@@ -1,0 +1,367 @@
+<?xml version="1.0"?>
+<!--
+/*
+ * Copyright  2004-2005 Stefan Reuter
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ */
+-->
+<document>
+	<properties>
+		<author email="srt at users.sourceforge.net">Stefan Reuter</author>
+		<title>Tutorial</title>
+	</properties>
+	<meta name="keywords" content="Asterisk,asterisk,Java,java,Manager API,FastAGI,AGI,tutorial,example"/>
+	<body>
+		<section name="The FastAGI Protocol">
+			<p>The easiest way to interact with Asterisk from Java applications is via
+				the FastAGI protocol. AGI scripts can handle either incoming calls or
+				calls originated via the Manager API (see below for an example on how to
+				use Asterisk-Java to originate a call from your Java application).</p>
+			<p>The AGI (Asterisk Gateway Interface) facility allows you to launch scripts,
+				from the Asterisk dial plan. Traditionally communication between the scripts
+				and Asterisk was via standard input and standard output and scripts had to run
+				on the same machine as Asterisk. Due to the large amount of time a Java 
+				Virtual Machine needs for startup and the discomfort of having to install 
+				a Java environment on the PBX box(es) Java has not been the language 
+				of choice for writing AGI scripts.</p>
+			<p>These drawbacks have been addressed by the addition of FastAGI to Asterisk.
+				FastAGI is basically AGI over TCP/IP socket connections instead of using
+				standard input and standard output as communication medium.</p>
+			<p>Using FastAGI you can run a Java application (on the same machine that runs
+				Asterisk or on a seperate machine) that is only started once and serves AGI
+				scripts until it is shut down. Combined with Java's multithreading support
+				you can build pretty fast AGI scripts using this protocol.</p>
+			<p>Asterisk-Java helps you with running your Java based AGI scripts by providing
+				a container that recives connections from the Asterisk server, parses the
+				request and calls your scripts mapped to the called URL.</p>
+			<subsection name="Hello AGI!">
+				<p>To write your own AGI scripts you must implement the AGIScript interface.
+					You can do so by simply extending AbstractAGIScript that provides
+					some convenience methods that further simplify that task.</p>
+				<p>A simple AGIScript might look as follows:</p>
+<source><![CDATA[
+import net.sf.asterisk.fastagi.AGIChannel;
+import net.sf.asterisk.fastagi.AGIException;
+import net.sf.asterisk.fastagi.AGIRequest;
+import net.sf.asterisk.fastagi.AbstractAGIScript;
+
+public class HelloAGIScript extends AbstractAGIScript
+{
+    public void service(AGIRequest request, AGIChannel channel)
+            throws AGIException
+    {
+        // Answer the channel...
+        answer(channel);
+		
+        // ...say hello...
+        streamFile(channel, "welcome");
+		
+        // ...and hangup.
+        hangup(channel);
+    }
+}
+]]></source>
+				<p>If you are using Asterisk-Java 0.2 (or a snapshot thereof)
+					you should extend 
+					<a href="http://asterisk-java.sourceforge.net/apidocs/net/sf/asterisk/fastagi/BaseAGIScript.html">BaseAGIScript</a>
+					instead of AbstractAGIScript. That way you don't have to
+					pass the channel to all the methods as this is done
+					automatically.</p>
+				<p>Put this Java source file into a directory of your choice,
+					add the <code>asterisk-java.jar</code> and compile it:</p>
+<source><![CDATA[
+$ javac -cp asterisk-java.jar HelloAGIScript.java
+$ 
+]]></source>
+				<p>Next you have to add a call to your script to your dialplan in Asterisk.</p>
+				<p>You might want to add an extension 1300 to the default section of your
+					<code>extensions.conf</code>:</p>
+<source><![CDATA[
+[default]
+...
+exten => 1300,1,Agi(agi://localhost/hello.agi)
+]]></source>
+				<p>Replace localhost with the hostname of the machine that runs Asterisk-Java.</p>
+				<p>Be sure to reload Asterisk for this change to take effect. You can do so
+					by executing <code>extensions reload</code> on the Asterisk CLI.</p>
+				<p>Now you must map the script name <code>hello.agi</code> to the HelloAGIScript
+					we just created. By default this is done in a properties file called
+					<code>fastagi-mapping.properties</code> that must be on the classpath
+					when we start the AGIServer. In this case it looks like:</p>
+<source><![CDATA[
+hello.agi = HelloAGIScript
+]]></source>
+				<p>Your directory should now contain the following files:</p>
+<source><![CDATA[
+$ ls -l
+-rw-r--r--  1 srt srt 163689 2005-03-11 22:07 asterisk-java.jar
+-rw-r--r--  1 srt srt     26 2005-03-11 20:50 fastagi-mapping.properties
+-rw-r--r--  1 srt srt    624 2005-03-11 22:07 HelloAGIScript.class
+-rw-r--r--  1 srt srt    438 2005-03-11 20:50 HelloAGIScript.java
+]]></source>
+				<p>Finally we start the AGIServer:</p>
+<source><![CDATA[
+$ java -cp asterisk-java.jar:. net.sf.asterisk.fastagi.DefaultAGIServer
+]]></source>
+				<p>You should see some logging output indicating that the AGIServer has
+					been successfully started and is listening for incoming connections:</p>
+<source><![CDATA[
+Mar 11, 2005 10:20:12 PM net.sf.asterisk.fastagi.DefaultAGIServer run
+INFO: Thread pool started.
+Mar 11, 2005 10:20:12 PM net.sf.asterisk.fastagi.DefaultAGIServer run
+INFO: Listening on *:4573.
+]]></source>
+				<p>When you call extension 1300 you will see the AGI script being launched:</p>
+<source><![CDATA[
+Mar 11, 2005 10:22:47 PM net.sf.asterisk.fastagi.DefaultAGIServer run
+INFO: Received connection.
+Mar 11, 2005 10:22:47 PM net.sf.asterisk.fastagi.AGIConnectionHandler run
+INFO: Begin AGIScript HelloAGIScript on AGIServer-TaskThread-0
+Mar 11, 2005 10:22:48 PM net.sf.asterisk.fastagi.AGIConnectionHandler run
+INFO: End AGIScript HelloAGIScript on AGIServer-TaskThread-0
+]]></source>
+			</subsection>
+
+			<subsection name="Extending the Example">
+				<p>Have a look at the documentation of 
+					<a href="apidocs/net/sf/asterisk/fastagi/AbstractAGIScript.html">AbstractAGIScript</a>
+					there you will find additional methods that you can use for your own scripts.
+					If you want to use commands that do not yet have a corresponding method in
+					AbstractAGIScript or if you want to extend the FastAGI protocol by adding your
+					own commands you can also use the 
+					<a href="apidocs/net/sf/asterisk/fastagi/AGIChannel.html">channel</a>.sendCommand(<a href="apidocs/net/sf/asterisk/fastagi/command/AGICommand.html">AGICommand</a>)
+					method to send arbitrary commands.</p>
+				<p>You can pass parameters to your scripts by including them in the URL used with
+					the AGI command. These parameters can be read by the getParameter(String) and
+					getParameterValues(String) methods in
+					<a href="apidocs/net/sf/asterisk/fastagi/AGIRequest.html">AGIRequest</a>.</p>
+				<p>If you want to pass a parameter named user with a value of "john" to your
+					script called hello.agi running on localhost your call to the AGI application
+					looks like this:</p>
+<source><![CDATA[
+exten => 1300,1,Agi(agi://localhost/hello.agi?user=john)
+]]></source>
+				<p>You can also pass multiple parameters. Parameters containing special characters
+					must be URL encoded.</p>
+				<p>If you are about to write more complex scripts please note that your AGIScript 
+					must be threadsafe. Only one instance will be used to serve all requests.
+					This is kind of similar to the constraints a servlet engine places on the 
+					implementation of servlets.</p>
+			</subsection>
+			
+			<subsection name="Configuration">
+				<p>You can tune the DefaultAGIServer by setting two properties: The bindPort
+					and the poolSize.</p>
+				<p>The bindPort determines the TCP port the server will listen on. By default
+					this is the FastAGI port 4573. If you change it make sure to include the
+					new port in the URLs used in <code>extensions.conf</code>. When using
+					bindPort 1234 your <code>extensions.conf</code> will contain:</p>
+<source><![CDATA[
+exten => 1300,1,Agi(agi://localhost:1234/hello.agi)
+]]></source>
+				<p>To understand the poolSize property you need to know that the 
+					DefaultAGIServer uses a fixed size thread pool to serve your AGIScripts.
+					The poolSize determines how many threads are spawned at startup and thus
+					limits the number of AGIScripts that can run at the same time. So you
+					should set the poolSize to at least the number of concurrent calls the
+					AGIServer should be able to handle. The default value is 10.</p>
+				<p>These configuration properties can be set by providing a
+					<code>fastagi.properties</code> file on the classpath.</p>
+				<p>This might look like:</p>
+<source><![CDATA[
+bindPort = 1234
+poolSize = 20
+]]></source>
+			</subsection>
+		</section>
+		<section name="The Manager API">
+			<p>The Manager API is the other way for remote interaction with an Asterisk server.
+				In contrast to the FastAGI protocol Asterisk does not explicitly pass control
+				to your application when using the Manager API but allows you to
+				query and change its state at any time.</p>
+			<p>The Manager API is made up of three concepts: Actions, Responses and	Events.</p>
+			<p>Actions can be sent to Asterisk and instruct it to do someting. For example your
+				application can send an Action to Asterisk requesting it to dial a number and
+				direct the dialed party to one of your phones. In reply to an
+				Action Asterisk sends a Reply that contains the results of the operation 
+				performed.</p>
+			<p>Events are sent by Asterisk without a direct relation to the Actions your
+				application is sending.
+				Events inform you about the relevant changes in Asterisk's state. For example
+				Events are used to inform your application about incoming calls or users joining
+				or leaving MeetMe conference rooms.</p>
+			<p>The connection to the Asterisk server via Manager API occurs over TCP/IP usually
+				on the default port 5038.</p>
+			<p>To enable the Manager API on Asterisk you must edit your <code>manager.conf</code>
+				configuration file and restart Asterisk. The <code>manager.conf</code> also contains
+				constraints on the range of IP addresses that are allowed to connect and username
+				and passwords for authentication. A sample might look like:</p>
+<source><![CDATA[
+[general]
+enabled = yes
+port = 5038
+bindaddr = 0.0.0.0
+
+[manager]
+secret=pa55w0rd
+permit=0.0.0.0/0.0.0.0
+read=system,call,log,verbose,agent,command,user
+write=system,call,log,verbose,agent,command,user
+]]></source>
+			<p>This will enable the Manager AP, allow access from any IP address using the
+				username "manager" and the password "pa55w0rd".</p>
+			<subsection name="Hello Manager!">
+				<p>Assume we have a phone connected via SIP that is available at SIP/john and
+					we want to initiate a call from that phone to extension 1300 in the default
+					context.</p>
+				<p>We have to obtain a
+					<a href="apidocs/net/sf/asterisk/manager/ManagerConnection.html">ManagerConnection</a>
+					providing the hostname Asterisk is running on and the username and password
+					as configured in <code>manager.conf</code>. Next we log in and send an
+					<a href="apidocs/net/sf/asterisk/manager/action/OriginateAction.html">OriginateAction</a>
+					and finally we disconnect.</p>
+				<p>An example that does this is shown below.</p>
+<source><![CDATA[
+import java.io.IOException;
+
+import net.sf.asterisk.manager.AuthenticationFailedException;
+import net.sf.asterisk.manager.ManagerConnection;
+import net.sf.asterisk.manager.ManagerConnectionFactory;
+import net.sf.asterisk.manager.TimeoutException;
+import net.sf.asterisk.manager.action.OriginateAction;
+import net.sf.asterisk.manager.response.ManagerResponse;
+
+public class HelloManager
+{
+    private ManagerConnection managerConnection;
+
+    public HelloManager() throws IOException
+    {
+        ManagerConnectionFactory factory = new ManagerConnectionFactory();
+
+        this.managerConnection = factory.getManagerConnection("localhost",
+                "manager", "pa55w0rd");
+    }
+
+    public void run() throws IOException, AuthenticationFailedException,
+            TimeoutException
+    {
+        OriginateAction originateAction;
+        ManagerResponse originateResponse;
+
+        originateAction = new OriginateAction();
+        originateAction.setChannel("SIP/John");
+        originateAction.setContext("default");
+        originateAction.setExten("1300");
+        originateAction.setPriority(new Integer(1));
+        originateAction.setTimeout(new Integer(30000));
+
+        // connect to Asterisk and log in
+        managerConnection.login();
+
+        // send the originate action and wait for a maximum of 30 seconds for Asterisk
+        // to send a reply
+        originateResponse = managerConnection.sendAction(originateAction, 30000);
+
+        // print out whether the originate succeeded or not
+        System.out.println(originateResponse.getResponse());
+
+        // and finally log off and disconnect
+        managerConnection.logoff();
+    }
+
+    public static void main(String[] args) throws Exception
+    {
+        HelloManager helloManager;
+
+        helloManager = new HelloManager();
+        helloManager.run();
+    }
+}
+]]></source>
+				<p>A list of the other <a href="apidocs/net/sf/asterisk/manager/action/package-summary.html">Actions</a>
+					povided by the Manager API is available in the
+					<a href="apidocs/index.html">javadocs</a>.</p>
+			</subsection>
+			<subsection name="Hello Events!">
+				<p>To receive events from Asterisk you have to implement the 
+					<a href="apidocs/net/sf/asterisk/manager/ManagerEventHandler.html">ManagerEventHandler</a>
+					interface and add it to the 
+					<a href="apidocs/net/sf/asterisk/manager/ManagerConnection.html">ManagerConnection</a></p>
+				<p>The following code shows a simple example of how to do this:</p>
+<source><![CDATA[
+import java.io.IOException;
+
+import net.sf.asterisk.manager.AuthenticationFailedException;
+import net.sf.asterisk.manager.ManagerConnection;
+import net.sf.asterisk.manager.ManagerConnectionFactory;
+import net.sf.asterisk.manager.ManagerEventHandler;
+import net.sf.asterisk.manager.TimeoutException;
+import net.sf.asterisk.manager.action.StatusAction;
+import net.sf.asterisk.manager.event.ManagerEvent;
+
+public class HelloEvents implements ManagerEventHandler
+{
+    private ManagerConnection managerConnection;
+
+    public HelloEvents() throws IOException
+    {
+        ManagerConnectionFactory factory = new ManagerConnectionFactory();
+
+        this.managerConnection = factory.getManagerConnection("localhost",
+                "manager", "pa55w0rd");
+    }
+
+    public void run() throws IOException, AuthenticationFailedException,
+            TimeoutException, InterruptedException
+    {
+        // register for events
+        managerConnection.addEventHandler(this);
+        
+        // connect to Asterisk and log in
+        managerConnection.login();
+
+        // request channel state
+        managerConnection.sendAction(new StatusAction());
+        
+        // wait 10 seconds for events to come in
+        Thread.sleep(10000);
+
+        // and finally log off and disconnect
+        managerConnection.logoff();
+    }
+
+    public void handleEvent(ManagerEvent event)
+    {
+        // just print received events
+        System.out.println(event);
+    }
+
+    public static void main(String[] args) throws Exception
+    {
+        HelloEvents helloEvents;
+
+        helloEvents = new HelloEvents();
+        helloEvents.run();
+    }
+}
+]]></source>				
+				<p>A list of the other <a href="apidocs/net/sf/asterisk/manager/event/package-summary.html">Events</a>
+					povided by the Manager API is available in the
+					<a href="apidocs/index.html">javadocs</a>.</p>
+			</subsection>
+		</section>
+	</body>
+</document>

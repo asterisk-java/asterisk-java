@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title>The asterisk-java Library</title>
+  </head>
+  <body>
+
+<h1>Asterisk Java</h1>
+
+<h2>What is asterisk-java?</h2>
+
+<p>The asterisk-java package consists of a set of Java classes that allow
+you to connect to an
+<a href="http://www.asterisk.org">Asterisk PBX Server</a> via
+<a href="http://www.voip-info.org/wiki-Asterisk+manager+API">Asterisk's Manager API</a>
+from any Java application.</p>
+<p>It supports receiving events from the Asterisk server (e.g. call progess,
+registered peers, channel state) and sending actions to Asterisk
+(e.g. originate call, agent login/logoff, start/stop voice recording).</p>
+<p>A complete list of the available
+<a href="api/net/sf/asterisk/manager/event/package-summary.html">events</a> and
+<a href="api/net/sf/asterisk/manager/action/package-summary.html">actions</a>
+is available in the <a href="api/index.html">javadocs</a>.
+
+<h2>License</h2>
+<p>Asterisk-java is provided under the terms of the
+<a href="http://www.gnu.org/copyleft/lesser.html">LGPL</a>.</p>
+
+<h2>Status</h2>
+<p>Currently asterisk-java supports the actions and events provided by
+the standard installation of Asterisk.
+Future releases will add the ability to easily extend them by user
+provided events and actions.</p>
+<p>Ideas for the future include a stateful higher level API that supports
+operations like "get list of currently active calls" or "place call" with
+objects like "Call" or "Channel" that are transparently updated as the
+state of the corresponding object within the asterisk server changes.</p>
+
+<h2>Download</h2>
+<p>Asterisk-java is currently available via cvs only.</p>
+<pre>
+cvs -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/asterisk-java login
+cvs -z3 -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/asterisk-java co asterisk-java
+</pre>
+<p>When prompted for a password for <i>anonymous</i>, simply press the
+Enter key.</p>
+<p>More information is available on the
+<a href="http://www.sourceforge.net/projects/asterisk-java">sourceforge
+project page</a>.</p>
+
+<h2>Related Projects</h2>
+<p>_dw has developed a similar kind of software for Python called
+<a href="http://www.botanicus.net/dw/py-asterisk.php">py-Asterisk</a>.</p>
+
+<p><a href="http://sourceforge.net/projects/jasterisk/">JAsterisk</a>
+is a set of JNI classes providing direct access
+to Asterisk PBX functionality from Java. It is not a
+socket-level interface into the Asterisk manager app (like asterisk-java)
+but a true Java-Asterisk integration at the Thread level.</p>
+
+<p><a href="http://www.voip-info.org/wiki-JAGIServer">JAGIServer</a>
+a 100% Pure Java application server for Asterisk using the FastAGI protocol,
+which is a TCP/IP wrapper around the Asterisk Gateway Interface AGI protocol
+for call handling and processing caller input.</a>
+
+<h2>Contact</h2>
+You can reach me at
+<code>srt</code> at <code>reucon</code> dot <code>net</code>.
+
+<p>
+<a href="http://sourceforge.net" target="_top"><img src="http://sourceforge.net/sflogo.php?group_id=118998&amp;type=2" width="125" height="37" border="0" alt="SourceForge.net Logo" align="right"/></a>
+<i>Copyright &#169; 2004, 2005 Stefan Reuter. All Rights Reserved.</i>
+</p>
+
+
+  </body>
+</html>

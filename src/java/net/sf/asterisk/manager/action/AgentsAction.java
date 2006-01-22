@@ -1,0 +1,61 @@
+/*
+ * Copyright  2004-2005 Stefan Reuter
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ */
+package net.sf.asterisk.manager.action;
+
+import net.sf.asterisk.manager.event.AgentsCompleteEvent;
+
+/**
+ * The AgentsAction requests the state of all agents.<br>
+ * For each agent an AgentsEvent is generated. After the state of all agents has been
+ * reported an AgentsCompleteEvent is generated.<br>
+ * Available since Asterisk 1.2
+ * 
+ * @see net.sf.asterisk.manager.event.AgentsEvent
+ * @see net.sf.asterisk.manager.event.AgentsCompleteEvent
+ * 
+ * @author srt
+ * @version $Id: AgentsAction.java,v 1.5 2005/08/07 00:09:42 srt Exp $
+ * @since 0.2
+ */
+public class AgentsAction extends AbstractManagerAction implements EventGeneratingAction
+{
+    /**
+     * Serializable version identifier
+     */
+    static final long serialVersionUID = -320228893513973367L;
+
+    /**
+     * Creates a new AgentsAction.
+     */
+    public AgentsAction()
+    {
+        
+    }
+    
+    /**
+     * Returns the name of this action, i.e. "Agents".
+     */
+    public String getAction()
+    {
+        return "Agents";
+    }
+
+    public Class getActionCompleteEventClass()
+    {
+        return AgentsCompleteEvent.class;
+    }
+}

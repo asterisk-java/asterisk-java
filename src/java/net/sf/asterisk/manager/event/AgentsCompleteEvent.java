@@ -1,0 +1,43 @@
+/*
+ * Copyright  2004-2005 Stefan Reuter
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ */
+package net.sf.asterisk.manager.event;
+
+/**
+ * An AgentsCompleteEvent is triggered after the state of all agents has been
+ * reported in response to an AgentsAction.<br>
+ * Available since Asterisk 1.2
+ * 
+ * @see net.sf.asterisk.manager.action.AgentsAction
+ * @author srt
+ * @version $Id: AgentsCompleteEvent.java,v 1.1 2005/07/15 19:01:33 srt Exp $
+ * @since 0.2
+ */
+public class AgentsCompleteEvent extends ResponseEvent
+{
+    /**
+     * Serial version identifier
+     */
+    private static final long serialVersionUID = -1177773673509373296L;
+
+    /**
+     * @param source
+     */
+    public AgentsCompleteEvent(Object source)
+    {
+        super(source);
+    }
+}

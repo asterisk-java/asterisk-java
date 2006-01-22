@@ -1,0 +1,78 @@
+/*
+ * Copyright  2004-2005 Stefan Reuter
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ */
+package net.sf.asterisk.fastagi.command;
+
+/**
+ * Returns the value of the given channel varible.<br>
+ * Since Asterisk 1.2 you can also use this command to use custom Asterisk
+ * functions. Syntax is "func(args)".<br>
+ * Returns 0 if the variable is not set. Returns 1 if the variable is set and
+ * returns the variable in parenthesis.<br>
+ * Example return code: 200 result=1 (testvariable)
+ * 
+ * @author srt
+ * @version $Id: GetVariableCommand.java,v 1.7 2006/01/12 10:35:13 srt Exp $
+ */
+public class GetVariableCommand extends AbstractAGICommand
+{
+    /**
+     * Serial version identifier.
+     */
+    private static final long serialVersionUID = 3256719598056387384L;
+
+    /**
+     * The name of the variable to retrieve.
+     */
+    private String variable;
+
+    /**
+     * Creates a new GetVariableCommand.
+     * 
+     * @param variable the name of the variable to retrieve.
+     */
+    public GetVariableCommand(String variable)
+    {
+        this.variable = variable;
+    }
+
+    /**
+     * Returns the name of the variable to retrieve.
+     * 
+     * @return the the name of the variable to retrieve.
+     */
+    public String getVariable()
+    {
+        return variable;
+    }
+
+    /**
+     * Sets the name of the variable to retrieve.<br>
+     * Since Asterisk 1.2 you can also use custom dialplan functions (like
+     * "func(args)") as variable.
+     * 
+     * @param variable the name of the variable to retrieve.
+     */
+    public void setVariable(String variable)
+    {
+        this.variable = variable;
+    }
+
+    public String buildCommand()
+    {
+        return "GET VARIABLE " + escapeAndQuote(variable);
+    }
+}

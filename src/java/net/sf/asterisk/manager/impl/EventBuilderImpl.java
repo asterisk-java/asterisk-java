@@ -1,0 +1,483 @@
+/*
+ * Copyright  2004-2005 Stefan Reuter
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ */
+package net.sf.asterisk.manager.impl;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+import net.sf.asterisk.manager.EventBuilder;
+import net.sf.asterisk.manager.event.AgentCallbackLoginEvent;
+import net.sf.asterisk.manager.event.AgentCallbackLogoffEvent;
+import net.sf.asterisk.manager.event.AgentCalledEvent;
+import net.sf.asterisk.manager.event.AgentCompleteEvent;
+import net.sf.asterisk.manager.event.AgentConnectEvent;
+import net.sf.asterisk.manager.event.AgentDumpEvent;
+import net.sf.asterisk.manager.event.AgentLoginEvent;
+import net.sf.asterisk.manager.event.AgentLogoffEvent;
+import net.sf.asterisk.manager.event.AgentsCompleteEvent;
+import net.sf.asterisk.manager.event.AgentsEvent;
+import net.sf.asterisk.manager.event.AlarmClearEvent;
+import net.sf.asterisk.manager.event.AlarmEvent;
+import net.sf.asterisk.manager.event.CdrEvent;
+import net.sf.asterisk.manager.event.DBGetResponseEvent;
+import net.sf.asterisk.manager.event.DNDStateEvent;
+import net.sf.asterisk.manager.event.DialEvent;
+import net.sf.asterisk.manager.event.ExtensionStatusEvent;
+import net.sf.asterisk.manager.event.FaxReceivedEvent;
+import net.sf.asterisk.manager.event.HangupEvent;
+import net.sf.asterisk.manager.event.HoldEvent;
+import net.sf.asterisk.manager.event.HoldedCallEvent;
+import net.sf.asterisk.manager.event.JoinEvent;
+import net.sf.asterisk.manager.event.LeaveEvent;
+import net.sf.asterisk.manager.event.LinkEvent;
+import net.sf.asterisk.manager.event.LogChannelEvent;
+import net.sf.asterisk.manager.event.ManagerEvent;
+import net.sf.asterisk.manager.event.MeetMeJoinEvent;
+import net.sf.asterisk.manager.event.MeetMeLeaveEvent;
+import net.sf.asterisk.manager.event.MessageWaitingEvent;
+import net.sf.asterisk.manager.event.NewCallerIdEvent;
+import net.sf.asterisk.manager.event.NewChannelEvent;
+import net.sf.asterisk.manager.event.NewExtenEvent;
+import net.sf.asterisk.manager.event.NewStateEvent;
+import net.sf.asterisk.manager.event.OriginateFailureEvent;
+import net.sf.asterisk.manager.event.OriginateSuccessEvent;
+import net.sf.asterisk.manager.event.ParkedCallEvent;
+import net.sf.asterisk.manager.event.ParkedCallGiveUpEvent;
+import net.sf.asterisk.manager.event.ParkedCallTimeOutEvent;
+import net.sf.asterisk.manager.event.ParkedCallsCompleteEvent;
+import net.sf.asterisk.manager.event.PeerEntryEvent;
+import net.sf.asterisk.manager.event.PeerStatusEvent;
+import net.sf.asterisk.manager.event.PeerlistCompleteEvent;
+import net.sf.asterisk.manager.event.QueueEntryEvent;
+import net.sf.asterisk.manager.event.QueueMemberAddedEvent;
+import net.sf.asterisk.manager.event.QueueMemberEvent;
+import net.sf.asterisk.manager.event.QueueMemberPausedEvent;
+import net.sf.asterisk.manager.event.QueueMemberRemovedEvent;
+import net.sf.asterisk.manager.event.QueueMemberStatusEvent;
+import net.sf.asterisk.manager.event.QueueParamsEvent;
+import net.sf.asterisk.manager.event.QueueStatusCompleteEvent;
+import net.sf.asterisk.manager.event.RegistryEvent;
+import net.sf.asterisk.manager.event.ReloadEvent;
+import net.sf.asterisk.manager.event.RenameEvent;
+import net.sf.asterisk.manager.event.ResponseEvent;
+import net.sf.asterisk.manager.event.ShutdownEvent;
+import net.sf.asterisk.manager.event.StatusCompleteEvent;
+import net.sf.asterisk.manager.event.StatusEvent;
+import net.sf.asterisk.manager.event.UnholdEvent;
+import net.sf.asterisk.manager.event.UnlinkEvent;
+import net.sf.asterisk.manager.event.UnparkedCallEvent;
+import net.sf.asterisk.manager.event.UserEvent;
+import net.sf.asterisk.manager.event.ZapShowChannelsCompleteEvent;
+import net.sf.asterisk.manager.event.ZapShowChannelsEvent;
+import net.sf.asterisk.util.AstUtil;
+import net.sf.asterisk.util.Log;
+import net.sf.asterisk.util.LogFactory;
+
+/**
+ * Default implementation of the EventBuilder interface.
+ * 
+ * @see net.sf.asterisk.manager.event.ManagerEvent
+ * @author srt
+ * @version $Id: EventBuilderImpl.java,v 1.18 2005/10/26 06:39:30 srt Exp $
+ */
+public class EventBuilderImpl implements EventBuilder
+{
+    private final Log logger = LogFactory.getLog(getClass());
+    private Map registeredEventClasses;
+
+    public EventBuilderImpl()
+    {
+        this.registeredEventClasses = new HashMap();
+        registerBuiltinEventClasses();
+    }
+
+    private void registerBuiltinEventClasses()
+    {
+        registerEventClass(AgentCallbackLoginEvent.class);
+        registerEventClass(AgentCallbackLogoffEvent.class);
+        registerEventClass(AgentCalledEvent.class);
+        registerEventClass(AgentConnectEvent.class);
+        registerEventClass(AgentCompleteEvent.class);
+        registerEventClass(AgentDumpEvent.class);
+        registerEventClass(AgentLoginEvent.class);
+        registerEventClass(AgentLogoffEvent.class);
+        registerEventClass(AgentsEvent.class);
+        registerEventClass(AgentsCompleteEvent.class);
+        registerEventClass(AlarmEvent.class);
+        registerEventClass(AlarmClearEvent.class);
+        registerEventClass(CdrEvent.class);
+        registerEventClass(DBGetResponseEvent.class);
+        registerEventClass(DialEvent.class);
+        registerEventClass(DNDStateEvent.class);
+        registerEventClass(ExtensionStatusEvent.class);
+        registerEventClass(FaxReceivedEvent.class);
+        registerEventClass(HangupEvent.class);
+        registerEventClass(HoldedCallEvent.class);
+        registerEventClass(HoldEvent.class);
+        registerEventClass(JoinEvent.class);
+        registerEventClass(LeaveEvent.class);
+        registerEventClass(LinkEvent.class);
+        registerEventClass(LogChannelEvent.class);
+        registerEventClass(MeetMeJoinEvent.class);
+        registerEventClass(MeetMeLeaveEvent.class);
+        registerEventClass(MessageWaitingEvent.class);
+        registerEventClass(NewCallerIdEvent.class);
+        registerEventClass(NewChannelEvent.class);
+        registerEventClass(NewExtenEvent.class);
+        registerEventClass(NewStateEvent.class);
+        registerEventClass(OriginateFailureEvent.class);
+        registerEventClass(OriginateSuccessEvent.class);
+        registerEventClass(ParkedCallGiveUpEvent.class);
+        registerEventClass(ParkedCallEvent.class);
+        registerEventClass(ParkedCallTimeOutEvent.class);
+        registerEventClass(ParkedCallsCompleteEvent.class);
+        registerEventClass(PeerEntryEvent.class);
+        registerEventClass(PeerlistCompleteEvent.class);
+        registerEventClass(PeerStatusEvent.class);
+        registerEventClass(QueueEntryEvent.class);
+        registerEventClass(QueueMemberAddedEvent.class);
+        registerEventClass(QueueMemberEvent.class);
+        registerEventClass(QueueMemberPausedEvent.class);
+        registerEventClass(QueueMemberRemovedEvent.class);
+        registerEventClass(QueueMemberStatusEvent.class);
+        registerEventClass(QueueParamsEvent.class);
+        registerEventClass(QueueStatusCompleteEvent.class);
+        registerEventClass(RegistryEvent.class);
+        registerEventClass(ReloadEvent.class);
+        registerEventClass(RenameEvent.class);
+        registerEventClass(ShutdownEvent.class);
+        registerEventClass(StatusEvent.class);
+        registerEventClass(StatusCompleteEvent.class);
+        registerEventClass(UnholdEvent.class);
+        registerEventClass(UnlinkEvent.class);
+        registerEventClass(UnparkedCallEvent.class);
+        registerEventClass(ZapShowChannelsEvent.class);
+        registerEventClass(ZapShowChannelsCompleteEvent.class);
+    }
+
+    public void registerEventClass(Class clazz)
+    {
+        String className;
+        String eventType;
+
+        className = clazz.getName();
+        eventType = className.substring(className.lastIndexOf('.') + 1)
+                .toLowerCase();
+
+        if (eventType.endsWith("event"))
+        {
+            eventType = eventType.substring(0, eventType.length()
+                    - "event".length());
+        }
+
+        if (UserEvent.class.isAssignableFrom(clazz)
+                && !eventType.startsWith("userevent"))
+        {
+            eventType = "userevent" + eventType;
+        }
+
+        registerEventClass(eventType, clazz);
+    }
+
+    /**
+     * Registers a new event class for the event given by eventType.
+     * 
+     * @param eventType the name of the event to register the class for. For
+     *            example "Join".
+     * @param clazz the event class to register, must extend
+     *            net.sf.asterisk.manager.event.Event.
+     */
+    public void registerEventClass(String eventType, Class clazz)
+    {
+        Constructor defaultConstructor;
+
+        if (!ManagerEvent.class.isAssignableFrom(clazz))
+        {
+            throw new IllegalArgumentException(clazz + " is not a ManagerEvent");
+        }
+
+        if ((clazz.getModifiers() & Modifier.ABSTRACT) != 0)
+        {
+            throw new IllegalArgumentException(clazz + " is abstract");
+        }
+
+        try
+        {
+            defaultConstructor = clazz
+                    .getConstructor(new Class[]{Object.class});
+        }
+        catch (NoSuchMethodException ex)
+        {
+            throw new IllegalArgumentException(clazz
+                    + " has no usable constructor");
+        }
+
+        if ((defaultConstructor.getModifiers() & Modifier.PUBLIC) == 0)
+        {
+            throw new IllegalArgumentException(clazz
+                    + " has no public default constructor");
+        }
+
+        registeredEventClasses.put(eventType.toLowerCase(), clazz);
+
+        logger.debug("Registered event type '" + eventType + "' (" + clazz
+                + ")");
+    }
+
+    public ManagerEvent buildEvent(Object source, Map attributes)
+    {
+        ManagerEvent event;
+        String eventType;
+        Class eventClass;
+        Constructor constructor;
+
+        if (attributes.get("event") == null)
+        {
+            logger.error("No event event type in properties");
+            return null;
+        }
+
+        eventType = ((String) attributes.get("event")).toLowerCase();
+        eventClass = (Class) registeredEventClasses.get(eventType);
+        if (eventClass == null)
+        {
+            logger.info("No event class registered for event type '"
+                    + eventType + "', attributes: " + attributes);
+            return null;
+        }
+
+        try
+        {
+            constructor = eventClass.getConstructor(new Class[]{Object.class});
+        }
+        catch (NoSuchMethodException ex)
+        {
+            logger.error("Unable to get constructor of " + eventClass, ex);
+            return null;
+        }
+
+        try
+        {
+            event = (ManagerEvent) constructor
+                    .newInstance(new Object[]{source});
+        }
+        catch (Exception ex)
+        {
+            logger.error("Unable to create new instance of " + eventClass, ex);
+            return null;
+        }
+
+        setAttributes(event, attributes);
+
+        // ResponseEvents are sent in response to a ManagerAction if the
+        // response contains lots of data. They include the actionId of
+        // the corresponding ManagerAction.
+        if (event instanceof ResponseEvent)
+        {
+            ResponseEvent responseEvent;
+            String actionId;
+
+            responseEvent = (ResponseEvent) event;
+            actionId = responseEvent.getActionId();
+            if (actionId != null)
+            {
+                responseEvent.setActionId(Util.stripInternalActionId(actionId));
+                responseEvent.setInternalActionId(Util
+                        .getInternalActionId(actionId));
+            }
+        }
+
+        return event;
+    }
+
+    private void setAttributes(ManagerEvent event, Map attributes)
+    {
+        Map setters;
+
+        setters = getSetters(event.getClass());
+
+        Iterator i = attributes.keySet().iterator();
+        while (i.hasNext())
+        {
+            String name;
+            Object value;
+            Class dataType;
+            Method setter;
+
+            name = (String) i.next();
+
+            if ("event".equals(name))
+            {
+                continue;
+            }
+
+            /*
+             * The source property needs special handling as it is already
+             * defined in java.util.EventObject (the base class of
+             * ManagerEvent), so we have to translate it.
+             */
+            if ("source".equals(name))
+            {
+                setter = (Method) setters.get("src");
+            }
+            else
+            {
+                setter = (Method) setters.get(stripIllegalCharacters(name));
+            }
+
+            if (setter == null)
+            {
+                logger.error("Unable to set property '" + name + "' on "
+                        + event.getClass() + ": no setter");
+                continue;
+            }
+
+            dataType = setter.getParameterTypes()[0];
+
+            if (dataType == Boolean.class)
+            {
+                value = new Boolean(AstUtil.isTrue((String) attributes
+                        .get(name)));
+            }
+            else if (dataType.isAssignableFrom(String.class))
+            {
+                value = attributes.get(name);
+            }
+            else
+            {
+                try
+                {
+                    Constructor constructor = dataType
+                            .getConstructor(new Class[]{String.class});
+                    value = constructor.newInstance(new Object[]{attributes
+                            .get(name)});
+                }
+                catch (Exception e)
+                {
+                    logger.error("Unable to convert value '"
+                            + attributes.get(name) + "' of property '" + name
+                            + "' on " + event.getClass() + " to required type "
+                            + dataType, e);
+                    continue;
+                }
+            }
+
+            try
+            {
+                setter.invoke(event, new Object[]{value});
+            }
+            catch (Exception e)
+            {
+                logger.error("Unable to set property '" + name + "' on "
+                        + event.getClass(), e);
+                continue;
+            }
+        }
+    }
+
+    /**
+     * Strips all illegal charaters from the given lower case string.
+     * 
+     * @param s the original string
+     * @return the string with all illegal characters stripped
+     */
+    private String stripIllegalCharacters(String s)
+    {
+        char c;
+        boolean needsStrip = false;
+        StringBuffer sb;
+
+        if (s == null)
+        {
+            return null;
+        }
+
+        for (int i = 0; i < s.length(); i++)
+        {
+            c = s.charAt(i);
+            if (c >= '0' && c <= '9')
+            {
+                continue;
+            }
+            else if (c >= 'a' && c <= 'z')
+            {
+                continue;
+            }
+            else
+            {
+                needsStrip = true;
+                break;
+            }
+        }
+
+        if (!needsStrip)
+        {
+            return s;
+        }
+
+        sb = new StringBuffer(s.length());
+        for (int i = 0; i < s.length(); i++)
+        {
+            c = s.charAt(i);
+            if (c >= '0' && c <= '9')
+            {
+                sb.append(c);
+            }
+            else if (c >= 'a' && c <= 'z')
+            {
+                sb.append(c);
+            }
+        }
+
+        return sb.toString();
+    }
+
+    private Map getSetters(Class clazz)
+    {
+        Map accessors = new HashMap();
+        Method[] methods = clazz.getMethods();
+
+        for (int i = 0; i < methods.length; i++)
+        {
+            String name;
+            String methodName;
+            Method method = methods[i];
+
+            methodName = method.getName();
+            if (!methodName.startsWith("set"))
+            {
+                continue;
+            }
+
+            // skip methods with != 1 parameters
+            if (method.getParameterTypes().length != 1)
+            {
+                continue;
+            }
+
+            // ok seems to be an accessor
+            name = methodName.substring("set".length()).toLowerCase();
+            accessors.put(name, method);
+        }
+
+        return accessors;
+    }
+}

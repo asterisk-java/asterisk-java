@@ -1,0 +1,46 @@
+Asterisk-Java 0.2
+	* Added SayDateTimeCommand (AJ-23)
+	* Added GetFullVariableCommand (AJ-23)
+	* Added ReceiveTextCommand (AJ-23)
+	* Changed SetPriorityCommand to support labels (AJ-23)
+	* Added callingPres, callingAni2, callingTns and callingTon
+	  properties to AGIRequest (AJ-22)
+	* Fixed CallerId information in AGIRequest for 
+	  Asterisk 1.2 (AJ-21)
+
+Asterisk-Java 0.2-rc2
+	* Fixed mapping of Variable property in OriginateAction for
+	  Asterisk 1.2 (AJ-15)
+	* Added FaxReceived event from spandsp (AJ-20)
+	* Added SimpleMappingStrategy and AGIServerThread to ease
+	  integration of AGIServer when using Spring Framework
+	* Timeout for socket connection can now be specified for
+	  the ManagerConnection (AJ-16)
+	* Added getPort() method to lookup port of an AGIServer (AJ-14)
+	* Readded getContext(), getExtension(), getPriority() as 
+	  convenience methods to Channel (AJ-12)
+	* Decreased log level for unknown events to INFO (AJ-13)
+
+Asterisk-Java 0.2-rc1
+	* Added Support for the new Actions, Events and Commands 
+	  of Asterisk 1.2
+	* Fixed getting the uniqueId from a successful originate
+	  in the DefaultAsteriskManager
+	* Added isConnected() method to ManagerConnection
+	* Changed ManagerAction to be an interface rather that an
+	  abstract base class. If you extended ManagerAction, please
+	  use AbstractManagerAction instead.
+	* Added support for event generating Actions, i.e. Actions
+	  that send their result as a series of Event rather than
+	  the usual ManagerResults. See the sendEventGeneratingAction()
+	  methods in ManagerConnection for more information.
+	* Deprecated AbstractAGIScript in favor of BaseAGIScript. This
+	  allows you write cleaner AGI scripts as you don't have to
+	  pass the channel variable to all methods.
+	* Added convenience constructors for manager actions
+
+Asterisk-Java 0.1
+	* Added accessors for raw attributes in ManagerResponse
+	* Fixed bug in action id creation
+	* Changed logging to use either log4j or java.util.logging
+	* Fixed ExecCommand
