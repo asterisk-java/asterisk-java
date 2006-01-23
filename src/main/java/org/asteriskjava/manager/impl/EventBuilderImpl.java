@@ -309,6 +309,7 @@ public class EventBuilderImpl implements EventBuilder
         return event;
     }
 
+    @SuppressWarnings("unchecked")
     private void setAttributes(ManagerEvent event, Map<String, String> attributes)
     {
         Map<String, Method> setters;

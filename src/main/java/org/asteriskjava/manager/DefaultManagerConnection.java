@@ -1183,6 +1183,7 @@ public class DefaultManagerConnection implements ManagerConnection, Dispatcher
      * A combinded event and response handler that adds received events and the
      * response to a ResponseEvents object.
      */
+    @SuppressWarnings("unchecked")
     private class ResponseEventHandler
             implements
                 ManagerEventHandler,
