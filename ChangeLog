@@ -1,3 +1,7 @@
+Asterisk-Java 0.3
+	* Changed package name from net.sf.asterisk to org.asteriskjava
+	* Introduced generics
+
 Asterisk-Java 0.2
 	* Added SayDateTimeCommand (AJ-23)
 	* Added GetFullVariableCommand (AJ-23)
