@@ -20,7 +20,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import org.asteriskjava.manager.EventBuilder;
@@ -315,16 +314,11 @@ public class EventBuilderImpl implements EventBuilder
         Map<String, Method> setters;
 
         setters = getSetters(event.getClass());
-
-        Iterator i = attributes.keySet().iterator();
-        while (i.hasNext())
+        for (String name : attributes.keySet())
         {
-            String name;
             Object value;
             Class dataType;
             Method setter;
-
-            name = (String) i.next();
 
             if ("event".equals(name))
             {

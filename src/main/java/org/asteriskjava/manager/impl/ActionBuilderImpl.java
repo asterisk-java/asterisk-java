@@ -64,10 +64,11 @@ public class ActionBuilderImpl implements ActionBuilder
         return buildAction(action, null);
     }
 
+    @SuppressWarnings("unchecked")
     public String buildAction(final ManagerAction action, final String internalActionId)
     {
         StringBuffer sb;
-        Map getters;
+        Map<String, Method> getters;
 
         sb = new StringBuffer("action: ");
         sb.append(action.getAction());
@@ -87,14 +88,10 @@ public class ActionBuilderImpl implements ActionBuilder
         
         getters = getGetters(action.getClass());
 
-        Iterator i = getters.keySet().iterator();
-        while (i.hasNext())
+        for (String name : getters.keySet())
         {
-            String name;
             Method getter;
             Object value;
-
-            name = (String) i.next();
 
             if ("class".equals(name) || "action".equals(name) || "actionid".equals(name))
             {
@@ -155,7 +152,7 @@ public class ActionBuilderImpl implements ActionBuilder
      * @param clazz the class to return the getters for
      * @return a Map of attributes and their accessor methods (getters)
      */
-    private Map getGetters(final Class clazz)
+    private Map<String, Method> getGetters(final Class clazz)
     {
         Map<String, Method> accessors = new HashMap<String, Method>();
         Method[] methods = clazz.getMethods();
@@ -192,7 +189,7 @@ public class ActionBuilderImpl implements ActionBuilder
         return accessors;
     }
 
-    protected void appendMap(StringBuffer sb, String key, Map values)
+    protected void appendMap(StringBuffer sb, String key, Map<String, String> values)
     {
         String singularKey;
 
@@ -216,9 +213,9 @@ public class ActionBuilderImpl implements ActionBuilder
         }
     }
 
-    protected void appendMap10(StringBuffer sb, String singularKey, Map values)
+    protected void appendMap10(StringBuffer sb, String singularKey, Map<String, String> values)
     {
-        Iterator entryIterator;
+        Iterator<Map.Entry<String, String>> entryIterator;
 
         sb.append(singularKey);
         sb.append(": ");
@@ -227,7 +224,7 @@ public class ActionBuilderImpl implements ActionBuilder
         {
             Map.Entry entry;
 
-            entry = (Map.Entry) entryIterator.next();
+            entry = entryIterator.next();
             sb.append(entry.getKey());
             sb.append("=");
             if (entry.getValue() != null)
@@ -243,17 +240,10 @@ public class ActionBuilderImpl implements ActionBuilder
         sb.append(LINE_SEPARATOR);
     }
 
-    protected void appendMap12(StringBuffer sb, String singularKey, Map values)
+    protected void appendMap12(StringBuffer sb, String singularKey, Map<String, String> values)
     {
-        Iterator entryIterator;
-
-        entryIterator = values.entrySet().iterator();
-        while (entryIterator.hasNext())
+        for (Map.Entry entry : values.entrySet())
         {
-            Map.Entry entry;
-
-            entry = (Map.Entry) entryIterator.next();
-
             sb.append(singularKey);
             sb.append(": ");
             sb.append(entry.getKey());

@@ -22,7 +22,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -969,12 +968,8 @@ public class DefaultManagerConnection implements ManagerConnection, Dispatcher
         // dispatch to eventHandlers registered by users
         synchronized (eventHandlers)
         {
-            Iterator i = eventHandlers.iterator();
-            while (i.hasNext())
+            for (ManagerEventHandler eventHandler : eventHandlers)
             {
-                ManagerEventHandler eventHandler;
-
-                eventHandler = (ManagerEventHandler) i.next();
                 try
                 {
                     eventHandler.handleEvent(event);

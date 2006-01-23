@@ -226,10 +226,8 @@ public class Originate
     public String getVariableString()
     {
         StringBuffer varstring = new StringBuffer();
-        Iterator i = variables.entrySet().iterator();
-        while (i.hasNext())
+        for (Map.Entry var : variables.entrySet())
         {
-            Map.Entry var = (Map.Entry) i.next();
             varstring.append(var.getKey());
             varstring.append("|");
             varstring.append(var.getValue());

@@ -18,6 +18,7 @@ package org.asteriskjava.manager;
 
 import java.util.Collection;
 
+import org.asteriskjava.manager.event.ResponseEvent;
 import org.asteriskjava.manager.response.ManagerResponse;
 
 
@@ -45,5 +46,5 @@ public interface ResponseEvents
      * 
      * @return a Collection of ManagerEvents received.
      */
-    Collection getEvents();
+    Collection<ResponseEvent> getEvents();
 }

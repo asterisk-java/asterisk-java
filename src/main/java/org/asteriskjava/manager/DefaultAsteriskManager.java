@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -162,15 +161,10 @@ public class DefaultAsteriskManager
     private void initializeChannels() throws EventTimeoutException, IOException
     {
         ResponseEvents re;
-        Iterator i;
 
         re = connection.sendEventGeneratingAction(new StatusAction());
-        i = re.getEvents().iterator();
-        while (i.hasNext())
+        for (ManagerEvent event : re.getEvents())
         {
-            ManagerEvent event;
-
-            event = (ManagerEvent) i.next();
             if (event instanceof StatusEvent)
             {
                 handleStatusEvent((StatusEvent) event);
@@ -181,7 +175,6 @@ public class DefaultAsteriskManager
     private void initializeQueues() throws IOException
     {
         ResponseEvents re;
-        Iterator i;
 
         if (skipQueues)
         {
@@ -199,12 +192,8 @@ public class DefaultAsteriskManager
             re = e.getPartialResult();
         }
 
-        i = re.getEvents().iterator();
-        while (i.hasNext())
+        for (ManagerEvent event : re.getEvents())
         {
-            ManagerEvent event;
-
-            event = (ManagerEvent) i.next();
             if (event instanceof QueueParamsEvent)
             {
                 handleQueueParamsEvent((QueueParamsEvent) event);
@@ -685,10 +674,8 @@ public class DefaultAsteriskManager
 
         synchronized (channels)
         {
-            Iterator channelIterator = channels.values().iterator();
-            while (channelIterator.hasNext())
+            for (Channel tmp : channels.values())
             {
-                Channel tmp = (Channel) channelIterator.next();
                 if (tmp.getName() != null && tmp.getName().equals(name))
                 {
                     channel = tmp;
