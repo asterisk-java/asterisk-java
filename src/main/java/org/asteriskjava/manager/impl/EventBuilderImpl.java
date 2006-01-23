@@ -102,11 +102,11 @@ import org.asteriskjava.util.LogFactory;
 public class EventBuilderImpl implements EventBuilder
 {
     private final Log logger = LogFactory.getLog(getClass());
-    private Map registeredEventClasses;
+    private Map<String, Class> registeredEventClasses;
 
     public EventBuilderImpl()
     {
-        this.registeredEventClasses = new HashMap();
+        this.registeredEventClasses = new HashMap<String, Class>();
         registerBuiltinEventClasses();
     }
 
@@ -243,7 +243,7 @@ public class EventBuilderImpl implements EventBuilder
                 + ")");
     }
 
-    public ManagerEvent buildEvent(Object source, Map attributes)
+    public ManagerEvent buildEvent(Object source, Map<String, String> attributes)
     {
         ManagerEvent event;
         String eventType;
@@ -309,9 +309,9 @@ public class EventBuilderImpl implements EventBuilder
         return event;
     }
 
-    private void setAttributes(ManagerEvent event, Map attributes)
+    private void setAttributes(ManagerEvent event, Map<String, String> attributes)
     {
-        Map setters;
+        Map<String, Method> setters;
 
         setters = getSetters(event.getClass());
 
@@ -451,9 +451,9 @@ public class EventBuilderImpl implements EventBuilder
         return sb.toString();
     }
 
-    private Map getSetters(Class clazz)
+    private Map<String, Method> getSetters(Class clazz)
     {
-        Map accessors = new HashMap();
+        Map<String, Method> accessors = new HashMap<String, Method>();
         Method[] methods = clazz.getMethods();
 
         for (int i = 0; i < methods.length; i++)

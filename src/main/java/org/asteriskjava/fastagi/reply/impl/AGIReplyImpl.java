@@ -68,7 +68,7 @@ public class AGIReplyImpl implements Serializable, AGIReply
     /**
      * Additional attributes contained in this reply, for example endpos.
      */
-    private Map attributes;
+    private Map<String, String> attributes;
 
     /**
      * The contents of the parenthesis.
@@ -244,7 +244,7 @@ public class AGIReplyImpl implements Serializable, AGIReply
                 String s;
                 Matcher attributeMatcher;
 
-                attributes = new HashMap();
+                attributes = new HashMap<String, String>();
                 s = matcher.group(2);
                 attributeMatcher = ADDITIONAL_ATTRIBUTE_PATTERN.matcher(s);
                 while (attributeMatcher.find())

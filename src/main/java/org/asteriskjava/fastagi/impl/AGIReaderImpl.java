@@ -49,9 +49,9 @@ public class AGIReaderImpl implements AGIReader
     {
         AGIRequestImpl request;
         String line;
-        List lines;
+        List<String> lines;
 
-        lines = new ArrayList();
+        lines = new ArrayList<String>();
 
         try
         {
@@ -84,10 +84,10 @@ public class AGIReaderImpl implements AGIReader
     public AGIReply readReply() throws AGIException
     {
         AGIReply reply;
-        List lines;
+        List<String> lines;
         String line;
 
-        lines = new ArrayList();
+        lines = new ArrayList<String>();
 
         try
         {

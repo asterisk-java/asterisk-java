@@ -38,5 +38,5 @@ public interface ResponseBuilder
      * case.
      * @return the response with the given attributes.
      */
-    ManagerResponse buildResponse(Map attributes);
+    ManagerResponse buildResponse(Map<String, String> attributes);
 }

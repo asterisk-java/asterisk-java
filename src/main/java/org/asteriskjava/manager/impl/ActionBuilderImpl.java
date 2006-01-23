@@ -157,7 +157,7 @@ public class ActionBuilderImpl implements ActionBuilder
      */
     private Map getGetters(final Class clazz)
     {
-        Map accessors = new HashMap();
+        Map<String, Method> accessors = new HashMap<String, Method>();
         Method[] methods = clazz.getMethods();
 
         for (int i = 0; i < methods.length; i++)

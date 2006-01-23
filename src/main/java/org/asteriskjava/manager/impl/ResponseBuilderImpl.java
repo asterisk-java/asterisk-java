@@ -44,7 +44,7 @@ public class ResponseBuilderImpl implements ResponseBuilder
      * case.
      * @return the response with the given attributes.
      */
-    public ManagerResponse buildResponse(final Map attributes)
+    public ManagerResponse buildResponse(final Map<String, String> attributes)
     {
         ManagerResponse response;
         String responseType;
@@ -106,7 +106,7 @@ public class ResponseBuilderImpl implements ResponseBuilder
         response.setResponse(responseType);
 
         // clone this map as it is reused by the ManagerReader
-        response.setAttributes(new HashMap(attributes));
+        response.setAttributes(new HashMap<String, String>(attributes));
 
         if (attributes.containsKey("actionid"))
         {

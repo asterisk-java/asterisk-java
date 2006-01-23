@@ -123,8 +123,8 @@ public class ManagerReaderImpl implements ManagerReader
      */
     public void run()
     {
-        final Map buffer = new HashMap();
-        final List commandResult = new ArrayList();
+        final Map<String, String> buffer = new HashMap<String, String>();
+        final List<String> commandResult = new ArrayList<String>();
         String line;
         boolean processingCommandResult = false;
 
@@ -180,7 +180,7 @@ public class ManagerReaderImpl implements ManagerReader
                         commandResponse.setResponse("Follows");
                         commandResponse.setDateReceived(DateUtil.getDate());
                         commandResponse.setResult(commandResult);
-                        Map attributes = new HashMap();
+                        Map<String, String> attributes = new HashMap<String, String>();
                         attributes.put("actionid", commandResponse.getActionId());
                         attributes.put("response", commandResponse.getResponse());
                         commandResponse.setAttributes(attributes);
@@ -289,7 +289,7 @@ public class ManagerReaderImpl implements ManagerReader
         this.die = true;
     }
 
-    private ManagerResponse buildResponse(Map buffer)
+    private ManagerResponse buildResponse(Map<String, String> buffer)
     {
         ManagerResponse response;
 
@@ -303,7 +303,7 @@ public class ManagerReaderImpl implements ManagerReader
         return response;
     }
 
-    private ManagerEvent buildEvent(Object source, Map buffer)
+    private ManagerEvent buildEvent(Object source, Map<String, String> buffer)
     {
         ManagerEvent event;
 

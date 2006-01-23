@@ -40,7 +40,7 @@ import org.asteriskjava.util.LogFactory;
 public class AGIConnectionHandler implements Runnable
 {
     private final Log logger = LogFactory.getLog(getClass());
-    private static final ThreadLocal channel = new ThreadLocal();
+    private static final ThreadLocal<AGIChannel> channel = new ThreadLocal<AGIChannel>();
 
     /**
      * The socket connection.

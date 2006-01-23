@@ -31,7 +31,7 @@ public class ThreadPool
     private boolean running;
     private int numThreads;
     private String name;
-    private List jobs;
+    private List<Runnable> jobs;
 
     /**
      * Creates a new ThreadPool of numThreads size. These Threads are waiting
@@ -46,7 +46,7 @@ public class ThreadPool
 
         this.name = name;
         this.numThreads = numThreads;
-        jobs = new LinkedList();
+        jobs = new LinkedList<Runnable>();
         running = true;
 
         group = new PoolThreadGroup(this.name);

@@ -23,7 +23,6 @@ import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -56,13 +55,13 @@ public class AGIRequestImpl implements Serializable, AGIRequest
      */
     private static final long serialVersionUID = 3257001047145789496L;
 
-    private Map request;
+    private Map<String, String> request;
 
     /**
      * A map assigning the values of a parameter (an array of Strings) to the
      * name of the parameter.
      */
-    private Map parameterMap;
+    private Map<String, String[]> parameterMap;
 
     private String parameters;
     private String script;
@@ -78,7 +77,7 @@ public class AGIRequestImpl implements Serializable, AGIRequest
      * @param environment the first lines as received from Asterisk containing
      *            the environment.
      */
-    public AGIRequestImpl(final Collection environment)
+    public AGIRequestImpl(final Collection<String> environment)
     {
         if (environment == null)
         {
@@ -96,22 +95,18 @@ public class AGIRequestImpl implements Serializable, AGIRequest
      * @return a map with the variables set corresponding to the given
      *         environment.
      */
-    private Map buildMap(final Collection lines)
+    private Map<String, String> buildMap(final Collection<String> lines)
     {
-        Map map;
-        Iterator lineIterator;
+        Map<String, String> map;
 
-        map = new HashMap();
-        lineIterator = lines.iterator();
+        map = new HashMap<String, String>();
 
-        while (lineIterator.hasNext())
+        for (String line : lines)
         {
-            String line;
             int colonPosition;
             String key;
             String value;
 
-            line = (String) lineIterator.next();
             colonPosition = line.indexOf(':');
 
             // no colon on the line?
@@ -144,7 +139,7 @@ public class AGIRequestImpl implements Serializable, AGIRequest
         return map;
     }
 
-    public Map getRequest()
+    public Map<String, String> getRequest()
     {
         return request;
     }
@@ -496,7 +491,7 @@ public class AGIRequestImpl implements Serializable, AGIRequest
             return null;
         }
 
-        return (String[]) parameterMap.get(name);
+        return parameterMap.get(name);
     }
 
     public synchronized Map getParameterMap()
@@ -514,17 +509,18 @@ public class AGIRequestImpl implements Serializable, AGIRequest
      * @param s the parameter string to parse
      * @return a Map made up of parameter names their values
      */
-    private synchronized Map parseParameters(String s)
+    private synchronized Map<String, String[]> parseParameters(String s)
     {
-        Map parameterMap;
-        Map result;
-        Iterator parameterIterator;
+        Map<String, List<String>> parameterMap;
+        Map<String, String[]> result;
         StringTokenizer st;
 
-        parameterMap = new HashMap();
+        parameterMap = new HashMap<String, List<String>>();
+        result = new HashMap<String, String[]>();
+
         if (s == null)
         {
-            return parameterMap;
+            return result;
         }
 
         st = new StringTokenizer(s, "&");
@@ -534,7 +530,7 @@ public class AGIRequestImpl implements Serializable, AGIRequest
             Matcher parameterMatcher;
             String name;
             String value;
-            List values;
+            List<String> values;
 
             parameter = st.nextToken();
             parameterMatcher = PARAMETER_PATTERN.matcher(parameter);
@@ -571,28 +567,23 @@ public class AGIRequestImpl implements Serializable, AGIRequest
 
             if (parameterMap.get(name) == null)
             {
-                values = new ArrayList();
+                values = new ArrayList<String>();
                 values.add(value);
                 parameterMap.put(name, values);
             }
             else
             {
-                values = (List) parameterMap.get(name);
+                values = parameterMap.get(name);
                 values.add(value);
             }
         }
 
-        result = new HashMap();
-        parameterIterator = parameterMap.keySet().iterator();
-        while (parameterIterator.hasNext())
+        for (String name : parameterMap.keySet())
         {
-            String name;
-            List values;
+            List<String> values;
             String[] valueArray;
 
-            name = (String) parameterIterator.next();
-            values = (List) parameterMap.get(name);
-
+            values = parameterMap.get(name);
             valueArray = new String[values.size()];
             result.put(name, values.toArray(valueArray));
         }

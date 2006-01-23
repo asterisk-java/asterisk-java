@@ -38,12 +38,12 @@ public class CommandResponse extends ManagerResponse
      */
     static final long serialVersionUID = -350763332794275049L;
 
-    protected List result;
+    protected List<String> result;
 
     /**
      * Returns a List containing strings representing the lines returned by the CLI command.
      */
-    public List getResult()
+    public List<String> getResult()
     {
         return result;
     }
@@ -51,7 +51,7 @@ public class CommandResponse extends ManagerResponse
     /**
      * Sets the result.
      */
-    public void setResult(List result)
+    public void setResult(List<String> result)
     {
         this.result = result;
     }

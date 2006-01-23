@@ -33,12 +33,12 @@ public class Queue implements Serializable
     private static final long serialVersionUID = -6597536667933738312L;
     private String name;
     private Integer max;
-    private List entries;
+    private List<Channel> entries;
 
     public Queue(String name)
     {
         this.name = name;
-        this.entries = Collections.synchronizedList(new ArrayList());
+        this.entries = Collections.synchronizedList(new ArrayList<Channel>());
     }
 
     public String getName()

@@ -33,7 +33,7 @@ public class ChannelStateEnum implements Serializable
      */
     private static final long serialVersionUID = 6436381500165485011L;
 
-    private static Map literals = new HashMap();
+    private static Map<String, ChannelStateEnum> literals = new HashMap<String, ChannelStateEnum>();
 
     private String state;
 
@@ -55,7 +55,7 @@ public class ChannelStateEnum implements Serializable
 
     public static ChannelStateEnum getEnum(String state)
     {
-        return (ChannelStateEnum) literals.get(state);
+        return literals.get(state);
     }
 
     public String toString()

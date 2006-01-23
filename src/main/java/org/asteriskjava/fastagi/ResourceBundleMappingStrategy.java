@@ -46,7 +46,7 @@ public class ResourceBundleMappingStrategy extends AbstractMappingStrategy
 {
     private static final String DEFAULT_RESOURCE_BUNDLE_NAME = "fastagi-mapping";
     private String resourceBundleName;
-    private Map mappings;
+    private Map<String, AGIScript> mappings;
 
     /**
      * Creates a new ResourceBundleMappingStrategy.
@@ -86,7 +86,7 @@ public class ResourceBundleMappingStrategy extends AbstractMappingStrategy
         ResourceBundle resourceBundle;
         Enumeration keys;
 
-        mappings = new HashMap();
+        mappings = new HashMap<String, AGIScript>();
 
         try
         {
@@ -127,6 +127,6 @@ public class ResourceBundleMappingStrategy extends AbstractMappingStrategy
             loadResourceBundle();
         }
 
-        return (AGIScript) mappings.get(request.getScript());
+        return mappings.get(request.getScript());
     }
 }

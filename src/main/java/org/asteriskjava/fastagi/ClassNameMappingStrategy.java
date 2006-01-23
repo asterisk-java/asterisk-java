@@ -35,24 +35,26 @@ import java.util.Map;
  */
 public class ClassNameMappingStrategy extends AbstractMappingStrategy
 {
-    private Map mappings;
+    private Map<String, AGIScript> mappings;
 
     /**
      * Creates a new ClassNameMappingStrategy.
      */
     public ClassNameMappingStrategy()
     {
-        this.mappings = new HashMap();
+        this.mappings = new HashMap<String, AGIScript>();
     }
 
     public AGIScript determineScript(AGIRequest request)
     {
-        if (mappings.get(request.getScript()) != null)
+        AGIScript script;
+
+        script = mappings.get(request.getScript());
+        if (script != null)
         {
-            return (AGIScript) mappings.get(request.getScript());
+            return script;
         }
 
-        AGIScript script;
         script = createAGIScriptInstance(request.getScript());
         if (script == null)
         {

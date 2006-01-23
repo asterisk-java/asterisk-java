@@ -17,12 +17,11 @@
 package org.asteriskjava.fastagi;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class CompositeMappingStrategy implements MappingStrategy
 {
-    private List strategies;
+    private List<MappingStrategy> strategies;
 
     public CompositeMappingStrategy()
     {
@@ -32,7 +31,7 @@ public class CompositeMappingStrategy implements MappingStrategy
     public CompositeMappingStrategy(MappingStrategy strategy1,
             MappingStrategy strategy2)
     {
-        strategies = new ArrayList();
+        strategies = new ArrayList<MappingStrategy>();
         strategies.add(strategy1);
         strategies.add(strategy2);
     }
@@ -41,12 +40,12 @@ public class CompositeMappingStrategy implements MappingStrategy
     {
         if (strategies == null)
         {
-            strategies = new ArrayList();
+            strategies = new ArrayList<MappingStrategy>();
         }
         strategies.add(strategy);
     }
 
-    public void setStrategies(List strategies)
+    public void setStrategies(List<MappingStrategy> strategies)
     {
         this.strategies = strategies;
     }
@@ -58,10 +57,8 @@ public class CompositeMappingStrategy implements MappingStrategy
             return null;
         }
 
-        Iterator i = strategies.iterator();
-        while (i.hasNext())
+        for (MappingStrategy strategy : strategies)
         {
-            MappingStrategy strategy = (MappingStrategy) i.next();
             AGIScript script = strategy.determineScript(request);
             if (script != null)
             {

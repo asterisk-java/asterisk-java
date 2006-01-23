@@ -158,7 +158,7 @@ public class DefaultManagerConnection implements ManagerConnection, Dispatcher
      * Key is the internalActionId of the Action sent and value the
      * corresponding ResponseHandler.
      */
-    private final Map responseHandlers;
+    private final Map<String, ManagerResponseHandler> responseHandlers;
 
     /**
      * Contains the event handlers that handle ResponseEvents for the
@@ -166,12 +166,12 @@ public class DefaultManagerConnection implements ManagerConnection, Dispatcher
      * Key is the internalActionId of the Action sent and value the
      * corresponding EventHandler.
      */
-    private final Map responseEventHandlers;
+    private final Map<String, ManagerEventHandler> responseEventHandlers;
 
     /**
      * Contains the event handlers that users registered.
      */
-    private final List eventHandlers;
+    private final List<ManagerEventHandler> eventHandlers;
 
     /**
      * Should we attempt to reconnect when the connection is lost?<br>
@@ -188,9 +188,9 @@ public class DefaultManagerConnection implements ManagerConnection, Dispatcher
     {
         this.asteriskServer = new AsteriskServer();
 
-        this.responseHandlers = new HashMap();
-        this.responseEventHandlers = new HashMap();
-        this.eventHandlers = new ArrayList();
+        this.responseHandlers = new HashMap<String, ManagerResponseHandler>();
+        this.responseEventHandlers = new HashMap<String, ManagerEventHandler>();
+        this.eventHandlers = new ArrayList<ManagerEventHandler>();
     }
 
     /**

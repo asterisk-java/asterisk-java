@@ -80,12 +80,12 @@ public class DefaultAsteriskManager
     /**
      * A map of all active channel by their unique id.
      */
-    private final Map channels;
+    private final Map<String, Channel> channels;
 
     /**
      * A map of ACD queues by there name.
      */
-    private final Map queues;
+    private final Map<String, Queue> queues;
 
     /**
      * The version of the Asterisk server we are connected to.<br>
@@ -112,8 +112,8 @@ public class DefaultAsteriskManager
      */
     public DefaultAsteriskManager()
     {
-        this.channels = Collections.synchronizedMap(new HashMap());
-        this.queues = Collections.synchronizedMap(new HashMap());
+        this.channels = Collections.synchronizedMap(new HashMap<String, Channel>());
+        this.queues = Collections.synchronizedMap(new HashMap<String, Queue>());
     }
 
     /**
@@ -311,17 +311,17 @@ public class DefaultAsteriskManager
 
         if (versions == null)
         {
-            Map map;
+            Map<String, String> map;
             ManagerResponse response;
 
-            map = new HashMap();
+            map = new HashMap<String, String>();
             try
             {
                 response = connection.sendAction(new CommandAction(
                         "show version files"));
                 if (response instanceof CommandResponse)
                 {
-                    List result;
+                    List<String> result;
 
                     result = ((CommandResponse) response).getResult();
                     for (int i = 2; i < result.size(); i++)

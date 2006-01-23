@@ -63,7 +63,7 @@ public class Channel implements Serializable
      * Account code used to bill this channel.
      */
     private String account;
-    private final List extensions;
+    private final List<Extension> extensions;
 
     /**
      * Date this channel has been created.
@@ -105,7 +105,7 @@ public class Channel implements Serializable
         this.name = name;
         this.id = id;
         this.asteriskServer = server;
-        this.extensions = new ArrayList();
+        this.extensions = new ArrayList<Extension>();
     }
 
     /**
@@ -336,13 +336,13 @@ public class Channel implements Serializable
      * @return a list of all visited dialplan entries.
      * @since 0.2
      */
-    public List getExtensions()
+    public List<Extension> getExtensions()
     {
-        List extensionsCopy;
+        List<Extension> extensionsCopy;
 
         synchronized (extensions)
         {
-            extensionsCopy = new ArrayList(extensions);
+            extensionsCopy = new ArrayList<Extension>(extensions);
         }
 
         return extensionsCopy;

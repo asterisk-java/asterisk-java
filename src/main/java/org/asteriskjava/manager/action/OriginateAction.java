@@ -60,7 +60,7 @@ public class OriginateAction extends AbstractManagerAction
     private Long timeout;
     private String callerId;
     private Boolean callingPres;
-    private Map variables;
+    private Map<String, String> variables;
     private String account;
     private String application;
     private String data;
@@ -282,7 +282,7 @@ public class OriginateAction extends AbstractManagerAction
         }
 
         st = new StringTokenizer(variable, "|");
-        variables = new LinkedHashMap();
+        variables = new LinkedHashMap<String, String>();
         while (st.hasMoreTokens())
         {
             String[] keyValue;
@@ -318,7 +318,7 @@ public class OriginateAction extends AbstractManagerAction
      *            values as value.
      * @since 0.2
      */
-    public void setVariables(Map variables)
+    public void setVariables(Map<String, String> variables)
     {
         this.variables = variables;
     }

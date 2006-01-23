@@ -30,7 +30,7 @@ public class Originate
     private Integer priority;
     private Long timeout;
     private String callerId;
-    private Map variables = new HashMap();
+    private Map<String, String> variables = new HashMap<String, String>();
     private String account;
     private String application;
     private String data;
@@ -193,7 +193,7 @@ public class Originate
     /**
      * Returns the variables to set on the originated call.
      */
-    public Map getVariables()
+    public Map<String, String> getVariables()
     {
         return variables;
     }
@@ -201,7 +201,7 @@ public class Originate
     /**
      * Sets the variables to set on the originated call.
      */
-    public void setVariables(Map variables)
+    public void setVariables(Map<String, String> variables)
     {
         this.variables = variables;
     }

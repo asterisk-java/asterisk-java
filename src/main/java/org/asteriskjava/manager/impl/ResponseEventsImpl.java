@@ -34,7 +34,7 @@ import org.asteriskjava.manager.response.ManagerResponse;
 public class ResponseEventsImpl implements ResponseEvents
 {
     private ManagerResponse response;
-    private final Collection events;
+    private final Collection<ResponseEvent> events;
     private boolean complete;
 
     /**
@@ -42,7 +42,7 @@ public class ResponseEventsImpl implements ResponseEvents
      */
     public ResponseEventsImpl()
     {
-        this.events = new ArrayList();
+        this.events = new ArrayList<ResponseEvent>();
         this.complete = false;
     }
 
@@ -53,7 +53,7 @@ public class ResponseEventsImpl implements ResponseEvents
         return response;
     }
 
-    public Collection getEvents()
+    public Collection<ResponseEvent> getEvents()
     {
         return events;
     }
