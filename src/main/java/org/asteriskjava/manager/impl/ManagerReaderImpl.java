@@ -269,7 +269,7 @@ public class ManagerReaderImpl implements ManagerReader
                     }
                 }
             }
-            logger.info("Reached end of stream, terminating reader.");
+            logger.debug("Reached end of stream, terminating reader.");
         }
         catch (IOException e)
         {
