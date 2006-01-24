@@ -261,7 +261,7 @@ public class DefaultManagerConnection implements ManagerConnection, Dispatcher
 
     /**
      * Sets the password to use to connect to the asterisk server. This is the
-     * password specified in asterisk's <code>manager.conf</code> file.
+     * password specified in Asterisk's <code>manager.conf</code> file.
      * 
      * @param password the password to use for login
      */
