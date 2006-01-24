@@ -48,37 +48,31 @@
 				request and calls your scripts mapped to the called URL.</p>
 			<subsection name="Hello AGI!">
 				<p>To write your own AGI scripts you must implement the AGIScript interface.
-					You can do so by simply extending AbstractAGIScript that provides
+					You can do so by simply extending BaseAGIScript that provides
 					some convenience methods that further simplify that task.</p>
 				<p>A simple AGIScript might look as follows:</p>
 <source><![CDATA[
 import net.sf.asterisk.fastagi.AGIChannel;
 import net.sf.asterisk.fastagi.AGIException;
 import net.sf.asterisk.fastagi.AGIRequest;
-import net.sf.asterisk.fastagi.AbstractAGIScript;
+import net.sf.asterisk.fastagi.BaseAGIScript;
 
-public class HelloAGIScript extends AbstractAGIScript
+public class HelloAGIScript extends BaseAGIScript
 {
     public void service(AGIRequest request, AGIChannel channel)
             throws AGIException
     {
         // Answer the channel...
-        answer(channel);
+        answer();
 		
         // ...say hello...
-        streamFile(channel, "welcome");
+        streamFile("welcome");
 		
         // ...and hangup.
-        hangup(channel);
+        hangup();
     }
 }
 ]]></source>
-				<p>If you are using Asterisk-Java 0.2 (or a snapshot thereof)
-					you should extend 
-					<a href="http://asterisk-java.sourceforge.net/apidocs/net/sf/asterisk/fastagi/BaseAGIScript.html">BaseAGIScript</a>
-					instead of AbstractAGIScript. That way you don't have to
-					pass the channel to all the methods as this is done
-					automatically.</p>
 				<p>Put this Java source file into a directory of your choice,
 					add the <code>asterisk-java.jar</code> and compile it:</p>
 <source><![CDATA[
@@ -136,10 +130,10 @@ INFO: End AGIScript HelloAGIScript on AGIServer-TaskThread-0
 
 			<subsection name="Extending the Example">
 				<p>Have a look at the documentation of 
-					<a href="apidocs/net/sf/asterisk/fastagi/AbstractAGIScript.html">AbstractAGIScript</a>
+					<a href="apidocs/net/sf/asterisk/fastagi/BaseAGIScript.html">BaseAGIScript</a>
 					there you will find additional methods that you can use for your own scripts.
 					If you want to use commands that do not yet have a corresponding method in
-					AbstractAGIScript or if you want to extend the FastAGI protocol by adding your
+					BaseAGIScript or if you want to extend the FastAGI protocol by adding your
 					own commands you can also use the 
 					<a href="apidocs/net/sf/asterisk/fastagi/AGIChannel.html">channel</a>.sendCommand(<a href="apidocs/net/sf/asterisk/fastagi/command/AGICommand.html">AGICommand</a>)
 					method to send arbitrary commands.</p>
