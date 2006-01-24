@@ -531,6 +531,7 @@ public class DefaultManagerConnection implements ManagerConnection, Dispatcher
 
         this.reader.setSocket(socket);
         this.readerThread = new Thread(reader, "ManagerReader");
+        this.readerThread.setDaemon(true);
         this.readerThread.start();
 
         this.writer.setSocket(socket);
