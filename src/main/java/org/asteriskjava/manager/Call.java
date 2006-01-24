@@ -1,5 +1,5 @@
 /*
- * Copyright  2004-2005 Stefan Reuter
+ *  Copyright  2004-2006 Stefan Reuter
  * 
  * Copyright 2005 Ben Hencke
  * 
