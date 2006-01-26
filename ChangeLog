@@ -3,6 +3,8 @@ Asterisk-Java 0.3
 	* Introduced generics
 	* ManagerReader threads are now daemon threads so as soon as
 	  all other threads are terminated the JVM will quit
+	* Changed log level for message about ManagerReader termination
+	  from INFO to DEBUG
 
 Asterisk-Java 0.2
 	* Added SayDateTimeCommand (AJ-23)
