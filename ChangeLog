@@ -1,6 +1,8 @@
 Asterisk-Java 0.3
 	* Changed package name from net.sf.asterisk to org.asteriskjava
 	* Introduced generics
+	* ManagerReader threads are now daemon threads so as soon as
+	  all other threads are terminated the JVM will quit
 
 Asterisk-Java 0.2
 	* Added SayDateTimeCommand (AJ-23)
