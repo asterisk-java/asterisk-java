@@ -43,6 +43,7 @@ public class HangupEvent extends ChannelEvent
 
     /**
      * Returns the cause of the hangup.
+     * @see org.asteriskjava.manager.HangupCause
      */
     public Integer getCause()
     {
