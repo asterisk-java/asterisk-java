@@ -202,14 +202,17 @@ public interface ManagerConnection
      * EventGeneratingActions are ManagerActions that don't return their
      * response in the corresponding ManagerResponse but send a series of events
      * that contain the payload.<br>
+     * This method will block until the correpsonding action complete event has
+     * been received. The action complete event is determined by
+     * {@link EventGeneratingAction#getActionCompleteEventClass()}.<br>
      * Examples for EventGeneratingActions are the
      * {@link org.asteriskjava.manager.action.StatusAction}, the
      * {@link org.asteriskjava.manager.action.QueueAction} or the
      * {@link org.asteriskjava.manager.action.AgentsAction}.
      * 
      * @param action the action to send to the Asterisk server
-     * @param timeout milliseconds to wait for the response and the response
-     *            events before throwing a TimeoutException
+     * @param timeout milliseconds to wait for the response and the action
+     *                complete event before throwing a TimeoutException
      * @return a ResponseEvents that contains the corresponding response and
      *         response events received from the Asterisk server
      * @throws IOException if the network connection is disrupted.
