@@ -168,6 +168,9 @@ public interface ManagerConnection
      * EventGeneratingActions are ManagerActions that don't return their
      * response in the corresponding ManagerResponse but send a series of events
      * that contain the payload.<br>
+     * This method will block until the correpsonding action complete event has
+     * been received. The action complete event is determined by
+     * {@link EventGeneratingAction#getActionCompleteEventClass()}.<br>
      * Examples for EventGeneratingActions are the
      * {@link org.asteriskjava.manager.action.StatusAction}, the
      * {@link org.asteriskjava.manager.action.QueueAction} or the
