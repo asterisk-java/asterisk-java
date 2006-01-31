@@ -19,9 +19,21 @@ package org.asteriskjava.manager.action;
 /**
  * The CommandAction sends a command line interface (CLI) command to the
  * asterisk server.<br>
- * For a list of supported commands type <code>help</code> on asterisk's
- * command line.
+ * For a list of supported commands type <code>help</code> on Asterisk's
+ * command line.<br>
+ * In response to a CommandAction you will receive a CommandResponse that
+ * contains the CLI output.<br>
+ * Example:
+ * <pre>
+ * CommandAction commandAction = new CommandAction("iax2 show peers");
+ * CommandResponse response = (CommandResponse) c.sendAction(commandAction);
+ * for (String line : (List<String>) response.getResult())
+ * {
+ *     System.out.println(line);
+ * }
+ * </pre>
  * 
+ * @see org.asteriskjava.manager.response.CommandResponse
  * @author srt
  * @version $Id: CommandAction.java,v 1.5 2005/08/07 00:09:42 srt Exp $
  */
@@ -70,7 +82,7 @@ public class CommandAction extends AbstractManagerAction
     }
 
     /**
-     * Sets the CLI command to send to the asterisk server.
+     * Sets the CLI command to send to the Asterisk server.
      */
     public void setCommand(String command)
     {
