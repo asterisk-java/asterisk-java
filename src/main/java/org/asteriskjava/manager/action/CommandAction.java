@@ -27,7 +27,7 @@ package org.asteriskjava.manager.action;
  * <pre>
  * CommandAction commandAction = new CommandAction("iax2 show peers");
  * CommandResponse response = (CommandResponse) c.sendAction(commandAction);
- * for (String line : (List<String>) response.getResult())
+ * for (String line : response.getResult())
  * {
  *     System.out.println(line);
  * }
