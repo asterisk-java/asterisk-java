@@ -3,7 +3,7 @@
  *
  * Created on Oct 28, 2004
  */
-package net.sf.asterisk.manager;
+package org.asteriskjava.manager;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -18,7 +18,7 @@ public class TestExtensionHistory extends AsteriskManagerTestCase
 {
     public void testGetHistory() throws Exception
     {
-        List channels;
+        List<Channel> channels;
         
         try
         {
@@ -28,7 +28,7 @@ public class TestExtensionHistory extends AsteriskManagerTestCase
         {
         }
 
-        channels = new ArrayList(manager.getChannels().values());
+        channels = new ArrayList<Channel>(manager.getChannels().values());
         System.out.println("# of active channels: " + channels.size());
         Iterator channelsIterator = channels.iterator();
         while (channelsIterator.hasNext())

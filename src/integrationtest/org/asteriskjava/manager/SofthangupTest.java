@@ -3,10 +3,10 @@
  *
  * Created on Oct 28, 2004
  */
-package net.sf.asterisk.manager;
+package org.asteriskjava.manager;
 
-import net.sf.asterisk.manager.action.OriginateAction;
-import net.sf.asterisk.manager.response.ManagerResponse;
+import org.asteriskjava.manager.action.OriginateAction;
+import org.asteriskjava.manager.response.ManagerResponse;
 
 
 /**

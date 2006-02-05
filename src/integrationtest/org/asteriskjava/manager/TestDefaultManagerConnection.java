@@ -3,13 +3,14 @@
  *
  * Created on Sep 24, 2004
  */
-package net.sf.asterisk.manager;
+package org.asteriskjava.manager;
+
+import org.asteriskjava.manager.action.CommandAction;
+import org.asteriskjava.manager.action.StatusAction;
+import org.asteriskjava.manager.event.ManagerEvent;
+import org.asteriskjava.manager.response.CommandResponse;
 
 import junit.framework.TestCase;
-import net.sf.asterisk.manager.action.CommandAction;
-import net.sf.asterisk.manager.action.StatusAction;
-import net.sf.asterisk.manager.event.ManagerEvent;
-import net.sf.asterisk.manager.response.CommandResponse;
 
 /**
  * @author srt

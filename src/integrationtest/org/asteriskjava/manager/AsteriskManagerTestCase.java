@@ -14,7 +14,7 @@
  *  limitations under the License.
  *
  */
-package net.sf.asterisk.manager;
+package org.asteriskjava.manager;
 
 import junit.framework.TestCase;
 

@@ -3,7 +3,7 @@
  *
  * Created on Oct 28, 2004
  */
-package net.sf.asterisk.manager;
+package org.asteriskjava.manager;
 
 import java.util.Arrays;
 import java.util.Iterator;
