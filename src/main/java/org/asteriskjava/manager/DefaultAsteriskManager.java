@@ -48,6 +48,8 @@ import org.asteriskjava.manager.event.QueueParamsEvent;
 import org.asteriskjava.manager.event.RenameEvent;
 import org.asteriskjava.manager.event.StatusEvent;
 import org.asteriskjava.manager.event.UnlinkEvent;
+import org.asteriskjava.manager.impl.ChannelImpl;
+import org.asteriskjava.manager.impl.QueueImpl;
 import org.asteriskjava.manager.response.CommandResponse;
 import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.util.Log;
@@ -79,12 +81,12 @@ public class DefaultAsteriskManager
     /**
      * A map of all active channel by their unique id.
      */
-    private final Map<String, Channel> channels;
+    private final Map<String, ChannelImpl> channels;
 
     /**
      * A map of ACD queues by there name.
      */
-    private final Map<String, Queue> queues;
+    private final Map<String, QueueImpl> queues;
 
     /**
      * The version of the Asterisk server we are connected to.<br>
@@ -111,8 +113,8 @@ public class DefaultAsteriskManager
      */
     public DefaultAsteriskManager()
     {
-        this.channels = Collections.synchronizedMap(new HashMap<String, Channel>());
-        this.queues = Collections.synchronizedMap(new HashMap<String, Queue>());
+        this.channels = Collections.synchronizedMap(new HashMap<String, ChannelImpl>());
+        this.queues = Collections.synchronizedMap(new HashMap<String, QueueImpl>());
     }
 
     /**
@@ -250,17 +252,34 @@ public class DefaultAsteriskManager
                 .toArray()[0]);
     }
 
-    /**
-     * Returns a map of all active channel by their unique id.
-     */
-    public Map getChannels()
+    public Map<String, Channel> getChannels()
     {
-        return channels;
+        Map<String, Channel> copy;
+        
+        copy = new HashMap<String, Channel>();
+        synchronized (channels)
+        {
+            for (String id : channels.keySet())
+            {
+                copy.put(id, channels.get(id));
+            }
+        }
+        return copy;
     }
 
-    public Map getQueues()
+    public Map<String, Queue> getQueues()
     {
-        return queues;
+        Map<String, Queue> copy;
+        
+        copy = new HashMap<String, Queue>();
+        synchronized (queues)
+        {
+            for (String name : queues.keySet())
+            {
+                copy.put(name, queues.get(name));
+            }
+        }
+        return copy;
     }
 
     public String getVersion()
@@ -430,7 +449,7 @@ public class DefaultAsteriskManager
 
     /* Private helper methods */
 
-    protected void addChannel(Channel channel)
+    protected void addChannel(ChannelImpl channel)
     {
         synchronized (channels)
         {
@@ -446,7 +465,7 @@ public class DefaultAsteriskManager
         }
     }
 
-    protected void addQueue(Queue queue)
+    protected void addQueue(QueueImpl queue)
     {
         synchronized (queues)
         {
@@ -464,14 +483,14 @@ public class DefaultAsteriskManager
 
     protected void handleStatusEvent(StatusEvent event)
     {
-        Channel channel;
+        ChannelImpl channel;
         Extension extension;
         boolean isNew = false;
 
-        channel = getChannelById(event.getUniqueId());
+        channel = getChannelImplById(event.getUniqueId());
         if (channel == null)
         {
-            channel = new Channel(event.getChannel(), event.getUniqueId());
+            channel = new ChannelImpl(event.getChannel(), event.getUniqueId());
             if (event.getSeconds() != null)
             {
                 channel.setDateOfCreation(new Date(System.currentTimeMillis()
@@ -501,7 +520,7 @@ public class DefaultAsteriskManager
 
             if (event.getLink() != null)
             {
-                Channel linkedChannel = getChannelByName(event.getLink());
+                ChannelImpl linkedChannel = getChannelImplByName(event.getLink());
                 if (linkedChannel != null)
                 {
                     channel.setLinkedChannel(linkedChannel);
@@ -562,14 +581,14 @@ public class DefaultAsteriskManager
 
     protected void handleQueueParamsEvent(QueueParamsEvent event)
     {
-        Queue queue;
+        QueueImpl queue;
         boolean isNew = false;
 
-        queue = (Queue) queues.get(event.getQueue());
+        queue = (QueueImpl) queues.get(event.getQueue());
 
         if (queue == null)
         {
-            queue = new Queue(event.getQueue());
+            queue = new QueueImpl(event.getQueue());
             isNew = true;
         }
 
@@ -592,8 +611,8 @@ public class DefaultAsteriskManager
 
     protected void handleQueueEntryEvent(QueueEntryEvent event)
     {
-        Queue queue = (Queue) queues.get(event.getQueue());
-        Channel channel = getChannelByName(event.getChannel());
+        QueueImpl queue = (QueueImpl) queues.get(event.getQueue());
+        ChannelImpl channel = getChannelImplByName(event.getChannel());
 
         if (queue == null)
         {
@@ -616,8 +635,8 @@ public class DefaultAsteriskManager
 
     protected void handleJoinEvent(JoinEvent event)
     {
-        Queue queue = (Queue) queues.get(event.getQueue());
-        Channel channel = getChannelByName(event.getChannel());
+        QueueImpl queue = (QueueImpl) queues.get(event.getQueue());
+        ChannelImpl channel = getChannelImplByName(event.getChannel());
 
         if (queue == null)
         {
@@ -640,7 +659,7 @@ public class DefaultAsteriskManager
 
     protected void handleLeaveEvent(LeaveEvent event)
     {
-        Queue queue = (Queue) queues.get(event.getQueue());
+        QueueImpl queue = (QueueImpl) queues.get(event.getQueue());
         Channel channel = getChannelByName(event.getChannel());
 
         if (queue == null)
@@ -670,19 +689,7 @@ public class DefaultAsteriskManager
      */
     public Channel getChannelByName(String name)
     {
-        Channel channel = null;
-
-        synchronized (channels)
-        {
-            for (Channel tmp : channels.values())
-            {
-                if (tmp.getName() != null && tmp.getName().equals(name))
-                {
-                    channel = tmp;
-                }
-            }
-        }
-        return channel;
+        return getChannelImplByName(name);
     }
 
     /**
@@ -693,18 +700,40 @@ public class DefaultAsteriskManager
      */
     public Channel getChannelById(String id)
     {
-        Channel channel = null;
+        return getChannelImplById(id);
+    }
+
+    protected ChannelImpl getChannelImplByName(String name)
+    {
+        ChannelImpl channel = null;
 
         synchronized (channels)
         {
-            channel = (Channel) channels.get(id);
+            for (ChannelImpl tmp : channels.values())
+            {
+                if (tmp.getName() != null && tmp.getName().equals(name))
+                {
+                    channel = tmp;
+                }
+            }
         }
         return channel;
     }
 
+    protected ChannelImpl getChannelImplById(String id)
+    {
+        ChannelImpl channel = null;
+
+        synchronized (channels)
+        {
+            channel = channels.get(id);
+        }
+        return channel;
+    }
+    
     protected void handleNewChannelEvent(NewChannelEvent event)
     {
-        Channel channel = new Channel(event.getChannel(), event.getUniqueId());
+        ChannelImpl channel = new ChannelImpl(event.getChannel(), event.getUniqueId());
 
         channel.setDateOfCreation(event.getDateReceived());
         channel.setCallerId(event.getCallerId());
@@ -717,10 +746,10 @@ public class DefaultAsteriskManager
 
     protected void handleNewExtenEvent(NewExtenEvent event)
     {
-        Channel channel;
+        ChannelImpl channel;
         Extension extension;
 
-        channel = getChannelById(event.getUniqueId());
+        channel = getChannelImplById(event.getUniqueId());
         if (channel == null)
         {
             logger.error("Ignored NewExtenEvent for unknown channel "
@@ -740,7 +769,7 @@ public class DefaultAsteriskManager
 
     protected void handleNewStateEvent(NewStateEvent event)
     {
-        Channel channel = getChannelById(event.getUniqueId());
+        ChannelImpl channel = getChannelImplById(event.getUniqueId());
 
         if (channel == null)
         {
@@ -757,7 +786,7 @@ public class DefaultAsteriskManager
 
     protected void handleNewCallerIdEvent(NewCallerIdEvent event)
     {
-        Channel channel = getChannelById(event.getUniqueId());
+        ChannelImpl channel = getChannelImplById(event.getUniqueId());
 
         if (channel == null)
         {
@@ -775,7 +804,7 @@ public class DefaultAsteriskManager
 
     protected void handleHangupEvent(HangupEvent event)
     {
-        Channel channel = getChannelById(event.getUniqueId());
+        ChannelImpl channel = getChannelImplById(event.getUniqueId());
         if (channel == null)
         {
             logger.error("Ignored HangupEvent for unknown channel "
@@ -794,8 +823,8 @@ public class DefaultAsteriskManager
 
     protected void handleLinkEvent(LinkEvent event)
     {
-        Channel channel1 = (Channel) channels.get(event.getUniqueId1());
-        Channel channel2 = (Channel) channels.get(event.getUniqueId2());
+        ChannelImpl channel1 = getChannelImplById(event.getUniqueId1());
+        ChannelImpl channel2 = getChannelImplById(event.getUniqueId2());
 
         if (channel1 == null)
         {
@@ -821,8 +850,8 @@ public class DefaultAsteriskManager
 
     protected void handleUnlinkEvent(UnlinkEvent event)
     {
-        Channel channel1 = getChannelByName(event.getChannel1());
-        Channel channel2 = getChannelByName(event.getChannel2());
+        ChannelImpl channel1 = getChannelImplByName(event.getChannel1());
+        ChannelImpl channel2 = getChannelImplByName(event.getChannel2());
 
         if (channel1 == null)
         {
@@ -852,7 +881,7 @@ public class DefaultAsteriskManager
 
     protected void handleRenameEvent(RenameEvent event)
     {
-        Channel channel = getChannelById(event.getUniqueId());
+        ChannelImpl channel = getChannelImplById(event.getUniqueId());
 
         if (channel == null)
         {

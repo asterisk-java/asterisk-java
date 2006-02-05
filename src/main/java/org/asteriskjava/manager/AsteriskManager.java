@@ -19,6 +19,8 @@ package org.asteriskjava.manager;
 import java.io.IOException;
 import java.util.Map;
 
+import org.asteriskjava.manager.impl.QueueImpl;
+
 /**
  * The AsteriskManager is built on top of the ManagerConnection and is an
  * attempt to simplify interaction with Asterisk by abstracting the interface.<br>
@@ -47,20 +49,20 @@ public interface AsteriskManager
     /**
      * Returns a Map of active channels.<br>
      * The map contain the channel names as keys and objects of type
-     * {@link org.asteriskjava.manager.Channel} as values.
+     * {@link org.asteriskjava.manager.impl.ChannelImpl} as values.
      * 
      * @return a Map of active channels.
      */
-    Map getChannels();
+    Map<String, Channel> getChannels();
 
     /**
      * Returns a Map of all queues.<br>
      * The map contains the queue names as keys and objects of type
-     * {@link Queue} as values.
+     * {@link QueueImpl} as values.
      * 
      * @return a Map of queues.
      */
-    Map getQueues();
+    Map<String, Queue> getQueues();
 
     /**
      * Returns the version of the Asterisk server you are connected to.<br>
