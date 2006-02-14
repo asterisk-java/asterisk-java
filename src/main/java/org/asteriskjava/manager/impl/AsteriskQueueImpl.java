@@ -16,32 +16,28 @@
  */
 package org.asteriskjava.manager.impl;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import org.asteriskjava.manager.Channel;
-import org.asteriskjava.manager.Queue;
+import org.asteriskjava.manager.AsteriskChannel;
+import org.asteriskjava.manager.AsteriskQueue;
 
 /**
+ * Default implementation of the AsteriskQueue interface.
+ * 
  * @author srt
  * @version $Id: Queue.java,v 1.3 2005/08/21 22:39:22 srt Exp $
  */
-public class QueueImpl implements Serializable, Queue
+public class AsteriskQueueImpl implements AsteriskQueue
 {
-    /**
-     * Serial version identifier
-     */
-    private static final long serialVersionUID = -6597536667933738312L;
     private String name;
     private Integer max;
-    private List<Channel> entries;
+    private List<AsteriskChannel> entries;
 
-    public QueueImpl(String name)
+    public AsteriskQueueImpl(String name)
     {
         this.name = name;
-        this.entries = Collections.synchronizedList(new ArrayList<Channel>());
+        this.entries = new ArrayList<AsteriskChannel>();
     }
 
     public String getName()
@@ -59,17 +55,26 @@ public class QueueImpl implements Serializable, Queue
         this.max = max;
     }
 
-    public List getEntries()
+    public List<AsteriskChannel> getEntries()
     {
-        return entries;
+        List<AsteriskChannel> copy = new ArrayList<AsteriskChannel>();
+        
+        synchronized (entries)
+        {
+            for (AsteriskChannel entry : entries)
+            {
+                copy.add(entry);
+            }
+        }
+        return copy;
     }
 
-    public void addEntry(Channel entry)
+    public void addEntry(AsteriskChannel entry)
     {
         entries.add(entry);
     }
 
-    public void removeEntry(Channel entry)
+    public void removeEntry(AsteriskChannel entry)
     {
         entries.remove(entry);
     }
@@ -82,7 +87,10 @@ public class QueueImpl implements Serializable, Queue
 
         sb.append("name='" + getName() + "'; ");
         sb.append("max='" + getMax() + "'; ");
-        sb.append("entries='" + getEntries() + "'; ");
+        synchronized (entries)
+        {
+            sb.append("entries='" + entries.toString() + "'; ");
+        }
         sb.append("systemHashcode=" + System.identityHashCode(this));
 
         return sb.toString();

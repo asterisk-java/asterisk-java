@@ -20,18 +20,26 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.asteriskjava.manager.AsteriskServer;
-import org.asteriskjava.manager.Channel;
-import org.asteriskjava.manager.ChannelStateEnum;
+import org.asteriskjava.manager.AsteriskChannel;
+import org.asteriskjava.manager.ChannelState;
 import org.asteriskjava.manager.Extension;
+import org.asteriskjava.manager.ManagerCommunicationException;
+import org.asteriskjava.manager.NoSuchChannelException;
+import org.asteriskjava.manager.action.GetVarAction;
+import org.asteriskjava.manager.action.HangupAction;
+import org.asteriskjava.manager.action.RedirectAction;
+import org.asteriskjava.manager.response.ManagerError;
+import org.asteriskjava.manager.response.ManagerResponse;
 
 /**
+ * Default implementation of the AsteriskChannel interface.
+ * 
  * @author srt
  * @version $Id: Channel.java,v 1.13 2005/09/01 19:13:20 srt Exp $
  */
-public class ChannelImpl implements Channel
+public class AsteriskChannelImpl implements AsteriskChannel
 {
-    private AsteriskServer asteriskServer;
+    private final ManagerConnectionPool connectionPool;
 
     /**
      * Unique id of this channel.
@@ -56,7 +64,7 @@ public class ChannelImpl implements Channel
     /**
      * State of this channel.
      */
-    private ChannelStateEnum state;
+    private ChannelState state;
 
     /**
      * Account code used to bill this channel.
@@ -73,7 +81,7 @@ public class ChannelImpl implements Channel
      * If this channel is bridged to another channel, the linkedChannel contains
      * the channel this channel is bridged with.
      */
-    private Channel linkedChannel;
+    private AsteriskChannel linkedChannel;
 
     /**
      * Indicates if this channel was linked to another channel at least once.
@@ -86,45 +94,12 @@ public class ChannelImpl implements Channel
      * @param name name of this channel, for example "SIP/1310-20da".
      * @param id unique id of this channel, for example "1099015093.165".
      */
-    public ChannelImpl(final String name, final String id)
+    public AsteriskChannelImpl(final ManagerConnectionPool connectionPool, final String name, final String id)
     {
-        this(name, id, null);
-    }
-
-    /**
-     * Creates a new Channel on the given server.
-     * 
-     * @param name name of this channel, for example "SIP/1310-20da".
-     * @param id unique id of this channel, for example "1099015093.165".
-     * @param server the Asterisk server this channel exists on.
-     */
-    public ChannelImpl(final String name, final String id,
-            final AsteriskServer server)
-    {
+        this.connectionPool = connectionPool;
         this.name = name;
         this.id = id;
-        this.asteriskServer = server;
         this.extensions = new ArrayList<Extension>();
-    }
-
-    /**
-     * Returns the Asterisk server.
-     * 
-     * @return the Asterisk server.
-     */
-    public final AsteriskServer getAsteriskServer()
-    {
-        return asteriskServer;
-    }
-
-    /**
-     * Sets the Asterisk server.
-     * 
-     * @param asteriskServer the Asterisk server to set.
-     */
-    public final void setAsteriskServer(final AsteriskServer asteriskServer)
-    {
-        this.asteriskServer = asteriskServer;
     }
 
     /**
@@ -202,7 +177,7 @@ public class ChannelImpl implements Channel
      * 
      * @return the state of this channel.
      */
-    public final ChannelStateEnum getState()
+    public final ChannelState getState()
     {
         return state;
     }
@@ -212,7 +187,7 @@ public class ChannelImpl implements Channel
      * 
      * @param state the state of this channel.
      */
-    public final void setState(final ChannelStateEnum state)
+    public final void setState(final ChannelState state)
     {
         this.state = state;
     }
@@ -387,7 +362,7 @@ public class ChannelImpl implements Channel
      * @return the channel this channel is bridged with, or <code>null</code>
      *         if this channel is currently not bridged to another channel.
      */
-    public final Channel getLinkedChannel()
+    public final AsteriskChannel getLinkedChannel()
     {
         return linkedChannel;
     }
@@ -397,7 +372,7 @@ public class ChannelImpl implements Channel
      * 
      * @param linkedChannel the channel this channel is bridged with.
      */
-    public final void setLinkedChannel(final Channel linkedChannel)
+    public final void setLinkedChannel(final AsteriskChannel linkedChannel)
     {
         this.linkedChannel = linkedChannel;
         if (linkedChannel != null)
@@ -417,44 +392,86 @@ public class ChannelImpl implements Channel
     {
         return wasLinked;
     }
+    
+    public void hangup() throws ManagerCommunicationException, NoSuchChannelException
+    {
+        ManagerResponse response;
+
+        response = connectionPool.sendAction(new HangupAction(name));
+        if (response instanceof ManagerError)
+        {
+            throw new NoSuchChannelException("Channel '" + name + "' is not available: " + response.getMessage());
+        }
+    }
+    
+    public void redirect(String context, String exten, int priority) throws ManagerCommunicationException, NoSuchChannelException
+    {
+        ManagerResponse response;
+
+        response = connectionPool.sendAction(new RedirectAction(name, context, exten, priority));
+        if (response instanceof ManagerError)
+        {
+            throw new NoSuchChannelException("Channel '" + name + "' is not available: " + response.getMessage());
+        }
+    }
+    
+    public String getVariable(String variable) throws ManagerCommunicationException, NoSuchChannelException
+    {
+        ManagerResponse response;
+        String value;
+
+        response = connectionPool.sendAction(new GetVarAction(name, variable));
+        if (response instanceof ManagerError)
+        {
+            throw new NoSuchChannelException("Channel '" + name + "' is not available: " + response.getMessage());
+        }
+        value = response.getAttribute("Value");
+        if (value == null)
+        {
+            value = response.getAttribute(variable); // for Asterisk 1.0.x
+        }
+        return value;
+    }
 
     public String toString()
     {
         StringBuffer sb;
-        Channel linkedChannel;
+        AsteriskChannel linkedChannel;
         int systemHashcode;
 
-        sb = new StringBuffer(getClass().getName() + ": ");
+        sb = new StringBuffer(getClass().getName() + "[");
 
         synchronized (this)
         {
-            sb.append("id='" + getId() + "'; ");
-            sb.append("name='" + getName() + "'; ");
-            sb.append("callerId='" + getCallerId() + "'; ");
-            sb.append("state='" + getState() + "'; ");
-            sb.append("account='" + getAccount() + "'; ");
-            sb.append("dateOfCreation=" + getDateOfCreation() + "; ");
+            sb.append("id='" + getId() + "',");
+            sb.append("name='" + getName() + "',");
+            sb.append("callerId='" + getCallerId() + "',");
+            sb.append("state='" + getState() + "',");
+            sb.append("account='" + getAccount() + "',");
+            sb.append("dateOfCreation=" + getDateOfCreation() + ",");
             linkedChannel = this.linkedChannel;
             systemHashcode = System.identityHashCode(this);
         }
         if (linkedChannel == null)
         {
-            sb.append("linkedChannel=null; ");
+            sb.append("linkedChannel=null,");
         }
         else
         {
             sb.append("linkedChannel=[");
             synchronized (linkedChannel)
             {
-                sb.append(linkedChannel.getClass().getName() + ": ");
-                sb.append("id='" + linkedChannel.getId() + "'; ");
-                sb.append("name='" + linkedChannel.getName() + "'; ");
+                sb.append(linkedChannel.getClass().getName() + "[");
+                sb.append("id='" + linkedChannel.getId() + "',");
+                sb.append("name='" + linkedChannel.getName() + "',");
                 sb.append("systemHashcode="
                         + System.identityHashCode(linkedChannel));
+                sb.append("]");
             }
-            sb.append("]; ");
+            sb.append("],");
         }
         sb.append("systemHashcode=" + systemHashcode);
+        sb.append("]");
 
         return sb.toString();
     }

@@ -16,6 +16,11 @@
  */
 package org.asteriskjava.manager.action;
 
+import java.lang.reflect.Method;
+import java.util.Map;
+
+import org.asteriskjava.util.ReflectionUtil;
+
 /**
  * This class implements the ManagerAction interface and can serve as base class
  * for your concrete Action implementations.
@@ -48,11 +53,30 @@ public abstract class AbstractManagerAction implements ManagerAction
     public String toString()
     {
         StringBuffer sb;
+        Map<String, Method> getters;
 
-        sb = new StringBuffer(getClass().getName() + ": ");
-        sb.append("action='" + getAction() + "'; ");
-        // TODO print attributes
+        sb = new StringBuffer(getClass().getName() + "[");
+        sb.append("action='" + getAction() + "',");
+        getters = ReflectionUtil.getGetters(getClass());
+        for (String attribute : getters.keySet())
+        {
+            if ("action".equals(attribute) || "class".equals(attribute))
+            {
+                continue;
+            }
+
+            try
+            {
+                Object value;
+                value = getters.get(attribute).invoke(this);
+                sb.append(attribute + "='" + value + "',");
+            }
+            catch (Exception e)
+            {
+            }
+        }
         sb.append("systemHashcode=" + System.identityHashCode(this));
+        sb.append("]");
 
         return sb.toString();
     }

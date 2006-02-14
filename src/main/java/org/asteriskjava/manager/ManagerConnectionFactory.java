@@ -27,149 +27,58 @@ import java.io.IOException;
  */
 public class ManagerConnectionFactory
 {
-    private static final String DEFAULT_HOSTNAME = "localhost";
     private static final int DEFAULT_PORT = 5038;
-    private static final String DEFAULT_USERNAME = "admin";
-    private static final String DEFAULT_PASSWORD = "admin";
 
-    private String hostname;
-    private int port;
-    private String username;
-    private String password;
+    private final String hostname;
+    private final int port;
+    private final String username;
+    private final String password;
 
     /**
-     * Creates a new ManagerConnectionFactory.
-     */
-    public ManagerConnectionFactory()
-    {
-        this.hostname = DEFAULT_HOSTNAME;
-        this.port = DEFAULT_PORT;
-        this.username = DEFAULT_USERNAME;
-        this.password = DEFAULT_PASSWORD;
-    }
-
-    /**
-     * Sets the default hostname.<br>
-     * Default is "localhost".
+     * Creates a new ManagerConnectionFactory with the given connection data and
+     * the default port 5038.
      * 
-     * @param hostname the default hostname
-     * @since 0.2
+     * @param hostname the hostname of the Asterisk server to connect to.
+     * @param username the username to use for login as defined in Asterisk's <code>manager.conf</code>.
+     * @param password the password to use for login as defined in Asterisk's <code>manager.conf</code>.
+     * @since 0.3
      */
-    public void setHostname(String hostname)
+    public ManagerConnectionFactory(String hostname, String username, String password)
     {
         this.hostname = hostname;
-    }
-
-    /**
-     * Sets the default port.<br>
-     * Default is 5038.
-     * 
-     * @param port the default port
-     * @since 0.2
-     */
-    public void setPort(int port)
-    {
-        this.port = port;
-    }
-
-    /**
-     * Sets the default username.<br>
-     * Default is "admin".
-     * 
-     * @param username the default username
-     * @since 0.2
-     */
-    public void setUsername(String username)
-    {
+        this.port = DEFAULT_PORT;
         this.username = username;
+        this.password = password;
     }
-
+    
     /**
-     * Sets the default password.<br>
-     * Default is "admin".
+     * Creates a new ManagerConnectionFactory with the given connection data.
      * 
-     * @param username the default password
-     * @since 0.2
+     * @param hostname the hostname of the Asterisk server to connect to.
+     * @param port the port where Asterisk listens for incoming Manager API
+     *            connections, usually 5038.
+     * @param username the username to use for login as defined in Asterisk's <code>manager.conf</code>.
+     * @param password the password to use for login as defined in Asterisk's <code>manager.conf</code>.
+     * @since 0.3
      */
-    public void setPassword(String password)
+    public ManagerConnectionFactory(String hostname, int port, String username, String password)
     {
+        this.hostname = hostname;
+        this.port = port;
+        this.username = username;
         this.password = password;
     }
 
     /**
-     * Returns a new ManagerConnection with the default values for hostname,
-     * port, username and password. It uses either the built-in defaults
-     * ("localhost", 5038, "admin", "admin") or the custom default values you
-     * set via {@link #setHostname(String)}, {@link #setPort(int)},
-     * {@link #setUsername(String)} and {@link #setPassword(String)}.
+     * Returns a new ManagerConnection.
      * 
-     * @return the created connection to the Asterisk call manager
+     * @return the created connection to the Asterisk server.
      * @throws IOException if the connection cannot be established.
-     * @since 0.2
+     * @since 0.3
      */
-    public ManagerConnection getManagerConnection() throws IOException
+    public ManagerConnection createManagerConnection() throws IOException
     {
         return new DefaultManagerConnection(this.hostname, this.port,
                 this.username, this.password);
-    }
-
-    /**
-     * Returns a new ManagerConnection to an Asterisk server running on default
-     * host ("localhost" if you didn't change that via
-     * {@link #setHostname(String)}) with the call manager interface listening
-     * on the default port (5038 if you didn't change that via
-     * {@link #setPort(int)}).
-     * 
-     * @param username the username as specified in Asterisk's
-     *            <code>manager.conf</code>
-     * @param password the password as specified in Asterisk's
-     *            <code>manager.conf</code>
-     * @return the created connection to the Asterisk call manager
-     * @throws IOException if the connection cannot be established.
-     */
-    public ManagerConnection getManagerConnection(String username,
-            String password) throws IOException
-    {
-        return new DefaultManagerConnection(this.hostname, this.port, username,
-                password);
-    }
-
-    /**
-     * Returns a new ManagerConnection to an Asterisk server running on given
-     * host with the call manager interface listening on the default port (5038
-     * if you didn't change that via {@link #setPort(int)}).
-     * 
-     * @param hostname the name of the host the Asterisk server is running on
-     * @param username the username as specified in Asterisk's
-     *            <code>manager.conf</code>
-     * @param password the password as specified in Asterisk's
-     *            <code>manager.conf</code>
-     * @return the created connection to the Asterisk call manager
-     * @throws IOException if the connection cannot be established.
-     */
-    public ManagerConnection getManagerConnection(String hostname,
-            String username, String password) throws IOException
-    {
-        return new DefaultManagerConnection(hostname, this.port, username,
-                password);
-    }
-
-    /**
-     * Returns a new ManagerConnection to an Asterisk server running on given
-     * host with the call manager interface listening on the given port.
-     * 
-     * @param hostname the name of the host the Asterisk server is running on
-     * @param port the port the call manager interface is listening on
-     * @param username the username as specified in Asterisk's
-     *            <code>manager.conf</code>
-     * @param password the password as specified in Asterisk's
-     *            <code>manager.conf</code>
-     * @return the created connection to the Asterisk call manager
-     * @throws IOException if the connection cannot be established.
-     */
-    public ManagerConnection getManagerConnection(String hostname, int port,
-            String username, String password) throws IOException
-    {
-        return new DefaultManagerConnection(hostname, port, username, password);
     }
 }

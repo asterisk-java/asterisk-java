@@ -19,7 +19,7 @@ package org.asteriskjava.manager;
 import java.util.Date;
 import java.util.List;
 
-public interface Channel
+public interface AsteriskChannel
 {
     /**
      * Returns the unique id of this channel, for example "1099015093.165".
@@ -54,7 +54,7 @@ public interface Channel
      * 
      * @return the state of this channel.
      */
-    ChannelStateEnum getState();
+    ChannelState getState();
 
     /**
      * Returns the account code used to bill this channel.
@@ -124,7 +124,7 @@ public interface Channel
      * @return the channel this channel is bridged with, or <code>null</code>
      *         if this channel is currently not bridged to another channel.
      */
-    Channel getLinkedChannel();
+    AsteriskChannel getLinkedChannel();
 
     /**
      * Indicates if this channel was linked to another channel at least once.
@@ -134,5 +134,10 @@ public interface Channel
      * @since 0.2
      */
     boolean getWasLinked();
-
+    
+    void hangup() throws ManagerCommunicationException, NoSuchChannelException;
+    
+    void redirect(String context, String exten, int priority) throws ManagerCommunicationException, NoSuchChannelException;
+    
+    String getVariable(String variable) throws ManagerCommunicationException, NoSuchChannelException;
 }

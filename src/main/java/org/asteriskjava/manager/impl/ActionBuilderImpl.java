@@ -18,7 +18,6 @@ package org.asteriskjava.manager.impl;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -27,6 +26,7 @@ import org.asteriskjava.manager.ActionBuilder;
 import org.asteriskjava.manager.action.ManagerAction;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
+import org.asteriskjava.util.ReflectionUtil;
 
 
 
@@ -86,8 +86,7 @@ public class ActionBuilderImpl implements ActionBuilder
             sb.append(LINE_SEPARATOR);
         }
         
-        getters = getGetters(action.getClass());
-
+        getters = ReflectionUtil.getGetters(action.getClass());
         for (String name : getters.keySet())
         {
             Method getter;
@@ -98,7 +97,7 @@ public class ActionBuilderImpl implements ActionBuilder
                 continue;
             }
 
-            getter = (Method) getters.get(name);
+            getter = getters.get(name);
             try
             {
                 value = getter.invoke(action, new Object[]{});
@@ -140,53 +139,6 @@ public class ActionBuilderImpl implements ActionBuilder
 
         sb.append(LINE_SEPARATOR);
         return sb.toString();
-    }
-
-    /**
-     * Returns a Map of getter methods of the given class.<br>
-     * The key of the map contains the name of the attribute that can be
-     * accessed by the getter, the value the getter itself (an instance of
-     * java.lang.reflect.Method). A method is considered a getter if its name
-     * starts with "get", it is declared public and takes no arguments.
-     * 
-     * @param clazz the class to return the getters for
-     * @return a Map of attributes and their accessor methods (getters)
-     */
-    private Map<String, Method> getGetters(final Class clazz)
-    {
-        Map<String, Method> accessors = new HashMap<String, Method>();
-        Method[] methods = clazz.getMethods();
-
-        for (int i = 0; i < methods.length; i++)
-        {
-            String name;
-            String methodName;
-            Method method = methods[i];
-
-            methodName = method.getName();
-            if (!methodName.startsWith("get"))
-            {
-                continue;
-            }
-
-            // skip methods with != 0 parameters
-            if (method.getParameterTypes().length != 0)
-            {
-                continue;
-            }
-
-            // ok seems to be an accessor
-            name = methodName.substring("get".length()).toLowerCase();
-
-            if (name.length() == 0)
-            {
-                continue;
-            }
-
-            accessors.put(name, method);
-        }
-
-        return accessors;
     }
 
     protected void appendMap(StringBuffer sb, String key, Map<String, String> values)

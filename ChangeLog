@@ -5,6 +5,9 @@ Asterisk-Java 0.3
 	  all other threads are terminated the JVM will quit
 	* Changed log level for message about ManagerReader termination
 	  from INFO to DEBUG
+	* ManagerConnectionFactory has been simplified. Usage example:
+	  new ManagerConnectionFactory("host", "user", "pass")
+	    .createManagerConnection();
 
 Asterisk-Java 0.2
 	* Added SayDateTimeCommand (AJ-23)

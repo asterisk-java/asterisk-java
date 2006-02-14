@@ -19,13 +19,15 @@ package org.asteriskjava.fastagi;
 import java.io.IOException;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import org.asteriskjava.io.ServerSocketFacade;
 import org.asteriskjava.io.SocketConnectionFacade;
 import org.asteriskjava.io.impl.ServerSocketFacadeImpl;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
-import org.asteriskjava.util.ThreadPool;
 
 
 
@@ -62,7 +64,7 @@ public class DefaultAGIServer implements AGIServer
      * The thread pool that contains the worker threads to process incoming
      * requests.
      */
-    private ThreadPool pool;
+    private ThreadPoolExecutor pool;
 
     /**
      * The number of worker threads in the thread pool. This equals the maximum
@@ -201,7 +203,9 @@ public class DefaultAGIServer implements AGIServer
         AGIConnectionHandler connectionHandler;
 
         die = false;
-        pool = new ThreadPool("AGIServer", poolSize);
+        pool = new ThreadPoolExecutor(poolSize, poolSize, 
+                50000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>());
+
         logger.info("Thread pool started.");
 
         try
@@ -223,7 +227,7 @@ public class DefaultAGIServer implements AGIServer
                 logger.info("Received connection.");
                 connectionHandler = new AGIConnectionHandler(socket,
                         mappingStrategy);
-                pool.addJob(connectionHandler);
+                pool.execute(connectionHandler);
             }
         }
         catch (IOException e)

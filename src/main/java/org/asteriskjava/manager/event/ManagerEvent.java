@@ -17,8 +17,12 @@
 package org.asteriskjava.manager.event;
 
 import java.io.Serializable;
+import java.lang.reflect.Method;
 import java.util.Date;
 import java.util.EventObject;
+import java.util.Map;
+
+import org.asteriskjava.util.ReflectionUtil;
 
 /**
  * Abstract base class for all Events that can be received from the Asterisk
@@ -102,15 +106,34 @@ public abstract class ManagerEvent extends EventObject implements Serializable
     public String toString()
     {
         StringBuffer sb;
+        Map<String, Method> getters;
 
-        sb = new StringBuffer(getClass().getName() + ": ");
-        sb.append("dateReceived=" + getDateReceived() + "; ");
+        sb = new StringBuffer(getClass().getName() + "[");
+        sb.append("dateReceived=" + getDateReceived() + ",");
         if (getPrivilege() != null)
         {
-            sb.append("privilege=" + getPrivilege() + "; ");
+            sb.append("privilege='" + getPrivilege() + "',");
         }
-        // TODO print attributes
+        getters = ReflectionUtil.getGetters(getClass());
+        for (String attribute : getters.keySet())
+        {
+            if ("class".equals(attribute) || "datereceived".equals(attribute) || "privilege".equals(attribute) || "source".equals(attribute))
+            {
+                continue;
+            }
+
+            try
+            {
+                Object value;
+                value = getters.get(attribute).invoke(this);
+                sb.append(attribute + "='" + value + "',");
+            }
+            catch (Exception e)
+            {
+            }
+        }
         sb.append("systemHashcode=" + System.identityHashCode(this));
+        sb.append("]");
 
         return sb.toString();
     }

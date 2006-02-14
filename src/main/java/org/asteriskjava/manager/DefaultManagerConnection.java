@@ -195,7 +195,7 @@ public class DefaultManagerConnection implements ManagerConnection, Dispatcher
     /**
      * Creates a new instance with the given connection parameters.
      * 
-     * @param hostname the hosname of the Asterisk server to connect to.
+     * @param hostname the hostname of the Asterisk server to connect to.
      * @param port the port where Asterisk listens for incoming Manager API
      *            connections, usually 5038.
      * @param username the username to use for login
@@ -490,7 +490,7 @@ public class DefaultManagerConnection implements ManagerConnection, Dispatcher
         ManagerResponse showVersionFilesResponse;
 
         // increase timeout as output is quite large
-        showVersionFilesResponse = sendAction(new CommandAction("show version files"), 
+        showVersionFilesResponse = sendAction(new CommandAction("show version files pbx.c"), 
                 defaultResponseTimeout * 2);
         if (showVersionFilesResponse instanceof CommandResponse)
         {

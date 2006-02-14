@@ -26,7 +26,7 @@ public class Call
 {
     private String uniqueId;
     private Integer reason;
-    private Channel channel;
+    private AsteriskChannel channel;
 
     private Date startTime;
     private Date endTime;
@@ -46,12 +46,12 @@ public class Call
         this.uniqueId = uniqueId;
     }
 
-    public Channel getChannel()
+    public AsteriskChannel getChannel()
     {
         return channel;
     }
 
-    public void setChannel(Channel channel)
+    public void setChannel(AsteriskChannel channel)
     {
         this.channel = channel;
     }

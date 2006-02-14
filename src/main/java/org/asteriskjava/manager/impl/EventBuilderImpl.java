@@ -89,6 +89,7 @@ import org.asteriskjava.manager.event.ZapShowChannelsEvent;
 import org.asteriskjava.util.AstUtil;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
+import org.asteriskjava.util.ReflectionUtil;
 
 
 /**
@@ -313,7 +314,7 @@ public class EventBuilderImpl implements EventBuilder
     {
         Map<String, Method> setters;
 
-        setters = getSetters(event.getClass());
+        setters = ReflectionUtil.getSetters(event.getClass());
         for (String name : attributes.keySet())
         {
             Object value;
@@ -332,11 +333,11 @@ public class EventBuilderImpl implements EventBuilder
              */
             if ("source".equals(name))
             {
-                setter = (Method) setters.get("src");
+                setter = setters.get("src");
             }
             else
             {
-                setter = (Method) setters.get(stripIllegalCharacters(name));
+                setter = setters.get(stripIllegalCharacters(name));
             }
 
             if (setter == null)
@@ -444,36 +445,5 @@ public class EventBuilderImpl implements EventBuilder
         }
 
         return sb.toString();
-    }
-
-    private Map<String, Method> getSetters(Class clazz)
-    {
-        Map<String, Method> accessors = new HashMap<String, Method>();
-        Method[] methods = clazz.getMethods();
-
-        for (int i = 0; i < methods.length; i++)
-        {
-            String name;
-            String methodName;
-            Method method = methods[i];
-
-            methodName = method.getName();
-            if (!methodName.startsWith("set"))
-            {
-                continue;
-            }
-
-            // skip methods with != 1 parameters
-            if (method.getParameterTypes().length != 1)
-            {
-                continue;
-            }
-
-            // ok seems to be an accessor
-            name = methodName.substring("set".length()).toLowerCase();
-            accessors.put(name, method);
-        }
-
-        return accessors;
     }
 }
