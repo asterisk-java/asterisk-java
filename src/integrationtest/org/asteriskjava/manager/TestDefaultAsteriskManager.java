@@ -6,7 +6,7 @@
 package org.asteriskjava.manager;
 
 import java.util.Arrays;
-import java.util.Iterator;
+import java.util.Map;
 
 
 /**
@@ -15,47 +15,66 @@ import java.util.Iterator;
  */
 public class TestDefaultAsteriskManager extends AsteriskManagerTestCase
 {
-    public void XtestGetChannels() throws Exception
+    public void testGetChannels() throws Exception
     {
+        System.out.println("waiting for channels...");
+
         try
         {
-            Thread.sleep(30000);
+            Thread.sleep(1000);
         }
         catch (InterruptedException e)
         {
         }
 
-        System.out.println(manager.getChannels().size());
-        Iterator i = manager.getChannels().keySet().iterator();
-        while (i.hasNext())
+        Map<String, AsteriskChannel> channels = manager.getChannels();
+
+        System.out.println("got channels. waiting to hangup...");
+
+        try
         {
-            String id = (String) i.next();
-            System.out.println(id + ": " + manager.getChannels().get(id));
+            Thread.sleep(10000);
+        }
+        catch (InterruptedException e)
+        {
+        }
+
+        for (AsteriskChannel channel : channels.values())
+        {
+            System.out.println(channel);
+            try
+            {
+                System.out.println("MY_VAR=" + channel.getVariable("MY_VAR"));
+                //channel.redirect("default", "1330", 1);
+                channel.hangup();
+            }
+            catch (NoSuchChannelException e)
+            {
+                System.out.println(e.getMessage());
+            }
         }
     }
 
-    public void testGetQueues() throws Exception
+    public void XtestGetQueues() throws Exception
     {
-        System.out.println("waiting...");
+        System.out.println("waiting for queues...");
         
         try
         {
-            Thread.sleep(20000);
+            Thread.sleep(10000);
         }
         catch (InterruptedException e)
         {
         }
 
-        System.out.println(manager.getQueues().size());
-        Iterator i = manager.getQueues().keySet().iterator();
-        while (i.hasNext())
+        Map<String, AsteriskQueue> queues = manager.getQueues();
+        for (AsteriskQueue queue : queues.values())
         {
-            String id = (String) i.next();
-            System.out.println(id + ": " + manager.getQueues().get(id));
+            System.out.println(queue);
         }
     }
 
-    public void XtestGetVersion() throws Exception
+    public void testGetVersion() throws Exception
     {
         System.out.println(Arrays.toString(manager.getVersion("cdr_manager.c")));
         System.out.println(manager.getVersion());

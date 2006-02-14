@@ -26,13 +26,12 @@ public class AsteriskManagerTestCase extends TestCase
     public void setUp() throws Exception
     {
         managerConnection = new DefaultManagerConnection();
-        managerConnection.setHostname("localhost");
+        managerConnection.setHostname("pbx0");
         managerConnection.setUsername("manager");
-        managerConnection.setPassword("pa55w0rd");
+        managerConnection.setPassword("obelisk");
 
         manager = new DefaultAsteriskManager();
         manager.setManagerConnection(managerConnection);
-        //manager.setSkipQueues(true);
         manager.initialize();
     }
 

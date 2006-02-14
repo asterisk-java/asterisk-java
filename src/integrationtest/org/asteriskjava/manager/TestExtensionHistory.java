@@ -18,7 +18,7 @@ public class TestExtensionHistory extends AsteriskManagerTestCase
 {
     public void testGetHistory() throws Exception
     {
-        List<Channel> channels;
+        List<AsteriskChannel> channels;
         
         try
         {
@@ -28,12 +28,12 @@ public class TestExtensionHistory extends AsteriskManagerTestCase
         {
         }
 
-        channels = new ArrayList<Channel>(manager.getChannels().values());
+        channels = new ArrayList<AsteriskChannel>(manager.getChannels().values());
         System.out.println("# of active channels: " + channels.size());
         Iterator channelsIterator = channels.iterator();
         while (channelsIterator.hasNext())
         {
-            Channel channel = (Channel) channelsIterator.next();
+            AsteriskChannel channel = (AsteriskChannel) channelsIterator.next();
 
             System.out.println(channel);
             System.out.println("  first extension: " + channel.getFirstExtension());
