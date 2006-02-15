@@ -1,9 +1,9 @@
-README for asterisk-java
+README for Asterisk-Java
 ========================
 
-The Asterisk-java package consists of a set of Java classes that allow you to
+The Asterisk-Java package consists of a set of Java classes that allow you to
 easily build Java applications that interact with an Asterisk PBX Server.
-Asterisk-java supports both interfaces that Asterisk provides for this
+Asterisk-Java supports both interfaces that Asterisk provides for this
 scenario: The FastAGI  protocol and the Manager API.
 
 The FastAGI implementation supports all commands currently available from
