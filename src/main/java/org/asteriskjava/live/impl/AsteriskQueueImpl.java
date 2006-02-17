@@ -14,13 +14,13 @@
  *  limitations under the License.
  *
  */
-package org.asteriskjava.manager.impl;
+package org.asteriskjava.live.impl;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.asteriskjava.manager.AsteriskChannel;
-import org.asteriskjava.manager.AsteriskQueue;
+import org.asteriskjava.live.AsteriskChannel;
+import org.asteriskjava.live.AsteriskQueue;
 
 /**
  * Default implementation of the AsteriskQueue interface.

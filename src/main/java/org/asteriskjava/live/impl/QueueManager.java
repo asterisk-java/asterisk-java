@@ -14,12 +14,12 @@
  *  limitations under the License.
  *
  */
-package org.asteriskjava.manager.impl;
+package org.asteriskjava.live.impl;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.asteriskjava.manager.AsteriskQueue;
+import org.asteriskjava.live.AsteriskQueue;
 import org.asteriskjava.manager.event.JoinEvent;
 import org.asteriskjava.manager.event.LeaveEvent;
 import org.asteriskjava.manager.event.QueueEntryEvent;

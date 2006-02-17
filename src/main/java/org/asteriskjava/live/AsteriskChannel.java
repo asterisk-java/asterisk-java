@@ -14,10 +14,13 @@
  *  limitations under the License.
  *
  */
-package org.asteriskjava.manager;
+package org.asteriskjava.live;
 
 import java.util.Date;
 import java.util.List;
+
+import org.asteriskjava.manager.ManagerCommunicationException;
+import org.asteriskjava.manager.NoSuchChannelException;
 
 public interface AsteriskChannel
 {

@@ -14,7 +14,7 @@
  *  limitations under the License.
  *
  */
-package org.asteriskjava.manager;
+package org.asteriskjava.live;
 
 /**
  * Enumeration that represents the state of a channel.

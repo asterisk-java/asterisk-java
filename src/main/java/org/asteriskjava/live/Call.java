@@ -15,9 +15,10 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.asteriskjava.manager;
+package org.asteriskjava.live;
 
 import java.util.*;
+
 
 /**
  * @author Ben Hencke

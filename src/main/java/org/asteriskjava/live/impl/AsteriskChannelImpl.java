@@ -14,15 +14,15 @@
  *  limitations under the License.
  *
  */
-package org.asteriskjava.manager.impl;
+package org.asteriskjava.live.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.asteriskjava.manager.AsteriskChannel;
-import org.asteriskjava.manager.ChannelState;
-import org.asteriskjava.manager.Extension;
+import org.asteriskjava.live.AsteriskChannel;
+import org.asteriskjava.live.ChannelState;
+import org.asteriskjava.live.Extension;
 import org.asteriskjava.manager.ManagerCommunicationException;
 import org.asteriskjava.manager.NoSuchChannelException;
 import org.asteriskjava.manager.action.GetVarAction;

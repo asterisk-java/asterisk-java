@@ -14,10 +14,12 @@
  *  limitations under the License.
  *
  */
-package org.asteriskjava.manager;
+package org.asteriskjava.live.impl;
 
 import java.io.Serializable;
 import java.util.Date;
+
+import org.asteriskjava.live.Extension;
 
 /**
  * Represents an Asterisk dialplan entry.
@@ -25,7 +27,7 @@ import java.util.Date;
  * @author srt
  * @version $Id: Extension.java,v 1.5 2005/08/08 06:10:18 srt Exp $
  */
-public class Extension implements Serializable
+public class ExtensionImpl implements Serializable, Extension
 {
     /**
      * Serial version identifier.
@@ -44,7 +46,7 @@ public class Extension implements Serializable
      * @param extension
      * @param priority
      */
-    public Extension(Date date, String context, String extension,
+    public ExtensionImpl(Date date, String context, String extension,
             Integer priority)
     {
         this(date, context, extension, priority, null, null);
@@ -58,7 +60,7 @@ public class Extension implements Serializable
      * @param application
      * @param appData
      */
-    public Extension(Date date, String context, String extension,
+    public ExtensionImpl(Date date, String context, String extension,
             Integer priority, String application, String appData)
     {
         this.date = date;

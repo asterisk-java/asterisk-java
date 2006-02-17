@@ -14,7 +14,7 @@
  *  limitations under the License.
  *
  */
-package org.asteriskjava.manager;
+package org.asteriskjava.live;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -23,6 +23,17 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.asteriskjava.live.impl.AsteriskChannelImpl;
+import org.asteriskjava.live.impl.ChannelManager;
+import org.asteriskjava.live.impl.ManagerConnectionPool;
+import org.asteriskjava.live.impl.QueueManager;
+import org.asteriskjava.manager.AuthenticationFailedException;
+import org.asteriskjava.manager.EventTimeoutException;
+import org.asteriskjava.manager.ManagerConnection;
+import org.asteriskjava.manager.ManagerEventHandler;
+import org.asteriskjava.manager.Originate;
+import org.asteriskjava.manager.ResponseEvents;
+import org.asteriskjava.manager.TimeoutException;
 import org.asteriskjava.manager.action.CommandAction;
 import org.asteriskjava.manager.action.OriginateAction;
 import org.asteriskjava.manager.action.QueueStatusAction;
@@ -46,10 +57,6 @@ import org.asteriskjava.manager.event.QueueParamsEvent;
 import org.asteriskjava.manager.event.RenameEvent;
 import org.asteriskjava.manager.event.StatusEvent;
 import org.asteriskjava.manager.event.UnlinkEvent;
-import org.asteriskjava.manager.impl.AsteriskChannelImpl;
-import org.asteriskjava.manager.impl.ChannelManager;
-import org.asteriskjava.manager.impl.ManagerConnectionPool;
-import org.asteriskjava.manager.impl.QueueManager;
 import org.asteriskjava.manager.response.CommandResponse;
 import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.util.Log;
@@ -58,7 +65,7 @@ import org.asteriskjava.util.LogFactory;
 /**
  * Default implementation of the AsteriskManager interface.
  * 
- * @see org.asteriskjava.manager.AsteriskManager
+ * @see org.asteriskjava.live.AsteriskManager
  * @author srt
  * @version $Id: DefaultAsteriskManager.java,v 1.23 2005/10/29 12:09:05 srt Exp $
  */

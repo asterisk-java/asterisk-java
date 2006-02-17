@@ -14,7 +14,7 @@
  *  limitations under the License.
  *
  */
-package org.asteriskjava.manager.impl;
+package org.asteriskjava.live.impl;
 
 import java.io.IOException;
 import java.util.concurrent.ArrayBlockingQueue;

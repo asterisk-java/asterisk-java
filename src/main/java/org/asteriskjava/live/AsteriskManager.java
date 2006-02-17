@@ -14,12 +14,14 @@
  *  limitations under the License.
  *
  */
-package org.asteriskjava.manager;
+package org.asteriskjava.live;
 
 import java.io.IOException;
 import java.util.Map;
 
-import org.asteriskjava.manager.impl.AsteriskQueueImpl;
+import org.asteriskjava.live.impl.AsteriskQueueImpl;
+import org.asteriskjava.manager.Originate;
+import org.asteriskjava.manager.TimeoutException;
 
 /**
  * The AsteriskManager is built on top of the ManagerConnection and is an
@@ -49,7 +51,7 @@ public interface AsteriskManager
     /**
      * Returns a Map of active channels.<br>
      * The map contain the channel names as keys and objects of type
-     * {@link org.asteriskjava.manager.impl.AsteriskChannelImpl} as values.
+     * {@link org.asteriskjava.live.impl.AsteriskChannelImpl} as values.
      * 
      * @return a Map of active channels.
      */

@@ -14,15 +14,15 @@
  *  limitations under the License.
  *
  */
-package org.asteriskjava.manager.impl;
+package org.asteriskjava.live.impl;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.asteriskjava.manager.AsteriskChannel;
-import org.asteriskjava.manager.ChannelState;
-import org.asteriskjava.manager.Extension;
+import org.asteriskjava.live.AsteriskChannel;
+import org.asteriskjava.live.ChannelState;
+import org.asteriskjava.live.Extension;
 import org.asteriskjava.manager.event.HangupEvent;
 import org.asteriskjava.manager.event.LinkEvent;
 import org.asteriskjava.manager.event.NewCallerIdEvent;
@@ -124,8 +124,9 @@ public class ChannelManager
         }
         else
         {
-            extension = new Extension(event.getDateReceived(), event
-                    .getContext(), event.getExtension(), event.getPriority());
+            extension = new ExtensionImpl(
+                    event.getDateReceived(), event.getContext(), 
+                    event.getExtension(), event.getPriority());
         }
 
         synchronized (channel)
@@ -217,9 +218,10 @@ public class ChannelManager
             return;
         }
 
-        extension = new Extension(event.getDateReceived(), event.getContext(),
-                event.getExtension(), event.getPriority(), event
-                        .getApplication(), event.getAppData());
+        extension = new ExtensionImpl(
+                event.getDateReceived(), event.getContext(),
+                event.getExtension(), event.getPriority(), 
+                event.getApplication(), event.getAppData());
 
         synchronized (channel)
         {
