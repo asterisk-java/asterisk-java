@@ -28,6 +28,7 @@ import org.asteriskjava.manager.NoSuchChannelException;
 import org.asteriskjava.manager.action.GetVarAction;
 import org.asteriskjava.manager.action.HangupAction;
 import org.asteriskjava.manager.action.RedirectAction;
+import org.asteriskjava.manager.action.SetVarAction;
 import org.asteriskjava.manager.response.ManagerError;
 import org.asteriskjava.manager.response.ManagerResponse;
 
@@ -431,6 +432,17 @@ public class AsteriskChannelImpl implements AsteriskChannel
             value = response.getAttribute(variable); // for Asterisk 1.0.x
         }
         return value;
+    }
+    
+    public void setVariable(String variable, String value) throws ManagerCommunicationException, NoSuchChannelException
+    {
+        ManagerResponse response;
+
+        response = connectionPool.sendAction(new SetVarAction(name, variable, value));
+        if (response instanceof ManagerError)
+        {
+            throw new NoSuchChannelException("Channel '" + name + "' is not available: " + response.getMessage());
+        }
     }
 
     public String toString()

@@ -134,10 +134,40 @@ public interface AsteriskChannel
      * @since 0.2
      */
     boolean getWasLinked();
-    
+
+    /**
+     * Hangs up this channel.
+     * 
+     * @throws ManagerCommunicationException if the hangup action cannot be sent to Asterisk.
+     * @throws NoSuchChannelException if this channel had already been hung up before the hangup was sent.
+     */
     void hangup() throws ManagerCommunicationException, NoSuchChannelException;
-    
+
+    /**
+     * Redirects this channel to a new extension.<br>
+     * If this channel is linked to another channel, the linked channel is hung
+     * up.
+     * 
+     * @param context the destination context.
+     * @param exten the destination extension.
+     * @param priority the destination priority.
+     * @throws ManagerCommunicationException if the redirect action cannot be sent to Asterisk.
+     * @throws NoSuchChannelException if this channel had been hung up before the redirect was sent.
+     */
     void redirect(String context, String exten, int priority) throws ManagerCommunicationException, NoSuchChannelException;
-    
+
+    /**
+     * Returns the value of the given channel variable.<br>
+     * Currently Asterisk does not support the retrieval of built-in variables like
+     * EXTEN or CALLERIDNUM but only custom variables set via Asterisk's Set command
+     * or via {@link #setVariable(String, String)}.
+     * 
+     * @param variable the name of the channel variable to return.
+     * @return the value of the channel variable or <code>null</code> if it is not set.
+     * @throws ManagerCommunicationException if the redirect action cannot be sent to Asterisk.
+     * @throws NoSuchChannelException if this channel had been hung up before the variable was request.
+     */
     String getVariable(String variable) throws ManagerCommunicationException, NoSuchChannelException;
+
+    void setVariable(String variable, String value) throws ManagerCommunicationException, NoSuchChannelException;
 }
