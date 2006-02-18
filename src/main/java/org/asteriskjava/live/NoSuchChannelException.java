@@ -14,7 +14,9 @@
  *  limitations under the License.
  *
  */
-package org.asteriskjava.manager;
+package org.asteriskjava.live;
+
+import org.asteriskjava.manager.ManagerException;
 
 public class NoSuchChannelException extends ManagerException
 {

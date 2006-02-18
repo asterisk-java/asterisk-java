@@ -20,8 +20,8 @@ import java.io.IOException;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
+import org.asteriskjava.live.ManagerCommunicationException;
 import org.asteriskjava.manager.EventTimeoutException;
-import org.asteriskjava.manager.ManagerCommunicationException;
 import org.asteriskjava.manager.ManagerConnection;
 import org.asteriskjava.manager.ResponseEvents;
 import org.asteriskjava.manager.TimeoutException;

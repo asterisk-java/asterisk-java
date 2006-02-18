@@ -19,7 +19,6 @@ package org.asteriskjava.live;
 import java.io.IOException;
 import java.util.Map;
 
-import org.asteriskjava.live.impl.AsteriskQueueImpl;
 import org.asteriskjava.manager.Originate;
 import org.asteriskjava.manager.TimeoutException;
 
@@ -60,7 +59,7 @@ public interface AsteriskManager
     /**
      * Returns a Map of all queues.<br>
      * The map contains the queue names as keys and objects of type
-     * {@link AsteriskQueueImpl} as values.
+     * {@link AsteriskQueue} as values.
      * 
      * @return a Map of queues.
      */

@@ -17,8 +17,7 @@
  */
 package org.asteriskjava.live;
 
-import java.util.*;
-
+import java.util.Date;
 
 /**
  * @author Ben Hencke
