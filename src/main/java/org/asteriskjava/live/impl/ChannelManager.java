@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.live.impl;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -68,17 +70,13 @@ public class ChannelManager
         }
     }
 
-    public Map<String, AsteriskChannel> getChannels()
+    public Collection<AsteriskChannel> getChannels()
     {
-        Map<String, AsteriskChannel> copy;
+        Collection<AsteriskChannel> copy;
         
-        copy = new HashMap<String, AsteriskChannel>();
         synchronized (channels)
         {
-            for (String id : channels.keySet())
-            {
-                copy.put(id, channels.get(id));
-            }
+            copy = new ArrayList<AsteriskChannel>(channels.values());
         }
         return copy;
     }

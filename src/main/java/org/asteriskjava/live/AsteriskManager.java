@@ -17,7 +17,7 @@
 package org.asteriskjava.live;
 
 import java.io.IOException;
-import java.util.Map;
+import java.util.Collection;
 
 import org.asteriskjava.manager.Originate;
 import org.asteriskjava.manager.TimeoutException;
@@ -48,22 +48,18 @@ public interface AsteriskManager
             IOException;
 
     /**
-     * Returns a Map of active channels.<br>
-     * The map contain the channel names as keys and objects of type
-     * {@link org.asteriskjava.live.impl.AsteriskChannelImpl} as values.
+     * Returns the active channels of the Asterisk server you are connected to.
      * 
-     * @return a Map of active channels.
+     * @return a Collection of active channels.
      */
-    Map<String, AsteriskChannel> getChannels();
+    Collection<AsteriskChannel> getChannels();
 
     /**
-     * Returns a Map of all queues.<br>
-     * The map contains the queue names as keys and objects of type
-     * {@link AsteriskQueue} as values.
+     * Returns the queues served by the Asterisk server you are connected to.
      * 
-     * @return a Map of queues.
+     * @return a Collection of queues.
      */
-    Map<String, AsteriskQueue> getQueues();
+    Collection<AsteriskQueue> getQueues();
 
     /**
      * Returns the version of the Asterisk server you are connected to.<br>

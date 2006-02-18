@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.live.impl;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -61,17 +63,13 @@ public class QueueManager
         }
     }
     
-    public Map<String, AsteriskQueue> getQueues()
+    public Collection<AsteriskQueue> getQueues()
     {
-        Map<String, AsteriskQueue> copy;
+        Collection<AsteriskQueue> copy;
         
-        copy = new HashMap<String, AsteriskQueue>();
         synchronized (queues)
         {
-            for (String name : queues.keySet())
-            {
-                copy.put(name, queues.get(name));
-            }
+            copy = new ArrayList<AsteriskQueue>(queues.values());
         }
         return copy;
     }

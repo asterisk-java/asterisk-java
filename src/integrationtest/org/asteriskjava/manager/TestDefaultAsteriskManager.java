@@ -6,7 +6,7 @@
 package org.asteriskjava.manager;
 
 import java.util.Arrays;
-import java.util.Map;
+import java.util.Collection;
 
 import org.asteriskjava.live.AsteriskChannel;
 import org.asteriskjava.live.AsteriskQueue;
@@ -32,7 +32,7 @@ public class TestDefaultAsteriskManager extends AsteriskManagerTestCase
         {
         }
 
-        Map<String, AsteriskChannel> channels = manager.getChannels();
+        Collection<AsteriskChannel> channels = manager.getChannels();
 
         System.out.println("got channels. waiting to hangup...");
 
@@ -44,7 +44,7 @@ public class TestDefaultAsteriskManager extends AsteriskManagerTestCase
         {
         }
 
-        for (AsteriskChannel channel : channels.values())
+        for (AsteriskChannel channel : channels)
         {
             System.out.println(channel);
             try
@@ -72,8 +72,8 @@ public class TestDefaultAsteriskManager extends AsteriskManagerTestCase
         {
         }
 
-        Map<String, AsteriskQueue> queues = manager.getQueues();
-        for (AsteriskQueue queue : queues.values())
+        Collection<AsteriskQueue> queues = manager.getQueues();
+        for (AsteriskQueue queue : queues)
         {
             System.out.println(queue);
         }

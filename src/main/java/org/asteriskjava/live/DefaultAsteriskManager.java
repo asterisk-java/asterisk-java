@@ -17,6 +17,7 @@
 package org.asteriskjava.live;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -258,12 +259,12 @@ public class DefaultAsteriskManager
                 .toArray()[0]);
     }
 
-    public Map<String, AsteriskChannel> getChannels()
+    public Collection<AsteriskChannel> getChannels()
     {
         return channelManager.getChannels();
     }
 
-    public Map<String, AsteriskQueue> getQueues()
+    public Collection<AsteriskQueue> getQueues()
     {
         return queueManager.getQueues();
     }

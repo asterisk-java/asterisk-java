@@ -5,9 +5,7 @@
  */
 package org.asteriskjava.manager;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.Collection;
 
 import org.asteriskjava.live.AsteriskChannel;
 import org.asteriskjava.live.Extension;
@@ -21,7 +19,7 @@ public class TestExtensionHistory extends AsteriskManagerTestCase
 {
     public void testGetHistory() throws Exception
     {
-        List<AsteriskChannel> channels;
+        Collection<AsteriskChannel> channels;
         
         try
         {
@@ -31,21 +29,16 @@ public class TestExtensionHistory extends AsteriskManagerTestCase
         {
         }
 
-        channels = new ArrayList<AsteriskChannel>(manager.getChannels().values());
+        channels = manager.getChannels();
         System.out.println("# of active channels: " + channels.size());
-        Iterator channelsIterator = channels.iterator();
-        while (channelsIterator.hasNext())
+        for (AsteriskChannel channel : channels)
         {
-            AsteriskChannel channel = (AsteriskChannel) channelsIterator.next();
-
             System.out.println(channel);
             System.out.println("  first extension: " + channel.getFirstExtension());
             System.out.println("  current extension: " + channel.getCurrentExtension());
 
-            Iterator historyIterator = channel.getExtensions().iterator();
-            while (historyIterator.hasNext())
+            for (Extension extension : channel.getExtensions())
             {
-                Extension extension = (Extension) historyIterator.next();
                 System.out.println("  " + extension);
             }
         }
