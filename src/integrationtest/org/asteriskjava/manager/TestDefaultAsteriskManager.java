@@ -8,6 +8,11 @@ package org.asteriskjava.manager;
 import java.util.Arrays;
 import java.util.Map;
 
+import org.asteriskjava.live.AsteriskChannel;
+import org.asteriskjava.live.AsteriskQueue;
+import org.asteriskjava.live.Call;
+import org.asteriskjava.live.NoSuchChannelException;
+
 
 /**
  * @author srt

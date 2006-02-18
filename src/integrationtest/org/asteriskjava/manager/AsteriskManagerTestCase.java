@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager;
 
+import org.asteriskjava.live.DefaultAsteriskManager;
+
 import junit.framework.TestCase;
 
 public class AsteriskManagerTestCase extends TestCase

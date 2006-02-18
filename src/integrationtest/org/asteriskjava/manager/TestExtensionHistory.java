@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.asteriskjava.live.AsteriskChannel;
+import org.asteriskjava.live.Extension;
+
 /**
  * @author srt
  * @version $Id: TestDefaultAsteriskManager.java,v 1.3 2005/07/16 13:19:34 srt
