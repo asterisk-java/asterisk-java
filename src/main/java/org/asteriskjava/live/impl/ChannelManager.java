@@ -39,12 +39,14 @@ import org.asteriskjava.util.LogFactory;
 
 
 /**
+ * Manages channel events on behalf of an AsteriskManager.
+ * 
  * @author srt
  * @version $Id: DefaultAsteriskManager.java,v 1.23 2005/10/29 12:09:05 srt Exp $
  */
 public class ChannelManager
 {
-    private final Log logger = LogFactory.getLog(this.getClass());
+    private final Log logger = LogFactory.getLog(getClass());
 
     private final ManagerConnectionPool connectionPool;
     
@@ -129,7 +131,7 @@ public class ChannelManager
 
         synchronized (channel)
         {
-            channel.setCallerId(event.getCallerId());
+            channel.setCallerIdNumber(event.getCallerId());
             channel.setCallerIdName(event.getCallerIdName());
             channel.setAccount(event.getAccount());
             if (event.getState() != null)
@@ -192,7 +194,7 @@ public class ChannelManager
         AsteriskChannelImpl channel = new AsteriskChannelImpl(connectionPool, event.getChannel(), event.getUniqueId());
 
         channel.setDateOfCreation(event.getDateReceived());
-        channel.setCallerId(event.getCallerId());
+        channel.setCallerIdNumber(event.getCallerId());
         channel.setCallerIdName(event.getCallerIdName());
         if (event.getState() != null)
         {
@@ -260,7 +262,7 @@ public class ChannelManager
 
         synchronized (channel)
         {
-            channel.setCallerId(event.getCallerId());
+            channel.setCallerIdNumber(event.getCallerId());
             channel.setCallerIdName(event.getCallerIdName());
         }
     }
@@ -348,8 +350,7 @@ public class ChannelManager
 
         if (channel == null)
         {
-            logger
-                    .error("Ignored RenameEvent for unknown channel with uniqueId "
+            logger.error("Ignored RenameEvent for unknown channel with uniqueId "
                             + event.getUniqueId());
             return;
         }

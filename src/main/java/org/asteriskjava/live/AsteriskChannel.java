@@ -37,11 +37,11 @@ public interface AsteriskChannel
     String getName();
 
     /**
-     * Returns the caller id of this channel.
+     * Returns the caller id number of this channel.
      * 
-     * @return the caller id of this channel.
+     * @return the caller id number of this channel.
      */
-    String getCallerId();
+    String getCallerIdNumber();
 
     /**
      * Returns the caller id name of this channel.
@@ -79,30 +79,6 @@ public interface AsteriskChannel
      * @since 0.2
      */
     Extension getFirstExtension();
-
-    /**
-     * Returns the context of the current extension. This is a shortcut for
-     * <code>getCurrentExtension().getContext()</code>.
-     * 
-     * @return the context of the current extension.
-     */
-    String getContext();
-
-    /**
-     * Returns the extension of the current extension. This is a shortcut for
-     * <code>getCurrentExtension().getExtension()</code>.
-     * 
-     * @return the extension of the current extension.
-     */
-    String getExtension();
-
-    /**
-     * Returns the priority of the current extension. This is a shortcut for
-     * <code>getCurrentExtension().getPriority()</code>.
-     * 
-     * @return the priority of the current extension.
-     */
-    Integer getPriority();
 
     /**
      * Returns a list of all visited dialplan entries.

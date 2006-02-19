@@ -53,9 +53,9 @@ public class AsteriskChannelImpl implements AsteriskChannel
     private String name;
 
     /**
-     * Caller ID of this channel.
+     * Caller ID Number of this channel.
      */
-    private String callerId;
+    private String callerIdNumber;
 
     /**
      * Caller ID Name of this channel.
@@ -103,22 +103,12 @@ public class AsteriskChannelImpl implements AsteriskChannel
         this.extensions = new ArrayList<Extension>();
     }
 
-    /**
-     * Returns the unique id of this channel, for example "1099015093.165".
-     * 
-     * @return the unique id of this channel.
-     */
-    public final String getId()
+    public String getId()
     {
         return id;
     }
 
-    /**
-     * Returns the name of this channel, for example "SIP/1310-20da".
-     * 
-     * @return the name of this channel.
-     */
-    public final String getName()
+    public String getName()
     {
         return name;
     }
@@ -128,37 +118,27 @@ public class AsteriskChannelImpl implements AsteriskChannel
      * 
      * @param name the name of this channel.
      */
-    public final void setName(final String name)
+    public void setName(final String name)
     {
         this.name = name;
     }
 
-    /**
-     * Returns the caller id of this channel.
-     * 
-     * @return the caller id of this channel.
-     */
-    public final String getCallerId()
+    public String getCallerIdNumber()
     {
-        return callerId;
+        return callerIdNumber;
     }
 
     /**
-     * Sets the caller id of this channel.
+     * Sets the caller id number of this channel.
      * 
-     * @param callerId the caller id of this channel.
+     * @param callerIdNumber the caller id number of this channel.
      */
-    public final void setCallerId(final String callerId)
+    public void setCallerIdNumber(final String callerIdNumber)
     {
-        this.callerId = callerId;
+        this.callerIdNumber = callerIdNumber;
     }
 
-    /**
-     * Returns the caller id name of this channel.
-     * 
-     * @return the caller id name of this channel.
-     */
-    public final String getCallerIdName()
+    public String getCallerIdName()
     {
         return callerIdName;
     }
@@ -168,17 +148,12 @@ public class AsteriskChannelImpl implements AsteriskChannel
      * 
      * @param callerIdName the caller id name of this channel.
      */
-    public final void setCallerIdName(final String callerIdName)
+    public void setCallerIdName(String callerIdName)
     {
         this.callerIdName = callerIdName;
     }
 
-    /**
-     * Returns the state of this channel.
-     * 
-     * @return the state of this channel.
-     */
-    public final ChannelState getState()
+    public ChannelState getState()
     {
         return state;
     }
@@ -188,17 +163,12 @@ public class AsteriskChannelImpl implements AsteriskChannel
      * 
      * @param state the state of this channel.
      */
-    public final void setState(final ChannelState state)
+    public void setState(ChannelState state)
     {
         this.state = state;
     }
 
-    /**
-     * Returns the account code used to bill this channel.
-     * 
-     * @return the account code used to bill this channel.
-     */
-    public final String getAccount()
+    public String getAccount()
     {
         return account;
     }
@@ -208,18 +178,12 @@ public class AsteriskChannelImpl implements AsteriskChannel
      * 
      * @param account the account code used to bill this channel.
      */
-    public final void setAccount(final String account)
+    public void setAccount(String account)
     {
         this.account = account;
     }
 
-    /**
-     * Returns the last visited dialplan entry.
-     * 
-     * @return the last visited dialplan entry.
-     * @since 0.2
-     */
-    public final Extension getCurrentExtension()
+    public Extension getCurrentExtension()
     {
         Extension extension;
 
@@ -238,12 +202,6 @@ public class AsteriskChannelImpl implements AsteriskChannel
         return extension;
     }
 
-    /**
-     * Returns the first visited dialplan entry.
-     * 
-     * @return the first visited dialplan entry.
-     * @since 0.2
-     */
     public Extension getFirstExtension()
     {
         Extension extension;
@@ -262,55 +220,7 @@ public class AsteriskChannelImpl implements AsteriskChannel
 
         return extension;
     }
-
-    /**
-     * Returns the context of the current extension. This is a shortcut for
-     * <code>getCurrentExtension().getContext()</code>.
-     * 
-     * @return the context of the current extension.
-     */
-    public String getContext()
-    {
-        Extension currentExtension;
-        
-        currentExtension = getCurrentExtension();
-        return currentExtension == null ? null : currentExtension.getContext();
-    }
-
-    /**
-     * Returns the extension of the current extension. This is a shortcut for
-     * <code>getCurrentExtension().getExtension()</code>.
-     * 
-     * @return the extension of the current extension.
-     */
-    public String getExtension()
-    {
-        Extension currentExtension;
-        
-        currentExtension = getCurrentExtension();
-        return currentExtension == null ? null : currentExtension.getExtension();
-    }
-
-    /**
-     * Returns the priority of the current extension. This is a shortcut for
-     * <code>getCurrentExtension().getPriority()</code>.
-     * 
-     * @return the priority of the current extension.
-     */
-    public Integer getPriority()
-    {
-        Extension currentExtension;
-        
-        currentExtension = getCurrentExtension();
-        return currentExtension == null ? null : currentExtension.getPriority();
-    }
     
-    /**
-     * Returns a list of all visited dialplan entries.
-     * 
-     * @return a list of all visited dialplan entries.
-     * @since 0.2
-     */
     public List<Extension> getExtensions()
     {
         List<Extension> extensionsCopy;
@@ -337,12 +247,7 @@ public class AsteriskChannelImpl implements AsteriskChannel
         }
     }
 
-    /**
-     * Returns the date this channel has been created.
-     * 
-     * @return the date this channel has been created.
-     */
-    public final Date getDateOfCreation()
+    public Date getDateOfCreation()
     {
         return dateOfCreation;
     }
@@ -352,18 +257,12 @@ public class AsteriskChannelImpl implements AsteriskChannel
      * 
      * @param dateOfCreation the date this channel has been created.
      */
-    public final void setDateOfCreation(final Date dateOfCreation)
+    public void setDateOfCreation(Date dateOfCreation)
     {
         this.dateOfCreation = dateOfCreation;
     }
 
-    /**
-     * Returns the channel this channel is bridged with, if any.
-     * 
-     * @return the channel this channel is bridged with, or <code>null</code>
-     *         if this channel is currently not bridged to another channel.
-     */
-    public final AsteriskChannel getLinkedChannel()
+    public AsteriskChannel getLinkedChannel()
     {
         return linkedChannel;
     }
@@ -373,7 +272,7 @@ public class AsteriskChannelImpl implements AsteriskChannel
      * 
      * @param linkedChannel the channel this channel is bridged with.
      */
-    public final void setLinkedChannel(final AsteriskChannel linkedChannel)
+    public void setLinkedChannel(AsteriskChannel linkedChannel)
     {
         this.linkedChannel = linkedChannel;
         if (linkedChannel != null)
@@ -382,14 +281,7 @@ public class AsteriskChannelImpl implements AsteriskChannel
         }
     }
 
-    /**
-     * Indicates if this channel was linked to another channel at least once.
-     * 
-     * @return <code>true</code> if this channel was linked to another channel
-     *         at least once, <code>false</code> otherwise.
-     * @since 0.2
-     */
-    public final boolean getWasLinked()
+    public boolean getWasLinked()
     {
         return wasLinked;
     }
@@ -457,7 +349,8 @@ public class AsteriskChannelImpl implements AsteriskChannel
         {
             sb.append("id='" + getId() + "',");
             sb.append("name='" + getName() + "',");
-            sb.append("callerId='" + getCallerId() + "',");
+            sb.append("callerIdNumber='" + getCallerIdNumber() + "',");
+            sb.append("callerIdName='" + getCallerIdName() + "',");
             sb.append("state='" + getState() + "',");
             sb.append("account='" + getAccount() + "',");
             sb.append("dateOfCreation=" + getDateOfCreation() + ",");
