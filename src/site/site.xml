@@ -17,7 +17,6 @@
  *
  */
 -->
-<?xml version="1.0" encoding="ISO-8859-1"?>
 <project name="Asterisk-Java">
   <bannerLeft>
     <name>Asterisk-Java</name>
