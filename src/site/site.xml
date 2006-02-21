@@ -17,12 +17,22 @@
  *
  */
 -->
-<project>
-	<body>
-		<links>
-			<item name="Asterisk Java" 
-				href="http://sourceforge.net/projects/asterisk-java" />
-		</links>
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="Asterisk-Java">
+  <bannerLeft>
+    <name>Asterisk-Java</name>
+    <src>http://maven.apache.org/images/apache-maven-project.png</src>
+    <href>http://www.asterisk-java.org/</href>
+  </bannerLeft>
+  <bannerRight>
+    <src>http://maven.apache.org/images/maven-small.gif</src>
+  </bannerRight>
+  <body>
+    <links>
+      <item name="Asterisk" href="http://www.asterisk.org/" />
+	  <item name="Asterisk-Java" href="http://sourceforge.net/projects/asterisk-java" />
+    </links>
+	  
 		<menu name="Overview">
 			<item name="Home" href="index.html"/>
 			<item name="Building with Maven" href="building.html"/>
@@ -43,5 +53,15 @@
 				href="http://fisheye.cenqua.com/changelog/asterisk-java/"
 				img="http://www.cenqua.com/images/fisheyed2.gif" />
 		</menu>
+	  
+    ${reports}
+
+  </body>
+</project>
+
+<project>
+	<body>
+		<links>
+		</links>
 	</body>
 </project>
