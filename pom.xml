@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.asteriskjava</groupId>
+	<artifactId>asterisk-java</artifactId>
+	<name>Asterisk-Java</name>
+	<version>0.3-SNAPSHOT</version>
+	<description>Asterisk-Java consists of a set of Java classes that allow you to control an
+		Asterisk PBX via Asterisk's Manager API from Java applications.</description>
+	<url>http://www.asterisk-java.org/</url>
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+    <organization>
+        <name>Stefan Reuter</name>
+        <url>http://www.asterisk-java.org/</url>
+    </organization>
+    <inceptionYear>2004</inceptionYear>
+	<developers>
+		<developer>
+            <name>Stefan Reuter</name>
+            <id>srt</id>
+            <email>srt at users.sourceforge.net</email>
+            <timezone>+1</timezone>
+        </developer>
+        <developer>
+            <name>Pierre-Yves Roger</name>
+            <id>partoutatis</id>
+            <email>partoutatis at users.sourceforge.net</email>
+            <timezone>+1</timezone>
+        </developer>
+        <developer>
+            <name>John Hood</name>
+            <id>squinky86</id>
+            <email>john at asteriasgi.com</email>
+            <organization>Asteria Soulutions Group, Inc.</organization>
+            <timezone>-6</timezone>
+        </developer>
+	</developers>
+	<issueManagement>
+		<system>JIRA</system>
+		<url>http://jira.reucon.com/browse/AJ</url>
+	</issueManagement>
+	
+    <mailingLists>
+        <mailingList>
+            <name>Asterisk-Java User List</name>
+            <subscribe>http://lists.sourceforge.net/mailman/listinfo/asterisk-java-users</subscribe>
+            <unsubscribe>http://lists.sourceforge.net/mailman/listinfo/asterisk-java-users</unsubscribe>
+            <archive>http://sourceforge.net/mailarchive/forum.php?forum=asterisk-java-users</archive>
+        </mailingList>
+        <mailingList>
+            <name>Asterisk-Java Developer List</name>
+            <subscribe>http://lists.sourceforge.net/mailman/listinfo/asterisk-java-devel</subscribe>
+            <unsubscribe>http://lists.sourceforge.net/mailman/listinfo/asterisk-java-devel</unsubscribe>
+            <archive>http://sourceforge.net/mailarchive/forum.php?forum=asterisk-java-devel</archive>
+        </mailingList>
+    </mailingLists>
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.5</source>
+					<target>1.5</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	    <extensions>
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-ssh-external</artifactId>
+				<version>1.0-alpha-5</version>
+			</extension>
+	    </extensions>
+	</build>
+	<dependencies>
+		<dependency>
+			<groupId>easymock</groupId>
+			<artifactId>easymock</artifactId>
+			<version>1.1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.9</version>
+			<scope>compile</scope>
+		</dependency>
+	</dependencies>
+	<distributionManagement>
+		<repository>
+			<id>reucon-ssh-repository</id>
+			<url>scpexe://maven.reucon.com/var/www/maven.reucon.com/htdocs/maven2</url>
+		</repository>
+	</distributionManagement>
+</project>
