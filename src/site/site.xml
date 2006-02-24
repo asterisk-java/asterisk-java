@@ -20,7 +20,7 @@
 <project name="Asterisk-Java">
   <bannerLeft>
     <name>Asterisk-Java</name>
-    <src>http://maven.apache.org/images/apache-maven-project.png</src>
+    <src>http://sourceforge.net/sflogo.php?group_id=118998&amp;type=5</src>
     <href>http://www.asterisk-java.org/</href>
   </bannerLeft>
   <bannerRight>
@@ -56,11 +56,4 @@
     ${reports}
 
   </body>
-</project>
-
-<project>
-	<body>
-		<links>
-		</links>
-	</body>
 </project>
