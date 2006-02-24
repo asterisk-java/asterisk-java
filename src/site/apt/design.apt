@@ -180,7 +180,9 @@ Design
   for FastAGI. The corresponding Java package is called
   <<<net.sf.asterisk.fastagi>>>.
   
-[images/agi-thumb.png] {{{images/agi.png}FastAGI (enlarge)}}
+[images/agi-thumb.png]
+
+  {{{images/agi.png}AGI Package Overview}}
   
   As you can see on the diagram the AGI package of 
   Asterisk-Java consists of three fundamental interfaces:
@@ -227,7 +229,9 @@ Design
   for the Manager API. The corresponding Java package is called
   <<<net.sf.asterisk.manager>>>.
 
-[images/manager-thumb.png] {{{images/manager.png}Manager API (enlarge)}}
+[images/manager-thumb.png]
+
+  {{{images/manager.png}Manager API Package Overview}}
 
   The important interfaces of Asterisk-Java's Manager 
   API package are ManagerConnection, ManagerEventHandler
