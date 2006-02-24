@@ -44,7 +44,7 @@
 			<item name="Tutorial" href="tutorial.html"/>
 		</menu>
 		<search/>
-		<menu type="footer">
+		<menu name="Sponsors">
 			<item name="Code Coverage by Clover" 
 				href="http://www.cenqua.com/clover/" 
 				img="http://www.cenqua.com/clover/images/clovered1.gif" />
