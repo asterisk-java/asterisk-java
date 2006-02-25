@@ -25,8 +25,8 @@ import java.util.*;
 public class Originate
 {
     private String channel;
-    private String exten;
     private String context;
+    private String exten;
     private Integer priority;
     private Long timeout;
     private String callerId;

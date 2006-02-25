@@ -43,10 +43,13 @@ public interface AsteriskManager
      * @return a Call object representing the originated call
      * @throws TimeoutException if the originated call is not answered in time
      * @throws IOException if the action cannot be sent to the asterisk server
+     * @deprecated
      */
-    public Call originateCall(Originate originate) throws TimeoutException,
-            IOException;
+    Call originateCall(Originate originate) throws ManagerCommunicationException;
 
+    AsteriskChannel originate(String channel, String context, String exten, int priority, long timeout) 
+        throws ManagerCommunicationException;
+    
     /**
      * Returns the active channels of the Asterisk server you are connected to.
      * 

@@ -72,8 +72,13 @@ public class ManagerConnectionPool
         
         return response;
     }
-    
+
     public ResponseEvents sendEventGeneratingAction(EventGeneratingAction action) throws ManagerCommunicationException
+    {
+        return sendEventGeneratingAction(action, -1);
+    }
+    
+    public ResponseEvents sendEventGeneratingAction(EventGeneratingAction action, long timeout) throws ManagerCommunicationException
     {
         ManagerConnection connection;
         ResponseEvents responseEvents;
@@ -81,7 +86,14 @@ public class ManagerConnectionPool
         connection = get();
         try
         {
-            responseEvents = connection.sendEventGeneratingAction(action);
+            if (timeout > 0)
+            {
+                responseEvents = connection.sendEventGeneratingAction(action, timeout);
+            }
+            else
+            {
+                responseEvents = connection.sendEventGeneratingAction(action);
+            }
         }
         catch (IllegalStateException e)
         {

@@ -220,8 +220,7 @@ public class DefaultAsteriskManager
 
     /* Implementation of the AsteriskManager interface */
 
-    public Call originateCall(Originate originate) throws TimeoutException,
-            IOException
+    public Call originateCall(Originate originate) throws ManagerCommunicationException
     {
         OriginateAction originateAction;
         ResponseEvents responseEvents;
@@ -252,11 +251,36 @@ public class DefaultAsteriskManager
         originateAction.setAsync(Boolean.TRUE);
 
         // 2000 ms extra for the OriginateFailureEvent should be fine
-        responseEvents = eventConnection.sendEventGeneratingAction(originateAction,
+        responseEvents = connectionPool.sendEventGeneratingAction(originateAction,
                 timeout.longValue() + 2000);
 
         return originateEvent2Call((OriginateEvent) responseEvents.getEvents()
                 .toArray()[0]);
+    }
+    
+    
+    public AsteriskChannel originate(String channel, String context, String exten, int priority, long timeout) throws ManagerCommunicationException
+    {
+        OriginateAction originateAction;
+        ResponseEvents responseEvents;
+
+        originateAction = new OriginateAction();
+        originateAction.setChannel(channel);
+        originateAction.setContext(context);
+        originateAction.setExten(exten);
+        originateAction.setPriority(priority);
+        originateAction.setTimeout(timeout);
+        
+        // must set async to true to receive OriginateEvents.
+        originateAction.setAsync(Boolean.TRUE);
+
+        // 2000 ms extra for the OriginateFailureEvent should be fine
+        responseEvents = connectionPool.sendEventGeneratingAction(originateAction,
+                timeout + 2000);
+        
+        //TODO fix originate
+        
+        return null;
     }
 
     public Collection<AsteriskChannel> getChannels()
