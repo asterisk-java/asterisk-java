@@ -104,5 +104,9 @@
 			<id>reucon-ssh-repository</id>
 			<url>scpexe://maven.reucon.com/var/www/maven.reucon.com/htdocs/maven2</url>
 		</repository>
+		<site>
+			<id>website</id>
+			<url>scpexe://www.asterisk-java.org/var/www/www.asterisk-java.org/htdocs/0.3-SNAPSHOT/</url>
+		</site>
 	</distributionManagement>
 </project>
