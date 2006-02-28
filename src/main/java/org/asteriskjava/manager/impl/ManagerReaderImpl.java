@@ -206,7 +206,8 @@ public class ManagerReaderImpl implements ManagerReader
 
                 // maybe we will find a better way to identify the protocol identifier but for now
                 // this works quite well.
-                if (line.startsWith("Asterisk Call Manager/"))
+                if (line.startsWith("Asterisk Call Manager/") ||
+                        line.startsWith("Asterisk Manager Proxy/"))
                 {
                     ConnectEvent connectEvent = new ConnectEvent(asteriskServer);
                     connectEvent.setProtocolIdentifier(line);
