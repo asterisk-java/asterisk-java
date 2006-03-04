@@ -19,6 +19,7 @@ package org.asteriskjava.live;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -56,6 +57,7 @@ import org.asteriskjava.manager.event.QueueEntryEvent;
 import org.asteriskjava.manager.event.QueueMemberEvent;
 import org.asteriskjava.manager.event.QueueParamsEvent;
 import org.asteriskjava.manager.event.RenameEvent;
+import org.asteriskjava.manager.event.ResponseEvent;
 import org.asteriskjava.manager.event.StatusEvent;
 import org.asteriskjava.manager.event.UnlinkEvent;
 import org.asteriskjava.manager.response.CommandResponse;
@@ -258,11 +260,9 @@ public class DefaultAsteriskManager
                 .toArray()[0]);
     }
     
-    
     public AsteriskChannel originate(String channel, String context, String exten, int priority, long timeout) throws ManagerCommunicationException
     {
         OriginateAction originateAction;
-        ResponseEvents responseEvents;
 
         originateAction = new OriginateAction();
         originateAction.setChannel(channel);
@@ -273,13 +273,31 @@ public class DefaultAsteriskManager
         
         // must set async to true to receive OriginateEvents.
         originateAction.setAsync(Boolean.TRUE);
+        
+        return originate(originateAction);
+    }
 
+    protected AsteriskChannel originate(OriginateAction originateAction) throws ManagerCommunicationException
+    {
+        ResponseEvents responseEvents;
+        Iterator<ResponseEvent> responseEventIterator;
+        
         // 2000 ms extra for the OriginateFailureEvent should be fine
         responseEvents = connectionPool.sendEventGeneratingAction(originateAction,
-                timeout + 2000);
-        
-        //TODO fix originate
-        
+                originateAction.getTimeout() + 2000);
+            
+        responseEventIterator = responseEvents.getEvents().iterator();
+        if (responseEventIterator.hasNext())
+        {
+            ResponseEvent responseEvent;
+            
+            responseEvent = responseEventIterator.next();
+            if (responseEvent instanceof OriginateEvent)
+            {
+                return getChannelById(((OriginateEvent) responseEvent).getUniqueId()); 
+            }
+        }
+
         return null;
     }
 
