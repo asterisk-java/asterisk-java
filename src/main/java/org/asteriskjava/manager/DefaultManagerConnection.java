@@ -359,22 +359,16 @@ public class DefaultManagerConnection implements ManagerConnection, Dispatcher
         this.socketTimeout = socketTimeout;
     }
 
-    /**
-     * Logs in to the asterisk manager using asterisk's MD5 based
-     * challenge/response protocol. The login is delayed until the protocol
-     * identifier has been received by the reader.
-     * 
-     * @throws AuthenticationFailedException if the username and/or password are
-     *             incorrect
-     * @throws TimeoutException if no response is received within the specified
-     *             timeout period
-     * @see ChallengeAction
-     * @see LoginAction
-     */
     public void login() throws IOException, AuthenticationFailedException,
             TimeoutException
     {
-        login(defaultResponseTimeout);
+        login(defaultResponseTimeout, null);
+    }
+
+    public void login(String events) throws IOException, AuthenticationFailedException,
+            TimeoutException
+    {
+        login(defaultResponseTimeout, events);
     }
 
     /**
@@ -393,6 +387,10 @@ public class DefaultManagerConnection implements ManagerConnection, Dispatcher
      * 
      * @param timeout the maximum time to wait for the protocol identifier (in
      *            ms)
+     * @param events the event mask. Set to "on" if all events should be send,
+     *            "off" if not events should be sent or a combination of
+     *            "system", "call" and "log" (separated by ',') to specify what
+     *            kind of events should be sent.
      * @throws AuthenticationFailedException if username or password are
      *             incorrect and the login action returns an error or if the MD5
      *             hash cannot be computed. The connection is closed in this
@@ -401,7 +399,7 @@ public class DefaultManagerConnection implements ManagerConnection, Dispatcher
      *             protocol identifier or when sending the challenge or login
      *             action. The connection is closed in this case.
      */
-    private void login(long timeout) throws IOException,
+    private void login(long timeout, String events) throws IOException,
             AuthenticationFailedException, TimeoutException
     {
         long start;
@@ -465,7 +463,7 @@ public class DefaultManagerConnection implements ManagerConnection, Dispatcher
                     "Unable to create login key using MD5 Message Digest", ex);
         }
 
-        loginAction = new LoginAction(username, "MD5", key);
+        loginAction = new LoginAction(username, "MD5", key, events);
         loginResponse = sendAction(loginAction);
         if (loginResponse instanceof ManagerError)
         {

@@ -90,6 +90,28 @@ public interface ManagerConnection
             TimeoutException;
 
     /**
+     * Logs in to the Asterisk server with the username and password specified
+     * when this connection was created and a given event mask.
+     * 
+     * @param events the event mask. Set to "on" if all events should be send,
+     *            "off" if not events should be sent or a combination of
+     *            "system", "call" and "log" (separated by ',') to specify what
+     *            kind of events should be sent.
+     * @throws IOException if the network connection is disrupted.
+     * @throws AuthenticationFailedException if the username and/or password are
+     *             incorrect or the ChallengeResponse could not be built.
+     * @throws TimeoutException if no response is received within the default
+     *             timeout period. If the implementation uses challenge/response
+     *             this can either be a timeout of the ChallengeAction or the
+     *             LoginAction; otherwise it is always a timeout of the
+     *             LoginAction.
+     * @see org.asteriskjava.manager.action.LoginAction
+     * @see org.asteriskjava.manager.action.ChallengeAction
+     */
+    void login(String events) throws IOException, AuthenticationFailedException,
+            TimeoutException;
+
+    /**
      * Sends a LogoffAction to the Asterisk server and disconnects.
      * 
      * @throws IOException if the network connection is disrupted.
