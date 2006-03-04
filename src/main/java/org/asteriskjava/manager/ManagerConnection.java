@@ -105,6 +105,7 @@ public interface ManagerConnection
      *             this can either be a timeout of the ChallengeAction or the
      *             LoginAction; otherwise it is always a timeout of the
      *             LoginAction.
+     * @since 0.3
      * @see org.asteriskjava.manager.action.LoginAction
      * @see org.asteriskjava.manager.action.ChallengeAction
      */
