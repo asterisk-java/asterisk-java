@@ -195,7 +195,7 @@ public class AsteriskChannelImpl implements AsteriskChannel
             }
             else
             {
-                extension = (Extension) extensions.get(extensions.size() - 1);
+                extension = extensions.get(extensions.size() - 1);
             }
         }
 
@@ -214,7 +214,7 @@ public class AsteriskChannelImpl implements AsteriskChannel
             }
             else
             {
-                extension = (Extension) extensions.get(0);
+                extension = extensions.get(0);
             }
         }
 
