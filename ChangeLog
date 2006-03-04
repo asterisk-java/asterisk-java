@@ -9,6 +9,8 @@ Asterisk-Java 0.3
 	  new ManagerConnectionFactory("host", "user", "pass")
 	    .createManagerConnection();
 	* Fixed timing bug in ResourceBundleMappingStrategy (AJ-25)
+	* Fixed interrupt in DefaultManagerConnection (AJ-27)
+	* Added support for login with eventMask (AJ-28)
 
 Asterisk-Java 0.2
 	* Added SayDateTimeCommand (AJ-23)
