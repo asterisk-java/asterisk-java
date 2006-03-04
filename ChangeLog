@@ -8,6 +8,7 @@ Asterisk-Java 0.3
 	* ManagerConnectionFactory has been simplified. Usage example:
 	  new ManagerConnectionFactory("host", "user", "pass")
 	    .createManagerConnection();
+	* Fixed timing bug in ResourceBundleMappingStrategy (AJ-25)
 
 Asterisk-Java 0.2
 	* Added SayDateTimeCommand (AJ-23)
