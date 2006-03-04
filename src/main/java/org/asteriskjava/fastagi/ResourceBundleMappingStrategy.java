@@ -122,9 +122,12 @@ public class ResourceBundleMappingStrategy extends AbstractMappingStrategy
 
     public AGIScript determineScript(AGIRequest request)
     {
-        if (mappings == null)
+        synchronized (this)
         {
-            loadResourceBundle();
+            if (mappings == null)
+            {
+                loadResourceBundle();
+            }
         }
 
         return mappings.get(request.getScript());
