@@ -605,36 +605,31 @@ public class DefaultManagerConnection implements ManagerConnection, Dispatcher
             throws IOException, TimeoutException, IllegalArgumentException,
             IllegalStateException
     {
-        long start;
-        long timeSpent;
         ResponseHandlerResult result;
         ManagerResponseHandler callbackHandler;
 
         result = new ResponseHandlerResult();
-        callbackHandler = new DefaultResponseHandler(result, Thread
-                .currentThread());
+        callbackHandler = new DefaultResponseHandler(result);
 
-        sendAction(action, callbackHandler);
-
-        start = System.currentTimeMillis();
-        timeSpent = 0;
-        while (result.getResponse() == null)
+        synchronized (result)
         {
+            sendAction(action, callbackHandler);
             try
             {
-                Thread.sleep(timeout - timeSpent);
+                result.wait(timeout);
             }
             catch (InterruptedException ex)
             {
+                //TODO fix logging
+                System.err.println("Interrupted!");
             }
-
-            // still no response and timed out?
-            timeSpent = System.currentTimeMillis() - start;
-            if (result.getResponse() == null && timeSpent > timeout)
-            {
-                throw new TimeoutException("Timeout waiting for response to "
-                        + action.getAction());
-            }
+        }
+    
+        // still no response?
+        if (result.getResponse() == null)
+        {
+            throw new TimeoutException("Timeout waiting for response to "
+                    + action.getAction());
         }
 
         return result.getResponse();
@@ -688,8 +683,6 @@ public class DefaultManagerConnection implements ManagerConnection, Dispatcher
         ResponseEventsImpl responseEvents;
         ResponseEventHandler responseEventHandler;
         String internalActionId;
-        long start;
-        long timeSpent;
 
         if (action == null)
         {
@@ -716,7 +709,7 @@ public class DefaultManagerConnection implements ManagerConnection, Dispatcher
 
         responseEvents = new ResponseEventsImpl();
         responseEventHandler = new ResponseEventHandler(responseEvents, action
-                .getActionCompleteEventClass(), Thread.currentThread());
+                .getActionCompleteEventClass());
 
         internalActionId = createInternalActionId();
 
@@ -733,38 +726,33 @@ public class DefaultManagerConnection implements ManagerConnection, Dispatcher
                     responseEventHandler);
         }
 
-        writer.sendAction(action, internalActionId);
-
-        // let's wait to see what we get
-        start = System.currentTimeMillis();
-        timeSpent = 0;
-        while (responseEvents.getResponse() == null
-                || !responseEvents.isComplete())
+        synchronized (responseEvents)
         {
+            writer.sendAction(action, internalActionId);
             try
             {
-                Thread.sleep(timeout - timeSpent);
+                responseEvents.wait(timeout);
             }
             catch (InterruptedException ex)
             {
+                //TODO fix logging
+                System.err.println("Interrupted");
             }
+        }
 
-            // still no response or not all events received and timed out?
-            timeSpent = System.currentTimeMillis() - start;
-            if ((responseEvents.getResponse() == null || !responseEvents
-                    .isComplete())
-                    && timeSpent > timeout)
+        // still no response or not all events received and timed out?
+        if ((responseEvents.getResponse() == null || !responseEvents
+                .isComplete()))
+        {
+            // clean up
+            synchronized (this.responseEventHandlers)
             {
-                // clean up
-                synchronized (this.responseEventHandlers)
-                {
-                    this.responseEventHandlers.remove(internalActionId);
-                }
-
-                throw new EventTimeoutException(
-                        "Timeout waiting for response or response events to "
-                                + action.getAction(), responseEvents);
+                this.responseEventHandlers.remove(internalActionId);
             }
+
+            throw new EventTimeoutException(
+                    "Timeout waiting for response or response events to "
+                            + action.getAction(), responseEvents);
         }
 
         // remove the event handler (note: the response handler is removed
@@ -1152,26 +1140,24 @@ public class DefaultManagerConnection implements ManagerConnection, Dispatcher
          */
         private static final long serialVersionUID = 2926598671855316803L;
         private ResponseHandlerResult result;
-        private final Thread thread;
 
         /**
          * Creates a new instance.
          * 
          * @param result the result to store the response in
-         * @param thread the thread to interrupt when the response has been
-         *            received
          */
-        public DefaultResponseHandler(ResponseHandlerResult result,
-                Thread thread)
+        public DefaultResponseHandler(ResponseHandlerResult result)
         {
             this.result = result;
-            this.thread = thread;
         }
 
         public void handleResponse(ManagerResponse response)
         {
-            result.setResponse(response);
-            thread.interrupt();
+            synchronized (result)
+            {
+                result.setResponse(response);
+                result.notify();
+            }
         }
     }
 
@@ -1192,7 +1178,6 @@ public class DefaultManagerConnection implements ManagerConnection, Dispatcher
         private static final long serialVersionUID = 2926598671855316803L;
         private final ResponseEventsImpl events;
         private final Class actionCompleteEventClass;
-        private final Thread thread;
 
         /**
          * Creates a new instance.
@@ -1204,33 +1189,33 @@ public class DefaultManagerConnection implements ManagerConnection, Dispatcher
          *            actionCompleteEventClass has been received
          */
         public ResponseEventHandler(ResponseEventsImpl events,
-                Class actionCompleteEventClass, Thread thread)
+                Class actionCompleteEventClass)
         {
             this.events = events;
             this.actionCompleteEventClass = actionCompleteEventClass;
-            this.thread = thread;
         }
 
         public void handleEvent(ManagerEvent event)
         {
-            // should always be a ResponseEvent, anyway...
-            if (event instanceof ResponseEvent)
+            synchronized (events)
             {
-                ResponseEvent responseEvent;
-
-                responseEvent = (ResponseEvent) event;
-                events.addEvent(responseEvent);
-            }
-
-            // finished?
-            if (actionCompleteEventClass.isAssignableFrom(event.getClass()))
-            {
-                synchronized (events)
+                // should always be a ResponseEvent, anyway...
+                if (event instanceof ResponseEvent)
+                {
+                    ResponseEvent responseEvent;
+    
+                    responseEvent = (ResponseEvent) event;
+                    events.addEvent(responseEvent);
+                }
+    
+                // finished?
+                if (actionCompleteEventClass.isAssignableFrom(event.getClass()))
                 {
                     events.setComplete(true);
+                    // notify if action complete event and response have been received
                     if (events.getResponse() != null)
                     {
-                        thread.interrupt();
+                        events.notify();
                     }
                 }
             }
@@ -1247,9 +1232,10 @@ public class DefaultManagerConnection implements ManagerConnection, Dispatcher
                 }
 
                 // finished?
+                // notify if action complete event and response have been received
                 if (events.isComplete())
                 {
-                    thread.interrupt();
+                    events.notify();
                 }
             }
         }
