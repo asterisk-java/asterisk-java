@@ -16,14 +16,7 @@
  */
 package org.asteriskjava.fastagi;
 
-import java.net.InetAddress;
-import java.util.Map;
-
 import junit.framework.TestCase;
-
-import org.asteriskjava.fastagi.AGIRequest;
-import org.asteriskjava.fastagi.AGIScript;
-import org.asteriskjava.fastagi.ClassNameMappingStrategy;
 
 public class ClassNameMappingStrategyTest extends TestCase
 {
@@ -41,7 +34,12 @@ public class ClassNameMappingStrategyTest extends TestCase
         AGIScript scriptSecondPass;
         AGIRequest request;
 
-        request = new SimpleAGIRequest();
+        request = new SimpleAGIRequest() {
+            public String getScript()
+            {
+                return "org.asteriskjava.fastagi.HelloAGIScript";
+            }
+        };
 
         scriptFirstPass = mappingStrategy.determineScript(request);
         scriptSecondPass = mappingStrategy.determineScript(request);
@@ -51,168 +49,5 @@ public class ClassNameMappingStrategyTest extends TestCase
 
         assertTrue("script instances are not cached",
                 scriptFirstPass == scriptSecondPass);
-    }
-    
-    public class SimpleAGIRequest implements AGIRequest
-    {
-        private InetAddress localAddress;
-        private int localPort;
-        private InetAddress remoteAddress;
-        private int remotePort;
-
-        public Map getRequest()
-        {
-            throw new UnsupportedOperationException();
-        }
-
-        public String getScript()
-        {
-            return "org.asteriskjava.fastagi.HelloAGIScript";
-        }
-
-        public String getRequestURL()
-        {
-            throw new UnsupportedOperationException();
-        }
-
-        public String getChannel()
-        {
-            throw new UnsupportedOperationException();
-        }
-
-        public String getUniqueId()
-        {
-            throw new UnsupportedOperationException();
-        }
-
-        public String getType()
-        {
-            throw new UnsupportedOperationException();
-        }
-
-        public String getLanguage()
-        {
-            throw new UnsupportedOperationException();
-        }
-
-        public String getCallerId()
-        {
-            throw new UnsupportedOperationException();
-        }
-
-        public String getCallerIdName()
-        {
-            throw new UnsupportedOperationException();
-        }
-
-        public String getDnid()
-        {
-            throw new UnsupportedOperationException();
-        }
-
-        public String getRdnis()
-        {
-            throw new UnsupportedOperationException();
-        }
-
-        public String getContext()
-        {
-            throw new UnsupportedOperationException();
-        }
-
-        public String getExtension()
-        {
-            throw new UnsupportedOperationException();
-        }
-
-        public Integer getPriority()
-        {
-            throw new UnsupportedOperationException();
-        }
-
-        public Boolean getEnhanced()
-        {
-            throw new UnsupportedOperationException();
-        }
-
-        public String getAccountCode()
-        {
-            throw new UnsupportedOperationException();
-        }
-
-        public Integer getCallingAni2()
-        {
-            throw new UnsupportedOperationException();
-        }
-
-        public Integer getCallingPres()
-        {
-            throw new UnsupportedOperationException();
-        }
-
-        public Integer getCallingTns()
-        {
-            throw new UnsupportedOperationException();
-        }
-
-        public Integer getCallingTon()
-        {
-            throw new UnsupportedOperationException();
-        }
-
-        public String getParameter(String name)
-        {
-            throw new UnsupportedOperationException();
-        }
-
-        public String[] getParameterValues(String name)
-        {
-            throw new UnsupportedOperationException();
-        }
-
-        public Map getParameterMap()
-        {
-            throw new UnsupportedOperationException();
-        }
-
-        public InetAddress getLocalAddress()
-        {
-            return localAddress;
-        }
-
-        public void setLocalAddress(InetAddress localAddress)
-        {
-            this.localAddress = localAddress;
-        }
-
-        public int getLocalPort()
-        {
-            return localPort;
-        }
-
-        public void setLocalPort(int localPort)
-        {
-            this.localPort = localPort;
-        }
-
-        public InetAddress getRemoteAddress()
-        {
-            return remoteAddress;
-        }
-
-        public void setRemoteAddress(InetAddress remoteAddress)
-        {
-            this.remoteAddress = remoteAddress;
-        }
-
-        public int getRemotePort()
-        {
-            return remotePort;
-        }
-
-        public void setRemotePort(int remotePort)
-        {
-            this.remotePort = remotePort;
-        }
     }
 }
