@@ -1065,12 +1065,13 @@ public class DefaultManagerConnection implements ManagerConnection, Dispatcher
                 {
                     if (this.keepAliveAfterAuthenticationFailure)
                     {
-                        logger.error("Unable to log in after reconnect.");
+                        logger.error("Unable to log in after reconnect: "
+                                + e1.getMessage());
                     }
                     else
                     {
-                        logger.error("Unable to log in after reconnect. "
-                                + "Giving up.");
+                        logger.error("Unable to log in after reconnect: "
+                                + e1.getMessage() + ". Giving up.");
                         this.keepAlive = false;
                     }
                 }
