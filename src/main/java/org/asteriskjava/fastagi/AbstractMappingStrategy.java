@@ -25,7 +25,7 @@ import org.asteriskjava.util.LogFactory;
 public abstract class AbstractMappingStrategy implements MappingStrategy
 {
     protected Log logger = LogFactory.getLog(getClass());
-    
+
     protected AGIScript createAGIScriptInstance(String className)
     {
         Class agiScriptClass;

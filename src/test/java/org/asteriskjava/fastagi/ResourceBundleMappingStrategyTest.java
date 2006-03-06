@@ -62,4 +62,23 @@ public class ResourceBundleMappingStrategyTest extends TestCase
                 .setResourceBundleName("net.sf.asterisk.fastagi.unavailable");
         assertNull(mappingStrategy.determineScript(request));
     }
+
+    public void testDetermineScriptWithNonSharedInstance()
+    {
+        AGIScript scriptFirstPass;
+        AGIScript scriptSecondPass;
+        AGIRequest request;
+
+        mappingStrategy.setShareInstances(false);
+        request = new SimpleAGIRequest();
+
+        scriptFirstPass = mappingStrategy.determineScript(request);
+        scriptSecondPass = mappingStrategy.determineScript(request);
+
+        assertEquals("incorrect script determined",
+                scriptFirstPass.getClass(), HelloAGIScript.class);
+
+        assertTrue("returned a shared instance",
+                scriptFirstPass != scriptSecondPass);
+    }
 }

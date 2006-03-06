@@ -50,4 +50,28 @@ public class ClassNameMappingStrategyTest extends TestCase
         assertTrue("script instances are not cached",
                 scriptFirstPass == scriptSecondPass);
     }
+
+    public void testDetermineScriptWithNonSharedInstance()
+    {
+        AGIScript scriptFirstPass;
+        AGIScript scriptSecondPass;
+        AGIRequest request;
+
+        mappingStrategy.setShareInstances(false);
+        request = new SimpleAGIRequest() {
+            public String getScript()
+            {
+                return "org.asteriskjava.fastagi.HelloAGIScript";
+            }
+        };
+
+        scriptFirstPass = mappingStrategy.determineScript(request);
+        scriptSecondPass = mappingStrategy.determineScript(request);
+
+        assertEquals("incorrect script determined",
+                scriptFirstPass.getClass(), HelloAGIScript.class);
+
+        assertTrue("returned a shared instance",
+                scriptFirstPass != scriptSecondPass);
+    }
 }

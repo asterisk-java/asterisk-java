@@ -35,24 +35,58 @@ import java.util.Map;
  */
 public class ClassNameMappingStrategy extends AbstractMappingStrategy
 {
-    private Map<String, AGIScript> mappings;
+    private Map<String, AGIScript> instances;
+    private boolean shareInstances;
 
     /**
      * Creates a new ClassNameMappingStrategy.
      */
     public ClassNameMappingStrategy()
     {
-        this.mappings = new HashMap<String, AGIScript>();
+        this(true);
     }
 
-    public AGIScript determineScript(AGIRequest request)
+    /**
+     * Creates a new ClassNameMappingStrategy.
+     * @param shareInstances <code>true</code> to use shared instances,
+     *                       <code>false</code> to create a new instance for
+     *                       each request.
+     * @since 0.3
+     */
+    public ClassNameMappingStrategy(boolean shareInstances)
+    {
+        this.instances = new HashMap<String, AGIScript>();
+        this.shareInstances = shareInstances;
+    }
+
+    /**
+     * Sets whether to use shared instances or not. If set to <code>true</code>
+     * all AGIRequests are served by the same instance of an
+     * AGIScript, if set to <code>false</code> a new instance is created for
+     * each request.<br>
+     * Default is <code>true</code>.
+     * 
+     * @param shareInstances <code>true</code> to use shared instances,
+     *                       <code>false</code> to create a new instance for
+     *                       each request.
+     * @since 0.3
+     */
+    public void setShareInstances(boolean shareInstances)
+    {
+        this.shareInstances = shareInstances;
+    }
+
+    public synchronized AGIScript determineScript(AGIRequest request)
     {
         AGIScript script;
 
-        script = mappings.get(request.getScript());
-        if (script != null)
+        if (shareInstances)
         {
-            return script;
+            script = instances.get(request.getScript());
+            if (script != null)
+            {
+                return script;
+            }
         }
 
         script = createAGIScriptInstance(request.getScript());
@@ -61,7 +95,11 @@ public class ClassNameMappingStrategy extends AbstractMappingStrategy
             return null;
         }
 
-        mappings.put(request.getScript(), script);
+        if (shareInstances)
+        {
+            instances.put(request.getScript(), script);
+        }
+
         return script;
     }
 }

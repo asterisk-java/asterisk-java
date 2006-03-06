@@ -46,15 +46,16 @@ public class ResourceBundleMappingStrategy extends AbstractMappingStrategy
 {
     private static final String DEFAULT_RESOURCE_BUNDLE_NAME = "fastagi-mapping";
     private String resourceBundleName;
-    private Map<String, AGIScript> mappings;
+    private Map<String, String> mappings;
+    private Map<String, AGIScript> instances;
+    private boolean shareInstances;
 
     /**
      * Creates a new ResourceBundleMappingStrategy.
      */
     public ResourceBundleMappingStrategy()
     {
-        this.resourceBundleName = DEFAULT_RESOURCE_BUNDLE_NAME;
-        this.mappings = null;
+        this(DEFAULT_RESOURCE_BUNDLE_NAME);
     }
 
     /**
@@ -65,11 +66,38 @@ public class ResourceBundleMappingStrategy extends AbstractMappingStrategy
      */
     public ResourceBundleMappingStrategy(String resourceBundleName)
     {
-        this.resourceBundleName = resourceBundleName;
-        this.mappings = null;
+        this(resourceBundleName, true);
     }
 
-    
+    /**
+     * Creates a new ResourceBundleMappingStrategy.
+     * 
+     * @param shareInstances <code>true</code> to use shared instances,
+     *                       <code>false</code> to create a new instance for
+     *                       each request.
+     * @since 0.3
+     */
+    public ResourceBundleMappingStrategy(boolean shareInstances)
+    {
+        this(DEFAULT_RESOURCE_BUNDLE_NAME, shareInstances);
+    }
+
+    /**
+     * Creates a new ResourceBundleMappingStrategy with the given basename
+     * of the resource bundle to use.
+     * 
+     * @param resourceBundleName basename of the resource bundle to use
+     * @param shareInstances <code>true</code> to use shared instances,
+     *                       <code>false</code> to create a new instance for
+     *                       each request.
+     * @since 0.3
+     */
+    public ResourceBundleMappingStrategy(String resourceBundleName, boolean shareInstances)
+    {
+        this.resourceBundleName = resourceBundleName;
+        this.shareInstances = shareInstances;
+    }
+
     /**
      * Sets the basename of the resource bundle to use.<br>
      * Default is "fastagi-mapping".
@@ -79,14 +107,40 @@ public class ResourceBundleMappingStrategy extends AbstractMappingStrategy
     public void setResourceBundleName(String resourceBundleName)
     {
         this.resourceBundleName = resourceBundleName;
+        synchronized (this)
+        {
+            this.mappings = null;
+            this.instances = null;
+        }
     }
 
-    private void loadResourceBundle()
+    /**
+     * Sets whether to use shared instances or not. If set to <code>true</code>
+     * all AGIRequests are served by the same instance of an
+     * AGIScript, if set to <code>false</code> a new instance is created for
+     * each request.<br>
+     * Default is <code>true</code>.
+     * 
+     * @param shareInstances <code>true</code> to use shared instances,
+     *                       <code>false</code> to create a new instance for
+     *                       each request.
+     * @since 0.3
+     */
+    public void setShareInstances(boolean shareInstances)
+    {
+        this.shareInstances = shareInstances;
+    }
+
+    private synchronized void loadResourceBundle()
     {
         ResourceBundle resourceBundle;
         Enumeration keys;
 
-        mappings = new HashMap<String, AGIScript>();
+        mappings = new HashMap<String, String>();
+        if (shareInstances)
+        {
+            instances = new HashMap<String, AGIScript>();
+        }
 
         try
         {
@@ -109,14 +163,19 @@ public class ResourceBundleMappingStrategy extends AbstractMappingStrategy
             scriptName = (String) keys.nextElement();
             className = resourceBundle.getString(scriptName);
 
-            agiScript = createAGIScriptInstance(className);
-            if (agiScript == null)
+            mappings.put(scriptName, className);
+
+            if (shareInstances)
             {
-                continue;
+                agiScript = createAGIScriptInstance(className);
+                if (agiScript == null)
+                {
+                    continue;
+                }
+                instances.put(scriptName, agiScript);
             }
 
-            mappings.put(scriptName, agiScript);
-            logger.info("Added mapping for '" + scriptName + "' to class " + agiScript.getClass());
+            logger.info("Added mapping for '" + scriptName + "' to class " + className);
         }
     }
 
@@ -124,12 +183,19 @@ public class ResourceBundleMappingStrategy extends AbstractMappingStrategy
     {
         synchronized (this)
         {
-            if (mappings == null)
+            if (mappings == null || (shareInstances && instances == null))
             {
                 loadResourceBundle();
             }
         }
 
-        return mappings.get(request.getScript());
+        if (shareInstances)
+        {
+            return instances.get(request.getScript());
+        }
+        else
+        {
+            return createAGIScriptInstance(mappings.get(request.getScript()));
+        }
     }
 }
