@@ -59,7 +59,7 @@ import java.util.Map;
  */
 public class SimpleMappingStrategy implements MappingStrategy
 {
-    private Map mappings;
+    private Map<String, AGIScript> mappings;
 
     /**
      * Set the path to AGIScript mapping.<br>
@@ -69,7 +69,7 @@ public class SimpleMappingStrategy implements MappingStrategy
      * 
      * @param mappings the path to AGIScript mapping.
      */
-    public void setMappings(Map mappings)
+    public void setMappings(Map<String, AGIScript> mappings)
     {
         this.mappings = mappings;
     }
@@ -81,6 +81,6 @@ public class SimpleMappingStrategy implements MappingStrategy
             return null;
         }
 
-        return (AGIScript) mappings.get(request.getScript());
+        return mappings.get(request.getScript());
     }
 }
