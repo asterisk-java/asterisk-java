@@ -62,7 +62,7 @@ public class SimpleMappingStrategy implements MappingStrategy
     private Map<String, AGIScript> mappings;
 
     /**
-     * Set the path to AGIScript mapping.<br>
+     * Set the "path to AGIScript" mapping.<br>
      * Use the path (for example <code>hello.agi</code>) as key and your
      * AGIScript (for example <code>new HelloAGIScript()</code>) as value of
      * this map. 
