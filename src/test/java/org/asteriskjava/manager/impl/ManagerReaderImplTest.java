@@ -22,8 +22,9 @@ import java.util.Date;
 import java.util.List;
 
 import junit.framework.TestCase;
-import org.asteriskjava.io.SocketConnectionFacade;
+import static org.easymock.EasyMock.*;
 
+import org.asteriskjava.io.SocketConnectionFacade;
 import org.asteriskjava.manager.AsteriskServer;
 import org.asteriskjava.manager.Dispatcher;
 import org.asteriskjava.manager.ManagerReader;
@@ -35,13 +36,11 @@ import org.asteriskjava.manager.event.StatusCompleteEvent;
 import org.asteriskjava.manager.response.CommandResponse;
 import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.util.DateUtil;
-import org.easymock.MockControl;
 
 public class ManagerReaderImplTest extends TestCase
 {
     private Date now;
     private MockedDispatcher dispatcher;
-    private MockControl socketConnectionFacadeMC;
     private SocketConnectionFacade socketConnectionFacade;
     private AsteriskServer asteriskServer;
     private ManagerReader managerReader;
@@ -54,10 +53,7 @@ public class ManagerReaderImplTest extends TestCase
         dispatcher = new MockedDispatcher();
         managerReader = new ManagerReaderImpl(dispatcher, asteriskServer);
 
-        socketConnectionFacadeMC = MockControl
-                .createControl(SocketConnectionFacade.class);
-        socketConnectionFacade = (SocketConnectionFacade) socketConnectionFacadeMC
-                .getMock();
+        socketConnectionFacade = createMock(SocketConnectionFacade.class);
     }
 
     protected void tearDown()
@@ -81,17 +77,15 @@ public class ManagerReaderImplTest extends TestCase
 
     public void testRunReceivingProtocolIdentifier() throws Exception
     {
-        socketConnectionFacade.readLine();
-        socketConnectionFacadeMC.setReturnValue("Asterisk Call Manager/1.0");
-        socketConnectionFacade.readLine();
-        socketConnectionFacadeMC.setReturnValue(null);
+        expect(socketConnectionFacade.readLine()).andReturn("Asterisk Call Manager/1.0");
+        expect(socketConnectionFacade.readLine()).andReturn(null);
 
-        socketConnectionFacadeMC.replay();
+        replay(socketConnectionFacade);
 
         managerReader.setSocket(socketConnectionFacade);
         managerReader.run();
 
-        socketConnectionFacadeMC.verify();
+        verify(socketConnectionFacade);
 
         assertEquals("not exactly two events dispatched", 2,
                 dispatcher.dispatchedEvents.size());
@@ -119,19 +113,16 @@ public class ManagerReaderImplTest extends TestCase
 
     public void testRunReceivingEvent() throws Exception
     {
-        socketConnectionFacade.readLine();
-        socketConnectionFacadeMC.setReturnValue("Event: StatusComplete");
-        socketConnectionFacade.readLine();
-        socketConnectionFacadeMC.setReturnValue("");
-        socketConnectionFacade.readLine();
-        socketConnectionFacadeMC.setReturnValue(null);
+        expect(socketConnectionFacade.readLine()).andReturn("Event: StatusComplete");
+        expect(socketConnectionFacade.readLine()).andReturn("");
+        expect(socketConnectionFacade.readLine()).andReturn(null);
 
-        socketConnectionFacadeMC.replay();
+        replay(socketConnectionFacade);
 
         managerReader.setSocket(socketConnectionFacade);
         managerReader.run();
 
-        socketConnectionFacadeMC.verify();
+        verify(socketConnectionFacade);
 
         assertEquals("not exactly two events dispatched", 2,
                 dispatcher.dispatchedEvents.size());
@@ -149,19 +140,16 @@ public class ManagerReaderImplTest extends TestCase
     {
         managerReader.registerEventClass(MyUserEvent.class);
 
-        socketConnectionFacade.readLine();
-        socketConnectionFacadeMC.setReturnValue("Event: MyUser");
-        socketConnectionFacade.readLine();
-        socketConnectionFacadeMC.setReturnValue("");
-        socketConnectionFacade.readLine();
-        socketConnectionFacadeMC.setReturnValue(null);
+        expect(socketConnectionFacade.readLine()).andReturn("Event: MyUser");
+        expect(socketConnectionFacade.readLine()).andReturn("");
+        expect(socketConnectionFacade.readLine()).andReturn(null);
 
-        socketConnectionFacadeMC.replay();
+        replay(socketConnectionFacade);
 
         managerReader.setSocket(socketConnectionFacade);
         managerReader.run();
 
-        socketConnectionFacadeMC.verify();
+        verify(socketConnectionFacade);
 
         assertEquals("not exactly two events dispatched", 2,
                 dispatcher.dispatchedEvents.size());
@@ -176,22 +164,17 @@ public class ManagerReaderImplTest extends TestCase
 
     public void testRunReceivingResponse() throws Exception
     {
-        socketConnectionFacade.readLine();
-        socketConnectionFacadeMC.setReturnValue("Response: Success");
-        socketConnectionFacade.readLine();
-        socketConnectionFacadeMC
-                .setReturnValue("Message: Authentication accepted");
-        socketConnectionFacade.readLine();
-        socketConnectionFacadeMC.setReturnValue("");
-        socketConnectionFacade.readLine();
-        socketConnectionFacadeMC.setReturnValue(null);
+        expect(socketConnectionFacade.readLine()).andReturn("Response: Success");
+        expect(socketConnectionFacade.readLine()).andReturn("Message: Authentication accepted");
+        expect(socketConnectionFacade.readLine()).andReturn("");
+        expect(socketConnectionFacade.readLine()).andReturn(null);
 
-        socketConnectionFacadeMC.replay();
+        replay(socketConnectionFacade);
 
         managerReader.setSocket(socketConnectionFacade);
         managerReader.run();
 
-        socketConnectionFacadeMC.verify();
+        verify(socketConnectionFacade);
 
         assertEquals("not exactly one response dispatched", 1,
                 dispatcher.dispatchedResponses.size());
@@ -230,30 +213,23 @@ public class ManagerReaderImplTest extends TestCase
     {
         List<String> result = new ArrayList<String>();
 
-        socketConnectionFacade.readLine();
-        socketConnectionFacadeMC.setReturnValue("Response: Follows");
-        socketConnectionFacade.readLine();
-        socketConnectionFacadeMC.setReturnValue("ActionID: 12345");
-        socketConnectionFacade.readLine();
-        socketConnectionFacadeMC.setReturnValue("Line1");
-        socketConnectionFacade.readLine();
-        socketConnectionFacadeMC.setReturnValue("Line2");
-        socketConnectionFacade.readLine();
-        socketConnectionFacadeMC.setReturnValue("--END COMMAND--");
-        socketConnectionFacade.readLine();
-        socketConnectionFacadeMC.setReturnValue("");
-        socketConnectionFacade.readLine();
-        socketConnectionFacadeMC.setReturnValue(null);
+        expect(socketConnectionFacade.readLine()).andReturn("Response: Follows");
+        expect(socketConnectionFacade.readLine()).andReturn("ActionID: 12345");
+        expect(socketConnectionFacade.readLine()).andReturn("Line1");
+        expect(socketConnectionFacade.readLine()).andReturn("Line2");
+        expect(socketConnectionFacade.readLine()).andReturn("--END COMMAND--");
+        expect(socketConnectionFacade.readLine()).andReturn("");
+        expect(socketConnectionFacade.readLine()).andReturn(null);
 
         result.add("Line1");
         result.add("Line2");
 
-        socketConnectionFacadeMC.replay();
+        replay(socketConnectionFacade);
 
         managerReader.setSocket(socketConnectionFacade);
         managerReader.run();
 
-        socketConnectionFacadeMC.verify();
+        verify(socketConnectionFacade);
 
         assertEquals("not exactly one response dispatched", 1,
                 dispatcher.dispatchedResponses.size());
@@ -285,16 +261,15 @@ public class ManagerReaderImplTest extends TestCase
 
     public void testRunCatchingIOException() throws Exception
     {
-        socketConnectionFacade.readLine();
-        socketConnectionFacadeMC.setThrowable(new IOException(
+        expect(socketConnectionFacade.readLine()).andThrow(new IOException(
                 "Something happened to the network..."));
 
-        socketConnectionFacadeMC.replay();
+        replay(socketConnectionFacade);
 
         managerReader.setSocket(socketConnectionFacade);
         managerReader.run();
 
-        socketConnectionFacadeMC.verify();
+        verify(socketConnectionFacade);
 
         assertEquals("must not dispatch a response", 0,
                 dispatcher.dispatchedResponses.size());

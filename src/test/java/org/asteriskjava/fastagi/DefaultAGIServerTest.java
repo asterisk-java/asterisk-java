@@ -19,17 +19,16 @@ package org.asteriskjava.fastagi;
 import java.io.IOException;
 
 import junit.framework.TestCase;
+import static org.easymock.EasyMock.*;
 
 import org.asteriskjava.fastagi.DefaultAGIServer;
 import org.asteriskjava.io.ServerSocketFacade;
 import org.asteriskjava.io.SocketConnectionFacade;
-import org.easymock.MockControl;
 
 public class DefaultAGIServerTest extends TestCase
 {
     private DefaultAGIServer server;
     private MockedServerSocketFacade serverSocket;
-    private MockControl socketMC;
     private SocketConnectionFacade socket;
 
     protected void setUp() throws Exception
@@ -53,25 +52,18 @@ public class DefaultAGIServerTest extends TestCase
     
     public void XtestStartup() throws Exception
     {
-        socketMC = MockControl.createControl(SocketConnectionFacade.class);
-        socket = (SocketConnectionFacade) socketMC.getMock();
+        socket = createMock(SocketConnectionFacade.class);
 
-        socket.readLine();
-        socketMC.setReturnValue(null);
-        socket.getLocalAddress();
-        socketMC.setReturnValue(null);
-        socket.getLocalPort();
-        socketMC.setReturnValue(1);
-        socket.getRemoteAddress();
-        socketMC.setReturnValue(null);
-        socket.getRemotePort();
-        socketMC.setReturnValue(2);
+        expect(socket.readLine()).andReturn(null);
+        expect(socket.getLocalAddress()).andReturn(null);
+        expect(socket.getLocalPort()).andReturn(1);
+        expect(socket.getRemoteAddress()).andReturn(null);
+        expect(socket.getRemotePort()).andReturn(2);
         socket.write("VERBOSE \"No script configured for null\" 1\n");
         socket.flush();
-        socket.readLine();
-        socketMC.setReturnValue(null);
+        expect(socket.readLine()).andReturn(null);
         socket.close();
-        socketMC.replay();
+        replay(socket);
 
         try
         {
@@ -88,7 +80,7 @@ public class DefaultAGIServerTest extends TestCase
         assertEquals("serverSocket.close() not called", 1,
                 serverSocket.closeCalls);
         
-        socketMC.verify();
+        verify(socket);
     }
 
     class MockedDefaultAGIServer extends DefaultAGIServer

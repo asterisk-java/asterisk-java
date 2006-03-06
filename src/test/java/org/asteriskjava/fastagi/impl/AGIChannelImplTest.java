@@ -19,6 +19,7 @@ package org.asteriskjava.fastagi.impl;
 import java.util.List;
 
 import junit.framework.TestCase;
+import static org.easymock.EasyMock.*;
 
 import org.asteriskjava.fastagi.AGIChannel;
 import org.asteriskjava.fastagi.AGIReader;
@@ -28,13 +29,10 @@ import org.asteriskjava.fastagi.InvalidOrUnknownCommandException;
 import org.asteriskjava.fastagi.command.NoopCommand;
 import org.asteriskjava.fastagi.impl.AGIChannelImpl;
 import org.asteriskjava.fastagi.reply.AGIReply;
-import org.easymock.MockControl;
 
 public class AGIChannelImplTest extends TestCase
 {
-    private MockControl agiWriterMC;
     private AGIWriter agiWriter;
-    private MockControl agiReaderMC;
     private AGIReader agiReader;
     private AGIChannel agiChannel;
 
@@ -42,10 +40,8 @@ public class AGIChannelImplTest extends TestCase
     {
         super.setUp();
 
-        this.agiWriterMC = MockControl.createControl(AGIWriter.class);
-        this.agiWriter = (AGIWriter) agiWriterMC.getMock();
-        this.agiReaderMC = MockControl.createControl(AGIReader.class);
-        this.agiReader = (AGIReader) agiReaderMC.getMock();
+        this.agiWriter = createMock(AGIWriter.class);
+        this.agiReader = createMock(AGIReader.class);
         this.agiChannel = new AGIChannelImpl(agiWriter, agiReader);
     }
 
@@ -61,16 +57,15 @@ public class AGIChannelImplTest extends TestCase
         command = new NoopCommand();
 
         agiWriter.sendCommand(command);
-        agiReader.readReply();
-        agiReaderMC.setReturnValue(reply);
+        expect(agiReader.readReply()).andReturn(reply);
 
-        agiWriterMC.replay();
-        agiReaderMC.replay();
+        replay(agiWriter);
+        replay(agiReader);
 
         assertEquals(reply, agiChannel.sendCommand(command));
 
-        agiWriterMC.verify();
-        agiReaderMC.verify();
+        verify(agiWriter);
+        verify(agiReader);
     }
 
     public void testSendCommandWithInvalidOrUnknownCommandResponse()
@@ -86,11 +81,10 @@ public class AGIChannelImplTest extends TestCase
         command = new NoopCommand();
 
         agiWriter.sendCommand(command);
-        agiReader.readReply();
-        agiReaderMC.setReturnValue(reply);
+        expect(agiReader.readReply()).andReturn(reply);
 
-        agiWriterMC.replay();
-        agiReaderMC.replay();
+        replay(agiWriter);
+        replay(agiReader);
 
         try
         {
@@ -103,8 +97,8 @@ public class AGIChannelImplTest extends TestCase
                     "Invalid or unknown command: NOOP", e.getMessage());
         }
 
-        agiWriterMC.verify();
-        agiReaderMC.verify();
+        verify(agiWriter);
+        verify(agiReader);
     }
 
     public void testSendCommandWithInvalidCommandSyntaxResponse()
@@ -122,11 +116,10 @@ public class AGIChannelImplTest extends TestCase
         command = new NoopCommand();
 
         agiWriter.sendCommand(command);
-        agiReader.readReply();
-        agiReaderMC.setReturnValue(reply);
+        expect(agiReader.readReply()).andReturn(reply);
 
-        agiWriterMC.replay();
-        agiReaderMC.replay();
+        replay(agiWriter);
+        replay(agiReader);
 
         try
         {
@@ -142,8 +135,8 @@ public class AGIChannelImplTest extends TestCase
             assertEquals("Incorrect usage", "NOOP Usage", e.getUsage());
         }
 
-        agiWriterMC.verify();
-        agiReaderMC.verify();
+        verify(agiWriter);
+        verify(agiReader);
     }
 
     public class SimpleAGIReply implements AGIReply

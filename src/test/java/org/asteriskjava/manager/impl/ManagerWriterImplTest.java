@@ -17,12 +17,12 @@
 package org.asteriskjava.manager.impl;
 
 import junit.framework.TestCase;
+import static org.easymock.EasyMock.*;
 
 import org.asteriskjava.io.SocketConnectionFacade;
 import org.asteriskjava.manager.ManagerWriter;
 import org.asteriskjava.manager.action.StatusAction;
 import org.asteriskjava.manager.impl.ManagerWriterImpl;
-import org.easymock.MockControl;
 
 public class ManagerWriterImplTest extends TestCase
 {
@@ -48,17 +48,15 @@ public class ManagerWriterImplTest extends TestCase
 
     public void testSendAction() throws Exception
     {
-        MockControl socketMC;
         SocketConnectionFacade socketConnectionFacade;
 
-        socketMC = MockControl.createControl(SocketConnectionFacade.class);
-        socketConnectionFacade = (SocketConnectionFacade) socketMC.getMock();
+        socketConnectionFacade = createMock(SocketConnectionFacade.class);
         socketConnectionFacade.write("action: Status\r\n\r\n");
         socketConnectionFacade.flush();
-        socketMC.replay();
+        replay(socketConnectionFacade);
 
         managerWriter.setSocket(socketConnectionFacade);
         managerWriter.sendAction(new StatusAction(), null);
-        socketMC.verify();
+        verify(socketConnectionFacade);
     }
 }

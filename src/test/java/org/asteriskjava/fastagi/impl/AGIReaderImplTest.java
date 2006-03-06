@@ -19,6 +19,7 @@ package org.asteriskjava.fastagi.impl;
 import java.net.InetAddress;
 
 import junit.framework.TestCase;
+import static org.easymock.EasyMock.*;
 
 import org.asteriskjava.fastagi.AGIHangupException;
 import org.asteriskjava.fastagi.AGIReader;
@@ -26,19 +27,16 @@ import org.asteriskjava.fastagi.AGIRequest;
 import org.asteriskjava.fastagi.impl.AGIReaderImpl;
 import org.asteriskjava.fastagi.reply.AGIReply;
 import org.asteriskjava.io.SocketConnectionFacade;
-import org.easymock.MockControl;
 
 public class AGIReaderImplTest extends TestCase
 {
     private AGIReader agiReader;
-    private MockControl socketMC;
     private SocketConnectionFacade socket;
 
     protected void setUp() throws Exception
     {
         super.setUp();
-        this.socketMC = MockControl.createControl(SocketConnectionFacade.class);
-        this.socket = (SocketConnectionFacade) socketMC.getMock();
+        this.socket = createMock(SocketConnectionFacade.class);
         this.agiReader = new AGIReaderImpl(socket);
     }
 
@@ -46,38 +44,29 @@ public class AGIReaderImplTest extends TestCase
     {
         AGIRequest request;
 
-        socket.readLine();
-        socketMC.setReturnValue("agi_network: yes");
-        socket.readLine();
-        socketMC.setReturnValue("agi_network_script: myscript.agi");
-        socket.readLine();
-        socketMC.setReturnValue("agi_request: agi://host/myscript.agi");
-        socket.readLine();
-        socketMC.setReturnValue("agi_channel: SIP/1234-d715");
-        socket.readLine();
-        socketMC.setReturnValue("");
+        expect(socket.readLine()).andReturn("agi_network: yes");
+        expect(socket.readLine()).andReturn("agi_network_script: myscript.agi");
+        expect(socket.readLine()).andReturn("agi_request: agi://host/myscript.agi");
+        expect(socket.readLine()).andReturn("agi_channel: SIP/1234-d715");
+        expect(socket.readLine()).andReturn("");
 
         byte[] ipLocal = new byte[4];
         ipLocal[0] = new Integer(192).byteValue();
         ipLocal[1] = new Integer(168).byteValue();
         ipLocal[2] = new Integer(0).byteValue();
         ipLocal[3] = new Integer(1).byteValue();
-        socket.getLocalAddress();
-        socketMC.setReturnValue(InetAddress.getByAddress(ipLocal));
-        socket.getLocalPort();
-        socketMC.setReturnValue(1234);
+        expect(socket.getLocalAddress()).andReturn(InetAddress.getByAddress(ipLocal));
+        expect(socket.getLocalPort()).andReturn(1234);
 
         byte[] ipRemote = new byte[4];
         ipRemote[0] = new Integer(192).byteValue();
         ipRemote[1] = new Integer(168).byteValue();
         ipRemote[2] = new Integer(0).byteValue();
         ipRemote[3] = new Integer(2).byteValue();
-        socket.getRemoteAddress();
-        socketMC.setReturnValue(InetAddress.getByAddress(ipRemote));
-        socket.getRemotePort();
-        socketMC.setReturnValue(1235);
+        expect(socket.getRemoteAddress()).andReturn(InetAddress.getByAddress(ipRemote));
+        expect(socket.getRemotePort()).andReturn(1235);
 
-        socketMC.replay();
+        replay(socket);
 
         request = agiReader.readRequest();
 
@@ -96,63 +85,53 @@ public class AGIReaderImplTest extends TestCase
         assertEquals("incorrect remote address", ipRemote[3], request.getRemoteAddress().getAddress()[3]);
         assertEquals("incorrect remote port", 1235, request.getRemotePort());
 
-        socketMC.verify();
+        verify(socket);
     }
 
     public void testReadReply() throws Exception
     {
         AGIReply reply;
 
-        socket.readLine();
-        socketMC.setReturnValue("200 result=49 endpos=2240");
+        expect(socket.readLine()).andReturn("200 result=49 endpos=2240");
 
-        socketMC.replay();
+        replay(socket);
 
         reply = agiReader.readReply();
 
         assertEquals("Incorrect status", AGIReply.SC_SUCCESS, reply.getStatus());
         assertEquals("Incorrect result", 49, reply.getResultCode());
 
-        socketMC.verify();
+        verify(socket);
     }
 
     public void testReadReplyInvalidOrUnknownCommand() throws Exception
     {
         AGIReply reply;
 
-        socket.readLine();
-        socketMC.setReturnValue("510 Invalid or unknown command");
+        expect(socket.readLine()).andReturn("510 Invalid or unknown command");
 
-        socketMC.replay();
+        replay(socket);
 
         reply = agiReader.readReply();
 
         assertEquals("Incorrect status",
                 AGIReply.SC_INVALID_OR_UNKNOWN_COMMAND, reply.getStatus());
 
-        socketMC.verify();
+        verify(socket);
     }
 
     public void testReadReplyInvalidCommandSyntax() throws Exception
     {
         AGIReply reply;
 
-        socket.readLine();
-        socketMC
-                .setReturnValue("520-Invalid command syntax.  Proper usage follows:");
-        socket.readLine();
-        socketMC.setReturnValue(" Usage: DATABASE DEL <family> <key>");
-        socket.readLine();
-        socketMC
-                .setReturnValue("        Deletes an entry in the Asterisk database for a");
-        socket.readLine();
-        socketMC.setReturnValue(" given family and key.");
-        socket.readLine();
-        socketMC.setReturnValue(" Returns 1 if succesful, 0 otherwise");
-        socket.readLine();
-        socketMC.setReturnValue("520 End of proper usage.");
+        expect(socket.readLine()).andReturn("520-Invalid command syntax.  Proper usage follows:");
+        expect(socket.readLine()).andReturn(" Usage: DATABASE DEL <family> <key>");
+        expect(socket.readLine()).andReturn("        Deletes an entry in the Asterisk database for a");
+        expect(socket.readLine()).andReturn(" given family and key.");
+        expect(socket.readLine()).andReturn(" Returns 1 if succesful, 0 otherwise");
+        expect(socket.readLine()).andReturn("520 End of proper usage.");
 
-        socketMC.replay();
+        replay(socket);
 
         reply = agiReader.readReply();
 
@@ -161,15 +140,14 @@ public class AGIReaderImplTest extends TestCase
         assertEquals("Incorrect synopsis", "DATABASE DEL <family> <key>", reply
                 .getSynopsis());
 
-        socketMC.verify();
+        verify(socket);
     }
 
     public void testReadReplyWhenHungUp() throws Exception
     {
-        socket.readLine();
-        socketMC.setReturnValue(null);
+        expect(socket.readLine()).andReturn(null);
 
-        socketMC.replay();
+        replay(socket);
 
         try
         {
@@ -180,7 +158,6 @@ public class AGIReaderImplTest extends TestCase
         {
         }
 
-        socketMC.verify();
+        verify(socket);
     }
-
 }
