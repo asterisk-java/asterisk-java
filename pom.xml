@@ -43,7 +43,7 @@
         </developer>
 	</developers>
 	<scm>
-		<connection>scm:svn:http://svn.apache.org/repos/asterisk-java/trunk</connection>
+		<connection>scm:svn:http://svn.reucon.net/repos/asterisk-java/trunk</connection>
 		<developerConnection>scm:svn:https://secure.reucon.net/svn/repos/asterisk-java/trunk</developerConnection>
 		<url>http://svn.reucon.net/fisheye/viewrep/repos/asterisk-java/trunk/</url>
 	</scm>
