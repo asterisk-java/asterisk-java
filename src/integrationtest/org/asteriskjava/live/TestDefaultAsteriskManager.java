@@ -3,15 +3,12 @@
  *
  * Created on Oct 28, 2004
  */
-package org.asteriskjava.manager;
+package org.asteriskjava.live;
 
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.asteriskjava.live.AsteriskChannel;
-import org.asteriskjava.live.AsteriskQueue;
-import org.asteriskjava.live.Call;
-import org.asteriskjava.live.NoSuchChannelException;
+import org.asteriskjava.manager.Originate;
 
 
 /**

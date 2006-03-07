@@ -3,7 +3,7 @@
  *
  * Created on Oct 28, 2004
  */
-package org.asteriskjava.manager;
+package org.asteriskjava.live;
 
 import java.util.Collection;
 

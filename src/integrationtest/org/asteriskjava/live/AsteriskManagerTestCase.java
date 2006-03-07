@@ -14,11 +14,11 @@
  *  limitations under the License.
  *
  */
-package org.asteriskjava.manager;
-
-import org.asteriskjava.live.DefaultAsteriskManager;
+package org.asteriskjava.live;
 
 import junit.framework.TestCase;
+
+import org.asteriskjava.manager.DefaultManagerConnection;
 
 public class AsteriskManagerTestCase extends TestCase
 {

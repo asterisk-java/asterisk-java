@@ -3,7 +3,7 @@
  *
  * Created on Oct 28, 2004
  */
-package org.asteriskjava.manager;
+package org.asteriskjava.live;
 
 import org.asteriskjava.manager.action.OriginateAction;
 import org.asteriskjava.manager.response.ManagerResponse;
