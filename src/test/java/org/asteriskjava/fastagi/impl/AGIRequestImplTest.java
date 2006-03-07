@@ -368,4 +368,20 @@ public class AGIRequestImplTest extends TestCase
         assertEquals("incorrect requestURL", "agi://host/myscript.agi?param1=my%20value", request.getRequestURL());
         assertEquals("incorrect value for parameter 'param1'", "my value", request.getParameter("param1"));
     }
+
+    public void testGetParameter()
+    {
+        Collection<String> lines;
+        AGIRequest request;
+
+        lines = new ArrayList<String>();
+
+        lines.add("agi_network_script: myscript.agi?param1=my%20value");
+        lines.add("agi_request: agi://host/myscript.agi?param1=my%20value");
+
+        request = new AGIRequestImpl(lines);
+
+        assertEquals("incorrect requestURL", "agi://host/myscript.agi?param1=my%20value", request.getRequestURL());
+        assertEquals("incorrect value for parameter 'param1'", "my value", request.getParameter("param1"));
+    }
 }

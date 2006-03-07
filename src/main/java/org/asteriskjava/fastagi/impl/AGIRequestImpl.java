@@ -84,6 +84,17 @@ public class AGIRequestImpl implements Serializable, AGIRequest
             throw new IllegalArgumentException("Environment must not be null.");
         }
         request = buildMap(environment);
+
+        script = (String) request.get("network_script");
+        if (script != null)
+        {
+            Matcher scriptMatcher = SCRIPT_PATTERN.matcher(script);
+            if (scriptMatcher.matches())
+            {
+                script = scriptMatcher.group(1);
+                parameters = scriptMatcher.group(2);
+            }
+        }
     }
 
     /**
@@ -151,22 +162,6 @@ public class AGIRequestImpl implements Serializable, AGIRequest
      */
     public synchronized String getScript()
     {
-        if (script != null)
-        {
-            return script;
-        }
-
-        script = (String) request.get("network_script");
-        if (script != null)
-        {
-            Matcher scriptMatcher = SCRIPT_PATTERN.matcher(script);
-            if (scriptMatcher.matches())
-            {
-                script = scriptMatcher.group(1);
-                parameters = scriptMatcher.group(2);
-            }
-        }
-
         return script;
     }
 
