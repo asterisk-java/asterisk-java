@@ -114,4 +114,22 @@
 			<url>scpexe://www.asterisk-java.org/var/www/www.asterisk-java.org/htdocs/0.3-SNAPSHOT/</url>
 		</site>
 	</distributionManagement>
+	<reporting>
+		<plugins>
+      		<plugin>
+				<artifactId>maven-javadoc-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>jxr-maven-plugin</artifactId>
+			</plugin>      
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>changelog-maven-plugin</artifactId>
+			</plugin>
+    		</plugins>
+	</reporting>
 </project>
