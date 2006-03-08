@@ -124,7 +124,8 @@
 				<artifactId>jxr-maven-plugin</artifactId>
 			</plugin>      
 			<plugin>
-				<artifactId>maven-surefire-plugin</artifactId>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>surefire-report-maven-plugin</artifactId>
 			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
