@@ -18,7 +18,7 @@ Asterisk-Java
   Asterisk-Java is compatible with Asterisk 1.0 and 1.2.
 
   The FastAGI implementation supports all
-  {{{apidocs/net/sf/asterisk/fastagi/command/package-summary.html}commands}}
+  {{{apidocs/org/asteriskjava/fastagi/command/package-summary.html}commands}}
   currently available from Asterisk.
 
   The Manager API implementation supports receiving events from the Asterisk 
@@ -27,9 +27,9 @@ Asterisk-Java
   login/logoff, start/stop voice recording).
   
   A complete list of the available
-  {{{apidocs/net/sf/asterisk/manager/event/package-summary.html}events}}
+  {{{apidocs/org/asteriskjava/manager/event/package-summary.html}events}}
   and
-  {{{apidocs/net/sf/asterisk/manager/action/package-summary.html}actions}}
+  {{{apidocs/org/asteriskjava/manager/action/package-summary.html}actions}}
   is available in the {{{apidocs/index.html}javadocs}}
 
 * License
