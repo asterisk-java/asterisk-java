@@ -39,19 +39,18 @@ Asterisk-Java
   
 * Status
 
-  Asterisk-Java 0.2 has been released in late november and is 
+  Asterisk-Java 0.3 will be released in march 2006 and be 
   available from the
   {{{http://sourceforge.net/projects/asterisk-java/}sourceforge project page}}.
   
-  Ideas for the future include a stateful higher level API 
+  For the future a stateful higher level API 
   that supports operations like "get list of currently active 
   calls" or "place call" with objects like "Call" or 
   "Channel" that are transparently updated as the state of 
   the corresponding object within the asterisk server 
-  changes. An option is to provide an implementation of the
-  {{{http://java.sun.com/products/jtapi/}Java Telephony API (JTAPI)}}
-  based on the
-  {{{http://gjtapi.sourceforge.net/}Generic JTAPI and JCC Project (GJTAPI)}}.
+  changes is on the way. You can have a look at
+  {{{apidocs/org/asteriskjava/live/package-summary.html}org.asteriskjava.live}}
+  that represents its current state.
 
 * Download
 
@@ -59,12 +58,12 @@ Asterisk-Java
   {{{http://sourceforge.net/projects/asterisk-java/}sourceforge project page}}.
 
   You can also download a 
-  {{{http://maven.reucon.com/maven/org.asteriskjava/distributions/}snapshot}}.
+  {{{http://maven.reucon.com/maven2/org/asteriskjava/asterisk-java/}snapshot}}.
   
   Please feel free to provide any feedback or ask for support via the
   {{{mail-lists.html}Asterisk-Java user's mailing list}}.
   
-  Asterisk-Java is also available via SVN:
+  The latest development version of Asterisk-Java is always available via SVN:
 
 +-----------------------------------------------------------------------+
   svn co http://svn.reucon.net/repos/asterisk-java/trunk asterisk-java
