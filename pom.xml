@@ -7,8 +7,7 @@
 	<artifactId>asterisk-java</artifactId>
 	<name>Asterisk-Java</name>
 	<version>0.3-SNAPSHOT</version>
-	<description>Asterisk-Java consists of a set of Java classes that allow you to control an
-		Asterisk PBX via Asterisk's Manager API from Java applications.</description>
+	<description>Java interface for Asterisk PBX</description>
 	<url>http://www.asterisk-java.org/</url>
     <licenses>
         <license>
