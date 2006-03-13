@@ -72,6 +72,8 @@ public class DefaultAGIServer implements AGIServer
      */
     private int poolSize;
 
+    private int maximumPoolSize;
+    
     /**
      * True while this server is shut down.
      */
@@ -91,6 +93,7 @@ public class DefaultAGIServer implements AGIServer
     {
         this.port = DEFAULT_BIND_PORT;
         this.poolSize = DEFAULT_POOL_SIZE;
+        this.maximumPoolSize = this.poolSize;
         this.mappingStrategy = new CompositeMappingStrategy(
                 new ResourceBundleMappingStrategy(),
                 new ClassNameMappingStrategy());
@@ -100,8 +103,7 @@ public class DefaultAGIServer implements AGIServer
 
     /**
      * Sets the number of worker threads in the thread pool.<br>
-     * This equals the maximum number of concurrent requests this AGIServer can
-     * serve.<br>
+     * This is the number of threads that are available even if they are idle.<br>
      * The default pool size is 10.
      * 
      * @param poolSize the size of the worker thread pool.
@@ -111,6 +113,19 @@ public class DefaultAGIServer implements AGIServer
         this.poolSize = poolSize;
     }
 
+    /**
+     * Sets the maximum number of worker threads in the thread pool.<br>
+     * This equals the maximum number of concurrent requests this AGIServer can
+     * serve.<br>
+     * The default maximum pool size is 10.
+     * 
+     * @param maximumPoolSize the maximum size of the worker thread pool.
+     */
+    public void setMaximumPoolSize(int maximumPoolSize)
+    {
+        this.maximumPoolSize = maximumPoolSize;
+    }
+    
     /**
      * Sets the TCP port to listen on for new connections.<br>
      * The default port is 4573.
@@ -203,7 +218,8 @@ public class DefaultAGIServer implements AGIServer
         AGIConnectionHandler connectionHandler;
 
         die = false;
-        pool = new ThreadPoolExecutor(poolSize, poolSize, 
+        pool = new ThreadPoolExecutor(
+                poolSize, (maximumPoolSize < poolSize) ? poolSize : maximumPoolSize, 
                 50000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>());
 
         logger.info("Thread pool started.");
