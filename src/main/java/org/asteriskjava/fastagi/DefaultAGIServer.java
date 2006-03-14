@@ -67,11 +67,14 @@ public class DefaultAGIServer implements AGIServer
     private ThreadPoolExecutor pool;
 
     /**
-     * The number of worker threads in the thread pool. This equals the maximum
-     * number of concurrent requests this AGIServer can serve.
+     * The minimum number of worker threads in the thread pool.
      */
     private int poolSize;
 
+    /**
+     * The maximum number of worker threads in the thread pool. This equals the maximum
+     * number of concurrent requests this AGIServer can serve.
+     */
     private int maximumPoolSize;
     
     /**
