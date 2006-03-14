@@ -58,6 +58,22 @@ public interface AsteriskManager
     Collection<AsteriskChannel> getChannels();
 
     /**
+     * Returns a channel by its name.
+     * 
+     * @param name name of the channel to return
+     * @return the channel with the given name
+     */
+    public AsteriskChannel getChannelByName(String name);
+
+    /**
+     * Returns a channel by its unique id.
+     * 
+     * @param id the unique id of the channel to return
+     * @return the channel with the given unique id
+     */
+    public AsteriskChannel getChannelById(String id);
+
+    /**
      * Returns the queues served by the Asterisk server you are connected to.
      * 
      * @return a Collection of queues.
