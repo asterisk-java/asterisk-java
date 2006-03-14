@@ -161,7 +161,10 @@ public class DefaultAsteriskManager
     public void initialize() throws TimeoutException, IOException,
             AuthenticationFailedException
     {
-        eventConnection.login();
+        if (!eventConnection.isConnected())
+        {
+            eventConnection.login();
+        }
 
         initializeChannels();
         initializeQueues();
