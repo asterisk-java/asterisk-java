@@ -42,9 +42,9 @@
         </developer>
 	</developers>
 	<scm>
-		<connection>scm:svn:http://svn.reucon.net/repos/asterisk-java/trunk</connection>
-		<developerConnection>scm:svn:https://secure.reucon.net/svn/repos/asterisk-java/trunk</developerConnection>
-		<url>http://svn.reucon.net/fisheye/viewrep/repos/asterisk-java/trunk/</url>
+		<connection>scm:svn:http://svn.reucon.net/repos/${artifactId}/trunk</connection>
+		<developerConnection>scm:svn:https://secure.reucon.net/svn/repos/${artifactId}/trunk</developerConnection>
+		<url>http://svn.reucon.net/fisheye/viewrep/repos/${artifactId}/trunk/</url>
 	</scm>
 	<issueManagement>
 		<system>JIRA</system>
@@ -110,12 +110,12 @@
 		</repository>
 		<site>
 			<id>website</id>
-			<url>scpexe://www.asterisk-java.org/var/www/www.asterisk-java.org/htdocs/0.3-SNAPSHOT/</url>
+			<url>scpexe://www.asterisk-java.org/var/www/www.asterisk-java.org/htdocs/${version}</url>
 		</site>
 	</distributionManagement>
 	<reporting>
 		<plugins>
-      		<plugin>
+			<plugin>
 				<artifactId>maven-javadoc-plugin</artifactId>
 			</plugin>
 			<plugin>
