@@ -405,7 +405,7 @@ public class DefaultManagerConnection implements ManagerConnection, Dispatcher
         long start;
         long timeSpent;
         ChallengeAction challengeAction;
-        ChallengeResponse challengeResponse;
+        ManagerResponse challengeResponse;
         String challenge;
         String key;
         LoginAction loginAction;
@@ -437,9 +437,17 @@ public class DefaultManagerConnection implements ManagerConnection, Dispatcher
         }
 
         challengeAction = new ChallengeAction("MD5");
-        challengeResponse = (ChallengeResponse) sendAction(challengeAction);
-
-        challenge = challengeResponse.getChallenge();
+        challengeResponse =  sendAction(challengeAction);
+        if (challengeResponse instanceof ChallengeResponse)
+        {
+            challenge = ((ChallengeResponse) challengeResponse).getChallenge();
+        }
+        else
+        {
+            throw new AuthenticationFailedException(
+                    "Unable to get challenge from Asterisk. ChallengeAction returned: " 
+                    + challengeResponse.getMessage());
+        }
 
         try
         {
