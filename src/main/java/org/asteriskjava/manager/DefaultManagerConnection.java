@@ -437,7 +437,7 @@ public class DefaultManagerConnection implements ManagerConnection, Dispatcher
         }
 
         challengeAction = new ChallengeAction("MD5");
-        challengeResponse =  sendAction(challengeAction);
+        challengeResponse = sendAction(challengeAction);
         if (challengeResponse instanceof ChallengeResponse)
         {
             challenge = ((ChallengeResponse) challengeResponse).getChallenge();
