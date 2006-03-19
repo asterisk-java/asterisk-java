@@ -39,9 +39,13 @@ public abstract class ResponseEvent extends ManagerEvent
     }
 
     /**
-     * Returns the action id of the ManagerAction that caused this event.
+     * Returns the user provided action id of the ManagerAction that caused 
+     * this event. If the application did not set an action id this method
+     * returns <code>null</code>.
      * 
-     * @return the action id of the ManagerAction that caused this event.
+     * @return the action id of the ManagerAction that caused this event or
+     *         <code>null</code> if none was set.
+     * @see org.asteriskjava.manager.action.ManagerAction#setActionId()
      */
     public String getActionId()
     {
@@ -61,7 +65,9 @@ public abstract class ResponseEvent extends ManagerEvent
 
     /**
      * Returns the internal action id of the ManagerAction that caused this
-     * event.
+     * event.<br>
+     * Warning: This method is internal to Asterisk-Java and should never be
+     * used in application code.
      * 
      * @return the internal action id of the ManagerAction that caused this
      *         event.
