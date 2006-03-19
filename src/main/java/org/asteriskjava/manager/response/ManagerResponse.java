@@ -111,8 +111,13 @@ public class ManagerResponse implements Serializable
     }
 
     /**
-     * Returns the action id received with this response referencing the action
-     * that generated this response.
+     * Returns the user provided action id of the ManagerAction that caused 
+     * this response. If the application did not set an action id this method
+     * returns <code>null</code>.
+     * 
+     * @return the action id of the ManagerAction that caused this response or
+     *         <code>null</code> if none was set.
+     * @see org.asteriskjava.manager.action.ManagerAction#setActionId()
      */
     public String getActionId()
     {
@@ -120,7 +125,10 @@ public class ManagerResponse implements Serializable
     }
 
     /**
-     * Sets the action id.
+     * Sets the action id of the ManagerAction that caused this response.
+     * 
+     * @param actionId the action id of the ManagerAction that caused this
+     *            response.
      */
     public void setActionId(String actionId)
     {
