@@ -16,7 +16,6 @@
  */
 package org.asteriskjava.manager.impl;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.Map;
@@ -102,13 +101,7 @@ public class ActionBuilderImpl implements ActionBuilder
             {
                 value = getter.invoke(action, new Object[]{});
             }
-            catch (IllegalAccessException ex)
-            {
-                logger.error("Unable to retrieve property '" + name + "' of "
-                        + action.getClass(), ex);
-                continue;
-            }
-            catch (InvocationTargetException ex)
+            catch (Exception ex)
             {
                 logger.error("Unable to retrieve property '" + name + "' of "
                         + action.getClass(), ex);
