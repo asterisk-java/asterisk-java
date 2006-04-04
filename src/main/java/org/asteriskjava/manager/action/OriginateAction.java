@@ -101,7 +101,11 @@ public class OriginateAction extends AbstractManagerAction
     }
 
     /**
-     * Sets the caller id to set on the outgoing channel.
+     * Sets the caller id to set on the outgoing channel.<br>
+     * This includes both the Caller*Id Number and Caller*Id Name in the form
+     * "Jon Doe &lt;1234&gt;".
+     * 
+     * @param callerId the caller id to set on the outgoing channel.
      */
     public void setCallerId(String callerId)
     {
@@ -109,7 +113,7 @@ public class OriginateAction extends AbstractManagerAction
     }
 
     /**
-     * Returns <code>true</code> if Caller ID presentation is set on the
+     * Returns <code>true</code> if Caller*ID presentation is set on the
      * outgoing channel.
      */
     public Boolean getCallingPres()
@@ -118,7 +122,7 @@ public class OriginateAction extends AbstractManagerAction
     }
 
     /**
-     * Set to <code>true</code> if you want Caller ID presentation to be set
+     * Set to <code>true</code> if you want Caller*ID presentation to be set
      * on the outgoing channel.
      */
     public void setCallingPres(Boolean callingPres)

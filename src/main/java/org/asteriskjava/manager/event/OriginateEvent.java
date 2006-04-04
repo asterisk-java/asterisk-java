@@ -30,6 +30,8 @@ public abstract class OriginateEvent extends ResponseEvent
     private String exten;
     private String uniqueId;
     private Integer reason;
+    private String callerId;
+    private String callerIdName;
 
     /**
      * @param source
@@ -97,6 +99,11 @@ public abstract class OriginateEvent extends ResponseEvent
         this.reason = reason;
     }
 
+    /**
+     * Returns the unique id of the originated channel.
+     * 
+     * @return the unique id of the originated channel or "&lt;null&gt;" if none is available.
+     */
     public String getUniqueId()
     {
         return uniqueId;
@@ -105,5 +112,37 @@ public abstract class OriginateEvent extends ResponseEvent
     public void setUniqueId(String uniqueId)
     {
         this.uniqueId = uniqueId;
+    }
+
+    /**
+     * Returns the Caller*ID Number of the originated channel.<br>
+     * Available sind Asterisk 1.4.
+     * 
+     * @return the Caller*ID Number of the originated channel or "&lt;unknown&gt;" if none was set.
+     */
+    public String getCallerId()
+    {
+        return callerId;
+    }
+
+    public void setCallerId(String callerId)
+    {
+        this.callerId = callerId;
+    }
+
+    /**
+     * Returns the Caller*ID Name of the originated channel.<br>
+     * Available sind Asterisk 1.4.
+     * 
+     * @return the Caller*ID Name of the originated channel or "&lt;unknown&gt;" if none was set.
+     */
+    public String getCallerIdName()
+    {
+        return callerIdName;
+    }
+
+    public void setCallerIdName(String callerIdName)
+    {
+        this.callerIdName = callerIdName;
     }
 }
