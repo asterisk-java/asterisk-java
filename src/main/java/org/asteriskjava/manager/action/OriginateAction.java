@@ -304,6 +304,23 @@ public class OriginateAction extends AbstractManagerAction
     }
 
     /**
+     * Sets an variable on the originated call.
+     * 
+     * @param name the name of the variable to set.
+     * @param value the value of the variable to set.
+     * @since 0.3
+     */
+    public void setVariable(String name, String value)
+    {
+        if (variables == null)
+        {
+            variables = new LinkedHashMap<String, String>();
+        }
+
+        variables.put(name, value);
+    }
+
+    /**
      * Returns the variables to set on the originated call.
      * 
      * @param variables a Map containing the variable names as key and their
