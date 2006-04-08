@@ -7,7 +7,7 @@
 	<artifactId>asterisk-java</artifactId>
 	<name>Asterisk-Java</name>
 	<version>0.3-SNAPSHOT</version>
-	<description>Java interface for Asterisk PBX</description>
+	<description>Java interface for Asterisk PBX.</description>
 	<url>http://www.asterisk-java.org/</url>
     <licenses>
         <license>
