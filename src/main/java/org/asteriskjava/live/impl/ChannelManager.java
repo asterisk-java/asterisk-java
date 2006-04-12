@@ -131,7 +131,7 @@ public class ChannelManager
 
         synchronized (channel)
         {
-            channel.setCallerIdNumber(event.getCallerId());
+            channel.setCallerIdNumber(event.getCallerIdNum());
             channel.setCallerIdName(event.getCallerIdName());
             channel.setAccount(event.getAccount());
             if (event.getState() != null)

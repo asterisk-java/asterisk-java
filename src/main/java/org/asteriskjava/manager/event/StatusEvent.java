@@ -31,7 +31,7 @@ public class StatusEvent extends ResponseEvent
      */
     private static final long serialVersionUID = -3619197512835308812L;
     private String channel;
-    private String callerId;
+    private String callerIdNum;
     private String callerIdName;
     private String account;
     private String state;
@@ -67,23 +67,47 @@ public class StatusEvent extends ResponseEvent
     }
 
     /**
-     * Returns the Caller*ID of this channel.
+     * Returns the Caller*ID Number of this channel.<br>
+     * This property is deprecated as of Asterisk 1.4, use {@link #getCallerIdNum()} instead.
+     * @return the Caller*ID Number of this channel or "&lt;unknown&gt;" if none is available.
+     * @deprecated
      */
     public String getCallerId()
     {
-        return callerId;
+        return callerIdNum;
     }
 
     /**
-     * Sets the Caller*ID of this channel.
+     * Sets the Caller*ID Number of this channel.<br>
+     * This property is deprecated as of Asterisk 1.4.
+     * @param callerId the Caller*ID Number to set.
      */
-    public void setCallerId(String callerId)
+    public void setCallerId(String callerIdNum)
     {
-        this.callerId = callerId;
+        this.callerIdNum = callerIdNum;
+    }
+
+    /**
+     * Returns the Caller*ID Number of this channel.
+     * @return the Caller*ID Number of this channel or "&lt;unknown&gt;" if none is available.
+     */
+    public String getCallerIdNum()
+    {
+        return callerIdNum;
+    }
+
+    /**
+     * Sets the Caller*ID Number of this channel.
+     * @param callerIdNum the Caller*ID Number to set.
+     */
+    public void setCallerIdNum(String callerIdNum)
+    {
+        this.callerIdNum = callerIdNum;
     }
 
     /**
      * Returns the Caller*ID Name of this channel.
+     * @return the Caller*ID Name of this channel or "&lt;unknown&gt;" if none is available.
      */
     public String getCallerIdName()
     {
@@ -92,6 +116,7 @@ public class StatusEvent extends ResponseEvent
 
     /**
      * Sets the Caller*ID Name of this channel.
+     * @param callerIdName the Caller*ID Name of this channel.
      */
     public void setCallerIdName(String callerIdName)
     {

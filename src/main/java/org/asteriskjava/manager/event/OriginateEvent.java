@@ -30,7 +30,7 @@ public abstract class OriginateEvent extends ResponseEvent
     private String exten;
     private String uniqueId;
     private Integer reason;
-    private String callerId;
+    private String callerIdNum;
     private String callerIdName;
 
     /**
@@ -120,14 +120,20 @@ public abstract class OriginateEvent extends ResponseEvent
      * 
      * @return the Caller*ID Number of the originated channel or "&lt;unknown&gt;" if none was set.
      */
-    public String getCallerId()
+    public String getCallerIdNum()
     {
-        return callerId;
+        return callerIdNum;
     }
 
-    public void setCallerId(String callerId)
+    public void setCallerIdNum(String callerId)
     {
-        this.callerId = callerId;
+        this.callerIdNum = callerId;
+    }
+    
+    // for backward compatibility only
+    public void setCallerId(String callerIdNum)
+    {
+        this.callerIdNum = callerIdNum;
     }
 
     /**
