@@ -119,6 +119,7 @@ public abstract class OriginateEvent extends ResponseEvent
      * Available sind Asterisk 1.4.
      * 
      * @return the Caller*ID Number of the originated channel or "&lt;unknown&gt;" if none was set.
+     * @since 0.3
      */
     public String getCallerIdNum()
     {

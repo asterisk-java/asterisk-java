@@ -90,6 +90,7 @@ public class StatusEvent extends ResponseEvent
     /**
      * Returns the Caller*ID Number of this channel.
      * @return the Caller*ID Number of this channel or "&lt;unknown&gt;" if none is available.
+     * @since 0.3
      */
     public String getCallerIdNum()
     {
@@ -99,6 +100,7 @@ public class StatusEvent extends ResponseEvent
     /**
      * Sets the Caller*ID Number of this channel.
      * @param callerIdNum the Caller*ID Number to set.
+     * @since 0.3
      */
     public void setCallerIdNum(String callerIdNum)
     {
