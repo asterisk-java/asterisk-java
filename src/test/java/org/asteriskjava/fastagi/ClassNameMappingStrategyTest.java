@@ -30,14 +30,14 @@ public class ClassNameMappingStrategyTest extends TestCase
 
     public void testDetermineScript()
     {
-        AGIScript scriptFirstPass;
-        AGIScript scriptSecondPass;
-        AGIRequest request;
+        AgiScript scriptFirstPass;
+        AgiScript scriptSecondPass;
+        AgiRequest request;
 
-        request = new SimpleAGIRequest() {
+        request = new SimpleAgiRequest() {
             public String getScript()
             {
-                return "org.asteriskjava.fastagi.HelloAGIScript";
+                return "org.asteriskjava.fastagi.HelloAgiScript";
             }
         };
 
@@ -45,7 +45,7 @@ public class ClassNameMappingStrategyTest extends TestCase
         scriptSecondPass = mappingStrategy.determineScript(request);
 
         assertEquals("incorrect script determined",
-                scriptFirstPass.getClass(), HelloAGIScript.class);
+                scriptFirstPass.getClass(), HelloAgiScript.class);
 
         assertTrue("script instances are not cached",
                 scriptFirstPass == scriptSecondPass);
@@ -53,15 +53,15 @@ public class ClassNameMappingStrategyTest extends TestCase
 
     public void testDetermineScriptWithNonSharedInstance()
     {
-        AGIScript scriptFirstPass;
-        AGIScript scriptSecondPass;
-        AGIRequest request;
+        AgiScript scriptFirstPass;
+        AgiScript scriptSecondPass;
+        AgiRequest request;
 
         mappingStrategy.setShareInstances(false);
-        request = new SimpleAGIRequest() {
+        request = new SimpleAgiRequest() {
             public String getScript()
             {
-                return "org.asteriskjava.fastagi.HelloAGIScript";
+                return "org.asteriskjava.fastagi.HelloAgiScript";
             }
         };
 
@@ -69,7 +69,7 @@ public class ClassNameMappingStrategyTest extends TestCase
         scriptSecondPass = mappingStrategy.determineScript(request);
 
         assertEquals("incorrect script determined",
-                scriptFirstPass.getClass(), HelloAGIScript.class);
+                scriptFirstPass.getClass(), HelloAgiScript.class);
 
         assertTrue("returned a shared instance",
                 scriptFirstPass != scriptSecondPass);

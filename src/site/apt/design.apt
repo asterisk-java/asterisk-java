@@ -28,7 +28,7 @@ Design
   structure.
   
   The second approach is to write AGI (Asterisk Gateway Interface) 
-  scripts. An AGI	script is to Asterisk what a CGI script is to an
+  scripts. An AGI script is to Asterisk what a CGI script is to an
   HTTP server. You can think of AGI as a means to
   make your dialplan more dynamic by handing control
   to an external process. As with CGI in its early
@@ -163,7 +163,7 @@ Design
   execute method there is a uniform way to "render" them
   to the format Asterisk understands (i.e. convert them to a
   String that can be sent over the wire). When using AGI this
-  is done by the AGICommands themselves that provide
+  is done by the AgiCommands themselves that provide
   a <<<buildCommand()>>> method, when using the 
   Manager API there is an ActionBuilder that renders 
   ManagerActions by using reflection.
@@ -186,20 +186,20 @@ Design
   
   As you can see on the diagram the AGI package of 
   Asterisk-Java consists of three fundamental interfaces:
-  AGIServer, AGIScript and MappingStrategy.
+  AgiServer, AgiScript and MappingStrategy.
   
-  The responsibility of an AGIServer is to listen for new
+  The responsibility of an AgiServer is to listen for new
   incoming AGI requests that an Asterisk server directs to
-  that server. The AGIServer must then choose the right
+  that server. The AgiServer must then choose the right
   processor for that request, invoke it and provide it with
   a means to send commands to Asterisk and receive the
   corresponding reply.\
-  Asterisk-Java includes DefaultAGIServer that contains the
+  Asterisk-Java includes DefaultAgiServer that contains the
   default implementation of this interface.
   
-  To choose the right processor for an AGIRequest, the 
-  AGIServer uses a MappingStrategy that returns an executable
-  AGIScript based on the request.\
+  To choose the right processor for an AgiRequest, the 
+  AgiServer uses a MappingStrategy that returns an executable
+  AgiScript based on the request.\
   Asterisk-Java includes a
   simple implementation of a MappingStrategy that is
   based on reading a resource bundle and matching the URL.
@@ -208,20 +208,20 @@ Design
   your own implementation of the MappingStrategy interface.
   
   The third important interface in this package is the
-  AGIScript. An AGI Script is the piece of code that is
-  invoked to service the request. An AGIScript is to
+  AgiScript. An AGI Script is the piece of code that is
+  invoked to service the request. An AgiScript is to
   Asterisk-Java what a servlet is to a servlet container.
   So when you want to expose your own Java based services
-  to Asterisk you must implement this interface. The AGIScript
+  to Asterisk you must implement this interface. The AgiScript
   interface is really simple: It contains only one method called
-  <<<service()>>> that is passed the AGIRequest and an
-  AGIChannel, that allows you to send AGICommands back to
+  <<<service()>>> that is passed the AgiRequest and an
+  AgiChannel, that allows you to send AgiCommands back to
   Asterisk.\
   Asterisk-Java also includes an abstract base class that
-  implements the AGIScript interface and provides convenience
+  implements the AgiScript interface and provides convenience
   methods for sending commands. You can choose whatever 
-  you like more: either implementing AGIScript or extending 
-  BaseAGIScript works fine.
+  you like more: either implementing AgiScript or extending 
+  BaseAgiScript works fine.
 
 * Manager API
 

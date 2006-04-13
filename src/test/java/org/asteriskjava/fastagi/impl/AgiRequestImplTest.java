@@ -21,10 +21,10 @@ import java.util.Collection;
 
 import junit.framework.TestCase;
 
-import org.asteriskjava.fastagi.AGIRequest;
-import org.asteriskjava.fastagi.impl.AGIRequestImpl;
+import org.asteriskjava.fastagi.AgiRequest;
+import org.asteriskjava.fastagi.impl.AgiRequestImpl;
 
-public class AGIRequestImplTest extends TestCase
+public class AgiRequestImplTest extends TestCase
 {
     protected void setUp()
     {
@@ -33,7 +33,7 @@ public class AGIRequestImplTest extends TestCase
     public void testBuildRequest()
     {
         Collection<String> lines;
-        AGIRequest request;
+        AgiRequest request;
 
         lines = new ArrayList<String>();
 
@@ -53,7 +53,7 @@ public class AGIRequestImplTest extends TestCase
         lines.add("agi_enhanced: 0.0");
         lines.add("agi_accountcode: ");
 
-        request = new AGIRequestImpl(lines);
+        request = new AgiRequestImpl(lines);
 
         assertEquals("incorrect script", "myscript.agi", request.getScript());
         assertEquals("incorrect requestURL", "agi://host/myscript.agi", request.getRequestURL());
@@ -76,13 +76,13 @@ public class AGIRequestImplTest extends TestCase
     public void testBuildRequestWithoutCallerIdName()
     {
         Collection<String> lines;
-        AGIRequest request;
+        AgiRequest request;
 
         lines = new ArrayList<String>();
 
         lines.add("agi_callerid: 1234");
 
-        request = new AGIRequestImpl(lines);
+        request = new AgiRequestImpl(lines);
 
         assertEquals("incorrect callerId", "1234", request.getCallerId());
         assertNull("callerIdName must not be set", request.getCallerIdName());
@@ -91,13 +91,13 @@ public class AGIRequestImplTest extends TestCase
     public void testBuildRequestWithoutCallerIdNameButBracket()
     {
         Collection<String> lines;
-        AGIRequest request;
+        AgiRequest request;
 
         lines = new ArrayList<String>();
 
         lines.add("agi_callerid: <1234>");
 
-        request = new AGIRequestImpl(lines);
+        request = new AgiRequestImpl(lines);
 
         assertEquals("incorrect callerId", "1234", request.getCallerId());
         assertNull("callerIdName must not be set", request.getCallerIdName());
@@ -106,13 +106,13 @@ public class AGIRequestImplTest extends TestCase
     public void testBuildRequestWithoutCallerIdNameButBracketAndQuotesAndSpace()
     {
         Collection<String> lines;
-        AGIRequest request;
+        AgiRequest request;
 
         lines = new ArrayList<String>();
 
         lines.add("agi_callerid: \"\" <1234>");
 
-        request = new AGIRequestImpl(lines);
+        request = new AgiRequestImpl(lines);
 
         assertEquals("incorrect callerId", "1234", request.getCallerId());
         assertNull("callerIdName must not be set", request.getCallerIdName());
@@ -121,13 +121,13 @@ public class AGIRequestImplTest extends TestCase
     public void testBuildRequestWithQuotedCallerIdName()
     {
         Collection<String> lines;
-        AGIRequest request;
+        AgiRequest request;
 
         lines = new ArrayList<String>();
 
         lines.add("agi_callerid: \"John Doe\"<1234>");
 
-        request = new AGIRequestImpl(lines);
+        request = new AgiRequestImpl(lines);
 
         assertEquals("incorrect callerId", "1234", request.getCallerId());
         assertEquals("incorrect callerIdName", "John Doe", request.getCallerIdName());
@@ -136,13 +136,13 @@ public class AGIRequestImplTest extends TestCase
     public void testBuildRequestWithQuotedCallerIdNameAndSpace()
     {
         Collection<String> lines;
-        AGIRequest request;
+        AgiRequest request;
 
         lines = new ArrayList<String>();
 
         lines.add("agi_callerid: \"John Doe\" <1234>");
 
-        request = new AGIRequestImpl(lines);
+        request = new AgiRequestImpl(lines);
 
         assertEquals("incorrect callerId", "1234", request.getCallerId());
         assertEquals("incorrect callerIdName", "John Doe", request.getCallerIdName());
@@ -151,13 +151,13 @@ public class AGIRequestImplTest extends TestCase
     public void testBuildRequestWithoutCallerId()
     {
         Collection<String> lines;
-        AGIRequest request;
+        AgiRequest request;
 
         lines = new ArrayList<String>();
 
         lines.add("agi_callerid: ");
 
-        request = new AGIRequestImpl(lines);
+        request = new AgiRequestImpl(lines);
 
         assertNull("callerId must not be set", request.getCallerId());
         assertNull("callerIdName must not be set", request.getCallerIdName());
@@ -170,14 +170,14 @@ public class AGIRequestImplTest extends TestCase
     public void testBuildRequestCallerIdAsterisk12()
     {
         Collection<String> lines;
-        AGIRequest request;
+        AgiRequest request;
 
         lines = new ArrayList<String>();
 
         lines.add("agi_callerid: 1234");
         lines.add("agi_calleridname: John Doe");
 
-        request = new AGIRequestImpl(lines);
+        request = new AgiRequestImpl(lines);
 
         assertEquals("incorrect callerId", "1234", request.getCallerId());
         assertEquals("incorrect callerIdName", "John Doe", request.getCallerIdName());
@@ -186,14 +186,14 @@ public class AGIRequestImplTest extends TestCase
     public void testBuildRequestCallerIdAsterisk12WithUnknownCallerId()
     {
         Collection<String> lines;
-        AGIRequest request;
+        AgiRequest request;
 
         lines = new ArrayList<String>();
 
         lines.add("agi_callerid: unknown");
         lines.add("agi_calleridname: John Doe");
 
-        request = new AGIRequestImpl(lines);
+        request = new AgiRequestImpl(lines);
 
         assertNull("callerId must not be set if \"unknown\"", request.getCallerId());
         assertEquals("incorrect callerIdName", "John Doe", request.getCallerIdName());
@@ -202,14 +202,14 @@ public class AGIRequestImplTest extends TestCase
     public void testBuildRequestCallerIdAsterisk12WithUnknownCallerIdName()
     {
         Collection<String> lines;
-        AGIRequest request;
+        AgiRequest request;
 
         lines = new ArrayList<String>();
 
         lines.add("agi_callerid: 1234");
         lines.add("agi_calleridname: unknown");
 
-        request = new AGIRequestImpl(lines);
+        request = new AgiRequestImpl(lines);
 
         assertEquals("incorrect callerId", "1234", request.getCallerId());
         assertNull("callerIdName must not be set if \"unknown\"", request.getCallerIdName());
@@ -218,13 +218,13 @@ public class AGIRequestImplTest extends TestCase
     public void testBuildRequestCallerIdWithUnknownDnid()
     {
         Collection<String> lines;
-        AGIRequest request;
+        AgiRequest request;
 
         lines = new ArrayList<String>();
 
         lines.add("agi_dnid: unknown");
 
-        request = new AGIRequestImpl(lines);
+        request = new AgiRequestImpl(lines);
 
         assertNull("dnid must not be set if \"unknown\"", request.getDnid());
     }
@@ -232,13 +232,13 @@ public class AGIRequestImplTest extends TestCase
     public void testBuildRequestCallerIdWithUnknownRdnis()
     {
         Collection<String> lines;
-        AGIRequest request;
+        AgiRequest request;
 
         lines = new ArrayList<String>();
 
         lines.add("agi_rdnis: unknown");
 
-        request = new AGIRequestImpl(lines);
+        request = new AgiRequestImpl(lines);
 
         assertNull("rdnis must not be set if \"unknown\"", request.getRdnis());
     }
@@ -247,7 +247,7 @@ public class AGIRequestImplTest extends TestCase
     {
         try
         {
-            new AGIRequestImpl(null);
+            new AgiRequestImpl(null);
             fail("No IllegalArgumentException thrown.");
         }
         catch (IllegalArgumentException e)
@@ -258,7 +258,7 @@ public class AGIRequestImplTest extends TestCase
     public void testBuildRequestWithUnusualInput()
     {
         Collection<String> lines;
-        AGIRequest request;
+        AgiRequest request;
 
         lines = new ArrayList<String>();
 
@@ -267,7 +267,7 @@ public class AGIRequestImplTest extends TestCase
         lines.add("agi_without_space_after_colon:");
         lines.add("agi_channel: SIP/1234-a892");
 
-        request = new AGIRequestImpl(lines);
+        request = new AgiRequestImpl(lines);
 
         assertEquals("incorrect channel", "SIP/1234-a892", request.getChannel());
     }
@@ -275,14 +275,14 @@ public class AGIRequestImplTest extends TestCase
     public void testBuildRequestWithoutParameters()
     {
         Collection<String> lines;
-        AGIRequest request;
+        AgiRequest request;
 
         lines = new ArrayList<String>();
 
         lines.add("agi_network_script: myscript.agi");
         lines.add("agi_request: agi://host/myscript.agi");
 
-        request = new AGIRequestImpl(lines);
+        request = new AgiRequestImpl(lines);
 
         assertEquals("incorrect script", "myscript.agi", request.getScript());
         assertEquals("incorrect requestURL", "agi://host/myscript.agi", request.getRequestURL());
@@ -295,14 +295,14 @@ public class AGIRequestImplTest extends TestCase
     public void testBuildRequestWithSingleValueParameters()
     {
         Collection<String> lines;
-        AGIRequest request;
+        AgiRequest request;
 
         lines = new ArrayList<String>();
 
         lines.add("agi_network_script: myscript.agi?param1=value1&param2=value2");
         lines.add("agi_request: agi://host/myscript.agi?param1=value1&param2=value2");
 
-        request = new AGIRequestImpl(lines);
+        request = new AgiRequestImpl(lines);
 
         assertEquals("incorrect script", "myscript.agi", request.getScript());
         assertEquals("incorrect requestURL", "agi://host/myscript.agi?param1=value1&param2=value2", request.getRequestURL());
@@ -316,14 +316,14 @@ public class AGIRequestImplTest extends TestCase
     public void testBuildRequestWithMultiValueParameter()
     {
         Collection<String> lines;
-        AGIRequest request;
+        AgiRequest request;
 
         lines = new ArrayList<String>();
 
         lines.add("agi_network_script: myscript.agi?param1=value1&param1=value2");
         lines.add("agi_request: agi://host/myscript.agi?param1=value1&param1=value2");
 
-        request = new AGIRequestImpl(lines);
+        request = new AgiRequestImpl(lines);
 
         assertEquals("incorrect script", "myscript.agi", request.getScript());
         assertEquals("incorrect requestURL", 
@@ -336,14 +336,14 @@ public class AGIRequestImplTest extends TestCase
     public void testBuildRequestWithEmptyValueParameter()
     {
         Collection<String> lines;
-        AGIRequest request;
+        AgiRequest request;
 
         lines = new ArrayList<String>();
 
         lines.add("agi_network_script: myscript.agi?param1");
         lines.add("agi_request: agi://host/myscript.agi?param1");
 
-        request = new AGIRequestImpl(lines);
+        request = new AgiRequestImpl(lines);
 
         assertEquals("incorrect script", "myscript.agi", request.getScript());
         assertEquals("incorrect requestURL", "agi://host/myscript.agi?param1", request.getRequestURL());
@@ -355,14 +355,14 @@ public class AGIRequestImplTest extends TestCase
     public void testBuildRequestWithUrlEncodedParameter()
     {
         Collection<String> lines;
-        AGIRequest request;
+        AgiRequest request;
 
         lines = new ArrayList<String>();
 
         lines.add("agi_network_script: myscript.agi?param1=my%20value");
         lines.add("agi_request: agi://host/myscript.agi?param1=my%20value");
 
-        request = new AGIRequestImpl(lines);
+        request = new AgiRequestImpl(lines);
 
         assertEquals("incorrect script", "myscript.agi", request.getScript());
         assertEquals("incorrect requestURL", "agi://host/myscript.agi?param1=my%20value", request.getRequestURL());
@@ -372,14 +372,14 @@ public class AGIRequestImplTest extends TestCase
     public void testGetParameter()
     {
         Collection<String> lines;
-        AGIRequest request;
+        AgiRequest request;
 
         lines = new ArrayList<String>();
 
         lines.add("agi_network_script: myscript.agi?param1=my%20value");
         lines.add("agi_request: agi://host/myscript.agi?param1=my%20value");
 
-        request = new AGIRequestImpl(lines);
+        request = new AgiRequestImpl(lines);
 
         assertEquals("incorrect requestURL", "agi://host/myscript.agi?param1=my%20value", request.getRequestURL());
         assertEquals("incorrect value for parameter 'param1'", "my value", request.getParameter("param1"));

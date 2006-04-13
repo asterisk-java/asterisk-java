@@ -16,9 +16,9 @@
  */
 package org.asteriskjava.fastagi;
 
-import org.asteriskjava.fastagi.AGIChannel;
-import org.asteriskjava.fastagi.AGIRequest;
-import org.asteriskjava.fastagi.AGIScript;
+import org.asteriskjava.fastagi.AgiChannel;
+import org.asteriskjava.fastagi.AgiRequest;
+import org.asteriskjava.fastagi.AgiScript;
 
 /**
  * Test script for use with the ResourceBundleMappingStrategyTest.
@@ -26,14 +26,14 @@ import org.asteriskjava.fastagi.AGIScript;
  * @author srt
  * @version $Id: HelloAGIScript.java,v 1.2 2005/03/10 23:57:07 srt Exp $
  */
-public class HelloAGIScript implements AGIScript
+public class HelloAgiScript implements AgiScript
 {
-    public HelloAGIScript()
+    public HelloAgiScript()
     {
 
     }
 
-    public void service(AGIRequest request, AGIChannel channel)
+    public void service(AgiRequest request, AgiChannel channel)
     {
         return;
     }

@@ -19,21 +19,21 @@ package org.asteriskjava.fastagi.impl;
 import junit.framework.TestCase;
 import static org.easymock.EasyMock.*;
 
-import org.asteriskjava.fastagi.AGIWriter;
+import org.asteriskjava.fastagi.AgiWriter;
 import org.asteriskjava.fastagi.command.StreamFileCommand;
-import org.asteriskjava.fastagi.impl.AGIWriterImpl;
+import org.asteriskjava.fastagi.impl.AgiWriterImpl;
 import org.asteriskjava.io.SocketConnectionFacade;
 
-public class AGIWriterImplTest extends TestCase
+public class AgiWriterImplTest extends TestCase
 {
-    private AGIWriter agiWriter;
+    private AgiWriter agiWriter;
     private SocketConnectionFacade socket;
 
     protected void setUp() throws Exception
     {
         super.setUp();
         this.socket = createMock(SocketConnectionFacade.class);
-        this.agiWriter = new AGIWriterImpl(socket);
+        this.agiWriter = new AgiWriterImpl(socket);
     }
 
     public void testSendCommand() throws Exception

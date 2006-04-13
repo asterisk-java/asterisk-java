@@ -18,9 +18,9 @@ package org.asteriskjava.fastagi.command;
 
 import junit.framework.TestCase;
 
-import org.asteriskjava.fastagi.command.AbstractAGICommand;
+import org.asteriskjava.fastagi.command.AbstractAgiCommand;
 
-public class AbstractAGICommandTest extends TestCase
+public class AbstractAgiCommandTest extends TestCase
 {
     private MyCommand myCommand;
 
@@ -59,7 +59,7 @@ public class AbstractAGICommandTest extends TestCase
         assertEquals("MY \"Caller is:John Doe\"", myCommand.buildCommand());
     }
 
-    public class MyCommand extends AbstractAGICommand
+    public class MyCommand extends AbstractAgiCommand
     {
         private static final long serialVersionUID = 3976731484641833012L;
         private String s;

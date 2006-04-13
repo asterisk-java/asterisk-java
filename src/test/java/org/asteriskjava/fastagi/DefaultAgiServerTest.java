@@ -21,13 +21,13 @@ import java.io.IOException;
 import junit.framework.TestCase;
 import static org.easymock.EasyMock.*;
 
-import org.asteriskjava.fastagi.DefaultAGIServer;
+import org.asteriskjava.fastagi.DefaultAgiServer;
 import org.asteriskjava.io.ServerSocketFacade;
 import org.asteriskjava.io.SocketConnectionFacade;
 
-public class DefaultAGIServerTest extends TestCase
+public class DefaultAgiServerTest extends TestCase
 {
-    private DefaultAGIServer server;
+    private DefaultAgiServer server;
     private MockedServerSocketFacade serverSocket;
     private SocketConnectionFacade socket;
 
@@ -36,7 +36,7 @@ public class DefaultAGIServerTest extends TestCase
         super.setUp();
 
         serverSocket = new MockedServerSocketFacade();
-        server = new MockedDefaultAGIServer();
+        server = new MockedDefaultAgiServer();
     }
 
     protected void tearDown() throws Exception
@@ -83,7 +83,7 @@ public class DefaultAGIServerTest extends TestCase
         verify(socket);
     }
 
-    class MockedDefaultAGIServer extends DefaultAGIServer
+    class MockedDefaultAgiServer extends DefaultAgiServer
     {
         protected ServerSocketFacade createServerSocket()
         {

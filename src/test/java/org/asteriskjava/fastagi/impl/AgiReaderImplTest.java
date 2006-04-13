@@ -21,28 +21,28 @@ import java.net.InetAddress;
 import junit.framework.TestCase;
 import static org.easymock.EasyMock.*;
 
-import org.asteriskjava.fastagi.AGIHangupException;
-import org.asteriskjava.fastagi.AGIReader;
-import org.asteriskjava.fastagi.AGIRequest;
-import org.asteriskjava.fastagi.impl.AGIReaderImpl;
-import org.asteriskjava.fastagi.reply.AGIReply;
+import org.asteriskjava.fastagi.AgiHangupException;
+import org.asteriskjava.fastagi.AgiReader;
+import org.asteriskjava.fastagi.AgiRequest;
+import org.asteriskjava.fastagi.impl.AgiReaderImpl;
+import org.asteriskjava.fastagi.reply.AgiReply;
 import org.asteriskjava.io.SocketConnectionFacade;
 
-public class AGIReaderImplTest extends TestCase
+public class AgiReaderImplTest extends TestCase
 {
-    private AGIReader agiReader;
+    private AgiReader agiReader;
     private SocketConnectionFacade socket;
 
     protected void setUp() throws Exception
     {
         super.setUp();
         this.socket = createMock(SocketConnectionFacade.class);
-        this.agiReader = new AGIReaderImpl(socket);
+        this.agiReader = new AgiReaderImpl(socket);
     }
 
     public void testReadRequest() throws Exception
     {
-        AGIRequest request;
+        AgiRequest request;
 
         expect(socket.readLine()).andReturn("agi_network: yes");
         expect(socket.readLine()).andReturn("agi_network_script: myscript.agi");
@@ -90,7 +90,7 @@ public class AGIReaderImplTest extends TestCase
 
     public void testReadReply() throws Exception
     {
-        AGIReply reply;
+        AgiReply reply;
 
         expect(socket.readLine()).andReturn("200 result=49 endpos=2240");
 
@@ -98,7 +98,7 @@ public class AGIReaderImplTest extends TestCase
 
         reply = agiReader.readReply();
 
-        assertEquals("Incorrect status", AGIReply.SC_SUCCESS, reply.getStatus());
+        assertEquals("Incorrect status", AgiReply.SC_SUCCESS, reply.getStatus());
         assertEquals("Incorrect result", 49, reply.getResultCode());
 
         verify(socket);
@@ -106,7 +106,7 @@ public class AGIReaderImplTest extends TestCase
 
     public void testReadReplyInvalidOrUnknownCommand() throws Exception
     {
-        AGIReply reply;
+        AgiReply reply;
 
         expect(socket.readLine()).andReturn("510 Invalid or unknown command");
 
@@ -115,14 +115,14 @@ public class AGIReaderImplTest extends TestCase
         reply = agiReader.readReply();
 
         assertEquals("Incorrect status",
-                AGIReply.SC_INVALID_OR_UNKNOWN_COMMAND, reply.getStatus());
+                AgiReply.SC_INVALID_OR_UNKNOWN_COMMAND, reply.getStatus());
 
         verify(socket);
     }
 
     public void testReadReplyInvalidCommandSyntax() throws Exception
     {
-        AGIReply reply;
+        AgiReply reply;
 
         expect(socket.readLine()).andReturn("520-Invalid command syntax.  Proper usage follows:");
         expect(socket.readLine()).andReturn(" Usage: DATABASE DEL <family> <key>");
@@ -135,7 +135,7 @@ public class AGIReaderImplTest extends TestCase
 
         reply = agiReader.readReply();
 
-        assertEquals("Incorrect status", AGIReply.SC_INVALID_COMMAND_SYNTAX,
+        assertEquals("Incorrect status", AgiReply.SC_INVALID_COMMAND_SYNTAX,
                 reply.getStatus());
         assertEquals("Incorrect synopsis", "DATABASE DEL <family> <key>", reply
                 .getSynopsis());
@@ -152,9 +152,9 @@ public class AGIReaderImplTest extends TestCase
         try
         {
             agiReader.readReply();
-            fail("Must throw AGIHangupException");
+            fail("Must throw AgiHangupException");
         }
-        catch (AGIHangupException e)
+        catch (AgiHangupException e)
         {
         }
 

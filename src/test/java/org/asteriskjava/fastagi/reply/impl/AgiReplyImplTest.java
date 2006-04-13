@@ -21,9 +21,9 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-import org.asteriskjava.fastagi.reply.impl.AGIReplyImpl;
+import org.asteriskjava.fastagi.reply.impl.AgiReplyImpl;
 
-public class AGIReplyImplTest extends TestCase
+public class AgiReplyImplTest extends TestCase
 {
     private List<String> lines;
 
@@ -34,13 +34,13 @@ public class AGIReplyImplTest extends TestCase
 
     public void testBuildReply()
     {
-        AGIReplyImpl reply;
+        AgiReplyImpl reply;
 
         lines.add("200 result=49");
 
-        reply = new AGIReplyImpl(lines);
+        reply = new AgiReplyImpl(lines);
 
-        assertEquals("Incorrect status", AGIReplyImpl.SC_SUCCESS, reply.getStatus());
+        assertEquals("Incorrect status", AgiReplyImpl.SC_SUCCESS, reply.getStatus());
         assertEquals("Incorrect result", 49, reply.getResultCode());
         assertEquals("Incorrect result as character", '1', reply
                 .getResultCodeAsChar());
@@ -50,13 +50,13 @@ public class AGIReplyImplTest extends TestCase
 
     public void testBuildReplyWithAdditionalAttribute()
     {
-        AGIReplyImpl reply;
+        AgiReplyImpl reply;
 
         lines.add("200 result=49 endpos=2240");
 
-        reply = new AGIReplyImpl(lines);
+        reply = new AgiReplyImpl(lines);
 
-        assertEquals("Incorrect status", AGIReplyImpl.SC_SUCCESS, reply.getStatus());
+        assertEquals("Incorrect status", AgiReplyImpl.SC_SUCCESS, reply.getStatus());
         assertEquals("Incorrect result", 49, reply.getResultCode());
         assertEquals("Incorrect result as character", '1', reply
                 .getResultCodeAsChar());
@@ -68,13 +68,13 @@ public class AGIReplyImplTest extends TestCase
 
     public void testBuildReplyWithMultipleAdditionalAttribute()
     {
-        AGIReplyImpl reply;
+        AgiReplyImpl reply;
 
         lines.add("200 result=49 startpos=1234 endpos=2240");
 
-        reply = new AGIReplyImpl(lines);
+        reply = new AgiReplyImpl(lines);
 
-        assertEquals("Incorrect status", AGIReplyImpl.SC_SUCCESS, reply.getStatus());
+        assertEquals("Incorrect status", AgiReplyImpl.SC_SUCCESS, reply.getStatus());
         assertEquals("Incorrect result", 49, reply.getResultCode());
         assertEquals("Incorrect result as character", '1', reply
                 .getResultCodeAsChar());
@@ -88,13 +88,13 @@ public class AGIReplyImplTest extends TestCase
 
     public void testBuildReplyWithParenthesis()
     {
-        AGIReplyImpl reply;
+        AgiReplyImpl reply;
 
         lines.add("200 result=1 ((hello)(world))");
 
-        reply = new AGIReplyImpl(lines);
+        reply = new AgiReplyImpl(lines);
 
-        assertEquals("Incorrect status", AGIReplyImpl.SC_SUCCESS, reply.getStatus());
+        assertEquals("Incorrect status", AgiReplyImpl.SC_SUCCESS, reply.getStatus());
         assertEquals("Incorrect result", 1, reply.getResultCode());
         assertEquals("Incorrect parenthesis", "(hello)(world)", reply
                 .getExtra());
@@ -102,13 +102,13 @@ public class AGIReplyImplTest extends TestCase
 
     public void testBuildReplyWithAdditionalAttributeAndParenthesis()
     {
-        AGIReplyImpl reply;
+        AgiReplyImpl reply;
 
         lines.add("200 result=1 ((hello)(world)) endpos=2240");
 
-        reply = new AGIReplyImpl(lines);
+        reply = new AgiReplyImpl(lines);
 
-        assertEquals("Incorrect status", AGIReplyImpl.SC_SUCCESS, reply.getStatus());
+        assertEquals("Incorrect status", AgiReplyImpl.SC_SUCCESS, reply.getStatus());
         assertEquals("Incorrect result", 1, reply.getResultCode());
         assertEquals("Incorrect parenthesis", "(hello)(world)", reply
                 .getExtra());
@@ -118,19 +118,19 @@ public class AGIReplyImplTest extends TestCase
 
     public void testBuildReplyInvalidOrUnknownCommand()
     {
-        AGIReplyImpl reply;
+        AgiReplyImpl reply;
 
         lines.add("510 Invalid or unknown command");
 
-        reply = new AGIReplyImpl(lines);
+        reply = new AgiReplyImpl(lines);
 
         assertEquals("Incorrect status",
-                AGIReplyImpl.SC_INVALID_OR_UNKNOWN_COMMAND, reply.getStatus());
+                AgiReplyImpl.SC_INVALID_OR_UNKNOWN_COMMAND, reply.getStatus());
     }
 
     public void testBuildReplyInvalidCommandSyntax()
     {
-        AGIReplyImpl reply;
+        AgiReplyImpl reply;
 
         lines.add("520-Invalid command syntax.  Proper usage follows:");
         lines.add(" Usage: DATABASE DEL <family> <key>");
@@ -139,9 +139,9 @@ public class AGIReplyImplTest extends TestCase
         lines.add(" Returns 1 if succesful, 0 otherwise");
         lines.add("520 End of proper usage.");
 
-        reply = new AGIReplyImpl(lines);
+        reply = new AgiReplyImpl(lines);
 
-        assertEquals("Incorrect status", AGIReplyImpl.SC_INVALID_COMMAND_SYNTAX,
+        assertEquals("Incorrect status", AgiReplyImpl.SC_INVALID_COMMAND_SYNTAX,
                 reply.getStatus());
         assertEquals("Incorrect synopsis", "DATABASE DEL <family> <key>", reply
                 .getSynopsis());
@@ -153,13 +153,13 @@ public class AGIReplyImplTest extends TestCase
 
     public void testBuildReplyWithLeadingSpace()
     {
-        AGIReplyImpl reply;
+        AgiReplyImpl reply;
 
         lines.add("200 result= (timeout)");
 
-        reply = new AGIReplyImpl(lines);
+        reply = new AgiReplyImpl(lines);
 
-        assertEquals("Incorrect status", AGIReplyImpl.SC_SUCCESS, reply.getStatus());
+        assertEquals("Incorrect status", AgiReplyImpl.SC_SUCCESS, reply.getStatus());
         assertEquals("Incorrect extra", "timeout", reply.getExtra());
     }
 }

@@ -19,8 +19,8 @@ package org.asteriskjava.fastagi;
 
 import junit.framework.TestCase;
 
-import org.asteriskjava.fastagi.AGIRequest;
-import org.asteriskjava.fastagi.AGIScript;
+import org.asteriskjava.fastagi.AgiRequest;
+import org.asteriskjava.fastagi.AgiScript;
 import org.asteriskjava.fastagi.ResourceBundleMappingStrategy;
 
 public class ResourceBundleMappingStrategyTest extends TestCase
@@ -36,17 +36,17 @@ public class ResourceBundleMappingStrategyTest extends TestCase
 
     public void testDetermineScript()
     {
-        AGIScript scriptFirstPass;
-        AGIScript scriptSecondPass;
-        AGIRequest request;
+        AgiScript scriptFirstPass;
+        AgiScript scriptSecondPass;
+        AgiRequest request;
 
-        request = new SimpleAGIRequest();
+        request = new SimpleAgiRequest();
 
         scriptFirstPass = mappingStrategy.determineScript(request);
         scriptSecondPass = mappingStrategy.determineScript(request);
 
         assertEquals("incorrect script determined",
-                scriptFirstPass.getClass(), HelloAGIScript.class);
+                scriptFirstPass.getClass(), HelloAgiScript.class);
 
         assertTrue("script instances are not cached",
                 scriptFirstPass == scriptSecondPass);
@@ -54,9 +54,9 @@ public class ResourceBundleMappingStrategyTest extends TestCase
 
     public void testDetermineScriptWithResourceBundleUnavailable()
     {
-        AGIRequest request;
+        AgiRequest request;
 
-        request = new SimpleAGIRequest();
+        request = new SimpleAgiRequest();
 
         mappingStrategy
                 .setResourceBundleName("net.sf.asterisk.fastagi.unavailable");
@@ -65,18 +65,18 @@ public class ResourceBundleMappingStrategyTest extends TestCase
 
     public void testDetermineScriptWithNonSharedInstance()
     {
-        AGIScript scriptFirstPass;
-        AGIScript scriptSecondPass;
-        AGIRequest request;
+        AgiScript scriptFirstPass;
+        AgiScript scriptSecondPass;
+        AgiRequest request;
 
         mappingStrategy.setShareInstances(false);
-        request = new SimpleAGIRequest();
+        request = new SimpleAgiRequest();
 
         scriptFirstPass = mappingStrategy.determineScript(request);
         scriptSecondPass = mappingStrategy.determineScript(request);
 
         assertEquals("incorrect script determined",
-                scriptFirstPass.getClass(), HelloAGIScript.class);
+                scriptFirstPass.getClass(), HelloAgiScript.class);
 
         assertTrue("returned a shared instance",
                 scriptFirstPass != scriptSecondPass);

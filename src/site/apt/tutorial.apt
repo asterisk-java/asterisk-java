@@ -35,22 +35,22 @@ The FastAGI Protocol
   
 * Hello AGI!
 
-  To write your own AGI scripts you must implement the AGIScript interface.
-  You can do so by simply extending BaseAGIScript that provides
+  To write your own AGI scripts you must implement the AgiScript interface.
+  You can do so by simply extending BaseAgiScript that provides
   some convenience methods that further simplify that task.
  
-  A simple AGIScript might look as follows:
+  A simple AgiScript might look as follows:
   
 +--
-import org.asteriskjava.fastagi.AGIChannel;
-import org.asteriskjava.fastagi.AGIException;
-import org.asteriskjava.fastagi.AGIRequest;
-import org.asteriskjava.fastagi.BaseAGIScript;
+import org.asteriskjava.fastagi.AgiChannel;
+import org.asteriskjava.fastagi.AgiException;
+import org.asteriskjava.fastagi.AgiRequest;
+import org.asteriskjava.fastagi.BaseAgiScript;
 
-public class HelloAGIScript extends BaseAGIScript
+public class HelloAgiScript extends BaseAgiScript
 {
-    public void service(AGIRequest request, AGIChannel channel)
-            throws AGIException
+    public void service(AgiRequest request, AgiChannel channel)
+            throws AgiException
     {
         // Answer the channel...
         answer();
@@ -68,7 +68,7 @@ public class HelloAGIScript extends BaseAGIScript
   add the <<<asterisk-java.jar>>> and compile it:
 
 +--
-$ javac -cp asterisk-java.jar HelloAGIScript.java
+$ javac -cp asterisk-java.jar HelloAgiScript.java
 $ 
 +--
 
@@ -88,13 +88,13 @@ exten => 1300,1,Agi(agi://localhost/hello.agi)
   Be sure to reload Asterisk for this change to take effect. You can do so
   by executing <<<extensions reload>>> on the Asterisk CLI.
   
-  Now you must map the script name <<<hello.agi>>> to the HelloAGIScript
+  Now you must map the script name <<<hello.agi>>> to the HelloAgiScript
   we just created. By default this is done in a properties file called
   <<<fastagi-mapping.properties>>> that must be on the classpath
-  when we start the AGIServer. In this case it looks like:
+  when we start the AgiServer. In this case it looks like:
   
 +--
-hello.agi = HelloAGIScript
+hello.agi = HelloAgiScript
 +--
 
   Your directory should now contain the following files:
@@ -103,52 +103,52 @@ hello.agi = HelloAGIScript
 $ ls -l
 -rw-r--r--  1 srt srt 163689 2005-03-11 22:07 asterisk-java.jar
 -rw-r--r--  1 srt srt     26 2005-03-11 20:50 fastagi-mapping.properties
--rw-r--r--  1 srt srt    624 2005-03-11 22:07 HelloAGIScript.class
--rw-r--r--  1 srt srt    438 2005-03-11 20:50 HelloAGIScript.java
+-rw-r--r--  1 srt srt    624 2005-03-11 22:07 HelloAgiScript.class
+-rw-r--r--  1 srt srt    438 2005-03-11 20:50 HelloAgiScript.java
 +--
 
-  Finally we start the AGIServer:
+  Finally we start the AgiServer:
 
 +--
-$ java -cp asterisk-java.jar:. org.asteriskjava.fastagi.DefaultAGIServer
+$ java -cp asterisk-java.jar:. org.asteriskjava.fastagi.DefaultAgiServer
 +--
 
-  You should see some logging output indicating that the AGIServer has
+  You should see some logging output indicating that the AgiServer has
   been successfully started and is listening for incoming connections:
 
 +--
-Mar 11, 2005 10:20:12 PM org.asteriskjava.fastagi.DefaultAGIServer run
+Mar 11, 2005 10:20:12 PM org.asteriskjava.fastagi.DefaultAgiServer run
 INFO: Thread pool started.
-Mar 11, 2005 10:20:12 PM org.asteriskjava.fastagi.DefaultAGIServer run
+Mar 11, 2005 10:20:12 PM org.asteriskjava.fastagi.DefaultAgiServer run
 INFO: Listening on *:4573.
 +--
 
   When you call extension 1300 you will see the AGI script being launched:
 
 +--
-Mar 11, 2005 10:22:47 PM org.asteriskjava.fastagi.DefaultAGIServer run
+Mar 11, 2005 10:22:47 PM org.asteriskjava.fastagi.DefaultAgiServer run
 INFO: Received connection.
-Mar 11, 2005 10:22:47 PM org.asteriskjava.fastagi.AGIConnectionHandler run
-INFO: Begin AGIScript HelloAGIScript on AGIServer-TaskThread-0
+Mar 11, 2005 10:22:47 PM org.asteriskjava.fastagi.AgiConnectionHandler run
+INFO: Begin AgiScript HelloAgiScript on AgiServer-TaskThread-0
 Mar 11, 2005 10:22:48 PM org.asteriskjava.fastagi.AGIConnectionHandler run
-INFO: End AGIScript HelloAGIScript on AGIServer-TaskThread-0
+INFO: End AgiScript HelloAgiScript on AgiServer-TaskThread-0
 +--
 
 * Extending the Example
 
   Have a look at the documentation of 
-  {{{apidocs/org/asteriskjava/fastagi/BaseAGIScript.html}BaseAGIScript}}
+  {{{apidocs/org/asteriskjava/fastagi/BaseAgiScript.html}BaseAgiScript}}
   there you will find additional methods that you can use for your own scripts.
   If you want to use commands that do not yet have a corresponding method in
-  BaseAGIScript or if you want to extend the FastAGI protocol by adding your
+  BaseAgiScript or if you want to extend the FastAGI protocol by adding your
   own commands you can also use the 
-  {{{apidocs/org/asteriskjava/fastagi/AGIChannel.html}channel}}.sendCommand({{{apidocs/org/asteriskjava/fastagi/command/AGICommand.html}AGICommand}})
+  {{{apidocs/org/asteriskjava/fastagi/AgiChannel.html}channel}}.sendCommand({{{apidocs/org/asteriskjava/fastagi/command/AgiCommand.html}AgiCommand}})
   method to send arbitrary commands.
   
   You can pass parameters to your scripts by including them in the URL used with
   the AGI command. These parameters can be read by the getParameter(String) and
   getParameterValues(String) methods in
-  {{{apidocs/org/asteriskjava/fastagi/AGIRequest.html}AGIRequest}}.
+  {{{apidocs/org/asteriskjava/fastagi/AgiRequest.html}AgiRequest}}.
   
   If you want to pass a parameter named user with a value of "john" to your
   script called hello.agi running on localhost your call to the AGI application
@@ -161,14 +161,14 @@ exten => 1300,1,Agi(agi://localhost/hello.agi?user=john)
   You can also pass multiple parameters. Parameters containing special characters
   must be URL encoded.
   
-  If you are about to write more complex scripts please note that your AGIScript 
+  If you are about to write more complex scripts please note that your AgiScript 
   must be threadsafe. Only one instance will be used to serve all requests.
   This is kind of similar to the constraints a servlet engine places on the 
   implementation of servlets.
   
 * Configuration
 
-  You can tune the DefaultAGIServer by setting two properties: The bindPort
+  You can tune the DefaultAgiServer by setting two properties: The bindPort
   and the poolSize.
   
   The bindPort determines the TCP port the server will listen on. By default
@@ -181,11 +181,11 @@ exten => 1300,1,Agi(agi://localhost:1234/hello.agi)
 +--
 
   To understand the poolSize property you need to know that the 
-  DefaultAGIServer uses a fixed size thread pool to serve your AGIScripts.
+  DefaultAgiServer uses a fixed size thread pool to serve your AgiScripts.
   The poolSize determines how many threads are spawned at startup and thus
-  limits the number of AGIScripts that can run at the same time. So you
+  limits the number of AgiScripts that can run at the same time. So you
   should set the poolSize to at least the number of concurrent calls the
-  AGIServer should be able to handle. The default value is 10.
+  AgiServer should be able to handle. The default value is 10.
   
   These configuration properties can be set by providing a
   <<<fastagi.properties>>> file on the classpath.

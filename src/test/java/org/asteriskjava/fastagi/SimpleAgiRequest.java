@@ -19,7 +19,7 @@ package org.asteriskjava.fastagi;
 import java.net.InetAddress;
 import java.util.Map;
 
-public class SimpleAGIRequest implements AGIRequest
+public class SimpleAgiRequest implements AgiRequest
 {
     InetAddress localAddress;
     int localPort;
