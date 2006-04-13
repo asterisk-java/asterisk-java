@@ -23,7 +23,7 @@ package org.asteriskjava.fastagi.command;
  * @author srt
  * @version $Id: SetPriorityCommand.java,v 1.6 2006/01/12 10:35:12 srt Exp $
  */
-public class SetPriorityCommand extends AbstractAGICommand
+public class SetPriorityCommand extends AbstractAgiCommand
 {
     /**
      * Serial version identifier.

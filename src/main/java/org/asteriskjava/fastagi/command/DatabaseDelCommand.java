@@ -24,7 +24,7 @@ package org.asteriskjava.fastagi.command;
  * @author srt
  * @version $Id: DatabaseDelCommand.java,v 1.3 2006/01/12 10:35:11 srt Exp $
  */
-public class DatabaseDelCommand extends AbstractAGICommand
+public class DatabaseDelCommand extends AbstractAgiCommand
 {
     /**
      * Serial version identifier.

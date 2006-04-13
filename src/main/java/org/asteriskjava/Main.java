@@ -16,11 +16,11 @@
  */
 package org.asteriskjava;
 
-import org.asteriskjava.fastagi.AGIServer;
-import org.asteriskjava.fastagi.DefaultAGIServer;
+import org.asteriskjava.fastagi.AgiServer;
+import org.asteriskjava.fastagi.DefaultAgiServer;
 
 /**
- * Starts the DefaultAGIServer.
+ * Starts the DefaultAgiServer.
  * 
  * @author srt
  * @version $Id: Main.java,v 1.1 2005/03/12 09:57:32 srt Exp $
@@ -29,9 +29,9 @@ public class Main
 {
     public static void main(String[] args) throws Exception
     {
-        AGIServer agiServer;
+        AgiServer agiServer;
         
-        agiServer = new DefaultAGIServer();
+        agiServer = new DefaultAgiServer();
         agiServer.startup();
     }
 }

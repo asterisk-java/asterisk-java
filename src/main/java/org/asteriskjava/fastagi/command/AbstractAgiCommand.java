@@ -20,12 +20,12 @@ import java.io.Serializable;
 
 /**
  * Abstract base class that provides some convenience methods for 
- * implementing AGICommand classes.
+ * implementing AgiCommand classes.
  * 
  * @author srt
  * @version $Id: AbstractAGICommand.java,v 1.1 2006/01/12 10:35:13 srt Exp $
  */
-public abstract class AbstractAGICommand implements Serializable, AGICommand
+public abstract class AbstractAgiCommand implements Serializable, AgiCommand
 {
     /**
      * Serial version identifier.

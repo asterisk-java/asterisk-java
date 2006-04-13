@@ -23,7 +23,7 @@ package org.asteriskjava.fastagi;
  * @author srt
  * @version $Id: InvalidCommandSyntaxException.java,v 1.1 2005/03/11 19:34:55 srt Exp $
  */
-public class InvalidCommandSyntaxException extends AGIException
+public class InvalidCommandSyntaxException extends AgiException
 {
     /**
      * Serial version identifier.

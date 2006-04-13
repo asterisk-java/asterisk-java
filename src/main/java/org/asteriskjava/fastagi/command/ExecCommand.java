@@ -24,7 +24,7 @@ package org.asteriskjava.fastagi.command;
  * @author srt
  * @version $Id: ExecCommand.java,v 1.6 2006/01/12 10:35:13 srt Exp $
  */
-public class ExecCommand extends AbstractAGICommand
+public class ExecCommand extends AbstractAgiCommand
 {
     /**
      * Serial version identifier.

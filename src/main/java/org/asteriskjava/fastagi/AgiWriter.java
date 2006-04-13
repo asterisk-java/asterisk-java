@@ -16,30 +16,21 @@
  */
 package org.asteriskjava.fastagi;
 
-import org.asteriskjava.fastagi.reply.AGIReply;
+import org.asteriskjava.fastagi.command.AgiCommand;
 
 /**
- * The AGIReader reads the replies from the network and parses them using a
- * ReplyBuilder.
+ * The AgiWriter sends commands to Asterisk.
  * 
  * @author srt
- * @version $Id: AGIReader.java,v 1.5 2005/03/11 09:37:37 srt Exp $
+ * @version $Id: AgiWriter.java,v 1.2 2005/03/11 09:37:39 srt Exp $
  */
-public interface AGIReader
+public interface AgiWriter
 {
     /**
-     * Reads the initial request data from Asterisk.
+     * Sends the given command to the Asterisk server.
      * 
-     * @return the request read.
-     * @throws AGIException if the request can't be read.
+     * @param command the command to send.
+     * @throws AgiException if the command can't be sent.
      */
-    AGIRequest readRequest() throws AGIException;
-
-    /**
-     * Reads one reply to an AGICommand from Asterisk.
-     * 
-     * @return the reply read.
-     * @throws AGIException if the reply can't be read.
-     */
-    AGIReply readReply() throws AGIException;
+    void sendCommand(AgiCommand command) throws AgiException;
 }

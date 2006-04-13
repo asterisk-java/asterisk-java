@@ -16,21 +16,22 @@
  */
 package org.asteriskjava.fastagi;
 
-import org.asteriskjava.fastagi.command.AGICommand;
-
 /**
- * The AGIWriter sends commands to Asterisk.
+ * The AgiHangupException is thrown if the channel has been hang up while
+ * processing the AgiRequest.
  * 
  * @author srt
- * @version $Id: AGIWriter.java,v 1.2 2005/03/11 09:37:39 srt Exp $
+ * @version $Id: AgiHangupException.java,v 1.2 2005/07/30 19:57:16 srt Exp $
  */
-public interface AGIWriter
+public class AgiHangupException extends AgiException
 {
     /**
-     * Sends the given command to the Asterisk server.
-     * 
-     * @param command the command to send.
-     * @throws AGIException if the command can't be sent.
+     * Serial version identifier.
      */
-    void sendCommand(AGICommand command) throws AGIException;
+    private static final long serialVersionUID = 3256444698691252274L;
+    
+    public AgiHangupException()
+    {
+        super("Channel was hung up.");
+    }
 }

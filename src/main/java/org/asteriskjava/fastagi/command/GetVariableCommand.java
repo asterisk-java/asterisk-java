@@ -27,7 +27,7 @@ package org.asteriskjava.fastagi.command;
  * @author srt
  * @version $Id: GetVariableCommand.java,v 1.7 2006/01/12 10:35:13 srt Exp $
  */
-public class GetVariableCommand extends AbstractAGICommand
+public class GetVariableCommand extends AbstractAgiCommand
 {
     /**
      * Serial version identifier.

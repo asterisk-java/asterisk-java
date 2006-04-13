@@ -26,21 +26,21 @@ public abstract class AbstractMappingStrategy implements MappingStrategy
 {
     protected Log logger = LogFactory.getLog(getClass());
 
-    protected AGIScript createAGIScriptInstance(String className)
+    protected AgiScript createAgiScriptInstance(String className)
     {
         Class agiScriptClass;
         Constructor constructor;
-        AGIScript agiScript;
+        AgiScript agiScript;
 
         try
         {
             agiScriptClass = Class.forName(className);
             constructor = agiScriptClass.getConstructor(new Class[]{});
-            agiScript = (AGIScript) constructor.newInstance(new Object[]{});
+            agiScript = (AgiScript) constructor.newInstance(new Object[]{});
         }
         catch (Exception e)
         {
-            logger.error("Unable to create AGIScript instance of type "
+            logger.error("Unable to create AgiScript instance of type "
                     + className);
             return null;
         }

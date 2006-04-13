@@ -25,7 +25,7 @@ package org.asteriskjava.fastagi.command;
  * @author srt
  * @version $Id: DatabaseGetCommand.java,v 1.3 2006/01/12 10:35:13 srt Exp $
  */
-public class DatabaseGetCommand extends AbstractAGICommand
+public class DatabaseGetCommand extends AbstractAgiCommand
 {
     /**
      * Serial version identifier.

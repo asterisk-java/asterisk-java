@@ -26,7 +26,7 @@ package org.asteriskjava.fastagi.command;
  * @author srt
  * @version $Id: SendImageCommand.java,v 1.3 2006/01/12 10:35:13 srt Exp $
  */
-public class SendImageCommand extends AbstractAGICommand
+public class SendImageCommand extends AbstractAgiCommand
 {
     /**
      * Serial version identifier.

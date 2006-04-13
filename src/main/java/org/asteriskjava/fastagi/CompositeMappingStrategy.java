@@ -50,7 +50,7 @@ public class CompositeMappingStrategy implements MappingStrategy
         this.strategies = strategies;
     }
 
-    public AGIScript determineScript(AGIRequest request)
+    public AgiScript determineScript(AgiRequest request)
     {
         if (strategies == null)
         {
@@ -59,7 +59,7 @@ public class CompositeMappingStrategy implements MappingStrategy
 
         for (MappingStrategy strategy : strategies)
         {
-            AGIScript script = strategy.determineScript(request);
+            AgiScript script = strategy.determineScript(request);
             if (script != null)
             {
                 return script;

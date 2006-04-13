@@ -14,31 +14,32 @@
  *  limitations under the License.
  *
  */
-package org.asteriskjava.fastagi.command;
+package org.asteriskjava.fastagi;
+
+import org.asteriskjava.fastagi.reply.AgiReply;
 
 /**
- * Turns off music on hold on the current channel.<br>
- * Always returns 0.
+ * The AgiReader reads the replies from the network and parses them using a
+ * ReplyBuilder.
  * 
  * @author srt
- * @version $Id: SetMusicOffCommand.java,v 1.2 2006/01/12 10:35:13 srt Exp $
+ * @version $Id: AgiReader.java,v 1.5 2005/03/11 09:37:37 srt Exp $
  */
-public class SetMusicOffCommand extends AbstractAgiCommand
+public interface AgiReader
 {
     /**
-     * Serial version identifier.
+     * Reads the initial request data from Asterisk.
+     * 
+     * @return the request read.
+     * @throws AgiException if the request can't be read.
      */
-    private static final long serialVersionUID = 3762248656229053753L;
+    AgiRequest readRequest() throws AgiException;
 
     /**
-     * Creates a new SetMusicOffCommand.
+     * Reads one reply to an AgiCommand from Asterisk.
+     * 
+     * @return the reply read.
+     * @throws AgiException if the reply can't be read.
      */
-    public SetMusicOffCommand()
-    {
-    }
-
-    public String buildCommand()
-    {
-        return "SET MUSIC OFF";
-    }
+    AgiReply readReply() throws AgiException;
 }

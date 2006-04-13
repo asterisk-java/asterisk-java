@@ -17,21 +17,21 @@
 package org.asteriskjava.fastagi;
 
 /**
- * The AGIHangupException is thrown if the channel has been hang up while
- * processing the AGIRequest.
+ * The AgiNetworkException usally wraps an IOException denoting a network
+ * problem when talking to the Asterisk server.
  * 
  * @author srt
- * @version $Id: AGIHangupException.java,v 1.2 2005/07/30 19:57:16 srt Exp $
+ * @version $Id: AgiNetworkException.java,v 1.1 2005/03/11 09:37:39 srt Exp $
  */
-public class AGIHangupException extends AGIException
+public class AgiNetworkException extends AgiException
 {
     /**
      * Serial version identifier.
      */
-    private static final long serialVersionUID = 3256444698691252274L;
-    
-    public AGIHangupException()
+    private static final long serialVersionUID = 3256445789629723703L;
+
+    public AgiNetworkException(String message, Throwable cause)
     {
-        super("Channel was hung up.");
+        super(message, cause);
     }
 }

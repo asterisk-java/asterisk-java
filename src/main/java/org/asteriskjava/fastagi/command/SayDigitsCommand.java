@@ -25,7 +25,7 @@ package org.asteriskjava.fastagi.command;
  * @author srt
  * @version $Id: SayDigitsCommand.java,v 1.6 2006/01/12 10:35:13 srt Exp $
  */
-public class SayDigitsCommand extends AbstractAGICommand
+public class SayDigitsCommand extends AbstractAgiCommand
 {
     /**
      * Serial version identifier.

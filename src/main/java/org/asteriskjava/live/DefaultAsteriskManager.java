@@ -334,9 +334,10 @@ public class DefaultAsteriskManager
                     }
                 }
             }
-            catch (Exception e)
+            catch (Throwable e)
             {
                 logger.warn("Unable to send 'show version' command.", e);
+                return ""; // FIXME hack to fix NPE when not connected (throws IllegalStateException)
             }
         }
 

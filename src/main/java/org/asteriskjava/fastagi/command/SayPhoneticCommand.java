@@ -25,7 +25,7 @@ package org.asteriskjava.fastagi.command;
  * @author srt
  * @version $Id: SayPhoneticCommand.java,v 1.4 2006/01/12 10:35:13 srt Exp $
  */
-public class SayPhoneticCommand extends AbstractAGICommand
+public class SayPhoneticCommand extends AbstractAgiCommand
 {
     /**
      * Serial version identifier.

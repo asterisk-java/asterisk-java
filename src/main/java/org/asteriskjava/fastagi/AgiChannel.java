@@ -16,44 +16,44 @@
  */
 package org.asteriskjava.fastagi;
 
-import org.asteriskjava.fastagi.command.AGICommand;
-import org.asteriskjava.fastagi.reply.AGIReply;
+import org.asteriskjava.fastagi.command.AgiCommand;
+import org.asteriskjava.fastagi.reply.AgiReply;
 
 
 /**
- * Provides the functionality to send AGICommands to Asterisk while handling an
- * AGIRequest.<br>
- * This interface is supposed to be used by AGIScripts for interaction with the
+ * Provides the functionality to send AgiCommands to Asterisk while handling an
+ * AgiRequest.<br>
+ * This interface is supposed to be used by AgiScripts for interaction with the
  * Asterisk server.
  * 
  * @author srt
- * @version $Id: AGIChannel.java,v 1.8 2006/01/12 14:08:33 srt Exp $
+ * @version $Id: AgiChannel.java,v 1.8 2006/01/12 14:08:33 srt Exp $
  */
-public interface AGIChannel
+public interface AgiChannel
 {
     /**
      * Sends a command to asterisk and returns the corresponding reply.
      * 
      * @param command the command to send.
      * @return the reply of the asterisk server containing the return value.
-     * @throws AGIException if the command can't be sent to Asterisk (for
+     * @throws AgiException if the command can't be sent to Asterisk (for
      *             example because the channel has been hung up)
      */
-    AGIReply sendCommand(AGICommand command) throws AGIException;
+    AgiReply sendCommand(AgiCommand command) throws AgiException;
 
     /**
      * Answers the channel.
      * 
      * @since 0.2
      */
-    void answer() throws AGIException;
+    void answer() throws AgiException;
 
     /**
      * Hangs the channel up.
      * 
      * @since 0.2
      */
-    void hangup() throws AGIException;
+    void hangup() throws AgiException;
 
     /**
      * Cause the channel to automatically hangup at the given number of seconds
@@ -64,7 +64,7 @@ public interface AGIChannel
      *            0 disables the autohangup feature.
      * @since 0.2
      */
-    void setAutoHangup(int time) throws AGIException;
+    void setAutoHangup(int time) throws AgiException;
 
     /**
      * Sets the caller id on the current channel.
@@ -72,14 +72,14 @@ public interface AGIChannel
      * @param callerId the raw caller id to set, for example "John Doe<1234>".
      * @since 0.2
      */
-    void setCallerId(String callerId) throws AGIException;
+    void setCallerId(String callerId) throws AgiException;
 
     /**
      * Plays music on hold from the default music on hold class.
      * 
      * @since 0.2
      */
-    void playMusicOnHold() throws AGIException;
+    void playMusicOnHold() throws AgiException;
 
     /**
      * Plays music on hold from the given music on hold class.
@@ -88,14 +88,14 @@ public interface AGIChannel
      *            configures in Asterisk's <code><musiconhold.conf/code>.
      * @since 0.2
      */
-    void playMusicOnHold(String musicOnHoldClass) throws AGIException;
+    void playMusicOnHold(String musicOnHoldClass) throws AgiException;
 
     /**
      * Stops playing music on hold.
      * 
      * @since 0.2
      */
-    void stopMusicOnHold() throws AGIException;
+    void stopMusicOnHold() throws AgiException;
 
     /**
      * Returns the status of the channel.<br>
@@ -114,7 +114,7 @@ public interface AGIChannel
      * @return the status of the channel.
      * @since 0.2
      */
-    int getChannelStatus() throws AGIException;
+    int getChannelStatus() throws AgiException;
 
     /**
      * Plays the given file and waits for the user to enter DTMF digits until he
@@ -125,7 +125,7 @@ public interface AGIChannel
      * @return a String containing the DTMF the user entered
      * @since 0.2
      */
-    String getData(String file) throws AGIException;
+    String getData(String file) throws AgiException;
 
     /**
      * Plays the given file and waits for the user to enter DTMF digits until he
@@ -139,7 +139,7 @@ public interface AGIChannel
      * @return a String containing the DTMF the user entered
      * @since 0.2
      */
-    String getData(String file, long timeout) throws AGIException;
+    String getData(String file, long timeout) throws AgiException;
 
     /**
      * Plays the given file and waits for the user to enter DTMF digits until he
@@ -157,7 +157,7 @@ public interface AGIChannel
      * @since 0.2
      */
     String getData(String file, long timeout, int maxDigits)
-            throws AGIException;
+            throws AgiException;
 
     /**
      * Plays the given file, and waits for the user to press one of the given
@@ -171,7 +171,7 @@ public interface AGIChannel
      * @return the DTMF digit pressed or 0x0 if none was pressed.
      * @since 0.2
      */
-    char getOption(String file, String escapeDigits) throws AGIException;
+    char getOption(String file, String escapeDigits) throws AgiException;
 
     /**
      * Plays the given file, and waits for the user to press one of the given
@@ -188,7 +188,7 @@ public interface AGIChannel
      * @since 0.2
      */
     char getOption(String file, String escapeDigits, int timeout)
-            throws AGIException;
+            throws AgiException;
 
     /**
      * Executes the given command.
@@ -199,7 +199,7 @@ public interface AGIChannel
      *         not found.
      * @since 0.2
      */
-    int exec(String application) throws AGIException;
+    int exec(String application) throws AgiException;
 
     /**
      * Executes the given command.
@@ -212,7 +212,7 @@ public interface AGIChannel
      *         not found.
      * @since 0.2
      */
-    int exec(String application, String options) throws AGIException;
+    int exec(String application, String options) throws AgiException;
 
     /**
      * Sets the context for continuation upon exiting the application.
@@ -220,7 +220,7 @@ public interface AGIChannel
      * @param context the context for continuation upon exiting the application.
      * @since 0.2
      */
-    void setContext(String context) throws AGIException;
+    void setContext(String context) throws AgiException;
 
     /**
      * Sets the extension for continuation upon exiting the application.
@@ -229,7 +229,7 @@ public interface AGIChannel
      *            application.
      * @since 0.2
      */
-    void setExtension(String extension) throws AGIException;
+    void setExtension(String extension) throws AgiException;
 
     /**
      * Sets the priority or label for continuation upon exiting the application.
@@ -238,7 +238,7 @@ public interface AGIChannel
      *            application.
      * @since 0.2
      */
-    void setPriority(String priority) throws AGIException;
+    void setPriority(String priority) throws AgiException;
 
     /**
      * Plays the given file.
@@ -246,7 +246,7 @@ public interface AGIChannel
      * @param file name of the file to play.
      * @since 0.2
      */
-    void streamFile(String file) throws AGIException;
+    void streamFile(String file) throws AgiException;
 
     /**
      * Plays the given file and allows the user to escape by pressing one of the
@@ -258,7 +258,7 @@ public interface AGIChannel
      * @return the DTMF digit pressed or 0x0 if none was pressed.
      * @since 0.2
      */
-    char streamFile(String file, String escapeDigits) throws AGIException;
+    char streamFile(String file, String escapeDigits) throws AgiException;
 
     /**
      * Says the given digit string.
@@ -266,7 +266,7 @@ public interface AGIChannel
      * @param digits the digit string to say.
      * @since 0.2
      */
-    void sayDigits(String digits) throws AGIException;
+    void sayDigits(String digits) throws AgiException;
 
     /**
      * Says the given number, returning early if any of the given DTMF number
@@ -278,7 +278,7 @@ public interface AGIChannel
      * @return the DTMF digit pressed or 0x0 if none was pressed.
      * @since 0.2
      */
-    char sayDigits(String digits, String escapeDigits) throws AGIException;
+    char sayDigits(String digits, String escapeDigits) throws AgiException;
 
     /**
      * Says the given number.
@@ -286,7 +286,7 @@ public interface AGIChannel
      * @param number the number to say.
      * @since 0.2
      */
-    void sayNumber(String number) throws AGIException;
+    void sayNumber(String number) throws AgiException;
 
     /**
      * Says the given number, returning early if any of the given DTMF number
@@ -298,7 +298,7 @@ public interface AGIChannel
      * @return the DTMF digit pressed or 0x0 if none was pressed.
      * @since 0.2
      */
-    char sayNumber(String number, String escapeDigits) throws AGIException;
+    char sayNumber(String number, String escapeDigits) throws AgiException;
 
     /**
      * Says the given character string with phonetics.
@@ -306,7 +306,7 @@ public interface AGIChannel
      * @param text the text to say.
      * @since 0.2
      */
-    void sayPhonetic(String text) throws AGIException;
+    void sayPhonetic(String text) throws AgiException;
 
     /**
      * Says the given character string with phonetics, returning early if any of
@@ -318,7 +318,7 @@ public interface AGIChannel
      * @return the DTMF digit pressed or 0x0 if none was pressed.
      * @since 0.2
      */
-    char sayPhonetic(String text, String escapeDigits) throws AGIException;
+    char sayPhonetic(String text, String escapeDigits) throws AgiException;
 
     /**
      * Says the given character string.
@@ -326,7 +326,7 @@ public interface AGIChannel
      * @param text the text to say.
      * @since 0.2
      */
-    void sayAlpha(String text) throws AGIException;
+    void sayAlpha(String text) throws AgiException;
 
     /**
      * Says the given character string, returning early if any of the given DTMF
@@ -338,7 +338,7 @@ public interface AGIChannel
      * @return the DTMF digit pressed or 0x0 if none was pressed.
      * @since 0.2
      */
-    char sayAlpha(String text, String escapeDigits) throws AGIException;
+    char sayAlpha(String text, String escapeDigits) throws AgiException;
 
     /**
      * Says the given time.
@@ -346,7 +346,7 @@ public interface AGIChannel
      * @param time the time to say in seconds since 00:00:00 on January 1, 1970.
      * @since 0.2
      */
-    void sayTime(long time) throws AGIException;
+    void sayTime(long time) throws AgiException;
 
     /**
      * Says the given time, returning early if any of the given DTMF number are
@@ -358,7 +358,7 @@ public interface AGIChannel
      * @return the DTMF digit pressed or 0x0 if none was pressed.
      * @since 0.2
      */
-    char sayTime(long time, String escapeDigits) throws AGIException;
+    char sayTime(long time, String escapeDigits) throws AgiException;
 
     /**
      * Returns the value of the current channel variable.
@@ -368,7 +368,7 @@ public interface AGIChannel
      *         set.
      * @since 0.2
      */
-    String getVariable(String name) throws AGIException;
+    String getVariable(String name) throws AgiException;
 
     /**
      * Sets the value of the current channel variable to a new value.
@@ -377,7 +377,7 @@ public interface AGIChannel
      * @param value the new value to set.
      * @since 0.2
      */
-    void setVariable(String name, String value) throws AGIException;
+    void setVariable(String name, String value) throws AgiException;
 
     /**
      * Waits up to 'timeout' milliseconds to receive a DTMF digit.
@@ -387,7 +387,7 @@ public interface AGIChannel
      * @return the DTMF digit pressed or 0x0 if none was pressed.
      * @since 0.2
      */
-    char waitForDigit(int timeout) throws AGIException;
+    char waitForDigit(int timeout) throws AgiException;
 
     /**
      * Returns the value of the current channel variable, unlike getVariable()
@@ -399,7 +399,7 @@ public interface AGIChannel
      *         set.
      * @since 0.2
      */
-    String getFullVariable(String name) throws AGIException;
+    String getFullVariable(String name) throws AgiException;
 
     /**
      * Returns the value of the given channel variable.<br>
@@ -411,7 +411,7 @@ public interface AGIChannel
      *         set.
      * @since 0.2
      */
-    String getFullVariable(String name, String channel) throws AGIException;
+    String getFullVariable(String name, String channel) throws AgiException;
 
     /**
      * Says the given time.<br>
@@ -421,7 +421,7 @@ public interface AGIChannel
      *            1, 1970, Coordinated Universal Time (UTC)
      * @since 0.2
      */
-    void sayDateTime(long time) throws AGIException;
+    void sayDateTime(long time) throws AgiException;
 
     /**
      * Says the given time and allows interruption by one of the given escape
@@ -435,7 +435,7 @@ public interface AGIChannel
      * @return the DTMF digit pressed or 0x0 if none was pressed.
      * @since 0.2
      */
-    char sayDateTime(long time, String escapeDigits) throws AGIException;
+    char sayDateTime(long time, String escapeDigits) throws AgiException;
 
     /**
      * Says the given time in the given format and allows interruption by one of
@@ -451,7 +451,7 @@ public interface AGIChannel
      * @since 0.2
      */
     char sayDateTime(long time, String escapeDigits, String format)
-            throws AGIException;
+            throws AgiException;
 
     /**
      * Says the given time in the given format and timezone and allows
@@ -469,7 +469,7 @@ public interface AGIChannel
      * @since 0.2
      */
     char sayDateTime(long time, String escapeDigits, String format,
-            String timezone) throws AGIException;
+            String timezone) throws AgiException;
 
     /**
      * Retrieves an entry in the Asterisk database for a given family and key.
@@ -480,7 +480,7 @@ public interface AGIChannel
      *         is no such value.
      * @since 0.3
      */
-    String databaseGet(String family, String key) throws AGIException;
+    String databaseGet(String family, String key) throws AgiException;
 
     /**
      * Adds or updates an entry in the Asterisk database for a given family, key,
@@ -491,7 +491,7 @@ public interface AGIChannel
      * @param value the new value of the entry.
      * @since 0.3
      */
-    void databasePut(String family, String key, String value) throws AGIException;
+    void databasePut(String family, String key, String value) throws AgiException;
 
     /**
      * Deletes an entry in the Asterisk database for a given family and key.
@@ -500,7 +500,7 @@ public interface AGIChannel
      * @param key the key of the entry to delete.
      * @since 0.3
      */
-    void databaseDel(String family, String key) throws AGIException;
+    void databaseDel(String family, String key) throws AgiException;
 
     /**
      * Deletes a whole family of entries in the Asterisk database.
@@ -508,7 +508,7 @@ public interface AGIChannel
      * @param family the family to delete.
      * @since 0.3
      */
-    void databaseDelTree(String family) throws AGIException;
+    void databaseDelTree(String family) throws AgiException;
 
     /**
      * Deletes all entries of a given family in the Asterisk database that have a key
@@ -518,7 +518,7 @@ public interface AGIChannel
      * @param keytree the prefix of the keys of the entries to delete.
      * @since 0.3
      */
-    void databaseDelTree(String family, String keytree) throws AGIException;
+    void databaseDelTree(String family, String keytree) throws AgiException;
 
     /**
      * Sends a message to the Asterisk console via the verbose message system.
@@ -527,5 +527,5 @@ public interface AGIChannel
      * @param level the verbosity level to use. Must be in [1..4].
      * @since 0.3
      */
-    void verbose(String message, int level) throws AGIException;
+    void verbose(String message, int level) throws AgiException;
 }

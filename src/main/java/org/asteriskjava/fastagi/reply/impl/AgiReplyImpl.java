@@ -20,16 +20,16 @@ import java.io.*;
 import java.util.*;
 import java.util.regex.*;
 
-import org.asteriskjava.fastagi.reply.AGIReply;
+import org.asteriskjava.fastagi.reply.AgiReply;
 
 
 /**
- * Default implementation of the AGIReply interface.
+ * Default implementation of the AgiReply interface.
  * 
  * @author srt
- * @version $Id: AGIReplyImpl.java,v 1.2 2005/05/03 21:07:52 srt Exp $
+ * @version $Id: AgiReplyImpl.java,v 1.2 2005/05/03 21:07:52 srt Exp $
  */
-public class AGIReplyImpl implements Serializable, AGIReply
+public class AgiReplyImpl implements Serializable, AgiReply
 {
     private static final Pattern STATUS_PATTERN = Pattern
             .compile("^(\\d{3})[ -]");
@@ -87,12 +87,12 @@ public class AGIReplyImpl implements Serializable, AGIReply
      */
     private String usage;
 
-    public AGIReplyImpl()
+    public AgiReplyImpl()
     {
 
     }
 
-    public AGIReplyImpl(List lines)
+    public AgiReplyImpl(List lines)
     {
         this.lines = lines;
         try

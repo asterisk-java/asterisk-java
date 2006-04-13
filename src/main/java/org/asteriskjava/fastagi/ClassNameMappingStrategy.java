@@ -35,7 +35,7 @@ import java.util.Map;
  */
 public class ClassNameMappingStrategy extends AbstractMappingStrategy
 {
-    private Map<String, AGIScript> instances;
+    private Map<String, AgiScript> instances;
     private boolean shareInstances;
 
     /**
@@ -55,7 +55,7 @@ public class ClassNameMappingStrategy extends AbstractMappingStrategy
      */
     public ClassNameMappingStrategy(boolean shareInstances)
     {
-        this.instances = new HashMap<String, AGIScript>();
+        this.instances = new HashMap<String, AgiScript>();
         this.shareInstances = shareInstances;
     }
 
@@ -76,9 +76,9 @@ public class ClassNameMappingStrategy extends AbstractMappingStrategy
         this.shareInstances = shareInstances;
     }
 
-    public synchronized AGIScript determineScript(AGIRequest request)
+    public synchronized AgiScript determineScript(AgiRequest request)
     {
-        AGIScript script;
+        AgiScript script;
 
         if (shareInstances)
         {
@@ -89,7 +89,7 @@ public class ClassNameMappingStrategy extends AbstractMappingStrategy
             }
         }
 
-        script = createAGIScriptInstance(request.getScript());
+        script = createAgiScriptInstance(request.getScript());
         if (script == null)
         {
             return null;

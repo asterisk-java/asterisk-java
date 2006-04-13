@@ -19,33 +19,33 @@ package org.asteriskjava.fastagi;
 import java.io.IOException;
 
 /**
- * Runs an AGIServer in a separate Thread.<br>
- * You can use this class to run an AGIServer in the background of your
+ * Runs an AgiServer in a separate Thread.<br>
+ * You can use this class to run an AgiServer in the background of your
  * application or run it in your webcontainer or application server. 
  * 
  * @author srt
- * @version $Id: AGIServerThread.java,v 1.2 2005/10/25 22:26:21 srt Exp $
+ * @version $Id: AgiServerThread.java,v 1.2 2005/10/25 22:26:21 srt Exp $
  * @since 0.2
  */
-public class AGIServerThread
+public class AgiServerThread
 {
-    private AGIServer agiServer;
+    private AgiServer agiServer;
     private Thread thread;
 
     /**
-     * Sets the AGIServer to run.
+     * Sets the AgiServer to run.
      * 
-     * @param agiServer the AGIServer to run.
+     * @param agiServer the AgiServer to run.
      */
-    public void setAgiServer(AGIServer agiServer)
+    public void setAgiServer(AgiServer agiServer)
     {
         this.agiServer = agiServer;
     }
 
     /**
-     * Starts the AGIServer in its own thread.<br>
-     * Note: The AGIServerThread is designed to handle on AGIServer instance at
-     * a time so calling this method twice without stopping the AGIServer in
+     * Starts the AgiServer in its own thread.<br>
+     * Note: The AgiServerThread is designed to handle on AgiServer instance at
+     * a time so calling this method twice without stopping the AgiServer in
      * between will result in a RuntimeException.
      */
     public synchronized void startup()
@@ -58,7 +58,7 @@ public class AGIServerThread
 
         if (thread != null)
         {
-            throw new RuntimeException("AGIServer is already started");
+            throw new RuntimeException("AgiServer is already started");
         }
 
         thread = new Thread(new Runnable()
@@ -71,16 +71,16 @@ public class AGIServerThread
                 }
                 catch (IOException e)
                 {
-                    throw new RuntimeException("Unable to start AGIServer.", e);
+                    throw new RuntimeException("Unable to start AgiServer.", e);
                 }
             }
         });
-        thread.setName("AGIServer Thread");
+        thread.setName("AgiServer Thread");
         thread.start();
     }
 
     /**
-     * Stops the AGIServer.
+     * Stops the AgiServer.
      */
     public synchronized void shutdown()
     {
@@ -96,7 +96,7 @@ public class AGIServerThread
         }
         catch (IOException e)
         {
-            throw new RuntimeException("Unable to stop AGIServer.", e);
+            throw new RuntimeException("Unable to stop AgiServer.", e);
         }
 
         thread = null;

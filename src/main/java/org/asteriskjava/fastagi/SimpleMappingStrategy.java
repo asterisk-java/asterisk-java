@@ -42,16 +42,16 @@ import java.util.Map;
  *    &lt;/bean&gt;
  *
  *    &lt;bean id="hello"
- *          class="com.example.fastagi.HelloAGIScript"/&gt;
+ *          class="com.example.fastagi.HelloAgiScript"/&gt;
  *
  *    &lt;bean id="leastCostDial"
- *          class="com.example.fastagi.LeastCostDialAGIScript"&gt;
+ *          class="com.example.fastagi.LeastCostDialAgiScript"&gt;
  *        &lt;property name="rates"&gt;&lt;value&gt;rates.txt&lt;/value&gt;&lt;/property&gt;
  *    &lt;/bean&gt;
  * &lt;beans&gt;
  * </pre>
  * 
- * LeastCostDialAGIScript and HelloAGIScript must both implement the AGIScript.<br>
+ * LeastCostDialAgiScript and HelloAgiScript must both implement the AgiScript.<br>
  * 
  * @author srt
  * @version $Id: SimpleMappingStrategy.java,v 1.4 2005/10/25 22:29:29 srt Exp $
@@ -59,22 +59,22 @@ import java.util.Map;
  */
 public class SimpleMappingStrategy implements MappingStrategy
 {
-    private Map<String, AGIScript> mappings;
+    private Map<String, AgiScript> mappings;
 
     /**
-     * Set the "path to AGIScript" mapping.<br>
+     * Set the "path to AgiScript" mapping.<br>
      * Use the path (for example <code>hello.agi</code>) as key and your
-     * AGIScript (for example <code>new HelloAGIScript()</code>) as value of
+     * AgiScript (for example <code>new HelloAgiScript()</code>) as value of
      * this map. 
      * 
-     * @param mappings the path to AGIScript mapping.
+     * @param mappings the path to AgiScript mapping.
      */
-    public void setMappings(Map<String, AGIScript> mappings)
+    public void setMappings(Map<String, AgiScript> mappings)
     {
         this.mappings = mappings;
     }
 
-    public AGIScript determineScript(AGIRequest request)
+    public AgiScript determineScript(AgiRequest request)
     {
         if (mappings == null)
         {

@@ -18,10 +18,10 @@ package org.asteriskjava.fastagi.impl;
 
 import java.io.IOException;
 
-import org.asteriskjava.fastagi.AGIException;
-import org.asteriskjava.fastagi.AGINetworkException;
-import org.asteriskjava.fastagi.AGIWriter;
-import org.asteriskjava.fastagi.command.AGICommand;
+import org.asteriskjava.fastagi.AgiException;
+import org.asteriskjava.fastagi.AgiNetworkException;
+import org.asteriskjava.fastagi.AgiWriter;
+import org.asteriskjava.fastagi.command.AgiCommand;
 import org.asteriskjava.io.SocketConnectionFacade;
 
 
@@ -31,16 +31,16 @@ import org.asteriskjava.io.SocketConnectionFacade;
  * @author srt
  * @version $Id: AGIWriterImpl.java,v 1.1 2005/03/11 15:20:50 srt Exp $
  */
-public class AGIWriterImpl implements AGIWriter
+public class AgiWriterImpl implements AgiWriter
 {
     private SocketConnectionFacade socket;
 
-    public AGIWriterImpl(SocketConnectionFacade socket)
+    public AgiWriterImpl(SocketConnectionFacade socket)
     {
         this.socket = socket;
     }
 
-    public void sendCommand(AGICommand command) throws AGIException
+    public void sendCommand(AgiCommand command) throws AgiException
     {
         try
         {
@@ -49,7 +49,7 @@ public class AGIWriterImpl implements AGIWriter
         }
         catch (IOException e)
         {
-            throw new AGINetworkException(
+            throw new AgiNetworkException(
                     "Unable to send command to Asterisk: " + e.getMessage(), e);
         }
     }

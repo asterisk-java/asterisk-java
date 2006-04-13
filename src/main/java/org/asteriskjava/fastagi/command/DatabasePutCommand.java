@@ -24,7 +24,7 @@ package org.asteriskjava.fastagi.command;
  * @author srt
  * @version $Id: DatabasePutCommand.java,v 1.3 2006/01/12 10:35:13 srt Exp $
  */
-public class DatabasePutCommand extends AbstractAGICommand
+public class DatabasePutCommand extends AbstractAgiCommand
 {
     /**
      * Serial version identifier.

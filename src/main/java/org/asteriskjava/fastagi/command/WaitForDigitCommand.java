@@ -25,7 +25,7 @@ package org.asteriskjava.fastagi.command;
  * @author srt
  * @version $Id: WaitForDigitCommand.java,v 1.4 2006/01/12 10:35:13 srt Exp $
  */
-public class WaitForDigitCommand extends AbstractAGICommand
+public class WaitForDigitCommand extends AbstractAgiCommand
 {
     /**
      * Serial version identifier.

@@ -14,24 +14,24 @@
  *  limitations under the License.
  *
  */
-package org.asteriskjava.fastagi;
+package org.asteriskjava.fastagi.command;
 
 /**
- * The AGINetworkException usally wraps an IOException denoting a network
- * problem when talking to the Asterisk server.
+ * AgiCommand that can be sent to Asterisk via the Asterisk Gateway Interface.<br>
+ * This interface contains only one method that transforms the command to a
+ * String representation understood by Asterisk.
  * 
  * @author srt
- * @version $Id: AGINetworkException.java,v 1.1 2005/03/11 09:37:39 srt Exp $
+ * @version $Id: AgiCommand.java,v 1.5 2006/01/12 10:35:12 srt Exp $
  */
-public class AGINetworkException extends AGIException
+public interface AgiCommand
 {
-    /**
-     * Serial version identifier.
-     */
-    private static final long serialVersionUID = 3256445789629723703L;
 
-    public AGINetworkException(String message, Throwable cause)
-    {
-        super(message, cause);
-    }
+    /**
+     * Returns a string suitable to be sent to asterisk.<br>
+     * 
+     * @return a string suitable to be sent to asterisk.
+     */
+    public abstract String buildCommand();
+
 }

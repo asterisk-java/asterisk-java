@@ -29,7 +29,7 @@ import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.asteriskjava.fastagi.AGIRequest;
+import org.asteriskjava.fastagi.AgiRequest;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
@@ -40,7 +40,7 @@ import org.asteriskjava.util.LogFactory;
  * @author srt
  * @version $Id: AGIRequestImpl.java,v 1.11 2005/11/27 16:08:17 srt Exp $
  */
-public class AGIRequestImpl implements Serializable, AGIRequest
+public class AgiRequestImpl implements Serializable, AgiRequest
 {
     private final Log logger = LogFactory.getLog(getClass());
     private static final Pattern SCRIPT_PATTERN = Pattern
@@ -77,7 +77,7 @@ public class AGIRequestImpl implements Serializable, AGIRequest
      * @param environment the first lines as received from Asterisk containing
      *            the environment.
      */
-    public AGIRequestImpl(final Collection<String> environment)
+    public AgiRequestImpl(final Collection<String> environment)
     {
         if (environment == null)
         {

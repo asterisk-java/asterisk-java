@@ -22,7 +22,7 @@ package org.asteriskjava.fastagi.command;
  * @author srt
  * @version $Id: SetContextCommand.java,v 1.2 2006/01/12 10:35:13 srt Exp $
  */
-public class SetContextCommand extends AbstractAGICommand
+public class SetContextCommand extends AbstractAgiCommand
 {
     /**
      * Serial version identifier.

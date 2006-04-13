@@ -36,5 +36,5 @@ public interface MappingStrategy
      * @return the AGIScript instance that should handle this request 
      *         or <code>null</code> if none could be determined by this strategy.
      */
-    AGIScript determineScript(AGIRequest request);
+    AgiScript determineScript(AgiRequest request);
 }

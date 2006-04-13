@@ -20,14 +20,14 @@ import java.net.InetAddress;
 import java.util.Map;
 
 /**
- * Defines an object to provide client request information to an AGIScript.<br>
+ * Defines an object to provide client request information to an AgiScript.<br>
  * This includes information about the channel the script is invoked on and
  * parameters passed from the dialplan.
  * 
  * @author srt
- * @version $Id: AGIRequest.java,v 1.11 2006/01/18 13:36:35 srt Exp $
+ * @version $Id: AgiRequest.java,v 1.11 2006/01/18 13:36:35 srt Exp $
  */
-public interface AGIRequest
+public interface AgiRequest
 {
     /**
      * Returns a Map containing the raw request name/value pairs.

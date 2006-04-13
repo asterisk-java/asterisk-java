@@ -20,34 +20,34 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.asteriskjava.fastagi.AGIException;
-import org.asteriskjava.fastagi.AGIHangupException;
-import org.asteriskjava.fastagi.AGINetworkException;
-import org.asteriskjava.fastagi.AGIReader;
-import org.asteriskjava.fastagi.AGIRequest;
-import org.asteriskjava.fastagi.reply.AGIReply;
-import org.asteriskjava.fastagi.reply.impl.AGIReplyImpl;
+import org.asteriskjava.fastagi.AgiException;
+import org.asteriskjava.fastagi.AgiHangupException;
+import org.asteriskjava.fastagi.AgiNetworkException;
+import org.asteriskjava.fastagi.AgiReader;
+import org.asteriskjava.fastagi.AgiRequest;
+import org.asteriskjava.fastagi.reply.AgiReply;
+import org.asteriskjava.fastagi.reply.impl.AgiReplyImpl;
 import org.asteriskjava.io.SocketConnectionFacade;
 
 
 /**
- * Default implementation of the AGIReader implementation.
+ * Default implementation of the AgiReader implementation.
  * 
  * @author srt
- * @version $Id: AGIReaderImpl.java,v 1.3 2005/09/27 21:07:26 srt Exp $
+ * @version $Id: AgiReaderImpl.java,v 1.3 2005/09/27 21:07:26 srt Exp $
  */
-public class AGIReaderImpl implements AGIReader
+public class AgiReaderImpl implements AgiReader
 {
     private SocketConnectionFacade socket;
 
-    public AGIReaderImpl(SocketConnectionFacade socket)
+    public AgiReaderImpl(SocketConnectionFacade socket)
     {
         this.socket = socket;
     }
 
-    public AGIRequest readRequest() throws AGIException
+    public AgiRequest readRequest() throws AgiException
     {
-        AGIRequestImpl request;
+        AgiRequestImpl request;
         String line;
         List<String> lines;
 
@@ -67,12 +67,12 @@ public class AGIReaderImpl implements AGIReader
         }
         catch (IOException e)
         {
-            throw new AGINetworkException(
+            throw new AgiNetworkException(
                     "Unable to read request from Asterisk: " + e.getMessage(),
                     e);
         }
 
-        request = new AGIRequestImpl(lines);
+        request = new AgiRequestImpl(lines);
         request.setLocalAddress(socket.getLocalAddress());
         request.setLocalPort(socket.getLocalPort());
         request.setRemoteAddress(socket.getRemoteAddress());
@@ -81,9 +81,9 @@ public class AGIReaderImpl implements AGIReader
         return request;
     }
 
-    public AGIReply readReply() throws AGIException
+    public AgiReply readReply() throws AgiException
     {
-        AGIReply reply;
+        AgiReply reply;
         List<String> lines;
         String line;
 
@@ -95,20 +95,20 @@ public class AGIReaderImpl implements AGIReader
         }
         catch (IOException e)
         {
-            throw new AGINetworkException(
+            throw new AgiNetworkException(
                     "Unable to read reply from Asterisk: " + e.getMessage(), e);
         }
 
         if (line == null)
         {
-            throw new AGIHangupException();
+            throw new AgiHangupException();
         }
 
         lines.add(line);
 
         // read synopsis and usage if statuscode is 520
         if (line.startsWith(Integer
-                .toString(AGIReply.SC_INVALID_COMMAND_SYNTAX)))
+                .toString(AgiReply.SC_INVALID_COMMAND_SYNTAX)))
         {
             try
             {
@@ -116,7 +116,7 @@ public class AGIReaderImpl implements AGIReader
                 {
                     lines.add(line);
                     if (line.startsWith(Integer
-                            .toString(AGIReply.SC_INVALID_COMMAND_SYNTAX)))
+                            .toString(AgiReply.SC_INVALID_COMMAND_SYNTAX)))
                     {
                         break;
                     }
@@ -124,13 +124,13 @@ public class AGIReaderImpl implements AGIReader
             }
             catch (IOException e)
             {
-                throw new AGINetworkException(
+                throw new AgiNetworkException(
                         "Unable to read reply from Asterisk: " + e.getMessage(),
                         e);
             }
         }
 
-        reply = new AGIReplyImpl(lines);
+        reply = new AgiReplyImpl(lines);
 
         return reply;
     }

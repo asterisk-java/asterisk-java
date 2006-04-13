@@ -16,26 +16,26 @@
  */
 package org.asteriskjava.fastagi;
 
-import org.asteriskjava.fastagi.command.AGICommand;
+import org.asteriskjava.fastagi.command.AgiCommand;
 import org.asteriskjava.fastagi.command.AnswerCommand;
-import org.asteriskjava.fastagi.reply.AGIReply;
+import org.asteriskjava.fastagi.reply.AgiReply;
 
 
 /**
- * The BaseAGIScript provides some convinience methods to make it easier to
- * write custom AGIScripts.<br>
- * Just extend it by your own AGIScripts.
+ * The BaseAgiScript provides some convinience methods to make it easier to
+ * write custom AgiScripts.<br>
+ * Just extend it by your own AgiScripts.
  * 
  * @since 0.2
  * @author srt
- * @version $Id: BaseAGIScript.java,v 1.9 2006/01/12 14:08:33 srt Exp $
+ * @version $Id: BaseAgiScript.java,v 1.9 2006/01/12 14:08:33 srt Exp $
  */
-public abstract class BaseAGIScript implements AGIScript
+public abstract class BaseAgiScript implements AgiScript
 {
     /**
      * Answers the channel.
      */
-    protected void answer() throws AGIException
+    protected void answer() throws AgiException
     {
         sendCommand(new AnswerCommand());
     }
@@ -43,7 +43,7 @@ public abstract class BaseAGIScript implements AGIScript
     /**
      * Hangs the channel up.
      */
-    protected void hangup() throws AGIException
+    protected void hangup() throws AgiException
     {
         getChannel().hangup();
     }
@@ -56,7 +56,7 @@ public abstract class BaseAGIScript implements AGIScript
      *            hung up.<br>
      *            0 disables the autohangup feature.
      */
-    protected void setAutoHangup(int time) throws AGIException
+    protected void setAutoHangup(int time) throws AgiException
     {
         getChannel().setAutoHangup(time);
     }
@@ -66,7 +66,7 @@ public abstract class BaseAGIScript implements AGIScript
      * 
      * @param callerId the raw caller id to set, for example "John Doe<1234>".
      */
-    protected void setCallerId(String callerId) throws AGIException
+    protected void setCallerId(String callerId) throws AgiException
     {
         getChannel().setCallerId(callerId);
     }
@@ -74,7 +74,7 @@ public abstract class BaseAGIScript implements AGIScript
     /**
      * Plays music on hold from the default music on hold class.
      */
-    protected void playMusicOnHold() throws AGIException
+    protected void playMusicOnHold() throws AgiException
     {
         getChannel().playMusicOnHold();
     }
@@ -85,7 +85,7 @@ public abstract class BaseAGIScript implements AGIScript
      * @param musicOnHoldClass the music on hold class to play music from as
      *            configures in Asterisk's <code><musiconhold.conf/code>.
      */
-    protected void playMusicOnHold(String musicOnHoldClass) throws AGIException
+    protected void playMusicOnHold(String musicOnHoldClass) throws AgiException
     {
         getChannel().playMusicOnHold(musicOnHoldClass);
     }
@@ -93,7 +93,7 @@ public abstract class BaseAGIScript implements AGIScript
     /**
      * Stops playing music on hold.
      */
-    protected void stopMusicOnHold() throws AGIException
+    protected void stopMusicOnHold() throws AgiException
     {
         getChannel().stopMusicOnHold();
     }
@@ -114,7 +114,7 @@ public abstract class BaseAGIScript implements AGIScript
      * 
      * @return the status of the channel.
      */
-    protected int getChannelStatus() throws AGIException
+    protected int getChannelStatus() throws AgiException
     {
         return getChannel().getChannelStatus();
     }
@@ -127,7 +127,7 @@ public abstract class BaseAGIScript implements AGIScript
      * @param file the name of the file to play
      * @return a String containing the DTMF the user entered
      */
-    protected String getData(String file) throws AGIException
+    protected String getData(String file) throws AgiException
     {
         return getChannel().getData(file);
     }
@@ -143,7 +143,7 @@ public abstract class BaseAGIScript implements AGIScript
      *            (essentially never times out).
      * @return a String containing the DTMF the user entered
      */
-    protected String getData(String file, int timeout) throws AGIException
+    protected String getData(String file, int timeout) throws AgiException
     {
         return getChannel().getData(file, timeout);
     }
@@ -163,7 +163,7 @@ public abstract class BaseAGIScript implements AGIScript
      * @return a String containing the DTMF the user entered
      */
     protected String getData(String file, int timeout, int maxDigits)
-            throws AGIException
+            throws AgiException
     {
         return getChannel().getData(file, timeout, maxDigits);
     }
@@ -180,7 +180,7 @@ public abstract class BaseAGIScript implements AGIScript
      * @return the DTMF digit pressed or 0x0 if none was pressed.
      */
     protected char getOption(String file, String escapeDigits)
-            throws AGIException
+            throws AgiException
     {
         return getChannel().getOption(file, escapeDigits);
     }
@@ -199,7 +199,7 @@ public abstract class BaseAGIScript implements AGIScript
      * @return the DTMF digit pressed or 0x0 if none was pressed.
      */
     protected char getOption(String file, String escapeDigits, int timeout)
-            throws AGIException
+            throws AgiException
     {
         return getChannel().getOption(file, escapeDigits, timeout);
     }
@@ -212,7 +212,7 @@ public abstract class BaseAGIScript implements AGIScript
      * @return the return code of the application of -2 if the application was
      *         not found.
      */
-    protected int exec(String application) throws AGIException
+    protected int exec(String application) throws AgiException
     {
         return getChannel().exec(application);
     }
@@ -227,7 +227,7 @@ public abstract class BaseAGIScript implements AGIScript
      * @return the return code of the application of -2 if the application was
      *         not found.
      */
-    protected int exec(String application, String options) throws AGIException
+    protected int exec(String application, String options) throws AgiException
     {
         return getChannel().exec(application, options);
     }
@@ -237,7 +237,7 @@ public abstract class BaseAGIScript implements AGIScript
      * 
      * @param context the context for continuation upon exiting the application.
      */
-    protected void setContext(String context) throws AGIException
+    protected void setContext(String context) throws AgiException
     {
         getChannel().setContext(context);
     }
@@ -248,7 +248,7 @@ public abstract class BaseAGIScript implements AGIScript
      * @param extension the extension for continuation upon exiting the
      *            application.
      */
-    protected void setExtension(String extension) throws AGIException
+    protected void setExtension(String extension) throws AgiException
     {
         getChannel().setExtension(extension);
     }
@@ -259,7 +259,7 @@ public abstract class BaseAGIScript implements AGIScript
      * @param priority the priority or label for continuation upon exiting the
      *            application.
      */
-    protected void setPriority(String priority) throws AGIException
+    protected void setPriority(String priority) throws AgiException
     {
         getChannel().setPriority(priority);
     }
@@ -269,7 +269,7 @@ public abstract class BaseAGIScript implements AGIScript
      * 
      * @param file name of the file to play.
      */
-    protected void streamFile(String file) throws AGIException
+    protected void streamFile(String file) throws AgiException
     {
         getChannel().streamFile(file);
     }
@@ -284,7 +284,7 @@ public abstract class BaseAGIScript implements AGIScript
      * @return the DTMF digit pressed or 0x0 if none was pressed.
      */
     protected char streamFile(String file, String escapeDigits)
-            throws AGIException
+            throws AgiException
     {
         return getChannel().streamFile(file, escapeDigits);
     }
@@ -294,7 +294,7 @@ public abstract class BaseAGIScript implements AGIScript
      * 
      * @param digits the digit string to say.
      */
-    protected void sayDigits(String digits) throws AGIException
+    protected void sayDigits(String digits) throws AgiException
     {
         getChannel().sayDigits(digits);
     }
@@ -309,7 +309,7 @@ public abstract class BaseAGIScript implements AGIScript
      * @return the DTMF digit pressed or 0x0 if none was pressed.
      */
     protected char sayDigits(String digits, String escapeDigits)
-            throws AGIException
+            throws AgiException
     {
         return getChannel().sayDigits(digits, escapeDigits);
     }
@@ -319,7 +319,7 @@ public abstract class BaseAGIScript implements AGIScript
      * 
      * @param number the number to say.
      */
-    protected void sayNumber(String number) throws AGIException
+    protected void sayNumber(String number) throws AgiException
     {
         getChannel().sayNumber(number);
     }
@@ -334,7 +334,7 @@ public abstract class BaseAGIScript implements AGIScript
      * @return the DTMF digit pressed or 0x0 if none was pressed.
      */
     protected char sayNumber(String number, String escapeDigits)
-            throws AGIException
+            throws AgiException
     {
         return getChannel().sayNumber(number, escapeDigits);
     }
@@ -344,7 +344,7 @@ public abstract class BaseAGIScript implements AGIScript
      * 
      * @param text the text to say.
      */
-    protected void sayPhonetic(String text) throws AGIException
+    protected void sayPhonetic(String text) throws AgiException
     {
         getChannel().sayPhonetic(text);
     }
@@ -359,7 +359,7 @@ public abstract class BaseAGIScript implements AGIScript
      * @return the DTMF digit pressed or 0x0 if none was pressed.
      */
     protected char sayPhonetic(String text, String escapeDigits)
-            throws AGIException
+            throws AgiException
     {
         return getChannel().sayPhonetic(text, escapeDigits);
     }
@@ -369,7 +369,7 @@ public abstract class BaseAGIScript implements AGIScript
      * 
      * @param text the text to say.
      */
-    protected void sayAlpha(String text) throws AGIException
+    protected void sayAlpha(String text) throws AgiException
     {
         getChannel().sayAlpha(text);
     }
@@ -384,7 +384,7 @@ public abstract class BaseAGIScript implements AGIScript
      * @return the DTMF digit pressed or 0x0 if none was pressed.
      */
     protected char sayAlpha(String text, String escapeDigits)
-            throws AGIException
+            throws AgiException
     {
         return getChannel().sayAlpha(text, escapeDigits);
     }
@@ -394,7 +394,7 @@ public abstract class BaseAGIScript implements AGIScript
      * 
      * @param time the time to say in seconds since 00:00:00 on January 1, 1970.
      */
-    protected void sayTime(long time) throws AGIException
+    protected void sayTime(long time) throws AgiException
     {
         getChannel().sayTime(time);
     }
@@ -408,7 +408,7 @@ public abstract class BaseAGIScript implements AGIScript
      *            user to escape.
      * @return the DTMF digit pressed or 0x0 if none was pressed.
      */
-    protected char sayTime(long time, String escapeDigits) throws AGIException
+    protected char sayTime(long time, String escapeDigits) throws AgiException
     {
         return getChannel().sayTime(time, escapeDigits);
     }
@@ -420,7 +420,7 @@ public abstract class BaseAGIScript implements AGIScript
      * @return the value of the given variable or <code>null</code> if not
      *         set.
      */
-    protected String getVariable(String name) throws AGIException
+    protected String getVariable(String name) throws AgiException
     {
         return getChannel().getVariable(name);
     }
@@ -431,7 +431,7 @@ public abstract class BaseAGIScript implements AGIScript
      * @param name the name of the variable to retrieve.
      * @param value the new value to set.
      */
-    protected void setVariable(String name, String value) throws AGIException
+    protected void setVariable(String name, String value) throws AgiException
     {
         getChannel().setVariable(name, value);
     }
@@ -443,7 +443,7 @@ public abstract class BaseAGIScript implements AGIScript
      *            receive a DTMF digit, -1 will wait forever.
      * @return the DTMF digit pressed or 0x0 if none was pressed.
      */
-    protected char waitForDigit(int timeout) throws AGIException
+    protected char waitForDigit(int timeout) throws AgiException
     {
         return getChannel().waitForDigit(timeout);
     }
@@ -458,7 +458,7 @@ public abstract class BaseAGIScript implements AGIScript
      *         set.
      * @since 0.2
      */
-    protected String getFullVariable(String name) throws AGIException
+    protected String getFullVariable(String name) throws AgiException
     {
         return getChannel().getFullVariable(name);
     }
@@ -474,7 +474,7 @@ public abstract class BaseAGIScript implements AGIScript
      * @since 0.2
      */
     protected String getFullVariable(String name, String channel)
-            throws AGIException
+            throws AgiException
     {
         return getChannel().getFullVariable(name, channel);
     }
@@ -487,7 +487,7 @@ public abstract class BaseAGIScript implements AGIScript
      *            1, 1970, Coordinated Universal Time (UTC)
      * @since 0.2
      */
-    protected void sayDateTime(long time) throws AGIException
+    protected void sayDateTime(long time) throws AgiException
     {
         getChannel().sayDateTime(time);
     }
@@ -505,7 +505,7 @@ public abstract class BaseAGIScript implements AGIScript
      * @since 0.2
      */
     protected char sayDateTime(long time, String escapeDigits)
-            throws AGIException
+            throws AgiException
     {
         return getChannel().sayDateTime(time, escapeDigits);
     }
@@ -524,7 +524,7 @@ public abstract class BaseAGIScript implements AGIScript
      * @since 0.2
      */
     protected char sayDateTime(long time, String escapeDigits, String format)
-            throws AGIException
+            throws AgiException
     {
         return getChannel().sayDateTime(time, escapeDigits, format);
     }
@@ -545,7 +545,7 @@ public abstract class BaseAGIScript implements AGIScript
      * @since 0.2
      */
     protected char sayDateTime(long time, String escapeDigits, String format,
-            String timezone) throws AGIException
+            String timezone) throws AgiException
     {
         return getChannel().sayDateTime(time, escapeDigits, format, timezone);
     }
@@ -559,7 +559,7 @@ public abstract class BaseAGIScript implements AGIScript
      *         is no such value.
      * @since 0.3
      */
-    protected String databaseGet(String family, String key) throws AGIException
+    protected String databaseGet(String family, String key) throws AgiException
     {
         return getChannel().databaseGet(family, key);
     }
@@ -573,7 +573,7 @@ public abstract class BaseAGIScript implements AGIScript
      * @param value the new value of the entry.
      * @since 0.3
      */
-    protected void databasePut(String family, String key, String value) throws AGIException
+    protected void databasePut(String family, String key, String value) throws AgiException
     {
         getChannel().databasePut(family, key, value);
     }
@@ -585,7 +585,7 @@ public abstract class BaseAGIScript implements AGIScript
      * @param key the key of the entry to delete.
      * @since 0.3
      */
-    protected void databaseDel(String family, String key) throws AGIException
+    protected void databaseDel(String family, String key) throws AgiException
     {
         getChannel().databaseDel(family, key);
     }
@@ -596,7 +596,7 @@ public abstract class BaseAGIScript implements AGIScript
      * @param family the family to delete.
      * @since 0.3
      */
-    protected void databaseDelTree(String family) throws AGIException
+    protected void databaseDelTree(String family) throws AgiException
     {
         getChannel().databaseDelTree(family);
     }
@@ -609,7 +609,7 @@ public abstract class BaseAGIScript implements AGIScript
      * @param keytree the prefix of the keys of the entries to delete.
      * @since 0.3
      */
-    protected void databaseDelTree(String family, String keytree) throws AGIException
+    protected void databaseDelTree(String family, String keytree) throws AgiException
     {
         getChannel().databaseDelTree(family, keytree);
     }
@@ -621,7 +621,7 @@ public abstract class BaseAGIScript implements AGIScript
      * @param level the verbosity level to use. Must be in [1..4].
      * @since 0.3
      */
-    protected void verbose(String message, int level) throws AGIException
+    protected void verbose(String message, int level) throws AgiException
     {
         getChannel().verbose(message, level);
     }
@@ -631,18 +631,18 @@ public abstract class BaseAGIScript implements AGIScript
      * 
      * @param command the command to send to Asterisk
      * @return the reply received from Asterisk
-     * @throws AGIException if the command could not be processed properly
+     * @throws AgiException if the command could not be processed properly
      */
-    private AGIReply sendCommand(AGICommand command) throws AGIException
+    private AgiReply sendCommand(AgiCommand command) throws AgiException
     {
         return getChannel().sendCommand(command);
     }
 
-    private AGIChannel getChannel()
+    private AgiChannel getChannel()
     {
-        AGIChannel channel;
+        AgiChannel channel;
 
-        channel = AGIConnectionHandler.getChannel();
+        channel = AgiConnectionHandler.getChannel();
         if (channel == null)
         {
             throw new RuntimeException(

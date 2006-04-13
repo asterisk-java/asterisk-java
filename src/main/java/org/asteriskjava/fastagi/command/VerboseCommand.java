@@ -23,7 +23,7 @@ package org.asteriskjava.fastagi.command;
  * @author srt
  * @version $Id: VerboseCommand.java,v 1.5 2006/01/12 14:04:36 srt Exp $
  */
-public class VerboseCommand extends AbstractAGICommand
+public class VerboseCommand extends AbstractAgiCommand
 {
     /**
      * Serial version identifier.

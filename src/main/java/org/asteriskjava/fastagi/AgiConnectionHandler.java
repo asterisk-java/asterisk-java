@@ -19,9 +19,9 @@ package org.asteriskjava.fastagi;
 import java.io.IOException;
 
 import org.asteriskjava.fastagi.command.VerboseCommand;
-import org.asteriskjava.fastagi.impl.AGIChannelImpl;
-import org.asteriskjava.fastagi.impl.AGIReaderImpl;
-import org.asteriskjava.fastagi.impl.AGIWriterImpl;
+import org.asteriskjava.fastagi.impl.AgiChannelImpl;
+import org.asteriskjava.fastagi.impl.AgiReaderImpl;
+import org.asteriskjava.fastagi.impl.AgiWriterImpl;
 import org.asteriskjava.io.SocketConnectionFacade;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
@@ -29,18 +29,18 @@ import org.asteriskjava.util.LogFactory;
 
 
 /**
- * An AGIConnectionHandler is created and run by the AGIServer whenever a new
+ * An AgiConnectionHandler is created and run by the AgiServer whenever a new
  * socket connection from an Asterisk Server is received.<br>
- * It reads the request using an AGIReader and runs the AGIScript configured to
+ * It reads the request using an AgiReader and runs the AgiScript configured to
  * handle this type of request. Finally it closes the socket connection.
  * 
  * @author srt
- * @version $Id: AGIConnectionHandler.java,v 1.13 2005/11/04 21:49:01 srt Exp $
+ * @version $Id: AgiConnectionHandler.java,v 1.13 2005/11/04 21:49:01 srt Exp $
  */
-public class AGIConnectionHandler implements Runnable
+public class AgiConnectionHandler implements Runnable
 {
     private final Log logger = LogFactory.getLog(getClass());
-    private static final ThreadLocal<AGIChannel> channel = new ThreadLocal<AGIChannel>();
+    private static final ThreadLocal<AgiChannel> channel = new ThreadLocal<AgiChannel>();
 
     /**
      * The socket connection.
@@ -59,32 +59,32 @@ public class AGIConnectionHandler implements Runnable
      * @param mappingStrategy the strategy to use to determine which script to
      *            run.
      */
-    public AGIConnectionHandler(SocketConnectionFacade socket,
+    public AgiConnectionHandler(SocketConnectionFacade socket,
             MappingStrategy mappingStrategy)
     {
         this.socket = socket;
         this.mappingStrategy = mappingStrategy;
     }
 
-    protected AGIReader createReader()
+    protected AgiReader createReader()
     {
-        return new AGIReaderImpl(socket);
+        return new AgiReaderImpl(socket);
     }
 
-    protected AGIWriter createWriter()
+    protected AgiWriter createWriter()
     {
-        return new AGIWriterImpl(socket);
+        return new AgiWriterImpl(socket);
     }
 
     public void run()
     {
         try
         {
-            AGIReader reader;
-            AGIWriter writer;
-            AGIRequest request;
-            AGIChannel channel;
-            AGIScript script;
+            AgiReader reader;
+            AgiWriter writer;
+            AgiRequest request;
+            AgiChannel channel;
+            AgiScript script;
             Thread thread;
             String threadName;
 
@@ -92,13 +92,13 @@ public class AGIConnectionHandler implements Runnable
             writer = createWriter();
 
             request = reader.readRequest();
-            channel = new AGIChannelImpl(writer, reader);
+            channel = new AgiChannelImpl(writer, reader);
 
             script = mappingStrategy.determineScript(request);
 
             thread = Thread.currentThread();
             threadName = thread.getName();
-            AGIConnectionHandler.channel.set(channel);
+            AgiConnectionHandler.channel.set(channel);
 
             if (script != null)
             {
@@ -119,7 +119,7 @@ public class AGIConnectionHandler implements Runnable
                 logger.error(error);
             }
         }
-        catch (AGIException e)
+        catch (AgiException e)
         {
             logger.error("AGIException while handling request", e);
         }
@@ -129,7 +129,7 @@ public class AGIConnectionHandler implements Runnable
         }
         finally
         {
-            AGIConnectionHandler.channel.set(null);
+            AgiConnectionHandler.channel.set(null);
             try
             {
                 socket.close();
@@ -147,8 +147,8 @@ public class AGIConnectionHandler implements Runnable
      * @return the AGIChannel associated with the current thread or
      *         <code>null</code> if none is associated.
      */
-    static AGIChannel getChannel()
+    static AgiChannel getChannel()
     {
-        return (AGIChannel) AGIConnectionHandler.channel.get();
+        return (AgiChannel) AgiConnectionHandler.channel.get();
     }
 }

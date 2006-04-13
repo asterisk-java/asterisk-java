@@ -19,33 +19,33 @@ package org.asteriskjava.fastagi.reply;
 import java.util.List;
 
 /**
- * Reply received in response to an AGICommand.<br>
- * The AGIReply contains information about success or failure of the execution
- * of an AGICommand and - depending on the command sent - additional information
+ * Reply received in response to an AgiCommand.<br>
+ * The AgiReply contains information about success or failure of the execution
+ * of an AgiCommand and - depending on the command sent - additional information
  * returned, for example the value of a variable requested by a
  * GetVariableCommand.
  * 
- * @see org.asteriskjava.fastagi.command.AGICommand
+ * @see org.asteriskjava.fastagi.command.AgiCommand
  * @author srt
- * @version $Id: AGIReply.java,v 1.14 2005/10/25 22:37:34 srt Exp $
+ * @version $Id: AgiReply.java,v 1.14 2005/10/25 22:37:34 srt Exp $
  */
-public interface AGIReply
+public interface AgiReply
 {
     /**
      * Status code (200) indicating Asterisk successfully processed the
-     * AGICommand.
+     * AgiCommand.
      */
     public static int SC_SUCCESS = 200;
 
     /**
      * Status code (510) indicating Asterisk was unable to process the
-     * AGICommand because there is no command with the given name available.
+     * AgiCommand because there is no command with the given name available.
      */
     public static int SC_INVALID_OR_UNKNOWN_COMMAND = 510;
 
     /**
      * Status code (520) indicating Asterisk was unable to process the
-     * AGICommand because the syntax used was not correct. This is most likely
+     * AgiCommand because the syntax used was not correct. This is most likely
      * due to missing required parameters or additional parameters sent that are
      * not understood.<br>
      * Ensure proper quoting of the parameters when you receive this status

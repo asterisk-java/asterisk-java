@@ -25,15 +25,15 @@ import java.util.ResourceBundle;
 /**
  * A MappingStrategy that is configured via a resource bundle.<br>
  * The resource bundle contains the script part of the url as key and the fully
- * qualified class name of the corresponding AGIScript as value.<br>
+ * qualified class name of the corresponding AgiScript as value.<br>
  * Example:
  * 
  * <pre>
- * leastcostdial.agi = com.example.fastagi.LeastCostDialAGIScript
- * hello.agi = com.example.fastagi.HelloAGIScript
+ * leastcostdial.agi = com.example.fastagi.LeastCostDialAgiScript
+ * hello.agi = com.example.fastagi.HelloAgiScript
  * </pre>
  * 
- * LeastCostDialAGIScript and HelloAGIScript must both implement the AGIScript
+ * LeastCostDialAgiScript and HelloAgiScript must both implement the AgiScript
  * interface and have a default constructor with no parameters.<br>
  * The resource bundle (properties) file is called
  * <code>fastagi-mapping.properties</code> by default and must be available on 
@@ -47,7 +47,7 @@ public class ResourceBundleMappingStrategy extends AbstractMappingStrategy
     private static final String DEFAULT_RESOURCE_BUNDLE_NAME = "fastagi-mapping";
     private String resourceBundleName;
     private Map<String, String> mappings;
-    private Map<String, AGIScript> instances;
+    private Map<String, AgiScript> instances;
     private boolean shareInstances;
 
     /**
@@ -116,8 +116,8 @@ public class ResourceBundleMappingStrategy extends AbstractMappingStrategy
 
     /**
      * Sets whether to use shared instances or not. If set to <code>true</code>
-     * all AGIRequests are served by the same instance of an
-     * AGIScript, if set to <code>false</code> a new instance is created for
+     * all AgiRequests are served by the same instance of an
+     * AgiScript, if set to <code>false</code> a new instance is created for
      * each request.<br>
      * Default is <code>true</code>.
      * 
@@ -139,7 +139,7 @@ public class ResourceBundleMappingStrategy extends AbstractMappingStrategy
         mappings = new HashMap<String, String>();
         if (shareInstances)
         {
-            instances = new HashMap<String, AGIScript>();
+            instances = new HashMap<String, AgiScript>();
         }
 
         try
@@ -158,7 +158,7 @@ public class ResourceBundleMappingStrategy extends AbstractMappingStrategy
         {
             String scriptName;
             String className;
-            AGIScript agiScript;
+            AgiScript agiScript;
 
             scriptName = (String) keys.nextElement();
             className = resourceBundle.getString(scriptName);
@@ -167,7 +167,7 @@ public class ResourceBundleMappingStrategy extends AbstractMappingStrategy
 
             if (shareInstances)
             {
-                agiScript = createAGIScriptInstance(className);
+                agiScript = createAgiScriptInstance(className);
                 if (agiScript == null)
                 {
                     continue;
@@ -179,7 +179,7 @@ public class ResourceBundleMappingStrategy extends AbstractMappingStrategy
         }
     }
 
-    public AGIScript determineScript(AGIRequest request)
+    public AgiScript determineScript(AgiRequest request)
     {
         synchronized (this)
         {
@@ -195,7 +195,7 @@ public class ResourceBundleMappingStrategy extends AbstractMappingStrategy
         }
         else
         {
-            return createAGIScriptInstance(mappings.get(request.getScript()));
+            return createAgiScriptInstance(mappings.get(request.getScript()));
         }
     }
 }

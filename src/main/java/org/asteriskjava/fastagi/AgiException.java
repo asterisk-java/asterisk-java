@@ -20,36 +20,36 @@ package org.asteriskjava.fastagi;
  * Abstract base class for all AGI specific exceptions.
  * 
  * @author srt
- * @version $Id: AGIException.java,v 1.2 2005/03/11 09:37:39 srt Exp $
+ * @version $Id: AgiException.java,v 1.2 2005/03/11 09:37:39 srt Exp $
  */
-public abstract class AGIException extends Exception
+public abstract class AgiException extends Exception
 {
     /**
      *  
      */
-    public AGIException()
+    public AgiException()
     {
         super();
     }
 
     /**
-     * Creates a new AGIExeption with the given message.
+     * Creates a new AgiException with the given message.
      * 
-     * @param message a message decribing the AGIException.
+     * @param message a message decribing the AgiException.
      */
-    public AGIException(String message)
+    public AgiException(String message)
     {
         super(message);
     }
 
 
     /**
-     * Creates a new AGIExeption with the given message and cause.
+     * Creates a new AgiException with the given message and cause.
      * 
-     * @param message a message decribing the AGIException.
+     * @param message a message decribing the AgiException.
      * @param cause the throwable that caused this exception to be thrown.
      */
-    public AGIException(String message, Throwable cause)
+    public AgiException(String message, Throwable cause)
     {
         super(message, cause);
     }

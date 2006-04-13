@@ -31,7 +31,7 @@ import org.asteriskjava.util.LogFactory;
 
 
 
-public class DefaultAGIServer implements AGIServer
+public class DefaultAgiServer implements AgiServer
 {
     /**
      * The default name of the resource bundle that contains the config.
@@ -51,7 +51,7 @@ public class DefaultAGIServer implements AGIServer
     /**
      * Instance logger.
      */
-    private final Log logger = LogFactory.getLog(DefaultAGIServer.class);
+    private final Log logger = LogFactory.getLog(DefaultAgiServer.class);
 
     private ServerSocketFacade serverSocket;
 
@@ -73,7 +73,7 @@ public class DefaultAGIServer implements AGIServer
 
     /**
      * The maximum number of worker threads in the thread pool. This equals the maximum
-     * number of concurrent requests this AGIServer can serve.
+     * number of concurrent requests this AgiServer can serve.
      */
     private int maximumPoolSize;
     
@@ -83,16 +83,16 @@ public class DefaultAGIServer implements AGIServer
     private boolean die;
 
     /**
-     * The strategy to use for mapping AGIRequests to AGIScripts that serve
+     * The strategy to use for mapping AgiRequests to AgiScripts that serve
      * them.
      */
     private MappingStrategy mappingStrategy;
 
     /**
-     * Creates a new DefaultAGIServer.
+     * Creates a new DefaultAgiServer.
      * 
      */
-    public DefaultAGIServer()
+    public DefaultAgiServer()
     {
         this.port = DEFAULT_BIND_PORT;
         this.poolSize = DEFAULT_POOL_SIZE;
@@ -118,7 +118,7 @@ public class DefaultAGIServer implements AGIServer
 
     /**
      * Sets the maximum number of worker threads in the thread pool.<br>
-     * This equals the maximum number of concurrent requests this AGIServer can
+     * This equals the maximum number of concurrent requests this AgiServer can
      * serve.<br>
      * The default maximum pool size is 10.
      * 
@@ -154,7 +154,7 @@ public class DefaultAGIServer implements AGIServer
     }
 
     /**
-     * Sets the strategy to use for mapping AGIRequests to AGIScripts that serve
+     * Sets the strategy to use for mapping AgiRequests to AgiScripts that serve
      * them.<br>
      * The default mapping strategy is a ResourceBundleMappingStrategy.
      * 
@@ -218,7 +218,7 @@ public class DefaultAGIServer implements AGIServer
     public void startup() throws IOException, IllegalStateException
     {
         SocketConnectionFacade socket;
-        AGIConnectionHandler connectionHandler;
+        AgiConnectionHandler connectionHandler;
 
         die = false;
         pool = new ThreadPoolExecutor(
@@ -233,7 +233,7 @@ public class DefaultAGIServer implements AGIServer
         }
         catch (IOException e)
         {
-            logger.error("Unable start AGI Server: cannot to bind to *:" + port + ".", e);
+            logger.error("Unable start AgiServer: cannot to bind to *:" + port + ".", e);
             throw e;
         }
         
@@ -244,7 +244,7 @@ public class DefaultAGIServer implements AGIServer
             while ((socket = serverSocket.accept()) != null)
             {
                 logger.info("Received connection.");
-                connectionHandler = new AGIConnectionHandler(socket,
+                connectionHandler = new AgiConnectionHandler(socket,
                         mappingStrategy);
                 pool.execute(connectionHandler);
             }
@@ -273,7 +273,7 @@ public class DefaultAGIServer implements AGIServer
             }
             serverSocket = null;
             pool.shutdown();
-            logger.info("AGIServer shut down.");
+            logger.info("AgiServer shut down.");
         }
     }
 
@@ -306,9 +306,9 @@ public class DefaultAGIServer implements AGIServer
 
     public static void main(String[] args) throws Exception
     {
-        AGIServer server;
+        AgiServer server;
 
-        server = new DefaultAGIServer();
+        server = new DefaultAgiServer();
         server.startup();
     }
 }
