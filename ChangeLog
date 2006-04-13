@@ -1,5 +1,7 @@
 Asterisk-Java 0.3
 	* Changed package name from net.sf.asterisk to org.asteriskjava
+	  and renamed AGI classes to Agi to conform to Java coding
+	  standards
 	* Introduced generics
 	* ManagerReader threads are now daemon threads so as soon as
 	  all other threads are terminated the JVM will quit
