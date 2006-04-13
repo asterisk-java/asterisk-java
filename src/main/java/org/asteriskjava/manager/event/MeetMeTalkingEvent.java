@@ -19,9 +19,11 @@ package org.asteriskjava.manager.event;
 /**
  * A MeetMeTalkingEvent is triggered when a user starts talking in a meet me
  * conference.<br>
+ * To enable talker detection you must pass the option 'T' to the MeetMe application.<br>
  * It is implemented in <code>apps/app_meetme.c</code><br>
  * Available since Asterisk 1.2
  * 
+ * @see org.asteriskjava.manager.event.MeetMeStopTalkingEvent
  * @author srt
  * @version $Id: MeetMeTalkingEvent.java,v 1.1 2005/08/27 03:15:32 srt Exp $
  * @since 0.2
