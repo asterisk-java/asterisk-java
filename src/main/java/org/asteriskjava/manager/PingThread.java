@@ -99,6 +99,11 @@ public class PingThread extends Thread
                 break;
             }
 
+            if (!connection.isConnected())
+            {
+                continue;
+            }
+
             try
             {
                 response = connection.sendAction(new PingAction());
