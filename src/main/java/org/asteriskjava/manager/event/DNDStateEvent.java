@@ -41,7 +41,7 @@ public class DNDStateEvent extends ManagerEvent
     /**
      * The DND state of the channel.
      */
-    private String state;
+    private Boolean state;
 
     /**
      * Creates a new DNDStateEvent.
@@ -73,9 +73,9 @@ public class DNDStateEvent extends ManagerEvent
     /**
      * Returns DND state of the channel.
      * 
-     * @return "enabled" if do not disturb is on, "disabled" if it is off.
+     * @return Boolean.TRUE if do not disturb is on, Boolean.FALSE if it is off.
      */
-    public String getState()
+    public Boolean getState()
     {
         return state;
     }
@@ -83,7 +83,7 @@ public class DNDStateEvent extends ManagerEvent
     /**
      * Sets the DND state of the channel.
      */
-    public void setState(String state)
+    public void setState(Boolean state)
     {
         this.state = state;
     }
