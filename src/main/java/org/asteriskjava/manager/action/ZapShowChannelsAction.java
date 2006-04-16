@@ -26,7 +26,7 @@ import org.asteriskjava.manager.event.ZapShowChannelsCompleteEvent;
  * @see org.asteriskjava.manager.event.ZapShowChannelsEvent
  * @see org.asteriskjava.manager.event.ZapShowChannelsCompleteEvent
  * @author srt
- * @version $Id: ZapShowChannelsAction.java,v 1.4 2005/08/07 17:10:29 srt Exp $
+ * @version $Id$
  */
 public class ZapShowChannelsAction extends AbstractManagerAction
         implements

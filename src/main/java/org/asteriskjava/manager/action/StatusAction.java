@@ -26,7 +26,7 @@ import org.asteriskjava.manager.event.StatusCompleteEvent;
  * @see org.asteriskjava.manager.event.StatusEvent
  * @see org.asteriskjava.manager.event.StatusCompleteEvent
  * @author srt
- * @version $Id: StatusAction.java,v 1.5 2005/08/07 16:55:18 srt Exp $
+ * @version $Id$
  */
 public class StatusAction extends AbstractManagerAction
         implements

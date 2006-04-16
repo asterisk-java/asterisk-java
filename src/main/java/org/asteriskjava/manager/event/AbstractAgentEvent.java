@@ -20,7 +20,7 @@ package org.asteriskjava.manager.event;
  * Abstract base class for several agent related events.
  * 
  * @author srt
- * @version $Id: AbstractAgentEvent.java,v 1.1 2005/08/28 09:45:18 srt Exp $
+ * @version $Id$
  * @since 0.2
  */
 public abstract class AbstractAgentEvent extends ManagerEvent

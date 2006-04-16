@@ -21,7 +21,7 @@ package org.asteriskjava.fastagi.command;
  * Always returns 1.
  * 
  * @author srt
- * @version $Id: VerboseCommand.java,v 1.5 2006/01/12 14:04:36 srt Exp $
+ * @version $Id$
  */
 public class VerboseCommand extends AbstractAgiCommand
 {

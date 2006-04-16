@@ -20,7 +20,7 @@ package org.asteriskjava.fastagi.command;
  * Does nothing.
  * 
  * @author srt
- * @version $Id: NoopCommand.java,v 1.2 2006/01/12 10:35:13 srt Exp $
+ * @version $Id$
  */
 public class NoopCommand extends AbstractAgiCommand
 {

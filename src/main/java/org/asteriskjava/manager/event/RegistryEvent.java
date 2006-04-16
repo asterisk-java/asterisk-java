@@ -23,7 +23,7 @@ package org.asteriskjava.manager.event;
  * <code>channels/chan_sip.c</code>
  * 
  * @author srt
- * @version $Id: RegistryEvent.java,v 1.7 2005/08/28 10:37:55 srt Exp $
+ * @version $Id$
  */
 public class RegistryEvent extends ManagerEvent
 {

@@ -24,7 +24,7 @@ package org.asteriskjava.manager.event;
  * @see org.asteriskjava.manager.action.QueueStatusAction
  * 
  * @author srt
- * @version $Id: QueueStatusCompleteEvent.java,v 1.1 2005/07/15 11:50:45 srt Exp $
+ * @version $Id$
  * @since 0.2
  */
 public class QueueStatusCompleteEvent extends ResponseEvent

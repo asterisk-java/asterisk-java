@@ -23,7 +23,7 @@ package org.asteriskjava.manager.event;
  * Implemented in <code>apps/app_rxfax.c</code>.
  * 
  * @author srt
- * @version $Id: FaxReceivedEvent.java,v 1.1 2005/10/26 06:39:30 srt Exp $
+ * @version $Id$
  * @since 0.2
  */
 public class FaxReceivedEvent extends AbstractAgentEvent

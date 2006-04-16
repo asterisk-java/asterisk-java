@@ -23,7 +23,7 @@ package org.asteriskjava.manager.event;
  * This event is implemented in <code>cdr/cdr_manager.c</code>
  * 
  * @author srt
- * @version $Id: CdrEvent.java,v 1.2 2005/02/23 22:50:58 srt Exp $
+ * @version $Id$
  */
 public class CdrEvent extends ManagerEvent
 {

@@ -22,7 +22,7 @@ package org.asteriskjava.manager.event;
  * 
  * @see org.asteriskjava.manager.action.AgentsAction
  * @author srt
- * @version $Id: AgentsEvent.java,v 1.1 2005/07/15 19:01:33 srt Exp $
+ * @version $Id$
  * @since 0.2
  */
 public class AgentsEvent extends ResponseEvent

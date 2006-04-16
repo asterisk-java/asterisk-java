@@ -5,7 +5,7 @@ package org.asteriskjava.util;
  * See Asterisk's <code>util.c</code>.
  * 
  * @author srt
- * @version $Id: AstUtil.java,v 1.1 2005/07/26 12:16:03 srt Exp $
+ * @version $Id$
  */
 public class AstUtil
 {

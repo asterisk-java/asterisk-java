@@ -26,7 +26,7 @@ import org.asteriskjava.manager.event.DBGetResponseEvent;
  * 
  * @see org.asteriskjava.manager.event.DBGetResponseEvent
  * @author srt
- * @version $Id: DBGetAction.java,v 1.4 2005/08/07 00:09:42 srt Exp $
+ * @version $Id$
  * @since 0.2
  */
 public class DBGetAction extends AbstractManagerAction

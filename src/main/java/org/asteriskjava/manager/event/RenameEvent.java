@@ -21,7 +21,7 @@ package org.asteriskjava.manager.event;
  * It is implemented in <code>channel.c</code>
  * 
  * @author srt
- * @version $Id: RenameEvent.java,v 1.3 2005/02/23 22:56:41 srt Exp $
+ * @version $Id$
  */
 public class RenameEvent extends ManagerEvent
 {

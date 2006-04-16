@@ -20,7 +20,7 @@ package org.asteriskjava.fastagi.command;
  * Changes the callerid of the current channel.
  * 
  * @author srt
- * @version $Id: SetCallerIdCommand.java,v 1.2 2006/01/12 10:35:13 srt Exp $
+ * @version $Id$
  */
 public class SetCallerIdCommand extends AbstractAgiCommand
 {

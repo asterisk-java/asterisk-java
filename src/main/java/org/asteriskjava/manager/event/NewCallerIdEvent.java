@@ -22,7 +22,7 @@ package org.asteriskjava.manager.event;
  * It is implemented in <code>channel.c</code>
  * 
  * @author srt
- * @version $Id: NewCallerIdEvent.java,v 1.6 2005/08/27 02:59:24 srt Exp $
+ * @version $Id$
  */
 public class NewCallerIdEvent extends ManagerEvent
 {

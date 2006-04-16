@@ -20,7 +20,7 @@ package org.asteriskjava.manager.event;
  * Abstract base class for several call parking related events.
  * 
  * @author srt
- * @version $Id: AbstractParkedCallEvent.java,v 1.1 2005/08/27 16:16:45 srt Exp $
+ * @version $Id$
  * @since 0.2
  */
 public abstract class AbstractParkedCallEvent extends ManagerEvent

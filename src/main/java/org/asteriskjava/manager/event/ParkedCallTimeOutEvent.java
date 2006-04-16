@@ -23,7 +23,7 @@ package org.asteriskjava.manager.event;
  * Available since Asterisk 1.2
  * 
  * @author srt
- * @version $Id: ParkedCallTimeOutEvent.java,v 1.1 2005/08/27 12:08:59 srt Exp $
+ * @version $Id$
  * @since 0.2
  */
 public class ParkedCallTimeOutEvent extends AbstractParkedCallEvent

@@ -27,7 +27,7 @@ import java.util.List;
  * 
  * @see org.asteriskjava.fastagi.command.AgiCommand
  * @author srt
- * @version $Id: AgiReply.java,v 1.14 2005/10/25 22:37:34 srt Exp $
+ * @version $Id$
  */
 public interface AgiReply
 {

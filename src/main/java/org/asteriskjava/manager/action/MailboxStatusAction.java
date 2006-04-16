@@ -22,7 +22,7 @@ package org.asteriskjava.manager.action;
  * 
  * @see org.asteriskjava.manager.response.MailboxStatusResponse
  * @author srt
- * @version $Id: MailboxStatusAction.java,v 1.5 2005/08/07 00:09:42 srt Exp $
+ * @version $Id$
  */
 public class MailboxStatusAction extends AbstractManagerAction
 {

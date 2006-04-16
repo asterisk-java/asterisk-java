@@ -23,7 +23,7 @@ package org.asteriskjava.fastagi.command;
  * the timeout value if you desire the call to block indefinitely.
  * 
  * @author srt
- * @version $Id: WaitForDigitCommand.java,v 1.4 2006/01/12 10:35:13 srt Exp $
+ * @version $Id$
  */
 public class WaitForDigitCommand extends AbstractAgiCommand
 {

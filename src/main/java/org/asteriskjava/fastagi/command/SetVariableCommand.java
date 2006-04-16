@@ -20,7 +20,7 @@ package org.asteriskjava.fastagi.command;
  * Sets the given channel varible to the given value.
  * 
  * @author srt
- * @version $Id: SetVariableCommand.java,v 1.4 2006/01/12 10:35:13 srt Exp $
+ * @version $Id$
  */
 public class SetVariableCommand extends AbstractAgiCommand
 {

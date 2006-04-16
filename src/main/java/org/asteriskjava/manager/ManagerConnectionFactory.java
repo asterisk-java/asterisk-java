@@ -23,7 +23,7 @@ import java.io.IOException;
  * 
  * @see org.asteriskjava.manager.ManagerConnection
  * @author srt
- * @version $Id: ManagerConnectionFactory.java,v 1.3 2005/08/05 05:03:14 srt Exp $
+ * @version $Id$
  */
 public class ManagerConnectionFactory
 {

@@ -27,7 +27,7 @@ import org.asteriskjava.manager.event.PeerlistCompleteEvent;
  * @see org.asteriskjava.manager.event.PeerEntryEvent
  * @see org.asteriskjava.manager.event.PeerlistCompleteEvent
  * @author srt
- * @version $Id: SIPShowPeerAction.java,v 1.3 2005/08/27 10:18:05 srt Exp $
+ * @version $Id$
  * @since 0.2
  */
 public class SIPShowPeerAction extends AbstractManagerAction

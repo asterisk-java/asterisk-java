@@ -20,7 +20,7 @@ package org.asteriskjava.manager.action;
  * The ExtensionStateAction queries the state of an extension in a given context.
  * 
  * @author srt
- * @version $Id: ExtensionStateAction.java,v 1.3 2005/07/16 13:19:34 srt Exp $
+ * @version $Id$
  */
 public class ExtensionStateAction extends AbstractManagerAction
 {

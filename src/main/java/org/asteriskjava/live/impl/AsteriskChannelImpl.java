@@ -36,7 +36,7 @@ import org.asteriskjava.manager.response.ManagerResponse;
  * Default implementation of the AsteriskChannel interface.
  * 
  * @author srt
- * @version $Id: Channel.java,v 1.13 2005/09/01 19:13:20 srt Exp $
+ * @version $Id$
  */
 public class AsteriskChannelImpl implements AsteriskChannel
 {

@@ -37,7 +37,7 @@ import org.asteriskjava.manager.impl.EventBuilderImpl;
 
 /**
  * @author srt
- * @version $Id: EventBuilderImplTest.java,v 1.7 2005/08/28 12:28:41 srt Exp $
+ * @version $Id$
  */
 public class EventBuilderImplTest extends TestCase
 {

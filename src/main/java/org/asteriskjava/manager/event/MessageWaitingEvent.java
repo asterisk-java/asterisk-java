@@ -21,7 +21,7 @@ package org.asteriskjava.manager.event;
  * It is implemented in <code>apps/app_voicemail.c</code>
  * 
  * @author srt
- * @version $Id: MessageWaitingEvent.java,v 1.3 2005/08/27 03:33:34 srt Exp $
+ * @version $Id$
  */
 public class MessageWaitingEvent extends ManagerEvent
 {

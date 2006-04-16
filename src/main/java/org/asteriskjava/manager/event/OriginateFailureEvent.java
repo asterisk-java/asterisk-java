@@ -22,7 +22,7 @@ package org.asteriskjava.manager.event;
  * 
  * @see org.asteriskjava.manager.action.OriginateAction
  * @author srt
- * @version $Id: OriginateFailureEvent.java,v 1.3 2005/06/08 02:21:31 srt Exp $
+ * @version $Id$
  */
 public class OriginateFailureEvent extends OriginateEvent
 {

@@ -25,7 +25,7 @@ package org.asteriskjava.fastagi;
  * is used by AsteriskServer to handle all requests to a resource.
  * 
  * @author srt
- * @version $Id: AgiScript.java,v 1.6 2005/03/11 09:37:39 srt Exp $
+ * @version $Id$
  */
 public interface AgiScript
 {

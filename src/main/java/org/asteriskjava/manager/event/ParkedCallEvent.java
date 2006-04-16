@@ -23,7 +23,7 @@ package org.asteriskjava.manager.event;
  * 
  * @see org.asteriskjava.manager.action.ParkedCallsAction
  * @author srt
- * @version $Id: ParkedCallEvent.java,v 1.3 2005/08/27 04:04:29 srt Exp $
+ * @version $Id$
  */
 public class ParkedCallEvent extends ResponseEvent
 {

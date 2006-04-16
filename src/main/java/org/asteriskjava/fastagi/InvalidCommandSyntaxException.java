@@ -21,7 +21,7 @@ package org.asteriskjava.fastagi;
  * with status code 520.
  * 
  * @author srt
- * @version $Id: InvalidCommandSyntaxException.java,v 1.1 2005/03/11 19:34:55 srt Exp $
+ * @version $Id$
  */
 public class InvalidCommandSyntaxException extends AgiException
 {

@@ -22,7 +22,7 @@ package org.asteriskjava.manager.event;
  * @see org.asteriskjava.manager.action.StatusAction
  * 
  * @author srt
- * @version $Id: StatusEvent.java,v 1.3 2005/03/16 09:49:49 srt Exp $
+ * @version $Id$
  */
 public class StatusEvent extends ResponseEvent
 {

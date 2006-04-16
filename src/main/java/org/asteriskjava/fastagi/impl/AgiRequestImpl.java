@@ -38,7 +38,7 @@ import org.asteriskjava.util.LogFactory;
  * Default implementation of the AGIRequest interface.
  * 
  * @author srt
- * @version $Id: AGIRequestImpl.java,v 1.11 2005/11/27 16:08:17 srt Exp $
+ * @version $Id$
  */
 public class AgiRequestImpl implements Serializable, AgiRequest
 {

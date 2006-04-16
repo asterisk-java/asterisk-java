@@ -26,7 +26,7 @@ package org.asteriskjava.manager.impl;
  * only. 
  * 
  * @author srt
- * @version $Id: Util.java,v 1.1 2005/10/25 23:08:02 srt Exp $
+ * @version $Id$
  */
 public class Util
 {

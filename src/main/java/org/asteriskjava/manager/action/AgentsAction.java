@@ -28,7 +28,7 @@ import org.asteriskjava.manager.event.AgentsCompleteEvent;
  * @see org.asteriskjava.manager.event.AgentsCompleteEvent
  * 
  * @author srt
- * @version $Id: AgentsAction.java,v 1.5 2005/08/07 00:09:42 srt Exp $
+ * @version $Id$
  * @since 0.2
  */
 public class AgentsAction extends AbstractManagerAction implements EventGeneratingAction

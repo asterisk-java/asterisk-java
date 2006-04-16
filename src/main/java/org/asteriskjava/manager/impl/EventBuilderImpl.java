@@ -99,7 +99,7 @@ import org.asteriskjava.util.ReflectionUtil;
  * 
  * @see org.asteriskjava.manager.event.ManagerEvent
  * @author srt
- * @version $Id: EventBuilderImpl.java,v 1.18 2005/10/26 06:39:30 srt Exp $
+ * @version $Id$
  */
 public class EventBuilderImpl implements EventBuilder
 {

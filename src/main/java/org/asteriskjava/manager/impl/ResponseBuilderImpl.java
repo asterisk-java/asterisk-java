@@ -33,7 +33,7 @@ import org.asteriskjava.manager.response.ManagerResponse;
  * 
  * @see org.asteriskjava.manager.response.ManagerResponse
  * @author srt
- * @version $Id: ResponseBuilderImpl.java,v 1.2 2005/04/23 22:56:29 srt Exp $
+ * @version $Id$
  */
 public class ResponseBuilderImpl implements ResponseBuilder
 {

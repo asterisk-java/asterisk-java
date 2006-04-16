@@ -34,7 +34,7 @@ import org.asteriskjava.io.SocketConnectionFacade;
  * Default implementation of the SocketConnectionFacade interface using java.io.
  * 
  * @author srt
- * @version $Id: SocketConnectionFacadeImpl.java,v 1.1 2005/10/25 22:43:25 srt Exp $
+ * @version $Id$
  */
 public class SocketConnectionFacadeImpl implements SocketConnectionFacade
 {

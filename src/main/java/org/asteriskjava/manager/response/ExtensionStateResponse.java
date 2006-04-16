@@ -18,7 +18,7 @@ package org.asteriskjava.manager.response;
 
 /**
  * @author srt
- * @version $Id: ExtensionStateResponse.java,v 1.3 2005/07/18 12:11:05 srt Exp $
+ * @version $Id$
  */
 public class ExtensionStateResponse extends ManagerResponse
 {

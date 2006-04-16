@@ -22,7 +22,7 @@ package org.asteriskjava.manager.event;
  * It is implemented in <code>channels/chan_sip.c</code>
  * 
  * @author srt
- * @version $Id: PeerEntryEvent.java,v 1.2 2005/12/19 15:07:51 srt Exp $
+ * @version $Id$
  * @since 0.2
  */
 public class PeerEntryEvent extends ResponseEvent

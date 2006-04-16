@@ -21,7 +21,7 @@ package org.asteriskjava.manager.event;
  * It is implemented in <code>channels/chan_zap.c</code>
  * 
  * @author srt
- * @version $Id: AlarmClearEvent.java,v 1.3 2005/02/27 15:15:02 srt Exp $
+ * @version $Id$
  */
 public class AlarmClearEvent extends ManagerEvent
 {

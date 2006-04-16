@@ -35,7 +35,7 @@ import org.asteriskjava.util.LogFactory;
  * handle this type of request. Finally it closes the socket connection.
  * 
  * @author srt
- * @version $Id: AgiConnectionHandler.java,v 1.13 2005/11/04 21:49:01 srt Exp $
+ * @version $Id$
  */
 public class AgiConnectionHandler implements Runnable
 {

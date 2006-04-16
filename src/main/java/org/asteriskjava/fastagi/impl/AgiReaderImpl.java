@@ -34,7 +34,7 @@ import org.asteriskjava.io.SocketConnectionFacade;
  * Default implementation of the AgiReader implementation.
  * 
  * @author srt
- * @version $Id: AgiReaderImpl.java,v 1.3 2005/09/27 21:07:26 srt Exp $
+ * @version $Id$
  */
 public class AgiReaderImpl implements AgiReader
 {

@@ -26,7 +26,7 @@ import org.asteriskjava.manager.response.ManagerResponse;
  * 
  * @see org.asteriskjava.manager.response.ManagerResponse
  * @author srt
- * @version $Id: ResponseBuilder.java,v 1.2 2005/03/05 13:34:23 srt Exp $
+ * @version $Id$
  */
 public interface ResponseBuilder
 {

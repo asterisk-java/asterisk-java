@@ -24,7 +24,7 @@ package org.asteriskjava.manager.event;
  * @see org.asteriskjava.manager.event.ZapShowChannelsEvent
  * 
  * @author srt
- * @version $Id: ZapShowChannelsCompleteEvent.java,v 1.2 2005/02/23 22:50:58 srt Exp $
+ * @version $Id$
  */
 public class ZapShowChannelsCompleteEvent extends ResponseEvent
 {

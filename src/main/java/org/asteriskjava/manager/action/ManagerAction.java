@@ -29,7 +29,7 @@ import java.io.Serializable;
  * Action.
  * 
  * @author srt
- * @version $Id: ManagerAction.java,v 1.4 2005/07/16 13:19:33 srt Exp $
+ * @version $Id$
  */
 public interface ManagerAction extends Serializable
 {

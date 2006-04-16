@@ -12,7 +12,7 @@ package org.asteriskjava.manager.action;
  * 
  * @see org.asteriskjava.manager.response.MailboxCountResponse
  * @author srt
- * @version $Id: MailboxCountAction.java,v 1.4 2005/08/07 00:09:42 srt Exp $
+ * @version $Id$
  */
 public class MailboxCountAction extends AbstractManagerAction
 {

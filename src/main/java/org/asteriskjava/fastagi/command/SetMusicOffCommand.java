@@ -21,7 +21,7 @@ package org.asteriskjava.fastagi.command;
  * Always returns 0.
  * 
  * @author srt
- * @version $Id: SetMusicOffCommand.java,v 1.2 2006/01/12 10:35:13 srt Exp $
+ * @version $Id$
  */
 public class SetMusicOffCommand extends AbstractAgiCommand
 {

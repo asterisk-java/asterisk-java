@@ -31,7 +31,7 @@ import org.asteriskjava.util.LogFactory;
  * Default implementation of ManagerWriter interface.
  * 
  * @author srt
- * @version $Id: ManagerWriterImpl.java,v 1.4 2005/11/08 15:25:18 srt Exp $
+ * @version $Id$
  */
 public class ManagerWriterImpl implements ManagerWriter
 {

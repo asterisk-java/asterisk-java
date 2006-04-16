@@ -22,7 +22,7 @@ package org.asteriskjava.fastagi.command;
  * found.
  * 
  * @author srt
- * @version $Id: ExecCommand.java,v 1.6 2006/01/12 10:35:13 srt Exp $
+ * @version $Id$
  */
 public class ExecCommand extends AbstractAgiCommand
 {

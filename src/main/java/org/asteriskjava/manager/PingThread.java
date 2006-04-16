@@ -28,7 +28,7 @@ import org.asteriskjava.util.LogFactory;
  * traffic.
  * 
  * @author srt
- * @version $Id: PingThread.java,v 1.2 2005/07/16 20:07:49 srt Exp $
+ * @version $Id$
  */
 public class PingThread extends Thread
 {

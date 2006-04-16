@@ -22,7 +22,7 @@ package org.asteriskjava.manager.action;
  * Available since Asterisk 1.2
  * 
  * @author srt
- * @version $Id: DBPutAction.java,v 1.3 2005/08/07 00:09:42 srt Exp $
+ * @version $Id$
  * @since 0.2
  */
 public class DBPutAction extends AbstractManagerAction

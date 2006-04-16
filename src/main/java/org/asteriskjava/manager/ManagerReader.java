@@ -29,7 +29,7 @@ import org.asteriskjava.io.SocketConnectionFacade;
  * @see org.asteriskjava.manager.ResponseBuilder
  * @see org.asteriskjava.manager.DefaultManagerConnection
  * @author srt
- * @version $Id: ManagerReader.java,v 1.13 2005/10/25 22:49:56 srt Exp $
+ * @version $Id$
  */
 
 public interface ManagerReader extends Runnable

@@ -31,7 +31,7 @@ import org.asteriskjava.manager.action.ManagerAction;
  * @see org.asteriskjava.manager.ActionBuilder
  * @see org.asteriskjava.manager.DefaultManagerConnection
  * @author srt
- * @version $Id: ManagerWriter.java,v 1.6 2005/11/08 15:25:18 srt Exp $
+ * @version $Id$
  */
 public interface ManagerWriter
 {

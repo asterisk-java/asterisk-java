@@ -20,7 +20,7 @@ package org.asteriskjava.manager.action;
  * The ZapHangupAction hangs up a zap channel.
  * 
  * @author srt
- * @version $Id: ZapHangupAction.java,v 1.4 2005/08/07 17:10:29 srt Exp $
+ * @version $Id$
  */
 public class ZapHangupAction extends AbstractManagerAction
 {

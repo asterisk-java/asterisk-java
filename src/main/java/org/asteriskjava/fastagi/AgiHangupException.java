@@ -21,7 +21,7 @@ package org.asteriskjava.fastagi;
  * processing the AgiRequest.
  * 
  * @author srt
- * @version $Id: AgiHangupException.java,v 1.2 2005/07/30 19:57:16 srt Exp $
+ * @version $Id$
  */
 public class AgiHangupException extends AgiException
 {

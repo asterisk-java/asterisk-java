@@ -28,7 +28,7 @@ import java.util.List;
  * @see org.asteriskjava.manager.action.CommandAction
  * 
  * @author srt
- * @version $Id: CommandResponse.java,v 1.2 2005/02/23 22:50:58 srt Exp $
+ * @version $Id$
  */
 public class CommandResponse extends ManagerResponse
 {

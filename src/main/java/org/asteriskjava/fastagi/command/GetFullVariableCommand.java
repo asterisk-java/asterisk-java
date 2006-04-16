@@ -28,7 +28,7 @@ package org.asteriskjava.fastagi.command;
  * 
  * @since 0.2
  * @author srt
- * @version $Id: GetFullVariableCommand.java,v 1.3 2006/01/12 10:35:13 srt Exp $
+ * @version $Id$
  * @see org.asteriskjava.fastagi.command.GetVariableCommand
  */
 public class GetFullVariableCommand extends AbstractAgiCommand

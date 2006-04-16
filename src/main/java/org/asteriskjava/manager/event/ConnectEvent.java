@@ -21,7 +21,7 @@ package org.asteriskjava.manager.event;
  * It is a pseudo event not directly related to an Asterisk generated event.
  * 
  * @author srt
- * @version $Id: ConnectEvent.java,v 1.3 2005/03/02 23:15:50 srt Exp $
+ * @version $Id$
  */
 public class ConnectEvent extends ManagerEvent
 {

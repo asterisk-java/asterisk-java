@@ -20,7 +20,7 @@ package org.asteriskjava.live;
  * Enumeration that represents the state of a channel.
  * 
  * @author srt
- * @version $Id: ChannelStateEnum.java,v 1.3 2005/03/13 11:26:48 srt Exp $
+ * @version $Id$
  */
 public enum ChannelState
 {

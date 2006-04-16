@@ -21,7 +21,7 @@ package org.asteriskjava.manager.action;
  * extension.
  * 
  * @author srt
- * @version $Id: RedirectAction.java,v 1.4 2005/08/07 16:43:29 srt Exp $
+ * @version $Id$
  */
 public class RedirectAction extends AbstractManagerAction
 {

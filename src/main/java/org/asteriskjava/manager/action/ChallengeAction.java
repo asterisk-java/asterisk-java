@@ -24,7 +24,7 @@ package org.asteriskjava.manager.action;
  * @see org.asteriskjava.manager.action.LoginAction
  * @see org.asteriskjava.manager.response.ChallengeResponse
  * @author srt
- * @version $Id: ChallengeAction.java,v 1.4 2005/08/07 00:09:42 srt Exp $
+ * @version $Id$
  */
 public class ChallengeAction extends AbstractManagerAction
 {

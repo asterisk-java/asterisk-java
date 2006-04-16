@@ -22,7 +22,7 @@ package org.asteriskjava.manager.event;
  * It is implemented in <code>channel.c</code>
  * 
  * @author srt
- * @version $Id: UnlinkEvent.java,v 1.2 2005/02/23 22:50:58 srt Exp $
+ * @version $Id$
  */
 public class UnlinkEvent extends LinkageEvent
 {

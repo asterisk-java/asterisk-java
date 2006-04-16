@@ -24,7 +24,7 @@ import java.io.IOException;
  * application or run it in your webcontainer or application server. 
  * 
  * @author srt
- * @version $Id: AgiServerThread.java,v 1.2 2005/10/25 22:26:21 srt Exp $
+ * @version $Id$
  * @since 0.2
  */
 public class AgiServerThread

@@ -40,7 +40,7 @@ import java.util.ResourceBundle;
  * the classpath.
  * 
  * @author srt
- * @version $Id: ResourceBundleMappingStrategy.java,v 1.6 2006/01/12 12:54:31 srt Exp $
+ * @version $Id$
  */
 public class ResourceBundleMappingStrategy extends AbstractMappingStrategy
 {

@@ -14,7 +14,7 @@ import junit.framework.TestCase;
 
 /**
  * @author srt
- * @version $Id: TestDefaultManagerConnection.java,v 1.2 2005/11/08 21:11:31 srt Exp $
+ * @version $Id$
  */
 public class TestDefaultManagerConnection extends TestCase
 {

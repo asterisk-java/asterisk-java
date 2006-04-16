@@ -28,7 +28,7 @@ package org.asteriskjava.fastagi.command;
  * 
  * @see org.asteriskjava.fastagi.command.StreamFileCommand
  * @author srt
- * @version $Id: GetOptionCommand.java,v 1.2 2006/01/12 10:35:13 srt Exp $
+ * @version $Id$
  */
 public class GetOptionCommand extends AbstractAgiCommand
 {

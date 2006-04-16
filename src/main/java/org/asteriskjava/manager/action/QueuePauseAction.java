@@ -23,7 +23,7 @@ package org.asteriskjava.manager.action;
  * Available since Asterisk 1.2.
  * 
  * @author srt
- * @version $Id: QueuePauseAction.java,v 1.2 2005/08/27 10:03:40 srt Exp $
+ * @version $Id$
  * @since 0.2
  */
 public class QueuePauseAction extends AbstractManagerAction

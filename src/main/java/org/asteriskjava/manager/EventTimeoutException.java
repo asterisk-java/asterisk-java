@@ -23,7 +23,7 @@ package org.asteriskjava.manager;
  * that have been successfully received before the timeout occured.
  * 
  * @author srt
- * @version $Id: EventTimeoutException.java,v 1.3 2005/10/25 23:25:12 srt Exp $
+ * @version $Id$
  * @since 0.2
  */
 public class EventTimeoutException extends TimeoutException

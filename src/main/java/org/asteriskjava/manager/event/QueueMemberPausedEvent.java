@@ -23,7 +23,7 @@ package org.asteriskjava.manager.event;
  * Available since Asterisk 1.2
  * 
  * @author srt
- * @version $Id: QueueMemberPausedEvent.java,v 1.1 2005/08/28 09:45:18 srt Exp $
+ * @version $Id$
  * @since 0.2
  */
 public class QueueMemberPausedEvent extends AbstractQueueMemberEvent

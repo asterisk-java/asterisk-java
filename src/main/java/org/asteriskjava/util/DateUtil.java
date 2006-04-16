@@ -22,7 +22,7 @@ import java.util.Date;
  * Utility class to obtain the current date and allows to override with a fixed value for testing.
  * 
  * @author srt
- * @version $Id: DateUtil.java,v 1.1 2005/03/11 15:31:47 srt Exp $
+ * @version $Id$
  */
 public class DateUtil
 {

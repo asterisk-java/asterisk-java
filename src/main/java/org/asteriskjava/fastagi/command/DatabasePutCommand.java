@@ -22,7 +22,7 @@ package org.asteriskjava.fastagi.command;
  * Returns 1 if successful, 0 otherwise.
  * 
  * @author srt
- * @version $Id: DatabasePutCommand.java,v 1.3 2006/01/12 10:35:13 srt Exp $
+ * @version $Id$
  */
 public class DatabasePutCommand extends AbstractAgiCommand
 {

@@ -20,7 +20,7 @@ package org.asteriskjava.manager.action;
  * The ZapTransferAction transfers a zap channel.
  * 
  * @author srt
- * @version $Id: ZapTransferAction.java,v 1.3 2005/07/16 13:19:33 srt Exp $
+ * @version $Id$
  */
 public class ZapTransferAction extends AbstractManagerAction
 {

@@ -27,7 +27,7 @@ import org.asteriskjava.manager.response.ManagerResponse;
  * DefaultManagerConnection and its ManagerReader.
  * 
  * @author srt
- * @version $Id: Dispatcher.java,v 1.2 2005/10/25 22:49:56 srt Exp $
+ * @version $Id$
  */
 public interface Dispatcher
 {

@@ -28,7 +28,7 @@ package org.asteriskjava.manager.action;
  * This action corresponds the the AbsoluteTimeout command used in the dialplan.
  * 
  * @author srt
- * @version $Id: AbsoluteTimeoutAction.java,v 1.4 2005/08/07 00:09:42 srt Exp $
+ * @version $Id$
  */
 public class AbsoluteTimeoutAction extends AbstractManagerAction
 {

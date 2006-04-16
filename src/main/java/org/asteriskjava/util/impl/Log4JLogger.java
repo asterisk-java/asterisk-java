@@ -32,7 +32,7 @@ import org.asteriskjava.util.Log;
  * @author <a href="mailto:sanders@apache.org">Scott Sanders</a>
  * @author Rod Waldhoff
  * @author Robert Burrell Donkin
- * @version $Id: Log4JLogger.java,v 1.1 2005/04/20 18:22:13 srt Exp $
+ * @version $Id$
  */
 public class Log4JLogger implements Log, Serializable
 {

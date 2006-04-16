@@ -31,7 +31,7 @@ import java.util.Map;
  * AGIScript.
  * 
  * @author srt
- * @version $Id: ClassNameMappingStrategy.java,v 1.2 2006/01/12 11:49:33 srt Exp $
+ * @version $Id$
  */
 public class ClassNameMappingStrategy extends AbstractMappingStrategy
 {

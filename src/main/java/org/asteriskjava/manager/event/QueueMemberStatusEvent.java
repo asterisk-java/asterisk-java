@@ -20,7 +20,7 @@ package org.asteriskjava.manager.event;
  * A QueueMemberStatusEvent shows the status of a QueueMemberEvent
  * 
  * @author Asteria Solutions Group, Inc. <http://www.asteriasgi.com/>
- * @version $Id: QueueMemberStatusEvent.java,v 1.4 2005/07/15 11:44:23 srt Exp $
+ * @version $Id$
  */
 public class QueueMemberStatusEvent extends QueueMemberEvent
 {

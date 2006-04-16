@@ -25,7 +25,7 @@ package org.asteriskjava.manager.event;
  * @see org.asteriskjava.manager.action.SIPPeersAction
  * @see org.asteriskjava.manager.action.SIPShowPeerAction
  * @author srt
- * @version $Id: PeerlistCompleteEvent.java,v 1.1 2005/07/18 14:53:08 srt Exp $
+ * @version $Id$
  * @since 0.2
  */
 public class PeerlistCompleteEvent extends ResponseEvent

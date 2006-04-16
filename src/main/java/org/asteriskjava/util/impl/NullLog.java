@@ -22,7 +22,7 @@ import org.asteriskjava.util.Log;
  * A Log implementation that does nothing.
  * 
  * @author srt
- * @version $Id: NullLog.java,v 1.1 2005/04/20 18:22:13 srt Exp $
+ * @version $Id$
  */
 public class NullLog implements Log
 {

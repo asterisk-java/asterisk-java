@@ -26,7 +26,7 @@ import org.asteriskjava.manager.event.ParkedCallsCompleteEvent;
  * @see org.asteriskjava.manager.event.ParkedCallEvent
  * @see org.asteriskjava.manager.event.ParkedCallsCompleteEvent
  * @author srt
- * @version $Id: ParkedCallsAction.java,v 1.5 2005/08/07 16:43:29 srt Exp $
+ * @version $Id$
  */
 public class ParkedCallsAction extends AbstractManagerAction
         implements

@@ -23,7 +23,7 @@ import org.asteriskjava.manager.response.ManagerResponse;
  * 
  * @see org.asteriskjava.manager.response.ManagerResponse
  * @author srt
- * @version $Id: ManagerResponseHandler.java,v 1.2 2005/02/23 22:50:57 srt Exp $
+ * @version $Id$
  */
 public interface ManagerResponseHandler
 {

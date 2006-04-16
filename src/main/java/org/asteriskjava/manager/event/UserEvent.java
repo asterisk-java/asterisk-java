@@ -59,7 +59,7 @@ package org.asteriskjava.manager.event;
  * @see org.asteriskjava.manager.ManagerConnection#registerUserEventClass(Class)
  * 
  * @author srt
- * @version $Id: UserEvent.java,v 1.3 2006/01/15 04:19:38 srt Exp $
+ * @version $Id$
  */
 public abstract class UserEvent extends ManagerEvent
 {

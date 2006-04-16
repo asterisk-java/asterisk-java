@@ -21,7 +21,7 @@ package org.asteriskjava.manager.event;
  * It is implemented in <code>channel.c</code>
  * 
  * @author srt
- * @version $Id: HangupEvent.java,v 1.3 2005/08/27 02:26:59 srt Exp $
+ * @version $Id$
  */
 public class HangupEvent extends ChannelEvent
 {

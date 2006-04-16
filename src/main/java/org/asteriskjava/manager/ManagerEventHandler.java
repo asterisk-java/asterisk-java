@@ -26,7 +26,7 @@ import org.asteriskjava.manager.event.ManagerEvent;
  * 
  * @see org.asteriskjava.manager.event.ManagerEvent
  * @author srt
- * @version $Id: ManagerEventHandler.java,v 1.3 2005/07/29 03:30:14 srt Exp $
+ * @version $Id$
  */
 public interface ManagerEventHandler extends EventListener
 {

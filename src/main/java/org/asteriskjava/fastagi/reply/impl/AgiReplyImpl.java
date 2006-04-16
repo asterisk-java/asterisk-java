@@ -27,7 +27,7 @@ import org.asteriskjava.fastagi.reply.AgiReply;
  * Default implementation of the AgiReply interface.
  * 
  * @author srt
- * @version $Id: AgiReplyImpl.java,v 1.2 2005/05/03 21:07:52 srt Exp $
+ * @version $Id$
  */
 public class AgiReplyImpl implements Serializable, AgiReply
 {

@@ -24,7 +24,7 @@ package org.asteriskjava.fastagi;
  * from the dialplan.
  * 
  * @author srt
- * @version $Id: MappingStrategy.java,v 1.2 2006/01/12 11:50:24 srt Exp $
+ * @version $Id$
  */
 public interface MappingStrategy
 {

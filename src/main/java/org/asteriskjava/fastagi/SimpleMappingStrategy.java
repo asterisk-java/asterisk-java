@@ -54,7 +54,7 @@ import java.util.Map;
  * LeastCostDialAgiScript and HelloAgiScript must both implement the AgiScript.<br>
  * 
  * @author srt
- * @version $Id: SimpleMappingStrategy.java,v 1.4 2005/10/25 22:29:29 srt Exp $
+ * @version $Id$
  * @since 0.2
  */
 public class SimpleMappingStrategy implements MappingStrategy

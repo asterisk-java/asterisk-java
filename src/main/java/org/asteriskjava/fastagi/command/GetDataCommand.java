@@ -24,7 +24,7 @@ package org.asteriskjava.fastagi.command;
  * or the user presses #.
  * 
  * @author srt
- * @version $Id: GetDataCommand.java,v 1.8 2006/01/12 10:35:13 srt Exp $
+ * @version $Id$
  */
 public class GetDataCommand extends AbstractAgiCommand
 {

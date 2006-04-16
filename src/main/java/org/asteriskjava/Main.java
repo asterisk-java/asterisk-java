@@ -23,7 +23,7 @@ import org.asteriskjava.fastagi.DefaultAgiServer;
  * Starts the DefaultAgiServer.
  * 
  * @author srt
- * @version $Id: Main.java,v 1.1 2005/03/12 09:57:32 srt Exp $
+ * @version $Id$
  */
 public class Main
 {

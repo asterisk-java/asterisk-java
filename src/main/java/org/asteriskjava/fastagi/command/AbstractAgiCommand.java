@@ -23,7 +23,7 @@ import java.io.Serializable;
  * implementing AgiCommand classes.
  * 
  * @author srt
- * @version $Id: AbstractAGICommand.java,v 1.1 2006/01/12 10:35:13 srt Exp $
+ * @version $Id$
  */
 public abstract class AbstractAgiCommand implements Serializable, AgiCommand
 {

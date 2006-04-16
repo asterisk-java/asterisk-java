@@ -33,7 +33,7 @@ import org.asteriskjava.util.ReflectionUtil;
  * Event.
  * 
  * @author srt
- * @version $Id: ManagerEvent.java,v 1.5 2005/05/21 23:06:04 srt Exp $
+ * @version $Id$
  */
 public abstract class ManagerEvent extends EventObject implements Serializable
 {

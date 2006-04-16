@@ -43,7 +43,7 @@ package org.asteriskjava.manager.action;
  * contains the name of a channel instance, for example "SIP/1234-9cd".
  * 
  * @author srt
- * @version $Id: GetVarAction.java,v 1.4 2005/11/02 20:02:37 srt Exp $
+ * @version $Id$
  */
 public class GetVarAction extends AbstractManagerAction
 {

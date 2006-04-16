@@ -21,7 +21,7 @@ package org.asteriskjava.manager.action;
  * Available since Asterisk 1.2
  * 
  * @author srt
- * @version $Id: AgentLogoffAction.java,v 1.4 2005/08/26 21:58:48 srt Exp $
+ * @version $Id$
  * @since 0.2
  */
 public class AgentLogoffAction extends AbstractManagerAction

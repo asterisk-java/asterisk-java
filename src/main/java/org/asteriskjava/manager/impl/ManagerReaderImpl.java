@@ -44,7 +44,7 @@ import org.asteriskjava.util.LogFactory;
  * Default implementation of the ManagerReader interface.
  * 
  * @author srt
- * @version $Id: ManagerReaderImpl.java,v 1.9 2005/09/13 19:59:58 srt Exp $
+ * @version $Id$
  */
 public class ManagerReaderImpl implements ManagerReader
 {

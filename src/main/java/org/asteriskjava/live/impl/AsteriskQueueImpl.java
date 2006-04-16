@@ -26,7 +26,7 @@ import org.asteriskjava.live.AsteriskQueue;
  * Default implementation of the AsteriskQueue interface.
  * 
  * @author srt
- * @version $Id: Queue.java,v 1.3 2005/08/21 22:39:22 srt Exp $
+ * @version $Id$
  */
 public class AsteriskQueueImpl implements AsteriskQueue
 {

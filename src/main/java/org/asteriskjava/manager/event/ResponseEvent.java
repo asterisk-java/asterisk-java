@@ -23,7 +23,7 @@ package org.asteriskjava.manager.event;
  * 
  * @see org.asteriskjava.manager.action.ManagerAction
  * @author srt
- * @version $Id: ResponseEvent.java,v 1.3 2005/07/16 00:16:02 srt Exp $
+ * @version $Id$
  */
 public abstract class ResponseEvent extends ManagerEvent
 {

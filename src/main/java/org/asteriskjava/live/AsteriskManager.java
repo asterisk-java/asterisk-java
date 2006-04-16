@@ -32,7 +32,7 @@ import org.asteriskjava.manager.TimeoutException;
  * AsteriskManager be aware that it might change in the future.
  * 
  * @author srt
- * @version $Id: AsteriskManager.java,v 1.9 2005/07/27 23:38:14 srt Exp $
+ * @version $Id$
  */
 public interface AsteriskManager
 {

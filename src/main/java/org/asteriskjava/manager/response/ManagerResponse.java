@@ -29,7 +29,7 @@ import java.util.Map;
  * 
  * @see org.asteriskjava.manager.action.ManagerAction
  * @author srt
- * @version $Id: ManagerResponse.java,v 1.5 2005/04/24 13:39:40 srt Exp $
+ * @version $Id$
  */
 public class ManagerResponse implements Serializable
 {

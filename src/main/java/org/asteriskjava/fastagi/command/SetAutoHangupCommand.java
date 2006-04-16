@@ -23,7 +23,7 @@ package org.asteriskjava.fastagi.command;
  * autohangup feature to be disabled on this channel.
  * 
  * @author srt
- * @version $Id: SetAutoHangupCommand.java,v 1.4 2006/01/12 10:35:13 srt Exp $
+ * @version $Id$
  */
 public class SetAutoHangupCommand extends AbstractAgiCommand
 {

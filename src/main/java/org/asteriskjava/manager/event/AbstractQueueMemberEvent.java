@@ -20,7 +20,7 @@ package org.asteriskjava.manager.event;
  * Abstract base class for several queue member related events.
  * 
  * @author srt
- * @version $Id: AbstractQueueMemberEvent.java,v 1.1 2005/08/28 09:45:19 srt Exp $
+ * @version $Id$
  * @since 0.2
  */
 public abstract class AbstractQueueMemberEvent extends ManagerEvent

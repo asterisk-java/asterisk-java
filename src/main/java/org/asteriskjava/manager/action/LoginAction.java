@@ -27,7 +27,7 @@ package org.asteriskjava.manager.action;
  * @see org.asteriskjava.manager.action.ChallengeAction
  * @see org.asteriskjava.manager.response.ManagerError
  * @author srt
- * @version $Id: LoginAction.java,v 1.4 2005/08/07 00:09:42 srt Exp $
+ * @version $Id$
  */
 public class LoginAction extends AbstractManagerAction
 {

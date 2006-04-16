@@ -23,7 +23,7 @@ package org.asteriskjava.manager.event;
  * 
  * @see org.asteriskjava.manager.action.QueueStatusAction
  * @author srt
- * @version $Id: QueueMemberEvent.java,v 1.4 2005/08/28 09:39:50 srt Exp $
+ * @version $Id$
  */
 public class QueueMemberEvent extends ResponseEvent
 {

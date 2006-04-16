@@ -22,7 +22,7 @@ package org.asteriskjava.manager.action;
  * 
  * @author Asteria Solutions Group, Inc. <http://www.asteriasgi.com>
  * @author srt
- * @version $Id: SetVarAction.java,v 1.4 2005/11/08 11:37:22 srt Exp $
+ * @version $Id$
  */
 public class SetVarAction extends AbstractManagerAction
 {

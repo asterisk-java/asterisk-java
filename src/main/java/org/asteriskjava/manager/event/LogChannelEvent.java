@@ -22,7 +22,7 @@ package org.asteriskjava.manager.event;
  * Available since Asterisk 1.2
  * 
  * @author srt
- * @version $Id: LogChannelEvent.java,v 1.2 2005/08/28 12:32:21 srt Exp $
+ * @version $Id$
  * @since 0.2
  */
 public class LogChannelEvent extends ManagerEvent

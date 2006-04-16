@@ -21,7 +21,7 @@ package org.asteriskjava.manager.action;
  * It is implemented in <code>res/res_monitor.c</code>
  * 
  * @author srt
- * @version $Id: StopMonitorAction.java,v 1.7 2005/12/14 07:55:37 srt Exp $
+ * @version $Id$
  */
 public class StopMonitorAction extends AbstractManagerAction
 {

@@ -22,7 +22,7 @@ package org.asteriskjava.fastagi.command;
  * String representation understood by Asterisk.
  * 
  * @author srt
- * @version $Id: AgiCommand.java,v 1.5 2006/01/12 10:35:12 srt Exp $
+ * @version $Id$
  */
 public interface AgiCommand
 {

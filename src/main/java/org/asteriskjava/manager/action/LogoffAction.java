@@ -20,7 +20,7 @@ package org.asteriskjava.manager.action;
  * The LogoffAction causes the server to close the connection.
  * 
  * @author srt
- * @version $Id: LogoffAction.java,v 1.4 2005/08/07 00:09:42 srt Exp $
+ * @version $Id$
  */
 public class LogoffAction extends AbstractManagerAction
 {

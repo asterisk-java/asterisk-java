@@ -20,7 +20,7 @@ package org.asteriskjava.fastagi.command;
  * Sets the extension for continuation upon exiting the application.
  * 
  * @author srt
- * @version $Id: SetExtensionCommand.java,v 1.3 2006/01/12 10:35:13 srt Exp $
+ * @version $Id$
  */
 public class SetExtensionCommand extends AbstractAgiCommand
 {

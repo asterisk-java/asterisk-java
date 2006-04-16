@@ -25,7 +25,7 @@ package org.asteriskjava.fastagi.command;
  * numerical value of the digit if one was pressed or -1 on error/hangup.
  * 
  * @author srt
- * @version $Id: SayTimeCommand.java,v 1.4 2006/01/12 10:35:12 srt Exp $
+ * @version $Id$
  */
 public class SayTimeCommand extends AbstractAgiCommand
 {

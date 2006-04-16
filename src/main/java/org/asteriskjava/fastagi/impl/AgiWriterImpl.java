@@ -29,7 +29,7 @@ import org.asteriskjava.io.SocketConnectionFacade;
  * Default implementation of the AGIWriter interface.
  * 
  * @author srt
- * @version $Id: AGIWriterImpl.java,v 1.1 2005/03/11 15:20:50 srt Exp $
+ * @version $Id$
  */
 public class AgiWriterImpl implements AgiWriter
 {

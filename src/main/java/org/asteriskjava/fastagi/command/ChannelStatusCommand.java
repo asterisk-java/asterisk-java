@@ -32,7 +32,7 @@ package org.asteriskjava.fastagi.command;
  * </ul>
  * 
  * @author srt
- * @version $Id: ChannelStatusCommand.java,v 1.3 2006/01/12 10:35:13 srt Exp $
+ * @version $Id$
  */
 public class ChannelStatusCommand extends AbstractAgiCommand
 {

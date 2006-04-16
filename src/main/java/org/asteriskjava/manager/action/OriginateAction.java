@@ -42,7 +42,7 @@ import org.asteriskjava.manager.event.OriginateEvent;
  * @see org.asteriskjava.manager.event.OriginateSuccessEvent
  * @see org.asteriskjava.manager.event.OriginateFailureEvent
  * @author srt
- * @version $Id: OriginateAction.java,v 1.9 2005/10/29 12:00:11 srt Exp $
+ * @version $Id$
  */
 public class OriginateAction extends AbstractManagerAction
         implements

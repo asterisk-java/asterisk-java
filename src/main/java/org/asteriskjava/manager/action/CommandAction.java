@@ -37,7 +37,7 @@ package org.asteriskjava.manager.action;
  * 
  * @see org.asteriskjava.manager.response.CommandResponse
  * @author srt
- * @version $Id: CommandAction.java,v 1.5 2005/08/07 00:09:42 srt Exp $
+ * @version $Id$
  */
 public class CommandAction extends AbstractManagerAction
 {

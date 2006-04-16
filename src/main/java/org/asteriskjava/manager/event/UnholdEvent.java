@@ -24,7 +24,7 @@ package org.asteriskjava.manager.event;
  * 
  * @see org.asteriskjava.manager.event.HoldEvent
  * @author srt
- * @version $Id: UnholdEvent.java,v 1.2 2005/08/28 12:20:53 srt Exp $
+ * @version $Id$
  * @since 0.2
  */
 public class UnholdEvent extends ManagerEvent

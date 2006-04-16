@@ -25,7 +25,7 @@ import org.asteriskjava.live.Extension;
  * Represents an Asterisk dialplan entry.
  * 
  * @author srt
- * @version $Id: Extension.java,v 1.5 2005/08/08 06:10:18 srt Exp $
+ * @version $Id$
  */
 public class ExtensionImpl implements Serializable, Extension
 {

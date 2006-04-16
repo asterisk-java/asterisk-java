@@ -20,7 +20,7 @@ package org.asteriskjava.manager.event;
  * Abstract base class providing common properties for JoinEvent and LeaveEvent.
  * 
  * @author srt
- * @version $Id: QueueEvent.java,v 1.2 2005/02/23 22:50:58 srt Exp $
+ * @version $Id$
  */
 public abstract class QueueEvent extends ManagerEvent
 {

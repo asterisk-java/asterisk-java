@@ -23,7 +23,7 @@ package org.asteriskjava.manager.event;
  * 
  * @see org.asteriskjava.manager.event.AgentLoginEvent
  * @author srt
- * @version $Id: AgentLogoffEvent.java,v 1.3 2005/02/27 15:19:54 srt Exp $
+ * @version $Id$
  */
 public class AgentLogoffEvent extends ManagerEvent
 {

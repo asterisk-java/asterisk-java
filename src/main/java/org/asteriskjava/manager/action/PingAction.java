@@ -21,7 +21,7 @@ package org.asteriskjava.manager.action;
  * connection open and performs no operation.
  * 
  * @author srt
- * @version $Id: PingAction.java,v 1.4 2005/08/07 16:43:29 srt Exp $
+ * @version $Id$
  */
 public class PingAction extends AbstractManagerAction
 {

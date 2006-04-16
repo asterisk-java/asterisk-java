@@ -28,7 +28,7 @@ import org.asteriskjava.fastagi.reply.AgiReply;
  * 
  * @since 0.2
  * @author srt
- * @version $Id: BaseAgiScript.java,v 1.9 2006/01/12 14:08:33 srt Exp $
+ * @version $Id$
  */
 public abstract class BaseAgiScript implements AgiScript
 {

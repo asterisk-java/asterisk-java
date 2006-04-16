@@ -21,7 +21,7 @@ package org.asteriskjava.manager.event;
  * It is implemented in <code>apps/app_queue.c</code>
  * 
  * @author srt
- * @version $Id: JoinEvent.java,v 1.3 2005/08/27 03:20:13 srt Exp $
+ * @version $Id$
  */
 public class JoinEvent extends QueueEvent
 {

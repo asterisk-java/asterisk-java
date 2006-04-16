@@ -25,7 +25,7 @@ package org.asteriskjava.manager.action;
  * 
  * @see org.asteriskjava.manager.event.ResponseEvent
  * @author srt
- * @version $Id: EventGeneratingAction.java,v 1.2 2005/07/16 21:48:16 srt Exp $
+ * @version $Id$
  * @since 0.2
  */
 public interface EventGeneratingAction extends ManagerAction

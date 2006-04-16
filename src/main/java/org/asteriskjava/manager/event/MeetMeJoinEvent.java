@@ -21,7 +21,7 @@ package org.asteriskjava.manager.event;
  * It is implemented in <code>apps/app_meetme.c</code>
  * 
  * @author srt
- * @version $Id: MeetMeJoinEvent.java,v 1.2 2005/02/23 22:50:58 srt Exp $
+ * @version $Id$
  */
 public class MeetMeJoinEvent extends MeetMeEvent
 {

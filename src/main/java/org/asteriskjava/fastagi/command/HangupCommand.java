@@ -21,7 +21,7 @@ package org.asteriskjava.fastagi.command;
  * current channel.
  * 
  * @author srt
- * @version $Id: HangupCommand.java,v 1.3 2006/01/12 10:35:13 srt Exp $
+ * @version $Id$
  */
 public class HangupCommand extends AbstractAgiCommand
 {

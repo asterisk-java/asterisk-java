@@ -25,7 +25,7 @@ import org.asteriskjava.manager.action.ManagerAction;
  * The attributes are determined using reflection.
  * 
  * @author srt
- * @version $Id: ActionBuilder.java,v 1.7 2005/11/08 15:25:18 srt Exp $
+ * @version $Id$
  */
 public interface ActionBuilder
 {

@@ -21,7 +21,7 @@ package org.asteriskjava.fastagi.command;
  * Returns 1 if successful, or 0 if channel is not TDD-capable.
  * 
  * @author srt
- * @version $Id: TDDModeCommand.java,v 1.3 2006/01/12 10:35:13 srt Exp $
+ * @version $Id$
  */
 public class TDDModeCommand extends AbstractAgiCommand
 {

@@ -27,7 +27,7 @@ package org.asteriskjava.fastagi.command;
  * timeout.
  * 
  * @author srt
- * @version $Id: RecordFileCommand.java,v 1.3 2006/01/12 10:35:13 srt Exp $
+ * @version $Id$
  */
 public class RecordFileCommand extends AbstractAgiCommand
 {

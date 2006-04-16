@@ -33,7 +33,7 @@ import org.asteriskjava.util.ReflectionUtil;
  * Default implementation of the ActionBuilder interface.
  * 
  * @author srt
- * @version $Id: ActionBuilderImpl.java,v 1.5 2005/11/08 15:25:18 srt Exp $
+ * @version $Id$
  */
 public class ActionBuilderImpl implements ActionBuilder
 {

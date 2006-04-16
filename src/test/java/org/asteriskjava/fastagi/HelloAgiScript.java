@@ -24,7 +24,7 @@ import org.asteriskjava.fastagi.AgiScript;
  * Test script for use with the ResourceBundleMappingStrategyTest.
  * 
  * @author srt
- * @version $Id: HelloAGIScript.java,v 1.2 2005/03/10 23:57:07 srt Exp $
+ * @version $Id$
  */
 public class HelloAgiScript implements AgiScript
 {

@@ -21,7 +21,7 @@ package org.asteriskjava.fastagi;
  * with status code 510.
  * 
  * @author srt
- * @version $Id: InvalidOrUnknownCommandException.java,v 1.2 2005/03/11 19:43:48 srt Exp $
+ * @version $Id$
  */
 public class InvalidOrUnknownCommandException extends AgiException
 {

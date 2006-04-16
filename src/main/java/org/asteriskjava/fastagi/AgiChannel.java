@@ -27,7 +27,7 @@ import org.asteriskjava.fastagi.reply.AgiReply;
  * Asterisk server.
  * 
  * @author srt
- * @version $Id: AgiChannel.java,v 1.8 2006/01/12 14:08:33 srt Exp $
+ * @version $Id$
  */
 public interface AgiChannel
 {

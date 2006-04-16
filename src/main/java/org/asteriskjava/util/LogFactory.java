@@ -24,7 +24,7 @@ import org.asteriskjava.util.impl.NullLog;
  * Facade to hide details of the underlying logging system.
  * 
  * @author srt
- * @version $Id: LogFactory.java,v 1.2 2005/04/20 18:22:13 srt Exp $
+ * @version $Id$
  */
 public final class LogFactory
 {

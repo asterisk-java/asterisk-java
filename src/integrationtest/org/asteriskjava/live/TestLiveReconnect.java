@@ -7,7 +7,7 @@ package org.asteriskjava.live;
 
 /**
  * @author srt
- * @version $Id: TestDefaultAsteriskManager.java,v 1.4 2005/11/08 21:11:31 srt Exp $
+ * @version $Id$
  */
 public class TestLiveReconnect extends AsteriskManagerTestCase
 {

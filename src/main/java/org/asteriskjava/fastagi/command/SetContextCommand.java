@@ -20,7 +20,7 @@ package org.asteriskjava.fastagi.command;
  * Sets the context for continuation upon exiting the application.
  * 
  * @author srt
- * @version $Id: SetContextCommand.java,v 1.2 2006/01/12 10:35:13 srt Exp $
+ * @version $Id$
  */
 public class SetContextCommand extends AbstractAgiCommand
 {

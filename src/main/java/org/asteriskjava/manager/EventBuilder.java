@@ -26,7 +26,7 @@ import org.asteriskjava.manager.event.ManagerEvent;
  * 
  * @see org.asteriskjava.manager.event.ManagerEvent
  * @author srt
- * @version $Id: EventBuilder.java,v 1.9 2005/09/13 19:59:59 srt Exp $
+ * @version $Id$
  */
 public interface EventBuilder
 {

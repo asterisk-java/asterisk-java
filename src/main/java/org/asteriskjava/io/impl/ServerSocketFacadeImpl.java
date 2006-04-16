@@ -30,7 +30,7 @@ import org.asteriskjava.io.SocketConnectionFacade;
  * java.io classes (ServerSocket in this case).
  * 
  * @author srt
- * @version $Id: ServerSocketFacadeImpl.java,v 1.1 2005/10/25 22:43:25 srt Exp $
+ * @version $Id$
  */
 public class ServerSocketFacadeImpl implements ServerSocketFacade
 {

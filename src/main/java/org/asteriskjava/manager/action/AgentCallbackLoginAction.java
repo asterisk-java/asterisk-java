@@ -26,7 +26,7 @@ package org.asteriskjava.manager.action;
  * Available since Asterisk 1.2
  * 
  * @author srt
- * @version $Id: AgentCallbackLoginAction.java,v 1.4 2005/08/26 21:56:34 srt Exp $
+ * @version $Id$
  * @since 0.2
  */
 public class AgentCallbackLoginAction extends AbstractManagerAction

@@ -23,7 +23,7 @@ package org.asteriskjava.manager.event;
  * Available since Asterisk 1.2
  * 
  * @author srt
- * @version $Id: DNDStateEvent.java,v 1.3 2005/08/28 12:20:53 srt Exp $
+ * @version $Id$
  * @since 0.2
  */
 public class DNDStateEvent extends ManagerEvent

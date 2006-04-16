@@ -22,7 +22,7 @@ package org.asteriskjava.manager.event;
  * Available since Asterisk 1.2.
  * 
  * @author Asteria Solutions Group, Inc. <http://www.asteriasgi.com/>
- * @version $Id: DialEvent.java,v 1.4 2005/07/26 11:35:58 srt Exp $
+ * @version $Id$
  * @since 0.2
  */
 public class DialEvent extends ManagerEvent

@@ -28,7 +28,7 @@ import org.asteriskjava.manager.response.ManagerResponse;
  * 
  * @see org.asteriskjava.manager.action.EventGeneratingAction
  * @author srt
- * @version $Id: ResponseEvents.java,v 1.1 2005/07/16 21:48:15 srt Exp $
+ * @version $Id$
  * @since 0.2
  */
 public interface ResponseEvents

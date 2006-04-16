@@ -21,7 +21,7 @@ package org.asteriskjava.manager.event;
  * UnlinkEvent.
  * 
  * @author srt
- * @version $Id: LinkageEvent.java,v 1.3 2005/08/27 03:01:58 srt Exp $
+ * @version $Id$
  */
 public abstract class LinkageEvent extends ManagerEvent
 {

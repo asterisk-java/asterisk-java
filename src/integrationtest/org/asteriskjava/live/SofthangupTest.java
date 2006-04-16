@@ -11,7 +11,7 @@ import org.asteriskjava.manager.response.ManagerResponse;
 
 /**
  * @author srt
- * @version $Id: SofthangupTest.java,v 1.1 2005/04/30 16:45:15 srt Exp $
+ * @version $Id$
  */
 public class SofthangupTest extends AsteriskManagerTestCase
 {

@@ -23,7 +23,7 @@ import org.asteriskjava.fastagi.reply.AgiReply;
  * ReplyBuilder.
  * 
  * @author srt
- * @version $Id: AgiReader.java,v 1.5 2005/03/11 09:37:37 srt Exp $
+ * @version $Id$
  */
 public interface AgiReader
 {

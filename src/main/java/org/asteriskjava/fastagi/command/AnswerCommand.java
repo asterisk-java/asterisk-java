@@ -21,7 +21,7 @@ package org.asteriskjava.fastagi.command;
  * Returns -1 on channel failure, or 0 if successful.
  * 
  * @author srt
- * @version $Id: AnswerCommand.java,v 1.2 2006/01/12 10:35:13 srt Exp $
+ * @version $Id$
  */
 public class AnswerCommand extends AbstractAgiCommand
 {

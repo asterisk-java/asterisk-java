@@ -38,7 +38,7 @@ import org.asteriskjava.manager.response.ManagerResponse;
  * 
  * @see org.asteriskjava.manager.ManagerConnectionFactory
  * @author srt
- * @version $Id: ManagerConnection.java,v 1.12 2005/10/10 20:33:55 srt Exp $
+ * @version $Id$
  */
 public interface ManagerConnection
 {

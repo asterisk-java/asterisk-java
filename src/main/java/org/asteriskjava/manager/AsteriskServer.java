@@ -22,7 +22,7 @@ import java.io.Serializable;
  * Represents an Asterisk server that is connected via the Manager API.
  * 
  * @author PY
- * @version $Id: AsteriskServer.java,v 1.4 2005/03/04 22:21:04 srt Exp $
+ * @version $Id$
  */
 public class AsteriskServer implements Serializable
 {

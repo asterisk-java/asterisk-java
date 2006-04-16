@@ -20,7 +20,7 @@ package org.asteriskjava.manager.action;
  * The HangupAction causes the pbx to hang up a given channel.
  * 
  * @author srt
- * @version $Id: HangupAction.java,v 1.4 2005/11/08 10:14:09 srt Exp $
+ * @version $Id$
  */
 public class HangupAction extends AbstractManagerAction
 {

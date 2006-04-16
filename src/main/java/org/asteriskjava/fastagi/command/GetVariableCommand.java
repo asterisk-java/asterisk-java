@@ -25,7 +25,7 @@ package org.asteriskjava.fastagi.command;
  * Example return code: 200 result=1 (testvariable)
  * 
  * @author srt
- * @version $Id: GetVariableCommand.java,v 1.7 2006/01/12 10:35:13 srt Exp $
+ * @version $Id$
  */
 public class GetVariableCommand extends AbstractAgiCommand
 {

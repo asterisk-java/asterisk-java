@@ -21,7 +21,7 @@ package org.asteriskjava.manager;
  * expected time period.
  * 
  * @author srt
- * @version $Id: TimeoutException.java,v 1.3 2005/07/16 22:04:55 srt Exp $
+ * @version $Id$
  */
 public class TimeoutException extends Exception
 {

@@ -60,7 +60,7 @@ import org.asteriskjava.io.SocketConnectionFacade;
  * Default implementation of the AgiChannel interface.
  * 
  * @author srt
- * @version $Id: AgiChannelImpl.java,v 1.9 2006/01/11 16:12:19 srt Exp $
+ * @version $Id$
  */
 public class AgiChannelImpl implements AgiChannel
 {

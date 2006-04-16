@@ -25,7 +25,7 @@ import java.io.IOException;
  * communication.
  * 
  * @author srt
- * @version $Id: ServerSocketFacade.java,v 1.3 2005/10/25 22:43:25 srt Exp $
+ * @version $Id$
  */
 public interface ServerSocketFacade
 {

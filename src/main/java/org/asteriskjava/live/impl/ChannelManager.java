@@ -42,7 +42,7 @@ import org.asteriskjava.util.LogFactory;
  * Manages channel events on behalf of an AsteriskManager.
  * 
  * @author srt
- * @version $Id: DefaultAsteriskManager.java,v 1.23 2005/10/29 12:09:05 srt Exp $
+ * @version $Id$
  */
 public class ChannelManager
 {

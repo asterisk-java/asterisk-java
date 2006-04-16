@@ -21,7 +21,7 @@ package org.asteriskjava.manager.response;
  * The cause for the error is given in the message attribute.
  * 
  * @author srt
- * @version $Id: ManagerError.java,v 1.3 2005/03/13 11:26:49 srt Exp $
+ * @version $Id$
  */
 public class ManagerError extends ManagerResponse
 {

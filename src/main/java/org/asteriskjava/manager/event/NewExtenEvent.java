@@ -21,7 +21,7 @@ package org.asteriskjava.manager.event;
  * It is implemented in <code>pbx.c</code>
  * 
  * @author srt
- * @version $Id: NewExtenEvent.java,v 1.2 2005/02/23 22:50:58 srt Exp $
+ * @version $Id$
  */
 public class NewExtenEvent extends ManagerEvent
 {

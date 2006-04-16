@@ -28,7 +28,7 @@ import org.asteriskjava.manager.response.ManagerResponse;
  * Implementation of the ResponseEvents interface.
  * 
  * @author srt
- * @version $Id: ResponseEventsImpl.java,v 1.1 2005/07/16 21:48:16 srt Exp $
+ * @version $Id$
  * @since 0.2
  */
 public class ResponseEventsImpl implements ResponseEvents

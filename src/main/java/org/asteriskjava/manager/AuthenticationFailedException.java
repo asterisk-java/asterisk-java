@@ -21,7 +21,7 @@ package org.asteriskjava.manager;
  * password.
  * 
  * @author srt
- * @version $Id: AuthenticationFailedException.java,v 1.3 2005/02/23 22:50:57 srt Exp $
+ * @version $Id$
  */
 public class AuthenticationFailedException extends Exception
 {

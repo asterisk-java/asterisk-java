@@ -23,7 +23,7 @@ import java.io.Serializable;
  * 
  * @since 0.2
  * @author srt
- * @version $Id: AsteriskVersion.java,v 1.1 2005/10/29 12:00:11 srt Exp $
+ * @version $Id$
  */
 public class AsteriskVersion implements Comparable, Serializable
 {

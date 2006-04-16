@@ -23,7 +23,7 @@ package org.asteriskjava.manager.event;
  * Available since Asterisk 1.2
  * 
  * @author srt
- * @version $Id: AgentDumpEvent.java,v 1.2 2005/08/28 09:45:19 srt Exp $
+ * @version $Id$
  * @since 0.2
  */
 public class AgentDumpEvent extends AbstractAgentEvent
