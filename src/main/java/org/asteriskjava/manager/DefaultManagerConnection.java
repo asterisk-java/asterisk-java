@@ -64,7 +64,7 @@ import org.asteriskjava.util.LogFactory;
  * 
  * @see org.asteriskjava.manager.ManagerConnectionFactory
  * @author srt
- * @version $Id: DefaultManagerConnection.java,v 1.36 2006/01/10 23:09:11 srt Exp $
+ * @version $Id$
  */
 public class DefaultManagerConnection implements ManagerConnection, Dispatcher
 {
