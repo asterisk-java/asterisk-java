@@ -40,7 +40,7 @@ public class TestDefaultManagerConnection extends TestCase
         {
             public void handleEvent(ManagerEvent event)
             {
-                System.out.println(event);
+                System.out.println("Got event: " + event);
             }
         });
         dmc.sendAction(new StatusAction());
@@ -54,9 +54,12 @@ public class TestDefaultManagerConnection extends TestCase
             
         }
 
-        // wait for 3 seconds to receive events
-        Thread.sleep(3000);
-        dmc.logoff();
+        while (true)
+        {
+            // wait for 3 seconds to receive events
+            Thread.sleep(3000);
+        }
+        //dmc.logoff();
     }
 
     public void testLoginAuthenticationFailure() throws Exception
@@ -87,7 +90,7 @@ public class TestDefaultManagerConnection extends TestCase
         dmc.login();
         
         response = (CommandResponse) dmc.sendAction(new CommandAction("show voicemail users"));
-        System.out.println(response.getResult());
+        System.out.println("Got response: " + response.getResult());
         
         dmc.logoff();
     }

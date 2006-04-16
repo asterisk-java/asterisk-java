@@ -214,8 +214,7 @@ public class DefaultManagerConnection implements ManagerConnection, Dispatcher
 
     // the following two methods can be overriden when running test cases to
     // return a mock object
-    protected ManagerReader createReader(Dispatcher dispatcher,
-            AsteriskServer server)
+    protected ManagerReader createReader(Dispatcher dispatcher, AsteriskServer server)
     {
         return new ManagerReaderImpl(dispatcher, server);
     }
@@ -525,21 +524,31 @@ public class DefaultManagerConnection implements ManagerConnection, Dispatcher
 
         if (this.reader == null)
         {
+            logger.debug("Creating reader for " + asteriskServer);
             this.reader = createReader(this, asteriskServer);
         }
 
         if (this.writer == null)
         {
+            logger.debug("Creating writer");
             this.writer = createWriter();
         }
 
+        logger.debug("Creating socket");
         this.socket = createSocket();
 
+        logger.debug("Passing socket to reader");
         this.reader.setSocket(socket);
-        this.readerThread = new Thread(reader, "ManagerReader");
-        this.readerThread.setDaemon(true);
-        this.readerThread.start();
 
+        if (this.readerThread == null)
+        {
+            logger.debug("Creating and starting reader thread");
+            this.readerThread = new Thread(reader, "ManagerReader");
+            this.readerThread.setDaemon(true);
+            this.readerThread.start();
+        }
+
+        logger.debug("Passing socket to writer");
         this.writer.setSocket(socket);
     }
 
@@ -1033,6 +1042,8 @@ public class DefaultManagerConnection implements ManagerConnection, Dispatcher
 
         // clean up at first
         disconnect();
+        this.reader = null;
+        this.readerThread = null;
 
         // try to reconnect
         numTries = 0;
@@ -1090,7 +1101,10 @@ public class DefaultManagerConnection implements ManagerConnection, Dispatcher
                             + "after reconnect.");
                     synchronized (this)
                     {
-                        socket.close();
+                        if (socket != null)
+                        {
+                            socket.close();
+                        }
                     }
                 }
             }
