@@ -37,6 +37,7 @@ import org.asteriskjava.manager.action.ManagerAction;
 import org.asteriskjava.manager.event.ConnectEvent;
 import org.asteriskjava.manager.event.DisconnectEvent;
 import org.asteriskjava.manager.event.ManagerEvent;
+import org.asteriskjava.manager.event.ProtocolIdentifierReceivedEvent;
 import org.asteriskjava.manager.event.ResponseEvent;
 import org.asteriskjava.manager.impl.ManagerReaderImpl;
 import org.asteriskjava.manager.impl.ManagerWriterImpl;
@@ -46,6 +47,7 @@ import org.asteriskjava.manager.response.ChallengeResponse;
 import org.asteriskjava.manager.response.CommandResponse;
 import org.asteriskjava.manager.response.ManagerError;
 import org.asteriskjava.manager.response.ManagerResponse;
+import org.asteriskjava.util.DateUtil;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
@@ -483,11 +485,17 @@ public class DefaultManagerConnection implements ManagerConnection, Dispatcher
         this.keepAlive = true;
 
         logger.info("Successfully logged in");
-        
+
         this.version = determineVersion();
         this.writer.setTargetVersion(version);
-        
+
         logger.info("Determined Asterisk version: " + version);
+
+        // generate pseudo event indicating a successful login
+        ConnectEvent connectEvent = new ConnectEvent(asteriskServer);
+        connectEvent.setProtocolIdentifier(getProtocolIdentifier());
+        connectEvent.setDateReceived(DateUtil.getDate());
+        dispatchEvent(connectEvent);
     }
     
     protected AsteriskVersion determineVersion() throws IOException, TimeoutException
@@ -500,12 +508,12 @@ public class DefaultManagerConnection implements ManagerConnection, Dispatcher
         if (showVersionFilesResponse instanceof CommandResponse)
         {
             List showVersionFilesResult;
-            
+
             showVersionFilesResult = ((CommandResponse) showVersionFilesResponse).getResult();
             if (showVersionFilesResult != null && showVersionFilesResult.size() > 0)
             {
                 String line1;
-                
+
                 line1 = (String) showVersionFilesResult.get(0); 
                 if (line1 != null && line1.startsWith("File"))
                 {
@@ -987,13 +995,13 @@ public class DefaultManagerConnection implements ManagerConnection, Dispatcher
         }
 
         // process special events
-        if (event instanceof ConnectEvent)
+        if (event instanceof ProtocolIdentifierReceivedEvent)
         {
-            ConnectEvent connectEvent;
+            ProtocolIdentifierReceivedEvent protocolIdentifierReceivedEvent;
             String protocolIdentifier;
 
-            connectEvent = (ConnectEvent) event;
-            protocolIdentifier = connectEvent.getProtocolIdentifier();
+            protocolIdentifierReceivedEvent = (ProtocolIdentifierReceivedEvent) event;
+            protocolIdentifier = protocolIdentifierReceivedEvent.getProtocolIdentifier();
             setProtocolIdentifier(protocolIdentifier);
         }
         else if (event instanceof DisconnectEvent)
@@ -1003,8 +1011,8 @@ public class DefaultManagerConnection implements ManagerConnection, Dispatcher
     }
 
     /**
-     * This method is called when a {@link ConnectEvent} is received from the
-     * reader. Having received a correct protocol identifier is the precodition
+     * This method is called when a {@link ProtocolIdentifierReceivedEvent} is received 
+     * from the reader. Having received a correct protocol identifier is the precodition
      * for logging in.
      * 
      * @param protocolIdentifier the protocol version used by the Asterisk

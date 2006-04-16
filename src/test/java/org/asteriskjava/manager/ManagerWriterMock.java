@@ -18,18 +18,18 @@ package org.asteriskjava.manager;
 
 import java.io.IOException;
 
+import org.asteriskjava.AsteriskVersion;
+import org.asteriskjava.io.SocketConnectionFacade;
 import org.asteriskjava.manager.action.ChallengeAction;
 import org.asteriskjava.manager.action.LoginAction;
 import org.asteriskjava.manager.action.LogoffAction;
 import org.asteriskjava.manager.action.ManagerAction;
-import org.asteriskjava.manager.event.ConnectEvent;
+import org.asteriskjava.manager.event.ProtocolIdentifierReceivedEvent;
 import org.asteriskjava.manager.impl.Util;
 import org.asteriskjava.manager.response.ChallengeResponse;
 import org.asteriskjava.manager.response.ManagerError;
 import org.asteriskjava.manager.response.ManagerResponse;
-
-import org.asteriskjava.AsteriskVersion;
-import org.asteriskjava.io.SocketConnectionFacade;
+import org.asteriskjava.util.DateUtil;
 
 public class ManagerWriterMock implements ManagerWriter
 {
@@ -41,7 +41,7 @@ public class ManagerWriterMock implements ManagerWriter
     private String expectedKey;
     private String expectedUsername;
     private boolean sendResponse = true;
-    private boolean sendConnectEvent = true;
+    private boolean sendProtocolIdentifierReceivedEvent = true;
 
     public int challengeActionsSent = 0;
     public int loginActionsSent = 0;
@@ -81,19 +81,20 @@ public class ManagerWriterMock implements ManagerWriter
         this.sendResponse = sendResponse;
     }
 
-    public void setSendConnectEvent(boolean sendConnectEvent)
+    public void setSendProtocolIdentifierReceivedEvent(boolean sendConnectEvent)
     {
-        this.sendConnectEvent = sendConnectEvent;
+        this.sendProtocolIdentifierReceivedEvent = sendConnectEvent;
     }
 
     public void setSocket(SocketConnectionFacade socket)
     {
-        if (sendConnectEvent)
+        if (sendProtocolIdentifierReceivedEvent)
         {
-            ConnectEvent connectEvent;
-            connectEvent = new ConnectEvent(asteriskServer);
-            connectEvent.setProtocolIdentifier("Asterisk Call Manager/1.0");
-            dispatcher.dispatchEvent(connectEvent);
+            ProtocolIdentifierReceivedEvent protocolIdentifierReceivedEvent;
+            protocolIdentifierReceivedEvent = new ProtocolIdentifierReceivedEvent(asteriskServer);
+            protocolIdentifierReceivedEvent.setProtocolIdentifier("Asterisk Call Manager/1.0");
+            protocolIdentifierReceivedEvent.setDateReceived(DateUtil.getDate());
+            dispatcher.dispatchEvent(protocolIdentifierReceivedEvent);
         }
     }
 

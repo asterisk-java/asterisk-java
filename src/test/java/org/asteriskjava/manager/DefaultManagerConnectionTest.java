@@ -29,6 +29,7 @@ import org.asteriskjava.manager.event.ConnectEvent;
 import org.asteriskjava.manager.event.DisconnectEvent;
 import org.asteriskjava.manager.event.ManagerEvent;
 import org.asteriskjava.manager.event.NewChannelEvent;
+import org.asteriskjava.manager.event.ProtocolIdentifierReceivedEvent;
 import org.asteriskjava.manager.response.ManagerResponse;
 
 public class DefaultManagerConnectionTest extends TestCase
@@ -105,12 +106,8 @@ public class DefaultManagerConnectionTest extends TestCase
     public void testLogin() throws Exception
     {
         MockedManagerEventHandler managerEventHandler;
-        ConnectEvent connectEvent;
 
         managerEventHandler = new MockedManagerEventHandler();
-
-        connectEvent = new ConnectEvent(asteriskServer);
-        connectEvent.setProtocolIdentifier("Asterisk Call Manager/1.0");
 
         replay(mockSocket);
 
@@ -152,12 +149,16 @@ public class DefaultManagerConnectionTest extends TestCase
 
         assertTrue("keepAlive not set", dmc.getKeepAlive());
 
-        assertEquals("must have handled exactly one event", 1,
+        assertEquals("must have handled exactly two events", 2,
                 managerEventHandler.eventsHandled.size());
 
         assertTrue(
-                "eventHandled must be a ConnectEvent",
-                managerEventHandler.eventsHandled.get(0) instanceof ConnectEvent);
+                "first event handled must be a ProtocolIdentifierReceivedEvent",
+                managerEventHandler.eventsHandled.get(0) instanceof ProtocolIdentifierReceivedEvent);
+
+        assertTrue(
+                "second event handled must be a ConnectEvent",
+                managerEventHandler.eventsHandled.get(1) instanceof ConnectEvent);
 
         verify(mockSocket);
     }
@@ -255,7 +256,7 @@ public class DefaultManagerConnectionTest extends TestCase
         replay(mockSocket);
 
         // provoke timeout
-        mockWriter.setSendConnectEvent(false);
+        mockWriter.setSendProtocolIdentifierReceivedEvent(false);
 
         try
         {

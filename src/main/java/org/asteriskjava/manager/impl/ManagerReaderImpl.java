@@ -24,13 +24,14 @@ import java.util.Map;
 
 import org.asteriskjava.io.SocketConnectionFacade;
 import org.asteriskjava.manager.AsteriskServer;
+import org.asteriskjava.manager.DefaultManagerConnection;
 import org.asteriskjava.manager.Dispatcher;
 import org.asteriskjava.manager.EventBuilder;
 import org.asteriskjava.manager.ManagerReader;
 import org.asteriskjava.manager.ResponseBuilder;
-import org.asteriskjava.manager.event.ConnectEvent;
 import org.asteriskjava.manager.event.DisconnectEvent;
 import org.asteriskjava.manager.event.ManagerEvent;
+import org.asteriskjava.manager.event.ProtocolIdentifierReceivedEvent;
 import org.asteriskjava.manager.response.CommandResponse;
 import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.util.DateUtil;
@@ -209,10 +210,11 @@ public class ManagerReaderImpl implements ManagerReader
                 if (line.startsWith("Asterisk Call Manager/") ||
                         line.startsWith("Asterisk Manager Proxy/"))
                 {
-                    ConnectEvent connectEvent = new ConnectEvent(asteriskServer);
-                    connectEvent.setProtocolIdentifier(line);
-                    connectEvent.setDateReceived(DateUtil.getDate());
-                    dispatcher.dispatchEvent(connectEvent);
+                    ProtocolIdentifierReceivedEvent protocolIdentifierReceivedEvent;
+                    protocolIdentifierReceivedEvent = new ProtocolIdentifierReceivedEvent(asteriskServer);
+                    protocolIdentifierReceivedEvent.setProtocolIdentifier(line);
+                    protocolIdentifierReceivedEvent.setDateReceived(DateUtil.getDate());
+                    dispatcher.dispatchEvent(protocolIdentifierReceivedEvent);
                     continue;
                 }
 

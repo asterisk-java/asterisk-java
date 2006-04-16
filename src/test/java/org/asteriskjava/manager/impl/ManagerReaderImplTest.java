@@ -16,22 +16,26 @@
  */
 package org.asteriskjava.manager.impl;
 
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import junit.framework.TestCase;
-import static org.easymock.EasyMock.*;
 
 import org.asteriskjava.io.SocketConnectionFacade;
 import org.asteriskjava.manager.AsteriskServer;
 import org.asteriskjava.manager.Dispatcher;
 import org.asteriskjava.manager.ManagerReader;
 import org.asteriskjava.manager.MyUserEvent;
-import org.asteriskjava.manager.event.ConnectEvent;
 import org.asteriskjava.manager.event.DisconnectEvent;
 import org.asteriskjava.manager.event.ManagerEvent;
+import org.asteriskjava.manager.event.ProtocolIdentifierReceivedEvent;
 import org.asteriskjava.manager.event.StatusCompleteEvent;
 import org.asteriskjava.manager.response.CommandResponse;
 import org.asteriskjava.manager.response.ManagerResponse;
@@ -90,16 +94,17 @@ public class ManagerReaderImplTest extends TestCase
         assertEquals("not exactly two events dispatched", 2,
                 dispatcher.dispatchedEvents.size());
 
-        assertEquals("first event must be a ConnectEvent", ConnectEvent.class,
+        assertEquals("first event must be a ProtocolIdentifierReceivedEvent", 
+                ProtocolIdentifierReceivedEvent.class,
                 dispatcher.dispatchedEvents.get(0).getClass());
 
-        assertEquals("ConnectEvent contains incorrect protocol identifier",
+        assertEquals("ProtocolIdentifierReceivedEvent contains incorrect protocol identifier",
                 "Asterisk Call Manager/1.0",
-                ((ConnectEvent) dispatcher.dispatchedEvents.get(0))
+                ((ProtocolIdentifierReceivedEvent) dispatcher.dispatchedEvents.get(0))
                         .getProtocolIdentifier());
 
-        assertEquals("ConnectEvent contains incorrect dateReceived", now,
-                ((ConnectEvent) dispatcher.dispatchedEvents.get(0))
+        assertEquals("ProtocolIdentifierReceivedEvent contains incorrect dateReceived", now,
+                ((ProtocolIdentifierReceivedEvent) dispatcher.dispatchedEvents.get(0))
                         .getDateReceived());
 
         assertEquals("second event must be a DisconnectEvent",

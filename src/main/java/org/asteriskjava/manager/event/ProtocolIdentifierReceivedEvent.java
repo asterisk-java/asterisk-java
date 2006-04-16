@@ -17,13 +17,14 @@
 package org.asteriskjava.manager.event;
 
 /**
- * A ConnectEvent is triggered after successful login to the Asterisk server.<br>
+ * A ProtocolIdentifierReceivedEvent is triggered when the network connection to the Asterisk 
+ * server has been established and the protocol identifier has been sent.<br>
  * It is a pseudo event not directly related to an Asterisk generated event.
  * 
  * @author srt
- * @version $Id: ConnectEvent.java,v 1.3 2005/03/02 23:15:50 srt Exp $
+ * @version $Id: ProtocolIdentifierReceivedEvent.java,v 1.3 2005/03/02 23:15:50 srt Exp $
  */
-public class ConnectEvent extends ManagerEvent
+public class ProtocolIdentifierReceivedEvent extends ManagerEvent
 {
     /**
      * Serializable version identifier
@@ -38,15 +39,9 @@ public class ConnectEvent extends ManagerEvent
     /**
      * @param source
      */
-    public ConnectEvent(Object source)
+    public ProtocolIdentifierReceivedEvent(Object source)
     {
         super(source);
-    }
-    
-    public ConnectEvent(Object source, String protocolIdentifier)
-    {
-        this(source);
-        this.protocolIdentifier = protocolIdentifier;
     }
 
     /**

@@ -18,7 +18,7 @@ package org.asteriskjava.manager.event;
 
 /**
  * A DisconnectEvent is triggered when the connection to the asterisk server is lost.<br>
- * It is a pseudo event not directly related to an asterisk generated event.
+ * It is a pseudo event not directly related to an Asterisk generated event.
  * 
  * @author srt
  * @version $Id: DisconnectEvent.java,v 1.2 2005/02/23 22:50:58 srt Exp $
