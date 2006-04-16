@@ -34,6 +34,7 @@ public class ZapShowChannelsEvent extends ResponseEvent
     private Integer channel;
     private String signalling;
     private String context;
+    private Boolean dnd;
     private String alarm;
 
     /**
@@ -116,6 +117,29 @@ public class ZapShowChannelsEvent extends ResponseEvent
     public void setContext(String context)
     {
         this.context = context;
+    }
+
+    /**
+     * Returns whether dnd (do not disturb) is enabled for this zap channel.
+     * 
+     * @return Boolean.TRUE if dnd is enabled, Boolean.FALSE if it is disabled,
+     *         <code>null</code> if not set.
+     * @since 0.3
+     */
+    public Boolean getDnd()
+    {
+        return dnd;
+    }
+
+    /**
+     * Sets whether dnd (do not disturb) is enabled for this zap channel.
+     * 
+     * @param dnd Boolean.TRUE if dnd is enabled, Boolean.FALSE if it is disabled.
+     * @since 0.3
+     */
+    public void setDnd(Boolean dnd)
+    {
+        this.dnd = dnd;
     }
 
     /**

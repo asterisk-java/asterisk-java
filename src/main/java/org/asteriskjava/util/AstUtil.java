@@ -36,6 +36,8 @@ public class AstUtil
      *        return 0;
      *    }
      * </pre>
+     * To support the dnd property of {@link org.asteriskjava.manager.event.ZapShowChannelsEvent}
+     * this method also consideres the string "Enabled" as true. 
      * 
      * @param s the String to check for <code>true</code>.
      * @return <code>true</code> if s represents <code>true</code>,
@@ -50,7 +52,8 @@ public class AstUtil
 
         if (("yes".equalsIgnoreCase(s) || "true".equalsIgnoreCase(s))
                 || "y".equalsIgnoreCase(s) || "t".equalsIgnoreCase(s)
-                || "1".equalsIgnoreCase(s) || "on".equalsIgnoreCase(s))
+                || "1".equalsIgnoreCase(s) || "on".equalsIgnoreCase(s)
+                || "Enabled".equalsIgnoreCase(s))
         {
             return true;
         }
