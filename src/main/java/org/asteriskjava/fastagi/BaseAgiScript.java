@@ -451,6 +451,8 @@ public abstract class BaseAgiScript implements AgiScript
     /**
      * Returns the value of the current channel variable, unlike getVariable()
      * this method understands complex variable names and builtin variables.<br>
+     * You can also use this method to use custom Asterisk functions. Syntax is
+     * "func(args)".<br>
      * Available since Asterisk 1.2.
      * 
      * @param name the name of the variable to retrieve.
