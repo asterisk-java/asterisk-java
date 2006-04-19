@@ -26,8 +26,6 @@ import org.asteriskjava.io.SocketConnectionFacade;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
-
-
 /**
  * An AgiConnectionHandler is created and run by the AgiServer whenever a new
  * socket connection from an Asterisk Server is received.<br>
@@ -150,13 +148,13 @@ public class AgiConnectionHandler implements Runnable
     }
 
     /**
-     * Returns the AGIChannel associated with the current thread.<br>
+     * Returns the AGIChannel associated with the current thread.
      * 
      * @return the AGIChannel associated with the current thread or
      *         <code>null</code> if none is associated.
      */
     static AgiChannel getChannel()
     {
-        return (AgiChannel) AgiConnectionHandler.channel.get();
+        return AgiConnectionHandler.channel.get();
     }
 }
