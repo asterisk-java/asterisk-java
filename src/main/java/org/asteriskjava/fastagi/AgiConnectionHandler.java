@@ -115,13 +115,21 @@ public class AgiConnectionHandler implements Runnable
                 error = "No script configured for URL '"
                         + request.getRequestURL() + "' (script '"
                         + request.getScript() + "')";
-                channel.sendCommand(new VerboseCommand(error, 1));
                 logger.error(error);
+
+                try
+                {
+                    channel.sendCommand(new VerboseCommand(error, 1));
+                }
+                catch (AgiException e)
+                {
+                    // do nothing
+                }
             }
         }
         catch (AgiException e)
         {
-            logger.error("AGIException while handling request", e);
+            logger.error("AgiException while handling request", e);
         }
         catch (Exception e)
         {
