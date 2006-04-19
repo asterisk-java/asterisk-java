@@ -148,9 +148,9 @@ public class AgiConnectionHandler implements Runnable
     }
 
     /**
-     * Returns the AGIChannel associated with the current thread.
+     * Returns the AgiChannel associated with the current thread.
      * 
-     * @return the AGIChannel associated with the current thread or
+     * @return the AgiChannel associated with the current thread or
      *         <code>null</code> if none is associated.
      */
     static AgiChannel getChannel()
