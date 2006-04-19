@@ -2,7 +2,8 @@ Asterisk-Java 0.3
 	* Changed package name from net.sf.asterisk to org.asteriskjava
 	  and renamed AGI classes to Agi to conform to Java coding
 	  standards
-	* Introduced generics
+	* Introduced generics and leveraged other Java5 features like
+	  java.util.concurrent.
 	* ManagerReader threads are now daemon threads so as soon as
 	  all other threads are terminated the JVM will quit
 	* Changed log level for message about ManagerReader termination
@@ -13,6 +14,7 @@ Asterisk-Java 0.3
 	* Fixed timing bug in ResourceBundleMappingStrategy (AJ-25)
 	* Fixed interrupt in DefaultManagerConnection (AJ-27)
 	* Added support for login with eventMask (AJ-28)
+	* Fixed accountCode always being null in AgiRequest
 
 Asterisk-Java 0.2
 	* Added SayDateTimeCommand (AJ-23)
