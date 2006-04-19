@@ -73,6 +73,22 @@ public class AgiRequestImplTest extends TestCase
         assertNull("incorrect accountCode must not be set", request.getAccountCode());
     }
 
+    public void testBuildRequestWithAccountCode()
+    {
+        Collection<String> lines;
+        AgiRequest request;
+
+        lines = new ArrayList<String>();
+
+        lines.add("agi_network: yes");
+        lines.add("agi_network_script: myscript.agi");
+        lines.add("agi_accountcode: 12345");
+
+        request = new AgiRequestImpl(lines);
+
+        assertEquals("incorrect accountCode", "12345", request.getAccountCode());
+    }
+
     public void testBuildRequestWithoutCallerIdName()
     {
         Collection<String> lines;

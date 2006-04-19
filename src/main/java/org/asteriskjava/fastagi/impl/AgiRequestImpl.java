@@ -394,7 +394,7 @@ public class AgiRequestImpl implements Serializable, AgiRequest
 
     public String getAccountCode()
     {
-        return (String) request.get("accountCode");
+        return (String) request.get("accountcode");
     }
 
     public Integer getCallingAni2()
