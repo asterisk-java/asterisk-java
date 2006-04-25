@@ -57,6 +57,7 @@ public class PingThread extends Thread
         this.interval = DEFAULT_INTERVAL;
         this.die = false;
         setName("Ping");
+        setDaemon(true);
     }
 
     /**
