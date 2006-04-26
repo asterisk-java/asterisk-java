@@ -43,6 +43,7 @@ public class PingThread extends Thread
     private final Log logger = LogFactory.getLog(getClass());
 
     private long interval;
+    private long timeout = 0;
     private boolean die;
     private ManagerConnection connection;
 
@@ -69,6 +70,16 @@ public class PingThread extends Thread
     public void setInterval(long interval)
     {
         this.interval = interval;
+    }
+
+    /**
+     * Sets the timeout to wait for the ManagerResponse before throwing an excpetion.
+     * 
+     * @param timeout the timeout in milliseconds
+     */
+    public void setTimeout(long timeout)
+    {
+        this.timeout = timeout;
     }
 
     /**
@@ -107,7 +118,14 @@ public class PingThread extends Thread
 
             try
             {
-                response = connection.sendAction(new PingAction());
+                if (timeout <= 0)
+                {
+                    response = connection.sendAction(new PingAction());
+                }
+                else
+                {
+                    response = connection.sendAction(new PingAction(), timeout);
+                }
                 logger.debug("Ping response: " + response);
             }
             catch (Exception e)
