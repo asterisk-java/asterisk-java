@@ -35,7 +35,7 @@ public class PingThread extends Thread
     /**
      * Default value for the interval attribute.
      */
-    private static final long DEFAULT_INTERVAL = 2000;
+    private static final long DEFAULT_INTERVAL = 20 * 1000L;
 
     /**
      * Instance logger.
@@ -63,7 +63,7 @@ public class PingThread extends Thread
 
     /**
      * Adjusts how often a PingAction is sent.<br>
-     * Default is 2000ms.
+     * Default is 20000ms, i.e. 20 seconds.
      * 
      * @param interval the interval in milliseconds
      */
@@ -76,6 +76,7 @@ public class PingThread extends Thread
      * Sets the timeout to wait for the ManagerResponse before throwing an excpetion.
      * 
      * @param timeout the timeout in milliseconds
+     * @since 0.3
      */
     public void setTimeout(long timeout)
     {
