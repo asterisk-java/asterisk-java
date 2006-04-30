@@ -18,19 +18,30 @@
  */
 -->
 <project name="Asterisk-Java">
-  <bannerLeft>
-    <src>http://sourceforge.net/sflogo.php?group_id=118998&amp;type=5</src>
-    <href>http://www.asterisk-java.org/</href>
-  </bannerLeft>
-  <bannerRight>
-  	<name>Asterisk-Java</name>
-  </bannerRight>
-  <body>
-    <links>
-      <item name="Asterisk" href="http://www.asterisk.org/" />
-	  <item name="Asterisk-Java" href="http://sourceforge.net/projects/asterisk-java" />
-    </links>
-	  
+	
+	<bannerLeft>
+		<name>Asterisk-Java</name>
+		<href>http://www.asterisk-java.org/</href>
+	</bannerLeft>
+	
+	<bannerRight>
+		<name>Asterisk-Java</name>
+		<src>http://sourceforge.net/sflogo.php?group_id=118998&amp;type=5</src>
+	</bannerRight>
+	
+	<skin>
+		<groupId>org.apache.maven.skins</groupId>
+		<artifactId>maven-default-skin</artifactId>
+		<version>1.0-SNAPSHOT</version>
+	</skin>
+	
+	<body>
+		<links>
+			<item name="Asterisk" href="http://www.asterisk.org/"/>
+			<item name="Asterisk-Java"
+				href="http://sourceforge.net/projects/asterisk-java"/>
+		</links>
+		
 		<menu name="Overview">
 			<item name="Home" href="index.html"/>
 			<item name="Building with Maven" href="building.html"/>
@@ -44,15 +55,13 @@
 		</menu>
 		<search/>
 		<menu name="Sponsors">
-			<item name="Code Coverage by Clover" 
-				href="http://www.cenqua.com/clover/" 
-				img="http://www.cenqua.com/clover/images/clovered1.gif" />
+			<item name="Code Coverage by Clover"
+				href="http://www.cenqua.com/clover/"
+				img="http://www.cenqua.com/clover/images/clovered1.gif"/>
 			<item name="Source Perspective by FishEye"
 				href="http://fisheye.cenqua.com/changelog/asterisk-java/"
-				img="http://www.cenqua.com/images/fisheyed2.gif" />
+				img="http://www.cenqua.com/images/fisheyed2.gif"/>
 		</menu>
-	  
-    ${reports}
-
-  </body>
+		${reports}
+	</body>
 </project>
