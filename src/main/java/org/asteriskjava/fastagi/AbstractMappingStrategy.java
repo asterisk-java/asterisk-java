@@ -41,7 +41,7 @@ public abstract class AbstractMappingStrategy implements MappingStrategy
         catch (Exception e)
         {
             logger.error("Unable to create AgiScript instance of type "
-                    + className);
+                    + className, e);
             return null;
         }
 
