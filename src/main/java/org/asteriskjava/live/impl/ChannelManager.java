@@ -83,7 +83,7 @@ public class ChannelManager
         return copy;
     }
 
-    public void addChannel(AsteriskChannelImpl channel)
+    private void addChannel(AsteriskChannelImpl channel)
     {
         synchronized (channels)
         {
@@ -91,7 +91,7 @@ public class ChannelManager
         }
     }
 
-    public void removeChannel(AsteriskChannel channel)
+    private void removeChannel(AsteriskChannel channel)
     {
         synchronized (channels)
         {
@@ -299,6 +299,8 @@ public class ChannelManager
         synchronized (channel)
         {
             channel.setState(ChannelState.HUNGUP);
+            channel.setHangupCause(event.getCause());
+            channel.setHangupCauseText(event.getCauseTxt());
         }
 
         logger.info("Removing channel " + channel.getName() + " due to hangup");

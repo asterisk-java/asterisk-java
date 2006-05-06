@@ -19,7 +19,6 @@ package org.asteriskjava.live;
 import java.util.Date;
 import java.util.List;
 
-
 public interface AsteriskChannel
 {
     /**
@@ -96,6 +95,28 @@ public interface AsteriskChannel
     Date getDateOfCreation();
 
     /**
+     * Returns the reason for hangup.
+     * 
+     * @return the numeric reason for hangup or <code>null</code> if the
+     *         channel has not yet been hung up or no hangup cause is available
+     *         for this type of channel. If no hangup cause is available 0 may
+     *         be returned, too.
+     * @see org.asteriskjava.manager.HangupCause
+     */
+    Integer getHangupCause();
+
+    /**
+     * Returns a textual representation of the reason for hangup.
+     * 
+     * @return the textual representation of the reason for hangup or
+     *         <code>null</code> if the channel has not yet been hung up or no
+     *         hangup cause is available for this type of channel. If no hangup
+     *         cause is available an empty String may be returned, too.
+     * @see org.asteriskjava.manager.HangupCause
+     */
+    String getHangupCauseText();
+
+    /**
      * Returns the channel this channel is bridged with, if any.
      * 
      * @return the channel this channel is bridged with, or <code>null</code>
@@ -115,10 +136,26 @@ public interface AsteriskChannel
     /**
      * Hangs up this channel.
      * 
-     * @throws ManagerCommunicationException if the hangup action cannot be sent to Asterisk.
-     * @throws NoSuchChannelException if this channel had already been hung up before the hangup was sent.
+     * @throws ManagerCommunicationException if the hangup action cannot be sent
+     *             to Asterisk.
+     * @throws NoSuchChannelException if this channel had already been hung up
+     *             before the hangup was sent.
      */
     void hangup() throws ManagerCommunicationException, NoSuchChannelException;
+
+    /**
+     * Hangs up this channel using a given cause code. The cause code is mainly
+     * used for Zap PRI channels where it makes Asterisk send a PRI DISCONNECT 
+     * message with the set CAUSE element to the switch. 
+     * 
+     * @param cause the cause code to send.
+     * @throws ManagerCommunicationException if the hangup action cannot be sent
+     *             to Asterisk.
+     * @throws NoSuchChannelException if this channel had already been hung up
+     *             before the hangup was sent.
+     * @see org.asteriskjava.manager.HangupCause
+     */
+    void hangup(Integer cause) throws ManagerCommunicationException, NoSuchChannelException;
 
     /**
      * Redirects this channel to a new extension.<br>
@@ -128,21 +165,26 @@ public interface AsteriskChannel
      * @param context the destination context.
      * @param exten the destination extension.
      * @param priority the destination priority.
-     * @throws ManagerCommunicationException if the redirect action cannot be sent to Asterisk.
-     * @throws NoSuchChannelException if this channel had been hung up before the redirect was sent.
+     * @throws ManagerCommunicationException if the redirect action cannot be
+     *             sent to Asterisk.
+     * @throws NoSuchChannelException if this channel had been hung up before
+     *             the redirect was sent.
      */
     void redirect(String context, String exten, int priority) throws ManagerCommunicationException, NoSuchChannelException;
 
     /**
      * Returns the value of the given channel variable.<br>
-     * Currently Asterisk does not support the retrieval of built-in variables like
-     * EXTEN or CALLERIDNUM but only custom variables set via Asterisk's Set command
-     * or via {@link #setVariable(String, String)}.
+     * Currently Asterisk does not support the retrieval of built-in variables
+     * like EXTEN or CALLERIDNUM but only custom variables set via Asterisk's
+     * Set command or via {@link #setVariable(String, String)}.
      * 
      * @param variable the name of the channel variable to return.
-     * @return the value of the channel variable or <code>null</code> if it is not set.
-     * @throws ManagerCommunicationException if the redirect action cannot be sent to Asterisk.
-     * @throws NoSuchChannelException if this channel had been hung up before the variable was request.
+     * @return the value of the channel variable or <code>null</code> if it is
+     *         not set.
+     * @throws ManagerCommunicationException if the redirect action cannot be
+     *             sent to Asterisk.
+     * @throws NoSuchChannelException if this channel had been hung up before
+     *             the variable was request.
      */
     String getVariable(String variable) throws ManagerCommunicationException, NoSuchChannelException;
 

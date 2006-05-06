@@ -40,6 +40,7 @@ import org.asteriskjava.manager.response.ManagerResponse;
  */
 public class AsteriskChannelImpl implements AsteriskChannel
 {
+    private static final String CAUSE_VARIABLE_NAME = "PRI_CAUSE";
     private final ManagerConnectionPool connectionPool;
 
     /**
@@ -88,6 +89,10 @@ public class AsteriskChannelImpl implements AsteriskChannel
      * Indicates if this channel was linked to another channel at least once.
      */
     private boolean wasLinked;
+    
+    private Integer hangupCause;
+    
+    private String hangupCauseText;
 
     /**
      * Creates a new Channel.
@@ -262,6 +267,26 @@ public class AsteriskChannelImpl implements AsteriskChannel
         this.dateOfCreation = dateOfCreation;
     }
 
+    public Integer getHangupCause()
+    {
+        return hangupCause;
+    }
+
+    public void setHangupCause(Integer hangupCause)
+    {
+        this.hangupCause = hangupCause;
+    }
+
+    public String getHangupCauseText()
+    {
+        return hangupCauseText;
+    }
+
+    public void setHangupCauseText(String hangupCauseText)
+    {
+        this.hangupCauseText = hangupCauseText;
+    }
+
     public AsteriskChannel getLinkedChannel()
     {
         return linkedChannel;
@@ -295,6 +320,15 @@ public class AsteriskChannelImpl implements AsteriskChannel
         {
             throw new NoSuchChannelException("Channel '" + name + "' is not available: " + response.getMessage());
         }
+    }
+
+    public void hangup(Integer cause) throws ManagerCommunicationException, NoSuchChannelException
+    {
+        if (cause != null)
+        {
+            setVariable(CAUSE_VARIABLE_NAME, cause.toString());
+        }
+        hangup();
     }
     
     public void redirect(String context, String exten, int priority) throws ManagerCommunicationException, NoSuchChannelException
