@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.live.impl;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -43,11 +45,17 @@ public class AsteriskChannelImpl implements AsteriskChannel
 {
     private static final String CAUSE_VARIABLE_NAME = "PRI_CAUSE";
     private final ManagerConnectionPool connectionPool;
+    private final PropertyChangeSupport changes;
 
     /**
      * Unique id of this channel.
      */
     private final String id;
+
+    /**
+     * Date this channel has been created.
+     */
+    private final Date dateOfCreation;
 
     /**
      * Name of this channel.
@@ -76,11 +84,6 @@ public class AsteriskChannelImpl implements AsteriskChannel
     private final List<Extension> extensions;
 
     /**
-     * Date this channel has been created.
-     */
-    private Date dateOfCreation;
-
-    /**
      * If this channel is bridged to another channel, the linkedChannel contains
      * the channel this channel is bridged with.
      */
@@ -101,12 +104,14 @@ public class AsteriskChannelImpl implements AsteriskChannel
      * @param name name of this channel, for example "SIP/1310-20da".
      * @param id unique id of this channel, for example "1099015093.165".
      */
-    public AsteriskChannelImpl(final ManagerConnectionPool connectionPool, final String name, final String id)
+    AsteriskChannelImpl(final ManagerConnectionPool connectionPool, final String name, final String id, final Date dateOfCreation)
     {
         this.connectionPool = connectionPool;
         this.name = name;
         this.id = id;
+        this.dateOfCreation = dateOfCreation;
         this.extensions = new ArrayList<Extension>();
+        this.changes = new PropertyChangeSupport(this);
     }
 
     public String getId()
@@ -124,9 +129,12 @@ public class AsteriskChannelImpl implements AsteriskChannel
      * 
      * @param name the name of this channel.
      */
-    public void setName(final String name)
+    void setName(final String name)
     {
+        String oldName = this.name;
+
         this.name = name;
+        firePropertyChange("name", oldName, name);
     }
 
     public String getCallerIdNumber()
@@ -139,9 +147,12 @@ public class AsteriskChannelImpl implements AsteriskChannel
      * 
      * @param callerIdNumber the caller id number of this channel.
      */
-    public void setCallerIdNumber(final String callerIdNumber)
+    void setCallerIdNumber(final String callerIdNumber)
     {
+        String oldCallerIdNumber = this.callerIdNumber;
+
         this.callerIdNumber = callerIdNumber;
+        firePropertyChange("callerIdNumber", oldCallerIdNumber, callerIdNumber);
     }
 
     public String getCallerIdName()
@@ -154,9 +165,12 @@ public class AsteriskChannelImpl implements AsteriskChannel
      * 
      * @param callerIdName the caller id name of this channel.
      */
-    public void setCallerIdName(String callerIdName)
+    void setCallerIdName(String callerIdName)
     {
+        String oldCallerIdName = this.callerIdName;
+        
         this.callerIdName = callerIdName;
+        firePropertyChange("callerIdName", oldCallerIdName, callerIdName);
     }
 
     public ChannelState getState()
@@ -169,9 +183,12 @@ public class AsteriskChannelImpl implements AsteriskChannel
      * 
      * @param state the state of this channel.
      */
-    public void setState(ChannelState state)
+    void setState(ChannelState state)
     {
+        ChannelState oldState = this.state;
+
         this.state = state;
+        firePropertyChange("state", oldState, state);
     }
 
     public String getAccount()
@@ -184,9 +201,12 @@ public class AsteriskChannelImpl implements AsteriskChannel
      * 
      * @param account the account code used to bill this channel.
      */
-    public void setAccount(String account)
+    void setAccount(String account)
     {
+        String oldAccount = this.account;
+
         this.account = account;
+        changes.firePropertyChange("account", oldAccount, account);
     }
 
     public Extension getCurrentExtension()
@@ -245,12 +265,16 @@ public class AsteriskChannelImpl implements AsteriskChannel
      * @param extension the visted dialplan entry to add.
      * @since 0.2
      */
-    public void addExtension(Extension extension)
+    void addExtension(Extension extension)
     {
+        Extension oldCurrentExtension = getCurrentExtension();
+        
         synchronized (extensions)
         {
             extensions.add(extension);
         }
+        
+        firePropertyChange("currentExtension", oldCurrentExtension, extension);
     }
 
     public Date getDateOfCreation()
@@ -258,24 +282,17 @@ public class AsteriskChannelImpl implements AsteriskChannel
         return dateOfCreation;
     }
 
-    /**
-     * Sets the date this channel has been created.
-     * 
-     * @param dateOfCreation the date this channel has been created.
-     */
-    public void setDateOfCreation(Date dateOfCreation)
-    {
-        this.dateOfCreation = dateOfCreation;
-    }
-
     public HangupCause getHangupCause()
     {
         return hangupCause;
     }
 
-    public void setHangupCause(HangupCause hangupCause)
+    void setHangupCause(HangupCause hangupCause)
     {
+        HangupCause oldHangupCause = this.hangupCause;
+
         this.hangupCause = hangupCause;
+        firePropertyChange("hangupCause", oldHangupCause, hangupCause);
     }
 
     public String getHangupCauseText()
@@ -283,9 +300,12 @@ public class AsteriskChannelImpl implements AsteriskChannel
         return hangupCauseText;
     }
 
-    public void setHangupCauseText(String hangupCauseText)
+    void setHangupCauseText(String hangupCauseText)
     {
+        String oldHangupCauseText = this.hangupCauseText;
+
         this.hangupCauseText = hangupCauseText;
+        firePropertyChange("hangupCauseText", oldHangupCauseText, hangupCauseText);
     }
 
     public AsteriskChannel getLinkedChannel()
@@ -298,20 +318,25 @@ public class AsteriskChannelImpl implements AsteriskChannel
      * 
      * @param linkedChannel the channel this channel is bridged with.
      */
-    public void setLinkedChannel(AsteriskChannel linkedChannel)
+    void setLinkedChannel(AsteriskChannel linkedChannel)
     {
+        AsteriskChannel oldLinkedChannel = this.linkedChannel;
+        
         this.linkedChannel = linkedChannel;
         if (linkedChannel != null)
         {
             this.wasLinked = true;
         }
+        firePropertyChange("linkedChannel", oldLinkedChannel, linkedChannel);
     }
 
-    public boolean getWasLinked()
+    public boolean wasLinked()
     {
         return wasLinked;
     }
-    
+
+    // action methods
+
     public void hangup() throws ManagerCommunicationException, NoSuchChannelException
     {
         ManagerResponse response;
@@ -372,6 +397,28 @@ public class AsteriskChannelImpl implements AsteriskChannel
         }
     }
 
+    // notification methods
+
+    public void addPropertyChangeListener(PropertyChangeListener listener)
+    {
+        changes.addPropertyChangeListener(listener);
+    }
+
+    public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener)
+    {
+        changes.addPropertyChangeListener(propertyName, listener);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener listener)
+    {
+        changes.removePropertyChangeListener(listener);
+    }
+
+    public void removePropertyChangeListener(String propertyName, PropertyChangeListener listener)
+    {
+        changes.removePropertyChangeListener(propertyName, listener);
+    }
+
     public String toString()
     {
         StringBuffer sb;
@@ -414,5 +461,13 @@ public class AsteriskChannelImpl implements AsteriskChannel
         sb.append("]");
 
         return sb.toString();
+    }
+    
+    private void firePropertyChange(String propertyName, Object oldValue, Object newValue)
+    {
+        if (oldValue != null || newValue != null)
+        {
+            changes.firePropertyChange(propertyName, oldValue, newValue);
+        }
     }
 }

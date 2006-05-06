@@ -16,9 +16,15 @@
  */
 package org.asteriskjava.live;
 
+import java.beans.PropertyChangeListener;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * An Asterisk channel.
+ * 
+ * @author srt
+ */
 public interface AsteriskChannel
 {
     /**
@@ -134,7 +140,7 @@ public interface AsteriskChannel
      *         at least once, <code>false</code> otherwise.
      * @since 0.2
      */
-    boolean getWasLinked();
+    boolean wasLinked();
 
     /**
      * Hangs up this channel.
@@ -143,6 +149,7 @@ public interface AsteriskChannel
      *             to Asterisk.
      * @throws NoSuchChannelException if this channel had already been hung up
      *             before the hangup was sent.
+     * @since 0.3
      */
     void hangup() throws ManagerCommunicationException, NoSuchChannelException;
 
@@ -172,6 +179,7 @@ public interface AsteriskChannel
      *             sent to Asterisk.
      * @throws NoSuchChannelException if this channel had been hung up before
      *             the redirect was sent.
+     * @since 0.3
      */
     void redirect(String context, String exten, int priority) throws ManagerCommunicationException, NoSuchChannelException;
 
@@ -188,6 +196,7 @@ public interface AsteriskChannel
      *             sent to Asterisk.
      * @throws NoSuchChannelException if this channel had been hung up before
      *             the variable was requested.
+     * @since 0.3
      */
     String getVariable(String variable) throws ManagerCommunicationException, NoSuchChannelException;
 
@@ -200,6 +209,15 @@ public interface AsteriskChannel
      *             sent to Asterisk.
      * @throws NoSuchChannelException if this channel had been hung up before
      *             the variable was set.
+     * @since 0.3
      */
     void setVariable(String variable, String value) throws ManagerCommunicationException, NoSuchChannelException;
+    
+    public void addPropertyChangeListener(PropertyChangeListener listener);
+
+    public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener);
+
+    public void removePropertyChangeListener(PropertyChangeListener listener);
+
+    public void removePropertyChangeListener(String propertyName, PropertyChangeListener listener);
 }

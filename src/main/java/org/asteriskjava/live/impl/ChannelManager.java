@@ -35,6 +35,7 @@ import org.asteriskjava.manager.event.NewStateEvent;
 import org.asteriskjava.manager.event.RenameEvent;
 import org.asteriskjava.manager.event.StatusEvent;
 import org.asteriskjava.manager.event.UnlinkEvent;
+import org.asteriskjava.util.DateUtil;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
@@ -102,9 +103,9 @@ public class ChannelManager
 
     private AsteriskChannelImpl createChannel(String uniqueId, String name, Date dateOfCreation, String callerIdNumber, String callerIdName, String state)
     {
-        AsteriskChannelImpl channel = new AsteriskChannelImpl(connectionPool, name, uniqueId);
-
-        channel.setDateOfCreation(dateOfCreation);
+        AsteriskChannelImpl channel;
+        
+        channel = new AsteriskChannelImpl(connectionPool, name, uniqueId, dateOfCreation);
         channel.setCallerIdNumber(callerIdNumber);
         channel.setCallerIdName(callerIdName);
         if (state != null)
@@ -124,12 +125,18 @@ public class ChannelManager
         channel = getChannelImplById(event.getUniqueId());
         if (channel == null)
         {
-            channel = new AsteriskChannelImpl(connectionPool, event.getChannel(), event.getUniqueId());
+            Date dateOfCreation;
+            
             if (event.getSeconds() != null)
             {
-                channel.setDateOfCreation(new Date(System.currentTimeMillis()
-                        - (event.getSeconds().intValue() * 1000)));
+                dateOfCreation = new Date(DateUtil.getDate().getTime()
+                        - (event.getSeconds().intValue() * 1000));
             }
+            else
+            {
+                dateOfCreation = DateUtil.getDate();
+            }
+            channel = new AsteriskChannelImpl(connectionPool, event.getChannel(), event.getUniqueId(), dateOfCreation);
             isNew = true;
         }
 
@@ -218,6 +225,17 @@ public class ChannelManager
             logger.info("Adding channel " + channel.getName());
             addChannel(channel);
         }
+        else
+        {
+            // channel had already been created probably by a NewCallerIdEvent
+            synchronized (channel)
+            {
+                channel.setName(event.getChannel());
+                channel.setCallerIdNumber(event.getCallerId());
+                channel.setCallerIdName(event.getCallerIdName());
+                channel.setState(ChannelState.valueOf(event.getState().toUpperCase()));
+            }
+        }
     }
 
     public void handleNewExtenEvent(NewExtenEvent event)
@@ -255,9 +273,9 @@ public class ChannelManager
             return;
         }
 
-        synchronized (channel)
+        if (event.getState() != null)
         {
-            if (event.getState() != null)
+            synchronized (channel)
             {
                 channel.setState(ChannelState.valueOf(event.getState().toUpperCase()));
             }
@@ -306,9 +324,9 @@ public class ChannelManager
         
         synchronized (channel)
         {
-            channel.setState(ChannelState.HUNGUP);
             channel.setHangupCause(cause);
             channel.setHangupCauseText(event.getCauseTxt());
+            channel.setState(ChannelState.HUNGUP);
         }
 
         logger.info("Removing channel " + channel.getName() + " due to hangup (" + cause + ")");
@@ -335,9 +353,13 @@ public class ChannelManager
 
         logger.info("Linking channels " + channel1.getName() + " and "
                 + channel2.getName());
-        synchronized (this)
+        synchronized (channel1)
         {
             channel1.setLinkedChannel(channel2);
+        }
+        
+        synchronized (channel2)
+        {
             channel2.setLinkedChannel(channel1);
         }
     }
@@ -386,6 +408,9 @@ public class ChannelManager
 
         logger.info("Renaming channel '" + channel.getName() + "' to '"
                 + event.getNewname() + "'");
-        channel.setName(event.getNewname());
+        synchronized (channel)
+        {
+            channel.setName(event.getNewname());
+        }
     }
 }
