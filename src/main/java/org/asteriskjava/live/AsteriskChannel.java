@@ -22,14 +22,18 @@ import java.util.List;
 public interface AsteriskChannel
 {
     /**
-     * Returns the unique id of this channel, for example "1099015093.165".
+     * Returns the unique id of this channel, for example "1099015093.165".<br>
+     * The unique id of an AsteriskChannel is immutable for the whole lifecycle
+     * of the channel.
      * 
      * @return the unique id of this channel.
      */
     String getId();
 
     /**
-     * Returns the name of this channel, for example "SIP/1310-20da".
+     * Returns the name of this channel, for example "SIP/1310-20da".<br>
+     * In contrast to the unique id the name of an AsteriskChannel can change
+     * while the call is processed.
      * 
      * @return the name of this channel.
      */
@@ -97,14 +101,12 @@ public interface AsteriskChannel
     /**
      * Returns the reason for hangup.
      * 
-     * @return the numeric reason for hangup or <code>null</code> if the
+     * @return the reason for hangup or <code>null</code> if the
      *         channel has not yet been hung up or no hangup cause is available
-     *         for this type of channel. If no hangup cause is available 0 may
-     *         be returned, too.
+     *         for this type of channel.
      * @since 0.3
-     * @see org.asteriskjava.manager.HangupCause
      */
-    Integer getHangupCause();
+    HangupCause getHangupCause();
 
     /**
      * Returns a textual representation of the reason for hangup.
@@ -114,7 +116,6 @@ public interface AsteriskChannel
      *         hangup cause is available for this type of channel. If no hangup
      *         cause is available an empty String may be returned, too.
      * @since 0.3
-     * @see org.asteriskjava.manager.HangupCause
      */
     String getHangupCauseText();
 
@@ -156,9 +157,8 @@ public interface AsteriskChannel
      * @throws NoSuchChannelException if this channel had already been hung up
      *             before the hangup was sent.
      * @since 0.3
-     * @see org.asteriskjava.manager.HangupCause
      */
-    void hangup(Integer cause) throws ManagerCommunicationException, NoSuchChannelException;
+    void hangup(HangupCause cause) throws ManagerCommunicationException, NoSuchChannelException;
 
     /**
      * Redirects this channel to a new extension.<br>

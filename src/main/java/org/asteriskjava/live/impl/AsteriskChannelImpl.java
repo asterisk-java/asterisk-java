@@ -23,6 +23,7 @@ import java.util.List;
 import org.asteriskjava.live.AsteriskChannel;
 import org.asteriskjava.live.ChannelState;
 import org.asteriskjava.live.Extension;
+import org.asteriskjava.live.HangupCause;
 import org.asteriskjava.live.ManagerCommunicationException;
 import org.asteriskjava.live.NoSuchChannelException;
 import org.asteriskjava.manager.action.GetVarAction;
@@ -90,7 +91,7 @@ public class AsteriskChannelImpl implements AsteriskChannel
      */
     private boolean wasLinked;
     
-    private Integer hangupCause;
+    private HangupCause hangupCause;
     
     private String hangupCauseText;
 
@@ -267,12 +268,12 @@ public class AsteriskChannelImpl implements AsteriskChannel
         this.dateOfCreation = dateOfCreation;
     }
 
-    public Integer getHangupCause()
+    public HangupCause getHangupCause()
     {
         return hangupCause;
     }
 
-    public void setHangupCause(Integer hangupCause)
+    public void setHangupCause(HangupCause hangupCause)
     {
         this.hangupCause = hangupCause;
     }
@@ -322,11 +323,11 @@ public class AsteriskChannelImpl implements AsteriskChannel
         }
     }
 
-    public void hangup(Integer cause) throws ManagerCommunicationException, NoSuchChannelException
+    public void hangup(HangupCause cause) throws ManagerCommunicationException, NoSuchChannelException
     {
         if (cause != null)
         {
-            setVariable(CAUSE_VARIABLE_NAME, cause.toString());
+            setVariable(CAUSE_VARIABLE_NAME, Integer.toString(cause.getCode()));
         }
         hangup();
     }

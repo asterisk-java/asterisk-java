@@ -25,6 +25,7 @@ import java.util.Map;
 import org.asteriskjava.live.AsteriskChannel;
 import org.asteriskjava.live.ChannelState;
 import org.asteriskjava.live.Extension;
+import org.asteriskjava.live.HangupCause;
 import org.asteriskjava.manager.event.HangupEvent;
 import org.asteriskjava.manager.event.LinkEvent;
 import org.asteriskjava.manager.event.NewCallerIdEvent;
@@ -288,7 +289,9 @@ public class ChannelManager
 
     public void handleHangupEvent(HangupEvent event)
     {
+        HangupCause cause = null;
         AsteriskChannelImpl channel = getChannelImplById(event.getUniqueId());
+
         if (channel == null)
         {
             logger.error("Ignored HangupEvent for unknown channel "
@@ -296,14 +299,19 @@ public class ChannelManager
             return;
         }
 
+        if (event.getCause() != null)
+        {
+            cause = HangupCause.getByCode(event.getCause());
+        }
+        
         synchronized (channel)
         {
             channel.setState(ChannelState.HUNGUP);
-            channel.setHangupCause(event.getCause());
+            channel.setHangupCause(cause);
             channel.setHangupCauseText(event.getCauseTxt());
         }
 
-        logger.info("Removing channel " + channel.getName() + " due to hangup");
+        logger.info("Removing channel " + channel.getName() + " due to hangup (" + cause + ")");
         removeChannel(channel);
     }
 

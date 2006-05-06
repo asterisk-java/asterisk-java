@@ -14,7 +14,10 @@
  *  limitations under the License.
  *
  */
-package org.asteriskjava.manager;
+package org.asteriskjava.live;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Asterisk hangup cause.<br>
@@ -80,26 +83,58 @@ public enum HangupCause
     AST_CAUSE_NOTDEFINED(0),
     AST_CAUSE_NOSUCHDRIVER(AST_CAUSE_CHAN_NOT_IMPLEMENTED);
 
-    HangupCause(int cause)
+    private HangupCause(int code)
     {
-        this.cause = cause;
+        this.code = code;
     }
 
-    HangupCause(HangupCause cause)
+    private HangupCause(HangupCause cause)
     {
-        this.cause = cause.cause;
+        this.code = cause.code;
     }
-   
+
+    /**
+     * Returns the numeric cause code.<br>
+     * Using this method in client code is discouraged.
+     * 
+     * @return the numeric cause code.
+     */
+    public int getCode()
+    {
+        return code;
+    }
+
+    /**
+     * Returns the HangupCode by its numeric cause code.<br>
+     * Using this method in client code is discouraged.
+     * 
+     * @param code the numeric cause code.
+     * @return the corresponding HangupCode enum or 
+     *         <code>null</code> if there is no such HangupCause.
+     */
+    public static synchronized HangupCause getByCode(int code)
+    {
+        if (causes == null)
+        {
+            causes = new HashMap<Integer, HangupCause>();
+            for (HangupCause cause : values())
+            {
+                causes.put(cause.code, cause);
+            }
+        }
+        
+        return causes.get(code);
+    }
+
     public String toString()
     {
-        String result = this.name();
-       
-        if (this.name().startsWith("AST_CAUSE_"))
+        if (name().startsWith("AST_CAUSE_"))
         {
-            result = this.name().substring(10);
+            return name().substring(10);
         }
-        return result;
+        return name();
     }
 
-    int cause;
+    private int code;
+    private static Map<Integer, HangupCause> causes;
 }
