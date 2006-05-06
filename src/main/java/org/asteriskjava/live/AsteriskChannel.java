@@ -101,6 +101,7 @@ public interface AsteriskChannel
      *         channel has not yet been hung up or no hangup cause is available
      *         for this type of channel. If no hangup cause is available 0 may
      *         be returned, too.
+     * @since 0.3
      * @see org.asteriskjava.manager.HangupCause
      */
     Integer getHangupCause();
@@ -112,6 +113,7 @@ public interface AsteriskChannel
      *         <code>null</code> if the channel has not yet been hung up or no
      *         hangup cause is available for this type of channel. If no hangup
      *         cause is available an empty String may be returned, too.
+     * @since 0.3
      * @see org.asteriskjava.manager.HangupCause
      */
     String getHangupCauseText();
@@ -153,6 +155,7 @@ public interface AsteriskChannel
      *             to Asterisk.
      * @throws NoSuchChannelException if this channel had already been hung up
      *             before the hangup was sent.
+     * @since 0.3
      * @see org.asteriskjava.manager.HangupCause
      */
     void hangup(Integer cause) throws ManagerCommunicationException, NoSuchChannelException;
