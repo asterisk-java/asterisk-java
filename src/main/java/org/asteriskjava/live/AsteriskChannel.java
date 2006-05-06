@@ -181,12 +181,22 @@ public interface AsteriskChannel
      * @param variable the name of the channel variable to return.
      * @return the value of the channel variable or <code>null</code> if it is
      *         not set.
-     * @throws ManagerCommunicationException if the redirect action cannot be
+     * @throws ManagerCommunicationException if the get variable action cannot be
      *             sent to Asterisk.
      * @throws NoSuchChannelException if this channel had been hung up before
-     *             the variable was request.
+     *             the variable was requested.
      */
     String getVariable(String variable) throws ManagerCommunicationException, NoSuchChannelException;
 
+    /**
+     * Sets the value of the given channel variable.
+     * 
+     * @param variable the name of the channel variable to set.
+     * @param value the value of the channel variable to set.
+     * @throws ManagerCommunicationException if the set variable action cannot be
+     *             sent to Asterisk.
+     * @throws NoSuchChannelException if this channel had been hung up before
+     *             the variable was set.
+     */
     void setVariable(String variable, String value) throws ManagerCommunicationException, NoSuchChannelException;
 }
