@@ -99,6 +99,21 @@ public class ChannelManager
         }
     }
 
+    private AsteriskChannelImpl createChannel(String uniqueId, String name, Date dateOfCreation, String callerIdNumber, String callerIdName, String state)
+    {
+        AsteriskChannelImpl channel = new AsteriskChannelImpl(connectionPool, name, uniqueId);
+
+        channel.setDateOfCreation(dateOfCreation);
+        channel.setCallerIdNumber(callerIdNumber);
+        channel.setCallerIdName(callerIdName);
+        if (state != null)
+        {
+            channel.setState(ChannelState.valueOf(state.toUpperCase()));
+        }
+
+        return channel;
+    }
+    
     public void handleStatusEvent(StatusEvent event)
     {
         AsteriskChannelImpl channel;
@@ -191,18 +206,17 @@ public class ChannelManager
     
     public void handleNewChannelEvent(NewChannelEvent event)
     {
-        AsteriskChannelImpl channel = new AsteriskChannelImpl(connectionPool, event.getChannel(), event.getUniqueId());
+        AsteriskChannelImpl channel;
 
-        channel.setDateOfCreation(event.getDateReceived());
-        channel.setCallerIdNumber(event.getCallerId());
-        channel.setCallerIdName(event.getCallerIdName());
-        if (event.getState() != null)
+        channel = getChannelImplById(event.getUniqueId());
+        if (channel == null)
         {
-            channel.setState(ChannelState.valueOf(event.getState().toUpperCase()));
+            channel = createChannel(
+                    event.getUniqueId(), event.getChannel(), event.getDateReceived(), 
+                    event.getCallerId(), event.getCallerIdName(), event.getState());
+            logger.info("Adding channel " + channel.getName());
+            addChannel(channel);
         }
-
-        logger.info("Adding channel " + channel.getName());
-        addChannel(channel);
     }
 
     public void handleNewExtenEvent(NewExtenEvent event)
@@ -255,15 +269,20 @@ public class ChannelManager
 
         if (channel == null)
         {
-            logger.error("Ignored NewCallerIdEvent for unknown channel "
-                    + event.getChannel());
-            return;
+            // NewCallerIdEvent can occur before NewChannelEvent
+            channel = createChannel(
+                    event.getUniqueId(), event.getChannel(), event.getDateReceived(), 
+                    event.getCallerId(), event.getCallerIdName(), null);
+            logger.info("Adding channel " + channel.getName());
+            addChannel(channel);
         }
-
-        synchronized (channel)
+        else
         {
-            channel.setCallerIdNumber(event.getCallerId());
-            channel.setCallerIdName(event.getCallerIdName());
+            synchronized (channel)
+            {
+                channel.setCallerIdNumber(event.getCallerId());
+                channel.setCallerIdName(event.getCallerIdName());
+            }
         }
     }
 
