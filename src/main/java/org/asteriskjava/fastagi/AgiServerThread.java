@@ -31,6 +31,7 @@ public class AgiServerThread
 {
     private AgiServer agiServer;
     private Thread thread;
+    private boolean daemon = false;
 
     /**
      * Sets the AgiServer to run.<br>
@@ -41,6 +42,19 @@ public class AgiServerThread
     public void setAgiServer(AgiServer agiServer)
     {
         this.agiServer = agiServer;
+    }
+
+    /**
+     * Marks the thread as either a daemon thread or a user thread.<br>
+     * Default is <code>false</code>.
+     * 
+     * @param daemon if <code>true</code>, marks the thread as a daemon thread.
+     * @see Thread#setDaemon(boolean)
+     * @since 0.3
+     */
+    public void setDaemon(boolean daemon)
+    {
+        this.daemon = daemon;
     }
 
     /**
@@ -77,6 +91,7 @@ public class AgiServerThread
             }
         });
         thread.setName("AgiServer Thread");
+        thread.setDaemon(daemon);
         thread.start();
     }
 
