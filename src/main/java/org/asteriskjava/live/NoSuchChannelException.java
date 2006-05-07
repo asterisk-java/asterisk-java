@@ -16,7 +16,6 @@
  */
 package org.asteriskjava.live;
 
-import org.asteriskjava.manager.ManagerException;
 
 public class NoSuchChannelException extends ManagerException
 {
