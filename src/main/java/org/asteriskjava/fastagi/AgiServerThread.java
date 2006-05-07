@@ -21,7 +21,7 @@ import java.io.IOException;
 /**
  * Runs an AgiServer in a separate Thread.<br>
  * You can use this class to run an AgiServer in the background of your
- * application or run it in your webcontainer or application server. 
+ * application or run it in your servlet container or application server. 
  * 
  * @author srt
  * @version $Id$
@@ -33,7 +33,8 @@ public class AgiServerThread
     private Thread thread;
 
     /**
-     * Sets the AgiServer to run.
+     * Sets the AgiServer to run.<br>
+     * This property must be set before starting the AgiServerThread by calling startup.
      * 
      * @param agiServer the AgiServer to run.
      */
@@ -80,7 +81,9 @@ public class AgiServerThread
     }
 
     /**
-     * Stops the AgiServer.
+     * Stops the AgiServer.<br>
+     * The AgiServer must have been started by calling startup before you are
+     * allowed to stop it.
      */
     public synchronized void shutdown()
     {

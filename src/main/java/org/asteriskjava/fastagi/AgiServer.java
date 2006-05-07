@@ -33,7 +33,10 @@ public interface AgiServer
     /**
      * Starts this AguServer.<br>
      * After calling startup() this AgiServer is ready to receive requests from
-     * Asterisk servers and process them.
+     * Asterisk servers and process them.<br>
+     * Note that this method will not return until the AgiServer has been shut down.
+     * If you want to run the AgiServer in the background use wrap it with an 
+     * {@link AgiServerThread}.
      * 
      * @throws IOException if the server socket cannot be bound.
      * @throws IllegalStateException if this AgiServer is already running.
