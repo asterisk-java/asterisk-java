@@ -16,8 +16,8 @@
  */
 package org.asteriskjava.manager.internal;
 
-import org.asteriskjava.io.SocketConnectionFacade;
 import org.asteriskjava.manager.event.ManagerEvent;
+import org.asteriskjava.util.SocketConnectionFacade;
 
 /**
  * The ManagerReader reads events and responses from the asterisk server, parses

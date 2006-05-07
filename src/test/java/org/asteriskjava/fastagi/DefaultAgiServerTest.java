@@ -22,8 +22,8 @@ import junit.framework.TestCase;
 import static org.easymock.EasyMock.*;
 
 import org.asteriskjava.fastagi.DefaultAgiServer;
-import org.asteriskjava.io.ServerSocketFacade;
-import org.asteriskjava.io.SocketConnectionFacade;
+import org.asteriskjava.util.ServerSocketFacade;
+import org.asteriskjava.util.SocketConnectionFacade;
 
 public class DefaultAgiServerTest extends TestCase
 {

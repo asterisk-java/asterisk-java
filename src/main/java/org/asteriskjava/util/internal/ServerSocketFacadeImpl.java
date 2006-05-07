@@ -14,15 +14,15 @@
  *  limitations under the License.
  *
  */
-package org.asteriskjava.io.internal;
+package org.asteriskjava.util.internal;
 
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import org.asteriskjava.io.ServerSocketFacade;
-import org.asteriskjava.io.SocketConnectionFacade;
+import org.asteriskjava.util.ServerSocketFacade;
+import org.asteriskjava.util.SocketConnectionFacade;
 
 
 /**

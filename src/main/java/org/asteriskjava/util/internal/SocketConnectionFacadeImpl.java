@@ -14,7 +14,7 @@
  *  limitations under the License.
  *
  */
-package org.asteriskjava.io.internal;
+package org.asteriskjava.util.internal;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -27,7 +27,7 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
-import org.asteriskjava.io.SocketConnectionFacade;
+import org.asteriskjava.util.SocketConnectionFacade;
 
 
 /**

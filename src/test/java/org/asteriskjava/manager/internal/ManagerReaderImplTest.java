@@ -28,7 +28,6 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-import org.asteriskjava.io.SocketConnectionFacade;
 import org.asteriskjava.manager.AsteriskServer;
 import org.asteriskjava.manager.event.DisconnectEvent;
 import org.asteriskjava.manager.event.ManagerEvent;
@@ -38,6 +37,7 @@ import org.asteriskjava.manager.internal.ManagerReaderImpl;
 import org.asteriskjava.manager.response.CommandResponse;
 import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.util.DateUtil;
+import org.asteriskjava.util.SocketConnectionFacade;
 
 public class ManagerReaderImplTest extends TestCase
 {

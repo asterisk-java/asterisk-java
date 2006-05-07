@@ -25,7 +25,7 @@ import org.asteriskjava.fastagi.AgiHangupException;
 import org.asteriskjava.fastagi.AgiRequest;
 import org.asteriskjava.fastagi.internal.AgiReaderImpl;
 import org.asteriskjava.fastagi.reply.AgiReply;
-import org.asteriskjava.io.SocketConnectionFacade;
+import org.asteriskjava.util.SocketConnectionFacade;
 
 public class AgiReaderImplTest extends TestCase
 {

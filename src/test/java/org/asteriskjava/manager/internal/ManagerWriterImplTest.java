@@ -19,9 +19,9 @@ package org.asteriskjava.manager.internal;
 import junit.framework.TestCase;
 import static org.easymock.EasyMock.*;
 
-import org.asteriskjava.io.SocketConnectionFacade;
 import org.asteriskjava.manager.action.StatusAction;
 import org.asteriskjava.manager.internal.ManagerWriterImpl;
+import org.asteriskjava.util.SocketConnectionFacade;
 
 public class ManagerWriterImplTest extends TestCase
 {

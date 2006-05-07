@@ -24,9 +24,9 @@ import org.asteriskjava.fastagi.AgiRequest;
 import org.asteriskjava.fastagi.AgiScript;
 import org.asteriskjava.fastagi.MappingStrategy;
 import org.asteriskjava.fastagi.command.VerboseCommand;
-import org.asteriskjava.io.SocketConnectionFacade;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
+import org.asteriskjava.util.SocketConnectionFacade;
 
 /**
  * An AgiConnectionHandler is created and run by the AgiServer whenever a new

@@ -14,7 +14,7 @@
  *  limitations under the License.
  *
  */
-package org.asteriskjava.io;
+package org.asteriskjava.util;
 
 import java.io.IOException;
 

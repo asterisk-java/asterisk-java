@@ -24,11 +24,11 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import org.asteriskjava.fastagi.internal.AgiConnectionHandler;
-import org.asteriskjava.io.ServerSocketFacade;
-import org.asteriskjava.io.SocketConnectionFacade;
-import org.asteriskjava.io.internal.ServerSocketFacadeImpl;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
+import org.asteriskjava.util.ServerSocketFacade;
+import org.asteriskjava.util.SocketConnectionFacade;
+import org.asteriskjava.util.internal.ServerSocketFacadeImpl;
 
 public class DefaultAgiServer implements AgiServer
 {

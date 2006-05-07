@@ -21,7 +21,7 @@ import static org.easymock.EasyMock.*;
 
 import org.asteriskjava.fastagi.command.StreamFileCommand;
 import org.asteriskjava.fastagi.internal.AgiWriterImpl;
-import org.asteriskjava.io.SocketConnectionFacade;
+import org.asteriskjava.util.SocketConnectionFacade;
 
 public class AgiWriterImplTest extends TestCase
 {

@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.asteriskjava.io.SocketConnectionFacade;
 import org.asteriskjava.manager.AsteriskServer;
 import org.asteriskjava.manager.DefaultManagerConnection;
 import org.asteriskjava.manager.ResponseBuilder;
@@ -34,6 +33,7 @@ import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.util.DateUtil;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
+import org.asteriskjava.util.SocketConnectionFacade;
 
 
 

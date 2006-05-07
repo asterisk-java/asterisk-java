@@ -19,8 +19,8 @@ package org.asteriskjava.manager.internal;
 import java.io.IOException;
 
 import org.asteriskjava.AsteriskVersion;
-import org.asteriskjava.io.SocketConnectionFacade;
 import org.asteriskjava.manager.action.ManagerAction;
+import org.asteriskjava.util.SocketConnectionFacade;
 
 
 /**

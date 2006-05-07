@@ -51,7 +51,7 @@ import org.asteriskjava.fastagi.command.StreamFileCommand;
 import org.asteriskjava.fastagi.command.VerboseCommand;
 import org.asteriskjava.fastagi.command.WaitForDigitCommand;
 import org.asteriskjava.fastagi.reply.AgiReply;
-import org.asteriskjava.io.SocketConnectionFacade;
+import org.asteriskjava.util.SocketConnectionFacade;
 
 /**
  * Default implementation of the AgiChannel interface.
