@@ -25,10 +25,10 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.asteriskjava.live.impl.AsteriskChannelImpl;
-import org.asteriskjava.live.impl.ChannelManager;
-import org.asteriskjava.live.impl.ManagerConnectionPool;
-import org.asteriskjava.live.impl.QueueManager;
+import org.asteriskjava.live.internal.AsteriskChannelImpl;
+import org.asteriskjava.live.internal.ChannelManager;
+import org.asteriskjava.live.internal.ManagerConnectionPool;
+import org.asteriskjava.live.internal.QueueManager;
 import org.asteriskjava.manager.AuthenticationFailedException;
 import org.asteriskjava.manager.EventTimeoutException;
 import org.asteriskjava.manager.ManagerConnection;
@@ -280,7 +280,7 @@ public class DefaultAsteriskManager
         return originate(originateAction);
     }
 
-    protected AsteriskChannel originate(OriginateAction originateAction) throws ManagerCommunicationException
+    private AsteriskChannel originate(OriginateAction originateAction) throws ManagerCommunicationException
     {
         ResponseEvents responseEvents;
         Iterator<ResponseEvent> responseEventIterator;
@@ -480,11 +480,11 @@ public class DefaultAsteriskManager
         }
     }
 
-    /**
+    /*
      * Resets the internal state when the connection to the asterisk server is
      * lost.
      */
-    protected void handleDisconnectEvent(DisconnectEvent disconnectEvent)
+    private void handleDisconnectEvent(DisconnectEvent disconnectEvent)
     {
         // reset version information as it might have changed while Asterisk
         // restarted
@@ -495,11 +495,11 @@ public class DefaultAsteriskManager
         queueManager.clear();
     }
 
-    /**
+    /*
      * Requests the current state from the asterisk server after the connection
      * to the asterisk server is restored.
      */
-    protected void handleConnectEvent(ConnectEvent connectEvent)
+    private void handleConnectEvent(ConnectEvent connectEvent)
     {
         try
         {
@@ -542,7 +542,7 @@ public class DefaultAsteriskManager
         return channelManager.getChannelImplById(id);
     }
 
-    protected Call originateEvent2Call(OriginateEvent event)
+    private Call originateEvent2Call(OriginateEvent event)
     {
         Call call;
         AsteriskChannelImpl channel;

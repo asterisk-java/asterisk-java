@@ -57,7 +57,7 @@ public class TestDefaultManagerConnection extends TestCase
         while (true)
         {
             // wait for 3 seconds to receive events
-            Thread.sleep(3000);
+            Thread.sleep(30000);
         }
         //dmc.logoff();
     }

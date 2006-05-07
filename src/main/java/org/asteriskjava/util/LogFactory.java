@@ -16,9 +16,9 @@
  */
 package org.asteriskjava.util;
 
-import org.asteriskjava.util.impl.JavaLoggingLog;
-import org.asteriskjava.util.impl.Log4JLogger;
-import org.asteriskjava.util.impl.NullLog;
+import org.asteriskjava.util.internal.JavaLoggingLog;
+import org.asteriskjava.util.internal.Log4JLogger;
+import org.asteriskjava.util.internal.NullLog;
 
 /**
  * Facade to hide details of the underlying logging system.

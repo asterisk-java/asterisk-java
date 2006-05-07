@@ -19,9 +19,9 @@ package org.asteriskjava.fastagi;
 import java.io.IOException;
 
 import org.asteriskjava.fastagi.command.VerboseCommand;
-import org.asteriskjava.fastagi.impl.AgiChannelImpl;
-import org.asteriskjava.fastagi.impl.AgiReaderImpl;
-import org.asteriskjava.fastagi.impl.AgiWriterImpl;
+import org.asteriskjava.fastagi.internal.AgiChannelImpl;
+import org.asteriskjava.fastagi.internal.AgiReaderImpl;
+import org.asteriskjava.fastagi.internal.AgiWriterImpl;
 import org.asteriskjava.io.SocketConnectionFacade;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;

@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.asteriskjava.io.ServerSocketFacade;
 import org.asteriskjava.io.SocketConnectionFacade;
-import org.asteriskjava.io.impl.ServerSocketFacadeImpl;
+import org.asteriskjava.io.internal.ServerSocketFacadeImpl;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
