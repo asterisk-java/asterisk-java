@@ -33,6 +33,7 @@ public class AgentConnectEvent extends AbstractAgentEvent
     private static final long serialVersionUID = 2108033737226142194L;
 
     private Long holdTime;
+    private String bridgedChannel;
 
     public AgentConnectEvent(Object source)
     {
@@ -58,4 +59,30 @@ public class AgentConnectEvent extends AbstractAgentEvent
     {
         this.holdTime = holdtime;
     }
+
+    /**
+     * Returns the unique ID of the queue member channel that is taking the
+     * call. This is useful when trying to link recording filenames back to a
+     * particular call from the queue.<br>
+     * Available since Asterisk 1.4.
+     * 
+     * @return the unique ID of the queue member channel that is taking the
+     *         call.
+     */
+    public String getBridgedChannel()
+    {
+        return bridgedChannel;
+    }
+
+    /**
+     * Sets the unique ID of the queue member channel that is taking the call.
+     * 
+     * @param bridgedChannel the unique ID of the queue member channel that is
+     *            taking the call.
+     */
+    public void setBridgedChannel(String bridgedChannel)
+    {
+        this.bridgedChannel = bridgedChannel;
+    }
+
 }
