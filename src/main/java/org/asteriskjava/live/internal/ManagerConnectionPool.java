@@ -128,8 +128,7 @@ public class ManagerConnectionPool
         }
         catch (InterruptedException e)
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            throw new RuntimeException("Interrupted while trying to add connection to pool");
         }
     }
 }
