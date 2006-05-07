@@ -26,7 +26,7 @@ import java.util.Map;
  * <pre>
  * &lt;beans&gt;
  *    &lt;bean id="mapping"
- *          class="net.sf.asterisk.fastagi.SimpleMappingStrategy"&gt;
+ *          class="org.asteriskjava.fastagi.SimpleMappingStrategy"&gt;
  *        &lt;property name="mappings"&gt;
  *            &lt;map&gt;
  *                &lt;entry&gt;

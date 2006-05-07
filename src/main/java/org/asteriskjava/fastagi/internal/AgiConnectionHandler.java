@@ -14,14 +14,18 @@
  *  limitations under the License.
  *
  */
-package org.asteriskjava.fastagi;
+package org.asteriskjava.fastagi.internal;
 
 import java.io.IOException;
 
+import org.asteriskjava.fastagi.AgiChannel;
+import org.asteriskjava.fastagi.AgiException;
+import org.asteriskjava.fastagi.AgiReader;
+import org.asteriskjava.fastagi.AgiRequest;
+import org.asteriskjava.fastagi.AgiScript;
+import org.asteriskjava.fastagi.AgiWriter;
+import org.asteriskjava.fastagi.MappingStrategy;
 import org.asteriskjava.fastagi.command.VerboseCommand;
-import org.asteriskjava.fastagi.internal.AgiChannelImpl;
-import org.asteriskjava.fastagi.internal.AgiReaderImpl;
-import org.asteriskjava.fastagi.internal.AgiWriterImpl;
 import org.asteriskjava.io.SocketConnectionFacade;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
@@ -153,7 +157,7 @@ public class AgiConnectionHandler implements Runnable
      * @return the AgiChannel associated with the current thread or
      *         <code>null</code> if none is associated.
      */
-    static AgiChannel getChannel()
+    public static AgiChannel getChannel()
     {
         return AgiConnectionHandler.channel.get();
     }

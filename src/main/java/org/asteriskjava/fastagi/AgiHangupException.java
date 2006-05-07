@@ -30,6 +30,9 @@ public class AgiHangupException extends AgiException
      */
     private static final long serialVersionUID = 3256444698691252274L;
     
+    /**
+     * Creates a new AgiHangupException.
+     */
     public AgiHangupException()
     {
         super("Channel was hung up.");

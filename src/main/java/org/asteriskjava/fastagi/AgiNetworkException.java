@@ -30,6 +30,12 @@ public class AgiNetworkException extends AgiException
      */
     private static final long serialVersionUID = 3256445789629723703L;
 
+    /**
+     * Creates a new AgiNetworkException with the given message and cause.
+     * 
+     * @param message a message describing the AgiException.
+     * @param cause the throwable that caused this exception.
+     */
     public AgiNetworkException(String message, Throwable cause)
     {
         super(message, cause);

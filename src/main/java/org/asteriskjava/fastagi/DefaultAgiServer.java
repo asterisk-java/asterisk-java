@@ -23,13 +23,12 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import org.asteriskjava.fastagi.internal.AgiConnectionHandler;
 import org.asteriskjava.io.ServerSocketFacade;
 import org.asteriskjava.io.SocketConnectionFacade;
 import org.asteriskjava.io.internal.ServerSocketFacadeImpl;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
-
-
 
 public class DefaultAgiServer implements AgiServer
 {
@@ -285,7 +284,8 @@ public class DefaultAgiServer implements AgiServer
         }
         catch (IOException e)
         {
-            // nothing we can do about that...
+            // nothing we can do about that and exceptions have already been logged
+            // by startup().
         }
     }
 

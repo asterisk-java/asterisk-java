@@ -68,5 +68,4 @@ public class CompositeMappingStrategy implements MappingStrategy
 
         return null;
     }
-
 }

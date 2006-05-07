@@ -18,6 +18,7 @@ package org.asteriskjava.fastagi;
 
 import org.asteriskjava.fastagi.command.AgiCommand;
 import org.asteriskjava.fastagi.command.AnswerCommand;
+import org.asteriskjava.fastagi.internal.AgiConnectionHandler;
 import org.asteriskjava.fastagi.reply.AgiReply;
 
 
