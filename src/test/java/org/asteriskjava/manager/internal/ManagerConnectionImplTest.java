@@ -424,6 +424,7 @@ public class ManagerConnectionImplTest extends TestCase
         statusAction = new StatusAction();
         statusAction.setActionId("123");
 
+        mc.setDefaultResponseTimeout(200);
         // fake connect
         mc.connect();
         // provoke timeout
