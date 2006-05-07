@@ -14,14 +14,14 @@
  *  limitations under the License.
  *
  */
-package org.asteriskjava.fastagi.reply.internal;
+package org.asteriskjava.fastagi.internal;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import junit.framework.TestCase;
 
-import org.asteriskjava.fastagi.reply.internal.AgiReplyImpl;
+import org.asteriskjava.fastagi.internal.AgiReplyImpl;
 
 public class AgiReplyImplTest extends TestCase
 {

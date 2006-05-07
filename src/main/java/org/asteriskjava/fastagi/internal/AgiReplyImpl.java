@@ -14,7 +14,7 @@
  *  limitations under the License.
  *
  */
-package org.asteriskjava.fastagi.reply.internal;
+package org.asteriskjava.fastagi.internal;
 
 import java.io.*;
 import java.util.*;
@@ -87,12 +87,12 @@ public class AgiReplyImpl implements Serializable, AgiReply
      */
     private String usage;
 
-    public AgiReplyImpl()
+    AgiReplyImpl()
     {
 
     }
 
-    public AgiReplyImpl(List lines)
+    AgiReplyImpl(List lines)
     {
         this.lines = lines;
         try

@@ -25,7 +25,6 @@ import org.asteriskjava.fastagi.AgiHangupException;
 import org.asteriskjava.fastagi.AgiNetworkException;
 import org.asteriskjava.fastagi.AgiRequest;
 import org.asteriskjava.fastagi.reply.AgiReply;
-import org.asteriskjava.fastagi.reply.internal.AgiReplyImpl;
 import org.asteriskjava.io.SocketConnectionFacade;
 
 
