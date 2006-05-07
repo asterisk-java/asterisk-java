@@ -304,8 +304,8 @@ public class EventBuilderImpl implements EventBuilder
             actionId = responseEvent.getActionId();
             if (actionId != null)
             {
-                responseEvent.setActionId(Util.stripInternalActionId(actionId));
-                responseEvent.setInternalActionId(Util
+                responseEvent.setActionId(ManagerUtil.stripInternalActionId(actionId));
+                responseEvent.setInternalActionId(ManagerUtil
                         .getInternalActionId(actionId));
             }
         }

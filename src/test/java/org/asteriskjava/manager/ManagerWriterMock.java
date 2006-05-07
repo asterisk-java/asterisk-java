@@ -25,7 +25,7 @@ import org.asteriskjava.manager.action.LoginAction;
 import org.asteriskjava.manager.action.LogoffAction;
 import org.asteriskjava.manager.action.ManagerAction;
 import org.asteriskjava.manager.event.ProtocolIdentifierReceivedEvent;
-import org.asteriskjava.manager.internal.Util;
+import org.asteriskjava.manager.internal.ManagerUtil;
 import org.asteriskjava.manager.response.ChallengeResponse;
 import org.asteriskjava.manager.response.ManagerError;
 import org.asteriskjava.manager.response.ManagerResponse;
@@ -117,7 +117,7 @@ public class ManagerWriterMock implements ManagerWriter
                 ChallengeResponse challengeResponse;
 
                 challengeResponse = new ChallengeResponse();
-                challengeResponse.setActionId(Util.addInternalActionId(action.getActionId(), internalActionId));
+                challengeResponse.setActionId(ManagerUtil.addInternalActionId(action.getActionId(), internalActionId));
                 challengeResponse.setChallenge(CHALLENGE);
                 dispatcher.dispatchResponse(challengeResponse);
             }
@@ -159,7 +159,7 @@ public class ManagerWriterMock implements ManagerWriter
                     loginResponse.setResponse("Error");
                     loginResponse.setMessage("Authentication failed");
                 }
-                loginResponse.setActionId(Util.addInternalActionId(action.getActionId(), internalActionId));
+                loginResponse.setActionId(ManagerUtil.addInternalActionId(action.getActionId(), internalActionId));
                 dispatcher.dispatchResponse(loginResponse);
             }
         }
@@ -172,7 +172,7 @@ public class ManagerWriterMock implements ManagerWriter
                 ManagerResponse response;
 
                 response = new ManagerResponse();
-                response.setActionId(Util.addInternalActionId(action.getActionId(), internalActionId));
+                response.setActionId(ManagerUtil.addInternalActionId(action.getActionId(), internalActionId));
                 response.setResponse("Success");
                 dispatcher.dispatchResponse(response);
             }
@@ -186,7 +186,7 @@ public class ManagerWriterMock implements ManagerWriter
                 ManagerResponse response;
 
                 response = new ManagerResponse();
-                response.setActionId(Util.addInternalActionId(action.getActionId(), internalActionId));
+                response.setActionId(ManagerUtil.addInternalActionId(action.getActionId(), internalActionId));
                 response.setResponse("Success");
                 dispatcher.dispatchResponse(response);
             }

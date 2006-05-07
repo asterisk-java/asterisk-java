@@ -18,7 +18,7 @@ package org.asteriskjava.manager.internal;
 
 /**
  * Utilitiy class with some static helper methods that are used in multiple
- * contexts.<br>
+ * contexts within the manager package.<br>
  * The methods for handling the internal action id are used to make sure we
  * send unique ids to Asterisk even when the user of Asterisk-Java does not
  * provide a unique action id or no action id at all.<br>
@@ -28,7 +28,7 @@ package org.asteriskjava.manager.internal;
  * @author srt
  * @version $Id$
  */
-public class Util
+public class ManagerUtil
 {
     public static char INTERNAL_ACTION_ID_DELIMITER = '#';
 

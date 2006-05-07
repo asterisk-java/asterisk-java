@@ -42,7 +42,7 @@ import org.asteriskjava.manager.event.ResponseEvent;
 import org.asteriskjava.manager.internal.ManagerReaderImpl;
 import org.asteriskjava.manager.internal.ManagerWriterImpl;
 import org.asteriskjava.manager.internal.ResponseEventsImpl;
-import org.asteriskjava.manager.internal.Util;
+import org.asteriskjava.manager.internal.ManagerUtil;
 import org.asteriskjava.manager.response.ChallengeResponse;
 import org.asteriskjava.manager.response.CommandResponse;
 import org.asteriskjava.manager.response.ManagerError;
@@ -463,7 +463,7 @@ public class DefaultManagerConnection implements ManagerConnection, Dispatcher
             {
                 md.update(password.getBytes());
             }
-            key = Util.toHexString(md.digest());
+            key = ManagerUtil.toHexString(md.digest());
         }
         catch (NoSuchAlgorithmException ex)
         {
@@ -792,9 +792,9 @@ public class DefaultManagerConnection implements ManagerConnection, Dispatcher
      * Creates a new unique internal action id based on the hash code of this
      * connection and a sequence.
      * 
-     * @see Util#addInternalActionId(String, String)
-     * @see Util#getInternalActionId(String)
-     * @see Util#stripInternalActionId(String)
+     * @see ManagerUtil#addInternalActionId(String, String)
+     * @see ManagerUtil#getInternalActionId(String)
+     * @see ManagerUtil#stripInternalActionId(String)
      */
     private String createInternalActionId()
     {
@@ -870,8 +870,8 @@ public class DefaultManagerConnection implements ManagerConnection, Dispatcher
 
         if (actionId != null)
         {
-            internalActionId = Util.getInternalActionId(actionId);
-            response.setActionId(Util.stripInternalActionId(actionId));
+            internalActionId = ManagerUtil.getInternalActionId(actionId);
+            response.setActionId(ManagerUtil.stripInternalActionId(actionId));
         }
 
         logger.debug("Dispatching response with internalActionId '"

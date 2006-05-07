@@ -75,7 +75,7 @@ public class ActionBuilderImpl implements ActionBuilder
         if (internalActionId != null)
         {
             sb.append("actionid: ");
-            sb.append(Util.addInternalActionId(action.getActionId(), internalActionId));
+            sb.append(ManagerUtil.addInternalActionId(action.getActionId(), internalActionId));
             sb.append(LINE_SEPARATOR);
         }
         else if (action.getActionId() != null)
