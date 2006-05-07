@@ -21,11 +21,29 @@ import java.lang.reflect.Constructor;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
-
+/**
+ * Abstract base class for common mapping strategies.<br>
+ * If you implement your own mapping strategy you can derive from this class.
+ * 
+ * @author srt
+ * @since 0.3
+ */
 public abstract class AbstractMappingStrategy implements MappingStrategy
 {
+    /**
+     * Reference to Asterisk-Java's logging subsystem.
+     */
     protected Log logger = LogFactory.getLog(getClass());
 
+    /**
+     * Creates a new instance of an AGI script.
+     * 
+     * @param className Class name of the AGI script. The class must implement
+     *            {@link AgiScript}.
+     * @return the created instance of the AGI script class. If the instance
+     *         can't be created an error is logged and <code>null</code> is
+     *         returned.
+     */
     protected AgiScript createAgiScriptInstance(String className)
     {
         Class agiScriptClass;
@@ -40,12 +58,10 @@ public abstract class AbstractMappingStrategy implements MappingStrategy
         }
         catch (Exception e)
         {
-            logger.error("Unable to create AgiScript instance of type "
-                    + className, e);
+            logger.error("Unable to create AgiScript instance of type " + className, e);
             return null;
         }
 
         return agiScript;
     }
-
 }
