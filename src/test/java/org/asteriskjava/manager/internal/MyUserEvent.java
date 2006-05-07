@@ -14,7 +14,7 @@
  *  limitations under the License.
  *
  */
-package org.asteriskjava.manager;
+package org.asteriskjava.manager.internal;
 
 import org.asteriskjava.manager.event.ManagerEvent;
 

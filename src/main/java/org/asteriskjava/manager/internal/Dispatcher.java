@@ -16,7 +16,6 @@
  */
 package org.asteriskjava.manager.internal;
 
-import org.asteriskjava.manager.ManagerResponseHandler;
 import org.asteriskjava.manager.event.ManagerEvent;
 import org.asteriskjava.manager.response.ManagerResponse;
 
@@ -30,12 +29,12 @@ import org.asteriskjava.manager.response.ManagerResponse;
  * @author srt
  * @version $Id$
  */
-public interface Dispatcher
+interface Dispatcher
 {
     /**
      * This method is called by the reader whenever a {@link ManagerResponse} is
      * received. The response is dispatched to the associated
-     * {@link ManagerResponseHandler}.
+     * {@link org.asteriskjava.manager.ManagerResponseListener}.
      * 
      * @param response the resonse received by the reader
      * @see ManagerReader

@@ -14,20 +14,18 @@
  *  limitations under the License.
  *
  */
-package org.asteriskjava.manager;
+package org.asteriskjava.manager.internal;
 
 import java.io.IOException;
 
 import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.io.SocketConnectionFacade;
+import org.asteriskjava.manager.AsteriskServer;
 import org.asteriskjava.manager.action.ChallengeAction;
 import org.asteriskjava.manager.action.LoginAction;
 import org.asteriskjava.manager.action.LogoffAction;
 import org.asteriskjava.manager.action.ManagerAction;
 import org.asteriskjava.manager.event.ProtocolIdentifierReceivedEvent;
-import org.asteriskjava.manager.internal.Dispatcher;
-import org.asteriskjava.manager.internal.ManagerUtil;
-import org.asteriskjava.manager.internal.ManagerWriter;
 import org.asteriskjava.manager.response.ChallengeResponse;
 import org.asteriskjava.manager.response.ManagerError;
 import org.asteriskjava.manager.response.ManagerResponse;
@@ -36,6 +34,8 @@ import org.asteriskjava.util.DateUtil;
 public class ManagerWriterMock implements ManagerWriter
 {
     private static final String CHALLENGE = "12345";
+    private static final long CONNECT_LATENCY = 50;
+    private static final long RESPONSE_LATENCY = 20;
 
     private Dispatcher dispatcher;
     private AsteriskServer asteriskServer;
@@ -92,11 +92,26 @@ public class ManagerWriterMock implements ManagerWriter
     {
         if (sendProtocolIdentifierReceivedEvent)
         {
-            ProtocolIdentifierReceivedEvent protocolIdentifierReceivedEvent;
-            protocolIdentifierReceivedEvent = new ProtocolIdentifierReceivedEvent(asteriskServer);
-            protocolIdentifierReceivedEvent.setProtocolIdentifier("Asterisk Call Manager/1.0");
-            protocolIdentifierReceivedEvent.setDateReceived(DateUtil.getDate());
-            dispatcher.dispatchEvent(protocolIdentifierReceivedEvent);
+            Thread future = new Thread(new Runnable()
+            {
+                public void run()
+                {
+                    try
+                    {
+                        Thread.sleep(CONNECT_LATENCY);
+                    }
+                    catch (InterruptedException e)
+                    {
+                        // ignore
+                    }
+                    ProtocolIdentifierReceivedEvent protocolIdentifierReceivedEvent;
+                    protocolIdentifierReceivedEvent = new ProtocolIdentifierReceivedEvent(asteriskServer);
+                    protocolIdentifierReceivedEvent.setProtocolIdentifier("Asterisk Call Manager/1.0");
+                    protocolIdentifierReceivedEvent.setDateReceived(DateUtil.getDate());
+                    dispatcher.dispatchEvent(protocolIdentifierReceivedEvent);
+                }
+            });
+            future.start();
         }
     }
 
@@ -121,7 +136,7 @@ public class ManagerWriterMock implements ManagerWriter
                 challengeResponse = new ChallengeResponse();
                 challengeResponse.setActionId(ManagerUtil.addInternalActionId(action.getActionId(), internalActionId));
                 challengeResponse.setChallenge(CHALLENGE);
-                dispatcher.dispatchResponse(challengeResponse);
+                dispatchLater(challengeResponse);
             }
         }
         else if (action instanceof LoginAction)
@@ -136,7 +151,7 @@ public class ManagerWriterMock implements ManagerWriter
             {
                 throw new RuntimeException("Expected authType 'MD5' got '" + authType + "'");
             }
-            
+
             if (!expectedUsername.equals(username))
             {
                 throw new RuntimeException("Expected username '" + expectedUsername + "' got '" + username + "'");
@@ -148,7 +163,8 @@ public class ManagerWriterMock implements ManagerWriter
             {
                 ManagerResponse loginResponse;
 
-                // let testReconnectWithKeepAliveAfterAuthenticationFailure succeed after
+                // let testReconnectWithKeepAliveAfterAuthenticationFailure
+                // succeed after
                 // 3 unsuccessful attempts
                 if (key.equals(expectedKey) || loginActionsSent > 2)
                 {
@@ -162,7 +178,7 @@ public class ManagerWriterMock implements ManagerWriter
                     loginResponse.setMessage("Authentication failed");
                 }
                 loginResponse.setActionId(ManagerUtil.addInternalActionId(action.getActionId(), internalActionId));
-                dispatcher.dispatchResponse(loginResponse);
+                dispatchLater(loginResponse);
             }
         }
         else if (action instanceof LogoffAction)
@@ -176,7 +192,7 @@ public class ManagerWriterMock implements ManagerWriter
                 response = new ManagerResponse();
                 response.setActionId(ManagerUtil.addInternalActionId(action.getActionId(), internalActionId));
                 response.setResponse("Success");
-                dispatcher.dispatchResponse(response);
+                dispatchLater(response);
             }
         }
         else
@@ -190,8 +206,28 @@ public class ManagerWriterMock implements ManagerWriter
                 response = new ManagerResponse();
                 response.setActionId(ManagerUtil.addInternalActionId(action.getActionId(), internalActionId));
                 response.setResponse("Success");
-                dispatcher.dispatchResponse(response);
+                dispatchLater(response);
             }
         }
+    }
+
+    private void dispatchLater(final ManagerResponse response)
+    {
+        Thread future = new Thread(new Runnable()
+        {
+            public void run()
+            {
+                try
+                {
+                    Thread.sleep(RESPONSE_LATENCY);
+                }
+                catch (InterruptedException e)
+                {
+                    // ignore
+                }
+                dispatcher.dispatchResponse(response);
+            }
+        });
+        future.start();
     }
 }

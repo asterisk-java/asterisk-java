@@ -144,7 +144,7 @@ public interface ManagerConnection
      * @throws IllegalStateException if you are not connected to an Asterisk
      *             server.
      * @see #sendAction(ManagerAction, long)
-     * @see #sendAction(ManagerAction, ManagerResponseHandler)
+     * @see #sendAction(ManagerAction, ManagerResponseListener)
      */
     ManagerResponse sendAction(ManagerAction action) throws IOException,
             TimeoutException, IllegalArgumentException, IllegalStateException;
@@ -163,7 +163,7 @@ public interface ManagerConnection
      * @throws IllegalArgumentException if the action is <code>null</code>.
      * @throws IllegalStateException if you are not connected to an Asterisk
      *             server.
-     * @see #sendAction(ManagerAction, ManagerResponseHandler)
+     * @see #sendAction(ManagerAction, ManagerResponseListener)
      */
     ManagerResponse sendAction(ManagerAction action, long timeout)
             throws IOException, TimeoutException, IllegalArgumentException,
@@ -181,8 +181,25 @@ public interface ManagerConnection
      * @throws IllegalArgumentException if the action is <code>null</code>.
      * @throws IllegalStateException if you are not connected to an Asterisk
      *             server.
+     * @deprecated this method is deprecated and will be removed in Asterisk-Java 0.4.
      */
     void sendAction(ManagerAction action, ManagerResponseHandler callbackHandler)
+            throws IOException, IllegalArgumentException, IllegalStateException;
+
+    /**
+     * Sends a ManagerAction to the Asterisk server and registers a callback
+     * handler to be called when the corresponding ManagerResponse is received.
+     * 
+     * @param action the action to send to the Asterisk server
+     * @param callbackHandler the callback handler to call when the response is
+     *            received or <code>null</code> if you are not interested in
+     *            the response
+     * @throws IOException if the network connection is disrupted.
+     * @throws IllegalArgumentException if the action is <code>null</code>.
+     * @throws IllegalStateException if you are not connected to an Asterisk
+     *             server.
+     */
+    void sendAction(ManagerAction action, ManagerResponseListener callbackHandler)
             throws IOException, IllegalArgumentException, IllegalStateException;
 
     /**
@@ -255,25 +272,54 @@ public interface ManagerConnection
             long timeout) throws IOException, EventTimeoutException,
             IllegalArgumentException, IllegalStateException;
 
+
+    /**
+     * Registers an event listener that is called whenever an
+     * {@link org.asteriskjava.manager.event.ManagerEvent} is receiced from the
+     * Asterisk server.<br>
+     * Event listeners are notified about new events in the same order as they
+     * were registered.
+     * 
+     * @param eventListener the listener to call whenever a manager event is
+     *            received
+     * @see #removeEventListener(ManagerEventListener)
+     */
+    void addEventListener(ManagerEventListener eventListener);
+
+    /**
+     * Unregisters a previously registered event listener.<br>
+     * Does nothing if the given event listener hasn't be been regiered before.
+     * 
+     * @param eventListener the listener to remove
+     * @see #addEventListener(ManagerEventListener)
+     */
+    void removeEventListener(ManagerEventListener eventListener);
+
     /**
      * Registers an event handler to be called whenever an
      * {@link org.asteriskjava.manager.event.ManagerEvent} is receiced from the
      * Asterisk server.<br>
      * Event handlers are notified about new events in the same order as they
-     * were registered via addEventHandler.
+     * were registered via addEventHandler.<br>
+     * This method is deprecated, please use {@link #removeEventListener(ManagerEventListener)}
+     * instaed.
      * 
      * @param eventHandler the handler to call whenever a manager event is
      *            received
      * @see #removeEventHandler(ManagerEventHandler)
+     * @deprecated this method is deprecated and will be removed in Asterisk-Java 0.4.
      */
     void addEventHandler(ManagerEventHandler eventHandler);
 
     /**
      * Unregisters a previously registered event handler.<br>
-     * Does nothing if the given event handler hasn't be been regiered before.
+     * Does nothing if the given event handler hasn't be been regiered before.<br>
+     * This method is deprecated, please use {@link #addEventListener(ManagerEventListener)}
+     * instaed.
      * 
      * @param eventHandler the event handle to unregister
      * @see #addEventHandler(ManagerEventHandler)
+     * @deprecated this method is deprecated and will be removed in Asterisk-Java 0.4.
      */
     void removeEventHandler(ManagerEventHandler eventHandler);
 

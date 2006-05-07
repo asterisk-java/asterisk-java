@@ -30,7 +30,6 @@ import junit.framework.TestCase;
 
 import org.asteriskjava.io.SocketConnectionFacade;
 import org.asteriskjava.manager.AsteriskServer;
-import org.asteriskjava.manager.MyUserEvent;
 import org.asteriskjava.manager.event.DisconnectEvent;
 import org.asteriskjava.manager.event.ManagerEvent;
 import org.asteriskjava.manager.event.ProtocolIdentifierReceivedEvent;

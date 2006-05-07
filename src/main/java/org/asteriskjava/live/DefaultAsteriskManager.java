@@ -32,7 +32,7 @@ import org.asteriskjava.live.internal.QueueManager;
 import org.asteriskjava.manager.AuthenticationFailedException;
 import org.asteriskjava.manager.EventTimeoutException;
 import org.asteriskjava.manager.ManagerConnection;
-import org.asteriskjava.manager.ManagerEventHandler;
+import org.asteriskjava.manager.ManagerEventListener;
 import org.asteriskjava.manager.Originate;
 import org.asteriskjava.manager.ResponseEvents;
 import org.asteriskjava.manager.TimeoutException;
@@ -75,7 +75,7 @@ import org.asteriskjava.util.LogFactory;
 public class DefaultAsteriskManager
         implements
             AsteriskManager,
-            ManagerEventHandler
+            ManagerEventListener
 {
     private static final Pattern SHOW_VERSION_FILES_PATTERN = Pattern
             .compile("^([\\S]+)\\s+Revision: ([0-9\\.]+)");
@@ -169,7 +169,7 @@ public class DefaultAsteriskManager
         initializeChannels();
         initializeQueues();
 
-        eventConnection.addEventHandler(this);
+        eventConnection.addEventListener(this);
     }
 
     private void initializeChannels() throws EventTimeoutException, IOException
@@ -424,11 +424,11 @@ public class DefaultAsteriskManager
     /* Implementation of the ManagerEventHandler interface */
 
     /**
-     * Handles all events received from the asterisk server.<br>
+     * Handles all events received from the Asterisk server.<br>
      * Events are queued until channels and queues are initialized and then
      * delegated to the dispatchEvent method.
      */
-    public void handleEvent(ManagerEvent event)
+    public void onManagerEvent(ManagerEvent event)
     {
         if (event instanceof ConnectEvent)
         {

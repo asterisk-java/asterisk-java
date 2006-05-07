@@ -14,33 +14,38 @@
  *  limitations under the License.
  *
  */
-package org.asteriskjava.manager;
+package org.asteriskjava.manager.internal;
+
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import junit.framework.TestCase;
-import static org.easymock.EasyMock.*;
 
 import org.asteriskjava.io.SocketConnectionFacade;
+import org.asteriskjava.manager.AsteriskServer;
+import org.asteriskjava.manager.AuthenticationFailedException;
+import org.asteriskjava.manager.ManagerEventListener;
+import org.asteriskjava.manager.TimeoutException;
 import org.asteriskjava.manager.action.StatusAction;
 import org.asteriskjava.manager.event.ConnectEvent;
 import org.asteriskjava.manager.event.DisconnectEvent;
 import org.asteriskjava.manager.event.ManagerEvent;
 import org.asteriskjava.manager.event.NewChannelEvent;
 import org.asteriskjava.manager.event.ProtocolIdentifierReceivedEvent;
-import org.asteriskjava.manager.internal.Dispatcher;
-import org.asteriskjava.manager.internal.ManagerReader;
-import org.asteriskjava.manager.internal.ManagerWriter;
 import org.asteriskjava.manager.response.ManagerResponse;
 
-public class DefaultManagerConnectionTest extends TestCase
+public class ManagerConnectionImplTest extends TestCase
 {
     protected SocketConnectionFacade mockSocket;
     protected ManagerWriterMock mockWriter;
     protected ManagerReaderMock mockReader;
-    protected MockedDefaultManagerConnection dmc;
+    protected MockedManagerConnectionImpl mc;
     protected AsteriskServer asteriskServer;
 
     protected void setUp() throws Exception
@@ -56,32 +61,19 @@ public class DefaultManagerConnectionTest extends TestCase
 
         mockSocket = createMock(SocketConnectionFacade.class);
 
-        dmc = new MockedDefaultManagerConnection(mockReader, mockWriter,
+        mc = new MockedManagerConnectionImpl(mockReader, mockWriter,
                 mockSocket);
 
-        dmc.setDefaultResponseTimeout(20);
-
-        mockWriter.setDispatcher(dmc);
+        mockWriter.setDispatcher(mc);
         mockWriter.setAsteriskServer(asteriskServer);
     }
 
     public void testDefaultConstructor()
     {
-        assertEquals("Invalid default hostname", "localhost", dmc
+        assertEquals("Invalid default hostname", "localhost", mc
                 .getAsteriskServer().getHostname());
-        assertEquals("Invalid default port", 5038, dmc.getAsteriskServer()
+        assertEquals("Invalid default port", 5038, mc.getAsteriskServer()
                 .getPort());
-    }
-
-    public void testFullConstructor()
-    {
-        dmc = new MockedDefaultManagerConnection("host", 1234, "u", "p");
-
-        assertEquals("Invalid hostname", "host", dmc.getAsteriskServer()
-                .getHostname());
-        assertEquals("Invalid port", 1234, dmc.getAsteriskServer().getPort());
-        assertEquals("Invalid username", "u", dmc.getUsername());
-        assertEquals("Invalid password", "p", dmc.getPassword());
     }
 
     public void testRegisterUserEventClass()
@@ -93,35 +85,43 @@ public class DefaultManagerConnectionTest extends TestCase
         managerReader.registerEventClass(MyUserEvent.class);
         replay(managerReader);
 
-        dmc = new MockedDefaultManagerConnection(managerReader, mockWriter,
+        mc = new MockedManagerConnectionImpl(managerReader, mockWriter,
                 mockSocket);
-        dmc.registerUserEventClass(MyUserEvent.class);
+        mc.registerUserEventClass(MyUserEvent.class);
 
         assertEquals("unexpected call to createSocket", 0,
-                dmc.createSocketCalls);
+                mc.createSocketCalls);
         assertEquals("unexpected call to createWriter", 0,
-                dmc.createWriterCalls);
-        assertEquals("createReader not called 1 time", 1, dmc.createReaderCalls);
+                mc.createWriterCalls);
+        assertEquals("createReader not called 1 time", 1, mc.createReaderCalls);
 
         verify(managerReader);
     }
 
     public void testLogin() throws Exception
     {
-        MockedManagerEventHandler managerEventHandler;
+        MockedManagerEventListener listener;
+        long startTime;
+        long endTime;
+        long duration;
 
-        managerEventHandler = new MockedManagerEventHandler();
+        listener = new MockedManagerEventListener();
 
         replay(mockSocket);
 
-        dmc.setUsername("username");
-        dmc.setPassword("password");
-        dmc.addEventHandler(managerEventHandler);
-        dmc.login();
+        mc.setUsername("username");
+        mc.setPassword("password");
+        mc.addEventListener(listener);
+        mc.setDefaultResponseTimeout(5000);
+        
+        startTime = System.currentTimeMillis();
+        mc.login();
+        endTime = System.currentTimeMillis();
+        duration = endTime - startTime;
 
-        assertEquals("createSocket not called 1 time", 1, dmc.createSocketCalls);
-        assertEquals("createWriter not called 1 time", 1, dmc.createWriterCalls);
-        assertEquals("createReader not called 1 time", 1, dmc.createReaderCalls);
+        assertEquals("createSocket not called 1 time", 1, mc.createSocketCalls);
+        assertEquals("createWriter not called 1 time", 1, mc.createWriterCalls);
+        assertEquals("createReader not called 1 time", 1, mc.createReaderCalls);
 
         assertEquals("challenge action not sent 1 time", 1,
                 mockWriter.challengeActionsSent);
@@ -150,20 +150,21 @@ public class DefaultManagerConnectionTest extends TestCase
         assertEquals("run() not called 1 time", 1, mockReader.runCalls);
         assertEquals("unexpected call to die()", 0, mockReader.dieCalls);
 
-        assertTrue("keepAlive not set", dmc.getKeepAlive());
+        assertTrue("keepAlive not set", mc.getKeepAlive());
 
         assertEquals("must have handled exactly two events", 2,
-                managerEventHandler.eventsHandled.size());
+                listener.eventsHandled.size());
 
         assertTrue(
                 "first event handled must be a ProtocolIdentifierReceivedEvent",
-                managerEventHandler.eventsHandled.get(0) instanceof ProtocolIdentifierReceivedEvent);
+                listener.eventsHandled.get(0) instanceof ProtocolIdentifierReceivedEvent);
 
         assertTrue(
                 "second event handled must be a ConnectEvent",
-                managerEventHandler.eventsHandled.get(1) instanceof ConnectEvent);
+                listener.eventsHandled.get(1) instanceof ConnectEvent);
 
         verify(mockSocket);
+        assertTrue("login() took longer than 1 second, probably a notify error", duration <= 1000);
     }
 
     public void testLoginIncorrectKey() throws Exception
@@ -175,21 +176,21 @@ public class DefaultManagerConnectionTest extends TestCase
         // md5 sum of 12345password
         mockWriter.setExpectedKey("40b1b887502902a8ce61a16e44630f7c");
 
-        dmc.setUsername("username");
-        dmc.setPassword("wrong password");
+        mc.setUsername("username");
+        mc.setPassword("wrong password");
 
         try
         {
-            dmc.login();
+            mc.login();
             fail("No AuthenticationFailedException thrown");
         }
         catch (AuthenticationFailedException e)
         {
         }
 
-        assertEquals("createSocket not called 1 time", 1, dmc.createSocketCalls);
-        assertEquals("createWriter not called 1 time", 1, dmc.createWriterCalls);
-        assertEquals("createReader not called 1 time", 1, dmc.createReaderCalls);
+        assertEquals("createSocket not called 1 time", 1, mc.createSocketCalls);
+        assertEquals("createWriter not called 1 time", 1, mc.createWriterCalls);
+        assertEquals("createReader not called 1 time", 1, mc.createReaderCalls);
 
         assertEquals("challenge action not sent 1 time", 1,
                 mockWriter.challengeActionsSent);
@@ -224,19 +225,19 @@ public class DefaultManagerConnectionTest extends TestCase
     {
         replay(mockSocket);
 
-        dmc.setThrowIOExceptionOnFirstSocketCreate(true);
+        mc.setThrowIOExceptionOnFirstSocketCreate(true);
         try
         {
-            dmc.login();
+            mc.login();
             fail("No IOException thrown");
         }
         catch (IOException e)
         {
         }
 
-        assertEquals("createSocket not called 1 time", 1, dmc.createSocketCalls);
-        assertEquals("createWriter not called 1 time", 1, dmc.createWriterCalls);
-        assertEquals("createReader not called 1 time", 1, dmc.createReaderCalls);
+        assertEquals("createSocket not called 1 time", 1, mc.createSocketCalls);
+        assertEquals("createWriter not called 1 time", 1, mc.createWriterCalls);
+        assertEquals("createReader not called 1 time", 1, mc.createReaderCalls);
 
         assertEquals("unexpected challenge action sent", 0,
                 mockWriter.challengeActionsSent);
@@ -255,6 +256,8 @@ public class DefaultManagerConnectionTest extends TestCase
 
     public void testLoginTimeoutOnConnect() throws Exception
     {
+        mc.setDefaultResponseTimeout(50);
+
         mockSocket.close();
         replay(mockSocket);
 
@@ -263,7 +266,7 @@ public class DefaultManagerConnectionTest extends TestCase
 
         try
         {
-            dmc.login();
+            mc.login();
             fail("No TimeoutException on login()");
         }
         catch (TimeoutException e)
@@ -272,9 +275,9 @@ public class DefaultManagerConnectionTest extends TestCase
                     .getMessage());
         }
 
-        assertEquals("createSocket not called 1 time", 1, dmc.createSocketCalls);
-        assertEquals("createWriter not called 1 time", 1, dmc.createWriterCalls);
-        assertEquals("createReader not called 1 time", 1, dmc.createReaderCalls);
+        assertEquals("createSocket not called 1 time", 1, mc.createSocketCalls);
+        assertEquals("createWriter not called 1 time", 1, mc.createWriterCalls);
+        assertEquals("createReader not called 1 time", 1, mc.createReaderCalls);
 
         assertEquals("unexpected challenge action sent", 0,
                 mockWriter.challengeActionsSent);
@@ -297,6 +300,8 @@ public class DefaultManagerConnectionTest extends TestCase
 
     public void testLoginTimeoutOnChallengeAction() throws Exception
     {
+        mc.setDefaultResponseTimeout(200);
+
         replay(mockSocket);
 
         // provoke timeout
@@ -304,7 +309,7 @@ public class DefaultManagerConnectionTest extends TestCase
 
         try
         {
-            dmc.login();
+            mc.login();
             fail("No TimeoutException on login()");
         }
         catch (TimeoutException e)
@@ -313,9 +318,9 @@ public class DefaultManagerConnectionTest extends TestCase
                     .getMessage());
         }
 
-        assertEquals("createSocket not called 1 time", 1, dmc.createSocketCalls);
-        assertEquals("createWriter not called 1 time", 1, dmc.createWriterCalls);
-        assertEquals("createReader not called 1 time", 1, dmc.createReaderCalls);
+        assertEquals("createSocket not called 1 time", 1, mc.createSocketCalls);
+        assertEquals("createWriter not called 1 time", 1, mc.createWriterCalls);
+        assertEquals("createReader not called 1 time", 1, mc.createReaderCalls);
 
         assertEquals("challenge action not sent 1 time", 1,
                 mockWriter.challengeActionsSent);
@@ -342,9 +347,9 @@ public class DefaultManagerConnectionTest extends TestCase
         replay(mockSocket);
 
         // fake connect
-        dmc.connect();
+        mc.connect();
 
-        dmc.logoff();
+        mc.logoff();
 
         assertEquals("logoff action not sent 1 time", 1,
                 mockWriter.logoffActionsSent);
@@ -355,7 +360,7 @@ public class DefaultManagerConnectionTest extends TestCase
     {
         replay(mockSocket);
 
-        dmc.logoff();
+        mc.logoff();
 
         assertEquals("unexpected logoff action sent", 0,
                 mockWriter.logoffActionsSent);
@@ -365,10 +370,10 @@ public class DefaultManagerConnectionTest extends TestCase
     public void testSendActionWithNullAction() throws Exception
     {
         // fake connect
-        dmc.connect();
+        mc.connect();
         try
         {
-            dmc.sendAction(null);
+            mc.sendAction(null);
             fail("No IllgealArgumentException thrown");
         }
         catch (IllegalArgumentException e)
@@ -384,7 +389,7 @@ public class DefaultManagerConnectionTest extends TestCase
 
         try
         {
-            dmc.sendAction(statusAction);
+            mc.sendAction(statusAction);
             fail("No IllegalStateException thrown");
         }
         catch (IllegalStateException e)
@@ -401,8 +406,8 @@ public class DefaultManagerConnectionTest extends TestCase
         statusAction.setActionId("123");
 
         // fake connect
-        dmc.connect();
-        response = dmc.sendAction(statusAction);
+        mc.connect();
+        response = mc.sendAction(statusAction);
 
         assertEquals("incorrect actionId in action", "123", statusAction.getActionId());
         assertEquals("incorrect actionId in response", "123", response.getActionId());
@@ -420,12 +425,12 @@ public class DefaultManagerConnectionTest extends TestCase
         statusAction.setActionId("123");
 
         // fake connect
-        dmc.connect();
+        mc.connect();
         // provoke timeout
         mockWriter.setSendResponse(false);
         try
         {
-            dmc.sendAction(statusAction);
+            mc.sendAction(statusAction);
             fail("No TimeoutException thrown");
         }
         catch (TimeoutException e)
@@ -446,7 +451,7 @@ public class DefaultManagerConnectionTest extends TestCase
         response.setResponse("Success");
 
         // expected result is ignoring the response and logging
-        dmc.dispatchResponse(response);
+        mc.dispatchResponse(response);
     }
 
     public void testDispatchResponseMissingInternalActionId()
@@ -458,7 +463,7 @@ public class DefaultManagerConnectionTest extends TestCase
         response.setResponse("Success");
 
         // expected result is ignoring the response and logging
-        dmc.dispatchResponse(response);
+        mc.dispatchResponse(response);
     }
 
     public void testDispatchResponseNullActionId()
@@ -470,13 +475,13 @@ public class DefaultManagerConnectionTest extends TestCase
         response.setResponse("Success");
 
         // expected result is ignoring the response and logging
-        dmc.dispatchResponse(response);
+        mc.dispatchResponse(response);
     }
 
     public void testDispatchResponseNullResponse()
     {
         // expected result is ignoring and logging
-        dmc.dispatchResponse(null);
+        mc.dispatchResponse(null);
     }
 
     public void testReconnect() throws Exception
@@ -487,16 +492,16 @@ public class DefaultManagerConnectionTest extends TestCase
         disconnectEvent = new DisconnectEvent(asteriskServer);
 
         // fake successful login
-        dmc.setKeepAlive(true);
+        mc.setKeepAlive(true);
 
-        dmc.setUsername("username");
-        dmc.setPassword("password");
+        mc.setUsername("username");
+        mc.setPassword("password");
 
-        dmc.dispatchEvent(disconnectEvent);
+        mc.dispatchEvent(disconnectEvent);
 
-        assertEquals("createSocket not called 1 time", 1, dmc.createSocketCalls);
-        assertEquals("createWriter not called 1 time", 1, dmc.createWriterCalls);
-        assertEquals("createReader not called 1 time", 1, dmc.createReaderCalls);
+        assertEquals("createSocket not called 1 time", 1, mc.createSocketCalls);
+        assertEquals("createWriter not called 1 time", 1, mc.createWriterCalls);
+        assertEquals("createReader not called 1 time", 1, mc.createReaderCalls);
 
         assertEquals("challenge action not sent 1 time", 1,
                 mockWriter.challengeActionsSent);
@@ -506,7 +511,7 @@ public class DefaultManagerConnectionTest extends TestCase
         assertEquals("unexpected other actions sent", 1,
                 mockWriter.otherActionsSent);
 
-        assertTrue("keepAlive not enabled", dmc.getKeepAlive());
+        assertTrue("keepAlive not enabled", mc.getKeepAlive());
 
         verify(mockSocket);
     }
@@ -519,18 +524,18 @@ public class DefaultManagerConnectionTest extends TestCase
         disconnectEvent = new DisconnectEvent(asteriskServer);
 
         // fake successful login
-        dmc.setKeepAlive(true);
+        mc.setKeepAlive(true);
 
-        dmc.setThrowIOExceptionOnFirstSocketCreate(true);
+        mc.setThrowIOExceptionOnFirstSocketCreate(true);
 
-        dmc.setUsername("username");
-        dmc.setPassword("password");
+        mc.setUsername("username");
+        mc.setPassword("password");
 
-        dmc.dispatchEvent(disconnectEvent);
+        mc.dispatchEvent(disconnectEvent);
 
-        assertEquals("createSocket not called 1 time", 2, dmc.createSocketCalls);
-        assertEquals("createWriter not called 1 time", 1, dmc.createWriterCalls);
-        assertEquals("createReader not called 1 time", 1, dmc.createReaderCalls);
+        assertEquals("createSocket not called 1 time", 2, mc.createSocketCalls);
+        assertEquals("createWriter not called 1 time", 1, mc.createWriterCalls);
+        assertEquals("createReader not called 1 time", 1, mc.createReaderCalls);
 
         assertEquals("challenge action not sent 1 time", 1,
                 mockWriter.challengeActionsSent);
@@ -540,7 +545,7 @@ public class DefaultManagerConnectionTest extends TestCase
         assertEquals("unexpected other actions sent", 1,
                 mockWriter.otherActionsSent);
 
-        assertTrue("keepAlive not enabled", dmc.getKeepAlive());
+        assertTrue("keepAlive not enabled", mc.getKeepAlive());
 
         verify(mockSocket);
     }
@@ -554,15 +559,15 @@ public class DefaultManagerConnectionTest extends TestCase
         disconnectEvent = new DisconnectEvent(asteriskServer);
 
         // fake successful login
-        dmc.setKeepAlive(true);
+        mc.setKeepAlive(true);
 
-        dmc.setUsername("username");
+        mc.setUsername("username");
 
-        dmc.dispatchEvent(disconnectEvent);
+        mc.dispatchEvent(disconnectEvent);
 
-        assertEquals("createSocket not called 1 time", 1, dmc.createSocketCalls);
-        assertEquals("createWriter not called 1 time", 1, dmc.createWriterCalls);
-        assertEquals("createReader not called 1 time", 1, dmc.createReaderCalls);
+        assertEquals("createSocket not called 1 time", 1, mc.createSocketCalls);
+        assertEquals("createWriter not called 1 time", 1, mc.createWriterCalls);
+        assertEquals("createReader not called 1 time", 1, mc.createReaderCalls);
 
         assertEquals("challenge action not sent 1 time", 1,
                 mockWriter.challengeActionsSent);
@@ -571,7 +576,7 @@ public class DefaultManagerConnectionTest extends TestCase
         assertEquals("unexpected other actions sent", 0,
                 mockWriter.otherActionsSent);
 
-        assertFalse("keepAlive not disabled", dmc.getKeepAlive());
+        assertFalse("keepAlive not disabled", mc.getKeepAlive());
 
         verify(mockSocket);
     }
@@ -588,19 +593,19 @@ public class DefaultManagerConnectionTest extends TestCase
         disconnectEvent = new DisconnectEvent(asteriskServer);
 
         // fake successful login
-        dmc.setKeepAlive(true);
+        mc.setKeepAlive(true);
 
         // to prevent an infinite loop we will be able to log in after two
         // unsuccessful attempts
         // even if the password is not correct.
-        dmc.setKeepAliveAfterAuthenticationFailure(true);
-        dmc.setUsername("username");
+        mc.setKeepAliveAfterAuthenticationFailure(true);
+        mc.setUsername("username");
 
-        dmc.dispatchEvent(disconnectEvent);
+        mc.dispatchEvent(disconnectEvent);
 
-        assertEquals("createSocket not called 3 time", 3, dmc.createSocketCalls);
-        assertEquals("createWriter not called 1 time", 1, dmc.createWriterCalls);
-        assertEquals("createReader not called 1 time", 1, dmc.createReaderCalls);
+        assertEquals("createSocket not called 3 time", 3, mc.createSocketCalls);
+        assertEquals("createWriter not called 1 time", 1, mc.createWriterCalls);
+        assertEquals("createReader not called 1 time", 1, mc.createReaderCalls);
 
         assertEquals("challenge action not sent 3 time", 3,
                 mockWriter.challengeActionsSent);
@@ -610,7 +615,7 @@ public class DefaultManagerConnectionTest extends TestCase
         assertEquals("unexpected other actions sent", 1,
                 mockWriter.otherActionsSent);
 
-        assertTrue("keepAlive not enabled", dmc.getKeepAlive());
+        assertTrue("keepAlive not enabled", mc.getKeepAlive());
 
         verify(mockSocket);
     }
@@ -629,9 +634,9 @@ public class DefaultManagerConnectionTest extends TestCase
         {
             final int index = i;
             expect(list.add(new Integer(index))).andReturn(true);
-            dmc.addEventHandler(new ManagerEventHandler()
+            mc.addEventListener(new ManagerEventListener()
             {
-                public void handleEvent(ManagerEvent event)
+                public void onManagerEvent(ManagerEvent event)
                 {
                     list.add(new Integer(index));
                 }
@@ -639,28 +644,28 @@ public class DefaultManagerConnectionTest extends TestCase
         }
 
         replay(list);
-        dmc.dispatchEvent(event);
+        mc.dispatchEvent(event);
         verify(list);
     }
 
-    private class MockedManagerEventHandler implements ManagerEventHandler
+    private class MockedManagerEventListener implements ManagerEventListener
     {
         List<ManagerEvent> eventsHandled;
 
-        public MockedManagerEventHandler()
+        public MockedManagerEventListener()
         {
             this.eventsHandled = new ArrayList<ManagerEvent>();
         }
 
-        public void handleEvent(ManagerEvent event)
+        public void onManagerEvent(ManagerEvent event)
         {
             eventsHandled.add(event);
         }
     }
 
-    private class MockedDefaultManagerConnection
+    private class MockedManagerConnectionImpl
             extends
-                DefaultManagerConnection
+                ManagerConnectionImpl
     {
         ManagerReader mockReader;
         ManagerWriter mockWriter;
@@ -672,19 +677,13 @@ public class DefaultManagerConnectionTest extends TestCase
         public int createWriterCalls = 0;
         public int createSocketCalls = 0;
 
-        public MockedDefaultManagerConnection(ManagerReader mockReader,
+        public MockedManagerConnectionImpl(ManagerReader mockReader,
                 ManagerWriter mockWriter, SocketConnectionFacade mockSocket)
         {
             super();
             this.mockReader = mockReader;
             this.mockWriter = mockWriter;
             this.mockSocket = mockSocket;
-        }
-
-        public MockedDefaultManagerConnection(String hostname, int port,
-                String username, String password)
-        {
-            super(hostname, port, username, password);
         }
 
         public void setThrowIOExceptionOnFirstSocketCreate(
@@ -713,18 +712,21 @@ public class DefaultManagerConnectionTest extends TestCase
             return keepAlive;
         }
 
+        @Override
         protected ManagerReader createReader(Dispatcher d, AsteriskServer s)
         {
             createReaderCalls++;
             return mockReader;
         }
 
+        @Override
         protected ManagerWriter createWriter()
         {
             createWriterCalls++;
             return mockWriter;
         }
 
+        @Override
         protected SocketConnectionFacade createSocket() throws IOException
         {
             createSocketCalls++;

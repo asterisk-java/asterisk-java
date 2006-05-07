@@ -20,13 +20,14 @@ import java.util.EventListener;
 
 import org.asteriskjava.manager.event.ManagerEvent;
 
-
 /**
- * An Interface to handle events received from an asterisk server.
+ * This interface is deprecated, please use {@link org.asteriskjava.manager.ManagerEventListener}
+ * instead.
  * 
  * @see org.asteriskjava.manager.event.ManagerEvent
  * @author srt
  * @version $Id$
+ * @deprecated this interface is deprecated and will be removed in Asterisk-Java 0.4. 
  */
 public interface ManagerEventHandler extends EventListener
 {
