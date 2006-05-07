@@ -593,8 +593,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
             }
             catch (InterruptedException ex)
             {
-                //TODO fix logging
-                System.err.println("Interrupted!");
+                logger.warn("Interrupted while waiting for result");
             }
         }
     
@@ -716,8 +715,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
             }
             catch (InterruptedException ex)
             {
-                //TODO fix logging
-                System.err.println("Interrupted");
+                logger.warn("Interrupted while waiting for response events");
             }
         }
 
