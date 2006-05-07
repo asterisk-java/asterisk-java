@@ -368,19 +368,20 @@ public class AgiReplyImpl implements Serializable, AgiReply
     {
         StringBuffer sb;
 
-        sb = new StringBuffer(getClass().getName() + ": ");
-        sb.append("status='" + getStatus() + "'; ");
+        sb = new StringBuffer("AgiReply[");
+        sb.append("status='" + getStatus() + "',");
         if (status == SC_SUCCESS)
         {
-            sb.append("result='" + getResult() + "'; ");
-            sb.append("extra='" + getExtra() + "'; ");
-            sb.append("attributes=" + attributes + "; ");
+            sb.append("result='" + getResult() + "',");
+            sb.append("extra='" + getExtra() + "',");
+            sb.append("attributes=" + attributes + ",");
         }
         if (status == SC_INVALID_COMMAND_SYNTAX)
         {
-            sb.append("synopsis='" + getSynopsis() + "'; ");
+            sb.append("synopsis='" + getSynopsis() + "',");
         }
         sb.append("systemHashcode=" + System.identityHashCode(this));
+        sb.append("]");
 
         return sb.toString();
     }
