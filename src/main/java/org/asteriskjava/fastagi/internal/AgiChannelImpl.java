@@ -18,8 +18,6 @@ package org.asteriskjava.fastagi.internal;
 
 import org.asteriskjava.fastagi.AgiChannel;
 import org.asteriskjava.fastagi.AgiException;
-import org.asteriskjava.fastagi.AgiReader;
-import org.asteriskjava.fastagi.AgiWriter;
 import org.asteriskjava.fastagi.InvalidCommandSyntaxException;
 import org.asteriskjava.fastagi.InvalidOrUnknownCommandException;
 import org.asteriskjava.fastagi.command.AgiCommand;
@@ -55,7 +53,6 @@ import org.asteriskjava.fastagi.command.WaitForDigitCommand;
 import org.asteriskjava.fastagi.reply.AgiReply;
 import org.asteriskjava.io.SocketConnectionFacade;
 
-
 /**
  * Default implementation of the AgiChannel interface.
  * 
@@ -67,13 +64,13 @@ public class AgiChannelImpl implements AgiChannel
     private AgiWriter agiWriter;
     private AgiReader agiReader;
 
-    public AgiChannelImpl(SocketConnectionFacade socket)
+    AgiChannelImpl(SocketConnectionFacade socket)
     {
         this.agiWriter = new AgiWriterImpl(socket);
         this.agiReader = new AgiReaderImpl(socket);
     }
 
-    public AgiChannelImpl(AgiWriter agiWriter, AgiReader agiReader)
+    AgiChannelImpl(AgiWriter agiWriter, AgiReader agiReader)
     {
         this.agiWriter = agiWriter;
         this.agiReader = agiReader;

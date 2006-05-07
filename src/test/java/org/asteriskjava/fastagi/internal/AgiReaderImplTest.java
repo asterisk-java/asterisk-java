@@ -22,7 +22,6 @@ import junit.framework.TestCase;
 import static org.easymock.EasyMock.*;
 
 import org.asteriskjava.fastagi.AgiHangupException;
-import org.asteriskjava.fastagi.AgiReader;
 import org.asteriskjava.fastagi.AgiRequest;
 import org.asteriskjava.fastagi.internal.AgiReaderImpl;
 import org.asteriskjava.fastagi.reply.AgiReply;

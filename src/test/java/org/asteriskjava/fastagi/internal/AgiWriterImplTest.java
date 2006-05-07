@@ -19,7 +19,6 @@ package org.asteriskjava.fastagi.internal;
 import junit.framework.TestCase;
 import static org.easymock.EasyMock.*;
 
-import org.asteriskjava.fastagi.AgiWriter;
 import org.asteriskjava.fastagi.command.StreamFileCommand;
 import org.asteriskjava.fastagi.internal.AgiWriterImpl;
 import org.asteriskjava.io.SocketConnectionFacade;

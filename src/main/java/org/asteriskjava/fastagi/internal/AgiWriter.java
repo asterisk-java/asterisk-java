@@ -14,8 +14,9 @@
  *  limitations under the License.
  *
  */
-package org.asteriskjava.fastagi;
+package org.asteriskjava.fastagi.internal;
 
+import org.asteriskjava.fastagi.AgiException;
 import org.asteriskjava.fastagi.command.AgiCommand;
 
 /**
@@ -24,7 +25,7 @@ import org.asteriskjava.fastagi.command.AgiCommand;
  * @author srt
  * @version $Id$
  */
-public interface AgiWriter
+interface AgiWriter
 {
     /**
      * Sends the given command to the Asterisk server.

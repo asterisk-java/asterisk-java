@@ -22,8 +22,6 @@ import junit.framework.TestCase;
 import static org.easymock.EasyMock.*;
 
 import org.asteriskjava.fastagi.AgiChannel;
-import org.asteriskjava.fastagi.AgiReader;
-import org.asteriskjava.fastagi.AgiWriter;
 import org.asteriskjava.fastagi.InvalidCommandSyntaxException;
 import org.asteriskjava.fastagi.InvalidOrUnknownCommandException;
 import org.asteriskjava.fastagi.command.NoopCommand;

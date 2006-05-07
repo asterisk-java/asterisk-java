@@ -77,7 +77,7 @@ public class AgiRequestImpl implements Serializable, AgiRequest
      * @param environment the first lines as received from Asterisk containing
      *            the environment.
      */
-    public AgiRequestImpl(final Collection<String> environment)
+    AgiRequestImpl(final Collection<String> environment)
     {
         if (environment == null)
         {
@@ -591,7 +591,7 @@ public class AgiRequestImpl implements Serializable, AgiRequest
         return localAddress;
     }
 
-    public void setLocalAddress(InetAddress localAddress)
+    void setLocalAddress(InetAddress localAddress)
     {
         this.localAddress = localAddress;
     }
@@ -601,7 +601,7 @@ public class AgiRequestImpl implements Serializable, AgiRequest
         return localPort;
     }
 
-    public void setLocalPort(int localPort)
+    void setLocalPort(int localPort)
     {
         this.localPort = localPort;
     }
@@ -611,7 +611,7 @@ public class AgiRequestImpl implements Serializable, AgiRequest
         return remoteAddress;
     }
 
-    public void setRemoteAddress(InetAddress remoteAddress)
+    void setRemoteAddress(InetAddress remoteAddress)
     {
         this.remoteAddress = remoteAddress;
     }
@@ -621,7 +621,7 @@ public class AgiRequestImpl implements Serializable, AgiRequest
         return remotePort;
     }
 
-    public void setRemotePort(int remotePort)
+    void setRemotePort(int remotePort)
     {
         this.remotePort = remotePort;
     }
@@ -630,23 +630,24 @@ public class AgiRequestImpl implements Serializable, AgiRequest
     {
         StringBuffer sb;
 
-        sb = new StringBuffer(getClass().getName() + ": ");
-        sb.append("script='" + getScript() + "'; ");
-        sb.append("requestURL='" + getRequestURL() + "'; ");
-        sb.append("channel='" + getChannel() + "'; ");
-        sb.append("uniqueId='" + getUniqueId() + "'; ");
-        sb.append("type='" + getType() + "'; ");
-        sb.append("language='" + getLanguage() + "'; ");
-        sb.append("callerId='" + getCallerId() + "'; ");
-        sb.append("callerIdName='" + getCallerIdName() + "'; ");
-        sb.append("dnid='" + getDnid() + "'; ");
-        sb.append("rdnis='" + getRdnis() + "'; ");
-        sb.append("context='" + getContext() + "'; ");
-        sb.append("extension='" + getExtension() + "'; ");
-        sb.append("priority='" + getPriority() + "'; ");
-        sb.append("enhanced='" + getEnhanced() + "'; ");
-        sb.append("accountCode='" + getAccountCode() + "'; ");
+        sb = new StringBuffer("AgiRequest[");
+        sb.append("script='" + getScript() + "',");
+        sb.append("requestURL='" + getRequestURL() + "',");
+        sb.append("channel='" + getChannel() + "',");
+        sb.append("uniqueId='" + getUniqueId() + "',");
+        sb.append("type='" + getType() + "',");
+        sb.append("language='" + getLanguage() + "',");
+        sb.append("callerId='" + getCallerId() + "',");
+        sb.append("callerIdName='" + getCallerIdName() + "',");
+        sb.append("dnid='" + getDnid() + "',");
+        sb.append("rdnis='" + getRdnis() + "',");
+        sb.append("context='" + getContext() + "',");
+        sb.append("extension='" + getExtension() + "',");
+        sb.append("priority='" + getPriority() + "',");
+        sb.append("enhanced='" + getEnhanced() + "',");
+        sb.append("accountCode='" + getAccountCode() + "',");
         sb.append("systemHashcode=" + System.identityHashCode(this));
+        sb.append("]");
 
         return sb.toString();
     }

@@ -20,7 +20,6 @@ import java.io.IOException;
 
 import org.asteriskjava.fastagi.AgiException;
 import org.asteriskjava.fastagi.AgiNetworkException;
-import org.asteriskjava.fastagi.AgiWriter;
 import org.asteriskjava.fastagi.command.AgiCommand;
 import org.asteriskjava.io.SocketConnectionFacade;
 
@@ -31,11 +30,11 @@ import org.asteriskjava.io.SocketConnectionFacade;
  * @author srt
  * @version $Id$
  */
-public class AgiWriterImpl implements AgiWriter
+class AgiWriterImpl implements AgiWriter
 {
     private SocketConnectionFacade socket;
 
-    public AgiWriterImpl(SocketConnectionFacade socket)
+    AgiWriterImpl(SocketConnectionFacade socket)
     {
         this.socket = socket;
     }

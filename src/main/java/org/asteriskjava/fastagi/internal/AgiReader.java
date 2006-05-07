@@ -14,8 +14,10 @@
  *  limitations under the License.
  *
  */
-package org.asteriskjava.fastagi;
+package org.asteriskjava.fastagi.internal;
 
+import org.asteriskjava.fastagi.AgiException;
+import org.asteriskjava.fastagi.AgiRequest;
 import org.asteriskjava.fastagi.reply.AgiReply;
 
 /**
@@ -25,7 +27,7 @@ import org.asteriskjava.fastagi.reply.AgiReply;
  * @author srt
  * @version $Id$
  */
-public interface AgiReader
+interface AgiReader
 {
     /**
      * Reads the initial request data from Asterisk.
