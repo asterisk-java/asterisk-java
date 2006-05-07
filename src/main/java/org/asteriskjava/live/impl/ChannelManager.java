@@ -77,7 +77,7 @@ public class ChannelManager
     public Collection<AsteriskChannel> getChannels()
     {
         Collection<AsteriskChannel> copy;
-        
+
         synchronized (channels)
         {
             copy = new ArrayList<AsteriskChannel>(channels.values());
