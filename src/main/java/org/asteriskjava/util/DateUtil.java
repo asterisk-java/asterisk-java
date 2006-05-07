@@ -19,7 +19,9 @@ package org.asteriskjava.util;
 import java.util.Date;
 
 /**
- * Utility class to obtain the current date and allows to override with a fixed value for testing.
+ * Utility class to obtain the current date and allows to override with a fixed value for 
+ * unit testing.<br>
+ * Client code is not supposed to use this class.
  * 
  * @author srt
  * @version $Id$
@@ -28,6 +30,7 @@ public class DateUtil
 {
     private static Date currentDate;
 
+    // hide constructor
     private DateUtil()
     {
     }

@@ -19,7 +19,10 @@ package org.asteriskjava.util.internal;
 import org.asteriskjava.util.Log;
 
 /**
- * A Log implementation that does nothing.
+ * A Log implementation that does nothing.<br>
+ * This logger is only used if neither log4j nor java.util.logging are
+ * available which should not happen anyway as Asterisk-Java depends on
+ * at least JDK 1.5.
  * 
  * @author srt
  * @version $Id$
@@ -31,7 +34,6 @@ public class NullLog implements Log
      */
     public NullLog()
     {
-
     }
 
     public void debug(Object obj)

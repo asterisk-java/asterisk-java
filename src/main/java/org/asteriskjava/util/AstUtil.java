@@ -2,7 +2,8 @@ package org.asteriskjava.util;
 
 /**
  * Some static utility methods to handle Asterisk specific stuff.<br>
- * See Asterisk's <code>util.c</code>.
+ * See Asterisk's <code>util.c</code>.<br>
+ * Client code is not supposed to use this class.
  * 
  * @author srt
  * @version $Id$

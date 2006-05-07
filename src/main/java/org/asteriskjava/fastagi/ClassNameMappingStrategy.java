@@ -22,13 +22,14 @@ import java.util.Map;
 /**
  * A MappingStrategy that determines the AGIScript based on the fully
  * qualified class name given in the AGI URL.<br>
- * To use this ClassNameMappingStrategy the calls to your AGIScript in
+ * To use this ClassNameMappingStrategy the calls to your 
+ * {@link org.asteriskjava.fastagi.AgiScript} in
  * your dialplan should look like this:
  * <pre>
  * exten => 123,1,AGI(agi://your.server.com/com.example.agi.MyScript)
  * </pre>
  * Where com.example.agi.MyScript is the fully qualified name of your
- * AGIScript.
+ * AgiScript.
  * 
  * @author srt
  * @version $Id$

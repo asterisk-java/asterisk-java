@@ -17,11 +17,16 @@
 package org.asteriskjava.fastagi;
 
 /**
- * A MappingStrategy determines which AGIScript is called to service a
- * given AGIRequest. A MappingStrategy can use any of the properties
- * of an AGIRequest to do this but will most likely use the script
- * property, that is the name of the invoked AGI script as passed
- * from the dialplan.
+ * A MappingStrategy determines which {@link org.asteriskjava.fastagi.AgiScript}
+ * is called to service a given {@link org.asteriskjava.fastagi.AgiRequest}.<br>
+ * A MappingStrategy can use any of the properties
+ * of an AgiRequest to do this. However most MappingStrategies will just use 
+ * the script property, that is the name of the invoked AGI script as passed
+ * from Asterisk's dialplan.<br>
+ * Asterisk-Java ships with several mapping strategies that are available out
+ * of the box. If you have some special requirements that are not satisfied by
+ * any of the available strategies feel free to implement this interface and
+ * use your own strategy.
  * 
  * @author srt
  * @version $Id$
@@ -29,11 +34,11 @@ package org.asteriskjava.fastagi;
 public interface MappingStrategy
 {
     /**
-     * Returns an instance of an AGIScript that is responsible to handle 
+     * Returns the AgiScript instance that is responsible to handle 
      * the given request.
      * 
      * @param request the request to lookup.
-     * @return the AGIScript instance that should handle this request 
+     * @return the AgiScript instance to handle this request 
      *         or <code>null</code> if none could be determined by this strategy.
      */
     AgiScript determineScript(AgiRequest request);

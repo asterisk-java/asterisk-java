@@ -21,7 +21,18 @@ import org.asteriskjava.util.internal.Log4JLogger;
 import org.asteriskjava.util.internal.NullLog;
 
 /**
- * Facade to hide details of the underlying logging system.
+ * Facade to hide details of the underlying logging system.<br>
+ * If you want to reuse Asterisk-Java's logging abstraction layer
+ * add a private attribute to your class like this:
+ * <pre>
+ * private final Log logger = LogFactory.getLog(getClass());
+ * </pre>
+ * and then use the methods defined in {@link org.asteriskjava.util.Log}:
+ * <pre>
+ * logger.error("Unable to create new instance of " + eventClass, ex);
+ * </pre>
+ * Asterisk-Java's logging abstraction layer uses log4j when available
+ * and falls back to java.util.logging otherwise.
  * 
  * @author srt
  * @version $Id$

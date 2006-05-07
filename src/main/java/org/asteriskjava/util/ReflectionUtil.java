@@ -20,8 +20,16 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Utility class that provides helper methods for reflection that is used by the
+ * fastagi and manager packages to access getter and setter methods.<br>
+ * Client code is not supposed to use this class. 
+ * 
+ * @author srt
+ */
 public class ReflectionUtil
 {
+    // hide constructor
     private ReflectionUtil()
     {
         
