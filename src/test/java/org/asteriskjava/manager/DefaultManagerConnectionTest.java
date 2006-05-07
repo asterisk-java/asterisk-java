@@ -30,6 +30,9 @@ import org.asteriskjava.manager.event.DisconnectEvent;
 import org.asteriskjava.manager.event.ManagerEvent;
 import org.asteriskjava.manager.event.NewChannelEvent;
 import org.asteriskjava.manager.event.ProtocolIdentifierReceivedEvent;
+import org.asteriskjava.manager.internal.Dispatcher;
+import org.asteriskjava.manager.internal.ManagerReader;
+import org.asteriskjava.manager.internal.ManagerWriter;
 import org.asteriskjava.manager.response.ManagerResponse;
 
 public class DefaultManagerConnectionTest extends TestCase

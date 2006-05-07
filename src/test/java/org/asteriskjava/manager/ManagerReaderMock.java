@@ -17,7 +17,7 @@
 package org.asteriskjava.manager;
 
 import org.asteriskjava.io.SocketConnectionFacade;
-import org.asteriskjava.manager.ManagerReader;
+import org.asteriskjava.manager.internal.ManagerReader;
 
 public class ManagerReaderMock implements ManagerReader
 {

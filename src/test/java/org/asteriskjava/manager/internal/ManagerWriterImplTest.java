@@ -20,7 +20,6 @@ import junit.framework.TestCase;
 import static org.easymock.EasyMock.*;
 
 import org.asteriskjava.io.SocketConnectionFacade;
-import org.asteriskjava.manager.ManagerWriter;
 import org.asteriskjava.manager.action.StatusAction;
 import org.asteriskjava.manager.internal.ManagerWriterImpl;
 

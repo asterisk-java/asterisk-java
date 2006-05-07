@@ -14,7 +14,7 @@
  *  limitations under the License.
  *
  */
-package org.asteriskjava.manager;
+package org.asteriskjava.manager.internal;
 
 import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.manager.action.ManagerAction;
@@ -27,7 +27,7 @@ import org.asteriskjava.manager.action.ManagerAction;
  * @author srt
  * @version $Id$
  */
-public interface ActionBuilder
+interface ActionBuilder
 {
     /**
      * Sets the version of the Asterisk server to built the action for.
@@ -35,7 +35,7 @@ public interface ActionBuilder
      * @param asteriskVersion the version of the target Asterisk server.
      * @since 0.2
      */
-    public void setTargetVersion(AsteriskVersion targetVersion);
+    void setTargetVersion(AsteriskVersion targetVersion);
 
     /**
      * Builds a String suitable to be sent to Asterisk based on the given action object.<br>

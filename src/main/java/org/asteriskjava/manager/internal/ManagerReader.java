@@ -14,9 +14,10 @@
  *  limitations under the License.
  *
  */
-package org.asteriskjava.manager;
+package org.asteriskjava.manager.internal;
 
 import org.asteriskjava.io.SocketConnectionFacade;
+import org.asteriskjava.manager.event.ManagerEvent;
 
 /**
  * The ManagerReader reads events and responses from the asterisk server, parses
@@ -25,13 +26,12 @@ import org.asteriskjava.io.SocketConnectionFacade;
  * Do not use this interface in your code, it is intended to be used only by the
  * DefaultManagerConnection.
  * 
- * @see org.asteriskjava.manager.EventBuilder
+ * @see org.asteriskjava.manager.internal.EventBuilder
  * @see org.asteriskjava.manager.ResponseBuilder
  * @see org.asteriskjava.manager.DefaultManagerConnection
  * @author srt
  * @version $Id$
  */
-
 public interface ManagerReader extends Runnable
 {
 

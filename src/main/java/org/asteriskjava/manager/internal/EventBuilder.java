@@ -14,7 +14,7 @@
  *  limitations under the License.
  *
  */
-package org.asteriskjava.manager;
+package org.asteriskjava.manager.internal;
 
 import java.util.Map;
 
@@ -28,7 +28,7 @@ import org.asteriskjava.manager.event.ManagerEvent;
  * @author srt
  * @version $Id$
  */
-public interface EventBuilder
+interface EventBuilder
 {
 
     /**

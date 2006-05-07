@@ -22,7 +22,6 @@ import java.util.Map;
 import junit.framework.TestCase;
 
 import org.asteriskjava.AsteriskVersion;
-import org.asteriskjava.manager.ActionBuilder;
 import org.asteriskjava.manager.action.AbstractManagerAction;
 import org.asteriskjava.manager.action.AgentsAction;
 import org.asteriskjava.manager.action.OriginateAction;

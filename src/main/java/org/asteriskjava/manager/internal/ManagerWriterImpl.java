@@ -20,8 +20,6 @@ import java.io.IOException;
 
 import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.io.SocketConnectionFacade;
-import org.asteriskjava.manager.ActionBuilder;
-import org.asteriskjava.manager.ManagerWriter;
 import org.asteriskjava.manager.action.ManagerAction;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;

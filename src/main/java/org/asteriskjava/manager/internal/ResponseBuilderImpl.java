@@ -35,7 +35,7 @@ import org.asteriskjava.manager.response.ManagerResponse;
  * @author srt
  * @version $Id$
  */
-public class ResponseBuilderImpl implements ResponseBuilder
+class ResponseBuilderImpl implements ResponseBuilder
 {
     /**
      * Constructs an instance of ManagerResponse based on a map of attributes.

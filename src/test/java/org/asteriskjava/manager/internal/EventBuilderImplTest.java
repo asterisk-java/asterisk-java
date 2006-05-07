@@ -21,7 +21,6 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
-import org.asteriskjava.manager.EventBuilder;
 import org.asteriskjava.manager.event.CdrEvent;
 import org.asteriskjava.manager.event.ChannelEvent;
 import org.asteriskjava.manager.event.HangupEvent;

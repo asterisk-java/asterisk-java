@@ -22,7 +22,6 @@ import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.asteriskjava.manager.EventBuilder;
 import org.asteriskjava.manager.event.AgentCallbackLoginEvent;
 import org.asteriskjava.manager.event.AgentCallbackLogoffEvent;
 import org.asteriskjava.manager.event.AgentCalledEvent;
@@ -101,12 +100,12 @@ import org.asteriskjava.util.ReflectionUtil;
  * @author srt
  * @version $Id$
  */
-public class EventBuilderImpl implements EventBuilder
+class EventBuilderImpl implements EventBuilder
 {
     private final Log logger = LogFactory.getLog(getClass());
     private Map<String, Class> registeredEventClasses;
 
-    public EventBuilderImpl()
+    EventBuilderImpl()
     {
         this.registeredEventClasses = new HashMap<String, Class>();
         registerBuiltinEventClasses();

@@ -14,7 +14,7 @@
  *  limitations under the License.
  *
  */
-package org.asteriskjava.manager;
+package org.asteriskjava.manager.internal;
 
 import java.io.IOException;
 
@@ -28,7 +28,7 @@ import org.asteriskjava.manager.action.ManagerAction;
  * the asterisk server.<br>
  * This class is intended to be used only by the DefaultManagerConnection.
  * 
- * @see org.asteriskjava.manager.ActionBuilder
+ * @see org.asteriskjava.manager.internal.ActionBuilder
  * @see org.asteriskjava.manager.DefaultManagerConnection
  * @author srt
  * @version $Id$

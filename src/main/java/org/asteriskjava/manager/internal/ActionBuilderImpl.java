@@ -21,7 +21,6 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.asteriskjava.AsteriskVersion;
-import org.asteriskjava.manager.ActionBuilder;
 import org.asteriskjava.manager.action.ManagerAction;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
@@ -35,7 +34,7 @@ import org.asteriskjava.util.ReflectionUtil;
  * @author srt
  * @version $Id$
  */
-public class ActionBuilderImpl implements ActionBuilder
+class ActionBuilderImpl implements ActionBuilder
 {
     private static final String LINE_SEPARATOR = "\r\n";
 
@@ -48,7 +47,7 @@ public class ActionBuilderImpl implements ActionBuilder
     /**
      * Creates a new ActionBuilder for Asterisk 1.0.
      */
-    public ActionBuilderImpl()
+    ActionBuilderImpl()
     {
         this.targetVersion = AsteriskVersion.ASTERISK_1_0;
     }
@@ -134,7 +133,7 @@ public class ActionBuilderImpl implements ActionBuilder
         return sb.toString();
     }
 
-    protected void appendMap(StringBuffer sb, String key, Map<String, String> values)
+    private void appendMap(StringBuffer sb, String key, Map<String, String> values)
     {
         String singularKey;
 
@@ -158,7 +157,7 @@ public class ActionBuilderImpl implements ActionBuilder
         }
     }
 
-    protected void appendMap10(StringBuffer sb, String singularKey, Map<String, String> values)
+    private void appendMap10(StringBuffer sb, String singularKey, Map<String, String> values)
     {
         Iterator<Map.Entry<String, String>> entryIterator;
 
@@ -185,7 +184,7 @@ public class ActionBuilderImpl implements ActionBuilder
         sb.append(LINE_SEPARATOR);
     }
 
-    protected void appendMap12(StringBuffer sb, String singularKey, Map<String, String> values)
+    private void appendMap12(StringBuffer sb, String singularKey, Map<String, String> values)
     {
         for (Map.Entry entry : values.entrySet())
         {
@@ -202,7 +201,7 @@ public class ActionBuilderImpl implements ActionBuilder
         }
     }
 
-    protected void appendString(StringBuffer sb, String key, String value)
+    private void appendString(StringBuffer sb, String key, String value)
     {
         sb.append(key);
         sb.append(": ");
