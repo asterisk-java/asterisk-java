@@ -32,12 +32,12 @@ public class AsteriskQueueImpl implements AsteriskQueue
 {
     private String name;
     private Integer max;
-    private List<AsteriskChannel> entries;
+    private ArrayList<AsteriskChannel> entries;
 
-    public AsteriskQueueImpl(String name)
+    AsteriskQueueImpl(String name)
     {
         this.name = name;
-        this.entries = new ArrayList<AsteriskChannel>();
+        this.entries = new ArrayList<AsteriskChannel>(25);
     }
 
     public String getName()
@@ -50,31 +50,26 @@ public class AsteriskQueueImpl implements AsteriskQueue
         return max;
     }
 
-    public void setMax(Integer max)
+    void setMax(Integer max)
     {
         this.max = max;
     }
 
+    @SuppressWarnings("unchecked")
     public List<AsteriskChannel> getEntries()
     {
-        List<AsteriskChannel> copy = new ArrayList<AsteriskChannel>();
-        
         synchronized (entries)
         {
-            for (AsteriskChannel entry : entries)
-            {
-                copy.add(entry);
-            }
+            return (List<AsteriskChannel>) entries.clone();
         }
-        return copy;
     }
 
-    public void addEntry(AsteriskChannel entry)
+    void addEntry(AsteriskChannel entry)
     {
         entries.add(entry);
     }
 
-    public void removeEntry(AsteriskChannel entry)
+    void removeEntry(AsteriskChannel entry)
     {
         entries.remove(entry);
     }
@@ -83,15 +78,16 @@ public class AsteriskQueueImpl implements AsteriskQueue
     {
         StringBuffer sb;
 
-        sb = new StringBuffer(getClass().getName() + ": ");
+        sb = new StringBuffer("AsteriskQueue[");
 
-        sb.append("name='" + getName() + "'; ");
-        sb.append("max='" + getMax() + "'; ");
+        sb.append("name='" + getName() + "',");
+        sb.append("max='" + getMax() + "',");
         synchronized (entries)
         {
-            sb.append("entries='" + entries.toString() + "'; ");
+            sb.append("entries='" + entries.toString() + "',");
         }
         sb.append("systemHashcode=" + System.identityHashCode(this));
+        sb.append("]");
 
         return sb.toString();
     }

@@ -425,7 +425,7 @@ public class AsteriskChannelImpl implements AsteriskChannel
         AsteriskChannel linkedChannel;
         int systemHashcode;
 
-        sb = new StringBuffer(getClass().getName() + "[");
+        sb = new StringBuffer("AsteriskChannel[");
 
         synchronized (this)
         {

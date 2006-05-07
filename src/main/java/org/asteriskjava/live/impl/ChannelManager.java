@@ -101,19 +101,28 @@ public class ChannelManager
         }
     }
 
-    private AsteriskChannelImpl createChannel(String uniqueId, String name, Date dateOfCreation, String callerIdNumber, String callerIdName, String state)
+    private AsteriskChannelImpl createChannel(String uniqueId, String name, 
+            Date dateOfCreation, String callerIdNumber, String callerIdName, 
+            ChannelState state)
     {
         AsteriskChannelImpl channel;
         
         channel = new AsteriskChannelImpl(connectionPool, name, uniqueId, dateOfCreation);
         channel.setCallerIdNumber(callerIdNumber);
         channel.setCallerIdName(callerIdName);
-        if (state != null)
-        {
-            channel.setState(ChannelState.valueOf(state.toUpperCase()));
-        }
+        channel.setState(state);
 
         return channel;
+    }
+    
+    private ChannelState string2ChannelState(String state)
+    {
+        if (state == null)
+        {
+            return null;
+        }
+        
+        return ChannelState.valueOf(state.toUpperCase());
     }
     
     public void handleStatusEvent(StatusEvent event)
@@ -221,7 +230,8 @@ public class ChannelManager
         {
             channel = createChannel(
                     event.getUniqueId(), event.getChannel(), event.getDateReceived(), 
-                    event.getCallerId(), event.getCallerIdName(), event.getState());
+                    event.getCallerId(), event.getCallerIdName(),
+                    string2ChannelState(event.getState()));
             logger.info("Adding channel " + channel.getName());
             addChannel(channel);
         }
@@ -233,7 +243,7 @@ public class ChannelManager
                 channel.setName(event.getChannel());
                 channel.setCallerIdNumber(event.getCallerId());
                 channel.setCallerIdName(event.getCallerIdName());
-                channel.setState(ChannelState.valueOf(event.getState().toUpperCase()));
+                channel.setState(string2ChannelState(event.getState()));
             }
         }
     }
@@ -291,7 +301,7 @@ public class ChannelManager
             // NewCallerIdEvent can occur before NewChannelEvent
             channel = createChannel(
                     event.getUniqueId(), event.getChannel(), event.getDateReceived(), 
-                    event.getCallerId(), event.getCallerIdName(), null);
+                    event.getCallerId(), event.getCallerIdName(), ChannelState.DOWN);
             logger.info("Adding channel " + channel.getName());
             addChannel(channel);
         }
