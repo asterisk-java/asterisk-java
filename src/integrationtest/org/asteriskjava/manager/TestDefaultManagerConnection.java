@@ -5,12 +5,12 @@
  */
 package org.asteriskjava.manager;
 
+import junit.framework.TestCase;
+
 import org.asteriskjava.manager.action.CommandAction;
 import org.asteriskjava.manager.action.StatusAction;
 import org.asteriskjava.manager.event.ManagerEvent;
 import org.asteriskjava.manager.response.CommandResponse;
-
-import junit.framework.TestCase;
 
 /**
  * @author srt
@@ -36,9 +36,9 @@ public class TestDefaultManagerConnection extends TestCase
 
         dmc = getDefaultManagerConnection();
         dmc.login();
-        dmc.addEventHandler(new ManagerEventHandler()
+        dmc.addEventListener(new ManagerEventListener()
         {
-            public void handleEvent(ManagerEvent event)
+            public void onManagerEvent(ManagerEvent event)
             {
                 System.out.println("Got event: " + event);
             }
