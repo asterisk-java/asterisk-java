@@ -531,7 +531,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     /**
      * Sends a {@link LogoffAction} and disconnects from the server.
      */
-    public synchronized void logoff() throws IOException, TimeoutException
+    public synchronized void logoff()
     {
         LogoffAction logoffAction;
 
@@ -542,7 +542,14 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
         if (socket != null)
         {
-            sendAction(logoffAction);
+            try
+            {
+                sendAction(logoffAction);
+            }
+            catch(Exception e)
+            {
+                logger.warn("Unable to send LogOff action", e);
+            }
             disconnect();
         }
     }

@@ -115,12 +115,9 @@ public interface ManagerConnection
     /**
      * Sends a LogoffAction to the Asterisk server and disconnects.
      * 
-     * @throws IOException if the network connection is disrupted.
-     * @throws TimeoutException if no response to the logoff action is received
-     *             within the default timeout period.
      * @see org.asteriskjava.manager.action.LogoffAction
      */
-    void logoff() throws IOException, TimeoutException;
+    void logoff();
 
     /**
      * Returns the protocol identifier, i.e. a string like "Asterisk Call

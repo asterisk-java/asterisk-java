@@ -208,7 +208,7 @@ public class DefaultManagerConnection implements ManagerConnection
         return connection.isConnected();
     }
 
-    public void logoff() throws IOException, TimeoutException
+    public void logoff()
     {
         connection.logoff();
     }
