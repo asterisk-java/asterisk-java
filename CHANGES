@@ -17,7 +17,9 @@ Asterisk-Java 0.3
 	* Fixed interrupt in DefaultManagerConnection (AJ-27)
 	* Added support for login with eventMask (AJ-28)
 	* Fixed accountCode always being null in AgiRequest
+	* Added brigedChannel property to AgentConnectEvent
 	* Live objects now fire PropertyChangeEvents
+	* ConnectEvent is now only fired after a successful login
 
 Asterisk-Java 0.2
 	* Added SayDateTimeCommand (AJ-23)
