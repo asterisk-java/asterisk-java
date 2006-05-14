@@ -16,6 +16,10 @@ Asterisk-Java 0.3
 	* Fixed timing bug in ResourceBundleMappingStrategy (AJ-25)
 	* Fixed interrupt in DefaultManagerConnection (AJ-27)
 	* Added support for login with eventMask (AJ-28)
+	* Added support for using non-shared instances AgiScript, i.e. a
+	  new instance is used for each request if you set the
+	  shareInstances property on your MappingStrategy to false.
+	  Default is still to use shared instances (AJ-29)
 	* Fixed accountCode always being null in AgiRequest
 	* Added brigedChannel property to AgentConnectEvent
 	* Live objects now fire PropertyChangeEvents
