@@ -273,7 +273,7 @@ public class ManagerReaderImpl implements ManagerReader
         }
         catch (IOException e)
         {
-            logger.info("IOException while reading from asterisk server, terminating reader thread: " + e.getMessage());
+            logger.info("Terminating reader thread: " + e.getMessage());
         }
         finally
         {
