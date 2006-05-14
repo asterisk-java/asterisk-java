@@ -184,7 +184,8 @@ public interface AsteriskChannel
     void redirect(String context, String exten, int priority) throws ManagerCommunicationException, NoSuchChannelException;
 
     /**
-     * Redirects this channel and the channel this channel is linked to to a new extension.
+     * Redirects this channel and the channel this channel is linked to to a new extension.<br>
+     * If this channel is not linked to another channel only this channel is redirected.
      * 
      * @param context the destination context.
      * @param exten the destination extension.
