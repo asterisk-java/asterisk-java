@@ -20,6 +20,8 @@ Asterisk-Java 0.3
 	* Added brigedChannel property to AgentConnectEvent
 	* Live objects now fire PropertyChangeEvents
 	* ConnectEvent is now only fired after a successful login (AJ-32)
+	* Added extraContext, extraExten, extraPriority properties to
+	  RedirectAction to support BRIstuffed versions of Asterisk (AJ-34)
 
 Asterisk-Java 0.2
 	* Added SayDateTimeCommand (AJ-23)
