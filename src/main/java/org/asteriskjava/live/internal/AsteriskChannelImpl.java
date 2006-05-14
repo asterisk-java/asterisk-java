@@ -367,7 +367,26 @@ public class AsteriskChannelImpl implements AsteriskChannel
             throw new NoSuchChannelException("Channel '" + name + "' is not available: " + response.getMessage());
         }
     }
-    
+
+    public void redirectBothLegs(String context, String exten, int priority) throws ManagerCommunicationException, NoSuchChannelException
+    {
+        ManagerResponse response;
+        
+        if (linkedChannel != null)
+        {
+            response = connectionPool.sendAction(new RedirectAction(name, linkedChannel.getName(), context, exten, priority, context, exten, priority));
+        }
+        else
+        {
+            response = connectionPool.sendAction(new RedirectAction(name, context, exten, priority));
+        }
+
+        if (response instanceof ManagerError)
+        {
+            throw new NoSuchChannelException("Channel '" + name + "' is not available: " + response.getMessage());
+        }
+    }
+
     public String getVariable(String variable) throws ManagerCommunicationException, NoSuchChannelException
     {
         ManagerResponse response;

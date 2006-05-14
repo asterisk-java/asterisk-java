@@ -184,6 +184,20 @@ public interface AsteriskChannel
     void redirect(String context, String exten, int priority) throws ManagerCommunicationException, NoSuchChannelException;
 
     /**
+     * Redirects this channel and the channel this channel is linked to to a new extension.
+     * 
+     * @param context the destination context.
+     * @param exten the destination extension.
+     * @param priority the destination priority.
+     * @throws ManagerCommunicationException if the redirect action cannot be
+     *             sent to Asterisk.
+     * @throws NoSuchChannelException if this channel had been hung up before
+     *             the redirect was sent.
+     * @since 0.3
+     */
+    void redirectBothLegs(String context, String exten, int priority) throws ManagerCommunicationException, NoSuchChannelException;
+    
+    /**
      * Returns the value of the given channel variable.<br>
      * Currently Asterisk does not support the retrieval of built-in variables
      * like EXTEN or CALLERIDNUM but only custom variables set via Asterisk's
