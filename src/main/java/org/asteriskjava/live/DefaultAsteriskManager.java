@@ -87,11 +87,13 @@ public class DefaultAsteriskManager
      */
     private ManagerConnection eventConnection;
 
-    private final ChannelManager channelManager;
-
-    private final QueueManager queueManager;
-    
+    /**
+     * A pool of manager connections to use for sending actions to Asterisk.
+     */
     private final ManagerConnectionPool connectionPool;
+
+    private final ChannelManager channelManager;
+    private final QueueManager queueManager;
 
     /**
      * The version of the Asterisk server we are connected to.<br>
@@ -105,7 +107,7 @@ public class DefaultAsteriskManager
      * <code>show version files</code>.<br>
      * Contains <code>null</code> until lazily initialized.
      */
-    private Map versions;
+    private Map<String, String> versions;
 
     /**
      * Flag to skip initializing queues as that results in a timeout on Asterisk
@@ -309,6 +311,16 @@ public class DefaultAsteriskManager
         return channelManager.getChannels();
     }
 
+    public AsteriskChannel getChannelByName(String name)
+    {
+        return channelManager.getChannelImplByName(name);
+    }
+
+    public AsteriskChannel getChannelById(String id)
+    {
+        return channelManager.getChannelImplById(id);
+    }
+
     public Collection<AsteriskQueue> getQueues()
     {
         return queueManager.getQueues();
@@ -394,7 +406,7 @@ public class DefaultAsteriskManager
         {
             synchronized (versions)
             {
-                fileVersion = (String) versions.get(file);
+                fileVersion = versions.get(file);
             }
         }
 
@@ -491,6 +503,7 @@ public class DefaultAsteriskManager
         version = null;
         versions = null;
 
+        // same for channels and queues, they are reinitialized when reconnected
         channelManager.clear();
         queueManager.clear();
     }
@@ -518,28 +531,6 @@ public class DefaultAsteriskManager
         {
             logger.error("Unable to initialize queues after reconnect.", e);
         }
-    }
-
-    /**
-     * Returns a channel by its name.
-     * 
-     * @param name name of the channel to return
-     * @return the channel with the given name
-     */
-    public AsteriskChannel getChannelByName(String name)
-    {
-        return channelManager.getChannelImplByName(name);
-    }
-
-    /**
-     * Returns a channel by its unique id.
-     * 
-     * @param id the unique id of the channel to return
-     * @return the channel with the given unique id
-     */
-    public AsteriskChannel getChannelById(String id)
-    {
-        return channelManager.getChannelImplById(id);
     }
 
     private Call originateEvent2Call(OriginateEvent event)
