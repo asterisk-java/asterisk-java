@@ -9,7 +9,7 @@ Asterisk-Java
 
   The Asterisk-Java package consists of a set of Java classes 
   that allow you to easily build Java applications that interact with an 
-  {{{http://www.asterisk.org/}Asterisk PBX Server}}. Asterisk-java
+  {{{http://www.asterisk.org/}Asterisk PBX Server}}. Asterisk-Java
   supports both interfaces that Asterisk provides for this scenario:
   The {{{http://www.voip-info.org/wiki-Asterisk+AGI}FastAGI}}
   protocol and the
