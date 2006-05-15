@@ -394,7 +394,7 @@ public class AgiRequestImpl implements Serializable, AgiRequest
 
     public String getAccountCode()
     {
-        return (String) request.get("accountcode");
+        return request.get("accountcode");
     }
 
     public Integer getCallingAni2()
@@ -403,10 +403,10 @@ public class AgiRequestImpl implements Serializable, AgiRequest
         {
             return null;
         }
-        
+
         try
         {
-            return Integer.valueOf((String) request.get("callingani2"));
+            return Integer.valueOf(request.get("callingani2"));
         }
         catch (NumberFormatException e)
         {
@@ -423,7 +423,7 @@ public class AgiRequestImpl implements Serializable, AgiRequest
         
         try
         {
-            return Integer.valueOf((String) request.get("callingpres"));
+            return Integer.valueOf(request.get("callingpres"));
         }
         catch (NumberFormatException e)
         {
@@ -440,7 +440,7 @@ public class AgiRequestImpl implements Serializable, AgiRequest
         
         try
         {
-            return Integer.valueOf((String) request.get("callingtns"));
+            return Integer.valueOf(request.get("callingtns"));
         }
         catch (NumberFormatException e)
         {
@@ -457,7 +457,7 @@ public class AgiRequestImpl implements Serializable, AgiRequest
         
         try
         {
-            return Integer.valueOf((String) request.get("callington"));
+            return Integer.valueOf(request.get("callington"));
         }
         catch (NumberFormatException e)
         {
