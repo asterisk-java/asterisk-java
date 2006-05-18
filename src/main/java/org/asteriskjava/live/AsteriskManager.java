@@ -47,7 +47,10 @@ public interface AsteriskManager
      */
     Call originateCall(Originate originate) throws ManagerCommunicationException;
 
-    AsteriskChannel originate(String channel, String context, String exten, int priority, long timeout) 
+    AsteriskChannel originateToExtension(String channel, String context, String exten, int priority, long timeout) 
+        throws ManagerCommunicationException;
+
+    AsteriskChannel originateToApplication(String channel, String application, String data, long timeout) 
         throws ManagerCommunicationException;
     
     /**
