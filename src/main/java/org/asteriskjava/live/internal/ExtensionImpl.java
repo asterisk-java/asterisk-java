@@ -27,7 +27,7 @@ import org.asteriskjava.live.Extension;
  * @author srt
  * @version $Id$
  */
-public class ExtensionImpl implements Serializable, Extension
+class ExtensionImpl implements Serializable, Extension
 {
     /**
      * Serial version identifier.

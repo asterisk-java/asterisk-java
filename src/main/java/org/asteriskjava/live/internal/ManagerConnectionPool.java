@@ -29,21 +29,21 @@ import org.asteriskjava.manager.action.EventGeneratingAction;
 import org.asteriskjava.manager.action.ManagerAction;
 import org.asteriskjava.manager.response.ManagerResponse;
 
-public class ManagerConnectionPool
+class ManagerConnectionPool
 {
     private BlockingQueue<ManagerConnection> connections;
     
-    public ManagerConnectionPool(int size)
+    ManagerConnectionPool(int size)
     {
         this.connections = new ArrayBlockingQueue<ManagerConnection>(size);
     }
     
-    public void clear()
+    void clear()
     {
         connections.clear();
     }
     
-    public ManagerResponse sendAction(ManagerAction action) throws ManagerCommunicationException
+    ManagerResponse sendAction(ManagerAction action) throws ManagerCommunicationException
     {
         ManagerConnection connection;
         ManagerResponse response;
@@ -73,12 +73,12 @@ public class ManagerConnectionPool
         return response;
     }
 
-    public ResponseEvents sendEventGeneratingAction(EventGeneratingAction action) throws ManagerCommunicationException
+    ResponseEvents sendEventGeneratingAction(EventGeneratingAction action) throws ManagerCommunicationException
     {
         return sendEventGeneratingAction(action, -1);
     }
     
-    public ResponseEvents sendEventGeneratingAction(EventGeneratingAction action, long timeout) throws ManagerCommunicationException
+    ResponseEvents sendEventGeneratingAction(EventGeneratingAction action, long timeout) throws ManagerCommunicationException
     {
         ManagerConnection connection;
         ResponseEvents responseEvents;

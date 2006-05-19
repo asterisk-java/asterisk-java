@@ -46,7 +46,7 @@ import org.asteriskjava.util.LogFactory;
  * @author srt
  * @version $Id$
  */
-public class ChannelManager
+class ChannelManager
 {
     private final Log logger = LogFactory.getLog(getClass());
 

@@ -28,7 +28,7 @@ import org.asteriskjava.live.AsteriskQueue;
  * @author srt
  * @version $Id$
  */
-public class AsteriskQueueImpl implements AsteriskQueue
+class AsteriskQueueImpl implements AsteriskQueue
 {
     private String name;
     private Integer max;

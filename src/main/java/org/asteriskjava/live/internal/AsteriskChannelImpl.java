@@ -41,7 +41,7 @@ import org.asteriskjava.manager.response.ManagerResponse;
  * @author srt
  * @version $Id$
  */
-public class AsteriskChannelImpl implements AsteriskChannel
+class AsteriskChannelImpl implements AsteriskChannel
 {
     private static final String CAUSE_VARIABLE_NAME = "PRI_CAUSE";
     private final ManagerConnectionPool connectionPool;

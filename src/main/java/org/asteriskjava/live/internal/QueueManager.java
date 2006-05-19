@@ -37,7 +37,7 @@ import org.asteriskjava.util.LogFactory;
  * @author srt
  * @version $Id$
  */
-public class QueueManager
+class QueueManager
 {
     private final Log logger = LogFactory.getLog(this.getClass());
 
