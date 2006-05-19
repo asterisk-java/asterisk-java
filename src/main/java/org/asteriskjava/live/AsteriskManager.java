@@ -48,17 +48,63 @@ public interface AsteriskManager
      */
     Call originateCall(Originate originate) throws ManagerCommunicationException;
 
+    /**
+     * Generates an outgoing channel to a dialplan entry (extension, context, priority).
+     * 
+     * @param channel channel name to call, for example "SIP/1310.
+     * @param context context to connect to
+     * @param exten extension to connect to
+     * @param priority priority to connect to
+     * @param timeout how long to wait for the channel to be answered before its considered to have failed (in ms)
+     * @return the generated channel
+     * @throws ManagerCommunicationException if the originate action cannot be sent to Asterisk
+     */
     AsteriskChannel originateToExtension(String channel, String context, String exten, int priority, long timeout) 
         throws ManagerCommunicationException;
 
+    /**
+     * Generates an outgoing channel to a dialplan entry (extension, context, priority)
+     * and sets an optional map of channel variables.
+     * 
+     * @param channel channel name to call, for example "SIP/1310.
+     * @param context context to connect to
+     * @param exten extension to connect to
+     * @param priority priority to connect to
+     * @param timeout how long to wait for the channel to be answered before its considered to have failed (in ms)
+     * @param variables channel variables to set, may be <code>null</code>.
+     * @return the generated channel
+     * @throws ManagerCommunicationException if the originate action cannot be sent to Asterisk
+     */
     AsteriskChannel originateToExtension(String channel, String context, String exten, int priority, long timeout, Map<String, String> variables) 
         throws ManagerCommunicationException;
 
+    /**
+     * Generates an outgoing channel to an application.
+     * 
+     * @param channel channel name to call, for example "SIP/1310.
+     * @param application application to connect to, for example "MeetMe"
+     * @param data data to pass to the application, for example "1000|d", may be <code>null</code>.
+     * @param timeout how long to wait for the channel to be answered before its considered to have failed (in ms)
+     * @return the generated channel
+     * @throws ManagerCommunicationException if the originate action cannot be sent to Asterisk
+     */
     AsteriskChannel originateToApplication(String channel, String application, String data, long timeout) 
         throws ManagerCommunicationException;
 
+    /**
+     * Generates an outgoing channel to an application and sets an optional
+     * map of channel variables.
+     * 
+     * @param channel channel name to call, for example "SIP/1310.
+     * @param application application to connect to, for example "MeetMe"
+     * @param data data to pass to the application, for example "1000|d", may be <code>null</code>.
+     * @param timeout how long to wait for the channel to be answered before its considered to have failed (in ms)
+     * @param variables channel variables to set, may be <code>null</code>.
+     * @return the generated channel
+     * @throws ManagerCommunicationException if the originate action cannot be sent to Asterisk
+     */
     AsteriskChannel originateToApplication(String channel, String application, String data, long timeout, Map<String, String> variables) 
-    throws ManagerCommunicationException;
+        throws ManagerCommunicationException;
 
     /**
      * Returns the active channels of the Asterisk server you are connected to.
