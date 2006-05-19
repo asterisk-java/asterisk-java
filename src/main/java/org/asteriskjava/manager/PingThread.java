@@ -94,8 +94,6 @@ public class PingThread extends Thread
 
     public void run()
     {
-        ManagerResponse response;
-
         while (!die)
         {
             try
@@ -107,32 +105,43 @@ public class PingThread extends Thread
                 // swallow
             }
 
+            // exit if die is set
             if (die)
             {
                 break;
             }
 
+            // skip if not connected
             if (!connection.isConnected())
             {
                 continue;
             }
 
-            try
+            ping();
+        }
+    }
+
+    /**
+     * Sends a ping to Asterisk and logs any errors that may occur.
+     */
+    protected void ping()
+    {
+        ManagerResponse response;
+        try
+        {
+            if (timeout <= 0)
             {
-                if (timeout <= 0)
-                {
-                    response = connection.sendAction(new PingAction());
-                }
-                else
-                {
-                    response = connection.sendAction(new PingAction(), timeout);
-                }
-                logger.debug("Ping response: " + response);
+                response = connection.sendAction(new PingAction());
             }
-            catch (Exception e)
+            else
             {
-                logger.warn("Exception on sending Ping", e);
+                response = connection.sendAction(new PingAction(), timeout);
             }
+            logger.debug("Ping response: " + response);
+        }
+        catch (Exception e)
+        {
+            logger.warn("Exception on sending Ping", e);
         }
     }
 }
