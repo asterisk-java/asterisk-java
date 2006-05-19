@@ -8,8 +8,6 @@ package org.asteriskjava.live;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.asteriskjava.manager.Originate;
-
 
 /**
  * @author srt
@@ -43,12 +41,16 @@ public class TestDefaultAsteriskManager extends AsteriskManagerTestCase
 
         for (AsteriskChannel channel : channels)
         {
+            if (!channel.getName().startsWith("SIP/1310"))
+            {
+                continue;
+            }
+
             System.out.println(channel);
             try
             {
-                System.out.println("MY_VAR=" + channel.getVariable("MY_VAR"));
-                //channel.redirect("default", "1330", 1);
-                channel.hangup();
+                channel.redirectBothLegs("default", "1399", 1);
+                //channel.hangup();
             }
             catch (NoSuchChannelException e)
             {
@@ -80,21 +82,5 @@ public class TestDefaultAsteriskManager extends AsteriskManagerTestCase
     {
         System.out.println(Arrays.toString(manager.getVersion("cdr_manager.c")));
         System.out.println(manager.getVersion());
-    }
-    
-    public void XtestOriginate() throws Exception
-    {
-        Originate originate;
-        Call call;
-
-        originate = new Originate();
-        originate.setChannel("SIP/1310");
-        originate.setContext("default");
-        originate.setExten("1330");
-        originate.setPriority(new Integer(1));
-
-        call = manager.originateCall(originate);
-
-        System.out.println(call);
     }
 }
