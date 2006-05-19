@@ -43,6 +43,11 @@ class ManagerConnectionPool
         connections.clear();
     }
     
+    void add(ManagerConnection connection)
+    {
+        put(connection);
+    }
+    
     ManagerResponse sendAction(ManagerAction action) throws ManagerCommunicationException
     {
         ManagerConnection connection;
@@ -115,12 +120,12 @@ class ManagerConnectionPool
         return responseEvents;
     }
     
-    ManagerConnection get()
+    private ManagerConnection get()
     {
         return connections.poll();
     }
     
-    void put(ManagerConnection connection)
+    private void put(ManagerConnection connection)
     {
         try
         {

@@ -132,7 +132,7 @@ public class AsteriskManagerImpl
     {
         this();
         this.eventConnection = eventConnection;
-        this.connectionPool.put(eventConnection);
+        this.connectionPool.add(eventConnection);
     }
 
     /**
@@ -155,7 +155,7 @@ public class AsteriskManagerImpl
     {
         this.eventConnection = eventConnection;
         this.connectionPool.clear();
-        this.connectionPool.put(eventConnection);
+        this.connectionPool.add(eventConnection);
     }
 
     public void initialize() throws TimeoutException, IOException,
