@@ -83,6 +83,11 @@ public class ManagerReaderImpl implements ManagerReader
     private boolean die = false;
 
     /**
+     * <code>true</code> if the main loop has finished.
+     */
+    private boolean dead = false;
+
+    /**
      * Creates a new ManagerReaderImpl.
      * 
      * @param dispatcher the dispatcher to use for dispatching events and responses.
@@ -132,9 +137,11 @@ public class ManagerReaderImpl implements ManagerReader
         }
 
         this.die = false;
+        this.dead = false;
 
         try
         {
+            // main loop
             while ((line = socket.readLine()) != null && !this.die)
             {
                 // dirty hack for handling the CommandAction. Needs fix when manager protocol is
@@ -269,14 +276,17 @@ public class ManagerReaderImpl implements ManagerReader
                     }
                 }
             }
+            this.dead = true;
             logger.debug("Reached end of stream, terminating reader.");
         }
         catch (IOException e)
         {
+            this.dead = true;
             logger.info("Terminating reader thread: " + e.getMessage());
         }
         finally
         {
+            this.dead = true;
             // cleans resources and reconnects if needed
             DisconnectEvent disconnectEvent = new DisconnectEvent(asteriskServer);
             disconnectEvent.setDateReceived(DateUtil.getDate());
@@ -287,6 +297,11 @@ public class ManagerReaderImpl implements ManagerReader
     public void die()
     {
         this.die = true;
+    }
+    
+    public boolean isDead()
+    {
+        return dead;
     }
 
     private ManagerResponse buildResponse(Map<String, String> buffer)

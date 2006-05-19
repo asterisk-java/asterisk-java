@@ -556,6 +556,7 @@ public class ManagerConnectionImplTest extends TestCase
     {
         DisconnectEvent disconnectEvent;
 
+        mockSocket.close();
         replay(mockSocket);
         disconnectEvent = new DisconnectEvent(asteriskServer);
 
@@ -569,9 +570,9 @@ public class ManagerConnectionImplTest extends TestCase
 
         mc.dispatchEvent(disconnectEvent);
 
-        assertEquals("createSocket not called 1 time", 2, mc.createSocketCalls);
+        assertEquals("createSocket not called 2 time", 2, mc.createSocketCalls);
         assertEquals("createWriter not called 1 time", 1, mc.createWriterCalls);
-        assertEquals("createReader not called 1 time", 1, mc.createReaderCalls);
+        assertEquals("createReader not called 2 time", 2, mc.createReaderCalls);
 
         assertEquals("challenge action not sent 1 time", 1,
                 mockWriter.challengeActionsSent);
@@ -594,6 +595,8 @@ public class ManagerConnectionImplTest extends TestCase
         replay(mockSocket);
         disconnectEvent = new DisconnectEvent(asteriskServer);
 
+        mc.setKeepAliveAfterAuthenticationFailure(false);
+        
         // fake successful login
         mc.setKeepAlive(true);
 
@@ -641,7 +644,7 @@ public class ManagerConnectionImplTest extends TestCase
 
         assertEquals("createSocket not called 3 time", 3, mc.createSocketCalls);
         assertEquals("createWriter not called 1 time", 1, mc.createWriterCalls);
-        assertEquals("createReader not called 1 time", 1, mc.createReaderCalls);
+        assertEquals("createReader not called 3 time", 3, mc.createReaderCalls);
 
         assertEquals("challenge action not sent 3 time", 3,
                 mockWriter.challengeActionsSent);

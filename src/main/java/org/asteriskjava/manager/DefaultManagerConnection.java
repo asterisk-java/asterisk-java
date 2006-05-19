@@ -171,7 +171,7 @@ public class DefaultManagerConnection implements ManagerConnection
     /**
      * Set to <code>true</code> to try reconnecting to ther asterisk serve
      * even if the reconnection attempt threw an AuthenticationFailedException.<br>
-     * Default is <code>false</code>.
+     * Default is <code>true</code>.
      */
     public void setKeepAliveAfterAuthenticationFailure(
             boolean keepAliveAfterAuthenticationFailure)

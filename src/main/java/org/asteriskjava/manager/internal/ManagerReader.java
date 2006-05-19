@@ -54,4 +54,5 @@ public interface ManagerReader extends Runnable
 
     void die();
 
+    boolean isDead();
 }

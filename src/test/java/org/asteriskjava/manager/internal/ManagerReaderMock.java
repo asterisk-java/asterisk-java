@@ -45,6 +45,11 @@ public class ManagerReaderMock implements ManagerReader
         dieCalls++;
     }
 
+    public boolean isDead()
+    {
+        return false;
+    }
+    
     public void run()
     {
         runCalls++;

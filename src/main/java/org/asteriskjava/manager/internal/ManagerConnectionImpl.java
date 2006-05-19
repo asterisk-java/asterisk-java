@@ -123,7 +123,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     /**
      * Should we continue to reconnect after an authentication failure?
      */
-    private boolean keepAliveAfterAuthenticationFailure = false;
+    private boolean keepAliveAfterAuthenticationFailure = true;
 
     /**
      * The socket to use for TCP/IP communication with Asterisk.
@@ -134,6 +134,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
      * The thread that runs the reader.
      */
     private Thread readerThread;
+    private int readerThreadNum = 0;
 
     /**
      * The reader to use to receive events and responses from asterisk.
@@ -183,6 +184,11 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
      * keepAliveAfterAuthenticationFailure is <code>false</code>.
      */
     protected boolean keepAlive = false;
+    
+    /**
+     * <code>true</code> while reconnecting.
+     */
+    private boolean reconnecting = false;
 
     /**
      * Creates a new instance.
@@ -285,7 +291,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     /**
      * Set to <code>true</code> to try reconnecting to ther asterisk serve
      * even if the reconnection attempt threw an AuthenticationFailedException.<br>
-     * Default is <code>false</code>.
+     * Default is <code>true</code>.
      */
     public void setKeepAliveAfterAuthenticationFailure(
             boolean keepAliveAfterAuthenticationFailure)
@@ -497,10 +503,10 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         logger.debug("Passing socket to reader");
         this.reader.setSocket(socket);
 
-        if (this.readerThread == null)
+        if (this.readerThread == null || !this.readerThread.isAlive())
         {
             logger.debug("Creating and starting reader thread");
-            this.readerThread = new Thread(reader, "ManagerReader");
+            this.readerThread = new Thread(reader, "ManagerReader-" + (readerThreadNum++));
             this.readerThread.setDaemon(true);
             this.readerThread.start();
         }
@@ -524,8 +530,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
      */
     public synchronized boolean isConnected()
     {
-        return socket != null && socket.isConnected(); // JDK 1.4
-        // return socket != null;
+        return socket != null && !reconnecting && socket.isConnected();
     }
 
     /**
@@ -542,13 +547,16 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
         if (socket != null)
         {
-            try
+            if (!reconnecting)
             {
-                sendAction(logoffAction);
-            }
-            catch(Exception e)
-            {
-                logger.warn("Unable to send LogOff action", e);
+                try
+                {
+                    sendAction(logoffAction);
+                }
+                catch(Exception e)
+                {
+                    logger.warn("Unable to send LogOff action", e);
+                }
             }
             disconnect();
         }
@@ -637,7 +645,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         if (socket == null)
         {
             throw new IllegalStateException("Unable to send "
-                    + action.getAction() + " action: not connected.");
+                    + action.getAction() + " action: socket not connected.");
         }
 
         internalActionId = createInternalActionId();
@@ -992,7 +1000,10 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         }
         else if (event instanceof DisconnectEvent)
         {
-            reconnect();
+            if (!reconnecting)
+            {
+                reconnect();
+            }
         }
     }
 
@@ -1038,11 +1049,10 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         int numTries;
 
         // clean up at first
-        disconnect();
-        this.reader = null;
-        this.readerThread = null;
+        cleanup();
 
         // try to reconnect
+        reconnecting = true;
         numTries = 0;
         while (this.keepAlive)
         {
@@ -1073,6 +1083,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                 try
                 {
                     login();
+                    reconnecting = false;
                     logger.info("Successfully reconnected.");
                     // everything is ok again, so we leave
                     break;
@@ -1090,14 +1101,14 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                                 + e1.getMessage() + ". Giving up.");
                         this.keepAlive = false;
                     }
-                    disconnect();
+                    cleanup();
                 }
                 catch (TimeoutException e1)
                 {
                     // shouldn't happen - but happens!
                     logger.error("TimeoutException while trying to log in "
                             + "after reconnect.");
-                    disconnect();
+                    cleanup();
                 }
             }
             catch (IOException e)
@@ -1109,6 +1120,13 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
             }
             numTries++;
         }
+    }
+    
+    private void cleanup()
+    {
+        disconnect();
+        this.reader = null;
+        this.readerThread = null;
     }
 
     /* Helper classes */
