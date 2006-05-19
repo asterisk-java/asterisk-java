@@ -46,7 +46,7 @@ public class ExtensionImpl implements Serializable, Extension
      * @param extension
      * @param priority
      */
-    public ExtensionImpl(Date date, String context, String extension,
+    ExtensionImpl(Date date, String context, String extension,
             Integer priority)
     {
         this(date, context, extension, priority, null, null);
@@ -60,7 +60,7 @@ public class ExtensionImpl implements Serializable, Extension
      * @param application
      * @param appData
      */
-    public ExtensionImpl(Date date, String context, String extension,
+    ExtensionImpl(Date date, String context, String extension,
             Integer priority, String application, String appData)
     {
         this.date = date;

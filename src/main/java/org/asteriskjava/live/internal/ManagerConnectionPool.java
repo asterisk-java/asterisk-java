@@ -115,12 +115,12 @@ public class ManagerConnectionPool
         return responseEvents;
     }
     
-    public ManagerConnection get()
+    ManagerConnection get()
     {
         return connections.poll();
     }
     
-    public void put(ManagerConnection connection)
+    void put(ManagerConnection connection)
     {
         try
         {

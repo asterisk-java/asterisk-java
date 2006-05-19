@@ -60,13 +60,13 @@ public class ChannelManager
     /**
      * Creates a new instance.
      */
-    public ChannelManager(ManagerConnectionPool connectionPool)
+    ChannelManager(ManagerConnectionPool connectionPool)
     {
         this.connectionPool = connectionPool;
         this.channels = new HashMap<String, AsteriskChannelImpl>();
     }
-    
-    public void clear()
+
+    void clear()
     {
         synchronized (channels)
         {
@@ -74,7 +74,7 @@ public class ChannelManager
         }
     }
 
-    public Collection<AsteriskChannel> getChannels()
+    Collection<AsteriskChannel> getChannels()
     {
         Collection<AsteriskChannel> copy;
 
@@ -125,7 +125,7 @@ public class ChannelManager
         return ChannelState.valueOf(state.toUpperCase());
     }
     
-    public void handleStatusEvent(StatusEvent event)
+    void handleStatusEvent(StatusEvent event)
     {
         AsteriskChannelImpl channel;
         Extension extension;
@@ -193,7 +193,7 @@ public class ChannelManager
         }
     }
 
-    public AsteriskChannelImpl getChannelImplByName(String name)
+    AsteriskChannelImpl getChannelImplByName(String name)
     {
         AsteriskChannelImpl channel = null;
 
@@ -210,7 +210,7 @@ public class ChannelManager
         return channel;
     }
 
-    public AsteriskChannelImpl getChannelImplById(String id)
+    AsteriskChannelImpl getChannelImplById(String id)
     {
         AsteriskChannelImpl channel = null;
 
@@ -221,7 +221,7 @@ public class ChannelManager
         return channel;
     }
     
-    public void handleNewChannelEvent(NewChannelEvent event)
+    void handleNewChannelEvent(NewChannelEvent event)
     {
         AsteriskChannelImpl channel;
 
@@ -248,7 +248,7 @@ public class ChannelManager
         }
     }
 
-    public void handleNewExtenEvent(NewExtenEvent event)
+    void handleNewExtenEvent(NewExtenEvent event)
     {
         AsteriskChannelImpl channel;
         Extension extension;
@@ -272,7 +272,7 @@ public class ChannelManager
         }
     }
 
-    public void handleNewStateEvent(NewStateEvent event)
+    void handleNewStateEvent(NewStateEvent event)
     {
         AsteriskChannelImpl channel = getChannelImplById(event.getUniqueId());
 
@@ -292,7 +292,7 @@ public class ChannelManager
         }
     }
 
-    public void handleNewCallerIdEvent(NewCallerIdEvent event)
+    void handleNewCallerIdEvent(NewCallerIdEvent event)
     {
         AsteriskChannelImpl channel = getChannelImplById(event.getUniqueId());
 
@@ -315,7 +315,7 @@ public class ChannelManager
         }
     }
 
-    public void handleHangupEvent(HangupEvent event)
+    void handleHangupEvent(HangupEvent event)
     {
         HangupCause cause = null;
         AsteriskChannelImpl channel = getChannelImplById(event.getUniqueId());
@@ -343,7 +343,7 @@ public class ChannelManager
         removeChannel(channel);
     }
 
-    public void handleLinkEvent(LinkEvent event)
+    void handleLinkEvent(LinkEvent event)
     {
         AsteriskChannelImpl channel1 = getChannelImplById(event.getUniqueId1());
         AsteriskChannelImpl channel2 = getChannelImplById(event.getUniqueId2());
@@ -374,7 +374,7 @@ public class ChannelManager
         }
     }
 
-    public void handleUnlinkEvent(UnlinkEvent event)
+    void handleUnlinkEvent(UnlinkEvent event)
     {
         AsteriskChannelImpl channel1 = getChannelImplByName(event.getChannel1());
         AsteriskChannelImpl channel2 = getChannelImplByName(event.getChannel2());
@@ -405,7 +405,7 @@ public class ChannelManager
         }
     }
 
-    public void handleRenameEvent(RenameEvent event)
+    void handleRenameEvent(RenameEvent event)
     {
         AsteriskChannelImpl channel = getChannelImplById(event.getUniqueId());
 

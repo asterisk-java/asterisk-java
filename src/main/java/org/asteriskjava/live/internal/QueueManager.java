@@ -51,13 +51,13 @@ public class QueueManager
     /**
      * Creates a new instance.
      */
-    public QueueManager(ChannelManager channelManager)
+    QueueManager(ChannelManager channelManager)
     {
         this.channelManager = channelManager;
         this.queues = new HashMap<String, AsteriskQueueImpl>();
     }
 
-    public void clear()
+    void clear()
     {
         synchronized (queues)
         {
@@ -65,7 +65,7 @@ public class QueueManager
         }
     }
     
-    public Collection<AsteriskQueue> getQueues()
+    Collection<AsteriskQueue> getQueues()
     {
         Collection<AsteriskQueue> copy;
         
@@ -76,7 +76,7 @@ public class QueueManager
         return copy;
     }
 
-    protected void addQueue(AsteriskQueueImpl queue)
+    private void addQueue(AsteriskQueueImpl queue)
     {
         synchronized (queues)
         {
@@ -84,7 +84,7 @@ public class QueueManager
         }
     }
 
-    protected void removeQueue(AsteriskQueue queue)
+    private void removeQueue(AsteriskQueue queue)
     {
         synchronized (queues)
         {
@@ -92,7 +92,7 @@ public class QueueManager
         }
     }
 
-    public void handleQueueParamsEvent(QueueParamsEvent event)
+    void handleQueueParamsEvent(QueueParamsEvent event)
     {
         AsteriskQueueImpl queue;
         boolean isNew = false;
@@ -117,12 +117,12 @@ public class QueueManager
         }
     }
 
-    public void handleQueueMemberEvent(QueueMemberEvent event)
+    void handleQueueMemberEvent(QueueMemberEvent event)
     {
 
     }
 
-    public void handleQueueEntryEvent(QueueEntryEvent event)
+    void handleQueueEntryEvent(QueueEntryEvent event)
     {
         AsteriskQueueImpl queue = queues.get(event.getQueue());
         AsteriskChannelImpl channel = channelManager.getChannelImplByName(event.getChannel());
@@ -146,7 +146,7 @@ public class QueueManager
         }
     }
 
-    public void handleJoinEvent(JoinEvent event)
+    void handleJoinEvent(JoinEvent event)
     {
         AsteriskQueueImpl queue = queues.get(event.getQueue());
         AsteriskChannelImpl channel = channelManager.getChannelImplByName(event.getChannel());
@@ -170,7 +170,7 @@ public class QueueManager
         }
     }
 
-    public void handleLeaveEvent(LeaveEvent event)
+    void handleLeaveEvent(LeaveEvent event)
     {
         AsteriskQueueImpl queue = queues.get(event.getQueue());
         AsteriskChannelImpl channel = channelManager.getChannelImplByName(event.getChannel());
