@@ -23,6 +23,7 @@ import org.asteriskjava.fastagi.InvalidOrUnknownCommandException;
 import org.asteriskjava.fastagi.command.AgiCommand;
 import org.asteriskjava.fastagi.command.AnswerCommand;
 import org.asteriskjava.fastagi.command.ChannelStatusCommand;
+import org.asteriskjava.fastagi.command.ControlStreamFileCommand;
 import org.asteriskjava.fastagi.command.DatabaseDelCommand;
 import org.asteriskjava.fastagi.command.DatabaseDelTreeCommand;
 import org.asteriskjava.fastagi.command.DatabaseGetCommand;
@@ -33,6 +34,7 @@ import org.asteriskjava.fastagi.command.GetFullVariableCommand;
 import org.asteriskjava.fastagi.command.GetOptionCommand;
 import org.asteriskjava.fastagi.command.GetVariableCommand;
 import org.asteriskjava.fastagi.command.HangupCommand;
+import org.asteriskjava.fastagi.command.RecordFileCommand;
 import org.asteriskjava.fastagi.command.SayAlphaCommand;
 import org.asteriskjava.fastagi.command.SayDateTimeCommand;
 import org.asteriskjava.fastagi.command.SayDigitsCommand;
@@ -410,5 +412,44 @@ public class AgiChannelImpl implements AgiChannel
     public void verbose(String message, int level) throws AgiException
     {
         sendCommand(new VerboseCommand(message, level));
+    }
+
+    public void recordFile(String file, String format, String escapeDigits, int timeout) throws AgiException
+    {
+        sendCommand(new RecordFileCommand(file, format, escapeDigits, timeout));
+    }
+
+    public void recordFile(String file, String format, String escapeDigits, int timeout, int offset, boolean beep, int maxSilence) throws AgiException
+    {
+        sendCommand(new RecordFileCommand(file, format, escapeDigits, timeout, offset, beep, maxSilence));
+    }
+
+    public void controlStreamFile(String file) throws AgiException
+    {
+        sendCommand(new ControlStreamFileCommand(file));
+    }
+
+    public char controlStreamFile(String file, String escapeDigits) throws AgiException
+    {
+        AgiReply reply;
+
+        reply = sendCommand(new ControlStreamFileCommand(file, escapeDigits));
+        return reply.getResultCodeAsChar();
+    }
+
+    public char controlStreamFile(String file, String escapeDigits, int offset) throws AgiException
+    {
+        AgiReply reply;
+
+        reply = sendCommand(new ControlStreamFileCommand(file, escapeDigits, offset));
+        return reply.getResultCodeAsChar();
+    }
+
+    public char controlStreamFile(String file, String escapeDigits, int offset, String forwardDigit, String rewindDigit, String pauseDigit) throws AgiException
+    {
+        AgiReply reply;
+
+        reply = sendCommand(new ControlStreamFileCommand(file, escapeDigits, offset, forwardDigit, rewindDigit, pauseDigit));
+        return reply.getResultCodeAsChar();
     }
 }

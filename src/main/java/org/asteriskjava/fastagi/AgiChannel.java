@@ -530,4 +530,97 @@ public interface AgiChannel
      * @since 0.3
      */
     void verbose(String message, int level) throws AgiException;
+    
+    /**
+     * Record to a file until a given dtmf digit in the sequence is received.
+     * 
+     * @param file the name of the file to stream, must not include extension.
+     * @param format the format of the file to be recorded, for example "wav".
+     * @param escapeDigits contains the digits that allow the user to end
+     *            recording.
+     * @param timeout the maximum record time in milliseconds, or -1 for no
+     *            timeout.
+     * @since 0.3
+     */
+    void recordFile(String file, String format, String escapeDigits,
+            int timeout) throws AgiException;
+
+    /**
+     * Record to a file until a given dtmf digit in the sequence is received.
+     * 
+     * @param file the name of the file to stream, must not include extension.
+     * @param format the format of the file to be recorded, for example "wav".
+     * @param escapeDigits contains the digits that allow the user to end
+     *            recording.
+     * @param timeout the maximum record time in milliseconds, or -1 for no
+     *            timeout.
+     * @param offset the offset samples to skip.
+     * @param beep <code>true</code> if a beep should be played before
+     *            recording.
+     * @param maxSilence The amount of silence (in seconds) to allow before
+     *            returning despite the lack of dtmf digits or reaching timeout.
+     * @since 0.3
+     */
+    void recordFile(String file, String format, String escapeDigits,
+            int timeout, int offset, boolean beep, int maxSilence) throws AgiException;
+    
+    /**
+     * Plays the given file allowing the user to control the streaming by
+     * using "#" for forward and "*" for rewind.
+     * 
+     * @param file the name of the file to stream, must not include extension.
+     * @since 0.3
+     */
+    void controlStreamFile(String file) throws AgiException;
+    
+    /**
+     * Plays the given file allowing the user to control the streaming by
+     * using "#" for forward and "*" for rewind. Pressing one of the escape
+     * digits stops streaming.
+     * 
+     * @param file the name of the file to stream, must not include extension.
+     * @param escapeDigits contains the digits that allow the user to interrupt
+     *            this command.
+     * @return the DTMF digit pressed or 0x0 if none was pressed.
+     * @since 0.3
+     */
+    char controlStreamFile(String file, String escapeDigits) throws AgiException;
+
+    /**
+     * Plays the given file allowing the user to control the streaming by
+     * using "#" for forward and "*" for rewind. Pressing one of the escape
+     * digits stops streaming. The file is played starting at the indicated
+     * offset.
+     * 
+     * @param file the name of the file to stream, must not include extension.
+     * @param escapeDigits contains the digits that allow the user to interrupt
+     *            this command. May be <code>null</code> if you don't want the
+     *            user to interrupt.
+     * @param offset the offset samples to skip before streaming.
+     * @return the DTMF digit pressed or 0x0 if none was pressed.
+     * @since 0.3
+     */
+    char controlStreamFile(String file, String escapeDigits, int offset) throws AgiException;
+
+    /**
+     * Plays the given file allowing the user to control the streaming by
+     * using forwardDigit for forward, rewindDigit for rewind and pauseDigit for pause.
+     * Pressing one of the escape digits stops streaming. 
+     * The file is played starting at the indicated
+     * offset, use 0 to start at the beginning.
+     * 
+     * @param file the name of the file to stream, must not include extension.
+     * @param escapeDigits contains the digits that allow the user to interrupt
+     *            this command. May be <code>null</code> if you don't want the
+     *            user to interrupt.
+     * @param offset the offset samples to skip before streaming, use 0 to start at the beginning.
+     * @param forwardDigit the digit for fast forward.
+     * @param rewindDigit the digit for rewind.
+     * @param pauseDigit the digit for pause and unpause.
+     * @return the DTMF digit pressed or 0x0 if none was pressed.
+     * @since 0.3
+     */
+    char controlStreamFile(String file, String escapeDigits,
+            int offset, String forwardDigit, String rewindDigit,
+            String pauseDigit) throws AgiException;
 }

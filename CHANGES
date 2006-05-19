@@ -26,6 +26,8 @@ Asterisk-Java 0.3
 	* ConnectEvent is now only fired after a successful login (AJ-32)
 	* Added extraContext, extraExten, extraPriority properties to
 	  RedirectAction to support BRIstuffed versions of Asterisk (AJ-34)
+	* Added recordFile and controlStreamFile methods to AgiChannel and
+	  BaseAgiScript
 
 Asterisk-Java 0.2
 	* Added SayDateTimeCommand (AJ-23)
