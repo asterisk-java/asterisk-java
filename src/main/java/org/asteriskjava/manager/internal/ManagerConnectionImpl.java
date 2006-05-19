@@ -1090,12 +1090,14 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                                 + e1.getMessage() + ". Giving up.");
                         this.keepAlive = false;
                     }
+                    disconnect();
                 }
                 catch (TimeoutException e1)
                 {
                     // shouldn't happen - but happens!
                     logger.error("TimeoutException while trying to log in "
                             + "after reconnect.");
+                    disconnect();
                 }
             }
             catch (IOException e)
