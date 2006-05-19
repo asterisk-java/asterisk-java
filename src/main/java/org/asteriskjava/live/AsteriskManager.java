@@ -18,6 +18,7 @@ package org.asteriskjava.live;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Map;
 
 import org.asteriskjava.manager.Originate;
 import org.asteriskjava.manager.TimeoutException;
@@ -50,9 +51,15 @@ public interface AsteriskManager
     AsteriskChannel originateToExtension(String channel, String context, String exten, int priority, long timeout) 
         throws ManagerCommunicationException;
 
+    AsteriskChannel originateToExtension(String channel, String context, String exten, int priority, long timeout, Map<String, String> variables) 
+        throws ManagerCommunicationException;
+
     AsteriskChannel originateToApplication(String channel, String application, String data, long timeout) 
         throws ManagerCommunicationException;
-    
+
+    AsteriskChannel originateToApplication(String channel, String application, String data, long timeout, Map<String, String> variables) 
+    throws ManagerCommunicationException;
+
     /**
      * Returns the active channels of the Asterisk server you are connected to.
      * 

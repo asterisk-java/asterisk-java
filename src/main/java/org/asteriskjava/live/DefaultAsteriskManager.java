@@ -267,6 +267,11 @@ public class DefaultAsteriskManager
 
     public AsteriskChannel originateToExtension(String channel, String context, String exten, int priority, long timeout) throws ManagerCommunicationException
     {
+        return originateToExtension(channel, context, exten, priority, timeout, null);
+    }
+
+    public AsteriskChannel originateToExtension(String channel, String context, String exten, int priority, long timeout, Map<String, String> variables) throws ManagerCommunicationException
+    {
         OriginateAction originateAction;
 
         originateAction = new OriginateAction();
@@ -275,7 +280,8 @@ public class DefaultAsteriskManager
         originateAction.setExten(exten);
         originateAction.setPriority(priority);
         originateAction.setTimeout(timeout);
-        
+        originateAction.setVariables(variables);
+
         // must set async to true to receive OriginateEvents.
         originateAction.setAsync(Boolean.TRUE);
         
@@ -284,6 +290,11 @@ public class DefaultAsteriskManager
 
     public AsteriskChannel originateToApplication(String channel, String application, String data, long timeout) throws ManagerCommunicationException
     {
+        return originateToApplication(channel, application, data, timeout, null);
+    }
+
+    public AsteriskChannel originateToApplication(String channel, String application, String data, long timeout, Map<String, String> variables) throws ManagerCommunicationException
+    {
         OriginateAction originateAction;
 
         originateAction = new OriginateAction();
@@ -291,6 +302,7 @@ public class DefaultAsteriskManager
         originateAction.setApplication(application);
         originateAction.setData(data);
         originateAction.setTimeout(timeout);
+        originateAction.setVariables(variables);
         
         // must set async to true to receive OriginateEvents.
         originateAction.setAsync(Boolean.TRUE);
