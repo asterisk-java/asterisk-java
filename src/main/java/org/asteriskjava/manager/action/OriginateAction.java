@@ -59,7 +59,7 @@ public class OriginateAction extends AbstractManagerAction
     private Integer priority;
     private Long timeout;
     private String callerId;
-    private Boolean callingPres;
+    private Integer callingPres;
     private Map<String, String> variables;
     private String account;
     private String application;
@@ -113,19 +113,57 @@ public class OriginateAction extends AbstractManagerAction
     }
 
     /**
-     * Returns <code>true</code> if Caller*ID presentation is set on the
-     * outgoing channel.
+     * Returns the calling presentation for the outgoing channel.<br>
+     * This property is only available on BRIstuffed Asterisk servers.
+     * 
+     * @return the calling presentation for the outgoing channel.
+     * @see #setCallingPres(Integer)
      */
-    public Boolean getCallingPres()
+    public Integer getCallingPres()
     {
         return callingPres;
     }
 
     /**
-     * Set to <code>true</code> if you want Caller*ID presentation to be set
-     * on the outgoing channel.
+     * Sets the calling presentation for the outgoing channel.<br>
+     * The number is a octet, and the only bits you need worry about are bits 1,2,6 and 7.<br>
+     * Bits 1 and 2 define the screening indicator and bits 6 and 7 define the 
+     * presentation indicator.<br>
+     * In essence, it says, 'Is the person who has been called allowed to see the callers number?' 
+     * (presentation) and 'What authority was used to verify that this is a genuine number?'
+     * (screening).<br> 
+     * Presentation indicator (Bits 6 and 7):
+     * <pre>
+     * Bits Meaning
+     *  7 6 
+     *  0 0 Presentation allowed
+     *  0 1 Presentation restricted
+     *  1 0 Number not available due to interworking
+     *  1 1 Reserved
+     * </pre>
+     * 
+     * Screening indicator (Bits 1 and 2):
+     * <pre>
+     * Bits Meaning
+     *  2 1 
+     *  0 0 User-provided, not screened
+     *  0 1 User-provided, verified and passed
+     *  1 0 User-provided, verified and failed
+     *  1 1 Network provided
+     * </pre>
+     * 
+     * Examples for some general settings:
+     * <pre>
+     * Presentation Allowed, Network Provided: 3 (00000011)
+     * Presentation Restricted, User-provided, not screened: 32 (00100000)
+     * Presentation Restricted, User-provided, verified, and passed: 33 (00100001)
+     * Presentation Restricted, Network Provided: 35 (00100011)
+     * </pre> 
+     * This property is only available on BRIstuffed Asterisk servers.
+     * 
+     * @param callingPres the calling presentation for the outgoing channel.
      */
-    public void setCallingPres(Boolean callingPres)
+    public void setCallingPres(Integer callingPres)
     {
         this.callingPres = callingPres;
     }
