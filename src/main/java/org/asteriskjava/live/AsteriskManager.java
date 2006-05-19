@@ -16,12 +16,8 @@
  */
 package org.asteriskjava.live;
 
-import java.io.IOException;
 import java.util.Collection;
 import java.util.Map;
-
-import org.asteriskjava.manager.Originate;
-import org.asteriskjava.manager.TimeoutException;
 
 /**
  * The AsteriskManager is built on top of the ManagerConnection and is an
@@ -37,17 +33,6 @@ import org.asteriskjava.manager.TimeoutException;
  */
 public interface AsteriskManager
 {
-    /**
-     * Generates an outgoing call.
-     * 
-     * @param originate conatins the details of the call to originate
-     * @return a Call object representing the originated call
-     * @throws TimeoutException if the originated call is not answered in time
-     * @throws IOException if the action cannot be sent to the asterisk server
-     * @deprecated
-     */
-    Call originateCall(Originate originate) throws ManagerCommunicationException;
-
     /**
      * Generates an outgoing channel to a dialplan entry (extension, context, priority).
      * 

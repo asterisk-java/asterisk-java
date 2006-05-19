@@ -25,7 +25,6 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.asteriskjava.live.internal.AsteriskChannelImpl;
 import org.asteriskjava.live.internal.ChannelManager;
 import org.asteriskjava.live.internal.ManagerConnectionPool;
 import org.asteriskjava.live.internal.QueueManager;
@@ -33,7 +32,6 @@ import org.asteriskjava.manager.AuthenticationFailedException;
 import org.asteriskjava.manager.EventTimeoutException;
 import org.asteriskjava.manager.ManagerConnection;
 import org.asteriskjava.manager.ManagerEventListener;
-import org.asteriskjava.manager.Originate;
 import org.asteriskjava.manager.ResponseEvents;
 import org.asteriskjava.manager.TimeoutException;
 import org.asteriskjava.manager.action.CommandAction;
@@ -52,7 +50,6 @@ import org.asteriskjava.manager.event.NewChannelEvent;
 import org.asteriskjava.manager.event.NewExtenEvent;
 import org.asteriskjava.manager.event.NewStateEvent;
 import org.asteriskjava.manager.event.OriginateEvent;
-import org.asteriskjava.manager.event.OriginateFailureEvent;
 import org.asteriskjava.manager.event.QueueEntryEvent;
 import org.asteriskjava.manager.event.QueueMemberEvent;
 import org.asteriskjava.manager.event.QueueParamsEvent;
@@ -226,44 +223,6 @@ public class DefaultAsteriskManager
     }
 
     /* Implementation of the AsteriskManager interface */
-
-    public Call originateCall(Originate originate) throws ManagerCommunicationException
-    {
-        OriginateAction originateAction;
-        ResponseEvents responseEvents;
-        Long timeout;
-
-        if (originate.getTimeout() == null)
-        {
-            timeout = new Long(30000);
-        }
-        else
-        {
-            timeout = originate.getTimeout();
-        }
-
-        originateAction = new OriginateAction();
-        originateAction.setAccount(originate.getAccount());
-        originateAction.setApplication(originate.getApplication());
-        originateAction.setCallerId(originate.getCallerId());
-        originateAction.setChannel(originate.getChannel());
-        originateAction.setContext(originate.getContext());
-        originateAction.setData(originate.getData());
-        originateAction.setExten(originate.getExten());
-        originateAction.setPriority(originate.getPriority());
-        originateAction.setTimeout(timeout);
-        originateAction.setVariables(originate.getVariables());
-
-        // must set async to true to receive OriginateEvents.
-        originateAction.setAsync(Boolean.TRUE);
-
-        // 2000 ms extra for the OriginateFailureEvent should be fine
-        responseEvents = connectionPool.sendEventGeneratingAction(originateAction,
-                timeout.longValue() + 2000);
-
-        return originateEvent2Call((OriginateEvent) responseEvents.getEvents()
-                .toArray()[0]);
-    }
 
     public AsteriskChannel originateToExtension(String channel, String context, String exten, int priority, long timeout) throws ManagerCommunicationException
     {
@@ -559,24 +518,5 @@ public class DefaultAsteriskManager
         {
             logger.error("Unable to initialize queues after reconnect.", e);
         }
-    }
-
-    private Call originateEvent2Call(OriginateEvent event)
-    {
-        Call call;
-        AsteriskChannelImpl channel;
-
-        channel = channelManager.getChannelImplById(event.getUniqueId());
-        call = new Call();
-        call.setUniqueId(event.getUniqueId());
-        call.setChannel(channel);
-        call.setStartTime(event.getDateReceived());
-        if (event instanceof OriginateFailureEvent)
-        {
-            call.setEndTime(event.getDateReceived());
-        }
-        call.setReason(event.getReason());
-
-        return call;
     }
 }
