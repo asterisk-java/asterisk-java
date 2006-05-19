@@ -96,7 +96,7 @@ public class ControlStreamFileCommand extends AbstractAgiCommand
      * 
      * @param file the name of the file to stream, must not include extension.
      * @param escapeDigits contains the digits that allow the user to interrupt
-     *            this command. Maybe <code>null</code> if you don't want the
+     *            this command. May be <code>null</code> if you don't want the
      *            user to interrupt.
      * @param offset the offset samples to skip before streaming.
      */
@@ -109,12 +109,11 @@ public class ControlStreamFileCommand extends AbstractAgiCommand
 
     /**
      * Creates a new ControlStreamFileCommand, streaming from the given offset.
-     * It uses the default digit "#" for forward and "*" for rewind and does not
-     * support pausing.
+     * It allows the user to pause streaming by pressing the pauseDigit.
      * 
      * @param file the name of the file to stream, must not include extension.
      * @param escapeDigits contains the digits that allow the user to interrupt
-     *            this command. Maybe <code>null</code> if you don't want the
+     *            this command. May be <code>null</code> if you don't want the
      *            user to interrupt.
      * @param offset the offset samples to skip before streaming.
      * @param forwardDigit the digit for fast forward.
