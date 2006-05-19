@@ -15,6 +15,7 @@ public class TestCdrEvent extends TestCase
         cdrEvent = new CdrEvent(this);
         cdrEvent.setStartTime("2006-05-19 11:54:48");
         defaultTimeZone = TimeZone.getDefault();
+        TimeZone.setDefault(TimeZone.getTimeZone("GMT"));
     }
 
     @Override
@@ -25,7 +26,6 @@ public class TestCdrEvent extends TestCase
 
     public void testGetStartTimeAsDate()
     {
-        TimeZone.setDefault(TimeZone.getTimeZone("GMT"));
         assertEquals(1137671688000L, cdrEvent.getStartTimeAsDate().getTime());
     }
 
