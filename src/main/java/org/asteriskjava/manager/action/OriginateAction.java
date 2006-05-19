@@ -126,7 +126,7 @@ public class OriginateAction extends AbstractManagerAction
 
     /**
      * Sets the calling presentation for the outgoing channel.<br>
-     * The number is a octet, and the only bits you need worry about are bits 1,2,6 and 7.<br>
+     * The number is an octet and the only bits you need worry about are bits 1,2,6 and 7.<br>
      * Bits 1 and 2 define the screening indicator and bits 6 and 7 define the 
      * presentation indicator.<br>
      * In essence, it says, 'Is the person who has been called allowed to see the callers number?' 
