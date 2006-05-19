@@ -131,7 +131,8 @@ public class OriginateAction extends AbstractManagerAction
      * presentation indicator.<br>
      * In essence, it says, 'Is the person who has been called allowed to see the callers number?' 
      * (presentation) and 'What authority was used to verify that this is a genuine number?'
-     * (screening).<br> 
+     * (screening).<br>
+     * <br>
      * Presentation indicator (Bits 6 and 7):
      * <pre>
      * Bits Meaning
@@ -141,7 +142,6 @@ public class OriginateAction extends AbstractManagerAction
      *  1 0 Number not available due to interworking
      *  1 1 Reserved
      * </pre>
-     * 
      * Screening indicator (Bits 1 and 2):
      * <pre>
      * Bits Meaning
@@ -151,7 +151,6 @@ public class OriginateAction extends AbstractManagerAction
      *  1 0 User-provided, verified and failed
      *  1 1 Network provided
      * </pre>
-     * 
      * Examples for some general settings:
      * <pre>
      * Presentation Allowed, Network Provided: 3 (00000011)
