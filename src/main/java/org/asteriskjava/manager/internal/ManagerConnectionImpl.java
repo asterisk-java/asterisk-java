@@ -349,7 +349,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
      *             protocol identifier or when sending the challenge or login
      *             action. The connection is closed in this case.
      */
-    private void login(long timeout, String events) throws IOException,
+    protected void login(long timeout, String events) throws IOException,
             AuthenticationFailedException, TimeoutException
     {
         ChallengeAction challengeAction;
@@ -1093,16 +1093,9 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                 }
                 catch (TimeoutException e1)
                 {
-                    // shouldn't happen
+                    // shouldn't happen - but happens!
                     logger.error("TimeoutException while trying to log in "
                             + "after reconnect.");
-                    synchronized (this)
-                    {
-                        if (socket != null)
-                        {
-                            socket.close();
-                        }
-                    }
                 }
             }
             catch (IOException e)

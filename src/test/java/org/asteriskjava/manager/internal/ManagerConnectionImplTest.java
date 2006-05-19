@@ -551,6 +551,41 @@ public class ManagerConnectionImplTest extends TestCase
         verify(mockSocket);
     }
 
+
+    public void testReconnectWithTimeoutException() throws Exception
+    {
+        DisconnectEvent disconnectEvent;
+
+        replay(mockSocket);
+        disconnectEvent = new DisconnectEvent(asteriskServer);
+
+        // fake successful login
+        mc.setKeepAlive(true);
+
+        mc.setThrowTimeoutExceptionOnFirstLogin(true);
+
+        mc.setUsername("username");
+        mc.setPassword("password");
+
+        mc.dispatchEvent(disconnectEvent);
+
+        assertEquals("createSocket not called 1 time", 2, mc.createSocketCalls);
+        assertEquals("createWriter not called 1 time", 1, mc.createWriterCalls);
+        assertEquals("createReader not called 1 time", 1, mc.createReaderCalls);
+
+        assertEquals("challenge action not sent 1 time", 1,
+                mockWriter.challengeActionsSent);
+        assertEquals("login action not sent 1 time", 1,
+                mockWriter.loginActionsSent);
+        // 1 other action sent to determine version
+        assertEquals("unexpected other actions sent", 1,
+                mockWriter.otherActionsSent);
+
+        assertTrue("keepAlive not enabled", mc.getKeepAlive());
+
+        verify(mockSocket);
+    }
+
     public void testReconnectWithAuthenticationFailure() throws Exception
     {
         DisconnectEvent disconnectEvent;
@@ -673,10 +708,13 @@ public class ManagerConnectionImplTest extends TestCase
         SocketConnectionFacade mockSocket;
 
         private boolean throwIOExceptionOnFirstSocketCreate = false;
+        private boolean throwTimeoutExceptionOnFirstLogin = false;
 
         public int createReaderCalls = 0;
         public int createWriterCalls = 0;
         public int createSocketCalls = 0;
+        
+        public int loginCalls = 0;
 
         public MockedManagerConnectionImpl(ManagerReader mockReader,
                 ManagerWriter mockWriter, SocketConnectionFacade mockSocket)
@@ -687,10 +725,14 @@ public class ManagerConnectionImplTest extends TestCase
             this.mockSocket = mockSocket;
         }
 
-        public void setThrowIOExceptionOnFirstSocketCreate(
-                boolean throwIOExceptionOnSocketCreate)
+        public void setThrowTimeoutExceptionOnFirstLogin(boolean b)
         {
-            this.throwIOExceptionOnFirstSocketCreate = throwIOExceptionOnSocketCreate;
+            this.throwTimeoutExceptionOnFirstLogin = b;
+        }
+
+        public void setThrowIOExceptionOnFirstSocketCreate(boolean b)
+        {
+            this.throwIOExceptionOnFirstSocketCreate = b;
         }
 
         public String getUsername()
@@ -737,6 +779,19 @@ public class ManagerConnectionImplTest extends TestCase
                 throw new IOException();
             }
             return mockSocket;
+        }
+        
+        @Override
+        protected void login(long timeout, String events) throws IOException,
+            AuthenticationFailedException, TimeoutException
+        {
+            loginCalls++;
+
+            if (throwTimeoutExceptionOnFirstLogin && loginCalls == 1)
+            {
+                throw new TimeoutException("Provoked timeout");
+            }
+            super.login(timeout, events);
         }
     }
 }
