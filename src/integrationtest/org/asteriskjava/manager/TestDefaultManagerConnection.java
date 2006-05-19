@@ -5,12 +5,12 @@
  */
 package org.asteriskjava.manager;
 
-import junit.framework.TestCase;
-
 import org.asteriskjava.manager.action.CommandAction;
 import org.asteriskjava.manager.action.StatusAction;
 import org.asteriskjava.manager.event.ManagerEvent;
 import org.asteriskjava.manager.response.CommandResponse;
+
+import junit.framework.TestCase;
 
 /**
  * @author srt
@@ -44,7 +44,40 @@ public class TestDefaultManagerConnection extends TestCase
             }
         });
         dmc.sendAction(new StatusAction());
-        
+
+        try
+        {
+            Thread.sleep(1000);
+        }
+        catch (InterruptedException e)
+        {
+            
+        }
+
+        while (true)
+        {
+            // wait for 3 seconds to receive events
+            Thread.sleep(30000);
+        }
+        //dmc.logoff();
+    }
+
+    @SuppressWarnings("deprecation")
+    public void testLoginWithManagerEventHandler() throws Exception
+    {
+        DefaultManagerConnection dmc;
+
+        dmc = getDefaultManagerConnection();
+        dmc.login();
+        dmc.addEventHandler(new ManagerEventHandler()
+        {
+            public void handleEvent(ManagerEvent event)
+            {
+                System.out.println("Got event: " + event);
+            }
+        });
+        dmc.sendAction(new StatusAction());
+
         try
         {
             Thread.sleep(1000);
