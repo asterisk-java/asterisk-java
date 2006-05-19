@@ -16,6 +16,12 @@
  */
 package org.asteriskjava.manager.event;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
+
 /**
  * A CdrEvent is triggered when a call detail record is generated, usually at the end of a call.<br>
  * To enable CdrEvents you have to add <code>enabled = yes</code> to the general section in
@@ -31,6 +37,7 @@ public class CdrEvent extends ManagerEvent
      * Serializable version identifier
      */
     private static final long serialVersionUID = 2541424315212201670L;
+    private static final String DATE_TIME_PATTERN = "y-M-D H:m:s";
     private String accountCode;
     private String src;
     private String destination;
@@ -258,6 +265,31 @@ public class CdrEvent extends ManagerEvent
     {
         return startTime;
     }
+    
+    /**
+     * Returns the start time as Date object.<br>
+     * This method asumes that the Asterisk server's timezone equals the default 
+     * timezone of your JVM.
+     * 
+     * @return the start time as Date object.
+     * @since 0.3
+     */
+    public Date getStartTimeAsDate()
+    {
+        return parseDateTime(startTime);
+    }
+    
+    /**
+     * Returns the start time as Date object.
+     * 
+     * @param tz the timezone of the Asterisk server.
+     * @return the start time as Date object.
+     * @since 0.3
+     */
+    public Date getStartTimeAsDate(TimeZone tz)
+    {
+        return parseDateTime(startTime, tz);
+    }
 
     /**
      * Sets the date/time when the call has started.
@@ -282,6 +314,31 @@ public class CdrEvent extends ManagerEvent
     }
 
     /**
+     * Returns the answer time as Date object.<br>
+     * This method asumes that the Asterisk server's timezone equals the default 
+     * timezone of your JVM.
+     * 
+     * @return the answer time as Date object.
+     * @since 0.3
+     */
+    public Date getAnswerTimeAsDate()
+    {
+        return parseDateTime(answerTime);
+    }
+
+    /**
+     * Returns the answer time as Date object.
+     * 
+     * @param tz the timezone of the Asterisk server.
+     * @return the answer time as Date object.
+     * @since 0.3
+     */
+    public Date getAnswerTimeAsDate(TimeZone tz)
+    {
+        return parseDateTime(answerTime, tz);
+    }
+
+    /**
      * Sets the date/time when the call was answered.
      * 
      * @param answerTime the date/time when the call was answered.
@@ -301,6 +358,31 @@ public class CdrEvent extends ManagerEvent
     public String getEndTime()
     {
         return endTime;
+    }
+
+    /**
+     * Returns the end time as Date object.<br>
+     * This method asumes that the Asterisk server's timezone equals the default 
+     * timezone of your JVM.
+     * 
+     * @return the end time as Date object.
+     * @since 0.3
+     */
+    public Date getEndTimeAsDate()
+    {
+        return parseDateTime(endTime);
+    }
+    
+    /**
+     * Returns the end time as Date object.
+     * 
+     * @param tz the timezone of the Asterisk server.
+     * @return the end time as Date object.
+     * @since 0.3
+     */
+    public Date getEndTimeAsDate(TimeZone tz)
+    {
+        return parseDateTime(endTime, tz);
     }
 
     /**
@@ -439,4 +521,33 @@ public class CdrEvent extends ManagerEvent
     {
         this.userField = userField;
     }
+
+    private Date parseDateTime(String s)
+    {
+        return parseDateTime(s, null);
+    }
+
+    private Date parseDateTime(String s, TimeZone tz)
+    {
+        DateFormat df;
+        
+        if (s == null)
+        {
+            return null;
+        }
+        
+        df = new SimpleDateFormat(DATE_TIME_PATTERN);
+        if (tz != null)
+        {
+            df.setTimeZone(tz);
+        }
+        try
+        {
+            return df.parse(s);
+        }
+        catch (ParseException e)
+        {
+            return null;
+        }
+    }    
 }
