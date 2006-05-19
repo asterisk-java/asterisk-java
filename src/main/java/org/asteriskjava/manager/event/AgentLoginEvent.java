@@ -96,11 +96,21 @@ public class AgentLoginEvent extends ManagerEvent
         this.channel = channel;
     }
 
+    /**
+     * Returns the unique id of the channel associated with the logged in agent.
+     * 
+     * @return the unique id of the channel associated with the logged in agent.
+     */
     public String getUniqueId()
     {
         return uniqueId;
     }
 
+    /**
+     * Sets the unique id of the channel associated with the logged in agent.
+     * 
+     * @param uniqueId the unique id of the channel associated with the logged in agent.
+     */
     public void setUniqueId(String uniqueId)
     {
         this.uniqueId = uniqueId;
