@@ -7,16 +7,25 @@ import junit.framework.TestCase;
 public class TestCdrEvent extends TestCase
 {
     CdrEvent cdrEvent;
+    TimeZone defaultTimeZone;
     
     @Override
     protected void setUp() throws Exception
     {
         cdrEvent = new CdrEvent(this);
         cdrEvent.setStartTime("2006-05-19 11:54:48");
+        defaultTimeZone = TimeZone.getDefault();
+    }
+
+    @Override
+    protected void tearDown() throws Exception
+    {
+        TimeZone.setDefault(defaultTimeZone);
     }
 
     public void testGetStartTimeAsDate()
     {
+        TimeZone.setDefault(TimeZone.getTimeZone("GMT"));
         assertEquals(1137671688000L, cdrEvent.getStartTimeAsDate().getTime());
     }
 
