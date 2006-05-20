@@ -29,6 +29,7 @@ import junit.framework.TestCase;
 
 import org.asteriskjava.manager.AsteriskServer;
 import org.asteriskjava.manager.AuthenticationFailedException;
+import org.asteriskjava.manager.ManagerConnectionState;
 import org.asteriskjava.manager.ManagerEventListener;
 import org.asteriskjava.manager.TimeoutException;
 import org.asteriskjava.manager.action.StatusAction;
@@ -150,7 +151,7 @@ public class ManagerConnectionImplTest extends TestCase
         assertEquals("run() not called 1 time", 1, mockReader.runCalls);
         assertEquals("unexpected call to die()", 0, mockReader.dieCalls);
 
-        assertTrue("keepAlive not set", mc.getKeepAlive());
+        assertEquals("state is not CONNECTED", ManagerConnectionState.CONNECTED, mc.getState());
 
         assertEquals("must have handled exactly two events", 2,
                 listener.eventsHandled.size());
@@ -302,6 +303,7 @@ public class ManagerConnectionImplTest extends TestCase
     {
         mc.setDefaultResponseTimeout(200);
 
+        mockSocket.close();
         replay(mockSocket);
 
         // provoke timeout
@@ -312,10 +314,11 @@ public class ManagerConnectionImplTest extends TestCase
             mc.login();
             fail("No TimeoutException on login()");
         }
-        catch (TimeoutException e)
+        catch (AuthenticationFailedException e)
         {
-            assertEquals("Timeout waiting for response to Challenge", e
-                    .getMessage());
+            assertEquals("Unable to send challenge action", e.getMessage());
+            assertEquals("Timeout waiting for response to Challenge", e.getCause().getMessage());
+            assertTrue(e.getCause() instanceof TimeoutException);
         }
 
         assertEquals("createSocket not called 1 time", 1, mc.createSocketCalls);
@@ -348,6 +351,7 @@ public class ManagerConnectionImplTest extends TestCase
 
         // fake connect
         mc.connect();
+        mc.setState(ManagerConnectionState.CONNECTED);
 
         mc.logoff();
 
@@ -360,7 +364,15 @@ public class ManagerConnectionImplTest extends TestCase
     {
         replay(mockSocket);
 
-        mc.logoff();
+        try
+        {
+            mc.logoff();
+            fail("Expected IllegalStateException when calling logoff when not connected");
+        }
+        catch (IllegalStateException e)
+        {
+            // fine
+        }
 
         assertEquals("unexpected logoff action sent", 0,
                 mockWriter.logoffActionsSent);
@@ -407,6 +419,7 @@ public class ManagerConnectionImplTest extends TestCase
 
         // fake connect
         mc.connect();
+        mc.setState(ManagerConnectionState.CONNECTED);
         response = mc.sendAction(statusAction);
 
         assertEquals("incorrect actionId in action", "123", statusAction.getActionId());
@@ -427,6 +440,8 @@ public class ManagerConnectionImplTest extends TestCase
         mc.setDefaultResponseTimeout(200);
         // fake connect
         mc.connect();
+        mc.setState(ManagerConnectionState.CONNECTED);
+
         // provoke timeout
         mockWriter.setSendResponse(false);
         try
@@ -493,12 +508,15 @@ public class ManagerConnectionImplTest extends TestCase
         disconnectEvent = new DisconnectEvent(asteriskServer);
 
         // fake successful login
-        mc.setKeepAlive(true);
+        mc.setState(ManagerConnectionState.CONNECTED);
 
         mc.setUsername("username");
         mc.setPassword("password");
 
         mc.dispatchEvent(disconnectEvent);
+        
+        // wait for reconnect thread to do its work
+        Thread.sleep(200);
 
         assertEquals("createSocket not called 1 time", 1, mc.createSocketCalls);
         assertEquals("createWriter not called 1 time", 1, mc.createWriterCalls);
@@ -512,7 +530,7 @@ public class ManagerConnectionImplTest extends TestCase
         assertEquals("unexpected other actions sent", 1,
                 mockWriter.otherActionsSent);
 
-        assertTrue("keepAlive not enabled", mc.getKeepAlive());
+        assertEquals("state is not CONNECTED", ManagerConnectionState.CONNECTED, mc.getState());
 
         verify(mockSocket);
     }
@@ -525,7 +543,7 @@ public class ManagerConnectionImplTest extends TestCase
         disconnectEvent = new DisconnectEvent(asteriskServer);
 
         // fake successful login
-        mc.setKeepAlive(true);
+        mc.setState(ManagerConnectionState.CONNECTED);
 
         mc.setThrowIOExceptionOnFirstSocketCreate(true);
 
@@ -533,6 +551,9 @@ public class ManagerConnectionImplTest extends TestCase
         mc.setPassword("password");
 
         mc.dispatchEvent(disconnectEvent);
+
+        // wait for reconnect thread to do its work
+        Thread.sleep(1000);
 
         assertEquals("createSocket not called 1 time", 2, mc.createSocketCalls);
         assertEquals("createWriter not called 1 time", 1, mc.createWriterCalls);
@@ -546,7 +567,7 @@ public class ManagerConnectionImplTest extends TestCase
         assertEquals("unexpected other actions sent", 1,
                 mockWriter.otherActionsSent);
 
-        assertTrue("keepAlive not enabled", mc.getKeepAlive());
+        assertEquals("state is not CONNECTED", ManagerConnectionState.CONNECTED, mc.getState());
 
         verify(mockSocket);
     }
@@ -561,7 +582,7 @@ public class ManagerConnectionImplTest extends TestCase
         disconnectEvent = new DisconnectEvent(asteriskServer);
 
         // fake successful login
-        mc.setKeepAlive(true);
+        mc.setState(ManagerConnectionState.CONNECTED);
 
         mc.setThrowTimeoutExceptionOnFirstLogin(true);
 
@@ -570,41 +591,10 @@ public class ManagerConnectionImplTest extends TestCase
 
         mc.dispatchEvent(disconnectEvent);
 
+        // wait for reconnect thread to do its work
+        Thread.sleep(1000);
+
         assertEquals("createSocket not called 2 time", 2, mc.createSocketCalls);
-        assertEquals("createWriter not called 1 time", 1, mc.createWriterCalls);
-        assertEquals("createReader not called 2 time", 2, mc.createReaderCalls);
-
-        assertEquals("challenge action not sent 1 time", 1,
-                mockWriter.challengeActionsSent);
-        assertEquals("login action not sent 1 time", 1,
-                mockWriter.loginActionsSent);
-        // 1 other action sent to determine version
-        assertEquals("unexpected other actions sent", 1,
-                mockWriter.otherActionsSent);
-
-        assertTrue("keepAlive not enabled", mc.getKeepAlive());
-
-        verify(mockSocket);
-    }
-
-    public void testReconnectWithAuthenticationFailure() throws Exception
-    {
-        DisconnectEvent disconnectEvent;
-
-        mockSocket.close();
-        replay(mockSocket);
-        disconnectEvent = new DisconnectEvent(asteriskServer);
-
-        mc.setKeepAliveAfterAuthenticationFailure(false);
-        
-        // fake successful login
-        mc.setKeepAlive(true);
-
-        mc.setUsername("username");
-
-        mc.dispatchEvent(disconnectEvent);
-
-        assertEquals("createSocket not called 1 time", 1, mc.createSocketCalls);
         assertEquals("createWriter not called 1 time", 1, mc.createWriterCalls);
         assertEquals("createReader not called 1 time", 1, mc.createReaderCalls);
 
@@ -612,49 +602,11 @@ public class ManagerConnectionImplTest extends TestCase
                 mockWriter.challengeActionsSent);
         assertEquals("login action not sent 1 time", 1,
                 mockWriter.loginActionsSent);
-        assertEquals("unexpected other actions sent", 0,
-                mockWriter.otherActionsSent);
-
-        assertFalse("keepAlive not disabled", mc.getKeepAlive());
-
-        verify(mockSocket);
-    }
-
-    public void testReconnectWithKeepAliveAfterAuthenticationFailure()
-            throws Exception
-    {
-        DisconnectEvent disconnectEvent;
-
-        // 2 unsuccessful attempts
-        mockSocket.close();
-        mockSocket.close();
-        replay(mockSocket);
-        disconnectEvent = new DisconnectEvent(asteriskServer);
-
-        // fake successful login
-        mc.setKeepAlive(true);
-
-        // to prevent an infinite loop we will be able to log in after two
-        // unsuccessful attempts
-        // even if the password is not correct.
-        mc.setKeepAliveAfterAuthenticationFailure(true);
-        mc.setUsername("username");
-
-        mc.dispatchEvent(disconnectEvent);
-
-        assertEquals("createSocket not called 3 time", 3, mc.createSocketCalls);
-        assertEquals("createWriter not called 1 time", 1, mc.createWriterCalls);
-        assertEquals("createReader not called 3 time", 3, mc.createReaderCalls);
-
-        assertEquals("challenge action not sent 3 time", 3,
-                mockWriter.challengeActionsSent);
-        assertEquals("login action not sent 3 time", 3,
-                mockWriter.loginActionsSent);
         // 1 other action sent to determine version
         assertEquals("unexpected other actions sent", 1,
                 mockWriter.otherActionsSent);
 
-        assertTrue("keepAlive not enabled", mc.getKeepAlive());
+        assertEquals("state is not CONNECTED", ManagerConnectionState.CONNECTED, mc.getState());
 
         verify(mockSocket);
     }
@@ -748,14 +700,9 @@ public class ManagerConnectionImplTest extends TestCase
             return password;
         }
 
-        public void setKeepAlive(boolean keepAlive)
+        public void setState(ManagerConnectionState state)
         {
-            this.keepAlive = keepAlive;
-        }
-
-        public boolean getKeepAlive()
-        {
-            return keepAlive;
+            this.state = state;
         }
 
         @Override
@@ -785,16 +732,17 @@ public class ManagerConnectionImplTest extends TestCase
         }
         
         @Override
-        protected void login(long timeout, String events) throws IOException,
+        protected void doLogin(long timeout, String events) throws IOException,
             AuthenticationFailedException, TimeoutException
         {
             loginCalls++;
 
             if (throwTimeoutExceptionOnFirstLogin && loginCalls == 1)
             {
+                disconnect();
                 throw new TimeoutException("Provoked timeout");
             }
-            super.login(timeout, events);
+            super.doLogin(timeout, events);
         }
     }
 }

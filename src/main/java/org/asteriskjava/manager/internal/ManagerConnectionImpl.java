@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.internal;
 
+import static org.asteriskjava.manager.ManagerConnectionState.*;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.security.MessageDigest;
@@ -31,6 +33,7 @@ import org.asteriskjava.manager.AsteriskServer;
 import org.asteriskjava.manager.AuthenticationFailedException;
 import org.asteriskjava.manager.EventTimeoutException;
 import org.asteriskjava.manager.ManagerConnection;
+import org.asteriskjava.manager.ManagerConnectionState;
 import org.asteriskjava.manager.ManagerEventHandler;
 import org.asteriskjava.manager.ManagerEventListener;
 import org.asteriskjava.manager.ManagerResponseHandler;
@@ -75,6 +78,10 @@ import org.asteriskjava.util.internal.SocketConnectionFacadeImpl;
  */
 public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 {
+    private static final int RECONNECTION_INTERVAL_2 = 5000;
+
+    private static final int RECONNECTION_INTERVAL_1 = 50;
+
     /**
      * Instance logger.
      */
@@ -137,6 +144,12 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     private int readerThreadNum = 0;
 
     /**
+     * The thread that performs reconnect.
+     */
+    private Thread reconnectThread;
+    private int reconnectThreadNum = 0;
+
+    /**
      * The reader to use to receive events and responses from asterisk.
      */
     private ManagerReader reader;
@@ -176,20 +189,14 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
      * Contains the event handlers that users registered.
      */
     private final List<ManagerEventListener> eventListeners;
-
-    /**
-     * Should we attempt to reconnect when the connection is lost?<br>
-     * This is set to <code>true</code> after successful login and to
-     * <code>false</code> after logoff or after an authentication failure when
-     * keepAliveAfterAuthenticationFailure is <code>false</code>.
-     */
-    protected boolean keepAlive = false;
     
     /**
      * <code>true</code> while reconnecting.
      */
     private boolean reconnecting = false;
 
+    protected ManagerConnectionState state = INITIAL;
+    
     /**
      * Creates a new instance.
      */
@@ -316,16 +323,32 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         this.socketTimeout = socketTimeout;
     }
 
-    public void login() throws IOException, AuthenticationFailedException,
+    public synchronized void login() throws IOException, AuthenticationFailedException,
             TimeoutException
     {
-        login(defaultResponseTimeout, null);
+        login(null);
     }
 
-    public void login(String events) throws IOException, AuthenticationFailedException,
-            TimeoutException
+    public synchronized void login(String events) throws IOException, AuthenticationFailedException, TimeoutException
     {
-        login(defaultResponseTimeout, events);
+        if (state != INITIAL && state != DISCONNECTED)
+        {
+            throw new IllegalStateException("Login may only be perfomed when in state " +
+                    "INITIAL or DISCONNECTED, but connection is in state " + state);
+        }
+
+        state = CONNECTING;
+        try
+        {
+            doLogin(defaultResponseTimeout, events);
+        }
+        finally
+        {
+            if (state != CONNECTED)
+            {
+                state = DISCONNECTED;
+            }
+        }
     }
 
     /**
@@ -351,12 +374,10 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
      *             incorrect and the login action returns an error or if the MD5
      *             hash cannot be computed. The connection is closed in this
      *             case.
-     * @throws TimeoutException if a timeout occurs either while waiting for the
-     *             protocol identifier or when sending the challenge or login
-     *             action. The connection is closed in this case.
+     * @throws TimeoutException if a timeout occurs while waiting for the
+     *             protocol identifier. The connection is closed in this case.
      */
-    protected void login(long timeout, String events) throws IOException,
-            AuthenticationFailedException, TimeoutException
+    protected synchronized void doLogin(long timeout, String events) throws IOException, AuthenticationFailedException, TimeoutException
     {
         ChallengeAction challengeAction;
         ManagerResponse challengeResponse;
@@ -393,13 +414,23 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         }
 
         challengeAction = new ChallengeAction("MD5");
-        challengeResponse = sendAction(challengeAction);
+        try
+        {
+            challengeResponse = sendAction(challengeAction);
+        }
+        catch(Exception e)
+        {
+            disconnect();
+            throw new AuthenticationFailedException("Unable to send challenge action", e);
+        }
+        
         if (challengeResponse instanceof ChallengeResponse)
         {
             challenge = ((ChallengeResponse) challengeResponse).getChallenge();
         }
         else
         {
+            disconnect();
             throw new AuthenticationFailedException(
                     "Unable to get challenge from Asterisk. ChallengeAction returned: " 
                     + challengeResponse.getMessage());
@@ -428,21 +459,28 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         }
 
         loginAction = new LoginAction(username, "MD5", key, events);
-        loginResponse = sendAction(loginAction);
+        try
+        {
+            loginResponse = sendAction(loginAction);
+        }
+        catch(Exception e)
+        {
+            disconnect();
+            throw new AuthenticationFailedException("Unable to send login action", e);
+        }
+
         if (loginResponse instanceof ManagerError)
         {
             disconnect();
             throw new AuthenticationFailedException(loginResponse.getMessage());
         }
 
-        // successfully logged in so assure that we keep trying to reconnect
-        // when disconnected
-        this.keepAlive = true;
+        state = CONNECTED; 
 
         logger.info("Successfully logged in");
 
-        this.version = determineVersion();
-        this.writer.setTargetVersion(version);
+        version = determineVersion();
+        writer.setTargetVersion(version);
 
         logger.info("Determined Asterisk version: " + version);
 
@@ -450,6 +488,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         ConnectEvent connectEvent = new ConnectEvent(asteriskServer);
         connectEvent.setProtocolIdentifier(getProtocolIdentifier());
         connectEvent.setDateReceived(DateUtil.getDate());
+        // TODO could this cause a deadlock?
         dispatchEvent(connectEvent);
     }
     
@@ -485,34 +524,34 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         logger.info("Connecting to " + asteriskServer.getHostname() + " port "
                 + asteriskServer.getPort());
 
-        if (this.reader == null)
+        if (reader == null)
         {
             logger.debug("Creating reader for " + asteriskServer);
-            this.reader = createReader(this, asteriskServer);
+            reader = createReader(this, asteriskServer);
         }
 
-        if (this.writer == null)
+        if (writer == null)
         {
             logger.debug("Creating writer");
-            this.writer = createWriter();
+            writer = createWriter();
         }
 
         logger.debug("Creating socket");
-        this.socket = createSocket();
+        socket = createSocket();
 
         logger.debug("Passing socket to reader");
-        this.reader.setSocket(socket);
+        reader.setSocket(socket);
 
-        if (this.readerThread == null || !this.readerThread.isAlive())
+        if (readerThread == null || !readerThread.isAlive() || reader.isDead())
         {
             logger.debug("Creating and starting reader thread");
-            this.readerThread = new Thread(reader, "ManagerReader-" + (readerThreadNum++));
-            this.readerThread.setDaemon(true);
-            this.readerThread.start();
+            readerThread = new Thread(reader, "ManagerReader-" + (readerThreadNum++));
+            readerThread.setDaemon(true);
+            readerThread.start();
         }
 
         logger.debug("Passing socket to writer");
-        this.writer.setSocket(socket);
+        writer.setSocket(socket);
     }
 
     protected SocketConnectionFacade createSocket() throws IOException
@@ -533,17 +572,15 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         return socket != null && !reconnecting && socket.isConnected();
     }
 
-    /**
-     * Sends a {@link LogoffAction} and disconnects from the server.
-     */
-    public synchronized void logoff()
+    public synchronized void logoff() throws IllegalStateException
     {
-        LogoffAction logoffAction;
+        if (state != CONNECTED && state != RECONNECTING)
+        {
+            throw new IllegalStateException("Logoff may only be perfomed when in state " +
+                    "CONNECTED or RECONNECTING, but connection is in state " + state);
+        }
 
-        // stop reconnecting when we got disconnected
-        this.keepAlive = false;
-
-        logoffAction = new LogoffAction();
+        state = DISCONNECTING;
 
         if (socket != null)
         {
@@ -551,34 +588,35 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
             {
                 try
                 {
-                    sendAction(logoffAction);
+                    sendAction(new LogoffAction());
                 }
                 catch(Exception e)
                 {
                     logger.warn("Unable to send LogOff action", e);
                 }
             }
-            disconnect();
         }
+        cleanup();
+        state = DISCONNECTED;
     }
 
     /**
      * Closes the socket connection.
      */
-    private synchronized void disconnect()
+    protected synchronized void disconnect()
     {
-        if (this.socket != null)
+        if (socket != null)
         {
             logger.info("Closing socket.");
             try
             {
-                this.socket.close();
+                socket.close();
             }
             catch (IOException ex)
             {
                 logger.warn("Unable to close socket: " + ex.getMessage());
             }
-            this.socket = null;
+            socket = null;
         }
         protocolIdentifier.value = null;
     }
@@ -642,6 +680,21 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                     "Unable to send action: action is null.");
         }
 
+        if ((state == CONNECTING || state == RECONNECTING) 
+                && (action instanceof ChallengeAction || action instanceof LoginAction))
+        {
+            // when (re-)connecting challenge and login actions are ok.
+        }
+        else if (state == DISCONNECTING && action instanceof LogoffAction)
+        {
+            // when disconnecting logoff action is ok.
+        }
+        else if (state != CONNECTED)
+        {
+            throw new IllegalStateException("Actions may only be sent when in state " +
+                    "CONNECTED, but connection is in state " + state);
+        }
+
         if (socket == null)
         {
             throw new IllegalStateException("Unable to send "
@@ -687,15 +740,19 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         else if (action.getActionCompleteEventClass() == null)
         {
             throw new IllegalArgumentException(
-                    "Unable to send action: actionCompleteEventClass is null.");
+                    "Unable to send action: actionCompleteEventClass for " + 
+                    action.getClass().getName() + " is null.");
         }
         else if (!ResponseEvent.class.isAssignableFrom(action
                 .getActionCompleteEventClass()))
         {
             throw new IllegalArgumentException(
-                    "Unable to send action: actionCompleteEventClass is not a ResponseEvent.");
+                    "Unable to send action: actionCompleteEventClass (" + 
+                    action.getActionCompleteEventClass().getName() + ") for " +
+                    action.getClass().getName() + " is not a ResponseEvent.");
         }
 
+        // TODO
         if (socket == null)
         {
             throw new IllegalStateException("Unable to send "
@@ -832,6 +889,11 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         return protocolIdentifier.value;
     }
 
+    public ManagerConnectionState getState()
+    {
+        return state;
+    }
+    
     public AsteriskServer getAsteriskServer()
     {
         return asteriskServer;
@@ -970,6 +1032,33 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                 //        + "internalActionId:\n" + responseEvent);
             }
         }
+        if (event instanceof DisconnectEvent)
+        {
+            if (state == CONNECTED)
+            {
+                state = RECONNECTING;
+                cleanup();
+                reconnectThread = new Thread(new Runnable()
+                {
+                    public void run()
+                    {
+                        reconnect();
+                    }
+                });
+                reconnectThread.setName("ReconnectThread-" + reconnectThreadNum++);
+                reconnectThread.setDaemon(true);
+                reconnectThread.start();
+            }
+        }
+        if (event instanceof ProtocolIdentifierReceivedEvent)
+        {
+            ProtocolIdentifierReceivedEvent protocolIdentifierReceivedEvent;
+            String protocolIdentifier;
+
+            protocolIdentifierReceivedEvent = (ProtocolIdentifierReceivedEvent) event;
+            protocolIdentifier = protocolIdentifierReceivedEvent.getProtocolIdentifier();
+            setProtocolIdentifier(protocolIdentifier);
+        }
 
         // dispatch to listeners registered by users
         synchronized (eventListeners)
@@ -985,24 +1074,6 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                     logger.warn("Unexpected exception in eventHandler "
                             + listener.getClass().getName(), e);
                 }
-            }
-        }
-
-        // process special events
-        if (event instanceof ProtocolIdentifierReceivedEvent)
-        {
-            ProtocolIdentifierReceivedEvent protocolIdentifierReceivedEvent;
-            String protocolIdentifier;
-
-            protocolIdentifierReceivedEvent = (ProtocolIdentifierReceivedEvent) event;
-            protocolIdentifier = protocolIdentifierReceivedEvent.getProtocolIdentifier();
-            setProtocolIdentifier(protocolIdentifier);
-        }
-        else if (event instanceof DisconnectEvent)
-        {
-            if (!reconnecting)
-            {
-                reconnect();
             }
         }
     }
@@ -1048,13 +1119,9 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     {
         int numTries;
 
-        // clean up at first
-        cleanup();
-
         // try to reconnect
-        reconnecting = true;
         numTries = 0;
-        while (this.keepAlive)
+        while (state == RECONNECTING)
         {
             try
             {
@@ -1062,18 +1129,18 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                 {
                     // try to reconnect quite fast for the firt 10 times
                     // this succeeds if the server has just been restarted
-                    Thread.sleep(50);
+                    Thread.sleep(RECONNECTION_INTERVAL_1);
                 }
                 else
                 {
                     // slow down after 10 unsuccessful attempts asuming a
                     // shutdown of the server
-                    Thread.sleep(5000);
+                    Thread.sleep(RECONNECTION_INTERVAL_2);
                 }
             }
             catch (InterruptedException e1)
             {
-                // it's ok to wake us
+                // ignore
             }
 
             try
@@ -1082,8 +1149,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
                 try
                 {
-                    login();
-                    reconnecting = false;
+                    doLogin(defaultResponseTimeout, null);
                     logger.info("Successfully reconnected.");
                     // everything is ok again, so we leave
                     break;
@@ -1099,16 +1165,14 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                     {
                         logger.error("Unable to log in after reconnect: "
                                 + e1.getMessage() + ". Giving up.");
-                        this.keepAlive = false;
+                        state = DISCONNECTED;
                     }
-                    cleanup();
                 }
                 catch (TimeoutException e1)
                 {
                     // shouldn't happen - but happens!
                     logger.error("TimeoutException while trying to log in "
                             + "after reconnect.");
-                    cleanup();
                 }
             }
             catch (IOException e)
@@ -1125,7 +1189,6 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     private void cleanup()
     {
         disconnect();
-        this.reader = null;
         this.readerThread = null;
     }
 

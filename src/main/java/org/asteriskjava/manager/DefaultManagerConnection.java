@@ -191,14 +191,14 @@ public class DefaultManagerConnection implements ManagerConnection
         connection.setSocketTimeout(socketTimeout);
     }
 
-    public void login() throws IOException, AuthenticationFailedException,
-            TimeoutException
+    public void login() throws IllegalStateException, IOException, 
+            AuthenticationFailedException, TimeoutException
     {
         connection.login();
     }
 
-    public void login(String events) throws IOException, AuthenticationFailedException,
-            TimeoutException
+    public void login(String events) throws IllegalStateException, IOException, 
+            AuthenticationFailedException, TimeoutException
     {
         connection.login(events);
     }
@@ -208,7 +208,7 @@ public class DefaultManagerConnection implements ManagerConnection
         return connection.isConnected();
     }
 
-    public void logoff()
+    public void logoff() throws IllegalStateException
     {
         connection.logoff();
     }
@@ -281,6 +281,11 @@ public class DefaultManagerConnection implements ManagerConnection
     public String getProtocolIdentifier()
     {
         return connection.getProtocolIdentifier();
+    }
+
+    public ManagerConnectionState getState()
+    {
+        return connection.getState();
     }
 
     public AsteriskServer getAsteriskServer()

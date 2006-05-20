@@ -75,18 +75,16 @@ public interface ManagerConnection
      * Logs in to the Asterisk server with the username and password specified
      * when this connection was created.
      * 
+     * @throws IllegalStateException if connection is not in state INITIAL or DISCONNECTED.
      * @throws IOException if the network connection is disrupted.
      * @throws AuthenticationFailedException if the username and/or password are
      *             incorrect or the ChallengeResponse could not be built.
-     * @throws TimeoutException if no response is received within the default
-     *             timeout period. If the implementation uses challenge/response
-     *             this can either be a timeout of the ChallengeAction or the
-     *             LoginAction; otherwise it is always a timeout of the
-     *             LoginAction.
+     * @throws TimeoutException if a timeout occurs while waiting for the
+     *             protocol identifier. The connection is closed in this case.
      * @see org.asteriskjava.manager.action.LoginAction
      * @see org.asteriskjava.manager.action.ChallengeAction
      */
-    void login() throws IOException, AuthenticationFailedException,
+    void login() throws IllegalStateException, IOException, AuthenticationFailedException,
             TimeoutException;
 
     /**
@@ -97,27 +95,26 @@ public interface ManagerConnection
      *            "off" if not events should be sent or a combination of
      *            "system", "call" and "log" (separated by ',') to specify what
      *            kind of events should be sent.
+     * @throws IllegalStateException if connection is not in state INITIAL or DISCONNECTED.
      * @throws IOException if the network connection is disrupted.
      * @throws AuthenticationFailedException if the username and/or password are
      *             incorrect or the ChallengeResponse could not be built.
-     * @throws TimeoutException if no response is received within the default
-     *             timeout period. If the implementation uses challenge/response
-     *             this can either be a timeout of the ChallengeAction or the
-     *             LoginAction; otherwise it is always a timeout of the
-     *             LoginAction.
+     * @throws TimeoutException if a timeout occurs while waiting for the
+     *             protocol identifier. The connection is closed in this case.
      * @since 0.3
      * @see org.asteriskjava.manager.action.LoginAction
      * @see org.asteriskjava.manager.action.ChallengeAction
      */
-    void login(String events) throws IOException, AuthenticationFailedException,
+    void login(String events) throws IllegalStateException, IOException, AuthenticationFailedException,
             TimeoutException;
 
     /**
      * Sends a LogoffAction to the Asterisk server and disconnects.
      * 
+     * @throws IllegalStateException if not in state CONNECTED or RECONNECTING.
      * @see org.asteriskjava.manager.action.LogoffAction
      */
-    void logoff();
+    void logoff() throws IllegalStateException;
 
     /**
      * Returns the protocol identifier, i.e. a string like "Asterisk Call
@@ -128,6 +125,13 @@ public interface ManagerConnection
      */
     String getProtocolIdentifier();
 
+    /**
+     * Returns the lifecycle status of this connection.
+     * 
+     * @return the lifecycle status of this connection.
+     */
+    ManagerConnectionState getState();
+    
     /**
      * Sends a ManagerAction to the Asterisk server and waits for the
      * corresponding ManagerResponse.
