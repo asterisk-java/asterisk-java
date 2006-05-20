@@ -98,9 +98,9 @@ class AsteriskChannelImpl implements AsteriskChannel
      * Indicates if this channel was linked to another channel at least once.
      */
     private boolean wasLinked;
-    
+
     private HangupCause hangupCause;
-    
+
     private String hangupCauseText;
 
     /**
@@ -251,7 +251,7 @@ class AsteriskChannelImpl implements AsteriskChannel
 
         return extension;
     }
-    
+
     public List<Extension> getExtensions()
     {
         List<Extension> extensionsCopy;
@@ -296,7 +296,7 @@ class AsteriskChannelImpl implements AsteriskChannel
     {
         this.dateOfRemoval = dateOfRemoval;
     }
-    
+
     public HangupCause getHangupCause()
     {
         return hangupCause;
@@ -317,10 +317,7 @@ class AsteriskChannelImpl implements AsteriskChannel
 
     void setHangupCauseText(String hangupCauseText)
     {
-        String oldHangupCauseText = this.hangupCauseText;
-
         this.hangupCauseText = hangupCauseText;
-        firePropertyChange("hangupCauseText", oldHangupCauseText, hangupCauseText);
     }
 
     public AsteriskChannel getLinkedChannel()
@@ -336,7 +333,7 @@ class AsteriskChannelImpl implements AsteriskChannel
     void setLinkedChannel(AsteriskChannel linkedChannel)
     {
         AsteriskChannel oldLinkedChannel = this.linkedChannel;
-        
+
         this.linkedChannel = linkedChannel;
         if (linkedChannel != null)
         {
@@ -371,7 +368,7 @@ class AsteriskChannelImpl implements AsteriskChannel
         }
         hangup();
     }
-    
+
     public void redirect(String context, String exten, int priority) throws ManagerCommunicationException, NoSuchChannelException
     {
         ManagerResponse response;
@@ -386,7 +383,7 @@ class AsteriskChannelImpl implements AsteriskChannel
     public void redirectBothLegs(String context, String exten, int priority) throws ManagerCommunicationException, NoSuchChannelException
     {
         ManagerResponse response;
-        
+
         if (linkedChannel != null)
         {
             response = connectionPool.sendAction(new RedirectAction(name, linkedChannel.getName(), context, exten, priority, context, exten, priority));
@@ -419,7 +416,7 @@ class AsteriskChannelImpl implements AsteriskChannel
         }
         return value;
     }
-    
+
     public void setVariable(String variable, String value) throws ManagerCommunicationException, NoSuchChannelException
     {
         ManagerResponse response;
@@ -496,7 +493,7 @@ class AsteriskChannelImpl implements AsteriskChannel
 
         return sb.toString();
     }
-    
+
     private void firePropertyChange(String propertyName, Object oldValue, Object newValue)
     {
         if (oldValue != null || newValue != null)

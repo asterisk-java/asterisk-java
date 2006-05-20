@@ -112,11 +112,26 @@ class ChannelManager
         }
     }
 
-    private void removeChannel(AsteriskChannel channel)
+    private void removeOldChannels()
     {
+        Iterator<AsteriskChannelImpl> i;
+        
         synchronized (channels)
         {
-            channels.remove(channel.getId());
+            i = channels.values().iterator();
+            while (i.hasNext())
+            {
+                AsteriskChannel channel = i.next();
+                Date dateOfRemoval = channel.getDateOfRemoval();
+                if (channel.getState() == ChannelState.HUNGUP && dateOfRemoval != null)
+                {
+                    long diff = DateUtil.getDate().getTime() - dateOfRemoval.getTime();
+                    if (diff >= REMOVAL_THRESHOLD)
+                    {
+                        i.remove();
+                    }
+                }
+            }
         }
     }
 
@@ -360,7 +375,7 @@ class ChannelManager
         }
 
         logger.info("Removing channel " + channel.getName() + " due to hangup (" + cause + ")");
-        removeChannel(channel);
+        removeOldChannels();
     }
 
     void handleLinkEvent(LinkEvent event)
@@ -441,28 +456,6 @@ class ChannelManager
         synchronized (channel)
         {
             channel.setName(event.getNewname());
-        }
-    }
-
-    void removeOldChannels()
-    {
-        Iterator<AsteriskChannelImpl> i;
-        
-        synchronized (channels)
-        {
-            i = channels.values().iterator();
-            while (i.hasNext())
-            {
-                AsteriskChannel channel = i.next();
-                if (channel.getState() == ChannelState.HUNGUP && channel.getDateOfRemoval() != null)
-                {
-                    long diff = DateUtil.getDate().getTime() - channel.getDateOfRemoval().getTime();
-                    if (diff >= REMOVAL_THRESHOLD)
-                    {
-                        i.remove();
-                    }
-                }
-            }
         }
     }
 }
