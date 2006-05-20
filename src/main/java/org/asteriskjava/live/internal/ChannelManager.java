@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.asteriskjava.live.AsteriskChannel;
@@ -50,6 +51,12 @@ class ChannelManager
 {
     private final Log logger = LogFactory.getLog(getClass());
 
+    /**
+     * How long do we wait before we remove hung up channels from memory?
+     * (in milliseconds)
+     */
+    private static final long REMOVAL_THRESHOLD = 5 * 60 * 1000L; // 5 minutes
+
     private final ManagerConnectionPool connectionPool;
     
     /**
@@ -74,13 +81,25 @@ class ChannelManager
         }
     }
 
+    /**
+     * Returns a collection of all active AsteriskChannels.
+     * 
+     * @return a collection of all active AsteriskChannels.
+     */
     Collection<AsteriskChannel> getChannels()
     {
         Collection<AsteriskChannel> copy;
 
         synchronized (channels)
         {
-            copy = new ArrayList<AsteriskChannel>(channels.values());
+            copy = new ArrayList<AsteriskChannel>(channels.size());
+            for (AsteriskChannel channel : channels.values())
+            {
+                if (channel.getState() != ChannelState.HUNGUP)
+                {
+                    copy.add(channel);
+                }
+            }
         }
         return copy;
     }
@@ -336,6 +355,7 @@ class ChannelManager
         {
             channel.setHangupCause(cause);
             channel.setHangupCauseText(event.getCauseTxt());
+            channel.setDateOfRemoval(event.getDateReceived());
             channel.setState(ChannelState.HUNGUP);
         }
 
@@ -421,6 +441,28 @@ class ChannelManager
         synchronized (channel)
         {
             channel.setName(event.getNewname());
+        }
+    }
+
+    void removeOldChannels()
+    {
+        Iterator<AsteriskChannelImpl> i;
+        
+        synchronized (channels)
+        {
+            i = channels.values().iterator();
+            while (i.hasNext())
+            {
+                AsteriskChannel channel = i.next();
+                if (channel.getState() == ChannelState.HUNGUP && channel.getDateOfRemoval() != null)
+                {
+                    long diff = DateUtil.getDate().getTime() - channel.getDateOfRemoval().getTime();
+                    if (diff >= REMOVAL_THRESHOLD)
+                    {
+                        i.remove();
+                    }
+                }
+            }
         }
     }
 }

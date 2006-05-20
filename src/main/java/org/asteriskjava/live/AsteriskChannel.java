@@ -105,6 +105,16 @@ public interface AsteriskChannel
     Date getDateOfCreation();
 
     /**
+     * Returns the date this channel has left the Asterisk server 
+     * for example by a hangup.
+     * 
+     * @return the date this channel has left the Asterisk server or
+     *         <code>null</code> if this channel is still active.
+     * @since 0.3
+     */
+    Date getDateOfRemoval();
+    
+    /**
      * Returns the reason for hangup.
      * 
      * @return the reason for hangup or <code>null</code> if the

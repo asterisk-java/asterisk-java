@@ -56,6 +56,11 @@ class AsteriskChannelImpl implements AsteriskChannel
      * Date this channel has been created.
      */
     private final Date dateOfCreation;
+    
+    /**
+     * Date this channel has left the Asterisk server.
+     */
+    private Date dateOfRemoval;
 
     /**
      * Name of this channel.
@@ -282,6 +287,16 @@ class AsteriskChannelImpl implements AsteriskChannel
         return dateOfCreation;
     }
 
+    public Date getDateOfRemoval()
+    {
+        return dateOfRemoval;
+    }
+
+    void setDateOfRemoval(Date dateOfRemoval)
+    {
+        this.dateOfRemoval = dateOfRemoval;
+    }
+    
     public HangupCause getHangupCause()
     {
         return hangupCause;
