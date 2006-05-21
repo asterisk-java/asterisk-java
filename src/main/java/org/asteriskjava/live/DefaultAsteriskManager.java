@@ -115,6 +115,11 @@ public class DefaultAsteriskManager implements AsteriskManager
         return asteriskManager.getChannelById(id);
     }
 
+    public Collection<MeetMeRoom> getMeetMeRooms()
+    {
+        return asteriskManager.getMeetMeRooms();
+    }
+
     public Collection<AsteriskQueue> getQueues()
     {
         return asteriskManager.getQueues();

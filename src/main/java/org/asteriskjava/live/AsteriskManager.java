@@ -92,7 +92,7 @@ public interface AsteriskManager
         throws ManagerCommunicationException;
 
     /**
-     * Returns the active channels of the Asterisk server you are connected to.
+     * Returns the active channels of the Asterisk server.
      * 
      * @return a Collection of active channels.
      */
@@ -104,7 +104,7 @@ public interface AsteriskManager
      * @param name name of the channel to return
      * @return the channel with the given name
      */
-    public AsteriskChannel getChannelByName(String name);
+    AsteriskChannel getChannelByName(String name);
 
     /**
      * Returns a channel by its unique id.
@@ -112,10 +112,17 @@ public interface AsteriskManager
      * @param id the unique id of the channel to return
      * @return the channel with the given unique id
      */
-    public AsteriskChannel getChannelById(String id);
+    AsteriskChannel getChannelById(String id);
 
     /**
-     * Returns the queues served by the Asterisk server you are connected to.
+     * Returns the acitve MeetMe rooms on the Asterisk server.
+     *  
+     * @return a Collection of MeetMeRooms
+     */
+    Collection<MeetMeRoom> getMeetMeRooms();
+
+    /**
+     * Returns the queues served by the Asterisk server.
      * 
      * @return a Collection of queues.
      */

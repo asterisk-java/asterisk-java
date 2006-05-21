@@ -106,7 +106,7 @@ class QueueManager
         }
     }
 
-    void clear()
+    void disconnected()
     {
         synchronized (queues)
         {

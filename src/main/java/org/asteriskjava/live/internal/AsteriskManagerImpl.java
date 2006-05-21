@@ -29,6 +29,7 @@ import org.asteriskjava.live.AsteriskChannel;
 import org.asteriskjava.live.AsteriskManager;
 import org.asteriskjava.live.AsteriskQueue;
 import org.asteriskjava.live.ManagerCommunicationException;
+import org.asteriskjava.live.MeetMeRoom;
 import org.asteriskjava.manager.AuthenticationFailedException;
 import org.asteriskjava.manager.ManagerConnection;
 import org.asteriskjava.manager.ManagerConnectionState;
@@ -44,6 +45,7 @@ import org.asteriskjava.manager.event.JoinEvent;
 import org.asteriskjava.manager.event.LeaveEvent;
 import org.asteriskjava.manager.event.LinkEvent;
 import org.asteriskjava.manager.event.ManagerEvent;
+import org.asteriskjava.manager.event.MeetMeEvent;
 import org.asteriskjava.manager.event.NewCallerIdEvent;
 import org.asteriskjava.manager.event.NewChannelEvent;
 import org.asteriskjava.manager.event.NewExtenEvent;
@@ -85,6 +87,7 @@ public class AsteriskManagerImpl
     private final ManagerConnectionPool connectionPool;
 
     private final ChannelManager channelManager;
+    private final MeetMeManager meetMeManager;
     private final QueueManager queueManager;
 
     /**
@@ -114,6 +117,7 @@ public class AsteriskManagerImpl
     {
         connectionPool = new ManagerConnectionPool(1);
         channelManager = new ChannelManager(connectionPool);
+        meetMeManager = new MeetMeManager(connectionPool, channelManager);
         queueManager = new QueueManager(connectionPool, channelManager);
     }
 
@@ -175,6 +179,7 @@ public class AsteriskManagerImpl
         }
 
         channelManager.initialize();
+        meetMeManager.initialize();
         if (!skipQueues)
         {
             queueManager.initialize();
@@ -267,6 +272,11 @@ public class AsteriskManagerImpl
     public AsteriskChannel getChannelById(String id)
     {
         return channelManager.getChannelImplById(id);
+    }
+
+    public Collection<MeetMeRoom> getMeetMeRooms()
+    {
+        return meetMeManager.getMeetMeRooms();
     }
 
     public Collection<AsteriskQueue> getQueues()
@@ -429,6 +439,10 @@ public class AsteriskManagerImpl
         {
             queueManager.handleLeaveEvent((LeaveEvent) event);
         }
+        else if (event instanceof MeetMeEvent)
+        {
+            meetMeManager.handleMeetMeEvent((MeetMeEvent) event);
+        }
     }
 
     /*
@@ -443,8 +457,9 @@ public class AsteriskManagerImpl
         versions = null;
 
         // same for channels and queues, they are reinitialized when reconnected
-        channelManager.clear();
-        queueManager.clear();
+        channelManager.disconnected();
+        meetMeManager.disconnected();
+        queueManager.disconnected();
     }
 
     /*

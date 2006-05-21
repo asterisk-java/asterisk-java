@@ -81,7 +81,7 @@ class ChannelManager
     {
         ResponseEvents re;
 
-        clear();
+        disconnected();
         re = connectionPool.sendEventGeneratingAction(new StatusAction());
         for (ManagerEvent event : re.getEvents())
         {
@@ -92,7 +92,7 @@ class ChannelManager
         }
     }
 
-    void clear()
+    void disconnected()
     {
         synchronized (channels)
         {
@@ -111,7 +111,7 @@ class ChannelManager
 
         synchronized (channels)
         {
-            copy = new ArrayList<AsteriskChannel>(channels.size());
+            copy = new ArrayList<AsteriskChannel>(channels.size() + 2);
             for (AsteriskChannel channel : channels.values())
             {
                 if (channel.getState() != ChannelState.HUNGUP)

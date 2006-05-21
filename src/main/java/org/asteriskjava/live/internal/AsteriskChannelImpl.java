@@ -103,6 +103,11 @@ class AsteriskChannelImpl implements AsteriskChannel
     private HangupCause hangupCause;
 
     private String hangupCauseText;
+    
+    /**
+     * MeetMe room user associated with this channel if any, <code>null</code> otherwise.
+     */
+    private MeetMeRoomUserImpl meetMeRoomUserImpl;
 
     /**
      * Creates a new Channel.
@@ -346,6 +351,16 @@ class AsteriskChannelImpl implements AsteriskChannel
     public boolean wasLinked()
     {
         return wasLinked;
+    }
+
+    MeetMeRoomUserImpl getMeetMeRoomUserImpl()
+    {
+        return meetMeRoomUserImpl;
+    }
+
+    void setMeetMeRoomUserImpl(MeetMeRoomUserImpl meetMeRoomUserImpl)
+    {
+        this.meetMeRoomUserImpl = meetMeRoomUserImpl;
     }
 
     // action methods
