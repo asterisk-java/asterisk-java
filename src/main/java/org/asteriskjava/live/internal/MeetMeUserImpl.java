@@ -4,10 +4,10 @@ import java.util.Date;
 
 import org.asteriskjava.live.AsteriskChannel;
 import org.asteriskjava.live.ManagerCommunicationException;
-import org.asteriskjava.live.MeetMeRoomUser;
+import org.asteriskjava.live.MeetMeUser;
 import org.asteriskjava.manager.action.CommandAction;
 
-class MeetMeRoomUserImpl implements MeetMeRoomUser
+class MeetMeUserImpl implements MeetMeUser
 {
     private static final String COMMAND_PREFIX = "meetme";
     private static final String MUTE_COMMAND = "mute";
@@ -23,7 +23,7 @@ class MeetMeRoomUserImpl implements MeetMeRoomUser
     private Date dateLeft;
     private boolean talking;
 
-    MeetMeRoomUserImpl(ManagerConnectionPool connectionPool, MeetMeRoomImpl room, Integer userNumber,
+    MeetMeUserImpl(ManagerConnectionPool connectionPool, MeetMeRoomImpl room, Integer userNumber,
             AsteriskChannel channel, Date dateJoined)
     {
         this.connectionPool = connectionPool;
@@ -99,7 +99,7 @@ class MeetMeRoomUserImpl implements MeetMeRoomUser
         StringBuffer sb;
         int systemHashcode;
 
-        sb = new StringBuffer("MeetMeRoomUser[");
+        sb = new StringBuffer("MeetMeUser[");
 
         synchronized (this)
         {

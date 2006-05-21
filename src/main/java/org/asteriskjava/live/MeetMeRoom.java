@@ -23,7 +23,7 @@ public interface MeetMeRoom
      * 
      * @return a collection of all active users in this MeetMe room.
      */
-    Collection<MeetMeRoomUser> getUsers();
+    Collection<MeetMeUser> getUsers();
 
     void lock() throws ManagerCommunicationException;
 

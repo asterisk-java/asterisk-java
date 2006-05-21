@@ -72,7 +72,7 @@ class MeetMeManager
         String roomNumber;
         AsteriskChannelImpl channel;
         MeetMeRoomImpl room;
-        MeetMeRoomUserImpl user;
+        MeetMeUserImpl user;
 
         uniqueId = event.getUniqueId();
         if (uniqueId == null)
@@ -96,14 +96,14 @@ class MeetMeManager
         }
 
         room = getOrCreateRoomImpl(roomNumber);
-        user = channel.getMeetMeRoomUserImpl();
+        user = channel.getMeetMeUserImpl();
 
         if (event instanceof MeetMeJoinEvent)
         {
             logger.info("Adding channel " + channel.getName() + " as user " + event.getUserNum() + " to room " + roomNumber);
-            user = new MeetMeRoomUserImpl(connectionPool, room, event.getUserNum(), channel, event.getDateReceived());
+            user = new MeetMeUserImpl(connectionPool, room, event.getUserNum(), channel, event.getDateReceived());
             room.addUser(user);
-            channel.setMeetMeRoomUserImpl(user);
+            channel.setMeetMeUserImpl(user);
             return;
         }
 
@@ -119,7 +119,7 @@ class MeetMeManager
             logger.info("Removing channel " + channel.getName() + " from room " + roomNumber);
             user.setDateLeft(event.getDateReceived());
             room.removeUser(user);
-            channel.setMeetMeRoomUserImpl(null);
+            channel.setMeetMeUserImpl(null);
         }
         else if (event instanceof MeetMeTalkingEvent)
         {

@@ -5,7 +5,7 @@ import java.util.Collection;
 
 import org.asteriskjava.live.ManagerCommunicationException;
 import org.asteriskjava.live.MeetMeRoom;
-import org.asteriskjava.live.MeetMeRoomUser;
+import org.asteriskjava.live.MeetMeUser;
 import org.asteriskjava.manager.action.CommandAction;
 
 class MeetMeRoomImpl implements MeetMeRoom
@@ -16,13 +16,13 @@ class MeetMeRoomImpl implements MeetMeRoom
 
     final ManagerConnectionPool connectionPool;
     final String roomNumber;
-    final Collection<MeetMeRoomUserImpl> users;
+    final Collection<MeetMeUserImpl> users;
 
     MeetMeRoomImpl(ManagerConnectionPool connectionPool, String roomNumber)
     {
         this.connectionPool = connectionPool;
         this.roomNumber = roomNumber;
-        this.users = new ArrayList<MeetMeRoomUserImpl>(20);
+        this.users = new ArrayList<MeetMeUserImpl>(20);
     }
 
     public String getRoomNumber()
@@ -30,14 +30,14 @@ class MeetMeRoomImpl implements MeetMeRoom
         return roomNumber;
     }
 
-    public Collection<MeetMeRoomUser> getUsers()
+    public Collection<MeetMeUser> getUsers()
     {
-        Collection<MeetMeRoomUser> copy;
+        Collection<MeetMeUser> copy;
 
         synchronized (users)
         {
-            copy = new ArrayList<MeetMeRoomUser>(users.size() + 2);
-            for (MeetMeRoomUserImpl user : users)
+            copy = new ArrayList<MeetMeUser>(users.size() + 2);
+            for (MeetMeUserImpl user : users)
             {
                 copy.add(user);
             }
@@ -45,7 +45,7 @@ class MeetMeRoomImpl implements MeetMeRoom
         return copy;
     }
     
-    void addUser(MeetMeRoomUserImpl user)
+    void addUser(MeetMeUserImpl user)
     {
         synchronized (users)
         {
@@ -53,7 +53,7 @@ class MeetMeRoomImpl implements MeetMeRoom
         }
     }
 
-    void removeUser(MeetMeRoomUserImpl user)
+    void removeUser(MeetMeUserImpl user)
     {
         synchronized (users)
         {

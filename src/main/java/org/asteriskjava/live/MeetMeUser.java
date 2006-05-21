@@ -9,7 +9,7 @@ import java.util.Date;
  * @author srt
  * @since 0.3
  */
-public interface MeetMeRoomUser
+public interface MeetMeUser
 {
     /**
      * Returns whether this user is currently talking or not.<br>

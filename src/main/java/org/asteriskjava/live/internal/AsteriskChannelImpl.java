@@ -107,7 +107,7 @@ class AsteriskChannelImpl implements AsteriskChannel
     /**
      * MeetMe room user associated with this channel if any, <code>null</code> otherwise.
      */
-    private MeetMeRoomUserImpl meetMeRoomUserImpl;
+    private MeetMeUserImpl meetMeUserImpl;
 
     /**
      * Creates a new Channel.
@@ -353,14 +353,14 @@ class AsteriskChannelImpl implements AsteriskChannel
         return wasLinked;
     }
 
-    MeetMeRoomUserImpl getMeetMeRoomUserImpl()
+    MeetMeUserImpl getMeetMeUserImpl()
     {
-        return meetMeRoomUserImpl;
+        return meetMeUserImpl;
     }
 
-    void setMeetMeRoomUserImpl(MeetMeRoomUserImpl meetMeRoomUserImpl)
+    void setMeetMeUserImpl(MeetMeUserImpl meetMeRoomUserImpl)
     {
-        this.meetMeRoomUserImpl = meetMeRoomUserImpl;
+        this.meetMeUserImpl = meetMeRoomUserImpl;
     }
 
     // action methods
