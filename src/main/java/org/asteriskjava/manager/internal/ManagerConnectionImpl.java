@@ -663,7 +663,8 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         if (result.getResponse() == null)
         {
             throw new TimeoutException("Timeout waiting for response to "
-                    + action.getAction());
+                    + action.getAction()
+                    + (action.getActionId() == null ? "" : " (actionId: " + action.getActionId() + ")"));
         }
 
         return result.getResponse();
@@ -812,7 +813,9 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
             throw new EventTimeoutException(
                     "Timeout waiting for response or response events to "
-                            + action.getAction(), responseEvents);
+                    + action.getAction()
+                    + (action.getActionId() == null ? "" : " (actionId: " + action.getActionId() + ")"),
+                    responseEvents);
         }
 
         // remove the event handler (note: the response handler is removed
@@ -1161,11 +1164,12 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                     doLogin(defaultResponseTimeout, eventMask);
                     logger.info("Successfully reconnected.");
                     // everything is ok again, so we leave
+                    // when successful doLogin set the state to CONNECTED so no need to adjust it 
                     break;
                 }
                 catch (AuthenticationFailedException e1)
                 {
-                    if (this.keepAliveAfterAuthenticationFailure)
+                    if (keepAliveAfterAuthenticationFailure)
                     {
                         logger.error("Unable to log in after reconnect: "
                                 + e1.getMessage());
