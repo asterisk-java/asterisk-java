@@ -27,6 +27,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.manager.AsteriskServer;
@@ -90,7 +92,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     /**
      * Used to construct the internalActionId.
      */
-    private long actionIdCount = 0;
+    private AtomicLong actionIdCount = new AtomicLong(0);
 
     /* Config attributes */
     /**
@@ -141,13 +143,13 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
      * The thread that runs the reader.
      */
     private Thread readerThread;
-    private int readerThreadNum = 0;
+    private AtomicLong readerThreadNum = new AtomicLong(0);
 
     /**
      * The thread that performs reconnect.
      */
     private Thread reconnectThread;
-    private int reconnectThreadNum = 0;
+    private AtomicLong reconnectThreadNum = new AtomicLong(0);
 
     /**
      * The reader to use to receive events and responses from asterisk.
@@ -545,7 +547,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         if (readerThread == null || !readerThread.isAlive() || reader.isDead())
         {
             logger.debug("Creating and starting reader thread");
-            readerThread = new Thread(reader, "ManagerReader-" + (readerThreadNum++));
+            readerThread = new Thread(reader, "ManagerReader-" + readerThreadNum.getAndIncrement());
             readerThread.setDaemon(true);
             readerThread.start();
         }
@@ -831,7 +833,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         sb = new StringBuffer();
         sb.append(this.hashCode());
         sb.append("_");
-        sb.append(this.actionIdCount++);
+        sb.append(actionIdCount.getAndIncrement());
 
         return sb.toString();
     }
@@ -1045,7 +1047,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                         reconnect();
                     }
                 });
-                reconnectThread.setName("ReconnectThread-" + reconnectThreadNum++);
+                reconnectThread.setName("ReconnectThread-" + reconnectThreadNum.getAndIncrement());
                 reconnectThread.setDaemon(true);
                 reconnectThread.start();
             }

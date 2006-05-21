@@ -30,7 +30,7 @@ public class TestDefaultManagerConnection extends TestCase
         return dmc;
     }
 
-    public void testLogin() throws Exception
+    public void XtestLogin() throws Exception
     {
         DefaultManagerConnection dmc;
 
@@ -45,21 +45,26 @@ public class TestDefaultManagerConnection extends TestCase
         });
         dmc.sendAction(new StatusAction());
 
-        try
-        {
-            Thread.sleep(1000);
-        }
-        catch (InterruptedException e)
-        {
-            
-        }
+        // wait for 3 seconds to receive events
+        Thread.sleep(3000);
+        dmc.logoff();
+    }
 
-        while (true)
+    public void testMultipleLogins() throws Exception
+    {
+        DefaultManagerConnection dmc;
+        CommandResponse response;
+
+        dmc = getDefaultManagerConnection();
+        dmc.setDefaultResponseTimeout(5000);
+
+        for (int i = 0; i < 10; i++)
         {
-            // wait for 3 seconds to receive events
-            Thread.sleep(30000);
+            dmc.login();
+            response = (CommandResponse) dmc.sendAction(new CommandAction("show version"));
+            assertTrue("version does not start with \"Asterisk\"", response.getResult().get(0).startsWith("Asterisk"));
+            dmc.logoff();
         }
-        //dmc.logoff();
     }
 
     @SuppressWarnings("deprecation")
@@ -78,21 +83,9 @@ public class TestDefaultManagerConnection extends TestCase
         });
         dmc.sendAction(new StatusAction());
 
-        try
-        {
-            Thread.sleep(1000);
-        }
-        catch (InterruptedException e)
-        {
-            
-        }
-
-        while (true)
-        {
-            // wait for 3 seconds to receive events
-            Thread.sleep(30000);
-        }
-        //dmc.logoff();
+        // wait for 3 seconds to receive events
+        Thread.sleep(3000);
+        dmc.logoff();
     }
 
     public void testLoginAuthenticationFailure() throws Exception
@@ -105,12 +98,12 @@ public class TestDefaultManagerConnection extends TestCase
         try
         {
             dmc.login();
+            dmc.logoff();
             fail("No AuthenticationFailedException received.");
         }
         catch (AuthenticationFailedException e)
         {
         }
-        dmc.logoff();
     }
 
 

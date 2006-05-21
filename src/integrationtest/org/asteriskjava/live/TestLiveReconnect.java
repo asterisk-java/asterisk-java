@@ -16,7 +16,7 @@ public class TestLiveReconnect extends AsteriskManagerTestCase
         System.out.println("Please stop and restart the Asterisk server...");
         while (true)
         {
-            Thread.sleep(3000);
+            Thread.sleep(300000);
         }
     }
 }

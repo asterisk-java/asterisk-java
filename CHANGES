@@ -28,6 +28,8 @@ Asterisk-Java 0.3
 	  RedirectAction to support BRIstuffed versions of Asterisk (AJ-34)
 	* Added recordFile and controlStreamFile methods to AgiChannel and
 	  BaseAgiScript
+	* Fixed synchronization bug when generating internal action ids for
+	  the Manager API
 
 Asterisk-Java 0.2
 	* Added SayDateTimeCommand (AJ-23)
