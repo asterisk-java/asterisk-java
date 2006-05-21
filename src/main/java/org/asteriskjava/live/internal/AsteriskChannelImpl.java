@@ -30,6 +30,7 @@ import org.asteriskjava.live.ManagerCommunicationException;
 import org.asteriskjava.live.NoSuchChannelException;
 import org.asteriskjava.manager.action.GetVarAction;
 import org.asteriskjava.manager.action.HangupAction;
+import org.asteriskjava.manager.action.PlayDTMFAction;
 import org.asteriskjava.manager.action.RedirectAction;
 import org.asteriskjava.manager.action.SetVarAction;
 import org.asteriskjava.manager.response.ManagerError;
@@ -428,6 +429,22 @@ class AsteriskChannelImpl implements AsteriskChannel
         }
     }
 
+    public void playDtmf(String digit) throws ManagerCommunicationException, NoSuchChannelException, IllegalArgumentException
+    {
+        ManagerResponse response;
+
+        if (digit == null)
+        {
+            throw new IllegalArgumentException("DTMF digit to send must not be null");
+        }
+
+        response = connectionPool.sendAction(new PlayDTMFAction(name, digit));
+        if (response instanceof ManagerError)
+        {
+            throw new NoSuchChannelException("Channel '" + name + "' is not available: " + response.getMessage());
+        }
+    }
+    
     // notification methods
 
     public void addPropertyChangeListener(PropertyChangeListener listener)

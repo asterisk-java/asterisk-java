@@ -239,6 +239,19 @@ public interface AsteriskChannel
     void setVariable(String variable, String value) throws ManagerCommunicationException, NoSuchChannelException;
     
     /**
+     * Plays the given DTMF digit on this channel.<br>
+     * Available since Asterisk 1.4.
+     * 
+     * @param digit the DTMF digit to play.
+     * @throws ManagerCommunicationException if the play DTMF action cannot be
+     *             sent to Asterisk.
+     * @throws NoSuchChannelException if this channel had been hung up before
+     *             the DTMF digit was set.
+     * @throws IllegalArgumentException if the digit is <code>null</code>.
+     */
+    void playDtmf(String digit) throws ManagerCommunicationException, NoSuchChannelException, IllegalArgumentException;
+    
+    /**
      * Adds a PropertyChangeListener that is notified whenever a property value changes.<br>
      * PropertyChangeEvents are fired for the following properties:
      * <ul>

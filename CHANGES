@@ -30,6 +30,7 @@ Asterisk-Java 0.3
 	  BaseAgiScript
 	* Fixed synchronization bug when generating internal action ids for
 	  the Manager API
+	* Added PlayDTMFAction and playDtmf() method for AsteriskChannel.
 
 Asterisk-Java 0.2
 	* Added SayDateTimeCommand (AJ-23)
