@@ -337,6 +337,7 @@ public interface ManagerConnection
      * @return <code>true</code> if the connection is established,
      *         <code>false</code> otherwise.
      * @since 0.2
+     * @deprecated use {@link #getState()} == CONNECTED instead.
      */
     boolean isConnected();
 }

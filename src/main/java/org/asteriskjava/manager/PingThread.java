@@ -112,7 +112,7 @@ public class PingThread extends Thread
             }
 
             // skip if not connected
-            if (!connection.isConnected())
+            if (connection.getState() != ManagerConnectionState.CONNECTED)
             {
                 continue;
             }
