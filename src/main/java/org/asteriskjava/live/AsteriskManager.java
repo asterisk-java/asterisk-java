@@ -127,9 +127,10 @@ public interface AsteriskManager
      * running Linux".
      * 
      * @return the version of the Asterisk server you are connected to
+     * @throws ManagerCommunicationException if the version cannot be retrieved from Asterisk
      * @since 0.2
      */
-    String getVersion();
+    String getVersion() throws ManagerCommunicationException;
 
     /**
      * Returns the CVS revision of a given source file of the Asterisk server
@@ -146,7 +147,8 @@ public interface AsteriskManager
      *         is not part of the Asterisk instance you are connected to (maybe
      *         due to a module that provides it has not been loaded) or if you
      *         are connected to an Astersion 1.0.x
+     * @throws ManagerCommunicationException if the version cannot be retrieved from Asterisk
      * @since 0.2
      */
-    int[] getVersion(String file);
+    int[] getVersion(String file) throws ManagerCommunicationException;
 }

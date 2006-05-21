@@ -30,15 +30,13 @@ import org.asteriskjava.live.AsteriskManager;
 import org.asteriskjava.live.AsteriskQueue;
 import org.asteriskjava.live.ManagerCommunicationException;
 import org.asteriskjava.manager.AuthenticationFailedException;
-import org.asteriskjava.manager.EventTimeoutException;
 import org.asteriskjava.manager.ManagerConnection;
+import org.asteriskjava.manager.ManagerConnectionState;
 import org.asteriskjava.manager.ManagerEventListener;
 import org.asteriskjava.manager.ResponseEvents;
 import org.asteriskjava.manager.TimeoutException;
 import org.asteriskjava.manager.action.CommandAction;
 import org.asteriskjava.manager.action.OriginateAction;
-import org.asteriskjava.manager.action.QueueStatusAction;
-import org.asteriskjava.manager.action.StatusAction;
 import org.asteriskjava.manager.event.ConnectEvent;
 import org.asteriskjava.manager.event.DisconnectEvent;
 import org.asteriskjava.manager.event.HangupEvent;
@@ -51,12 +49,8 @@ import org.asteriskjava.manager.event.NewChannelEvent;
 import org.asteriskjava.manager.event.NewExtenEvent;
 import org.asteriskjava.manager.event.NewStateEvent;
 import org.asteriskjava.manager.event.OriginateEvent;
-import org.asteriskjava.manager.event.QueueEntryEvent;
-import org.asteriskjava.manager.event.QueueMemberEvent;
-import org.asteriskjava.manager.event.QueueParamsEvent;
 import org.asteriskjava.manager.event.RenameEvent;
 import org.asteriskjava.manager.event.ResponseEvent;
-import org.asteriskjava.manager.event.StatusEvent;
 import org.asteriskjava.manager.event.UnlinkEvent;
 import org.asteriskjava.manager.response.CommandResponse;
 import org.asteriskjava.manager.response.ManagerResponse;
@@ -120,7 +114,7 @@ public class AsteriskManagerImpl
     {
         connectionPool = new ManagerConnectionPool(1);
         channelManager = new ChannelManager(connectionPool);
-        queueManager = new QueueManager(channelManager);
+        queueManager = new QueueManager(connectionPool, channelManager);
     }
 
     /**
@@ -158,69 +152,35 @@ public class AsteriskManagerImpl
         this.connectionPool.add(eventConnection);
     }
 
-    public void initialize() throws TimeoutException, IOException,
-            AuthenticationFailedException
+    public void initialize() throws AuthenticationFailedException, ManagerCommunicationException
     {
-        if (!eventConnection.isConnected())
+        if (eventConnection.getState() != ManagerConnectionState.CONNECTED)
         {
-            eventConnection.login();
+            try
+            {
+                eventConnection.login();
+            }
+            catch (IllegalStateException e)
+            {
+                throw new ManagerCommunicationException("Unable to login", e);
+            }
+            catch (IOException e)
+            {
+                throw new ManagerCommunicationException("Unable to login", e);
+            }
+            catch (TimeoutException e)
+            {
+                throw new ManagerCommunicationException("Unable to login", e);
+            }
         }
 
-        initializeChannels();
-        initializeQueues();
+        channelManager.initialize();
+        if (!skipQueues)
+        {
+            queueManager.initialize();
+        }
 
         eventConnection.addEventListener(this);
-    }
-
-    private void initializeChannels() throws EventTimeoutException, IOException
-    {
-        ResponseEvents re;
-
-        re = eventConnection.sendEventGeneratingAction(new StatusAction());
-        for (ManagerEvent event : re.getEvents())
-        {
-            if (event instanceof StatusEvent)
-            {
-                channelManager.handleStatusEvent((StatusEvent) event);
-            }
-        }
-    }
-
-    private void initializeQueues() throws IOException
-    {
-        ResponseEvents re;
-
-        if (skipQueues)
-        {
-            return;
-        }
-
-        try
-        {
-            re = eventConnection.sendEventGeneratingAction(new QueueStatusAction());
-        }
-        catch (EventTimeoutException e)
-        {
-            // this happens with Asterisk 1.0.x as it doesn't send a
-            // QueueStatusCompleteEvent
-            re = e.getPartialResult();
-        }
-
-        for (ManagerEvent event : re.getEvents())
-        {
-            if (event instanceof QueueParamsEvent)
-            {
-                queueManager.handleQueueParamsEvent((QueueParamsEvent) event);
-            }
-            else if (event instanceof QueueMemberEvent)
-            {
-                queueManager.handleQueueMemberEvent((QueueMemberEvent) event);
-            }
-            else if (event instanceof QueueEntryEvent)
-            {
-                queueManager.handleQueueEntryEvent((QueueEntryEvent) event);
-            }
-        }
     }
 
     /* Implementation of the AsteriskManager interface */
@@ -314,30 +274,21 @@ public class AsteriskManagerImpl
         return queueManager.getQueues();
     }
 
-    public String getVersion()
+    public String getVersion() throws ManagerCommunicationException
     {
         if (version == null)
         {
             ManagerResponse response;
-            try
+            response = connectionPool.sendAction(new CommandAction("show version"));
+            if (response instanceof CommandResponse)
             {
-                response = eventConnection.sendAction(new CommandAction(
-                        "show version"));
-                if (response instanceof CommandResponse)
-                {
-                    List result;
+                List result;
 
-                    result = ((CommandResponse) response).getResult();
-                    if (result.size() > 0)
-                    {
-                        version = (String) result.get(0);
-                    }
+                result = ((CommandResponse) response).getResult();
+                if (result.size() > 0)
+                {
+                    version = (String) result.get(0);
                 }
-            }
-            catch (Throwable e)
-            {
-                logger.warn("Unable to send 'show version' command.", e);
-                return ""; // FIXME hack to fix NPE when not connected (throws IllegalStateException)
             }
         }
 
@@ -504,20 +455,11 @@ public class AsteriskManagerImpl
     {
         try
         {
-            initializeChannels();
+            initialize();
         }
         catch (Exception e)
         {
-            logger.error("Unable to initialize channels after reconnect.", e);
-        }
-
-        try
-        {
-            initializeQueues();
-        }
-        catch (IOException e)
-        {
-            logger.error("Unable to initialize queues after reconnect.", e);
+            logger.error("Unable to reinitialize state after reconnection", e);
         }
     }
 }

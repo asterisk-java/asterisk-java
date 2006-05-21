@@ -16,14 +16,12 @@
  */
 package org.asteriskjava.live;
 
-import java.io.IOException;
 import java.util.Collection;
 import java.util.Map;
 
 import org.asteriskjava.live.internal.AsteriskManagerImpl;
 import org.asteriskjava.manager.AuthenticationFailedException;
 import org.asteriskjava.manager.ManagerConnection;
-import org.asteriskjava.manager.TimeoutException;
 
 /**
  * Default implementation of the AsteriskManager interface.
@@ -75,8 +73,7 @@ public class DefaultAsteriskManager implements AsteriskManager
         asteriskManager.setManagerConnection(eventConnection);
     }
 
-    public void initialize() throws TimeoutException, IOException,
-            AuthenticationFailedException
+    public void initialize() throws AuthenticationFailedException, ManagerCommunicationException
     {
         asteriskManager.initialize();
     }
@@ -123,7 +120,7 @@ public class DefaultAsteriskManager implements AsteriskManager
         return asteriskManager.getQueues();
     }
 
-    public String getVersion()
+    public String getVersion() throws ManagerCommunicationException
     {
         return asteriskManager.getVersion();
     }

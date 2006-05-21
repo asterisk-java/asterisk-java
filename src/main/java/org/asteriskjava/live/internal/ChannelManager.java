@@ -27,8 +27,12 @@ import org.asteriskjava.live.AsteriskChannel;
 import org.asteriskjava.live.ChannelState;
 import org.asteriskjava.live.Extension;
 import org.asteriskjava.live.HangupCause;
+import org.asteriskjava.live.ManagerCommunicationException;
+import org.asteriskjava.manager.ResponseEvents;
+import org.asteriskjava.manager.action.StatusAction;
 import org.asteriskjava.manager.event.HangupEvent;
 import org.asteriskjava.manager.event.LinkEvent;
+import org.asteriskjava.manager.event.ManagerEvent;
 import org.asteriskjava.manager.event.NewCallerIdEvent;
 import org.asteriskjava.manager.event.NewChannelEvent;
 import org.asteriskjava.manager.event.NewExtenEvent;
@@ -71,6 +75,21 @@ class ChannelManager
     {
         this.connectionPool = connectionPool;
         this.channels = new HashMap<String, AsteriskChannelImpl>();
+    }
+
+    void initialize() throws ManagerCommunicationException
+    {
+        ResponseEvents re;
+
+        clear();
+        re = connectionPool.sendEventGeneratingAction(new StatusAction());
+        for (ManagerEvent event : re.getEvents())
+        {
+            if (event instanceof StatusEvent)
+            {
+                handleStatusEvent((StatusEvent) event);
+            }
+        }
     }
 
     void clear()

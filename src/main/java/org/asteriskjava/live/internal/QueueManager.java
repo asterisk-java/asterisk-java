@@ -22,8 +22,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.asteriskjava.live.AsteriskQueue;
+import org.asteriskjava.live.ManagerCommunicationException;
+import org.asteriskjava.manager.EventTimeoutException;
+import org.asteriskjava.manager.ResponseEvents;
+import org.asteriskjava.manager.action.QueueStatusAction;
 import org.asteriskjava.manager.event.JoinEvent;
 import org.asteriskjava.manager.event.LeaveEvent;
+import org.asteriskjava.manager.event.ManagerEvent;
 import org.asteriskjava.manager.event.QueueEntryEvent;
 import org.asteriskjava.manager.event.QueueMemberEvent;
 import org.asteriskjava.manager.event.QueueParamsEvent;
@@ -42,7 +47,9 @@ class QueueManager
     private final Log logger = LogFactory.getLog(this.getClass());
 
     private final ChannelManager channelManager;
-    
+
+    private final ManagerConnectionPool connectionPool;
+
     /**
      * A map of ACD queues by there name.
      */
@@ -51,10 +58,52 @@ class QueueManager
     /**
      * Creates a new instance.
      */
-    QueueManager(ChannelManager channelManager)
+    QueueManager(ManagerConnectionPool connectionPool, ChannelManager channelManager)
     {
+        this.connectionPool = connectionPool;
         this.channelManager = channelManager;
         this.queues = new HashMap<String, AsteriskQueueImpl>();
+    }
+
+    void initialize() throws ManagerCommunicationException
+    {
+        ResponseEvents re;
+
+        try
+        {
+            re = connectionPool.sendEventGeneratingAction(new QueueStatusAction());
+        }
+        catch (ManagerCommunicationException e)
+        {
+            Throwable cause = e.getCause();
+
+            if (cause != null && cause instanceof EventTimeoutException)
+            {
+                // this happens with Asterisk 1.0.x as it doesn't send a
+                // QueueStatusCompleteEvent
+                re = ((EventTimeoutException) cause).getPartialResult();
+            }
+            else
+            {
+                throw e;
+            }
+        }
+
+        for (ManagerEvent event : re.getEvents())
+        {
+            if (event instanceof QueueParamsEvent)
+            {
+                handleQueueParamsEvent((QueueParamsEvent) event);
+            }
+            else if (event instanceof QueueMemberEvent)
+            {
+                handleQueueMemberEvent((QueueMemberEvent) event);
+            }
+            else if (event instanceof QueueEntryEvent)
+            {
+                handleQueueEntryEvent((QueueEntryEvent) event);
+            }
+        }
     }
 
     void clear()
@@ -81,14 +130,6 @@ class QueueManager
         synchronized (queues)
         {
             queues.put(queue.getName(), queue);
-        }
-    }
-
-    private void removeQueue(AsteriskQueue queue)
-    {
-        synchronized (queues)
-        {
-            queues.remove(queue.getName());
         }
     }
 
