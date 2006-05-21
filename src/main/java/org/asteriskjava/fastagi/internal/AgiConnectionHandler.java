@@ -39,6 +39,10 @@ import org.asteriskjava.util.SocketConnectionFacade;
  */
 public class AgiConnectionHandler implements Runnable
 {
+    private static final String AJ_AGISTATUS_VARIABLE = "AJ_AGISTATUS";
+    private static final String AJ_AGISTATUS_NOT_FOUND = "NOT_FOUND";
+    private static final String AJ_AGISTATUS_SUCCESS = "SUCCESS";
+    private static final String AJ_AGISTATUS_FAILED = "FAILED";
     private final Log logger = LogFactory.getLog(getClass());
     private static final ThreadLocal<AgiChannel> channel = new ThreadLocal<AgiChannel>();
 
@@ -78,12 +82,13 @@ public class AgiConnectionHandler implements Runnable
 
     public void run()
     {
+        AgiChannel channel = null;
+
         try
         {
             AgiReader reader;
             AgiWriter writer;
             AgiRequest request;
-            AgiChannel channel;
             AgiScript script;
             Thread thread;
             String threadName;
@@ -107,6 +112,7 @@ public class AgiConnectionHandler implements Runnable
                 script.service(request, channel);
                 logger.info("End AGIScript " + script.getClass().getName()
                         + " on " + threadName);
+                setStatusVariable(channel, AJ_AGISTATUS_SUCCESS);
             }
             else
             {
@@ -119,9 +125,10 @@ public class AgiConnectionHandler implements Runnable
 
                 try
                 {
+                    setStatusVariable(channel, AJ_AGISTATUS_NOT_FOUND);
                     channel.sendCommand(new VerboseCommand(error, 1));
                 }
-                catch (AgiException e)
+                catch (Exception e)
                 {
                     // do nothing
                 }
@@ -129,10 +136,12 @@ public class AgiConnectionHandler implements Runnable
         }
         catch (AgiException e)
         {
+            setStatusVariable(channel, AJ_AGISTATUS_FAILED);
             logger.error("AgiException while handling request", e);
         }
         catch (Exception e)
         {
+            setStatusVariable(channel, AJ_AGISTATUS_FAILED);
             logger.error("Unexpected Exception while handling request", e);
         }
         finally
@@ -146,6 +155,23 @@ public class AgiConnectionHandler implements Runnable
             {
                 // swallow
             }
+        }
+    }
+    
+    private void setStatusVariable(AgiChannel channel, String value)
+    {
+        if (channel == null)
+        {
+            return;
+        }
+
+        try
+        {
+            channel.setVariable(AJ_AGISTATUS_VARIABLE, value);
+        }
+        catch (Exception e)
+        {
+            // do nothing
         }
     }
 

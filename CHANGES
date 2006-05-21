@@ -31,6 +31,10 @@ Asterisk-Java 0.3
 	* Fixed synchronization bug when generating internal action ids for
 	  the Manager API
 	* Added PlayDTMFAction and playDtmf() method for AsteriskChannel.
+	* Introduced channel variable AJ_AGISTATUS that is set by the AgiServer
+	  to "SUCCESS" if the AgiScript completed successfully, "FAILED" if it
+	  threw an exception or "NOT_FOUND" if the mapping strategy did not 
+	  return a script for the requested URL.
 
 Asterisk-Java 0.2
 	* Added SayDateTimeCommand (AJ-23)
