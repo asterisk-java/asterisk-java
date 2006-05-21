@@ -16,7 +16,12 @@
  */
 package org.asteriskjava.manager.internal;
 
-import static org.asteriskjava.manager.ManagerConnectionState.*;
+import static org.asteriskjava.manager.ManagerConnectionState.CONNECTED;
+import static org.asteriskjava.manager.ManagerConnectionState.CONNECTING;
+import static org.asteriskjava.manager.ManagerConnectionState.DISCONNECTED;
+import static org.asteriskjava.manager.ManagerConnectionState.DISCONNECTING;
+import static org.asteriskjava.manager.ManagerConnectionState.INITIAL;
+import static org.asteriskjava.manager.ManagerConnectionState.RECONNECTING;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -27,7 +32,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.asteriskjava.AsteriskVersion;
