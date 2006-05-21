@@ -62,6 +62,11 @@ class MeetMeUserImpl implements MeetMeUser
     {
         this.talking = talking;
     }
+    
+    MeetMeRoomImpl getMeetMeRoomImpl()
+    {
+        return room;
+    }
 
     // action methods
 

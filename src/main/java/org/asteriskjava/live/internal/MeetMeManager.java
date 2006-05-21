@@ -100,6 +100,17 @@ class MeetMeManager
 
         if (event instanceof MeetMeJoinEvent)
         {
+            if (user != null)
+            {
+                logger.error("Got MeetMeJoin event for channel " + channel.getName() + " that is already user of a room");
+                user.setDateLeft(event.getDateReceived());
+                if (user.getMeetMeRoomImpl() != null)
+                {
+                    user.getMeetMeRoomImpl().removeUser(user);
+                }
+                channel.setMeetMeUserImpl(null);
+            }
+            
             logger.info("Adding channel " + channel.getName() + " as user " + event.getUserNum() + " to room " + roomNumber);
             user = new MeetMeUserImpl(connectionPool, room, event.getUserNum(), channel, event.getDateReceived());
             room.addUser(user);
@@ -117,6 +128,18 @@ class MeetMeManager
         if (event instanceof MeetMeLeaveEvent)
         {
             logger.info("Removing channel " + channel.getName() + " from room " + roomNumber);
+            if (room != user.getMeetMeRoomImpl())
+            {
+                if (user.getMeetMeRoomImpl() != null)
+                {
+                    logger.error("Channel " + channel.getName() + " should be removed from room " + roomNumber + " but is user of room " + user.getMeetMeRoomImpl().getRoomNumber());
+                    user.getMeetMeRoomImpl().removeUser(user);
+                }
+                else
+                {
+                    logger.error("Channel " + channel.getName() + " should be removed from room " + roomNumber + " but is user of no room");
+                }
+            }
             user.setDateLeft(event.getDateReceived());
             room.removeUser(user);
             channel.setMeetMeUserImpl(null);
