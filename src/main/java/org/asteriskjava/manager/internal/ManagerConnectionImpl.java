@@ -203,6 +203,8 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
     protected ManagerConnectionState state = INITIAL;
     
+    private String eventMask;
+    
     /**
      * Creates a new instance.
      */
@@ -335,7 +337,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         login(null);
     }
 
-    public synchronized void login(String events) throws IOException, AuthenticationFailedException, TimeoutException
+    public synchronized void login(String eventMask) throws IOException, AuthenticationFailedException, TimeoutException
     {
         if (state != INITIAL && state != DISCONNECTED)
         {
@@ -344,9 +346,10 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         }
 
         state = CONNECTING;
+        this.eventMask = eventMask;
         try
         {
-            doLogin(defaultResponseTimeout, events);
+            doLogin(defaultResponseTimeout, eventMask);
         }
         finally
         {
@@ -372,7 +375,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
      * 
      * @param timeout the maximum time to wait for the protocol identifier (in
      *            ms)
-     * @param events the event mask. Set to "on" if all events should be send,
+     * @param eventMask the event mask. Set to "on" if all events should be send,
      *            "off" if not events should be sent or a combination of
      *            "system", "call" and "log" (separated by ',') to specify what
      *            kind of events should be sent.
@@ -383,7 +386,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
      * @throws TimeoutException if a timeout occurs while waiting for the
      *             protocol identifier. The connection is closed in this case.
      */
-    protected synchronized void doLogin(long timeout, String events) throws IOException, AuthenticationFailedException, TimeoutException
+    protected synchronized void doLogin(long timeout, String eventMask) throws IOException, AuthenticationFailedException, TimeoutException
     {
         ChallengeAction challengeAction;
         ManagerResponse challengeResponse;
@@ -464,7 +467,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                     "Unable to create login key using MD5 Message Digest", ex);
         }
 
-        loginAction = new LoginAction(username, "MD5", key, events);
+        loginAction = new LoginAction(username, "MD5", key, eventMask);
         try
         {
             loginResponse = sendAction(loginAction);
@@ -1155,7 +1158,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
                 try
                 {
-                    doLogin(defaultResponseTimeout, null);
+                    doLogin(defaultResponseTimeout, eventMask);
                     logger.info("Successfully reconnected.");
                     // everything is ok again, so we leave
                     break;
