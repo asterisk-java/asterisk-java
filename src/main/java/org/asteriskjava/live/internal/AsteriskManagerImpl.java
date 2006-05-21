@@ -68,7 +68,7 @@ import org.asteriskjava.util.LogFactory;
  * 
  * @see org.asteriskjava.live.AsteriskManager
  * @author srt
- * @version $Id: DefaultAsteriskManager.java 306 2006-05-19 15:29:14Z srt $
+ * @version $Id$
  */
 public class AsteriskManagerImpl
         implements

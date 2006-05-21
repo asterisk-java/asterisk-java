@@ -23,7 +23,7 @@ package org.asteriskjava.manager.action;
  * 
  * @since 0.3
  * @author srt
- * @version $Id: HangupAction.java 229 2006-04-16 21:04:17Z srt $
+ * @version $Id$
  */
 public class PlayDTMFAction extends AbstractManagerAction
 {

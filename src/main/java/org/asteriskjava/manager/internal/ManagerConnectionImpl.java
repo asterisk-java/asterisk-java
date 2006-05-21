@@ -80,7 +80,7 @@ import org.asteriskjava.util.internal.SocketConnectionFacadeImpl;
  * 
  * @see org.asteriskjava.manager.ManagerConnectionFactory
  * @author srt
- * @version $Id: DefaultManagerConnection.java 274 2006-05-07 14:25:57Z srt $
+ * @version $Id$
  */
 public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 {
