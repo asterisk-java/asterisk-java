@@ -126,6 +126,7 @@ class MeetMeUserImpl implements MeetMeUser
             sb.append("dateJoined='" + getDateJoined() + "',");
             sb.append("dateLeft='" + getDateLeft() + "',");
             sb.append("talking=" + isTalking() + ",");
+            sb.append("muted=" + isMuted() + ",");
             sb.append("room=" + room + ",");
             systemHashcode = System.identityHashCode(this);
         }
