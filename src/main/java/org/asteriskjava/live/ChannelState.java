@@ -17,13 +17,16 @@
 package org.asteriskjava.live;
 
 /**
- * Enumeration that represents the state of a channel.
+ * The lifecycle status of an {@link org.asteriskjava.live.AsteriskChannel}.
  * 
  * @author srt
  * @version $Id$
  */
 public enum ChannelState
 {
+    /**
+     * The initial state of the channel when it is not yet in use.
+     */
     DOWN,
     OFF_HOOK,
     DIALING,
@@ -32,5 +35,9 @@ public enum ChannelState
     UP,
     BUSY,
     RSRVD,
+
+    /**
+     * The channel has been hung up.
+     */
     HUNGUP
 }
