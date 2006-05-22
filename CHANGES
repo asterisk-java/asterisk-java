@@ -35,6 +35,7 @@ Asterisk-Java 0.3
 	  to "SUCCESS" if the AgiScript completed successfully, "FAILED" if it
 	  threw an exception or "NOT_FOUND" if the mapping strategy did not 
 	  return a script for the requested URL.
+	* Added MeetMeMuteEvent.
 
 Asterisk-Java 0.2
 	* Added SayDateTimeCommand (AJ-23)
