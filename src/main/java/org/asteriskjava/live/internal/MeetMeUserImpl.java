@@ -2,7 +2,6 @@ package org.asteriskjava.live.internal;
 
 import java.util.Date;
 
-import org.asteriskjava.live.AsteriskChannel;
 import org.asteriskjava.live.ManagerCommunicationException;
 import org.asteriskjava.live.MeetMeUser;
 import org.asteriskjava.manager.action.CommandAction;
@@ -17,14 +16,15 @@ class MeetMeUserImpl implements MeetMeUser
     private final ManagerConnectionPool connectionPool;
     private final MeetMeRoomImpl room;
     private final Integer userNumber;
-    private final AsteriskChannel channel;
+    private final AsteriskChannelImpl channel;
     private final Date dateJoined;
 
     private Date dateLeft;
     private boolean talking;
+    private boolean muted;
 
     MeetMeUserImpl(ManagerConnectionPool connectionPool, MeetMeRoomImpl room, Integer userNumber,
-            AsteriskChannel channel, Date dateJoined)
+            AsteriskChannelImpl channel, Date dateJoined)
     {
         this.connectionPool = connectionPool;
         this.room = room;
@@ -33,7 +33,7 @@ class MeetMeUserImpl implements MeetMeUser
         this.dateJoined = dateJoined;
     }
 
-    public AsteriskChannel getChannel()
+    public AsteriskChannelImpl getChannel()
     {
         return channel;
     }
@@ -62,8 +62,23 @@ class MeetMeUserImpl implements MeetMeUser
     {
         this.talking = talking;
     }
-    
-    MeetMeRoomImpl getMeetMeRoomImpl()
+
+    public boolean isMuted()
+    {
+        return muted;
+    }
+
+    void setMuted(boolean muted)
+    {
+        this.muted = muted;
+    }
+
+    Integer getUserNumber()
+    {
+        return userNumber;
+    }
+
+    MeetMeRoomImpl getRoom()
     {
         return room;
     }

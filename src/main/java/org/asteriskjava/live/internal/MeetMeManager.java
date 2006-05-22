@@ -9,6 +9,7 @@ import org.asteriskjava.live.MeetMeRoom;
 import org.asteriskjava.manager.event.MeetMeEvent;
 import org.asteriskjava.manager.event.MeetMeJoinEvent;
 import org.asteriskjava.manager.event.MeetMeLeaveEvent;
+import org.asteriskjava.manager.event.MeetMeMuteEvent;
 import org.asteriskjava.manager.event.MeetMeStopTalkingEvent;
 import org.asteriskjava.manager.event.MeetMeTalkingEvent;
 import org.asteriskjava.util.Log;
@@ -70,16 +71,10 @@ class MeetMeManager
     {
         String uniqueId;
         String roomNumber;
+        Integer userNumber;
         AsteriskChannelImpl channel;
         MeetMeRoomImpl room;
         MeetMeUserImpl user;
-
-        uniqueId = event.getUniqueId();
-        if (uniqueId == null)
-        {
-            logger.warn("UniqueId is null. Ignoring " + event.getClass().getName());
-            return;
-        }
 
         roomNumber = event.getMeetMe();
         if (roomNumber == null)
@@ -88,25 +83,39 @@ class MeetMeManager
             return;
         }
 
-        channel = channelManager.getChannelImplById(uniqueId);
-        if (channel == null)
+        userNumber = event.getUserNum();
+        if (userNumber == null)
         {
-            logger.warn("No channel with unique id " + uniqueId + ". Ignoring " + event.getClass().getName());
+            logger.warn("UserNumber (userNum property) is null. Ignoring " + event.getClass().getName());
             return;
         }
 
         room = getOrCreateRoomImpl(roomNumber);
-        user = channel.getMeetMeUserImpl();
 
         if (event instanceof MeetMeJoinEvent)
         {
+            uniqueId = ((MeetMeJoinEvent) event).getUniqueId();
+            if (uniqueId == null)
+            {
+                logger.warn("UniqueId is null. Ignoring MeetMeJoinEvent");
+                return;
+            }
+
+            channel = channelManager.getChannelImplById(uniqueId);
+            if (channel == null)
+            {
+                logger.warn("No channel with unique id " + uniqueId + ". Ignoring MeetMeJoinEvent");
+                return;
+            }
+
+            user = channel.getMeetMeUserImpl();
             if (user != null)
             {
-                logger.error("Got MeetMeJoin event for channel " + channel.getName() + " that is already user of a room");
+                logger.error("Got MeetMeJoinEvent for channel " + channel.getName() + " that is already user of a room");
                 user.setDateLeft(event.getDateReceived());
-                if (user.getMeetMeRoomImpl() != null)
+                if (user.getRoom() != null)
                 {
-                    user.getMeetMeRoomImpl().removeUser(user);
+                    user.getRoom().removeUser(user);
                 }
                 channel.setMeetMeUserImpl(null);
             }
@@ -119,21 +128,24 @@ class MeetMeManager
         }
 
         // all events below require the user to already exist
+        user = room.getUser(event.getUserNum());
         if (user == null)
         {
-            logger.warn("No MeetMe user associated with channel " + channel.getName() + ". Ignoring " + event.getClass().getName());
+            logger.warn("No MeetMe user " + userNumber + " in room " + roomNumber + ". Ignoring " + event.getClass().getName());
             return;
         }
+
+        channel = user.getChannel();
 
         if (event instanceof MeetMeLeaveEvent)
         {
             logger.info("Removing channel " + channel.getName() + " from room " + roomNumber);
-            if (room != user.getMeetMeRoomImpl())
+            if (room != user.getRoom())
             {
-                if (user.getMeetMeRoomImpl() != null)
+                if (user.getRoom() != null)
                 {
-                    logger.error("Channel " + channel.getName() + " should be removed from room " + roomNumber + " but is user of room " + user.getMeetMeRoomImpl().getRoomNumber());
-                    user.getMeetMeRoomImpl().removeUser(user);
+                    logger.error("Channel " + channel.getName() + " should be removed from room " + roomNumber + " but is user of room " + user.getRoom().getRoomNumber());
+                    user.getRoom().removeUser(user);
                 }
                 else
                 {
@@ -151,6 +163,17 @@ class MeetMeManager
         else if (event instanceof MeetMeStopTalkingEvent)
         {
             user.setTalking(false);
+        }
+        else if (event instanceof MeetMeMuteEvent)
+        {
+            Boolean status;
+            
+            status = ((MeetMeMuteEvent) event).getStatus();
+            
+            if (status != null)
+            {
+                user.setMuted(status);
+            }
         }
     }
 

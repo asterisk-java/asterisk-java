@@ -21,6 +21,15 @@ public interface MeetMeUser
     boolean isTalking();
 
     /**
+     * Returns whether this user is muted or not.<br>
+     * Supported since Asterisk version 1.4.
+     * 
+     * @return <code>true</code> if this user is muted and
+     *         mute detection is supported, <code>false</code> otherwise. 
+     */
+    boolean isMuted();
+    
+    /**
      * Returns the date this user joined the MeetMe room.
      * 
      * @return the date this user joined the MeetMe room.

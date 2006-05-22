@@ -2,6 +2,8 @@ package org.asteriskjava.live.internal;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.asteriskjava.live.ManagerCommunicationException;
 import org.asteriskjava.live.MeetMeRoom;
@@ -16,13 +18,17 @@ class MeetMeRoomImpl implements MeetMeRoom
 
     final ManagerConnectionPool connectionPool;
     final String roomNumber;
-    final Collection<MeetMeUserImpl> users;
+    
+    /**
+     * Maps userNumber to user
+     */
+    final Map<Integer, MeetMeUserImpl> users;
 
     MeetMeRoomImpl(ManagerConnectionPool connectionPool, String roomNumber)
     {
         this.connectionPool = connectionPool;
         this.roomNumber = roomNumber;
-        this.users = new ArrayList<MeetMeUserImpl>(20);
+        this.users = new HashMap<Integer, MeetMeUserImpl>(20);
     }
 
     public String getRoomNumber()
@@ -37,7 +43,7 @@ class MeetMeRoomImpl implements MeetMeRoom
         synchronized (users)
         {
             copy = new ArrayList<MeetMeUser>(users.size() + 2);
-            for (MeetMeUserImpl user : users)
+            for (MeetMeUserImpl user : users.values())
             {
                 copy.add(user);
             }
@@ -49,7 +55,15 @@ class MeetMeRoomImpl implements MeetMeRoom
     {
         synchronized (users)
         {
-            users.add(user);
+            users.put(user.getUserNumber(), user);
+        }
+    }
+
+    MeetMeUserImpl getUser(Integer userNumber)
+    {
+        synchronized (users)
+        {
+            return users.get(userNumber);
         }
     }
 
@@ -57,7 +71,7 @@ class MeetMeRoomImpl implements MeetMeRoom
     {
         synchronized (users)
         {
-            users.remove(user);
+            users.remove(user.getUserNumber());
         }
     }
 
