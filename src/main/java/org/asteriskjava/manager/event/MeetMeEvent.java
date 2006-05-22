@@ -17,16 +17,14 @@
 package org.asteriskjava.manager.event;
 
 /**
- * Abstract base class providing common properties for meet me (asterisk's conference system)
- * events.
+ * Abstract base class providing common properties for MeetMe
+ * (Asterisk's conference system) events.
  * 
  * @author srt
  * @version $Id$
  */
 public abstract class MeetMeEvent extends ManagerEvent
 {
-    private String channel;
-    private String uniqueId;
     private String meetMe;
     private Integer userNum;
 
@@ -39,39 +37,9 @@ public abstract class MeetMeEvent extends ManagerEvent
     }
 
     /**
-     * Returns the name of the channel that joined of left a conference.
-     */
-    public String getChannel()
-    {
-        return channel;
-    }
-
-    /**
-     * Sets the name of the channel that joined of left a conference.
-     */
-    public void setChannel(String channel)
-    {
-        this.channel = channel;
-    }
-
-    /**
-     * Returns the unique id of the channel.
-     */
-    public String getUniqueId()
-    {
-        return uniqueId;
-    }
-
-    /**
-     * Sets the unique id of the channel.
-     */
-    public void setUniqueId(String uniqueId)
-    {
-        this.uniqueId = uniqueId;
-    }
-
-    /**
      * Returns the conference number.
+     * 
+     * @return the conference number.
      */
     public String getMeetMe()
     {
@@ -80,17 +48,30 @@ public abstract class MeetMeEvent extends ManagerEvent
 
     /**
      * Sets the conference number.
+     * 
+     * @param meetMe the conference number.
      */
     public void setMeetMe(String meetMe)
     {
         this.meetMe = meetMe;
     }
 
+    /**
+     * Returns the index of the user in the conference.<br>
+     * This can be used for the "meetme (mute|unmute|kick)" commands.
+     * 
+     * @return the index of the user in the conference.
+     */
     public Integer getUserNum()
     {
         return userNum;
     }
 
+    /**
+     * Sets the index of the user in the conference.
+     * 
+     * @param userNum the index of the user in the conference.
+     */
     public void setUserNum(Integer userNum)
     {
         this.userNum = userNum;

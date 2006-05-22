@@ -17,59 +17,50 @@
 package org.asteriskjava.manager.event;
 
 /**
- * A MeetMeJoinEvent is triggered if a channel joins a MeetMe conference.<br>
- * It is implemented in <code>apps/app_meetme.c</code>
+ * A MeetMeMuteEvent is triggered when a user in a MeetMe room is muted or
+ * unmuted.<br>
+ * It is implemented in <code>apps/app_meetme.c</code><br>
+ * Available since Asterisk 1.4.
  * 
  * @author srt
- * @version $Id$
+ * @version $Id: MeetMeJoinEvent.java 229 2006-04-16 21:04:17Z srt $
  */
-public class MeetMeJoinEvent extends MeetMeEvent
+public class MeetMeMuteEvent extends MeetMeEvent
 {
     /**
      * Serializable version identifier
      */
     private static final long serialVersionUID = -8554403451985143184L;
 
-    private String channel;
-    private String uniqueId;
+    private Boolean status;
 
     /**
      * @param source
      */
-    public MeetMeJoinEvent(Object source)
+    public MeetMeMuteEvent(Object source)
     {
         super(source);
     }
-    
+
     /**
-     * Returns the name of the channel that joined the left the conference.
+     * Returns whether the user was muted or unmuted.
+     * 
+     * @return <code>true</code> if ther user was muted,
+     *         <code>false</code> if the user was unmuted.
      */
-    public String getChannel()
+    public Boolean getStatus()
     {
-        return channel;
+        return status;
     }
 
     /**
-     * Sets the name of the channel that joined the left the conference.
+     * Sets whether the user was muted or unmuted.
+     * 
+     * @param status <code>true</code> if ther user was muted, 
+     *               <code>false</code> if the user was unmuted.
      */
-    public void setChannel(String channel)
+    public void setStatus(Boolean status)
     {
-        this.channel = channel;
-    }
-
-    /**
-     * Returns the unique id of the channel that joined the left the conference.
-     */
-    public String getUniqueId()
-    {
-        return uniqueId;
-    }
-
-    /**
-     * Sets the unique id of the channel that joined the left the conference.
-     */
-    public void setUniqueId(String uniqueId)
-    {
-        this.uniqueId = uniqueId;
+        this.status = status;
     }
 }
