@@ -26,7 +26,7 @@ package org.asteriskjava.manager.event;
  * @version $Id$
  * @since 0.2
  */
-public class DNDStateEvent extends ManagerEvent
+public class DndStateEvent extends ManagerEvent
 {
     /**
      * Serializable version identifier
@@ -48,7 +48,7 @@ public class DNDStateEvent extends ManagerEvent
      * 
      * @param source
      */
-    public DNDStateEvent(Object source)
+    public DndStateEvent(Object source)
     {
         super(source);
     }

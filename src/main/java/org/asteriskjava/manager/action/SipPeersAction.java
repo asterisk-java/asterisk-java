@@ -31,7 +31,7 @@ import org.asteriskjava.manager.event.PeerlistCompleteEvent;
  * @version $Id$
  * @since 0.2
  */
-public class SIPPeersAction extends AbstractManagerAction
+public class SipPeersAction extends AbstractManagerAction
         implements
             EventGeneratingAction
 {
@@ -41,9 +41,9 @@ public class SIPPeersAction extends AbstractManagerAction
     private static final long serialVersionUID = 921037572305993779L;
 
     /**
-     * Creates a new SIPPeersAction.
+     * Creates a new SipPeersAction.
      */
-    public SIPPeersAction()
+    public SipPeersAction()
     {
 
     }

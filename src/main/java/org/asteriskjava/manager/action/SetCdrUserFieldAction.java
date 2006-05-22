@@ -27,7 +27,7 @@ package org.asteriskjava.manager.action;
  * @author srt
  * @version $Id$
  */
-public class SetCDRUserFieldAction extends AbstractManagerAction
+public class SetCdrUserFieldAction extends AbstractManagerAction
 {
     /**
      * Serializable version identifier
@@ -38,22 +38,22 @@ public class SetCDRUserFieldAction extends AbstractManagerAction
     private Boolean append;
 
     /**
-     * Creates a new empty SetCDRUserFieldAction.
+     * Creates a new empty SetCdrUserFieldAction.
      */
-    public SetCDRUserFieldAction()
+    public SetCdrUserFieldAction()
     {
 
     }
 
     /**
-     * Creates a new SetCDRUserFieldAction that sets the user field of the call
+     * Creates a new SetCdrUserFieldAction that sets the user field of the call
      * detail record for the given channel to the given value.
      * 
      * @param channel the name of the channel
      * @param userField the new value of the userfield
      * @since 0.2
      */
-    public SetCDRUserFieldAction(String channel, String userField)
+    public SetCdrUserFieldAction(String channel, String userField)
     {
         this.channel = channel;
         this.userField = userField;
@@ -69,7 +69,7 @@ public class SetCDRUserFieldAction extends AbstractManagerAction
      *            overwrite
      * @since 0.2
      */
-    public SetCDRUserFieldAction(String channel, String userField,
+    public SetCdrUserFieldAction(String channel, String userField,
             Boolean append)
     {
         this.channel = channel;

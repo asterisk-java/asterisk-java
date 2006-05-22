@@ -22,7 +22,7 @@ package org.asteriskjava.manager.action;
  * @author srt
  * @version $Id$
  */
-public class ZapDNDOnAction extends AbstractManagerAction
+public class ZapDndOnAction extends AbstractManagerAction
 {
     /**
      * Serializable version identifier
@@ -31,21 +31,21 @@ public class ZapDNDOnAction extends AbstractManagerAction
     private Integer zapChannel;
 
     /**
-     * Creates a new empty ZapDNDOnAction.
+     * Creates a new empty ZapDndOnAction.
      */
-    public ZapDNDOnAction()
+    public ZapDndOnAction()
     {
 
     }
 
     /**
-     * Creates a new ZapDNDOnAction that enables "Do Not Disturb" status for
+     * Creates a new ZapDndOnAction that enables "Do Not Disturb" status for
      * the given zap channel.
      * 
      * @param zapChannel the number of the zap channel
      * @since 0.2
      */
-    public ZapDNDOnAction(Integer zapChannel)
+    public ZapDndOnAction(Integer zapChannel)
     {
         this.zapChannel = zapChannel;
     }

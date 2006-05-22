@@ -16,7 +16,7 @@
  */
 package org.asteriskjava.manager.action;
 
-import org.asteriskjava.manager.event.DBGetResponseEvent;
+import org.asteriskjava.manager.event.DbGetResponseEvent;
 
 /**
  * Retrieves an entry in the Asterisk database for a given family and key.<br>
@@ -29,7 +29,7 @@ import org.asteriskjava.manager.event.DBGetResponseEvent;
  * @version $Id$
  * @since 0.2
  */
-public class DBGetAction extends AbstractManagerAction
+public class DbGetAction extends AbstractManagerAction
         implements
             EventGeneratingAction
 {
@@ -41,22 +41,22 @@ public class DBGetAction extends AbstractManagerAction
     private String key;
 
     /**
-     * Creates a new empty DBGetAction.
+     * Creates a new empty DbGetAction.
      */
-    public DBGetAction()
+    public DbGetAction()
     {
 
     }
 
     /**
-     * Creates a new DBGetAction that retrieves the value of the database entry
+     * Creates a new DbGetAction that retrieves the value of the database entry
      * with the given key in the given family.
      * 
      * @param family the family of the key
      * @param key the key of the entry to retrieve
      * @since 0.2
      */
-    public DBGetAction(String family, String key)
+    public DbGetAction(String family, String key)
     {
         this.family = family;
         this.key = key;
@@ -109,6 +109,6 @@ public class DBGetAction extends AbstractManagerAction
 
     public Class getActionCompleteEventClass()
     {
-        return DBGetResponseEvent.class;
+        return DbGetResponseEvent.class;
     }
 }

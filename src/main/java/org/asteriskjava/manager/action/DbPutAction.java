@@ -25,7 +25,7 @@ package org.asteriskjava.manager.action;
  * @version $Id$
  * @since 0.2
  */
-public class DBPutAction extends AbstractManagerAction
+public class DbPutAction extends AbstractManagerAction
 {
     /**
      * Serial version identifier
@@ -36,15 +36,15 @@ public class DBPutAction extends AbstractManagerAction
     private String val;
 
     /**
-     * Creates a new empty DBPutAction.
+     * Creates a new empty DbPutAction.
      */
-    public DBPutAction()
+    public DbPutAction()
     {
 
     }
 
     /**
-     * Creates a new DBPutAction that sets the value of the database entry with
+     * Creates a new DbPutAction that sets the value of the database entry with
      * the given key in the given family.
      * 
      * @param family the family of the key
@@ -52,7 +52,7 @@ public class DBPutAction extends AbstractManagerAction
      * @param val the value to set
      * @since 0.2
      */
-    public DBPutAction(String family, String key, String val)
+    public DbPutAction(String family, String key, String val)
     {
         this.family = family;
         this.key = key;

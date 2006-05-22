@@ -25,7 +25,7 @@ package org.asteriskjava.manager.action;
  * @author srt
  * @version $Id$
  */
-public class PlayDTMFAction extends AbstractManagerAction
+public class PlayDtmfAction extends AbstractManagerAction
 {
     /**
      * Serializable version identifier
@@ -36,20 +36,20 @@ public class PlayDTMFAction extends AbstractManagerAction
     private String digit;
 
     /**
-     * Creates a new empty PlayDTMFAction.
+     * Creates a new empty PlayDtmfAction.
      */
-    public PlayDTMFAction()
+    public PlayDtmfAction()
     {
 
     }
 
     /**
-     * Creates a new PlayDTMFAction that sends the given DTMF digit to the given channel.
+     * Creates a new PlayDtmfAction that sends the given DTMF digit to the given channel.
      * 
      * @param channel the name of the channel to send the digit to.
      * @param digit the DTML digit to play.
      */
-    public PlayDTMFAction(String channel, String digit)
+    public PlayDtmfAction(String channel, String digit)
     {
         this.channel = channel;
         this.digit = digit;

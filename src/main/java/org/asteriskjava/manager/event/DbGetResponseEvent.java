@@ -26,7 +26,7 @@ package org.asteriskjava.manager.event;
  * @version $Id$
  * @since 0.2
  */
-public class DBGetResponseEvent extends ResponseEvent
+public class DbGetResponseEvent extends ResponseEvent
 {
     private String family;
     private String key;
@@ -40,7 +40,7 @@ public class DBGetResponseEvent extends ResponseEvent
     /**
      * @param source
      */
-    public DBGetResponseEvent(Object source)
+    public DbGetResponseEvent(Object source)
     {
         super(source);
     }

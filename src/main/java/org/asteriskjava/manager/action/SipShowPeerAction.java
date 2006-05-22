@@ -30,7 +30,7 @@ import org.asteriskjava.manager.event.PeerlistCompleteEvent;
  * @version $Id$
  * @since 0.2
  */
-public class SIPShowPeerAction extends AbstractManagerAction
+public class SipShowPeerAction extends AbstractManagerAction
         implements
             EventGeneratingAction
 {
@@ -41,21 +41,21 @@ public class SIPShowPeerAction extends AbstractManagerAction
     private String peer;
 
     /**
-     * Creates a new empty SIPShowPeerAction.
+     * Creates a new empty SipShowPeerAction.
      */
-    public SIPShowPeerAction()
+    public SipShowPeerAction()
     {
 
     }
 
     /**
-     * Creates a new SIPShowPeerAction that requests the details about the given
+     * Creates a new SipShowPeerAction that requests the details about the given
      * SIP peer.
      * 
      * @param peer the name of the SIP peer to retrieve details for.
      * @since 0.2
      */
-    public SIPShowPeerAction(String peer)
+    public SipShowPeerAction(String peer)
     {
         this.peer = peer;
     }

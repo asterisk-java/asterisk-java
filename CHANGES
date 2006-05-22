@@ -30,7 +30,7 @@ Asterisk-Java 0.3
 	  BaseAgiScript
 	* Fixed synchronization bug when generating internal action ids for
 	  the Manager API
-	* Added PlayDTMFAction and playDtmf() method for AsteriskChannel.
+	* Added PlayDtmfAction and playDtmf() method for AsteriskChannel.
 	* Introduced channel variable AJ_AGISTATUS that is set by the AgiServer
 	  to "SUCCESS" if the AgiScript completed successfully, "FAILED" if it
 	  threw an exception or "NOT_FOUND" if the mapping strategy did not 
