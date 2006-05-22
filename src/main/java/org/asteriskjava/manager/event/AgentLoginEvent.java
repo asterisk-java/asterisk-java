@@ -59,19 +59,13 @@ public class AgentLoginEvent extends ManagerEvent
     }
 
     /**
-     * @deprecated
+     * Returns the name of the channel associated with the logged in agent.
+     * 
+     * @deprecated use {@link #getChannel()} instead.
      */
     public String getLoginChan()
     {
         return channel;
-    }
-
-    /**
-     * @deprecated
-     */
-    public void setLoginChan(String loginChan)
-    {
-        this.channel = loginChan;
     }
 
     /**
