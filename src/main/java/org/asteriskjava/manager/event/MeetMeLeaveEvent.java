@@ -18,6 +18,7 @@ package org.asteriskjava.manager.event;
 
 /**
  * A MeetMeLeaveEvent is triggered if a channel leaves a MeetMe conference.<br>
+ * Channel and unqiueId properties for this event are available since Asterisk 1.0.<br>
  * It is implemented in <code>apps/app_meetme.c</code>
  * 
  * @author srt
@@ -30,8 +31,6 @@ public class MeetMeLeaveEvent extends MeetMeEvent
      */
     private static final long serialVersionUID = 7692361610793036224L;
 
-    private String channel;
-    private String uniqueId;
     private String callerIdNum;
     private String callerIdName;
     private Long duration;
@@ -42,38 +41,6 @@ public class MeetMeLeaveEvent extends MeetMeEvent
     public MeetMeLeaveEvent(Object source)
     {
         super(source);
-    }
-    
-    /**
-     * Returns the name of the channel that left the conference.
-     */
-    public String getChannel()
-    {
-        return channel;
-    }
-
-    /**
-     * Sets the name of the channel that left the conference.
-     */
-    public void setChannel(String channel)
-    {
-        this.channel = channel;
-    }
-
-    /**
-     * Returns the unique id of the channel that left the conference.
-     */
-    public String getUniqueId()
-    {
-        return uniqueId;
-    }
-
-    /**
-     * Sets the unique id of the channel that left the conference.
-     */
-    public void setUniqueId(String uniqueId)
-    {
-        this.uniqueId = uniqueId;
     }
 
     /**

@@ -18,6 +18,7 @@ package org.asteriskjava.manager.event;
 
 /**
  * A MeetMeJoinEvent is triggered if a channel joins a MeetMe conference.<br>
+ * Channel and unqiueId properties for this event are available since Asterisk 1.0.<br>
  * It is implemented in <code>apps/app_meetme.c</code>
  * 
  * @author srt
@@ -30,46 +31,11 @@ public class MeetMeJoinEvent extends MeetMeEvent
      */
     private static final long serialVersionUID = -8554403451985143184L;
 
-    private String channel;
-    private String uniqueId;
-
     /**
      * @param source
      */
     public MeetMeJoinEvent(Object source)
     {
         super(source);
-    }
-    
-    /**
-     * Returns the name of the channel that joined the left the conference.
-     */
-    public String getChannel()
-    {
-        return channel;
-    }
-
-    /**
-     * Sets the name of the channel that joined the left the conference.
-     */
-    public void setChannel(String channel)
-    {
-        this.channel = channel;
-    }
-
-    /**
-     * Returns the unique id of the channel that joined the left the conference.
-     */
-    public String getUniqueId()
-    {
-        return uniqueId;
-    }
-
-    /**
-     * Sets the unique id of the channel that joined the left the conference.
-     */
-    public void setUniqueId(String uniqueId)
-    {
-        this.uniqueId = uniqueId;
     }
 }
