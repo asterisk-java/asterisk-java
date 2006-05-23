@@ -12,7 +12,8 @@ import java.util.Collection;
 public interface MeetMeRoom
 {
     /**
-     * Returns the number of this MeetMe room.
+     * Returns the number of this MeetMe room.<br>
+     * This property is immutable.
      * 
      * @return the number of this MeetMe room.
      */
@@ -25,7 +26,17 @@ public interface MeetMeRoom
      */
     Collection<MeetMeUser> getUsers();
 
+    /**
+     * Locks this room so no addtional users can join.
+     * 
+     * @throws ManagerCommunicationException if the room can't be locked.
+     */
     void lock() throws ManagerCommunicationException;
 
+    /**
+     * Unlocks this room so additional users can join again.
+     * 
+     * @throws ManagerCommunicationException if the room can't be locked.
+     */
     void unlock() throws ManagerCommunicationException;
 }

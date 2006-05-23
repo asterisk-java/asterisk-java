@@ -36,7 +36,8 @@ public interface MeetMeUser extends LiveObject
     boolean isMuted();
     
     /**
-     * Returns the date this user joined the MeetMe room.
+     * Returns the date this user joined the MeetMe room.<br>
+     * This property is immutable.
      * 
      * @return the date this user joined the MeetMe room.
      */
@@ -57,7 +58,8 @@ public interface MeetMeUser extends LiveObject
     MeetMeUserState getState();
 
     /**
-     * Returns the channel associated with this user.
+     * Returns the channel associated with this user.<br>
+     * This property is immutable.
      * 
      * @return the channel associated with this user.
      */

@@ -108,7 +108,8 @@ public interface AsteriskChannel extends LiveObject
     List<Extension> getExtensions();
 
     /**
-     * Returns the date this channel has been created.
+     * Returns the date this channel has been created.<br>
+     * This property is immutable.
      * 
      * @return the date this channel has been created.
      */
