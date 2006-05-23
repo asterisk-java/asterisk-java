@@ -38,6 +38,18 @@ public class CdrEvent extends ManagerEvent
      */
     private static final long serialVersionUID = 2541424315212201670L;
     private static final String DATE_TIME_PATTERN = "y-M-D H:m:s";
+    
+    public static final String DISPOSITION_NO_ANSWER = "NO ANSWER";
+    public static final String DISPOSITION_FAILED = "FAILED";
+    public static final String DISPOSITION_BUSY = "BUSY";
+    public static final String DISPOSITION_ANSWERED = "ANSWERED";
+    public static final String DISPOSITION_UNKNOWN = "UNKNOWN";
+    
+    public static final String AMA_FLAG_OMIT = "OMIT";
+    public static final String AMA_FLAG_BILLING = "BILLING";
+    public static final String AMA_FLAG_DOCUMENTATION = "DOCUMENTATION";
+    public static final String AMA_FLAG_UNKNOWN = "Unknown";
+    
     private String accountCode;
     private String src;
     private String destination;
@@ -439,7 +451,14 @@ public class CdrEvent extends ManagerEvent
 
     /**
      * Returns what happened to the call.<br>
-     * This is one of "NO ANSWER", "FAILED", "BUSY", "ANSWERED" or "UNKNOWN".<br>
+     * This is one of
+     * <ul>
+     * <li>{@link #DISPOSITION_NO_ANSWER}
+     * <li>{@link #DISPOSITION_FAILED}
+     * <li>{@link #DISPOSITION_BUSY}
+     * <li>{@link #DISPOSITION_ANSWERED}
+     * <li>{@link #DISPOSITION_UNKNOWN}
+     * </ul>
      * Corresponds to CDR field <code>disposition</code>.
      * 
      * @return the disposition.
@@ -461,7 +480,13 @@ public class CdrEvent extends ManagerEvent
 
     /**
      * Returns the AMA (Automated Message Accounting) flags.<br>
-     * This is one of "OMIT", "BILLING", "DOCUMENTATION" or "Unknown".<br>
+     * This is one of
+     * <ul>
+     * <li>{@link #AMA_FLAG_OMIT}
+     * <li>{@link #AMA_FLAG_BILLING}
+     * <li>{@link #AMA_FLAG_DOCUMENTATION}
+     * <li>{@link #AMA_FLAG_UNKNOWN}
+     * </ul>
      * Corresponds to CDR field <code>amaflags</code>.
      * 
      * @return the AMA flags.
