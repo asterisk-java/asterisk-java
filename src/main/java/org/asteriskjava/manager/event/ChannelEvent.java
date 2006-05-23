@@ -65,6 +65,8 @@ public abstract class ChannelEvent extends ManagerEvent
 
     /**
      * Returns the name of the channel.
+     * 
+     * @return the name of the channel.
      */
     public String getChannel()
     {
@@ -73,6 +75,8 @@ public abstract class ChannelEvent extends ManagerEvent
 
     /**
      * Sets the name of the channel.
+     * 
+     * @param channel the name of the channel.
      */
     public void setChannel(String channel)
     {
@@ -81,6 +85,8 @@ public abstract class ChannelEvent extends ManagerEvent
 
     /**
      * Returns the unique id of the channel.
+     * 
+     * @return the unique id of the channel.
      */
     public String getUniqueId()
     {
@@ -89,6 +95,8 @@ public abstract class ChannelEvent extends ManagerEvent
 
     /**
      * Sets the unique id of the channel.
+     * 
+     * @param uniqueId the unique id of the channel.
      */
     public void setUniqueId(String uniqueId)
     {
