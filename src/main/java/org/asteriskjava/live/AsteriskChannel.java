@@ -16,16 +16,26 @@
  */
 package org.asteriskjava.live;
 
-import java.beans.PropertyChangeListener;
 import java.util.Date;
 import java.util.List;
 
 /**
- * An Asterisk channel.
+ * Represents an Asterisk channel.<br>
+ * PropertyChangeEvents are fired for the following properties:
+ * <ul>
+ * <li>name
+ * <li>callerIdNumber
+ * <li>callerIdName
+ * <li>state
+ * <li>account
+ * <li>currentExtension
+ * <li>hangupCause
+ * <li>linkedChannel
+ * </ul>
  * 
  * @author srt
  */
-public interface AsteriskChannel
+public interface AsteriskChannel extends LiveObject
 {
     /**
      * Returns the unique id of this channel, for example "1099015093.165".<br>
@@ -250,52 +260,4 @@ public interface AsteriskChannel
      * @throws IllegalArgumentException if the digit is <code>null</code>.
      */
     void playDtmf(String digit) throws ManagerCommunicationException, NoSuchChannelException, IllegalArgumentException;
-    
-    /**
-     * Adds a PropertyChangeListener that is notified whenever a property value changes.<br>
-     * PropertyChangeEvents are fired for the following properties:
-     * <ul>
-     * <li>name
-     * <li>callerIdNumber
-     * <li>callerIdName
-     * <li>state
-     * <li>account
-     * <li>currentExtension
-     * <li>hangupCause
-     * <li>linkedChannel
-     * </ul>
-     * 
-     * @param listener listener to notify
-     * @since 0.3
-     */
-    public void addPropertyChangeListener(PropertyChangeListener listener);
-
-    /**
-     * Adds a PropertyChangeListener that is notified whenever a given property value changes.
-     * 
-     * @param propertyName property to observe
-     * @param listener listener to notify
-     * @see #addPropertyChangeListener(PropertyChangeListener)
-     * @since 0.3
-     */
-    public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener);
-
-    /**
-     * Removes the given PropertyChangeListener that was added by calling
-     * {@link #addPropertyChangeListener(PropertyChangeListener)}.
-     * 
-     * @param listener listener to remove
-     * @since 0.3
-     */
-    public void removePropertyChangeListener(PropertyChangeListener listener);
-
-    /**
-     * Removes the given PropertyChangeListener that was added by calling
-     * {@link #addPropertyChangeListener(String, PropertyChangeListener)}.
-     * 
-     * @param propertyName property that is observed
-     * @param listener listener to remove
-     * @since 0.3
-     */
-    public void removePropertyChangeListener(String propertyName, PropertyChangeListener listener);
 }

@@ -4,9 +4,10 @@ import java.util.Date;
 
 import org.asteriskjava.live.ManagerCommunicationException;
 import org.asteriskjava.live.MeetMeUser;
+import org.asteriskjava.live.MeetMeUserState;
 import org.asteriskjava.manager.action.CommandAction;
 
-class MeetMeUserImpl implements MeetMeUser
+class MeetMeUserImpl extends AbstractLiveObject implements MeetMeUser
 {
     private static final String COMMAND_PREFIX = "meetme";
     private static final String MUTE_COMMAND = "mute";
@@ -14,23 +15,27 @@ class MeetMeUserImpl implements MeetMeUser
     private static final String KICK_COMMAND = "kick";
 
     private final ManagerConnectionPool connectionPool;
+    
     private final MeetMeRoomImpl room;
     private final Integer userNumber;
     private final AsteriskChannelImpl channel;
     private final Date dateJoined;
 
     private Date dateLeft;
+    private MeetMeUserState state;
     private boolean talking;
     private boolean muted;
 
     MeetMeUserImpl(ManagerConnectionPool connectionPool, MeetMeRoomImpl room, Integer userNumber,
             AsteriskChannelImpl channel, Date dateJoined)
     {
+        super();
         this.connectionPool = connectionPool;
         this.room = room;
         this.userNumber = userNumber;
         this.channel = channel;
         this.dateJoined = dateJoined;
+        this.state = MeetMeUserState.JOINED;
     }
 
     public AsteriskChannelImpl getChannel()
@@ -48,9 +53,26 @@ class MeetMeUserImpl implements MeetMeUser
         return dateLeft;
     }
 
-    void setDateLeft(Date dateLeft)
+    /**
+     * Sets the status to {@link MeetMeUserState#LEFT} and dateLeft to the given date.
+     * 
+     * @param dateLeft the date this user left the room.
+     */
+    void left(Date dateLeft)
     {
-        this.dateLeft = dateLeft;
+        MeetMeUserState oldState;
+        synchronized (this)
+        {
+            oldState = this.state;
+            this.dateLeft = dateLeft;
+            this.state = MeetMeUserState.LEFT;
+        }
+        firePropertyChange("state", oldState, state);
+    }
+
+    public MeetMeUserState getState()
+    {
+        return state;
     }
 
     public boolean isTalking()
@@ -60,7 +82,9 @@ class MeetMeUserImpl implements MeetMeUser
 
     void setTalking(boolean talking)
     {
+        boolean oldTalking = this.talking;
         this.talking = talking;
+        firePropertyChange("talking", oldTalking, talking);
     }
 
     public boolean isMuted()
@@ -70,7 +94,9 @@ class MeetMeUserImpl implements MeetMeUser
 
     void setMuted(boolean muted)
     {
+        boolean oldMuted = this.muted;
         this.muted = muted;
+        firePropertyChange("muted", oldMuted, muted);
     }
 
     Integer getUserNumber()

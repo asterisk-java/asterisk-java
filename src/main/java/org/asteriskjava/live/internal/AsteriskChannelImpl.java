@@ -16,8 +16,6 @@
  */
 package org.asteriskjava.live.internal;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -42,11 +40,10 @@ import org.asteriskjava.manager.response.ManagerResponse;
  * @author srt
  * @version $Id$
  */
-class AsteriskChannelImpl implements AsteriskChannel
+class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
 {
     private static final String CAUSE_VARIABLE_NAME = "PRI_CAUSE";
     private final ManagerConnectionPool connectionPool;
-    private final PropertyChangeSupport changes;
 
     /**
      * Unique id of this channel.
@@ -117,12 +114,12 @@ class AsteriskChannelImpl implements AsteriskChannel
      */
     AsteriskChannelImpl(final ManagerConnectionPool connectionPool, final String name, final String id, final Date dateOfCreation)
     {
+        super();
         this.connectionPool = connectionPool;
         this.name = name;
         this.id = id;
         this.dateOfCreation = dateOfCreation;
         this.extensions = new ArrayList<Extension>();
-        this.changes = new PropertyChangeSupport(this);
     }
 
     public String getId()
@@ -217,7 +214,7 @@ class AsteriskChannelImpl implements AsteriskChannel
         String oldAccount = this.account;
 
         this.account = account;
-        changes.firePropertyChange("account", oldAccount, account);
+        firePropertyChange("account", oldAccount, account);
     }
 
     public Extension getCurrentExtension()
@@ -459,28 +456,6 @@ class AsteriskChannelImpl implements AsteriskChannel
             throw new NoSuchChannelException("Channel '" + name + "' is not available: " + response.getMessage());
         }
     }
-    
-    // notification methods
-
-    public void addPropertyChangeListener(PropertyChangeListener listener)
-    {
-        changes.addPropertyChangeListener(listener);
-    }
-
-    public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener)
-    {
-        changes.addPropertyChangeListener(propertyName, listener);
-    }
-
-    public void removePropertyChangeListener(PropertyChangeListener listener)
-    {
-        changes.removePropertyChangeListener(listener);
-    }
-
-    public void removePropertyChangeListener(String propertyName, PropertyChangeListener listener)
-    {
-        changes.removePropertyChangeListener(propertyName, listener);
-    }
 
     public String toString()
     {
@@ -524,13 +499,5 @@ class AsteriskChannelImpl implements AsteriskChannel
         sb.append("]");
 
         return sb.toString();
-    }
-
-    private void firePropertyChange(String propertyName, Object oldValue, Object newValue)
-    {
-        if (oldValue != null || newValue != null)
-        {
-            changes.firePropertyChange(propertyName, oldValue, newValue);
-        }
     }
 }

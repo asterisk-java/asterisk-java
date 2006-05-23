@@ -3,13 +3,19 @@ package org.asteriskjava.live;
 import java.util.Date;
 
 /**
- * Represents a user of a MeetMe room.
+ * Represents a user of a MeetMe room.<br>
+ * PropertyChangeEvents are fired for the following properties:
+ * <ul>
+ * <li>talking
+ * <li>muted
+ * <li>state
+ * </ul>
  * 
  * @see org.asteriskjava.live.MeetMeRoom
  * @author srt
  * @since 0.3
  */
-public interface MeetMeUser
+public interface MeetMeUser extends LiveObject
 {
     /**
      * Returns whether this user is currently talking or not.<br>
@@ -42,6 +48,13 @@ public interface MeetMeUser
      * @return the date this user left the MeetMe room.
      */
     Date getDateLeft();
+    
+    /**
+     * Returns the lifecycle status of this MeetMeUser.
+     * 
+     * @return the lifecycle status of this MeetMeUser.
+     */
+    MeetMeUserState getState();
 
     /**
      * Returns the channel associated with this user.

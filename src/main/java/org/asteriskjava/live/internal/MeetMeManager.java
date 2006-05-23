@@ -112,7 +112,7 @@ class MeetMeManager
             if (user != null)
             {
                 logger.error("Got MeetMeJoinEvent for channel " + channel.getName() + " that is already user of a room");
-                user.setDateLeft(event.getDateReceived());
+                user.left(event.getDateReceived());
                 if (user.getRoom() != null)
                 {
                     user.getRoom().removeUser(user);
@@ -152,7 +152,7 @@ class MeetMeManager
                     logger.error("Channel " + channel.getName() + " should be removed from room " + roomNumber + " but is user of no room");
                 }
             }
-            user.setDateLeft(event.getDateReceived());
+            user.left(event.getDateReceived());
             room.removeUser(user);
             channel.setMeetMeUserImpl(null);
         }
