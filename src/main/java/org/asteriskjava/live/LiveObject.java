@@ -3,7 +3,7 @@ package org.asteriskjava.live;
 import java.beans.PropertyChangeListener;
 
 /**
- * Interface for all live objects that support property change notification
+ * Interface for all live objects that support property change notification.
  * 
  * @author srt
  * @since 0.3
