@@ -32,6 +32,9 @@ public class MeetMeLeaveEvent extends MeetMeEvent
 
     private String channel;
     private String uniqueId;
+    private String callerIdNum;
+    private String callerIdName;
+    private Long duration;
 
     /**
      * @param source
@@ -71,5 +74,68 @@ public class MeetMeLeaveEvent extends MeetMeEvent
     public void setUniqueId(String uniqueId)
     {
         this.uniqueId = uniqueId;
+    }
+
+    /**
+     * Returns the Caller*ID Name of the channel that left the conference.<br>
+     * This property is available since Asterisk 1.4.
+     * 
+     * @return the Caller*ID Name of the channel that left the conference.
+     */
+    public String getCallerIdName()
+    {
+        return callerIdName;
+    }
+
+    /**
+     * Sets the Caller*ID Name of the channel that left the conference.
+     * 
+     * @param callerIdName the Caller*ID Name of the channel that left the conference.
+     */
+    public void setCallerIdName(String callerIdName)
+    {
+        this.callerIdName = callerIdName;
+    }
+
+    /**
+     * Returns the Caller*ID Number of the channel that left the conference.<br>
+     * This property is available since Asterisk 1.4.
+     * 
+     * @return the Caller*ID Number of the channel that left the conference.
+     */
+    public String getCallerIdNum()
+    {
+        return callerIdNum;
+    }
+
+    /**
+     * Sets the Caller*ID Number of the channel that left the conference.
+     * 
+     * @param callerIdNum the Caller*ID Number of the channel that left the conference.
+     */
+    public void setCallerIdNum(String callerIdNum)
+    {
+        this.callerIdNum = callerIdNum;
+    }
+
+    /**
+     * Returns how long the user spent in the conference.<br>
+     * This property is available since Asterisk 1.4.
+     * 
+     * @return the duration in seconds the user spent in the conference.
+     */
+    Long getDuration()
+    {
+        return duration;
+    }
+
+    /**
+     * Sets how long the user spent in the conference.
+     * 
+     * @param duration the duration in seconds the user spent in the conference.
+     */
+    void setDuration(Long duration)
+    {
+        this.duration = duration;
     }
 }
