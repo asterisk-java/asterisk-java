@@ -25,6 +25,8 @@ package org.asteriskjava.manager.event;
  */
 public abstract class MeetMeEvent extends ManagerEvent
 {
+    private String channel;
+    private String uniqueId;
     private String meetMe;
     private Integer userNum;
 
@@ -34,6 +36,50 @@ public abstract class MeetMeEvent extends ManagerEvent
     public MeetMeEvent(Object source)
     {
         super(source);
+    }
+
+    /**
+     * Returns the name of the channel.<br>
+     * This property is available since Asterisk 1.4.
+     * 
+     * @return the name of the channel.
+     */
+    public String getChannel()
+    {
+        return channel;
+    }
+
+    /**
+     * Sets the name of the channel.<br>
+     * This property is available since Asterisk 1.4.
+     * 
+     * @param channel the name of the channel.
+     */
+    public void setChannel(String channel)
+    {
+        this.channel = channel;
+    }
+
+    /**
+     * Returns the unique id of the channel.<br>
+     * This property is available since Asterisk 1.4.
+     * 
+     * @return the unique id of the channel.
+     */
+    public String getUniqueId()
+    {
+        return uniqueId;
+    }
+
+    /**
+     * Sets the unique id of the channel.<br>
+     * This property is available since Asterisk 1.4.
+     * 
+     * @param uniqueId the unique id of the channel.
+     */
+    public void setUniqueId(String uniqueId)
+    {
+        this.uniqueId = uniqueId;
     }
 
     /**
