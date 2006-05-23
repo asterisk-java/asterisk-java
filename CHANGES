@@ -15,27 +15,33 @@ Asterisk-Java 0.3
 	    .createManagerConnection();
 	* Fixed timing bug in ResourceBundleMappingStrategy (AJ-25)
 	* Fixed interrupt in DefaultManagerConnection (AJ-27)
+	* Fixed accountCode always being null in AgiRequest
+	* Fixed synchronization bug when generating internal action ids for
+	  the Manager API
+	* Fixed ConnectEvent being only fired after a successful 
+	  login (AJ-32)
 	* Added support for login with eventMask (AJ-28)
 	* Added support for using non-shared instances AgiScript, i.e. a
 	  new instance is used for each request if you set the
 	  shareInstances property on your MappingStrategy to false.
 	  Default is still to use shared instances (AJ-29)
-	* Fixed accountCode always being null in AgiRequest
-	* Added brigedChannel property to AgentConnectEvent
 	* Live objects now fire PropertyChangeEvents
-	* ConnectEvent is now only fired after a successful login (AJ-32)
 	* Added extraContext, extraExten, extraPriority properties to
 	  RedirectAction to support BRIstuffed versions of Asterisk (AJ-34)
 	* Added recordFile and controlStreamFile methods to AgiChannel and
 	  BaseAgiScript
-	* Fixed synchronization bug when generating internal action ids for
-	  the Manager API
+	* Added channel variable AJ_AGISTATUS that is set by the AgiServer
+	  to "SUCCESS" if the AgiScript completed successfully, "FAILED" 
+	  if it threw an exception or "NOT_FOUND" if the mapping strategy 
+	  did not return a script for the requested URL.
+	* Added MeetMeMuteEvent and muted property for MeetMeUser.
 	* Added PlayDtmfAction and playDtmf() method for AsteriskChannel.
-	* Introduced channel variable AJ_AGISTATUS that is set by the AgiServer
-	  to "SUCCESS" if the AgiScript completed successfully, "FAILED" if it
-	  threw an exception or "NOT_FOUND" if the mapping strategy did not 
-	  return a script for the requested URL.
-	* Added MeetMeMuteEvent.
+	* Added several new event properties for Asterisk 1.4:
+	  - MeetMeLeaveEvent: callerIdNum, callerIdName and duration
+	  - StatusEvent: callerIdNum and callerIdName
+	  - OriginateEvent: callerIdNum and callerIdName
+	  - JoinEvent and LeaveEvent: uniqueId
+	  - AgentConnectEvent: brigedChannel
 
 Asterisk-Java 0.2
 	* Added SayDateTimeCommand (AJ-23)
