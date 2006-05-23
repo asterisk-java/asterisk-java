@@ -2,9 +2,14 @@ package org.asteriskjava.live;
 
 import java.beans.PropertyChangeListener;
 
+/**
+ * Interface for all live objects that support property change notification
+ * 
+ * @author srt
+ * @since 0.3
+ */
 public interface LiveObject
 {
-
     /**
      * Adds a PropertyChangeListener that is notified whenever a property value changes.
      * 
