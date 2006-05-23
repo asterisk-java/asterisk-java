@@ -38,6 +38,11 @@ class MeetMeUserImpl extends AbstractLiveObject implements MeetMeUser
         this.state = MeetMeUserState.JOINED;
     }
 
+    public MeetMeRoomImpl getRoom()
+    {
+        return room;
+    }
+
     public AsteriskChannelImpl getChannel()
     {
         return channel;
@@ -102,11 +107,6 @@ class MeetMeUserImpl extends AbstractLiveObject implements MeetMeUser
     Integer getUserNumber()
     {
         return userNumber;
-    }
-
-    MeetMeRoomImpl getRoom()
-    {
-        return room;
     }
 
     // action methods
