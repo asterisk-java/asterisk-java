@@ -1,7 +1,7 @@
 package org.asteriskjava.live;
 
 /**
- * The lifecycle status of a {@link org.asteriskjava.live.Me}.
+ * The lifecycle status of a {@link org.asteriskjava.live.MeetMeUser}.
  * 
  * @author srt
  * @version $Id: ChannelState.java 349 2006-05-22 17:47:00Z srt $
