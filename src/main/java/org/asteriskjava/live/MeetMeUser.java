@@ -44,19 +44,32 @@ public interface MeetMeUser extends LiveObject
     Date getDateJoined();
 
     /**
-     * Returns the date this user left the MeetMe room.
+     * Returns the date this user left the MeetMe room.<br>
+     * This property is <code>null</code> as long as the user is
+     * in state {@link MeetMeUserState#JOINED} and set to date the
+     * user left when entering {@link MeetMeUserState#LEFT}.
      * 
-     * @return the date this user left the MeetMe room.
+     * @return the date this user left the MeetMe room or 
+     *         <code>null</code> if the user did not yet leave.
      */
     Date getDateLeft();
     
     /**
-     * Returns the lifecycle status of this MeetMeUser.
+     * Returns the lifecycle status of this MeetMeUser.<br>
+     * Initially the user is in state {@link MeetMeUserState#JOINED}.
      * 
      * @return the lifecycle status of this MeetMeUser.
      */
     MeetMeUserState getState();
 
+    /**
+     * Returns the MeetMe room this user joined.<br>
+     * This property is immutable.
+     * 
+     * @return the MeetMe room this user joined.
+     */
+    MeetMeRoom getRoom();
+    
     /**
      * Returns the channel associated with this user.<br>
      * This property is immutable.
