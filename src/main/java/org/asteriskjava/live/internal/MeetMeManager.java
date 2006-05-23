@@ -158,18 +158,23 @@ class MeetMeManager
         }
         else if (event instanceof MeetMeTalkingEvent)
         {
-            user.setTalking(true);
+            Boolean status;
+
+            status = ((MeetMeTalkingEvent) event).getStatus();
+            if (status != null)
+            {
+                user.setTalking(status);
+            }
         }
-        else if (event instanceof MeetMeStopTalkingEvent)
+        else if (event instanceof MeetMeStopTalkingEvent) // only for Asterisk 1.2
         {
             user.setTalking(false);
         }
         else if (event instanceof MeetMeMuteEvent)
         {
             Boolean status;
-            
+
             status = ((MeetMeMuteEvent) event).getStatus();
-            
             if (status != null)
             {
                 user.setMuted(status);

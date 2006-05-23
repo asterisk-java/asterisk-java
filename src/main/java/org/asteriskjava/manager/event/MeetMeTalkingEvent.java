@@ -35,11 +35,44 @@ public class MeetMeTalkingEvent extends MeetMeEvent
      */
     private static final long serialVersionUID = -8554403451985143184L;
 
+    private Boolean status = Boolean.TRUE;
+
     /**
      * @param source
      */
     public MeetMeTalkingEvent(Object source)
     {
         super(source);
+    }
+
+    /**
+     * Returns whether the user has started or stopped talking.<br>
+     * Until Asterisk 1.2 Asterisk used different events to indicate start
+     * and stop: This MeetMeTalkingEvent when the user started talking and the
+     * {@link MeetMeStopTalkingEvent} when he stopped. With Asterisk 1.2
+     * only this MeetMeTalkingEvent is used with the status property indicating
+     * start and stop. For backwards compatibility this property defaults to
+     * <code>true</code> so when used with version 1.2 of Asterisk you get
+     * <code>true</code> when calling {@link #getStatus()}.
+     * 
+     * @return <code>true</code> if ther user has started talking,
+     *         <code>false</code> if the user has stopped talking.
+     * @since 0.3
+     */
+    public Boolean getStatus()
+    {
+        return status;
+    }
+
+    /**
+     * Sets whether the user has started or stopped talking.
+     * 
+     * @return <code>true</code> if ther user has started talking,
+     *         <code>false</code> if the user has stopped talking.
+     * @since 0.3
+     */
+    public void setStatus(Boolean status)
+    {
+        this.status = status;
     }
 }

@@ -21,7 +21,9 @@ package org.asteriskjava.manager.event;
  * conference.<br>
  * To enable talker detection you must pass the option 'T' to the MeetMe application.<br>
  * It is implemented in <code>apps/app_meetme.c</code><br>
- * Available since Asterisk 1.2
+ * Available only in Asterisk 1.2. Asterisk 1.4 sends a 
+ * {@link org.asteriskjava.manager.event.MeetMeTalkingEvent} with status set to
+ * <code>false</code> instead. 
  * 
  * @see org.asteriskjava.manager.event.MeetMeTalkingEvent
  * @author srt
