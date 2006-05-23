@@ -165,6 +165,10 @@ class MeetMeManager
             {
                 user.setTalking(status);
             }
+            else
+            {
+                user.setTalking(true);
+            }
         }
         else if (event instanceof MeetMeStopTalkingEvent) // only for Asterisk 1.2
         {
