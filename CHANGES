@@ -37,7 +37,9 @@ Asterisk-Java 0.3
 	* Added MeetMeMuteEvent and muted property for MeetMeUser.
 	* Added PlayDtmfAction and playDtmf() method for AsteriskChannel.
 	* Added several new event properties for Asterisk 1.4:
+	  - MeetMeEvent: channel and uniqueId
 	  - MeetMeLeaveEvent: callerIdNum, callerIdName and duration
+	  - MeetMeTalkingEvent: status
 	  - StatusEvent: callerIdNum and callerIdName
 	  - OriginateEvent: callerIdNum and callerIdName
 	  - JoinEvent and LeaveEvent: uniqueId
