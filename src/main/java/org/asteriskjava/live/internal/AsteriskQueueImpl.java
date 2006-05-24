@@ -28,14 +28,15 @@ import org.asteriskjava.live.AsteriskQueue;
  * @author srt
  * @version $Id$
  */
-class AsteriskQueueImpl implements AsteriskQueue
+class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
 {
-    private String name;
+    private final String name;
     private Integer max;
-    private ArrayList<AsteriskChannel> entries;
+    private final ArrayList<AsteriskChannel> entries;
 
-    AsteriskQueueImpl(String name)
+    AsteriskQueueImpl(ManagerConnectionPool connectionPool, String name)
     {
+        super(connectionPool);
         this.name = name;
         this.entries = new ArrayList<AsteriskChannel>(25);
     }

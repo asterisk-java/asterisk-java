@@ -43,7 +43,6 @@ import org.asteriskjava.manager.response.ManagerResponse;
 class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
 {
     private static final String CAUSE_VARIABLE_NAME = "PRI_CAUSE";
-    private final ManagerConnectionPool connectionPool;
 
     /**
      * Unique id of this channel.
@@ -114,8 +113,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
      */
     AsteriskChannelImpl(final ManagerConnectionPool connectionPool, final String name, final String id, final Date dateOfCreation)
     {
-        super();
-        this.connectionPool = connectionPool;
+        super(connectionPool);
         this.name = name;
         this.id = id;
         this.dateOfCreation = dateOfCreation;

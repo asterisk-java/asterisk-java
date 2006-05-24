@@ -142,7 +142,7 @@ class QueueManager
 
         if (queue == null)
         {
-            queue = new AsteriskQueueImpl(event.getQueue());
+            queue = new AsteriskQueueImpl(connectionPool, event.getQueue());
             isNew = true;
         }
 

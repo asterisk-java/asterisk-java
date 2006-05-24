@@ -10,23 +10,22 @@ import org.asteriskjava.live.MeetMeRoom;
 import org.asteriskjava.live.MeetMeUser;
 import org.asteriskjava.manager.action.CommandAction;
 
-class MeetMeRoomImpl implements MeetMeRoom
+class MeetMeRoomImpl extends AbstractLiveObject implements MeetMeRoom
 {
     private static final String COMMAND_PREFIX = "meetme";
     private static final String LOCK_COMMAND = "lock";
     private static final String UNLOCK_COMMAND = "unlock";
 
-    final ManagerConnectionPool connectionPool;
-    final String roomNumber;
+    private final String roomNumber;
     
     /**
      * Maps userNumber to user
      */
-    final Map<Integer, MeetMeUserImpl> users;
+    private final Map<Integer, MeetMeUserImpl> users;
 
     MeetMeRoomImpl(ManagerConnectionPool connectionPool, String roomNumber)
     {
-        this.connectionPool = connectionPool;
+        super(connectionPool);
         this.roomNumber = roomNumber;
         this.users = new HashMap<Integer, MeetMeUserImpl>(20);
     }

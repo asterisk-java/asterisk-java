@@ -16,8 +16,11 @@ abstract class AbstractLiveObject implements LiveObject
 {
     private final PropertyChangeSupport changes;
 
-    AbstractLiveObject()
+    protected final ManagerConnectionPool connectionPool;
+
+    AbstractLiveObject(ManagerConnectionPool connectionPool)
     {
+        this.connectionPool = connectionPool;
         this.changes = new PropertyChangeSupport(this);
     }
 

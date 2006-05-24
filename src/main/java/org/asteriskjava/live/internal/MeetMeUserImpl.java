@@ -14,8 +14,6 @@ class MeetMeUserImpl extends AbstractLiveObject implements MeetMeUser
     private static final String UNMUTE_COMMAND = "unmute";
     private static final String KICK_COMMAND = "kick";
 
-    private final ManagerConnectionPool connectionPool;
-    
     private final MeetMeRoomImpl room;
     private final Integer userNumber;
     private final AsteriskChannelImpl channel;
@@ -29,8 +27,7 @@ class MeetMeUserImpl extends AbstractLiveObject implements MeetMeUser
     MeetMeUserImpl(ManagerConnectionPool connectionPool, MeetMeRoomImpl room, Integer userNumber,
             AsteriskChannelImpl channel, Date dateJoined)
     {
-        super();
-        this.connectionPool = connectionPool;
+        super(connectionPool);
         this.room = room;
         this.userNumber = userNumber;
         this.channel = channel;
