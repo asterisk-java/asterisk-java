@@ -19,7 +19,6 @@ package org.asteriskjava.manager.internal;
 import java.io.IOException;
 
 import org.asteriskjava.AsteriskVersion;
-import org.asteriskjava.manager.AsteriskServer;
 import org.asteriskjava.manager.action.ChallengeAction;
 import org.asteriskjava.manager.action.LoginAction;
 import org.asteriskjava.manager.action.LogoffAction;
@@ -38,7 +37,6 @@ public class ManagerWriterMock implements ManagerWriter
     private static final long RESPONSE_LATENCY = 20;
 
     private Dispatcher dispatcher;
-    private AsteriskServer asteriskServer;
 
     private String expectedKey;
     private String expectedUsername;
@@ -61,11 +59,6 @@ public class ManagerWriterMock implements ManagerWriter
     public void setDispatcher(Dispatcher dispatcher)
     {
         this.dispatcher = dispatcher;
-    }
-
-    public void setAsteriskServer(AsteriskServer asteriskServer)
-    {
-        this.asteriskServer = asteriskServer;
     }
 
     public void setExpectedKey(String key)
@@ -105,7 +98,7 @@ public class ManagerWriterMock implements ManagerWriter
                         // ignore
                     }
                     ProtocolIdentifierReceivedEvent protocolIdentifierReceivedEvent;
-                    protocolIdentifierReceivedEvent = new ProtocolIdentifierReceivedEvent(asteriskServer);
+                    protocolIdentifierReceivedEvent = new ProtocolIdentifierReceivedEvent(this);
                     protocolIdentifierReceivedEvent.setProtocolIdentifier("Asterisk Call Manager/1.0");
                     protocolIdentifierReceivedEvent.setDateReceived(DateUtil.getDate());
                     dispatcher.dispatchEvent(protocolIdentifierReceivedEvent);

@@ -27,7 +27,6 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-import org.asteriskjava.manager.AsteriskServer;
 import org.asteriskjava.manager.AuthenticationFailedException;
 import org.asteriskjava.manager.ManagerConnectionState;
 import org.asteriskjava.manager.ManagerEventListener;
@@ -46,12 +45,9 @@ public class ManagerConnectionImplTest extends TestCase
     protected ManagerWriterMock mockWriter;
     protected ManagerReaderMock mockReader;
     protected MockedManagerConnectionImpl mc;
-    protected AsteriskServer asteriskServer;
 
     protected void setUp() throws Exception
     {
-        asteriskServer = new AsteriskServer("localhost", 5038);
-
         mockWriter = new ManagerWriterMock();
         mockWriter.setExpectedUsername("username");
         // md5 sum of 12345password
@@ -65,15 +61,12 @@ public class ManagerConnectionImplTest extends TestCase
                 mockSocket);
 
         mockWriter.setDispatcher(mc);
-        mockWriter.setAsteriskServer(asteriskServer);
     }
 
     public void testDefaultConstructor()
     {
-        assertEquals("Invalid default hostname", "localhost", mc
-                .getAsteriskServer().getHostname());
-        assertEquals("Invalid default port", 5038, mc.getAsteriskServer()
-                .getPort());
+        assertEquals("Invalid default hostname", "localhost", mc.getHostname());
+        assertEquals("Invalid default port", 5038, mc.getPort());
     }
 
     public void testRegisterUserEventClass()
@@ -504,7 +497,7 @@ public class ManagerConnectionImplTest extends TestCase
         DisconnectEvent disconnectEvent;
 
         replay(mockSocket);
-        disconnectEvent = new DisconnectEvent(asteriskServer);
+        disconnectEvent = new DisconnectEvent(this);
 
         // fake successful login
         mc.setState(ManagerConnectionState.CONNECTED);
@@ -538,7 +531,7 @@ public class ManagerConnectionImplTest extends TestCase
         DisconnectEvent disconnectEvent;
 
         replay(mockSocket);
-        disconnectEvent = new DisconnectEvent(asteriskServer);
+        disconnectEvent = new DisconnectEvent(this);
 
         // fake successful login
         mc.setState(ManagerConnectionState.CONNECTED);
@@ -577,7 +570,7 @@ public class ManagerConnectionImplTest extends TestCase
 
         mockSocket.close();
         replay(mockSocket);
-        disconnectEvent = new DisconnectEvent(asteriskServer);
+        disconnectEvent = new DisconnectEvent(this);
 
         // fake successful login
         mc.setState(ManagerConnectionState.CONNECTED);
@@ -617,7 +610,7 @@ public class ManagerConnectionImplTest extends TestCase
         final List<Integer> list;
 
         // verify that event handlers are called in the correct order
-        event = new NewChannelEvent(new AsteriskServer());
+        event = new NewChannelEvent(this);
         list = createMock(List.class);
         for (int i = 0; i < count; i++)
         {
@@ -704,7 +697,7 @@ public class ManagerConnectionImplTest extends TestCase
         }
 
         @Override
-        protected ManagerReader createReader(Dispatcher d, AsteriskServer s)
+        protected ManagerReader createReader(Dispatcher d, Object source)
         {
             createReaderCalls++;
             return mockReader;

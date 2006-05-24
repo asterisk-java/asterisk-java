@@ -28,12 +28,10 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-import org.asteriskjava.manager.AsteriskServer;
 import org.asteriskjava.manager.event.DisconnectEvent;
 import org.asteriskjava.manager.event.ManagerEvent;
 import org.asteriskjava.manager.event.ProtocolIdentifierReceivedEvent;
 import org.asteriskjava.manager.event.StatusCompleteEvent;
-import org.asteriskjava.manager.internal.ManagerReaderImpl;
 import org.asteriskjava.manager.response.CommandResponse;
 import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.util.DateUtil;
@@ -44,16 +42,14 @@ public class ManagerReaderImplTest extends TestCase
     private Date now;
     private MockedDispatcher dispatcher;
     private SocketConnectionFacade socketConnectionFacade;
-    private AsteriskServer asteriskServer;
     private ManagerReader managerReader;
 
     protected void setUp()
     {
         now = new Date();
         DateUtil.overrideCurrentDate(now);
-        asteriskServer = new AsteriskServer();
         dispatcher = new MockedDispatcher();
-        managerReader = new ManagerReaderImpl(dispatcher, asteriskServer);
+        managerReader = new ManagerReaderImpl(dispatcher, this);
 
         socketConnectionFacade = createMock(SocketConnectionFacade.class);
     }

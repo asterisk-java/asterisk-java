@@ -70,7 +70,7 @@ public class DefaultManagerConnection implements ManagerConnection
     }
 
     /**
-     * Sets the hostname of the asterisk server to connect to.<br>
+     * Sets the hostname of the Asterisk server to connect to.<br>
      * Default is <code>localhost</code>.
      * 
      * @param hostname the hostname to connect to
@@ -81,8 +81,8 @@ public class DefaultManagerConnection implements ManagerConnection
     }
 
     /**
-     * Sets the port to use to connect to the asterisk server. This is the port
-     * specified in asterisk's <code>manager.conf</code> file.<br>
+     * Sets the port to use to connect to the Asterisk server. This is the port
+     * specified in Asterisk's <code>manager.conf</code> file.<br>
      * Default is 5038.
      * 
      * @param port the port to connect to
@@ -93,8 +93,8 @@ public class DefaultManagerConnection implements ManagerConnection
     }
 
     /**
-     * Sets the username to use to connect to the asterisk server. This is the
-     * username specified in asterisk's <code>manager.conf</code> file.
+     * Sets the username to use to connect to the Asterisk server. This is the
+     * username specified in Asterisk's <code>manager.conf</code> file.
      * 
      * @param username the username to use for login
      */
@@ -104,7 +104,7 @@ public class DefaultManagerConnection implements ManagerConnection
     }
 
     /**
-     * Sets the password to use to connect to the asterisk server. This is the
+     * Sets the password to use to connect to the Asterisk server. This is the
      * password specified in Asterisk's <code>manager.conf</code> file.
      * 
      * @param password the password to use for login
@@ -180,6 +180,16 @@ public class DefaultManagerConnection implements ManagerConnection
     }
 
     /* Implementation of ManagerConnection interface */
+
+    public String getHostname()
+    {
+        return connection.getHostname();
+    }
+
+    public int getPort()
+    {
+        return connection.getPort();
+    }
 
     public void registerUserEventClass(Class userEventClass)
     {
@@ -286,10 +296,5 @@ public class DefaultManagerConnection implements ManagerConnection
     public ManagerConnectionState getState()
     {
         return connection.getState();
-    }
-
-    public AsteriskServer getAsteriskServer()
-    {
-        return connection.getAsteriskServer();
     }
 }

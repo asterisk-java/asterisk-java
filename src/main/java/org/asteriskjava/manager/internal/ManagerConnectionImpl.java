@@ -35,7 +35,6 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.asteriskjava.AsteriskVersion;
-import org.asteriskjava.manager.AsteriskServer;
 import org.asteriskjava.manager.AuthenticationFailedException;
 import org.asteriskjava.manager.EventTimeoutException;
 import org.asteriskjava.manager.ManagerConnection;
@@ -84,9 +83,8 @@ import org.asteriskjava.util.internal.SocketConnectionFacadeImpl;
  */
 public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 {
-    private static final int RECONNECTION_INTERVAL_2 = 5000;
-
     private static final int RECONNECTION_INTERVAL_1 = 50;
+    private static final int RECONNECTION_INTERVAL_2 = 5000;
 
     /**
      * Instance logger.
@@ -100,9 +98,14 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
     /* Config attributes */
     /**
-     * The Asterisk server to connect to.
+     * Hostname of the Asterisk server to connect to.
      */
-    private AsteriskServer asteriskServer;
+    private String hostname = "localhost";
+
+    /**
+     * TCP port to connect to.  
+     */
+    private int port = 5038;
 
     /**
      * The username to use for login as defined in Asterisk's
@@ -210,8 +213,6 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
      */
     public ManagerConnectionImpl()
     {
-        this.asteriskServer = new AsteriskServer();
-
         this.responseListeners = new HashMap<String, ManagerResponseListener>();
         this.responseEventListeners = new HashMap<String, ManagerEventListener>();
         this.eventListeners = new ArrayList<ManagerEventListener>();
@@ -220,9 +221,9 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
     // the following two methods can be overriden when running test cases to
     // return a mock object
-    protected ManagerReader createReader(Dispatcher dispatcher, AsteriskServer server)
+    protected ManagerReader createReader(Dispatcher dispatcher, Object source)
     {
-        return new ManagerReaderImpl(dispatcher, server);
+        return new ManagerReaderImpl(dispatcher, source);
     }
 
     protected ManagerWriter createWriter()
@@ -238,7 +239,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
      */
     public void setHostname(String hostname)
     {
-        this.asteriskServer.setHostname(hostname);
+        this.hostname = hostname;
     }
 
     /**
@@ -250,7 +251,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
      */
     public void setPort(int port)
     {
-        this.asteriskServer.setPort(port);
+        this.port = port;
     }
 
     /**
@@ -316,11 +317,21 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
     /* Implementation of ManagerConnection interface */
 
+    public String getHostname()
+    {
+        return hostname;
+    }
+
+    public int getPort()
+    {
+        return port;
+    }
+
     public void registerUserEventClass(Class userEventClass)
     {
         if (reader == null)
         {
-            reader = createReader(this, asteriskServer);
+            reader = createReader(this, this);
         }
 
         reader.registerEventClass(userEventClass);
@@ -494,7 +505,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         logger.info("Determined Asterisk version: " + version);
 
         // generate pseudo event indicating a successful login
-        ConnectEvent connectEvent = new ConnectEvent(asteriskServer);
+        ConnectEvent connectEvent = new ConnectEvent(this);
         connectEvent.setProtocolIdentifier(getProtocolIdentifier());
         connectEvent.setDateReceived(DateUtil.getDate());
         // TODO could this cause a deadlock?
@@ -530,13 +541,12 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
     protected synchronized void connect() throws IOException
     {
-        logger.info("Connecting to " + asteriskServer.getHostname() + " port "
-                + asteriskServer.getPort());
+        logger.info("Connecting to " + hostname + ":" + port);
 
         if (reader == null)
         {
-            logger.debug("Creating reader for " + asteriskServer);
-            reader = createReader(this, asteriskServer);
+            logger.debug("Creating reader for " + hostname + ":" + port);
+            reader = createReader(this, this);
         }
 
         if (writer == null)
@@ -565,8 +575,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
     protected SocketConnectionFacade createSocket() throws IOException
     {
-        return new SocketConnectionFacadeImpl(asteriskServer.getHostname(),
-                asteriskServer.getPort(), socketTimeout);
+        return new SocketConnectionFacadeImpl(hostname, port, socketTimeout);
     }
 
     public synchronized boolean isConnected()
@@ -912,11 +921,6 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     public ManagerConnectionState getState()
     {
         return state;
-    }
-
-    public AsteriskServer getAsteriskServer()
-    {
-        return asteriskServer;
     }
 
     /* Implementation of Dispatcher: callbacks for ManagerReader */

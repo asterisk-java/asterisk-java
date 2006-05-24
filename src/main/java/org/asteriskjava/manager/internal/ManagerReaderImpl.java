@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.asteriskjava.manager.AsteriskServer;
 import org.asteriskjava.manager.DefaultManagerConnection;
 import org.asteriskjava.manager.ResponseBuilder;
 import org.asteriskjava.manager.event.DisconnectEvent;
@@ -68,9 +67,9 @@ public class ManagerReaderImpl implements ManagerReader
     private final Dispatcher dispatcher;
 
     /**
-     * The asterisk server we are reading from.
+     * The source to use when creating {@link ManagerEvent}s.
      */
-    private final AsteriskServer asteriskServer;
+    private final Object source;
 
     /**
      * The socket to use for reading from the asterisk server.
@@ -91,11 +90,12 @@ public class ManagerReaderImpl implements ManagerReader
      * Creates a new ManagerReaderImpl.
      * 
      * @param dispatcher the dispatcher to use for dispatching events and responses.
+     * @param source the source to use when creating {@link ManagerEvent}s
      */
-    public ManagerReaderImpl(final Dispatcher dispatcher, AsteriskServer asteriskServer)
+    public ManagerReaderImpl(final Dispatcher dispatcher, Object source)
     {
         this.dispatcher = dispatcher;
-        this.asteriskServer = asteriskServer;
+        this.source = source;
 
         this.eventBuilder = new EventBuilderImpl();
         this.responseBuilder = new ResponseBuilderImpl();
@@ -215,7 +215,7 @@ public class ManagerReaderImpl implements ManagerReader
                         line.startsWith("Asterisk Manager Proxy/"))
                 {
                     ProtocolIdentifierReceivedEvent protocolIdentifierReceivedEvent;
-                    protocolIdentifierReceivedEvent = new ProtocolIdentifierReceivedEvent(asteriskServer);
+                    protocolIdentifierReceivedEvent = new ProtocolIdentifierReceivedEvent(source);
                     protocolIdentifierReceivedEvent.setProtocolIdentifier(line);
                     protocolIdentifierReceivedEvent.setDateReceived(DateUtil.getDate());
                     dispatcher.dispatchEvent(protocolIdentifierReceivedEvent);
@@ -238,7 +238,7 @@ public class ManagerReaderImpl implements ManagerReader
                     else if (buffer.containsKey("event"))
                     {
                         logger.debug("attempting to build event: " + buffer.get("event"));
-                        ManagerEvent event = buildEvent(asteriskServer, buffer);
+                        ManagerEvent event = buildEvent(source, buffer);
                         if (event != null)
                         {
                             dispatcher.dispatchEvent(event);
@@ -288,7 +288,7 @@ public class ManagerReaderImpl implements ManagerReader
         {
             this.dead = true;
             // cleans resources and reconnects if needed
-            DisconnectEvent disconnectEvent = new DisconnectEvent(asteriskServer);
+            DisconnectEvent disconnectEvent = new DisconnectEvent(source);
             disconnectEvent.setDateReceived(DateUtil.getDate());
             dispatcher.dispatchEvent(disconnectEvent);
         }

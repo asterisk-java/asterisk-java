@@ -43,6 +43,20 @@ import org.asteriskjava.manager.response.ManagerResponse;
 public interface ManagerConnection
 {
     /**
+     * Returns the hostname of the connected Asterisk server.
+     * 
+     * @return the hostname of the connected Asterisk server.
+     */
+    String getHostname();
+
+    /**
+     * Returns the Manager API port of the connected Asterisk server.
+     *  
+     * @return the Manager API port of the connected Asterisk server.
+     */
+    int getPort();
+
+    /**
      * Registers a new user event type.<br>
      * Asterisk allows you to send custom events via the UserEvent application.
      * If you choose to send such events you can extend the abstract class
@@ -323,13 +337,6 @@ public interface ManagerConnection
      * @deprecated this method is deprecated and will be removed in Asterisk-Java 0.4.
      */
     void removeEventHandler(ManagerEventHandler eventHandler);
-
-    /**
-     * Returns the Asterisk server of this connection.
-     * 
-     * @return the Asterisk server of this connection.
-     */
-    AsteriskServer getAsteriskServer();
 
     /**
      * Checks if the connection to the Asterisk server is established.
