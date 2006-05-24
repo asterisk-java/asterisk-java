@@ -26,6 +26,8 @@ import org.asteriskjava.manager.response.MailboxCountResponse;
 import org.asteriskjava.manager.response.MailboxStatusResponse;
 import org.asteriskjava.manager.response.ManagerError;
 import org.asteriskjava.manager.response.ManagerResponse;
+import org.asteriskjava.manager.response.proxy.ManagerProxyError;
+import org.asteriskjava.manager.response.proxy.ManagerProxyResponse;
 
 
 /**
@@ -48,8 +50,10 @@ class ResponseBuilderImpl implements ResponseBuilder
     {
         ManagerResponse response;
         String responseType;
+        String proxyResponseType;
         
-        responseType = (String) attributes.get("response");
+        responseType = attributes.get("response");
+        proxyResponseType = attributes.get("proxyresponse");
 
         // determine type
         if ("error".equalsIgnoreCase(responseType))
@@ -97,28 +101,43 @@ class ResponseBuilderImpl implements ResponseBuilder
             extensionStateResponse.setStatus(new Integer((String) attributes.get("status")));
             response = extensionStateResponse;
         }
+        else if (responseType == null && "error".equalsIgnoreCase(proxyResponseType))
+        {
+            response = new ManagerProxyError();
+        }
+        else if (responseType == null && proxyResponseType != null)
+        {
+            response = new ManagerProxyResponse();
+        }
         else
         {
             response = new ManagerResponse();
         }
 
         // fill known attributes
-        response.setResponse(responseType);
+        if (responseType != null)
+        {
+            response.setResponse(responseType);
+        }
+        else if (proxyResponseType != null)
+        {
+            response.setResponse(proxyResponseType);
+        }
 
         // clone this map as it is reused by the ManagerReader
         response.setAttributes(new HashMap<String, String>(attributes));
 
         if (attributes.containsKey("actionid"))
         {
-            response.setActionId((String) attributes.get("actionid"));
+            response.setActionId(attributes.get("actionid"));
         }
         if (attributes.containsKey("message"))
         {
-            response.setMessage((String) attributes.get("message"));
+            response.setMessage(attributes.get("message"));
         }
         if (attributes.containsKey("uniqueid"))
         {
-            response.setUniqueId((String) attributes.get("uniqueid"));
+            response.setUniqueId(attributes.get("uniqueid"));
         }
 
         return response;

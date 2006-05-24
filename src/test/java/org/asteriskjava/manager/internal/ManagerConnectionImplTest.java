@@ -37,7 +37,6 @@ import org.asteriskjava.manager.event.ConnectEvent;
 import org.asteriskjava.manager.event.DisconnectEvent;
 import org.asteriskjava.manager.event.ManagerEvent;
 import org.asteriskjava.manager.event.NewChannelEvent;
-import org.asteriskjava.manager.event.ProtocolIdentifierReceivedEvent;
 import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.util.SocketConnectionFacade;
 
@@ -153,16 +152,16 @@ public class ManagerConnectionImplTest extends TestCase
 
         assertEquals("state is not CONNECTED", ManagerConnectionState.CONNECTED, mc.getState());
 
-        assertEquals("must have handled exactly two events", 2,
+        assertEquals("must have handled exactly one events", 1,
                 listener.eventsHandled.size());
-
+/*
         assertTrue(
                 "first event handled must be a ProtocolIdentifierReceivedEvent",
                 listener.eventsHandled.get(0) instanceof ProtocolIdentifierReceivedEvent);
-
+*/
         assertTrue(
-                "second event handled must be a ConnectEvent",
-                listener.eventsHandled.get(1) instanceof ConnectEvent);
+                "event handled must be a ConnectEvent",
+                listener.eventsHandled.get(0) instanceof ConnectEvent);
 
         verify(mockSocket);
         assertTrue("login() took longer than 1 second, probably a notify error", duration <= 1000);
@@ -516,7 +515,7 @@ public class ManagerConnectionImplTest extends TestCase
         mc.dispatchEvent(disconnectEvent);
         
         // wait for reconnect thread to do its work
-        Thread.sleep(200);
+        Thread.sleep(500);
 
         assertEquals("createSocket not called 1 time", 1, mc.createSocketCalls);
         assertEquals("createWriter not called 1 time", 1, mc.createWriterCalls);
@@ -526,7 +525,6 @@ public class ManagerConnectionImplTest extends TestCase
                 mockWriter.challengeActionsSent);
         assertEquals("login action not sent 1 time", 1,
                 mockWriter.loginActionsSent);
-        // 1 other action sent to determine version
         assertEquals("unexpected other actions sent", 1,
                 mockWriter.otherActionsSent);
 

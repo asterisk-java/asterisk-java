@@ -498,7 +498,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         connectEvent.setProtocolIdentifier(getProtocolIdentifier());
         connectEvent.setDateReceived(DateUtil.getDate());
         // TODO could this cause a deadlock?
-        dispatchEvent(connectEvent);
+        fireEvent(connectEvent);
     }
     
     protected AsteriskVersion determineVersion() throws IOException, TimeoutException
@@ -636,6 +636,9 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         return sendAction(action, defaultResponseTimeout);
     }
 
+    /*
+     * Implements synchronous sending of "simple" actions.
+     */
     public ManagerResponse sendAction(ManagerAction action, long timeout)
             throws IOException, TimeoutException, IllegalArgumentException,
             IllegalStateException
@@ -687,18 +690,20 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
             ManagerResponseListener callbackHandler) throws IOException,
             IllegalArgumentException, IllegalStateException
     {
-        String internalActionId;
+        final String internalActionId;
 
         if (action == null)
         {
-            throw new IllegalArgumentException(
-                    "Unable to send action: action is null.");
+            throw new IllegalArgumentException("Unable to send action: action is null.");
         }
 
+        // In general sending actions is only allowed while connected, though
+        // there are a few exceptions, these are handled here:
         if ((state == CONNECTING || state == RECONNECTING) 
                 && (action instanceof ChallengeAction || action instanceof LoginAction))
         {
             // when (re-)connecting challenge and login actions are ok.
+            //TODO add ProxyLogin  
         }
         else if (state == DISCONNECTING && action instanceof LogoffAction)
         {
@@ -738,14 +743,17 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         return sendEventGeneratingAction(action, defaultEventTimeout);
     }
 
+    /*
+     * Implements synchronous sending of event generating actions.
+     */
     public ResponseEvents sendEventGeneratingAction(
             EventGeneratingAction action, long timeout) throws IOException,
             EventTimeoutException, IllegalArgumentException,
             IllegalStateException
     {
-        ResponseEventsImpl responseEvents;
-        ResponseEventHandler responseEventHandler;
-        String internalActionId;
+        final ResponseEventsImpl responseEvents;
+        final ResponseEventHandler responseEventHandler;
+        final String internalActionId;
 
         if (action == null)
         {
@@ -758,8 +766,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                     "Unable to send action: actionCompleteEventClass for " + 
                     action.getClass().getName() + " is null.");
         }
-        else if (!ResponseEvent.class.isAssignableFrom(action
-                .getActionCompleteEventClass()))
+        else if (!ResponseEvent.class.isAssignableFrom(action.getActionCompleteEventClass()))
         {
             throw new IllegalArgumentException(
                     "Unable to send action: actionCompleteEventClass (" + 
@@ -775,8 +782,9 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         }
 
         responseEvents = new ResponseEventsImpl();
-        responseEventHandler = new ResponseEventHandler(responseEvents, action
-                .getActionCompleteEventClass());
+        responseEventHandler = new ResponseEventHandler(
+                responseEvents, 
+                action.getActionCompleteEventClass());
 
         internalActionId = createInternalActionId();
 
@@ -789,26 +797,28 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         // ...and event handler.
         synchronized (this.responseEventListeners)
         {
-            this.responseEventListeners.put(internalActionId,
-                    responseEventHandler);
+            this.responseEventListeners.put(internalActionId, responseEventHandler);
         }
 
         synchronized (responseEvents)
         {
             writer.sendAction(action, internalActionId);
-            try
+            // only wait if response has not yet arrived.
+            if ((responseEvents.getResponse() == null || !responseEvents.isComplete()))
             {
-                responseEvents.wait(timeout);
-            }
-            catch (InterruptedException ex)
-            {
-                logger.warn("Interrupted while waiting for response events");
+                try
+                {
+                    responseEvents.wait(timeout);
+                }
+                catch (InterruptedException e)
+                {
+                    logger.warn("Interrupted while waiting for response events.");
+                }
             }
         }
 
         // still no response or not all events received and timed out?
-        if ((responseEvents.getResponse() == null || !responseEvents
-                .isComplete()))
+        if ((responseEvents.getResponse() == null || !responseEvents.isComplete()))
         {
             // clean up
             synchronized (this.responseEventListeners)
@@ -823,8 +833,9 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                     responseEvents);
         }
 
-        // remove the event handler (note: the response handler is removed
-        // automatically when the response is received)
+        // remove the event handler
+        // Note: The response handler has already been removed  
+        //       when the response was received
         synchronized (this.responseEventListeners)
         {
             this.responseEventListeners.remove(internalActionId);
@@ -935,7 +946,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         // shouldn't happen
         if (response == null)
         {
-            logger.error("Unable to dispatch null response");
+            logger.error("Unable to dispatch null response. This should never happen. Please file a bug.");
             return;
         }
 
@@ -982,7 +993,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
             {
                 listener.onManagerResponse(response);
             }
-            catch (RuntimeException e)
+            catch (Exception e)
             {
                 logger.warn("Unexpected exception in response listener "
                         + listener.getClass().getName(), e);
@@ -1004,13 +1015,17 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         // shouldn't happen
         if (event == null)
         {
-            logger.error("Unable to dispatch null event");
+            logger.error("Unable to dispatch null event. This should never happen. Please file a bug.");
             return;
         }
 
         logger.debug("Dispatching event:\n" + event.toString());
 
-        // dispatch ResponseEvents to the appropriate responseEventHandler
+        // Some events need special treatment besides forwarding them to the
+        // registered eventListeners (clients)
+        // These events are handled here at first:
+        
+        // Dispatch ResponseEvents to the appropriate responseEventListener
         if (event instanceof ResponseEvent)
         {
             ResponseEvent responseEvent;
@@ -1031,9 +1046,9 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                         {
                             listener.onManagerEvent(event);
                         }
-                        catch (RuntimeException e)
+                        catch (Exception e)
                         {
-                            logger.warn("Unexpected exception in event listener "
+                            logger.warn("Unexpected exception in response event listener "
                                     + listener.getClass().getName(), e);
                         }
                     }
@@ -1044,16 +1059,20 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                 // ResponseEvent without internalActionId:
                 // this happens if the same event class is used as response event
                 // and as an event that is not triggered by a Manager command
-                // example: QueueMemberStatusEvent.
+                // Example: QueueMemberStatusEvent.
                 //logger.debug("ResponseEvent without "
                 //        + "internalActionId:\n" + responseEvent);
             }
         }
         if (event instanceof DisconnectEvent)
         {
+            // When we receive get disconnected while we are connected start
+            // a new reconnect thread and set the state to RECONNECTING.
             if (state == CONNECTED)
             {
                 state = RECONNECTING;
+                // close socket if still open and remove reference to readerThread
+                // After sending the DisconnectThread that thread will die anyway.
                 cleanup();
                 reconnectThread = new Thread(new Runnable()
                 {
@@ -1065,6 +1084,15 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                 reconnectThread.setName("ReconnectThread-" + reconnectThreadNum.getAndIncrement());
                 reconnectThread.setDaemon(true);
                 reconnectThread.start();
+                // now the DisconnectEvent is dispatched to registered eventListeners
+                // (clients) and after that the ManagerReaderThread is gone.
+                // So effectively we replaced the reader thread by a ReconnectThread.
+            }
+            else
+            {
+                // when we receive a DisconnectEvent while not connected we
+                // ignore it and do not send it to clients
+                return;
             }
         }
         if (event instanceof ProtocolIdentifierReceivedEvent)
@@ -1075,9 +1103,20 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
             protocolIdentifierReceivedEvent = (ProtocolIdentifierReceivedEvent) event;
             protocolIdentifier = protocolIdentifierReceivedEvent.getProtocolIdentifier();
             setProtocolIdentifier(protocolIdentifier);
+            // no need to send this event to clients
+            return;
         }
 
-        // dispatch to listeners registered by users
+        fireEvent(event);
+    }
+
+    /**
+     * Notifies all {@link ManagerEventListener}s registered by users.
+     * 
+     * @param event the event to propagate
+     */
+    private void fireEvent(ManagerEvent event)
+    {
         synchronized (eventListeners)
         {
             for (ManagerEventListener listener : eventListeners)
@@ -1094,7 +1133,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
             }
         }
     }
-
+    
     /**
      * This method is called when a {@link ProtocolIdentifierReceivedEvent} is received 
      * from the reader. Having received a correct protocol identifier is the precodition
