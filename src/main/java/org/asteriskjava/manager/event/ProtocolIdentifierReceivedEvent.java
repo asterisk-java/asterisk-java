@@ -19,7 +19,9 @@ package org.asteriskjava.manager.event;
 /**
  * A ProtocolIdentifierReceivedEvent is triggered when the network connection to the Asterisk 
  * server has been established and the protocol identifier has been sent.<br>
- * It is a pseudo event not directly related to an Asterisk generated event.
+ * It is a pseudo event not directly related to an Asterisk generated event.<br>
+ * The ProtocolIdentifierReceivedEvent is not dispatched to clients so you will
+ * probably never see it.
  * 
  * @author srt
  * @version $Id$
