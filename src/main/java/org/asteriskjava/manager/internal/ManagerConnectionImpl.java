@@ -696,7 +696,6 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                 && (action instanceof ChallengeAction || action instanceof LoginAction))
         {
             // when (re-)connecting challenge and login actions are ok.
-            //TODO add ProxyLogin  
         }
         else if (state == DISCONNECTING && action instanceof LogoffAction)
         {
@@ -914,7 +913,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     {
         return state;
     }
-    
+
     public AsteriskServer getAsteriskServer()
     {
         return asteriskServer;
@@ -1017,7 +1016,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         // Some events need special treatment besides forwarding them to the
         // registered eventListeners (clients)
         // These events are handled here at first:
-        
+
         // Dispatch ResponseEvents to the appropriate responseEventListener
         if (event instanceof ResponseEvent)
         {
@@ -1126,7 +1125,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
             }
         }
     }
-    
+
     /**
      * This method is called when a {@link ProtocolIdentifierReceivedEvent} is received 
      * from the reader. Having received a correct protocol identifier is the precodition
@@ -1235,7 +1234,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
             numTries++;
         }
     }
-    
+
     private void cleanup()
     {
         disconnect();
@@ -1351,7 +1350,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                     responseEvent = (ResponseEvent) event;
                     events.addEvent(responseEvent);
                 }
-    
+
                 // finished?
                 if (actionCompleteEventClass.isAssignableFrom(event.getClass()))
                 {
@@ -1384,14 +1383,14 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
             }
         }
     }
-    
+
     private class ProtocolIdentifierWrapper
     {
         String value;
     }
 
     // to be removed in 0.4
-    
+
     @SuppressWarnings("deprecation") 
     private class ManagerResponseListenerAdapter implements ManagerResponseListener
     {
