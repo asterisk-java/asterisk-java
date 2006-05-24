@@ -18,6 +18,8 @@ Asterisk-Java 0.3
 	* Fixed accountCode always being null in AgiRequest
 	* Fixed synchronization bug when generating internal action ids for
 	  the Manager API
+	* Fixed synchronous sendAction for responses that are received really
+	  fast, i.e. before the thread is put asleep.
 	* Fixed ConnectEvent being only fired after a successful 
 	  login (AJ-32)
 	* Added support for login with eventMask (AJ-28)

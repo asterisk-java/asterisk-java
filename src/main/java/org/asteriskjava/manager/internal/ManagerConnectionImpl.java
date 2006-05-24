@@ -649,13 +649,18 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         synchronized (result)
         {
             sendAction(action, callbackHandler);
-            try
+            // only wait if we did not yet receive the response.
+            // Responses may be returned really fast.
+            if (result.getResponse() == null)
             {
-                result.wait(timeout);
-            }
-            catch (InterruptedException ex)
-            {
-                logger.warn("Interrupted while waiting for result");
+                try
+                {
+                    result.wait(timeout);
+                }
+                catch (InterruptedException ex)
+                {
+                    logger.warn("Interrupted while waiting for result");
+                }
             }
         }
     
