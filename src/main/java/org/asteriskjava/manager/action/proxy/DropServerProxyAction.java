@@ -1,8 +1,9 @@
 package org.asteriskjava.manager.action.proxy;
 
 /**
- * Disconnects a proxy<->server session.
+ * Disconnects a proxy-to-server session.
  * 
+ * @see org.asteriskjava.manager.action.proxy.AddServerProxyAction
  * @author srt
  * @since 0.3
  */
@@ -15,11 +16,22 @@ public class DropServerProxyAction extends AbstractManagerProxyAction
 
     private String server;
 
+    /**
+     * Creates a new empty DropServerProxyAction.
+     */
     public DropServerProxyAction()
     {
-        
+
     }
-    
+
+    /**
+     * Creates a new DropServerProxyAction that disconnects the given server
+     * from the proxy.
+     * 
+     * @param server hostname or IP address of the server to remove. This should
+     *            exactly match the entry in your config host= section, or
+     *            whatever name you used with ProxyAction: AddServer.
+     */
     public DropServerProxyAction(String server)
     {
         this.server = server;
@@ -43,8 +55,8 @@ public class DropServerProxyAction extends AbstractManagerProxyAction
 
     /**
      * Sets the hostname or IP address of the server to remove.<br>
-     * This should exactly match the entry in your config host= section,
-     * or whatever name you used with ProxyAction: AddServer.
+     * This should exactly match the entry in your config <code>host=</code>
+     * section, or whatever name you used with {@link AddServerProxyAction}.
      * 
      * @param server the hostname or IP address of the server to remove.
      */

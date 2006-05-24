@@ -569,13 +569,6 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                 asteriskServer.getPort(), socketTimeout);
     }
 
-    /**
-     * Returns <code>true</code> if there is a socket connection to the
-     * asterisk server, <code>false</code> otherwise.
-     * 
-     * @return <code>true</code> if there is a socket connection to the
-     *         asterisk server, <code>false</code> otherwise.
-     */
     public synchronized boolean isConnected()
     {
         return socket != null && !reconnecting && socket.isConnected();

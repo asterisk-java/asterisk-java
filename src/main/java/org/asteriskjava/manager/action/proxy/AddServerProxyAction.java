@@ -1,10 +1,11 @@
 package org.asteriskjava.manager.action.proxy;
 
 /**
- * Initiates a proxy connection to a new Asterisk Server; this has the same 
- * effect of including a host entry in your <code>host=</code> section 
- * of the configuration file.
+ * Initiates a proxy connection to a new Asterisk Server; this has the same
+ * effect of including a host entry in your <code>host=</code> section of the
+ * configuration file.
  * 
+ * @see org.asteriskjava.manager.action.proxy.DropServerProxyAction
  * @author srt
  * @since 0.3
  */
@@ -16,16 +17,26 @@ public class AddServerProxyAction extends AbstractManagerProxyAction
     private static final long serialVersionUID = 7080183949750838050L;
 
     private String server;
-    private Integer port;
+    private Integer port = 5038;
     private String username;
     private String secret;
-    private Boolean events;
+    private Boolean events = true;
 
+    /**
+     * Creates a new empty AddServerProxyAction.
+     */
     public AddServerProxyAction()
     {
-        
+
     }
-    
+
+    public AddServerProxyAction(String server, String username, String secret)
+    {
+        this.server = server;
+        this.username = username;
+        this.secret = secret;
+    }
+
     public AddServerProxyAction(String server, Integer port, String username, String secret, Boolean events)
     {
         this.server = server;
@@ -43,7 +54,7 @@ public class AddServerProxyAction extends AbstractManagerProxyAction
 
     /**
      * Returns the name or IP address of the new Asterisk server to connect to.
-     *  
+     * 
      * @return the name or IP address of the new server to connect to.
      */
     public String getServer()
@@ -63,7 +74,7 @@ public class AddServerProxyAction extends AbstractManagerProxyAction
 
     /**
      * Returns the manager port of the server to connect to.
-     *  
+     * 
      * @return the manager port of the server to connect to.
      */
     public Integer getPort()
