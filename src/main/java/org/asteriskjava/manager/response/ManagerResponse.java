@@ -43,14 +43,14 @@ public class ManagerResponse implements Serializable
     private String response;
     private String message;
     private String uniqueId;
-    private Map attributes;
+    private Map<String, String> attributes;
 
     /**
      * Returns a Map with all attributes of this response.<br>
      * The keys are all lower case!
      * @see #getAttribute(String)
      */
-    public Map getAttributes()
+    public Map<String, String> getAttributes()
     {
         return attributes;
     }
@@ -60,7 +60,7 @@ public class ManagerResponse implements Serializable
      * @param attributes Map with containing the attributes with all lower 
      * case keys. 
      */
-    public void setAttributes(Map attributes)
+    public void setAttributes(Map<String, String> attributes)
     {
         this.attributes = attributes;
     }
@@ -89,7 +89,7 @@ public class ManagerResponse implements Serializable
      */
     public String getAttribute(String key)
     {
-        return (String) attributes.get(key.toLowerCase());
+        return attributes.get(key.toLowerCase());
     }
 
     /**
