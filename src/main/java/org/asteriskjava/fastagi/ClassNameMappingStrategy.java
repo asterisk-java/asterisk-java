@@ -48,7 +48,9 @@ public class ClassNameMappingStrategy extends AbstractMappingStrategy
     }
 
     /**
-     * Creates a new ClassNameMappingStrategy.
+     * Creates a new ClassNameMappingStrategy indicating whether to use shared
+     * instances or not.
+     * 
      * @param shareInstances <code>true</code> to use shared instances,
      *                       <code>false</code> to create a new instance for
      *                       each request.

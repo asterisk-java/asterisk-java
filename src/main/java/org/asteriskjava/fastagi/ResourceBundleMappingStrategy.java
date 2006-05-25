@@ -70,7 +70,8 @@ public class ResourceBundleMappingStrategy extends AbstractMappingStrategy
     }
 
     /**
-     * Creates a new ResourceBundleMappingStrategy.
+     * Creates a new ResourceBundleMappingStrategy indicating whether to use shared
+     * instances or not.
      * 
      * @param shareInstances <code>true</code> to use shared instances,
      *                       <code>false</code> to create a new instance for
@@ -84,7 +85,8 @@ public class ResourceBundleMappingStrategy extends AbstractMappingStrategy
 
     /**
      * Creates a new ResourceBundleMappingStrategy with the given basename
-     * of the resource bundle to use.
+     * of the resource bundle to use and indicating whether to use shared
+     * instances or not.
      * 
      * @param resourceBundleName basename of the resource bundle to use
      * @param shareInstances <code>true</code> to use shared instances,
