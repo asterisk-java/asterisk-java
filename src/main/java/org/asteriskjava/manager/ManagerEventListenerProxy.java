@@ -6,8 +6,8 @@ import java.util.concurrent.Executors;
 import org.asteriskjava.manager.event.ManagerEvent;
 
 /**
- * Proxies a ManagerEventListener and dispatches events asynchronously
- * by using a single threaded executor. 
+ * Proxies a ManagerEventListener and dispatches events asynchronously by using
+ * a single threaded executor.
  * 
  * @author srt
  * @since 0.3
@@ -15,29 +15,52 @@ import org.asteriskjava.manager.event.ManagerEvent;
  */
 public class ManagerEventListenerProxy implements ManagerEventListener
 {
-    private final ManagerEventListener target;
     private final ExecutorService executor;
+    private ManagerEventListener target;
+
+    /**
+     * Creates a new ManagerEventListenerProxy.<br>
+     * You must set the target by calling {@link #setTarget(ManagerEventListener)}.
+     */
+    public ManagerEventListenerProxy()
+    {
+        this.executor = Executors.newSingleThreadExecutor();
+    }
 
     /**
      * Creates a new ManagerEventListenerProxy that notifies the given target
      * asynchronously when new events are received.
      * 
-     * @param target the target listener to invoke.
+     * @param target c
      */
     public ManagerEventListenerProxy(ManagerEventListener target)
     {
+        this();
         this.target = target;
-        this.executor = Executors.newSingleThreadExecutor();
     }
 
-    public void onManagerEvent(final ManagerEvent event)
+    /**
+     * Sets the target listener that is notified asynchronously when new events
+     * are received.
+     * c
+     * @param target the target listener to invoke.
+     */
+    public synchronized void setTarget(ManagerEventListener target)
     {
-        executor.execute(new Runnable()
+        this.target = target;
+    }
+
+    public synchronized void onManagerEvent(final ManagerEvent event)
+    {
+        if (target != null)
         {
-            public void run()
+            executor.execute(new Runnable()
             {
-                target.onManagerEvent(event);
-            }
-        });
+                public void run()
+                {
+                    target.onManagerEvent(event);
+                }
+            });
+        }
     }
 }
