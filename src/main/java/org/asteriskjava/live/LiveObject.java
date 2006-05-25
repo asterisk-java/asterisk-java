@@ -3,7 +3,7 @@ package org.asteriskjava.live;
 import java.beans.PropertyChangeListener;
 
 /**
- * Interface for all live objects that support property change notification.
+ * Interface for all live objects.
  * 
  * @author srt
  * @since 0.3
@@ -11,11 +11,18 @@ import java.beans.PropertyChangeListener;
 public interface LiveObject
 {
     /**
+     * Returns the AsteriskServer this live object belongs to.
+     * 
+     * @return the AsteriskServer this live object belongs to.
+     */
+    AsteriskServer getServer();
+    
+    /**
      * Adds a PropertyChangeListener that is notified whenever a property value changes.
      * 
      * @param listener listener to notify
      */
-    public void addPropertyChangeListener(PropertyChangeListener listener);
+    void addPropertyChangeListener(PropertyChangeListener listener);
 
     /**
      * Adds a PropertyChangeListener that is notified whenever a given property value changes.
@@ -24,7 +31,7 @@ public interface LiveObject
      * @param listener listener to notify
      * @see #addPropertyChangeListener(PropertyChangeListener)
      */
-    public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener);
+    void addPropertyChangeListener(String propertyName, PropertyChangeListener listener);
 
     /**
      * Removes the given PropertyChangeListener that was added by calling
@@ -32,7 +39,7 @@ public interface LiveObject
      * 
      * @param listener listener to remove
      */
-    public void removePropertyChangeListener(PropertyChangeListener listener);
+    void removePropertyChangeListener(PropertyChangeListener listener);
 
     /**
      * Removes the given PropertyChangeListener that was added by calling
@@ -41,5 +48,5 @@ public interface LiveObject
      * @param propertyName property that is observed
      * @param listener listener to remove
      */
-    public void removePropertyChangeListener(String propertyName, PropertyChangeListener listener);
+    void removePropertyChangeListener(String propertyName, PropertyChangeListener listener);
 }

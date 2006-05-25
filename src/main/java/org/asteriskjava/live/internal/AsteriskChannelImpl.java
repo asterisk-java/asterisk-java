@@ -111,9 +111,9 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
      * @param name name of this channel, for example "SIP/1310-20da".
      * @param id unique id of this channel, for example "1099015093.165".
      */
-    AsteriskChannelImpl(final ManagerConnectionPool connectionPool, final String name, final String id, final Date dateOfCreation)
+    AsteriskChannelImpl(final AsteriskServerImpl server, final String name, final String id, final Date dateOfCreation)
     {
-        super(connectionPool);
+        super(server);
         this.name = name;
         this.id = id;
         this.dateOfCreation = dateOfCreation;
@@ -364,7 +364,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
     {
         ManagerResponse response;
 
-        response = connectionPool.sendAction(new HangupAction(name));
+        response = server.sendAction(new HangupAction(name));
         if (response instanceof ManagerError)
         {
             throw new NoSuchChannelException("Channel '" + name + "' is not available: " + response.getMessage());
@@ -384,7 +384,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
     {
         ManagerResponse response;
 
-        response = connectionPool.sendAction(new RedirectAction(name, context, exten, priority));
+        response = server.sendAction(new RedirectAction(name, context, exten, priority));
         if (response instanceof ManagerError)
         {
             throw new NoSuchChannelException("Channel '" + name + "' is not available: " + response.getMessage());
@@ -397,11 +397,11 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
 
         if (linkedChannel != null)
         {
-            response = connectionPool.sendAction(new RedirectAction(name, linkedChannel.getName(), context, exten, priority, context, exten, priority));
+            response = server.sendAction(new RedirectAction(name, linkedChannel.getName(), context, exten, priority, context, exten, priority));
         }
         else
         {
-            response = connectionPool.sendAction(new RedirectAction(name, context, exten, priority));
+            response = server.sendAction(new RedirectAction(name, context, exten, priority));
         }
 
         if (response instanceof ManagerError)
@@ -415,7 +415,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         ManagerResponse response;
         String value;
 
-        response = connectionPool.sendAction(new GetVarAction(name, variable));
+        response = server.sendAction(new GetVarAction(name, variable));
         if (response instanceof ManagerError)
         {
             throw new NoSuchChannelException("Channel '" + name + "' is not available: " + response.getMessage());
@@ -432,7 +432,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
     {
         ManagerResponse response;
 
-        response = connectionPool.sendAction(new SetVarAction(name, variable, value));
+        response = server.sendAction(new SetVarAction(name, variable, value));
         if (response instanceof ManagerError)
         {
             throw new NoSuchChannelException("Channel '" + name + "' is not available: " + response.getMessage());
@@ -448,7 +448,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
             throw new IllegalArgumentException("DTMF digit to send must not be null");
         }
 
-        response = connectionPool.sendAction(new PlayDtmfAction(name, digit));
+        response = server.sendAction(new PlayDtmfAction(name, digit));
         if (response instanceof ManagerError)
         {
             throw new NoSuchChannelException("Channel '" + name + "' is not available: " + response.getMessage());

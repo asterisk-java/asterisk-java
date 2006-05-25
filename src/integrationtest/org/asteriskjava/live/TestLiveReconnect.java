@@ -9,7 +9,7 @@ package org.asteriskjava.live;
  * @author srt
  * @version $Id$
  */
-public class TestLiveReconnect extends AsteriskManagerTestCase
+public class TestLiveReconnect extends AsteriskServerTestCase
 {
     public void testLiveReconnect() throws Exception
     {

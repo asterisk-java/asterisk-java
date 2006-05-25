@@ -3,12 +3,10 @@ package org.asteriskjava.live.internal;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import org.asteriskjava.live.ChannelState;
-import org.asteriskjava.live.internal.AsteriskChannelImpl;
-import org.asteriskjava.live.internal.ManagerConnectionPool;
-import org.asteriskjava.util.DateUtil;
-
 import junit.framework.TestCase;
+
+import org.asteriskjava.live.ChannelState;
+import org.asteriskjava.util.DateUtil;
 
 public class AsteriskChannelImplTest extends TestCase
 {
@@ -17,8 +15,8 @@ public class AsteriskChannelImplTest extends TestCase
 
     public void setUp()
     {
-        ManagerConnectionPool pool = new ManagerConnectionPool(1);
-        channel = new AsteriskChannelImpl(pool, "SIP/1234", "0123456789.123", DateUtil.getDate());
+        AsteriskServerImpl server = new AsteriskServerImpl();
+        channel = new AsteriskChannelImpl(server, "SIP/1234", "0123456789.123", DateUtil.getDate());
         channel.setState(ChannelState.DOWN);
         numberOfChanges = 0;
     }

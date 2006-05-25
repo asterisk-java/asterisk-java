@@ -3,11 +3,11 @@ package org.asteriskjava.live.internal;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
+import org.asteriskjava.live.AsteriskServer;
 import org.asteriskjava.live.LiveObject;
 
 /**
- * Abstract base class for all live objects with support for property change
- * notification.
+ * Abstract base class for all live objects.
  * 
  * @author srt
  * @since 0.3
@@ -15,13 +15,17 @@ import org.asteriskjava.live.LiveObject;
 abstract class AbstractLiveObject implements LiveObject
 {
     private final PropertyChangeSupport changes;
+    protected final AsteriskServerImpl server;
 
-    protected final ManagerConnectionPool connectionPool;
-
-    AbstractLiveObject(ManagerConnectionPool connectionPool)
+    AbstractLiveObject(AsteriskServerImpl server)
     {
-        this.connectionPool = connectionPool;
+        this.server = server;
         this.changes = new PropertyChangeSupport(this);
+    }
+
+    public AsteriskServer getServer()
+    {
+        return server;
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener)

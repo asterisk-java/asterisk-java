@@ -24,10 +24,10 @@ class MeetMeUserImpl extends AbstractLiveObject implements MeetMeUser
     private boolean talking;
     private boolean muted;
 
-    MeetMeUserImpl(ManagerConnectionPool connectionPool, MeetMeRoomImpl room, Integer userNumber,
+    MeetMeUserImpl(AsteriskServerImpl server, MeetMeRoomImpl room, Integer userNumber,
             AsteriskChannelImpl channel, Date dateJoined)
     {
-        super(connectionPool);
+        super(server);
         this.room = room;
         this.userNumber = userNumber;
         this.channel = channel;
@@ -134,7 +134,7 @@ class MeetMeUserImpl extends AbstractLiveObject implements MeetMeUser
         sb.append(" ");
         sb.append(userNumber);
 
-        connectionPool.sendAction(new CommandAction(sb.toString()));
+        server.sendAction(new CommandAction(sb.toString()));
     }
     
     public String toString()

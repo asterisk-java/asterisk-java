@@ -13,7 +13,7 @@ import org.asteriskjava.manager.response.ManagerResponse;
  * @author srt
  * @version $Id$
  */
-public class SofthangupTest extends AsteriskManagerTestCase
+public class SofthangupTest extends AsteriskServerTestCase
 {
     public void testSofthangup() throws Exception
     {

@@ -16,15 +16,14 @@ import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
 /**
- * Manages MeetMe events on behalf of an AsteriskManager.
+ * Manages MeetMe events on behalf of an AsteriskServer.
  * 
  * @author srt
  */
 class MeetMeManager
 {
     private final Log logger = LogFactory.getLog(getClass());
-    
-    private final ManagerConnectionPool connectionPool;
+    private final AsteriskServerImpl server;
     private final ChannelManager channelManager;
     
     /**
@@ -32,9 +31,9 @@ class MeetMeManager
      */
     private final Map<String, MeetMeRoomImpl> rooms;
 
-    MeetMeManager(ManagerConnectionPool connectionPool, ChannelManager channelManager)
+    MeetMeManager(AsteriskServerImpl server, ChannelManager channelManager)
     {
-        this.connectionPool = connectionPool;
+        this.server = server;
         this.channelManager = channelManager;
         this.rooms = new HashMap<String, MeetMeRoomImpl>();
     }
@@ -121,7 +120,7 @@ class MeetMeManager
             }
             
             logger.info("Adding channel " + channel.getName() + " as user " + event.getUserNum() + " to room " + roomNumber);
-            user = new MeetMeUserImpl(connectionPool, room, event.getUserNum(), channel, event.getDateReceived());
+            user = new MeetMeUserImpl(server, room, event.getUserNum(), channel, event.getDateReceived());
             room.addUser(user);
             channel.setMeetMeUserImpl(user);
             return;
@@ -202,7 +201,7 @@ class MeetMeManager
             room = rooms.get(roomNumber); 
             if (room == null)
             {
-                room = new MeetMeRoomImpl(connectionPool, roomNumber);
+                room = new MeetMeRoomImpl(server, roomNumber);
                 rooms.put(roomNumber, room);
                 created = true;
             }

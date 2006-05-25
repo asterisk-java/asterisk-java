@@ -23,9 +23,9 @@ class MeetMeRoomImpl extends AbstractLiveObject implements MeetMeRoom
      */
     private final Map<Integer, MeetMeUserImpl> users;
 
-    MeetMeRoomImpl(ManagerConnectionPool connectionPool, String roomNumber)
+    MeetMeRoomImpl(AsteriskServerImpl server, String roomNumber)
     {
-        super(connectionPool);
+        super(server);
         this.roomNumber = roomNumber;
         this.users = new HashMap<Integer, MeetMeUserImpl>(20);
     }
@@ -95,7 +95,7 @@ class MeetMeRoomImpl extends AbstractLiveObject implements MeetMeRoom
         sb.append(" ");
         sb.append(roomNumber);
 
-        connectionPool.sendAction(new CommandAction(sb.toString()));
+        server.sendAction(new CommandAction(sb.toString()));
     }
 
     public String toString()

@@ -15,7 +15,7 @@ import org.asteriskjava.live.Extension;
  * @version $Id: TestDefaultAsteriskManager.java,v 1.3 2005/07/16 13:19:34 srt
  *          Exp $
  */
-public class TestExtensionHistory extends AsteriskManagerTestCase
+public class TestExtensionHistory extends AsteriskServerTestCase
 {
     public void testGetHistory() throws Exception
     {
@@ -29,7 +29,7 @@ public class TestExtensionHistory extends AsteriskManagerTestCase
         {
         }
 
-        channels = manager.getChannels();
+        channels = server.getChannels();
         System.out.println("# of active channels: " + channels.size());
         for (AsteriskChannel channel : channels)
         {

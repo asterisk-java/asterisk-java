@@ -37,7 +37,7 @@ import org.asteriskjava.util.LogFactory;
 
 
 /**
- * Manages queue events on behalf of an AsteriskManager.
+ * Manages queue events on behalf of an AsteriskServer.
  * 
  * @author srt
  * @version $Id$
@@ -46,9 +46,8 @@ class QueueManager
 {
     private final Log logger = LogFactory.getLog(this.getClass());
 
+    private final AsteriskServerImpl server;
     private final ChannelManager channelManager;
-
-    private final ManagerConnectionPool connectionPool;
 
     /**
      * A map of ACD queues by there name.
@@ -58,9 +57,9 @@ class QueueManager
     /**
      * Creates a new instance.
      */
-    QueueManager(ManagerConnectionPool connectionPool, ChannelManager channelManager)
+    QueueManager(AsteriskServerImpl server, ChannelManager channelManager)
     {
-        this.connectionPool = connectionPool;
+        this.server = server;
         this.channelManager = channelManager;
         this.queues = new HashMap<String, AsteriskQueueImpl>();
     }
@@ -71,7 +70,7 @@ class QueueManager
 
         try
         {
-            re = connectionPool.sendEventGeneratingAction(new QueueStatusAction());
+            re = server.sendEventGeneratingAction(new QueueStatusAction());
         }
         catch (ManagerCommunicationException e)
         {
@@ -142,7 +141,7 @@ class QueueManager
 
         if (queue == null)
         {
-            queue = new AsteriskQueueImpl(connectionPool, event.getQueue());
+            queue = new AsteriskQueueImpl(server, event.getQueue());
             isNew = true;
         }
 

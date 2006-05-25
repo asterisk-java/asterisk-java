@@ -13,7 +13,7 @@ import java.util.Collection;
  * @author srt
  * @version $Id$
  */
-public class TestDefaultAsteriskManager extends AsteriskManagerTestCase
+public class TestDefaultAsteriskManager extends AsteriskServerTestCase
 {
     public void testGetChannels() throws Exception
     {
@@ -27,7 +27,7 @@ public class TestDefaultAsteriskManager extends AsteriskManagerTestCase
         {
         }
 
-        Collection<AsteriskChannel> channels = manager.getChannels();
+        Collection<AsteriskChannel> channels = server.getChannels();
 
         System.out.println("got channels. waiting to hangup...");
 
@@ -71,7 +71,7 @@ public class TestDefaultAsteriskManager extends AsteriskManagerTestCase
         {
         }
 
-        Collection<AsteriskQueue> queues = manager.getQueues();
+        Collection<AsteriskQueue> queues = server.getQueues();
         for (AsteriskQueue queue : queues)
         {
             System.out.println(queue);
@@ -80,7 +80,7 @@ public class TestDefaultAsteriskManager extends AsteriskManagerTestCase
 
     public void testGetVersion() throws Exception
     {
-        System.out.println(Arrays.toString(manager.getVersion("cdr_manager.c")));
-        System.out.println(manager.getVersion());
+        System.out.println(Arrays.toString(server.getVersion("cdr_manager.c")));
+        System.out.println(server.getVersion());
     }
 }

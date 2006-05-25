@@ -26,7 +26,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.asteriskjava.live.AsteriskChannel;
-import org.asteriskjava.live.AsteriskManager;
+import org.asteriskjava.live.AsteriskServer;
 import org.asteriskjava.live.AsteriskQueue;
 import org.asteriskjava.live.ManagerCommunicationException;
 import org.asteriskjava.live.MeetMeRoom;
@@ -37,6 +37,8 @@ import org.asteriskjava.manager.ManagerEventListener;
 import org.asteriskjava.manager.ResponseEvents;
 import org.asteriskjava.manager.TimeoutException;
 import org.asteriskjava.manager.action.CommandAction;
+import org.asteriskjava.manager.action.EventGeneratingAction;
+import org.asteriskjava.manager.action.ManagerAction;
 import org.asteriskjava.manager.action.OriginateAction;
 import org.asteriskjava.manager.event.ConnectEvent;
 import org.asteriskjava.manager.event.DisconnectEvent;
@@ -62,13 +64,13 @@ import org.asteriskjava.util.LogFactory;
 /**
  * Default implementation of the AsteriskManager interface.
  * 
- * @see org.asteriskjava.live.AsteriskManager
+ * @see org.asteriskjava.live.AsteriskServer
  * @author srt
  * @version $Id$
  */
-public class AsteriskManagerImpl
+public class AsteriskServerImpl
         implements
-            AsteriskManager,
+            AsteriskServer,
             ManagerEventListener
 {
     private static final Pattern SHOW_VERSION_FILES_PATTERN = Pattern
@@ -113,12 +115,12 @@ public class AsteriskManagerImpl
     /**
      * Creates a new instance.
      */
-    public AsteriskManagerImpl()
+    public AsteriskServerImpl()
     {
         connectionPool = new ManagerConnectionPool(1);
-        channelManager = new ChannelManager(connectionPool);
-        meetMeManager = new MeetMeManager(connectionPool, channelManager);
-        queueManager = new QueueManager(connectionPool, channelManager);
+        channelManager = new ChannelManager(this);
+        meetMeManager = new MeetMeManager(this, channelManager);
+        queueManager = new QueueManager(this, channelManager);
     }
 
     /**
@@ -126,7 +128,7 @@ public class AsteriskManagerImpl
      * 
      * @param eventConnection the ManagerConnection to use for receiving events from Asterisk.
      */
-    public AsteriskManagerImpl(ManagerConnection eventConnection)
+    public AsteriskServerImpl(ManagerConnection eventConnection)
     {
         this();
         this.eventConnection = eventConnection;
@@ -380,6 +382,21 @@ public class AsteriskManagerImpl
         }
 
         return intParts;
+    }
+
+    ManagerResponse sendAction(ManagerAction action) throws ManagerCommunicationException
+    {
+        return connectionPool.sendAction(action);
+    }
+
+    ResponseEvents sendEventGeneratingAction(EventGeneratingAction action) throws ManagerCommunicationException
+    {
+        return connectionPool.sendEventGeneratingAction(action);
+    }
+
+    ResponseEvents sendEventGeneratingAction(EventGeneratingAction action, long timeout) throws ManagerCommunicationException
+    {
+        return connectionPool.sendEventGeneratingAction(action, timeout);
     }
 
     /* Implementation of the ManagerEventListener interface */

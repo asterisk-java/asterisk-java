@@ -46,7 +46,7 @@ import org.asteriskjava.util.LogFactory;
 
 
 /**
- * Manages channel events on behalf of an AsteriskManager.
+ * Manages channel events on behalf of an AsteriskServer.
  * 
  * @author srt
  * @version $Id$
@@ -61,7 +61,7 @@ class ChannelManager
      */
     private static final long REMOVAL_THRESHOLD = 5 * 60 * 1000L; // 5 minutes
 
-    private final ManagerConnectionPool connectionPool;
+    private final AsteriskServerImpl server;
     
     /**
      * A map of all active channel by their unique id.
@@ -71,9 +71,9 @@ class ChannelManager
     /**
      * Creates a new instance.
      */
-    ChannelManager(ManagerConnectionPool connectionPool)
+    ChannelManager(AsteriskServerImpl server)
     {
-        this.connectionPool = connectionPool;
+        this.server = server;
         this.channels = new HashMap<String, AsteriskChannelImpl>();
     }
 
@@ -82,7 +82,7 @@ class ChannelManager
         ResponseEvents re;
 
         disconnected();
-        re = connectionPool.sendEventGeneratingAction(new StatusAction());
+        re = server.sendEventGeneratingAction(new StatusAction());
         for (ManagerEvent event : re.getEvents())
         {
             if (event instanceof StatusEvent)
@@ -160,7 +160,7 @@ class ChannelManager
     {
         AsteriskChannelImpl channel;
         
-        channel = new AsteriskChannelImpl(connectionPool, name, uniqueId, dateOfCreation);
+        channel = new AsteriskChannelImpl(server, name, uniqueId, dateOfCreation);
         channel.setCallerIdNumber(callerIdNumber);
         channel.setCallerIdName(callerIdName);
         channel.setState(state);
@@ -198,7 +198,7 @@ class ChannelManager
             {
                 dateOfCreation = DateUtil.getDate();
             }
-            channel = new AsteriskChannelImpl(connectionPool, event.getChannel(), event.getUniqueId(), dateOfCreation);
+            channel = new AsteriskChannelImpl(server, event.getChannel(), event.getUniqueId(), dateOfCreation);
             isNew = true;
         }
 

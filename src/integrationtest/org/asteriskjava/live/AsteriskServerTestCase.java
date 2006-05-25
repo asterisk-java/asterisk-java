@@ -20,9 +20,9 @@ import junit.framework.TestCase;
 
 import org.asteriskjava.manager.DefaultManagerConnection;
 
-public class AsteriskManagerTestCase extends TestCase
+public class AsteriskServerTestCase extends TestCase
 {
-    protected DefaultAsteriskManager manager;
+    protected DefaultAsteriskServer server;
     protected DefaultManagerConnection managerConnection;
 
     public void setUp() throws Exception
@@ -32,9 +32,9 @@ public class AsteriskManagerTestCase extends TestCase
         managerConnection.setUsername("manager");
         managerConnection.setPassword("obelisk");
 
-        manager = new DefaultAsteriskManager();
-        manager.setManagerConnection(managerConnection);
-        manager.initialize();
+        server = new DefaultAsteriskServer();
+        server.setManagerConnection(managerConnection);
+        server.initialize();
     }
 
     public void tearDown() throws Exception

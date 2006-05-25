@@ -31,7 +31,7 @@ import java.util.Map;
  * @author srt
  * @version $Id$
  */
-public interface AsteriskManager
+public interface AsteriskServer
 {
     /**
      * Generates an outgoing channel to a dialplan entry (extension, context, priority).

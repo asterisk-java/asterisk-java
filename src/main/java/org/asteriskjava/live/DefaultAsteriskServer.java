@@ -19,27 +19,27 @@ package org.asteriskjava.live;
 import java.util.Collection;
 import java.util.Map;
 
-import org.asteriskjava.live.internal.AsteriskManagerImpl;
+import org.asteriskjava.live.internal.AsteriskServerImpl;
 import org.asteriskjava.manager.AuthenticationFailedException;
 import org.asteriskjava.manager.ManagerConnection;
 
 /**
- * Default implementation of the AsteriskManager interface.
+ * Default implementation of the AsteriskServer interface.
  * 
- * @see org.asteriskjava.live.AsteriskManager
+ * @see org.asteriskjava.live.AsteriskServer
  * @author srt
  * @version $Id$
  */
-public class DefaultAsteriskManager implements AsteriskManager
+public class DefaultAsteriskServer implements AsteriskServer
 {
-    private AsteriskManagerImpl asteriskManager;
+    private AsteriskServerImpl impl;
 
     /**
      * Creates a new instance.
      */
-    public DefaultAsteriskManager()
+    public DefaultAsteriskServer()
     {
-        asteriskManager = new AsteriskManagerImpl();
+        impl = new AsteriskServerImpl();
     }
 
     /**
@@ -47,9 +47,9 @@ public class DefaultAsteriskManager implements AsteriskManager
      * 
      * @param eventConnection the ManagerConnection to use for receiving events from Asterisk.
      */
-    public DefaultAsteriskManager(ManagerConnection eventConnection)
+    public DefaultAsteriskServer(ManagerConnection eventConnection)
     {
-        asteriskManager = new AsteriskManagerImpl(eventConnection);
+        impl = new AsteriskServerImpl(eventConnection);
     }
 
     /**
@@ -65,73 +65,73 @@ public class DefaultAsteriskManager implements AsteriskManager
      */
     public void setSkipQueues(boolean skipQueues)
     {
-        asteriskManager.setSkipQueues(skipQueues);
+        impl.setSkipQueues(skipQueues);
     }
 
     public void setManagerConnection(ManagerConnection eventConnection)
     {
-        asteriskManager.setManagerConnection(eventConnection);
+        impl.setManagerConnection(eventConnection);
     }
 
     public void initialize() throws AuthenticationFailedException, ManagerCommunicationException
     {
-        asteriskManager.initialize();
+        impl.initialize();
     }
     
     /* Implementation of the AsteriskManager interface */
 
     public AsteriskChannel originateToExtension(String channel, String context, String exten, int priority, long timeout) throws ManagerCommunicationException
     {
-        return asteriskManager.originateToExtension(channel, context, exten, priority, timeout);
+        return impl.originateToExtension(channel, context, exten, priority, timeout);
     }
 
     public AsteriskChannel originateToExtension(String channel, String context, String exten, int priority, long timeout, Map<String, String> variables) throws ManagerCommunicationException
     {
-        return asteriskManager.originateToExtension(channel, context, exten, priority, timeout, variables);
+        return impl.originateToExtension(channel, context, exten, priority, timeout, variables);
     }
 
     public AsteriskChannel originateToApplication(String channel, String application, String data, long timeout) throws ManagerCommunicationException
     {
-        return asteriskManager.originateToApplication(channel, application, data, timeout);
+        return impl.originateToApplication(channel, application, data, timeout);
     }
 
     public AsteriskChannel originateToApplication(String channel, String application, String data, long timeout, Map<String, String> variables) throws ManagerCommunicationException
     {
-        return asteriskManager.originateToApplication(channel, application, data, timeout, variables);
+        return impl.originateToApplication(channel, application, data, timeout, variables);
     }
 
     public Collection<AsteriskChannel> getChannels()
     {
-        return asteriskManager.getChannels();
+        return impl.getChannels();
     }
 
     public AsteriskChannel getChannelByName(String name)
     {
-        return asteriskManager.getChannelByName(name);
+        return impl.getChannelByName(name);
     }
 
     public AsteriskChannel getChannelById(String id)
     {
-        return asteriskManager.getChannelById(id);
+        return impl.getChannelById(id);
     }
 
     public Collection<MeetMeRoom> getMeetMeRooms()
     {
-        return asteriskManager.getMeetMeRooms();
+        return impl.getMeetMeRooms();
     }
 
     public Collection<AsteriskQueue> getQueues()
     {
-        return asteriskManager.getQueues();
+        return impl.getQueues();
     }
 
     public String getVersion() throws ManagerCommunicationException
     {
-        return asteriskManager.getVersion();
+        return impl.getVersion();
     }
 
     public int[] getVersion(String file)
     {
-        return asteriskManager.getVersion(file);
+        return impl.getVersion(file);
     }
 }

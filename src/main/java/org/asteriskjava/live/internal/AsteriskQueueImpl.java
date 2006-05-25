@@ -34,9 +34,9 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
     private Integer max;
     private final ArrayList<AsteriskChannel> entries;
 
-    AsteriskQueueImpl(ManagerConnectionPool connectionPool, String name)
+    AsteriskQueueImpl(AsteriskServerImpl server, String name)
     {
-        super(connectionPool);
+        super(server);
         this.name = name;
         this.entries = new ArrayList<AsteriskChannel>(25);
     }
