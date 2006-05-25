@@ -209,6 +209,10 @@ public interface ManagerConnection
      * handler to be called when the corresponding {@link ManagerResponse}
      * is received.
      * 
+     * Be very careful that your callbackHandler terminates very quickly and
+     * does not do any fancy processing because it is called from the reader thread
+     * which is blocked for the time it takes to execute your callbackHandler.
+     * 
      * @param action the action to send to the Asterisk server
      * @param callbackHandler the callback handler to call when the response is
      *            received or <code>null</code> if you are not interested in
