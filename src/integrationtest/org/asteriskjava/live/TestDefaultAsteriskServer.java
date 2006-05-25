@@ -13,7 +13,7 @@ import java.util.Collection;
  * @author srt
  * @version $Id$
  */
-public class TestDefaultAsteriskManager extends AsteriskServerTestCase
+public class TestDefaultAsteriskServer extends AsteriskServerTestCase
 {
     public void testGetChannels() throws Exception
     {
@@ -21,7 +21,7 @@ public class TestDefaultAsteriskManager extends AsteriskServerTestCase
 
         try
         {
-            Thread.sleep(1000);
+            Thread.sleep(10000);
         }
         catch (InterruptedException e)
         {
@@ -33,7 +33,7 @@ public class TestDefaultAsteriskManager extends AsteriskServerTestCase
 
         try
         {
-            Thread.sleep(10000);
+            Thread.sleep(1000);
         }
         catch (InterruptedException e)
         {
