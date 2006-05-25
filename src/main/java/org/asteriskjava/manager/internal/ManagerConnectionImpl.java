@@ -86,15 +86,19 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     private static final int RECONNECTION_INTERVAL_1 = 50;
     private static final int RECONNECTION_INTERVAL_2 = 5000;
 
+    private static final AtomicLong idCounter = new AtomicLong(0);
+
     /**
      * Instance logger.
      */
     private final Log logger = LogFactory.getLog(getClass());
 
+    private final long id;
+
     /**
      * Used to construct the internalActionId.
      */
-    private AtomicLong actionIdCount = new AtomicLong(0);
+    private AtomicLong actionIdCounter = new AtomicLong(0);
 
     /* Config attributes */
     /**
@@ -150,13 +154,13 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
      * The thread that runs the reader.
      */
     private Thread readerThread;
-    private AtomicLong readerThreadNum = new AtomicLong(0);
+    private final AtomicLong readerThreadCounter = new AtomicLong(0);
 
     /**
      * The thread that performs reconnect.
      */
     private Thread reconnectThread;
-    private AtomicLong reconnectThreadNum = new AtomicLong(0);
+    private final AtomicLong reconnectThreadCounter = new AtomicLong(0);
 
     /**
      * The reader to use to receive events and responses from asterisk.
@@ -213,6 +217,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
      */
     public ManagerConnectionImpl()
     {
+        this.id = idCounter.getAndIncrement();
         this.responseListeners = new HashMap<String, ManagerResponseListener>();
         this.responseEventListeners = new HashMap<String, ManagerEventListener>();
         this.eventListeners = new ArrayList<ManagerEventListener>();
@@ -564,7 +569,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         if (readerThread == null || !readerThread.isAlive() || reader.isDead())
         {
             logger.debug("Creating and starting reader thread");
-            readerThread = new Thread(reader, "ManagerReader-" + readerThreadNum.getAndIncrement());
+            readerThread = new Thread(reader, "ManagerConnection-" + id + "-Reader-" + readerThreadCounter.getAndIncrement());
             readerThread.setDaemon(true);
             readerThread.start();
         }
@@ -860,7 +865,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         sb = new StringBuffer();
         sb.append(this.hashCode());
         sb.append("_");
-        sb.append(actionIdCount.getAndIncrement());
+        sb.append(actionIdCounter.getAndIncrement());
 
         return sb.toString();
     }
@@ -1077,7 +1082,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                         reconnect();
                     }
                 });
-                reconnectThread.setName("ReconnectThread-" + reconnectThreadNum.getAndIncrement());
+                reconnectThread.setName("ManagerConnection-" + id + "-Reconnect-" + reconnectThreadCounter.getAndIncrement());
                 reconnectThread.setDaemon(true);
                 reconnectThread.start();
                 // now the DisconnectEvent is dispatched to registered eventListeners
@@ -1245,6 +1250,18 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         this.readerThread = null;
     }
 
+    public String toString()
+    {
+        StringBuffer sb;
+
+        sb = new StringBuffer("ManagerConnection[");
+        sb.append("id='" + id + "',");
+        sb.append("hostname='" + hostname + "',");
+        sb.append("port=" + port + "]");
+
+        return sb.toString();
+    }
+    
     /* Helper classes */
 
     /**
