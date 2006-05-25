@@ -16,7 +16,6 @@
  */
 package org.asteriskjava.manager;
 
-import java.io.IOException;
 
 /**
  * This factory is used to obtain new ManagerConnections.<br>
