@@ -58,11 +58,9 @@ public class DefaultManagerConnection implements ManagerConnection
      * @param username the username to use for login
      * @param password the password to use for login
      */
-    public DefaultManagerConnection(String hostname, int port, String username,
-            String password)
+    public DefaultManagerConnection(String hostname, int port, String username, String password)
     {
         this();
-
         setHostname(hostname);
         setPort(port);
         setUsername(username);

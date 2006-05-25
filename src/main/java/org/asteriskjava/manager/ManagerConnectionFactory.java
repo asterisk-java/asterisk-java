@@ -66,7 +66,7 @@ public class ManagerConnectionFactory
         this.username = username;
         this.password = password;
     }
-    
+
     /**
      * Creates a new ManagerConnectionFactory with the given connection data.
      * 
@@ -86,13 +86,12 @@ public class ManagerConnectionFactory
     }
 
     /**
-     * Returns a new ManagerConnection.
+     * Returns a new ManagerConnection in state {@link ManagerConnectionState#DISCONNECTED}.
      * 
      * @return the created connection to the Asterisk server.
-     * @throws IOException if the connection cannot be established.
      * @since 0.3
      */
-    public ManagerConnection createManagerConnection() throws IOException
+    public ManagerConnection createManagerConnection()
     {
         return new DefaultManagerConnection(hostname, port, username, password);
     }
