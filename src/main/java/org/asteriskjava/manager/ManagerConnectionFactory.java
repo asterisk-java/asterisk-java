@@ -16,9 +16,15 @@
  */
 package org.asteriskjava.manager;
 
-
 /**
- * This factory is used to obtain new ManagerConnections.<br>
+ * This factory is the canonical way to obtain new 
+ * {@link org.asteriskjava.manager.ManagerConnection}s.<br>
+ * It creates new connections in state 
+ * {@link org.asteriskjava.manager.ManagerConnectionState#INITIAL}. Before
+ * you can start using such a connection (i.e. sending 
+ * {@link org.asteriskjava.manager.action.ManagerAction}s you must
+ * {@link org.asteriskjava.manager.ManagerConnection#login()} to change its state
+ * to {@link org.asteriskjava.manager.ManagerConnectionState#CONNECTED}.<br>
  * Example:
  * <pre>
  * ManagerConnectionFactory factory;
@@ -26,15 +32,12 @@ package org.asteriskjava.manager;
  * 
  * factory = new ManagerConnectionFactory("localhost", "manager", "secret");
  * connection = factory.createManagerConnection();
+ * connection.login();
+ * ...
+ * connection.logoff();
  * </pre>
  * If want you can use the factory to create multiple connections to the same
  * server by calling {@link #createManagerConnection()} multiple times.<br>
- * When created the connection is in state 
- * {@link org.asteriskjava.manager.ManagerConnectionState#INITIAL}. Before
- * you can start using it (i.e. sending 
- * {@link org.asteriskjava.manager.action.ManagerAction}s you must
- * {@link org.asteriskjava.manager.ManagerConnection#login()} to change its state
- * to {@link org.asteriskjava.manager.ManagerConnectionState#CONNECTED}.
  * 
  * @see org.asteriskjava.manager.ManagerConnection
  * @author srt
@@ -85,7 +88,7 @@ public class ManagerConnectionFactory
     }
 
     /**
-     * Returns a new ManagerConnection in state {@link ManagerConnectionState#DISCONNECTED}.
+     * Returns a new ManagerConnection in state {@link ManagerConnectionState#CONNECTED}.
      * 
      * @return the created connection to the Asterisk server.
      * @since 0.3

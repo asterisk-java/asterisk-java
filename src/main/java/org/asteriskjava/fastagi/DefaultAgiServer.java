@@ -289,17 +289,25 @@ public class DefaultAgiServer implements AgiServer
         }
     }
 
-    public void die() throws IOException
+    public void die()
     {
         die = true;
 
         if (serverSocket != null)
         {
-            serverSocket.close();
+            try
+            {
+                serverSocket.close();
+            }
+            catch(IOException e)
+            {
+                logger.warn("IOException while closing server socket.", e);
+            }
         }
+        pool.shutdown();
     }
 
-    public void shutdown() throws IOException, IllegalStateException
+    public void shutdown() throws IllegalStateException
     {
         die();
     }

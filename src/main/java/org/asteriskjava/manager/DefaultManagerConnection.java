@@ -24,14 +24,17 @@ import org.asteriskjava.manager.internal.ManagerConnectionImpl;
 import org.asteriskjava.manager.response.ManagerResponse;
 
 /**
- * Default implemention of the ManagerConnection interface.<br>
- * Generelly avoid direct use of this class. Use the ManagerConnectionFactory to
- * obtain a ManagerConnection instead.<br>
- * When using a dependency injection framework like Spring direct usage for
- * wiring up beans that require a ManagerConnection property is fine though.<br>
+ * Default implemention of the {@link org.asteriskjava.manager.ManagerConnection}
+ * interface.<br>
+ * Generelly avoid direct use of this class. Use a
+ * {@link org.asteriskjava.manager.ManagerConnectionFactory} to
+ * obtain a {@link org.asteriskjava.manager.ManagerConnection} instead.<br>
+ * When using a dependency injection framework like the Spring Framework direct usage for
+ * wiring up beans that require a {@link org.asteriskjava.manager.ManagerConnection}
+ * property is fine though.<br>
  * Note that the DefaultManagerConnection will create one new Thread
- * for reading data from Asterisk on the first call to on of the login()
- * methods.
+ * for reading data from Asterisk once it is
+ * {@link org.asteriskjava.manager.ManagerConnectionState#CONNECTING}.
  * 
  * @see org.asteriskjava.manager.ManagerConnectionFactory
  * @author srt
@@ -39,14 +42,14 @@ import org.asteriskjava.manager.response.ManagerResponse;
  */
 public class DefaultManagerConnection implements ManagerConnection
 {
-    private ManagerConnectionImpl connection;
+    private ManagerConnectionImpl impl;
 
     /**
      * Creates a new instance.
      */
     public DefaultManagerConnection()
     {
-        this.connection = new ManagerConnectionImpl();
+        this.impl = new ManagerConnectionImpl();
     }
 
     /**
@@ -75,7 +78,7 @@ public class DefaultManagerConnection implements ManagerConnection
      */
     public void setHostname(String hostname)
     {
-        connection.setHostname(hostname);
+        impl.setHostname(hostname);
     }
 
     /**
@@ -87,7 +90,7 @@ public class DefaultManagerConnection implements ManagerConnection
      */
     public void setPort(int port)
     {
-        connection.setPort(port);
+        impl.setPort(port);
     }
 
     /**
@@ -98,7 +101,7 @@ public class DefaultManagerConnection implements ManagerConnection
      */
     public void setUsername(String username)
     {
-        connection.setUsername(username);
+        impl.setUsername(username);
     }
 
     /**
@@ -109,7 +112,7 @@ public class DefaultManagerConnection implements ManagerConnection
      */
     public void setPassword(String password)
     {
-        connection.setPassword(password);
+        impl.setPassword(password);
     }
 
     /**
@@ -123,7 +126,7 @@ public class DefaultManagerConnection implements ManagerConnection
      */
     public void setDefaultTimeout(long defaultTimeout)
     {
-        connection.setDefaultResponseTimeout(defaultTimeout);
+        impl.setDefaultResponseTimeout(defaultTimeout);
     }
 
     /**
@@ -137,7 +140,7 @@ public class DefaultManagerConnection implements ManagerConnection
      */
     public void setDefaultResponseTimeout(long defaultResponseTimeout)
     {
-        connection.setDefaultResponseTimeout(defaultResponseTimeout);
+        impl.setDefaultResponseTimeout(defaultResponseTimeout);
     }
 
     /**
@@ -151,7 +154,7 @@ public class DefaultManagerConnection implements ManagerConnection
      */
     public void setDefaultEventTimeout(long defaultEventTimeout)
     {
-        connection.setDefaultEventTimeout(defaultEventTimeout);
+        impl.setDefaultEventTimeout(defaultEventTimeout);
     }
 
     /**
@@ -174,64 +177,64 @@ public class DefaultManagerConnection implements ManagerConnection
     public void setKeepAliveAfterAuthenticationFailure(
             boolean keepAliveAfterAuthenticationFailure)
     {
-        connection.setKeepAliveAfterAuthenticationFailure(keepAliveAfterAuthenticationFailure);
+        impl.setKeepAliveAfterAuthenticationFailure(keepAliveAfterAuthenticationFailure);
     }
 
     /* Implementation of ManagerConnection interface */
 
     public String getHostname()
     {
-        return connection.getHostname();
+        return impl.getHostname();
     }
 
     public int getPort()
     {
-        return connection.getPort();
+        return impl.getPort();
     }
 
     public void registerUserEventClass(Class userEventClass)
     {
-        connection.registerUserEventClass(userEventClass);
+        impl.registerUserEventClass(userEventClass);
     }
 
     public void setSocketTimeout(int socketTimeout)
     {
-        connection.setSocketTimeout(socketTimeout);
+        impl.setSocketTimeout(socketTimeout);
     }
 
     public void login() throws IllegalStateException, IOException, 
             AuthenticationFailedException, TimeoutException
     {
-        connection.login();
+        impl.login();
     }
 
     public void login(String events) throws IllegalStateException, IOException, 
             AuthenticationFailedException, TimeoutException
     {
-        connection.login(events);
+        impl.login(events);
     }
 
     public boolean isConnected()
     {
-        return connection.isConnected();
+        return impl.isConnected();
     }
 
     public void logoff() throws IllegalStateException
     {
-        connection.logoff();
+        impl.logoff();
     }
 
     public ManagerResponse sendAction(ManagerAction action) throws IOException,
             TimeoutException, IllegalArgumentException, IllegalStateException
     {
-        return connection.sendAction(action);
+        return impl.sendAction(action);
     }
 
     public ManagerResponse sendAction(ManagerAction action, long timeout)
             throws IOException, TimeoutException, IllegalArgumentException,
             IllegalStateException
     {
-        return connection.sendAction(action, timeout);
+        return impl.sendAction(action, timeout);
     }
 
     @SuppressWarnings("deprecation")
@@ -239,21 +242,21 @@ public class DefaultManagerConnection implements ManagerConnection
             ManagerResponseHandler callbackHandler) throws IOException,
             IllegalArgumentException, IllegalStateException
     {
-        connection.sendAction(action, callbackHandler);
+        impl.sendAction(action, callbackHandler);
     }
 
     public void sendAction(ManagerAction action,
             ManagerResponseListener callbackHandler) throws IOException,
             IllegalArgumentException, IllegalStateException
     {
-        connection.sendAction(action, callbackHandler);
+        impl.sendAction(action, callbackHandler);
     }
 
     public ResponseEvents sendEventGeneratingAction(EventGeneratingAction action)
             throws IOException, EventTimeoutException,
             IllegalArgumentException, IllegalStateException
     {
-        return connection.sendEventGeneratingAction(action);
+        return impl.sendEventGeneratingAction(action);
     }
 
     public ResponseEvents sendEventGeneratingAction(
@@ -261,38 +264,38 @@ public class DefaultManagerConnection implements ManagerConnection
             EventTimeoutException, IllegalArgumentException,
             IllegalStateException
     {
-        return connection.sendEventGeneratingAction(action, timeout);
+        return impl.sendEventGeneratingAction(action, timeout);
     }
 
     public void addEventListener(final ManagerEventListener listener)
     {
-        connection.addEventListener(listener);
+        impl.addEventListener(listener);
     }
 
     public void removeEventListener(final ManagerEventListener listener)
     {
-        connection.removeEventListener(listener);
+        impl.removeEventListener(listener);
     }
 
     @SuppressWarnings("deprecation")
     public void addEventHandler(final ManagerEventHandler eventHandler)
     {
-        connection.addEventHandler(eventHandler);
+        impl.addEventHandler(eventHandler);
     }
 
     @SuppressWarnings("deprecation")
     public void removeEventHandler(final ManagerEventHandler eventHandler)
     {
-        connection.removeEventHandler(eventHandler);
+        impl.removeEventHandler(eventHandler);
     }
 
     public String getProtocolIdentifier()
     {
-        return connection.getProtocolIdentifier();
+        return impl.getProtocolIdentifier();
     }
 
     public ManagerConnectionState getState()
     {
-        return connection.getState();
+        return impl.getState();
     }
 }

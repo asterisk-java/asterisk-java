@@ -23,8 +23,10 @@ import org.asteriskjava.manager.response.ManagerResponse;
 
 
 /**
- * Contains the result of executing an EventGeneratingAction, that is the
- * ManagerResponse and any received ManagerEvents.
+ * Contains the result of executing an 
+ * {@link org.asteriskjava.manager.action.EventGeneratingAction}, that is the
+ * {@link org.asteriskjava.manager.response.ManagerResponse} and any received 
+ * {@link org.asteriskjava.manager.event.ManagerEvent}s.
  * 
  * @see org.asteriskjava.manager.action.EventGeneratingAction
  * @author srt
@@ -34,9 +36,9 @@ import org.asteriskjava.manager.response.ManagerResponse;
 public interface ResponseEvents
 {
     /**
-     * Returns the ManagerResponse received.
+     * Returns the response received.
      * 
-     * @return the ManagerResponse received.
+     * @return the response received.
      */
     ManagerResponse getResponse();
 
