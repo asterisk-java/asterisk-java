@@ -46,7 +46,7 @@ public class ManagerEventListenerProxy implements ManagerEventListener
      * Creates a new ManagerEventListenerProxy that notifies the given target
      * asynchronously when new events are received.
      * 
-     * @param target c
+     * @param target the target listener to invoke.
      */
     public ManagerEventListenerProxy(ManagerEventListener target)
     {
