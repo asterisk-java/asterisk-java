@@ -310,7 +310,11 @@ public class DefaultAgiServer implements AgiServer
                 logger.warn("IOException while closing server socket.", e);
             }
         }
-        pool.shutdown();
+
+        if (pool != null)
+        {
+            pool.shutdown();
+        }
     }
 
     public void shutdown() throws IllegalStateException
