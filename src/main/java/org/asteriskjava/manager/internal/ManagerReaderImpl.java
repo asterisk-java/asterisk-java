@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.asteriskjava.manager.DefaultManagerConnection;
-import org.asteriskjava.manager.ResponseBuilder;
 import org.asteriskjava.manager.event.DisconnectEvent;
 import org.asteriskjava.manager.event.ManagerEvent;
 import org.asteriskjava.manager.event.ProtocolIdentifierReceivedEvent;

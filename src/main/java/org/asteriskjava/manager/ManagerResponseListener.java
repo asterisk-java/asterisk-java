@@ -19,7 +19,7 @@ package org.asteriskjava.manager;
 import org.asteriskjava.manager.response.ManagerResponse;
 
 /**
- * An Interface to handle responses received from an asterisk server.
+ * An interface to listen for responses received from an Asterisk server.
  * 
  * @see org.asteriskjava.manager.response.ManagerResponse
  * @author srt
@@ -30,7 +30,7 @@ public interface ManagerResponseListener
     /**
      * This method is called when a response is received.
      * 
-     * @param response the response received
+     * @param response the response that has been received
      */
     void onManagerResponse(ManagerResponse response);
 }

@@ -19,12 +19,13 @@ package org.asteriskjava.manager;
 import org.asteriskjava.manager.response.ManagerResponse;
 
 /**
- * An Interface to handle responses received from an asterisk server.
+ * This interface is deprecated, please use {@link org.asteriskjava.manager.ManagerResponseListener}
+ * instead.
  * 
  * @see org.asteriskjava.manager.response.ManagerResponse
  * @author srt
  * @version $Id$
- * @deprecated
+ * @deprecated this interface is deprecated and will be removed in Asterisk-Java 0.4.
  */
 public interface ManagerResponseHandler
 {

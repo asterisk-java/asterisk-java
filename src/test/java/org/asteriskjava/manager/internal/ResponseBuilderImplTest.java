@@ -21,7 +21,6 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
-import org.asteriskjava.manager.ResponseBuilder;
 import org.asteriskjava.manager.internal.ResponseBuilderImpl;
 import org.asteriskjava.manager.response.ChallengeResponse;
 import org.asteriskjava.manager.response.ExtensionStateResponse;

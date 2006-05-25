@@ -27,7 +27,7 @@ import org.asteriskjava.util.SocketConnectionFacade;
  * DefaultManagerConnection.
  * 
  * @see org.asteriskjava.manager.internal.EventBuilder
- * @see org.asteriskjava.manager.ResponseBuilder
+ * @see org.asteriskjava.manager.internal.ResponseBuilder
  * @see org.asteriskjava.manager.DefaultManagerConnection
  * @author srt
  * @version $Id$

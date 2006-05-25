@@ -27,14 +27,16 @@ import org.asteriskjava.manager.response.ManagerResponse;
 /**
  * The main interface to talk to an Asterisk server via the Asterisk Manager
  * API.<br>
- * The ManagerConnection repesents a connection to an Asterisk Server and is
- * capable to send Actions and receive Responses and Events. It does not add any
- * valuable functionality but rather provides a Java view to Asterisk's Manager
+ * The ManagerConnection repesents a connection to an Asterisk server and is
+ * capable of sending {@link org.asteriskjava.manager.action.ManagerAction}s and 
+ * receiving {@link org.asteriskjava.manager.response.ManagerResponse}s and 
+ * {@link org.asteriskjava.manager.event.ManagerEvent}s. It does not add any
+ * further functionality but rather provides a Java view to Asterisk's Manager
  * API (freeing you from TCP/IP connection and parsing stuff).<br>
  * It is used as the foundation for higher leveled interfaces like the
- * AsteriskManager.<br>
+ * Asterisk-Java Live.<br>
  * A concrete implementation of this interface can be obtained from a
- * ManagerConnectionFactory.
+ * {@link org.asteriskjava.manager.ManagerConnectionFactory}.
  * 
  * @see org.asteriskjava.manager.ManagerConnectionFactory
  * @author srt

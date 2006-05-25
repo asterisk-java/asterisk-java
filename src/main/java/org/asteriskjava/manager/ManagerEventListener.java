@@ -22,7 +22,7 @@ import org.asteriskjava.manager.event.ManagerEvent;
 
 
 /**
- * An interface to listen for events received from the Asterisk server.
+ * An interface to listen for events received from an Asterisk server.
  * 
  * @see org.asteriskjava.manager.event.ManagerEvent
  * @author srt
@@ -31,7 +31,7 @@ import org.asteriskjava.manager.event.ManagerEvent;
 public interface ManagerEventListener extends EventListener
 {
     /**
-     * This method is called whenever an event is received from the Asterisk server.
+     * This method is called when an event is received.
      * 
      * @param event the event that has been received
      */

@@ -14,7 +14,7 @@
  *  limitations under the License.
  *
  */
-package org.asteriskjava.manager;
+package org.asteriskjava.manager.internal;
 
 import java.util.Map;
 
@@ -28,7 +28,7 @@ import org.asteriskjava.manager.response.ManagerResponse;
  * @author srt
  * @version $Id$
  */
-public interface ResponseBuilder
+interface ResponseBuilder
 {
 
     /**

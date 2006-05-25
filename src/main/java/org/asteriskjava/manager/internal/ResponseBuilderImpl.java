@@ -19,7 +19,6 @@ package org.asteriskjava.manager.internal;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.asteriskjava.manager.ResponseBuilder;
 import org.asteriskjava.manager.response.ChallengeResponse;
 import org.asteriskjava.manager.response.ExtensionStateResponse;
 import org.asteriskjava.manager.response.MailboxCountResponse;
