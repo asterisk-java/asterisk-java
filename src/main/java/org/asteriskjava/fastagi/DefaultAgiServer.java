@@ -30,6 +30,12 @@ import org.asteriskjava.util.ServerSocketFacade;
 import org.asteriskjava.util.SocketConnectionFacade;
 import org.asteriskjava.util.internal.ServerSocketFacadeImpl;
 
+/**
+ * Default implementation of the {@link org.asteriskjava.fastagi.AgiServer} interface.
+ * 
+ * @author srt
+ * @version $Id$
+ */
 public class DefaultAgiServer implements AgiServer
 {
     /**

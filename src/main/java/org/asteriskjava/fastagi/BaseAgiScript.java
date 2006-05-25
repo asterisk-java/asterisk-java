@@ -21,11 +21,10 @@ import org.asteriskjava.fastagi.command.AnswerCommand;
 import org.asteriskjava.fastagi.internal.AgiConnectionHandler;
 import org.asteriskjava.fastagi.reply.AgiReply;
 
-
 /**
  * The BaseAgiScript provides some convinience methods to make it easier to
- * write custom AgiScripts.<br>
- * Just extend it by your own AgiScripts.
+ * write custom {@link org.asteriskjava.fastagi.AgiScript}s.<br>
+ * Just extend it by your own script classes.
  * 
  * @since 0.2
  * @author srt

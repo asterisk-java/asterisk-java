@@ -18,7 +18,7 @@ package org.asteriskjava.fastagi;
 
 /**
  * The AgiNetworkException usally wraps an IOException denoting a network
- * problem when talking to the Asterisk server.
+ * problem while talking to the Asterisk server.
  * 
  * @author srt
  * @version $Id$

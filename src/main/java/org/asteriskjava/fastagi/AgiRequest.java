@@ -20,7 +20,7 @@ import java.net.InetAddress;
 import java.util.Map;
 
 /**
- * Defines an object to provide client request information to an AgiScript.<br>
+ * Provides client request information to an {@link org.asteriskjava.fastagi.AgiScript}.<br>
  * This includes information about the channel the script is invoked on and
  * parameters passed from the dialplan.
  * 

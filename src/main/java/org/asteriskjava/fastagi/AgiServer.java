@@ -20,9 +20,8 @@ import java.io.IOException;
 
 /**
  * Listens for incoming AGI connections, reads the inital data and builds an
- * AgiRequest using an AgiRequestBuilder.<br>
- * The AgiRequest is then handed over to the appropriate AgiScript for
- * processing.
+ * {@link AgiRequest} that is then handed over to the appropriate 
+ * {@link org.asteriskjava.fastagi.AgiScript} for processing.
  * 
  * @see org.asteriskjava.fastagi.AgiServerThread
  * @author srt

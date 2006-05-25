@@ -17,8 +17,8 @@
 package org.asteriskjava.fastagi;
 
 /**
- * The AgiHangupException is thrown if the channel has been hang up while
- * processing the AgiRequest.
+ * The AgiHangupException is thrown if the channel is hung up while
+ * processing the {@link org.asteriskjava.fastagi.AgiRequest}.
  * 
  * @author srt
  * @version $Id$
