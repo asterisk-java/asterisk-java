@@ -19,7 +19,23 @@ package org.asteriskjava.manager;
 import java.io.IOException;
 
 /**
- * This factory is used to obtain new ManagerConnections.
+ * This factory is used to obtain new ManagerConnections.<br>
+ * Example:
+ * <pre>
+ * ManagerConnectionFactory factory;
+ * ManagerConnection connection;
+ * 
+ * factory = new ManagerConnectionFactory("localhost", "manager", "secret");
+ * connection = factory.createManagerConnection();
+ * </pre>
+ * If want you can use the factory to create multiple connections to the same
+ * server by calling {@link #createManagerConnection()} multiple times.<br>
+ * When created the connection is in state 
+ * {@link org.asteriskjava.manager.ManagerConnectionState#INITIAL}. Before
+ * you can start using it (i.e. sending 
+ * {@link org.asteriskjava.manager.action.ManagerAction}s you must
+ * {@link org.asteriskjava.manager.ManagerConnection#login()} to change its state
+ * to {@link org.asteriskjava.manager.ManagerConnectionState#CONNECTED}.
  * 
  * @see org.asteriskjava.manager.ManagerConnection
  * @author srt
@@ -78,7 +94,6 @@ public class ManagerConnectionFactory
      */
     public ManagerConnection createManagerConnection() throws IOException
     {
-        return new DefaultManagerConnection(this.hostname, this.port,
-                this.username, this.password);
+        return new DefaultManagerConnection(hostname, port, username, password);
     }
 }
