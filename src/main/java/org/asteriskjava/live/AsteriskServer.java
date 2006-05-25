@@ -20,13 +20,13 @@ import java.util.Collection;
 import java.util.Map;
 
 /**
- * The AsteriskManager is built on top of the ManagerConnection and is an
- * attempt to simplify interaction with Asterisk by abstracting the interface.<br>
- * You will certainly have less freedom using AsteriskManager but it will make
+ * The AsteriskServer is built on top of the {@link org.asteriskjava.manager.ManagerConnection}
+ * and is an attempt to simplify interaction with Asterisk by abstracting the interface.<br>
+ * You will certainly have less freedom using AsteriskServer but it will make
  * life easier for easy things (like originating a call or getting a list of
  * open channels).<br>
- * AsteriskManager is still in an early state of development. So, when using
- * AsteriskManager be aware that it might change in the future.
+ * AsteriskServer is still in an early state of development. So, when using
+ * AsteriskServer be aware that it might change in the future.
  * 
  * @author srt
  * @version $Id$
