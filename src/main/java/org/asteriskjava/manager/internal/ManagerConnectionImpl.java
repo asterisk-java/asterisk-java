@@ -1257,7 +1257,8 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         sb = new StringBuffer("ManagerConnection[");
         sb.append("id='" + id + "',");
         sb.append("hostname='" + hostname + "',");
-        sb.append("port=" + port + "]");
+        sb.append("port=" + port + ",");
+        sb.append("systemHashcode=" + System.identityHashCode(this));
 
         return sb.toString();
     }
