@@ -34,7 +34,7 @@ public class AgentCallbackLogoffEvent extends ManagerEvent
     private static final long serialVersionUID = 8458799161502800576L;
     private String agent;
     private String loginChan;
-    private String loginTime;
+    private Long loginTime;
     private String reason;
     private String uniqueId;
 
@@ -72,12 +72,12 @@ public class AgentCallbackLogoffEvent extends ManagerEvent
         this.loginChan = loginChan;
     }
 
-    public String getLoginTime()
+    public Long getLoginTime()
     {
         return loginTime;
     }
 
-    public void setLoginTime(String loginTime)
+    public void setLoginTime(Long loginTime)
     {
         this.loginTime = loginTime;
     }
