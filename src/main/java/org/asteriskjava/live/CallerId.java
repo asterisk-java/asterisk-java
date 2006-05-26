@@ -1,5 +1,7 @@
 package org.asteriskjava.live;
 
+import java.io.Serializable;
+
 /**
  * Represents a Caller*ID containing name and number.
  * <p>
@@ -9,8 +11,12 @@ package org.asteriskjava.live;
  * @version $Id$
  * @since 0.3
  */
-public class CallerId
+public class CallerId implements Serializable
 {
+    /**
+     * Serial version identifier.
+     */
+    private static final long serialVersionUID = 6498024163374551005L;
     private final String name;
     private final String number;
 
