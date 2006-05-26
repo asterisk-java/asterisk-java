@@ -140,7 +140,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         String oldName = this.name;
 
         this.name = name;
-        firePropertyChange("name", oldName, name);
+        firePropertyChange(PROPERTY_NAME, oldName, name);
     }
 
     public String getCallerIdNumber()
@@ -158,7 +158,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         String oldCallerIdNumber = this.callerIdNumber;
 
         this.callerIdNumber = callerIdNumber;
-        firePropertyChange("callerIdNumber", oldCallerIdNumber, callerIdNumber);
+        firePropertyChange(PROPERTY_CALLER_ID_NUMBER, oldCallerIdNumber, callerIdNumber);
     }
 
     public String getCallerIdName()
@@ -176,7 +176,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         String oldCallerIdName = this.callerIdName;
         
         this.callerIdName = callerIdName;
-        firePropertyChange("callerIdName", oldCallerIdName, callerIdName);
+        firePropertyChange(PROPERTY_CALLER_ID_NUMBER, oldCallerIdName, callerIdName);
     }
 
     public ChannelState getState()
@@ -194,7 +194,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         ChannelState oldState = this.state;
 
         this.state = state;
-        firePropertyChange("state", oldState, state);
+        firePropertyChange(PROPERTY_STATE, oldState, state);
     }
 
     public String getAccount()
@@ -212,7 +212,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         String oldAccount = this.account;
 
         this.account = account;
-        firePropertyChange("account", oldAccount, account);
+        firePropertyChange(PROPERTY_ACCOUNT, oldAccount, account);
     }
 
     public Extension getCurrentExtension()
@@ -280,7 +280,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
             extensions.add(extension);
         }
         
-        firePropertyChange("currentExtension", oldCurrentExtension, extension);
+        firePropertyChange(PROPERTY_CURRENT_EXTENSION, oldCurrentExtension, extension);
     }
 
     public Date getDateOfCreation()
@@ -303,22 +303,18 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         return hangupCause;
     }
 
-    void setHangupCause(HangupCause hangupCause)
+    void setHangupCause(HangupCause hangupCause, String hangupCauseText)
     {
         HangupCause oldHangupCause = this.hangupCause;
 
         this.hangupCause = hangupCause;
-        firePropertyChange("hangupCause", oldHangupCause, hangupCause);
+        this.hangupCauseText = hangupCauseText;
+        firePropertyChange(PROPERTY_HANGUP_CAUSE, oldHangupCause, hangupCause);
     }
 
     public String getHangupCauseText()
     {
         return hangupCauseText;
-    }
-
-    void setHangupCauseText(String hangupCauseText)
-    {
-        this.hangupCauseText = hangupCauseText;
     }
 
     public AsteriskChannel getLinkedChannel()
@@ -340,7 +336,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         {
             this.wasLinked = true;
         }
-        firePropertyChange("linkedChannel", oldLinkedChannel, linkedChannel);
+        firePropertyChange(PROPERTY_LINKED_CHANNEL, oldLinkedChannel, linkedChannel);
     }
 
     public boolean wasLinked()

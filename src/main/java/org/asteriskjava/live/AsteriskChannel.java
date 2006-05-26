@@ -37,6 +37,15 @@ import java.util.List;
  */
 public interface AsteriskChannel extends LiveObject
 {
+    final String PROPERTY_NAME = "name";
+    final String PROPERTY_CALLER_ID_NUMBER = "callerIdNumber";
+    final String PROPERTY_CALLER_ID_NAME = "callerIdName";
+    final String PROPERTY_STATE = "state";
+    final String PROPERTY_ACCOUNT = "account";
+    final String PROPERTY_CURRENT_EXTENSION = "currentExtension";
+    final String PROPERTY_HANGUP_CAUSE = "hangupCause";
+    final String PROPERTY_LINKED_CHANNEL = "linkedChannel";
+    
     /**
      * Returns the unique id of this channel, for example "1099015093.165".<br>
      * The unique id of an AsteriskChannel is immutable for the whole lifecycle

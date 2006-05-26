@@ -34,6 +34,7 @@ import org.asteriskjava.manager.AuthenticationFailedException;
 import org.asteriskjava.manager.ManagerConnection;
 import org.asteriskjava.manager.ManagerConnectionState;
 import org.asteriskjava.manager.ManagerEventListener;
+import org.asteriskjava.manager.ManagerEventListenerProxy;
 import org.asteriskjava.manager.ResponseEvents;
 import org.asteriskjava.manager.TimeoutException;
 import org.asteriskjava.manager.action.CommandAction;
@@ -113,6 +114,13 @@ public class AsteriskServerImpl
     private boolean skipQueues;
 
     /**
+     * Set to <code>true</code> to not handle ManagerEvents in the reader tread but
+     * process them asynchronously.
+     * This is a good idea :)
+     */
+    private boolean asyncEventHandling = true;
+
+    /**
      * Creates a new instance.
      */
     public AsteriskServerImpl()
@@ -132,7 +140,7 @@ public class AsteriskServerImpl
     {
         this();
         this.eventConnection = eventConnection;
-        this.connectionPool.add(eventConnection);
+        connectionPool.add(eventConnection);
     }
 
     /**
@@ -160,7 +168,7 @@ public class AsteriskServerImpl
 
     public void initialize() throws AuthenticationFailedException, ManagerCommunicationException
     {
-        if (eventConnection.getState() != ManagerConnectionState.CONNECTED)
+        if (eventConnection.getState() == ManagerConnectionState.DISCONNECTED)
         {
             try
             {
@@ -187,7 +195,14 @@ public class AsteriskServerImpl
             queueManager.initialize();
         }
 
-        eventConnection.addEventListener(this);
+        if (asyncEventHandling)
+        {
+            eventConnection.addEventListener(new ManagerEventListenerProxy(this));
+        }
+        else
+        {
+            eventConnection.addEventListener(this);
+        }
     }
 
     /* Implementation of the AsteriskManager interface */
@@ -321,8 +336,7 @@ public class AsteriskServerImpl
             map = new HashMap<String, String>();
             try
             {
-                response = eventConnection.sendAction(new CommandAction(
-                        "show version files"));
+                response = sendAction(new CommandAction("show version files"));
                 if (response instanceof CommandResponse)
                 {
                     List<String> result;

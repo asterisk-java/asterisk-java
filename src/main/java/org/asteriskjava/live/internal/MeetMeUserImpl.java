@@ -69,7 +69,7 @@ class MeetMeUserImpl extends AbstractLiveObject implements MeetMeUser
             this.dateLeft = dateLeft;
             this.state = MeetMeUserState.LEFT;
         }
-        firePropertyChange("state", oldState, state);
+        firePropertyChange(PROPERTY_STATE, oldState, state);
     }
 
     public MeetMeUserState getState()
@@ -86,7 +86,7 @@ class MeetMeUserImpl extends AbstractLiveObject implements MeetMeUser
     {
         boolean oldTalking = this.talking;
         this.talking = talking;
-        firePropertyChange("talking", oldTalking, talking);
+        firePropertyChange(PROPERTY_TALKING, oldTalking, talking);
     }
 
     public boolean isMuted()
@@ -98,7 +98,7 @@ class MeetMeUserImpl extends AbstractLiveObject implements MeetMeUser
     {
         boolean oldMuted = this.muted;
         this.muted = muted;
-        firePropertyChange("muted", oldMuted, muted);
+        firePropertyChange(PROPERTY_MUTED, oldMuted, muted);
     }
 
     Integer getUserNumber()

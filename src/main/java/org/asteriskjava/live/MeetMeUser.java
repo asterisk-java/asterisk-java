@@ -17,6 +17,10 @@ import java.util.Date;
  */
 public interface MeetMeUser extends LiveObject
 {
+    final String PROPERTY_TALKING = "talking";
+    final String PROPERTY_MUTED = "muted";
+    final String PROPERTY_STATE = "state";
+    
     /**
      * Returns whether this user is currently talking or not.<br>
      * Asterisk supports talker detection since version 1.2.
