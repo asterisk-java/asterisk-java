@@ -29,12 +29,6 @@
 		<src>http://sourceforge.net/sflogo.php?group_id=118998&amp;type=5</src>
 	</bannerRight>
 	
-	<skin>
-		<groupId>org.apache.maven.skins</groupId>
-		<artifactId>maven-default-skin</artifactId>
-		<version>1.0-SNAPSHOT</version>
-	</skin>
-	
 	<body>
 		<links>
 			<item name="Asterisk" href="http://www.asterisk.org/"/>
