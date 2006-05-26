@@ -20,7 +20,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import org.asteriskjava.manager.event.OriginateEvent;
+import org.asteriskjava.manager.event.AbstractOriginateEvent;
 
 
 /**
@@ -400,6 +400,6 @@ public class OriginateAction extends AbstractManagerAction
 
     public Class getActionCompleteEventClass()
     {
-        return OriginateEvent.class;
+        return AbstractOriginateEvent.class;
     }
 }

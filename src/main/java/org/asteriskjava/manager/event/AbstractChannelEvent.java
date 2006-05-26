@@ -23,7 +23,7 @@ package org.asteriskjava.manager.event;
  * @author srt
  * @version $Id$
  */
-public abstract class ChannelEvent extends ManagerEvent
+public abstract class AbstractChannelEvent extends ManagerEvent
 {
     /**
      * Serializable version identifier
@@ -58,7 +58,7 @@ public abstract class ChannelEvent extends ManagerEvent
     /**
      * @param source
      */
-    public ChannelEvent(Object source)
+    public AbstractChannelEvent(Object source)
     {
         super(source);
     }

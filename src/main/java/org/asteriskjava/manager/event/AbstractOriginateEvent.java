@@ -23,7 +23,7 @@ package org.asteriskjava.manager.event;
  * @author srt
  * @version $Id$
  */
-public abstract class OriginateEvent extends ResponseEvent
+public abstract class AbstractOriginateEvent extends ResponseEvent
 {
     private String channel;
     private String context;
@@ -36,7 +36,7 @@ public abstract class OriginateEvent extends ResponseEvent
     /**
      * @param source
      */
-    public OriginateEvent(Object source)
+    public AbstractOriginateEvent(Object source)
     {
         super(source);
     }

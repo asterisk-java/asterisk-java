@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.asteriskjava.live.MeetMeRoom;
-import org.asteriskjava.manager.event.MeetMeEvent;
+import org.asteriskjava.manager.event.AbstractMeetMeEvent;
 import org.asteriskjava.manager.event.MeetMeJoinEvent;
 import org.asteriskjava.manager.event.MeetMeLeaveEvent;
 import org.asteriskjava.manager.event.MeetMeMuteEvent;
@@ -66,7 +66,7 @@ class MeetMeManager
         return copy;
     }
 
-    void handleMeetMeEvent(MeetMeEvent event)
+    void handleMeetMeEvent(AbstractMeetMeEvent event)
     {
         String uniqueId;
         String roomNumber;

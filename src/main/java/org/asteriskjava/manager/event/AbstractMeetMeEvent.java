@@ -23,7 +23,7 @@ package org.asteriskjava.manager.event;
  * @author srt
  * @version $Id$
  */
-public abstract class MeetMeEvent extends ManagerEvent
+public abstract class AbstractMeetMeEvent extends ManagerEvent
 {
     private String channel;
     private String uniqueId;
@@ -33,7 +33,7 @@ public abstract class MeetMeEvent extends ManagerEvent
     /**
      * @param source
      */
-    public MeetMeEvent(Object source)
+    public AbstractMeetMeEvent(Object source)
     {
         super(source);
     }

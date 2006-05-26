@@ -24,7 +24,7 @@ package org.asteriskjava.manager.event;
  * @author srt
  * @version $Id$
  */
-public class MeetMeLeaveEvent extends MeetMeEvent
+public class MeetMeLeaveEvent extends AbstractMeetMeEvent
 {
     /**
      * Serializable version identifier

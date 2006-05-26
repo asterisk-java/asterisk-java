@@ -22,7 +22,7 @@ import java.util.Map;
 import junit.framework.TestCase;
 
 import org.asteriskjava.manager.event.CdrEvent;
-import org.asteriskjava.manager.event.ChannelEvent;
+import org.asteriskjava.manager.event.AbstractChannelEvent;
 import org.asteriskjava.manager.event.HangupEvent;
 import org.asteriskjava.manager.event.LogChannelEvent;
 import org.asteriskjava.manager.event.ManagerEvent;
@@ -104,7 +104,7 @@ public class EventBuilderImplTest extends TestCase
     {
         try
         {
-            eventBuilder.registerEventClass(ChannelEvent.class);
+            eventBuilder.registerEventClass(AbstractChannelEvent.class);
             fail("registerEvent() must not accept abstract classes");
         }
         catch (IllegalArgumentException ex)

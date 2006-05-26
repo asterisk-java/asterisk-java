@@ -48,12 +48,12 @@ import org.asteriskjava.manager.event.JoinEvent;
 import org.asteriskjava.manager.event.LeaveEvent;
 import org.asteriskjava.manager.event.LinkEvent;
 import org.asteriskjava.manager.event.ManagerEvent;
-import org.asteriskjava.manager.event.MeetMeEvent;
+import org.asteriskjava.manager.event.AbstractMeetMeEvent;
 import org.asteriskjava.manager.event.NewCallerIdEvent;
 import org.asteriskjava.manager.event.NewChannelEvent;
 import org.asteriskjava.manager.event.NewExtenEvent;
 import org.asteriskjava.manager.event.NewStateEvent;
-import org.asteriskjava.manager.event.OriginateEvent;
+import org.asteriskjava.manager.event.AbstractOriginateEvent;
 import org.asteriskjava.manager.event.RenameEvent;
 import org.asteriskjava.manager.event.ResponseEvent;
 import org.asteriskjava.manager.event.UnlinkEvent;
@@ -267,9 +267,9 @@ public class AsteriskServerImpl
             ResponseEvent responseEvent;
             
             responseEvent = responseEventIterator.next();
-            if (responseEvent instanceof OriginateEvent)
+            if (responseEvent instanceof AbstractOriginateEvent)
             {
-                return getChannelById(((OriginateEvent) responseEvent).getUniqueId()); 
+                return getChannelById(((AbstractOriginateEvent) responseEvent).getUniqueId()); 
             }
         }
 
@@ -470,9 +470,9 @@ public class AsteriskServerImpl
         {
             queueManager.handleLeaveEvent((LeaveEvent) event);
         }
-        else if (event instanceof MeetMeEvent)
+        else if (event instanceof AbstractMeetMeEvent)
         {
-            meetMeManager.handleMeetMeEvent((MeetMeEvent) event);
+            meetMeManager.handleMeetMeEvent((AbstractMeetMeEvent) event);
         }
     }
 
