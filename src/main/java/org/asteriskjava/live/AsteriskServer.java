@@ -22,11 +22,11 @@ import java.util.Map;
 /**
  * The AsteriskServer is built on top of the {@link org.asteriskjava.manager.ManagerConnection}
  * and is an attempt to simplify interaction with Asterisk by abstracting the interface.
- * 
+ * <p>
  * You will certainly have less freedom using AsteriskServer but it will make
  * life easier for easy things (like originating a call or getting a list of
  * open channels).
- * 
+ * <p>
  * AsteriskServer is still in an early state of development. So, when using
  * AsteriskServer be aware that it might change in the future.
  * 
@@ -143,9 +143,11 @@ public interface AsteriskServer
 
     /**
      * Returns the CVS revision of a given source file of the Asterisk server
-     * you are connected to.<br>
+     * you are connected to.
+     * <p>
      * For example getVersion("app_meetme.c") may return {1, 102} for CVS
-     * revision "1.102".<br>
+     * revision "1.102".
+     * <p>
      * Note that this feature is not available with Asterisk 1.0.x.<br>
      * You can use this feature if you need to write applications that behave
      * different depending on specific modules being available in a specific
