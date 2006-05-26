@@ -22,7 +22,7 @@ import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
 /**
- * Runs an AgiServer in a separate Thread.<br>
+ * Runs an AgiServer in a separate Thread.<p>
  * You can use this class to run an AgiServer in the background of your
  * application or run it in your servlet container or application server. 
  * 
@@ -53,7 +53,7 @@ public class AgiServerThread
     }
 
     /**
-     * Sets the AgiServer to run.<br>
+     * Sets the AgiServer to run.<p>
      * This property must be set before starting the AgiServerThread by calling startup.
      * 
      * @param agiServer the AgiServer to run.
@@ -64,7 +64,7 @@ public class AgiServerThread
     }
 
     /**
-     * Marks the thread as either a daemon thread or a user thread.<br>
+     * Marks the thread as either a daemon thread or a user thread.<p>
      * Default is <code>true</code>.
      * 
      * @param daemon if <code>false</code>, marks the thread as a user thread.
@@ -77,7 +77,7 @@ public class AgiServerThread
     }
 
     /**
-     * Starts the AgiServer in its own thread.<br>
+     * Starts the AgiServer in its own thread.<p>
      * Note: The AgiServerThread is designed to handle one AgiServer instance at
      * a time so calling this method twice without stopping the AgiServer in
      * between will result in a RuntimeException.
@@ -119,7 +119,7 @@ public class AgiServerThread
     }
 
     /**
-     * Stops the {@link AgiServer}.<br>
+     * Stops the {@link AgiServer}.<p>
      * The AgiServer must have been started by calling {@link #startup()} before you
      * can stop it.
      * 

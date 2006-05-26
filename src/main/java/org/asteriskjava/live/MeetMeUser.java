@@ -3,7 +3,7 @@ package org.asteriskjava.live;
 import java.util.Date;
 
 /**
- * Represents a user of a MeetMe room.<br>
+ * Represents a user of a MeetMe room.<p>
  * PropertyChangeEvents are fired for the following properties:
  * <ul>
  * <li>talking
@@ -22,7 +22,7 @@ public interface MeetMeUser extends LiveObject
     final String PROPERTY_STATE = "state";
     
     /**
-     * Returns whether this user is currently talking or not.<br>
+     * Returns whether this user is currently talking or not.<p>
      * Asterisk supports talker detection since version 1.2.
      * 
      * @return <code>true</code> if this user is currently talking and
@@ -31,7 +31,7 @@ public interface MeetMeUser extends LiveObject
     boolean isTalking();
 
     /**
-     * Returns whether this user is muted or not.<br>
+     * Returns whether this user is muted or not.<p>
      * Supported since Asterisk version 1.4.
      * 
      * @return <code>true</code> if this user is muted and
@@ -40,7 +40,7 @@ public interface MeetMeUser extends LiveObject
     boolean isMuted();
     
     /**
-     * Returns the date this user joined the MeetMe room.<br>
+     * Returns the date this user joined the MeetMe room.<p>
      * This property is immutable.
      * 
      * @return the date this user joined the MeetMe room.
@@ -48,7 +48,7 @@ public interface MeetMeUser extends LiveObject
     Date getDateJoined();
 
     /**
-     * Returns the date this user left the MeetMe room.<br>
+     * Returns the date this user left the MeetMe room.<p>
      * This property is <code>null</code> as long as the user is
      * in state {@link MeetMeUserState#JOINED} and set to date the
      * user left when entering {@link MeetMeUserState#LEFT}.
@@ -59,7 +59,7 @@ public interface MeetMeUser extends LiveObject
     Date getDateLeft();
     
     /**
-     * Returns the lifecycle status of this MeetMeUser.<br>
+     * Returns the lifecycle status of this MeetMeUser.<p>
      * Initially the user is in state {@link MeetMeUserState#JOINED}.
      * 
      * @return the lifecycle status of this MeetMeUser.
@@ -67,7 +67,7 @@ public interface MeetMeUser extends LiveObject
     MeetMeUserState getState();
 
     /**
-     * Returns the MeetMe room this user joined.<br>
+     * Returns the MeetMe room this user joined.<p>
      * This property is immutable.
      * 
      * @return the MeetMe room this user joined.
@@ -75,7 +75,7 @@ public interface MeetMeUser extends LiveObject
     MeetMeRoom getRoom();
     
     /**
-     * Returns the channel associated with this user.<br>
+     * Returns the channel associated with this user.<p>
      * This property is immutable.
      * 
      * @return the channel associated with this user.

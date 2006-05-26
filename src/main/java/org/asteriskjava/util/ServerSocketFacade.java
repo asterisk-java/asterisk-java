@@ -20,7 +20,7 @@ import java.io.IOException;
 
 /**
  * The ServerSocketFacade provides operations to accept client connections over
- * TCP/IP sockets.<br>
+ * TCP/IP sockets.<p>
  * It hides the details of the underlying I/O system used for server socket
  * communication.
  * 

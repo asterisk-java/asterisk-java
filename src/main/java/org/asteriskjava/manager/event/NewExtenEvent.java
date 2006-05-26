@@ -17,7 +17,7 @@
 package org.asteriskjava.manager.event;
 
 /**
- * A NewExtenEvent is triggered when a channel is connected to a new extension.<br>
+ * A NewExtenEvent is triggered when a channel is connected to a new extension.<p>
  * It is implemented in <code>pbx.c</code>
  * 
  * @author srt

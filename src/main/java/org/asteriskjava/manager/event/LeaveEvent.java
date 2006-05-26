@@ -17,7 +17,7 @@
 package org.asteriskjava.manager.event;
 
 /**
- * A LeaveEvent is triggered when a channel leaves a queue.<br>
+ * A LeaveEvent is triggered when a channel leaves a queue.<p>
  * It is implemented in <code>apps/app_queue.c</code>
  * 
  * @author srt

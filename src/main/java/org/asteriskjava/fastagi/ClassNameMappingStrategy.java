@@ -21,7 +21,7 @@ import java.util.Map;
 
 /**
  * A MappingStrategy that determines the AGIScript based on the fully
- * qualified class name given in the AGI URL.<br>
+ * qualified class name given in the AGI URL.<p>
  * To use this ClassNameMappingStrategy the calls to your 
  * {@link org.asteriskjava.fastagi.AgiScript} in
  * your dialplan should look like this:
@@ -66,7 +66,7 @@ public class ClassNameMappingStrategy extends AbstractMappingStrategy
      * Sets whether to use shared instances or not. If set to <code>true</code>
      * all AGIRequests are served by the same instance of an
      * AGIScript, if set to <code>false</code> a new instance is created for
-     * each request.<br>
+     * each request.<p>
      * Default is <code>true</code>.
      * 
      * @param shareInstances <code>true</code> to use shared instances,

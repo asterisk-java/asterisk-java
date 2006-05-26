@@ -17,7 +17,7 @@
 package org.asteriskjava.fastagi.command;
 
 /**
- * Sets the priority for continuation upon exiting the application.<br>
+ * Sets the priority for continuation upon exiting the application.<p>
  * Since Asterisk 1.2 SetPriorityCommand also supports labels.
  * 
  * @author srt

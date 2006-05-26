@@ -17,9 +17,9 @@
 package org.asteriskjava.manager.action;
 
 /**
- * The LoginAction authenticates the connection.<br>
+ * The LoginAction authenticates the connection.<p>
  * A successful login is the precondition for sending any other action except
- * for the ChallengeAction.<br>
+ * for the ChallengeAction.<p>
  * An unsuccessful login results in an ManagerError being received from the
  * server with a message set to "Authentication failed" and the socket being
  * closed by Asterisk.
@@ -51,7 +51,7 @@ public class LoginAction extends AbstractManagerAction
     }
     
     /**
-     * Creates a new LoginAction that performs a cleartext login.<br>
+     * Creates a new LoginAction that performs a cleartext login.<p>
      * You should not use cleartext login if you are concerned about security,
      * using {@see ChallengeAction} and login with a password hash instead.
      * 
@@ -140,9 +140,9 @@ public class LoginAction extends AbstractManagerAction
     }
 
     /**
-     * Sets the secret to use when using cleartext login.<br>
+     * Sets the secret to use when using cleartext login.<p>
      * The secret contains the user's password as configured in Asterisk's
-     * <code>manager.conf</code>.<br>
+     * <code>manager.conf</code>.<p>
      * The secret and key properties are mutually exclusive.
      */
     public void setSecret(String secret)
@@ -159,9 +159,9 @@ public class LoginAction extends AbstractManagerAction
     }
 
     /**
-     * Sets the digest alogrithm when using challenge/response.<br>
+     * Sets the digest alogrithm when using challenge/response.<p>
      * The digest algorithm is used to create the key based on the challenge and
-     * the user's password.<br>
+     * the user's password.<p>
      * Currently Asterisk supports only "MD5".
      */
     public void setAuthType(String authType)

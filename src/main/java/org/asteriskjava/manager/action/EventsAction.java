@@ -72,7 +72,7 @@ public class EventsAction extends AbstractManagerAction
     }
 
     /**
-     * Sets the event mask.<br>
+     * Sets the event mask.<p>
      * Set to "on" if all events should be send, "off" if not events should be
      * sent or a combination of "system", "call" and "log" (separated by ',') to
      * specify what kind of events should be sent.

@@ -20,11 +20,11 @@ import java.io.Serializable;
 
 /**
  * Interface that all Actions that can be sent to the Asterisk server must
- * impement.<br>
+ * impement.<p>
  * Instances of this class represent a command sent to Asterisk via Manager API,
  * requesting a particular Action be performed. The number of actions available
  * to the client are determined by the modules presently loaded in the Asterisk
- * engine.<br>
+ * engine.<p>
  * There is one conrete subclass of ManagerAction per each supported Asterisk
  * Action.
  * 
@@ -46,11 +46,11 @@ public interface ManagerAction extends Serializable
     String getActionId();
 
     /**
-     * Sets the action id.<br>
+     * Sets the action id.<p>
      * If the action id is set and sent to the asterisk server any response
      * returned by the Asterisk server will include the same id. This way
      * the action id can be used to track actions and their corresponding
-     * responses and response events.<br>
+     * responses and response events.<p>
      * Note that Asterisk-Java uses its own internal action id to match 
      * actions with the corresponding responses and events. Though the internal
      * action is never exposed to the application code. So if you want to 

@@ -20,7 +20,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Represents an Asterisk channel.<br>
+ * Represents an Asterisk channel.<p>
  * PropertyChangeEvents are fired for the following properties:
  * <ul>
  * <li>name
@@ -47,7 +47,7 @@ public interface AsteriskChannel extends LiveObject
     final String PROPERTY_LINKED_CHANNEL = "linkedChannel";
     
     /**
-     * Returns the unique id of this channel, for example "1099015093.165".<br>
+     * Returns the unique id of this channel, for example "1099015093.165".<p>
      * The unique id of an AsteriskChannel is immutable for the whole lifecycle
      * of the channel.
      * 
@@ -56,7 +56,7 @@ public interface AsteriskChannel extends LiveObject
     String getId();
 
     /**
-     * Returns the name of this channel, for example "SIP/1310-20da".<br>
+     * Returns the name of this channel, for example "SIP/1310-20da".<p>
      * In contrast to the unique id the name of an AsteriskChannel can change
      * while the call is processed.
      * 
@@ -117,7 +117,7 @@ public interface AsteriskChannel extends LiveObject
     List<Extension> getExtensions();
 
     /**
-     * Returns the date this channel has been created.<br>
+     * Returns the date this channel has been created.<p>
      * This property is immutable.
      * 
      * @return the date this channel has been created.
@@ -198,7 +198,7 @@ public interface AsteriskChannel extends LiveObject
     void hangup(HangupCause cause) throws ManagerCommunicationException, NoSuchChannelException;
 
     /**
-     * Redirects this channel to a new extension.<br>
+     * Redirects this channel to a new extension.<p>
      * If this channel is linked to another channel, the linked channel is hung
      * up.
      * 
@@ -214,7 +214,7 @@ public interface AsteriskChannel extends LiveObject
     void redirect(String context, String exten, int priority) throws ManagerCommunicationException, NoSuchChannelException;
 
     /**
-     * Redirects this channel and the channel this channel is linked to to a new extension.<br>
+     * Redirects this channel and the channel this channel is linked to to a new extension.<p>
      * If this channel is not linked to another channel only this channel is redirected.
      * 
      * @param context the destination context.
@@ -229,7 +229,7 @@ public interface AsteriskChannel extends LiveObject
     void redirectBothLegs(String context, String exten, int priority) throws ManagerCommunicationException, NoSuchChannelException;
     
     /**
-     * Returns the value of the given channel variable.<br>
+     * Returns the value of the given channel variable.<p>
      * Currently Asterisk does not support the retrieval of built-in variables
      * like EXTEN or CALLERIDNUM but only custom variables set via Asterisk's
      * Set command or via {@link #setVariable(String, String)}.
@@ -259,7 +259,7 @@ public interface AsteriskChannel extends LiveObject
     void setVariable(String variable, String value) throws ManagerCommunicationException, NoSuchChannelException;
     
     /**
-     * Plays the given DTMF digit on this channel.<br>
+     * Plays the given DTMF digit on this channel.<p>
      * Available since Asterisk 1.4.
      * 
      * @param digit the DTMF digit to play.

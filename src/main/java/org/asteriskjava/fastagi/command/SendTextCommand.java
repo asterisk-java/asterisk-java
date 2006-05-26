@@ -17,8 +17,8 @@
 package org.asteriskjava.fastagi.command;
 
 /**
- * Sends the given text on a channel.<br>
- * Most channels do not support the transmission of text.<br>
+ * Sends the given text on a channel.<p>
+ * Most channels do not support the transmission of text.<p>
  * Returns 0 if text is sent, or if the channel does not support text
  * transmission. Returns -1 only on error/hangup.
  * 

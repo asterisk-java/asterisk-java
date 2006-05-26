@@ -17,7 +17,7 @@
 package org.asteriskjava.manager.event;
 
 /**
- * An ExtensionStatusEvent is triggered when the state of an extension changes.<br>
+ * An ExtensionStatusEvent is triggered when the state of an extension changes.<p>
  * It is implemented in <code>manager.c</code>
  * 
  * @author srt

@@ -21,7 +21,7 @@ import java.net.InetAddress;
 
 /**
  * The SocketConnectionFacade provides read and write operation for
- * communication over TCP/IP sockets.<br>
+ * communication over TCP/IP sockets.<p>
  * It hides the details of the underlying I/O system used for socket
  * communication.
  * 
@@ -59,7 +59,7 @@ public interface SocketConnectionFacade
 
     /**
      * Closes the socket connection including its input and output stream and
-     * frees all associated ressources.<br>
+     * frees all associated ressources.<p>
      * When calling close() any Thread currently blocked by a call to readLine()
      * will be unblocked and receive an IOException.
      * 

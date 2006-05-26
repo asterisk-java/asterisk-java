@@ -22,7 +22,7 @@ import org.asteriskjava.util.SocketConnectionFacade;
 /**
  * The ManagerReader reads events and responses from the asterisk server, parses
  * them using EventBuilderImpl and ResponseBuilder and dispatches them to the
- * associated ManagerConnection.<br>
+ * associated ManagerConnection.<p>
  * Do not use this interface in your code, it is intended to be used only by the
  * DefaultManagerConnection.
  * 
@@ -43,7 +43,7 @@ public interface ManagerReader extends Runnable
     void setSocket(final SocketConnectionFacade socket);
 
     /**
-     * Registers a new event type with the underlying EventBuilderImpl.<br>
+     * Registers a new event type with the underlying EventBuilderImpl.<p>
      * The eventClass must extend ManagerEvent.
      * 
      * @see EventBuilder

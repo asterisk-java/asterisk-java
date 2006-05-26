@@ -3,7 +3,7 @@ package org.asteriskjava.live;
 import java.util.Collection;
 
 /**
- * Represents an Asterisk MeetMe room.<br>
+ * Represents an Asterisk MeetMe room.<p>
  * MeetMe rooms bridge multiple channels.
  * 
  * @author srt
@@ -12,7 +12,7 @@ import java.util.Collection;
 public interface MeetMeRoom
 {
     /**
-     * Returns the number of this MeetMe room.<br>
+     * Returns the number of this MeetMe room.<p>
      * This property is immutable.
      * 
      * @return the number of this MeetMe room.

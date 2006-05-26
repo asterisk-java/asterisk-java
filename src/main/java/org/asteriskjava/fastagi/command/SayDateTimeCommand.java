@@ -18,9 +18,9 @@ package org.asteriskjava.fastagi.command;
 
 /**
  * Say a given time, returning early if any of the given DTMF digits are
- * pressed.<br>
+ * pressed.<p>
  * Returns 0 if playback completes without a digit being pressed, or the ASCII
- * numerical value of the digit if one was pressed or -1 on error/hangup.<br>
+ * numerical value of the digit if one was pressed or -1 on error/hangup.<p>
  * Available since Asterisk 1.2.
  * 
  * @since 0.2
@@ -120,7 +120,7 @@ public class SayDateTimeCommand extends AbstractAgiCommand
 
     /**
      * Returns the time to say in seconds elapsed since 00:00:00 on January 1,
-     * 1970, Coordinated Universal Time (UTC).<br>
+     * 1970, Coordinated Universal Time (UTC).<p>
      * This property is mandatory.
      * 
      * @param time the time to say in seconds elapsed since 00:00:00 on January
@@ -163,8 +163,8 @@ public class SayDateTimeCommand extends AbstractAgiCommand
     }
 
     /**
-     * Sets the format the time should be said in.<br>
-     * See <code>voicemail.conf</code>.<br>
+     * Sets the format the time should be said in.<p>
+     * See <code>voicemail.conf</code>.<p>
      * Defaults to "ABdY 'digits/at' IMp".
      * 
      * @param format the format the time should be said in
@@ -185,9 +185,9 @@ public class SayDateTimeCommand extends AbstractAgiCommand
     }
 
     /**
-     * Sets the timezone to use when saying the time.<br>
+     * Sets the timezone to use when saying the time.<p>
      * A list of available timezones is available in
-     * <code>/usr/share/zoneinfo</code> on your Asterisk server.<br>
+     * <code>/usr/share/zoneinfo</code> on your Asterisk server.<p>
      * Defaults to machine default.
      * 
      * @param timezone the timezone to use when saying the time, for example

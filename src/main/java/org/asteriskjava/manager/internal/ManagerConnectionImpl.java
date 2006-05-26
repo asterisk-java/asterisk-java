@@ -68,11 +68,11 @@ import org.asteriskjava.util.internal.SocketConnectionFacadeImpl;
 
 
 /**
- * Default implemention of the ManagerConnection interface.<br>
+ * Default implemention of the ManagerConnection interface.<p>
  * Generelly avoid direct use of this class. Use the ManagerConnectionFactory to
- * obtain a ManagerConnection instead.<br>
+ * obtain a ManagerConnection instead.<p>
  * When using a dependency injection framework like Spring direct usage for
- * wiring up beans that require a ManagerConnection property is fine though.<br>
+ * wiring up beans that require a ManagerConnection property is fine though.<p>
  * Note that the DefaultManagerConnection will create one new Thread
  * for reading data from Asterisk on the first call to on of the login()
  * methods.
@@ -184,7 +184,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     private AsteriskVersion version;
 
     /**
-     * Contains the registered handlers that process the ManagerResponses.<br>
+     * Contains the registered handlers that process the ManagerResponses.<p>
      * Key is the internalActionId of the Action sent and value the
      * corresponding ResponseListener.
      */
@@ -192,7 +192,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
     /**
      * Contains the event handlers that handle ResponseEvents for the
-     * sendEventGeneratingAction methods.<br>
+     * sendEventGeneratingAction methods.<p>
      * Key is the internalActionId of the Action sent and value the
      * corresponding EventHandler.
      */
@@ -237,7 +237,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     }
 
     /**
-     * Sets the hostname of the asterisk server to connect to.<br>
+     * Sets the hostname of the asterisk server to connect to.<p>
      * Default is <code>localhost</code>.
      * 
      * @param hostname the hostname to connect to
@@ -249,7 +249,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
     /**
      * Sets the port to use to connect to the asterisk server. This is the port
-     * specified in asterisk's <code>manager.conf</code> file.<br>
+     * specified in asterisk's <code>manager.conf</code> file.<p>
      * Default is 5038.
      * 
      * @param port the port to connect to
@@ -284,7 +284,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     /**
      * Sets the time in milliseconds the synchronous method
      * {@link #sendAction(ManagerAction)} will wait for a response before
-     * throwing a TimeoutException.<br>
+     * throwing a TimeoutException.<p>
      * Default is 2000.
      * 
      * @param defaultResponseTimeout default response timeout in milliseconds
@@ -298,7 +298,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     /**
      * Sets the time in milliseconds the synchronous method
      * {@link #sendEventGeneratingAction(EventGeneratingAction)} will wait for a
-     * response and the last response event before throwing a TimeoutException.<br>
+     * response and the last response event before throwing a TimeoutException.<p>
      * Default is 5000.
      * 
      * @param defaultEventTimeout default event timeout in milliseconds
@@ -311,7 +311,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
     /**
      * Set to <code>true</code> to try reconnecting to ther asterisk serve
-     * even if the reconnection attempt threw an AuthenticationFailedException.<br>
+     * even if the reconnection attempt threw an AuthenticationFailedException.<p>
      * Default is <code>true</code>.
      */
     public void setKeepAliveAfterAuthenticationFailure(
@@ -377,7 +377,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     }
 
     /**
-     * Does the real login, following the steps outlined below.<br>
+     * Does the real login, following the steps outlined below.<p>
      * <ol>
      * <li>Connects to the asterisk server by calling {@link #connect()} if not
      * already connected
@@ -1162,13 +1162,13 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     }
 
     /**
-     * Reconnects to the asterisk server when the connection is lost.<br>
+     * Reconnects to the asterisk server when the connection is lost.<p>
      * While keepAlive is <code>true</code> we will try to reconnect.
      * Reconnection attempts will be stopped when the {@link #logoff()} method
      * is called or when the login after a successful reconnect results in an
      * {@link AuthenticationFailedException} suggesting that the manager
      * credentials have changed and keepAliveAfterAuthenticationFailure is not
-     * set.<br>
+     * set.<p>
      * This method is called when a {@link DisconnectEvent} is received from the
      * reader.
      */

@@ -17,7 +17,7 @@
 package org.asteriskjava.manager.event;
 
 /**
- * A NewChannelEvent is triggered when a new channel is created.<br>
+ * A NewChannelEvent is triggered when a new channel is created.<p>
  * It is implemented in <code>channel.c</code>
  * 
  * @author srt

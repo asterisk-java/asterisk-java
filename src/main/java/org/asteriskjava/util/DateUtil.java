@@ -20,7 +20,7 @@ import java.util.Date;
 
 /**
  * Utility class to obtain the current date and allows to override with a fixed value for 
- * unit testing.<br>
+ * unit testing.<p>
  * Client code is not supposed to use this class.
  * 
  * @author srt

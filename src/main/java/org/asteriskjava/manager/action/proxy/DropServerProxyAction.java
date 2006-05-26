@@ -54,7 +54,7 @@ public class DropServerProxyAction extends AbstractManagerProxyAction
     }
 
     /**
-     * Sets the hostname or IP address of the server to remove.<br>
+     * Sets the hostname or IP address of the server to remove.<p>
      * This should exactly match the entry in your config <code>host=</code>
      * section, or whatever name you used with {@link AddServerProxyAction}.
      * 

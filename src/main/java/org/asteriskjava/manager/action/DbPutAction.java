@@ -18,7 +18,7 @@ package org.asteriskjava.manager.action;
 
 /**
  * Adds or updates an entry in the Asterisk database for a given family, key,
- * and value.<br>
+ * and value.<p>
  * Available since Asterisk 1.2
  * 
  * @author srt

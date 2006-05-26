@@ -18,7 +18,7 @@ package org.asteriskjava.manager.event;
 
 /**
  * A PeerStatusEvent is triggered when a SIP or IAX client attempts to registrer at this asterisk
- * server.<br>
+ * server.<p>
  * This event is implemented in <code>channels/chan_iax2.c</code> and
  * <code>channels/chan_sip.c</code>
  * 
@@ -63,7 +63,7 @@ public class PeerStatusEvent extends ManagerEvent
     }
 
     /**
-     * Returns the registration state.<br>
+     * Returns the registration state.<p>
      * This may be one of
      * <ul>
      * <li>Registered</li>
@@ -88,8 +88,8 @@ public class PeerStatusEvent extends ManagerEvent
     }
 
     /**
-     * Returns the cause of a rejection or unregistration.<br>
-     * For IAX peers this is set only if the status equals "Rejected".<br>
+     * Returns the cause of a rejection or unregistration.<p>
+     * For IAX peers this is set only if the status equals "Rejected".<p>
      * For SIP peers this is set if the status equals "Unregistered" and the peer was unregistered
      * due to an expiration. In that case the cause is set to "Expired".
      */

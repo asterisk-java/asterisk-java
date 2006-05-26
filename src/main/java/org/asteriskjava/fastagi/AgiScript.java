@@ -18,9 +18,9 @@ package org.asteriskjava.fastagi;
 
 /**
  * AgiScripts are used by the AsteriskServer to handle AgiRequests received from
- * the Asterisk server.<br>
+ * the Asterisk server.<p>
  * To implement functionality using this framework you have to implement this
- * interface.<br>
+ * interface.<p>
  * Note: The implementation of AgiScript must be threadsafe as only one instance
  * is used by AsteriskServer to handle all requests to a resource.
  * 

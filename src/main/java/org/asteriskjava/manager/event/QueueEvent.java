@@ -43,9 +43,9 @@ public abstract class QueueEvent extends ManagerEvent
     }
 
     /**
-     * Returns the unique id of the channel that joines or leaves the queue.<br>
+     * Returns the unique id of the channel that joines or leaves the queue.<p>
      * This property is only available since Asterisk 1.4. Up to Asterisk 1.2
-     * this method always returns <code>null</code>.<br>
+     * this method always returns <code>null</code>.<p>
      * See Asterisk issues 6458 and 7002.
      * 
      * @return the unique id of the channel that joines or leaves the queue or

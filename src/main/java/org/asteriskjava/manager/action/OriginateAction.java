@@ -26,15 +26,15 @@ import org.asteriskjava.manager.event.OriginateEvent;
 /**
  * The OriginateAction generates an outgoing call to the extension in the given
  * context with the given priority or to a given application with optional
- * parameters.<br>
+ * parameters.<p>
  * If you want to connect to an extension use the properties context, exten and
  * priority. If you want to connect to an application use the properties
  * application and data if needed. Note that no call detail record will be
  * written when directly connecting to an application, so it may be better to
- * connect to an extension that starts the application you wish to connect to.<br>
+ * connect to an extension that starts the application you wish to connect to.<p>
  * The response to this action is sent when the channel has been answered and
  * asterisk starts connecting it to the given extension. So be careful not to
- * choose a too short timeout when waiting for the response.<br>
+ * choose a too short timeout when waiting for the response.<p>
  * If you set async to <code>true</code> Asterisk reports an OriginateSuccess-
  * and OriginateFailureEvents. The action id of these events equals the action
  * id of this OriginateAction.
@@ -83,7 +83,7 @@ public class OriginateAction extends AbstractManagerAction
     }
 
     /**
-     * Sets the account code to use for the originated call.<br>
+     * Sets the account code to use for the originated call.<p>
      * The account code is included in the call detail record generated for this
      * call and will be used for billing.
      */
@@ -101,7 +101,7 @@ public class OriginateAction extends AbstractManagerAction
     }
 
     /**
-     * Sets the caller id to set on the outgoing channel.<br>
+     * Sets the caller id to set on the outgoing channel.<p>
      * This includes both the Caller*Id Number and Caller*Id Name in the form
      * "Jon Doe &lt;1234&gt;".
      * 
@@ -113,7 +113,7 @@ public class OriginateAction extends AbstractManagerAction
     }
 
     /**
-     * Returns the calling presentation for the outgoing channel.<br>
+     * Returns the calling presentation for the outgoing channel.<p>
      * This property is only available on BRIstuffed Asterisk servers.
      * 
      * @return the calling presentation for the outgoing channel.
@@ -125,14 +125,14 @@ public class OriginateAction extends AbstractManagerAction
     }
 
     /**
-     * Sets the calling presentation for the outgoing channel.<br>
-     * The number is an octet and the only bits you need worry about are bits 1,2,6 and 7.<br>
+     * Sets the calling presentation for the outgoing channel.<p>
+     * The number is an octet and the only bits you need worry about are bits 1,2,6 and 7.<p>
      * Bits 1 and 2 define the screening indicator and bits 6 and 7 define the 
-     * presentation indicator.<br>
+     * presentation indicator.<p>
      * In essence, it says, 'Is the person who has been called allowed to see the callers number?' 
      * (presentation) and 'What authority was used to verify that this is a genuine number?'
-     * (screening).<br>
-     * <br>
+     * (screening).<p>
+     * <p>
      * Presentation indicator (Bits 6 and 7):
      * <pre>
      * Bits Meaning
@@ -176,7 +176,7 @@ public class OriginateAction extends AbstractManagerAction
     }
 
     /**
-     * Sets the name of the channel to connect to the outgoing call.<br>
+     * Sets the name of the channel to connect to the outgoing call.<p>
      * This property is required.
      */
     public void setChannel(String channel)
@@ -193,7 +193,7 @@ public class OriginateAction extends AbstractManagerAction
     }
 
     /**
-     * Sets the name of the context of the extension to connect to.<br>
+     * Sets the name of the context of the extension to connect to.<p>
      * If you set the context you also have to set the exten and priority
      * properties.
      */
@@ -211,7 +211,7 @@ public class OriginateAction extends AbstractManagerAction
     }
 
     /**
-     * Sets the extension to connect to.<br>
+     * Sets the extension to connect to.<p>
      * If you set the extension you also have to set the context and priority
      * properties.
      */
@@ -278,9 +278,9 @@ public class OriginateAction extends AbstractManagerAction
     }
 
     /**
-     * Sets the timeout (in milliseconds) for the origination.<br>
+     * Sets the timeout (in milliseconds) for the origination.<p>
      * The channel must be answered within this time, otherwise the origination
-     * is considered to have failed and an OriginateFailureEvent is generated.<br>
+     * is considered to have failed and an OriginateFailureEvent is generated.<p>
      * If not set, Asterisk assumes a default value of 30000 meaning 30 seconds.
      * 
      * @param timeout the timeout in milliseconds
@@ -292,9 +292,9 @@ public class OriginateAction extends AbstractManagerAction
     }
 
     /**
-     * Sets the timeout (in milliseconds) for the origination.<br>
+     * Sets the timeout (in milliseconds) for the origination.<p>
      * The channel must be answered within this time, otherwise the origination
-     * is considered to have failed and an OriginateFailureEvent is generated.<br>
+     * is considered to have failed and an OriginateFailureEvent is generated.<p>
      * If not set, Asterisk assumes a default value of 30000 meaning 30 seconds.
      * 
      * @param timeout the timeout in milliseconds
@@ -305,9 +305,9 @@ public class OriginateAction extends AbstractManagerAction
     }
 
     /**
-     * Sets the variables to set on the originated call.<br>
+     * Sets the variables to set on the originated call.<p>
      * Variable assignments are of the form "VARNAME=VALUE". You can specify
-     * multiple variable assignments separated by the '|' character.<br>
+     * multiple variable assignments separated by the '|' character.<p>
      * Example: "VAR1=abc|VAR2=def" sets the channel variables VAR1 to "abc" and
      * VAR2 to "def".
      * 

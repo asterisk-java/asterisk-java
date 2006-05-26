@@ -17,7 +17,7 @@
 package org.asteriskjava.manager.action;
 
 /**
- * The QueueRemoveAction removes a member from a queue.<br>
+ * The QueueRemoveAction removes a member from a queue.<p>
  * It is implemented in <code>apps/app_queue.c</code>
  * 
  * @author srt
@@ -79,7 +79,7 @@ public class QueueRemoveAction extends AbstractManagerAction
     }
 
     /**
-     * Sets the name of the queue the member will be removed from.<br>
+     * Sets the name of the queue the member will be removed from.<p>
      * This property is mandatory.
      * 
      * @param queue the name of the queue the member will be removed from.
@@ -98,7 +98,7 @@ public class QueueRemoveAction extends AbstractManagerAction
     }
 
     /**
-     * Sets the interface to remove.<br>
+     * Sets the interface to remove.<p>
      * This property is mandatory.
      */
     public void setInterface(String iface)

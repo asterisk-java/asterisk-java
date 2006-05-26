@@ -17,7 +17,7 @@
 package org.asteriskjava.manager.action;
 
 /**
- * The QueueAddAction adds a new member to a queue.<br>
+ * The QueueAddAction adds a new member to a queue.<p>
  * It is implemented in <code>apps/app_queue.c</code>
  * 
  * @author srt
@@ -93,7 +93,7 @@ public class QueueAddAction extends AbstractManagerAction
     }
 
     /**
-     * Sets the name of the queue the new member will be added to.<br>
+     * Sets the name of the queue the new member will be added to.<p>
      * This property is mandatory.
      */
     public void setQueue(String queue)
@@ -110,8 +110,8 @@ public class QueueAddAction extends AbstractManagerAction
     }
 
     /**
-     * Sets the interface to add.<br>
-     * To add a specific channel just use the channel name, e.g. "SIP/1234".<br>
+     * Sets the interface to add.<p>
+     * To add a specific channel just use the channel name, e.g. "SIP/1234".<p>
      * This property is mandatory.
      */
     public void setInterface(String iface)
@@ -128,9 +128,9 @@ public class QueueAddAction extends AbstractManagerAction
     }
 
     /**
-     * Sets the penalty for this member.<br>
+     * Sets the penalty for this member.<p>
      * The penalty must be a positive integer or 0 for no penalty. If it is
-     * not set 0 is assumed.<br>
+     * not set 0 is assumed.<p>
      * When calls are distributed members with higher penalties are considered
      * last.
      */

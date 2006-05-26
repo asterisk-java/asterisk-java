@@ -17,12 +17,12 @@
 package org.asteriskjava.manager.action;
 
 /**
- * The AgentCallbackLoginAction sets an agent as logged in with callback.<br>
+ * The AgentCallbackLoginAction sets an agent as logged in with callback.<p>
  * You can pass an extentsion (and optionally a context) to specify the
- * destination of the callback.<br>
+ * destination of the callback.<p>
  * In contrast to the AgentCallbackLogin application that you can use within
  * Asterisk's dialplan, you don't need to know the agent's password when logging
- * in an agent.<br>
+ * in an agent.<p>
  * Available since Asterisk 1.2
  * 
  * @author srt
@@ -99,7 +99,7 @@ public class AgentCallbackLoginAction extends AbstractManagerAction
     }
 
     /**
-     * Sets the name of the agent to log in, for example "1002".<br>
+     * Sets the name of the agent to log in, for example "1002".<p>
      * This is property is mandatory.
      * 
      * @param agent the name of the agent to log in
@@ -120,7 +120,7 @@ public class AgentCallbackLoginAction extends AbstractManagerAction
     }
 
     /**
-     * Sets the extension to use for callback.<br>
+     * Sets the extension to use for callback.<p>
      * This is property is mandatory.
      * 
      * @param exten the extension to use for callback.
@@ -163,7 +163,7 @@ public class AgentCallbackLoginAction extends AbstractManagerAction
     }
 
     /**
-     * Sets if an acknowledgement is needed when agent is called back.<br>
+     * Sets if an acknowledgement is needed when agent is called back.<p>
      * This property is optional, it allows you to override the defaults defined
      * in Asterisk's configuration.
      * 
@@ -190,7 +190,7 @@ public class AgentCallbackLoginAction extends AbstractManagerAction
 
     /**
      * Sets the minimum amount of time after disconnecting before the caller can
-     * receive a new call.<br>
+     * receive a new call.<p>
      * This property is optional, it allows you to override the defaults defined
      * in Asterisk's configuration.
      * 

@@ -17,7 +17,7 @@
 package org.asteriskjava.manager.event;
 
 /**
- * A ShutdownEvent is triggered when the asterisk server is shut down or restarted.<br>
+ * A ShutdownEvent is triggered when the asterisk server is shut down or restarted.<p>
  * It is implemented in <code>asterisk.c</code>
  * 
  * @author srt

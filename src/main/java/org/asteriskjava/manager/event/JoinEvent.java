@@ -17,7 +17,7 @@
 package org.asteriskjava.manager.event;
 
 /**
- * A JoinEvent is triggered when a channel joines a queue.<br>
+ * A JoinEvent is triggered when a channel joines a queue.<p>
  * It is implemented in <code>apps/app_queue.c</code>
  * 
  * @author srt

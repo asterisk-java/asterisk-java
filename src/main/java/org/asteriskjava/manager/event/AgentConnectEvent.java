@@ -17,8 +17,8 @@
 package org.asteriskjava.manager.event;
 
 /**
- * An AgentConnectEvent is triggered when a caller is connected to an agent.<br>
- * It is implemented in <code>apps/app_queue.c</code>.<br>
+ * An AgentConnectEvent is triggered when a caller is connected to an agent.<p>
+ * It is implemented in <code>apps/app_queue.c</code>.<p>
  * Available since Asterisk 1.2
  * 
  * @author srt
@@ -63,7 +63,7 @@ public class AgentConnectEvent extends AbstractAgentEvent
     /**
      * Returns the unique ID of the queue member channel that is taking the
      * call. This is useful when trying to link recording filenames back to a
-     * particular call from the queue.<br>
+     * particular call from the queue.<p>
      * Available since Asterisk 1.4.
      * 
      * @return the unique ID of the queue member channel that is taking the

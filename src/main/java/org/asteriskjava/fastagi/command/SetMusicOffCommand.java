@@ -17,7 +17,7 @@
 package org.asteriskjava.fastagi.command;
 
 /**
- * Turns off music on hold on the current channel.<br>
+ * Turns off music on hold on the current channel.<p>
  * Always returns 0.
  * 
  * @author srt

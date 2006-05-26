@@ -19,9 +19,9 @@ package org.asteriskjava.manager.action;
 import org.asteriskjava.manager.event.PeerlistCompleteEvent;
 
 /**
- * Retrieves a the details about a given SIP peer.<br>
+ * Retrieves a the details about a given SIP peer.<p>
  * For a PeerEntryEvent is sent by Asterisk containing the details of the peer
- * followed by a PeerlistCompleteEvent.<br>
+ * followed by a PeerlistCompleteEvent.<p>
  * Available since Asterisk 1.2
  * 
  * @see org.asteriskjava.manager.event.PeerEntryEvent
@@ -66,7 +66,7 @@ public class SipShowPeerAction extends AbstractManagerAction
     }
 
     /**
-     * Returns the name of the peer to retrieve.<br>
+     * Returns the name of the peer to retrieve.<p>
      * This parameter is mandatory.
      * 
      * @return the name of the peer to retrieve.
@@ -77,7 +77,7 @@ public class SipShowPeerAction extends AbstractManagerAction
     }
 
     /**
-     * Sets the name of the peer to retrieve.<br>
+     * Sets the name of the peer to retrieve.<p>
      * This parameter is mandatory.
      * 
      * @param peer the name of the peer to retrieve.

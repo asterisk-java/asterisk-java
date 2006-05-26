@@ -56,7 +56,7 @@ public class DefaultAsteriskServer implements AsteriskServer
      * Determines if queue status is retrieved at startup. If you don't need
      * queue information and still run Asterisk 1.0.x you can set this to
      * <code>true</code> to circumvent the startup delay caused by the missing
-     * QueueStatusComplete event.<br>
+     * QueueStatusComplete event.<p>
      * Default is <code>false</code>.
      * 
      * @param skipQueues <code>true</code> to skip queue initialization,

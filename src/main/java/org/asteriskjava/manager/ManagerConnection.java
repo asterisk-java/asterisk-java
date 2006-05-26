@@ -26,15 +26,15 @@ import org.asteriskjava.manager.response.ManagerResponse;
 
 /**
  * The main interface to talk to an Asterisk server via the Asterisk Manager
- * API.<br>
+ * API.<p>
  * The ManagerConnection repesents a connection to an Asterisk server and is
  * capable of sending {@link org.asteriskjava.manager.action.ManagerAction}s and 
  * receiving {@link org.asteriskjava.manager.response.ManagerResponse}s and 
  * {@link org.asteriskjava.manager.event.ManagerEvent}s. It does not add any
  * further functionality but rather provides a Java view to Asterisk's Manager
- * API (freeing you from TCP/IP connection and parsing stuff).<br>
+ * API (freeing you from TCP/IP connection and parsing stuff).<p>
  * It is used as the foundation for higher leveled interfaces like the
- * Asterisk-Java Live.<br>
+ * Asterisk-Java Live.<p>
  * A concrete implementation of this interface can be obtained from a
  * {@link org.asteriskjava.manager.ManagerConnectionFactory}.
  * 
@@ -59,13 +59,13 @@ public interface ManagerConnection
     int getPort();
 
     /**
-     * Registers a new user event type.<br>
+     * Registers a new user event type.<p>
      * Asterisk allows you to send custom events via the UserEvent application.
      * If you choose to send such events you can extend the abstract class
      * UserEvent provide a name for your new event and optionally add your own
      * attributes. After registering a user event type Asterisk-Java will handle
      * such events the same way it handles the internal events and inform your
-     * registered event handlers.<br>
+     * registered event handlers.<p>
      * Note: If you write your own Asterisk applications that use Asterisk's
      * <code>manager_event()</code> function directly and don't use the
      * channel and uniqueid attributes provided by UserEvent you can also
@@ -78,7 +78,7 @@ public interface ManagerConnection
     void registerUserEventClass(Class userEventClass);
 
     /**
-     * The timeout to use when connecting the the Asterisk server.<br>
+     * The timeout to use when connecting the the Asterisk server.<p>
      * Default is 0, that is using Java's built-in default.
      * 
      * @param socketTimeout the timeout value to be used in milliseconds.
@@ -228,13 +228,13 @@ public interface ManagerConnection
     /**
      * Sends an {@link EventGeneratingAction} to the Asterisk server and waits for the
      * corresponding {@link ManagerResponse} and the
-     * {@link org.asteriskjava.manager.event.ResponseEvent}s<br>
+     * {@link org.asteriskjava.manager.event.ResponseEvent}s<p>
      * EventGeneratingActions are {@link ManagerAction}s that don't return their
      * response in the corresponding {@link ManagerResponse} but send a series of events
-     * that contain the payload.<br>
+     * that contain the payload.<p>
      * This method will block until the correpsonding action complete event has
      * been received. The action complete event is determined by
-     * {@link EventGeneratingAction#getActionCompleteEventClass()}.<br>
+     * {@link EventGeneratingAction#getActionCompleteEventClass()}.<p>
      * Examples for EventGeneratingActions are 
      * {@link org.asteriskjava.manager.action.StatusAction},
      * {@link org.asteriskjava.manager.action.QueueAction} or 
@@ -263,14 +263,14 @@ public interface ManagerConnection
     /**
      * Sends an {@link EventGeneratingAction} to the Asterisk server and waits for the
      * corresponding {@link ManagerResponse} and the
-     * {@link org.asteriskjava.manager.event.ResponseEvent}s<br>
+     * {@link org.asteriskjava.manager.event.ResponseEvent}s<p>
      * EventGeneratingActions are {@link ManagerAction}s that don't return their
      * response in the corresponding {@link ManagerResponse} but send a series of events
-     * that contain the payload.<br>
+     * that contain the payload.<p>
      * This method will block until the correpsonding action complete event has
      * been received but no longer that timeout seconds.
      * The action complete event is determined by
-     * {@link EventGeneratingAction#getActionCompleteEventClass()}.<br>
+     * {@link EventGeneratingAction#getActionCompleteEventClass()}.<p>
      * Examples for EventGeneratingActions are the
      * {@link org.asteriskjava.manager.action.StatusAction}, the
      * {@link org.asteriskjava.manager.action.QueueAction} or the
@@ -301,7 +301,7 @@ public interface ManagerConnection
     /**
      * Registers an event listener that is called whenever an
      * {@link org.asteriskjava.manager.event.ManagerEvent} is receiced from the
-     * Asterisk server.<br>
+     * Asterisk server.<p>
      * Event listeners are notified about new events in the same order as they
      * were registered.
      * 
@@ -312,7 +312,7 @@ public interface ManagerConnection
     void addEventListener(ManagerEventListener eventListener);
 
     /**
-     * Unregisters a previously registered event listener.<br>
+     * Unregisters a previously registered event listener.<p>
      * Does nothing if the given event listener hasn't be been regiered before.
      * 
      * @param eventListener the listener to remove
@@ -323,9 +323,9 @@ public interface ManagerConnection
     /**
      * Registers an event handler to be called whenever an
      * {@link org.asteriskjava.manager.event.ManagerEvent} is receiced from the
-     * Asterisk server.<br>
+     * Asterisk server.<p>
      * Event handlers are notified about new events in the same order as they
-     * were registered via addEventHandler.<br>
+     * were registered via addEventHandler.<p>
      * This method is deprecated, please use {@link #removeEventListener(ManagerEventListener)}
      * instaed.
      * 
@@ -337,8 +337,8 @@ public interface ManagerConnection
     void addEventHandler(ManagerEventHandler eventHandler);
 
     /**
-     * Unregisters a previously registered event handler.<br>
-     * Does nothing if the given event handler hasn't be been regiered before.<br>
+     * Unregisters a previously registered event handler.<p>
+     * Does nothing if the given event handler hasn't be been regiered before.<p>
      * This method is deprecated, please use {@link #addEventListener(ManagerEventListener)}
      * instaed.
      * 

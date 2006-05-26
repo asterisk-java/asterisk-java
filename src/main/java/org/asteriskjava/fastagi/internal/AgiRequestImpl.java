@@ -99,7 +99,7 @@ public class AgiRequestImpl implements Serializable, AgiRequest
 
     /**
      * Builds a map containing variable names as key (with the "agi_" prefix
-     * stripped) and the corresponding values.<br>
+     * stripped) and the corresponding values.<p>
      * Syntactically invalid and empty variables are skipped.
      * 
      * @param lines the environment to transform.

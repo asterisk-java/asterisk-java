@@ -17,7 +17,7 @@
 package org.asteriskjava.manager.event;
 
 /**
- * Abstract base class for events triggered in response to a ManagerAction.<br>
+ * Abstract base class for events triggered in response to a ManagerAction.<p>
  * All ResponseEvents contain an additional action id property that links the
  * event to the action that caused it.
  * 
@@ -65,7 +65,7 @@ public abstract class ResponseEvent extends ManagerEvent
 
     /**
      * Returns the internal action id of the ManagerAction that caused this
-     * event.<br>
+     * event.<p>
      * Warning: This method is internal to Asterisk-Java and should never be
      * used in application code.
      * 

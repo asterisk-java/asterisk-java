@@ -25,13 +25,13 @@ import org.asteriskjava.manager.response.ManagerResponse;
 
 /**
  * Default implemention of the {@link org.asteriskjava.manager.ManagerConnection}
- * interface.<br>
+ * interface.<p>
  * Generelly avoid direct use of this class. Use a
  * {@link org.asteriskjava.manager.ManagerConnectionFactory} to
- * obtain a {@link org.asteriskjava.manager.ManagerConnection} instead.<br>
+ * obtain a {@link org.asteriskjava.manager.ManagerConnection} instead.<p>
  * When using a dependency injection framework like the Spring Framework direct usage for
  * wiring up beans that require a {@link org.asteriskjava.manager.ManagerConnection}
- * property is fine though.<br>
+ * property is fine though.<p>
  * Note that the DefaultManagerConnection will create one new Thread
  * for reading data from Asterisk once it is
  * {@link org.asteriskjava.manager.ManagerConnectionState#CONNECTING}.
@@ -71,7 +71,7 @@ public class DefaultManagerConnection implements ManagerConnection
     }
 
     /**
-     * Sets the hostname of the Asterisk server to connect to.<br>
+     * Sets the hostname of the Asterisk server to connect to.<p>
      * Default is <code>localhost</code>.
      * 
      * @param hostname the hostname to connect to
@@ -83,7 +83,7 @@ public class DefaultManagerConnection implements ManagerConnection
 
     /**
      * Sets the port to use to connect to the Asterisk server. This is the port
-     * specified in Asterisk's <code>manager.conf</code> file.<br>
+     * specified in Asterisk's <code>manager.conf</code> file.<p>
      * Default is 5038.
      * 
      * @param port the port to connect to
@@ -118,7 +118,7 @@ public class DefaultManagerConnection implements ManagerConnection
     /**
      * Sets the time in milliseconds the synchronous sendAction methods
      * {@link #sendAction(ManagerAction)} will wait for a response before
-     * throwing a TimeoutException.<br>
+     * throwing a TimeoutException.<p>
      * Default is 2000.
      * 
      * @param defaultTimeout default timeout in milliseconds
@@ -132,7 +132,7 @@ public class DefaultManagerConnection implements ManagerConnection
     /**
      * Sets the time in milliseconds the synchronous method
      * {@link #sendAction(ManagerAction)} will wait for a response before
-     * throwing a TimeoutException.<br>
+     * throwing a TimeoutException.<p>
      * Default is 2000.
      * 
      * @param defaultResponseTimeout default response timeout in milliseconds
@@ -146,7 +146,7 @@ public class DefaultManagerConnection implements ManagerConnection
     /**
      * Sets the time in milliseconds the synchronous method
      * {@link #sendEventGeneratingAction(EventGeneratingAction)} will wait for a
-     * response and the last response event before throwing a TimeoutException.<br>
+     * response and the last response event before throwing a TimeoutException.<p>
      * Default is 5000.
      * 
      * @param defaultEventTimeout default event timeout in milliseconds
@@ -158,7 +158,7 @@ public class DefaultManagerConnection implements ManagerConnection
     }
 
     /**
-     * This method is deprecated and will be removed in Asterisk-Java 0.4.<br>
+     * This method is deprecated and will be removed in Asterisk-Java 0.4.<p>
      * It does nothing.
      * 
      * @deprecated no longer needed as we now use an interrupt based response
@@ -171,7 +171,7 @@ public class DefaultManagerConnection implements ManagerConnection
 
     /**
      * Set to <code>true</code> to try reconnecting to ther asterisk serve
-     * even if the reconnection attempt threw an AuthenticationFailedException.<br>
+     * even if the reconnection attempt threw an AuthenticationFailedException.<p>
      * Default is <code>true</code>.
      */
     public void setKeepAliveAfterAuthenticationFailure(

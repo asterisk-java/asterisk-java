@@ -23,7 +23,7 @@ import org.asteriskjava.util.LogFactory;
 
 
 /**
- * A Thread that pings the Asterisk server at a given interval.<br>
+ * A Thread that pings the Asterisk server at a given interval.<p>
  * You can use this to prevent the connection being shut down when there is no
  * traffic.
  * 
@@ -62,7 +62,7 @@ public class PingThread extends Thread
     }
 
     /**
-     * Adjusts how often a PingAction is sent.<br>
+     * Adjusts how often a PingAction is sent.<p>
      * Default is 20000ms, i.e. 20 seconds.
      * 
      * @param interval the interval in milliseconds

@@ -17,10 +17,10 @@
 package org.asteriskjava.fastagi.command;
 
 /**
- * Sends the given image on a channel.<br>
- * Most channels do not support the transmission of images.<br>
+ * Sends the given image on a channel.<p>
+ * Most channels do not support the transmission of images.<p>
  * Returns 0 if image is sent, or if the channel does not support image
- * transmission. Returns -1 only on error/hangup.<br>
+ * transmission. Returns -1 only on error/hangup.<p>
  * Image names should not include extensions.
  * 
  * @author srt

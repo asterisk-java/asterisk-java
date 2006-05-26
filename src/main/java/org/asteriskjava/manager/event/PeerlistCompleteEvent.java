@@ -18,7 +18,7 @@ package org.asteriskjava.manager.event;
 
 /**
  * A PeerlistCompleteEvent is triggered after the details of all peers has been reported in response
- * to an SIPPeersAction or SIPShowPeerAction.<br>
+ * to an SIPPeersAction or SIPShowPeerAction.<p>
  * Available since Asterisk 1.2
  * 
  * @see org.asteriskjava.manager.event.PeerEntryEvent

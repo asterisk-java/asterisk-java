@@ -67,7 +67,7 @@ public class StatusEvent extends ResponseEvent
     }
 
     /**
-     * Returns the Caller*ID Number of this channel.<br>
+     * Returns the Caller*ID Number of this channel.<p>
      * This property is deprecated as of Asterisk 1.4, use {@link #getCallerIdNum()} instead.
      * @return the Caller*ID Number of this channel or "&lt;unknown&gt;" if none is available.
      * @deprecated
@@ -78,7 +78,7 @@ public class StatusEvent extends ResponseEvent
     }
 
     /**
-     * Sets the Caller*ID Number of this channel.<br>
+     * Sets the Caller*ID Number of this channel.<p>
      * This property is deprecated as of Asterisk 1.4.
      * @param callerId the Caller*ID Number to set.
      */

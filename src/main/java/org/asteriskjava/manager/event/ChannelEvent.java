@@ -142,8 +142,8 @@ public abstract class ChannelEvent extends ManagerEvent
     }
 
     /**
-     * Returns the (new) state of the channel.<br>
-     * The following states are used:<br>
+     * Returns the (new) state of the channel.<p>
+     * The following states are used:<p>
      * <ul>
      * <li>Down</li>
      * <li>OffHook</li>

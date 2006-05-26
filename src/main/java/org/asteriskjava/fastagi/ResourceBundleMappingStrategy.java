@@ -23,9 +23,9 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 /**
- * A MappingStrategy that is configured via a resource bundle.<br>
+ * A MappingStrategy that is configured via a resource bundle.<p>
  * The resource bundle contains the script part of the url as key and the fully
- * qualified class name of the corresponding AgiScript as value.<br>
+ * qualified class name of the corresponding AgiScript as value.<p>
  * Example:
  * 
  * <pre>
@@ -34,7 +34,7 @@ import java.util.ResourceBundle;
  * </pre>
  * 
  * LeastCostDialAgiScript and HelloAgiScript must both implement the AgiScript
- * interface and have a default constructor with no parameters.<br>
+ * interface and have a default constructor with no parameters.<p>
  * The resource bundle (properties) file is called
  * <code>fastagi-mapping.properties</code> by default and must be available on 
  * the classpath.
@@ -101,7 +101,7 @@ public class ResourceBundleMappingStrategy extends AbstractMappingStrategy
     }
 
     /**
-     * Sets the basename of the resource bundle to use.<br>
+     * Sets the basename of the resource bundle to use.<p>
      * Default is "fastagi-mapping".
      * 
      * @param resourceBundleName basename of the resource bundle to use
@@ -120,7 +120,7 @@ public class ResourceBundleMappingStrategy extends AbstractMappingStrategy
      * Sets whether to use shared instances or not. If set to <code>true</code>
      * all AgiRequests are served by the same instance of an
      * AgiScript, if set to <code>false</code> a new instance is created for
-     * each request.<br>
+     * each request.<p>
      * Default is <code>true</code>.
      * 
      * @param shareInstances <code>true</code> to use shared instances,

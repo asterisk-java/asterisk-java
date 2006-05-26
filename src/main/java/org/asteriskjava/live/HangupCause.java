@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Asterisk hangup cause.<br>
+ * Asterisk hangup cause.<p>
  * Definitions from <code>/include/asterisk/causes.h</code>.
  * 
  * @author srt
@@ -94,7 +94,7 @@ public enum HangupCause
     }
 
     /**
-     * Returns the numeric cause code.<br>
+     * Returns the numeric cause code.<p>
      * Using this method in client code is discouraged.
      * 
      * @return the numeric cause code.
@@ -105,7 +105,7 @@ public enum HangupCause
     }
 
     /**
-     * Returns the HangupCode by its numeric cause code.<br>
+     * Returns the HangupCode by its numeric cause code.<p>
      * Using this method in client code is discouraged.
      * 
      * @param code the numeric cause code.

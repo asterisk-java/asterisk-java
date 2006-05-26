@@ -22,7 +22,7 @@ import org.asteriskjava.manager.response.ManagerResponse;
 
 /**
  * The Dispatcher defines the interface used for communication between
- * ManagerConnection and ManagerReader.<br>
+ * ManagerConnection and ManagerReader.<p>
  * Do not use this interface in your code, it is intended to be used only by the
  * DefaultManagerConnection and its ManagerReader.
  * 

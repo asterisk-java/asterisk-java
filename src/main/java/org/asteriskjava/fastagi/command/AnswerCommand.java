@@ -17,7 +17,7 @@
 package org.asteriskjava.fastagi.command;
 
 /**
- * Answers channel if not already in answer state.<br>
+ * Answers channel if not already in answer state.<p>
  * Returns -1 on channel failure, or 0 if successful.
  * 
  * @author srt

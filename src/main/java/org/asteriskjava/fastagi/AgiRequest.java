@@ -20,7 +20,7 @@ import java.net.InetAddress;
 import java.util.Map;
 
 /**
- * Provides client request information to an {@link org.asteriskjava.fastagi.AgiScript}.<br>
+ * Provides client request information to an {@link org.asteriskjava.fastagi.AgiScript}.<p>
  * This includes information about the channel the script is invoked on and
  * parameters passed from the dialplan.
  * 
@@ -37,7 +37,7 @@ public interface AgiRequest
     Map getRequest();
 
     /**
-     * Returns the name of the script to execute including its full path.<br>
+     * Returns the name of the script to execute including its full path.<p>
      * This corresponds to the request url with protocol, host, port and
      * parameters stripped off.
      * 
@@ -83,7 +83,7 @@ public interface AgiRequest
     String getLanguage();
 
     /**
-     * Returns the Caller*ID, for example "1234".<br>
+     * Returns the Caller*ID, for example "1234".<p>
      * Note: even with Asterisk 1.0 is contains only the numerical part
      * of the Caller ID.
      * 
@@ -110,7 +110,7 @@ public interface AgiRequest
 
     /**
      * If this call has been forwared, the number of the person doing the
-     * redirect is returned (Redirected dialed number identification service).<br>
+     * redirect is returned (Redirected dialed number identification service).<p>
      * This is usally only only available on PRI.
      * 
      * @return the number of the person doing the redirect, , if no RDNIS is
@@ -146,7 +146,7 @@ public interface AgiRequest
     Integer getPriority();
 
     /**
-     * Returns wheather this agi is passed audio (EAGI - Enhanced AGI).<br>
+     * Returns wheather this agi is passed audio (EAGI - Enhanced AGI).<p>
      * Enhanced AGI is currently not supported on FastAGI.
      * 
      * @return Boolean.TRUE if this agi is passed audio, Boolean.FALSE
@@ -162,7 +162,7 @@ public interface AgiRequest
     String getAccountCode();
 
     /**
-     * Returns the Callerid presentation/screening.<br>
+     * Returns the Callerid presentation/screening.<p>
      * Available since Asterisk 1.2.
      * 
      * @return the Callerid presentation/screening.
@@ -171,7 +171,7 @@ public interface AgiRequest
     Integer getCallingPres();
 
     /**
-     * Returns the Callerid ANI 2 (Info digits).<br>
+     * Returns the Callerid ANI 2 (Info digits).<p>
      * Available since Asterisk 1.2.
      * 
      * @return the Callerid ANI 2 (Info digits).
@@ -180,7 +180,7 @@ public interface AgiRequest
     Integer getCallingAni2();
 
     /**
-     * Returns the Callerid Type of Number.<br>
+     * Returns the Callerid Type of Number.<p>
      * Available since Asterisk 1.2.
      * 
      * @return the Callerid Type of Number.
@@ -189,7 +189,7 @@ public interface AgiRequest
     Integer getCallingTon();
 
     /**
-     * Returns the Callerid Transit Network Select.<br>
+     * Returns the Callerid Transit Network Select.<p>
      * Available since Asterisk 1.2.
      * 
      * @return the Callerid Transit Network Select.
@@ -200,9 +200,9 @@ public interface AgiRequest
     /**
      * Returns the value of a request parameter as a String, or
      * <code>null</code> if the parameter does not exist. You should only use
-     * this method when you are sure the parameter has only one value.<br>
+     * this method when you are sure the parameter has only one value.<p>
      * If the parameter might have more than one value, use
-     * {@link #getParameterValues(String)}.<br>
+     * {@link #getParameterValues(String)}.<p>
      * If you use this method with a multivalued parameter, the value returned
      * is equal to the first value in the array returned by
      * <code>getParameterValues</code>.
@@ -217,7 +217,7 @@ public interface AgiRequest
     /**
      * Returns an array of String objects containing all of the values the given
      * request parameter has, or
-     * <code>null</coder> if the parameter does not exist.<br>
+     * <code>null</coder> if the parameter does not exist.<p>
      * If the parameter has a single value, the array has a length of 1.
      * 
      * @param name a String containing the name of the parameter whose value is requested.

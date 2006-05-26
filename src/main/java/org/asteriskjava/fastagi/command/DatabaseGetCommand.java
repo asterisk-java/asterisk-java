@@ -17,9 +17,9 @@
 package org.asteriskjava.fastagi.command;
 
 /**
- * Retrieves an entry in the Asterisk database for a given family and key.<br>
+ * Retrieves an entry in the Asterisk database for a given family and key.<p>
  * Returns 0 if is not set. Returns 1 if the variable is set and returns the
- * value in parenthesis.<br>
+ * value in parenthesis.<p>
  * Example return code: 200 result=1 (testvariable)
  * 
  * @author srt

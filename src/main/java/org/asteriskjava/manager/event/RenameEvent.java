@@ -17,7 +17,7 @@
 package org.asteriskjava.manager.event;
 
 /**
- * A RenameEvent is triggered when the name of a channel is changed.<br>
+ * A RenameEvent is triggered when the name of a channel is changed.<p>
  * It is implemented in <code>channel.c</code>
  * 
  * @author srt

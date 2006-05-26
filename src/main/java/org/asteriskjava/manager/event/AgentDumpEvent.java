@@ -18,8 +18,8 @@ package org.asteriskjava.manager.event;
 
 /**
  * An AgentDumpEvent is triggered when an agent dumps the caller while listening
- * to the queue announcement.<br>
- * It is implemented in <code>apps/app_queue.c</code>.<br>
+ * to the queue announcement.<p>
+ * It is implemented in <code>apps/app_queue.c</code>.<p>
  * Available since Asterisk 1.2
  * 
  * @author srt

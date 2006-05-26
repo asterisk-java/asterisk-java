@@ -26,9 +26,9 @@ import org.asteriskjava.util.ReflectionUtil;
 
 /**
  * Abstract base class for all Events that can be received from the Asterisk
- * server.<br>
+ * server.<p>
  * Events contain data pertaining to an event generated from within the Asterisk
- * core or an extension module.<br>
+ * core or an extension module.<p>
  * There is one conrete subclass of ManagerEvent per each supported Asterisk
  * Event.
  * 
@@ -64,7 +64,7 @@ public abstract class ManagerEvent extends EventObject implements Serializable
 
     /**
      * Returns the point in time this event was received from the Asterisk
-     * server.<br>
+     * server.<p>
      * Pseudo events that are not directly received from the asterisk server
      * (for example ConnectEvent and DisconnectEvent) may return
      * <code>null</code>.
@@ -83,9 +83,9 @@ public abstract class ManagerEvent extends EventObject implements Serializable
     }
 
     /**
-     * Returns the AMI authorization class of this event.<br>
+     * Returns the AMI authorization class of this event.<p>
      * This is one or more of system, call, log, verbose, command, agent or user.
-     * Multiple privileges are separated by comma.<br>
+     * Multiple privileges are separated by comma.<p>
      * Note: This property is not available from Asterisk 1.0 servers.
      * @since 0.2
      */

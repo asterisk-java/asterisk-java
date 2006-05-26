@@ -18,7 +18,7 @@ package org.asteriskjava.manager.event;
 
 
 /**
- * A NewCallerIdEvent is triggered when the caller id of a channel changes.<br>
+ * A NewCallerIdEvent is triggered when the caller id of a channel changes.<p>
  * It is implemented in <code>channel.c</code>
  * 
  * @author srt

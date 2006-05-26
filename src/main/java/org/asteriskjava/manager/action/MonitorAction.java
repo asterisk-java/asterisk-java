@@ -17,7 +17,7 @@
 package org.asteriskjava.manager.action;
 
 /**
- * The MonitorAction starts monitoring (recording) a channel.<br>
+ * The MonitorAction starts monitoring (recording) a channel.<p>
  * It is implemented in <code>res/res_monitor.c</code>
  * 
  * @author srt
@@ -111,7 +111,7 @@ public class MonitorAction extends AbstractManagerAction
     }
 
     /**
-     * Sets the name of the channel to monitor.<br>
+     * Sets the name of the channel to monitor.<p>
      * This property is mandatory.
      */
     public void setChannel(String channel)
@@ -128,7 +128,7 @@ public class MonitorAction extends AbstractManagerAction
     }
 
     /**
-     * Sets the (base) name of the file(s) to which the voice data is written.<br>
+     * Sets the (base) name of the file(s) to which the voice data is written.<p>
      * If this property is not set it defaults to to the channel name as per CLI
      * with the '/' replaced by '-'.
      */
@@ -146,7 +146,7 @@ public class MonitorAction extends AbstractManagerAction
     }
 
     /**
-     * Sets the format to use for encoding the voice files.<br>
+     * Sets the format to use for encoding the voice files.<p>
      * If this property is not set it defaults to "wav".
      */
     public void setFormat(String format)

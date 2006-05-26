@@ -18,9 +18,9 @@ package org.asteriskjava.manager.event;
 
 /**
  * A MeetMeTalkingEvent is triggered when a user starts talking in a meet me
- * conference.<br>
- * To enable talker detection you must pass the option 'T' to the MeetMe application.<br>
- * It is implemented in <code>apps/app_meetme.c</code><br>
+ * conference.<p>
+ * To enable talker detection you must pass the option 'T' to the MeetMe application.<p>
+ * It is implemented in <code>apps/app_meetme.c</code><p>
  * Available since Asterisk 1.2
  * 
  * @see org.asteriskjava.manager.event.MeetMeStopTalkingEvent
@@ -46,7 +46,7 @@ public class MeetMeTalkingEvent extends MeetMeEvent
     }
 
     /**
-     * Returns whether the user has started or stopped talking.<br>
+     * Returns whether the user has started or stopped talking.<p>
      * Until Asterisk 1.2 Asterisk used different events to indicate start
      * and stop: This MeetMeTalkingEvent when the user started talking and the
      * {@link MeetMeStopTalkingEvent} when he stopped. With Asterisk 1.2

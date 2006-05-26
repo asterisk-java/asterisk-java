@@ -17,8 +17,8 @@
 package org.asteriskjava.manager.event;
 
 /**
- * A dial event is triggered whenever a phone attempts to dial someone.<br>
- * This event is implemented in <code>apps/app_dial.c</code>.<br>
+ * A dial event is triggered whenever a phone attempts to dial someone.<p>
+ * This event is implemented in <code>apps/app_dial.c</code>.<p>
  * Available since Asterisk 1.2.
  * 
  * @author Asteria Solutions Group, Inc. <http://www.asteriasgi.com/>

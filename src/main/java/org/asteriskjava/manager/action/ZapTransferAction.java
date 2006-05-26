@@ -47,7 +47,7 @@ public class ZapTransferAction extends AbstractManagerAction
     }
 
     /**
-     * Sets the number of the zap channel to transfer.<br>
+     * Sets the number of the zap channel to transfer.<p>
      * This property is mandatory.
      */
     public void setZapChannel(Integer channel)

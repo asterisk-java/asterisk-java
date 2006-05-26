@@ -18,7 +18,7 @@ package org.asteriskjava.fastagi.command;
 
 /**
  * Say a given digit string, returning early if any of the given DTMF digits are
- * received on the channel.<br>
+ * received on the channel.<p>
  * Returns 0 if playback completes without a digit being pressed, or the ASCII
  * numerical value of the digit if one was pressed or -1 on error/hangup.
  * 

@@ -19,7 +19,7 @@ package org.asteriskjava.manager.action;
 /**
  * The EventGeneratingAction interface is implemented by ManagerActions that
  * return their result not in a ManagerResponse but by sending a series of
- * events.<br>
+ * events.<p>
  * The event type that indicates that Asterisk is finished is returned by the
  * getActionCompleteEventClass() method.
  * 

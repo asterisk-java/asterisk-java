@@ -184,7 +184,7 @@ public class AgiReplyImpl implements Serializable, AgiReply
     private boolean statusCreated;
 
     /**
-     * Returns the status code.<br>
+     * Returns the status code.<p>
      * Supported status codes are:
      * <ul>
      * <li>200 Success
@@ -213,7 +213,7 @@ public class AgiReplyImpl implements Serializable, AgiReply
     private boolean attributesCreated;
 
     /**
-     * Returns an additional attribute contained in the reply.<br>
+     * Returns an additional attribute contained in the reply.<p>
      * For example the reply to the StreamFileCommand contains an additional
      * endpos attribute indicating the frame where the playback was stopped.
      * This can be retrieved by calling getAttribute("endpos") on the
@@ -271,7 +271,7 @@ public class AgiReplyImpl implements Serializable, AgiReply
     private boolean extraCreated;
 
     /**
-     * Returns the text in parenthesis contained in this reply.<br>
+     * Returns the text in parenthesis contained in this reply.<p>
      * The meaning of this property depends on the command sent. Sometimes it
      * contains a flag like "timeout" or "hangup" or - in case of the
      * GetVariableCommand - the value of the variable.

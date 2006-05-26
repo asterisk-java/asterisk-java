@@ -61,7 +61,7 @@ public abstract class AbstractQueueMemberEvent extends ManagerEvent
     }
 
     /**
-     * Returns the name of the member's interface.<br>
+     * Returns the name of the member's interface.<p>
      * E.g. the channel name or agent group.
      * 
      * @return the name of the member's interface.

@@ -17,8 +17,8 @@
 package org.asteriskjava.fastagi.command;
 
 /**
- * Record to a file until a given dtmf digit in the sequence is received.<br>
- * Returns -1 on hangup or error.<br>
+ * Record to a file until a given dtmf digit in the sequence is received.<p>
+ * Returns -1 on hangup or error.<p>
  * The format will specify what kind of file will be recorded. The timeout is
  * the maximum record time in milliseconds, or -1 for no timeout. Offset samples
  * is optional, and if provided will seek to the offset without exceeding the

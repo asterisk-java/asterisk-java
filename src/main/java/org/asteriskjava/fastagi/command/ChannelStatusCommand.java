@@ -18,7 +18,7 @@ package org.asteriskjava.fastagi.command;
 
 /**
  * Returns the status of the specified channel. If no channel name is given the
- * returns the status of the current channel.<br>
+ * returns the status of the current channel.<p>
  * Return values:
  * <ul>
  * <li>0 Channel is down and available

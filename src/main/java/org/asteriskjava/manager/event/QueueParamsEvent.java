@@ -18,7 +18,7 @@ package org.asteriskjava.manager.event;
 
 /**
  * A QueueParamsEvent is triggered in response to a QueueStatusAction and contains the parameters of
- * a queue.<br>
+ * a queue.<p>
  * It is implemented in <code>apps/app_queue.c</code>
  * 
  * @see org.asteriskjava.manager.action.QueueStatusAction
@@ -67,7 +67,7 @@ public class QueueParamsEvent extends ResponseEvent
     }
 
     /**
-     * Returns the maximum number of people waiting in the queue or 0 for unlimited.<br>
+     * Returns the maximum number of people waiting in the queue or 0 for unlimited.<p>
      * This corresponds to the <code>maxlen</code> setting in <code>queues.conf</code>.
      */
     public Integer getMax()
@@ -183,11 +183,11 @@ public class QueueParamsEvent extends ResponseEvent
     }
 
     /**
-     * Returns the weight of this queue.<br>
+     * Returns the weight of this queue.<p>
      * A queues can be assigned a 'weight' to ensure calls waiting in a 
      * higher priority queue will deliver its calls first. Only delays 
      * the lower weight queue's call if the member is also in the 
-     * higher weight queue.<br>
+     * higher weight queue.<p>
      * Available since Asterisk 1.2
      * 
      * @return the weight of this queue or <code>null</code> if not 

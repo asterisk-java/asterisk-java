@@ -17,7 +17,7 @@
 package org.asteriskjava.fastagi.command;
 
 /**
- * AgiCommand that can be sent to Asterisk via the Asterisk Gateway Interface.<br>
+ * AgiCommand that can be sent to Asterisk via the Asterisk Gateway Interface.<p>
  * This interface contains only one method that transforms the command to a
  * String representation understood by Asterisk.
  * 
@@ -28,7 +28,7 @@ public interface AgiCommand
 {
 
     /**
-     * Returns a string suitable to be sent to asterisk.<br>
+     * Returns a string suitable to be sent to asterisk.<p>
      * 
      * @return a string suitable to be sent to asterisk.
      */

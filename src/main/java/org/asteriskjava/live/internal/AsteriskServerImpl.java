@@ -94,15 +94,15 @@ public class AsteriskServerImpl
     private final QueueManager queueManager;
 
     /**
-     * The version of the Asterisk server we are connected to.<br>
+     * The version of the Asterisk server we are connected to.<p>
      * Contains <code>null</code> until lazily initialized.
      */
     private String version;
 
     /**
-     * Holds the version of Asterisk's source files.<br>
+     * Holds the version of Asterisk's source files.<p>
      * That corresponds to the output of the CLI command
-     * <code>show version files</code>.<br>
+     * <code>show version files</code>.<p>
      * Contains <code>null</code> until lazily initialized.
      */
     private Map<String, String> versions;
@@ -147,7 +147,7 @@ public class AsteriskServerImpl
      * Determines if queue status is retrieved at startup. If you don't need
      * queue information and still run Asterisk 1.0.x you can set this to
      * <code>true</code> to circumvent the startup delay caused by the missing
-     * QueueStatusComplete event.<br>
+     * QueueStatusComplete event.<p>
      * Default is <code>false</code>.
      * 
      * @param skipQueues <code>true</code> to skip queue initialization,
@@ -416,7 +416,7 @@ public class AsteriskServerImpl
     /* Implementation of the ManagerEventListener interface */
 
     /**
-     * Handles all events received from the Asterisk server.<br>
+     * Handles all events received from the Asterisk server.<p>
      * Events are queued until channels and queues are initialized and then
      * delegated to the dispatchEvent method.
      */

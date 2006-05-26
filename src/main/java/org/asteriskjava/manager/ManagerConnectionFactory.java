@@ -18,13 +18,13 @@ package org.asteriskjava.manager;
 
 /**
  * This factory is the canonical way to obtain new 
- * {@link org.asteriskjava.manager.ManagerConnection}s.<br>
+ * {@link org.asteriskjava.manager.ManagerConnection}s.<p>
  * It creates new connections in state 
  * {@link org.asteriskjava.manager.ManagerConnectionState#INITIAL}. Before
  * you can start using such a connection (i.e. sending 
  * {@link org.asteriskjava.manager.action.ManagerAction}s you must
  * {@link org.asteriskjava.manager.ManagerConnection#login()} to change its state
- * to {@link org.asteriskjava.manager.ManagerConnectionState#CONNECTED}.<br>
+ * to {@link org.asteriskjava.manager.ManagerConnectionState#CONNECTED}.<p>
  * Example:
  * <pre>
  * ManagerConnectionFactory factory;
@@ -37,7 +37,7 @@ package org.asteriskjava.manager;
  * connection.logoff();
  * </pre>
  * If want you can use the factory to create multiple connections to the same
- * server by calling {@link #createManagerConnection()} multiple times.<br>
+ * server by calling {@link #createManagerConnection()} multiple times.<p>
  * 
  * @see org.asteriskjava.manager.ManagerConnection
  * @author srt

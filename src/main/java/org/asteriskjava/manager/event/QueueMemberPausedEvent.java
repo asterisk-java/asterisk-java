@@ -18,8 +18,8 @@ package org.asteriskjava.manager.event;
 
 /**
  * A QueueMemberPausedEvent is triggered when a queue member is paused or
- * unpaused.<br>
- * It is implemented in <code>apps/app_queue.c</code>.<br>
+ * unpaused.<p>
+ * It is implemented in <code>apps/app_queue.c</code>.<p>
  * Available since Asterisk 1.2
  * 
  * @author srt
@@ -41,7 +41,7 @@ public class QueueMemberPausedEvent extends AbstractQueueMemberEvent
     }
 
     /**
-     * Returns if this queue member is paused (not accepting calls).<br>
+     * Returns if this queue member is paused (not accepting calls).<p>
      * 
      * @return <code>Boolean.TRUE</code> if this member has been paused or
      *         <code>Boolean.FALSE</code> if not.

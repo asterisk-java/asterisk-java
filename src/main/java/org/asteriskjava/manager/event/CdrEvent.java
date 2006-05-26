@@ -23,9 +23,9 @@ import java.util.Date;
 import java.util.TimeZone;
 
 /**
- * A CdrEvent is triggered when a call detail record is generated, usually at the end of a call.<br>
+ * A CdrEvent is triggered when a call detail record is generated, usually at the end of a call.<p>
  * To enable CdrEvents you have to add <code>enabled = yes</code> to the general section in
- * <code>cdr_manager.conf</code>.<br>
+ * <code>cdr_manager.conf</code>.<p>
  * This event is implemented in <code>cdr/cdr_manager.c</code>
  * 
  * @author srt
@@ -78,7 +78,7 @@ public class CdrEvent extends ManagerEvent
     }
 
     /**
-     * Returns the account number that is usually used to identify the party to bill for the call.<br>
+     * Returns the account number that is usually used to identify the party to bill for the call.<p>
      * Corresponds to CDR field <code>accountcode</code>.
      * 
      * @return the account number.
@@ -99,7 +99,7 @@ public class CdrEvent extends ManagerEvent
     }
 
     /**
-     * Returns the Caller*ID number.<br>
+     * Returns the Caller*ID number.<p>
      * Corresponds to CDR field <code>src</code>.
      * 
      * @return the Caller*ID number.
@@ -120,7 +120,7 @@ public class CdrEvent extends ManagerEvent
     }
 
     /**
-     * Returns the destination extension.<br>
+     * Returns the destination extension.<p>
      * Corresponds to CDR field <code>dst</code>.
      * 
      * @return the destination extension.
@@ -141,7 +141,7 @@ public class CdrEvent extends ManagerEvent
     }
 
     /**
-     * Returns the destination context.<br>
+     * Returns the destination context.<p>
      * Corresponds to CDR field <code>dcontext</code>.
      * 
      * @return the destination context.
@@ -162,7 +162,7 @@ public class CdrEvent extends ManagerEvent
     }
 
     /**
-     * Returns the Caller*ID with text.<br>
+     * Returns the Caller*ID with text.<p>
      * Corresponds to CDR field <code>clid</code>.
      * 
      * @return the Caller*ID with text
@@ -183,7 +183,7 @@ public class CdrEvent extends ManagerEvent
     }
 
     /**
-     * Returns the name of the channel, for example "SIP/1310-asfe".<br>
+     * Returns the name of the channel, for example "SIP/1310-asfe".<p>
      * Corresponds to CDR field <code>channel</code>.
      * 
      * @return the name of the channel.
@@ -204,7 +204,7 @@ public class CdrEvent extends ManagerEvent
     }
 
     /**
-     * Returns the name of the destination channel if appropriate.<br>
+     * Returns the name of the destination channel if appropriate.<p>
      * Corresponds to CDR field <code>dstchannel</code>.
      * 
      * @return the name of the destination channel or <code>null</code> if not available.
@@ -225,7 +225,7 @@ public class CdrEvent extends ManagerEvent
     }
 
     /**
-     * Returns the last application if appropriate, for example "VoiceMail".<br>
+     * Returns the last application if appropriate, for example "VoiceMail".<p>
      * Corresponds to CDR field <code>lastapp</code>.
      * 
      * @return the last application or <code>null</code> if not avaialble.
@@ -246,7 +246,7 @@ public class CdrEvent extends ManagerEvent
     }
 
     /**
-     * Returns the last application's data (arguments), for example "s1234".<br>
+     * Returns the last application's data (arguments), for example "s1234".<p>
      * Corresponds to CDR field <code>lastdata</code>.
      * 
      * @return the last application's data or <code>null</code> if not avaialble.
@@ -267,7 +267,7 @@ public class CdrEvent extends ManagerEvent
     }
 
     /**
-     * Returns when the call has started.<br>
+     * Returns when the call has started.<p>
      * This corresponds to CDR field <code>start</code>.
      * 
      * @return A string of the format "%Y-%m-%d %T" (strftime(3)) representing the date/time the
@@ -279,7 +279,7 @@ public class CdrEvent extends ManagerEvent
     }
     
     /**
-     * Returns the start time as Date object.<br>
+     * Returns the start time as Date object.<p>
      * This method asumes that the Asterisk server's timezone equals the default 
      * timezone of your JVM.
      * 
@@ -314,7 +314,7 @@ public class CdrEvent extends ManagerEvent
     }
 
     /**
-     * Returns when the call was answered.<br>
+     * Returns when the call was answered.<p>
      * This corresponds to CDR field <code>answered</code>.
      * 
      * @return A string of the format "%Y-%m-%d %T" (strftime(3)) representing the date/time the
@@ -326,7 +326,7 @@ public class CdrEvent extends ManagerEvent
     }
 
     /**
-     * Returns the answer time as Date object.<br>
+     * Returns the answer time as Date object.<p>
      * This method asumes that the Asterisk server's timezone equals the default 
      * timezone of your JVM.
      * 
@@ -361,7 +361,7 @@ public class CdrEvent extends ManagerEvent
     }
 
     /**
-     * Returns when the call has ended.<br>
+     * Returns when the call has ended.<p>
      * This corresponds to CDR field <code>end</code>.
      * 
      * @return A string of the format "%Y-%m-%d %T" (strftime(3)) representing the date/time the
@@ -373,7 +373,7 @@ public class CdrEvent extends ManagerEvent
     }
 
     /**
-     * Returns the end time as Date object.<br>
+     * Returns the end time as Date object.<p>
      * This method asumes that the Asterisk server's timezone equals the default 
      * timezone of your JVM.
      * 
@@ -408,7 +408,7 @@ public class CdrEvent extends ManagerEvent
     }
 
     /**
-     * Returns the total time (in seconds) the caller spent in the system from dial to hangup.<br>
+     * Returns the total time (in seconds) the caller spent in the system from dial to hangup.<p>
      * Corresponds to CDR field <code>duration</code>.
      * 
      * @return the total time in system in seconds.
@@ -429,7 +429,7 @@ public class CdrEvent extends ManagerEvent
     }
 
     /**
-     * Returns the total time (in seconds) the call was up from answer to hangup.<br>
+     * Returns the total time (in seconds) the call was up from answer to hangup.<p>
      * Corresponds to CDR field <code>billsec</code>.
      * 
      * @return the total time in call in seconds.
@@ -450,7 +450,7 @@ public class CdrEvent extends ManagerEvent
     }
 
     /**
-     * Returns what happened to the call.<br>
+     * Returns what happened to the call.<p>
      * This is one of
      * <ul>
      * <li>{@link #DISPOSITION_NO_ANSWER}
@@ -479,7 +479,7 @@ public class CdrEvent extends ManagerEvent
     }
 
     /**
-     * Returns the AMA (Automated Message Accounting) flags.<br>
+     * Returns the AMA (Automated Message Accounting) flags.<p>
      * This is one of
      * <ul>
      * <li>{@link #AMA_FLAG_OMIT}
@@ -527,7 +527,7 @@ public class CdrEvent extends ManagerEvent
     }
 
     /**
-     * Returns the user-defined field as set by <code>Set(CDR(userfield)=Value)</code>.<br>
+     * Returns the user-defined field as set by <code>Set(CDR(userfield)=Value)</code>.<p>
      * Corresponds to CDR field <code>userfield</code>.
      * 
      * @return the user-defined field.

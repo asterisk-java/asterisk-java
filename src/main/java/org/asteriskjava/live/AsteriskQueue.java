@@ -36,7 +36,7 @@ public interface AsteriskQueue
 
     /**
      * Returns the maximum number of people waiting in this queue or 0 for
-     * unlimited.<br>
+     * unlimited.<p>
      * Corresponds to the <code>maxlen</code> option in Asterisk's
      * <code>queues.conf</code>.
      * 

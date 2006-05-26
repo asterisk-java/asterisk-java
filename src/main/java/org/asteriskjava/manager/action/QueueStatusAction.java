@@ -20,12 +20,12 @@ import org.asteriskjava.manager.event.QueueStatusCompleteEvent;
 
 /**
  * The QueueStatusAction requests the state of all defined queues their members
- * (agents) and entries (callers).<br>
+ * (agents) and entries (callers).<p>
  * For each queue a QueueParamsEvent is generated, followed by a
  * QueueMemberEvent for each member of that queue and a QueueEntryEvent for each
- * entry in the queue.<br>
+ * entry in the queue.<p>
  * Since Asterisk 1.2 a QueueStatusCompleteEvent is sent to denote the end of
- * the generated dump.<br>
+ * the generated dump.<p>
  * This action is implemented in <code>apps/app_queue.c</code>
  * 
  * @see org.asteriskjava.manager.event.QueueParamsEvent

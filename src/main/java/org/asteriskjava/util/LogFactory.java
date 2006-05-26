@@ -21,7 +21,7 @@ import org.asteriskjava.util.internal.Log4JLogger;
 import org.asteriskjava.util.internal.NullLog;
 
 /**
- * Facade to hide details of the underlying logging system.<br>
+ * Facade to hide details of the underlying logging system.<p>
  * If you want to reuse Asterisk-Java's logging abstraction layer
  * add a private attribute to your class like this:
  * <pre>

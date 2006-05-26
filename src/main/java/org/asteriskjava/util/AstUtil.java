@@ -1,8 +1,8 @@
 package org.asteriskjava.util;
 
 /**
- * Some static utility methods to handle Asterisk specific stuff.<br>
- * See Asterisk's <code>util.c</code>.<br>
+ * Some static utility methods to handle Asterisk specific stuff.<p>
+ * See Asterisk's <code>util.c</code>.<p>
  * Client code is not supposed to use this class.
  * 
  * @author srt
@@ -17,7 +17,7 @@ public class AstUtil
 
     /**
      * Checks if a String represents <code>true</code> or <code>false</code>
-     * according to Asterisk's logic.<br>
+     * according to Asterisk's logic.<p>
      * The original implementation is <code>util.c</code> is as follows:
      * 
      * <pre>

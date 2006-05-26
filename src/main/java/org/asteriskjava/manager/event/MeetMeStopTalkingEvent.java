@@ -18,9 +18,9 @@ package org.asteriskjava.manager.event;
 
 /**
  * A MeetMeStopTalkingEvent is triggered when a user ends talking in a meet me
- * conference.<br>
- * To enable talker detection you must pass the option 'T' to the MeetMe application.<br>
- * It is implemented in <code>apps/app_meetme.c</code><br>
+ * conference.<p>
+ * To enable talker detection you must pass the option 'T' to the MeetMe application.<p>
+ * It is implemented in <code>apps/app_meetme.c</code><p>
  * Available only in Asterisk 1.2. Asterisk 1.4 sends a 
  * {@link org.asteriskjava.manager.event.MeetMeTalkingEvent} with status set to
  * <code>false</code> instead. 

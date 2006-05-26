@@ -22,7 +22,8 @@ import org.asteriskjava.fastagi.reply.AgiReply;
 
 /**
  * Provides the functionality to send AgiCommands to Asterisk while handling an
- * AgiRequest.<br>
+ * AgiRequest.
+ * <p>
  * This interface is supposed to be used by AgiScripts for interaction with the
  * Asterisk server.
  * 
@@ -60,7 +61,7 @@ public interface AgiChannel
      * in the future.
      * 
      * @param time the number of seconds before this channel is automatically
-     *            hung up.<br>
+     *            hung up.<p>
      *            0 disables the autohangup feature.
      * @since 0.2
      */
@@ -98,7 +99,7 @@ public interface AgiChannel
     void stopMusicOnHold() throws AgiException;
 
     /**
-     * Returns the status of the channel.<br>
+     * Returns the status of the channel.<p>
      * Return values:
      * <ul>
      * <li>0 Channel is down and available
@@ -133,7 +134,7 @@ public interface AgiChannel
      * by starting to enter digits.
      * 
      * @param file the name of the file to play
-     * @param timeout the timeout in milliseconds to wait for user input.<br>
+     * @param timeout the timeout in milliseconds to wait for user input.<p>
      *            0 means standard timeout value, -1 means "ludicrous time"
      *            (essentially never times out).
      * @return a String containing the DTMF the user entered
@@ -148,7 +149,7 @@ public interface AgiChannel
      * digits.
      * 
      * @param file the name of the file to play
-     * @param timeout the timeout in milliseconds to wait for user input.<br>
+     * @param timeout the timeout in milliseconds to wait for user input.<p>
      *            0 means standard timeout value, -1 means "ludicrous time"
      *            (essentially never times out).
      * @param maxDigits the maximum number of digits the user is allowed to
@@ -391,9 +392,9 @@ public interface AgiChannel
 
     /**
      * Returns the value of the current channel variable, unlike getVariable()
-     * this method understands complex variable names and builtin variables.<br>
+     * this method understands complex variable names and builtin variables.<p>
      * You can also use this method to use custom Asterisk functions. Syntax is
-     * "func(args)".<br>
+     * "func(args)".<p>
      * Available since Asterisk 1.2.
      * 
      * @param name the name of the variable to retrieve.
@@ -404,7 +405,7 @@ public interface AgiChannel
     String getFullVariable(String name) throws AgiException;
 
     /**
-     * Returns the value of the given channel variable.<br>
+     * Returns the value of the given channel variable.<p>
      * Available since Asterisk 1.2.
      * 
      * @param name the name of the variable to retrieve.
@@ -416,7 +417,7 @@ public interface AgiChannel
     String getFullVariable(String name, String channel) throws AgiException;
 
     /**
-     * Says the given time.<br>
+     * Says the given time.<p>
      * Available since Asterisk 1.2.
      * 
      * @param time the time to say in seconds elapsed since 00:00:00 on January
@@ -427,7 +428,7 @@ public interface AgiChannel
 
     /**
      * Says the given time and allows interruption by one of the given escape
-     * digits.<br>
+     * digits.<p>
      * Available since Asterisk 1.2.
      * 
      * @param time the time to say in seconds elapsed since 00:00:00 on January
@@ -441,7 +442,7 @@ public interface AgiChannel
 
     /**
      * Says the given time in the given format and allows interruption by one of
-     * the given escape digits.<br>
+     * the given escape digits.<p>
      * Available since Asterisk 1.2.
      * 
      * @param time the time to say in seconds elapsed since 00:00:00 on January
@@ -457,7 +458,7 @@ public interface AgiChannel
 
     /**
      * Says the given time in the given format and timezone and allows
-     * interruption by one of the given escape digits.<br>
+     * interruption by one of the given escape digits.<p>
      * Available since Asterisk 1.2.
      * 
      * @param time the time to say in seconds elapsed since 00:00:00 on January

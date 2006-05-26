@@ -19,7 +19,7 @@ package org.asteriskjava.fastagi.reply;
 import java.util.List;
 
 /**
- * Reply received in response to an AgiCommand.<br>
+ * Reply received in response to an AgiCommand.<p>
  * The AgiReply contains information about success or failure of the execution
  * of an AgiCommand and - depending on the command sent - additional information
  * returned, for example the value of a variable requested by a
@@ -47,7 +47,7 @@ public interface AgiReply
      * Status code (520) indicating Asterisk was unable to process the
      * AgiCommand because the syntax used was not correct. This is most likely
      * due to missing required parameters or additional parameters sent that are
-     * not understood.<br>
+     * not understood.<p>
      * Ensure proper quoting of the parameters when you receive this status
      * code.
      */
@@ -90,7 +90,7 @@ public interface AgiReply
     String getResult();
 
     /**
-     * Returns the status code.<br>
+     * Returns the status code.<p>
      * Supported status codes are:
      * <ul>
      * <li>200 Success
@@ -103,7 +103,7 @@ public interface AgiReply
     int getStatus();
 
     /**
-     * Returns an additional attribute contained in the reply.<br>
+     * Returns an additional attribute contained in the reply.<p>
      * For example the reply to the StreamFileCommand contains an additional
      * endpos attribute indicating the frame where the playback was stopped.
      * This can be retrieved by calling getAttribute("endpos") on the
@@ -117,7 +117,7 @@ public interface AgiReply
     String getAttribute(String name);
 
     /**
-     * Returns the text in parenthesis contained in this reply.<br>
+     * Returns the text in parenthesis contained in this reply.<p>
      * The meaning of this property depends on the command sent. Sometimes it
      * contains a flag like "timeout" or "hangup" or - in case of the
      * GetVariableCommand - the value of the variable.

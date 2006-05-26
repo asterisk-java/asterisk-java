@@ -19,10 +19,10 @@ package org.asteriskjava.manager.action;
 import org.asteriskjava.manager.event.PeerlistCompleteEvent;
 
 /**
- * Retrieves a list of all defined SIP peers.<br>
+ * Retrieves a list of all defined SIP peers.<p>
  * For each peer that is found a PeerEntryEvent is sent by Asterisk containing
  * the details. When all peers have been reported a PeerlistCompleteEvent is
- * sent.<br>
+ * sent.<p>
  * Available since Asterisk 1.2
  * 
  * @see org.asteriskjava.manager.event.PeerEntryEvent

@@ -23,9 +23,9 @@ import org.apache.log4j.Level;
 import org.asteriskjava.util.Log;
 
 /**
- * Implementation of {@link Log} that maps directly to a Log4J <strong>Logger</strong>.<br>
+ * Implementation of {@link Log} that maps directly to a Log4J <strong>Logger</strong>.<p>
  * Initial configuration of the corresponding Logger instances should be done in
- * the usual manner, as outlined in the Log4J documentation.<br>
+ * the usual manner, as outlined in the Log4J documentation.<p>
  * More or less "stolen" from Apache's commons-logging.
  * 
  * @author <a href="mailto:sanders@apache.org">Scott Sanders</a>

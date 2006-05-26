@@ -131,7 +131,7 @@ public interface AsteriskServer
     Collection<AsteriskQueue> getQueues();
 
     /**
-     * Returns the version of the Asterisk server you are connected to.<br>
+     * Returns the version of the Asterisk server you are connected to.<p>
      * This typically looks like "Asterisk 1.0.9 built by root@host on a i686
      * running Linux".
      * 
@@ -148,7 +148,7 @@ public interface AsteriskServer
      * For example getVersion("app_meetme.c") may return {1, 102} for CVS
      * revision "1.102".
      * <p>
-     * Note that this feature is not available with Asterisk 1.0.x.<br>
+     * Note that this feature is not available with Asterisk 1.0.x.<p>
      * You can use this feature if you need to write applications that behave
      * different depending on specific modules being available in a specific
      * version or not.
