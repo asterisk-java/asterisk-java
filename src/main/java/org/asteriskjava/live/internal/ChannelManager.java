@@ -387,9 +387,7 @@ class ChannelManager
         
         synchronized (channel)
         {
-            channel.setHangupCause(cause, event.getCauseTxt());
-            channel.setDateOfRemoval(event.getDateReceived());
-            channel.setState(ChannelState.HUNGUP);
+            channel.hungup(event.getDateReceived(), cause, event.getCauseTxt());
         }
 
         logger.info("Removing channel " + channel.getName() + " due to hangup (" + cause + ")");

@@ -293,28 +293,31 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         return dateOfRemoval;
     }
 
-    void setDateOfRemoval(Date dateOfRemoval)
-    {
-        this.dateOfRemoval = dateOfRemoval;
-    }
-
     public HangupCause getHangupCause()
     {
         return hangupCause;
     }
 
-    void setHangupCause(HangupCause hangupCause, String hangupCauseText)
-    {
-        HangupCause oldHangupCause = this.hangupCause;
-
-        this.hangupCause = hangupCause;
-        this.hangupCauseText = hangupCauseText;
-        firePropertyChange(PROPERTY_HANGUP_CAUSE, oldHangupCause, hangupCause);
-    }
-
     public String getHangupCauseText()
     {
         return hangupCauseText;
+    }
+
+    /**
+     * Sets dateOfRemoval, hangupCause and hangupCauseText and changes state to
+     * {@link ChannelState#HUNGUP}. Fires a PropertyChangeEvent for state.
+     * 
+     * @param dateOfRemoval date the channel was hung up
+     * @param hangupCause cause for hangup
+     * @param hangupCauseText textual representation of hangup cause
+     */
+    void hungup(Date dateOfRemoval, HangupCause hangupCause, String hangupCauseText)
+    {
+        this.dateOfRemoval = dateOfRemoval;
+        this.hangupCause = hangupCause;
+        this.hangupCauseText = hangupCauseText;
+        // update state and fire PropertyChangeEvent
+        setState(ChannelState.HUNGUP);
     }
 
     public AsteriskChannel getLinkedChannel()

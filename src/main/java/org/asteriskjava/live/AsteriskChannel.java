@@ -29,7 +29,6 @@ import java.util.List;
  * <li>state
  * <li>account
  * <li>currentExtension
- * <li>hangupCause
  * <li>linkedChannel
  * </ul>
  * 
@@ -43,7 +42,6 @@ public interface AsteriskChannel extends LiveObject
     final String PROPERTY_STATE = "state";
     final String PROPERTY_ACCOUNT = "account";
     final String PROPERTY_CURRENT_EXTENSION = "currentExtension";
-    final String PROPERTY_HANGUP_CAUSE = "hangupCause";
     final String PROPERTY_LINKED_CHANNEL = "linkedChannel";
     
     /**
