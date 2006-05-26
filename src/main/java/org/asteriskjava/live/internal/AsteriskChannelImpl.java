@@ -21,6 +21,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.asteriskjava.live.AsteriskChannel;
+import org.asteriskjava.live.CallerId;
 import org.asteriskjava.live.ChannelState;
 import org.asteriskjava.live.Extension;
 import org.asteriskjava.live.HangupCause;
@@ -65,14 +66,9 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
     private String name;
 
     /**
-     * Caller ID Number of this channel.
+     * Caller*ID of this channel.
      */
-    private String callerIdNumber;
-
-    /**
-     * Caller ID Name of this channel.
-     */
-    private String callerIdName;
+    private CallerId callerId;
 
     /**
      * State of this channel.
@@ -143,9 +139,9 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         firePropertyChange(PROPERTY_NAME, oldName, name);
     }
 
-    public String getCallerIdNumber()
+    public CallerId getCallerId()
     {
-        return callerIdNumber;
+        return callerId;
     }
 
     /**
@@ -153,30 +149,12 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
      * 
      * @param callerIdNumber the caller id number of this channel.
      */
-    void setCallerIdNumber(final String callerIdNumber)
+    void setCallerId(final CallerId callerId)
     {
-        String oldCallerIdNumber = this.callerIdNumber;
+        CallerId oldCallerId = this.callerId;
 
-        this.callerIdNumber = callerIdNumber;
-        firePropertyChange(PROPERTY_CALLER_ID_NUMBER, oldCallerIdNumber, callerIdNumber);
-    }
-
-    public String getCallerIdName()
-    {
-        return callerIdName;
-    }
-
-    /**
-     * Sets the caller id of this channel.
-     * 
-     * @param callerIdName the caller id name of this channel.
-     */
-    void setCallerIdName(String callerIdName)
-    {
-        String oldCallerIdName = this.callerIdName;
-        
-        this.callerIdName = callerIdName;
-        firePropertyChange(PROPERTY_CALLER_ID_NUMBER, oldCallerIdName, callerIdName);
+        this.callerId = callerId;
+        firePropertyChange(PROPERTY_CALLER_ID, oldCallerId, callerId);
     }
 
     public ChannelState getState()
@@ -466,8 +444,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         {
             sb.append("id='" + getId() + "',");
             sb.append("name='" + getName() + "',");
-            sb.append("callerIdNumber='" + getCallerIdNumber() + "',");
-            sb.append("callerIdName='" + getCallerIdName() + "',");
+            sb.append("callerId='" + getCallerId() + "',");
             sb.append("state='" + getState() + "',");
             sb.append("account='" + getAccount() + "',");
             sb.append("dateOfCreation=" + getDateOfCreation() + ",");

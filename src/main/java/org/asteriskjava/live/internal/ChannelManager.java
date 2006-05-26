@@ -24,6 +24,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.asteriskjava.live.AsteriskChannel;
+import org.asteriskjava.live.CallerId;
 import org.asteriskjava.live.ChannelState;
 import org.asteriskjava.live.Extension;
 import org.asteriskjava.live.HangupCause;
@@ -161,8 +162,7 @@ class ChannelManager
         AsteriskChannelImpl channel;
         
         channel = new AsteriskChannelImpl(server, name, uniqueId, dateOfCreation);
-        channel.setCallerIdNumber(callerIdNumber);
-        channel.setCallerIdName(callerIdName);
+        channel.setCallerId(new CallerId(callerIdName, callerIdNumber));
         channel.setState(state);
 
         return channel;
@@ -216,8 +216,7 @@ class ChannelManager
 
         synchronized (channel)
         {
-            channel.setCallerIdNumber(event.getCallerIdNum());
-            channel.setCallerIdName(event.getCallerIdName());
+            channel.setCallerId(new CallerId(event.getCallerIdName(), event.getCallerIdNum()));
             channel.setAccount(event.getAccount());
             if (event.getState() != null)
             {
@@ -294,8 +293,7 @@ class ChannelManager
             synchronized (channel)
             {
                 channel.setName(event.getChannel());
-                channel.setCallerIdNumber(event.getCallerId());
-                channel.setCallerIdName(event.getCallerIdName());
+                channel.setCallerId(new CallerId(event.getCallerIdName(), event.getCallerId()));
                 channel.setState(string2ChannelState(event.getState()));
             }
         }
@@ -362,8 +360,7 @@ class ChannelManager
         {
             synchronized (channel)
             {
-                channel.setCallerIdNumber(event.getCallerId());
-                channel.setCallerIdName(event.getCallerIdName());
+                channel.setCallerId(new CallerId(event.getCallerIdName(), event.getCallerId()));
             }
         }
     }
