@@ -128,6 +128,35 @@
 		<plugins>
 			<plugin>
 				<artifactId>maven-javadoc-plugin</artifactId>
+				<configuration>
+					<groups>
+						<group>
+							<title>Core Packages</title>
+							<packages>
+								org.asteriskjava
+								org.asteriskjava.fastagi
+								org.asteriskjava.fastagi.command
+								org.asteriskjava.fastagi.reply
+								org.asteriskjava.manager
+								org.asteriskjava.manager.action
+								org.asteriskjava.manager.action.proxy
+								org.asteriskjava.manager.response
+								org.asteriskjava.manager.event
+								org.asteriskjava.manager.live
+								org.asteriskjava.manager.util
+							</packages>
+						</group>
+						<group>
+							<title>Internal Packages</title>
+							<packages>
+								org.asteriskjava.fastagi.internal
+								org.asteriskjava.manager.internal
+								org.asteriskjava.manager.live.internal
+								org.asteriskjava.manager.util.internal
+							</packages>
+						</group>
+					</groups>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
