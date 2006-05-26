@@ -53,7 +53,6 @@
 			<item name="Design" href="design.html"/>
 			<item name="Tutorial" href="tutorial.html"/>
 		</menu>
-		<search/>
 		<menu name="Sponsors">
 			<item name="Code Coverage by Clover"
 				href="http://www.cenqua.com/clover/"
