@@ -179,7 +179,7 @@ class EventBuilderImpl implements EventBuilder
         registerEventClass(ZapShowChannelsCompleteEvent.class);
     }
 
-    public void registerEventClass(Class clazz)
+    public void registerEventClass(Class clazz) throws IllegalArgumentException
     {
         String className;
         String eventType;
@@ -209,9 +209,10 @@ class EventBuilderImpl implements EventBuilder
      * @param eventType the name of the event to register the class for. For
      *            example "Join".
      * @param clazz the event class to register, must extend
-     *            net.sf.asterisk.manager.event.Event.
+     *            {@link ManagerEvent}.
+     * @throws IllegalArgumentException if clazz is not a valid event class.
      */
-    public void registerEventClass(String eventType, Class clazz)
+    public void registerEventClass(String eventType, Class clazz) throws IllegalArgumentException
     {
         Constructor defaultConstructor;
 

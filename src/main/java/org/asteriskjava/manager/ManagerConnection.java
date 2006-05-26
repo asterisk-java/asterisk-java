@@ -23,18 +23,20 @@ import org.asteriskjava.manager.action.ManagerAction;
 import org.asteriskjava.manager.event.ManagerEvent;
 import org.asteriskjava.manager.response.ManagerResponse;
 
-
 /**
  * The main interface to talk to an Asterisk server via the Asterisk Manager
- * API.<p>
+ * API.
+ * <p>
  * The ManagerConnection repesents a connection to an Asterisk server and is
- * capable of sending {@link org.asteriskjava.manager.action.ManagerAction}s and 
- * receiving {@link org.asteriskjava.manager.response.ManagerResponse}s and 
+ * capable of sending {@link org.asteriskjava.manager.action.ManagerAction}s
+ * and receiving {@link org.asteriskjava.manager.response.ManagerResponse}s and
  * {@link org.asteriskjava.manager.event.ManagerEvent}s. It does not add any
  * further functionality but rather provides a Java view to Asterisk's Manager
- * API (freeing you from TCP/IP connection and parsing stuff).<p>
+ * API (freeing you from TCP/IP connection and parsing stuff).
+ * <p>
  * It is used as the foundation for higher leveled interfaces like the
- * Asterisk-Java Live.<p>
+ * Asterisk-Java Live.
+ * <p>
  * A concrete implementation of this interface can be obtained from a
  * {@link org.asteriskjava.manager.ManagerConnectionFactory}.
  * 
@@ -48,37 +50,47 @@ public interface ManagerConnection
      * Returns the hostname of the connected Asterisk server.
      * 
      * @return the hostname of the connected Asterisk server.
+     * @since 0.3
      */
     String getHostname();
 
     /**
      * Returns the Manager API port of the connected Asterisk server.
-     *  
+     * 
      * @return the Manager API port of the connected Asterisk server.
+     * @since 0.3
      */
     int getPort();
 
     /**
-     * Registers a new user event type.<p>
+     * Registers a new user event type.
+     * <p>
      * Asterisk allows you to send custom events via the UserEvent application.
      * If you choose to send such events you can extend the abstract class
      * UserEvent provide a name for your new event and optionally add your own
      * attributes. After registering a user event type Asterisk-Java will handle
      * such events the same way it handles the internal events and inform your
-     * registered event handlers.<p>
+     * registered event handlers.
+     * <p>
      * Note: If you write your own Asterisk applications that use Asterisk's
      * <code>manager_event()</code> function directly and don't use the
      * channel and uniqueid attributes provided by UserEvent you can also
-     * register events that directly subclass ManagerEvent.
+     * register events that directly subclass {@link ManagerEvent}.
+     * <p>
+     * The event class must be a concrete class with a default constructor (one
+     * that takes no arguments).
      * 
+     * @param userEventClass the class representing the user event to register.
+     * @throws IllegalArgumentException if userEventClass is not a valid event
+     *             class.
      * @see org.asteriskjava.manager.event.UserEvent
      * @see ManagerEvent
-     * @param userEventClass the class of the user event to register.
      */
     void registerUserEventClass(Class userEventClass);
 
     /**
-     * The timeout to use when connecting the the Asterisk server.<p>
+     * The timeout to use when connecting the the Asterisk server.
+     * <p>
      * Default is 0, that is using Java's built-in default.
      * 
      * @param socketTimeout the timeout value to be used in milliseconds.
@@ -91,7 +103,8 @@ public interface ManagerConnection
      * Logs in to the Asterisk server with the username and password specified
      * when this connection was created.
      * 
-     * @throws IllegalStateException if connection is not in state INITIAL or DISCONNECTED.
+     * @throws IllegalStateException if connection is not in state INITIAL or
+     *             DISCONNECTED.
      * @throws IOException if the network connection is disrupted.
      * @throws AuthenticationFailedException if the username and/or password are
      *             incorrect or the ChallengeResponse could not be built.
@@ -100,8 +113,7 @@ public interface ManagerConnection
      * @see org.asteriskjava.manager.action.LoginAction
      * @see org.asteriskjava.manager.action.ChallengeAction
      */
-    void login() throws IllegalStateException, IOException, AuthenticationFailedException,
-            TimeoutException;
+    void login() throws IllegalStateException, IOException, AuthenticationFailedException, TimeoutException;
 
     /**
      * Logs in to the Asterisk server with the username and password specified
@@ -111,7 +123,8 @@ public interface ManagerConnection
      *            "off" if not events should be sent or a combination of
      *            "system", "call" and "log" (separated by ',') to specify what
      *            kind of events should be sent.
-     * @throws IllegalStateException if connection is not in state INITIAL or DISCONNECTED.
+     * @throws IllegalStateException if connection is not in state INITIAL or
+     *             DISCONNECTED.
      * @throws IOException if the network connection is disrupted.
      * @throws AuthenticationFailedException if the username and/or password are
      *             incorrect or the ChallengeResponse could not be built.
@@ -121,8 +134,7 @@ public interface ManagerConnection
      * @see org.asteriskjava.manager.action.LoginAction
      * @see org.asteriskjava.manager.action.ChallengeAction
      */
-    void login(String events) throws IllegalStateException, IOException, AuthenticationFailedException,
-            TimeoutException;
+    void login(String events) throws IllegalStateException, IOException, AuthenticationFailedException, TimeoutException;
 
     /**
      * Sends a LogoffAction to the Asterisk server and disconnects.
@@ -147,7 +159,7 @@ public interface ManagerConnection
      * @return the lifecycle status of this connection.
      */
     ManagerConnectionState getState();
-    
+
     /**
      * Sends a ManagerAction to the Asterisk server and waits for the
      * corresponding ManagerResponse.
@@ -163,8 +175,8 @@ public interface ManagerConnection
      * @see #sendAction(ManagerAction, long)
      * @see #sendAction(ManagerAction, ManagerResponseListener)
      */
-    ManagerResponse sendAction(ManagerAction action) throws IOException,
-            TimeoutException, IllegalArgumentException, IllegalStateException;
+    ManagerResponse sendAction(ManagerAction action) throws IOException, TimeoutException, IllegalArgumentException,
+            IllegalStateException;
 
     /**
      * Sends a ManagerAction to the Asterisk server and waits for the
@@ -182,36 +194,16 @@ public interface ManagerConnection
      *             server.
      * @see #sendAction(ManagerAction, ManagerResponseListener)
      */
-    ManagerResponse sendAction(ManagerAction action, long timeout)
-            throws IOException, TimeoutException, IllegalArgumentException,
-            IllegalStateException;
+    ManagerResponse sendAction(ManagerAction action, long timeout) throws IOException, TimeoutException,
+            IllegalArgumentException, IllegalStateException;
 
     /**
      * Sends a ManagerAction to the Asterisk server and registers a callback
-     * handler to be called when the corresponding {@link ManagerResponse}
-     * is received.
-     * 
-     * @param action the action to send to the Asterisk server
-     * @param callbackHandler the callback handler to call when the response is
-     *            received or <code>null</code> if you are not interested in
-     *            the response
-     * @throws IOException if the network connection is disrupted.
-     * @throws IllegalArgumentException if the action is <code>null</code>.
-     * @throws IllegalStateException if you are not connected to the Asterisk
-     *             server.
-     * @deprecated this method is deprecated and will be removed in Asterisk-Java 0.4.
-     */
-    void sendAction(ManagerAction action, ManagerResponseHandler callbackHandler)
-            throws IOException, IllegalArgumentException, IllegalStateException;
-
-    /**
-     * Sends a ManagerAction to the Asterisk server and registers a callback
-     * handler to be called when the corresponding {@link ManagerResponse}
-     * is received.
-     * 
-     * Be very careful that your callbackHandler terminates very quickly and
-     * does not do any fancy processing because it is called from the reader thread
-     * which is blocked for the time it takes to execute your callbackHandler.
+     * handler to be called when the corresponding {@link ManagerResponse} is
+     * received. Be very careful that your callbackHandler terminates very
+     * quickly and does not do any fancy processing because it is called from
+     * the reader thread which is blocked for the time it takes to execute your
+     * callbackHandler.
      * 
      * @param action the action to send to the Asterisk server
      * @param callbackHandler the callback handler to call when the response is
@@ -222,30 +214,33 @@ public interface ManagerConnection
      * @throws IllegalStateException if you are not connected to the Asterisk
      *             server.
      */
-    void sendAction(ManagerAction action, ManagerResponseListener callbackHandler)
-            throws IOException, IllegalArgumentException, IllegalStateException;
+    void sendAction(ManagerAction action, ManagerResponseListener callbackHandler) throws IOException,
+            IllegalArgumentException, IllegalStateException;
 
     /**
-     * Sends an {@link EventGeneratingAction} to the Asterisk server and waits for the
-     * corresponding {@link ManagerResponse} and the
-     * {@link org.asteriskjava.manager.event.ResponseEvent}s<p>
-     * EventGeneratingActions are {@link ManagerAction}s that don't return their
-     * response in the corresponding {@link ManagerResponse} but send a series of events
-     * that contain the payload.<p>
+     * Sends an {@link EventGeneratingAction} to the Asterisk server and waits
+     * for the corresponding {@link ManagerResponse} and the
+     * {@link org.asteriskjava.manager.event.ResponseEvent}s
+     * <p>
+     * EventGeneratingActions are {@link ManagerAction}s that don't return
+     * their response in the corresponding {@link ManagerResponse} but send a
+     * series of events that contain the payload.
+     * <p>
      * This method will block until the correpsonding action complete event has
      * been received. The action complete event is determined by
-     * {@link EventGeneratingAction#getActionCompleteEventClass()}.<p>
-     * Examples for EventGeneratingActions are 
+     * {@link EventGeneratingAction#getActionCompleteEventClass()}.
+     * <p>
+     * Examples for EventGeneratingActions are
      * {@link org.asteriskjava.manager.action.StatusAction},
-     * {@link org.asteriskjava.manager.action.QueueAction} or 
+     * {@link org.asteriskjava.manager.action.QueueAction} or
      * {@link org.asteriskjava.manager.action.AgentsAction}.
      * 
      * @param action the action to send to the Asterisk server
      * @return a ResponseEvents that contains the corresponding response and
      *         response events received from the Asterisk server
      * @throws IOException if the network connection is disrupted.
-     * @throws EventTimeoutException if no response or not all response events are
-     *             received within the given timeout period.
+     * @throws EventTimeoutException if no response or not all response events
+     *             are received within the given timeout period.
      * @throws IllegalArgumentException if the action is <code>null</code>,
      *             the actionCompleteEventClass property of the action is
      *             <code>null</code> or if actionCompleteEventClass is not a
@@ -256,21 +251,23 @@ public interface ManagerConnection
      * @see org.asteriskjava.manager.event.ResponseEvent
      * @since 0.2
      */
-    ResponseEvents sendEventGeneratingAction(EventGeneratingAction action)
-            throws IOException, EventTimeoutException, IllegalArgumentException,
-            IllegalStateException;
+    ResponseEvents sendEventGeneratingAction(EventGeneratingAction action) throws IOException, EventTimeoutException,
+            IllegalArgumentException, IllegalStateException;
 
     /**
-     * Sends an {@link EventGeneratingAction} to the Asterisk server and waits for the
-     * corresponding {@link ManagerResponse} and the
-     * {@link org.asteriskjava.manager.event.ResponseEvent}s<p>
-     * EventGeneratingActions are {@link ManagerAction}s that don't return their
-     * response in the corresponding {@link ManagerResponse} but send a series of events
-     * that contain the payload.<p>
+     * Sends an {@link EventGeneratingAction} to the Asterisk server and waits
+     * for the corresponding {@link ManagerResponse} and the
+     * {@link org.asteriskjava.manager.event.ResponseEvent}s
+     * <p>
+     * EventGeneratingActions are {@link ManagerAction}s that don't return
+     * their response in the corresponding {@link ManagerResponse} but send a
+     * series of events that contain the payload.
+     * <p>
      * This method will block until the correpsonding action complete event has
-     * been received but no longer that timeout seconds.
-     * The action complete event is determined by
-     * {@link EventGeneratingAction#getActionCompleteEventClass()}.<p>
+     * been received but no longer that timeout seconds. The action complete
+     * event is determined by
+     * {@link EventGeneratingAction#getActionCompleteEventClass()}.
+     * <p>
      * Examples for EventGeneratingActions are the
      * {@link org.asteriskjava.manager.action.StatusAction}, the
      * {@link org.asteriskjava.manager.action.QueueAction} or the
@@ -278,12 +275,12 @@ public interface ManagerConnection
      * 
      * @param action the action to send to the Asterisk server
      * @param timeout milliseconds to wait for the response and the action
-     *                complete event before throwing a TimeoutException
+     *            complete event before throwing a TimeoutException
      * @return a ResponseEvents that contains the corresponding response and
      *         response events received from the Asterisk server
      * @throws IOException if the network connection is disrupted.
-     * @throws EventTimeoutException if no response or not all response events are
-     *             received within the given timeout period.
+     * @throws EventTimeoutException if no response or not all response events
+     *             are received within the given timeout period.
      * @throws IllegalArgumentException if the action is <code>null</code>,
      *             the actionCompleteEventClass property of the action is
      *             <code>null</code> or if actionCompleteEventClass is not a
@@ -294,14 +291,14 @@ public interface ManagerConnection
      * @see org.asteriskjava.manager.event.ResponseEvent
      * @since 0.2
      */
-    ResponseEvents sendEventGeneratingAction(EventGeneratingAction action,
-            long timeout) throws IOException, EventTimeoutException,
-            IllegalArgumentException, IllegalStateException;
+    ResponseEvents sendEventGeneratingAction(EventGeneratingAction action, long timeout) throws IOException,
+            EventTimeoutException, IllegalArgumentException, IllegalStateException;
 
     /**
      * Registers an event listener that is called whenever an
      * {@link org.asteriskjava.manager.event.ManagerEvent} is receiced from the
-     * Asterisk server.<p>
+     * Asterisk server.
+     * <p>
      * Event listeners are notified about new events in the same order as they
      * were registered.
      * 
@@ -312,7 +309,8 @@ public interface ManagerConnection
     void addEventListener(ManagerEventListener eventListener);
 
     /**
-     * Unregisters a previously registered event listener.<p>
+     * Unregisters a previously registered event listener.
+     * <p>
      * Does nothing if the given event listener hasn't be been regiered before.
      * 
      * @param eventListener the listener to remove
@@ -320,31 +318,39 @@ public interface ManagerConnection
      */
     void removeEventListener(ManagerEventListener eventListener);
 
+    /* Deprecated methods provided for backwards compatibility - to be removed in 0.4 */
+
     /**
      * Registers an event handler to be called whenever an
      * {@link org.asteriskjava.manager.event.ManagerEvent} is receiced from the
-     * Asterisk server.<p>
+     * Asterisk server.
+     * <p>
      * Event handlers are notified about new events in the same order as they
-     * were registered via addEventHandler.<p>
-     * This method is deprecated, please use {@link #removeEventListener(ManagerEventListener)}
-     * instaed.
+     * were registered via addEventHandler.
+     * <p>
+     * This method is deprecated, please use
+     * {@link #removeEventListener(ManagerEventListener)} instaed.
      * 
      * @param eventHandler the handler to call whenever a manager event is
      *            received
      * @see #removeEventHandler(ManagerEventHandler)
-     * @deprecated this method is deprecated and will be removed in Asterisk-Java 0.4.
+     * @deprecated this method is deprecated and will be removed in
+     *             Asterisk-Java 0.4.
      */
     void addEventHandler(ManagerEventHandler eventHandler);
 
     /**
-     * Unregisters a previously registered event handler.<p>
-     * Does nothing if the given event handler hasn't be been regiered before.<p>
-     * This method is deprecated, please use {@link #addEventListener(ManagerEventListener)}
-     * instaed.
+     * Unregisters a previously registered event handler.
+     * <p>
+     * Does nothing if the given event handler hasn't be been regiered before.
+     * <p>
+     * This method is deprecated, please use
+     * {@link #addEventListener(ManagerEventListener)} instaed.
      * 
      * @param eventHandler the event handle to unregister
      * @see #addEventHandler(ManagerEventHandler)
-     * @deprecated this method is deprecated and will be removed in Asterisk-Java 0.4.
+     * @deprecated this method is deprecated and will be removed in
+     *             Asterisk-Java 0.4.
      */
     void removeEventHandler(ManagerEventHandler eventHandler);
 
@@ -357,4 +363,23 @@ public interface ManagerConnection
      * @deprecated use {@link #getState()} == CONNECTED instead.
      */
     boolean isConnected();
+
+    /**
+     * Sends a ManagerAction to the Asterisk server and registers a callback
+     * handler to be called when the corresponding {@link ManagerResponse} is
+     * received.
+     * 
+     * @param action the action to send to the Asterisk server
+     * @param callbackHandler the callback handler to call when the response is
+     *            received or <code>null</code> if you are not interested in
+     *            the response
+     * @throws IOException if the network connection is disrupted.
+     * @throws IllegalArgumentException if the action is <code>null</code>.
+     * @throws IllegalStateException if you are not connected to the Asterisk
+     *             server.
+     * @deprecated this method is deprecated and will be removed in
+     *             Asterisk-Java 0.4.
+     */
+    void sendAction(ManagerAction action, ManagerResponseHandler callbackHandler) throws IOException,
+            IllegalArgumentException, IllegalStateException;
 }

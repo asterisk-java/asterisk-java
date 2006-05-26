@@ -30,18 +30,20 @@ import org.asteriskjava.manager.event.ManagerEvent;
  */
 interface EventBuilder
 {
-
     /**
      * Registers a new event class. The event this class is registered for is
      * simply derived from the name of the class by stripping any package name
      * (if present) and stripping the sufffix "Event". For example
-     * <code>net.sf.asterisk.manager.event.JoinEvent</code> is registered for
+     * <code>org.asteriskjava.manager.event.JoinEvent</code> is registered for
      * the event "Join".
+     * <p>
+     * The event class must be a concrete class with a default constructor
+     * (one that takes no arguments).
      * 
-     * @param clazz the event class to register, must extend
-     *            net.sf.asterisk.manager.event.ManagerEvent.
+     * @param clazz the event class to register, must extend {@link ManagerEvent}.
+     * @throws IllegalArgumentException if clazz is not a valid event class
      */
-    void registerEventClass(Class clazz);
+    void registerEventClass(Class clazz) throws IllegalArgumentException;
 
     /**
      * Builds the event based on the given map of attributes and the registered
