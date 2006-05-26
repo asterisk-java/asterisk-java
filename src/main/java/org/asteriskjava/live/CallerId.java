@@ -67,10 +67,23 @@ public class CallerId implements Serializable
         CallerId o = (CallerId) obj;
 
         if (o.name == null)
-            return name == null;
-
-        if (o.number == null)
-            return number == null;
+        {
+            if (name != null)
+            {
+                return false;
+            }
+            else
+            {
+                if (o.number == null)
+                {
+                    return number == null;
+                }
+                else
+                {
+                    return o.number.equals(number);
+                }
+            }
+        }
 
         return o.name.equals(name) && o.number.equals(number);
     }
