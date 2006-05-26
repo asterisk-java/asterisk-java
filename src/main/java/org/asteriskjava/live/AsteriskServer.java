@@ -21,10 +21,12 @@ import java.util.Map;
 
 /**
  * The AsteriskServer is built on top of the {@link org.asteriskjava.manager.ManagerConnection}
- * and is an attempt to simplify interaction with Asterisk by abstracting the interface.<br>
+ * and is an attempt to simplify interaction with Asterisk by abstracting the interface.
+ * 
  * You will certainly have less freedom using AsteriskServer but it will make
  * life easier for easy things (like originating a call or getting a list of
- * open channels).<br>
+ * open channels).
+ * 
  * AsteriskServer is still in an early state of development. So, when using
  * AsteriskServer be aware that it might change in the future.
  * 
