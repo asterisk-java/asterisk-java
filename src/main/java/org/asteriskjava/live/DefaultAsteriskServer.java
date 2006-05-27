@@ -120,6 +120,11 @@ public class DefaultAsteriskServer implements AsteriskServer
         return impl.getMeetMeRooms();
     }
 
+    public MeetMeRoom getMeetMeRoom(String name)
+    {
+        return impl.getMeetMeRoom(name);
+    }
+
     public Collection<AsteriskQueue> getQueues()
     {
         return impl.getQueues();

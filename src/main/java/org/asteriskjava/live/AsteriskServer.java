@@ -104,7 +104,7 @@ public interface AsteriskServer
      * Returns a channel by its name.
      * 
      * @param name name of the channel to return
-     * @return the channel with the given name
+     * @return the channel with the given name or <code>null</code> if there is no such channel.
      */
     AsteriskChannel getChannelByName(String name);
 
@@ -112,7 +112,7 @@ public interface AsteriskServer
      * Returns a channel by its unique id.
      * 
      * @param id the unique id of the channel to return
-     * @return the channel with the given unique id
+     * @return the channel with the given unique id or <code>null</code> if there is no such channel.
      */
     AsteriskChannel getChannelById(String id);
 
@@ -122,6 +122,14 @@ public interface AsteriskServer
      * @return a Collection of MeetMeRooms
      */
     Collection<MeetMeRoom> getMeetMeRooms();
+
+    /**
+     * Returns the MeetMe room with the given name.
+     * 
+     * @param name the name of the room to return
+     * @return the MeetMe room with the given name or <code>null</code> if there is no such room.
+     */
+    MeetMeRoom getMeetMeRoom(String name);
 
     /**
      * Returns the queues served by the Asterisk server.

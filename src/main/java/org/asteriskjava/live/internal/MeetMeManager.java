@@ -66,6 +66,14 @@ class MeetMeManager
         return copy;
     }
 
+    MeetMeRoom getMeetMeRoom(String name)
+    {
+        synchronized (rooms)
+        {
+            return rooms.get(name);
+        }
+    }
+
     void handleMeetMeEvent(AbstractMeetMeEvent event)
     {
         String uniqueId;

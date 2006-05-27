@@ -296,6 +296,11 @@ public class AsteriskServerImpl
         return meetMeManager.getMeetMeRooms();
     }
 
+    public MeetMeRoom getMeetMeRoom(String name)
+    {
+        return meetMeManager.getMeetMeRoom(name);
+    }
+
     public Collection<AsteriskQueue> getQueues()
     {
         return queueManager.getQueues();
