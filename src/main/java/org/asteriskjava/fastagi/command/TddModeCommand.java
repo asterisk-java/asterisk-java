@@ -23,7 +23,7 @@ package org.asteriskjava.fastagi.command;
  * @author srt
  * @version $Id$
  */
-public class TDDModeCommand extends AbstractAgiCommand
+public class TddModeCommand extends AbstractAgiCommand
 {
     /**
      * Serial version identifier.
@@ -41,7 +41,7 @@ public class TDDModeCommand extends AbstractAgiCommand
      * @param mode the mode to set, this can be one of "on", "off", "mate" or
      *            "tdd".
      */
-    public TDDModeCommand(String mode)
+    public TddModeCommand(String mode)
     {
         this.mode = mode;
     }
