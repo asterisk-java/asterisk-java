@@ -66,11 +66,11 @@ class MeetMeManager
         return copy;
     }
 
-    MeetMeRoom getMeetMeRoom(String name)
+    MeetMeRoom getMeetMeRoom(String number)
     {
         synchronized (rooms)
         {
-            return rooms.get(name);
+            return rooms.get(number);
         }
     }
 

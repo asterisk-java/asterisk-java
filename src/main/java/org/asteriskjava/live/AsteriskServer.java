@@ -124,12 +124,12 @@ public interface AsteriskServer
     Collection<MeetMeRoom> getMeetMeRooms();
 
     /**
-     * Returns the MeetMe room with the given name.
+     * Returns the MeetMe room with the given number.
      * 
-     * @param name the name of the room to return
-     * @return the MeetMe room with the given name or <code>null</code> if there is no such room.
+     * @param roomNumber the number of the room to return
+     * @return the MeetMe room with the given number or <code>null</code> if there is no such room.
      */
-    MeetMeRoom getMeetMeRoom(String name);
+    MeetMeRoom getMeetMeRoom(String roomNumber);
 
     /**
      * Returns the queues served by the Asterisk server.
