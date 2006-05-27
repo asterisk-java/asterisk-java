@@ -12,8 +12,7 @@ import org.asteriskjava.live.Extension;
 
 /**
  * @author srt
- * @version $Id: TestDefaultAsteriskManager.java,v 1.3 2005/07/16 13:19:34 srt
- *          Exp $
+ * @version $Id$
  */
 public class TestExtensionHistory extends AsteriskServerTestCase
 {
