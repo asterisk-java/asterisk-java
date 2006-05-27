@@ -45,7 +45,8 @@ public class DefaultAsteriskServer implements AsteriskServer
     /**
      * Creates a new instance.
      * 
-     * @param eventConnection the ManagerConnection to use for receiving events from Asterisk.
+     * @param eventConnection the ManagerConnection to use for receiving events
+     *            from Asterisk.
      */
     public DefaultAsteriskServer(ManagerConnection eventConnection)
     {
@@ -56,7 +57,8 @@ public class DefaultAsteriskServer implements AsteriskServer
      * Determines if queue status is retrieved at startup. If you don't need
      * queue information and still run Asterisk 1.0.x you can set this to
      * <code>true</code> to circumvent the startup delay caused by the missing
-     * QueueStatusComplete event.<p>
+     * QueueStatusComplete event.
+     * <p>
      * Default is <code>false</code>.
      * 
      * @param skipQueues <code>true</code> to skip queue initialization,
@@ -77,25 +79,29 @@ public class DefaultAsteriskServer implements AsteriskServer
     {
         impl.initialize();
     }
-    
+
     /* Implementation of the AsteriskServer interface */
 
-    public AsteriskChannel originateToExtension(String channel, String context, String exten, int priority, long timeout) throws ManagerCommunicationException
+    public AsteriskChannel originateToExtension(String channel, String context, String exten, int priority, long timeout)
+            throws ManagerCommunicationException
     {
         return impl.originateToExtension(channel, context, exten, priority, timeout);
     }
 
-    public AsteriskChannel originateToExtension(String channel, String context, String exten, int priority, long timeout, Map<String, String> variables) throws ManagerCommunicationException
+    public AsteriskChannel originateToExtension(String channel, String context, String exten, int priority, long timeout,
+            Map<String, String> variables) throws ManagerCommunicationException
     {
         return impl.originateToExtension(channel, context, exten, priority, timeout, variables);
     }
 
-    public AsteriskChannel originateToApplication(String channel, String application, String data, long timeout) throws ManagerCommunicationException
+    public AsteriskChannel originateToApplication(String channel, String application, String data, long timeout)
+            throws ManagerCommunicationException
     {
         return impl.originateToApplication(channel, application, data, timeout);
     }
 
-    public AsteriskChannel originateToApplication(String channel, String application, String data, long timeout, Map<String, String> variables) throws ManagerCommunicationException
+    public AsteriskChannel originateToApplication(String channel, String application, String data, long timeout,
+            Map<String, String> variables) throws ManagerCommunicationException
     {
         return impl.originateToApplication(channel, application, data, timeout, variables);
     }
@@ -138,5 +144,15 @@ public class DefaultAsteriskServer implements AsteriskServer
     public int[] getVersion(String file)
     {
         return impl.getVersion(file);
+    }
+
+    public void addAsteriskServerListener(AsteriskServerListener listener)
+    {
+        impl.addAsteriskServerListener(listener);
+    }
+
+    public void removeAsteriskServerListener(AsteriskServerListener listener)
+    {
+        impl.removeAsteriskServerListener(listener);
     }
 }

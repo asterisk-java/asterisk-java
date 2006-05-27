@@ -155,7 +155,7 @@ class ChannelManager
         }
     }
 
-    private AsteriskChannelImpl createChannel(String uniqueId, String name, 
+    private AsteriskChannelImpl addNewChannel(String uniqueId, String name, 
             Date dateOfCreation, String callerIdNumber, String callerIdName, 
             ChannelState state)
     {
@@ -164,6 +164,10 @@ class ChannelManager
         channel = new AsteriskChannelImpl(server, name, uniqueId, dateOfCreation);
         channel.setCallerId(new CallerId(callerIdName, callerIdNumber));
         channel.setState(state);
+        logger.info("Adding channel " + channel.getName());
+        addChannel(channel);
+
+        server.fireNewAsteriskChannel(channel);
 
         return channel;
     }
@@ -242,6 +246,7 @@ class ChannelManager
         {
             logger.info("Adding new channel " + channel.getName());
             addChannel(channel);
+            server.fireNewAsteriskChannel(channel);
         }
     }
 
@@ -280,12 +285,10 @@ class ChannelManager
         channel = getChannelImplById(event.getUniqueId());
         if (channel == null)
         {
-            channel = createChannel(
+            channel = addNewChannel(
                     event.getUniqueId(), event.getChannel(), event.getDateReceived(), 
                     event.getCallerId(), event.getCallerIdName(),
                     string2ChannelState(event.getState()));
-            logger.info("Adding channel " + channel.getName());
-            addChannel(channel);
         }
         else
         {
@@ -350,11 +353,9 @@ class ChannelManager
         if (channel == null)
         {
             // NewCallerIdEvent can occur before NewChannelEvent
-            channel = createChannel(
+            channel = addNewChannel(
                     event.getUniqueId(), event.getChannel(), event.getDateReceived(), 
                     event.getCallerId(), event.getCallerIdName(), ChannelState.DOWN);
-            logger.info("Adding channel " + channel.getName());
-            addChannel(channel);
         }
         else
         {

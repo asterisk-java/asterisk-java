@@ -66,14 +66,6 @@ class MeetMeManager
         return copy;
     }
 
-    MeetMeRoom getMeetMeRoom(String number)
-    {
-        synchronized (rooms)
-        {
-            return rooms.get(number);
-        }
-    }
-
     void handleMeetMeEvent(AbstractMeetMeEvent event)
     {
         String uniqueId;
@@ -131,6 +123,7 @@ class MeetMeManager
             user = new MeetMeUserImpl(server, room, event.getUserNum(), channel, event.getDateReceived());
             room.addUser(user);
             channel.setMeetMeUserImpl(user);
+            server.fireNewMeetMeUser(user);
             return;
         }
 
@@ -199,7 +192,7 @@ class MeetMeManager
      * @param roomNumber number of the room to get or create.
      * @return the room with the given number.
      */
-    private MeetMeRoomImpl getOrCreateRoomImpl(String roomNumber)
+    MeetMeRoomImpl getOrCreateRoomImpl(String roomNumber)
     {
         MeetMeRoomImpl room;
         boolean created = false;

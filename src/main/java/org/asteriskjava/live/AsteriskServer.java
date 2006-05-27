@@ -124,10 +124,11 @@ public interface AsteriskServer
     Collection<MeetMeRoom> getMeetMeRooms();
 
     /**
-     * Returns the MeetMe room with the given number.
+     * Returns the MeetMe room with the given number, if the room does not
+     * yet exist a new {@link MeetMeRoom} object is created.
      * 
      * @param roomNumber the number of the room to return
-     * @return the MeetMe room with the given number or <code>null</code> if there is no such room.
+     * @return the MeetMe room with the given number.
      */
     MeetMeRoom getMeetMeRoom(String roomNumber);
 
@@ -170,4 +171,8 @@ public interface AsteriskServer
      * @since 0.2
      */
     int[] getVersion(String file) throws ManagerCommunicationException;
+    
+    void addAsteriskServerListener(AsteriskServerListener listener);
+    
+    void removeAsteriskServerListener(AsteriskServerListener listener);
 }

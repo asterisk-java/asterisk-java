@@ -16,6 +16,7 @@
  */
 package org.asteriskjava.live.internal;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -27,8 +28,10 @@ import java.util.regex.Pattern;
 import org.asteriskjava.live.AsteriskChannel;
 import org.asteriskjava.live.AsteriskQueue;
 import org.asteriskjava.live.AsteriskServer;
+import org.asteriskjava.live.AsteriskServerListener;
 import org.asteriskjava.live.ManagerCommunicationException;
 import org.asteriskjava.live.MeetMeRoom;
+import org.asteriskjava.live.MeetMeUser;
 import org.asteriskjava.manager.AuthenticationFailedException;
 import org.asteriskjava.manager.ManagerConnection;
 import org.asteriskjava.manager.ManagerConnectionState;
@@ -85,6 +88,8 @@ public class AsteriskServerImpl
      * A pool of manager connections to use for sending actions to Asterisk.
      */
     private final ManagerConnectionPool connectionPool;
+    
+    private final List<AsteriskServerListener> listeners;
 
     private final ChannelManager channelManager;
     private final MeetMeManager meetMeManager;
@@ -123,6 +128,7 @@ public class AsteriskServerImpl
     public AsteriskServerImpl()
     {
         connectionPool = new ManagerConnectionPool(1);
+        listeners = new ArrayList<AsteriskServerListener>();
         channelManager = new ChannelManager(this);
         meetMeManager = new MeetMeManager(this, channelManager);
         queueManager = new QueueManager(this, channelManager);
@@ -215,7 +221,7 @@ public class AsteriskServerImpl
 
         // must set async to true to receive OriginateEvents.
         originateAction.setAsync(Boolean.TRUE);
-        
+
         return originate(originateAction);
     }
 
@@ -234,10 +240,10 @@ public class AsteriskServerImpl
         originateAction.setData(data);
         originateAction.setTimeout(timeout);
         originateAction.setVariables(variables);
-        
+
         // must set async to true to receive OriginateEvents.
         originateAction.setAsync(Boolean.TRUE);
-        
+
         return originate(originateAction);
     }
 
@@ -245,16 +251,16 @@ public class AsteriskServerImpl
     {
         ResponseEvents responseEvents;
         Iterator<ResponseEvent> responseEventIterator;
-        
+
         // 2000 ms extra for the OriginateFailureEvent should be fine
-        responseEvents = connectionPool.sendEventGeneratingAction(originateAction,
+        responseEvents = sendEventGeneratingAction(originateAction,
                 originateAction.getTimeout() + 2000);
-            
+
         responseEventIterator = responseEvents.getEvents().iterator();
         if (responseEventIterator.hasNext())
         {
             ResponseEvent responseEvent;
-            
+
             responseEvent = responseEventIterator.next();
             if (responseEvent instanceof AbstractOriginateEvent)
             {
@@ -287,7 +293,7 @@ public class AsteriskServerImpl
 
     public MeetMeRoom getMeetMeRoom(String name)
     {
-        return meetMeManager.getMeetMeRoom(name);
+        return meetMeManager.getOrCreateRoomImpl(name);
     }
 
     public Collection<AsteriskQueue> getQueues()
@@ -300,7 +306,7 @@ public class AsteriskServerImpl
         if (version == null)
         {
             ManagerResponse response;
-            response = connectionPool.sendAction(new CommandAction("show version"));
+            response = sendAction(new CommandAction("show version"));
             if (response instanceof CommandResponse)
             {
                 List result;
@@ -390,6 +396,58 @@ public class AsteriskServerImpl
         }
 
         return intParts;
+    }
+
+    public void addAsteriskServerListener(AsteriskServerListener listener)
+    {
+        synchronized (listeners)
+        {
+            listeners.add(listener);
+        }
+    }
+
+    public void removeAsteriskServerListener(AsteriskServerListener listener)
+    {
+        synchronized (listeners)
+        {
+            listeners.remove(listener);
+        }
+    }
+
+    void fireNewAsteriskChannel(AsteriskChannel channel)
+    {
+        synchronized (listeners)
+        {
+            for (AsteriskServerListener listener : listeners)
+            {
+                try
+                {
+                    listener.onNewAsteriskChannel(channel);
+                }
+                catch (Exception e)
+                {
+                    logger.warn("Exception in onNewAsteriskChannel()", e);
+                }
+            }
+        }
+    }
+
+    void fireNewMeetMeUser(MeetMeUser user)
+    {
+        synchronized (listeners)
+        {
+            for (AsteriskServerListener listener : listeners)
+            {
+                try
+                {
+                    listener.onNewMeetMeUser(user);
+                }
+                catch (Exception e)
+                {
+                    logger.warn("Exception in onNewMeetMeUser()", e);
+                }
+            }
+        }
     }
 
     ManagerResponse sendAction(ManagerAction action) throws ManagerCommunicationException
