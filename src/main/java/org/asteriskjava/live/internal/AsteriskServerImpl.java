@@ -16,7 +16,6 @@
  */
 package org.asteriskjava.live.internal;
 
-import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -26,8 +25,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.asteriskjava.live.AsteriskChannel;
-import org.asteriskjava.live.AsteriskServer;
 import org.asteriskjava.live.AsteriskQueue;
+import org.asteriskjava.live.AsteriskServer;
 import org.asteriskjava.live.ManagerCommunicationException;
 import org.asteriskjava.live.MeetMeRoom;
 import org.asteriskjava.manager.AuthenticationFailedException;
@@ -36,11 +35,12 @@ import org.asteriskjava.manager.ManagerConnectionState;
 import org.asteriskjava.manager.ManagerEventListener;
 import org.asteriskjava.manager.ManagerEventListenerProxy;
 import org.asteriskjava.manager.ResponseEvents;
-import org.asteriskjava.manager.TimeoutException;
 import org.asteriskjava.manager.action.CommandAction;
 import org.asteriskjava.manager.action.EventGeneratingAction;
 import org.asteriskjava.manager.action.ManagerAction;
 import org.asteriskjava.manager.action.OriginateAction;
+import org.asteriskjava.manager.event.AbstractMeetMeEvent;
+import org.asteriskjava.manager.event.AbstractOriginateEvent;
 import org.asteriskjava.manager.event.ConnectEvent;
 import org.asteriskjava.manager.event.DisconnectEvent;
 import org.asteriskjava.manager.event.HangupEvent;
@@ -48,12 +48,10 @@ import org.asteriskjava.manager.event.JoinEvent;
 import org.asteriskjava.manager.event.LeaveEvent;
 import org.asteriskjava.manager.event.LinkEvent;
 import org.asteriskjava.manager.event.ManagerEvent;
-import org.asteriskjava.manager.event.AbstractMeetMeEvent;
 import org.asteriskjava.manager.event.NewCallerIdEvent;
 import org.asteriskjava.manager.event.NewChannelEvent;
 import org.asteriskjava.manager.event.NewExtenEvent;
 import org.asteriskjava.manager.event.NewStateEvent;
-import org.asteriskjava.manager.event.AbstractOriginateEvent;
 import org.asteriskjava.manager.event.RenameEvent;
 import org.asteriskjava.manager.event.ResponseEvent;
 import org.asteriskjava.manager.event.UnlinkEvent;
@@ -173,15 +171,7 @@ public class AsteriskServerImpl
             {
                 eventConnection.login();
             }
-            catch (IllegalStateException e)
-            {
-                throw new ManagerCommunicationException("Unable to login", e);
-            }
-            catch (IOException e)
-            {
-                throw new ManagerCommunicationException("Unable to login", e);
-            }
-            catch (TimeoutException e)
+            catch (Exception e)
             {
                 throw new ManagerCommunicationException("Unable to login", e);
             }
@@ -204,7 +194,7 @@ public class AsteriskServerImpl
         }
     }
 
-    /* Implementation of the AsteriskManager interface */
+    /* Implementation of the AsteriskServer interface */
 
     public AsteriskChannel originateToExtension(String channel, String context, String exten, int priority, long timeout) throws ManagerCommunicationException
     {
