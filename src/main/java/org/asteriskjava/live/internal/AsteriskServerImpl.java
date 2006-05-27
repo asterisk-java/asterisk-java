@@ -44,6 +44,7 @@ import org.asteriskjava.manager.action.ManagerAction;
 import org.asteriskjava.manager.action.OriginateAction;
 import org.asteriskjava.manager.event.AbstractMeetMeEvent;
 import org.asteriskjava.manager.event.AbstractOriginateEvent;
+import org.asteriskjava.manager.event.CdrEvent;
 import org.asteriskjava.manager.event.ConnectEvent;
 import org.asteriskjava.manager.event.DisconnectEvent;
 import org.asteriskjava.manager.event.HangupEvent;
@@ -513,6 +514,10 @@ public class AsteriskServerImpl
         else if (event instanceof HangupEvent)
         {
             channelManager.handleHangupEvent((HangupEvent) event);
+        }
+        else if (event instanceof CdrEvent)
+        {
+            channelManager.handleCdrEvent((CdrEvent) event);
         }
         else if (event instanceof JoinEvent)
         {

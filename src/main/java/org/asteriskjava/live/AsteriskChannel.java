@@ -29,6 +29,7 @@ import java.util.List;
  * <li>state
  * <li>account
  * <li>currentExtension
+ * <li>callDetailRecord
  * <li>linkedChannel
  * </ul>
  * 
@@ -41,6 +42,7 @@ public interface AsteriskChannel extends LiveObject
     final String PROPERTY_STATE = "state";
     final String PROPERTY_ACCOUNT = "account";
     final String PROPERTY_CURRENT_EXTENSION = "currentExtension";
+    final String PROPERTY_CALL_DETAIL_RECORD = "callDetailRecord";
     final String PROPERTY_LINKED_CHANNEL = "linkedChannel";
 
     /**
@@ -147,6 +149,14 @@ public interface AsteriskChannel extends LiveObject
      * @since 0.3
      */
     String getHangupCauseText();
+
+    /**
+     * Returns the call detail record for this channel.
+     * 
+     * @return the call detail record for this channel or <code>null</code> if
+     *         none has (yet) been received.
+     */
+    CallDetailRecord getCallDetailRecord();
 
     /**
      * Returns the channel this channel is bridged with, if any.

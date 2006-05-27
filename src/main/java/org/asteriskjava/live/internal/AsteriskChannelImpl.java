@@ -21,6 +21,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.asteriskjava.live.AsteriskChannel;
+import org.asteriskjava.live.CallDetailRecord;
 import org.asteriskjava.live.CallerId;
 import org.asteriskjava.live.ChannelState;
 import org.asteriskjava.live.Extension;
@@ -95,6 +96,8 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
     private HangupCause hangupCause;
 
     private String hangupCauseText;
+    
+    private CallDetailRecordImpl callDetailRecord;
     
     /**
      * MeetMe room user associated with this channel if any, <code>null</code> otherwise.
@@ -279,6 +282,19 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
     public String getHangupCauseText()
     {
         return hangupCauseText;
+    }
+
+    public CallDetailRecord getCallDetailRecord()
+    {
+        return callDetailRecord;
+    }
+
+    void setCallDetailRecord(CallDetailRecordImpl callDetailRecord)
+    {
+        CallDetailRecordImpl oldCallDetailRecord = this.callDetailRecord;
+
+        this.callDetailRecord = callDetailRecord;
+        firePropertyChange(PROPERTY_CALL_DETAIL_RECORD, oldCallDetailRecord, callDetailRecord);
     }
 
     /**

@@ -31,6 +31,7 @@ import org.asteriskjava.live.HangupCause;
 import org.asteriskjava.live.ManagerCommunicationException;
 import org.asteriskjava.manager.ResponseEvents;
 import org.asteriskjava.manager.action.StatusAction;
+import org.asteriskjava.manager.event.CdrEvent;
 import org.asteriskjava.manager.event.HangupEvent;
 import org.asteriskjava.manager.event.LinkEvent;
 import org.asteriskjava.manager.event.ManagerEvent;
@@ -60,7 +61,7 @@ class ChannelManager
      * How long do we wait before we remove hung up channels from memory?
      * (in milliseconds)
      */
-    private static final long REMOVAL_THRESHOLD = 5 * 60 * 1000L; // 5 minutes
+    private static final long REMOVAL_THRESHOLD = 15 * 60 * 1000L; // 15 minutes
 
     private final AsteriskServerImpl server;
     
@@ -470,6 +471,27 @@ class ChannelManager
         synchronized (channel)
         {
             channel.setName(event.getNewname());
+        }
+    }
+
+    void handleCdrEvent(CdrEvent event)
+    {
+        AsteriskChannelImpl channel = getChannelImplById(event.getUniqueId());
+        AsteriskChannelImpl destinationChannel = getChannelImplByName(event.getDestinationChannel());
+        CallDetailRecordImpl cdr;
+
+        if (channel == null)
+        {
+            logger.error("Ignored CdrEvent for unknown channel with uniqueId "
+                            + event.getUniqueId());
+            return;
+        }
+
+        cdr = new CallDetailRecordImpl(channel, destinationChannel, event);
+
+        synchronized (channel)
+        {
+            channel.setCallDetailRecord(cdr);
         }
     }
 }
