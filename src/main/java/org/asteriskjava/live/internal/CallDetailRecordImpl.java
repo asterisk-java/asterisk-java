@@ -71,7 +71,7 @@ public class CallDetailRecordImpl implements CallDetailRecord
         }
         else
         {
-            amaFlags = AmaFlags.UNKNOWN;
+            amaFlags = null;
         }
         if (cdrEvent.getDisposition() != null)
         {
@@ -79,7 +79,7 @@ public class CallDetailRecordImpl implements CallDetailRecord
         }
         else
         {
-            disposition = Disposition.UNKNOWN;
+            disposition = null;
         }
         userField = cdrEvent.getUserField();
     }

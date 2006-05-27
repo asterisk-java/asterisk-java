@@ -32,6 +32,7 @@ import org.asteriskjava.live.ManagerCommunicationException;
 import org.asteriskjava.manager.ResponseEvents;
 import org.asteriskjava.manager.action.StatusAction;
 import org.asteriskjava.manager.event.CdrEvent;
+import org.asteriskjava.manager.event.DialEvent;
 import org.asteriskjava.manager.event.HangupEvent;
 import org.asteriskjava.manager.event.LinkEvent;
 import org.asteriskjava.manager.event.ManagerEvent;
@@ -393,6 +394,30 @@ class ChannelManager
         removeOldChannels();
     }
 
+    void handleDialEvent(DialEvent event)
+    {
+        AsteriskChannelImpl sourceChannel = getChannelImplById(event.getSrcUniqueId());
+        AsteriskChannelImpl destinationChannel = getChannelImplById(event.getDestUniqueId());
+
+        if (sourceChannel == null)
+        {
+            logger.error("Ignored LinkEvent for unknown source channel "
+                    + event.getSrc());
+            return;
+        }
+        if (destinationChannel == null)
+        {
+            logger.error("Ignored DialEvent for unknown destination channel "
+                    + event.getDestination());
+            return;
+        }
+
+        synchronized (sourceChannel)
+        {
+            sourceChannel.setDialedChannel(destinationChannel);
+        }
+    }
+
     void handleLinkEvent(LinkEvent event)
     {
         AsteriskChannelImpl channel1 = getChannelImplById(event.getUniqueId1());
@@ -417,7 +442,7 @@ class ChannelManager
         {
             channel1.setLinkedChannel(channel2);
         }
-        
+
         synchronized (channel2)
         {
             channel2.setLinkedChannel(channel1);

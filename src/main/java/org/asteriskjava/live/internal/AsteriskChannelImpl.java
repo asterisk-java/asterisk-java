@@ -82,6 +82,8 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
     private String account;
     private final List<Extension> extensions;
 
+    private AsteriskChannel dialedChannel;
+
     /**
      * If this channel is bridged to another channel, the linkedChannel contains
      * the channel this channel is bridged with.
@@ -312,6 +314,19 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         this.hangupCauseText = hangupCauseText;
         // update state and fire PropertyChangeEvent
         setState(ChannelState.HUNGUP);
+    }
+
+    public AsteriskChannel getDialedChannel()
+    {
+        return linkedChannel;
+    }
+
+    void setDialedChannel(AsteriskChannel dialedChannel)
+    {
+        AsteriskChannel oldDialedChannel = this.dialedChannel;
+    
+        this.dialedChannel = dialedChannel;
+        firePropertyChange(PROPERTY_DIALED_CHANNEL, oldDialedChannel, dialedChannel);
     }
 
     public AsteriskChannel getLinkedChannel()

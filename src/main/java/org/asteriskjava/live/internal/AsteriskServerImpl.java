@@ -46,6 +46,7 @@ import org.asteriskjava.manager.event.AbstractMeetMeEvent;
 import org.asteriskjava.manager.event.AbstractOriginateEvent;
 import org.asteriskjava.manager.event.CdrEvent;
 import org.asteriskjava.manager.event.ConnectEvent;
+import org.asteriskjava.manager.event.DialEvent;
 import org.asteriskjava.manager.event.DisconnectEvent;
 import org.asteriskjava.manager.event.HangupEvent;
 import org.asteriskjava.manager.event.JoinEvent;
@@ -498,6 +499,10 @@ public class AsteriskServerImpl
         else if (event instanceof NewCallerIdEvent)
         {
             channelManager.handleNewCallerIdEvent((NewCallerIdEvent) event);
+        }
+        else if (event instanceof DialEvent)
+        {
+            channelManager.handleDialEvent((DialEvent) event);
         }
         else if (event instanceof LinkEvent)
         {

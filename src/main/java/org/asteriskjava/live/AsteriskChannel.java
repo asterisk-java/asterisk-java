@@ -30,6 +30,7 @@ import java.util.List;
  * <li>account
  * <li>currentExtension
  * <li>callDetailRecord
+ * <li>dialedChannel
  * <li>linkedChannel
  * </ul>
  * 
@@ -43,6 +44,7 @@ public interface AsteriskChannel extends LiveObject
     final String PROPERTY_ACCOUNT = "account";
     final String PROPERTY_CURRENT_EXTENSION = "currentExtension";
     final String PROPERTY_CALL_DETAIL_RECORD = "callDetailRecord";
+    final String PROPERTY_DIALED_CHANNEL = "dialedChannel";
     final String PROPERTY_LINKED_CHANNEL = "linkedChannel";
 
     /**
@@ -157,6 +159,14 @@ public interface AsteriskChannel extends LiveObject
      *         none has (yet) been received.
      */
     CallDetailRecord getCallDetailRecord();
+
+    /**
+     * Returns the channel that has been dialed by this channel.
+     * 
+     * @return the channel that has been dialed by this channel or 
+     *         <code>null</code> if none has been dialed.
+     */
+    AsteriskChannel getDialedChannel();
 
     /**
      * Returns the channel this channel is bridged with, if any.
