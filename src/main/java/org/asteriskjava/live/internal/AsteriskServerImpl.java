@@ -63,9 +63,8 @@ import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
 /**
- * Default implementation of the AsteriskManager interface.
+ * Default implementation of the {@link AsteriskServer} interface.
  * 
- * @see org.asteriskjava.live.AsteriskServer
  * @author srt
  * @version $Id$
  */

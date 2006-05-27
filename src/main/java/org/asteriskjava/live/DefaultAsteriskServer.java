@@ -78,7 +78,7 @@ public class DefaultAsteriskServer implements AsteriskServer
         impl.initialize();
     }
     
-    /* Implementation of the AsteriskManager interface */
+    /* Implementation of the AsteriskServer interface */
 
     public AsteriskChannel originateToExtension(String channel, String context, String exten, int priority, long timeout) throws ManagerCommunicationException
     {
