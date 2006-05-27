@@ -4,8 +4,13 @@ import java.beans.PropertyChangeListener;
 
 /**
  * Interface for all live objects.
+ * <p>
+ * Allows you to retrieve the {@link org.asteriskjava.live.AsteriskServer} this
+ * live object belongs to and provides support for
+ * {@link java.beans.PropertyChangeEvent}s.
  * 
  * @author srt
+ * @version $Id$
  * @since 0.3
  */
 public interface LiveObject
@@ -16,16 +21,18 @@ public interface LiveObject
      * @return the AsteriskServer this live object belongs to.
      */
     AsteriskServer getServer();
-    
+
     /**
-     * Adds a PropertyChangeListener that is notified whenever a property value changes.
+     * Adds a PropertyChangeListener that is notified whenever a property value
+     * changes.
      * 
      * @param listener listener to notify
      */
     void addPropertyChangeListener(PropertyChangeListener listener);
 
     /**
-     * Adds a PropertyChangeListener that is notified whenever a given property value changes.
+     * Adds a PropertyChangeListener that is notified whenever a given property
+     * value changes.
      * 
      * @param propertyName property to observe
      * @param listener listener to notify
