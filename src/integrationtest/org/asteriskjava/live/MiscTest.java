@@ -7,7 +7,7 @@ package org.asteriskjava.live;
 
 /**
  * @author srt
- * @version $Id: TestExtensionHistory.java 417 2006-05-27 10:53:26Z srt $
+ * @version $Id$
  */
 public class MiscTest extends AsteriskServerTestCase
 {
