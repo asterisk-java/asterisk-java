@@ -41,6 +41,9 @@ package org.asteriskjava.manager.action;
  * Where <code>c</code> is an instance of 
  * {@link org.asteriskjava.manager.ManagerConnection} and <code>channel</code>
  * contains the name of a channel instance, for example "SIP/1234-9cd".
+ * <p>
+ * Since Asterisk 1.4 this action also supports built-in functions like
+ * <code>DB()</code>, <code>CALLERID()</code> and <code>ENV()</code>.
  * 
  * @author srt
  * @version $Id$

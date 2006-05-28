@@ -214,11 +214,6 @@ public class DefaultManagerConnection implements ManagerConnection
         impl.login(events);
     }
 
-    public boolean isConnected()
-    {
-        return impl.isConnected();
-    }
-
     public void logoff() throws IllegalStateException
     {
         impl.logoff();
@@ -237,16 +232,8 @@ public class DefaultManagerConnection implements ManagerConnection
         return impl.sendAction(action, timeout);
     }
 
-    @SuppressWarnings("deprecation")
     public void sendAction(ManagerAction action,
-            ManagerResponseHandler callbackHandler) throws IOException,
-            IllegalArgumentException, IllegalStateException
-    {
-        impl.sendAction(action, callbackHandler);
-    }
-
-    public void sendAction(ManagerAction action,
-            ManagerResponseListener callbackHandler) throws IOException,
+            SendActionCallback callbackHandler) throws IOException,
             IllegalArgumentException, IllegalStateException
     {
         impl.sendAction(action, callbackHandler);
@@ -275,18 +262,6 @@ public class DefaultManagerConnection implements ManagerConnection
     public void removeEventListener(final ManagerEventListener listener)
     {
         impl.removeEventListener(listener);
-    }
-
-    @SuppressWarnings("deprecation")
-    public void addEventHandler(final ManagerEventHandler eventHandler)
-    {
-        impl.addEventHandler(eventHandler);
-    }
-
-    @SuppressWarnings("deprecation")
-    public void removeEventHandler(final ManagerEventHandler eventHandler)
-    {
-        impl.removeEventHandler(eventHandler);
     }
 
     public String getProtocolIdentifier()

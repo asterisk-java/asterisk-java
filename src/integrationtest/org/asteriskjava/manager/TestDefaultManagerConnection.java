@@ -67,27 +67,6 @@ public class TestDefaultManagerConnection extends TestCase
         }
     }
 
-    @SuppressWarnings("deprecation")
-    public void testLoginWithManagerEventHandler() throws Exception
-    {
-        DefaultManagerConnection dmc;
-
-        dmc = getDefaultManagerConnection();
-        dmc.login();
-        dmc.addEventHandler(new ManagerEventHandler()
-        {
-            public void handleEvent(ManagerEvent event)
-            {
-                System.out.println("Got event: " + event);
-            }
-        });
-        dmc.sendAction(new StatusAction());
-
-        // wait for 3 seconds to receive events
-        Thread.sleep(3000);
-        dmc.logoff();
-    }
-
     public void testLoginAuthenticationFailure() throws Exception
     {
         DefaultManagerConnection dmc;

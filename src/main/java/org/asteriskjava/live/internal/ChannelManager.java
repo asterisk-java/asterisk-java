@@ -29,6 +29,7 @@ import org.asteriskjava.live.ChannelState;
 import org.asteriskjava.live.Extension;
 import org.asteriskjava.live.HangupCause;
 import org.asteriskjava.live.ManagerCommunicationException;
+import org.asteriskjava.live.NoSuchChannelException;
 import org.asteriskjava.manager.ResponseEvents;
 import org.asteriskjava.manager.action.StatusAction;
 import org.asteriskjava.manager.event.CdrEvent;
@@ -162,11 +163,20 @@ class ChannelManager
             ChannelState state)
     {
         AsteriskChannelImpl channel;
+        String traceId;
         
         channel = new AsteriskChannelImpl(server, name, uniqueId, dateOfCreation);
         channel.setCallerId(new CallerId(callerIdName, callerIdNumber));
         channel.setState(state);
-        logger.info("Adding channel " + channel.getName());
+        try
+        {
+            traceId = channel.getVariable("AJ_TRACE_ID");
+        }
+        catch (Exception e)
+        {
+            traceId = null;
+        }
+        logger.info("Adding channel " + channel.getName() + " with traceId " + traceId);
         addChannel(channel);
 
         server.fireNewAsteriskChannel(channel);
@@ -412,6 +422,7 @@ class ChannelManager
             return;
         }
 
+        logger.info(sourceChannel.getName() + " dialed " + destinationChannel.getName());
         synchronized (sourceChannel)
         {
             sourceChannel.setDialedChannel(destinationChannel);

@@ -18,11 +18,12 @@ package org.asteriskjava.live;
 
 import junit.framework.TestCase;
 
+import org.asteriskjava.live.internal.AsteriskServerImpl;
 import org.asteriskjava.manager.DefaultManagerConnection;
 
 public class AsteriskServerTestCase extends TestCase
 {
-    protected DefaultAsteriskServer server;
+    protected AsteriskServerImpl server;
     protected DefaultManagerConnection managerConnection;
 
     public void setUp() throws Exception
@@ -32,7 +33,7 @@ public class AsteriskServerTestCase extends TestCase
         managerConnection.setUsername("manager");
         managerConnection.setPassword("obelisk");
 
-        server = new DefaultAsteriskServer();
+        server = new AsteriskServerImpl();
         server.setManagerConnection(managerConnection);
         server.initialize();
     }

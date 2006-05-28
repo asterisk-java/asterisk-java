@@ -364,7 +364,7 @@ public class OriginateAction extends AbstractManagerAction
      *            values as value.
      * @since 0.2
      */
-    public Map getVariables()
+    public Map<String, String> getVariables()
     {
         return variables;
     }

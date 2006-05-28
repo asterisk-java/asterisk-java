@@ -19,20 +19,19 @@ package org.asteriskjava.manager;
 import org.asteriskjava.manager.response.ManagerResponse;
 
 /**
- * This interface is deprecated, please use {@link org.asteriskjava.manager.ManagerResponseListener}
- * instead.
+ * Callback interface to send {@link org.asteriskjava.manager.action.ManagerAction}s
+ * asynchronously.
  * 
- * @see org.asteriskjava.manager.response.ManagerResponse
+ * @see org.asteriskjava.manager.ManagerConnection#sendAction(ManagerAction, SendActionCallback)
  * @author srt
  * @version $Id$
- * @deprecated this interface is deprecated and will be removed in Asterisk-Java 0.4.
  */
-public interface ManagerResponseHandler
+public interface SendActionCallback
 {
     /**
      * This method is called when a response is received.
      * 
-     * @param response the response received
+     * @param response the response that has been received
      */
-    void handleResponse(ManagerResponse response);
+    void onResponse(ManagerResponse response);
 }

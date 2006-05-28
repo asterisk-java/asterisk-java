@@ -29,7 +29,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
@@ -39,10 +38,8 @@ import org.asteriskjava.manager.AuthenticationFailedException;
 import org.asteriskjava.manager.EventTimeoutException;
 import org.asteriskjava.manager.ManagerConnection;
 import org.asteriskjava.manager.ManagerConnectionState;
-import org.asteriskjava.manager.ManagerEventHandler;
 import org.asteriskjava.manager.ManagerEventListener;
-import org.asteriskjava.manager.ManagerResponseHandler;
-import org.asteriskjava.manager.ManagerResponseListener;
+import org.asteriskjava.manager.SendActionCallback;
 import org.asteriskjava.manager.ResponseEvents;
 import org.asteriskjava.manager.TimeoutException;
 import org.asteriskjava.manager.action.ChallengeAction;
@@ -188,7 +185,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
      * Key is the internalActionId of the Action sent and value the
      * corresponding ResponseListener.
      */
-    private final Map<String, ManagerResponseListener> responseListeners;
+    private final Map<String, SendActionCallback> responseListeners;
 
     /**
      * Contains the event handlers that handle ResponseEvents for the
@@ -218,7 +215,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     public ManagerConnectionImpl()
     {
         this.id = idCounter.getAndIncrement();
-        this.responseListeners = new HashMap<String, ManagerResponseListener>();
+        this.responseListeners = new HashMap<String, SendActionCallback>();
         this.responseEventListeners = new HashMap<String, ManagerEventListener>();
         this.eventListeners = new ArrayList<ManagerEventListener>();
         this.protocolIdentifier = new ProtocolIdentifierWrapper();
@@ -583,11 +580,6 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         return new SocketConnectionFacadeImpl(hostname, port, socketTimeout);
     }
 
-    public synchronized boolean isConnected()
-    {
-        return socket != null && !reconnecting && socket.isConnected();
-    }
-
     public synchronized void logoff() throws IllegalStateException
     {
         if (state != CONNECTED && state != RECONNECTING)
@@ -651,10 +643,10 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
             IllegalStateException
     {
         ResponseHandlerResult result;
-        ManagerResponseListener callbackHandler;
+        SendActionCallback callbackHandler;
 
         result = new ResponseHandlerResult();
-        callbackHandler = new DefaultResponseListener(result);
+        callbackHandler = new DefaultSendActionCallback(result);
 
         synchronized (result)
         {
@@ -685,16 +677,8 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         return result.getResponse();
     }
 
-    @SuppressWarnings("deprecation")
     public void sendAction(ManagerAction action,
-            ManagerResponseHandler callbackHandler) throws IOException,
-            IllegalArgumentException, IllegalStateException
-    {
-        sendAction(action, new ManagerResponseListenerAdapter(callbackHandler));
-    }
-
-    public void sendAction(ManagerAction action,
-            ManagerResponseListener callbackHandler) throws IOException,
+            SendActionCallback callback) throws IOException,
             IllegalArgumentException, IllegalStateException
     {
         final String internalActionId;
@@ -731,11 +715,11 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
         // if the callbackHandler is null the user is obviously not interested
         // in the response, thats fine.
-        if (callbackHandler != null)
+        if (callback != null)
         {
             synchronized (this.responseListeners)
             {
-                this.responseListeners.put(internalActionId, callbackHandler);
+                this.responseListeners.put(internalActionId, callback);
             }
         }
 
@@ -780,11 +764,10 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                     action.getClass().getName() + " is not a ResponseEvent.");
         }
 
-        // TODO
-        if (socket == null)
+        if (state != CONNECTED)
         {
-            throw new IllegalStateException("Unable to send "
-                    + action.getAction() + " action: not connected.");
+            throw new IllegalStateException("Actions may only be sent when in state " +
+                    "CONNECTED, but connection is in state " + state);
         }
 
         responseEvents = new ResponseEventsImpl();
@@ -893,31 +876,6 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         }
     }
 
-    @SuppressWarnings("deprecation")
-    public void addEventHandler(final ManagerEventHandler eventHandler)
-    {
-        addEventListener(new ManagerEventListenerAdapter(eventHandler));
-    }
-
-    @SuppressWarnings("deprecation")
-    public void removeEventHandler(final ManagerEventHandler eventHandler)
-    {
-        synchronized (this.eventListeners)
-        {
-            Iterator<ManagerEventListener> i = eventListeners.iterator();
-            
-            while (i.hasNext())
-            {
-                ManagerEventListener listener = i.next();
-                if (listener instanceof ManagerEventListenerAdapter &&
-                    ((ManagerEventListenerAdapter) listener).handler == eventHandler)
-                {
-                    i.remove();
-                }
-            }
-        }
-    }
-
     public String getProtocolIdentifier()
     {
         return protocolIdentifier.value;
@@ -933,7 +891,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     /**
      * This method is called by the reader whenever a {@link ManagerResponse} is
      * received. The response is dispatched to the associated
-     * {@link ManagerResponseListener}.
+     * {@link SendActionCallback}.
      * 
      * @param response the response received by the reader
      * @see ManagerReader
@@ -942,7 +900,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     {
         final String actionId;
         String internalActionId;
-        ManagerResponseListener listener;
+        SendActionCallback listener;
 
         // shouldn't happen
         if (response == null)
@@ -992,7 +950,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         {
             try
             {
-                listener.onManagerResponse(response);
+                listener.onResponse(response);
             }
             catch (Exception e)
             {
@@ -1295,9 +1253,9 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
      * A simple response handler that stores the received response in a
      * ResponseHandlerResult for further processing.
      */
-    private class DefaultResponseListener
+    private class DefaultSendActionCallback
             implements
-                ManagerResponseListener,
+                SendActionCallback,
                 Serializable
     {
         /**
@@ -1311,12 +1269,12 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
          * 
          * @param result the result to store the response in
          */
-        public DefaultResponseListener(ResponseHandlerResult result)
+        public DefaultSendActionCallback(ResponseHandlerResult result)
         {
             this.result = result;
         }
 
-        public void onManagerResponse(ManagerResponse response)
+        public void onResponse(ManagerResponse response)
         {
             synchronized (result)
             {
@@ -1334,7 +1292,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     private class ResponseEventHandler
             implements
                 ManagerEventListener,
-                ManagerResponseListener,
+                SendActionCallback,
                 Serializable
     {
         /**
@@ -1386,7 +1344,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
             }
         }
 
-        public void onManagerResponse(ManagerResponse response)
+        public void onResponse(ManagerResponse response)
         {
             synchronized (events)
             {
@@ -1409,39 +1367,5 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     private class ProtocolIdentifierWrapper
     {
         String value;
-    }
-
-    // to be removed in 0.4
-
-    @SuppressWarnings("deprecation") 
-    private class ManagerResponseListenerAdapter implements ManagerResponseListener
-    {
-        ManagerResponseHandler handler;
-
-        public ManagerResponseListenerAdapter(ManagerResponseHandler handler)
-        {
-            this.handler = handler;
-        }
-
-        public void onManagerResponse(ManagerResponse response)
-        {
-            handler.handleResponse(response);
-        }
-    }
-
-    @SuppressWarnings("deprecation") 
-    private class ManagerEventListenerAdapter implements ManagerEventListener
-    {
-        ManagerEventHandler handler;
-
-        public ManagerEventListenerAdapter(ManagerEventHandler handler)
-        {
-            this.handler = handler;
-        }
-
-        public void onManagerEvent(ManagerEvent event)
-        {
-            handler.handleEvent(event);
-        }
     }
 }

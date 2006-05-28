@@ -40,8 +40,10 @@ import org.asteriskjava.manager.ManagerEventListenerProxy;
 import org.asteriskjava.manager.ResponseEvents;
 import org.asteriskjava.manager.action.CommandAction;
 import org.asteriskjava.manager.action.EventGeneratingAction;
+import org.asteriskjava.manager.action.GetVarAction;
 import org.asteriskjava.manager.action.ManagerAction;
 import org.asteriskjava.manager.action.OriginateAction;
+import org.asteriskjava.manager.action.SetVarAction;
 import org.asteriskjava.manager.event.AbstractMeetMeEvent;
 import org.asteriskjava.manager.event.AbstractOriginateEvent;
 import org.asteriskjava.manager.event.CdrEvent;
@@ -61,6 +63,7 @@ import org.asteriskjava.manager.event.RenameEvent;
 import org.asteriskjava.manager.event.ResponseEvent;
 import org.asteriskjava.manager.event.UnlinkEvent;
 import org.asteriskjava.manager.response.CommandResponse;
+import org.asteriskjava.manager.response.ManagerError;
 import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
@@ -173,7 +176,8 @@ public class AsteriskServerImpl
 
     public void initialize() throws AuthenticationFailedException, ManagerCommunicationException
     {
-        if (eventConnection.getState() == ManagerConnectionState.DISCONNECTED)
+        if (eventConnection.getState() == ManagerConnectionState.INITIAL ||
+            eventConnection.getState() == ManagerConnectionState.DISCONNECTED)
         {
             try
             {
@@ -221,9 +225,6 @@ public class AsteriskServerImpl
         originateAction.setTimeout(timeout);
         originateAction.setVariables(variables);
 
-        // must set async to true to receive OriginateEvents.
-        originateAction.setAsync(Boolean.TRUE);
-
         return originate(originateAction);
     }
 
@@ -243,9 +244,6 @@ public class AsteriskServerImpl
         originateAction.setTimeout(timeout);
         originateAction.setVariables(variables);
 
-        // must set async to true to receive OriginateEvents.
-        originateAction.setAsync(Boolean.TRUE);
-
         return originate(originateAction);
     }
 
@@ -253,6 +251,20 @@ public class AsteriskServerImpl
     {
         ResponseEvents responseEvents;
         Iterator<ResponseEvent> responseEventIterator;
+        Map<String, String> variables;
+
+        if (originateAction.getVariables() == null)
+        {
+            variables = new HashMap<String, String>();
+        }
+        else
+        {
+            variables = new HashMap<String, String>(originateAction.getVariables());
+        }
+        variables.put("_AJ_TRACE_ID", "trace me!");
+        originateAction.setVariables(variables);
+        // must set async to true to receive OriginateEvents.
+        originateAction.setAsync(Boolean.TRUE);
 
         // 2000 ms extra for the OriginateFailureEvent should be fine
         responseEvents = sendEventGeneratingAction(originateAction,
@@ -322,6 +334,35 @@ public class AsteriskServerImpl
         }
 
         return version;
+    }
+
+    public String getGlobalVariable(String variable) throws ManagerCommunicationException
+    {
+        ManagerResponse response;
+        String value;
+
+        response = sendAction(new GetVarAction(variable));
+        if (response instanceof ManagerError)
+        {
+            return null;
+        }
+        value = response.getAttribute("Value");
+        if (value == null)
+        {
+            value = response.getAttribute(variable); // for Asterisk 1.0.x
+        }
+        return value;
+    }
+
+    public void setGlobalVariable(String variable, String value) throws ManagerCommunicationException
+    {
+        ManagerResponse response;
+
+        response = sendAction(new SetVarAction(variable, value));
+        if (response instanceof ManagerError)
+        {
+            logger.error("Unable to set global variable '" + variable + "' to '" + value + "':" + response.getMessage());
+        }
     }
 
     public int[] getVersion(String file)

@@ -2,8 +2,8 @@ Asterisk-Java 0.3
 	* Changed package name from net.sf.asterisk to org.asteriskjava
 	  and renamed AGI classes to Agi to conform to Java coding
 	  standards
-	* Renamed EventHandler and ResponseHandler to EventListener and
-	  ResponseListener.
+	* Renamed ManagerEventHandler and ManagerResponseHandler to 
+	  ManagerEventListener and SendActionCallback.
 	* Introduced generics and leveraged other Java5 features like
 	  java.util.concurrent.
 	* ManagerReader threads are now daemon threads so as soon as

@@ -467,7 +467,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
     {
         StringBuffer sb;
         AsteriskChannel linkedChannel;
-        int systemHashcode;
+        AsteriskChannel dialedChannel;
 
         sb = new StringBuffer("AsteriskChannel[");
 
@@ -480,27 +480,34 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
             sb.append("account='" + getAccount() + "',");
             sb.append("dateOfCreation=" + getDateOfCreation() + ",");
             linkedChannel = this.linkedChannel;
-            systemHashcode = System.identityHashCode(this);
+            dialedChannel = this.dialedChannel;
         }
-        if (linkedChannel == null)
+        if (dialedChannel == null)
         {
-            sb.append("linkedChannel=null,");
+            sb.append("dialedChannel=null,");
         }
         else
         {
-            sb.append("linkedChannel=[");
+            sb.append("dialedChannel=AsteriskChannel[");
+            synchronized (dialedChannel)
+            {
+                sb.append("id='" + dialedChannel.getId() + "',");
+                sb.append("name='" + dialedChannel.getName() + "'],");
+            }
+        }
+        if (linkedChannel == null)
+        {
+            sb.append("linkedChannel=null");
+        }
+        else
+        {
+            sb.append("linkedChannel=AsteriskChannel[");
             synchronized (linkedChannel)
             {
-                sb.append(linkedChannel.getClass().getName() + "[");
                 sb.append("id='" + linkedChannel.getId() + "',");
-                sb.append("name='" + linkedChannel.getName() + "',");
-                sb.append("systemHashcode="
-                        + System.identityHashCode(linkedChannel));
-                sb.append("]");
+                sb.append("name='" + linkedChannel.getName() + "']");
             }
-            sb.append("],");
         }
-        sb.append("systemHashcode=" + systemHashcode);
         sb.append("]");
 
         return sb.toString();

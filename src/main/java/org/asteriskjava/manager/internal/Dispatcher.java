@@ -34,7 +34,7 @@ interface Dispatcher
     /**
      * This method is called by the reader whenever a {@link ManagerResponse} is
      * received. The response is dispatched to the associated
-     * {@link org.asteriskjava.manager.ManagerResponseListener}.
+     * {@link org.asteriskjava.manager.SendActionCallback}.
      * 
      * @param response the resonse received by the reader
      * @see ManagerReader
