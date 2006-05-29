@@ -29,7 +29,6 @@ import org.asteriskjava.live.ChannelState;
 import org.asteriskjava.live.Extension;
 import org.asteriskjava.live.HangupCause;
 import org.asteriskjava.live.ManagerCommunicationException;
-import org.asteriskjava.live.NoSuchChannelException;
 import org.asteriskjava.manager.ResponseEvents;
 import org.asteriskjava.manager.action.StatusAction;
 import org.asteriskjava.manager.event.CdrEvent;
@@ -163,27 +162,18 @@ class ChannelManager
             ChannelState state)
     {
         AsteriskChannelImpl channel;
-        String traceId;
-        
+
         channel = new AsteriskChannelImpl(server, name, uniqueId, dateOfCreation);
         channel.setCallerId(new CallerId(callerIdName, callerIdNumber));
         channel.setState(state);
-        try
-        {
-            traceId = channel.getVariable("AJ_TRACE_ID");
-        }
-        catch (Exception e)
-        {
-            traceId = null;
-        }
-        logger.info("Adding channel " + channel.getName() + " with traceId " + traceId);
+        logger.info("Adding channel " + channel.getName());
         addChannel(channel);
 
+        getTraceId(channel);
         server.fireNewAsteriskChannel(channel);
-
         return channel;
     }
-    
+
     private ChannelState string2ChannelState(String state)
     {
         if (state == null)
@@ -193,7 +183,7 @@ class ChannelManager
         
         return ChannelState.valueOf(state.toUpperCase());
     }
-    
+
     void handleStatusEvent(StatusEvent event)
     {
         AsteriskChannelImpl channel;
@@ -423,6 +413,8 @@ class ChannelManager
         }
 
         logger.info(sourceChannel.getName() + " dialed " + destinationChannel.getName());
+        getTraceId(sourceChannel);
+        getTraceId(destinationChannel);
         synchronized (sourceChannel)
         {
             sourceChannel.setDialedChannel(destinationChannel);
@@ -529,5 +521,21 @@ class ChannelManager
         {
             channel.setCallDetailRecord(cdr);
         }
+    }
+
+    private String getTraceId(AsteriskChannel channel)
+    {
+        String traceId;
+
+        try
+        {
+            traceId = channel.getVariable("AJ_TRACE_ID");
+        }
+        catch (Exception e)
+        {
+            traceId = null;
+        }
+        logger.info("TraceId for channel " + channel.getName() + " is " + traceId);
+        return traceId;
     }
 }

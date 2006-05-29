@@ -261,7 +261,7 @@ public class AsteriskServerImpl
         {
             variables = new HashMap<String, String>(originateAction.getVariables());
         }
-        variables.put("_AJ_TRACE_ID", "trace me!");
+        variables.put("__AJ_TRACE_ID", "trace me!");
         originateAction.setVariables(variables);
         // must set async to true to receive OriginateEvents.
         originateAction.setAsync(Boolean.TRUE);

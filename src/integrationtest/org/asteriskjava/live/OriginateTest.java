@@ -15,9 +15,11 @@ public class OriginateTest extends AsteriskServerTestCase
     {
         AsteriskChannel channel;
         channel = server.originateToExtension("Local/1310@default", "from-local", "1330", 1, 10000L);
-
         System.err.println(channel);
+        System.err.println(channel.getVariable("AJ_TRACE_ID"));
+
         Thread.sleep(20000L);
         System.err.println(channel);
+        System.err.println(channel.getVariable("AJ_TRACE_ID"));
     }
 }

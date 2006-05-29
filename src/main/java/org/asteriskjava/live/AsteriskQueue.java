@@ -22,7 +22,7 @@ import java.util.List;
  * An Asterisk ACD queue.
  * 
  * @author srt
- * @version $Id: $
+ * @version $Id$
  */
 public interface AsteriskQueue
 {
