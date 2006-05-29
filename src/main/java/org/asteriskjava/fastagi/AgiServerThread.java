@@ -22,9 +22,13 @@ import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
 /**
- * Runs an AgiServer in a separate Thread.<p>
+ * Runs an AgiServer in a separate Thread.
+ * <p>
  * You can use this class to run an AgiServer in the background of your
- * application or run it in your servlet container or application server. 
+ * application or run it in your servlet container or application server.
+ * <p>
+ * By default the thread used by this class is marked as daemon thread,
+ * that means it will be destroyed when the last user thread has finished.  
  * 
  * @author srt
  * @version $Id$
@@ -37,6 +41,15 @@ public class AgiServerThread
     private Thread thread;
     private boolean daemon = true;
 
+    /**
+     * Creates a new AgiServerThread.
+     * <p>
+     * Before you can run this thread you must set an {@link AgiServer} using
+     * {@link #setAgiServer(AgiServer)}.
+     * <p>
+     * This constructor is mainly intended for use with setter based dependency
+     * injection.
+     */
     public AgiServerThread()
     {
         
