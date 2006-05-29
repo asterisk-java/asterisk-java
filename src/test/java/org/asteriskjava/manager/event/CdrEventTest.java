@@ -4,7 +4,7 @@ import java.util.TimeZone;
 
 import junit.framework.TestCase;
 
-public class TestCdrEvent extends TestCase
+public class CdrEventTest extends TestCase
 {
     CdrEvent cdrEvent;
     TimeZone defaultTimeZone;
@@ -26,12 +26,20 @@ public class TestCdrEvent extends TestCase
 
     public void testGetStartTimeAsDate()
     {
-        assertEquals(1137671688000L, cdrEvent.getStartTimeAsDate().getTime());
+        assertEquals(1148039688000L, cdrEvent.getStartTimeAsDate().getTime());
     }
 
     public void testGetStartTimeAsDateWithTimeZone()
     {
         TimeZone tz = TimeZone.getTimeZone("GMT+2");
-        assertEquals(1137664488000L, cdrEvent.getStartTimeAsDate(tz).getTime());
+        assertEquals(1148032488000L, cdrEvent.getStartTimeAsDate(tz).getTime());
+    }
+
+    public void testBug()
+    {
+        TimeZone.setDefault(TimeZone.getTimeZone("Europe/Monaco"));
+        
+        cdrEvent.setStartTime("2006-05-29 13:17:21");
+        assertEquals("Mon May 29 13:17:21 CEST 2006", cdrEvent.getStartTimeAsDate().toString());
     }
 }

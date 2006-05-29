@@ -37,7 +37,7 @@ public class CdrEvent extends ManagerEvent
      * Serializable version identifier
      */
     private static final long serialVersionUID = 2541424315212201670L;
-    private static final String DATE_TIME_PATTERN = "y-M-D H:m:s";
+    private static final String DATE_TIME_PATTERN = "yy-MM-dd HH:mm:ss";
     
     public static final String DISPOSITION_NO_ANSWER = "NO ANSWER";
     public static final String DISPOSITION_FAILED = "FAILED";
