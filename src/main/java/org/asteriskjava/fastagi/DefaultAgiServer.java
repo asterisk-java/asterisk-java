@@ -54,6 +54,11 @@ public class DefaultAgiServer implements AgiServer
     private static final int DEFAULT_POOL_SIZE = 10;
 
     /**
+     * The default thread pool size.
+     */
+    private static final int DEFAULT_MAXIMUM_POOL_SIZE = 100;
+
+    /**
      * Instance logger.
      */
     private final Log logger = LogFactory.getLog(DefaultAgiServer.class);
@@ -101,6 +106,7 @@ public class DefaultAgiServer implements AgiServer
     {
         this.port = DEFAULT_BIND_PORT;
         this.poolSize = DEFAULT_POOL_SIZE;
+        this.maximumPoolSize = DEFAULT_MAXIMUM_POOL_SIZE;
         this.maximumPoolSize = this.poolSize;
         this.mappingStrategy = new CompositeMappingStrategy(
                 new ResourceBundleMappingStrategy(),
@@ -125,7 +131,7 @@ public class DefaultAgiServer implements AgiServer
      * Sets the maximum number of worker threads in the thread pool.<p>
      * This equals the maximum number of concurrent requests this AgiServer can
      * serve.<p>
-     * The default maximum pool size is 10.
+     * The default maximum pool size is 100.
      * 
      * @param maximumPoolSize the maximum size of the worker thread pool.
      */
@@ -208,6 +214,18 @@ public class DefaultAgiServer implements AgiServer
 
             poolSizeString = resourceBundle.getString("poolSize");
             poolSize = Integer.parseInt(poolSizeString);
+        }
+        catch(Exception e)
+        {
+            //swallow
+        }
+
+        try
+        {
+            String maximumPoolSizeString;
+
+            maximumPoolSizeString = resourceBundle.getString("maximumPoolSize");
+            maximumPoolSize = Integer.parseInt(maximumPoolSizeString);
         }
         catch(Exception e)
         {
