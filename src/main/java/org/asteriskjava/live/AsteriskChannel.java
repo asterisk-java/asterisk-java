@@ -280,7 +280,7 @@ public interface AsteriskChannel extends LiveObject
     /**
      * Plays the given DTMF digit on this channel.
      * <p>
-     * Available since Asterisk 1.4.
+     * Available since Asterisk 1.2.8
      * 
      * @param digit the DTMF digit to play.
      * @throws ManagerCommunicationException if the play DTMF action cannot be
