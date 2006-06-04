@@ -26,6 +26,7 @@ public class AsteriskServerTestCase extends TestCase
     protected AsteriskServerImpl server;
     protected DefaultManagerConnection managerConnection;
 
+    @Override
     public void setUp() throws Exception
     {
         managerConnection = new DefaultManagerConnection();
@@ -38,6 +39,7 @@ public class AsteriskServerTestCase extends TestCase
         server.initialize();
     }
 
+    @Override
     public void tearDown() throws Exception
     {
         managerConnection.logoff();
