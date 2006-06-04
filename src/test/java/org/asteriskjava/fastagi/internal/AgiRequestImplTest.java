@@ -30,6 +30,7 @@ public class AgiRequestImplTest extends TestCase
     {
     }
 
+    @SuppressWarnings("deprecation")
     public void testBuildRequest()
     {
         Collection<String> lines;
@@ -89,6 +90,7 @@ public class AgiRequestImplTest extends TestCase
         assertEquals("incorrect accountCode", "12345", request.getAccountCode());
     }
 
+    @SuppressWarnings("deprecation")
     public void testBuildRequestWithoutCallerIdName()
     {
         Collection<String> lines;
@@ -101,9 +103,11 @@ public class AgiRequestImplTest extends TestCase
         request = new AgiRequestImpl(lines);
 
         assertEquals("incorrect callerId", "1234", request.getCallerId());
-        assertNull("callerIdName must not be set", request.getCallerIdName());
+        assertEquals("incorrect callerIdNumber", "1234", request.getCallerIdNumber());
+        //assertNull("callerIdName must not be set", request.getCallerIdName());
     }
 
+    @SuppressWarnings("deprecation")
     public void testBuildRequestWithoutCallerIdNameButBracket()
     {
         Collection<String> lines;
@@ -116,9 +120,11 @@ public class AgiRequestImplTest extends TestCase
         request = new AgiRequestImpl(lines);
 
         assertEquals("incorrect callerId", "1234", request.getCallerId());
+        assertEquals("incorrect callerIdNumber", "1234", request.getCallerIdNumber());
         assertNull("callerIdName must not be set", request.getCallerIdName());
     }
 
+    @SuppressWarnings("deprecation")
     public void testBuildRequestWithoutCallerIdNameButBracketAndQuotesAndSpace()
     {
         Collection<String> lines;
@@ -131,9 +137,11 @@ public class AgiRequestImplTest extends TestCase
         request = new AgiRequestImpl(lines);
 
         assertEquals("incorrect callerId", "1234", request.getCallerId());
+        assertEquals("incorrect callerIdNumber", "1234", request.getCallerIdNumber());
         assertNull("callerIdName must not be set", request.getCallerIdName());
     }
 
+    @SuppressWarnings("deprecation")
     public void testBuildRequestWithQuotedCallerIdName()
     {
         Collection<String> lines;
@@ -146,9 +154,11 @@ public class AgiRequestImplTest extends TestCase
         request = new AgiRequestImpl(lines);
 
         assertEquals("incorrect callerId", "1234", request.getCallerId());
+        assertEquals("incorrect callerIdNumber", "1234", request.getCallerIdNumber());
         assertEquals("incorrect callerIdName", "John Doe", request.getCallerIdName());
     }
 
+    @SuppressWarnings("deprecation")
     public void testBuildRequestWithQuotedCallerIdNameAndSpace()
     {
         Collection<String> lines;
@@ -161,9 +171,11 @@ public class AgiRequestImplTest extends TestCase
         request = new AgiRequestImpl(lines);
 
         assertEquals("incorrect callerId", "1234", request.getCallerId());
+        assertEquals("incorrect callerIdNumber", "1234", request.getCallerIdNumber());
         assertEquals("incorrect callerIdName", "John Doe", request.getCallerIdName());
     }
 
+    @SuppressWarnings("deprecation")
     public void testBuildRequestWithoutCallerId()
     {
         Collection<String> lines;
@@ -176,6 +188,7 @@ public class AgiRequestImplTest extends TestCase
         request = new AgiRequestImpl(lines);
 
         assertNull("callerId must not be set", request.getCallerId());
+        assertNull("callerIdNumber must not be set", request.getCallerIdNumber());
         assertNull("callerIdName must not be set", request.getCallerIdName());
     }
 
@@ -183,6 +196,7 @@ public class AgiRequestImplTest extends TestCase
      * Asterisk 1.2 now uses agi_callerid and agi_calleridname so we don't need to process
      * it ourselves.
      */
+    @SuppressWarnings("deprecation")
     public void testBuildRequestCallerIdAsterisk12()
     {
         Collection<String> lines;
@@ -196,9 +210,11 @@ public class AgiRequestImplTest extends TestCase
         request = new AgiRequestImpl(lines);
 
         assertEquals("incorrect callerId", "1234", request.getCallerId());
+        assertEquals("incorrect callerIdNumber", "1234", request.getCallerIdNumber());
         assertEquals("incorrect callerIdName", "John Doe", request.getCallerIdName());
     }
 
+    @SuppressWarnings("deprecation")
     public void testBuildRequestCallerIdAsterisk12WithUnknownCallerId()
     {
         Collection<String> lines;
@@ -212,9 +228,11 @@ public class AgiRequestImplTest extends TestCase
         request = new AgiRequestImpl(lines);
 
         assertNull("callerId must not be set if \"unknown\"", request.getCallerId());
+        assertNull("callerIdNumber must not be set if \"unknown\"", request.getCallerIdNumber());
         assertEquals("incorrect callerIdName", "John Doe", request.getCallerIdName());
     }
 
+    @SuppressWarnings("deprecation")
     public void testBuildRequestCallerIdAsterisk12WithUnknownCallerIdName()
     {
         Collection<String> lines;
@@ -228,6 +246,7 @@ public class AgiRequestImplTest extends TestCase
         request = new AgiRequestImpl(lines);
 
         assertEquals("incorrect callerId", "1234", request.getCallerId());
+        assertEquals("incorrect callerIdNumber", "1234", request.getCallerIdNumber());
         assertNull("callerIdName must not be set if \"unknown\"", request.getCallerIdName());
     }
 

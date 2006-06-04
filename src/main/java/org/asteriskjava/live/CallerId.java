@@ -2,6 +2,8 @@ package org.asteriskjava.live;
 
 import java.io.Serializable;
 
+import org.asteriskjava.util.AstUtil;
+
 /**
  * Represents a Caller*ID containing name and number.
  * <p>
@@ -52,39 +54,86 @@ public class CallerId implements Serializable
         return number;
     }
 
+    /**
+     * Parses a caller id string in the form
+     * <code>"Some Name" &lt;1234&gt;</code> to a CallerId object.
+     * 
+     * @param s the caller id string to parse.
+     * @return the corresponding CallerId object which is never <code>null</code>.
+     * @see AstUtil#parseCallerId(String)
+     */
+    public static CallerId valueOf(String s)
+    {
+        final String[] parsedCallerId;
+        
+        parsedCallerId = AstUtil.parseCallerId(s);
+        return new CallerId(parsedCallerId[0], parsedCallerId[1]);
+    }
+
+    /**
+     * Returns a string representation of this CallerId in the form
+     * <code>"Some Name" &lt;1234&gt;</code>.
+     */
     @Override
     public String toString()
     {
-        return "CallerId[name='" + name + "',number='" + number + "']";
+        final StringBuffer sb;
+        
+        sb = new StringBuffer();
+        if (name != null)
+        {
+            sb.append("\"");
+            sb.append(name);
+            sb.append("\"");
+            if (number != null)
+            {
+                sb.append(" ");
+            }
+        }
+        
+        if (number != null)
+        {
+            sb.append("<");
+            sb.append(number);
+            sb.append(">");
+        }
+        return  sb.toString();
+    }
+
+    @Override
+    public int hashCode()
+    {
+        final int PRIME = 31;
+        int result = 1;
+        result = PRIME * result + ((name == null) ? 0 : name.hashCode());
+        result = PRIME * result + ((number == null) ? 0 : number.hashCode());
+        return result;
     }
 
     @Override
     public boolean equals(Object obj)
     {
-        if (obj == null && !(obj instanceof CallerId))
+        if (this == obj)
+            return true;
+        if (obj == null)
             return false;
-
-        CallerId o = (CallerId) obj;
-
-        if (o.name == null)
+        if (getClass() != obj.getClass())
+            return false;
+        final CallerId other = (CallerId) obj;
+        if (name == null)
         {
-            if (name != null)
-            {
+            if (other.name != null)
                 return false;
-            }
-            else
-            {
-                if (o.number == null)
-                {
-                    return number == null;
-                }
-                else
-                {
-                    return o.number.equals(number);
-                }
-            }
         }
-
-        return o.name.equals(name) && o.number.equals(number);
+        else if (!name.equals(other.name))
+            return false;
+        if (number == null)
+        {
+            if (other.number != null)
+                return false;
+        }
+        else if (!number.equals(other.number))
+            return false;
+        return true;
     }
 }

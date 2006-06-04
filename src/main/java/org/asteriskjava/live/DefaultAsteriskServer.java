@@ -89,9 +89,9 @@ public class DefaultAsteriskServer implements AsteriskServer
     }
 
     public AsteriskChannel originateToExtension(String channel, String context, String exten, int priority, long timeout,
-            Map<String, String> variables) throws ManagerCommunicationException
+            CallerId callerId, Map<String, String> variables) throws ManagerCommunicationException
     {
-        return impl.originateToExtension(channel, context, exten, priority, timeout, variables);
+        return impl.originateToExtension(channel, context, exten, priority, timeout, callerId, variables);
     }
 
     public AsteriskChannel originateToApplication(String channel, String application, String data, long timeout)
@@ -101,14 +101,15 @@ public class DefaultAsteriskServer implements AsteriskServer
     }
 
     public AsteriskChannel originateToApplication(String channel, String application, String data, long timeout,
-            Map<String, String> variables) throws ManagerCommunicationException
+            CallerId callerId, Map<String, String> variables) throws ManagerCommunicationException
     {
-        return impl.originateToApplication(channel, application, data, timeout, variables);
+        return impl.originateToApplication(channel, application, data, timeout, callerId, variables);
     }
 
-    public void originateToApplicationAsync(String channel, String application, String data, long timeout, Map<String, String> variables, OriginateCallback cb) throws ManagerCommunicationException
+    public void originateToApplicationAsync(String channel, String application, String data, long timeout, 
+            CallerId callerId, Map<String, String> variables, OriginateCallback cb) throws ManagerCommunicationException
     {
-        impl.originateToApplicationAsync(channel, application, data, timeout, variables, cb);
+        impl.originateToApplicationAsync(channel, application, data, timeout, callerId, variables, cb);
     }
 
     public void originateToApplicationAsync(String channel, String application, String data, long timeout, OriginateCallback cb) throws ManagerCommunicationException
@@ -116,9 +117,10 @@ public class DefaultAsteriskServer implements AsteriskServer
         impl.originateToApplicationAsync(channel, application, data, timeout, cb);
     }
 
-    public void originateToExtensionAsync(String channel, String context, String exten, int priority, long timeout, Map<String, String> variables, OriginateCallback cb) throws ManagerCommunicationException
+    public void originateToExtensionAsync(String channel, String context, String exten, int priority, long timeout, 
+            CallerId callerId, Map<String, String> variables, OriginateCallback cb) throws ManagerCommunicationException
     {
-        impl.originateToExtensionAsync(channel, context, exten, priority, timeout, variables, cb);
+        impl.originateToExtensionAsync(channel, context, exten, priority, timeout, callerId, variables, cb);
     }
 
     public void originateToExtensionAsync(String channel, String context, String exten, int priority, long timeout, OriginateCallback cb) throws ManagerCommunicationException

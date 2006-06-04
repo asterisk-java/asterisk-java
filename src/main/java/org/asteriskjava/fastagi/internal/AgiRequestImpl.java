@@ -30,6 +30,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.asteriskjava.fastagi.AgiRequest;
+import org.asteriskjava.util.AstUtil;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
@@ -209,6 +210,11 @@ public class AgiRequestImpl implements Serializable, AgiRequest
 
     public String getCallerId()
     {
+        return getCallerIdNumber();
+    }
+
+    public String getCallerIdNumber()
+    {
         String callerIdName;
         String callerId;
 
@@ -254,14 +260,13 @@ public class AgiRequestImpl implements Serializable, AgiRequest
     }
 
     /**
-     * Returns the Caller*ID using Asterisk 1.0 logic.
+     * Returns the Caller*ID number using Asterisk 1.0 logic.
      * 
-     * @return the Caller*ID
+     * @return the Caller*ID number
      */
-    private String getCallerId10()
+    private synchronized String getCallerId10()
     {
-        int lbPosition;
-        int rbPosition;
+        final String[] parsedCallerId;
 
         if (!callerIdCreated)
         {
@@ -269,64 +274,37 @@ public class AgiRequestImpl implements Serializable, AgiRequest
             callerIdCreated = true;
         }
 
-        if (rawCallerId == null)
+        parsedCallerId = AstUtil.parseCallerId(rawCallerId);
+        if (parsedCallerId[1] == null)
         {
-            return null;
-        }
-
-        lbPosition = rawCallerId.indexOf('<');
-        rbPosition = rawCallerId.indexOf('>');
-
-        if (lbPosition < 0 || rbPosition < 0)
-        {
-            return rawCallerId;
-        }
-
-        return rawCallerId.substring(lbPosition + 1, rbPosition);
-    }
-
-    /**
-     * Returns the Caller*ID using Asterisk 1.0 logic.
-     * 
-     * @return the Caller*ID Name
-     */
-    private String getCallerIdName10()
-    {
-        int lbPosition;
-        String callerIdName;
-
-        if (!callerIdCreated)
-        {
-            rawCallerId = (String) request.get("callerid");
-            callerIdCreated = true;
-        }
-
-        if (rawCallerId == null)
-        {
-            return null;
-        }
-
-        lbPosition = rawCallerId.indexOf('<');
-
-        if (lbPosition < 0)
-        {
-            return null;
-        }
-
-        callerIdName = rawCallerId.substring(0, lbPosition).trim();
-        if (callerIdName.startsWith("\"") && callerIdName.endsWith("\""))
-        {
-            callerIdName = callerIdName.substring(1, callerIdName.length() - 1);
-        }
-
-        if (callerIdName.length() == 0)
-        {
-            return null;
+            return parsedCallerId[0];
         }
         else
         {
-            return callerIdName;
+            return parsedCallerId[1];
         }
+    }
+
+    /**
+     * Returns the Caller*ID name using Asterisk 1.0 logic.
+     * 
+     * @return the Caller*ID name
+     */
+    private synchronized String getCallerIdName10()
+    {
+        if (!callerIdCreated)
+        {
+            rawCallerId = (String) request.get("callerid");
+            callerIdCreated = true;
+        }
+
+        if (!callerIdCreated)
+        {
+            rawCallerId = (String) request.get("callerid");
+            callerIdCreated = true;
+        }
+
+        return AstUtil.parseCallerId(rawCallerId)[0];
     }
 
     public String getDnid()

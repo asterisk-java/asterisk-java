@@ -30,6 +30,7 @@ import org.asteriskjava.live.AsteriskChannel;
 import org.asteriskjava.live.AsteriskQueue;
 import org.asteriskjava.live.AsteriskServer;
 import org.asteriskjava.live.AsteriskServerListener;
+import org.asteriskjava.live.CallerId;
 import org.asteriskjava.live.ChannelState;
 import org.asteriskjava.live.HangupCause;
 import org.asteriskjava.live.ManagerCommunicationException;
@@ -223,10 +224,10 @@ public class AsteriskServerImpl
 
     public AsteriskChannel originateToExtension(String channel, String context, String exten, int priority, long timeout) throws ManagerCommunicationException
     {
-        return originateToExtension(channel, context, exten, priority, timeout, null);
+        return originateToExtension(channel, context, exten, priority, timeout, null, null);
     }
 
-    public AsteriskChannel originateToExtension(String channel, String context, String exten, int priority, long timeout, Map<String, String> variables) throws ManagerCommunicationException
+    public AsteriskChannel originateToExtension(String channel, String context, String exten, int priority, long timeout, CallerId callerId, Map<String, String> variables) throws ManagerCommunicationException
     {
         final OriginateAction originateAction;
 
@@ -236,6 +237,10 @@ public class AsteriskServerImpl
         originateAction.setExten(exten);
         originateAction.setPriority(priority);
         originateAction.setTimeout(timeout);
+        if (callerId != null)
+        {
+            originateAction.setCallerId(callerId.toString());
+        }
         originateAction.setVariables(variables);
 
         return originate(originateAction);
@@ -243,10 +248,10 @@ public class AsteriskServerImpl
 
     public AsteriskChannel originateToApplication(String channel, String application, String data, long timeout) throws ManagerCommunicationException
     {
-        return originateToApplication(channel, application, data, timeout, null);
+        return originateToApplication(channel, application, data, timeout, null, null);
     }
 
-    public AsteriskChannel originateToApplication(String channel, String application, String data, long timeout, Map<String, String> variables) throws ManagerCommunicationException
+    public AsteriskChannel originateToApplication(String channel, String application, String data, long timeout, CallerId callerId, Map<String, String> variables) throws ManagerCommunicationException
     {
         final OriginateAction originateAction;
 
@@ -255,6 +260,10 @@ public class AsteriskServerImpl
         originateAction.setApplication(application);
         originateAction.setData(data);
         originateAction.setTimeout(timeout);
+        if (callerId != null)
+        {
+            originateAction.setCallerId(callerId.toString());
+        }
         originateAction.setVariables(variables);
 
         return originate(originateAction);
@@ -300,10 +309,10 @@ public class AsteriskServerImpl
 
     public void originateToExtensionAsync(String channel, String context, String exten, int priority, long timeout, OriginateCallback cb) throws ManagerCommunicationException
     {
-        originateToExtensionAsync(channel, context, exten, priority, timeout, null, cb);
+        originateToExtensionAsync(channel, context, exten, priority, timeout, null, null, cb);
     }
 
-    public void originateToExtensionAsync(String channel, String context, String exten, int priority, long timeout, Map<String, String> variables, OriginateCallback cb) throws ManagerCommunicationException
+    public void originateToExtensionAsync(String channel, String context, String exten, int priority, long timeout, CallerId callerId, Map<String, String> variables, OriginateCallback cb) throws ManagerCommunicationException
     {
         final OriginateAction originateAction;
 
@@ -313,6 +322,10 @@ public class AsteriskServerImpl
         originateAction.setExten(exten);
         originateAction.setPriority(priority);
         originateAction.setTimeout(timeout);
+        if (callerId != null)
+        {
+            originateAction.setCallerId(callerId.toString());
+        }
         originateAction.setVariables(variables);
 
         originateAsync(originateAction, cb);
@@ -320,10 +333,10 @@ public class AsteriskServerImpl
 
     public void originateToApplicationAsync(String channel, String application, String data, long timeout, OriginateCallback cb) throws ManagerCommunicationException
     {
-        originateToApplicationAsync(channel, application, data, timeout, null, cb);
+        originateToApplicationAsync(channel, application, data, timeout, null, null, cb);
     }
 
-    public void originateToApplicationAsync(String channel, String application, String data, long timeout, Map<String, String> variables, OriginateCallback cb) throws ManagerCommunicationException
+    public void originateToApplicationAsync(String channel, String application, String data, long timeout, CallerId callerId, Map<String, String> variables, OriginateCallback cb) throws ManagerCommunicationException
     {
         final OriginateAction originateAction;
 
@@ -332,6 +345,10 @@ public class AsteriskServerImpl
         originateAction.setApplication(application);
         originateAction.setData(data);
         originateAction.setTimeout(timeout);
+        if (callerId != null)
+        {
+            originateAction.setCallerId(callerId.toString());
+        }
         originateAction.setVariables(variables);
 
         originateAsync(originateAction, cb);

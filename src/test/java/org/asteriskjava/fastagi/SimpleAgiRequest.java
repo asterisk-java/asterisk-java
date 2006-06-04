@@ -66,6 +66,11 @@ public class SimpleAgiRequest implements AgiRequest
         throw new UnsupportedOperationException();
     }
 
+    public String getCallerIdNumber()
+    {
+        throw new UnsupportedOperationException();
+    }
+
     public String getCallerIdName()
     {
         throw new UnsupportedOperationException();

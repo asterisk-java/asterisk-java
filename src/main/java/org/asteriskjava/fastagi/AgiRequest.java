@@ -83,14 +83,25 @@ public interface AgiRequest
     String getLanguage();
 
     /**
-     * Returns the Caller*ID, for example "1234".<p>
+     * Returns the Caller*ID number, for example "1234".<p>
      * Note: even with Asterisk 1.0 is contains only the numerical part
      * of the Caller ID.
      * 
-     * @return the Caller*ID, for example "1234", if no Caller*ID is set or it
+     * @return the Caller*ID number, for example "1234", if no Caller*ID is set or it
      *         is "unknown" <code>null</code> is returned.
+     * @deprecated will be removed in 0.4, use {@link #getCallerIdNumber()} instead.
      */
     String getCallerId();
+
+    /**
+     * Returns the Caller*ID number, for example "1234".<p>
+     * Note: even with Asterisk 1.0 is contains only the numerical part
+     * of the Caller ID.
+     * 
+     * @return the Caller*ID number, for example "1234", if no Caller*ID is set or it
+     *         is "unknown" <code>null</code> is returned.
+     */
+    String getCallerIdNumber();
 
     /**
      * Returns the the Caller*ID Name, for example "John Doe".
