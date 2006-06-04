@@ -16,21 +16,83 @@
  */
 package org.asteriskjava.live;
 
-import java.util.Date;
+import java.io.Serializable;
 
-public interface Extension
+public class Extension implements Serializable
 {
+    /**
+     * Serial version identifier.
+     */
+    private static final long serialVersionUID = 768239042942945744L;
+    private final String context;
+    private final String extension;
+    private final Integer priority;
+    private final String application;
+    private final String appData;
 
-    Date getDate();
+    /**
+     * @param context
+     * @param extension
+     * @param priority
+     */
+    public Extension(String context, String extension, Integer priority)
+    {
+        this(context, extension, priority, null, null);
+    }
 
-    String getContext();
+    /**
+     * @param context
+     * @param extension
+     * @param priority
+     * @param application
+     * @param appData
+     */
+    public Extension(String context, String extension,
+            Integer priority, String application, String appData)
+    {
+        this.context = context;
+        this.extension = extension;
+        this.priority = priority;
+        this.application = application;
+        this.appData = appData;
+    }
 
-    String getExtension();
+    public String getContext()
+    {
+        return context;
+    }
 
-    Integer getPriority();
+    public String getExtension()
+    {
+        return extension;
+    }
 
-    String getApplication();
+    public Integer getPriority()
+    {
+        return priority;
+    }
 
-    String getAppData();
+    public String getApplication()
+    {
+        return application;
+    }
 
+    public String getAppData()
+    {
+        return appData;
+    }
+
+    public String toString()
+    {
+        StringBuffer sb;
+
+        sb = new StringBuffer("Extension[");
+        sb.append("context='" + getContext() + "',");
+        sb.append("extension='" + getExtension() + "',");
+        sb.append("priority='" + getPriority() + "',");
+        sb.append("application='" + getApplication() + "',");
+        sb.append("appData=" + getAppData() + "]");
+
+        return sb.toString();
+    }
 }

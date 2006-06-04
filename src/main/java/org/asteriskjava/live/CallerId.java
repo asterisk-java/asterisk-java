@@ -55,7 +55,7 @@ public class CallerId implements Serializable
     @Override
     public String toString()
     {
-        return "CallerId[name='" + name + "',number=" + number + "']";
+        return "CallerId[name='" + name + "',number='" + number + "']";
     }
 
     @Override

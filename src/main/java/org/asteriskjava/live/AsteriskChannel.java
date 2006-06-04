@@ -82,6 +82,22 @@ public interface AsteriskChannel extends LiveObject
     ChannelState getState();
 
     /**
+     * Checks if this channel was at least once in the given state.
+     * <p>
+     * For example you can use this method the check if this channel had been
+     * answered:
+     * <pre>
+     * boolean answered = channel.wasInState(ChannelState.UP);
+     * </pre> 
+     * 
+     * @param state the state to look for.
+     * @return <code>true</code> if this channel was at least once in the given state;
+     *         <code>false</code> otherwise.
+     * @since 0.3
+     */
+    boolean wasInState(ChannelState state);
+
+    /**
      * Returns the account code used to bill this channel.
      * 
      * @return the account code used to bill this channel.
@@ -108,9 +124,9 @@ public interface AsteriskChannel extends LiveObject
      * Returns a list of all visited dialplan entries.
      * 
      * @return a list of all visited dialplan entries.
-     * @since 0.2
+     * @since 0.3
      */
-    List<Extension> getExtensions();
+    List<ExtensionHistoryEntry> getExtensionHistory();
 
     /**
      * Returns the date this channel has been created.
@@ -161,20 +177,24 @@ public interface AsteriskChannel extends LiveObject
     CallDetailRecord getCallDetailRecord();
 
     /**
-     * Returns the channel that has been dialed by this channel.
+     * Returns the channel that has been dialed by this channel most recently.
      * 
      * @return the channel that has been dialed by this channel or 
      *         <code>null</code> if none has been dialed.
      */
     AsteriskChannel getDialedChannel();
 
+    List<DialedChannelHistoryEntry> getDialedChannelHistory();
+
     /**
-     * Returns the channel this channel is bridged with, if any.
+     * Returns the channel this channel is currently bridged with, if any.
      * 
      * @return the channel this channel is bridged with, or <code>null</code>
      *         if this channel is currently not bridged to another channel.
      */
     AsteriskChannel getLinkedChannel();
+    
+    List<LinkedChannelHistoryEntry> getLinkedChannelHistory();
 
     /**
      * Indicates if this channel was linked to another channel at least once.

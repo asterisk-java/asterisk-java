@@ -47,7 +47,6 @@ import org.asteriskjava.util.DateUtil;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
-
 /**
  * Manages channel events on behalf of an AsteriskServer.
  * 
@@ -165,7 +164,7 @@ class ChannelManager
 
         channel = new AsteriskChannelImpl(server, name, uniqueId, dateOfCreation);
         channel.setCallerId(new CallerId(callerIdName, callerIdNumber));
-        channel.setState(state);
+        channel.stateChanged(dateOfCreation, state);
         logger.info("Adding channel " + channel.getName());
         addChannel(channel);
 
@@ -180,14 +179,14 @@ class ChannelManager
         {
             return null;
         }
-        
+
         return ChannelState.valueOf(state.toUpperCase());
     }
 
     void handleStatusEvent(StatusEvent event)
     {
         AsteriskChannelImpl channel;
-        Extension extension;
+        final Extension extension;
         boolean isNew = false;
 
         channel = getChannelImplById(event.getUniqueId());
@@ -215,9 +214,7 @@ class ChannelManager
         }
         else
         {
-            extension = new ExtensionImpl(
-                    event.getDateReceived(), event.getContext(), 
-                    event.getExtension(), event.getPriority());
+            extension = new Extension(event.getContext(), event.getExtension(), event.getPriority());
         }
 
         synchronized (channel)
@@ -226,19 +223,20 @@ class ChannelManager
             channel.setAccount(event.getAccount());
             if (event.getState() != null)
             {
-                channel.setState(ChannelState.valueOf(event.getState().toUpperCase()));
+                channel.stateChanged(event.getDateReceived(), ChannelState.valueOf(event.getState().toUpperCase()));
             }
-            channel.addExtension(extension);
+            channel.extensionVisited(event.getDateReceived(), extension);
 
             if (event.getLink() != null)
             {
                 AsteriskChannelImpl linkedChannel = getChannelImplByName(event.getLink());
                 if (linkedChannel != null)
                 {
-                    channel.setLinkedChannel(linkedChannel);
+                    // the date used here is not correct!
+                    channel.channelLinked(event.getDateReceived(), linkedChannel);
                     synchronized (linkedChannel)
                     {
-                        linkedChannel.setLinkedChannel(channel);
+                        linkedChannel.channelLinked(event.getDateReceived(), channel);
                     }
                 }
             }
@@ -255,6 +253,11 @@ class ChannelManager
     AsteriskChannelImpl getChannelImplByName(String name)
     {
         AsteriskChannelImpl channel = null;
+
+        if (name == null)
+        {
+            return null;
+        }
 
         synchronized (channels)
         {
@@ -273,13 +276,61 @@ class ChannelManager
     {
         AsteriskChannelImpl channel = null;
 
+        if (id == null)
+        {
+            return null;
+        }
+
         synchronized (channels)
         {
             channel = channels.get(id);
         }
         return channel;
     }
-    
+
+    /**
+     * Returns the other side of a local channel.
+     * <p>
+     * Local channels consist of two sides, like
+     * "Local/1234@from-local-60b5,1" and "Local/1234@from-local-60b5,2"
+     * this method returns the other side.
+     * 
+     * @param localChannel one side
+     * @return the other side, or <code>null</code> if not available or if the given channel
+     *         is not a local channel.
+     */
+    AsteriskChannelImpl getOtherSideOfLocalChannel(AsteriskChannel localChannel)
+    {
+        final String name;
+        final char num;
+
+        if (localChannel == null)
+        {
+            return null;
+        }
+
+        name = localChannel.getName();
+        if (name == null || !name.startsWith("Local/") || name.charAt(name.length() - 2) != ',')
+        {
+            return null;
+        }
+
+        num = name.charAt(name.length() - 1);
+
+        if (num == '1')
+        {
+            return getChannelImplByName(name.substring(0, name.length() - 1) + "2");
+        }
+        else if (num == '2')
+        {
+            return getChannelImplByName(name.substring(0, name.length() - 1) + "1");
+        }
+        else
+        {
+            return null;
+        }
+    }
+
     void handleNewChannelEvent(NewChannelEvent event)
     {
         AsteriskChannelImpl channel;
@@ -297,9 +348,9 @@ class ChannelManager
             // channel had already been created probably by a NewCallerIdEvent
             synchronized (channel)
             {
-                channel.setName(event.getChannel());
+                channel.nameChanged(event.getDateReceived(), event.getChannel());
                 channel.setCallerId(new CallerId(event.getCallerIdName(), event.getCallerId()));
-                channel.setState(string2ChannelState(event.getState()));
+                channel.stateChanged(event.getDateReceived(), string2ChannelState(event.getState()));
             }
         }
     }
@@ -317,14 +368,13 @@ class ChannelManager
             return;
         }
 
-        extension = new ExtensionImpl(
-                event.getDateReceived(), event.getContext(),
-                event.getExtension(), event.getPriority(), 
-                event.getApplication(), event.getAppData());
+        extension = new Extension(
+                        event.getContext(), event.getExtension(), event.getPriority(), 
+                        event.getApplication(), event.getAppData());
 
         synchronized (channel)
         {
-            channel.addExtension(extension);
+            channel.extensionVisited(event.getDateReceived(), extension);
         }
     }
 
@@ -343,7 +393,7 @@ class ChannelManager
         {
             synchronized (channel)
             {
-                channel.setState(ChannelState.valueOf(event.getState().toUpperCase()));
+                channel.stateChanged(event.getDateReceived(), ChannelState.valueOf(event.getState().toUpperCase()));
             }
         }
     }
@@ -417,7 +467,7 @@ class ChannelManager
         getTraceId(destinationChannel);
         synchronized (sourceChannel)
         {
-            sourceChannel.setDialedChannel(destinationChannel);
+            sourceChannel.channelDialed(event.getDateReceived(), destinationChannel);
         }
     }
 
@@ -443,12 +493,12 @@ class ChannelManager
                 + channel2.getName());
         synchronized (channel1)
         {
-            channel1.setLinkedChannel(channel2);
+            channel1.channelLinked(event.getDateReceived(), channel2);
         }
 
         synchronized (channel2)
         {
-            channel2.setLinkedChannel(channel1);
+            channel2.channelLinked(event.getDateReceived(), channel1);
         }
     }
 
@@ -474,12 +524,12 @@ class ChannelManager
                 + channel2.getName());
         synchronized (channel1)
         {
-            channel1.setLinkedChannel(null);
+            channel1.channelUnlinked(event.getDateReceived());
         }
 
         synchronized (channel2)
         {
-            channel2.setLinkedChannel(null);
+            channel2.channelUnlinked(event.getDateReceived());
         }
     }
 
@@ -498,7 +548,7 @@ class ChannelManager
                 + event.getNewname() + "'");
         synchronized (channel)
         {
-            channel.setName(event.getNewname());
+            channel.nameChanged(event.getDateReceived(), event.getNewname());
         }
     }
 
@@ -519,7 +569,7 @@ class ChannelManager
 
         synchronized (channel)
         {
-            channel.setCallDetailRecord(cdr);
+            channel.callDetailRecordReceived(event.getDateReceived(), cdr);
         }
     }
 

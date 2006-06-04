@@ -7,9 +7,6 @@ package org.asteriskjava.live;
 
 import java.util.Collection;
 
-import org.asteriskjava.live.AsteriskChannel;
-import org.asteriskjava.live.Extension;
-
 /**
  * @author srt
  * @version $Id$
@@ -36,9 +33,9 @@ public class TestExtensionHistory extends AsteriskServerTestCase
             System.out.println("  first extension: " + channel.getFirstExtension());
             System.out.println("  current extension: " + channel.getCurrentExtension());
 
-            for (Extension extension : channel.getExtensions())
+            for (ExtensionHistoryEntry extensionHistoryEntry : channel.getExtensionHistory())
             {
-                System.out.println("  " + extension);
+                System.out.println("  " + extensionHistoryEntry);
             }
         }
     }

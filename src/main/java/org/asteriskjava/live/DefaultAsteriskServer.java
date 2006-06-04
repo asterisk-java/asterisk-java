@@ -106,6 +106,26 @@ public class DefaultAsteriskServer implements AsteriskServer
         return impl.originateToApplication(channel, application, data, timeout, variables);
     }
 
+    public void originateToApplicationAsync(String channel, String application, String data, long timeout, Map<String, String> variables, OriginateCallback cb) throws ManagerCommunicationException
+    {
+        impl.originateToApplicationAsync(channel, application, data, timeout, variables, cb);
+    }
+
+    public void originateToApplicationAsync(String channel, String application, String data, long timeout, OriginateCallback cb) throws ManagerCommunicationException
+    {
+        impl.originateToApplicationAsync(channel, application, data, timeout, cb);
+    }
+
+    public void originateToExtensionAsync(String channel, String context, String exten, int priority, long timeout, Map<String, String> variables, OriginateCallback cb) throws ManagerCommunicationException
+    {
+        impl.originateToExtensionAsync(channel, context, exten, priority, timeout, variables, cb);
+    }
+
+    public void originateToExtensionAsync(String channel, String context, String exten, int priority, long timeout, OriginateCallback cb) throws ManagerCommunicationException
+    {
+        impl.originateToExtensionAsync(channel, context, exten, priority, timeout, cb);
+    }
+
     public Collection<AsteriskChannel> getChannels()
     {
         return impl.getChannels();

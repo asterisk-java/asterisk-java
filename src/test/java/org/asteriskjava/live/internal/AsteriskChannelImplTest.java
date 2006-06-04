@@ -17,7 +17,7 @@ public class AsteriskChannelImplTest extends TestCase
     {
         AsteriskServerImpl server = new AsteriskServerImpl();
         channel = new AsteriskChannelImpl(server, "SIP/1234", "0123456789.123", DateUtil.getDate());
-        channel.setState(ChannelState.DOWN);
+        channel.stateChanged(DateUtil.getDate(), ChannelState.DOWN);
         numberOfChanges = 0;
     }
 
@@ -35,7 +35,7 @@ public class AsteriskChannelImplTest extends TestCase
             }
         });
 
-        channel.setState(ChannelState.DIALING);
+        channel.stateChanged(DateUtil.getDate(), ChannelState.DIALING);
         assertEquals("wrong number of propagated changes", 1, numberOfChanges);
     }
 }

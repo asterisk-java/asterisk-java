@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -29,9 +30,12 @@ import org.asteriskjava.live.AsteriskChannel;
 import org.asteriskjava.live.AsteriskQueue;
 import org.asteriskjava.live.AsteriskServer;
 import org.asteriskjava.live.AsteriskServerListener;
+import org.asteriskjava.live.ChannelState;
+import org.asteriskjava.live.HangupCause;
 import org.asteriskjava.live.ManagerCommunicationException;
 import org.asteriskjava.live.MeetMeRoom;
 import org.asteriskjava.live.MeetMeUser;
+import org.asteriskjava.live.OriginateCallback;
 import org.asteriskjava.manager.AuthenticationFailedException;
 import org.asteriskjava.manager.ManagerConnection;
 import org.asteriskjava.manager.ManagerConnectionState;
@@ -79,8 +83,9 @@ public class AsteriskServerImpl
             AsteriskServer,
             ManagerEventListener
 {
-    private static final Pattern SHOW_VERSION_FILES_PATTERN = Pattern
-            .compile("^([\\S]+)\\s+Revision: ([0-9\\.]+)");
+    private static final String ACTION_ID_PREFIX_ORIGINATE = "AJ_ORIGINATE_";
+    private static final Pattern SHOW_VERSION_FILES_PATTERN = 
+        Pattern.compile("^([\\S]+)\\s+Revision: ([0-9\\.]+)");
 
     private final Log logger = LogFactory.getLog(this.getClass());
 
@@ -93,7 +98,7 @@ public class AsteriskServerImpl
      * A pool of manager connections to use for sending actions to Asterisk.
      */
     private final ManagerConnectionPool connectionPool;
-    
+
     private final List<AsteriskServerListener> listeners;
 
     private final ChannelManager channelManager;
@@ -114,6 +119,12 @@ public class AsteriskServerImpl
      */
     private Map<String, String> versions;
 
+    private final Map<String, OriginateCallback> originateCallbacks;
+
+    private final AtomicLong idCounter;
+
+    /* config options */
+
     /**
      * Flag to skip initializing queues as that results in a timeout on Asterisk
      * 1.0.x.
@@ -133,7 +144,9 @@ public class AsteriskServerImpl
     public AsteriskServerImpl()
     {
         connectionPool = new ManagerConnectionPool(1);
+        idCounter = new AtomicLong();
         listeners = new ArrayList<AsteriskServerListener>();
+        originateCallbacks = new HashMap<String, OriginateCallback>();
         channelManager = new ChannelManager(this);
         meetMeManager = new MeetMeManager(this, channelManager);
         queueManager = new QueueManager(this, channelManager);
@@ -215,7 +228,7 @@ public class AsteriskServerImpl
 
     public AsteriskChannel originateToExtension(String channel, String context, String exten, int priority, long timeout, Map<String, String> variables) throws ManagerCommunicationException
     {
-        OriginateAction originateAction;
+        final OriginateAction originateAction;
 
         originateAction = new OriginateAction();
         originateAction.setChannel(channel);
@@ -235,7 +248,7 @@ public class AsteriskServerImpl
 
     public AsteriskChannel originateToApplication(String channel, String application, String data, long timeout, Map<String, String> variables) throws ManagerCommunicationException
     {
-        OriginateAction originateAction;
+        final OriginateAction originateAction;
 
         originateAction = new OriginateAction();
         originateAction.setChannel(channel);
@@ -249,9 +262,9 @@ public class AsteriskServerImpl
 
     private AsteriskChannel originate(OriginateAction originateAction) throws ManagerCommunicationException
     {
-        ResponseEvents responseEvents;
-        Iterator<ResponseEvent> responseEventIterator;
-        Map<String, String> variables;
+        final ResponseEvents responseEvents;
+        final Iterator<ResponseEvent> responseEventIterator;
+        final Map<String, String> variables;
 
         if (originateAction.getVariables() == null)
         {
@@ -285,6 +298,66 @@ public class AsteriskServerImpl
         return null;
     }
 
+    public void originateToExtensionAsync(String channel, String context, String exten, int priority, long timeout, OriginateCallback cb) throws ManagerCommunicationException
+    {
+        originateToExtensionAsync(channel, context, exten, priority, timeout, null, cb);
+    }
+
+    public void originateToExtensionAsync(String channel, String context, String exten, int priority, long timeout, Map<String, String> variables, OriginateCallback cb) throws ManagerCommunicationException
+    {
+        final OriginateAction originateAction;
+
+        originateAction = new OriginateAction();
+        originateAction.setChannel(channel);
+        originateAction.setContext(context);
+        originateAction.setExten(exten);
+        originateAction.setPriority(priority);
+        originateAction.setTimeout(timeout);
+        originateAction.setVariables(variables);
+
+        originateAsync(originateAction, cb);
+    }
+
+    public void originateToApplicationAsync(String channel, String application, String data, long timeout, OriginateCallback cb) throws ManagerCommunicationException
+    {
+        originateToApplicationAsync(channel, application, data, timeout, null, cb);
+    }
+
+    public void originateToApplicationAsync(String channel, String application, String data, long timeout, Map<String, String> variables, OriginateCallback cb) throws ManagerCommunicationException
+    {
+        final OriginateAction originateAction;
+
+        originateAction = new OriginateAction();
+        originateAction.setChannel(channel);
+        originateAction.setApplication(application);
+        originateAction.setData(data);
+        originateAction.setTimeout(timeout);
+        originateAction.setVariables(variables);
+
+        originateAsync(originateAction, cb);
+    }
+
+    private void originateAsync(OriginateAction originateAction, OriginateCallback cb) throws ManagerCommunicationException
+    {
+        final String actionId;
+
+        actionId = ACTION_ID_PREFIX_ORIGINATE + idCounter.getAndIncrement();
+        // must set async to true to receive OriginateEvents.
+        originateAction.setAsync(Boolean.TRUE);
+        originateAction.setActionId(actionId);
+
+        if (cb != null)
+        {
+            // register callback
+            synchronized (originateCallbacks)
+            {
+                originateCallbacks.put(actionId, cb);
+            }
+        }
+
+        sendActionOnEventConnection(originateAction);
+    }
+
     public Collection<AsteriskChannel> getChannels()
     {
         return channelManager.getChannels();
@@ -315,15 +388,16 @@ public class AsteriskServerImpl
         return queueManager.getQueues();
     }
 
-    public String getVersion() throws ManagerCommunicationException
+    public synchronized String getVersion() throws ManagerCommunicationException
     {
+        final ManagerResponse response;
+
         if (version == null)
         {
-            ManagerResponse response;
             response = sendAction(new CommandAction("show version"));
             if (response instanceof CommandResponse)
             {
-                List result;
+                final List result;
 
                 result = ((CommandResponse) response).getResult();
                 if (result.size() > 0)
@@ -334,35 +408,6 @@ public class AsteriskServerImpl
         }
 
         return version;
-    }
-
-    public String getGlobalVariable(String variable) throws ManagerCommunicationException
-    {
-        ManagerResponse response;
-        String value;
-
-        response = sendAction(new GetVarAction(variable));
-        if (response instanceof ManagerError)
-        {
-            return null;
-        }
-        value = response.getAttribute("Value");
-        if (value == null)
-        {
-            value = response.getAttribute(variable); // for Asterisk 1.0.x
-        }
-        return value;
-    }
-
-    public void setGlobalVariable(String variable, String value) throws ManagerCommunicationException
-    {
-        ManagerResponse response;
-
-        response = sendAction(new SetVarAction(variable, value));
-        if (response instanceof ManagerError)
-        {
-            logger.error("Unable to set global variable '" + variable + "' to '" + value + "':" + response.getMessage());
-        }
     }
 
     public int[] getVersion(String file)
@@ -441,6 +486,35 @@ public class AsteriskServerImpl
         return intParts;
     }
 
+    public String getGlobalVariable(String variable) throws ManagerCommunicationException
+    {
+        ManagerResponse response;
+        String value;
+
+        response = sendAction(new GetVarAction(variable));
+        if (response instanceof ManagerError)
+        {
+            return null;
+        }
+        value = response.getAttribute("Value");
+        if (value == null)
+        {
+            value = response.getAttribute(variable); // for Asterisk 1.0.x
+        }
+        return value;
+    }
+
+    public void setGlobalVariable(String variable, String value) throws ManagerCommunicationException
+    {
+        ManagerResponse response;
+
+        response = sendAction(new SetVarAction(variable, value));
+        if (response instanceof ManagerError)
+        {
+            logger.error("Unable to set global variable '" + variable + "' to '" + value + "':" + response.getMessage());
+        }
+    }
+
     public void addAsteriskServerListener(AsteriskServerListener listener)
     {
         synchronized (listeners)
@@ -490,6 +564,18 @@ public class AsteriskServerImpl
                     logger.warn("Exception in onNewMeetMeUser()", e);
                 }
             }
+        }
+    }
+
+    ManagerResponse sendActionOnEventConnection(ManagerAction action) throws ManagerCommunicationException
+    {
+        try
+        {
+            return eventConnection.sendAction(action);
+        }
+        catch (Exception e)
+        {
+            throw ManagerCommunicationExceptionMapper.mapSendActionException(action.getAction(), e);
         }
     }
 
@@ -577,6 +663,10 @@ public class AsteriskServerImpl
         {
             meetMeManager.handleMeetMeEvent((AbstractMeetMeEvent) event);
         }
+        else if (event instanceof AbstractOriginateEvent)
+        {
+            handleOriginateEvent((AbstractOriginateEvent) event);
+        }
     }
 
     /*
@@ -610,5 +700,85 @@ public class AsteriskServerImpl
         {
             logger.error("Unable to reinitialize state after reconnection", e);
         }
+    }
+    
+    private void handleOriginateEvent(AbstractOriginateEvent originateEvent)
+    {
+        final OriginateCallback cb;
+        final AsteriskChannelImpl channel;
+        final AsteriskChannelImpl otherChannel; // the other side if local channel
+
+        if (originateEvent.getActionId() == null)
+        {
+            return;
+        }
+
+        synchronized (originateCallbacks)
+        {
+            cb = originateCallbacks.get(originateEvent.getActionId());
+            if (cb == null)
+            {
+                return;
+            }
+            originateCallbacks.remove(originateEvent.getActionId());
+        }
+
+        channel = channelManager.getChannelImplById(originateEvent.getUniqueId());
+        if (channel == null)
+        {
+            cb.onFailure();
+            return;
+        }
+
+        if (channel.wasInState(ChannelState.UP))
+        {
+            cb.onSuccess(channel);
+            return;
+        }
+        
+        if (channel.wasInState(ChannelState.BUSY)
+                || channel.getHangupCause() == HangupCause.AST_CAUSE_BUSY
+                || channel.getHangupCause() == HangupCause.AST_CAUSE_USER_BUSY)
+        {
+            cb.onBusy(channel);
+            return;
+        }
+
+        otherChannel = channelManager.getOtherSideOfLocalChannel(channel);
+        // special treatment of local channels:
+        // the interesting things happen to the other side so we have a look at that
+        if (otherChannel != null)
+        {
+            final AsteriskChannel dialedChannel;
+
+            dialedChannel = otherChannel.getDialedChannel();
+
+            // on busy the other channel is in state busy when we receive the originate event
+            if (otherChannel.wasInState(ChannelState.BUSY)
+                    || otherChannel.getHangupCause() == HangupCause.AST_CAUSE_BUSY
+                    || otherChannel.getHangupCause() == HangupCause.AST_CAUSE_USER_BUSY)
+            {
+                cb.onBusy(channel);
+                return;
+            }
+
+            // alternative:
+            // on busy the dialed channel is hung up when we receive the originate event
+            // having a look at the hangup cause reveals the information we are interested in
+            // this alternative has the drawback that there might by multiple channels that have
+            // been dialed by the local channel but we only look at the last one.
+            if (dialedChannel != null &&
+                    (dialedChannel.wasInState(ChannelState.BUSY)
+                    || dialedChannel.getHangupCause() == HangupCause.AST_CAUSE_BUSY
+                    || dialedChannel.getHangupCause() == HangupCause.AST_CAUSE_USER_BUSY))
+            {
+                cb.onBusy(channel);
+                return;
+            }
+
+        }
+
+        // if nothing else matched we asume no answer
+        cb.onNoAnswer(channel);
     }
 }

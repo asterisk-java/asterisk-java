@@ -16,15 +16,12 @@
  */
 package org.asteriskjava.live.internal;
 
-import java.io.IOException;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
 import org.asteriskjava.live.ManagerCommunicationException;
-import org.asteriskjava.manager.EventTimeoutException;
 import org.asteriskjava.manager.ManagerConnection;
 import org.asteriskjava.manager.ResponseEvents;
-import org.asteriskjava.manager.TimeoutException;
 import org.asteriskjava.manager.action.EventGeneratingAction;
 import org.asteriskjava.manager.action.ManagerAction;
 import org.asteriskjava.manager.response.ManagerResponse;
@@ -58,17 +55,9 @@ class ManagerConnectionPool
         {
             response = connection.sendAction(action);
         }
-        catch (IllegalStateException e)
+        catch (Exception e)
         {
-            throw new ManagerCommunicationException("Not connected to Asterisk Server", e);
-        }
-        catch (IOException e)
-        {
-            throw new ManagerCommunicationException("Unable to send " + action.getAction() + "Action", e);
-        }
-        catch (TimeoutException e)
-        {
-            throw new ManagerCommunicationException("Timeout while sending " + action.getAction() + "Action", e);
+            throw ManagerCommunicationExceptionMapper.mapSendActionException(action.getAction(), e);
         }
         finally
         {
@@ -100,17 +89,9 @@ class ManagerConnectionPool
                 responseEvents = connection.sendEventGeneratingAction(action);
             }
         }
-        catch (IllegalStateException e)
+        catch (Exception e)
         {
-            throw new ManagerCommunicationException("Not connected to Asterisk Server", e);
-        }
-        catch (IOException e)
-        {
-            throw new ManagerCommunicationException("Unable to send " + action.getAction() + "Action", e);
-        }
-        catch (EventTimeoutException e)
-        {
-            throw new ManagerCommunicationException("Timeout waiting for events from " + action.getAction() + "Action", e);
+            throw ManagerCommunicationExceptionMapper.mapSendActionException(action.getAction(), e);
         }
         finally
         {
