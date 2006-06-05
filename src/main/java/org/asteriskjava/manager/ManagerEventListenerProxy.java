@@ -4,6 +4,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import org.asteriskjava.manager.event.ManagerEvent;
+import org.asteriskjava.util.DaemonThreadFactory;
 
 /**
  * Proxies a ManagerEventListener and dispatches events asynchronously by using
@@ -39,7 +40,7 @@ public class ManagerEventListenerProxy implements ManagerEventListener
      */
     public ManagerEventListenerProxy()
     {
-        this.executor = Executors.newSingleThreadExecutor();
+        this.executor = Executors.newSingleThreadExecutor(new DaemonThreadFactory());
     }
 
     /**

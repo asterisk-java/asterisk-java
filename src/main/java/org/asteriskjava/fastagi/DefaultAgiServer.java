@@ -24,6 +24,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import org.asteriskjava.fastagi.internal.AgiConnectionHandler;
+import org.asteriskjava.util.DaemonThreadFactory;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 import org.asteriskjava.util.ServerSocketFacade;
@@ -246,7 +247,8 @@ public class DefaultAgiServer implements AgiServer
         die = false;
         pool = new ThreadPoolExecutor(
                 poolSize, (maximumPoolSize < poolSize) ? poolSize : maximumPoolSize, 
-                50000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>());
+                50000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>(),
+                new DaemonThreadFactory());
 
         logger.info("Thread pool started.");
 
@@ -338,6 +340,28 @@ public class DefaultAgiServer implements AgiServer
     public void shutdown() throws IllegalStateException
     {
         die();
+    }
+
+    @Override
+    protected void finalize() throws Throwable
+    {
+        super.finalize();
+        if (pool != null)
+        {
+            pool.shutdown();
+        }
+        
+        if (serverSocket != null)
+        {
+            try
+            {
+                serverSocket.close();
+            }
+            catch (IOException e)
+            {
+                // ignore
+            }
+        }
     }
 
     public static void main(String[] args) throws Exception
