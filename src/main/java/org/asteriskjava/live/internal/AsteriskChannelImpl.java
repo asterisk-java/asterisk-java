@@ -212,11 +212,10 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
 
         if (oldState == state)
         {
-            System.err.println("New state equals old state");
             return;
         }
 
-        System.err.println(id + " state change: " + oldState + " => " + state + " (" + name + ")");
+        //System.err.println(id + " state change: " + oldState + " => " + state + " (" + name + ")");
         historyEntry = new ChannelStateHistoryEntry(date, state);
         synchronized (stateHistory)
         {
