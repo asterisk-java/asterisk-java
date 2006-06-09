@@ -16,14 +16,24 @@
  */
 package org.asteriskjava.live;
 
-
-public class NoSuchChannelException extends ManagerException
+/**
+ * Indicates that the channel is not available on the Asterisk server.
+ * 
+ * @author srt
+ * @version $Id$
+ */
+public class NoSuchChannelException extends LiveException
 {
     /**
      * Serial version identifier 
      */
     private static final long serialVersionUID = -6751088178882822091L;
 
+    /**
+     * Creates a new instance with the given message.
+     * 
+     * @param message the message
+     */
     public NoSuchChannelException(String message)
     {
         super(message);

@@ -83,25 +83,25 @@ public class DefaultAsteriskServer implements AsteriskServer
     /* Implementation of the AsteriskServer interface */
 
     public AsteriskChannel originateToExtension(String channel, String context, String exten, int priority, long timeout)
-            throws ManagerCommunicationException
+            throws ManagerCommunicationException, NoSuchChannelException
     {
         return impl.originateToExtension(channel, context, exten, priority, timeout);
     }
 
     public AsteriskChannel originateToExtension(String channel, String context, String exten, int priority, long timeout,
-            CallerId callerId, Map<String, String> variables) throws ManagerCommunicationException
+            CallerId callerId, Map<String, String> variables) throws ManagerCommunicationException, NoSuchChannelException
     {
         return impl.originateToExtension(channel, context, exten, priority, timeout, callerId, variables);
     }
 
     public AsteriskChannel originateToApplication(String channel, String application, String data, long timeout)
-            throws ManagerCommunicationException
+            throws ManagerCommunicationException, NoSuchChannelException
     {
         return impl.originateToApplication(channel, application, data, timeout);
     }
 
     public AsteriskChannel originateToApplication(String channel, String application, String data, long timeout,
-            CallerId callerId, Map<String, String> variables) throws ManagerCommunicationException
+            CallerId callerId, Map<String, String> variables) throws ManagerCommunicationException, NoSuchChannelException
     {
         return impl.originateToApplication(channel, application, data, timeout, callerId, variables);
     }

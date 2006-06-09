@@ -36,6 +36,7 @@ import org.asteriskjava.live.HangupCause;
 import org.asteriskjava.live.ManagerCommunicationException;
 import org.asteriskjava.live.MeetMeRoom;
 import org.asteriskjava.live.MeetMeUser;
+import org.asteriskjava.live.NoSuchChannelException;
 import org.asteriskjava.live.OriginateCallback;
 import org.asteriskjava.manager.AuthenticationFailedException;
 import org.asteriskjava.manager.ManagerConnection;
@@ -222,12 +223,12 @@ public class AsteriskServerImpl
 
     /* Implementation of the AsteriskServer interface */
 
-    public AsteriskChannel originateToExtension(String channel, String context, String exten, int priority, long timeout) throws ManagerCommunicationException
+    public AsteriskChannel originateToExtension(String channel, String context, String exten, int priority, long timeout) throws ManagerCommunicationException, NoSuchChannelException
     {
         return originateToExtension(channel, context, exten, priority, timeout, null, null);
     }
 
-    public AsteriskChannel originateToExtension(String channel, String context, String exten, int priority, long timeout, CallerId callerId, Map<String, String> variables) throws ManagerCommunicationException
+    public AsteriskChannel originateToExtension(String channel, String context, String exten, int priority, long timeout, CallerId callerId, Map<String, String> variables) throws ManagerCommunicationException, NoSuchChannelException
     {
         final OriginateAction originateAction;
 
@@ -246,12 +247,12 @@ public class AsteriskServerImpl
         return originate(originateAction);
     }
 
-    public AsteriskChannel originateToApplication(String channel, String application, String data, long timeout) throws ManagerCommunicationException
+    public AsteriskChannel originateToApplication(String channel, String application, String data, long timeout) throws ManagerCommunicationException, NoSuchChannelException
     {
         return originateToApplication(channel, application, data, timeout, null, null);
     }
 
-    public AsteriskChannel originateToApplication(String channel, String application, String data, long timeout, CallerId callerId, Map<String, String> variables) throws ManagerCommunicationException
+    public AsteriskChannel originateToApplication(String channel, String application, String data, long timeout, CallerId callerId, Map<String, String> variables) throws ManagerCommunicationException, NoSuchChannelException
     {
         final OriginateAction originateAction;
 
@@ -269,11 +270,12 @@ public class AsteriskServerImpl
         return originate(originateAction);
     }
 
-    private AsteriskChannel originate(OriginateAction originateAction) throws ManagerCommunicationException
+    private AsteriskChannel originate(OriginateAction originateAction) throws ManagerCommunicationException, NoSuchChannelException
     {
         final ResponseEvents responseEvents;
         final Iterator<ResponseEvent> responseEventIterator;
         final Map<String, String> variables;
+        AsteriskChannel channel = null;
 
         if (originateAction.getVariables() == null)
         {
@@ -300,11 +302,16 @@ public class AsteriskServerImpl
             responseEvent = responseEventIterator.next();
             if (responseEvent instanceof AbstractOriginateEvent)
             {
-                return getChannelById(((AbstractOriginateEvent) responseEvent).getUniqueId()); 
+                channel = getChannelById(((AbstractOriginateEvent) responseEvent).getUniqueId()); 
             }
         }
 
-        return null;
+        if (channel == null)
+        {
+            throw new NoSuchChannelException("Channel '" + originateAction.getChannel() + " is not available");
+        }
+
+        return channel;
     }
 
     public void originateToExtensionAsync(String channel, String context, String exten, int priority, long timeout, OriginateCallback cb) throws ManagerCommunicationException

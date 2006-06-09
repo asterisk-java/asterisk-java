@@ -16,21 +16,31 @@
  */
 package org.asteriskjava.live;
 
-public abstract class ManagerException extends Exception
+/**
+ * Abstract base class for exceptions thrown by the live package.
+ * 
+ * @author srt
+ * @version $Id$
+ */
+public abstract class LiveException extends Exception
 {
     /**
-     * @param message
+     * Creates a new instance with the given message.
+     * 
+     * @param message the message
      */
-    public ManagerException(String message)
+    public LiveException(String message)
     {
         super(message);
     }
 
     /**
-     * @param message
-     * @param cause
+     * Creates a new instance with the given message and cause.
+     * 
+     * @param message the message
+     * @param cause the cause
      */
-    public ManagerException(String message, Throwable cause)
+    public LiveException(String message, Throwable cause)
     {
         super(message, cause);
     }

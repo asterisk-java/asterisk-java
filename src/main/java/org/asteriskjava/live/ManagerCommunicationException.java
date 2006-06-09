@@ -17,7 +17,7 @@
 package org.asteriskjava.live;
 
 
-public class ManagerCommunicationException extends ManagerException
+public class ManagerCommunicationException extends LiveException
 {
     /**
      * Serial version identifier
