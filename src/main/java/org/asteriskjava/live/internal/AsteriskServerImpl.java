@@ -18,6 +18,7 @@ package org.asteriskjava.live.internal;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -33,6 +34,7 @@ import org.asteriskjava.live.AsteriskServerListener;
 import org.asteriskjava.live.CallerId;
 import org.asteriskjava.live.ChannelState;
 import org.asteriskjava.live.HangupCause;
+import org.asteriskjava.live.LiveException;
 import org.asteriskjava.live.ManagerCommunicationException;
 import org.asteriskjava.live.MeetMeRoom;
 import org.asteriskjava.live.MeetMeUser;
@@ -71,6 +73,7 @@ import org.asteriskjava.manager.event.UnlinkEvent;
 import org.asteriskjava.manager.response.CommandResponse;
 import org.asteriskjava.manager.response.ManagerError;
 import org.asteriskjava.manager.response.ManagerResponse;
+import org.asteriskjava.util.DateUtil;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
@@ -121,7 +124,7 @@ public class AsteriskServerImpl
      */
     private Map<String, String> versions;
 
-    private final Map<String, OriginateCallback> originateCallbacks;
+    private final Map<String, OriginateCallbackData> originateCallbacks;
 
     private final AtomicLong idCounter;
 
@@ -148,7 +151,7 @@ public class AsteriskServerImpl
         connectionPool = new ManagerConnectionPool(1);
         idCounter = new AtomicLong();
         listeners = new ArrayList<AsteriskServerListener>();
-        originateCallbacks = new HashMap<String, OriginateCallback>();
+        originateCallbacks = new HashMap<String, OriginateCallbackData>();
         channelManager = new ChannelManager(this);
         meetMeManager = new MeetMeManager(this, channelManager);
         queueManager = new QueueManager(this, channelManager);
@@ -372,10 +375,13 @@ public class AsteriskServerImpl
 
         if (cb != null)
         {
+            OriginateCallbackData callbackData;
+            
+            callbackData = new OriginateCallbackData(originateAction, DateUtil.getDate(), cb);
             // register callback
             synchronized (originateCallbacks)
             {
-                originateCallbacks.put(actionId, cb);
+                originateCallbacks.put(actionId, callbackData);
             }
         }
 
@@ -728,6 +734,7 @@ public class AsteriskServerImpl
     
     private void handleOriginateEvent(AbstractOriginateEvent originateEvent)
     {
+        final OriginateCallbackData callbackData;
         final OriginateCallback cb;
         final AsteriskChannelImpl channel;
         final AsteriskChannelImpl otherChannel; // the other side if local channel
@@ -739,18 +746,22 @@ public class AsteriskServerImpl
 
         synchronized (originateCallbacks)
         {
-            cb = originateCallbacks.get(originateEvent.getActionId());
-            if (cb == null)
+            callbackData = originateCallbacks.get(originateEvent.getActionId());
+            if (callbackData == null)
             {
                 return;
             }
             originateCallbacks.remove(originateEvent.getActionId());
         }
 
+        cb = callbackData.getCallback();
         channel = channelManager.getChannelImplById(originateEvent.getUniqueId());
         if (channel == null)
         {
-            cb.onFailure();
+            LiveException cause;
+            
+            cause = new NoSuchChannelException("Channel '" + callbackData.getOriginateAction().getChannel() + " is not available");
+            cb.onFailure(cause);
             return;
         }
 
@@ -804,5 +815,42 @@ public class AsteriskServerImpl
 
         // if nothing else matched we asume no answer
         cb.onNoAnswer(channel);
+    }
+    
+    private class OriginateCallbackData
+    {
+        private OriginateAction originateAction;
+        private Date dateSent;
+        private OriginateCallback callback;
+        
+        /**
+         * Creates a new instance.
+         * 
+         * @param originateAction the action that has been sent to the Asterisk server
+         * @param dateSent date when the the action has been sent
+         * @param callback callback to notify about result
+         */
+        OriginateCallbackData(OriginateAction originateAction, Date dateSent, OriginateCallback callback)
+        {
+            super();
+            this.originateAction = originateAction;
+            this.dateSent = dateSent;
+            this.callback = callback;
+        }
+
+        OriginateAction getOriginateAction()
+        {
+            return originateAction;
+        }
+
+        Date getDateSent()
+        {
+            return dateSent;
+        }
+        
+        OriginateCallback getCallback()
+        {
+            return callback;
+        }
     }
 }

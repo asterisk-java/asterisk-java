@@ -33,6 +33,8 @@ public interface OriginateCallback
 
     /**
      * Called if the originate failed for example due to an invalid channel name.
+     * 
+     * @param cause the exception that caused the failure.
      */
-    void onFailure();
+    void onFailure(LiveException cause);
 }
