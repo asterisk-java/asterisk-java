@@ -311,7 +311,7 @@ public class AsteriskServerImpl
 
         if (channel == null)
         {
-            throw new NoSuchChannelException("Channel '" + originateAction.getChannel() + " is not available");
+            throw new NoSuchChannelException("Channel '" + originateAction.getChannel() + "' is not available");
         }
 
         return channel;
@@ -760,7 +760,7 @@ public class AsteriskServerImpl
         {
             LiveException cause;
             
-            cause = new NoSuchChannelException("Channel '" + callbackData.getOriginateAction().getChannel() + " is not available");
+            cause = new NoSuchChannelException("Channel '" + callbackData.getOriginateAction().getChannel() + "' is not available");
             cb.onFailure(cause);
             return;
         }
