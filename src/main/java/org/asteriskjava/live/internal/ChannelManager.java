@@ -560,7 +560,7 @@ class ChannelManager
 
         if (channel == null)
         {
-            logger.error("Ignored CdrEvent for unknown channel with uniqueId "
+            logger.info("Ignored CdrEvent for unknown channel with uniqueId "
                             + event.getUniqueId());
             return;
         }
