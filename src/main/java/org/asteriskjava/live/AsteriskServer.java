@@ -38,7 +38,7 @@ public interface AsteriskServer
     /**
      * Generates an outgoing channel to a dialplan entry (extension, context, priority).
      * 
-     * @param channel channel name to call, for example "SIP/1310.
+     * @param channel channel name to call, for example "SIP/1310".
      * @param context context to connect to
      * @param exten extension to connect to
      * @param priority priority to connect to
@@ -53,7 +53,7 @@ public interface AsteriskServer
      * Generates an outgoing channel to a dialplan entry (extension, context, priority)
      * and sets an optional map of channel variables.
      * 
-     * @param channel channel name to call, for example "SIP/1310.
+     * @param channel channel name to call, for example "SIP/1310".
      * @param context context to connect to
      * @param exten extension to connect to
      * @param priority priority to connect to
@@ -69,7 +69,7 @@ public interface AsteriskServer
     /**
      * Generates an outgoing channel to an application.
      * 
-     * @param channel channel name to call, for example "SIP/1310.
+     * @param channel channel name to call, for example "SIP/1310".
      * @param application application to connect to, for example "MeetMe"
      * @param data data to pass to the application, for example "1000|d", may be <code>null</code>.
      * @param timeout how long to wait for the channel to be answered before its considered to have failed (in ms)
@@ -83,7 +83,7 @@ public interface AsteriskServer
      * Generates an outgoing channel to an application and sets an optional
      * map of channel variables.
      * 
-     * @param channel channel name to call, for example "SIP/1310.
+     * @param channel channel name to call, for example "SIP/1310".
      * @param application application to connect to, for example "MeetMe"
      * @param data data to pass to the application, for example "1000|d", may be <code>null</code>.
      * @param timeout how long to wait for the channel to be answered before its considered to have failed (in ms)
@@ -98,7 +98,7 @@ public interface AsteriskServer
     /**
      * Asynchronously generates an outgoing channel to a dialplan entry (extension, context, priority).
      * 
-     * @param channel channel name to call, for example "SIP/1310.
+     * @param channel channel name to call, for example "SIP/1310".
      * @param context context to connect to
      * @param exten extension to connect to
      * @param priority priority to connect to
@@ -113,7 +113,7 @@ public interface AsteriskServer
      * Asynchronously generates an outgoing channel to a dialplan entry (extension, context, priority)
      * and sets an optional map of channel variables.
      * 
-     * @param channel channel name to call, for example "SIP/1310.
+     * @param channel channel name to call, for example "SIP/1310".
      * @param context context to connect to
      * @param exten extension to connect to
      * @param priority priority to connect to
@@ -129,7 +129,7 @@ public interface AsteriskServer
     /**
      * Asynchronously generates an outgoing channel to an application.
      * 
-     * @param channel channel name to call, for example "SIP/1310.
+     * @param channel channel name to call, for example "SIP/1310".
      * @param application application to connect to, for example "MeetMe"
      * @param data data to pass to the application, for example "1000|d", may be <code>null</code>.
      * @param timeout how long to wait for the channel to be answered before its considered to have failed (in ms)
@@ -143,7 +143,7 @@ public interface AsteriskServer
      * Asynchronously generates an outgoing channel to an application and sets an optional
      * map of channel variables.
      * 
-     * @param channel channel name to call, for example "SIP/1310.
+     * @param channel channel name to call, for example "SIP/1310".
      * @param application application to connect to, for example "MeetMe"
      * @param data data to pass to the application, for example "1000|d", may be <code>null</code>.
      * @param timeout how long to wait for the channel to be answered before its considered to have failed (in ms)
@@ -233,8 +233,8 @@ public interface AsteriskServer
      * @since 0.2
      */
     int[] getVersion(String file) throws ManagerCommunicationException;
-    
+
     void addAsteriskServerListener(AsteriskServerListener listener);
-    
+
     void removeAsteriskServerListener(AsteriskServerListener listener);
 }
