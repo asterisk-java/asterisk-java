@@ -45,8 +45,9 @@ public interface AsteriskServer
      * @param timeout how long to wait for the channel to be answered before its considered to have failed (in ms)
      * @return the generated channel
      * @throws NoSuchChannelException if the channel is not available on the Asterisk server, 
-     *         for example because you used "SIP/1310" and 1310 is not a valid SIP user or
-     *         the SIP channel module hasn't been loaded.
+     *         for example because you used "SIP/1310" and 1310 is not a valid SIP user,
+     *         the SIP channel module hasn't been loaded or the SIP or IAX peer is not
+     *         registered currently.
      * @throws ManagerCommunicationException if the originate action cannot be sent to Asterisk
      */
     AsteriskChannel originateToExtension(String channel, String context, String exten, int priority, long timeout) 
@@ -65,8 +66,9 @@ public interface AsteriskServer
      * @param variables channel variables to set, may be <code>null</code>.
      * @return the generated channel
      * @throws NoSuchChannelException if the channel is not available on the Asterisk server, 
-     *         for example because you used "SIP/1310" and 1310 is not a valid SIP user or
-     *         the SIP channel module hasn't been loaded.
+     *         for example because you used "SIP/1310" and 1310 is not a valid SIP user,
+     *         the SIP channel module hasn't been loaded or the SIP or IAX peer is not
+     *         registered currently.
      * @throws ManagerCommunicationException if the originate action cannot be sent to Asterisk
      */
     AsteriskChannel originateToExtension(String channel, String context, String exten, int priority, long timeout, CallerId callerId, Map<String, String> variables) 
@@ -81,8 +83,9 @@ public interface AsteriskServer
      * @param timeout how long to wait for the channel to be answered before its considered to have failed (in ms)
      * @return the generated channel
      * @throws NoSuchChannelException if the channel is not available on the Asterisk server, 
-     *         for example because you used "SIP/1310" and 1310 is not a valid SIP user or
-     *         the SIP channel module hasn't been loaded.
+     *         for example because you used "SIP/1310" and 1310 is not a valid SIP user,
+     *         the SIP channel module hasn't been loaded or the SIP or IAX peer is not
+     *         registered currently.
      * @throws ManagerCommunicationException if the originate action cannot be sent to Asterisk
      */
     AsteriskChannel originateToApplication(String channel, String application, String data, long timeout) 
@@ -100,8 +103,9 @@ public interface AsteriskServer
      * @param variables channel variables to set, may be <code>null</code>.
      * @return the generated channel
      * @throws NoSuchChannelException if the channel is not available on the Asterisk server, 
-     *         for example because you used "SIP/1310" and 1310 is not a valid SIP user or
-     *         the SIP channel module hasn't been loaded.
+     *         for example because you used "SIP/1310" and 1310 is not a valid SIP user,
+     *         the SIP channel module hasn't been loaded or the SIP or IAX peer is not
+     *         registered currently.
      * @throws ManagerCommunicationException if the originate action cannot be sent to Asterisk
      */
     AsteriskChannel originateToApplication(String channel, String application, String data, long timeout, CallerId callerId, Map<String, String> variables) 

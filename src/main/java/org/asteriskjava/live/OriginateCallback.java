@@ -32,7 +32,8 @@ public interface OriginateCallback
     void onBusy(AsteriskChannel channel);
 
     /**
-     * Called if the originate failed for example due to an invalid channel name.
+     * Called if the originate failed for example due to an invalid channel name or an
+     * originate to an unregistered SIP or IAX peer.
      * 
      * @param cause the exception that caused the failure.
      */
