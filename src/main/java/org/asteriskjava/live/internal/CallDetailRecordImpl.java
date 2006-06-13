@@ -22,7 +22,7 @@ public class CallDetailRecordImpl implements CallDetailRecord
     private final String destinationContext;
     private final String destinationExtension;
     private final String lastApplication;
-    private final String lastData;
+    private final String lastAppData;
     private final Date startDate;
     private final Date answerDate;
     private final Date endDate;
@@ -59,7 +59,7 @@ public class CallDetailRecordImpl implements CallDetailRecord
         destinationContext = cdrEvent.getDestinationContext();
         destinationExtension = cdrEvent.getDestination();
         lastApplication = cdrEvent.getLastApplication();
-        lastData = cdrEvent.getLastData();
+        lastAppData = cdrEvent.getLastData();
         startDate = cdrEvent.getStartTimeAsDate(tz);
         answerDate = cdrEvent.getAnswerTimeAsDate(tz);
         endDate = cdrEvent.getEndTimeAsDate(tz);
@@ -144,9 +144,9 @@ public class CallDetailRecordImpl implements CallDetailRecord
         return lastApplication;
     }
 
-    public String getLastData()
+    public String getLastAppData()
     {
-        return lastData;
+        return lastAppData;
     }
 
     public Date getStartDate()
