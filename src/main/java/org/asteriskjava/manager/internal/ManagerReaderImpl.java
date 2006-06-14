@@ -183,7 +183,8 @@ public class ManagerReaderImpl implements ManagerReader
                         }
                         commandResponse.setResponse("Follows");
                         commandResponse.setDateReceived(DateUtil.getDate());
-                        commandResponse.setResult(commandResult);
+                        // clone commandResult as it is reused
+                        commandResponse.setResult(new ArrayList<String>(commandResult));
                         Map<String, String> attributes = new HashMap<String, String>();
                         attributes.put("actionid", commandResponse.getActionId());
                         attributes.put("response", commandResponse.getResponse());
