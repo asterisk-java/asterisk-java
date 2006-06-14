@@ -595,9 +595,10 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
 
     public String toString()
     {
-        StringBuffer sb;
-        AsteriskChannel linkedChannel;
-        AsteriskChannel dialedChannel;
+        final StringBuffer sb;
+        final AsteriskChannel dialedChannel;
+        final AsteriskChannel dialingChannel;
+        final AsteriskChannel linkedChannel;
 
         sb = new StringBuffer("AsteriskChannel[");
 
@@ -609,8 +610,9 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
             sb.append("state='" + getState() + "',");
             sb.append("account='" + getAccount() + "',");
             sb.append("dateOfCreation=" + getDateOfCreation() + ",");
-            linkedChannel = this.linkedChannel;
             dialedChannel = this.dialedChannel;
+            dialingChannel = this.dialingChannel;
+            linkedChannel = this.linkedChannel;
         }
         if (dialedChannel == null)
         {
@@ -623,6 +625,19 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
             {
                 sb.append("id='" + dialedChannel.getId() + "',");
                 sb.append("name='" + dialedChannel.getName() + "'],");
+            }
+        }
+        if (dialingChannel == null)
+        {
+            sb.append("dialingChannel=null,");
+        }
+        else
+        {
+            sb.append("dialingChannel=AsteriskChannel[");
+            synchronized (dialingChannel)
+            {
+                sb.append("id='" + dialingChannel.getId() + "',");
+                sb.append("name='" + dialingChannel.getName() + "'],");
             }
         }
         if (linkedChannel == null)
