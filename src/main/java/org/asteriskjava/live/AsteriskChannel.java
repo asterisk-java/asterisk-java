@@ -31,6 +31,7 @@ import java.util.List;
  * <li>currentExtension
  * <li>callDetailRecord
  * <li>dialedChannel
+ * <li>dialingChannel
  * <li>linkedChannel
  * </ul>
  * 
@@ -45,6 +46,7 @@ public interface AsteriskChannel extends LiveObject
     final String PROPERTY_CURRENT_EXTENSION = "currentExtension";
     final String PROPERTY_CALL_DETAIL_RECORD = "callDetailRecord";
     final String PROPERTY_DIALED_CHANNEL = "dialedChannel";
+    final String PROPERTY_DIALING_CHANNEL = "dialingChannel";
     final String PROPERTY_LINKED_CHANNEL = "linkedChannel";
 
     /**
@@ -177,7 +179,9 @@ public interface AsteriskChannel extends LiveObject
     CallDetailRecord getCallDetailRecord();
 
     /**
-     * Returns the channel that has been dialed by this channel most recently.
+     * Returns the channel that has been dialed by this channel most recently,
+     * this is the destination channel that was created because this channel 
+     * dialed it.
      * 
      * @return the channel that has been dialed by this channel or 
      *         <code>null</code> if none has been dialed.
@@ -185,6 +189,15 @@ public interface AsteriskChannel extends LiveObject
     AsteriskChannel getDialedChannel();
 
     List<DialedChannelHistoryEntry> getDialedChannelHistory();
+
+    /**
+     * Returns the channel that was dialing this channel, this is the source channel
+     * that created this channel by dialing it.
+     * 
+     * @return the channel that was dialing this channel or 
+     *         <code>null</code> if none was dialing.
+     */
+    AsteriskChannel getDialingChannel();
 
     /**
      * Returns the channel this channel is currently bridged with, if any.

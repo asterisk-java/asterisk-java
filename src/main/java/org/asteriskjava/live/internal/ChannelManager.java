@@ -469,6 +469,10 @@ class ChannelManager
         {
             sourceChannel.channelDialed(event.getDateReceived(), destinationChannel);
         }
+        synchronized (destinationChannel)
+        {
+            destinationChannel.channelDialing(event.getDateReceived(), sourceChannel);
+        }
     }
 
     void handleLinkEvent(LinkEvent event)
