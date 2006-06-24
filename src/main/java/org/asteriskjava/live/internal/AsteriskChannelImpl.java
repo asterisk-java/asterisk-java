@@ -32,11 +32,14 @@ import org.asteriskjava.live.HangupCause;
 import org.asteriskjava.live.LinkedChannelHistoryEntry;
 import org.asteriskjava.live.ManagerCommunicationException;
 import org.asteriskjava.live.NoSuchChannelException;
+import org.asteriskjava.manager.action.ChangeMonitorAction;
 import org.asteriskjava.manager.action.GetVarAction;
 import org.asteriskjava.manager.action.HangupAction;
+import org.asteriskjava.manager.action.MonitorAction;
 import org.asteriskjava.manager.action.PlayDtmfAction;
 import org.asteriskjava.manager.action.RedirectAction;
 import org.asteriskjava.manager.action.SetVarAction;
+import org.asteriskjava.manager.action.StopMonitorAction;
 import org.asteriskjava.manager.response.ManagerError;
 import org.asteriskjava.manager.response.ManagerResponse;
 
@@ -587,6 +590,54 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         }
 
         response = server.sendAction(new PlayDtmfAction(name, digit));
+        if (response instanceof ManagerError)
+        {
+            throw new NoSuchChannelException("Channel '" + name + "' is not available: " + response.getMessage());
+        }
+    }
+
+    public void startMonitoring(String filename) throws ManagerCommunicationException, NoSuchChannelException
+    {
+        startMonitoring(filename, null, false);
+    }
+
+    public void startMonitoring(String filename, String format) throws ManagerCommunicationException, NoSuchChannelException
+    {
+        startMonitoring(filename, format, false);
+    }
+
+    public void startMonitoring(String filename, String format, boolean mix) throws ManagerCommunicationException, NoSuchChannelException
+    {
+        ManagerResponse response;
+
+        response = server.sendAction(new MonitorAction(name, filename, format, mix));
+        if (response instanceof ManagerError)
+        {
+            throw new NoSuchChannelException("Channel '" + name + "' is not available: " + response.getMessage());
+        }
+    }
+
+    public void changeMonitoring(String filename) throws ManagerCommunicationException, NoSuchChannelException, IllegalArgumentException
+    {
+        ManagerResponse response;
+
+        if (filename == null)
+        {
+            throw new IllegalArgumentException("New filename must not be null");
+        }
+
+        response = server.sendAction(new ChangeMonitorAction(name, filename));
+        if (response instanceof ManagerError)
+        {
+            throw new NoSuchChannelException("Channel '" + name + "' is not available: " + response.getMessage());
+        }
+    }
+
+    public void stopMonitoring() throws ManagerCommunicationException, NoSuchChannelException
+    {
+        ManagerResponse response;
+
+        response = server.sendAction(new StopMonitorAction(name));
         if (response instanceof ManagerError)
         {
             throw new NoSuchChannelException("Channel '" + name + "' is not available: " + response.getMessage());

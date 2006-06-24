@@ -49,6 +49,9 @@ public interface AsteriskChannel extends LiveObject
     final String PROPERTY_DIALING_CHANNEL = "dialingChannel";
     final String PROPERTY_LINKED_CHANNEL = "linkedChannel";
 
+    final String VARIABLE_MONITOR_EXEC = "MONITOR_EXEC";
+    final String VARIABLE_MONITOR_EXEC_ARGS = "MONITOR_EXEC_ARGS";
+
     /**
      * Returns the unique id of this channel, for example "1099015093.165".
      * <p>
@@ -88,13 +91,14 @@ public interface AsteriskChannel extends LiveObject
      * <p>
      * For example you can use this method the check if this channel had been
      * answered:
+     * 
      * <pre>
      * boolean answered = channel.wasInState(ChannelState.UP);
-     * </pre> 
+     * </pre>
      * 
      * @param state the state to look for.
-     * @return <code>true</code> if this channel was at least once in the given state;
-     *         <code>false</code> otherwise.
+     * @return <code>true</code> if this channel was at least once in the
+     *         given state; <code>false</code> otherwise.
      * @since 0.3
      */
     boolean wasInState(ChannelState state);
@@ -180,10 +184,10 @@ public interface AsteriskChannel extends LiveObject
 
     /**
      * Returns the channel that has been dialed by this channel most recently,
-     * this is the destination channel that was created because this channel 
+     * this is the destination channel that was created because this channel
      * dialed it.
      * 
-     * @return the channel that has been dialed by this channel or 
+     * @return the channel that has been dialed by this channel or
      *         <code>null</code> if none has been dialed.
      */
     AsteriskChannel getDialedChannel();
@@ -191,11 +195,11 @@ public interface AsteriskChannel extends LiveObject
     List<DialedChannelHistoryEntry> getDialedChannelHistory();
 
     /**
-     * Returns the channel that was dialing this channel, this is the source channel
-     * that created this channel by dialing it.
+     * Returns the channel that was dialing this channel, this is the source
+     * channel that created this channel by dialing it.
      * 
-     * @return the channel that was dialing this channel or 
-     *         <code>null</code> if none was dialing.
+     * @return the channel that was dialing this channel or <code>null</code>
+     *         if none was dialing.
      */
     AsteriskChannel getDialingChannel();
 
@@ -206,7 +210,7 @@ public interface AsteriskChannel extends LiveObject
      *         if this channel is currently not bridged to another channel.
      */
     AsteriskChannel getLinkedChannel();
-    
+
     List<LinkedChannelHistoryEntry> getLinkedChannelHistory();
 
     /**
@@ -323,4 +327,125 @@ public interface AsteriskChannel extends LiveObject
      * @throws IllegalArgumentException if the digit is <code>null</code>.
      */
     void playDtmf(String digit) throws ManagerCommunicationException, NoSuchChannelException, IllegalArgumentException;
+
+    /**
+     * Starts monitoring (recording) this channel.
+     * <p>
+     * The format of the files is "wav", they are not mixed.
+     * <p>
+     * The files are called <i>filename</i>-in.wav and <i>filename</i>-out.wav.
+     * 
+     * @param filename the basename of the files created in the monitor spool
+     *            directory. If <code>null</code> the channel name (with
+     *            slashed replaced by dashes) is used.
+     * @throws ManagerCommunicationException if the monitor action cannot be
+     *             sent to Asterisk.
+     * @throws NoSuchChannelException if this channel had been hung up before
+     *             starting monitoring.
+     * @since 0.3
+     */
+    void startMonitoring(String filename) throws ManagerCommunicationException, NoSuchChannelException;
+
+    /**
+     * Starts monitoring (recording) this channel using the given audio format.
+     * <p>
+     * The files are not mixed.
+     * <p>
+     * The files are called <i>filename</i>-in.<i>format</i> and <i>filename</i>-out.<i>format</i>.
+     * 
+     * @param filename the basename of the files created in the monitor spool
+     *            directory. If <code>null</code> the channel name (with
+     *            slashed replaced by dashes) is used.
+     * @param format the audio recording format. If <code>null</code> wav is
+     *            used.
+     * @throws ManagerCommunicationException if the monitor action cannot be
+     *             sent to Asterisk.
+     * @throws NoSuchChannelException if this channel had been hung up before
+     *             starting monitoring.
+     * @since 0.3
+     */
+    void startMonitoring(String filename, String format) throws ManagerCommunicationException, NoSuchChannelException;
+
+    /**
+     * Starts monitoring (recording) this channel using the given audio format
+     * and optionally mixing input and output data after recording is finished.
+     * <p>
+     * Mixing is done by soxmix by default (which has to be installed on your
+     * Asterisk server). You can use your own script by setting the variable
+     * <code>MONITOR_EXEC</code> to your custom script before starting monitoring
+     * the channel. Your script is then
+     * called with 3 arguments, the two leg files and a target mixed file name
+     * which is the same as the leg file names without the in/out designator,
+     * i.e. <i>filename</i>.<i>format</i>.<br>
+     * The two leg files are only removed by Asterisk if
+     * <code>MONITOR_EXEC</code> is not set. If you use a custom script and
+     * want to remove them, just let your script do this.<br>
+     * To pass additional arguments to your script you can set the variable
+     * <code>MONITOR_EXEC_ARGS</code> to a list of arguments (separated by
+     * spaces).
+     * Example:
+     * <pre>
+     * AsteriskChannel c;
+     * 
+     * [...]
+     * c.setVariable(AsteriskChannel.VARIABLE_MONITOR_EXEC, "/usr/local/bin/2wav2mp3");
+     * c.startMonitoring("my-recording", "wav", true);
+     * </pre>
+     * Side note: 2wav2mp3 is a nice script by Dietmar Zlabinger to mix the
+     * two legs to a stero mp3 file, for details see 
+     * {@link http://www.voip-info.org/wiki/view/Monitor+stereo-example}.
+     * 
+     * @param filename the basename of the file(s) created in the monitor spool
+     *            directory. If <code>null</code> the channel name (with
+     *            slashed replaced by dashes) is used.
+     * @param format the audio recording format. If <code>null</code> wav is
+     *            used.
+     * @param mix <code>true</code> to mix input and output data together
+     *            after recording is finished, <code>false</code> to not mix
+     *            them.
+     * @throws ManagerCommunicationException if the monitor action cannot be
+     *             sent to Asterisk.
+     * @throws NoSuchChannelException if this channel had been hung up before
+     *             starting monitoring.
+     * @since 0.3
+     * @see #VARIABLE_MONITOR_EXEC
+     * @see #VARIABLE_MONITOR_EXEC_ARGS
+     */
+    void startMonitoring(String filename, String format, boolean mix) throws ManagerCommunicationException,
+            NoSuchChannelException;
+
+    /**
+     * Changes the filename of a previously started monitoring.
+     * <p>
+     * If the channel exists but is not currently monitored your request is
+     * ignored and a warning message is written to Asterisk's CLI.
+     * <p>
+     * Use with care, this doesn't always seem to work.
+     * 
+     * @param filename the basename of the file(s) created in the monitor spool
+     *            directory.
+     * @throws ManagerCommunicationException
+     * @throws ManagerCommunicationException if the change monitor action cannot
+     *             be sent to Asterisk.
+     * @throws NoSuchChannelException if this channel had been hung up before
+     *             changing monitoring.
+     * @throws IllegalArgumentException if filename is <code>null</code>.
+     * @since 0.3
+     */
+    void changeMonitoring(String filename) throws ManagerCommunicationException, NoSuchChannelException,
+            IllegalArgumentException;
+
+    /**
+     * Stops monitoring this channel.
+     * <p>
+     * If the channel exists but is not currently monitored your request is
+     * ignored.
+     * 
+     * @throws ManagerCommunicationException if the stop monitor action cannot
+     *             be sent to Asterisk.
+     * @throws NoSuchChannelException if this channel had been hung up before
+     *             stopping monitoring.
+     * @since 0.3
+     */
+    void stopMonitoring() throws ManagerCommunicationException, NoSuchChannelException;
 }
