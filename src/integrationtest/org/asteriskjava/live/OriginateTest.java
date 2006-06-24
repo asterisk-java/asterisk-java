@@ -37,8 +37,8 @@ public class OriginateTest extends AsteriskServerTestCase
     {
         final String source;
 
-        //source = "SIP/1301";
-        source = "Local/1313@from-local";
+        //source = "SIP/1313";
+        source = "Local/1313@from-local/n";
         server.originateToExtensionAsync(source, "from-local", "1399", 1, timeout, 
                 new CallerId("AJ Test Call", "08003301000"), null, 
                 new OriginateCallback()
@@ -48,6 +48,18 @@ public class OriginateTest extends AsteriskServerTestCase
                 channel = c;
                 System.err.println("Success: " + c);
                 showInfo(c);
+                try
+                {
+                    c.setVariable(AsteriskChannel.VARIABLE_MONITOR_EXEC, "/usr/local/bin/2wav2mp3");
+                    c.setVariable(AsteriskChannel.VARIABLE_MONITOR_EXEC_ARGS, "a b");
+                    c.startMonitoring("mtest", "wav", true);
+                    Thread.sleep(2000L);
+                    c.stopMonitoring();
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
             }
 
             public void onNoAnswer(AsteriskChannel c)
