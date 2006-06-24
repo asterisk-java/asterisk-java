@@ -46,6 +46,7 @@
 		<menu name="Documentation">
 			<item name="Design" href="design.html"/>
 			<item name="Tutorial" href="tutorial.html"/>
+			<item name="API Reference" href="apidocs/index.html"/>
 		</menu>
 		<menu name="Sponsors">
 			<item name="Code Coverage by Clover"
