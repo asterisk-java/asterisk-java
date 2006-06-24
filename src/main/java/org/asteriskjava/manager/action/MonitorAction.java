@@ -44,10 +44,11 @@ public class MonitorAction extends AbstractManagerAction
 
     /**
      * Creates a new MonitorAction that starts monitoring the given channel and
-     * writes voice data to the given file(s).
+     * writes voice data to the given files.<p>
+     * The format of the files is "wav", they are not mixed.
      * 
      * @param channel the name of the channel to monitor
-     * @param file the (base) name of the file(s) to which the voice data is
+     * @param file the (base) name of the files to which the voice data is
      *            written
      * @since 0.2
      */
@@ -59,10 +60,11 @@ public class MonitorAction extends AbstractManagerAction
 
     /**
      * Creates a new MonitorAction that starts monitoring the given channel and
-     * writes voice data to the given file(s).
+     * writes voice data to the given files.<p>
+     * The files are not mixed.
      * 
      * @param channel the name of the channel to monitor
-     * @param file the (base) name of the file(s) to which the voice data is
+     * @param file the (base) name of the files to which the voice data is
      *            written
      * @param format the format to use for encoding the voice files
      * @since 0.2
