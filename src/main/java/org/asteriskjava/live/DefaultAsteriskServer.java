@@ -167,7 +167,18 @@ public class DefaultAsteriskServer implements AsteriskServer
     {
         return impl.getVersion(file);
     }
+    
+    public String getGlobalVariable(String variable) throws ManagerCommunicationException
+    {
+        return impl.getGlobalVariable(variable);
+    }
 
+    public void setGlobalVariable(String variable, String value) throws ManagerCommunicationException
+    {
+        impl.setGlobalVariable(variable, value);
+    }
+
+    
     public void addAsteriskServerListener(AsteriskServerListener listener)
     {
         impl.addAsteriskServerListener(listener);

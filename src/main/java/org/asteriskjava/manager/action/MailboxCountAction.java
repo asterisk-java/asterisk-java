@@ -37,7 +37,7 @@ public class MailboxCountAction extends AbstractManagerAction
      * 
      * @param mailbox the name of the mailbox to query.<p>
      *            This can either be only the number of the mailbox or a string
-     *            of the form mailboxnumber@context.If no context is specified
+     *            of the form mailboxnumber@context. If no context is specified
      *            "default" is assumed.
      * @since 0.2
      */

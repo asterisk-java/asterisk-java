@@ -258,6 +258,22 @@ public interface AsteriskChannel extends LiveObject
     void hangup(HangupCause cause) throws ManagerCommunicationException, NoSuchChannelException;
 
     /**
+     * Sets the absolute maximum amount of time permitted for a call on a given
+     * channel, it hangs up the channel after this time.<p>
+     * Time is counted from when you call setAbsoluteTimeout, not from the
+     * beginning of the call.
+     * 
+     * @param seconds maximum duration of the call in seconds, 0 for unlimited
+     *            call length.
+     * @throws ManagerCommunicationException if the absolute timeout action
+     *             cannot be sent to Asterisk.
+     * @throws NoSuchChannelException if this channel had already been hung up
+     *             before the absolute timeout was set.
+     * @since 0.3
+     */
+    void setAbsoluteTimeout(int seconds) throws ManagerCommunicationException, NoSuchChannelException;
+
+    /**
      * Redirects this channel to a new extension.
      * <p>
      * If this channel is linked to another channel, the linked channel is hung
@@ -382,11 +398,10 @@ public interface AsteriskChannel extends LiveObject
      * <p>
      * Mixing is done by soxmix by default (which has to be installed on your
      * Asterisk server). You can use your own script by setting the variable
-     * <code>MONITOR_EXEC</code> to your custom script before starting monitoring
-     * the channel. Your script is then
-     * called with 3 arguments, the two leg files and a target mixed file name
-     * which is the same as the leg file names without the in/out designator,
-     * i.e. <i>filename</i>.<i>format</i>.<br>
+     * <code>MONITOR_EXEC</code> to your custom script before starting
+     * monitoring the channel. Your script is then called with 3 arguments, the
+     * two leg files and a target mixed file name which is the same as the leg
+     * file names without the in/out designator, i.e. <i>filename</i>.<i>format</i>.<br>
      * The two leg files are only removed by Asterisk if
      * <code>MONITOR_EXEC</code> is not set. If you use a custom script and
      * want to remove them, just let your script do this.<br>
@@ -395,15 +410,17 @@ public interface AsteriskChannel extends LiveObject
      * spaces).
      * <p>
      * Example:
-     * <pre>
-     * AsteriskChannel c;
      * 
-     * [...]
-     * c.setVariable(AsteriskChannel.VARIABLE_MONITOR_EXEC, "/usr/local/bin/2wav2mp3");
-     * c.startMonitoring("my-recording", "wav", true);
+     * <pre>
+     *  AsteriskChannel c;
+     *  
+     *  [...]
+     *  c.setVariable(AsteriskChannel.VARIABLE_MONITOR_EXEC, &quot;/usr/local/bin/2wav2mp3&quot;);
+     *  c.startMonitoring(&quot;my-recording&quot;, &quot;wav&quot;, true);
      * </pre>
-     * Side note: 2wav2mp3 is a nice script by Dietmar Zlabinger to mix the
-     * two legs to a stero mp3 file, for details see 
+     * 
+     * Side note: 2wav2mp3 is a nice script by Dietmar Zlabinger to mix the two
+     * legs to a stero mp3 file, for details see
      * {@linkplain http://www.voip-info.org/wiki/view/Monitor+stereo-example}.
      * 
      * @param filename the basename of the file(s) created in the monitor spool

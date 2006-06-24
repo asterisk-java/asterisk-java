@@ -32,6 +32,7 @@ import org.asteriskjava.live.HangupCause;
 import org.asteriskjava.live.LinkedChannelHistoryEntry;
 import org.asteriskjava.live.ManagerCommunicationException;
 import org.asteriskjava.live.NoSuchChannelException;
+import org.asteriskjava.manager.action.AbsoluteTimeoutAction;
 import org.asteriskjava.manager.action.ChangeMonitorAction;
 import org.asteriskjava.manager.action.GetVarAction;
 import org.asteriskjava.manager.action.HangupAction;
@@ -519,6 +520,17 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
             setVariable(CAUSE_VARIABLE_NAME, Integer.toString(cause.getCode()));
         }
         hangup();
+    }
+
+    public void setAbsoluteTimeout(int seconds) throws ManagerCommunicationException, NoSuchChannelException
+    {
+        ManagerResponse response;
+
+        response = server.sendAction(new AbsoluteTimeoutAction(name, seconds));
+        if (response instanceof ManagerError)
+        {
+            throw new NoSuchChannelException("Channel '" + name + "' is not available: " + response.getMessage());
+        }
     }
 
     public void redirect(String context, String exten, int priority) throws ManagerCommunicationException, NoSuchChannelException

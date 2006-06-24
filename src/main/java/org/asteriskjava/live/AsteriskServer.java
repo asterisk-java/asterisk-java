@@ -20,8 +20,9 @@ import java.util.Collection;
 import java.util.Map;
 
 /**
- * The AsteriskServer is built on top of the {@link org.asteriskjava.manager.ManagerConnection}
- * and is an attempt to simplify interaction with Asterisk by abstracting the interface.
+ * The AsteriskServer is built on top of the
+ * {@link org.asteriskjava.manager.ManagerConnection} and is an attempt to
+ * simplify interaction with Asterisk by abstracting the interface.
  * <p>
  * You will certainly have less freedom using AsteriskServer but it will make
  * life easier for easy things (like originating a call or getting a list of
@@ -36,140 +37,172 @@ import java.util.Map;
 public interface AsteriskServer
 {
     /**
-     * Generates an outgoing channel to a dialplan entry (extension, context, priority).
+     * Generates an outgoing channel to a dialplan entry (extension, context,
+     * priority).
      * 
      * @param channel channel name to call, for example "SIP/1310".
      * @param context context to connect to
      * @param exten extension to connect to
      * @param priority priority to connect to
-     * @param timeout how long to wait for the channel to be answered before its considered to have failed (in ms)
+     * @param timeout how long to wait for the channel to be answered before its
+     *            considered to have failed (in ms)
      * @return the generated channel
-     * @throws NoSuchChannelException if the channel is not available on the Asterisk server, 
-     *         for example because you used "SIP/1310" and 1310 is not a valid SIP user,
-     *         the SIP channel module hasn't been loaded or the SIP or IAX peer is not
-     *         registered currently.
-     * @throws ManagerCommunicationException if the originate action cannot be sent to Asterisk
+     * @throws NoSuchChannelException if the channel is not available on the
+     *             Asterisk server, for example because you used "SIP/1310" and
+     *             1310 is not a valid SIP user, the SIP channel module hasn't
+     *             been loaded or the SIP or IAX peer is not registered
+     *             currently.
+     * @throws ManagerCommunicationException if the originate action cannot be
+     *             sent to Asterisk
      */
-    AsteriskChannel originateToExtension(String channel, String context, String exten, int priority, long timeout) 
-        throws ManagerCommunicationException, NoSuchChannelException;
+    AsteriskChannel originateToExtension(String channel, String context, String exten, int priority, long timeout)
+            throws ManagerCommunicationException, NoSuchChannelException;
 
     /**
-     * Generates an outgoing channel to a dialplan entry (extension, context, priority)
-     * and sets an optional map of channel variables.
+     * Generates an outgoing channel to a dialplan entry (extension, context,
+     * priority) and sets an optional map of channel variables.
      * 
      * @param channel channel name to call, for example "SIP/1310".
      * @param context context to connect to
      * @param exten extension to connect to
      * @param priority priority to connect to
-     * @param timeout how long to wait for the channel to be answered before its considered to have failed (in ms)
-     * @param callerId callerId to use for the outgoing channel, may be <code>null</code>.
+     * @param timeout how long to wait for the channel to be answered before its
+     *            considered to have failed (in ms)
+     * @param callerId callerId to use for the outgoing channel, may be
+     *            <code>null</code>.
      * @param variables channel variables to set, may be <code>null</code>.
      * @return the generated channel
-     * @throws NoSuchChannelException if the channel is not available on the Asterisk server, 
-     *         for example because you used "SIP/1310" and 1310 is not a valid SIP user,
-     *         the SIP channel module hasn't been loaded or the SIP or IAX peer is not
-     *         registered currently.
-     * @throws ManagerCommunicationException if the originate action cannot be sent to Asterisk
+     * @throws NoSuchChannelException if the channel is not available on the
+     *             Asterisk server, for example because you used "SIP/1310" and
+     *             1310 is not a valid SIP user, the SIP channel module hasn't
+     *             been loaded or the SIP or IAX peer is not registered
+     *             currently.
+     * @throws ManagerCommunicationException if the originate action cannot be
+     *             sent to Asterisk
      */
-    AsteriskChannel originateToExtension(String channel, String context, String exten, int priority, long timeout, CallerId callerId, Map<String, String> variables) 
-        throws ManagerCommunicationException, NoSuchChannelException;
+    AsteriskChannel originateToExtension(String channel, String context, String exten, int priority, long timeout,
+            CallerId callerId, Map<String, String> variables) throws ManagerCommunicationException, NoSuchChannelException;
 
     /**
      * Generates an outgoing channel to an application.
      * 
      * @param channel channel name to call, for example "SIP/1310".
      * @param application application to connect to, for example "MeetMe"
-     * @param data data to pass to the application, for example "1000|d", may be <code>null</code>.
-     * @param timeout how long to wait for the channel to be answered before its considered to have failed (in ms)
+     * @param data data to pass to the application, for example "1000|d", may be
+     *            <code>null</code>.
+     * @param timeout how long to wait for the channel to be answered before its
+     *            considered to have failed (in ms)
      * @return the generated channel
-     * @throws NoSuchChannelException if the channel is not available on the Asterisk server, 
-     *         for example because you used "SIP/1310" and 1310 is not a valid SIP user,
-     *         the SIP channel module hasn't been loaded or the SIP or IAX peer is not
-     *         registered currently.
-     * @throws ManagerCommunicationException if the originate action cannot be sent to Asterisk
+     * @throws NoSuchChannelException if the channel is not available on the
+     *             Asterisk server, for example because you used "SIP/1310" and
+     *             1310 is not a valid SIP user, the SIP channel module hasn't
+     *             been loaded or the SIP or IAX peer is not registered
+     *             currently.
+     * @throws ManagerCommunicationException if the originate action cannot be
+     *             sent to Asterisk
      */
-    AsteriskChannel originateToApplication(String channel, String application, String data, long timeout) 
-        throws ManagerCommunicationException, NoSuchChannelException;
+    AsteriskChannel originateToApplication(String channel, String application, String data, long timeout)
+            throws ManagerCommunicationException, NoSuchChannelException;
 
     /**
-     * Generates an outgoing channel to an application and sets an optional
-     * map of channel variables.
+     * Generates an outgoing channel to an application and sets an optional map
+     * of channel variables.
      * 
      * @param channel channel name to call, for example "SIP/1310".
      * @param application application to connect to, for example "MeetMe"
-     * @param data data to pass to the application, for example "1000|d", may be <code>null</code>.
-     * @param timeout how long to wait for the channel to be answered before its considered to have failed (in ms)
-     * @param callerId callerId to use for the outgoing channel, may be <code>null</code>.
+     * @param data data to pass to the application, for example "1000|d", may be
+     *            <code>null</code>.
+     * @param timeout how long to wait for the channel to be answered before its
+     *            considered to have failed (in ms)
+     * @param callerId callerId to use for the outgoing channel, may be
+     *            <code>null</code>.
      * @param variables channel variables to set, may be <code>null</code>.
      * @return the generated channel
-     * @throws NoSuchChannelException if the channel is not available on the Asterisk server, 
-     *         for example because you used "SIP/1310" and 1310 is not a valid SIP user,
-     *         the SIP channel module hasn't been loaded or the SIP or IAX peer is not
-     *         registered currently.
-     * @throws ManagerCommunicationException if the originate action cannot be sent to Asterisk
+     * @throws NoSuchChannelException if the channel is not available on the
+     *             Asterisk server, for example because you used "SIP/1310" and
+     *             1310 is not a valid SIP user, the SIP channel module hasn't
+     *             been loaded or the SIP or IAX peer is not registered
+     *             currently.
+     * @throws ManagerCommunicationException if the originate action cannot be
+     *             sent to Asterisk
      */
-    AsteriskChannel originateToApplication(String channel, String application, String data, long timeout, CallerId callerId, Map<String, String> variables) 
-        throws ManagerCommunicationException, NoSuchChannelException;
+    AsteriskChannel originateToApplication(String channel, String application, String data, long timeout, CallerId callerId,
+            Map<String, String> variables) throws ManagerCommunicationException, NoSuchChannelException;
 
     /**
-     * Asynchronously generates an outgoing channel to a dialplan entry (extension, context, priority).
+     * Asynchronously generates an outgoing channel to a dialplan entry
+     * (extension, context, priority).
      * 
      * @param channel channel name to call, for example "SIP/1310".
      * @param context context to connect to
      * @param exten extension to connect to
      * @param priority priority to connect to
-     * @param timeout how long to wait for the channel to be answered before its considered to have failed (in ms)
+     * @param timeout how long to wait for the channel to be answered before its
+     *            considered to have failed (in ms)
      * @param callback callback to inform about the result
-     * @throws ManagerCommunicationException if the originate action cannot be sent to Asterisk
+     * @throws ManagerCommunicationException if the originate action cannot be
+     *             sent to Asterisk
      */
-    void originateToExtensionAsync(String channel, String context, String exten, int priority, long timeout, OriginateCallback callback) 
-        throws ManagerCommunicationException;
+    void originateToExtensionAsync(String channel, String context, String exten, int priority, long timeout,
+            OriginateCallback callback) throws ManagerCommunicationException;
 
     /**
-     * Asynchronously generates an outgoing channel to a dialplan entry (extension, context, priority)
-     * and sets an optional map of channel variables.
+     * Asynchronously generates an outgoing channel to a dialplan entry
+     * (extension, context, priority) and sets an optional map of channel
+     * variables.
      * 
      * @param channel channel name to call, for example "SIP/1310".
      * @param context context to connect to
      * @param exten extension to connect to
      * @param priority priority to connect to
-     * @param timeout how long to wait for the channel to be answered before its considered to have failed (in ms)
-     * @param callerId callerId to use for the outgoing channel, may be <code>null</code>.
+     * @param timeout how long to wait for the channel to be answered before its
+     *            considered to have failed (in ms)
+     * @param callerId callerId to use for the outgoing channel, may be
+     *            <code>null</code>.
      * @param variables channel variables to set, may be <code>null</code>.
      * @param callback callback to inform about the result
-     * @throws ManagerCommunicationException if the originate action cannot be sent to Asterisk
+     * @throws ManagerCommunicationException if the originate action cannot be
+     *             sent to Asterisk
      */
-    void originateToExtensionAsync(String channel, String context, String exten, int priority, long timeout, CallerId callerId, Map<String, String> variables, OriginateCallback callback) 
-        throws ManagerCommunicationException;
+    void originateToExtensionAsync(String channel, String context, String exten, int priority, long timeout,
+            CallerId callerId, Map<String, String> variables, OriginateCallback callback)
+            throws ManagerCommunicationException;
 
     /**
      * Asynchronously generates an outgoing channel to an application.
      * 
      * @param channel channel name to call, for example "SIP/1310".
      * @param application application to connect to, for example "MeetMe"
-     * @param data data to pass to the application, for example "1000|d", may be <code>null</code>.
-     * @param timeout how long to wait for the channel to be answered before its considered to have failed (in ms)
+     * @param data data to pass to the application, for example "1000|d", may be
+     *            <code>null</code>.
+     * @param timeout how long to wait for the channel to be answered before its
+     *            considered to have failed (in ms)
      * @param callback callback to inform about the result
-     * @throws ManagerCommunicationException if the originate action cannot be sent to Asterisk
+     * @throws ManagerCommunicationException if the originate action cannot be
+     *             sent to Asterisk
      */
-    void originateToApplicationAsync(String channel, String application, String data, long timeout, OriginateCallback callback) 
-        throws ManagerCommunicationException;
+    void originateToApplicationAsync(String channel, String application, String data, long timeout,
+            OriginateCallback callback) throws ManagerCommunicationException;
 
     /**
-     * Asynchronously generates an outgoing channel to an application and sets an optional
-     * map of channel variables.
+     * Asynchronously generates an outgoing channel to an application and sets
+     * an optional map of channel variables.
      * 
      * @param channel channel name to call, for example "SIP/1310".
      * @param application application to connect to, for example "MeetMe"
-     * @param data data to pass to the application, for example "1000|d", may be <code>null</code>.
-     * @param timeout how long to wait for the channel to be answered before its considered to have failed (in ms)
-     * @param callerId callerId to use for the outgoing channel, may be <code>null</code>.
+     * @param data data to pass to the application, for example "1000|d", may be
+     *            <code>null</code>.
+     * @param timeout how long to wait for the channel to be answered before its
+     *            considered to have failed (in ms)
+     * @param callerId callerId to use for the outgoing channel, may be
+     *            <code>null</code>.
      * @param variables channel variables to set, may be <code>null</code>.
      * @param callback callback to inform about the result
-     * @throws ManagerCommunicationException if the originate action cannot be sent to Asterisk
+     * @throws ManagerCommunicationException if the originate action cannot be
+     *             sent to Asterisk
      */
-    void originateToApplicationAsync(String channel, String application, String data, long timeout, CallerId callerId, Map<String, String> variables, OriginateCallback callback) 
-        throws ManagerCommunicationException;
+    void originateToApplicationAsync(String channel, String application, String data, long timeout, CallerId callerId,
+            Map<String, String> variables, OriginateCallback callback) throws ManagerCommunicationException;
 
     /**
      * Returns the active channels of the Asterisk server.
@@ -182,7 +215,8 @@ public interface AsteriskServer
      * Returns a channel by its name.
      * 
      * @param name name of the channel to return
-     * @return the channel with the given name or <code>null</code> if there is no such channel.
+     * @return the channel with the given name or <code>null</code> if there
+     *         is no such channel.
      */
     AsteriskChannel getChannelByName(String name);
 
@@ -190,20 +224,21 @@ public interface AsteriskServer
      * Returns a channel by its unique id.
      * 
      * @param id the unique id of the channel to return
-     * @return the channel with the given unique id or <code>null</code> if there is no such channel.
+     * @return the channel with the given unique id or <code>null</code> if
+     *         there is no such channel.
      */
     AsteriskChannel getChannelById(String id);
 
     /**
      * Returns the acitve MeetMe rooms on the Asterisk server.
-     *  
+     * 
      * @return a Collection of MeetMeRooms
      */
     Collection<MeetMeRoom> getMeetMeRooms();
 
     /**
-     * Returns the MeetMe room with the given number, if the room does not
-     * yet exist a new {@link MeetMeRoom} object is created.
+     * Returns the MeetMe room with the given number, if the room does not yet
+     * exist a new {@link MeetMeRoom} object is created.
      * 
      * @param roomNumber the number of the room to return
      * @return the MeetMe room with the given number.
@@ -218,12 +253,14 @@ public interface AsteriskServer
     Collection<AsteriskQueue> getQueues();
 
     /**
-     * Returns the version of the Asterisk server you are connected to.<p>
+     * Returns the version of the Asterisk server you are connected to.
+     * <p>
      * This typically looks like "Asterisk 1.0.9 built by root@host on a i686
      * running Linux".
      * 
      * @return the version of the Asterisk server you are connected to
-     * @throws ManagerCommunicationException if the version cannot be retrieved from Asterisk
+     * @throws ManagerCommunicationException if the version cannot be retrieved
+     *             from Asterisk
      * @since 0.2
      */
     String getVersion() throws ManagerCommunicationException;
@@ -235,7 +272,8 @@ public interface AsteriskServer
      * For example getVersion("app_meetme.c") may return {1, 102} for CVS
      * revision "1.102".
      * <p>
-     * Note that this feature is not available with Asterisk 1.0.x.<p>
+     * Note that this feature is not available with Asterisk 1.0.x.
+     * <p>
      * You can use this feature if you need to write applications that behave
      * different depending on specific modules being available in a specific
      * version or not.
@@ -245,10 +283,34 @@ public interface AsteriskServer
      *         is not part of the Asterisk instance you are connected to (maybe
      *         due to a module that provides it has not been loaded) or if you
      *         are connected to an Astersion 1.0.x
-     * @throws ManagerCommunicationException if the version cannot be retrieved from Asterisk
+     * @throws ManagerCommunicationException if the version cannot be retrieved
+     *             from Asterisk
      * @since 0.2
      */
     int[] getVersion(String file) throws ManagerCommunicationException;
+
+    /**
+     * Returns the value of the given global variable.
+     * 
+     * @param variable the name of the global variable to return.
+     * @return the value of the global variable or <code>null</code> if it is
+     *         not set.
+     * @throws ManagerCommunicationException if the get variable action cannot
+     *             be sent to Asterisk.
+     * @since 0.3
+     */
+    String getGlobalVariable(String variable) throws ManagerCommunicationException;
+
+    /**
+     * Sets the value of the given global variable.
+     * 
+     * @param variable the name of the global variable to set.
+     * @param value the value of the global variable to set.
+     * @throws ManagerCommunicationException if the set variable action cannot
+     *             be sent to Asterisk.
+     * @since 0.3
+     */
+    void setGlobalVariable(String variable, String value) throws ManagerCommunicationException;
 
     void addAsteriskServerListener(AsteriskServerListener listener);
 
