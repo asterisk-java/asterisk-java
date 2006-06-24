@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Some static utility methods to handle Asterisk specific stuff.
+ * Some static utility methods to imitate Asterisk specific logic.
  * <p>
  * See Asterisk's <code>util.c</code>.
  * <p>

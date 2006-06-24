@@ -192,6 +192,11 @@ public interface AsteriskChannel extends LiveObject
      */
     AsteriskChannel getDialedChannel();
 
+    /**
+     * Returns a list of all channels that have been dialed by this channel.
+     * 
+     * @return a list of all channels that have been dialed by this channel.
+     */
     List<DialedChannelHistoryEntry> getDialedChannelHistory();
 
     /**
@@ -211,6 +216,11 @@ public interface AsteriskChannel extends LiveObject
      */
     AsteriskChannel getLinkedChannel();
 
+    /**
+     * Returns a list of all channels this channel was briged with.
+     * 
+     * @return a list of all channels this channel was briged with.
+     */
     List<LinkedChannelHistoryEntry> getLinkedChannelHistory();
 
     /**
@@ -383,6 +393,7 @@ public interface AsteriskChannel extends LiveObject
      * To pass additional arguments to your script you can set the variable
      * <code>MONITOR_EXEC_ARGS</code> to a list of arguments (separated by
      * spaces).
+     * <p>
      * Example:
      * <pre>
      * AsteriskChannel c;
@@ -393,7 +404,7 @@ public interface AsteriskChannel extends LiveObject
      * </pre>
      * Side note: 2wav2mp3 is a nice script by Dietmar Zlabinger to mix the
      * two legs to a stero mp3 file, for details see 
-     * {@link http://www.voip-info.org/wiki/view/Monitor+stereo-example}.
+     * {@linkplain http://www.voip-info.org/wiki/view/Monitor+stereo-example}.
      * 
      * @param filename the basename of the file(s) created in the monitor spool
      *            directory. If <code>null</code> the channel name (with
