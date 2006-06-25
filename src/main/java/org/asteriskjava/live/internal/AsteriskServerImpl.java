@@ -89,6 +89,8 @@ import org.asteriskjava.util.LogFactory;
 public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
 {
     private static final String ACTION_ID_PREFIX_ORIGINATE = "AJ_ORIGINATE_";
+    private static final String SHOW_VERSION_COMMAND = "show version";
+    private static final String SHOW_VERSION_FILES_COMMAND = "show version files";
     private static final Pattern SHOW_VERSION_FILES_PATTERN = Pattern.compile("^([\\S]+)\\s+Revision: ([0-9\\.]+)");
     private static final String SHOW_VOICEMAIL_USERS_COMMAND = "show voicemail users";
     private static final Pattern SHOW_VOICEMAIL_USERS_PATTERN = Pattern.compile("^(\\S+)\\s+(\\S+)\\s+(.{25})");
@@ -112,7 +114,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
     private final QueueManager queueManager;
 
     /**
-     * The version of the Asterisk server we are connected to.
+     * The exact version string of the Asterisk server we are connected to.
      * <p>
      * Contains <code>null</code> until lazily initialized.
      */
@@ -437,7 +439,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
 
         if (version == null)
         {
-            response = sendAction(new CommandAction("show version"));
+            response = sendAction(new CommandAction(SHOW_VERSION_COMMAND));
             if (response instanceof CommandResponse)
             {
                 final List result;
@@ -447,6 +449,11 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
                 {
                     version = (String) result.get(0);
                 }
+            }
+            else
+            {
+                logger.error("Response to CommandAction(\"" + SHOW_VERSION_COMMAND
+                        + "\") was not a CommandResponse but " + response);
             }
         }
 
@@ -467,7 +474,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
             map = new HashMap<String, String>();
             try
             {
-                response = sendAction(new CommandAction("show version files"));
+                response = sendAction(new CommandAction(SHOW_VERSION_FILES_COMMAND));
                 if (response instanceof CommandResponse)
                 {
                     List<String> result;
@@ -492,10 +499,15 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
                     fileVersion = (String) map.get(file);
                     versions = map;
                 }
+                else
+                {
+                    logger.error("Response to CommandAction(\"" + SHOW_VERSION_FILES_COMMAND
+                            + "\") was not a CommandResponse but " + response);
+                }
             }
             catch (Exception e)
             {
-                logger.warn("Unable to send 'show version files' command.", e);
+                logger.warn("Unable to send '" + SHOW_VERSION_FILES_COMMAND + "' command.", e);
             }
         }
         else

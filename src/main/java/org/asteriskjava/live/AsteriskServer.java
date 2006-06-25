@@ -253,12 +253,11 @@ public interface AsteriskServer
     Collection<AsteriskQueue> getQueues();
 
     /**
-     * Returns the version of the Asterisk server you are connected to.
+     * Returns the exact version string of this Asterisk server.
      * <p>
-     * This typically looks like "Asterisk 1.0.9 built by root@host on a i686
-     * running Linux".
-     * 
-     * @return the version of the Asterisk server you are connected to
+     * This typically looks like "Asterisk 1.2.9.1-BRIstuffed-0.3.0-PRE-1q built
+     * by root @ pbx0 on a i686 running Linux on 2006-06-20 20:21:30 UTC".
+     * @return the version of this Asterisk server
      * @throws ManagerCommunicationException if the version cannot be retrieved
      *             from Asterisk
      * @since 0.2
@@ -266,8 +265,7 @@ public interface AsteriskServer
     String getVersion() throws ManagerCommunicationException;
 
     /**
-     * Returns the CVS revision of a given source file of the Asterisk server
-     * you are connected to.
+     * Returns the CVS revision of a given source file of this Asterisk server.
      * <p>
      * For example getVersion("app_meetme.c") may return {1, 102} for CVS
      * revision "1.102".
@@ -312,6 +310,16 @@ public interface AsteriskServer
      */
     void setGlobalVariable(String variable, String value) throws ManagerCommunicationException;
 
+    /**
+     * Returns a collection of all voicemailboxes configured for this Asterisk
+     * server with the number of new and old messages they contain.
+     * 
+     * @return a collection of all voicemailboxes configured for this Asterisk
+     *         server
+     * @throws ManagerCommunicationException if the voicemailboxes can't be
+     *             retrieved.
+     * @since 0.3
+     */
     Collection<Voicemailbox> getVoicemailboxes() throws ManagerCommunicationException;
 
     void addAsteriskServerListener(AsteriskServerListener listener);
