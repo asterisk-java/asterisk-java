@@ -106,24 +106,26 @@ public class DefaultAsteriskServer implements AsteriskServer
         return impl.originateToApplication(channel, application, data, timeout, callerId, variables);
     }
 
-    public void originateToApplicationAsync(String channel, String application, String data, long timeout, 
+    public void originateToApplicationAsync(String channel, String application, String data, long timeout,
             CallerId callerId, Map<String, String> variables, OriginateCallback cb) throws ManagerCommunicationException
     {
         impl.originateToApplicationAsync(channel, application, data, timeout, callerId, variables, cb);
     }
 
-    public void originateToApplicationAsync(String channel, String application, String data, long timeout, OriginateCallback cb) throws ManagerCommunicationException
+    public void originateToApplicationAsync(String channel, String application, String data, long timeout,
+            OriginateCallback cb) throws ManagerCommunicationException
     {
         impl.originateToApplicationAsync(channel, application, data, timeout, cb);
     }
 
-    public void originateToExtensionAsync(String channel, String context, String exten, int priority, long timeout, 
+    public void originateToExtensionAsync(String channel, String context, String exten, int priority, long timeout,
             CallerId callerId, Map<String, String> variables, OriginateCallback cb) throws ManagerCommunicationException
     {
         impl.originateToExtensionAsync(channel, context, exten, priority, timeout, callerId, variables, cb);
     }
 
-    public void originateToExtensionAsync(String channel, String context, String exten, int priority, long timeout, OriginateCallback cb) throws ManagerCommunicationException
+    public void originateToExtensionAsync(String channel, String context, String exten, int priority, long timeout,
+            OriginateCallback cb) throws ManagerCommunicationException
     {
         impl.originateToExtensionAsync(channel, context, exten, priority, timeout, cb);
     }
@@ -167,7 +169,7 @@ public class DefaultAsteriskServer implements AsteriskServer
     {
         return impl.getVersion(file);
     }
-    
+
     public String getGlobalVariable(String variable) throws ManagerCommunicationException
     {
         return impl.getGlobalVariable(variable);
@@ -178,7 +180,11 @@ public class DefaultAsteriskServer implements AsteriskServer
         impl.setGlobalVariable(variable, value);
     }
 
-    
+    public Collection<Voicemailbox> getVoicemailboxes() throws ManagerCommunicationException
+    {
+        return impl.getVoicemailboxes();
+    }
+
     public void addAsteriskServerListener(AsteriskServerListener listener)
     {
         impl.addAsteriskServerListener(listener);

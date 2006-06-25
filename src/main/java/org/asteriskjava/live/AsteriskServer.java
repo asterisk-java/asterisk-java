@@ -312,6 +312,8 @@ public interface AsteriskServer
      */
     void setGlobalVariable(String variable, String value) throws ManagerCommunicationException;
 
+    Collection<Voicemailbox> getVoicemailboxes() throws ManagerCommunicationException;
+
     void addAsteriskServerListener(AsteriskServerListener listener);
 
     void removeAsteriskServerListener(AsteriskServerListener listener);
