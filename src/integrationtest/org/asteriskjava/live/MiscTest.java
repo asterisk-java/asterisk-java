@@ -21,4 +21,9 @@ public class MiscTest extends AsteriskServerTestCase
     {
         System.err.println(server.getGlobalVariable("DB(/Agents,1301)"));
     }
+
+    public void testGetVoicemailboxes() throws Exception
+    {
+        System.err.println("mailboxes: " + server.getVoicemailboxes());
+    }
 }
