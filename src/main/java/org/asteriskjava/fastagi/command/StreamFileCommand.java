@@ -58,8 +58,8 @@ public class StreamFileCommand extends AbstractAgiCommand
      */
     public StreamFileCommand(String file)
     {
+        super();
         this.file = file;
-        this.escapeDigits = null;
         this.offset = -1;
     }
 
@@ -72,6 +72,7 @@ public class StreamFileCommand extends AbstractAgiCommand
      */
     public StreamFileCommand(String file, String escapeDigits)
     {
+        super();
         this.file = file;
         this.escapeDigits = escapeDigits;
         this.offset = -1;
@@ -88,6 +89,7 @@ public class StreamFileCommand extends AbstractAgiCommand
      */
     public StreamFileCommand(String file, String escapeDigits, int offset)
     {
+        super();
         this.file = file;
         this.escapeDigits = escapeDigits;
         this.offset = offset;

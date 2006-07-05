@@ -64,10 +64,10 @@ public class DefaultManagerConnection implements ManagerConnection
     public DefaultManagerConnection(String hostname, int port, String username, String password)
     {
         this();
-        setHostname(hostname);
-        setPort(port);
-        setUsername(username);
-        setPassword(password);
+        impl.setHostname(hostname);
+        impl.setPort(port);
+        impl.setUsername(username);
+        impl.setPassword(password);
     }
 
     /**

@@ -86,8 +86,8 @@ class ResponseBuilderImpl implements ResponseBuilder
         {
             MailboxCountResponse mailboxCountResponse = new MailboxCountResponse();
             mailboxCountResponse.setMailbox((String) attributes.get("mailbox"));
-            mailboxCountResponse.setNewMessages(new Integer((String) attributes.get("newmessages")));
-            mailboxCountResponse.setOldMessages(new Integer((String) attributes.get("oldmessages")));
+            mailboxCountResponse.setNewMessages(Integer.valueOf((String) attributes.get("newmessages")));
+            mailboxCountResponse.setOldMessages(Integer.valueOf((String) attributes.get("oldmessages")));
             response = mailboxCountResponse;
         }
         else if (attributes.containsKey("exten") && attributes.containsKey("context") && attributes.containsKey("hint")

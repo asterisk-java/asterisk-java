@@ -68,6 +68,7 @@ public class ControlStreamFileCommand extends AbstractAgiCommand
      */
     public ControlStreamFileCommand(String file)
     {
+        super();
         this.file = file;
         this.escapeDigits = null;
         this.offset = -1;
@@ -84,6 +85,7 @@ public class ControlStreamFileCommand extends AbstractAgiCommand
      */
     public ControlStreamFileCommand(String file, String escapeDigits)
     {
+        super();
         this.file = file;
         this.escapeDigits = escapeDigits;
         this.offset = -1;
@@ -102,6 +104,7 @@ public class ControlStreamFileCommand extends AbstractAgiCommand
      */
     public ControlStreamFileCommand(String file, String escapeDigits, int offset)
     {
+        super();
         this.file = file;
         this.escapeDigits = escapeDigits;
         this.offset = offset;
@@ -124,6 +127,7 @@ public class ControlStreamFileCommand extends AbstractAgiCommand
             int offset, String forwardDigit, String rewindDigit,
             String pauseDigit)
     {
+        super();
         this.file = file;
         this.escapeDigits = escapeDigits;
         this.offset = offset;

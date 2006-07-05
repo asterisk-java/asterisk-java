@@ -34,6 +34,7 @@ public class NoopCommand extends AbstractAgiCommand
      */
     public NoopCommand()
     {
+        super();
     }
 
     public String buildCommand()

@@ -45,6 +45,7 @@ public class ReceiveCharCommand extends AbstractAgiCommand
      */
     public ReceiveCharCommand()
     {
+        super();
         this.timeout = 0;
     }
 
@@ -56,6 +57,7 @@ public class ReceiveCharCommand extends AbstractAgiCommand
      */
     public ReceiveCharCommand(int timeout)
     {
+        super();
         this.timeout = timeout;
     }
 

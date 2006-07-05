@@ -43,6 +43,7 @@ public class SetPriorityCommand extends AbstractAgiCommand
      */
     public SetPriorityCommand(String priority)
     {
+        super();
         this.priority = priority;
     }
 

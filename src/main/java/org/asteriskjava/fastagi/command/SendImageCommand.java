@@ -45,6 +45,7 @@ public class SendImageCommand extends AbstractAgiCommand
      */
     public SendImageCommand(String image)
     {
+        super();
         this.image = image;
     }
 

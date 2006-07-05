@@ -50,8 +50,8 @@ public class SayDigitsCommand extends AbstractAgiCommand
      */
     public SayDigitsCommand(String digits)
     {
+        super();
         this.digits = digits;
-        this.escapeDigits = null;
     }
 
     /**
@@ -63,6 +63,7 @@ public class SayDigitsCommand extends AbstractAgiCommand
      */
     public SayDigitsCommand(String digits, String escapeDigits)
     {
+        super();
         this.digits = digits;
         this.escapeDigits = escapeDigits;
     }

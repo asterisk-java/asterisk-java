@@ -48,8 +48,8 @@ public class DatabaseDelCommand extends AbstractAgiCommand
      */
     public DatabaseDelCommand(String family)
     {
+        super();
         this.family = family;
-        this.keyTree = null;
     }
 
     /**
@@ -60,6 +60,7 @@ public class DatabaseDelCommand extends AbstractAgiCommand
      */
     public DatabaseDelCommand(String family, String keyTree)
     {
+        super();
         this.family = family;
         this.keyTree = keyTree;
     }

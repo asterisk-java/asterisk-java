@@ -96,6 +96,7 @@ public class ResourceBundleMappingStrategy extends AbstractMappingStrategy
      */
     public ResourceBundleMappingStrategy(String resourceBundleName, boolean shareInstances)
     {
+        super();
         this.resourceBundleName = resourceBundleName;
         this.shareInstances = shareInstances;
     }

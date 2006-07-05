@@ -47,6 +47,7 @@ public class DatabaseDelTreeCommand extends AbstractAgiCommand
      */
     public DatabaseDelTreeCommand(String family)
     {
+        super();
         this.family = family;
     }
 
@@ -58,6 +59,7 @@ public class DatabaseDelTreeCommand extends AbstractAgiCommand
      */
     public DatabaseDelTreeCommand(String family, String keytree)
     {
+        super();
         this.family = family;
         this.keytree = keytree;
     }
@@ -104,13 +106,13 @@ public class DatabaseDelTreeCommand extends AbstractAgiCommand
 
     public String buildCommand()
     {
-        if (keytree != null)
+        if (keytree == null)
         {
-            return "DATABASE DELTREE " + escapeAndQuote(family);
+            return "DATABASE DELTREE " + escapeAndQuote(family) + " " + escapeAndQuote(keytree);
         }
         else
         {
-            return "DATABASE DELTREE " + escapeAndQuote(family) + " " + escapeAndQuote(keytree);
+            return "DATABASE DELTREE " + escapeAndQuote(family);
         }
     }
 }

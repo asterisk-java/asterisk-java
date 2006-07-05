@@ -32,6 +32,5 @@ public interface AgiCommand
      * 
      * @return a string suitable to be sent to asterisk.
      */
-    public abstract String buildCommand();
-
+    String buildCommand();
 }

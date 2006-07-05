@@ -41,7 +41,7 @@ public class HangupCommand extends AbstractAgiCommand
      */
     public HangupCommand()
     {
-        this.channel = null;
+        super();
     }
 
     /**

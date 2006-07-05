@@ -35,6 +35,7 @@ public class SetMusicOffCommand extends AbstractAgiCommand
      */
     public SetMusicOffCommand()
     {
+        super();
     }
 
     public String buildCommand()

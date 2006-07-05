@@ -34,7 +34,7 @@ public class JavaLoggingLog implements Log
     /**
      * The underlying commons-logging Log object to use.
      */
-    private Logger log;
+    private final Logger log;  // NOPMD by srt on 7/5/06 11:18 PM
 
     /**
      * Creates a new JavaLoggingLog obtained from java.util.logging for the

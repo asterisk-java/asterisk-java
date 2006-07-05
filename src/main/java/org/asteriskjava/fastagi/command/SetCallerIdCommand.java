@@ -41,6 +41,7 @@ public class SetCallerIdCommand extends AbstractAgiCommand
      */
     public SetCallerIdCommand(String callerId)
     {
+        super();
         this.callerId = callerId;
     }
 

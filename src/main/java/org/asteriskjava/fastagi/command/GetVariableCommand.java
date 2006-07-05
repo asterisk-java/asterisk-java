@@ -46,6 +46,7 @@ public class GetVariableCommand extends AbstractAgiCommand
      */
     public GetVariableCommand(String variable)
     {
+        super();
         this.variable = variable;
     }
 

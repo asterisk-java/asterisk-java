@@ -49,6 +49,7 @@ public class SayDateTimeCommand extends AbstractAgiCommand
      */
     public SayDateTimeCommand(long time)
     {
+        super();
         this.time = time;
     }
 
@@ -63,6 +64,7 @@ public class SayDateTimeCommand extends AbstractAgiCommand
      */
     public SayDateTimeCommand(long time, String escapeDigits)
     {
+        super();
         this.time = time;
         this.escapeDigits = escapeDigits;
     }
@@ -79,6 +81,7 @@ public class SayDateTimeCommand extends AbstractAgiCommand
      */
     public SayDateTimeCommand(long time, String escapeDigits, String format)
     {
+        super();
         this.time = time;
         this.escapeDigits = escapeDigits;
         this.format = format;
@@ -100,6 +103,7 @@ public class SayDateTimeCommand extends AbstractAgiCommand
     public SayDateTimeCommand(long time, String escapeDigits, String format,
             String timezone)
     {
+        super();
         this.time = time;
         this.escapeDigits = escapeDigits;
         this.format = format;

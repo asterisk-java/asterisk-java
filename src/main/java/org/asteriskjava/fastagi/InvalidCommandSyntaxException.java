@@ -30,8 +30,8 @@ public class InvalidCommandSyntaxException extends AgiException
      */
     private static final long serialVersionUID = 3257002168165807929L;
 
-    private String synopsis;
-    private String usage;
+    private final String synopsis;
+    private final String usage;
 
     /**
      * Creates a new InvalidCommandSyntaxException with the given synopsis and

@@ -48,6 +48,7 @@ public class ExecCommand extends AbstractAgiCommand
      */
     public ExecCommand(String application)
     {
+        super();
         this.application = application;
     }
 
@@ -59,6 +60,7 @@ public class ExecCommand extends AbstractAgiCommand
      */
     public ExecCommand(String application, String options)
     {
+        super();
         this.application = application;
         this.options = options;
     }

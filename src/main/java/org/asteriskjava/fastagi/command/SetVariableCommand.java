@@ -47,6 +47,7 @@ public class SetVariableCommand extends AbstractAgiCommand
      */
     public SetVariableCommand(String variable, String value)
     {
+        super();
         this.variable = variable;
         this.value = value;
     }

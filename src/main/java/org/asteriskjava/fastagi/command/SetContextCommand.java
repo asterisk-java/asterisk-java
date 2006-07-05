@@ -41,6 +41,7 @@ public class SetContextCommand extends AbstractAgiCommand
      */
     public SetContextCommand(String context)
     {
+        super();
         this.context = context;
     }
 

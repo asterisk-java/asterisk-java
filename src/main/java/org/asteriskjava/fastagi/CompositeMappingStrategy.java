@@ -25,12 +25,13 @@ public class CompositeMappingStrategy implements MappingStrategy
 
     public CompositeMappingStrategy()
     {
-
+        super();
     }
 
     public CompositeMappingStrategy(MappingStrategy strategy1,
             MappingStrategy strategy2)
     {
+        super();
         strategies = new ArrayList<MappingStrategy>();
         strategies.add(strategy1);
         strategies.add(strategy2);
@@ -52,6 +53,8 @@ public class CompositeMappingStrategy implements MappingStrategy
 
     public AgiScript determineScript(AgiRequest request)
     {
+        AgiScript script = null;
+
         if (strategies == null)
         {
             return null;
@@ -59,13 +62,9 @@ public class CompositeMappingStrategy implements MappingStrategy
 
         for (MappingStrategy strategy : strategies)
         {
-            AgiScript script = strategy.determineScript(request);
-            if (script != null)
-            {
-                return script;
-            }
+            script = strategy.determineScript(request);
         }
 
-        return null;
+        return script;
     }
 }

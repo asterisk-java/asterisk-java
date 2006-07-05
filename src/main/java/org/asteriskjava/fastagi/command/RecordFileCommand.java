@@ -17,8 +17,10 @@
 package org.asteriskjava.fastagi.command;
 
 /**
- * Record to a file until a given dtmf digit in the sequence is received.<p>
- * Returns -1 on hangup or error.<p>
+ * Record to a file until a given dtmf digit in the sequence is received.
+ * <p>
+ * Returns -1 on hangup or error.
+ * <p>
  * The format will specify what kind of file will be recorded. The timeout is
  * the maximum record time in milliseconds, or -1 for no timeout. Offset samples
  * is optional, and if provided will seek to the offset without exceeding the
@@ -82,9 +84,9 @@ public class RecordFileCommand extends AbstractAgiCommand
      * @param timeout the maximum record time in milliseconds, or -1 for no
      *            timeout.
      */
-    public RecordFileCommand(String file, String format, String escapeDigits,
-            int timeout)
+    public RecordFileCommand(String file, String format, String escapeDigits, int timeout)
     {
+        super();
         this.file = file;
         this.format = format;
         this.escapeDigits = escapeDigits;
@@ -109,9 +111,10 @@ public class RecordFileCommand extends AbstractAgiCommand
      * @param maxSilence The amount of silence (in seconds) to allow before
      *            returning despite the lack of dtmf digits or reaching timeout.
      */
-    public RecordFileCommand(String file, String format, String escapeDigits,
-            int timeout, int offset, boolean beep, int maxSilence)
+    public RecordFileCommand(String file, String format, String escapeDigits, int timeout, int offset, boolean beep,
+            int maxSilence)
     {
+        super();
         this.file = file;
         this.format = format;
         this.escapeDigits = escapeDigits;
@@ -245,11 +248,33 @@ public class RecordFileCommand extends AbstractAgiCommand
         this.beep = beep;
     }
 
+    /**
+     * Returns the amount of silence (in seconds) to allow before returning
+     * despite the lack of dtmf digits or reaching timeout.
+     * 
+     * @return the amount of silence (in seconds) to allow before returning
+     *         despite the lack of dtmf digits or reaching timeout.
+     */
+    int getMaxSilence()
+    {
+        return maxSilence;
+    }
+
+    /**
+     * Sets the amount of silence (in seconds) to allow before returning despite
+     * the lack of dtmf digits or reaching timeout.
+     * 
+     * @param maxSilence the amount of silence (in seconds) to allow before
+     *            returning despite the lack of dtmf digits or reaching timeout.
+     */
+    void setMaxSilence(int maxSilence)
+    {
+        this.maxSilence = maxSilence;
+    }
+
     public String buildCommand()
     {
-        return "RECORD FILE " + escapeAndQuote(file) + " "
-                + escapeAndQuote(format) + " " + escapeAndQuote(escapeDigits)
-                + " " + timeout + " " + offset + (beep == true ? " BEEP" : "")
-                + " s=" + maxSilence;
+        return "RECORD FILE " + escapeAndQuote(file) + " " + escapeAndQuote(format) + " " + escapeAndQuote(escapeDigits)
+                + " " + timeout + " " + offset + (beep ? " BEEP" : "") + " s=" + maxSilence;
     }
 }

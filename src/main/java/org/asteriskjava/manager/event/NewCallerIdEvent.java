@@ -194,7 +194,7 @@ public class NewCallerIdEvent extends ManagerEvent
 
         try
         {
-            this.cidCallingPres = new Integer(s.substring(0, spaceIdx));
+            this.cidCallingPres = Integer.valueOf(s.substring(0, spaceIdx));
         }
         catch (NumberFormatException e)
         {

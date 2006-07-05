@@ -46,6 +46,7 @@ public class SetAutoHangupCommand extends AbstractAgiCommand
      */
     public SetAutoHangupCommand(int time)
     {
+        super();
         this.time = time;
     }
 

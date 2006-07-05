@@ -349,7 +349,7 @@ public class AgiRequestImpl implements Serializable, AgiRequest
     {
         if (request.get("priority") != null)
         {
-            return new Integer((String) request.get("priority"));
+            return Integer.valueOf((String) request.get("priority"));
         }
         return null;
     }

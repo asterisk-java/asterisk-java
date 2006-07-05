@@ -49,8 +49,8 @@ public class SayNumberCommand extends AbstractAgiCommand
      */
     public SayNumberCommand(String number)
     {
+        super();
         this.number = number;
-        this.escapeDigits = null;
     }
 
     /**
@@ -62,6 +62,7 @@ public class SayNumberCommand extends AbstractAgiCommand
      */
     public SayNumberCommand(String number, String escapeDigits)
     {
+        super();
         this.number = number;
         this.escapeDigits = escapeDigits;
     }

@@ -605,7 +605,6 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
             matcher = SHOW_VOICEMAIL_USERS_PATTERN.matcher(line);
             if (!matcher.find())
             {
-                System.err.println("no match: " + line);
                 continue;
             }
 

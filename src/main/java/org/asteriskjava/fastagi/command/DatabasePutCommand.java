@@ -55,6 +55,7 @@ public class DatabasePutCommand extends AbstractAgiCommand
      */
     public DatabasePutCommand(String family, String key, String value)
     {
+        super();
         this.family = family;
         this.key = key;
         this.value = value;

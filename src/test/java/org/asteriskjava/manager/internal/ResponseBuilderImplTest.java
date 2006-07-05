@@ -136,8 +136,8 @@ public class ResponseBuilderImplTest extends TestCase
         
         MailboxCountResponse mailboxCountResponse = (MailboxCountResponse) response;
         assertEquals("Mailbox not set correctly", "123@myctx", mailboxCountResponse.getMailbox());
-        assertEquals("New messages not set correctly", new Integer(2), mailboxCountResponse.getNewMessages());
-        assertEquals("Old messages set correctly", new Integer(5), mailboxCountResponse.getOldMessages());
+        assertEquals("New messages not set correctly", Integer.valueOf(2), mailboxCountResponse.getNewMessages());
+        assertEquals("Old messages set correctly", Integer.valueOf(5), mailboxCountResponse.getOldMessages());
     }
 
     public void testBuildExtensionStateResponse()
@@ -158,6 +158,6 @@ public class ResponseBuilderImplTest extends TestCase
         assertEquals("Exten not set correctly", "1", extensionStateResponse.getExten());
         assertEquals("Context not set correctly", "default", extensionStateResponse.getContext());
         assertEquals("Hint not set correctly", "", extensionStateResponse.getHint());
-        assertEquals("Status not set correctly", new Integer(-1), extensionStateResponse.getStatus());
+        assertEquals("Status not set correctly", Integer.valueOf(-1), extensionStateResponse.getStatus());
     }
 }

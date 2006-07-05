@@ -50,6 +50,7 @@ public class VerboseCommand extends AbstractAgiCommand
      */
     public VerboseCommand(String message, int level)
     {
+        super();
         this.message = message;
         this.level = level;
     }

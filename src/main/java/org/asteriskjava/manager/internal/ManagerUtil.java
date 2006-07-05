@@ -30,7 +30,7 @@ package org.asteriskjava.manager.internal;
  */
 public class ManagerUtil
 {
-    public static char INTERNAL_ACTION_ID_DELIMITER = '#';
+    public static final char INTERNAL_ACTION_ID_DELIMITER = '#';
 
     /**
      * The hex digits used to build a hex string representation of a byte array.

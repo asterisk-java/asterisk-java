@@ -17,19 +17,24 @@
 package org.asteriskjava.fastagi;
 
 /**
- * Abstract base class for all AGI specific exceptions.
+ * Base class for all AGI specific exceptions.
  * 
  * @author srt
  * @version $Id$
  */
-public abstract class AgiException extends Exception
+public class AgiException extends Exception
 {
+    /**
+     * Serial version identifier.
+     */
+    private static final long serialVersionUID = 1215836054948768757L;
+
     /**
      * Creates a new AgiException with the given message.
      * 
      * @param message a message describing the AgiException.
      */
-    public AgiException(String message)
+    protected AgiException(String message)
     {
         super(message);
     }
@@ -40,7 +45,7 @@ public abstract class AgiException extends Exception
      * @param message a message describing the AgiException.
      * @param cause the throwable that caused this exception.
      */
-    public AgiException(String message, Throwable cause)
+    protected AgiException(String message, Throwable cause)
     {
         super(message, cause);
     }

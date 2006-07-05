@@ -50,18 +50,18 @@ public class AgiReaderImplTest extends TestCase
         expect(socket.readLine()).andReturn("");
 
         byte[] ipLocal = new byte[4];
-        ipLocal[0] = new Integer(192).byteValue();
-        ipLocal[1] = new Integer(168).byteValue();
-        ipLocal[2] = new Integer(0).byteValue();
-        ipLocal[3] = new Integer(1).byteValue();
+        ipLocal[0] = Integer.valueOf(192).byteValue();
+        ipLocal[1] = Integer.valueOf(168).byteValue();
+        ipLocal[2] = Integer.valueOf(0).byteValue();
+        ipLocal[3] = Integer.valueOf(1).byteValue();
         expect(socket.getLocalAddress()).andReturn(InetAddress.getByAddress(ipLocal));
         expect(socket.getLocalPort()).andReturn(1234);
 
         byte[] ipRemote = new byte[4];
-        ipRemote[0] = new Integer(192).byteValue();
-        ipRemote[1] = new Integer(168).byteValue();
-        ipRemote[2] = new Integer(0).byteValue();
-        ipRemote[3] = new Integer(2).byteValue();
+        ipRemote[0] = Integer.valueOf(192).byteValue();
+        ipRemote[1] = Integer.valueOf(168).byteValue();
+        ipRemote[2] = Integer.valueOf(0).byteValue();
+        ipRemote[3] = Integer.valueOf(2).byteValue();
         expect(socket.getRemoteAddress()).andReturn(InetAddress.getByAddress(ipRemote));
         expect(socket.getRemotePort()).andReturn(1235);
 

@@ -42,6 +42,7 @@ public class SetExtensionCommand extends AbstractAgiCommand
      */
     public SetExtensionCommand(String extension)
     {
+        super();
         this.extension = extension;
     }
 

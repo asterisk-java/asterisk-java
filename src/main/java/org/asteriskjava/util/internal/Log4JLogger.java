@@ -46,11 +46,10 @@ public class Log4JLogger implements Log, Serializable
     /** The fully qualified name of the Log4JLogger class. */
     private static final String FQCN = Log4JLogger.class.getName();
 
-    private static final boolean is12 = Priority.class
-            .isAssignableFrom(Level.class);
+    private static final boolean IS12 = Priority.class.isAssignableFrom(Level.class);
 
     /** Log to this logger */
-    private transient Logger logger = null;
+    private transient Logger logger = null;  // NOPMD by srt on 7/5/06 11:18 PM
 
     /** Logger name */
     private String name = null;
@@ -78,7 +77,7 @@ public class Log4JLogger implements Log, Serializable
      */
     public void trace(Object message)
     {
-        if (is12)
+        if (IS12)
         {
             getLogger().log(FQCN, (Priority) Level.DEBUG, message, null);
         }
@@ -94,7 +93,7 @@ public class Log4JLogger implements Log, Serializable
      */
     public void trace(Object message, Throwable t)
     {
-        if (is12)
+        if (IS12)
         {
             getLogger().log(FQCN, (Priority) Level.DEBUG, message, t);
         }
@@ -109,7 +108,7 @@ public class Log4JLogger implements Log, Serializable
      */
     public void debug(Object message)
     {
-        if (is12)
+        if (IS12)
         {
             getLogger().log(FQCN, (Priority) Level.DEBUG, message, null);
         }
@@ -124,7 +123,7 @@ public class Log4JLogger implements Log, Serializable
      */
     public void debug(Object message, Throwable t)
     {
-        if (is12)
+        if (IS12)
         {
             getLogger().log(FQCN, (Priority) Level.DEBUG, message, t);
         }
@@ -139,7 +138,7 @@ public class Log4JLogger implements Log, Serializable
      */
     public void info(Object message)
     {
-        if (is12)
+        if (IS12)
         {
             getLogger().log(FQCN, (Priority) Level.INFO, message, null);
         }
@@ -154,7 +153,7 @@ public class Log4JLogger implements Log, Serializable
      */
     public void info(Object message, Throwable t)
     {
-        if (is12)
+        if (IS12)
         {
             getLogger().log(FQCN, (Priority) Level.INFO, message, t);
         }
@@ -169,7 +168,7 @@ public class Log4JLogger implements Log, Serializable
      */
     public void warn(Object message)
     {
-        if (is12)
+        if (IS12)
         {
             getLogger().log(FQCN, (Priority) Level.WARN, message, null);
         }
@@ -184,7 +183,7 @@ public class Log4JLogger implements Log, Serializable
      */
     public void warn(Object message, Throwable t)
     {
-        if (is12)
+        if (IS12)
         {
             getLogger().log(FQCN, (Priority) Level.WARN, message, t);
         }
@@ -199,7 +198,7 @@ public class Log4JLogger implements Log, Serializable
      */
     public void error(Object message)
     {
-        if (is12)
+        if (IS12)
         {
             getLogger().log(FQCN, (Priority) Level.ERROR, message, null);
         }
@@ -214,7 +213,7 @@ public class Log4JLogger implements Log, Serializable
      */
     public void error(Object message, Throwable t)
     {
-        if (is12)
+        if (IS12)
         {
             getLogger().log(FQCN, (Priority) Level.ERROR, message, t);
         }
@@ -229,7 +228,7 @@ public class Log4JLogger implements Log, Serializable
      */
     public void fatal(Object message)
     {
-        if (is12)
+        if (IS12)
         {
             getLogger().log(FQCN, (Priority) Level.FATAL, message, null);
         }
@@ -244,7 +243,7 @@ public class Log4JLogger implements Log, Serializable
      */
     public void fatal(Object message, Throwable t)
     {
-        if (is12)
+        if (IS12)
         {
             getLogger().log(FQCN, (Priority) Level.FATAL, message, t);
         }
@@ -257,7 +256,7 @@ public class Log4JLogger implements Log, Serializable
     /**
      * Return the native Logger instance we are using.
      */
-    public Logger getLogger()
+    public final Logger getLogger()
     {
         if (logger == null)
         {
@@ -281,7 +280,7 @@ public class Log4JLogger implements Log, Serializable
      */
     public boolean isErrorEnabled()
     {
-        if (is12)
+        if (IS12)
         {
             return getLogger().isEnabledFor((Priority) Level.ERROR);
         }
@@ -297,7 +296,7 @@ public class Log4JLogger implements Log, Serializable
      */
     public boolean isFatalEnabled()
     {
-        if (is12)
+        if (IS12)
         {
             return getLogger().isEnabledFor((Priority) Level.FATAL);
         }
@@ -332,7 +331,7 @@ public class Log4JLogger implements Log, Serializable
      */
     public boolean isWarnEnabled()
     {
-        if (is12)
+        if (IS12)
         {
             return getLogger().isEnabledFor((Priority) Level.WARN);
         }

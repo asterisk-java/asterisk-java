@@ -179,7 +179,7 @@ class EventBuilderImpl implements EventBuilder
         registerEventClass(ZapShowChannelsCompleteEvent.class);
     }
 
-    public void registerEventClass(Class clazz) throws IllegalArgumentException
+    public final void registerEventClass(Class clazz) throws IllegalArgumentException
     {
         String className;
         String eventType;
@@ -212,7 +212,7 @@ class EventBuilderImpl implements EventBuilder
      *            {@link ManagerEvent}.
      * @throws IllegalArgumentException if clazz is not a valid event class.
      */
-    public void registerEventClass(String eventType, Class clazz) throws IllegalArgumentException
+    public final void registerEventClass(String eventType, Class clazz) throws IllegalArgumentException
     {
         Constructor defaultConstructor;
 

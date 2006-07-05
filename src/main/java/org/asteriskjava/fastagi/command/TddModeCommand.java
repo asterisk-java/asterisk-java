@@ -43,6 +43,7 @@ public class TddModeCommand extends AbstractAgiCommand
      */
     public TddModeCommand(String mode)
     {
+        super();
         this.mode = mode;
     }
 
@@ -62,7 +63,7 @@ public class TddModeCommand extends AbstractAgiCommand
      * @param mode the mode to set, this can be one of "on", "off", "mate" or
      *            "tdd".
      */
-    public void setTimeout(String mode)
+    public void setMode(String mode)
     {
         this.mode = mode;
     }

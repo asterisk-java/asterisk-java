@@ -63,6 +63,7 @@ public class GetDataCommand extends AbstractAgiCommand
      */
     public GetDataCommand(String file)
     {
+        super();
         this.file = file;
         this.timeout = DEFAULT_TIMEOUT;
         this.maxDigits = DEFAULT_MAX_DIGITS;
@@ -79,6 +80,7 @@ public class GetDataCommand extends AbstractAgiCommand
      */
     public GetDataCommand(String file, long timeout)
     {
+        super();
         this.file = file;
         this.timeout = timeout;
         this.maxDigits = DEFAULT_MAX_DIGITS;
@@ -99,6 +101,7 @@ public class GetDataCommand extends AbstractAgiCommand
     public GetDataCommand(String file, long timeout, int maxDigits)
             throws IllegalArgumentException
     {
+        super();
         if (maxDigits < 1 || maxDigits > 1024)
         {
             throw new IllegalArgumentException("maxDigits must be in [1..1024]");

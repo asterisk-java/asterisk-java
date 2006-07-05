@@ -35,6 +35,7 @@ public class AnswerCommand extends AbstractAgiCommand
      */
     public AnswerCommand()
     {
+        super();
     }
 
     public String buildCommand()

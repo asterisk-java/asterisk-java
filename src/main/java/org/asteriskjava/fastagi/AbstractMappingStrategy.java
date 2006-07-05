@@ -51,6 +51,7 @@ public abstract class AbstractMappingStrategy implements MappingStrategy
         Constructor constructor;
         AgiScript agiScript;
 
+        agiScript = null;
         try
         {
             agiScriptClass = Class.forName(className);
@@ -60,7 +61,6 @@ public abstract class AbstractMappingStrategy implements MappingStrategy
         catch (Exception e)
         {
             logger.error("Unable to create AgiScript instance of type " + className, e);
-            return null;
         }
 
         return agiScript;

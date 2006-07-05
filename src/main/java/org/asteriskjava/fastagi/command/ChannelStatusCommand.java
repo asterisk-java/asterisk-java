@@ -52,7 +52,7 @@ public class ChannelStatusCommand extends AbstractAgiCommand
      */
     public ChannelStatusCommand()
     {
-        this.channel = null;
+        super();
     }
 
     /**
@@ -62,6 +62,7 @@ public class ChannelStatusCommand extends AbstractAgiCommand
      */
     public ChannelStatusCommand(String channel)
     {
+        super();
         this.channel = channel;
     }
 

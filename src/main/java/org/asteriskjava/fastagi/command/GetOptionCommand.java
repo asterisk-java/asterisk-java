@@ -61,6 +61,7 @@ public class GetOptionCommand extends AbstractAgiCommand
      */
     public GetOptionCommand(String file, String escapeDigits)
     {
+        super();
         this.file = file;
         this.escapeDigits = escapeDigits;
         this.timeout = -1;
@@ -77,6 +78,7 @@ public class GetOptionCommand extends AbstractAgiCommand
      */
     public GetOptionCommand(String file, String escapeDigits, int timeout)
     {
+        super();
         this.file = file;
         this.escapeDigits = escapeDigits;
         this.timeout = timeout;

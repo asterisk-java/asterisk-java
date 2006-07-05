@@ -44,6 +44,7 @@ public class SendTextCommand extends AbstractAgiCommand
      */
     public SendTextCommand(String text)
     {
+        super();
         this.text = text;
     }
 

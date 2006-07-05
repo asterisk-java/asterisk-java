@@ -43,6 +43,7 @@ public class WaitForDigitCommand extends AbstractAgiCommand
      */
     public WaitForDigitCommand()
     {
+        super();
         this.timeout = -1;
     }
 
@@ -54,6 +55,7 @@ public class WaitForDigitCommand extends AbstractAgiCommand
      */
     public WaitForDigitCommand(long timeout)
     {
+        super();
         this.timeout = timeout;
     }
 

@@ -52,7 +52,7 @@ public class AgiServerThread
      */
     public AgiServerThread()
     {
-        
+        super();
     }
 
     /**
@@ -62,6 +62,7 @@ public class AgiServerThread
      */
     public AgiServerThread(AgiServer agiServer)
     {
+        super();
         this.agiServer = agiServer;
     }
 
@@ -159,7 +160,7 @@ public class AgiServerThread
             {
                 logger.warn("Interrupted while waiting for AgiServer to shutdown.");
             }
-            thread = null;
+            thread = null; // NOPMD by srt on 7/5/06 11:23 PM
         }
     }
 }

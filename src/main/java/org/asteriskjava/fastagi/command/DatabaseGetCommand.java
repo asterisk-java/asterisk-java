@@ -50,6 +50,7 @@ public class DatabaseGetCommand extends AbstractAgiCommand
      */
     public DatabaseGetCommand(String family, String key)
     {
+        super();
         this.family = family;
         this.key = key;
     }

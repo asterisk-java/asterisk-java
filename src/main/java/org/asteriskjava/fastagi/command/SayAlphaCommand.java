@@ -49,8 +49,8 @@ public class SayAlphaCommand extends AbstractAgiCommand
      */
     public SayAlphaCommand(String text)
     {
+        super();
         this.text = text;
-        this.escapeDigits = null;
     }
 
     /**
@@ -62,6 +62,7 @@ public class SayAlphaCommand extends AbstractAgiCommand
      */
     public SayAlphaCommand(String text, String escapeDigits)
     {
+        super();
         this.text = text;
         this.escapeDigits = escapeDigits;
     }

@@ -52,6 +52,7 @@ public class GetFullVariableCommand extends AbstractAgiCommand
      */
     public GetFullVariableCommand(String variable)
     {
+        super();
         this.variable = variable;
     }
 
@@ -63,6 +64,7 @@ public class GetFullVariableCommand extends AbstractAgiCommand
      */
     public GetFullVariableCommand(String variable, String channel)
     {
+        super();
         this.variable = variable;
         this.channel = channel;
     }

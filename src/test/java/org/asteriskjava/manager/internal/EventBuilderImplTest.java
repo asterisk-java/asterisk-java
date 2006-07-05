@@ -153,7 +153,7 @@ public class EventBuilderImplTest extends TestCase
     {
         Map<String, String> properties = new HashMap<String, String>();
         String channel = "SIP/1234";
-        Integer priority = new Integer(1);
+        Integer priority = Integer.valueOf(1);
         NewExtenEvent event;
 
         properties.put("event", "newexten");
@@ -296,7 +296,7 @@ public class EventBuilderImplTest extends TestCase
         event = eventBuilder.buildEvent(this, properties);
 
         assertNotNull(event);
-        assertEquals("CidCallingPres property not set correctly", new Integer(123),
+        assertEquals("CidCallingPres property not set correctly", Integer.valueOf(123),
                 ((NewCallerIdEvent) event).getCidCallingPres());
         assertEquals("CidCallingPresTxt property not set correctly", "nice description",
                 ((NewCallerIdEvent) event).getCidCallingPresTxt());
@@ -312,7 +312,7 @@ public class EventBuilderImplTest extends TestCase
         event = eventBuilder.buildEvent(this, properties);
 
         assertNotNull(event);
-        assertEquals("CidCallingPres property not set correctly", new Integer(123),
+        assertEquals("CidCallingPres property not set correctly", Integer.valueOf(123),
                 ((NewCallerIdEvent) event).getCidCallingPres());
         assertNull("CidCallingPresTxt property not set correctly (must be null)",
                 ((NewCallerIdEvent) event).getCidCallingPresTxt());
@@ -328,7 +328,7 @@ public class EventBuilderImplTest extends TestCase
         event = eventBuilder.buildEvent(this, properties);
 
         assertNotNull(event);
-        assertEquals("CidCallingPres property not set correctly", new Integer(123),
+        assertEquals("CidCallingPres property not set correctly", Integer.valueOf(123),
                 ((NewCallerIdEvent) event).getCidCallingPres());
         assertNull("CidCallingPresTxt property not set correctly (must be null)",
                 ((NewCallerIdEvent) event).getCidCallingPresTxt());
@@ -360,7 +360,7 @@ public class EventBuilderImplTest extends TestCase
         event = eventBuilder.buildEvent(this, properties);
 
         assertNotNull(event);
-        assertEquals("Reason property not set correctly", new Integer(123),
+        assertEquals("Reason property not set correctly", Integer.valueOf(123),
                 ((LogChannelEvent) event).getReason());
         assertEquals("ReasonTxt property not set correctly", "a reason", 
                 ((LogChannelEvent) event).getReasonTxt());

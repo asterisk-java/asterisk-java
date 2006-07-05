@@ -51,8 +51,8 @@ public class SayTimeCommand extends AbstractAgiCommand
      */
     public SayTimeCommand(long time)
     {
+        super();
         this.time = time;
-        this.escapeDigits = null;
     }
 
     /**
@@ -64,6 +64,7 @@ public class SayTimeCommand extends AbstractAgiCommand
      */
     public SayTimeCommand(long time, String escapeDigits)
     {
+        super();
         this.time = time;
         this.escapeDigits = escapeDigits;
     }
