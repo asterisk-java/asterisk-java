@@ -69,7 +69,8 @@ public class ExtensionHistoryEntry implements Serializable
     {
         final StringBuffer sb;
 
-        sb = new StringBuffer("ExtensionHistoryEntry[");
+        sb = new StringBuffer(100);
+        sb.append("ExtensionHistoryEntry[");
         sb.append("date=" + date + ",");
         sb.append("extension=" + extension + "]");
         return sb.toString();

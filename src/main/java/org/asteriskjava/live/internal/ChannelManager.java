@@ -142,11 +142,11 @@ class ChannelManager
             i = channels.values().iterator();
             while (i.hasNext())
             {
-                AsteriskChannel channel = i.next();
-                Date dateOfRemoval = channel.getDateOfRemoval();
+                final AsteriskChannel channel = i.next();
+                final Date dateOfRemoval = channel.getDateOfRemoval();
                 if (channel.getState() == ChannelState.HUNGUP && dateOfRemoval != null)
                 {
-                    long diff = DateUtil.getDate().getTime() - dateOfRemoval.getTime();
+                    final long diff = DateUtil.getDate().getTime() - dateOfRemoval.getTime();
                     if (diff >= REMOVAL_THRESHOLD)
                     {
                         i.remove();
@@ -229,7 +229,7 @@ class ChannelManager
 
             if (event.getLink() != null)
             {
-                AsteriskChannelImpl linkedChannel = getChannelImplByName(event.getLink());
+                final AsteriskChannelImpl linkedChannel = getChannelImplByName(event.getLink());
                 if (linkedChannel != null)
                 {
                     // the date used here is not correct!
@@ -380,7 +380,7 @@ class ChannelManager
 
     void handleNewStateEvent(NewStateEvent event)
     {
-        AsteriskChannelImpl channel = getChannelImplById(event.getUniqueId());
+        final AsteriskChannelImpl channel = getChannelImplById(event.getUniqueId());
 
         if (channel == null)
         {

@@ -92,7 +92,8 @@ public class LinkedChannelHistoryEntry implements Serializable
     {
         final StringBuffer sb;
 
-        sb = new StringBuffer("LinkedChannelHistoryEntry[");
+        sb = new StringBuffer(100);
+        sb.append("LinkedChannelHistoryEntry[");
         sb.append("dateLinked=" + dateLinked + ",");
         sb.append("dateUnlinked=" + dateUnlinked + ",");
         sb.append("channel=" + channel + "]");

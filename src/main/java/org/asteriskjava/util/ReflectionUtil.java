@@ -29,10 +29,9 @@ import java.util.Map;
  */
 public class ReflectionUtil
 {
-    // hide constructor
     private ReflectionUtil()
     {
-        
+        // hide constructor
     }
 
     /**
@@ -47,14 +46,14 @@ public class ReflectionUtil
      */
     public static Map<String, Method> getGetters(final Class clazz)
     {
-        Map<String, Method> accessors = new HashMap<String, Method>();
-        Method[] methods = clazz.getMethods();
+        final Map<String, Method> accessors = new HashMap<String, Method>();
+        final Method[] methods = clazz.getMethods();
 
         for (int i = 0; i < methods.length; i++)
         {
             String name;
             String methodName;
-            Method method = methods[i];
+            final Method method = methods[i];
 
             methodName = method.getName();
             if (!methodName.startsWith("get"))
@@ -94,8 +93,8 @@ public class ReflectionUtil
      */
     public static Map<String, Method> getSetters(Class clazz)
     {
-        Map<String, Method> accessors = new HashMap<String, Method>();
-        Method[] methods = clazz.getMethods();
+        final Map<String, Method> accessors = new HashMap<String, Method>();
+        final Method[] methods = clazz.getMethods();
 
         for (int i = 0; i < methods.length; i++)
         {

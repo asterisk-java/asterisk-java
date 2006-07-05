@@ -17,19 +17,24 @@
 package org.asteriskjava.live;
 
 /**
- * Abstract base class for exceptions thrown by the live package.
+ * Base class for exceptions thrown by the live package.
  * 
  * @author srt
  * @version $Id$
  */
-public abstract class LiveException extends Exception
+public class LiveException extends Exception
 {
+    /**
+     * Serial version identifier.
+     */
+    private static final long serialVersionUID = -7422839292479814036L;
+
     /**
      * Creates a new instance with the given message.
      * 
      * @param message the message
      */
-    public LiveException(String message)
+    protected LiveException(String message)
     {
         super(message);
     }
@@ -40,7 +45,7 @@ public abstract class LiveException extends Exception
      * @param message the message
      * @param cause the cause
      */
-    public LiveException(String message, Throwable cause)
+    protected LiveException(String message, Throwable cause)
     {
         super(message, cause);
     }

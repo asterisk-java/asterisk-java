@@ -174,8 +174,7 @@ public class DefaultManagerConnection implements ManagerConnection
      * even if the reconnection attempt threw an AuthenticationFailedException.<p>
      * Default is <code>true</code>.
      */
-    public void setKeepAliveAfterAuthenticationFailure(
-            boolean keepAliveAfterAuthenticationFailure)
+    public void setKeepAliveAfterAuthenticationFailure(boolean keepAliveAfterAuthenticationFailure)
     {
         impl.setKeepAliveAfterAuthenticationFailure(keepAliveAfterAuthenticationFailure);
     }

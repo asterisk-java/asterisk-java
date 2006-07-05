@@ -27,6 +27,11 @@ import org.asteriskjava.fastagi.DefaultAgiServer;
  */
 public class Main
 {
+    private Main()
+    {
+        // hide constructor
+    }
+
     public static void main(String[] args) throws Exception
     {
         AgiServer agiServer;

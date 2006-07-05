@@ -39,9 +39,9 @@ public class AstUtil
         NULL_LITERALS.add("<no name>");
     }
     
-    // hide constructor
     private AstUtil()
     {
+        //hide constructor
     }
 
     /**

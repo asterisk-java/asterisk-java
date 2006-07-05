@@ -134,7 +134,8 @@ public class Voicemailbox implements Serializable
     {
         StringBuffer sb;
 
-        sb = new StringBuffer("Voicemailbox[");
+        sb = new StringBuffer(100);
+        sb.append("Voicemailbox[");
         sb.append("mailbox='" + getMailbox() + "',");
         sb.append("context='" + getContext() + "',");
         sb.append("user='" + getUser() + "',");

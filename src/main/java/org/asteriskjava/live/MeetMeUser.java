@@ -33,9 +33,9 @@ import java.util.Date;
  */
 public interface MeetMeUser extends LiveObject
 {
-    final String PROPERTY_TALKING = "talking";
-    final String PROPERTY_MUTED = "muted";
-    final String PROPERTY_STATE = "state";
+    String PROPERTY_TALKING = "talking";
+    String PROPERTY_MUTED = "muted";
+    String PROPERTY_STATE = "state";
     
     /**
      * Returns whether this user is currently talking or not.<p>

@@ -28,7 +28,7 @@ public class TimeoutException extends Exception
     /**
      * Serial version identifier
      */
-    static final long serialVersionUID = 7674248607624140309L;
+    private static final long serialVersionUID = 7674248607624140309L;
 
     /**
      * Creates a new TimeoutException with the given message.

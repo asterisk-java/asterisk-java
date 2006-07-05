@@ -35,13 +35,13 @@ public interface AgiReply
      * Status code (200) indicating Asterisk successfully processed the
      * AgiCommand.
      */
-    public static int SC_SUCCESS = 200;
+    int SC_SUCCESS = 200;
 
     /**
      * Status code (510) indicating Asterisk was unable to process the
      * AgiCommand because there is no command with the given name available.
      */
-    public static int SC_INVALID_OR_UNKNOWN_COMMAND = 510;
+    int SC_INVALID_OR_UNKNOWN_COMMAND = 510;
 
     /**
      * Status code (520) indicating Asterisk was unable to process the
@@ -51,7 +51,7 @@ public interface AgiReply
      * Ensure proper quoting of the parameters when you receive this status
      * code.
      */
-    public static int SC_INVALID_COMMAND_SYNTAX = 520;
+    int SC_INVALID_COMMAND_SYNTAX = 520;
 
     /**
      * Returns the first line of the raw reply.

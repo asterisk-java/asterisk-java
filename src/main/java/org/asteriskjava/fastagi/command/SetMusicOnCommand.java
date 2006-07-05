@@ -42,7 +42,6 @@ public class SetMusicOnCommand extends AbstractAgiCommand
     public SetMusicOnCommand()
     {
         super();
-        this.musicOnHoldClass = null;
     }
 
     /**

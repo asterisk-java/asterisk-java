@@ -129,7 +129,7 @@ public class LogChannelEvent extends ManagerEvent
 
         try
         {
-            this.reason = new Integer(s.substring(0, spaceIdx));
+            this.reason = Integer.valueOf(s.substring(0, spaceIdx));
         }
         catch (NumberFormatException e)
         {

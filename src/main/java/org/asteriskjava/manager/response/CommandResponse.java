@@ -35,7 +35,7 @@ public class CommandResponse extends ManagerResponse
     /**
      * Serial version identifier
      */
-    static final long serialVersionUID = -350763332794275049L;
+    private static final long serialVersionUID = -350763332794275049L;
 
     protected List<String> result;
 

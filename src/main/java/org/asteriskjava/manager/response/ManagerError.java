@@ -28,13 +28,13 @@ public class ManagerError extends ManagerResponse
     /**
      * Serial version identifier
      */
-    static final long serialVersionUID = -8753149536715547476L;
+    private static final long serialVersionUID = -8753149536715547476L;
 
     /**
      * Creates a new ManagerError.
      */
     public ManagerError()
     {
-
+        super();
     }
 }

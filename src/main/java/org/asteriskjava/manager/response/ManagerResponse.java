@@ -36,7 +36,7 @@ public class ManagerResponse implements Serializable
     /**
      * Serial version identifier
      */
-    static final long serialVersionUID = -935845815108584292L;
+    private static final long serialVersionUID = -935845815108584292L;
 
     private Date dateReceived;
     private String actionId;
@@ -192,7 +192,8 @@ public class ManagerResponse implements Serializable
     {
         StringBuffer sb;
 
-        sb = new StringBuffer(getClass().getName() + ": ");
+        sb = new StringBuffer(100);
+        sb.append(getClass().getName() + ": ");
         sb.append("actionId='" + getActionId() + "'; ");
         sb.append("message='" + getMessage() + "'; ");
         sb.append("response='" + getResponse() + "'; ");

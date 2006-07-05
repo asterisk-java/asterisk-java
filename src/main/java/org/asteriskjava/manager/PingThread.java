@@ -45,7 +45,7 @@ public class PingThread extends Thread
     private long interval;
     private long timeout = 0;
     private boolean die;
-    private ManagerConnection connection;
+    private final ManagerConnection connection;
 
     /**
      * Creates a new PingThread that uses the given ManagerConnection.
@@ -54,6 +54,7 @@ public class PingThread extends Thread
      */
     public PingThread(ManagerConnection connection)
     {
+        super();
         this.connection = connection;
         this.interval = DEFAULT_INTERVAL;
         this.die = false;

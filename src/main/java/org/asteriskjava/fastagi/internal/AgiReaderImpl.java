@@ -36,7 +36,7 @@ import org.asteriskjava.util.SocketConnectionFacade;
  */
 class AgiReaderImpl implements AgiReader
 {
-    private SocketConnectionFacade socket;
+    private final SocketConnectionFacade socket;
 
     AgiReaderImpl(SocketConnectionFacade socket)
     {

@@ -70,7 +70,6 @@ public class ControlStreamFileCommand extends AbstractAgiCommand
     {
         super();
         this.file = file;
-        this.escapeDigits = null;
         this.offset = -1;
     }
 

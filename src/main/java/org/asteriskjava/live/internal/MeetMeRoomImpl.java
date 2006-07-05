@@ -104,7 +104,7 @@ class MeetMeRoomImpl extends AbstractLiveObject implements MeetMeRoom
 
     private void sendMeetMeCommand(String command) throws ManagerCommunicationException
     {
-        StringBuffer sb = new StringBuffer();
+        final StringBuffer sb = new StringBuffer();
         sb.append(COMMAND_PREFIX);
         sb.append(" ");
         sb.append(command);

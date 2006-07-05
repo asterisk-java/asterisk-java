@@ -29,7 +29,7 @@ public interface Log
     void debug(Object obj);
     void info(Object obj);
     void warn(Object obj);
-    void warn(Object obj, Throwable ex);
+    void warn(Object obj, Throwable exception);
     void error(Object obj);
-    void error(Object obj, Throwable ex);
+    void error(Object obj, Throwable exception);
 }

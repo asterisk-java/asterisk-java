@@ -74,9 +74,9 @@ class QueueManager
         }
         catch (ManagerCommunicationException e)
         {
-            Throwable cause = e.getCause();
+            final Throwable cause = e.getCause();
 
-            if (cause != null && cause instanceof EventTimeoutException)
+            if (cause instanceof EventTimeoutException)
             {
                 // this happens with Asterisk 1.0.x as it doesn't send a
                 // QueueStatusCompleteEvent

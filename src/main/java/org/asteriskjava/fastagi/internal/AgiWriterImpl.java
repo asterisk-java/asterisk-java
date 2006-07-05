@@ -32,7 +32,7 @@ import org.asteriskjava.util.SocketConnectionFacade;
  */
 class AgiWriterImpl implements AgiWriter
 {
-    private SocketConnectionFacade socket;
+    private final SocketConnectionFacade socket;
 
     AgiWriterImpl(SocketConnectionFacade socket)
     {

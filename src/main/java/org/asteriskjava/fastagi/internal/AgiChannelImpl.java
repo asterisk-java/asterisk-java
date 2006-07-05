@@ -63,8 +63,8 @@ import org.asteriskjava.util.SocketConnectionFacade;
  */
 public class AgiChannelImpl implements AgiChannel
 {
-    private AgiWriter agiWriter;
-    private AgiReader agiReader;
+    private final AgiWriter agiWriter;
+    private final AgiReader agiReader;
 
     AgiChannelImpl(SocketConnectionFacade socket)
     {
@@ -78,8 +78,7 @@ public class AgiChannelImpl implements AgiChannel
         this.agiReader = agiReader;
     }
 
-    public synchronized AgiReply sendCommand(AgiCommand command)
-            throws AgiException
+    public synchronized AgiReply sendCommand(AgiCommand command) throws AgiException
     {
         AgiReply reply;
 
@@ -92,8 +91,7 @@ public class AgiChannelImpl implements AgiChannel
         }
         if (reply.getStatus() == AgiReply.SC_INVALID_COMMAND_SYNTAX)
         {
-            throw new InvalidCommandSyntaxException(reply.getSynopsis(), reply
-                    .getUsage());
+            throw new InvalidCommandSyntaxException(reply.getSynopsis(), reply.getUsage());
         }
 
         return reply;

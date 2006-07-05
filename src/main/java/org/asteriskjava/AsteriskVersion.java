@@ -27,8 +27,8 @@ import java.io.Serializable;
  */
 public class AsteriskVersion implements Comparable, Serializable
 {
-    private int version;
-    private String versionString;
+    private final int version;
+    private final String versionString;
 
     /**
      * Represents the Asterisk 1.0 series.

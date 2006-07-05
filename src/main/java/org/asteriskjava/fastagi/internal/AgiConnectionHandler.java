@@ -49,12 +49,12 @@ public class AgiConnectionHandler implements Runnable
     /**
      * The socket connection.
      */
-    private SocketConnectionFacade socket;
+    private final SocketConnectionFacade socket;
 
     /**
      * The strategy to use to determine which script to run.
      */
-    private MappingStrategy mappingStrategy;
+    private final MappingStrategy mappingStrategy;
 
     /**
      * Creates a new AGIConnectionHandler to handle the given socket connection.
@@ -105,18 +105,9 @@ public class AgiConnectionHandler implements Runnable
             threadName = thread.getName();
             AgiConnectionHandler.channel.set(channel);
 
-            if (script != null)
+            if (script == null)
             {
-                logger.info("Begin AGIScript " + script.getClass().getName()
-                        + " on " + threadName);
-                script.service(request, channel);
-                logger.info("End AGIScript " + script.getClass().getName()
-                        + " on " + threadName);
-                setStatusVariable(channel, AJ_AGISTATUS_SUCCESS);
-            }
-            else
-            {
-                String error;
+                final String error;
 
                 error = "No script configured for URL '"
                         + request.getRequestURL() + "' (script '"
@@ -132,6 +123,15 @@ public class AgiConnectionHandler implements Runnable
                 {
                     // do nothing
                 }
+            }
+            else
+            {
+                logger.info("Begin AGIScript " + script.getClass().getName()
+                        + " on " + threadName);
+                script.service(request, channel);
+                logger.info("End AGIScript " + script.getClass().getName()
+                        + " on " + threadName);
+                setStatusVariable(channel, AJ_AGISTATUS_SUCCESS);
             }
         }
         catch (AgiException e)

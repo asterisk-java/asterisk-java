@@ -32,7 +32,7 @@ import org.asteriskjava.manager.ManagerConnection;
  */
 public class DefaultAsteriskServer implements AsteriskServer
 {
-    private AsteriskServerImpl impl;
+    private final AsteriskServerImpl impl;
 
     /**
      * Creates a new instance.

@@ -28,7 +28,7 @@ import org.asteriskjava.manager.response.ManagerResponse;
 
 class ManagerConnectionPool
 {
-    private BlockingQueue<ManagerConnection> connections;
+    private final BlockingQueue<ManagerConnection> connections;
     
     ManagerConnectionPool(int size)
     {

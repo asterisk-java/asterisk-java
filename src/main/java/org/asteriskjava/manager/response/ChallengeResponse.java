@@ -31,7 +31,7 @@ public class ChallengeResponse extends ManagerResponse
     /**
      * Serial version identifier
      */
-    static final long serialVersionUID = -7253724086340850957L;
+    private static final long serialVersionUID = -7253724086340850957L;
 
     private String challenge;
 

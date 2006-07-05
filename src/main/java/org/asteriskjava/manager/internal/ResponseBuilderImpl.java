@@ -61,13 +61,13 @@ class ResponseBuilderImpl implements ResponseBuilder
         }
         else if (attributes.containsKey("challenge"))
         {
-            ChallengeResponse challengeResponse = new ChallengeResponse();
+            final ChallengeResponse challengeResponse = new ChallengeResponse();
             challengeResponse.setChallenge((String) attributes.get("challenge"));
             response = challengeResponse;
         }
         else if (attributes.containsKey("mailbox") && attributes.containsKey("waiting"))
         {
-            MailboxStatusResponse mailboxStatusResponse = new MailboxStatusResponse();
+            final MailboxStatusResponse mailboxStatusResponse = new MailboxStatusResponse();
             mailboxStatusResponse.setMailbox((String) attributes.get("mailbox"));
             
             if ("1".equals((String) attributes.get("waiting")))
@@ -84,7 +84,7 @@ class ResponseBuilderImpl implements ResponseBuilder
         else if (attributes.containsKey("mailbox") && attributes.containsKey("newmessages")
                 && attributes.containsKey("oldmessages"))
         {
-            MailboxCountResponse mailboxCountResponse = new MailboxCountResponse();
+            final MailboxCountResponse mailboxCountResponse = new MailboxCountResponse();
             mailboxCountResponse.setMailbox((String) attributes.get("mailbox"));
             mailboxCountResponse.setNewMessages(Integer.valueOf((String) attributes.get("newmessages")));
             mailboxCountResponse.setOldMessages(Integer.valueOf((String) attributes.get("oldmessages")));
@@ -93,11 +93,11 @@ class ResponseBuilderImpl implements ResponseBuilder
         else if (attributes.containsKey("exten") && attributes.containsKey("context") && attributes.containsKey("hint")
                 && attributes.containsKey("status"))
         {
-            ExtensionStateResponse extensionStateResponse = new ExtensionStateResponse();
+            final ExtensionStateResponse extensionStateResponse = new ExtensionStateResponse();
             extensionStateResponse.setExten((String) attributes.get("exten"));
             extensionStateResponse.setContext((String) attributes.get("context"));
             extensionStateResponse.setHint((String) attributes.get("hint"));
-            extensionStateResponse.setStatus(new Integer((String) attributes.get("status")));
+            extensionStateResponse.setStatus(Integer.valueOf((String) attributes.get("status")));
             response = extensionStateResponse;
         }
         else if (responseType == null && "error".equalsIgnoreCase(proxyResponseType))

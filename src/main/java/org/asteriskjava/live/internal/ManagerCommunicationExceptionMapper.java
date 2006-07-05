@@ -42,22 +42,22 @@ class ManagerCommunicationExceptionMapper
      * {@link org.asteriskjava.live.ManagerCommunicationException}.
      * 
      * @param actionName name of the action that has been tried to send
-     * @param e exception received
+     * @param exception exception received
      * @return the corresponding ManagerCommunicationException
      */
-    static ManagerCommunicationException mapSendActionException(String actionName, Exception e)
+    static ManagerCommunicationException mapSendActionException(String actionName, Exception exception)
     {
-        if (e instanceof IllegalStateException)
+        if (exception instanceof IllegalStateException)
         {
-            return new ManagerCommunicationException("Not connected to Asterisk Server", e);
+            return new ManagerCommunicationException("Not connected to Asterisk Server", exception);
         }
-        else if (e instanceof EventTimeoutException)
+        else if (exception instanceof EventTimeoutException)
         {
-            return new ManagerCommunicationException("Timeout waiting for events from " + actionName + "Action", e);
+            return new ManagerCommunicationException("Timeout waiting for events from " + actionName + "Action", exception);
         }
         else
         {
-            return new ManagerCommunicationException("Unable to send " + actionName + "Action", e);
+            return new ManagerCommunicationException("Unable to send " + actionName + "Action", exception);
         }
     }
 }

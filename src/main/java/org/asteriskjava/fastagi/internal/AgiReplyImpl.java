@@ -89,11 +89,12 @@ public class AgiReplyImpl implements Serializable, AgiReply
 
     AgiReplyImpl()
     {
-
+        super();
     }
 
     AgiReplyImpl(List lines)
     {
+        super();
         this.lines = lines;
         try
         {

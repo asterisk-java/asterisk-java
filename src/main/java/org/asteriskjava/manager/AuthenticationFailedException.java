@@ -28,7 +28,7 @@ public class AuthenticationFailedException extends Exception
     /**
      * Serializable version identifier
      */
-    static final long serialVersionUID = 7674248607624140309L;
+    private static final long serialVersionUID = 7674248607624140309L;
 
     /**
      * Creates a new AuthenticationFailedException with the given message.

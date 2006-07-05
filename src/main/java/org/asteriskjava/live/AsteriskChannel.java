@@ -39,18 +39,18 @@ import java.util.List;
  */
 public interface AsteriskChannel extends LiveObject
 {
-    final String PROPERTY_NAME = "name";
-    final String PROPERTY_CALLER_ID = "callerId";
-    final String PROPERTY_STATE = "state";
-    final String PROPERTY_ACCOUNT = "account";
-    final String PROPERTY_CURRENT_EXTENSION = "currentExtension";
-    final String PROPERTY_CALL_DETAIL_RECORD = "callDetailRecord";
-    final String PROPERTY_DIALED_CHANNEL = "dialedChannel";
-    final String PROPERTY_DIALING_CHANNEL = "dialingChannel";
-    final String PROPERTY_LINKED_CHANNEL = "linkedChannel";
+    String PROPERTY_NAME = "name";
+    String PROPERTY_CALLER_ID = "callerId";
+    String PROPERTY_STATE = "state";
+    String PROPERTY_ACCOUNT = "account";
+    String PROPERTY_CURRENT_EXTENSION = "currentExtension";
+    String PROPERTY_CALL_DETAIL_RECORD = "callDetailRecord";
+    String PROPERTY_DIALED_CHANNEL = "dialedChannel";
+    String PROPERTY_DIALING_CHANNEL = "dialingChannel";
+    String PROPERTY_LINKED_CHANNEL = "linkedChannel";
 
-    final String VARIABLE_MONITOR_EXEC = "MONITOR_EXEC";
-    final String VARIABLE_MONITOR_EXEC_ARGS = "MONITOR_EXEC_ARGS";
+    String VARIABLE_MONITOR_EXEC = "MONITOR_EXEC";
+    String VARIABLE_MONITOR_EXEC_ARGS = "MONITOR_EXEC_ARGS";
 
     /**
      * Returns the unique id of this channel, for example "1099015093.165".

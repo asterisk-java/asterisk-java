@@ -30,9 +30,9 @@ public class DateUtil
 {
     private static Date currentDate;
 
-    // hide constructor
     private DateUtil()
     {
+        // hide constructor
     }
 
     /**
@@ -54,13 +54,13 @@ public class DateUtil
      */
     public static Date getDate()
     {
-        if (currentDate != null)
+        if (currentDate == null)
         {
-            return currentDate;
+            return new Date();
         }
         else
         {
-            return new Date();
+            return currentDate;
         }
     }
 }
