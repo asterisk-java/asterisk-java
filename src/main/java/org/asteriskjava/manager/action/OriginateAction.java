@@ -177,7 +177,7 @@ public class OriginateAction extends AbstractManagerAction
 
     /**
      * Sets the name of the channel to connect to the outgoing call.<p>
-     * This property is required.
+     * This property is mandatory.
      */
     public void setChannel(String channel)
     {

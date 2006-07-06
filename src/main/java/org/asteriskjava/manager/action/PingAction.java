@@ -35,7 +35,7 @@ public class PingAction extends AbstractManagerAction
      */
     public PingAction()
     {
-
+        super();
     }
 
     /**

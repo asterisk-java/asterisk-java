@@ -39,7 +39,7 @@ public class MonitorAction extends AbstractManagerAction
      */
     public MonitorAction()
     {
-
+        super();
     }
 
     /**
@@ -54,6 +54,7 @@ public class MonitorAction extends AbstractManagerAction
      */
     public MonitorAction(String channel, String file)
     {
+        super();
         this.channel = channel;
         this.file = file;
     }
@@ -71,6 +72,7 @@ public class MonitorAction extends AbstractManagerAction
      */
     public MonitorAction(String channel, String file, String format)
     {
+        super();
         this.channel = channel;
         this.file = file;
         this.format = format;
@@ -90,6 +92,7 @@ public class MonitorAction extends AbstractManagerAction
      */
     public MonitorAction(String channel, String file, String format, Boolean mix)
     {
+        super();
         this.channel = channel;
         this.file = file;
         this.format = format;
