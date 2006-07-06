@@ -37,7 +37,7 @@ public abstract class AbstractAgentEvent extends ManagerEvent
     /**
      * @param source
      */
-    public AbstractAgentEvent(Object source)
+    protected AbstractAgentEvent(Object source)
     {
         super(source);
     }

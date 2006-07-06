@@ -35,7 +35,7 @@ public abstract class AbstractQueueMemberEvent extends ManagerEvent
     /**
      * @param source
      */
-    public AbstractQueueMemberEvent(Object source)
+    protected AbstractQueueMemberEvent(Object source)
     {
         super(source);
     }

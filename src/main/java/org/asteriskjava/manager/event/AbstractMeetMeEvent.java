@@ -33,7 +33,7 @@ public abstract class AbstractMeetMeEvent extends ManagerEvent
     /**
      * @param source
      */
-    public AbstractMeetMeEvent(Object source)
+    protected AbstractMeetMeEvent(Object source)
     {
         super(source);
     }

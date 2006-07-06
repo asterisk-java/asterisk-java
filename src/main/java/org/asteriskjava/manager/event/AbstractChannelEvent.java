@@ -58,7 +58,7 @@ public abstract class AbstractChannelEvent extends ManagerEvent
     /**
      * @param source
      */
-    public AbstractChannelEvent(Object source)
+    protected AbstractChannelEvent(Object source)
     {
         super(source);
     }

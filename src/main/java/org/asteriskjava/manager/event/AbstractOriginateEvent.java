@@ -36,7 +36,7 @@ public abstract class AbstractOriginateEvent extends ResponseEvent
     /**
      * @param source
      */
-    public AbstractOriginateEvent(Object source)
+    protected AbstractOriginateEvent(Object source)
     {
         super(source);
     }

@@ -37,7 +37,7 @@ public abstract class AbstractParkedCallEvent extends ManagerEvent
     /**
      * @param source
      */
-    public AbstractParkedCallEvent(Object source)
+    protected AbstractParkedCallEvent(Object source)
     {
         super(source);
     }
