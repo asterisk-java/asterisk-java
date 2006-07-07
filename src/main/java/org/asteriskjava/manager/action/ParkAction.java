@@ -19,7 +19,7 @@ package org.asteriskjava.manager.action;
 /**
  * The ParkAction parks a channel using Asterisk's park feature.
  * <p>
- * Defined in <code>res/res_features.c</code><br>
+ * Defined in <code>res/res_features.c</code><p>
  * Available since Asterisk 1.4.
  * 
  * @author srt
