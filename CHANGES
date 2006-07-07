@@ -22,6 +22,8 @@ Asterisk-Java 0.3
 	  fast, i.e. before the thread is put asleep.
 	* Fixed ConnectEvent being only fired after a successful 
 	  login (AJ-32)
+	* Fixed no setter for the dnd field when sending
+	  ZapShowChannelsAction (AJ-33)
 	* Added support for login with eventMask (AJ-28)
 	* Added support for using non-shared instances AgiScript, i.e. a
 	  new instance is used for each request if you set the
@@ -37,6 +39,8 @@ Asterisk-Java 0.3
 	  if it threw an exception or "NOT_FOUND" if the mapping strategy 
 	  did not return a script for the requested URL.
 	* Added MeetMeMuteEvent and muted property for MeetMeUser.
+	* Added MeetMeMuteAction and MeetMeUnmuteAction.
+	* Added ParkAction.
 	* Added PlayDtmfAction and playDtmf() method for AsteriskChannel.
 	* Added several new event properties for Asterisk 1.4:
 	  - MeetMeEvent: channel and uniqueId
