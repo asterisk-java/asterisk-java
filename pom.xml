@@ -123,8 +123,7 @@
 		</repository>
 		<site>
 			<id>website</id>
-			<url>
-				scpexe://www.asterisk-java.org/var/www/asterisk-java.org/htdocs/${version}</url>
+			<url>scpexe://asterisk-java.org/var/www/asterisk-java.org/htdocs/${version}</url>
 		</site>
 	</distributionManagement>
 	<reporting>
