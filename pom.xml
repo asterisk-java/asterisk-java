@@ -8,7 +8,7 @@
 	<name>Asterisk-Java</name>
 	<version>0.3-SNAPSHOT</version>
 	<description>Java interface for Asterisk PBX.</description>
-	<url>http://www.asterisk-java.org/</url>
+	<url>http://asterisk-java.org/</url>
 	<licenses>
 		<license>
 			<name>Apache License, Version 2.0</name>
@@ -17,7 +17,7 @@
 	</licenses>
 	<organization>
 		<name>Stefan Reuter</name>
-		<url>http://www.asterisk-java.org/</url>
+		<url>http://asterisk-java.org/</url>
 	</organization>
 	<inceptionYear>2004</inceptionYear>
 	<developers>
@@ -124,7 +124,7 @@
 		<site>
 			<id>website</id>
 			<url>
-				scpexe://www.asterisk-java.org/var/www/www.asterisk-java.org/htdocs/${version}</url>
+				scpexe://www.asterisk-java.org/var/www/asterisk-java.org/htdocs/${version}</url>
 		</site>
 	</distributionManagement>
 	<reporting>
@@ -135,15 +135,21 @@
 					<groups>
 						<group>
 							<title>Core Packages</title>
-							<packages>org.asteriskjava:org.asteriskjava.fastagi:org.asteriskjava.fastagi.command:org.asteriskjava.fastagi.reply:org.asteriskjava.manager:org.asteriskjava.manager.action:org.asteriskjava.manager.response:org.asteriskjava.manager.event:org.asteriskjava.live:org.asteriskjava.util</packages>
+							<packages>
+								org.asteriskjava:org.asteriskjava.fastagi:org.asteriskjava.fastagi.command:org.asteriskjava.fastagi.reply:org.asteriskjava.manager:org.asteriskjava.manager.action:org.asteriskjava.manager.response:org.asteriskjava.manager.event:org.asteriskjava.live:org.asteriskjava.util
+							</packages>
 						</group>
 						<group>
 							<title>Astmanproxy Support Packages</title>
-							<packages>org.asteriskjava.manager.action.proxy:org.asteriskjava.manager.response.proxy</packages>
+							<packages>
+								org.asteriskjava.manager.action.proxy:org.asteriskjava.manager.response.proxy
+							</packages>
 						</group>
 						<group>
 							<title>Internal Packages</title>
-							<packages>org.asteriskjava.fastagi.internal:org.asteriskjava.manager.internal:org.asteriskjava.live.internal:org.asteriskjava.util.internal</packages>
+							<packages>
+								org.asteriskjava.fastagi.internal:org.asteriskjava.manager.internal:org.asteriskjava.live.internal:org.asteriskjava.util.internal
+							</packages>
 						</group>
 					</groups>
 					<header>${project.name}</header>
@@ -161,6 +167,21 @@
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>changelog-maven-plugin</artifactId>
 			</plugin>
+<!--
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<configuration>
+					<targetJdk>1.5</targetJdk>
+					<minimumTokens>100</minimumTokens>
+					<linkXRef>true</linkXRef>
+					<rulesets>
+						<ruleset>/rulesets/basic.xml</ruleset>
+						<ruleset>/rulesets/controversial.xml</ruleset>
+					</rulesets>
+				</configuration>
+			</plugin>
+-->
 		</plugins>
 	</reporting>
 </project>
