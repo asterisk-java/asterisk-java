@@ -22,7 +22,7 @@
 	<bannerLeft>
 		<name>Asterisk-Java</name>
 		<src>images/asterisk-java.png</src>
-		<href>http://www.asterisk-java.org/</href>
+		<href>http://asterisk-java.org/</href>
 	</bannerLeft>
 
 	<bannerRight>
@@ -52,7 +52,7 @@
 		<links>
 			<item name="Asterisk" href="http://www.asterisk.org/" />
 			<item name="Asterisk-Java"
-				href="http://sourceforge.net/projects/asterisk-java" />
+				href="http://asterisk-java.org" />
 		</links>
 
 		<menu name="Overview">
