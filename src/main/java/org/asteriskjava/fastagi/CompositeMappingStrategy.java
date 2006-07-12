@@ -63,6 +63,10 @@ public class CompositeMappingStrategy implements MappingStrategy
         for (MappingStrategy strategy : strategies)
         {
             script = strategy.determineScript(request);
+            if (script != null)
+            {
+                break;
+            }
         }
 
         return script;

@@ -45,6 +45,7 @@ public class ResourceBundleMappingStrategyTest extends TestCase
         scriptFirstPass = mappingStrategy.determineScript(request);
         scriptSecondPass = mappingStrategy.determineScript(request);
 
+        assertNotNull("no script determined", scriptFirstPass);
         assertEquals("incorrect script determined",
                 scriptFirstPass.getClass(), HelloAgiScript.class);
 

@@ -25,7 +25,18 @@ public class SimpleAgiRequest implements AgiRequest
     int localPort;
     InetAddress remoteAddress;
     int remotePort;
+    private String script;
 
+    public SimpleAgiRequest()
+    {
+        this.script = "hello.agi";
+    }
+    
+    public SimpleAgiRequest(String script)
+    {
+        this.script = script;
+    }
+    
     public Map getRequest()
     {
         throw new UnsupportedOperationException();
@@ -33,7 +44,7 @@ public class SimpleAgiRequest implements AgiRequest
 
     public String getScript()
     {
-        return "hello.agi";
+        return script;
     }
 
     public String getRequestURL()
