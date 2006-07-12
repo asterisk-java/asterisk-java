@@ -19,24 +19,71 @@ package org.asteriskjava.fastagi;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A mapping strategy that tries a sequence of other mapping strategies to find
+ * an AgiScript matching the request. The first strategy that returns a result wins,
+ * so the order of the mapping strategies passed to the CompositeMappingStrategy
+ * matters.<p>
+ * Example:
+ * <pre>
+ * new CompositeMappingStrategy(
+ *       new ResourceBundleMappingStrategy(),
+ *       new ClassNameMappingStrategy());
+ * </pre>
+ * This creates a new mapping strategy that first tries to look up the script
+ * in <code>fastagi-mapping.properties</code> and - if the properties file is
+ * not present on the classpath or contains no mapping for the request - uses
+ * a {@link ClassNameMappingStrategy} to get the script.
+ * 
+ * @see ResourceBundleMappingStrategy
+ * @see ClassNameMappingStrategy
+ * @author srt
+ * @since 0.3
+ * @version $Id$
+ */
 public class CompositeMappingStrategy implements MappingStrategy
 {
     private List<MappingStrategy> strategies;
 
+    /**
+     * Creates a new empty CompositeMappingStrategy.
+     */
     public CompositeMappingStrategy()
     {
         super();
     }
 
-    public CompositeMappingStrategy(MappingStrategy strategy1,
-            MappingStrategy strategy2)
+    /**
+     * Creates a new CompositeMappingStrategy.
+     * 
+     * @param strategies the strategies to use.
+     */
+    public CompositeMappingStrategy(MappingStrategy... strategies)
     {
         super();
-        strategies = new ArrayList<MappingStrategy>();
-        strategies.add(strategy1);
-        strategies.add(strategy2);
+        this.strategies = new ArrayList<MappingStrategy>();
+        for (MappingStrategy strategy : strategies)
+        {
+            this.strategies.add(strategy);
+        }
     }
 
+    /**
+     * Creates a new CompositeMappingStrategy.
+     * 
+     * @param strategies the strategies to use.
+     */
+    public CompositeMappingStrategy(List<MappingStrategy> strategies)
+    {
+        super();
+        this.strategies = new ArrayList<MappingStrategy>(strategies);
+    }
+
+    /**
+     * Adds a strategy (at the end of the list).
+     * 
+     * @param strategy the strategy to add.
+     */
     public void addStrategy(MappingStrategy strategy)
     {
         if (strategies == null)
@@ -46,9 +93,14 @@ public class CompositeMappingStrategy implements MappingStrategy
         strategies.add(strategy);
     }
 
+    /**
+     * Sets the strategies to use.
+     * 
+     * @param strategies the strategies to use.
+     */
     public void setStrategies(List<MappingStrategy> strategies)
     {
-        this.strategies = strategies;
+        this.strategies = new ArrayList<MappingStrategy>(strategies);
     }
 
     public AgiScript determineScript(AgiRequest request)
