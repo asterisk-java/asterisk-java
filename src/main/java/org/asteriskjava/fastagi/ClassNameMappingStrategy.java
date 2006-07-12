@@ -40,7 +40,7 @@ public class ClassNameMappingStrategy extends AbstractMappingStrategy
     private boolean shareInstances;
 
     /**
-     * Creates a new ClassNameMappingStrategy.
+     * Creates a new ClassNameMappingStrategy using shared instances.
      */
     public ClassNameMappingStrategy()
     {
