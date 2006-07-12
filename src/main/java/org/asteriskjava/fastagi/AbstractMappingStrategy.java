@@ -52,9 +52,27 @@ public abstract class AbstractMappingStrategy implements MappingStrategy
         AgiScript agiScript;
 
         agiScript = null;
+
         try
         {
             agiScriptClass = Class.forName(className);
+        }
+        catch (ClassNotFoundException e1)
+        {
+            logger.error("Unable to create AgiScript instance of type " + className
+                    + ": Class not found, make sure the class exists and is available on the CLASSPATH");
+            return null;
+        }
+
+        if (!AgiScript.class.isAssignableFrom(agiScriptClass))
+        {
+            logger.error("Unable to create AgiScript instance of type " + className
+                    + ": Class does not implement the AgiScript interface");
+            return null;
+        }
+
+        try
+        {
             constructor = agiScriptClass.getConstructor(new Class[]{});
             agiScript = (AgiScript) constructor.newInstance(new Object[]{});
         }
