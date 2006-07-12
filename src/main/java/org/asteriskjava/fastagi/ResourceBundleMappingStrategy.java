@@ -51,7 +51,7 @@ public class ResourceBundleMappingStrategy extends AbstractMappingStrategy
     private boolean shareInstances;
 
     /**
-     * Creates a new ResourceBundleMappingStrategy.
+     * Creates a new ResourceBundleMappingStrategy using shared instances..
      */
     public ResourceBundleMappingStrategy()
     {
