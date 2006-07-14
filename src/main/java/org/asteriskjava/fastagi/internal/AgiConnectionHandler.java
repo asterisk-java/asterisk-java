@@ -119,9 +119,9 @@ public class AgiConnectionHandler implements Runnable
                     setStatusVariable(channel, AJ_AGISTATUS_NOT_FOUND);
                     channel.sendCommand(new VerboseCommand(error, 1));
                 }
-                catch (Exception e)
+                catch (Exception e) //NOPMD
                 {
-                    //NOPMD
+                    //swallow
                 }
             }
             else
@@ -151,9 +151,9 @@ public class AgiConnectionHandler implements Runnable
             {
                 socket.close();
             }
-            catch (IOException e)
+            catch (IOException e) //NOPMD
             {
-                //NOPMD
+                //swallow
             }
         }
     }
@@ -169,9 +169,9 @@ public class AgiConnectionHandler implements Runnable
         {
             channel.setVariable(AJ_AGISTATUS_VARIABLE, value);
         }
-        catch (Exception e)
+        catch (Exception e) //NOPMD
         {
-            //NOPMD
+            //swallow
         }
     }
 

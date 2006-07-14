@@ -204,9 +204,9 @@ public class DefaultAgiServer implements AgiServer
             }
             port = Integer.parseInt(portString);
         }
-        catch(Exception e)
+        catch(Exception e) //NOPMD
         {
-            //NOPMD
+            //swallow
         }
 
         try
@@ -216,9 +216,9 @@ public class DefaultAgiServer implements AgiServer
             poolSizeString = resourceBundle.getString("poolSize");
             poolSize = Integer.parseInt(poolSizeString);
         }
-        catch(Exception e)
+        catch(Exception e) //NOPMD
         {
-            //NOPMD
+            //swallow
         }
 
         try
@@ -228,9 +228,9 @@ public class DefaultAgiServer implements AgiServer
             maximumPoolSizeString = resourceBundle.getString("maximumPoolSize");
             maximumPoolSize = Integer.parseInt(maximumPoolSizeString);
         }
-        catch(Exception e)
+        catch(Exception e) //NOPMD
         {
-            //NOPMD
+            //swallow
         }
     }
 
@@ -291,9 +291,9 @@ public class DefaultAgiServer implements AgiServer
                 {
                     serverSocket.close();
                 }
-                catch (IOException e)
+                catch (IOException e) //NOPMD
                 {
-                    //NOPMD
+                    //swallow
                 }
             }
             serverSocket = null;
@@ -308,9 +308,8 @@ public class DefaultAgiServer implements AgiServer
         {
             startup();
         }
-        catch (IOException e)
+        catch (IOException e) //NOPMD
         {
-            //NOPMD
             // nothing we can do about that and exceptions have already been logged
             // by startup().
         }
@@ -358,9 +357,9 @@ public class DefaultAgiServer implements AgiServer
             {
                 serverSocket.close();
             }
-            catch (IOException e)
+            catch (IOException e) //NOPMD
             {
-                //NOPMD
+                //swallow
             }
         }
     }

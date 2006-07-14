@@ -6,5 +6,5 @@
 	<classpathentry path="org.eclipse.jdt.launching.JRE_CONTAINER" kind="con"/>
 	<classpathentry path="org.maven.ide.eclipse.MAVEN2_CLASSPATH_CONTAINER" kind="con"/>
 	<classpathentry path="src/integrationtest" kind="src"/>
-	<classpathentry path="target/classes" kind="output"/>
+	<classpathentry path="bin" kind="output"/>
 </classpath>

@@ -101,9 +101,9 @@ public class PingThread extends Thread
             {
                 sleep(interval);
             }
-            catch (InterruptedException e)
+            catch (InterruptedException e) //NOPMD
             {
-                //NOPMD
+                //swallow
             }
 
             // exit if die is set

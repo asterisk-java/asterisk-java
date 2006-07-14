@@ -423,9 +423,9 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                 {
                     protocolIdentifier.wait(timeout);
                 }
-                catch (InterruptedException e)
+                catch (InterruptedException e) //NOPMD
                 {
-                    //NOPMD
+                    //swallow
                 }
             }
 
