@@ -52,7 +52,7 @@ public class AgiReplyImpl implements Serializable, AgiReply
      */
     private static final long serialVersionUID = 3256727294671337012L;
 
-    private List lines;
+    private List<String> lines;
     private String firstLine;
 
     /**
@@ -92,16 +92,16 @@ public class AgiReplyImpl implements Serializable, AgiReply
         super();
     }
 
-    AgiReplyImpl(List lines)
+    AgiReplyImpl(List<String> lines)
     {
         super();
-        this.lines = lines;
-        try
+        if (lines != null)
         {
-            firstLine = (String) lines.get(0);
-        }
-        catch (Exception e)
-        {
+            this.lines = new ArrayList<String>(lines);
+            if (!lines.isEmpty())
+            {
+                firstLine = (String) lines.get(0);
+            }
         }
     }
 
@@ -110,7 +110,7 @@ public class AgiReplyImpl implements Serializable, AgiReply
         return firstLine;
     }
 
-    public List getLines()
+    public List<String> getLines()
     {
         return lines;
     }

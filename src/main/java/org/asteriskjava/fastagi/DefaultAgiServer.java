@@ -206,7 +206,7 @@ public class DefaultAgiServer implements AgiServer
         }
         catch(Exception e)
         {
-            //swallow
+            //NOPMD
         }
 
         try
@@ -218,7 +218,7 @@ public class DefaultAgiServer implements AgiServer
         }
         catch(Exception e)
         {
-            //swallow
+            //NOPMD
         }
 
         try
@@ -230,7 +230,7 @@ public class DefaultAgiServer implements AgiServer
         }
         catch(Exception e)
         {
-            //swallow
+            //NOPMD
         }
     }
 
@@ -293,7 +293,7 @@ public class DefaultAgiServer implements AgiServer
                 }
                 catch (IOException e)
                 {
-                    // swallow
+                    //NOPMD
                 }
             }
             serverSocket = null;
@@ -310,6 +310,7 @@ public class DefaultAgiServer implements AgiServer
         }
         catch (IOException e)
         {
+            //NOPMD
             // nothing we can do about that and exceptions have already been logged
             // by startup().
         }
@@ -359,7 +360,7 @@ public class DefaultAgiServer implements AgiServer
             }
             catch (IOException e)
             {
-                // ignore
+                //NOPMD
             }
         }
     }

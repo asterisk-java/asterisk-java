@@ -121,7 +121,7 @@ public class AgiConnectionHandler implements Runnable
                 }
                 catch (Exception e)
                 {
-                    // do nothing
+                    //NOPMD
                 }
             }
             else
@@ -153,7 +153,7 @@ public class AgiConnectionHandler implements Runnable
             }
             catch (IOException e)
             {
-                // swallow
+                //NOPMD
             }
         }
     }
@@ -171,7 +171,7 @@ public class AgiConnectionHandler implements Runnable
         }
         catch (Exception e)
         {
-            // do nothing
+            //NOPMD
         }
     }
 

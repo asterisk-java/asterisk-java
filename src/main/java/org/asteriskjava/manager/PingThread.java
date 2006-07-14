@@ -103,7 +103,7 @@ public class PingThread extends Thread
             }
             catch (InterruptedException e)
             {
-                // swallow
+                //NOPMD
             }
 
             // exit if die is set

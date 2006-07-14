@@ -425,7 +425,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                 }
                 catch (InterruptedException e)
                 {
-                    // swallow
+                    //NOPMD
                 }
             }
 

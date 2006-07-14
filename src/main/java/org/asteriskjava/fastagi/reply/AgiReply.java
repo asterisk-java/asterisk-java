@@ -65,7 +65,7 @@ public interface AgiReply
      * 
      * @return a List containing the lines of the raw reply.
      */
-    List getLines();
+    List<String> getLines();
 
     /**
      * Returns the return code (the result as int).
@@ -143,5 +143,4 @@ public interface AgiReply
      *         no syntax errors.
      */
     String getUsage();
-
 }

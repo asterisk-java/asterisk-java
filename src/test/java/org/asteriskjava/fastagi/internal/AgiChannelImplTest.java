@@ -169,7 +169,7 @@ public class AgiChannelImplTest extends TestCase
             this.status = status;
         }
 
-        public List getLines()
+        public List<String> getLines()
         {
             throw new UnsupportedOperationException();
         }
