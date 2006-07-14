@@ -24,32 +24,12 @@ package org.asteriskjava.manager.event;
  * @author srt
  * @version $Id$
  */
-public class NewCallerIdEvent extends ManagerEvent
+public class NewCallerIdEvent extends AbstractChannelEvent
 {
     /**
      * Serializable version identifier
      */
     static final long serialVersionUID = 6639570533512201213L;
-
-    /**
-     * The new Caller*ID.
-     */
-    private String callerId;
-
-    /**
-     * The new Caller*ID Name.
-     */
-    private String callerIdName;
-
-    /**
-     * The name of the channel.
-     */
-    private String channel;
-
-    /**
-     * The unique id of the channel.
-     */
-    private String uniqueId;
 
     /**
      * Callerid presentation/screening.
@@ -63,88 +43,6 @@ public class NewCallerIdEvent extends ManagerEvent
     public NewCallerIdEvent(Object source)
     {
         super(source);
-    }
-
-    /**
-     * Returns the name of the channel.
-     * 
-     * @return the name of the channel.
-     */
-    public String getChannel()
-    {
-        return channel;
-    }
-
-    /**
-     * Sets the name of the channel.
-     * 
-     * @param channel the name of the channel
-     */
-    public void setChannel(String channel)
-    {
-        this.channel = channel;
-    }
-
-    /**
-     * Returns the unique id of the channel.
-     * 
-     * @return the unique id of the channel.
-     */
-    public String getUniqueId()
-    {
-        return uniqueId;
-    }
-
-    /**
-     * Sets the unique id of the channel.
-     * 
-     * @param uniqueId the unique id of the channel.
-     */
-    public void setUniqueId(String uniqueId)
-    {
-        this.uniqueId = uniqueId;
-    }
-
-    /**
-     * Returns the new caller id.
-     * 
-     * @return the new caller id.
-     */
-    public String getCallerId()
-    {
-        return callerId;
-    }
-
-    /**
-     * Sets the new Caller*ID.
-     * 
-     * @param callerId the new Caller*ID.
-     */
-    public void setCallerId(String callerId)
-    {
-        this.callerId = callerId;
-    }
-
-    /**
-     * Returns the new Caller*ID Name if set or "&lg;Unknown&gt;" if none has
-     * been set.
-     * 
-     * @return the new Caller*ID Name.
-     */
-    public String getCallerIdName()
-    {
-        return callerIdName;
-    }
-
-    /**
-     * Sets the new Caller*ID Name if set or "&lg;Unknown&gt;" if none has been
-     * set.
-     * 
-     * @param callerIdName the Caller*ID Name to set.
-     */
-    public void setCallerIdName(String callerIdName)
-    {
-        this.callerIdName = callerIdName;
     }
 
     /**

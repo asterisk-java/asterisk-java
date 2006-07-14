@@ -23,7 +23,7 @@ package org.asteriskjava.manager.event;
  * @author srt
  * @version $Id$
  */
-public class NewStateEvent extends AbstractChannelEvent
+public class NewStateEvent extends AbstractChannelStateEvent
 {
     /**
      * Serializable version identifier

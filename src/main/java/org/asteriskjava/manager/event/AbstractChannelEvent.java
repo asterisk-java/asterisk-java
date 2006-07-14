@@ -17,8 +17,7 @@
 package org.asteriskjava.manager.event;
 
 /**
- * Abstract base class providing common properties for HangupEvent, NewChannelEvent and
- * NewStateEvent.
+ * Abstract base class providing common properties channel related events.
  * 
  * @author srt
  * @version $Id$
@@ -34,11 +33,6 @@ public abstract class AbstractChannelEvent extends ManagerEvent
      * The name of the channel.
      */
     private String channel;
-
-    /**
-     * The state of the channel.
-     */
-    private String state;
 
     /**
      * This Caller*ID of the channel.
@@ -139,31 +133,5 @@ public abstract class AbstractChannelEvent extends ManagerEvent
     public void setCallerIdName(String callerIdName)
     {
         this.callerIdName = callerIdName;
-    }
-
-    /**
-     * Returns the (new) state of the channel.<p>
-     * The following states are used:<p>
-     * <ul>
-     * <li>Down</li>
-     * <li>OffHook</li>
-     * <li>Dialing</li>
-     * <li>Ring</li>
-     * <li>Ringing</li>
-     * <li>Up</li>
-     * <li>Busy</li>
-     * <ul>
-     */
-    public String getState()
-    {
-        return state;
-    }
-
-    /**
-     * Sets the (new) state of the channel.
-     */
-    public void setState(String state)
-    {
-        this.state = state;
     }
 }
