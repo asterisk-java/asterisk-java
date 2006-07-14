@@ -71,7 +71,7 @@ public abstract class AbstractManagerAction implements ManagerAction
                 value = getters.get(attribute).invoke(this);
                 sb.append(attribute + "='" + value + "',");
             }
-            catch (Exception e)
+            catch (Exception e) //NOPMD
             {
             }
         }

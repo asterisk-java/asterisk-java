@@ -128,7 +128,7 @@ public abstract class ManagerEvent extends EventObject implements Serializable
                 value = getters.get(attribute).invoke(this);
                 sb.append(attribute + "='" + value + "',");
             }
-            catch (Exception e)
+            catch (Exception e) //NOPMD
             {
             }
         }
