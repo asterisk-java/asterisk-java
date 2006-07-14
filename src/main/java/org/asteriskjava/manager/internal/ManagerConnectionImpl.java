@@ -82,6 +82,8 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 {
     private static final int RECONNECTION_INTERVAL_1 = 50;
     private static final int RECONNECTION_INTERVAL_2 = 5000;
+    private static final String DEFAULT_HOSTNAME = "localhost";
+    private static final int DEFAULT_PORT = 5038;
 
     private static final AtomicLong idCounter = new AtomicLong(0);
 
@@ -101,12 +103,12 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     /**
      * Hostname of the Asterisk server to connect to.
      */
-    private String hostname = "localhost";
+    private String hostname = DEFAULT_HOSTNAME;
 
     /**
      * TCP port to connect to.  
      */
-    private int port = 5038;
+    private int port = DEFAULT_PORT;
 
     /**
      * The username to use for login as defined in Asterisk's

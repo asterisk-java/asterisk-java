@@ -53,6 +53,22 @@ public class DefaultManagerConnection implements ManagerConnection
     }
 
     /**
+     * Creates a new instance with the given connection parameters using
+     * Asterisk's default port.
+     * 
+     * @param hostname the hostname of the Asterisk server to connect to.
+     * @param username the username to use for login
+     * @param password the password to use for login
+     */
+    public DefaultManagerConnection(String hostname, String username, String password)
+    {
+        this();
+        impl.setHostname(hostname);
+        impl.setUsername(username);
+        impl.setPassword(password);
+    }
+
+    /**
      * Creates a new instance with the given connection parameters.
      * 
      * @param hostname the hostname of the Asterisk server to connect to.
