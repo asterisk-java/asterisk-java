@@ -41,7 +41,6 @@ import org.asteriskjava.live.MeetMeUser;
 import org.asteriskjava.live.NoSuchChannelException;
 import org.asteriskjava.live.OriginateCallback;
 import org.asteriskjava.live.Voicemailbox;
-import org.asteriskjava.manager.AuthenticationFailedException;
 import org.asteriskjava.manager.ManagerConnection;
 import org.asteriskjava.manager.ManagerConnectionState;
 import org.asteriskjava.manager.ManagerEventListener;
@@ -101,6 +100,8 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
      * The underlying manager connection used to receive events from Asterisk.
      */
     private ManagerConnection eventConnection;
+
+    private boolean initialized = false;
 
     /**
      * A pool of manager connections to use for sending actions to Asterisk.
@@ -199,8 +200,18 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         this.connectionPool.add(eventConnection);
     }
 
-    public void initialize() throws AuthenticationFailedException, ManagerCommunicationException
+    public void initialize() throws ManagerCommunicationException
     {
+        initializeIfNeeded();
+    }
+
+    private synchronized void initializeIfNeeded() throws ManagerCommunicationException
+    {
+        if (initialized)
+        {
+            return;
+        }
+
         if (eventConnection.getState() == ManagerConnectionState.INITIAL
                 || eventConnection.getState() == ManagerConnectionState.DISCONNECTED)
         {
@@ -229,6 +240,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         {
             eventConnection.addEventListener(this);
         }
+        initialized = true;
     }
 
     /* Implementation of the AsteriskServer interface */
@@ -403,33 +415,39 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         sendActionOnEventConnection(originateAction);
     }
 
-    public Collection<AsteriskChannel> getChannels()
+    public Collection<AsteriskChannel> getChannels() throws ManagerCommunicationException
     {
+        initializeIfNeeded();
         return channelManager.getChannels();
     }
 
-    public AsteriskChannel getChannelByName(String name)
+    public AsteriskChannel getChannelByName(String name) throws ManagerCommunicationException
     {
+        initializeIfNeeded();
         return channelManager.getChannelImplByName(name);
     }
 
-    public AsteriskChannel getChannelById(String id)
+    public AsteriskChannel getChannelById(String id) throws ManagerCommunicationException
     {
+        initializeIfNeeded();
         return channelManager.getChannelImplById(id);
     }
 
-    public Collection<MeetMeRoom> getMeetMeRooms()
+    public Collection<MeetMeRoom> getMeetMeRooms() throws ManagerCommunicationException
     {
+        initializeIfNeeded();
         return meetMeManager.getMeetMeRooms();
     }
 
-    public MeetMeRoom getMeetMeRoom(String name)
+    public MeetMeRoom getMeetMeRoom(String name) throws ManagerCommunicationException
     {
+        initializeIfNeeded();
         return meetMeManager.getOrCreateRoomImpl(name);
     }
 
-    public Collection<AsteriskQueue> getQueues()
+    public Collection<AsteriskQueue> getQueues() throws ManagerCommunicationException
     {
+        initializeIfNeeded();
         return queueManager.getQueues();
     }
 
@@ -452,15 +470,15 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
             }
             else
             {
-                logger.error("Response to CommandAction(\"" + SHOW_VERSION_COMMAND
-                        + "\") was not a CommandResponse but " + response);
+                logger.error("Response to CommandAction(\"" + SHOW_VERSION_COMMAND + "\") was not a CommandResponse but "
+                        + response);
             }
         }
 
         return version;
     }
 
-    public int[] getVersion(String file)
+    public int[] getVersion(String file) throws ManagerCommunicationException
     {
         String fileVersion = null;
         String[] parts;
@@ -694,6 +712,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
 
     ManagerResponse sendActionOnEventConnection(ManagerAction action) throws ManagerCommunicationException
     {
+        initializeIfNeeded();
         try
         {
             return eventConnection.sendAction(action);
@@ -706,17 +725,20 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
 
     ManagerResponse sendAction(ManagerAction action) throws ManagerCommunicationException
     {
+        initializeIfNeeded();
         return connectionPool.sendAction(action);
     }
 
     ResponseEvents sendEventGeneratingAction(EventGeneratingAction action) throws ManagerCommunicationException
     {
+        initializeIfNeeded();
         return connectionPool.sendEventGeneratingAction(action);
     }
 
     ResponseEvents sendEventGeneratingAction(EventGeneratingAction action, long timeout)
             throws ManagerCommunicationException
     {
+        initializeIfNeeded();
         return connectionPool.sendEventGeneratingAction(action, timeout);
     }
 
