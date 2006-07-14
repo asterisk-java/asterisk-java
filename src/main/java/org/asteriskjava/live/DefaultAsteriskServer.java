@@ -219,7 +219,7 @@ public class DefaultAsteriskServer implements AsteriskServer
         return impl.getVoicemailboxes();
     }
 
-    public void addAsteriskServerListener(AsteriskServerListener listener)
+    public void addAsteriskServerListener(AsteriskServerListener listener) throws ManagerCommunicationException
     {
         impl.addAsteriskServerListener(listener);
     }

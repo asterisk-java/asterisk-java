@@ -334,7 +334,7 @@ public interface AsteriskServer
      */
     Collection<Voicemailbox> getVoicemailboxes() throws ManagerCommunicationException;
 
-    void addAsteriskServerListener(AsteriskServerListener listener);
+    void addAsteriskServerListener(AsteriskServerListener listener) throws ManagerCommunicationException;
 
     void removeAsteriskServerListener(AsteriskServerListener listener);
 }

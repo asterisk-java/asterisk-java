@@ -671,8 +671,9 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         return voicemailboxes;
     }
 
-    public void addAsteriskServerListener(AsteriskServerListener listener)
+    public void addAsteriskServerListener(AsteriskServerListener listener) throws ManagerCommunicationException
     {
+        initializeIfNeeded();
         synchronized (listeners)
         {
             listeners.add(listener);
