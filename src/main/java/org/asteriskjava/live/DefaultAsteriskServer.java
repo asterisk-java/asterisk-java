@@ -20,7 +20,6 @@ import java.util.Collection;
 import java.util.Map;
 
 import org.asteriskjava.live.internal.AsteriskServerImpl;
-import org.asteriskjava.manager.AuthenticationFailedException;
 import org.asteriskjava.manager.DefaultManagerConnection;
 import org.asteriskjava.manager.ManagerConnection;
 
@@ -110,7 +109,7 @@ public class DefaultAsteriskServer implements AsteriskServer
         impl.setManagerConnection(eventConnection);
     }
 
-    public void initialize() throws AuthenticationFailedException, ManagerCommunicationException
+    public void initialize() throws ManagerCommunicationException
     {
         impl.initialize();
     }
@@ -165,32 +164,32 @@ public class DefaultAsteriskServer implements AsteriskServer
         impl.originateToExtensionAsync(channel, context, exten, priority, timeout, cb);
     }
 
-    public Collection<AsteriskChannel> getChannels()
+    public Collection<AsteriskChannel> getChannels() throws ManagerCommunicationException
     {
         return impl.getChannels();
     }
 
-    public AsteriskChannel getChannelByName(String name)
+    public AsteriskChannel getChannelByName(String name) throws ManagerCommunicationException
     {
         return impl.getChannelByName(name);
     }
 
-    public AsteriskChannel getChannelById(String id)
+    public AsteriskChannel getChannelById(String id) throws ManagerCommunicationException
     {
         return impl.getChannelById(id);
     }
 
-    public Collection<MeetMeRoom> getMeetMeRooms()
+    public Collection<MeetMeRoom> getMeetMeRooms() throws ManagerCommunicationException
     {
         return impl.getMeetMeRooms();
     }
 
-    public MeetMeRoom getMeetMeRoom(String name)
+    public MeetMeRoom getMeetMeRoom(String name) throws ManagerCommunicationException
     {
         return impl.getMeetMeRoom(name);
     }
 
-    public Collection<AsteriskQueue> getQueues()
+    public Collection<AsteriskQueue> getQueues() throws ManagerCommunicationException
     {
         return impl.getQueues();
     }
@@ -200,7 +199,7 @@ public class DefaultAsteriskServer implements AsteriskServer
         return impl.getVersion();
     }
 
-    public int[] getVersion(String file)
+    public int[] getVersion(String file) throws ManagerCommunicationException
     {
         return impl.getVersion(file);
     }

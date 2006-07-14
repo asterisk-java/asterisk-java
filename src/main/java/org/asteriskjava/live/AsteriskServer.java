@@ -208,8 +208,10 @@ public interface AsteriskServer
      * Returns the active channels of the Asterisk server.
      * 
      * @return a Collection of active channels.
+     * @throws ManagerCommunicationException if there is a problem communication
+     *             with Asterisk
      */
-    Collection<AsteriskChannel> getChannels();
+    Collection<AsteriskChannel> getChannels() throws ManagerCommunicationException;
 
     /**
      * Returns a channel by its name.
@@ -217,8 +219,10 @@ public interface AsteriskServer
      * @param name name of the channel to return
      * @return the channel with the given name or <code>null</code> if there
      *         is no such channel.
+     * @throws ManagerCommunicationException if there is a problem communication
+     *             with Asterisk
      */
-    AsteriskChannel getChannelByName(String name);
+    AsteriskChannel getChannelByName(String name) throws ManagerCommunicationException;
 
     /**
      * Returns a channel by its unique id.
@@ -226,15 +230,19 @@ public interface AsteriskServer
      * @param id the unique id of the channel to return
      * @return the channel with the given unique id or <code>null</code> if
      *         there is no such channel.
+     * @throws ManagerCommunicationException if there is a problem communication
+     *             with Asterisk
      */
-    AsteriskChannel getChannelById(String id);
+    AsteriskChannel getChannelById(String id) throws ManagerCommunicationException;
 
     /**
      * Returns the acitve MeetMe rooms on the Asterisk server.
      * 
      * @return a Collection of MeetMeRooms
+     * @throws ManagerCommunicationException if there is a problem communication
+     *             with Asterisk
      */
-    Collection<MeetMeRoom> getMeetMeRooms();
+    Collection<MeetMeRoom> getMeetMeRooms() throws ManagerCommunicationException;
 
     /**
      * Returns the MeetMe room with the given number, if the room does not yet
@@ -242,15 +250,19 @@ public interface AsteriskServer
      * 
      * @param roomNumber the number of the room to return
      * @return the MeetMe room with the given number.
+     * @throws ManagerCommunicationException if there is a problem communication
+     *             with Asterisk
      */
-    MeetMeRoom getMeetMeRoom(String roomNumber);
+    MeetMeRoom getMeetMeRoom(String roomNumber) throws ManagerCommunicationException;
 
     /**
      * Returns the queues served by the Asterisk server.
      * 
      * @return a Collection of queues.
+     * @throws ManagerCommunicationException if there is a problem communication
+     *             with Asterisk
      */
-    Collection<AsteriskQueue> getQueues();
+    Collection<AsteriskQueue> getQueues() throws ManagerCommunicationException;
 
     /**
      * Returns the exact version string of this Asterisk server.
