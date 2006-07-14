@@ -334,7 +334,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
                 final String uniqueId;
 
                 uniqueId = ((AbstractOriginateEvent) responseEvent).getUniqueId();
-                logger.info(responseEvent.getClass() + " received with uniqueId " + uniqueId);
+                logger.debug(responseEvent.getClass() + " received with uniqueId " + uniqueId);
                 channel = getChannelById(uniqueId);
             }
         }
