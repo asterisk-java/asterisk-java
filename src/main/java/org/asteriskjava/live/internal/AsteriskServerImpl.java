@@ -240,6 +240,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         {
             eventConnection.addEventListener(this);
         }
+        logger.info("Initializing done");
         initialized = true;
     }
 
@@ -317,6 +318,8 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         // must set async to true to receive OriginateEvents.
         originateAction.setAsync(Boolean.TRUE);
 
+        initializeIfNeeded();
+
         // 2000 ms extra for the OriginateFailureEvent should be fine
         responseEvents = sendEventGeneratingAction(originateAction, originateAction.getTimeout() + 2000);
 
@@ -328,7 +331,11 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
             responseEvent = responseEventIterator.next();
             if (responseEvent instanceof AbstractOriginateEvent)
             {
-                channel = getChannelById(((AbstractOriginateEvent) responseEvent).getUniqueId());
+                final String uniqueId;
+
+                uniqueId = ((AbstractOriginateEvent) responseEvent).getUniqueId();
+                logger.info(responseEvent.getClass() + " received with uniqueId " + uniqueId);
+                channel = getChannelById(uniqueId);
             }
         }
 
@@ -412,6 +419,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
             }
         }
 
+        initializeIfNeeded();
         sendActionOnEventConnection(originateAction);
     }
 
@@ -455,6 +463,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
     {
         final ManagerResponse response;
 
+        initializeIfNeeded();
         if (version == null)
         {
             response = sendAction(new CommandAction(SHOW_VERSION_COMMAND));
@@ -484,6 +493,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         String[] parts;
         int[] intParts;
 
+        initializeIfNeeded();
         if (versions == null)
         {
             Map<String, String> map;
@@ -564,6 +574,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         ManagerResponse response;
         String value;
 
+        initializeIfNeeded();
         response = sendAction(new GetVarAction(variable));
         if (response instanceof ManagerError)
         {
@@ -581,6 +592,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
     {
         ManagerResponse response;
 
+        initializeIfNeeded();
         response = sendAction(new SetVarAction(variable, value));
         if (response instanceof ManagerError)
         {
@@ -594,6 +606,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         ManagerResponse response;
         final List<String> result;
 
+        initializeIfNeeded();
         voicemailboxes = new ArrayList<Voicemailbox>();
         response = sendAction(new CommandAction(SHOW_VOICEMAIL_USERS_COMMAND));
         if (!(response instanceof CommandResponse))
@@ -712,7 +725,6 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
 
     ManagerResponse sendActionOnEventConnection(ManagerAction action) throws ManagerCommunicationException
     {
-        initializeIfNeeded();
         try
         {
             return eventConnection.sendAction(action);
@@ -725,21 +737,42 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
 
     ManagerResponse sendAction(ManagerAction action) throws ManagerCommunicationException
     {
-        initializeIfNeeded();
-        return connectionPool.sendAction(action);
+        //return connectionPool.sendAction(action);
+        try
+        {
+            return eventConnection.sendAction(action);
+        }
+        catch (Exception e)
+        {
+            throw ManagerCommunicationExceptionMapper.mapSendActionException(action.getAction(), e);
+        }
     }
 
     ResponseEvents sendEventGeneratingAction(EventGeneratingAction action) throws ManagerCommunicationException
     {
-        initializeIfNeeded();
-        return connectionPool.sendEventGeneratingAction(action);
+        //return connectionPool.sendEventGeneratingAction(action);
+        try
+        {
+            return eventConnection.sendEventGeneratingAction(action);
+        }
+        catch (Exception e)
+        {
+            throw ManagerCommunicationExceptionMapper.mapSendActionException(action.getAction(), e);
+        }
     }
 
     ResponseEvents sendEventGeneratingAction(EventGeneratingAction action, long timeout)
             throws ManagerCommunicationException
     {
-        initializeIfNeeded();
-        return connectionPool.sendEventGeneratingAction(action, timeout);
+        //return connectionPool.sendEventGeneratingAction(action, timeout);
+        try
+        {
+            return eventConnection.sendEventGeneratingAction(action, timeout);
+        }
+        catch (Exception e)
+        {
+            throw ManagerCommunicationExceptionMapper.mapSendActionException(action.getAction(), e);
+        }
     }
 
     /* Implementation of the ManagerEventListener interface */

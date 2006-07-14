@@ -165,7 +165,7 @@ class ChannelManager
         channel = new AsteriskChannelImpl(server, name, uniqueId, dateOfCreation);
         channel.setCallerId(new CallerId(callerIdName, callerIdNumber));
         channel.stateChanged(dateOfCreation, state);
-        logger.info("Adding channel " + channel.getName());
+        logger.info("Adding channel " + channel.getName() + "(" + channel.getId() + ")");
         addChannel(channel);
 
         getTraceId(channel);

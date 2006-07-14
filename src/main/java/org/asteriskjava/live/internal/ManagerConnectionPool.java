@@ -25,31 +25,34 @@ import org.asteriskjava.manager.ResponseEvents;
 import org.asteriskjava.manager.action.EventGeneratingAction;
 import org.asteriskjava.manager.action.ManagerAction;
 import org.asteriskjava.manager.response.ManagerResponse;
+import org.asteriskjava.util.Log;
+import org.asteriskjava.util.LogFactory;
 
 class ManagerConnectionPool
 {
+    private final Log logger = LogFactory.getLog(getClass());
     private final BlockingQueue<ManagerConnection> connections;
-    
+
     ManagerConnectionPool(int size)
     {
         this.connections = new ArrayBlockingQueue<ManagerConnection>(size);
     }
-    
+
     void clear()
     {
         connections.clear();
     }
-    
+
     void add(ManagerConnection connection)
     {
         put(connection);
     }
-    
+
     ManagerResponse sendAction(ManagerAction action) throws ManagerCommunicationException
     {
         ManagerConnection connection;
         ManagerResponse response;
-        
+
         connection = get();
         try
         {
@@ -63,7 +66,7 @@ class ManagerConnectionPool
         {
             put(connection);
         }
-        
+
         return response;
     }
 
@@ -71,12 +74,13 @@ class ManagerConnectionPool
     {
         return sendEventGeneratingAction(action, -1);
     }
-    
-    ResponseEvents sendEventGeneratingAction(EventGeneratingAction action, long timeout) throws ManagerCommunicationException
+
+    ResponseEvents sendEventGeneratingAction(EventGeneratingAction action, long timeout)
+            throws ManagerCommunicationException
     {
         ManagerConnection connection;
         ResponseEvents responseEvents;
-        
+
         connection = get();
         try
         {
@@ -97,15 +101,29 @@ class ManagerConnectionPool
         {
             put(connection);
         }
-        
+
         return responseEvents;
     }
-    
+
+    /**
+     * Retrieves a connection from the pool.
+     * 
+     * @return the retrieved connection, or <code>null</code> if interrupted
+     *         while waiting for a connection to become available.
+     */
     private ManagerConnection get()
     {
-        return connections.poll();
+        try
+        {
+            return connections.take();
+        }
+        catch (InterruptedException e)
+        {
+            logger.error("Interrupted while waiting for ManagerConnection to become available", e);
+            return null;
+        }
     }
-    
+
     private void put(ManagerConnection connection)
     {
         try
