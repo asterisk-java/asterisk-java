@@ -21,6 +21,7 @@ import java.util.Map;
 
 import org.asteriskjava.live.internal.AsteriskServerImpl;
 import org.asteriskjava.manager.AuthenticationFailedException;
+import org.asteriskjava.manager.DefaultManagerConnection;
 import org.asteriskjava.manager.ManagerConnection;
 
 /**
@@ -35,7 +36,9 @@ public class DefaultAsteriskServer implements AsteriskServer
     private final AsteriskServerImpl impl;
 
     /**
-     * Creates a new instance.
+     * Creates a new instance without a {@link ManagerConnection}. The
+     * ManagerConnection must be set using {@link #setManagerConnection(ManagerConnection)}
+     * before you can use this AsteriskServer.
      */
     public DefaultAsteriskServer()
     {
@@ -43,7 +46,39 @@ public class DefaultAsteriskServer implements AsteriskServer
     }
 
     /**
-     * Creates a new instance.
+     * Creates a new instance and a new {@link ManagerConnection} with the given
+     * connection data.
+     * 
+     * @param hostname the hostname of the Asterisk server to connect to.
+     * @param username the username to use for login
+     * @param password the password to use for login
+     */
+    public DefaultAsteriskServer(String hostname, String username, String password)
+    {
+        final ManagerConnection connection;
+        connection = new DefaultManagerConnection(hostname, username, password);
+        impl = new AsteriskServerImpl(connection);
+    }
+
+    /**
+     * Creates a new instance and a new {@link ManagerConnection} with the given
+     * connection data.
+     * 
+     * @param hostname the hostname of the Asterisk server to connect to.
+     * @param port the port where Asterisk listens for incoming Manager API
+     *            connections, usually 5038.
+     * @param username the username to use for login
+     * @param password the password to use for login
+     */
+    public DefaultAsteriskServer(String hostname, int port, String username, String password)
+    {
+        final ManagerConnection connection;
+        connection = new DefaultManagerConnection(hostname, port, username, password);
+        impl = new AsteriskServerImpl(connection);
+    }
+
+    /**
+     * Creates a new instance that uses the given {@link ManagerConnection}.
      * 
      * @param eventConnection the ManagerConnection to use for receiving events
      *            from Asterisk.
