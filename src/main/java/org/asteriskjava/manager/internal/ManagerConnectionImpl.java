@@ -592,18 +592,15 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
         state = DISCONNECTING;
 
-        if (socket != null)
+        if (socket != null && !reconnecting)
         {
-            if (!reconnecting)
+            try
             {
-                try
-                {
-                    sendAction(new LogoffAction());
-                }
-                catch(Exception e)
-                {
-                    logger.warn("Unable to send LogOff action", e);
-                }
+                sendAction(new LogoffAction());
+            }
+            catch(Exception e)
+            {
+                logger.warn("Unable to send LogOff action", e);
             }
         }
         cleanup();
@@ -696,11 +693,11 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                 && (action instanceof ChallengeAction || action instanceof LoginAction))
         {
             // when (re-)connecting challenge and login actions are ok.
-        }
+        } //NOPMD
         else if (state == DISCONNECTING && action instanceof LogoffAction)
         {
             // when disconnecting logoff action is ok.
-        }
+        }  //NOPMD
         else if (state != CONNECTED)
         {
             throw new IllegalStateException("Actions may only be sent when in state " +
@@ -1023,7 +1020,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                 // Example: QueueMemberStatusEvent.
                 //logger.debug("ResponseEvent without "
                 //        + "internalActionId:\n" + responseEvent);
-            }
+            } //NOPMD
         }
         if (event instanceof DisconnectEvent)
         {
