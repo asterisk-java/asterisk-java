@@ -42,36 +42,39 @@
 		</developer>
 	</developers>
 	<scm>
-		<connection>
-			scm:svn:http://svn.reucon.net/repos/${artifactId}/trunk</connection>
-		<developerConnection>
-			scm:svn:https://secure.reucon.net/svn/repos/${artifactId}/trunk</developerConnection>
-		<url>
-			http://svn.reucon.net/fisheye/viewrep/repos/${artifactId}/trunk/</url>
+		<connection>scm:svn:http://svn.reucon.net/repos/${artifactId}/trunk</connection>
+		<developerConnection>scm:svn:https://secure.reucon.net/svn/repos/${artifactId}/trunk</developerConnection>
+		<url>http://asterisk-java.org/fisheye/viewrep/repos/${artifactId}/trunk/</url>
 	</scm>
 	<issueManagement>
 		<system>JIRA</system>
 		<url>http://jira.reucon.com/browse/AJ</url>
 	</issueManagement>
+	<ciManagement>
+		<system>continuum</system>
+		<notifiers>
+			<notifier>
+				<type>mail</type>
+				<configuration>
+					<address>dev@asterisk-java.org</address>
+				</configuration>
+			</notifier>
+		</notifiers>
+		<url>http://ci.reucon.net/continuum</url>
+	</ciManagement>
 	
 	<mailingLists>
 		<mailingList>
 			<name>Asterisk-Java User List</name>
-			<subscribe>
-				http://lists.sourceforge.net/mailman/listinfo/asterisk-java-users</subscribe>
-			<unsubscribe>
-				http://lists.sourceforge.net/mailman/listinfo/asterisk-java-users</unsubscribe>
-			<archive>
-				http://sourceforge.net/mailarchive/forum.php?forum=asterisk-java-users</archive>
+			<subscribe>http://lists.sourceforge.net/mailman/listinfo/asterisk-java-users</subscribe>
+			<unsubscribe>http://lists.sourceforge.net/mailman/listinfo/asterisk-java-users</unsubscribe>
+			<archive>http://sourceforge.net/mailarchive/forum.php?forum=asterisk-java-users</archive>
 		</mailingList>
 		<mailingList>
 			<name>Asterisk-Java Developer List</name>
-			<subscribe>
-				http://lists.sourceforge.net/mailman/listinfo/asterisk-java-devel</subscribe>
-			<unsubscribe>
-				http://lists.sourceforge.net/mailman/listinfo/asterisk-java-devel</unsubscribe>
-			<archive>
-				http://sourceforge.net/mailarchive/forum.php?forum=asterisk-java-devel</archive>
+			<subscribe>http://lists.sourceforge.net/mailman/listinfo/asterisk-java-devel</subscribe>
+			<unsubscribe>http://lists.sourceforge.net/mailman/listinfo/asterisk-java-devel</unsubscribe>
+			<archive>http://sourceforge.net/mailarchive/forum.php?forum=asterisk-java-devel</archive>
 		</mailingList>
 	</mailingLists>
 	<build>
