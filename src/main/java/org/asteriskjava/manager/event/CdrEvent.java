@@ -16,11 +16,10 @@
  */
 package org.asteriskjava.manager.event;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
+
+import org.asteriskjava.util.DateUtil;
 
 /**
  * A CdrEvent is triggered when a call detail record is generated, usually at the end of a call.<p>
@@ -37,7 +36,6 @@ public class CdrEvent extends ManagerEvent
      * Serializable version identifier
      */
     private static final long serialVersionUID = 2541424315212201670L;
-    private static final String DATE_TIME_PATTERN = "yy-MM-dd HH:mm:ss";
     
     public static final String DISPOSITION_NO_ANSWER = "NO ANSWER";
     public static final String DISPOSITION_FAILED = "FAILED";
@@ -288,7 +286,7 @@ public class CdrEvent extends ManagerEvent
      */
     public Date getStartTimeAsDate()
     {
-        return parseDateTime(startTime);
+        return DateUtil.parseDateTime(startTime);
     }
     
     /**
@@ -300,7 +298,7 @@ public class CdrEvent extends ManagerEvent
      */
     public Date getStartTimeAsDate(TimeZone tz)
     {
-        return parseDateTime(startTime, tz);
+        return DateUtil.parseDateTime(startTime, tz);
     }
 
     /**
@@ -335,7 +333,7 @@ public class CdrEvent extends ManagerEvent
      */
     public Date getAnswerTimeAsDate()
     {
-        return parseDateTime(answerTime);
+        return DateUtil.parseDateTime(answerTime);
     }
 
     /**
@@ -347,7 +345,7 @@ public class CdrEvent extends ManagerEvent
      */
     public Date getAnswerTimeAsDate(TimeZone tz)
     {
-        return parseDateTime(answerTime, tz);
+        return DateUtil.parseDateTime(answerTime, tz);
     }
 
     /**
@@ -382,7 +380,7 @@ public class CdrEvent extends ManagerEvent
      */
     public Date getEndTimeAsDate()
     {
-        return parseDateTime(endTime);
+        return DateUtil.parseDateTime(endTime);
     }
     
     /**
@@ -394,7 +392,7 @@ public class CdrEvent extends ManagerEvent
      */
     public Date getEndTimeAsDate(TimeZone tz)
     {
-        return parseDateTime(endTime, tz);
+        return DateUtil.parseDateTime(endTime, tz);
     }
 
     /**
@@ -546,33 +544,4 @@ public class CdrEvent extends ManagerEvent
     {
         this.userField = userField;
     }
-
-    private Date parseDateTime(String s)
-    {
-        return parseDateTime(s, null);
-    }
-
-    private Date parseDateTime(String s, TimeZone tz)
-    {
-        DateFormat df;
-        
-        if (s == null)
-        {
-            return null;
-        }
-        
-        df = new SimpleDateFormat(DATE_TIME_PATTERN);
-        if (tz != null)
-        {
-            df.setTimeZone(tz);
-        }
-        try
-        {
-            return df.parse(s);
-        }
-        catch (ParseException e)
-        {
-            return null;
-        }
-    }    
 }

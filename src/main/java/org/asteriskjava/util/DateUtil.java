@@ -16,11 +16,17 @@
  */
 package org.asteriskjava.util;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 /**
- * Utility class to obtain the current date and allows to override with a fixed value for 
- * unit testing.<p>
+ * Utility class to obtain the current date and allows to override with a fixed
+ * value for unit testing. Includes some convenience methods for date
+ * conversion.
+ * <p>
  * Client code is not supposed to use this class.
  * 
  * @author srt
@@ -28,6 +34,8 @@ import java.util.Date;
  */
 public class DateUtil
 {
+    private static final String DATE_TIME_PATTERN = "yy-MM-dd HH:mm:ss";
+
     private static Date currentDate;
 
     private DateUtil()
@@ -36,11 +44,11 @@ public class DateUtil
     }
 
     /**
-     * If set to a non null value uses the date given as current date on calls to getDate(). Set to
-     * null to restore the normal behavior.
+     * If set to a non null value uses the date given as current date on calls
+     * to getDate(). Set to null to restore the normal behavior.
      * 
-     * @param currentDate the date to return on calls to getDate() or <code>null</code> to return
-     * the real current date.
+     * @param currentDate the date to return on calls to getDate() or
+     *            <code>null</code> to return the real current date.
      */
     public static void overrideCurrentDate(Date currentDate)
     {
@@ -61,6 +69,50 @@ public class DateUtil
         else
         {
             return currentDate;
+        }
+    }
+
+    /**
+     * Converts a date in the form of "yy-MM-dd HH:mm:ss" to a Date object using
+     * the default timezone.
+     * 
+     * @param s date string in the form of "yy-MM-dd HH:mm:ss"
+     * @return the corresponding Java date object
+     */
+    public static Date parseDateTime(String s)
+    {
+        return parseDateTime(s, null);
+    }
+
+    /**
+     * Converts a date in the form of "yy-MM-dd HH:mm:ss" to a Date object using
+     * the given timezone.
+     * 
+     * @param s date string in the form of "yy-MM-dd HH:mm:ss"
+     * @param tz the timezone to use
+     * @return the corresponding Java date object
+     */
+    public static Date parseDateTime(String s, TimeZone tz)
+    {
+        DateFormat df;
+
+        if (s == null)
+        {
+            return null;
+        }
+
+        df = new SimpleDateFormat(DATE_TIME_PATTERN);
+        if (tz != null)
+        {
+            df.setTimeZone(tz);
+        }
+        try
+        {
+            return df.parse(s);
+        }
+        catch (ParseException e)
+        {
+            return null;
         }
     }
 }
