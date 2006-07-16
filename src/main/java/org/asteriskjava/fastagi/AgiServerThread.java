@@ -16,7 +16,6 @@
  */
 package org.asteriskjava.fastagi;
 
-import java.io.IOException;
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -138,9 +137,9 @@ public class AgiServerThread
                 {
                     agiServer.startup();
                 }
-                catch (IOException e)
+                catch (Throwable e)
                 {
-                    throw new RuntimeException("Unable to start AgiServer.", e);
+                    throw new RuntimeException("Exception running AgiServer.", e);
                 }
             }
         });
