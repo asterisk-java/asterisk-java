@@ -40,6 +40,5 @@ public interface AgiScript
      * 
      * @throws AgiException any exception thrown by your script will be logged.
      */
-    void service(final AgiRequest request, final AgiChannel channel)
-            throws AgiException;
+    void service(final AgiRequest request, final AgiChannel channel) throws AgiException;
 }

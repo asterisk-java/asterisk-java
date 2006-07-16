@@ -17,6 +17,8 @@
 package org.asteriskjava.fastagi;
 
 import java.io.IOException;
+import java.lang.Thread.UncaughtExceptionHandler;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
@@ -27,8 +29,8 @@ import org.asteriskjava.util.LogFactory;
  * You can use this class to run an AgiServer in the background of your
  * application or run it in your servlet container or application server.
  * <p>
- * By default the thread used by this class is marked as daemon thread,
- * that means it will be destroyed when the last user thread has finished.  
+ * By default the thread used by this class is marked as daemon thread, that
+ * means it will be destroyed when the last user thread has finished.
  * 
  * @author srt
  * @version $Id$
@@ -36,7 +38,8 @@ import org.asteriskjava.util.LogFactory;
  */
 public class AgiServerThread
 {
-    private final Log logger = LogFactory.getLog(getClass()); 
+    private final Log logger = LogFactory.getLog(getClass());
+    private static AtomicLong idCounter = new AtomicLong();
     private AgiServer agiServer;
     private Thread thread;
     private boolean daemon = true;
@@ -67,8 +70,10 @@ public class AgiServerThread
     }
 
     /**
-     * Sets the AgiServer to run.<p>
-     * This property must be set before starting the AgiServerThread by calling startup.
+     * Sets the AgiServer to run.
+     * <p>
+     * This property must be set before starting the AgiServerThread by calling
+     * startup.
      * 
      * @param agiServer the AgiServer to run.
      */
@@ -78,10 +83,12 @@ public class AgiServerThread
     }
 
     /**
-     * Marks the thread as either a daemon thread or a user thread.<p>
+     * Marks the thread as either a daemon thread or a user thread.
+     * <p>
      * Default is <code>true</code>.
      * 
-     * @param daemon if <code>false</code>, marks the thread as a user thread.
+     * @param daemon if <code>false</code>, marks the thread as a user
+     *            thread.
      * @see Thread#setDaemon(boolean)
      * @since 0.3
      */
@@ -91,15 +98,17 @@ public class AgiServerThread
     }
 
     /**
-     * Starts the AgiServer in its own thread.<p>
+     * Starts the AgiServer in its own thread.
+     * <p>
      * Note: The AgiServerThread is designed to handle one AgiServer instance at
      * a time so calling this method twice without stopping the AgiServer in
      * between will result in a RuntimeException.
      * 
-     * @throws IllegalStateException if the mandatory property agiServer has
-     *         not been set or the AgiServer had already been started.
-     * @throws RuntimeException if the AgiServer can't be started due to IO problems, for
-     *         example because the socket has already been bound by another process.
+     * @throws IllegalStateException if the mandatory property agiServer has not
+     *             been set or the AgiServer had already been started.
+     * @throws RuntimeException if the AgiServer can't be started due to IO
+     *             problems, for example because the socket has already been
+     *             bound by another process.
      */
     public synchronized void startup() throws IllegalStateException, RuntimeException
     {
@@ -113,7 +122,15 @@ public class AgiServerThread
             throw new IllegalStateException("AgiServer is already started");
         }
 
-        thread = new Thread(new Runnable()
+        thread = createThread();
+        thread.start();
+    }
+
+    protected Thread createThread()
+    {
+        Thread t;
+
+        t = new Thread(new Runnable()
         {
             public void run()
             {
@@ -127,19 +144,22 @@ public class AgiServerThread
                 }
             }
         });
-        thread.setName("AgiServer Thread");
-        thread.setDaemon(daemon);
-        thread.start();
+        t.setName("AgiServerThread-" + idCounter.getAndIncrement());
+        t.setDaemon(daemon);
+        t.setUncaughtExceptionHandler(new AgiThreadUncaughtExceptionHanlder());
+
+        return t;
     }
 
     /**
-     * Stops the {@link AgiServer}.<p>
-     * The AgiServer must have been started by calling {@link #startup()} before you
-     * can stop it.
+     * Stops the {@link AgiServer}.
+     * <p>
+     * The AgiServer must have been started by calling {@link #startup()} before
+     * you can stop it.
      * 
      * @see AgiServer#shutdown()
-     * @throws IllegalStateException if the mandatory property agiServer has
-     *         not been set or the AgiServer had already been shut down.
+     * @throws IllegalStateException if the mandatory property agiServer has not
+     *             been set or the AgiServer had already been shut down.
      */
     public synchronized void shutdown() throws IllegalStateException
     {
@@ -161,6 +181,14 @@ public class AgiServerThread
                 logger.warn("Interrupted while waiting for AgiServer to shutdown.");
             }
             thread = null; // NOPMD by srt on 7/5/06 11:23 PM
+        }
+    }
+
+    class AgiThreadUncaughtExceptionHanlder implements UncaughtExceptionHandler
+    {
+        public void uncaughtException(Thread t, Throwable e)
+        {
+            logger.error("Uncaught exception in AgiServerThread", e);
         }
     }
 }

@@ -249,7 +249,6 @@ public class DefaultAgiServer implements AgiServer
                 poolSize, (maximumPoolSize < poolSize) ? poolSize : maximumPoolSize, 
                 50000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>(),
                 new DaemonThreadFactory());
-
         logger.info("Thread pool started.");
 
         try
@@ -268,9 +267,8 @@ public class DefaultAgiServer implements AgiServer
         {
             while ((socket = serverSocket.accept()) != null)
             {
-                logger.info("Received connection.");
-                connectionHandler = new AgiConnectionHandler(socket,
-                        mappingStrategy);
+                logger.info("Received connection from " + socket.getRemoteAddress());
+                connectionHandler = new AgiConnectionHandler(socket, mappingStrategy);
                 pool.execute(connectionHandler);
             }
         }

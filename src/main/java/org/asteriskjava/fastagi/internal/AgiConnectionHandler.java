@@ -30,7 +30,8 @@ import org.asteriskjava.util.SocketConnectionFacade;
 
 /**
  * An AgiConnectionHandler is created and run by the AgiServer whenever a new
- * socket connection from an Asterisk Server is received.<p>
+ * socket connection from an Asterisk Server is received.
+ * <p>
  * It reads the request using an AgiReader and runs the AgiScript configured to
  * handle this type of request. Finally it closes the socket connection.
  * 
@@ -63,8 +64,7 @@ public class AgiConnectionHandler implements Runnable
      * @param mappingStrategy the strategy to use to determine which script to
      *            run.
      */
-    public AgiConnectionHandler(SocketConnectionFacade socket,
-            MappingStrategy mappingStrategy)
+    public AgiConnectionHandler(SocketConnectionFacade socket, MappingStrategy mappingStrategy)
     {
         this.socket = socket;
         this.mappingStrategy = mappingStrategy;
@@ -90,8 +90,6 @@ public class AgiConnectionHandler implements Runnable
             AgiWriter writer;
             AgiRequest request;
             AgiScript script;
-            Thread thread;
-            String threadName;
 
             reader = createReader();
             writer = createWriter();
@@ -99,39 +97,23 @@ public class AgiConnectionHandler implements Runnable
             request = reader.readRequest();
             channel = new AgiChannelImpl(writer, reader);
 
-            script = mappingStrategy.determineScript(request);
-
-            thread = Thread.currentThread();
-            threadName = thread.getName();
             AgiConnectionHandler.channel.set(channel);
 
+            script = mappingStrategy.determineScript(request);
             if (script == null)
             {
-                final String error;
+                final String errorMessage;
 
-                error = "No script configured for URL '"
-                        + request.getRequestURL() + "' (script '"
+                errorMessage = "No script configured for URL '" + request.getRequestURL() + "' (script '"
                         + request.getScript() + "')";
-                logger.error(error);
+                logger.error(errorMessage);
 
-                try
-                {
-                    setStatusVariable(channel, AJ_AGISTATUS_NOT_FOUND);
-                    channel.sendCommand(new VerboseCommand(error, 1));
-                }
-                catch (Exception e) //NOPMD
-                {
-                    //swallow
-                }
+                setStatusVariable(channel, AJ_AGISTATUS_NOT_FOUND);
+                logToAsterisk(channel, errorMessage);
             }
             else
             {
-                logger.info("Begin AGIScript " + script.getClass().getName()
-                        + " on " + threadName);
-                script.service(request, channel);
-                logger.info("End AGIScript " + script.getClass().getName()
-                        + " on " + threadName);
-                setStatusVariable(channel, AJ_AGISTATUS_SUCCESS);
+                runScript(script, request, channel);
             }
         }
         catch (AgiException e)
@@ -151,13 +133,37 @@ public class AgiConnectionHandler implements Runnable
             {
                 socket.close();
             }
-            catch (IOException e) //NOPMD
+            catch (IOException e) // NOPMD
             {
-                //swallow
+                // swallow
             }
         }
     }
-    
+
+    private void runScript(AgiScript script, AgiRequest request, AgiChannel channel)
+    {
+        String threadName;
+        threadName = Thread.currentThread().getName();
+
+        logger.info("Begin AgiScript " + script.getClass().getName() + " on " + threadName);
+        try
+        {
+            script.service(request, channel);
+            setStatusVariable(channel, AJ_AGISTATUS_SUCCESS);
+        }
+        catch (AgiException e)
+        {
+            logger.error("AgiException running AgiScript " + script.getClass().getName() + " on " + threadName, e);
+            setStatusVariable(channel, AJ_AGISTATUS_FAILED);
+        }
+        catch (Exception e)
+        {
+            logger.error("Exception running AgiScript " + script.getClass().getName() + " on " + threadName, e);
+            setStatusVariable(channel, AJ_AGISTATUS_FAILED);
+        }
+        logger.info("End AgiScript " + script.getClass().getName() + " on " + threadName);
+    }
+
     private void setStatusVariable(AgiChannel channel, String value)
     {
         if (channel == null)
@@ -169,9 +175,26 @@ public class AgiConnectionHandler implements Runnable
         {
             channel.setVariable(AJ_AGISTATUS_VARIABLE, value);
         }
-        catch (Exception e) //NOPMD
+        catch (Exception e) // NOPMD
         {
-            //swallow
+            // swallow
+        }
+    }
+
+    private void logToAsterisk(AgiChannel channel, String message)
+    {
+        if (channel == null)
+        {
+            return;
+        }
+
+        try
+        {
+            channel.sendCommand(new VerboseCommand(message, 1));
+        }
+        catch (Exception e) // NOPMD
+        {
+            // swallow
         }
     }
 
