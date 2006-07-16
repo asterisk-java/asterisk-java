@@ -17,7 +17,8 @@
 package org.asteriskjava.manager.event;
 
 /**
- * An AgentsEvent is triggered for each agent in response to an AgentsAction.<p>
+ * An AgentsEvent is triggered for each agent in response to an AgentsAction.
+ * <p>
  * Available since Asterisk 1.2
  * 
  * @see org.asteriskjava.manager.action.AgentsAction
@@ -31,6 +32,27 @@ public class AgentsEvent extends ResponseEvent
      * Serial version identifier
      */
     private static final long serialVersionUID = -3619197512835308812L;
+
+    /**
+     * Agent isn't logged in.
+     */
+    public static final String AGENT_STATUS_LOGGEDOFF = "AGENT_LOGGEDOFF";
+
+    /**
+     * Agent is logged in and waiting for call.
+     */
+    public static final String AGENT_STATUS_IDLE = "AGENT_IDLE";
+
+    /**
+     * Agent is logged in and on a call.
+     */
+    public static final String AGENT_STATUS_ONCALL = "AGENT_ONCALL";
+
+    /**
+     * Don't know anything about agent. Shouldn't ever get this.
+     */
+    public static final String AGENT_STATUS_UNKNOWN = "AGENT_UNKNOWN";
+
     private String agent;
     private String name;
     private String status;
@@ -83,20 +105,25 @@ public class AgentsEvent extends ResponseEvent
     }
 
     /**
-     * Returns the status of this agent.<p>
+     * Returns the status of this agent.
+     * <p>
      * This is one of
      * <dl>
      * <dt>"AGENT_LOGGEDOFF"</dt>
      * <dd>Agent isn't logged in</dd>
      * <dt>"AGENT_IDLE"</dt>
-     * <dd>Agent is logged in, and waiting for call</dd>
+     * <dd>Agent is logged in and waiting for call</dd>
      * <dt>"AGENT_ONCALL"</dt>
-     * <dd>Agent is logged in, and on a call</dd>
+     * <dd>Agent is logged in and on a call</dd>
      * <dt>"AGENT_UNKNOWN"</dt>
      * <dd>Don't know anything about agent. Shouldn't ever get this.</dd>
      * </dl>
      * 
      * @return the status of this agent
+     * @see #AGENT_STATUS_LOGGEDOFF
+     * @see #AGENT_STATUS_IDLE
+     * @see #AGENT_STATUS_ONCALL
+     * @see #AGENT_STATUS_UNKNOWN
      */
     public String getStatus()
     {
