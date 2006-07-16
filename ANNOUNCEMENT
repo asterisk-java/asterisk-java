@@ -11,7 +11,9 @@ provides for this scenario: The FastAGI protocol and the Manager API.
 The 0.3-rc1 release candidate focuses on ease of use and provides the
 new org.asteriskjava.live package that takes care of the lowlevel action
 and event handling of the Manager API and offers an intuitive API for
-Java developers.
+Java developers. Asterisk-Java has been updated to take advantage of the
+new features of Java 5.0 and therfore requires a Java Virtual Machine
+of at least version 1.5.0.
 
 Asterisk-Java is used in several commercial environments and by
 the following Open Source projects:
