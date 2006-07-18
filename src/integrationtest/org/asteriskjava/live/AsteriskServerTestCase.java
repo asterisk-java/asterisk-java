@@ -18,25 +18,18 @@ package org.asteriskjava.live;
 
 import junit.framework.TestCase;
 
-import org.asteriskjava.live.internal.AsteriskServerImpl;
 import org.asteriskjava.manager.DefaultManagerConnection;
 
 public class AsteriskServerTestCase extends TestCase
 {
-    protected AsteriskServerImpl server;
+    protected DefaultAsteriskServer server;
     protected DefaultManagerConnection managerConnection;
 
     @Override
     public void setUp() throws Exception
     {
-        managerConnection = new DefaultManagerConnection();
-        managerConnection.setHostname("pbx0");
-        managerConnection.setUsername("manager");
-        managerConnection.setPassword("obelisk");
-
-        server = new AsteriskServerImpl();
-        server.setManagerConnection(managerConnection);
-        server.initialize();
+        server = new DefaultAsteriskServer("pbx0", "manager", "obelisk");
+        //server.initialize();
     }
 
     @Override

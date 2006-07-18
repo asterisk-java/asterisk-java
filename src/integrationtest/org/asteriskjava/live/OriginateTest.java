@@ -21,7 +21,7 @@ public class OriginateTest extends AsteriskServerTestCase
         this.channel = null;
     }
 
-    public void XtestOriginate() throws Exception
+    public void testOriginate() throws Exception
     {
         AsteriskChannel channel;
         channel = server.originateToExtension("Local/1310@default", "from-local", "1330", 1, timeout);
@@ -33,12 +33,12 @@ public class OriginateTest extends AsteriskServerTestCase
         System.err.println(channel.getVariable("AJ_TRACE_ID"));
     }
 
-    public void testOriginateAsync() throws Exception
+    public void XtestOriginateAsync() throws Exception
     {
         final String source;
 
-        //source = "SIP/1313";
-        source = "Local/1313@from-local/n";
+        source = "SIP/1313";
+        //source = "Local/1313@from-local/n";
         server.originateToExtensionAsync(source, "from-local", "1399", 1, timeout, 
                 new CallerId("AJ Test Call", "08003301000"), null, 
                 new OriginateCallback()
@@ -53,8 +53,9 @@ public class OriginateTest extends AsteriskServerTestCase
                     c.setVariable(AsteriskChannel.VARIABLE_MONITOR_EXEC, "/usr/local/bin/2wav2mp3");
                     c.setVariable(AsteriskChannel.VARIABLE_MONITOR_EXEC_ARGS, "a b");
                     c.startMonitoring("mtest", "wav", true);
-                    Thread.sleep(2000L);
+                    Thread.sleep(10000L);
                     c.stopMonitoring();
+                    c.setAbsoluteTimeout(20);
                 }
                 catch (Exception e)
                 {
@@ -104,7 +105,15 @@ public class OriginateTest extends AsteriskServerTestCase
         {
             otherName = name.substring(0, name.length() - 1) + "2";
             System.err.println("other name: " + otherName);
-            otherChannel = server.getChannelByName(otherName);
+            try
+            {
+                otherChannel = server.getChannelByName(otherName);
+            }
+            catch (ManagerCommunicationException e)
+            {
+                e.printStackTrace();
+                return;
+            }
             System.err.println("other channel: " + otherChannel);
             System.err.println("other dialedChannel: " + otherChannel.getDialedChannel());
             System.err.println("other linkedChannelHistory: " + otherChannel.getLinkedChannelHistory());
