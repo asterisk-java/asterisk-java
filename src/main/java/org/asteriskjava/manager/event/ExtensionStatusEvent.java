@@ -97,6 +97,7 @@ public class ExtensionStatusEvent extends ManagerEvent
      * This property is only available on BRIstuffed Asterisk servers.
      * 
      * @return the Caller*ID.
+     * @since 0.3
      */
     public String getCallerId()
     {
@@ -107,6 +108,7 @@ public class ExtensionStatusEvent extends ManagerEvent
      * Sets the Caller*ID.
      * 
      * @param callerId the Caller*ID.
+     * @since 0.3
      */
     public void setCallerId(String callerId)
     {
