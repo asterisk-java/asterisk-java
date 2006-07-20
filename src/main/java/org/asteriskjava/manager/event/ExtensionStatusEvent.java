@@ -17,7 +17,8 @@
 package org.asteriskjava.manager.event;
 
 /**
- * An ExtensionStatusEvent is triggered when the state of an extension changes.<p>
+ * An ExtensionStatusEvent is triggered when the state of an extension changes.
+ * <p>
  * It is implemented in <code>manager.c</code>
  * 
  * @author srt
@@ -32,6 +33,7 @@ public class ExtensionStatusEvent extends ManagerEvent
     private String exten;
     private String context;
     private Integer status;
+    private String callerId;
 
     /**
      * @param source
@@ -87,5 +89,27 @@ public class ExtensionStatusEvent extends ManagerEvent
     public void setStatus(Integer status)
     {
         this.status = status;
+    }
+
+    /**
+     * Returns the Caller*ID in the form <code>"Some Name" &lt;1234&gt;</code>.
+     * <p>
+     * This property is only available on BRIstuffed Asterisk servers.
+     * 
+     * @return the Caller*ID.
+     */
+    public String getCallerId()
+    {
+        return callerId;
+    }
+
+    /**
+     * Sets the Caller*ID.
+     * 
+     * @param callerId the Caller*ID.
+     */
+    public void setCallerId(String callerId)
+    {
+        this.callerId = callerId;
     }
 }
