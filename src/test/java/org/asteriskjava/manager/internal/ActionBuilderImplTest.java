@@ -25,8 +25,6 @@ import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.manager.action.AbstractManagerAction;
 import org.asteriskjava.manager.action.AgentsAction;
 import org.asteriskjava.manager.action.OriginateAction;
-import org.asteriskjava.manager.action.proxy.DropServerProxyAction;
-import org.asteriskjava.manager.internal.ActionBuilderImpl;
 
 public class ActionBuilderImplTest extends TestCase
 {
@@ -56,23 +54,6 @@ public class ActionBuilderImplTest extends TestCase
                 .indexOf("secondproperty: 2\r\n") >= 0);
         assertTrue("Missing trailing CRNL CRNL", actual.endsWith("\r\n\r\n"));
         assertEquals("Incorrect length", 61, actual.length());
-    }
-
-    public void testBuildProxyAction()
-    {
-        DropServerProxyAction myAction;
-        String actual;
-
-        myAction = new DropServerProxyAction();
-        myAction.setServer("first value");
-
-        actual = actionBuilder.buildAction(myAction);
-
-        assertTrue("ProxyAction name missing", actual.indexOf("proxyaction: DropServer\r\n") >= 0);
-        assertTrue("First property missing", actual
-                .indexOf("server: first value\r\n") >= 0);
-        assertTrue("Missing trailing CRNL CRNL", actual.endsWith("\r\n\r\n"));
-        //assertEquals("Incorrect length", 61, actual.length());
     }
 
     public void testBuildActionWithNullValue()

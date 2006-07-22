@@ -142,12 +142,6 @@
 							</packages>
 						</group>
 						<group>
-							<title>Astmanproxy Support Packages</title>
-							<packages>
-								org.asteriskjava.manager.action.proxy:org.asteriskjava.manager.response.proxy
-							</packages>
-						</group>
-						<group>
 							<title>Internal Packages</title>
 							<packages>
 								org.asteriskjava.fastagi.internal:org.asteriskjava.manager.internal:org.asteriskjava.live.internal:org.asteriskjava.util.internal
@@ -181,6 +175,13 @@
 					</rulesets>
 				</configuration>
 			</plugin>
+<!--
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>jdepend-maven-plugin</artifactId>
+				<version>2.0-beta-1-SNAPSHOT</version>
+			</plugin>
+-->
 		</plugins>
 	</reporting>
 </project>

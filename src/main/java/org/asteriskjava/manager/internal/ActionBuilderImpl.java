@@ -22,7 +22,6 @@ import java.util.Map;
 
 import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.manager.action.ManagerAction;
-import org.asteriskjava.manager.action.proxy.ManagerProxyAction;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 import org.asteriskjava.util.ReflectionUtil;
@@ -70,14 +69,7 @@ class ActionBuilderImpl implements ActionBuilder
         Map<String, Method> getters;
 
         sb = new StringBuffer();
-        if (action instanceof ManagerProxyAction)
-        {
-            sb.append("proxyaction: ");
-        }
-        else
-        {
-            sb.append("action: ");
-        }        
+        sb.append("action: ");
         sb.append(action.getAction());
         sb.append(LINE_SEPARATOR);
         if (internalActionId != null)

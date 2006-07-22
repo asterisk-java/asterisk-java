@@ -25,8 +25,6 @@ import org.asteriskjava.manager.response.MailboxCountResponse;
 import org.asteriskjava.manager.response.MailboxStatusResponse;
 import org.asteriskjava.manager.response.ManagerError;
 import org.asteriskjava.manager.response.ManagerResponse;
-import org.asteriskjava.manager.response.proxy.ManagerProxyError;
-import org.asteriskjava.manager.response.proxy.ManagerProxyResponse;
 
 
 /**
@@ -99,14 +97,6 @@ class ResponseBuilderImpl implements ResponseBuilder
             extensionStateResponse.setHint((String) attributes.get("hint"));
             extensionStateResponse.setStatus(Integer.valueOf((String) attributes.get("status")));
             response = extensionStateResponse;
-        }
-        else if (responseType == null && "error".equalsIgnoreCase(proxyResponseType))
-        {
-            response = new ManagerProxyError();
-        }
-        else if (responseType == null && proxyResponseType != null)
-        {
-            response = new ManagerProxyResponse();
         }
         else
         {
