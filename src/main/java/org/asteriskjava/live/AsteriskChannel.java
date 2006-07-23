@@ -103,6 +103,8 @@ public interface AsteriskChannel extends LiveObject
      */
     boolean wasInState(ChannelState state);
 
+    boolean wasBusy();
+
     /**
      * Returns the account code used to bill this channel.
      * 

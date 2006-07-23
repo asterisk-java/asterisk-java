@@ -18,8 +18,19 @@ package org.asteriskjava.live;
 
 /**
  * Callback interface for asynchronous originates.
- *
- * @see org.asteriskjava.live.AsteriskServer#ori
+ * <p>
+ * Contract:<br>
+ * {@link #onDialing(AsteriskChannel)} is called exactly once iif originate did not fail.
+ * It is called immediately after the channel has been created and before it is ringing.<br>
+ * In case of a failure {@link #onFailure(LiveException)} is the only method that is called
+ * and it is called exactly once.<br>
+ * Otherwise one of {@link #onSuccess(AsteriskChannel)} {@link #onBusy(AsteriskChannel)} or
+ * {@link #onNoAnswer(AsteriskChannel)} is called exactly once.
+ * 
+ * @see AsteriskServer#originateToApplicationAsync(String, String, String, long, OriginateCallback)
+ * @see AsteriskServer#originateToApplicationAsync(String, String, String, long, CallerId, java.util.Map, OriginateCallback)
+ * @see AsteriskServer#originateToExtensionAsync(String, String, String, int, long, OriginateCallback)
+ * @see AsteriskServer#originateToExtensionAsync(String, String, String, int, long, CallerId, java.util.Map, OriginateCallback)
  * @author srt
  * @version $Id$
  * @since 0.3
@@ -27,29 +38,39 @@ package org.asteriskjava.live;
 public interface OriginateCallback
 {
     /**
-     * Called if the originate was successful and the called party answered the call.
+     * Called when the channel has been created and before it starts ringing.
+     * 
+     * @param channel the channel created.
+     */
+    void onDialing(AsteriskChannel channel);
+
+    /**
+     * Called if the originate was successful and the called party answered the
+     * call.
      * 
      * @param channel the channel created.
      */
     void onSuccess(AsteriskChannel channel);
 
     /**
-     * Called if the originate was unsuccessful because the called party did not answer the call.
+     * Called if the originate was unsuccessful because the called party did not
+     * answer the call.
      * 
-     * @param channel  the channel created.
+     * @param channel the channel created.
      */
     void onNoAnswer(AsteriskChannel channel);
 
     /**
-     * Called if the originate was unsuccessful because the called party was busy.
+     * Called if the originate was unsuccessful because the called party was
+     * busy.
      * 
-     * @param channel  the channel created.
+     * @param channel the channel created.
      */
     void onBusy(AsteriskChannel channel);
 
     /**
-     * Called if the originate failed for example due to an invalid channel name or an
-     * originate to an unregistered SIP or IAX peer.
+     * Called if the originate failed for example due to an invalid channel name
+     * or an originate to an unregistered SIP or IAX peer.
      * 
      * @param cause the exception that caused the failure.
      */

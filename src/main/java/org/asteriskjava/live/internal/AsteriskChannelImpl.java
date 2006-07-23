@@ -60,10 +60,15 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
     private final String id;
 
     /**
+     * The traceId is used to trace originated channels.
+     */
+    private String traceId;
+
+    /**
      * Date this channel has been created.
      */
     private final Date dateOfCreation;
-    
+
     /**
      * Date this channel has left the Asterisk server.
      */
@@ -115,7 +120,8 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
     private CallDetailRecordImpl callDetailRecord;
 
     /**
-     * MeetMe room user associated with this channel if any, <code>null</code> otherwise.
+     * MeetMe room user associated with this channel if any, <code>null</code>
+     * otherwise.
      */
     private MeetMeUserImpl meetMeUserImpl;
 
@@ -140,6 +146,16 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
     public String getId()
     {
         return id;
+    }
+
+    String getTraceId()
+    {
+        return traceId;
+    }
+
+    void setTraceId(String traceId)
+    {
+        this.traceId = traceId;
     }
 
     public String getName()
@@ -205,6 +221,13 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         return false;
     }
 
+    public boolean wasBusy()
+    {
+        return wasInState(ChannelState.BUSY) 
+                || hangupCause == HangupCause.AST_CAUSE_BUSY
+                || hangupCause == HangupCause.AST_CAUSE_USER_BUSY;
+    }
+
     /**
      * Changes the state of this channel.
      * 
@@ -221,7 +244,8 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
             return;
         }
 
-        //System.err.println(id + " state change: " + oldState + " => " + state + " (" + name + ")");
+        // System.err.println(id + " state change: " + oldState + " => " + state
+        // + " (" + name + ")");
         historyEntry = new ChannelStateHistoryEntry(date, state);
         synchronized (stateHistory)
         {
@@ -425,7 +449,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
     {
         return linkedChannel;
     }
-    
+
     public List<LinkedChannelHistoryEntry> getLinkedChannelHistory()
     {
         final List<LinkedChannelHistoryEntry> copy;
@@ -533,7 +557,8 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         }
     }
 
-    public void redirect(String context, String exten, int priority) throws ManagerCommunicationException, NoSuchChannelException
+    public void redirect(String context, String exten, int priority) throws ManagerCommunicationException,
+            NoSuchChannelException
     {
         ManagerResponse response;
 
@@ -544,7 +569,8 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         }
     }
 
-    public void redirectBothLegs(String context, String exten, int priority) throws ManagerCommunicationException, NoSuchChannelException
+    public void redirectBothLegs(String context, String exten, int priority) throws ManagerCommunicationException,
+            NoSuchChannelException
     {
         ManagerResponse response;
 
@@ -554,7 +580,8 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         }
         else
         {
-            response = server.sendAction(new RedirectAction(name, linkedChannel.getName(), context, exten, priority, context, exten, priority));
+            response = server.sendAction(new RedirectAction(name, linkedChannel.getName(), context, exten, priority,
+                    context, exten, priority));
         }
 
         if (response instanceof ManagerError)
@@ -592,7 +619,8 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         }
     }
 
-    public void playDtmf(String digit) throws ManagerCommunicationException, NoSuchChannelException, IllegalArgumentException
+    public void playDtmf(String digit) throws ManagerCommunicationException, NoSuchChannelException,
+            IllegalArgumentException
     {
         ManagerResponse response;
 
@@ -618,7 +646,8 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         startMonitoring(filename, format, false);
     }
 
-    public void startMonitoring(String filename, String format, boolean mix) throws ManagerCommunicationException, NoSuchChannelException
+    public void startMonitoring(String filename, String format, boolean mix) throws ManagerCommunicationException,
+            NoSuchChannelException
     {
         ManagerResponse response;
 
@@ -629,7 +658,8 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         }
     }
 
-    public void changeMonitoring(String filename) throws ManagerCommunicationException, NoSuchChannelException, IllegalArgumentException
+    public void changeMonitoring(String filename) throws ManagerCommunicationException, NoSuchChannelException,
+            IllegalArgumentException
     {
         ManagerResponse response;
 

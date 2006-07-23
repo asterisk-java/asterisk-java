@@ -160,15 +160,36 @@ class ChannelManager
             Date dateOfCreation, String callerIdNumber, String callerIdName, 
             ChannelState state)
     {
-        AsteriskChannelImpl channel;
+        final AsteriskChannelImpl channel;
+        final String traceId;
 
         channel = new AsteriskChannelImpl(server, name, uniqueId, dateOfCreation);
         channel.setCallerId(new CallerId(callerIdName, callerIdNumber));
         channel.stateChanged(dateOfCreation, state);
         logger.info("Adding channel " + channel.getName() + "(" + channel.getId() + ")");
+
+        traceId = getTraceId(channel);
+        channel.setTraceId(traceId);
+
         addChannel(channel);
 
-        getTraceId(channel);
+        if (traceId != null && (! name.toLowerCase().startsWith("local/") || name.endsWith(",1")))
+        {
+            final OriginateCallbackData callbackData;
+            callbackData = server.getOriginateCallbackDataByTraceId(traceId);
+            if (callbackData != null && callbackData.getChannel() == null)
+            {
+                callbackData.setChannel(channel);
+                try
+                {
+                    callbackData.getCallback().onDialing(channel);
+                }
+                catch (Throwable t)
+                {
+                    logger.warn("Exception dispatching originate progress", t);
+                }
+            }
+        }
         server.fireNewAsteriskChannel(channel);
         return channel;
     }
@@ -583,13 +604,13 @@ class ChannelManager
 
         try
         {
-            traceId = channel.getVariable("AJ_TRACE_ID");
+            traceId = channel.getVariable(Constants.VARIABLE_TRACE_ID);
         }
         catch (Exception e)
         {
             traceId = null;
         }
-        logger.info("TraceId for channel " + channel.getName() + " is " + traceId);
+        //logger.info("TraceId for channel " + channel.getName() + " is " + traceId);
         return traceId;
     }
 }

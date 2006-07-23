@@ -18,7 +18,6 @@ package org.asteriskjava.live.internal;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -33,7 +32,6 @@ import org.asteriskjava.live.AsteriskServer;
 import org.asteriskjava.live.AsteriskServerListener;
 import org.asteriskjava.live.CallerId;
 import org.asteriskjava.live.ChannelState;
-import org.asteriskjava.live.HangupCause;
 import org.asteriskjava.live.LiveException;
 import org.asteriskjava.live.ManagerCommunicationException;
 import org.asteriskjava.live.MeetMeRoom;
@@ -131,6 +129,9 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
      */
     private Map<String, String> versions;
 
+    /**
+     * Maps the traceId to the corresponding callback data.
+     */
     private final Map<String, OriginateCallbackData> originateCallbacks;
 
     private final AtomicLong idCounter;
@@ -302,19 +303,8 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
     {
         final ResponseEvents responseEvents;
         final Iterator<ResponseEvent> responseEventIterator;
-        final Map<String, String> variables;
         AsteriskChannel channel = null;
 
-        if (originateAction.getVariables() == null)
-        {
-            variables = new HashMap<String, String>();
-        }
-        else
-        {
-            variables = new HashMap<String, String>(originateAction.getVariables());
-        }
-        variables.put("__AJ_TRACE_ID", "trace me!");
-        originateAction.setVariables(variables);
         // must set async to true to receive OriginateEvents.
         originateAction.setAsync(Boolean.TRUE);
 
@@ -400,12 +390,26 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
 
     private void originateAsync(OriginateAction originateAction, OriginateCallback cb) throws ManagerCommunicationException
     {
-        final String actionId;
+        final Map<String, String> variables;
+        final String traceId;
 
-        actionId = ACTION_ID_PREFIX_ORIGINATE + idCounter.getAndIncrement();
+        traceId = ACTION_ID_PREFIX_ORIGINATE + idCounter.getAndIncrement();
+        if (originateAction.getVariables() == null)
+        {
+            variables = new HashMap<String, String>();
+        }
+        else
+        {
+            variables = new HashMap<String, String>(originateAction.getVariables());
+        }
+        // prefix variable name by "__" to enable variable inheritence across
+        // channels
+        variables.put("__" + Constants.VARIABLE_TRACE_ID, traceId);
+        originateAction.setVariables(variables);
+
         // must set async to true to receive OriginateEvents.
         originateAction.setAsync(Boolean.TRUE);
-        originateAction.setActionId(actionId);
+        originateAction.setActionId(traceId);
 
         if (cb != null)
         {
@@ -415,7 +419,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
             // register callback
             synchronized (originateCallbacks)
             {
-                originateCallbacks.put(actionId, callbackData);
+                originateCallbacks.put(traceId, callbackData);
             }
         }
 
@@ -738,7 +742,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
 
     ManagerResponse sendAction(ManagerAction action) throws ManagerCommunicationException
     {
-        //return connectionPool.sendAction(action);
+        // return connectionPool.sendAction(action);
         try
         {
             return eventConnection.sendAction(action);
@@ -751,7 +755,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
 
     ResponseEvents sendEventGeneratingAction(EventGeneratingAction action) throws ManagerCommunicationException
     {
-        //return connectionPool.sendEventGeneratingAction(action);
+        // return connectionPool.sendEventGeneratingAction(action);
         try
         {
             return eventConnection.sendEventGeneratingAction(action);
@@ -765,7 +769,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
     ResponseEvents sendEventGeneratingAction(EventGeneratingAction action, long timeout)
             throws ManagerCommunicationException
     {
-        //return connectionPool.sendEventGeneratingAction(action, timeout);
+        // return connectionPool.sendEventGeneratingAction(action, timeout);
         try
         {
             return eventConnection.sendEventGeneratingAction(action, timeout);
@@ -773,6 +777,14 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         catch (Exception e)
         {
             throw ManagerCommunicationExceptionMapper.mapSendActionException(action.getAction(), e);
+        }
+    }
+
+    OriginateCallbackData getOriginateCallbackDataByTraceId(String traceId)
+    {
+        synchronized (originateCallbacks)
+        {
+            return originateCallbacks.get(traceId);
         }
     }
 
@@ -887,130 +899,94 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
 
     private void handleOriginateEvent(AbstractOriginateEvent originateEvent)
     {
+        final String traceId;
         final OriginateCallbackData callbackData;
         final OriginateCallback cb;
         final AsteriskChannelImpl channel;
         final AsteriskChannelImpl otherChannel; // the other side if local
         // channel
 
-        if (originateEvent.getActionId() == null)
+        traceId = originateEvent.getActionId();
+        if (traceId == null)
         {
             return;
         }
 
         synchronized (originateCallbacks)
         {
-            callbackData = originateCallbacks.get(originateEvent.getActionId());
+            callbackData = originateCallbacks.get(traceId);
             if (callbackData == null)
             {
                 return;
             }
-            originateCallbacks.remove(originateEvent.getActionId());
+            originateCallbacks.remove(traceId);
         }
 
         cb = callbackData.getCallback();
         channel = channelManager.getChannelImplById(originateEvent.getUniqueId());
-        if (channel == null)
+
+        try
         {
-            LiveException cause;
+            if (channel == null)
+            {
+                LiveException cause;
 
-            cause = new NoSuchChannelException("Channel '" + callbackData.getOriginateAction().getChannel()
-                    + "' is not available");
-            cb.onFailure(cause);
-            return;
-        }
+                cause = new NoSuchChannelException("Channel '" + callbackData.getOriginateAction().getChannel()
+                        + "' is not available");
+                cb.onFailure(cause);
+                return;
+            }
 
-        if (channel.wasInState(ChannelState.UP))
-        {
-            cb.onSuccess(channel);
-            return;
-        }
+            if (channel.wasInState(ChannelState.UP))
+            {
+                cb.onSuccess(channel);
+                return;
+            }
 
-        if (channel.wasInState(ChannelState.BUSY) || channel.getHangupCause() == HangupCause.AST_CAUSE_BUSY
-                || channel.getHangupCause() == HangupCause.AST_CAUSE_USER_BUSY)
-        {
-            cb.onBusy(channel);
-            return;
-        }
-
-        otherChannel = channelManager.getOtherSideOfLocalChannel(channel);
-        // special treatment of local channels:
-        // the interesting things happen to the other side so we have a look at
-        // that
-        if (otherChannel != null)
-        {
-            final AsteriskChannel dialedChannel;
-
-            dialedChannel = otherChannel.getDialedChannel();
-
-            // on busy the other channel is in state busy when we receive the
-            // originate event
-            if (otherChannel.wasInState(ChannelState.BUSY) || otherChannel.getHangupCause() == HangupCause.AST_CAUSE_BUSY
-                    || otherChannel.getHangupCause() == HangupCause.AST_CAUSE_USER_BUSY)
+            if (channel.wasBusy())
             {
                 cb.onBusy(channel);
                 return;
             }
 
-            // alternative:
-            // on busy the dialed channel is hung up when we receive the
-            // originate event
-            // having a look at the hangup cause reveals the information we are
-            // interested in
-            // this alternative has the drawback that there might by multiple
-            // channels that have
-            // been dialed by the local channel but we only look at the last
-            // one.
-            if (dialedChannel != null
-                    && (dialedChannel.wasInState(ChannelState.BUSY)
-                            || dialedChannel.getHangupCause() == HangupCause.AST_CAUSE_BUSY || dialedChannel
-                            .getHangupCause() == HangupCause.AST_CAUSE_USER_BUSY))
+            otherChannel = channelManager.getOtherSideOfLocalChannel(channel);
+            // special treatment of local channels:
+            // the interesting things happen to the other side so we have a look
+            // at that
+            if (otherChannel != null)
             {
-                cb.onBusy(channel);
-                return;
+                final AsteriskChannel dialedChannel;
+
+                dialedChannel = otherChannel.getDialedChannel();
+
+                // on busy the other channel is in state busy when we receive
+                // the originate event
+                if (otherChannel.wasBusy())
+                {
+                    cb.onBusy(channel);
+                    return;
+                }
+
+                // alternative:
+                // on busy the dialed channel is hung up when we receive the
+                // originate event having a look at the hangup cause reveals the
+                // information we are interested in
+                // this alternative has the drawback that there might by
+                // multiple channels that have been dialed by the local channel
+                // but we only look at the last one.
+                if (dialedChannel != null && dialedChannel.wasBusy())
+                {
+                    cb.onBusy(channel);
+                    return;
+                }
             }
 
+            // if nothing else matched we asume no answer
+            cb.onNoAnswer(channel);
         }
-
-        // if nothing else matched we asume no answer
-        cb.onNoAnswer(channel);
-    }
-
-    private class OriginateCallbackData
-    {
-        private OriginateAction originateAction;
-        private Date dateSent;
-        private OriginateCallback callback;
-
-        /**
-         * Creates a new instance.
-         * 
-         * @param originateAction the action that has been sent to the Asterisk
-         *            server
-         * @param dateSent date when the the action has been sent
-         * @param callback callback to notify about result
-         */
-        OriginateCallbackData(OriginateAction originateAction, Date dateSent, OriginateCallback callback)
+        catch (Throwable t)
         {
-            super();
-            this.originateAction = originateAction;
-            this.dateSent = dateSent;
-            this.callback = callback;
-        }
-
-        OriginateAction getOriginateAction()
-        {
-            return originateAction;
-        }
-
-        Date getDateSent()
-        {
-            return dateSent;
-        }
-
-        OriginateCallback getCallback()
-        {
-            return callback;
+            logger.warn("Exception dispatching originate progress", t);
         }
     }
 }
