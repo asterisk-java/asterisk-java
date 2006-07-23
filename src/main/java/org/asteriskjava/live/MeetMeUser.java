@@ -89,7 +89,16 @@ public interface MeetMeUser extends LiveObject
      * @return the MeetMe room this user joined.
      */
     MeetMeRoom getRoom();
-    
+
+    /**
+     * Returns the user number assigned to this user in the room.<p>
+     * Usually you won't need to access this property directly.<p>
+     * This property is immutable.
+     * 
+     * @return the user number assigned to this user in the room.
+     */
+    Integer getUserNumber();
+
     /**
      * Returns the channel associated with this user.<p>
      * This property is immutable.

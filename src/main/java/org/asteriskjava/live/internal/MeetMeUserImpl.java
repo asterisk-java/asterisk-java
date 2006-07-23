@@ -56,6 +56,11 @@ class MeetMeUserImpl extends AbstractLiveObject implements MeetMeUser
         return room;
     }
 
+    public Integer getUserNumber()
+    {
+        return userNumber;
+    }
+
     public AsteriskChannelImpl getChannel()
     {
         return channel;
@@ -115,11 +120,6 @@ class MeetMeUserImpl extends AbstractLiveObject implements MeetMeUser
         boolean oldMuted = this.muted;
         this.muted = muted;
         firePropertyChange(PROPERTY_MUTED, oldMuted, muted);
-    }
-
-    Integer getUserNumber()
-    {
-        return userNumber;
     }
 
     // action methods
