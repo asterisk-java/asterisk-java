@@ -18,23 +18,19 @@ package org.asteriskjava.live;
 
 import junit.framework.TestCase;
 
-import org.asteriskjava.manager.DefaultManagerConnection;
-
 public class AsteriskServerTestCase extends TestCase
 {
     protected DefaultAsteriskServer server;
-    protected DefaultManagerConnection managerConnection;
 
     @Override
     public void setUp() throws Exception
     {
         server = new DefaultAsteriskServer("pbx0", "manager", "obelisk");
-        //server.initialize();
     }
 
     @Override
     public void tearDown() throws Exception
     {
-        managerConnection.logoff();
+        //managerConnection.logoff();
     }
 }

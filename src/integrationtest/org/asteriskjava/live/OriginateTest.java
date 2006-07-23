@@ -5,6 +5,12 @@
  */
 package org.asteriskjava.live;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 /**
  * @author srt
  * @version $Id$
@@ -12,7 +18,7 @@ package org.asteriskjava.live;
 public class OriginateTest extends AsteriskServerTestCase
 {
     private AsteriskChannel channel;
-    private Long timeout = 10000L;
+    private Long timeout = 20000L;
 
     @Override
     public void setUp() throws Exception
@@ -21,10 +27,10 @@ public class OriginateTest extends AsteriskServerTestCase
         this.channel = null;
     }
 
-    public void testOriginate() throws Exception
+    public void xtestOriginate() throws Exception
     {
         AsteriskChannel channel;
-        channel = server.originateToExtension("Local/1310@default", "from-local", "1330", 1, timeout);
+        channel = server.originateToExtension("SIP/1310", "from-local", "1330", 1, timeout);
         System.err.println(channel);
         System.err.println(channel.getVariable("AJ_TRACE_ID"));
 
@@ -33,16 +39,46 @@ public class OriginateTest extends AsteriskServerTestCase
         System.err.println(channel.getVariable("AJ_TRACE_ID"));
     }
 
-    public void XtestOriginateAsync() throws Exception
+    public void testOriginateAsync() throws Exception
     {
         final String source;
 
-        source = "SIP/1313";
-        //source = "Local/1313@from-local/n";
-        server.originateToExtensionAsync(source, "from-local", "1399", 1, timeout, 
-                new CallerId("AJ Test Call", "08003301000"), null, 
-                new OriginateCallback()
+        //source = "SIP/1310";
+        source = "Local/1337@from-local";
+        // source = "Local/1310@from-local/n";
+        server.originateToExtensionAsync(source, "from-local", "1399", 1, timeout, new CallerId("AJ Test Call",
+                "08003301000"), null, new OriginateCallback()
         {
+            public void onDialing(final AsteriskChannel c)
+            {
+                channel = c;
+                System.err.println("Dialing: " + channel);
+                channel.addPropertyChangeListener(new PropertyChangeListener()
+                {
+                    public void propertyChange(PropertyChangeEvent evt)
+                    {
+                        System.err.println("PropertyChange (" + ((AsteriskChannel) evt.getSource()).getName() + ") " + evt.getPropertyName() + ": " + evt.getOldValue() + " => " + evt.getNewValue());
+                    }
+                });
+                ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+                scheduler.schedule(new Runnable()
+                {
+                    public void run()
+                    {
+                        System.out.println("Tata");
+                        try
+                        {
+                            c.hangup();
+                        }
+                        catch (Exception e)
+                        {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                    }
+                }, 5, TimeUnit.SECONDS);
+            }
+
             public void onSuccess(AsteriskChannel c)
             {
                 channel = c;
@@ -50,12 +86,14 @@ public class OriginateTest extends AsteriskServerTestCase
                 showInfo(c);
                 try
                 {
+                    /*
                     c.setVariable(AsteriskChannel.VARIABLE_MONITOR_EXEC, "/usr/local/bin/2wav2mp3");
                     c.setVariable(AsteriskChannel.VARIABLE_MONITOR_EXEC_ARGS, "a b");
                     c.startMonitoring("mtest", "wav", true);
                     Thread.sleep(10000L);
                     c.stopMonitoring();
                     c.setAbsoluteTimeout(20);
+                    */
                 }
                 catch (Exception e)
                 {
