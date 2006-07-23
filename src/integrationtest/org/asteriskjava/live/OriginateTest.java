@@ -46,7 +46,7 @@ public class OriginateTest extends AsteriskServerTestCase
         //source = "SIP/1310";
         source = "Local/1337@from-local";
         // source = "Local/1310@from-local/n";
-        server.originateToExtensionAsync(source, "from-local", "1399", 1, timeout, new CallerId("AJ Test Call",
+        server.originateToExtensionAsync(source, "conference", "1399", 1, timeout, new CallerId("AJ Test Call",
                 "08003301000"), null, new OriginateCallback()
         {
             public void onDialing(final AsteriskChannel c)
@@ -76,7 +76,7 @@ public class OriginateTest extends AsteriskServerTestCase
                             e.printStackTrace();
                         }
                     }
-                }, 5, TimeUnit.SECONDS);
+                }, 10, TimeUnit.SECONDS);
             }
 
             public void onSuccess(AsteriskChannel c)

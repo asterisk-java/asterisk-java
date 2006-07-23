@@ -33,6 +33,7 @@ import java.util.List;
  * <li>dialedChannel
  * <li>dialingChannel
  * <li>linkedChannel
+ * <li>meetMeUser
  * </ul>
  * 
  * @author srt
@@ -48,6 +49,7 @@ public interface AsteriskChannel extends LiveObject
     String PROPERTY_DIALED_CHANNEL = "dialedChannel";
     String PROPERTY_DIALING_CHANNEL = "dialingChannel";
     String PROPERTY_LINKED_CHANNEL = "linkedChannel";
+    String PROPERTY_MEET_ME_USER = "meetMeUser";
 
     String VARIABLE_MONITOR_EXEC = "MONITOR_EXEC";
     String VARIABLE_MONITOR_EXEC_ARGS = "MONITOR_EXEC_ARGS";
@@ -239,6 +241,15 @@ public interface AsteriskChannel extends LiveObject
      * @since 0.2
      */
     boolean wasLinked();
+
+    /**
+     * Returns the MeetMeUser associated with this channel if this channel
+     * is currently taking part in a MeetMe conference.
+     * 
+     * @return the MeetMeUser associated with this channel or <code>null</code>
+     *         if this channel is currently not taking part in a MeetMe conference.
+     */
+    MeetMeUser getMeetMeUser();
 
     /**
      * Hangs up this channel.
