@@ -103,6 +103,12 @@ public interface AsteriskChannel extends LiveObject
      */
     boolean wasInState(ChannelState state);
 
+    /**
+     * Checks if this channel was busy.
+     * 
+     * @return <code>true</code> if this channel was busy; <code>false</code> otherwise.
+     * @since 0.3
+     */
     boolean wasBusy();
 
     /**
