@@ -67,7 +67,6 @@ public class CallerIdTest extends TestCase
         assertEquals(new CallerId(null, "1234"), new CallerId("<unknown>", "1234"));
     }
 
-
     public void testToString()
     {
         assertEquals("\"Hans Wurst\" <1234>", new CallerId("Hans Wurst", "1234").toString());
