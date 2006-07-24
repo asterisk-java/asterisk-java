@@ -31,6 +31,16 @@ public class RegistryEvent extends ManagerEvent
      * Serializable version identifier
      */
     private static final long serialVersionUID = 6243135032555863775L;
+    
+    public static final String STATUS_REGISTERED = "Registered";
+    public static final String STATUS_UNREGISTERED = "Registered";
+    public static final String STATUS_REQUEST_SENT = "Request Sent";
+    public static final String STATUS_AUTH_SENT = "Auth. Sent";
+    public static final String STATUS_REJECTED = "Rejected";
+    public static final String STATUS_TIMEOUT = "Timeout";
+    public static final String STATUS_NO_AUTHENTICATION = "No Authentication";
+    public static final String STATUS_UNREACHABLE = "Unreachable";
+    
     private String channel;
     private String domain;
     private String username;
