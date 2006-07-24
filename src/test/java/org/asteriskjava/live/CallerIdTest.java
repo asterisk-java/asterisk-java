@@ -34,12 +34,32 @@ public class CallerIdTest extends TestCase
         assertEquals(callerId, CallerId.valueOf(callerId.toString()));
     }
 
-    public void testValueOfWithNullLiteral()
+    public void testValueOfWithNullLiteralInName()
     {
         CallerId callerId = new CallerId(null, "1234");
         assertEquals(callerId, CallerId.valueOf("\"\" <1234>"));
+        assertEquals(callerId, CallerId.valueOf("\"<Unknown>\" <1234>"));
         assertEquals(callerId, CallerId.valueOf("<1234>"));
         assertEquals(callerId, CallerId.valueOf(callerId.toString()));
+    }
+
+    public void testValueOfWithNullLiteralInNumber()
+    {
+        CallerId callerId = new CallerId("Hans Wurst", null);
+        assertEquals(callerId, CallerId.valueOf("\"Hans Wurst\" <>"));
+        //assertEquals(callerId, CallerId.valueOf("\"Hans Wurst\" <<Unknown>>"));
+        //assertEquals(callerId, CallerId.valueOf("Hans Wurst <<Unknown>>"));
+    }
+
+    public void testValueOfWithNullLiteralInNameAndNumber()
+    {
+        CallerId callerId = new CallerId(null, null);
+        assertEquals(callerId, CallerId.valueOf("\"\" <>"));
+        //assertEquals(callerId, CallerId.valueOf("<<Unknown>>"));
+        //assertEquals(callerId, CallerId.valueOf("\"<Unknown>\" <<Unknown>>"));
+        //assertEquals(callerId, CallerId.valueOf("<Unknown> <<Unknown>>"));
+        assertEquals(callerId, CallerId.valueOf("<Unknown>"));
+        //assertEquals(callerId, CallerId.valueOf("\"<Unknown>\""));
     }
 
     public void testConstructorWithNullLiteral()

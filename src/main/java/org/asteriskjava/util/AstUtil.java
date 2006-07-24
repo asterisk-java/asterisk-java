@@ -143,7 +143,7 @@ public class AstUtil
         }
 
         name = s.substring(0, lbPosition).trim();
-        if (name.startsWith("\"") && name.endsWith("\""))
+        if (name.startsWith("\"") && name.endsWith("\"") && name.length() > 1)
         {
             name = name.substring(1, name.length() - 1).trim();
         }
