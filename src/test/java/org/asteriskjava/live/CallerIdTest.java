@@ -34,6 +34,20 @@ public class CallerIdTest extends TestCase
         assertEquals(callerId, CallerId.valueOf(callerId.toString()));
     }
 
+    public void testValueOfWithNullLiteral()
+    {
+        CallerId callerId = new CallerId(null, "1234");
+        assertEquals(callerId, CallerId.valueOf("\"\" <1234>"));
+        assertEquals(callerId, CallerId.valueOf("<1234>"));
+        assertEquals(callerId, CallerId.valueOf(callerId.toString()));
+    }
+
+    public void testConstructorWithNullLiteral()
+    {
+        assertEquals(new CallerId(null, "1234"), new CallerId("<unknown>", "1234"));
+    }
+
+
     public void testToString()
     {
         assertEquals("\"Hans Wurst\" <1234>", new CallerId("Hans Wurst", "1234").toString());
