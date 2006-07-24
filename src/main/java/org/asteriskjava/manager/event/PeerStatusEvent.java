@@ -31,6 +31,14 @@ public class PeerStatusEvent extends ManagerEvent
      * Serializable version identifier
      */
     private static final long serialVersionUID = 8384939771592846892L;
+    
+    public static final String STATUS_REGISTERED = "Registered";
+    public static final String STATUS_UNREGISTERED = "Unregistered";
+    public static final String STATUS_REACHABLE = "Reachable";
+    public static final String STATUS_LAGGED = "Lagged";
+    public static final String STATUS_UNREACHABLE = "Unreachable";
+    public static final String STATUS_REJECTED = "Rejected";
+
     private String peer;
     private String peerStatus;
     private String cause;
