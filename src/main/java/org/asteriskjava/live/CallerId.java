@@ -46,8 +46,8 @@ public class CallerId implements Serializable
      */
     public CallerId(String name, String number)
     {
-        this.number = number;
-        this.name = name;
+        this.number = (AstUtil.isNull(number)) ? null : number;
+        this.name = (AstUtil.isNull(name)) ? null : name;
     }
 
     /**
