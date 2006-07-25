@@ -67,6 +67,7 @@ class MeetMeManager
 
     void initialize()
     {
+        // TODO remove users that are no longer in the room
         synchronized (rooms)
         {
             for (MeetMeRoomImpl room : rooms.values())
