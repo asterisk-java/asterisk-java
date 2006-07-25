@@ -80,17 +80,10 @@ class MeetMeManager
 
     Collection<MeetMeRoom> getMeetMeRooms()
     {
-        Collection<MeetMeRoom> copy;
-
         synchronized (rooms)
         {
-            copy = new ArrayList<MeetMeRoom>(rooms.size() + 2);
-            for (MeetMeRoomImpl room : rooms.values())
-            {
-                copy.add(room);
-            }
+            return new ArrayList<MeetMeRoom>(rooms.values());
         }
-        return copy;
     }
 
     void handleMeetMeEvent(AbstractMeetMeEvent event)
