@@ -19,15 +19,23 @@ package org.asteriskjava.live.internal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import org.asteriskjava.live.ManagerCommunicationException;
 import org.asteriskjava.live.MeetMeRoom;
+import org.asteriskjava.manager.action.CommandAction;
 import org.asteriskjava.manager.event.AbstractMeetMeEvent;
-import org.asteriskjava.manager.event.MeetMeJoinEvent;
 import org.asteriskjava.manager.event.MeetMeLeaveEvent;
 import org.asteriskjava.manager.event.MeetMeMuteEvent;
 import org.asteriskjava.manager.event.MeetMeStopTalkingEvent;
 import org.asteriskjava.manager.event.MeetMeTalkingEvent;
+import org.asteriskjava.manager.response.CommandResponse;
+import org.asteriskjava.manager.response.ManagerError;
+import org.asteriskjava.manager.response.ManagerResponse;
+import org.asteriskjava.util.DateUtil;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
@@ -38,10 +46,13 @@ import org.asteriskjava.util.LogFactory;
  */
 class MeetMeManager
 {
+    private static final String MEETME_LIST_COMMAND = "meetme list";
+    private static final Pattern MEETME_LIST_PATTERN = Pattern.compile("^User #: ([0-9]+).*Channel: (\\S+).*$");
+
     private final Log logger = LogFactory.getLog(getClass());
     private final AsteriskServerImpl server;
     private final ChannelManager channelManager;
-    
+
     /**
      * Maps room number to MeetMe room.
      */
@@ -56,7 +67,7 @@ class MeetMeManager
 
     void initialize()
     {
-        
+
     }
 
     void disconnected()
@@ -66,7 +77,7 @@ class MeetMeManager
             rooms.clear();
         }
     }
-    
+
     Collection<MeetMeRoom> getMeetMeRooms()
     {
         Collection<MeetMeRoom> copy;
@@ -84,7 +95,6 @@ class MeetMeManager
 
     void handleMeetMeEvent(AbstractMeetMeEvent event)
     {
-        String uniqueId;
         String roomNumber;
         Integer userNumber;
         AsteriskChannelImpl channel;
@@ -105,53 +115,14 @@ class MeetMeManager
             return;
         }
 
-        room = getOrCreateRoomImpl(roomNumber);
-
-        if (event instanceof MeetMeJoinEvent)
-        {
-            uniqueId = ((MeetMeJoinEvent) event).getUniqueId();
-            if (uniqueId == null)
-            {
-                logger.warn("UniqueId is null. Ignoring MeetMeJoinEvent");
-                return;
-            }
-
-            channel = channelManager.getChannelImplById(uniqueId);
-            if (channel == null)
-            {
-                logger.warn("No channel with unique id " + uniqueId + ". Ignoring MeetMeJoinEvent");
-                return;
-            }
-
-            user = channel.getMeetMeUserImpl();
-            if (user != null)
-            {
-                logger.error("Got MeetMeJoinEvent for channel " + channel.getName() + " that is already user of a room");
-                user.left(event.getDateReceived());
-                if (user.getRoom() != null)
-                {
-                    user.getRoom().removeUser(user);
-                }
-                channel.setMeetMeUserImpl(null);
-            }
-            
-            logger.info("Adding channel " + channel.getName() + " as user " + event.getUserNum() + " to room " + roomNumber);
-            user = new MeetMeUserImpl(server, room, event.getUserNum(), channel, event.getDateReceived());
-            room.addUser(user);
-            channel.setMeetMeUserImpl(user);
-            server.fireNewMeetMeUser(user);
-            return;
-        }
-
-        // all events below require the user to already exist
-        user = room.getUser(event.getUserNum());
+        user = getOrCreateUserImpl(event);
         if (user == null)
         {
-            logger.warn("No MeetMe user " + userNumber + " in room " + roomNumber + ". Ignoring " + event.getClass().getName());
             return;
         }
 
         channel = user.getChannel();
+        room = user.getRoom();
 
         if (event instanceof MeetMeLeaveEvent)
         {
@@ -160,12 +131,14 @@ class MeetMeManager
             {
                 if (user.getRoom() != null)
                 {
-                    logger.error("Channel " + channel.getName() + " should be removed from room " + roomNumber + " but is user of room " + user.getRoom().getRoomNumber());
+                    logger.error("Channel " + channel.getName() + " should be removed from room " + roomNumber
+                            + " but is user of room " + user.getRoom().getRoomNumber());
                     user.getRoom().removeUser(user);
                 }
                 else
                 {
-                    logger.error("Channel " + channel.getName() + " should be removed from room " + roomNumber + " but is user of no room");
+                    logger.error("Channel " + channel.getName() + " should be removed from room " + roomNumber
+                            + " but is user of no room");
                 }
             }
             user.left(event.getDateReceived());
@@ -186,7 +159,8 @@ class MeetMeManager
                 user.setTalking(true);
             }
         }
-        else if (event instanceof MeetMeStopTalkingEvent) // only for Asterisk 1.2
+        else if (event instanceof MeetMeStopTalkingEvent) // only for Asterisk
+                                                            // 1.2
         {
             user.setTalking(false);
         }
@@ -202,8 +176,163 @@ class MeetMeManager
         }
     }
 
+    private void populateRoom(MeetMeRoomImpl room)
+    {
+        final CommandAction meetMeListAction;
+        final ManagerResponse response;
+        final List<String> lines;
+
+        meetMeListAction = new CommandAction(MEETME_LIST_COMMAND + " " + room.getRoomNumber());
+        try
+        {
+            response = server.sendAction(meetMeListAction);
+        }
+        catch (ManagerCommunicationException e)
+        {
+            logger.error("Unable to send \"" + MEETME_LIST_COMMAND + "\" command", e);
+            return;
+        }
+        if (response instanceof ManagerError)
+        {
+            logger.error("Unable to send \"" + MEETME_LIST_COMMAND + "\" command: " + response.getMessage());
+            return;
+        }
+        if (!(response instanceof CommandResponse))
+        {
+            logger.error("Response to \"" + MEETME_LIST_COMMAND + "\" command is not a CommandResponse but "
+                    + response.getClass());
+            return;
+        }
+
+        lines = ((CommandResponse) response).getResult();
+        for (String line : lines)
+        {
+            final Matcher matcher;
+            final Integer userNumber;
+            final AsteriskChannelImpl channel;
+            boolean muted = false;
+            boolean talking = false;
+            MeetMeUserImpl channelUser;
+            MeetMeUserImpl roomUser;
+
+            matcher = MEETME_LIST_PATTERN.matcher(line);
+            if (!matcher.matches())
+            {
+                continue;
+            }
+
+            userNumber = Integer.valueOf(matcher.group(1));
+            channel = channelManager.getChannelImplByName(matcher.group(2));
+
+            if (line.contains("(Admin Muted)") || line.contains("(Muted)"))
+            {
+                muted = true;
+            }
+
+            if (line.contains("(talking)"))
+            {
+                talking = true;
+            }
+
+            channelUser = channel.getMeetMeUserImpl();
+            if (channelUser != null && channelUser.getRoom() != room)
+            {
+                channelUser.left(DateUtil.getDate());
+                channelUser = null;
+            }
+
+            roomUser = room.getUser(userNumber);
+            if (roomUser != null && roomUser.getChannel() != channel)
+            {
+                room.removeUser(roomUser);
+                roomUser = null;
+            }
+
+            if (channelUser == null && roomUser == null)
+            {
+                MeetMeUserImpl user;
+                user = new MeetMeUserImpl(server, room, userNumber, channel, DateUtil.getDate());
+                user.setMuted(muted);
+                user.setTalking(talking);
+                room.addUser(user);
+                channel.setMeetMeUserImpl(user);
+                server.fireNewMeetMeUser(user);
+            }
+            else if (channelUser != null && roomUser == null)
+            {
+                channelUser.setMuted(muted);
+                room.addUser(channelUser);
+            }
+            else if (channelUser == null && roomUser != null)
+            {
+                roomUser.setMuted(muted);
+                channel.setMeetMeUserImpl(roomUser);
+            }
+            else
+            {
+                if (channelUser != roomUser)
+                {
+                    logger.error("Inconsistent state: channelUser != roomUser, channelUser=" + channelUser + ", roomUser=" + roomUser);
+                }
+            }
+        }
+    }
+
+    private MeetMeUserImpl getOrCreateUserImpl(AbstractMeetMeEvent event)
+    {
+        final String roomNumber;
+        final MeetMeRoomImpl room;
+        final String uniqueId;
+        final AsteriskChannelImpl channel;
+        MeetMeUserImpl user;
+
+        roomNumber = event.getMeetMe();
+        room = getOrCreateRoomImpl(roomNumber);
+        user = room.getUser(event.getUserNum());
+        if (user != null)
+        {
+            return user;
+        }
+
+        // ok create a new one
+        uniqueId = event.getUniqueId();
+        if (uniqueId == null)
+        {
+            logger.warn("UniqueId is null. Ignoring MeetMeEvent");
+            return null;
+        }
+
+        channel = channelManager.getChannelImplById(uniqueId);
+        if (channel == null)
+        {
+            logger.warn("No channel with unique id " + uniqueId + ". Ignoring MeetMeEvent");
+            return null;
+        }
+
+        user = channel.getMeetMeUserImpl();
+        if (user != null)
+        {
+            logger.error("Got MeetMeEvent for channel " + channel.getName() + " that is already user of a room");
+            user.left(event.getDateReceived());
+            if (user.getRoom() != null)
+            {
+                user.getRoom().removeUser(user);
+            }
+            channel.setMeetMeUserImpl(null);
+        }
+
+        logger.info("Adding channel " + channel.getName() + " as user " + event.getUserNum() + " to room " + roomNumber);
+        user = new MeetMeUserImpl(server, room, event.getUserNum(), channel, event.getDateReceived());
+        room.addUser(user);
+        channel.setMeetMeUserImpl(user);
+        server.fireNewMeetMeUser(user);
+
+        return user;
+    }
+
     /**
-     * Returns the room with the given number or creates a new one if none is there yet.
+     * Returns the room with the given number or creates a new one if none is
+     * there yet.
      * 
      * @param roomNumber number of the room to get or create.
      * @return the room with the given number.
@@ -212,13 +341,14 @@ class MeetMeManager
     {
         MeetMeRoomImpl room;
         boolean created = false;
-        
+
         synchronized (rooms)
         {
-            room = rooms.get(roomNumber); 
+            room = rooms.get(roomNumber);
             if (room == null)
             {
                 room = new MeetMeRoomImpl(server, roomNumber);
+                populateRoom(room);
                 rooms.put(roomNumber, room);
                 created = true;
             }
