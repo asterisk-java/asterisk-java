@@ -160,7 +160,7 @@ class MeetMeManager
             }
         }
         else if (event instanceof MeetMeStopTalkingEvent) // only for Asterisk
-                                                            // 1.2
+        // 1.2
         {
             user.setTalking(false);
         }
@@ -250,7 +250,9 @@ class MeetMeManager
 
             if (channelUser == null && roomUser == null)
             {
-                MeetMeUserImpl user;
+                final MeetMeUserImpl user;
+                // using the current date as dateJoined is not correct but we
+                // don't have anything that is better
                 user = new MeetMeUserImpl(server, room, userNumber, channel, DateUtil.getDate());
                 user.setMuted(muted);
                 user.setTalking(talking);
@@ -272,7 +274,8 @@ class MeetMeManager
             {
                 if (channelUser != roomUser)
                 {
-                    logger.error("Inconsistent state: channelUser != roomUser, channelUser=" + channelUser + ", roomUser=" + roomUser);
+                    logger.error("Inconsistent state: channelUser != roomUser, channelUser=" + channelUser + ", roomUser="
+                            + roomUser);
                 }
             }
         }
