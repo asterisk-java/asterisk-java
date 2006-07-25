@@ -67,15 +67,23 @@ class MeetMeManager
 
     void initialize()
     {
-
+        synchronized (rooms)
+        {
+            for (MeetMeRoomImpl room : rooms.values())
+            {
+                populateRoom(room);
+            }
+        }
     }
 
     void disconnected()
     {
+        /*
         synchronized (rooms)
         {
             rooms.clear();
         }
+        */
     }
 
     Collection<MeetMeRoom> getMeetMeRooms()

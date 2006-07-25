@@ -6,12 +6,16 @@ public class MeetMeTest extends AsteriskServerTestCase
 {
     public void testMeetMeRoom() throws Exception
     {
-        Collection<MeetMeRoom> rooms;
-        
-        server.initialize();
-        //Thread.sleep(10000);
         server.getMeetMeRoom("1000");
-        
+        printRooms();
+        System.out.println("waiting...");
+        Thread.sleep(20000);
+        printRooms();
+    }
+    
+    private void printRooms() throws Exception
+    {
+        Collection<MeetMeRoom> rooms;
         rooms = server.getMeetMeRooms();
         for (MeetMeRoom room : rooms)
         {
