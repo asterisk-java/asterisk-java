@@ -31,7 +31,6 @@ import org.asteriskjava.live.ExtensionHistoryEntry;
 import org.asteriskjava.live.HangupCause;
 import org.asteriskjava.live.LinkedChannelHistoryEntry;
 import org.asteriskjava.live.ManagerCommunicationException;
-import org.asteriskjava.live.MeetMeUser;
 import org.asteriskjava.live.NoSuchChannelException;
 import org.asteriskjava.manager.action.AbsoluteTimeoutAction;
 import org.asteriskjava.manager.action.ChangeMonitorAction;
@@ -515,12 +514,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
 
     /* MeetMe user */
 
-    public MeetMeUser getMeetMeUser()
-    {
-        return meetMeUserImpl;
-    }
-
-    MeetMeUserImpl getMeetMeUserImpl()
+    public MeetMeUserImpl getMeetMeUser()
     {
         return meetMeUserImpl;
     }

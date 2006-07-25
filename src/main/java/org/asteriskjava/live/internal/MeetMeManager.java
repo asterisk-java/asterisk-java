@@ -238,7 +238,7 @@ class MeetMeManager
                 talking = true;
             }
 
-            channelUser = channel.getMeetMeUserImpl();
+            channelUser = channel.getMeetMeUser();
             if (channelUser != null && channelUser.getRoom() != room)
             {
                 channelUser.left(DateUtil.getDate());
@@ -333,7 +333,7 @@ class MeetMeManager
             return null;
         }
 
-        user = channel.getMeetMeUserImpl();
+        user = channel.getMeetMeUser();
         if (user != null)
         {
             logger.error("Got MeetMeEvent for channel " + channel.getName() + " that is already user of a room");
