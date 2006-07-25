@@ -67,7 +67,6 @@ class MeetMeManager
 
     void initialize()
     {
-        // TODO remove users that are no longer in the room
         synchronized (rooms)
         {
             for (MeetMeRoomImpl room : rooms.values())
@@ -183,6 +182,7 @@ class MeetMeManager
         final CommandAction meetMeListAction;
         final ManagerResponse response;
         final List<String> lines;
+        final Collection<Integer> userNumbers = new ArrayList<Integer>(); // list of user numbers in the room
 
         meetMeListAction = new CommandAction(MEETME_LIST_COMMAND + " " + room.getRoomNumber());
         try
@@ -225,6 +225,8 @@ class MeetMeManager
 
             userNumber = Integer.valueOf(matcher.group(1));
             channel = channelManager.getChannelImplByName(matcher.group(2));
+
+            userNumbers.add(userNumber);
 
             if (line.contains("(Admin Muted)") || line.contains("(Muted)"))
             {
@@ -280,6 +282,23 @@ class MeetMeManager
                             + roomUser);
                 }
             }
+        }
+        
+        Collection<MeetMeUserImpl> users = room.getUserImpls();
+        Collection<MeetMeUserImpl> usersToRemove = new ArrayList<MeetMeUserImpl>();
+        for (MeetMeUserImpl user : users)
+        {
+            if (! userNumbers.contains(user.getUserNumber()))
+            {
+                // remove user as he is no longer in the room
+                usersToRemove.add(user);
+            }
+        }
+        for (MeetMeUserImpl user : usersToRemove)
+        {
+            user.left(DateUtil.getDate());
+            room.removeUser(user);
+            user.getChannel().setMeetMeUserImpl(null);
         }
     }
 

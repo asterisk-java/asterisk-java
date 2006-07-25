@@ -53,17 +53,18 @@ class MeetMeRoomImpl extends AbstractLiveObject implements MeetMeRoom
 
     public Collection<MeetMeUser> getUsers()
     {
-        Collection<MeetMeUser> copy;
-
         synchronized (users)
         {
-            copy = new ArrayList<MeetMeUser>(users.size() + 2);
-            for (MeetMeUserImpl user : users.values())
-            {
-                copy.add(user);
-            }
+            return new ArrayList<MeetMeUser>(users.values());
         }
-        return copy;
+    }
+
+    Collection<MeetMeUserImpl> getUserImpls()
+    {
+        synchronized (users)
+        {
+            return new ArrayList<MeetMeUserImpl>(users.values());
+        }
     }
     
     void addUser(MeetMeUserImpl user)
