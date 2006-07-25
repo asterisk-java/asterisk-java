@@ -6,6 +6,8 @@ public class MeetMeTest extends AsteriskServerTestCase
 {
     public void testMeetMeRoom() throws Exception
     {
+        server.originateToExtension("Local/1201@basa", "conference", "1000", 1, 5000L);
+        
         server.getMeetMeRoom("1000");
         printRooms();
         System.out.println("waiting...");

@@ -879,6 +879,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         channelManager.disconnected();
         meetMeManager.disconnected();
         queueManager.disconnected();
+        initialized = false;
     }
 
     /*
