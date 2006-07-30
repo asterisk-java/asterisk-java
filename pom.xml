@@ -48,7 +48,7 @@
 	</scm>
 	<issueManagement>
 		<system>JIRA</system>
-		<url>http://jira.reucon.com/browse/AJ</url>
+		<url>http://jira.reucon.org/secure/BrowseProject.jspa?id=10000</url>
 	</issueManagement>
 	<ciManagement>
 		<system>continuum</system>
@@ -62,7 +62,6 @@
 		</notifiers>
 		<url>http://ci.reucon.net/continuum</url>
 	</ciManagement>
-	
 	<mailingLists>
 		<mailingList>
 			<name>Asterisk-Java User List</name>
