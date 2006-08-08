@@ -109,6 +109,12 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
      * TCP port to connect to.  
      */
     private int port = DEFAULT_PORT;
+    
+    /**
+     * <code>true</code> to use SSL for the connection, 
+     * <code>false</code> for a plain text connection.
+     */
+    private boolean ssl = false;
 
     /**
      * The username to use for login as defined in Asterisk's
@@ -259,6 +265,19 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     }
 
     /**
+     * Sets whether to use SSL.<p>
+     * Default is false.
+     * 
+     * @param ssl <code>true</code> to use SSL for the connection, 
+     *        <code>false</code> for a plain text connection.
+     * @since 0.3
+     */
+    public void setSsl(boolean ssl)
+    {
+        this.ssl = ssl;
+    }
+    
+    /**
      * Sets the username to use to connect to the asterisk server. This is the
      * username specified in asterisk's <code>manager.conf</code> file.
      * 
@@ -329,6 +348,11 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     public int getPort()
     {
         return port;
+    }
+
+    public boolean isSsl()
+    {
+        return ssl;
     }
 
     public void registerUserEventClass(Class userEventClass)
@@ -432,8 +456,14 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
             if (protocolIdentifier.value == null)
             {
                 disconnect();
-                throw new TimeoutException(
-                        "Timeout waiting for protocol identifier");
+                if (reader != null && reader.getTerminationException() != null)
+                {
+                    throw reader.getTerminationException();
+                }
+                else
+                {
+                    throw new TimeoutException("Timeout waiting for protocol identifier");
+                }
             }
         }
 
@@ -579,7 +609,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
     protected SocketConnectionFacade createSocket() throws IOException
     {
-        return new SocketConnectionFacadeImpl(hostname, port, socketTimeout);
+        return new SocketConnectionFacadeImpl(hostname, port, ssl, socketTimeout);
     }
 
     public synchronized void logoff() throws IllegalStateException

@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.internal;
 
+import java.io.IOException;
+
 import org.asteriskjava.manager.internal.ManagerReader;
 import org.asteriskjava.util.SocketConnectionFacade;
 
@@ -53,5 +55,10 @@ public class ManagerReaderMock implements ManagerReader
     public void run()
     {
         runCalls++;
+    }
+
+    public IOException getTerminationException()
+    {
+        return null;
     }
 }

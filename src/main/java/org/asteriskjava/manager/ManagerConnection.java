@@ -63,6 +63,16 @@ public interface ManagerConnection
     int getPort();
 
     /**
+     * Returns whether to use SSL.<p>
+     * Default is false.
+     * 
+     * @return <code>true</code> if SSL is used for the connection, 
+     *         <code>false</code> for a plain text connection.
+     * @since 0.3
+     */
+    boolean isSsl();
+    
+    /**
      * Registers a new user event type.
      * <p>
      * Asterisk allows you to send custom events via the UserEvent application.

@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.internal;
 
+import java.io.IOException;
+
 import org.asteriskjava.manager.event.ManagerEvent;
 import org.asteriskjava.util.SocketConnectionFacade;
 
@@ -55,4 +57,11 @@ public interface ManagerReader extends Runnable
     void die();
 
     boolean isDead();
+    
+    /**
+     * Returns the Exception that caused this reader to terminate if any.
+     * 
+     * @return the Exception that caused this reader to terminate if any or <code>null</code> if not.
+     */
+    IOException getTerminationException();
 }

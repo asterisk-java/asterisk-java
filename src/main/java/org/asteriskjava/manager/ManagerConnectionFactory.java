@@ -97,4 +97,18 @@ public class ManagerConnectionFactory
     {
         return new DefaultManagerConnection(hostname, port, username, password);
     }
+
+    /**
+     * Returns a new SSL secured ManagerConnection in state {@link ManagerConnectionState#CONNECTED}.
+     * 
+     * @return the created connection to the Asterisk server.
+     * @since 0.3
+     */
+    public ManagerConnection createSecureManagerConnection()
+    {
+        DefaultManagerConnection dmc;
+        dmc = new DefaultManagerConnection(hostname, port, username, password);
+        dmc.setSsl(true);
+        return dmc;
+    }
 }

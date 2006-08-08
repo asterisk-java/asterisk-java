@@ -27,6 +27,9 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
+import javax.net.SocketFactory;
+import javax.net.ssl.SSLSocketFactory;
+
 import org.asteriskjava.util.SocketConnectionFacade;
 
 
@@ -42,14 +45,25 @@ public class SocketConnectionFacadeImpl implements SocketConnectionFacade
     private final BufferedReader reader;
     private final BufferedWriter writer;
 
-    public SocketConnectionFacadeImpl(String host, int port) throws IOException
+    /**
+     * Creates a new instance.
+     * 
+     * @param host the foreign host to connect to.
+     * @param port the foreign port to connect to.
+     * @param ssl <code>true</code> to use SSL, <code>false</code> otherwise.
+     * @param timeout 0 incidcates default
+     * @throws IOException
+     */
+    public SocketConnectionFacadeImpl(String host, int port, boolean ssl, int timeout) throws IOException
     {
-    	this(host, port, 0);
-    }    
-    
-    public SocketConnectionFacadeImpl(String host, int port, int timeout) throws IOException
-    {
-    	this.socket = new Socket();
+        if (ssl)
+        {
+            this.socket = SSLSocketFactory.getDefault().createSocket();
+        }
+        else
+        {
+            this.socket = SocketFactory.getDefault().createSocket();
+        }
     	this.socket.connect(new InetSocketAddress(host, port), timeout);
 
         InputStream inputStream = socket.getInputStream();

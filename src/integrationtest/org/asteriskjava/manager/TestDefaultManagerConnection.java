@@ -25,7 +25,9 @@ public class TestDefaultManagerConnection extends TestCase
         dmc = new DefaultManagerConnection();
         dmc.setUsername("manager");
         dmc.setPassword("obelisk");
-        dmc.setHostname("pbx0");
+        dmc.setHostname("pbx0.cologne.reucon.net");
+        dmc.setPort(5039);
+        dmc.setSsl(true);
 
         return dmc;
     }

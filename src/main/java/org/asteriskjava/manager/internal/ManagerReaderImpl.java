@@ -84,6 +84,11 @@ public class ManagerReaderImpl implements ManagerReader
      * <code>true</code> if the main loop has finished.
      */
     private boolean dead = false;
+    
+    /**
+     * Exception that caused this reader to terminate if any.
+     */
+    private IOException terminationException;
 
     /**
      * Creates a new ManagerReaderImpl.
@@ -281,6 +286,7 @@ public class ManagerReaderImpl implements ManagerReader
         }
         catch (IOException e)
         {
+            this.terminationException = e;
             this.dead = true;
             logger.info("Terminating reader thread: " + e.getMessage());
         }
@@ -302,6 +308,11 @@ public class ManagerReaderImpl implements ManagerReader
     public boolean isDead()
     {
         return dead;
+    }
+
+    public IOException getTerminationException()
+    {
+        return terminationException;
     }
 
     private ManagerResponse buildResponse(Map<String, String> buffer)

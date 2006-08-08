@@ -110,6 +110,19 @@ public class DefaultManagerConnection implements ManagerConnection
     }
 
     /**
+     * Sets whether to use SSL.<p>
+     * Default is false.
+     * 
+     * @param ssl <code>true</code> to use SSL for the connection, 
+     *        <code>false</code> for a plain text connection.
+     * @since 0.3
+     */
+    public void setSsl(boolean ssl)
+    {
+        impl.setSsl(ssl);
+    }
+
+    /**
      * Sets the username to use to connect to the Asterisk server. This is the
      * username specified in Asterisk's <code>manager.conf</code> file.
      * 
@@ -205,6 +218,11 @@ public class DefaultManagerConnection implements ManagerConnection
     public int getPort()
     {
         return impl.getPort();
+    }
+
+    public boolean isSsl()
+    {
+        return impl.isSsl();
     }
 
     public void registerUserEventClass(Class userEventClass)
