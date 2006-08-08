@@ -261,7 +261,14 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
      */
     public void setPort(int port)
     {
-        this.port = port;
+        if (port <= 0)
+        {
+            this.port = DEFAULT_PORT;
+        }
+        else
+        {
+            this.port = port;
+        }
     }
 
     /**

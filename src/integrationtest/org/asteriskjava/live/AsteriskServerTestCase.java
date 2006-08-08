@@ -20,12 +20,12 @@ import junit.framework.TestCase;
 
 public class AsteriskServerTestCase extends TestCase
 {
-    protected DefaultAsteriskServer server;
+    protected AsteriskServer server;
 
     @Override
     public void setUp() throws Exception
     {
-        server = new DefaultAsteriskServer("pbx0", "manager", "obelisk");
+        server = new SecureAsteriskServer("pbx0", 5039, "manager", "obelisk");
     }
 
     @Override

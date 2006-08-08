@@ -55,7 +55,7 @@ public class DefaultAsteriskServer implements AsteriskServer
     public DefaultAsteriskServer(String hostname, String username, String password)
     {
         final ManagerConnection connection;
-        connection = new DefaultManagerConnection(hostname, username, password);
+        connection = createManagerConnection(hostname, 0, username, password);
         impl = new AsteriskServerImpl(connection);
     }
 
@@ -72,10 +72,15 @@ public class DefaultAsteriskServer implements AsteriskServer
     public DefaultAsteriskServer(String hostname, int port, String username, String password)
     {
         final ManagerConnection connection;
-        connection = new DefaultManagerConnection(hostname, port, username, password);
+        connection = createManagerConnection(hostname, port, username, password);
         impl = new AsteriskServerImpl(connection);
     }
 
+    protected ManagerConnection createManagerConnection(String hostname, int port, String username, String password)
+    {
+        return new DefaultManagerConnection(hostname, port, username, password);
+    }
+    
     /**
      * Creates a new instance that uses the given {@link ManagerConnection}.
      * 
