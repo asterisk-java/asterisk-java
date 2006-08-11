@@ -85,9 +85,7 @@
 			<plugin>
 				<artifactId>maven-release-plugin</artifactId>
 				<configuration>
-					<tagBase>
-						scm:svn:https://secure.reucon.net/svn/repos/${artifactId}/tags
-					</tagBase>
+					<tagBase>https://secure.reucon.net/svn/repos/${artifactId}/tags</tagBase>
 				</configuration>
 			</plugin>
 			<plugin>
