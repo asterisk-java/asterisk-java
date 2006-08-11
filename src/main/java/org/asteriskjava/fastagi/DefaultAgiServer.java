@@ -72,8 +72,7 @@ public class DefaultAgiServer implements AgiServer
     private int port;
 
     /**
-     * The thread pool that contains the worker threads to process incoming
-     * requests.
+     * The thread pool that contains the worker threads to process incoming requests.
      */
     private ThreadPoolExecutor pool;
 
@@ -83,25 +82,23 @@ public class DefaultAgiServer implements AgiServer
     private int poolSize;
 
     /**
-     * The maximum number of worker threads in the thread pool. This equals the maximum
-     * number of concurrent requests this AgiServer can serve.
+     * The maximum number of worker threads in the thread pool. This equals the maximum number of
+     * concurrent requests this AgiServer can serve.
      */
     private int maximumPoolSize;
-    
+
     /**
      * True while this server is shut down.
      */
     private boolean die;
 
     /**
-     * The strategy to use for mapping AgiRequests to AgiScripts that serve
-     * them.
+     * The strategy to use for mapping AgiRequests to AgiScripts that serve them.
      */
     private MappingStrategy mappingStrategy;
 
     /**
      * Creates a new DefaultAgiServer.
-     * 
      */
     public DefaultAgiServer()
     {
@@ -109,16 +106,17 @@ public class DefaultAgiServer implements AgiServer
         this.poolSize = DEFAULT_POOL_SIZE;
         this.maximumPoolSize = DEFAULT_MAXIMUM_POOL_SIZE;
         this.maximumPoolSize = this.poolSize;
-        this.mappingStrategy = new CompositeMappingStrategy(
-                new ResourceBundleMappingStrategy(),
+        this.mappingStrategy = new CompositeMappingStrategy(new ResourceBundleMappingStrategy(),
                 new ClassNameMappingStrategy());
-        
+
         loadConfig();
     }
 
     /**
-     * Sets the number of worker threads in the thread pool.<p>
-     * This is the number of threads that are available even if they are idle.<p>
+     * Sets the number of worker threads in the thread pool.
+     * <p>
+     * This is the number of threads that are available even if they are idle.
+     * <p>
      * The default pool size is 10.
      * 
      * @param poolSize the size of the worker thread pool.
@@ -129,9 +127,10 @@ public class DefaultAgiServer implements AgiServer
     }
 
     /**
-     * Sets the maximum number of worker threads in the thread pool.<p>
-     * This equals the maximum number of concurrent requests this AgiServer can
-     * serve.<p>
+     * Sets the maximum number of worker threads in the thread pool.
+     * <p>
+     * This equals the maximum number of concurrent requests this AgiServer can serve.
+     * <p>
      * The default maximum pool size is 100.
      * 
      * @param maximumPoolSize the maximum size of the worker thread pool.
@@ -140,9 +139,10 @@ public class DefaultAgiServer implements AgiServer
     {
         this.maximumPoolSize = maximumPoolSize;
     }
-    
+
     /**
-     * Sets the TCP port to listen on for new connections.<p>
+     * Sets the TCP port to listen on for new connections.
+     * <p>
      * The default port is 4573.
      * 
      * @param bindPort the port to bind to.
@@ -152,9 +152,10 @@ public class DefaultAgiServer implements AgiServer
     {
         this.port = bindPort;
     }
-    
+
     /**
-     * Sets the TCP port to listen on for new connections.<p>
+     * Sets the TCP port to listen on for new connections.
+     * <p>
      * The default port is 4573.
      * 
      * @param port the port to bind to.
@@ -166,8 +167,8 @@ public class DefaultAgiServer implements AgiServer
     }
 
     /**
-     * Sets the strategy to use for mapping AgiRequests to AgiScripts that serve
-     * them.<p>
+     * Sets the strategy to use for mapping AgiRequests to AgiScripts that serve them.
+     * <p>
      * The default mapping strategy is a ResourceBundleMappingStrategy.
      * 
      * @param mappingStrategy the mapping strategy to use.
@@ -180,18 +181,17 @@ public class DefaultAgiServer implements AgiServer
 
     private void loadConfig()
     {
-        ResourceBundle resourceBundle;
+        final ResourceBundle resourceBundle;
 
         try
         {
-            resourceBundle = ResourceBundle
-                    .getBundle(DEFAULT_CONFIG_RESOURCE_BUNDLE_NAME);
+            resourceBundle = ResourceBundle.getBundle(DEFAULT_CONFIG_RESOURCE_BUNDLE_NAME);
         }
         catch (MissingResourceException e)
         {
             return;
         }
-        
+
         try
         {
             String portString;
@@ -204,9 +204,9 @@ public class DefaultAgiServer implements AgiServer
             }
             port = Integer.parseInt(portString);
         }
-        catch(Exception e) //NOPMD
+        catch (Exception e) // NOPMD
         {
-            //swallow
+            // swallow
         }
 
         try
@@ -216,9 +216,9 @@ public class DefaultAgiServer implements AgiServer
             poolSizeString = resourceBundle.getString("poolSize");
             poolSize = Integer.parseInt(poolSizeString);
         }
-        catch(Exception e) //NOPMD
+        catch (Exception e) // NOPMD
         {
-            //swallow
+            // swallow
         }
 
         try
@@ -228,9 +228,9 @@ public class DefaultAgiServer implements AgiServer
             maximumPoolSizeString = resourceBundle.getString("maximumPoolSize");
             maximumPoolSize = Integer.parseInt(maximumPoolSizeString);
         }
-        catch(Exception e) //NOPMD
+        catch (Exception e) // NOPMD
         {
-            //swallow
+            // swallow
         }
     }
 
@@ -245,10 +245,8 @@ public class DefaultAgiServer implements AgiServer
         AgiConnectionHandler connectionHandler;
 
         die = false;
-        pool = new ThreadPoolExecutor(
-                poolSize, (maximumPoolSize < poolSize) ? poolSize : maximumPoolSize, 
-                50000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>(),
-                new DaemonThreadFactory());
+        pool = new ThreadPoolExecutor(poolSize, (maximumPoolSize < poolSize) ? poolSize : maximumPoolSize, 50000L,
+                TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>(), new DaemonThreadFactory());
         logger.info("Thread pool started.");
 
         try
@@ -260,47 +258,35 @@ public class DefaultAgiServer implements AgiServer
             logger.error("Unable start AgiServer: cannot to bind to *:" + port + ".", e);
             throw e;
         }
-        
+
         logger.info("Listening on *:" + port + ".");
 
-        try
+        // loop will be terminated by accept() throwing an IOException when the
+        // ServerSocket is closed.
+        while (true)
         {
-            // loop will be terminated by accept() throwing an IOException when the
-            // ServerSocket is closed.
-            while (true)
+            try
             {
                 socket = serverSocket.accept();
                 logger.info("Received connection from " + socket.getRemoteAddress());
                 connectionHandler = new AgiConnectionHandler(socket, mappingStrategy);
                 pool.execute(connectionHandler);
             }
-        }
-        catch (IOException e)
-        {
-            // swallow only if shutdown
-            if (!die)
+            catch (IOException e)
             {
-                logger.error("IOException while waiting for connections.", e);
-                throw e;
-            }
-        }
-        finally
-        {
-            if (serverSocket != null)
-            {
-                try
+                // swallow only if shutdown
+                if (die)
                 {
-                    serverSocket.close();
+                    break;
                 }
-                catch (IOException e) //NOPMD
+                else
                 {
-                    //swallow
+                    logger.error("IOException while waiting for connections.", e);
+                    // log error but continue
                 }
             }
-            serverSocket = null;
-            pool.shutdown();
-            logger.info("AgiServer shut down.");
         }
+        logger.info("AgiServer shut down.");
     }
 
     public void run()
@@ -309,7 +295,7 @@ public class DefaultAgiServer implements AgiServer
         {
             startup();
         }
-        catch (IOException e) //NOPMD
+        catch (IOException e) // NOPMD
         {
             // nothing we can do about that and exceptions have already been logged
             // by startup().
@@ -318,15 +304,19 @@ public class DefaultAgiServer implements AgiServer
 
     public void die()
     {
+        // setting the death flag causes the accept() loop to exit when an 
+        // SocketException occurs.
         die = true;
 
         if (serverSocket != null)
         {
             try
             {
+                // closes the server socket and throws a SocketException on
+                // Threads waiting in accept()
                 serverSocket.close();
             }
-            catch(IOException e)
+            catch (IOException e)
             {
                 logger.warn("IOException while closing server socket.", e);
             }
@@ -351,16 +341,16 @@ public class DefaultAgiServer implements AgiServer
         {
             pool.shutdown();
         }
-        
+
         if (serverSocket != null)
         {
             try
             {
                 serverSocket.close();
             }
-            catch (IOException e) //NOPMD
+            catch (IOException e) // NOPMD
             {
-                //swallow
+                // swallow
             }
         }
     }
