@@ -3,7 +3,7 @@
 	<groupId>org.asteriskjava</groupId>
 	<artifactId>asterisk-java</artifactId>
 	<name>Asterisk-Java</name>
-	<version>0.3-SNAPSHOT</version>
+	<version>0.3-m1</version>
 	<description>Java interface for Asterisk PBX.</description>
 	<url>http://asterisk-java.org/</url>
 	<licenses>
@@ -39,8 +39,8 @@
 		</developer>
 	</developers>
 	<scm>
-		<connection>scm:svn:https://secure.reucon.net/svn/repos/${artifactId}/trunk</connection>
-		<developerConnection>scm:svn:https://secure.reucon.net/svn/repos/${artifactId}/trunk</developerConnection>
+		<connection>scm:svn:https://secure.reucon.net/svn/repos/asterisk-java/tags/asterisk-java-0.3-m1</connection>
+		<developerConnection>scm:svn:https://secure.reucon.net/svn/repos/asterisk-java/tags/asterisk-java-0.3-m1</developerConnection>
 	</scm>
 	<issueManagement>
 		<system>JIRA</system>
