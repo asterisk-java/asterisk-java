@@ -33,7 +33,7 @@ public interface ServerSocketFacade
      * Waits for a new incoming connection.
      * 
      * @return the new connection.
-     * @throws IOException
+     * @throws IOException if an I/O error occurs when waiting for a connection.
      */
     SocketConnectionFacade accept() throws IOException;
 
