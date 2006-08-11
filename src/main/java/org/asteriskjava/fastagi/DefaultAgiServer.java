@@ -265,8 +265,11 @@ public class DefaultAgiServer implements AgiServer
 
         try
         {
-            while ((socket = serverSocket.accept()) != null)
+            // loop will be terminated by accept() throwing an IOException when the
+            // ServerSocket is closed.
+            while (true)
             {
+                socket = serverSocket.accept();
                 logger.info("Received connection from " + socket.getRemoteAddress());
                 connectionHandler = new AgiConnectionHandler(socket, mappingStrategy);
                 pool.execute(connectionHandler);
