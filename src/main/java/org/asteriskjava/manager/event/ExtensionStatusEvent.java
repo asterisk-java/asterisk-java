@@ -17,9 +17,16 @@
 package org.asteriskjava.manager.event;
 
 /**
- * An ExtensionStatusEvent is triggered when the state of an extension changes.
+ * An ExtensionStatusEvent is triggered when the state of an extension changes.<p>
+ * For this to work for you must provide appropriate hints in your dialplan to
+ * map channels to extensions. 
  * <p>
- * It is implemented in <code>manager.c</code>
+ * Example:
+ * <pre>exten => 1234,1,Dial(SIP/myuser)
+ * exten => 1234,hint,SIP/myuser</pre>
+ * <p>
+ * It is implemented in <code>manager.c</code>, values for state are defined in
+ * <code>include/asterisk/pbx.h</code>.
  * 
  * @author srt
  * @version $Id$
@@ -30,6 +37,18 @@ public class ExtensionStatusEvent extends ManagerEvent
      * Serializable version identifier
      */
     private static final long serialVersionUID = -6459014125704286869L;
+
+    /** No device INUSE or BUSY  */
+    public static final int NOT_INUSE = 0;
+    /** One or more devices INUSE */
+    public static final int INUSE = 1 << 0;
+    /** All devices BUSY */
+    public static final int BUSY = 1 << 1;
+    /** All devices UNAVAILABLE/UNREGISTERED */
+    public static final int UNAVAILABLE = 1 << 2;
+    /** One or more devices RINGING */
+    public static final int RINGING = 1 << 3;
+    
     private String exten;
     private String context;
     private Integer status;
@@ -76,7 +95,16 @@ public class ExtensionStatusEvent extends ManagerEvent
     }
 
     /**
-     * Returns the state of the extension.
+     * Returns the state of the extension.<p>
+     * Possible values are:
+     * <ul>
+     * <li>RINGING
+     * <li>INUSE | RINGING
+     * <li>INUSE
+     * <li>NOT_INUSE
+     * <li>BUSY
+     * <li>UNAVAILABLE
+     * </li>
      */
     public Integer getStatus()
     {
