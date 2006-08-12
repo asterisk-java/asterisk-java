@@ -6,6 +6,7 @@ Asterisk-Java 0.3
 	  ManagerEventListener and SendActionCallback.
 	* Introduced generics and leveraged other Java5 features like
 	  java.util.concurrent.
+	* Added SSL support for the Manager API.
 	* ManagerReader threads are now daemon threads so as soon as
 	  all other threads are terminated the JVM will quit
 	* Changed log level for message about ManagerReader termination
