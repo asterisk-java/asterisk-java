@@ -24,6 +24,8 @@ package org.asteriskjava.manager.event;
  * Example:
  * <pre>exten => 1234,1,Dial(SIP/myuser)
  * exten => 1234,hint,SIP/myuser</pre>
+ * Hints can also be used to map the state of multiple channels to an extension:
+ * <pre>exten => 6789,hint,SIP/user1&SIP/user2
  * <p>
  * It is implemented in <code>manager.c</code>, values for state are defined in
  * <code>include/asterisk/pbx.h</code>.
