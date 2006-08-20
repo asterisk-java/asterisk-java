@@ -47,14 +47,14 @@ public class ManagerUtil
      */
     public static String toHexString(byte[] b)
     {
-        StringBuffer sb = new StringBuffer(b.length * 2);
-
+        final StringBuilder sb;
+        
+        sb = new StringBuilder(b.length * 2);
         for (int i = 0; i < b.length; i++)
         {
             sb.append(hexChar[(b[i] & 0xf0) >>> 4]);
             sb.append(hexChar[b[i] & 0x0f]);
         }
-
         return sb.toString();
     }
 
