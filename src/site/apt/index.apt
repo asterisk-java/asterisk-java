@@ -3,7 +3,7 @@
   ---
   Stefan Reuter
   ---
-  24-February-2006
+  23-August-2006
 
 Asterisk-Java
 
@@ -39,9 +39,11 @@ Asterisk-Java
   
 * Status
 
-  Asterisk-Java 0.3 will be released in august 2006 and be 
+  Asterisk-Java 0.3 will be released shortly after Asterisk 1.4 and be 
   available from the
-  {{{http://sourceforge.net/projects/asterisk-java/}sourceforge project page}}.
+  {{{http://sourceforge.net/projects/asterisk-java/}sourceforge project page}}
+  as well as our
+  {{{http://maven.reucon.com/public/org/asteriskjava/asterisk-java/}distribution site}}.
   
   For the future a stateful higher level API 
   that supports operations like "get list of currently active 
@@ -54,11 +56,14 @@ Asterisk-Java
 
 * Download
 
-  Official releases and release candidates are available on the
-  {{{http://sourceforge.net/projects/asterisk-java/}sourceforge project page}}.
+  Official releases and release candidates are available from the
+  {{{http://sourceforge.net/projects/asterisk-java/}sourceforge project page}}
+  as well as our
+  {{{http://maven.reucon.com/public/org/asteriskjava/asterisk-java/}distribution site}}.
 
-  You can also download a 
-  {{{http://maven.reucon.com/maven2/org/asteriskjava/asterisk-java/}snapshot}}.
+  The
+  {{{http://maven.reucon.com/public/org/asteriskjava/asterisk-java/}distribution site}}
+  also hosts the latest snapshot releases.
   
   Please feel free to provide any feedback or ask for support via the
   {{{mail-lists.html}Asterisk-Java user's mailing list}}.

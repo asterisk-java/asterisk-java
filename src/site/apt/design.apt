@@ -178,7 +178,7 @@ Design
 
   This section describes the design of Asterisk-Java's support
   for FastAGI. The corresponding Java package is called
-  <<<net.sf.asterisk.fastagi>>>.
+  <<<org.asteriskjava.fastagi>>>.
   
 [images/agi-thumb.png]
 
@@ -227,7 +227,7 @@ Design
 
   This section describes the design of Asterisk-Java's support
   for the Manager API. The corresponding Java package is called
-  <<<net.sf.asterisk.manager>>>.
+  <<<org.asteriskjava.manager>>>.
 
 [images/manager-thumb.png]
 
