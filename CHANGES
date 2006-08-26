@@ -1,4 +1,4 @@
-Asterisk-Java 0.3
+Asterisk-Java 0.3-m1
 	* Changed package name from net.sf.asterisk to org.asteriskjava
 	  and renamed AGI classes to Agi to conform to Java coding
 	  standards
