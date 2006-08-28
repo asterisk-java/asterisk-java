@@ -272,10 +272,10 @@ public class HelloManager
 
     public HelloManager() throws IOException
     {
-        ManagerConnectionFactory factory = new ManagerConnectionFactory();
+        ManagerConnectionFactory factory = new ManagerConnectionFactory(
+                "localhost", "manager", "pa55w0rd");
 
-        this.managerConnection = factory.getManagerConnection("localhost",
-                "manager", "pa55w0rd");
+        this.managerConnection = factory.createManagerConnection();
     }
 
     public void run() throws IOException, AuthenticationFailedException,
@@ -344,10 +344,10 @@ public class HelloEvents implements ManagerEventListener
 
     public HelloEvents() throws IOException
     {
-        ManagerConnectionFactory factory = new ManagerConnectionFactory();
+        ManagerConnectionFactory factory = new ManagerConnectionFactory(
+                "localhost", "manager", "pa55w0rd");
 
-        this.managerConnection = factory.getManagerConnection("localhost",
-                "manager", "pa55w0rd");
+        this.managerConnection = factory.createManagerConnection();
     }
 
     public void run() throws IOException, AuthenticationFailedException,
