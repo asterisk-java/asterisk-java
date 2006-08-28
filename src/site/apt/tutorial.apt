@@ -321,7 +321,7 @@ public class HelloManager
 * Hello Events!
 
   To receive events from Asterisk you have to implement the 
-  {{{apidocs/org/asteriskjava/manager/ManagerEventHandler.html}ManagerEventHandler}}
+  {{{apidocs/org/asteriskjava/manager/ManagerEventListener.html}ManagerEventListener}}
   interface and add it to the 
   {{{apidocs/org/asteriskjava/manager/ManagerConnection.html}ManagerConnection}}
   
@@ -333,12 +333,12 @@ import java.io.IOException;
 import org.asteriskjava.manager.AuthenticationFailedException;
 import org.asteriskjava.manager.ManagerConnection;
 import org.asteriskjava.manager.ManagerConnectionFactory;
-import org.asteriskjava.manager.ManagerEventHandler;
+import org.asteriskjava.manager.ManagerEventListener;
 import org.asteriskjava.manager.TimeoutException;
 import org.asteriskjava.manager.action.StatusAction;
 import org.asteriskjava.manager.event.ManagerEvent;
 
-public class HelloEvents implements ManagerEventHandler
+public class HelloEvents implements ManagerEventListener
 {
     private ManagerConnection managerConnection;
 
@@ -354,7 +354,7 @@ public class HelloEvents implements ManagerEventHandler
             TimeoutException, InterruptedException
     {
         // register for events
-        managerConnection.addEventHandler(this);
+        managerConnection.addEventListener(this);
         
         // connect to Asterisk and log in
         managerConnection.login();
@@ -369,7 +369,7 @@ public class HelloEvents implements ManagerEventHandler
         managerConnection.logoff();
     }
 
-    public void handleEvent(ManagerEvent event)
+    public void onManagerEvent(ManagerEvent event)
     {
         // just print received events
         System.out.println(event);
