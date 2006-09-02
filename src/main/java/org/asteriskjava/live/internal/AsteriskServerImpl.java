@@ -201,6 +201,11 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         this.connectionPool.add(eventConnection);
     }
 
+    public ManagerConnection getManagerConnection()
+    {
+        return eventConnection;
+    }
+
     public void initialize() throws ManagerCommunicationException
     {
         initializeIfNeeded();

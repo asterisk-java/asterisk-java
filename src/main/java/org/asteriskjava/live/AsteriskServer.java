@@ -19,6 +19,8 @@ package org.asteriskjava.live;
 import java.util.Collection;
 import java.util.Map;
 
+import org.asteriskjava.manager.ManagerConnection;
+
 /**
  * The AsteriskServer is built on top of the
  * {@link org.asteriskjava.manager.ManagerConnection} and is an attempt to
@@ -36,6 +38,13 @@ import java.util.Map;
  */
 public interface AsteriskServer
 {
+    /**
+     * Returns the underlying ManagerConnection.
+     * 
+     * @return the underlying ManagerConnection.
+     */
+    ManagerConnection getManagerConnection();
+
     /**
      * Generates an outgoing channel to a dialplan entry (extension, context,
      * priority).

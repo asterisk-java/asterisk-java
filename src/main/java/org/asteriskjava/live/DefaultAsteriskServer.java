@@ -36,8 +36,9 @@ public class DefaultAsteriskServer implements AsteriskServer
 
     /**
      * Creates a new instance without a {@link ManagerConnection}. The
-     * ManagerConnection must be set using {@link #setManagerConnection(ManagerConnection)}
-     * before you can use this AsteriskServer.
+     * ManagerConnection must be set using
+     * {@link #setManagerConnection(ManagerConnection)} before you can use this
+     * AsteriskServer.
      */
     public DefaultAsteriskServer()
     {
@@ -80,7 +81,7 @@ public class DefaultAsteriskServer implements AsteriskServer
     {
         return new DefaultManagerConnection(hostname, port, username, password);
     }
-    
+
     /**
      * Creates a new instance that uses the given {@link ManagerConnection}.
      * 
@@ -120,6 +121,11 @@ public class DefaultAsteriskServer implements AsteriskServer
     }
 
     /* Implementation of the AsteriskServer interface */
+
+    public ManagerConnection getManagerConnection()
+    {
+        return impl.getManagerConnection();
+    }
 
     public AsteriskChannel originateToExtension(String channel, String context, String exten, int priority, long timeout)
             throws ManagerCommunicationException, NoSuchChannelException
