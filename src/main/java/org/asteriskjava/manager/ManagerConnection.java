@@ -67,6 +67,7 @@ public interface ManagerConnection
      * the username specified in Asterisk's <code>manager.conf</code> file.
      * 
      * @return the username to use for login
+     * @since 0.3
      */
     String getUsername();
 
@@ -75,6 +76,7 @@ public interface ManagerConnection
      * the username specified in Asterisk's <code>manager.conf</code> file.
      * 
      * @return the password to use for login
+     * @since 0.3
      */
     String getPassword();
 
