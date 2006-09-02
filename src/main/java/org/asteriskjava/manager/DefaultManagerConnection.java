@@ -24,16 +24,19 @@ import org.asteriskjava.manager.internal.ManagerConnectionImpl;
 import org.asteriskjava.manager.response.ManagerResponse;
 
 /**
- * Default implemention of the {@link org.asteriskjava.manager.ManagerConnection}
- * interface.<p>
+ * Default implemention of the
+ * {@link org.asteriskjava.manager.ManagerConnection} interface.
+ * <p>
  * Generelly avoid direct use of this class. Use a
- * {@link org.asteriskjava.manager.ManagerConnectionFactory} to
- * obtain a {@link org.asteriskjava.manager.ManagerConnection} instead.<p>
- * When using a dependency injection framework like the Spring Framework direct usage for
- * wiring up beans that require a {@link org.asteriskjava.manager.ManagerConnection}
- * property is fine though.<p>
- * Note that the DefaultManagerConnection will create one new Thread
- * for reading data from Asterisk once it is
+ * {@link org.asteriskjava.manager.ManagerConnectionFactory} to obtain a
+ * {@link org.asteriskjava.manager.ManagerConnection} instead.
+ * <p>
+ * When using a dependency injection framework like the Spring Framework direct
+ * usage for wiring up beans that require a
+ * {@link org.asteriskjava.manager.ManagerConnection} property is fine though.
+ * <p>
+ * Note that the DefaultManagerConnection will create one new Thread for reading
+ * data from Asterisk once it is
  * {@link org.asteriskjava.manager.ManagerConnectionState#CONNECTING}.
  * 
  * @see org.asteriskjava.manager.ManagerConnectionFactory
@@ -87,7 +90,8 @@ public class DefaultManagerConnection implements ManagerConnection
     }
 
     /**
-     * Sets the hostname of the Asterisk server to connect to.<p>
+     * Sets the hostname of the Asterisk server to connect to.
+     * <p>
      * Default is <code>localhost</code>.
      * 
      * @param hostname the hostname to connect to
@@ -99,7 +103,8 @@ public class DefaultManagerConnection implements ManagerConnection
 
     /**
      * Sets the port to use to connect to the Asterisk server. This is the port
-     * specified in Asterisk's <code>manager.conf</code> file.<p>
+     * specified in Asterisk's <code>manager.conf</code> file.
+     * <p>
      * Default is 5038.
      * 
      * @param port the port to connect to
@@ -110,11 +115,12 @@ public class DefaultManagerConnection implements ManagerConnection
     }
 
     /**
-     * Sets whether to use SSL.<p>
+     * Sets whether to use SSL.
+     * <p>
      * Default is false.
      * 
-     * @param ssl <code>true</code> to use SSL for the connection, 
-     *        <code>false</code> for a plain text connection.
+     * @param ssl <code>true</code> to use SSL for the connection,
+     *            <code>false</code> for a plain text connection.
      * @since 0.3
      */
     public void setSsl(boolean ssl)
@@ -147,7 +153,8 @@ public class DefaultManagerConnection implements ManagerConnection
     /**
      * Sets the time in milliseconds the synchronous sendAction methods
      * {@link #sendAction(ManagerAction)} will wait for a response before
-     * throwing a TimeoutException.<p>
+     * throwing a TimeoutException.
+     * <p>
      * Default is 2000.
      * 
      * @param defaultTimeout default timeout in milliseconds
@@ -161,7 +168,8 @@ public class DefaultManagerConnection implements ManagerConnection
     /**
      * Sets the time in milliseconds the synchronous method
      * {@link #sendAction(ManagerAction)} will wait for a response before
-     * throwing a TimeoutException.<p>
+     * throwing a TimeoutException.
+     * <p>
      * Default is 2000.
      * 
      * @param defaultResponseTimeout default response timeout in milliseconds
@@ -175,7 +183,8 @@ public class DefaultManagerConnection implements ManagerConnection
     /**
      * Sets the time in milliseconds the synchronous method
      * {@link #sendEventGeneratingAction(EventGeneratingAction)} will wait for a
-     * response and the last response event before throwing a TimeoutException.<p>
+     * response and the last response event before throwing a TimeoutException.
+     * <p>
      * Default is 5000.
      * 
      * @param defaultEventTimeout default event timeout in milliseconds
@@ -187,7 +196,8 @@ public class DefaultManagerConnection implements ManagerConnection
     }
 
     /**
-     * This method is deprecated and will be removed in Asterisk-Java 0.4.<p>
+     * This method is deprecated and will be removed in Asterisk-Java 0.4.
+     * <p>
      * It does nothing.
      * 
      * @deprecated no longer needed as we now use an interrupt based response
@@ -200,7 +210,8 @@ public class DefaultManagerConnection implements ManagerConnection
 
     /**
      * Set to <code>true</code> to try reconnecting to ther asterisk serve
-     * even if the reconnection attempt threw an AuthenticationFailedException.<p>
+     * even if the reconnection attempt threw an AuthenticationFailedException.
+     * <p>
      * Default is <code>true</code>.
      */
     public void setKeepAliveAfterAuthenticationFailure(boolean keepAliveAfterAuthenticationFailure)
@@ -220,6 +231,16 @@ public class DefaultManagerConnection implements ManagerConnection
         return impl.getPort();
     }
 
+    public String getUsername()
+    {
+        return impl.getUsername();
+    }
+
+    public String getPassword()
+    {
+        return impl.getPassword();
+    }
+
     public boolean isSsl()
     {
         return impl.isSsl();
@@ -235,14 +256,13 @@ public class DefaultManagerConnection implements ManagerConnection
         impl.setSocketTimeout(socketTimeout);
     }
 
-    public void login() throws IllegalStateException, IOException, 
-            AuthenticationFailedException, TimeoutException
+    public void login() throws IllegalStateException, IOException, AuthenticationFailedException, TimeoutException
     {
         impl.login();
     }
 
-    public void login(String events) throws IllegalStateException, IOException, 
-            AuthenticationFailedException, TimeoutException
+    public void login(String events) throws IllegalStateException, IOException, AuthenticationFailedException,
+            TimeoutException
     {
         impl.login(events);
     }
@@ -252,37 +272,32 @@ public class DefaultManagerConnection implements ManagerConnection
         impl.logoff();
     }
 
-    public ManagerResponse sendAction(ManagerAction action) throws IOException,
-            TimeoutException, IllegalArgumentException, IllegalStateException
+    public ManagerResponse sendAction(ManagerAction action) throws IOException, TimeoutException, IllegalArgumentException,
+            IllegalStateException
     {
         return impl.sendAction(action);
     }
 
-    public ManagerResponse sendAction(ManagerAction action, long timeout)
-            throws IOException, TimeoutException, IllegalArgumentException,
-            IllegalStateException
+    public ManagerResponse sendAction(ManagerAction action, long timeout) throws IOException, TimeoutException,
+            IllegalArgumentException, IllegalStateException
     {
         return impl.sendAction(action, timeout);
     }
 
-    public void sendAction(ManagerAction action,
-            SendActionCallback callbackHandler) throws IOException,
+    public void sendAction(ManagerAction action, SendActionCallback callbackHandler) throws IOException,
             IllegalArgumentException, IllegalStateException
     {
         impl.sendAction(action, callbackHandler);
     }
 
-    public ResponseEvents sendEventGeneratingAction(EventGeneratingAction action)
-            throws IOException, EventTimeoutException,
+    public ResponseEvents sendEventGeneratingAction(EventGeneratingAction action) throws IOException, EventTimeoutException,
             IllegalArgumentException, IllegalStateException
     {
         return impl.sendEventGeneratingAction(action);
     }
 
-    public ResponseEvents sendEventGeneratingAction(
-            EventGeneratingAction action, long timeout) throws IOException,
-            EventTimeoutException, IllegalArgumentException,
-            IllegalStateException
+    public ResponseEvents sendEventGeneratingAction(EventGeneratingAction action, long timeout) throws IOException,
+            EventTimeoutException, IllegalArgumentException, IllegalStateException
     {
         return impl.sendEventGeneratingAction(action, timeout);
     }

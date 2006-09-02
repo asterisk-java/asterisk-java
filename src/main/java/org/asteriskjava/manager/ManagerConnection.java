@@ -63,15 +63,32 @@ public interface ManagerConnection
     int getPort();
 
     /**
-     * Returns whether to use SSL.<p>
+     * Returns the username to use to connect to the Asterisk server. This is
+     * the username specified in Asterisk's <code>manager.conf</code> file.
+     * 
+     * @return the username to use for login
+     */
+    String getUsername();
+
+    /**
+     * Returns the password to use to connect to the Asterisk server. This is
+     * the username specified in Asterisk's <code>manager.conf</code> file.
+     * 
+     * @return the password to use for login
+     */
+    String getPassword();
+
+    /**
+     * Returns whether to use SSL.
+     * <p>
      * Default is false.
      * 
-     * @return <code>true</code> if SSL is used for the connection, 
+     * @return <code>true</code> if SSL is used for the connection,
      *         <code>false</code> for a plain text connection.
      * @since 0.3
      */
     boolean isSsl();
-    
+
     /**
      * Registers a new user event type.
      * <p>
@@ -224,8 +241,8 @@ public interface ManagerConnection
      * @throws IllegalStateException if you are not connected to the Asterisk
      *             server.
      */
-    void sendAction(ManagerAction action, SendActionCallback callback) throws IOException,
-            IllegalArgumentException, IllegalStateException;
+    void sendAction(ManagerAction action, SendActionCallback callback) throws IOException, IllegalArgumentException,
+            IllegalStateException;
 
     /**
      * Sends an {@link EventGeneratingAction} to the Asterisk server and waits
