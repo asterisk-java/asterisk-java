@@ -401,15 +401,15 @@ class ChannelManager
 
     void handleNewStateEvent(NewStateEvent event)
     {
-        final AsteriskChannelImpl channel = getChannelImplById(event.getUniqueId());
+        AsteriskChannelImpl channel = getChannelImplById(event.getUniqueId());
 
         if (channel == null)
         {
-            logger.error("Ignored NewStateEvent for unknown channel "
-                    + event.getChannel());
-            return;
+            // NewStateEvent can occur before NewChannelEvent
+            channel = addNewChannel(
+                    event.getUniqueId(), event.getChannel(), event.getDateReceived(), 
+                    event.getCallerId(), event.getCallerIdName(), string2ChannelState(event.getState()));
         }
-
         if (event.getState() != null)
         {
             synchronized (channel)
