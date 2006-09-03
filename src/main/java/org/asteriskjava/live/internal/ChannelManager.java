@@ -405,7 +405,7 @@ class ChannelManager
 
         if (channel == null)
         {
-            // NewStateEvent can occur before NewChannelEvent
+            // NewStateEvent can occur instead of a NewChannelEvent
             channel = addNewChannel(
                     event.getUniqueId(), event.getChannel(), event.getDateReceived(), 
                     event.getCallerId(), event.getCallerIdName(), string2ChannelState(event.getState()));
