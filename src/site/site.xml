@@ -31,28 +31,18 @@
 			http://sourceforge.net/sflogo.php?group_id=118998&amp;type=5
 		</src>
 	</bannerRight>
-	<!-- 
-		<skin>
-		<groupId>org.apache.maven.skins</groupId>
-		<artifactId>maven-stylus-skin</artifactId>
-		<version>1.1-SNAPSHOT</version>
-		</skin>
-	-->
+
+	<skin>
+		<groupId>org.asteriskjava</groupId>
+		<artifactId>asterisk-java-skin</artifactId>
+		<version>0.1-SNAPSHOT</version>
+	</skin>
+
 	<body>
 
-		<head>
-			<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
-			</script>
-			<script type="text/javascript">
-				_uacct = "UA-443212-1";
-				urchinTracker();
-			</script>
-		</head>
-		
 		<links>
 			<item name="Asterisk" href="http://www.asterisk.org/" />
-			<item name="Asterisk-Java"
-				href="http://asterisk-java.org" />
+			<item name="Asterisk-Java" href="http://asterisk-java.org" />
 		</links>
 
 		<menu name="Overview">
