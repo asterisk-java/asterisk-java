@@ -98,7 +98,7 @@ public abstract class AbstractChannelEvent extends ManagerEvent
     }
 
     /**
-     * Returns the Caller*ID of the channel if set or "&lg;unknown&gt;" if none has been set.
+     * Returns the Caller*ID of the channel if set or "&lt;unknown&gt;" if none has been set.
      */
     public String getCallerId()
     {
@@ -116,7 +116,7 @@ public abstract class AbstractChannelEvent extends ManagerEvent
     }
 
     /**
-     * Returns the Caller*ID Name of the channel if set or "&lg;unknown&gt;" if none has been set.
+     * Returns the Caller*ID Name of the channel if set or "&lt;unknown&gt;" if none has been set.
      * 
      * @return the Caller*ID Name of the channel.
      */
