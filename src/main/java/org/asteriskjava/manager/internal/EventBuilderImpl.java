@@ -268,7 +268,7 @@ class EventBuilderImpl implements EventBuilder
         }
         catch (NoSuchMethodException ex)
         {
-            logger.error("Unable to get constructor of " + eventClass, ex);
+            logger.error("Unable to get constructor of " + eventClass.getName(), ex);
             return null;
         }
 
@@ -278,7 +278,7 @@ class EventBuilderImpl implements EventBuilder
         }
         catch (Exception ex)
         {
-            logger.error("Unable to create new instance of " + eventClass, ex);
+            logger.error("Unable to create new instance of " + eventClass.getName(), ex);
             return null;
         }
 
@@ -362,7 +362,7 @@ class EventBuilderImpl implements EventBuilder
                 catch (Exception e)
                 {
                     logger.error("Unable to convert value '" + attributes.get(name) + "' of property '" + name + "' on "
-                            + event.getClass() + " to required type " + dataType, e);
+                            + event.getClass().getName() + " to required type " + dataType, e);
                     continue;
                 }
             }
@@ -373,7 +373,8 @@ class EventBuilderImpl implements EventBuilder
             }
             catch (Exception e)
             {
-                logger.error("Unable to set property '" + name + "' on " + event.getClass(), e);
+                logger.error("Unable to set property '" + name + "' to '" + attributes.get(name) + "' on "
+                        + event.getClass().getName(), e);
                 continue;
             }
         }
