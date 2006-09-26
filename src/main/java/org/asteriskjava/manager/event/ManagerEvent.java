@@ -26,9 +26,11 @@ import org.asteriskjava.util.ReflectionUtil;
 
 /**
  * Abstract base class for all Events that can be received from the Asterisk
- * server.<p>
+ * server.
+ * <p>
  * Events contain data pertaining to an event generated from within the Asterisk
- * core or an extension module.<p>
+ * core or an extension module.
+ * <p>
  * There is one conrete subclass of ManagerEvent per each supported Asterisk
  * Event.
  * 
@@ -46,12 +48,13 @@ public abstract class ManagerEvent extends EventObject implements Serializable
      * AMI authorization class.
      */
     private String privilege;
-    
+
     /**
-     * The point in time this event has been received from the Asterisk
-     * server.
+     * The point in time this event has been received from the Asterisk server.
      */
     private Date dateReceived;
+
+    private Double timestamp;
 
     /**
      * @param source
@@ -64,7 +67,8 @@ public abstract class ManagerEvent extends EventObject implements Serializable
 
     /**
      * Returns the point in time this event was received from the Asterisk
-     * server.<p>
+     * server.
+     * <p>
      * Pseudo events that are not directly received from the asterisk server
      * (for example ConnectEvent and DisconnectEvent) may return
      * <code>null</code>.
@@ -83,10 +87,13 @@ public abstract class ManagerEvent extends EventObject implements Serializable
     }
 
     /**
-     * Returns the AMI authorization class of this event.<p>
-     * This is one or more of system, call, log, verbose, command, agent or user.
-     * Multiple privileges are separated by comma.<p>
+     * Returns the AMI authorization class of this event.
+     * <p>
+     * This is one or more of system, call, log, verbose, command, agent or
+     * user. Multiple privileges are separated by comma.
+     * <p>
      * Note: This property is not available from Asterisk 1.0 servers.
+     * 
      * @since 0.2
      */
     public String getPrivilege()
@@ -96,6 +103,7 @@ public abstract class ManagerEvent extends EventObject implements Serializable
 
     /**
      * Sets the AMI authorization class of this event.
+     * 
      * @since 0.2
      */
     public void setPrivilege(String privilege)
@@ -103,6 +111,36 @@ public abstract class ManagerEvent extends EventObject implements Serializable
         this.privilege = privilege;
     }
 
+    /**
+     * Returns the timestamp for this event.
+     * <p>
+     * The timestamp property is available in Asterisk since 1.4 if enabled in
+     * <code>manager.conf</code> by setting <code>timestampevents = yes</code>.
+     * <p>
+     * In contains the time the event was generated in seconds since the epoch.
+     * <p>
+     * Example: 1159310429.569108
+     * 
+     * @return
+     * @since 0.3
+     */
+    public final Double getTimestamp()
+    {
+        return timestamp;
+    }
+
+    /**
+     * Sets the timestamp for this event.
+     * 
+     * @param timestamp the timestamp to set.
+     * @since 0.3
+     */
+    public final void setTimestamp(Double timestamp)
+    {
+        this.timestamp = timestamp;
+    }
+
+    @Override
     public String toString()
     {
         StringBuffer sb;
@@ -117,7 +155,8 @@ public abstract class ManagerEvent extends EventObject implements Serializable
         getters = ReflectionUtil.getGetters(getClass());
         for (String attribute : getters.keySet())
         {
-            if ("class".equals(attribute) || "datereceived".equals(attribute) || "privilege".equals(attribute) || "source".equals(attribute))
+            if ("class".equals(attribute) || "datereceived".equals(attribute) || "privilege".equals(attribute)
+                    || "source".equals(attribute))
             {
                 continue;
             }
@@ -128,7 +167,7 @@ public abstract class ManagerEvent extends EventObject implements Serializable
                 value = getters.get(attribute).invoke(this);
                 sb.append(attribute + "='" + value + "',");
             }
-            catch (Exception e) //NOPMD
+            catch (Exception e) // NOPMD
             {
             }
         }
