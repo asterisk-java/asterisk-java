@@ -93,7 +93,6 @@ import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 import org.asteriskjava.util.ReflectionUtil;
 
-
 /**
  * Default implementation of the EventBuilder interface.
  * 
@@ -185,17 +184,14 @@ class EventBuilderImpl implements EventBuilder
         String eventType;
 
         className = clazz.getName();
-        eventType = className.substring(className.lastIndexOf('.') + 1)
-                .toLowerCase();
+        eventType = className.substring(className.lastIndexOf('.') + 1).toLowerCase();
 
         if (eventType.endsWith("event"))
         {
-            eventType = eventType.substring(0, eventType.length()
-                    - "event".length());
+            eventType = eventType.substring(0, eventType.length() - "event".length());
         }
 
-        if (UserEvent.class.isAssignableFrom(clazz)
-                && !eventType.startsWith("userevent"))
+        if (UserEvent.class.isAssignableFrom(clazz) && !eventType.startsWith("userevent"))
         {
             eventType = "userevent" + eventType;
         }
@@ -228,25 +224,21 @@ class EventBuilderImpl implements EventBuilder
 
         try
         {
-            defaultConstructor = clazz
-                    .getConstructor(new Class[]{Object.class});
+            defaultConstructor = clazz.getConstructor(new Class[]{Object.class});
         }
         catch (NoSuchMethodException ex)
         {
-            throw new IllegalArgumentException(clazz
-                    + " has no usable constructor");
+            throw new IllegalArgumentException(clazz + " has no usable constructor");
         }
 
         if ((defaultConstructor.getModifiers() & Modifier.PUBLIC) == 0)
         {
-            throw new IllegalArgumentException(clazz
-                    + " has no public default constructor");
+            throw new IllegalArgumentException(clazz + " has no public default constructor");
         }
 
         registeredEventClasses.put(eventType.toLowerCase(), clazz);
 
-        logger.debug("Registered event type '" + eventType + "' (" + clazz
-                + ")");
+        logger.debug("Registered event type '" + eventType + "' (" + clazz + ")");
     }
 
     public ManagerEvent buildEvent(Object source, Map<String, String> attributes)
@@ -266,8 +258,7 @@ class EventBuilderImpl implements EventBuilder
         eventClass = (Class) registeredEventClasses.get(eventType);
         if (eventClass == null)
         {
-            logger.info("No event class registered for event type '"
-                    + eventType + "', attributes: " + attributes);
+            logger.info("No event class registered for event type '" + eventType + "', attributes: " + attributes);
             return null;
         }
 
@@ -283,8 +274,7 @@ class EventBuilderImpl implements EventBuilder
 
         try
         {
-            event = (ManagerEvent) constructor
-                    .newInstance(new Object[]{source});
+            event = (ManagerEvent) constructor.newInstance(new Object[]{source});
         }
         catch (Exception ex)
         {
@@ -307,8 +297,7 @@ class EventBuilderImpl implements EventBuilder
             if (actionId != null)
             {
                 responseEvent.setActionId(ManagerUtil.stripInternalActionId(actionId));
-                responseEvent.setInternalActionId(ManagerUtil
-                        .getInternalActionId(actionId));
+                responseEvent.setInternalActionId(ManagerUtil.getInternalActionId(actionId));
             }
         }
 
@@ -348,8 +337,8 @@ class EventBuilderImpl implements EventBuilder
 
             if (setter == null)
             {
-                logger.error("Unable to set property '" + name + "' on "
-                        + event.getClass() + ": no setter");
+                logger.error("Unable to set property '" + name + "' to '" + attributes.get(name) + "' on "
+                        + event.getClass().getName() + ": no setter");
                 continue;
             }
 
@@ -357,8 +346,7 @@ class EventBuilderImpl implements EventBuilder
 
             if (dataType == Boolean.class)
             {
-                value = new Boolean(AstUtil.isTrue((String) attributes
-                        .get(name)));
+                value = new Boolean(AstUtil.isTrue((String) attributes.get(name)));
             }
             else if (dataType.isAssignableFrom(String.class))
             {
@@ -368,17 +356,13 @@ class EventBuilderImpl implements EventBuilder
             {
                 try
                 {
-                    Constructor constructor = dataType
-                            .getConstructor(new Class[]{String.class});
-                    value = constructor.newInstance(new Object[]{attributes
-                            .get(name)});
+                    Constructor constructor = dataType.getConstructor(new Class[]{String.class});
+                    value = constructor.newInstance(new Object[]{attributes.get(name)});
                 }
                 catch (Exception e)
                 {
-                    logger.error("Unable to convert value '"
-                            + attributes.get(name) + "' of property '" + name
-                            + "' on " + event.getClass() + " to required type "
-                            + dataType, e);
+                    logger.error("Unable to convert value '" + attributes.get(name) + "' of property '" + name + "' on "
+                            + event.getClass() + " to required type " + dataType, e);
                     continue;
                 }
             }
@@ -389,8 +373,7 @@ class EventBuilderImpl implements EventBuilder
             }
             catch (Exception e)
             {
-                logger.error("Unable to set property '" + name + "' on "
-                        + event.getClass(), e);
+                logger.error("Unable to set property '" + name + "' on " + event.getClass(), e);
                 continue;
             }
         }
