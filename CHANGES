@@ -1,6 +1,8 @@
 Asterisk-Java 0.3-m2
 	* Added getManagerConnection() to AsteriskServer (AJ-41)
 	* Added timestamp property to ManagerEvent (AJ-35)
+	* Added QueueSummaryAction, QueueSummaryEvent and 
+	  QueueSummaryCompleteEvent (AJ-42)
 
 Asterisk-Java 0.3-m1
 	* Changed package name from net.sf.asterisk to org.asteriskjava

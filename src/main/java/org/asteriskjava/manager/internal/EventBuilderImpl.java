@@ -75,6 +75,8 @@ import org.asteriskjava.manager.event.QueueMemberRemovedEvent;
 import org.asteriskjava.manager.event.QueueMemberStatusEvent;
 import org.asteriskjava.manager.event.QueueParamsEvent;
 import org.asteriskjava.manager.event.QueueStatusCompleteEvent;
+import org.asteriskjava.manager.event.QueueSummaryCompleteEvent;
+import org.asteriskjava.manager.event.QueueSummaryEvent;
 import org.asteriskjava.manager.event.RegistryEvent;
 import org.asteriskjava.manager.event.ReloadEvent;
 import org.asteriskjava.manager.event.RenameEvent;
@@ -165,6 +167,8 @@ class EventBuilderImpl implements EventBuilder
         registerEventClass(QueueMemberStatusEvent.class);
         registerEventClass(QueueParamsEvent.class);
         registerEventClass(QueueStatusCompleteEvent.class);
+        registerEventClass(QueueSummaryCompleteEvent.class);
+        registerEventClass(QueueSummaryEvent.class);
         registerEventClass(RegistryEvent.class);
         registerEventClass(ReloadEvent.class);
         registerEventClass(RenameEvent.class);
