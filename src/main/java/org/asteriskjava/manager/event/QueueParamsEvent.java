@@ -184,7 +184,7 @@ public class QueueParamsEvent extends ResponseEvent
 
     /**
      * Returns the weight of this queue.<p>
-     * A queues can be assigned a 'weight' to ensure calls waiting in a 
+     * A queue can be assigned a 'weight' to ensure calls waiting in a 
      * higher priority queue will deliver its calls first. Only delays 
      * the lower weight queue's call if the member is also in the 
      * higher weight queue.<p>

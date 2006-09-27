@@ -35,7 +35,6 @@ import org.asteriskjava.manager.event.QueueParamsEvent;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
-
 /**
  * Manages queue events on behalf of an AsteriskServer.
  * 
@@ -112,11 +111,11 @@ class QueueManager
             queues.clear();
         }
     }
-    
+
     Collection<AsteriskQueue> getQueues()
     {
         Collection<AsteriskQueue> copy;
-        
+
         synchronized (queues)
         {
             copy = new ArrayList<AsteriskQueue>(queues.values());
@@ -135,25 +134,32 @@ class QueueManager
     void handleQueueParamsEvent(QueueParamsEvent event)
     {
         AsteriskQueueImpl queue;
-        boolean isNew = false;
+        final String name;
+        final Integer max;
+        final Integer serviceLevel;
+        final Integer weight;
 
-        queue = queues.get(event.getQueue());
+        name = event.getQueue();
+        max = event.getMax();
+        serviceLevel = event.getServiceLevel();
+        weight = event.getServiceLevel();
+
+        queue = queues.get(name);
 
         if (queue == null)
         {
-            queue = new AsteriskQueueImpl(server, event.getQueue());
-            isNew = true;
-        }
-
-        synchronized (queue)
-        {
-            queue.setMax(event.getMax());
-        }
-
-        if (isNew)
-        {
-            logger.info("Adding new queue " + queue.getName());
+            queue = new AsteriskQueueImpl(server, name, max, serviceLevel, weight);
+            logger.info("Adding new queue " + queue);
             addQueue(queue);
+        }
+        else
+        {
+            synchronized (queue)
+            {
+                queue.setMax(max);
+                queue.setServiceLevel(serviceLevel);
+                queue.setWeight(weight);
+            }
         }
     }
 
@@ -164,73 +170,58 @@ class QueueManager
 
     void handleQueueEntryEvent(QueueEntryEvent event)
     {
-        AsteriskQueueImpl queue = queues.get(event.getQueue());
-        AsteriskChannelImpl channel = channelManager.getChannelImplByName(event.getChannel());
+        final AsteriskQueueImpl queue = queues.get(event.getQueue());
+        final AsteriskChannelImpl channel = channelManager.getChannelImplByName(event.getChannel());
 
         if (queue == null)
         {
-            logger.error("Ignored QueueEntryEvent for unknown queue "
-                    + event.getQueue());
+            logger.error("Ignored QueueEntryEvent for unknown queue " + event.getQueue());
             return;
         }
         if (channel == null)
         {
-            logger.error("Ignored QueueEntryEvent for unknown channel "
-                    + event.getChannel());
+            logger.error("Ignored QueueEntryEvent for unknown channel " + event.getChannel());
             return;
         }
 
-        if (!queue.getEntries().contains(channel))
-        {
-            queue.addEntry(channel);
-        }
+        queue.addEntry(channel);
     }
 
     void handleJoinEvent(JoinEvent event)
     {
-        AsteriskQueueImpl queue = queues.get(event.getQueue());
-        AsteriskChannelImpl channel = channelManager.getChannelImplByName(event.getChannel());
+        final AsteriskQueueImpl queue = queues.get(event.getQueue());
+        final AsteriskChannelImpl channel = channelManager.getChannelImplByName(event.getChannel());
 
         if (queue == null)
         {
-            logger.error("Ignored JoinEvent for unknown queue "
-                    + event.getQueue());
+            logger.error("Ignored JoinEvent for unknown queue " + event.getQueue());
             return;
         }
         if (channel == null)
         {
-            logger.error("Ignored JoinEvent for unknown channel "
-                    + event.getChannel());
+            logger.error("Ignored JoinEvent for unknown channel " + event.getChannel());
             return;
         }
 
-        if (!queue.getEntries().contains(channel))
-        {
-            queue.addEntry(channel);
-        }
+        queue.addEntry(channel);
     }
 
     void handleLeaveEvent(LeaveEvent event)
     {
-        AsteriskQueueImpl queue = queues.get(event.getQueue());
-        AsteriskChannelImpl channel = channelManager.getChannelImplByName(event.getChannel());
+        final AsteriskQueueImpl queue = queues.get(event.getQueue());
+        final AsteriskChannelImpl channel = channelManager.getChannelImplByName(event.getChannel());
 
         if (queue == null)
         {
-            logger.error("Ignored LeaveEvent for unknown queue "
-                    + event.getQueue());
+            logger.error("Ignored LeaveEvent for unknown queue " + event.getQueue());
             return;
         }
         if (channel == null)
         {
-            logger.error("Ignored LeaveEvent for unknown channel "
-                    + event.getChannel());
+            logger.error("Ignored LeaveEvent for unknown channel " + event.getChannel());
             return;
         }
 
-        if (queue.getEntries().contains(channel))
-        {
-            queue.removeEntry(channel);
-        }
+        queue.removeEntry(channel);
     }
 }

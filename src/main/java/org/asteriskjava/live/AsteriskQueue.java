@@ -35,14 +35,37 @@ public interface AsteriskQueue
     String getName();
 
     /**
-     * Returns the maximum number of people waiting in this queue or 0 for
-     * unlimited.<p>
+     * Returns the maximum number of people allowed to wait in this queue or 0
+     * for unlimited.
+     * <p>
      * Corresponds to the <code>maxlen</code> option in Asterisk's
      * <code>queues.conf</code>.
      * 
-     * @return the maximum number of people waiting in this queue.
+     * @return the maximum number of people allowed to wait in this queue.
      */
     Integer getMax();
+
+    /**
+     * Returns the service level (in seconds) as defined by the
+     * <code>servicelevel</code> setting in <code>queues.conf</code>.
+     * 
+     * @return the service level (in seconds).
+     */
+    Integer getServiceLevel();
+
+    /**
+     * Returns the weight of this queue.
+     * <p>
+     * A queue can be assigned a 'weight' to ensure calls waiting in a higher
+     * priority queue will deliver its calls first. Only delays the lower weight
+     * queue's call if the member is also in the higher weight queue.
+     * <p>
+     * Available since Asterisk 1.2
+     * 
+     * @return the weight of this queue or <code>null</code> if not supported
+     *         by your version of Asterisk.
+     */
+    Integer getWeight();
 
     /**
      * Returns the list of channels currently waiting in this queue.

@@ -32,12 +32,17 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
 {
     private final String name;
     private Integer max;
+    private Integer serviceLevel;
+    private Integer weight;
     private final ArrayList<AsteriskChannel> entries;
 
-    AsteriskQueueImpl(AsteriskServerImpl server, String name)
+    AsteriskQueueImpl(AsteriskServerImpl server, String name, Integer max, Integer serviceLevel, Integer weight)
     {
         super(server);
         this.name = name;
+        this.max = max;
+        this.serviceLevel = serviceLevel;
+        this.weight = weight;
         this.entries = new ArrayList<AsteriskChannel>(25);
     }
 
@@ -56,6 +61,26 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
         this.max = max;
     }
 
+    public Integer getServiceLevel()
+    {
+        return serviceLevel;
+    }
+
+    void setServiceLevel(Integer serviceLevel)
+    {
+        this.serviceLevel = serviceLevel;
+    }
+
+    public Integer getWeight()
+    {
+        return weight;
+    }
+
+    void setWeight(Integer weight)
+    {
+        this.weight = weight;
+    }
+
     @SuppressWarnings("unchecked")
     public List<AsteriskChannel> getEntries()
     {
@@ -67,22 +92,34 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
 
     void addEntry(AsteriskChannel entry)
     {
-        entries.add(entry);
+        synchronized (entries)
+        {
+            // only add if not yet there
+            if (entries.contains(entry))
+            {
+                return;
+            }
+            entries.add(entry);
+        }
     }
 
     void removeEntry(AsteriskChannel entry)
     {
-        entries.remove(entry);
+        synchronized (entries)
+        {
+            entries.remove(entry);
+        }
     }
 
     public String toString()
     {
-        StringBuffer sb;
+        final StringBuffer sb;
 
         sb = new StringBuffer("AsteriskQueue[");
-
         sb.append("name='" + getName() + "',");
         sb.append("max='" + getMax() + "',");
+        sb.append("serviceLevel='" + getServiceLevel() + "',");
+        sb.append("weight='" + getWeight() + "',");
         synchronized (entries)
         {
             sb.append("entries='" + entries.toString() + "',");
