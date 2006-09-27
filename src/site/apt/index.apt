@@ -15,7 +15,7 @@ Asterisk-Java
   protocol and the
   {{{http://www.voip-info.org/wiki-Asterisk+manager+API}Manager API}}.
 
-  Asterisk-Java is compatible with Asterisk 1.0 and 1.2.
+  Asterisk-Java is compatible with Asterisk 1.0, 1.2 and 1.4.
 
   The FastAGI implementation supports all
   {{{apidocs/org/asteriskjava/fastagi/command/package-summary.html}commands}}
