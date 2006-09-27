@@ -18,7 +18,8 @@ package org.asteriskjava.manager.event;
 
 /**
  * A QueueMemberEvent is triggered in response to a QueueStatusAction and
- * contains information about a member of a queue.<p>
+ * contains information about a member of a queue.
+ * <p>
  * It is implemented in <code>apps/app_queue.c</code>
  * 
  * @see org.asteriskjava.manager.action.QueueStatusAction
@@ -27,6 +28,17 @@ package org.asteriskjava.manager.event;
  */
 public class QueueMemberEvent extends ResponseEvent
 {
+    public static final int AST_DEVICE_UNKNOWN = 0;
+
+    /**
+     * Queue member is available
+     */
+    public static final int AST_DEVICE_NOT_INUSE = 1;
+    public static final int AST_DEVICE_INUSE = 2;
+    public static final int AST_DEVICE_BUSY = 3;
+    public static final int AST_DEVICE_INVALID = 4;
+    public static final int AST_DEVICE_UNAVAILABLE = 5;
+
     /**
      * Serializable version identifier
      */
@@ -69,7 +81,8 @@ public class QueueMemberEvent extends ResponseEvent
     }
 
     /**
-     * Returns the name of the member's interface.<p>
+     * Returns the name of the member's interface.
+     * <p>
      * E.g. the channel name or agent group.
      * 
      * @return the name of the member's interface.
@@ -179,8 +192,10 @@ public class QueueMemberEvent extends ResponseEvent
     }
 
     /**
-     * Returns the status of this queue member.<p>
-     * Available since Asterisk 1.2<p>
+     * Returns the status of this queue member.
+     * <p>
+     * Available since Asterisk 1.2
+     * <p>
      * Valid status codes are:
      * <dl>
      * <dt>AST_DEVICE_UNKNOWN (0)</dt>
@@ -218,7 +233,8 @@ public class QueueMemberEvent extends ResponseEvent
     }
 
     /**
-     * Is this queue member paused (not accepting calls)?<p>
+     * Is this queue member paused (not accepting calls)?
+     * <p>
      * Available since Asterisk 1.2.
      * 
      * @return <code>Boolean.TRUE</code> if this member has been paused,
