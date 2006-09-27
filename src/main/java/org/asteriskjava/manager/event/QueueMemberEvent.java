@@ -116,6 +116,32 @@ public class QueueMemberEvent extends ResponseEvent
     }
 
     /**
+     * Convenience method that checks whether this member has been statically
+     * defined in <code>queues.conf</code>.
+     * 
+     * @return <code>true</code> if this member has been statically defined in
+     *         <code>queues.conf</code>, <code>false</code> otherwise.
+     * @since 0.3
+     */
+    public boolean isStatic()
+    {
+        return membership != null && "static".equals(membership);
+    }
+
+    /**
+     * Convenience method that checks whether this member has been dynamically
+     * added by the QueueAdd command.
+     * 
+     * @return <code>true</code> if this member has been dynamically added by
+     *         the QueueAdd command, <code>false</code> otherwise.
+     * @since 0.3
+     */
+    public boolean isDynamic()
+    {
+        return membership != null && "dynamic".equals(membership);
+    }
+
+    /**
      * Sets if this member has been dynamically or statically added.
      * 
      * @param membership "dynamic" if the added member is a dynamic queue
