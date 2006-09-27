@@ -83,7 +83,7 @@ public class QueueMemberEvent extends ResponseEvent
     /**
      * Returns the name of the member's interface.
      * <p>
-     * E.g. the channel name or agent group.
+     * E.g. the channel name or agent group (for example "Agent/@1").
      * 
      * @return the name of the member's interface.
      */

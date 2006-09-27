@@ -17,9 +17,11 @@
 package org.asteriskjava.manager.event;
 
 /**
- * An AgentCalledEvent is triggered when an agent is rung.<p>
+ * An AgentCalledEvent is triggered when an agent is rung.
+ * <p>
  * To enable AgentCalledEvents you have to set
- * <code>eventwhencalled = yes</code> in <code>queues.conf</code>.<p>
+ * <code>eventwhencalled = yes</code> in <code>queues.conf</code>.
+ * <p>
  * This event is implemented in <code>apps/app_queue.c</code>
  * 
  * @author srt
@@ -47,41 +49,74 @@ public class AgentCalledEvent extends ManagerEvent
         super(source);
     }
 
+    /**
+     * Returns the member interface of the agent that has been called.
+     * 
+     * @return the member interface of the agent that has been called.
+     * @see QueueMemberEvent#getLocation()
+     */
     public String getAgentCalled()
     {
         return agentCalled;
     }
 
+    /**
+     * Sets the member interface of the agent that has been called.
+     * 
+     * @param agentCalled the member interface of the agent that has been
+     *            called.
+     */
     public void setAgentCalled(String agentCalled)
     {
         this.agentCalled = agentCalled;
     }
 
+    /**
+     * Returns the name of the caller's channel that is about to be handled by
+     * the agent.
+     * 
+     * @return the name of the caller's channel.
+     */
     public String getChannelCalling()
     {
         return channelCalling;
     }
 
+    /**
+     * Sets the name of the caller's channel.
+     * 
+     * @param channelCalling the name of the caller's channel.
+     */
     public void setChannelCalling(String channelCalling)
     {
         this.channelCalling = channelCalling;
     }
 
+    /**
+     * Returns the Caller ID number of the caller's channel.
+     * 
+     * @return the Caller ID number of the caller's channel.
+     */
     public String getCallerId()
     {
         return callerId;
     }
 
+    /**
+     * Sets the Caller ID number of the caller's channel.
+     * 
+     * @param callerId the Caller ID number of the caller's channel.
+     */
     public void setCallerId(String callerId)
     {
         this.callerId = callerId;
     }
 
     /**
-     * Returns the Caller*ID name of the calling channel.
+     * Returns the Caller ID name of the caller's channel.
      * 
-     * @return the Caller*ID name of the calling channel or "unknown" if no
-     *         Caller*Id has been set.
+     * @return the Caller ID name of the caller's channel or "unknown" if no
+     *         Caller ID name has been set.
      * @since 0.2
      */
     public String getCallerIdName()
@@ -90,9 +125,9 @@ public class AgentCalledEvent extends ManagerEvent
     }
 
     /**
-     * Sets the Caller*ID name of the calling channel.
+     * Sets the Caller ID name of the caller's channel.
      * 
-     * @param callerIdName the Caller*ID name of the calling channel.
+     * @param callerIdName the Caller ID name of the caller's channel.
      * @since 0.2
      */
     public void setCallerIdName(String callerIdName)
