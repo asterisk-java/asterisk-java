@@ -16,7 +16,7 @@ import org.asteriskjava.manager.action.QueueSummaryAction;
  * @version $Id$
  * @since 0.3
  */
-public class QueueSummaryEvent extends ManagerEvent
+public class QueueSummaryEvent extends ResponseEvent
 {
     /**
      * Serial version identifier.
