@@ -4,7 +4,7 @@ package org.asteriskjava.live.internal;
  * Defines constants used internally in the live package in multiple classes.
  * 
  * @author srt
- * @version $Id:$
+ * @version $Id$
  */
 class Constants
 {

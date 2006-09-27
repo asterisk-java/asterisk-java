@@ -21,7 +21,7 @@ package org.asteriskjava.manager.event;
  * NewStateEvent.
  * 
  * @author srt
- * @version $Id: AbstractChannelEvent.java 459 2006-07-06 23:24:57Z srt $
+ * @version $Id$
  */
 public abstract class AbstractChannelStateEvent extends AbstractChannelEvent
 {

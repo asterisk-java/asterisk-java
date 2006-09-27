@@ -13,7 +13,7 @@ import org.asteriskjava.manager.action.QueueSummaryAction;
  * @see QueueSummaryCompleteEvent
  * @see QueueSummaryAction
  * @author srt
- * @version $Id:$
+ * @version $Id$
  * @since 0.3
  */
 public class QueueSummaryEvent extends ManagerEvent

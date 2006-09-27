@@ -9,7 +9,7 @@ import org.asteriskjava.manager.ManagerConnection;
  * 
  * @see org.asteriskjava.live.AsteriskServer
  * @author srt
- * @version $Id: DefaultAsteriskServer.java 485 2006-07-14 21:55:34Z srt $
+ * @version $Id$
  */
 public class SecureAsteriskServer extends DefaultAsteriskServer
 {

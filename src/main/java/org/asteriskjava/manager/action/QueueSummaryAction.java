@@ -14,7 +14,7 @@ import org.asteriskjava.manager.event.QueueSummaryEvent;
  * @see QueueSummaryEvent
  * @see QueueSummaryCompleteEvent
  * @author srt
- * @version $Id:$
+ * @version $Id$
  * @since 0.3
  */
 public class QueueSummaryAction extends AbstractManagerAction implements EventGeneratingAction
