@@ -108,7 +108,8 @@ public interface AsteriskChannel extends LiveObject
     /**
      * Checks if this channel was busy.
      * 
-     * @return <code>true</code> if this channel was busy; <code>false</code> otherwise.
+     * @return <code>true</code> if this channel was busy; <code>false</code>
+     *         otherwise.
      * @since 0.3
      */
     boolean wasBusy();
@@ -243,11 +244,12 @@ public interface AsteriskChannel extends LiveObject
     boolean wasLinked();
 
     /**
-     * Returns the MeetMeUser associated with this channel if this channel
-     * is currently taking part in a MeetMe conference.
+     * Returns the MeetMeUser associated with this channel if this channel is
+     * currently taking part in a MeetMe conference.
      * 
      * @return the MeetMeUser associated with this channel or <code>null</code>
-     *         if this channel is currently not taking part in a MeetMe conference.
+     *         if this channel is currently not taking part in a MeetMe
+     *         conference.
      */
     MeetMeUser getMeetMeUser();
 
@@ -278,7 +280,8 @@ public interface AsteriskChannel extends LiveObject
 
     /**
      * Sets the absolute maximum amount of time permitted for a call on a given
-     * channel, it hangs up the channel after this time.<p>
+     * channel, it hangs up the channel after this time.
+     * <p>
      * Time is counted from when you call setAbsoluteTimeout, not from the
      * beginning of the call.
      * 
@@ -370,6 +373,7 @@ public interface AsteriskChannel extends LiveObject
      * @throws NoSuchChannelException if this channel had been hung up before
      *             the DTMF digit was set.
      * @throws IllegalArgumentException if the digit is <code>null</code>.
+     * @since 0.3
      */
     void playDtmf(String digit) throws ManagerCommunicationException, NoSuchChannelException, IllegalArgumentException;
 
@@ -387,6 +391,8 @@ public interface AsteriskChannel extends LiveObject
      *             sent to Asterisk.
      * @throws NoSuchChannelException if this channel had been hung up before
      *             starting monitoring.
+     * @see #stopMonitoring()
+     * @see #pauseMonitoring()
      * @since 0.3
      */
     void startMonitoring(String filename) throws ManagerCommunicationException, NoSuchChannelException;
@@ -407,6 +413,8 @@ public interface AsteriskChannel extends LiveObject
      *             sent to Asterisk.
      * @throws NoSuchChannelException if this channel had been hung up before
      *             starting monitoring.
+     * @see #stopMonitoring()
+     * @see #pauseMonitoring()
      * @since 0.3
      */
     void startMonitoring(String filename, String format) throws ManagerCommunicationException, NoSuchChannelException;
@@ -431,11 +439,11 @@ public interface AsteriskChannel extends LiveObject
      * Example:
      * 
      * <pre>
-     *  AsteriskChannel c;
-     *  
-     *  [...]
-     *  c.setVariable(AsteriskChannel.VARIABLE_MONITOR_EXEC, &quot;/usr/local/bin/2wav2mp3&quot;);
-     *  c.startMonitoring(&quot;my-recording&quot;, &quot;wav&quot;, true);
+     *      AsteriskChannel c;
+     *      
+     *      [...]
+     *      c.setVariable(AsteriskChannel.VARIABLE_MONITOR_EXEC, &quot;/usr/local/bin/2wav2mp3&quot;);
+     *      c.startMonitoring(&quot;my-recording&quot;, &quot;wav&quot;, true);
      * </pre>
      * 
      * Side note: 2wav2mp3 is a nice script by Dietmar Zlabinger to mix the two
@@ -454,9 +462,11 @@ public interface AsteriskChannel extends LiveObject
      *             sent to Asterisk.
      * @throws NoSuchChannelException if this channel had been hung up before
      *             starting monitoring.
-     * @since 0.3
      * @see #VARIABLE_MONITOR_EXEC
      * @see #VARIABLE_MONITOR_EXEC_ARGS
+     * @see #stopMonitoring()
+     * @see #pauseMonitoring()
+     * @since 0.3
      */
     void startMonitoring(String filename, String format, boolean mix) throws ManagerCommunicationException,
             NoSuchChannelException;
@@ -477,6 +487,8 @@ public interface AsteriskChannel extends LiveObject
      * @throws NoSuchChannelException if this channel had been hung up before
      *             changing monitoring.
      * @throws IllegalArgumentException if filename is <code>null</code>.
+     * @see #stopMonitoring()
+     * @see #pauseMonitoring()
      * @since 0.3
      */
     void changeMonitoring(String filename) throws ManagerCommunicationException, NoSuchChannelException,
@@ -492,7 +504,45 @@ public interface AsteriskChannel extends LiveObject
      *             be sent to Asterisk.
      * @throws NoSuchChannelException if this channel had been hung up before
      *             stopping monitoring.
+     * @see #startMonitoring(String)
+     * @see #startMonitoring(String, String)
+     * @see #startMonitoring(String, String, boolean)
      * @since 0.3
      */
     void stopMonitoring() throws ManagerCommunicationException, NoSuchChannelException;
+
+    /**
+     * Temporarily stops monitoring this channel.
+     * <p>
+     * If the channel exists but is not currently monitored your request is
+     * ignored.
+     * <p>
+     * This method is available since Asterisk 1.4.
+     * 
+     * @throws ManagerCommunicationException if the pause monitor action cannot
+     *             be sent to Asterisk.
+     * @throws NoSuchChannelException if this channel had been hung up before
+     *             temporarily stopping monitoring.
+     * @see #unpauseMonitoring()
+     * @since 0.3
+     */
+    void pauseMonitoring() throws ManagerCommunicationException, NoSuchChannelException;
+
+    /**
+     * Re-enables monitoring this channel after calling
+     * {@link #pauseMonitoring()}.
+     * <p>
+     * If the channel exists but monitoring has not been paused your request is
+     * ignored.
+     * <p>
+     * This method is available since Asterisk 1.4.
+     * 
+     * @throws ManagerCommunicationException if the unpasue monitor action
+     *             cannot be sent to Asterisk.
+     * @throws NoSuchChannelException if this channel had been hung up before
+     *             re-enabling monitoring.
+     * @see #pauseMonitoring()
+     * @since 0.3
+     */
+    void unpauseMonitoring() throws ManagerCommunicationException, NoSuchChannelException;
 }

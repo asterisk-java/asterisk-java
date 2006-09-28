@@ -37,10 +37,12 @@ import org.asteriskjava.manager.action.ChangeMonitorAction;
 import org.asteriskjava.manager.action.GetVarAction;
 import org.asteriskjava.manager.action.HangupAction;
 import org.asteriskjava.manager.action.MonitorAction;
+import org.asteriskjava.manager.action.PauseMonitorAction;
 import org.asteriskjava.manager.action.PlayDtmfAction;
 import org.asteriskjava.manager.action.RedirectAction;
 import org.asteriskjava.manager.action.SetVarAction;
 import org.asteriskjava.manager.action.StopMonitorAction;
+import org.asteriskjava.manager.action.UnpauseMonitorAction;
 import org.asteriskjava.manager.response.ManagerError;
 import org.asteriskjava.manager.response.ManagerResponse;
 
@@ -682,6 +684,28 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         ManagerResponse response;
 
         response = server.sendAction(new StopMonitorAction(name));
+        if (response instanceof ManagerError)
+        {
+            throw new NoSuchChannelException("Channel '" + name + "' is not available: " + response.getMessage());
+        }
+    }
+
+    public void pauseMonitoring() throws ManagerCommunicationException, NoSuchChannelException
+    {
+        ManagerResponse response;
+
+        response = server.sendAction(new PauseMonitorAction(name));
+        if (response instanceof ManagerError)
+        {
+            throw new NoSuchChannelException("Channel '" + name + "' is not available: " + response.getMessage());
+        }
+    }
+
+    public void unpauseMonitoring() throws ManagerCommunicationException, NoSuchChannelException
+    {
+        ManagerResponse response;
+
+        response = server.sendAction(new UnpauseMonitorAction(name));
         if (response instanceof ManagerError)
         {
             throw new NoSuchChannelException("Channel '" + name + "' is not available: " + response.getMessage());

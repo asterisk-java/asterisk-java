@@ -4,6 +4,9 @@ Asterisk-Java 0.3-m2
 	* Added QueueSummaryAction, QueueSummaryEvent and 
 	  QueueSummaryCompleteEvent (AJ-42)
 	* Added ZapRestartAction (AJ-45)
+	* Added PauseMontiorAction and UnpauseMonitorAction and
+	  pauseMontior() and unpauseMonitor() methods to
+	  AsteriskChannel (AJ-44)
 
 Asterisk-Java 0.3-m1
 	* Changed package name from net.sf.asterisk to org.asteriskjava
