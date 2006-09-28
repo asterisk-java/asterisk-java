@@ -3,6 +3,7 @@ Asterisk-Java 0.3-m2
 	* Added timestamp property to ManagerEvent (AJ-35)
 	* Added QueueSummaryAction, QueueSummaryEvent and 
 	  QueueSummaryCompleteEvent (AJ-42)
+	* Added Added ZapRestartAction (AJ-45)
 
 Asterisk-Java 0.3-m1
 	* Changed package name from net.sf.asterisk to org.asteriskjava
