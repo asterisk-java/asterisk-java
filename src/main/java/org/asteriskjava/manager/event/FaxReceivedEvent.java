@@ -17,16 +17,19 @@
 package org.asteriskjava.manager.event;
 
 /**
- * A FaxReceivedEvent is triggered by spandsp after a new fax has been received.<p>
- * It is only available if you installed the spandsp patches to Asterisk.<p>
- * See http://soft-switch.org/installing-spandsp.html for details.<p>
+ * A FaxReceivedEvent is triggered by spandsp after a new fax has been received.
+ * <p>
+ * It is only available if you installed the spandsp patches to Asterisk.
+ * <p>
+ * See http://soft-switch.org/installing-spandsp.html for details.
+ * <p>
  * Implemented in <code>apps/app_rxfax.c</code>.
  * 
  * @author srt
  * @version $Id$
  * @since 0.2
  */
-public class FaxReceivedEvent extends AbstractAgentEvent
+public class FaxReceivedEvent extends ManagerEvent
 {
     /**
      * Serial version identifier.
