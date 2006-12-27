@@ -70,8 +70,7 @@ public class AgiReaderImplTest extends TestCase
         request = agiReader.readRequest();
 
         assertEquals("incorrect script", "myscript.agi", request.getScript());
-        assertEquals("incorrect requestURL", "agi://host/myscript.agi", request
-                .getRequestURL());
+        assertEquals("incorrect requestURL", "agi://host/myscript.agi", request.getRequestURL());
         assertEquals("incorrect channel", "SIP/1234-d715", request.getChannel());
         assertEquals("incorrect local address", ipLocal[0], request.getLocalAddress().getAddress()[0]);
         assertEquals("incorrect local address", ipLocal[1], request.getLocalAddress().getAddress()[1]);
@@ -113,8 +112,7 @@ public class AgiReaderImplTest extends TestCase
 
         reply = agiReader.readReply();
 
-        assertEquals("Incorrect status",
-                AgiReply.SC_INVALID_OR_UNKNOWN_COMMAND, reply.getStatus());
+        assertEquals("Incorrect status", AgiReply.SC_INVALID_OR_UNKNOWN_COMMAND, reply.getStatus());
 
         verify(socket);
     }
@@ -134,10 +132,8 @@ public class AgiReaderImplTest extends TestCase
 
         reply = agiReader.readReply();
 
-        assertEquals("Incorrect status", AgiReply.SC_INVALID_COMMAND_SYNTAX,
-                reply.getStatus());
-        assertEquals("Incorrect synopsis", "DATABASE DEL <family> <key>", reply
-                .getSynopsis());
+        assertEquals("Incorrect status", AgiReply.SC_INVALID_COMMAND_SYNTAX, reply.getStatus());
+        assertEquals("Incorrect synopsis", "DATABASE DEL <family> <key>", reply.getSynopsis());
 
         verify(socket);
     }

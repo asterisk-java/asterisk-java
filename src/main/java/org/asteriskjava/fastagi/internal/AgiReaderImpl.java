@@ -27,7 +27,6 @@ import org.asteriskjava.fastagi.AgiRequest;
 import org.asteriskjava.fastagi.reply.AgiReply;
 import org.asteriskjava.util.SocketConnectionFacade;
 
-
 /**
  * Default implementation of the AgiReader implementation.
  * 
@@ -65,9 +64,7 @@ class AgiReaderImpl implements AgiReader
         }
         catch (IOException e)
         {
-            throw new AgiNetworkException(
-                    "Unable to read request from Asterisk: " + e.getMessage(),
-                    e);
+            throw new AgiNetworkException("Unable to read request from Asterisk: " + e.getMessage(), e);
         }
 
         request = new AgiRequestImpl(lines);
@@ -93,8 +90,7 @@ class AgiReaderImpl implements AgiReader
         }
         catch (IOException e)
         {
-            throw new AgiNetworkException(
-                    "Unable to read reply from Asterisk: " + e.getMessage(), e);
+            throw new AgiNetworkException("Unable to read reply from Asterisk: " + e.getMessage(), e);
         }
 
         if (line == null)
@@ -105,16 +101,14 @@ class AgiReaderImpl implements AgiReader
         lines.add(line);
 
         // read synopsis and usage if statuscode is 520
-        if (line.startsWith(Integer
-                .toString(AgiReply.SC_INVALID_COMMAND_SYNTAX)))
+        if (line.startsWith(Integer.toString(AgiReply.SC_INVALID_COMMAND_SYNTAX)))
         {
             try
             {
                 while ((line = socket.readLine()) != null)
                 {
                     lines.add(line);
-                    if (line.startsWith(Integer
-                            .toString(AgiReply.SC_INVALID_COMMAND_SYNTAX)))
+                    if (line.startsWith(Integer.toString(AgiReply.SC_INVALID_COMMAND_SYNTAX)))
                     {
                         break;
                     }
@@ -122,9 +116,7 @@ class AgiReaderImpl implements AgiReader
             }
             catch (IOException e)
             {
-                throw new AgiNetworkException(
-                        "Unable to read reply from Asterisk: " + e.getMessage(),
-                        e);
+                throw new AgiNetworkException("Unable to read reply from Asterisk: " + e.getMessage(), e);
             }
         }
 
