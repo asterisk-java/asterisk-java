@@ -258,7 +258,24 @@ class EventBuilderImpl implements EventBuilder
             return null;
         }
 
-        eventType = ((String) attributes.get("event")).toLowerCase();
+        eventType = attributes.get("event").toLowerCase();
+
+        // Change in Asterisk 1.4 where the name of the UserEvent is sent as property instead
+        // of the event name (AJ-48)
+        if ("userevent".equals(eventType))
+        {
+            String userEventType;
+
+            if (attributes.get("userevent") == null)
+            {
+                logger.error("No user event type in properties");
+                return null;
+            }
+
+            userEventType = attributes.get("userevent").toLowerCase();
+            eventType = eventType + userEventType;
+        }
+
         eventClass = (Class) registeredEventClasses.get(eventType);
         if (eventClass == null)
         {

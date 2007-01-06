@@ -87,6 +87,19 @@ public class EventBuilderImplTest extends TestCase
         assertTrue("Wrong type", event instanceof UserEventC);
     }
 
+    public void testRegisterUserEventWithUserEventCAndAsterisk14()
+    {
+        Map<String, String> properties = new HashMap<String, String>();
+        ManagerEvent event;
+
+        eventBuilder.registerEventClass(UserEventC.class);
+        properties.put("event", "UserEvent");
+        properties.put("userevent", "C");
+        event = eventBuilder.buildEvent(this, properties);
+
+        assertTrue("Wrong type", event instanceof UserEventC);
+    }
+
     public void testRegisterUserEventWithUserEventDEvent()
     {
         Map<String, String> properties = new HashMap<String, String>();
