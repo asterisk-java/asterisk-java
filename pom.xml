@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.asteriskjava</groupId>
 	<artifactId>asterisk-java</artifactId>
@@ -43,14 +44,14 @@
 		<developerConnection>scm:svn:https://secure.reucon.net/svn/repos/asterisk-java/trunk</developerConnection>
 	</scm>
 	<distributionManagement>
-        <repository>
-                <id>reucon-public-repository</id>
-                <url>dav:https://secure.reucon.net/maven/public</url>
-        </repository>
-        <snapshotRepository>
-                <id>reucon-public-snapshot-repository</id>
-                <url>dav:https://secure.reucon.net/maven/public-snapshot</url>
-        </snapshotRepository>
+		<repository>
+			<id>reucon-public-repository</id>
+			<url>dav:https://secure.reucon.net/maven/public</url>
+		</repository>
+		<snapshotRepository>
+			<id>reucon-public-snapshot-repository</id>
+			<url>dav:https://secure.reucon.net/maven/public-snapshot</url>
+		</snapshotRepository>
 		<site>
 			<id>asterisk-java-website</id>
 			<url>dav:https://secure.reucon.net/maven/projects/public/${artifactId}/${version}</url>
@@ -187,13 +188,20 @@
 					</rulesets>
 				</configuration>
 			</plugin>
-<!--
-			<plugin>
+			<!--
+				<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>jdepend-maven-plugin</artifactId>
 				<version>2.0-beta-1-SNAPSHOT</version>
-			</plugin>
--->
+				</plugin>
+			-->
 		</plugins>
+		<extensions>
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-webdav</artifactId>
+				<version>1.0-beta-2</version>
+			</extension>
+		</extensions>
 	</reporting>
 </project>
