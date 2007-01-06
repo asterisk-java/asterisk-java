@@ -120,6 +120,13 @@
 				<artifactId>wagon-ssh-external</artifactId>
 				<version>1.0-alpha-5</version>
 			</extension>
+			<extensions>
+				<extension>
+					<groupId>org.apache.maven.wagon</groupId>
+					<artifactId>wagon-webdav</artifactId>
+					<version>1.0-beta-2</version>
+				</extension>
+			</extensions>
 		</extensions>
 	</build>
 	<dependencies>
@@ -196,12 +203,5 @@
 				</plugin>
 			-->
 		</plugins>
-		<extensions>
-			<extension>
-				<groupId>org.apache.maven.wagon</groupId>
-				<artifactId>wagon-webdav</artifactId>
-				<version>1.0-beta-2</version>
-			</extension>
-		</extensions>
 	</reporting>
 </project>
