@@ -43,13 +43,17 @@
 		<developerConnection>scm:svn:https://secure.reucon.net/svn/repos/asterisk-java/trunk</developerConnection>
 	</scm>
 	<distributionManagement>
-		<repository>
-			<id>reucon-public-repository</id>
-			<url>scpexe://maven.reucon.com/var/www/maven.reucon.com/htdocs/public</url>
-		</repository>
+        <repository>
+                <id>reucon-public-repository</id>
+                <url>dav:https://secure.reucon.net/maven/public</url>
+        </repository>
+        <snapshotRepository>
+                <id>reucon-public-snapshot-repository</id>
+                <url>dav:https://secure.reucon.net/maven/public-snapshot</url>
+        </snapshotRepository>
 		<site>
 			<id>asterisk-java-website</id>
-			<url>scpexe://asterisk-java.org/var/www/asterisk-java.org/${version}</url>
+			<url>dav:https://secure.reucon.net/maven/projects/public/${artifactId}/${version}</url>
 		</site>
 	</distributionManagement>
 	<issueManagement>
