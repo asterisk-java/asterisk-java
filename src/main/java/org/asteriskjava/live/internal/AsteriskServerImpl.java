@@ -308,6 +308,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
     {
         final ResponseEvents responseEvents;
         final Iterator<ResponseEvent> responseEventIterator;
+        String uniqueId = null;
         AsteriskChannel channel = null;
 
         // must set async to true to receive OriginateEvents.
@@ -326,10 +327,8 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
             responseEvent = responseEventIterator.next();
             if (responseEvent instanceof AbstractOriginateEvent)
             {
-                final String uniqueId;
-
                 uniqueId = ((AbstractOriginateEvent) responseEvent).getUniqueId();
-                logger.debug(responseEvent.getClass() + " received with uniqueId " + uniqueId);
+                logger.debug(responseEvent.getClass().getName() + " received with uniqueId " + uniqueId);
                 channel = getChannelById(uniqueId);
             }
         }

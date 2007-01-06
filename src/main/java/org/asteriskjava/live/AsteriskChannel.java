@@ -293,6 +293,8 @@ public interface AsteriskChannel extends LiveObject
      *             before the absolute timeout was set.
      * @since 0.3
      */
+    //TODO exception when setting it to 0: NoSuchChannelException: Channel 
+    // 'SIP/248-0a02fcd0' is not available: No timeout specified
     void setAbsoluteTimeout(int seconds) throws ManagerCommunicationException, NoSuchChannelException;
 
     /**
