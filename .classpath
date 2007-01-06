@@ -3,6 +3,7 @@
 	<classpathentry kind="src" path="src/main/java"/>
 	<classpathentry output="target/test-classes" kind="src" path="src/test/java"/>
 	<classpathentry output="target/test-classes" kind="src" path="src/test/resources"/>
+	<classpathentry kind="src" path="src/integrationtest"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry sourcepath="M2_REPO/junit/junit/4.0/junit-4.0-sources.jar" kind="var" path="M2_REPO/junit/junit/4.0/junit-4.0.jar"/>
 	<classpathentry sourcepath="M2_REPO/log4j/log4j/1.2.13/log4j-1.2.13-sources.jar" kind="var" path="M2_REPO/log4j/log4j/1.2.13/log4j-1.2.13.jar"/>
