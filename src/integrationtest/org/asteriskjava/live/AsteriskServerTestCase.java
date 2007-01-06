@@ -25,12 +25,12 @@ public class AsteriskServerTestCase extends TestCase
     @Override
     public void setUp() throws Exception
     {
-        server = new SecureAsteriskServer("pbx0", 5039, "manager", "obelisk");
+        server = new DefaultAsteriskServer("pbx0", "manager", "obelisk");
     }
 
     @Override
     public void tearDown() throws Exception
     {
-        //managerConnection.logoff();
+        server.getManagerConnection().logoff();
     }
 }
