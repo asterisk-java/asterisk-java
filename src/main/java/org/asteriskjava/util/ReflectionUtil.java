@@ -18,6 +18,7 @@ package org.asteriskjava.util;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -68,7 +69,7 @@ public class ReflectionUtil
             }
 
             // ok seems to be an accessor
-            name = methodName.substring("get".length()).toLowerCase();
+            name = methodName.substring("get".length()).toLowerCase(Locale.ENGLISH);
 
             if (name.length() == 0)
             {

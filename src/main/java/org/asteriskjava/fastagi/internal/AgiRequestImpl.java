@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
@@ -139,7 +140,7 @@ public class AgiRequestImpl implements Serializable, AgiRequest
                 continue;
             }
 
-            key = line.substring(4, colonPosition).toLowerCase();
+            key = line.substring(4, colonPosition).toLowerCase(Locale.ENGLISH);
             value = line.substring(colonPosition + 2);
 
             if (value.length() != 0)

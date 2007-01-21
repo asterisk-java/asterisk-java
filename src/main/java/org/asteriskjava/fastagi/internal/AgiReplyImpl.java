@@ -255,7 +255,7 @@ public class AgiReplyImpl implements Serializable, AgiReply
 
                     key = attributeMatcher.group(1);
                     value = attributeMatcher.group(2);
-                    attributes.put(key.toLowerCase(), value);
+                    attributes.put(key.toLowerCase(Locale.ENGLISH), value);
                 }
             }
             attributesCreated = true;
@@ -266,7 +266,7 @@ public class AgiReplyImpl implements Serializable, AgiReply
             return null;
         }
 
-        return (String) attributes.get(name.toLowerCase());
+        return (String) attributes.get(name.toLowerCase(Locale.ENGLISH));
     }
 
     private boolean extraCreated;

@@ -18,6 +18,7 @@ package org.asteriskjava.manager.response;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -89,7 +90,7 @@ public class ManagerResponse implements Serializable
      */
     public String getAttribute(String key)
     {
-        return attributes.get(key.toLowerCase());
+        return attributes.get(key.toLowerCase(Locale.ENGLISH));
     }
 
     /**

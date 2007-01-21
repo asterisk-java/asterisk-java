@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
 
 import org.asteriskjava.live.AsteriskChannel;
@@ -173,7 +174,7 @@ class ChannelManager
 
         addChannel(channel);
 
-        if (traceId != null && (! name.toLowerCase().startsWith("local/") || name.endsWith(",1")))
+        if (traceId != null && (! name.toLowerCase(Locale.ENGLISH).startsWith("local/") || name.endsWith(",1")))
         {
             final OriginateCallbackData callbackData;
             callbackData = server.getOriginateCallbackDataByTraceId(traceId);

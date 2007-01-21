@@ -20,6 +20,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import org.asteriskjava.manager.event.AgentCallbackLoginEvent;
@@ -188,7 +189,7 @@ class EventBuilderImpl implements EventBuilder
         String eventType;
 
         className = clazz.getName();
-        eventType = className.substring(className.lastIndexOf('.') + 1).toLowerCase();
+        eventType = className.substring(className.lastIndexOf('.') + 1).toLowerCase(Locale.ENGLISH);
 
         if (eventType.endsWith("event"))
         {

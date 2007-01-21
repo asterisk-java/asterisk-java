@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.asteriskjava.manager.DefaultManagerConnection;
@@ -273,7 +274,7 @@ public class ManagerReaderImpl implements ManagerReader
                         String name;
                         String value;
 
-                        name = line.substring(0, delimiterIndex).toLowerCase();
+                        name = line.substring(0, delimiterIndex).toLowerCase(Locale.ENGLISH);
                         value = line.substring(delimiterIndex + 2);
 
                         buffer.put(name, value);
