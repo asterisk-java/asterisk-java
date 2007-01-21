@@ -46,7 +46,7 @@ public class PingThread extends Thread
     private final Log logger = LogFactory.getLog(getClass());
 
     private final long id;
-    private long interval;
+    private long interval = DEFAULT_INTERVAL;
     private long timeout = 0;
     private boolean die;
     private final ManagerConnection connection;
@@ -60,10 +60,9 @@ public class PingThread extends Thread
     {
         super();
         this.connection = connection;
-        this.interval = DEFAULT_INTERVAL;
         this.die = false;
         this.id = idCounter.getAndIncrement();
-        setName("Asterisk-Java PingThread-" + id);
+        setName("Asterisk-Java Ping-" + id);
         setDaemon(true);
     }
 
