@@ -25,6 +25,7 @@ import static org.asteriskjava.manager.ManagerConnectionState.RECONNECTING;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.net.Socket;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -145,6 +146,11 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
      * The timeout to use when connecting the the Asterisk server.
      */
     private int socketTimeout = 0;
+
+    /**
+     * @see Socket#setSoTimeout(int)
+     */
+    private int socketReadTimeout = 0;
 
     /**
      * Should we continue to reconnect after an authentication failure?
@@ -395,6 +401,11 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         this.socketTimeout = socketTimeout;
     }
 
+    public void setSocketReadTimeout(int socketReadTimeout)
+    {
+        this.socketReadTimeout = socketReadTimeout;
+    }
+
     public synchronized void login() throws IOException, AuthenticationFailedException, TimeoutException
     {
         login(null);
@@ -622,7 +633,9 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         if (readerThread == null || !readerThread.isAlive() || reader.isDead())
         {
             logger.debug("Creating and starting reader thread");
-            readerThread = new Thread(reader, "ManagerConnection-" + id + "-Reader-" + readerThreadCounter.getAndIncrement());
+            readerThread = new Thread(reader);
+            readerThread.setName("Asterisk-Java ManagerConnection-" + id + "-Reader-"
+                    + readerThreadCounter.getAndIncrement());
             readerThread.setDaemon(true);
             readerThread.start();
         }
@@ -633,7 +646,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
     protected SocketConnectionFacade createSocket() throws IOException
     {
-        return new SocketConnectionFacadeImpl(hostname, port, ssl, socketTimeout);
+        return new SocketConnectionFacadeImpl(hostname, port, ssl, socketTimeout, socketReadTimeout);
     }
 
     public synchronized void logoff() throws IllegalStateException
@@ -1079,8 +1092,8 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                         reconnect();
                     }
                 });
-                reconnectThread
-                        .setName("ManagerConnection-" + id + "-Reconnect-" + reconnectThreadCounter.getAndIncrement());
+                reconnectThread.setName("Asterisk-Java ManagerConnection-" + id + "-Reconnect-"
+                        + reconnectThreadCounter.getAndIncrement());
                 reconnectThread.setDaemon(true);
                 reconnectThread.start();
                 // now the DisconnectEvent is dispatched to registered

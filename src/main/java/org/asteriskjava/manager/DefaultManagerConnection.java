@@ -256,6 +256,11 @@ public class DefaultManagerConnection implements ManagerConnection
         impl.setSocketTimeout(socketTimeout);
     }
 
+    public void setSocketReadTimeout(int socketReadTimeout)
+    {
+        impl.setSocketReadTimeout(socketReadTimeout);
+    }
+
     public void login() throws IllegalStateException, IOException, AuthenticationFailedException, TimeoutException
     {
         impl.login();

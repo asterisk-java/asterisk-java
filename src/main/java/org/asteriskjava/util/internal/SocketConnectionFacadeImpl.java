@@ -52,9 +52,10 @@ public class SocketConnectionFacadeImpl implements SocketConnectionFacade
      * @param port the foreign port to connect to.
      * @param ssl <code>true</code> to use SSL, <code>false</code> otherwise.
      * @param timeout 0 incidcates default
+     * @param readTimeout see {@link Socket#setSoTimeout(int)} 
      * @throws IOException
      */
-    public SocketConnectionFacadeImpl(String host, int port, boolean ssl, int timeout) throws IOException
+    public SocketConnectionFacadeImpl(String host, int port, boolean ssl, int timeout, int readTimeout) throws IOException
     {
         if (ssl)
         {
@@ -64,6 +65,7 @@ public class SocketConnectionFacadeImpl implements SocketConnectionFacade
         {
             this.socket = SocketFactory.getDefault().createSocket();
         }
+        this.socket.setSoTimeout(readTimeout);
     	this.socket.connect(new InetSocketAddress(host, port), timeout);
 
         InputStream inputStream = socket.getInputStream();

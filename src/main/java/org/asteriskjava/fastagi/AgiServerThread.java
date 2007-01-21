@@ -143,7 +143,7 @@ public class AgiServerThread
                 }
             }
         });
-        t.setName("AgiServerThread-" + idCounter.getAndIncrement());
+        t.setName("Asterisk-Java AgiServer-" + idCounter.getAndIncrement());
         t.setDaemon(daemon);
         t.setUncaughtExceptionHandler(new AgiThreadUncaughtExceptionHanlder());
 

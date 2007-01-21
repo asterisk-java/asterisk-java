@@ -77,9 +77,11 @@ public class DefaultAsteriskServer implements AsteriskServer
         impl = new AsteriskServerImpl(connection);
     }
 
-    protected ManagerConnection createManagerConnection(String hostname, int port, String username, String password)
+    protected DefaultManagerConnection createManagerConnection(String hostname, int port, String username, String password)
     {
-        return new DefaultManagerConnection(hostname, port, username, password);
+        DefaultManagerConnection dmc;
+        dmc = new DefaultManagerConnection(hostname, port, username, password);
+        return dmc;
     }
 
     /**

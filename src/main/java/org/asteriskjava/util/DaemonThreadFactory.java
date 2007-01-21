@@ -22,7 +22,7 @@ public class DaemonThreadFactory implements ThreadFactory
      */
     public DaemonThreadFactory()
     {
-        namePrefix = "daemonPool-" + poolNumber.getAndIncrement() + "-thread-";
+        namePrefix = "Asterisk-Java DaemonPool-" + poolNumber.getAndIncrement() + "-thread-";
     }
 
     public Thread newThread(Runnable r)

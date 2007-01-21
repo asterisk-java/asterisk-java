@@ -129,6 +129,25 @@ public interface ManagerConnection
     public void setSocketTimeout(int socketTimeout);
 
     /**
+     * Connection is dropped (and restarted) if it stales on read longer than
+     * the timeout.
+     * <p>
+     * If you set this property to a non zero value be sure to also use a
+     * {@link PingThread} or somthing similar to make sure there is some network
+     * traffic, otherwise you will encounter lots of unexpected reconnects. The
+     * read timeout should be at least twice the interval set for the
+     * PingThread.
+     * <p>
+     * Default is 0, that is no read timeout.
+     * 
+     * @param socketReadTimeout the read timeout value to be used in
+     *            milliseconds.
+     * @see java.net.Socket#setSoTimeout(int)
+     * @since 0.3
+     */
+    void setSocketReadTimeout(int socketReadTimeout);
+
+    /**
      * Logs in to the Asterisk server with the username and password specified
      * when this connection was created.
      * 

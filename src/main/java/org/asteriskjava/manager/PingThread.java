@@ -16,14 +16,16 @@
  */
 package org.asteriskjava.manager;
 
+import java.util.concurrent.atomic.AtomicLong;
+
 import org.asteriskjava.manager.action.PingAction;
 import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
-
 /**
- * A Thread that pings the Asterisk server at a given interval.<p>
+ * A Thread that pings the Asterisk server at a given interval.
+ * <p>
  * You can use this to prevent the connection being shut down when there is no
  * traffic.
  * 
@@ -36,12 +38,14 @@ public class PingThread extends Thread
      * Default value for the interval attribute.
      */
     private static final long DEFAULT_INTERVAL = 20 * 1000L;
+    private static final AtomicLong idCounter = new AtomicLong(0);
 
     /**
      * Instance logger.
      */
     private final Log logger = LogFactory.getLog(getClass());
 
+    private final long id;
     private long interval;
     private long timeout = 0;
     private boolean die;
@@ -58,12 +62,14 @@ public class PingThread extends Thread
         this.connection = connection;
         this.interval = DEFAULT_INTERVAL;
         this.die = false;
-        setName("Ping");
+        this.id = idCounter.getAndIncrement();
+        setName("Asterisk-Java PingThread-" + id);
         setDaemon(true);
     }
 
     /**
-     * Adjusts how often a PingAction is sent.<p>
+     * Adjusts how often a PingAction is sent.
+     * <p>
      * Default is 20000ms, i.e. 20 seconds.
      * 
      * @param interval the interval in milliseconds
@@ -74,9 +80,15 @@ public class PingThread extends Thread
     }
 
     /**
-     * Sets the timeout to wait for the ManagerResponse before throwing an excpetion.
+     * Sets the timeout to wait for the ManagerResponse before throwing an
+     * excpetion.
+     * <p>
+     * If set to 0 the response will be ignored an no exception will be thrown
+     * at all.
+     * <p>
+     * Default is 0.
      * 
-     * @param timeout the timeout in milliseconds
+     * @param timeout the timeout in milliseconds or 0 to indicate no timeout.
      * @since 0.3
      */
     public void setTimeout(long timeout)
@@ -101,9 +113,9 @@ public class PingThread extends Thread
             {
                 sleep(interval);
             }
-            catch (InterruptedException e) //NOPMD
+            catch (InterruptedException e) // NOPMD
             {
-                //swallow
+                // swallow
             }
 
             // exit if die is set
@@ -132,13 +144,13 @@ public class PingThread extends Thread
         {
             if (timeout <= 0)
             {
-                response = connection.sendAction(new PingAction());
+                connection.sendAction(new PingAction(), null);
             }
             else
             {
                 response = connection.sendAction(new PingAction(), timeout);
+                logger.debug("Ping response: " + response);
             }
-            logger.debug("Ping response: " + response);
         }
         catch (Exception e)
         {
