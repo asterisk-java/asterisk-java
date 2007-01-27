@@ -62,8 +62,8 @@ Asterisk-Java
   {{{http://maven.reucon.com/public/org/asteriskjava/asterisk-java/}distribution site}}.
 
   The
-  {{{http://maven.reucon.com/public/org/asteriskjava/asterisk-java/}distribution site}}
-  also hosts the latest snapshot releases.
+  {{{http://maven.reucon.com/public-snapshot/org/asteriskjava/asterisk-java/}snapshot distribution site}}
+  hosts the latest snapshot releases.
   
   Please feel free to provide any feedback or ask for support via the
   {{{mail-lists.html}Asterisk-Java user's mailing list}}.
@@ -186,6 +186,11 @@ Asterisk-Java
 
   * JetBrains for providing a free license of
     {{{http://www.jetbrains.com/idea/}IntelliJ Idea}}.
+
+  * {{{http://www.atlassian.com/}Atlassian}} for providing a free license of
+    the excellent {{{http://www.atlassian.com/software/jira/}JIRA} Bug tracker.
+
+  * YourKit {{{http://www.yourkit.com/}Java Profiler}}.
 
 * Contact
 
