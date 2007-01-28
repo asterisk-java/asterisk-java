@@ -98,6 +98,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
      * The underlying manager connection used to receive events from Asterisk.
      */
     private ManagerConnection eventConnection;
+    private ManagerEventListener eventListener;
 
     private boolean initialized = false;
 
@@ -173,8 +174,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
     public AsteriskServerImpl(ManagerConnection eventConnection)
     {
         this();
-        this.eventConnection = eventConnection;
-        connectionPool.add(eventConnection);
+        setManagerConnection(eventConnection);
     }
 
     /**
@@ -196,6 +196,11 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
 
     public void setManagerConnection(ManagerConnection eventConnection)
     {
+        if (this.eventConnection != null)
+        {
+            throw new IllegalStateException("ManagerConnection already set.");
+        }
+
         this.eventConnection = eventConnection;
         this.connectionPool.clear();
         this.connectionPool.add(eventConnection);
@@ -238,13 +243,17 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
             queueManager.initialize();
         }
 
-        if (asyncEventHandling)
+        if (eventListener == null)
         {
-            eventConnection.addEventListener(new ManagerEventListenerProxy(this));
-        }
-        else
-        {
-            eventConnection.addEventListener(this);
+            if (asyncEventHandling)
+            {
+                eventListener = new ManagerEventListenerProxy(this);
+            }
+            else
+            {
+                eventListener = this;
+            }
+            eventConnection.addEventListener(eventListener);
         }
         logger.info("Initializing done");
         initialized = true;
