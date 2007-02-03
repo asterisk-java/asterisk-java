@@ -98,7 +98,8 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
      * The underlying manager connection used to receive events from Asterisk.
      */
     private ManagerConnection eventConnection;
-    private ManagerEventListener eventListener;
+    private ManagerEventListener eventListener = null;
+    private ManagerEventListenerProxy managerEventListenerProxy = null;
 
     private boolean initialized = false;
 
@@ -243,16 +244,14 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
             queueManager.initialize();
         }
 
-        if (eventListener == null)
+        if (asyncEventHandling && managerEventListenerProxy == null)
         {
-            if (asyncEventHandling)
-            {
-                eventListener = new ManagerEventListenerProxy(this);
-            }
-            else
-            {
-                eventListener = this;
-            }
+            managerEventListenerProxy = new ManagerEventListenerProxy(this);
+            eventConnection.addEventListener(managerEventListenerProxy);
+        } 
+        else if (!asyncEventHandling && eventListener == null)
+        {
+            eventListener = this;
             eventConnection.addEventListener(eventListener);
         }
         logger.info("Initializing done");
@@ -1002,5 +1001,20 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         {
             logger.warn("Exception dispatching originate progress", t);
         }
+    }
+
+    public void shutdown() {
+        
+        if (eventConnection != null && eventConnection.getState() == ManagerConnectionState.CONNECTED) 
+        {
+            eventConnection.logoff();
+            eventConnection = null;
+        }
+        if (managerEventListenerProxy != null) 
+        {
+            managerEventListenerProxy.shutdown();
+        }
+        managerEventListenerProxy = null;
+        eventListener = null;
     }
 }

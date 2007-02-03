@@ -241,4 +241,9 @@ public class DefaultAsteriskServer implements AsteriskServer
     {
         impl.removeAsteriskServerListener(listener);
     }
+    
+    public void shutdown()
+    {
+        impl.shutdown();
+    }
 }

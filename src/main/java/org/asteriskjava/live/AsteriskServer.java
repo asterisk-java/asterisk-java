@@ -346,4 +346,6 @@ public interface AsteriskServer
     void addAsteriskServerListener(AsteriskServerListener listener) throws ManagerCommunicationException;
 
     void removeAsteriskServerListener(AsteriskServerListener listener);
+    
+    void shutdown();
 }

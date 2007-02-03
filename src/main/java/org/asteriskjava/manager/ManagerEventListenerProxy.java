@@ -79,4 +79,9 @@ public class ManagerEventListenerProxy implements ManagerEventListener
             });
         }
     }
+    
+    public void shutdown() {
+        
+        executor.shutdown();
+    }
 }
