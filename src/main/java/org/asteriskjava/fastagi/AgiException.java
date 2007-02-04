@@ -34,7 +34,7 @@ public class AgiException extends Exception
      * 
      * @param message a message describing the AgiException.
      */
-    protected AgiException(String message)
+    public AgiException(String message)
     {
         super(message);
     }
@@ -45,7 +45,7 @@ public class AgiException extends Exception
      * @param message a message describing the AgiException.
      * @param cause the throwable that caused this exception.
      */
-    protected AgiException(String message, Throwable cause)
+    public AgiException(String message, Throwable cause)
     {
         super(message, cause);
     }
