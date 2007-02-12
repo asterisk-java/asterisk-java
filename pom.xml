@@ -1,10 +1,9 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.asteriskjava</groupId>
 	<artifactId>asterisk-java</artifactId>
 	<name>Asterisk-Java</name>
-	<version>0.3-SNAPSHOT</version>
+	<version>0.3-m2</version>
 	<description>Java interface for Asterisk PBX.</description>
 	<url>http://asterisk-java.org/</url>
 	<licenses>
@@ -40,8 +39,8 @@
 		</developer>
 	</developers>
 	<scm>
-		<connection>scm:svn:http://svn.reucon.net/repos/asterisk-java/trunk</connection>
-		<developerConnection>scm:svn:https://secure.reucon.net/svn/repos/asterisk-java/trunk</developerConnection>
+		<connection>scm:svn:https://secure.reucon.net/svn/repos/asterisk-java/tags/asterisk-java-0.3-m2</connection>
+		<developerConnection>scm:svn:https://secure.reucon.net/svn/repos/asterisk-java/tags/asterisk-java-0.3-m2</developerConnection>
 	</scm>
 	<distributionManagement>
 		<repository>
