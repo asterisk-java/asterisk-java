@@ -73,4 +73,20 @@ public interface AsteriskQueue
      * @return the list of channels currently waiting in this queue.
      */
     List<AsteriskChannel> getEntries();
+    
+    /**
+     * Registers a new queue listener.
+     * 
+     * @param listener the listener to add.
+     * @since 0.3
+     */
+    void addAsteriskQueueListener(AsteriskQueueListener listener);
+
+    /**
+     * Removes a previously registered queue listener.
+     * 
+     * @param listener the listener to remove.
+     * @since 0.3
+     */
+    void removeAsteriskQueueListener(AsteriskQueueListener listener);
 }

@@ -33,6 +33,8 @@ public abstract class AbstractParkedCallEvent extends ManagerEvent
     private String channel;
     private String callerId;
     private String callerIdName;
+    private String uniqueId;
+   
 
     /**
      * @param source
@@ -112,5 +114,21 @@ public abstract class AbstractParkedCallEvent extends ManagerEvent
     public void setCallerIdName(String callerIdName)
     {
         this.callerIdName = callerIdName;
+    }
+    
+    /**
+     * Returns the unique id of the parked channel.
+     */
+    public String getUniqueId()
+    {
+        return uniqueId;
+    }
+
+    /**
+     * Sets the unique id of the parked channel.
+     */
+    public void setUniqueId(String uniqueId)
+    {
+        this.uniqueId = uniqueId;
     }
 }

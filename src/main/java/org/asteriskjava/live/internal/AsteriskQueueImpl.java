@@ -21,6 +21,9 @@ import java.util.List;
 
 import org.asteriskjava.live.AsteriskChannel;
 import org.asteriskjava.live.AsteriskQueue;
+import org.asteriskjava.live.AsteriskQueueListener;
+import org.asteriskjava.util.Log;
+import org.asteriskjava.util.LogFactory;
 
 /**
  * Default implementation of the AsteriskQueue interface.
@@ -30,11 +33,13 @@ import org.asteriskjava.live.AsteriskQueue;
  */
 class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
 {
+	private final Log logger = LogFactory.getLog(this.getClass());
     private final String name;
     private Integer max;
     private Integer serviceLevel;
     private Integer weight;
     private final ArrayList<AsteriskChannel> entries;
+    private final List<AsteriskQueueListener> listeners;
 
     AsteriskQueueImpl(AsteriskServerImpl server, String name, Integer max, Integer serviceLevel, Integer weight)
     {
@@ -44,6 +49,7 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
         this.serviceLevel = serviceLevel;
         this.weight = weight;
         this.entries = new ArrayList<AsteriskChannel>(25);
+        listeners = new ArrayList<AsteriskQueueListener>();
     }
 
     public String getName()
@@ -101,6 +107,7 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
             }
             entries.add(entry);
         }
+        fireNewEntry(entry);
     }
 
     void removeEntry(AsteriskChannel entry)
@@ -109,6 +116,7 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
         {
             entries.remove(entry);
         }
+        fireEntryLeave(entry);
     }
 
     public String toString()
@@ -128,5 +136,57 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
         sb.append("]");
 
         return sb.toString();
+    }
+    
+    public void addAsteriskQueueListener(AsteriskQueueListener listener)
+    {
+        synchronized (listeners)
+        {
+            listeners.add(listener);
+        }
+    }
+
+    public void removeAsteriskQueueListener(AsteriskQueueListener listener)
+    {
+        synchronized (listeners)
+        {
+            listeners.remove(listener);
+        }
+    }
+
+    void fireNewEntry(AsteriskChannel channel)
+    {
+        synchronized (listeners)
+        {
+            for (AsteriskQueueListener listener : listeners)
+            {
+                try
+                {
+                    listener.onNewEntry(channel);
+                }
+                catch (Exception e)
+                {
+                    logger.warn("Exception in onNewEntryl()", e);
+                }
+            }
+        }
+    }
+
+    void fireEntryLeave(AsteriskChannel channel)
+    {
+        synchronized (listeners)
+        {
+            for (AsteriskQueueListener listener : listeners)
+            {
+                try
+                {
+                    listener.onEntryLeave(channel);
+                }
+                catch (Exception e)
+                {
+                    logger.warn("Exception in onEntryLeave()", e);
+                }
+            }
+        }
     }
 }

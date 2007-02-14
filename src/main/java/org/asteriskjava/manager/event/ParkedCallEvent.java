@@ -25,19 +25,16 @@ package org.asteriskjava.manager.event;
  * @author srt
  * @version $Id$
  */
-public class ParkedCallEvent extends ResponseEvent
+public class ParkedCallEvent extends AbstractParkedCallEvent
 {
     /**
      * Serializable version identifier
      */
     private static final long serialVersionUID = -7437833328723536814L;
-    private String exten;
-    private String channel;
+    
     private String from;
     private Integer timeout;
-    private String callerId;
-    private String callerIdName;
-    private String uniqueId;
+    
 
     /**
      * @param source
@@ -45,38 +42,6 @@ public class ParkedCallEvent extends ResponseEvent
     public ParkedCallEvent(Object source)
     {
         super(source);
-    }
-
-    /**
-     * Returns the extension the channel is parked at.
-     */
-    public String getExten()
-    {
-        return exten;
-    }
-
-    /**
-     * Sets the extension the channel is parked at.
-     */
-    public void setExten(String exten)
-    {
-        this.exten = exten;
-    }
-
-    /**
-     * Returns the name of the channel that is parked.
-     */
-    public String getChannel()
-    {
-        return channel;
-    }
-
-    /**
-     * Sets the name of the channel that is parked.
-     */
-    public void setChannel(String channel)
-    {
-        this.channel = channel;
     }
 
     /**
@@ -112,60 +77,13 @@ public class ParkedCallEvent extends ResponseEvent
     {
         this.timeout = timeout;
     }
-
+  
     /**
-     * Returns the Caller*ID number of the parked channel.
-     * @return the Caller*ID number of the parked channel.
+     * Sets the unique id of the parked channel,
+     * workaround for a typo in asterisk manager event
      */
-    public String getCallerId()
+    public void setUnqiueId(String unqiueId)
     {
-        return callerId;
-    }
-
-    /**
-     * Sets the Caller*ID number of the parked channel.
-     * @param callerId the Caller*ID number of the parked channel.
-     */
-    public void setCallerId(String callerId)
-    {
-        this.callerId = callerId;
-    }
-
-    /**
-     * Returns the Caller*ID name of the parked channel.
-     * 
-     * @return the Caller*ID name of the parked channel.
-     * @since 0.2
-     */
-    public String getCallerIdName()
-    {
-        return callerIdName;
-    }
-
-    /**
-     * Sets the Caller*ID name of the parked channel.
-     * 
-     * @param callerIdName the Caller*ID name of the parked channel.
-     * @since 0.2
-     */
-    public void setCallerIdName(String callerIdName)
-    {
-        this.callerIdName = callerIdName;
-    }
-
-    /**
-     * Returns the unique id of the parked channel.
-     */
-    public String getUniqueId()
-    {
-        return uniqueId;
-    }
-
-    /**
-     * Sets the unique id of the parked channel.
-     */
-    public void setUniqueId(String uniqueId)
-    {
-        this.uniqueId = uniqueId;
+        setUniqueId(unqiueId);
     }
 }
