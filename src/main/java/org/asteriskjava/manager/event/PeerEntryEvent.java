@@ -39,8 +39,10 @@ public class PeerEntryEvent extends ResponseEvent
     private Integer ipPort;
     private Boolean dynamic;
     private Boolean natSupport;
+    private Boolean videoSupport;
     private Boolean acl;
     private String status;
+    private String realtimeDevice;
 
     /**
      * Creates a new instance.
@@ -142,6 +144,26 @@ public class PeerEntryEvent extends ResponseEvent
         this.natSupport = natSupport;
     }
 
+    /**
+     * Available since Asterisk 1.4.
+     * 
+     * @since 0.3
+     */
+    public Boolean getVideoSupport()
+    {
+        return videoSupport;
+    }
+
+    /**
+     * Available since Asterisk 1.4.
+     * 
+     * @since 0.3
+     */
+    public void setVideoSupport(Boolean videoSupport)
+    {
+        this.videoSupport = videoSupport;
+    }
+
     public Boolean getAcl()
     {
         return acl;
@@ -183,5 +205,25 @@ public class PeerEntryEvent extends ResponseEvent
     public void setStatus(String status)
     {
         this.status = status;
+    }
+
+    /**
+     * Available since Asterisk 1.4.
+     * 
+     * @since 0.3
+     */
+    public String getRealtimeDevice()
+    {
+        return realtimeDevice;
+    }
+
+    /**
+     * Available since Asterisk 1.4.
+     * 
+     * @since 0.3
+     */
+    public void setRealtimeDevice(String realtimeDevice)
+    {
+        this.realtimeDevice = realtimeDevice;
     }
 }
