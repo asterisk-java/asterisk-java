@@ -362,7 +362,7 @@ class ChannelManager
         {
             channel = addNewChannel(
                     event.getUniqueId(), event.getChannel(), event.getDateReceived(), 
-                    event.getCallerId(), event.getCallerIdName(),
+                    event.getCallerIdNum(), event.getCallerIdName(),
                     string2ChannelState(event.getState()));
         }
         else
@@ -371,7 +371,7 @@ class ChannelManager
             synchronized (channel)
             {
                 channel.nameChanged(event.getDateReceived(), event.getChannel());
-                channel.setCallerId(new CallerId(event.getCallerIdName(), event.getCallerId()));
+                channel.setCallerId(new CallerId(event.getCallerIdName(), event.getCallerIdNum()));
                 channel.stateChanged(event.getDateReceived(), string2ChannelState(event.getState()));
             }
         }
@@ -409,7 +409,7 @@ class ChannelManager
             // NewStateEvent can occur instead of a NewChannelEvent
             channel = addNewChannel(
                     event.getUniqueId(), event.getChannel(), event.getDateReceived(), 
-                    event.getCallerId(), event.getCallerIdName(), string2ChannelState(event.getState()));
+                    event.getCallerIdNum(), event.getCallerIdName(), string2ChannelState(event.getState()));
         }
         if (event.getState() != null)
         {
@@ -429,13 +429,13 @@ class ChannelManager
             // NewCallerIdEvent can occur before NewChannelEvent
             channel = addNewChannel(
                     event.getUniqueId(), event.getChannel(), event.getDateReceived(), 
-                    event.getCallerId(), event.getCallerIdName(), ChannelState.DOWN);
+                    event.getCallerIdNum(), event.getCallerIdName(), ChannelState.DOWN);
         }
         else
         {
             synchronized (channel)
             {
-                channel.setCallerId(new CallerId(event.getCallerIdName(), event.getCallerId()));
+                channel.setCallerId(new CallerId(event.getCallerIdName(), event.getCallerIdNum()));
             }
         }
     }

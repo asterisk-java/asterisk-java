@@ -154,10 +154,8 @@ public class EventBuilderImplTest extends TestCase
         event = (NewChannelEvent) eventBuilder.buildEvent(this, properties);
 
         assertNotNull(event);
-        assertEquals("Returned event is of wrong type", NewChannelEvent.class,
-                event.getClass());
-        assertEquals("String property not set correctly", callerid, event
-                .getCallerId());
+        assertEquals("Returned event is of wrong type", NewChannelEvent.class, event.getClass());
+        assertEquals("String property not set correctly", callerid, event.getCallerIdNum());
         assertEquals("Source not set correctly", this, event.getSource());
     }
 
