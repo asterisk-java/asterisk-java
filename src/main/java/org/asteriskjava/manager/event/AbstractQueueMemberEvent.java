@@ -31,6 +31,7 @@ public abstract class AbstractQueueMemberEvent extends ManagerEvent
     private static final long serialVersionUID = -7437833328723536814L;
     private String queue;
     private String location;
+    private String memberName;
 
     /**
      * @param source
@@ -79,5 +80,31 @@ public abstract class AbstractQueueMemberEvent extends ManagerEvent
     public void setLocation(String member)
     {
         this.location = member;
+    }
+
+    /**
+     * Retruns the name of the queue member.
+     * <p>
+     * Available since Asterisk 1.4
+     * 
+     * @return the name of the queue member.
+     * @since 0.3
+     */
+    public String getMemberName()
+    {
+        return memberName;
+    }
+
+    /**
+     * Sets the name of the queue member.
+     * <p>
+     * Available since Asterisk 1.4
+     * 
+     * @param memberName the name of the queue member.
+     * @since 0.3
+     */
+    public void setMemberName(String memberName)
+    {
+        this.memberName = memberName;
     }
 }
