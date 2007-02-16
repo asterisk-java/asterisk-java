@@ -41,7 +41,7 @@ public class RegistryEvent extends ManagerEvent
     public static final String STATUS_NO_AUTHENTICATION = "No Authentication";
     public static final String STATUS_UNREACHABLE = "Unreachable";
     
-    private String channel;
+    private String channelDriver;
     private String domain;
     private String username;
     private String status;
@@ -56,20 +56,47 @@ public class RegistryEvent extends ManagerEvent
     }
 
     /**
-     * Returns the type of channel that is registered, i.e. "IAX2" for an IAX2
+     * Returns the type of channel that is registered, that is "IAX2" for an IAX2
      * channel or "SIP" for a SIP channel.
+     * 
+     * @since 0.3
      */
-    public String getChannel()
+    public String getChannelDriver()
     {
-        return channel;
+        return channelDriver;
     }
 
     /**
      * Sets the type of channel that is registered.
+     * 
+     * @since 0.3
+     */
+    public void setChannelDriver(String channelDriver)
+    {
+        this.channelDriver = channelDriver;
+    }
+
+    /**
+     * Returns the type of channel that is registered, that is "IAX2" for an IAX2
+     * channel or "SIP" for a SIP channel.
+     * 
+     * @deprecated
+     * @see #getChannelDriver()
+     */
+    public String getChannel()
+    {
+        return channelDriver;
+    }
+
+    /**
+     * Sets the type of channel that is registered.
+     * 
+     * @deprecated
+     * @see #setChannelDriver(String)
      */
     public void setChannel(String channel)
     {
-        this.channel = channel;
+        this.channelDriver = channel;
     }
 
     /**
