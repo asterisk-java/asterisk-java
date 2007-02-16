@@ -45,17 +45,19 @@ public abstract class AbstractMappingStrategy implements MappingStrategy
      *         can't be created an error is logged and <code>null</code> is
      *         returned.
      */
+    @SuppressWarnings("unchecked")
     protected AgiScript createAgiScriptInstance(String className)
     {
-        Class agiScriptClass;
-        Constructor constructor;
+        Class tmpClass;
+        Class<AgiScript> agiScriptClass;
+        Constructor<AgiScript> constructor;
         AgiScript agiScript;
 
         agiScript = null;
 
         try
         {
-            agiScriptClass = Class.forName(className);
+            tmpClass = Class.forName(className);
         }
         catch (ClassNotFoundException e1)
         {
@@ -64,17 +66,18 @@ public abstract class AbstractMappingStrategy implements MappingStrategy
             return null;
         }
 
-        if (!AgiScript.class.isAssignableFrom(agiScriptClass))
+        if (!AgiScript.class.isAssignableFrom(tmpClass))
         {
             logger.error("Unable to create AgiScript instance of type " + className
                     + ": Class does not implement the AgiScript interface");
             return null;
         }
 
+        agiScriptClass = (Class<AgiScript>) tmpClass;
         try
         {
-            constructor = agiScriptClass.getConstructor(new Class[]{});
-            agiScript = (AgiScript) constructor.newInstance(new Object[]{});
+            constructor = agiScriptClass.getConstructor();
+            agiScript = constructor.newInstance();
         }
         catch (Exception e)
         {

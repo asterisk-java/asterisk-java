@@ -213,6 +213,7 @@ class EventBuilderImpl implements EventBuilder
      *            {@link ManagerEvent}.
      * @throws IllegalArgumentException if clazz is not a valid event class.
      */
+    @SuppressWarnings("unchecked")
     public final void registerEventClass(String eventType, Class clazz) throws IllegalArgumentException
     {
         Constructor defaultConstructor;
@@ -246,6 +247,7 @@ class EventBuilderImpl implements EventBuilder
         logger.debug("Registered event type '" + eventType + "' (" + clazz + ")");
     }
 
+    @SuppressWarnings("unchecked")
     public ManagerEvent buildEvent(Object source, Map<String, String> attributes)
     {
         ManagerEvent event;
