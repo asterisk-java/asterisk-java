@@ -23,8 +23,9 @@ import java.util.logging.Logger;
 import org.asteriskjava.util.Log;
 
 /**
- * Implementation of {@link Log} that maps to the <strong>Logger</strong>
- * of the java.util.logging package.<p>
+ * Implementation of {@link Log} that maps to the <strong>Logger</strong> of
+ * the java.util.logging package.
+ * <p>
  * Kindly donated by Sun's Steve Drach.
  * 
  * @author drach
@@ -34,7 +35,7 @@ public class JavaLoggingLog implements Log
     /**
      * The underlying commons-logging Log object to use.
      */
-    private final Logger log;  // NOPMD by srt on 7/5/06 11:18 PM
+    private final Logger log; // NOPMD by srt on 7/5/06 11:18 PM
 
     /**
      * Creates a new JavaLoggingLog obtained from java.util.logging for the
@@ -49,31 +50,98 @@ public class JavaLoggingLog implements Log
 
     public void debug(Object obj)
     {
-        log.fine(obj.toString());
+        StackTraceElement ste = getInvokerSTE();
+
+        if (ste != null)
+        {
+            log.logp(Level.FINE, ste.getClassName(), ste.getMethodName(), obj.toString());
+        }
+        else
+        {
+            log.fine(obj.toString());
+        }
     }
 
     public void info(Object obj)
     {
-        log.info(obj.toString());
+        StackTraceElement ste = getInvokerSTE();
+
+        if (ste != null)
+        {
+            log.logp(Level.INFO, ste.getClassName(), ste.getMethodName(), obj.toString());
+        }
+        else
+        {
+            log.info(obj.toString());
+        }
     }
 
     public void warn(Object obj)
     {
-        log.warning(obj.toString());
+        StackTraceElement ste = getInvokerSTE();
+
+        if (ste != null)
+        {
+            log.logp(Level.WARNING, ste.getClassName(), ste.getMethodName(), obj.toString());
+        }
+        else
+        {
+            log.warning(obj.toString());
+        }
     }
 
     public void warn(Object obj, Throwable ex)
     {
-        log.log(Level.WARNING, obj.toString(), ex);
+        StackTraceElement ste = getInvokerSTE();
+
+        if (ste != null)
+        {
+            log.logp(Level.WARNING, ste.getClassName(), ste.getMethodName(), obj.toString(), ex);
+        }
+        else
+        {
+            log.log(Level.WARNING, obj.toString(), ex);
+        }
     }
 
     public void error(Object obj)
     {
-        log.severe(obj.toString());
+        StackTraceElement ste = getInvokerSTE();
+
+        if (ste != null)
+        {
+            log.logp(Level.SEVERE, ste.getClassName(), ste.getMethodName(), obj.toString());
+        }
+        else
+        {
+            log.severe(obj.toString());
+        }
     }
 
     public void error(Object obj, Throwable ex)
     {
-        log.log(Level.SEVERE, obj.toString(), ex);
+        StackTraceElement ste = getInvokerSTE();
+
+        if (ste != null)
+        {
+            log.logp(Level.SEVERE, ste.getClassName(), ste.getMethodName(), obj.toString(), ex);
+        }
+        else
+        {
+            log.log(Level.SEVERE, obj.toString(), ex);
+        }
     }
+
+    private StackTraceElement getInvokerSTE()
+    {
+        StackTraceElement stack[] = (new Throwable()).getStackTrace();
+
+        if (stack.length > 2)
+        {
+            return stack[2];
+        }
+
+        return null;
+    }
+
 }
