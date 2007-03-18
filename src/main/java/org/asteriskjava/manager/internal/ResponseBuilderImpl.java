@@ -19,6 +19,7 @@ package org.asteriskjava.manager.internal;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.asteriskjava.manager.response.GetConfigResponse;
 import org.asteriskjava.manager.response.ChallengeResponse;
 import org.asteriskjava.manager.response.ExtensionStateResponse;
 import org.asteriskjava.manager.response.MailboxCountResponse;
@@ -97,6 +98,12 @@ class ResponseBuilderImpl implements ResponseBuilder
             extensionStateResponse.setHint((String) attributes.get("hint"));
             extensionStateResponse.setStatus(Integer.valueOf((String) attributes.get("status")));
             response = extensionStateResponse;
+        }
+        else if(attributes.containsKey("line-000000-000000"))
+        {
+        	// this attribute will be there if the file has any lines at all
+        	final GetConfigResponse getConfigResponse = new GetConfigResponse();
+        	response = getConfigResponse;
         }
         else
         {
