@@ -41,7 +41,7 @@ public class GetConfigAction extends AbstractManagerAction
     }
 
     /**
-     * Creates a new GetConfigAction with the given command.
+     * Creates a new GetConfigAction with the given filename.
      * 
      * @param filename the name of the file to get.
      */
