@@ -232,16 +232,7 @@ public class ManagerReaderImpl implements ManagerReader
                 // the corresponding value object and dispatch it through the ManagerConnection.
                 if (line.length() == 0)
                 {
-                    if (buffer.containsKey("response"))
-                    {
-                        ManagerResponse response = buildResponse(buffer);
-                        logger.debug("attempting to build response");
-                        if (response != null)
-                        {
-                            dispatcher.dispatchResponse(response);
-                        } 
-                    }
-                    else if (buffer.containsKey("event"))
+                    if (buffer.containsKey("event"))
                     {
                         logger.debug("attempting to build event: " + buffer.get("event"));
                         ManagerEvent event = buildEvent(source, buffer);
@@ -253,6 +244,15 @@ public class ManagerReaderImpl implements ManagerReader
                         {
                             logger.debug("buildEvent returned null");
                         }
+                    }
+                    else if (buffer.containsKey("response"))
+                    {
+                        ManagerResponse response = buildResponse(buffer);
+                        logger.debug("attempting to build response");
+                        if (response != null)
+                        {
+                            dispatcher.dispatchResponse(response);
+                        } 
                     }
                     else
                     {
