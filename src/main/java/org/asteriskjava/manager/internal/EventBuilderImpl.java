@@ -59,7 +59,9 @@ import org.asteriskjava.manager.event.NewCallerIdEvent;
 import org.asteriskjava.manager.event.NewChannelEvent;
 import org.asteriskjava.manager.event.NewExtenEvent;
 import org.asteriskjava.manager.event.NewStateEvent;
+import org.asteriskjava.manager.event.OriginateFailureEvent;
 import org.asteriskjava.manager.event.OriginateResponseEvent;
+import org.asteriskjava.manager.event.OriginateSuccessEvent;
 import org.asteriskjava.manager.event.ParkedCallEvent;
 import org.asteriskjava.manager.event.ParkedCallGiveUpEvent;
 import org.asteriskjava.manager.event.ParkedCallTimeOutEvent;
@@ -150,6 +152,8 @@ class EventBuilderImpl implements EventBuilder
         registerEventClass(NewChannelEvent.class);
         registerEventClass(NewExtenEvent.class);
         registerEventClass(NewStateEvent.class);
+        registerEventClass(OriginateFailureEvent.class);
+        registerEventClass(OriginateSuccessEvent.class);
         registerEventClass(OriginateResponseEvent.class);
         registerEventClass(ParkedCallGiveUpEvent.class);
         registerEventClass(ParkedCallEvent.class);
