@@ -86,6 +86,8 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     private static final int RECONNECTION_INTERVAL_2 = 5000;
     private static final String DEFAULT_HOSTNAME = "localhost";
     private static final int DEFAULT_PORT = 5038;
+    private static final int RECONNECTION_VERSION_INTERVAL = 500;
+    private static final int MAX_VERSION_ATTEMPTS = 4;
 
     private static final AtomicLong idCounter = new AtomicLong(0);
 
@@ -584,25 +586,45 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
     protected AsteriskVersion determineVersion() throws IOException, TimeoutException
     {
-        ManagerResponse showVersionFilesResponse;
-
-        // increase timeout as output is quite large
-        showVersionFilesResponse = sendAction(new CommandAction("show version files pbx.c"), defaultResponseTimeout * 2);
-        if (showVersionFilesResponse instanceof CommandResponse)
+        int attempts = 0;
+        while(attempts < MAX_VERSION_ATTEMPTS)
         {
-            List showVersionFilesResult;
-
-            showVersionFilesResult = ((CommandResponse) showVersionFilesResponse).getResult();
-            if (showVersionFilesResult != null && showVersionFilesResult.size() > 0)
-            {
-                String line1;
-
-                line1 = (String) showVersionFilesResult.get(0);
-                if (line1 != null && line1.startsWith("File"))
-                {
-                    return AsteriskVersion.ASTERISK_1_2;
-                }
-            }
+	    	ManagerResponse showVersionFilesResponse;
+	
+	        // increase timeout as output is quite large
+	        showVersionFilesResponse = sendAction(new CommandAction("show version files pbx.c"), defaultResponseTimeout * 2);
+	        if (showVersionFilesResponse instanceof CommandResponse)
+	        {
+	            List showVersionFilesResult;
+	
+	            showVersionFilesResult = ((CommandResponse) showVersionFilesResponse).getResult();
+	            if (showVersionFilesResult != null && showVersionFilesResult.size() > 0)
+	            {
+	                String line1;
+	
+	                line1 = (String) showVersionFilesResult.get(0);
+                    if (line1 != null && line1.startsWith("File"))
+                    {
+                        return AsteriskVersion.ASTERISK_1_2;
+                    }
+                    else if (line1 != null && line1.contains("No such command"))
+                    {
+                        try
+                        {
+                            attempts++;
+                            Thread.sleep(RECONNECTION_VERSION_INTERVAL);
+                        }
+                        catch (Exception ex)
+                        {
+                        }
+                    }
+                    else
+                    {
+                        // if it isn't the "no such command", break and return the lowest version immediately
+                        break;
+                    }
+	            }
+	        }
         }
 
         return AsteriskVersion.ASTERISK_1_0;
