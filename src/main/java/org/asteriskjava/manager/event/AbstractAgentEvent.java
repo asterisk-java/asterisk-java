@@ -20,6 +20,7 @@ package org.asteriskjava.manager.event;
  * Abstract base class for several agent related events.
  * 
  * @author srt
+ * @author martins
  * @version $Id$
  * @since 0.2
  */
@@ -33,6 +34,7 @@ public abstract class AbstractAgentEvent extends ManagerEvent
     private String uniqueId;
     private String queue;
     private String member;
+    private String memberName;
 
     /**
      * @param source
@@ -116,5 +118,21 @@ public abstract class AbstractAgentEvent extends ManagerEvent
     public void setMember(String member)
     {
         this.member = member;
+    }
+
+    /**
+     * @return the memberName
+     */
+    public String getMemberName()
+    {
+        return memberName;
+    }
+
+    /**
+     * @param memberName the memberName to set
+     */
+    public void setMemberName(String memberName)
+    {
+        this.memberName = memberName;
     }
 }
