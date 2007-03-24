@@ -34,9 +34,9 @@ public class ChannelReloadEvent extends ManagerEvent
 
     private String channel;
     private String reloadReason;
-    private String registryCount;
-    private String peerCount;
-    private String userCount;
+    private Integer registryCount;
+    private Integer peerCount;
+    private Integer userCount;
     
     /**
      * @param source
@@ -65,7 +65,7 @@ public class ChannelReloadEvent extends ManagerEvent
     /**
      * @return the peerCount
      */
-    public String getPeerCount()
+    public Integer getPeerCount()
     {
         return peerCount;
     }
@@ -73,7 +73,7 @@ public class ChannelReloadEvent extends ManagerEvent
     /**
      * @param peerCount the peerCount to set
      */
-    public void setPeerCount(String peerCount)
+    public void setPeerCount(Integer peerCount)
     {
         this.peerCount = peerCount;
     }
@@ -81,7 +81,7 @@ public class ChannelReloadEvent extends ManagerEvent
     /**
      * @return the registryCount
      */
-    public String getRegistryCount()
+    public Integer getRegistryCount()
     {
         return registryCount;
     }
@@ -89,7 +89,7 @@ public class ChannelReloadEvent extends ManagerEvent
     /**
      * @param registryCount the registryCount to set
      */
-    public void setRegistryCount(String registryCount)
+    public void setRegistryCount(Integer registryCount)
     {
         this.registryCount = registryCount;
     }
@@ -113,7 +113,7 @@ public class ChannelReloadEvent extends ManagerEvent
     /**
      * @return the userCount
      */
-    public String getUserCount()
+    public Integer getUserCount()
     {
         return userCount;
     }
@@ -121,7 +121,7 @@ public class ChannelReloadEvent extends ManagerEvent
     /**
      * @param userCount the userCount to set
      */
-    public void setUserCount(String userCount)
+    public void setUserCount(Integer userCount)
     {
         this.userCount = userCount;
     }
