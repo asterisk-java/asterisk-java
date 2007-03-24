@@ -38,8 +38,7 @@ import org.asteriskjava.manager.event.NewCallerIdEvent;
 import org.asteriskjava.manager.event.NewChannelEvent;
 import org.asteriskjava.manager.event.NewExtenEvent;
 import org.asteriskjava.manager.event.NewStateEvent;
-import org.asteriskjava.manager.event.OriginateFailureEvent;
-import org.asteriskjava.manager.event.OriginateSuccessEvent;
+import org.asteriskjava.manager.event.OriginateResponseEvent;
 import org.asteriskjava.manager.event.ParkedCallEvent;
 import org.asteriskjava.manager.event.ParkedCallGiveUpEvent;
 import org.asteriskjava.manager.event.ParkedCallTimeOutEvent;
@@ -335,11 +334,7 @@ public abstract class AbstractManagerEventListener implements ManagerEventListen
     {
     }
 
-    protected void handleEvent(OriginateFailureEvent event)
-    {
-    }
-
-    protected void handleEvent(OriginateSuccessEvent event)
+    protected void handleEvent(OriginateResponseEvent event)
     {
     }
 
@@ -614,13 +609,9 @@ public abstract class AbstractManagerEventListener implements ManagerEventListen
         {
             handleEvent((LinkEvent) event);
         }
-        else if (event instanceof OriginateFailureEvent)
+        else if (event instanceof OriginateResponseEvent)
         {
-            handleEvent((OriginateFailureEvent) event);
-        }
-        else if (event instanceof OriginateSuccessEvent)
-        {
-            handleEvent((OriginateSuccessEvent) event);
+            handleEvent((OriginateResponseEvent) event);
         }
         else if (event instanceof ParkedCallEvent)
         {

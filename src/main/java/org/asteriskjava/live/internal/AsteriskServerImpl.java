@@ -52,7 +52,7 @@ import org.asteriskjava.manager.action.ManagerAction;
 import org.asteriskjava.manager.action.OriginateAction;
 import org.asteriskjava.manager.action.SetVarAction;
 import org.asteriskjava.manager.event.AbstractMeetMeEvent;
-import org.asteriskjava.manager.event.AbstractOriginateEvent;
+import org.asteriskjava.manager.event.OriginateResponseEvent;
 import org.asteriskjava.manager.event.CdrEvent;
 import org.asteriskjava.manager.event.ConnectEvent;
 import org.asteriskjava.manager.event.DialEvent;
@@ -333,9 +333,9 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
             ResponseEvent responseEvent;
 
             responseEvent = responseEventIterator.next();
-            if (responseEvent instanceof AbstractOriginateEvent)
+            if (responseEvent instanceof OriginateResponseEvent)
             {
-                uniqueId = ((AbstractOriginateEvent) responseEvent).getUniqueId();
+                uniqueId = ((OriginateResponseEvent) responseEvent).getUniqueId();
                 logger.debug(responseEvent.getClass().getName() + " received with uniqueId " + uniqueId);
                 channel = getChannelById(uniqueId);
             }
@@ -870,9 +870,9 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         {
             meetMeManager.handleMeetMeEvent((AbstractMeetMeEvent) event);
         }
-        else if (event instanceof AbstractOriginateEvent)
+        else if (event instanceof OriginateResponseEvent)
         {
-            handleOriginateEvent((AbstractOriginateEvent) event);
+            handleOriginateEvent((OriginateResponseEvent) event);
         }
     }
 
@@ -910,7 +910,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         }
     }
 
-    private void handleOriginateEvent(AbstractOriginateEvent originateEvent)
+    private void handleOriginateEvent(OriginateResponseEvent originateEvent)
     {
         final String traceId;
         final OriginateCallbackData callbackData;

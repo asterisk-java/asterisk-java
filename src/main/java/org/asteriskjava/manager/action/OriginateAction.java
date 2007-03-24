@@ -20,7 +20,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import org.asteriskjava.manager.event.AbstractOriginateEvent;
+import org.asteriskjava.manager.event.OriginateResponseEvent;
 
 
 /**
@@ -39,8 +39,7 @@ import org.asteriskjava.manager.event.AbstractOriginateEvent;
  * and OriginateFailureEvents. The action id of these events equals the action
  * id of this OriginateAction.
  * 
- * @see org.asteriskjava.manager.event.OriginateSuccessEvent
- * @see org.asteriskjava.manager.event.OriginateFailureEvent
+ * @see org.asteriskjava.manager.event.OriginateResponseEvent
  * @author srt
  * @version $Id$
  */
@@ -400,6 +399,6 @@ public class OriginateAction extends AbstractManagerAction
 
     public Class getActionCompleteEventClass()
     {
-        return AbstractOriginateEvent.class;
+        return OriginateResponseEvent.class;
     }
 }

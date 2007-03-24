@@ -17,14 +17,19 @@
 package org.asteriskjava.manager.event;
 
 /**
- * Abstract base class for events triggered in response to an OriginateAction.
+ * Response to an OriginateAction.
  * 
  * @see org.asteriskjava.manager.action.OriginateAction
  * @author srt
  * @version $Id$
  */
-public abstract class AbstractOriginateEvent extends ResponseEvent
+public class OriginateResponseEvent extends ResponseEvent
 {
+    /**
+     * Serial version identifier.
+     */
+    private static final long serialVersionUID = 910724860608259687L;
+    private String response;
     private String channel;
     private String context;
     private String exten;
@@ -36,9 +41,34 @@ public abstract class AbstractOriginateEvent extends ResponseEvent
     /**
      * @param source
      */
-    protected AbstractOriginateEvent(Object source)
+    protected OriginateResponseEvent(Object source)
     {
         super(source);
+    }
+
+    /**
+     * Returns the result of the corresponding Originate action.
+     * 
+     * @return "Success" or "Failure"
+     */
+    public String getResponse()
+    {
+        return response;
+    }
+
+    /**
+     * Sets the result of the corresponding Originate action.
+     * 
+     * @param response "Success" or "Failure"
+     */
+    public void setResponse(String response)
+    {
+        this.response = response;
+    }
+    
+    public boolean isSuccess()
+    {
+        return "Success".equalsIgnoreCase(response);
     }
 
     /**
@@ -102,7 +132,8 @@ public abstract class AbstractOriginateEvent extends ResponseEvent
     /**
      * Returns the unique id of the originated channel.
      * 
-     * @return the unique id of the originated channel or "&lt;null&gt;" if none is available.
+     * @return the unique id of the originated channel or "&lt;null&gt;" if none
+     *         is available.
      */
     public String getUniqueId()
     {
@@ -115,10 +146,12 @@ public abstract class AbstractOriginateEvent extends ResponseEvent
     }
 
     /**
-     * Returns the Caller*ID Number of the originated channel.<p>
+     * Returns the Caller*ID Number of the originated channel.
+     * <p>
      * Available sind Asterisk 1.4.
      * 
-     * @return the Caller*ID Number of the originated channel or "&lt;unknown&gt;" if none was set.
+     * @return the Caller*ID Number of the originated channel or
+     *         "&lt;unknown&gt;" if none was set.
      * @since 0.3
      */
     public String getCallerIdNum()
@@ -130,18 +163,23 @@ public abstract class AbstractOriginateEvent extends ResponseEvent
     {
         this.callerIdNum = callerId;
     }
-    
+
     // for backward compatibility only
-    public void setCallerId(String callerIdNum)
+    public void setCallerId(String callerId)
     {
-        this.callerIdNum = callerIdNum;
+        if (this.callerIdNum == null)
+        {
+            this.callerIdNum = callerId;
+        }
     }
 
     /**
-     * Returns the Caller*ID Name of the originated channel.<p>
+     * Returns the Caller*ID Name of the originated channel.
+     * <p>
      * Available sind Asterisk 1.4.
      * 
-     * @return the Caller*ID Name of the originated channel or "&lt;unknown&gt;" if none was set.
+     * @return the Caller*ID Name of the originated channel or "&lt;unknown&gt;"
+     *         if none was set.
      */
     public String getCallerIdName()
     {
