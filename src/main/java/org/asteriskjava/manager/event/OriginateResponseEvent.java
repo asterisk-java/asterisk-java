@@ -41,7 +41,7 @@ public class OriginateResponseEvent extends ResponseEvent
     /**
      * @param source
      */
-    protected OriginateResponseEvent(Object source)
+    public OriginateResponseEvent(Object source)
     {
         super(source);
     }
