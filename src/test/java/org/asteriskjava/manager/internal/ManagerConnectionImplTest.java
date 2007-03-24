@@ -27,6 +27,7 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.manager.AuthenticationFailedException;
 import org.asteriskjava.manager.ManagerConnectionState;
 import org.asteriskjava.manager.ManagerEventListener;
@@ -120,8 +121,7 @@ public class ManagerConnectionImplTest extends TestCase
                 mockWriter.challengeActionsSent);
         assertEquals("login action not sent 1 time", 1,
                 mockWriter.loginActionsSent);
-        // 1 other action sent to determine version
-        assertEquals("unexpected other actions sent", 1,
+        assertEquals("unexpected other actions sent", 0,
                 mockWriter.otherActionsSent);
 
         assertEquals("setSocket() not called 1 time", 1,
@@ -264,20 +264,16 @@ public class ManagerConnectionImplTest extends TestCase
         }
         catch (TimeoutException e)
         {
-            assertEquals("Timeout waiting for protocol identifier", e
-                    .getMessage());
+            assertEquals("Timeout waiting for protocol identifier", e.getMessage());
         }
 
         assertEquals("createSocket not called 1 time", 1, mc.createSocketCalls);
         assertEquals("createWriter not called 1 time", 1, mc.createWriterCalls);
         assertEquals("createReader not called 1 time", 1, mc.createReaderCalls);
 
-        assertEquals("unexpected challenge action sent", 0,
-                mockWriter.challengeActionsSent);
-        assertEquals("unexpected login action sent", 0,
-                mockWriter.loginActionsSent);
-        assertEquals("unexpected other actions sent", 0,
-                mockWriter.otherActionsSent);
+        assertEquals("unexpected challenge action sent", 0, mockWriter.challengeActionsSent);
+        assertEquals("unexpected login action sent", 0, mockWriter.loginActionsSent);
+        assertEquals("unexpected other actions sent", 0, mockWriter.otherActionsSent);
 
         assertEquals("setSocket() not called 1 time", 1,
                 mockReader.setSocketCalls);
@@ -317,15 +313,11 @@ public class ManagerConnectionImplTest extends TestCase
         assertEquals("createWriter not called 1 time", 1, mc.createWriterCalls);
         assertEquals("createReader not called 1 time", 1, mc.createReaderCalls);
 
-        assertEquals("challenge action not sent 1 time", 1,
-                mockWriter.challengeActionsSent);
-        assertEquals("unexpected login action sent", 0,
-                mockWriter.loginActionsSent);
-        assertEquals("unexpected other actions sent", 0,
-                mockWriter.otherActionsSent);
+        assertEquals("challenge action not sent 1 time", 1, mockWriter.challengeActionsSent);
+        assertEquals("unexpected login action sent", 0, mockWriter.loginActionsSent);
+        assertEquals("unexpected other actions sent", 0, mockWriter.otherActionsSent);
 
-        assertEquals("setSocket() not called 1 time", 1,
-                mockReader.setSocketCalls);
+        assertEquals("setSocket() not called 1 time", 1, mockReader.setSocketCalls);
         // Some time for the reader thread to be started. Otherwise run() might
         // not yet have been
         // called.
@@ -514,12 +506,9 @@ public class ManagerConnectionImplTest extends TestCase
         assertEquals("createWriter not called 1 time", 1, mc.createWriterCalls);
         assertEquals("createReader not called 1 time", 1, mc.createReaderCalls);
 
-        assertEquals("challenge action not sent 1 time", 1,
-                mockWriter.challengeActionsSent);
-        assertEquals("login action not sent 1 time", 1,
-                mockWriter.loginActionsSent);
-        assertEquals("unexpected other actions sent", 1,
-                mockWriter.otherActionsSent);
+        assertEquals("challenge action not sent 1 time", 1, mockWriter.challengeActionsSent);
+        assertEquals("login action not sent 1 time", 1, mockWriter.loginActionsSent);
+        assertEquals("unexpected other actions sent", 0, mockWriter.otherActionsSent);
 
         assertEquals("state is not CONNECTED", ManagerConnectionState.CONNECTED, mc.getState());
 
@@ -550,13 +539,9 @@ public class ManagerConnectionImplTest extends TestCase
         assertEquals("createWriter not called 1 time", 1, mc.createWriterCalls);
         assertEquals("createReader not called 1 time", 1, mc.createReaderCalls);
 
-        assertEquals("challenge action not sent 1 time", 1,
-                mockWriter.challengeActionsSent);
-        assertEquals("login action not sent 1 time", 1,
-                mockWriter.loginActionsSent);
-        // 1 other action sent to determine version
-        assertEquals("unexpected other actions sent", 1,
-                mockWriter.otherActionsSent);
+        assertEquals("challenge action not sent 1 time", 1, mockWriter.challengeActionsSent);
+        assertEquals("login action not sent 1 time", 1, mockWriter.loginActionsSent);
+        assertEquals("unexpected other actions sent", 0, mockWriter.otherActionsSent);
 
         assertEquals("state is not CONNECTED", ManagerConnectionState.CONNECTED, mc.getState());
 
@@ -589,13 +574,9 @@ public class ManagerConnectionImplTest extends TestCase
         assertEquals("createWriter not called 1 time", 1, mc.createWriterCalls);
         assertEquals("createReader not called 1 time", 1, mc.createReaderCalls);
 
-        assertEquals("challenge action not sent 1 time", 1,
-                mockWriter.challengeActionsSent);
-        assertEquals("login action not sent 1 time", 1,
-                mockWriter.loginActionsSent);
-        // 1 other action sent to determine version
-        assertEquals("unexpected other actions sent", 1,
-                mockWriter.otherActionsSent);
+        assertEquals("challenge action not sent 1 time", 1, mockWriter.challengeActionsSent);
+        assertEquals("login action not sent 1 time", 1, mockWriter.loginActionsSent);
+        assertEquals("unexpected other actions sent", 0, mockWriter.otherActionsSent);
 
         assertEquals("state is not CONNECTED", ManagerConnectionState.CONNECTED, mc.getState());
 
@@ -734,6 +715,11 @@ public class ManagerConnectionImplTest extends TestCase
                 throw new TimeoutException("Provoked timeout");
             }
             super.doLogin(timeout, events);
+        }
+        
+        protected AsteriskVersion determineVersion()
+        {
+            return null;
         }
     }
 }
