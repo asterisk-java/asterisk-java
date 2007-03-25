@@ -121,7 +121,7 @@ public abstract class AbstractAgentEvent extends ManagerEvent
     }
 
     /**
-     * @return the memberName
+     * @return the member name supplied for logging when the member is added
      */
     public String getMemberName()
     {
@@ -129,7 +129,7 @@ public abstract class AbstractAgentEvent extends ManagerEvent
     }
 
     /**
-     * @param memberName the memberName to set
+     * @param memberName the member name supplied for logging when the member is added
      */
     public void setMemberName(String memberName)
     {

@@ -46,6 +46,7 @@ public class QueueMemberEvent extends ResponseEvent
     private String queue;
     private String location;
     private String membership;
+    private String memberName;
     private Integer penalty;
     private Integer callsTaken;
     private Long lastCall;
@@ -281,5 +282,21 @@ public class QueueMemberEvent extends ResponseEvent
     public void setPaused(Boolean paused)
     {
         this.paused = paused;
+    }
+
+    /**
+     * @return the member name supplied for logging when the member is added
+     */
+    public String getMemberName()
+    {
+        return memberName;
+    }
+
+    /**
+     * @param memberName the member name supplied for logging when the member is added
+     */
+    public void setMemberName(String memberName)
+    {
+        this.memberName = memberName;
     }
 }
