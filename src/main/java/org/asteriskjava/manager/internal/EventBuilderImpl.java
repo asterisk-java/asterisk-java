@@ -70,6 +70,7 @@ import org.asteriskjava.manager.event.ParkedCallsCompleteEvent;
 import org.asteriskjava.manager.event.PeerEntryEvent;
 import org.asteriskjava.manager.event.PeerStatusEvent;
 import org.asteriskjava.manager.event.PeerlistCompleteEvent;
+import org.asteriskjava.manager.event.QueueCallerAbandonEvent;
 import org.asteriskjava.manager.event.QueueEntryEvent;
 import org.asteriskjava.manager.event.QueueMemberAddedEvent;
 import org.asteriskjava.manager.event.QueueMemberEvent;
@@ -165,6 +166,7 @@ class EventBuilderImpl implements EventBuilder
         registerEventClass(PeerEntryEvent.class);
         registerEventClass(PeerlistCompleteEvent.class);
         registerEventClass(PeerStatusEvent.class);
+        registerEventClass(QueueCallerAbandonEvent.class);
         registerEventClass(QueueEntryEvent.class);
         registerEventClass(QueueMemberAddedEvent.class);
         registerEventClass(QueueMemberEvent.class);
