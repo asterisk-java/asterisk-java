@@ -16,6 +16,9 @@
  */
 package org.asteriskjava.manager.event;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * A ChannelReloadEvent is when a channel driver is reloaded, either on startup
  * or by request.
@@ -25,10 +28,9 @@ package org.asteriskjava.manager.event;
  * reload' command was issued at the Manager interface, the CLI, or for another
  * reason.
  * <p>
- * @see org.asteriskjava.manager.event.ChannelReloadEvent#REASON_CHANNEL_CLI_RELOAD
- * @see org.asteriskjava.manager.event.ChannelReloadEvent#REASON_CHANNEL_MODULE_LOAD
- * @see org.asteriskjava.manager.event.ChannelReloadEvent#REASON_CHANNEL_MODULE_RELOAD
- * @see org.asteriskjava.manager.event.ChannelReloadEvent#REASON_MANAGER_RELOAD
+ * Available since Asterisk 1.4.
+ * <p>
+ * It is implemented in <code>channels/chan_sip.c</code>
  * 
  * @author martins
  */
@@ -40,19 +42,44 @@ public class ChannelReloadEvent extends ManagerEvent
     private static final long serialVersionUID = 548974088194720544L;
 
     /**
+     * The channel module has been loaded for the first time. 
+     */
+    public static final String REASON_LOAD = "LOAD";
+    
+    /**
+     * The channel module has been reloaded.
+     */
+    public static final String REASON_RELOAD = "RELOAD";
+
+    /**
+     * The channel module has been reloaded from the command line.
+     */
+    public static final String REASON_CLI_RELOAD = "CLIRELOAD";
+    
+    /**
+     * The channel module has been reloaded due to a manager action.
+     */
+    public static final String REASON_MANAGER_RELOAD = "MANAGERRELOAD";
+
+    private static final Pattern REASON_PATTERN = Pattern.compile("^([A-Z]+) \\((.*)\\)$");
+    
+    /**
      * The channel that got reloaded (i.e. SIP)
      */
     private String channel;
 
+    private String reloadReason;
+
     /**
      * The reason for the reload
      * 
-     * @see org.asteriskjava.manager.event.ChannelReloadEvent#REASON_CHANNEL_CLI_RELOAD
-     * @see org.asteriskjava.manager.event.ChannelReloadEvent#REASON_CHANNEL_MODULE_LOAD
-     * @see org.asteriskjava.manager.event.ChannelReloadEvent#REASON_CHANNEL_MODULE_RELOAD
+     * @see org.asteriskjava.manager.event.ChannelReloadEvent#REASON_CLI_RELOAD
+     * @see org.asteriskjava.manager.event.ChannelReloadEvent#REASON_LOAD
+     * @see org.asteriskjava.manager.event.ChannelReloadEvent#REASON_RELOAD
      * @see org.asteriskjava.manager.event.ChannelReloadEvent#REASON_MANAGER_RELOAD
      */
-    private String reloadReason;
+    private String reloadReasonCode;
+    private String reloadReasonDescription;
 
     /**
      * The number of registrations with other channels (e.g. registrations with
@@ -71,14 +98,6 @@ public class ChannelReloadEvent extends ManagerEvent
      * (e.g. sip user definitions)
      */
     private Integer userCount;
-
-    /*
-     * Possible reasons for the channel being reloaded
-     */
-    public static final String REASON_CHANNEL_MODULE_LOAD = "LOAD (Channel module load)";
-    public static final String REASON_CHANNEL_MODULE_RELOAD = "RELOAD (Channel module reload)";
-    public static final String REASON_CHANNEL_CLI_RELOAD = "CLIRELOAD (Channel module reload by CLI command)";
-    public static final String REASON_MANAGER_RELOAD = "MANAGERRELOAD (Channel module reload by manager)";
 
     /**
      * @param source
@@ -142,15 +161,16 @@ public class ChannelReloadEvent extends ManagerEvent
     {
         this.registryCount = registryCount;
     }
-
+    
     /**
-     * Returns the reason that this channel was reloaded
+     * Returns the reason that this channel was reloaded as received from Asterisk, for
+     * example "CLIRELOAD (Channel module reload by CLI command)".
+     * <p>
+     * Usually you don't want to use this method directly.  
      * 
-     * @see org.asteriskjava.manager.event.ChannelReloadEvent#REASON_CHANNEL_CLI_RELOAD
-     * @see org.asteriskjava.manager.event.ChannelReloadEvent#REASON_CHANNEL_MODULE_LOAD
-     * @see org.asteriskjava.manager.event.ChannelReloadEvent#REASON_CHANNEL_MODULE_RELOAD
-     * @see org.asteriskjava.manager.event.ChannelReloadEvent#REASON_MANAGER_RELOAD
-     * @return the reason for the reload
+     * @see #getReloadReasonCode()
+     * @see #getReloadReasonDescription()
+     * @return the reason for the reload as received from Asterisk.
      */
     public String getReloadReason()
     {
@@ -158,19 +178,61 @@ public class ChannelReloadEvent extends ManagerEvent
     }
 
     /**
-     * Sets the reason that this channel was reloaded
-     * 
-     * @see org.asteriskjava.manager.event.ChannelReloadEvent#REASON_CHANNEL_CLI_RELOAD
-     * @see org.asteriskjava.manager.event.ChannelReloadEvent#REASON_CHANNEL_MODULE_LOAD
-     * @see org.asteriskjava.manager.event.ChannelReloadEvent#REASON_CHANNEL_MODULE_RELOAD
-     * @see org.asteriskjava.manager.event.ChannelReloadEvent#REASON_MANAGER_RELOAD
+     * Sets the reason that this channel was reloaded, for
+     * example "CLIRELOAD (Channel module reload by CLI command)".
+     *
      * @param reloadReason the reason that this channel was reloaded
      */
     public void setReloadReason(String reloadReason)
     {
+        Matcher matcher;
+
         this.reloadReason = reloadReason;
+        if (reloadReason == null)
+        {
+            return;
+        }
+        
+        matcher = REASON_PATTERN.matcher(reloadReason);
+        if (matcher.matches())
+        {
+            reloadReasonCode = matcher.group(1);
+            reloadReasonDescription = matcher.group(2);
+        }
     }
 
+    /**
+     * Returns the reason that this channel was reloaded.<p>
+     * Only the code part of the reason is returned. This is one of
+     * <ul>
+     * <li>LOAD</li>
+     * <li>RELOAD</li>
+     * <li>CLIRELOAD</li>
+     * <li>MANAGERRELOAD</li>
+     * </ul>
+     * 
+     * @see org.asteriskjava.manager.event.ChannelReloadEvent#REASON_CLI_RELOAD
+     * @see org.asteriskjava.manager.event.ChannelReloadEvent#REASON_LOAD
+     * @see org.asteriskjava.manager.event.ChannelReloadEvent#REASON_RELOAD
+     * @see org.asteriskjava.manager.event.ChannelReloadEvent#REASON_MANAGER_RELOAD
+     * @return the code of the reason for the reload
+     */
+    public String getReloadReasonCode()
+    {
+        return reloadReasonCode;
+    }
+
+    /**
+     * Returns the reason that this channel was reloaded as a human readable descriptive 
+     * string, for example "Channel module reload by CLI command".
+     *
+     * @return the descriptive version of the reason for the reload.
+     */
+    public String getReloadReasonDescription()
+    {
+        return reloadReasonDescription;
+    }
+    
     /**
      * @return the number of users defined during the configuration of this
      *         channel (e.g. sip user definitions)
