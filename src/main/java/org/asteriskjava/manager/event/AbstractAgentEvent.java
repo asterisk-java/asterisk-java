@@ -121,7 +121,11 @@ public abstract class AbstractAgentEvent extends ManagerEvent
     }
 
     /**
-     * @return the member name supplied for logging when the member is added
+     * Returns the member name supplied for logging when the member is added.
+     * <p>
+     * Available since Asterisk 1.4.
+     * 
+     * @return the member name supplied for logging when the member is added.
      */
     public String getMemberName()
     {
