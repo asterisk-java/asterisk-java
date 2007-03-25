@@ -116,6 +116,7 @@ class EventBuilderImpl implements EventBuilder
         registerBuiltinEventClasses();
     }
 
+    @SuppressWarnings("deprecation")
     private void registerBuiltinEventClasses()
     {
         registerEventClass(AgentCallbackLoginEvent.class);
