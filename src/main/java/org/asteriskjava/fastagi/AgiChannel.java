@@ -33,6 +33,20 @@ import org.asteriskjava.fastagi.reply.AgiReply;
 public interface AgiChannel
 {
     /**
+     * Returns the name of the channel.
+     * 
+     * @return the name of the channel.
+     */
+    String getName();
+
+    /**
+     * Returns the unqiue id of the channel.
+     * 
+     * @return the unqiue id of the channel.
+     */
+    String getUniqueId();
+    
+    /**
      * Sends a command to asterisk and returns the corresponding reply.
      * 
      * @param command the command to send.

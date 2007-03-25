@@ -18,6 +18,7 @@ package org.asteriskjava.fastagi.internal;
 
 import org.asteriskjava.fastagi.AgiChannel;
 import org.asteriskjava.fastagi.AgiException;
+import org.asteriskjava.fastagi.AgiRequest;
 import org.asteriskjava.fastagi.InvalidCommandSyntaxException;
 import org.asteriskjava.fastagi.InvalidOrUnknownCommandException;
 import org.asteriskjava.fastagi.command.AgiCommand;
@@ -63,19 +64,32 @@ import org.asteriskjava.util.SocketConnectionFacade;
  */
 public class AgiChannelImpl implements AgiChannel
 {
+    private final AgiRequest request;
     private final AgiWriter agiWriter;
     private final AgiReader agiReader;
 
-    AgiChannelImpl(SocketConnectionFacade socket)
+    AgiChannelImpl(AgiRequest request, SocketConnectionFacade socket)
     {
+        this.request = request;
         this.agiWriter = new AgiWriterImpl(socket);
         this.agiReader = new AgiReaderImpl(socket);
     }
 
-    AgiChannelImpl(AgiWriter agiWriter, AgiReader agiReader)
+    AgiChannelImpl(AgiRequest request, AgiWriter agiWriter, AgiReader agiReader)
     {
+        this.request = request;
         this.agiWriter = agiWriter;
         this.agiReader = agiReader;
+    }
+
+    public String getName()
+    {
+        return request.getChannel();
+    }
+
+    public String getUniqueId()
+    {
+        return request.getUniqueId();
     }
 
     public synchronized AgiReply sendCommand(AgiCommand command) throws AgiException

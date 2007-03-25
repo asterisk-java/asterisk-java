@@ -40,7 +40,7 @@ public class AgiChannelImplTest extends TestCase
 
         this.agiWriter = createMock(AgiWriter.class);
         this.agiReader = createMock(AgiReader.class);
-        this.agiChannel = new AgiChannelImpl(agiWriter, agiReader);
+        this.agiChannel = new AgiChannelImpl(null, agiWriter, agiReader);
     }
 
     public void testSendCommand() throws Exception

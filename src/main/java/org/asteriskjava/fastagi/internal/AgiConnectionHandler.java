@@ -95,7 +95,7 @@ public class AgiConnectionHandler implements Runnable
             writer = createWriter();
 
             request = reader.readRequest();
-            channel = new AgiChannelImpl(writer, reader);
+            channel = new AgiChannelImpl(request, writer, reader);
 
             AgiConnectionHandler.channel.set(channel);
 
