@@ -234,7 +234,8 @@ public class ManagerReaderImpl implements ManagerReader
                 {
                     if (buffer.containsKey("event"))
                     {
-                        logger.debug("attempting to build event: " + buffer.get("event"));
+                        // TODO tracing
+                        //logger.debug("attempting to build event: " + buffer.get("event"));
                         ManagerEvent event = buildEvent(source, buffer);
                         if (event != null)
                         {
@@ -248,7 +249,8 @@ public class ManagerReaderImpl implements ManagerReader
                     else if (buffer.containsKey("response"))
                     {
                         ManagerResponse response = buildResponse(buffer);
-                        logger.debug("attempting to build response");
+                        // TODO tracing
+                        //logger.debug("attempting to build response");
                         if (response != null)
                         {
                             dispatcher.dispatchResponse(response);
@@ -278,7 +280,8 @@ public class ManagerReaderImpl implements ManagerReader
                         value = line.substring(delimiterIndex + 2);
 
                         buffer.put(name, value);
-                        logger.debug("Got name [" + name + "], value: [" + value + "]");
+                        // TODO tracing
+                        //logger.debug("Got name [" + name + "], value: [" + value + "]");
                     }
                 }
             }

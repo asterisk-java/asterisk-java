@@ -78,7 +78,7 @@ public class ManagerWriterImpl implements ManagerWriter
         socket.write(actionString);
         socket.flush();
 
-        logger.debug("Sent " + action.getAction() + " action with actionId '" + action.getActionId() + "':\n"
-                + actionString);
+        // TODO tracing
+        //logger.debug("Sent " + action.getAction() + " action with actionId '" + action.getActionId() + "':\n" + actionString);
     }
 }
