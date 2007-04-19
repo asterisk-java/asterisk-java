@@ -18,6 +18,7 @@ package org.asteriskjava.live;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.List;
 
 import org.asteriskjava.live.internal.AsteriskServerImpl;
 import org.asteriskjava.manager.DefaultManagerConnection;
@@ -230,6 +231,11 @@ public class DefaultAsteriskServer implements AsteriskServer
     public Collection<Voicemailbox> getVoicemailboxes() throws ManagerCommunicationException
     {
         return impl.getVoicemailboxes();
+    }
+
+    public List<String> executeCommand(String command) throws ManagerCommunicationException
+    {
+        return impl.executeCommand(command);
     }
 
     public void addAsteriskServerListener(AsteriskServerListener listener) throws ManagerCommunicationException

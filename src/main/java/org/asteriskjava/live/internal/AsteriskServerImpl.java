@@ -687,6 +687,21 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         return voicemailboxes;
     }
 
+    public List<String> executeCommand(String command) throws ManagerCommunicationException
+    {
+        final ManagerResponse response;
+
+        initializeIfNeeded();
+        response = sendAction(new CommandAction(SHOW_VOICEMAIL_USERS_COMMAND));
+        if (!(response instanceof CommandResponse))
+        {
+            throw new ManagerCommunicationException("Response to CommandAction(\"" + command
+                    + "\") was not a CommandResponse but " + response, null);
+        }
+
+        return ((CommandResponse) response).getResult();
+    }
+
     public void addAsteriskServerListener(AsteriskServerListener listener) throws ManagerCommunicationException
     {
         initializeIfNeeded();
