@@ -59,8 +59,7 @@ class ChannelManager
     private final Log logger = LogFactory.getLog(getClass());
 
     /**
-     * How long do we wait before we remove hung up channels from memory?
-     * (in milliseconds)
+     * How long we wait before we remove hung up channels from memory (in milliseconds).
      */
     private static final long REMOVAL_THRESHOLD = 15 * 60 * 1000L; // 15 minutes
 
@@ -73,6 +72,8 @@ class ChannelManager
 
     /**
      * Creates a new instance.
+     *
+     * @param server the server this channel manager belongs to.
      */
     ChannelManager(AsteriskServerImpl server)
     {
@@ -134,6 +135,9 @@ class ChannelManager
         }
     }
 
+    /**
+     * Removes channels that have been hung more than {@link #REMOVAL_THRESHOLD} milliseconds.
+     */
     private void removeOldChannels()
     {
         Iterator<AsteriskChannelImpl> i;
@@ -187,7 +191,7 @@ class ChannelManager
                 }
                 catch (Throwable t)
                 {
-                    logger.warn("Exception dispatching originate progress", t);
+                    logger.warn("Exception dispatching originate progress.", t);
                 }
             }
         }
@@ -218,8 +222,7 @@ class ChannelManager
             
             if (event.getSeconds() != null)
             {
-                dateOfCreation = new Date(DateUtil.getDate().getTime()
-                        - (event.getSeconds().intValue() * 1000));
+                dateOfCreation = new Date(DateUtil.getDate().getTime() - (event.getSeconds() * 1000L));
             }
             else
             {
@@ -274,6 +277,7 @@ class ChannelManager
 
     AsteriskChannelImpl getChannelImplByName(String name)
     {
+        Date dateOfCreation = null;
         AsteriskChannelImpl channel = null;
 
         if (name == null)
@@ -287,7 +291,12 @@ class ChannelManager
             {
                 if (tmp.getName() != null && tmp.getName().equals(name))
                 {
-                    channel = tmp;
+                    // return the most recent channel
+                    if (dateOfCreation == null || channel.getDateOfCreation().after(dateOfCreation))
+                    {
+                        channel = tmp;
+                        dateOfCreation = channel.getDateOfCreation();
+                    }
                 }
             }
         }

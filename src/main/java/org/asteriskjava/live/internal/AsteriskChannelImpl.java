@@ -129,13 +129,22 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
 
     /**
      * Creates a new Channel.
-     * 
+     *
+     * @param server server this channel belongs to.
      * @param name name of this channel, for example "SIP/1310-20da".
      * @param id unique id of this channel, for example "1099015093.165".
+     * @param dateOfCreation date this channel has been created.
+     * @throws NullPointerException if any of the parameters is null.
      */
     AsteriskChannelImpl(final AsteriskServerImpl server, final String name, final String id, final Date dateOfCreation)
+            throws NullPointerException
     {
         super(server);
+
+        if (server == null || name == null || id == null || dateOfCreation == null)
+        {
+            throw new NullPointerException("Parameters passed to AsteriskChannelImpl() must not be null.");
+        }
         this.name = name;
         this.id = id;
         this.dateOfCreation = dateOfCreation;
@@ -190,9 +199,9 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
     }
 
     /**
-     * Sets the caller id number of this channel.
+     * Sets the caller id of this channel.
      * 
-     * @param callerIdNumber the caller id number of this channel.
+     * @param callerId the caller id of this channel.
      */
     void setCallerId(final CallerId callerId)
     {

@@ -36,7 +36,7 @@ public class SipPeersAction extends AbstractManagerAction
             EventGeneratingAction
 {
     /**
-     * Serial version identifier
+     * Serial version identifier.
      */
     private static final long serialVersionUID = 921037572305993779L;
 
