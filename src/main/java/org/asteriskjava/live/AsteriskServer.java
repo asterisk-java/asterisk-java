@@ -356,9 +356,25 @@ public interface AsteriskServer
      */
     List<String> executeCliCommand(String command) throws ManagerCommunicationException;
 
+    /**
+     * Adds a listener to this AsteriskServer.
+     * <p/>
+     * If this server is not yet connected it will be implicitly connected.
+     *
+     * @param listener the listener to add.
+     * @throws ManagerCommunicationException if the server is not yet connected and the connection or initialization fails.
+     */
     void addAsteriskServerListener(AsteriskServerListener listener) throws ManagerCommunicationException;
 
+    /**
+     * Removes a listener from this Asterisk server.
+     *
+     * @param listener the listener to remove.
+     */
     void removeAsteriskServerListener(AsteriskServerListener listener);
 
+    /**
+     * Closes the connection to this server.
+     */
     void shutdown();
 }
