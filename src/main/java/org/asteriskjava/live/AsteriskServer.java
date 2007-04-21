@@ -354,7 +354,7 @@ public interface AsteriskServer
      * @see org.asteriskjava.manager.action.CommandAction
      * @since 0.3
      */
-    List<String> executeCommand(String command) throws ManagerCommunicationException;
+    List<String> executeCliCommand(String command) throws ManagerCommunicationException;
 
     void addAsteriskServerListener(AsteriskServerListener listener) throws ManagerCommunicationException;
 

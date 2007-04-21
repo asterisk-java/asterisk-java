@@ -448,9 +448,9 @@ public interface AsteriskChannel extends LiveObject
      *      c.startMonitoring(&quot;my-recording&quot;, &quot;wav&quot;, true);
      * </pre>
      * 
-     * Side note: 2wav2mp3 is a nice script by Dietmar Zlabinger to mix the two
+     * Side note: <tt>2wav2mp3</tt> is a nice script by Dietmar Zlabinger to mix the two
      * legs to a stero mp3 file, for details see
-     * {@linkplain http://www.voip-info.org/wiki/view/Monitor+stereo-example}.
+     * <a href="http://www.voip-info.org/wiki/view/Monitor+stereo-example">voip-info.org</a>.
      * 
      * @param filename the basename of the file(s) created in the monitor spool
      *            directory. If <code>null</code> the channel name (with
@@ -483,7 +483,6 @@ public interface AsteriskChannel extends LiveObject
      * 
      * @param filename the basename of the file(s) created in the monitor spool
      *            directory.
-     * @throws ManagerCommunicationException
      * @throws ManagerCommunicationException if the change monitor action cannot
      *             be sent to Asterisk.
      * @throws NoSuchChannelException if this channel had been hung up before

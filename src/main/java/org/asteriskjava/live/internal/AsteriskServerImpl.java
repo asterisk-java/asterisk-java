@@ -687,7 +687,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         return voicemailboxes;
     }
 
-    public List<String> executeCommand(String command) throws ManagerCommunicationException
+    public List<String> executeCliCommand(String command) throws ManagerCommunicationException
     {
         final ManagerResponse response;
 

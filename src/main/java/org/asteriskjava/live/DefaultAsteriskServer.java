@@ -233,9 +233,9 @@ public class DefaultAsteriskServer implements AsteriskServer
         return impl.getVoicemailboxes();
     }
 
-    public List<String> executeCommand(String command) throws ManagerCommunicationException
+    public List<String> executeCliCommand(String command) throws ManagerCommunicationException
     {
-        return impl.executeCommand(command);
+        return impl.executeCliCommand(command);
     }
 
     public void addAsteriskServerListener(AsteriskServerListener listener) throws ManagerCommunicationException
