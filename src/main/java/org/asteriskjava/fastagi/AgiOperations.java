@@ -104,7 +104,7 @@ public class AgiOperations
      * Plays music on hold from the given music on hold class.
      * 
      * @param musicOnHoldClass the music on hold class to play music from as
-     *            configures in Asterisk's <code><musiconhold.conf/code>.
+     *            configures in Asterisk's <code><musiconhold.conf</code>.
      */
     public void playMusicOnHold(String musicOnHoldClass) throws AgiException
     {
