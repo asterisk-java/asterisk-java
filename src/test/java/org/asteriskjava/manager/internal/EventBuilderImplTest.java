@@ -21,17 +21,7 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
-import org.asteriskjava.manager.event.AbstractChannelEvent;
-import org.asteriskjava.manager.event.CdrEvent;
-import org.asteriskjava.manager.event.HangupEvent;
-import org.asteriskjava.manager.event.LogChannelEvent;
-import org.asteriskjava.manager.event.ManagerEvent;
-import org.asteriskjava.manager.event.NewCallerIdEvent;
-import org.asteriskjava.manager.event.NewChannelEvent;
-import org.asteriskjava.manager.event.NewExtenEvent;
-import org.asteriskjava.manager.event.ResponseEvent;
-import org.asteriskjava.manager.event.ShutdownEvent;
-import org.asteriskjava.manager.event.StatusCompleteEvent;
+import org.asteriskjava.manager.event.*;
 
 /**
  * @author srt
@@ -388,5 +378,19 @@ public class EventBuilderImplTest extends TestCase
         assertNotNull(event);
         assertEquals("Timestamp property not set correctly", 1159310429.569108D, 
                 ((NewChannelEvent) event).getTimestamp());
+    }
+
+    public void testBuildEventWithLong()
+    {
+        Map<String, String> properties = new HashMap<String, String>();
+        ManagerEvent event;
+
+        properties.put("event", "MeetmeLeave");
+        properties.put("duration", "569108");
+        event = eventBuilder.buildEvent(this, properties);
+
+        assertNotNull(event);
+        assertEquals("Duration property not set correctly", new Long(569108),
+                ((MeetMeLeaveEvent) event).getDuration());
     }
 }

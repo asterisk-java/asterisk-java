@@ -91,7 +91,7 @@ public class MeetMeLeaveEvent extends AbstractMeetMeEvent
      * 
      * @return the duration in seconds the user spent in the conference.
      */
-    Long getDuration()
+    public Long getDuration()
     {
         return duration;
     }
@@ -101,7 +101,7 @@ public class MeetMeLeaveEvent extends AbstractMeetMeEvent
      * 
      * @param duration the duration in seconds the user spent in the conference.
      */
-    void setDuration(Long duration)
+    public void setDuration(Long duration)
     {
         this.duration = duration;
     }
