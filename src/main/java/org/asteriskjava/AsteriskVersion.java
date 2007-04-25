@@ -44,6 +44,8 @@ public class AsteriskVersion implements Comparable, Serializable
 
     /**
      * Represents the Asterisk 1.4 series.
+     *
+     * @since 0.3
      */
     public static final AsteriskVersion ASTERISK_1_4 = new AsteriskVersion(140,
             "Asterisk 1.4");

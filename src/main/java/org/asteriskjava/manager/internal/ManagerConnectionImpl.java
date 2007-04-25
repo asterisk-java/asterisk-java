@@ -1055,9 +1055,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         }
         else
         {
-            logger
-                    .error("Unable to retrieve internalActionId from response: " + "actionId '" + actionId + "':\n"
-                            + response);
+            logger.error("Unable to retrieve internalActionId from response: " + "actionId '" + actionId + "':\n" + response);
         }
 
         if (listener != null)
