@@ -43,6 +43,12 @@ public class AsteriskVersion implements Comparable, Serializable
             "Asterisk 1.2");
 
     /**
+     * Represents the Asterisk 1.4 series.
+     */
+    public static final AsteriskVersion ASTERISK_1_4 = new AsteriskVersion(140,
+            "Asterisk 1.4");
+
+    /**
      * Serial version identifier.
      */
     private static final long serialVersionUID = -5696160640576385797L;

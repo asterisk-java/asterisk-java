@@ -355,6 +355,10 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
      * even if the reconnection attempt threw an AuthenticationFailedException.
      * <p>
      * Default is <code>true</code>.
+     *
+     * @param keepAliveAfterAuthenticationFailure <code>true</code> to try reconnecting to ther asterisk serve
+     *                                            even if the reconnection attempt threw an AuthenticationFailedException,
+     *                                            <code>false</code> otherwise.
      */
     public void setKeepAliveAfterAuthenticationFailure(boolean keepAliveAfterAuthenticationFailure)
     {
@@ -457,6 +461,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
      *            send, "off" if not events should be sent or a combination of
      *            "system", "call" and "log" (separated by ',') to specify what
      *            kind of events should be sent.
+     * @throws IOException if there is an i/o problem.
      * @throws AuthenticationFailedException if username or password are
      *             incorrect and the login action returns an error or if the MD5
      *             hash cannot be computed. The connection is closed in this
@@ -595,16 +600,24 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 	        showVersionFilesResponse = sendAction(new CommandAction("show version files pbx.c"), defaultResponseTimeout * 2);
 	        if (showVersionFilesResponse instanceof CommandResponse)
 	        {
-	            List showVersionFilesResult;
+	            List<String> showVersionFilesResult;
 	
 	            showVersionFilesResult = ((CommandResponse) showVersionFilesResponse).getResult();
 	            if (showVersionFilesResult != null && showVersionFilesResult.size() > 0)
 	            {
 	                String line1;
 	
-	                line1 = (String) showVersionFilesResult.get(0);
+	                line1 = showVersionFilesResult.get(0);
                     if (line1 != null && line1.startsWith("File"))
                     {
+                        final String rawVersion;
+
+                        rawVersion = getRawVersion();
+                        if (rawVersion != null && rawVersion.startsWith("Asterisk 1.4"))
+                        {
+                            return AsteriskVersion.ASTERISK_1_4;
+                        }
+                    
                         return AsteriskVersion.ASTERISK_1_2;
                     }
                     else if (line1 != null && line1.contains("No such command"))
@@ -616,6 +629,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                         }
                         catch (Exception ex)
                         {
+                            // ingnore
                         }
                     }
                     else
@@ -628,6 +642,33 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         }
 
         return AsteriskVersion.ASTERISK_1_0;
+    }
+
+    protected String getRawVersion()
+    {
+        final ManagerResponse showVersionResponse;
+
+        try
+        {
+            showVersionResponse = sendAction(new CommandAction("show version"), defaultResponseTimeout * 2);
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
+
+        if (showVersionResponse instanceof CommandResponse)
+        {
+            final List<String> showVersionResult;
+            
+            showVersionResult = ((CommandResponse) showVersionResponse).getResult();
+            if (showVersionResult != null && showVersionResult.size() > 0)
+            {
+                return showVersionResult.get(0);
+            }
+        }
+
+        return null;
     }
 
     protected synchronized void connect() throws IOException
@@ -909,7 +950,8 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     /**
      * Creates a new unique internal action id based on the hash code of this
      * connection and a sequence.
-     * 
+     *
+     * @return a new internal action id
      * @see ManagerUtil#addInternalActionId(String, String)
      * @see ManagerUtil#getInternalActionId(String)
      * @see ManagerUtil#stripInternalActionId(String)
@@ -1287,10 +1329,10 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         StringBuffer sb;
 
         sb = new StringBuffer("ManagerConnection[");
-        sb.append("id='" + id + "',");
-        sb.append("hostname='" + hostname + "',");
-        sb.append("port=" + port + ",");
-        sb.append("systemHashcode=" + System.identityHashCode(this));
+        sb.append("id='").append(id).append("',");
+        sb.append("hostname='").append(hostname).append("',");
+        sb.append("port=").append(port).append(",");
+        sb.append("systemHashcode=").append(System.identityHashCode(this)).append("]");
 
         return sb.toString();
     }
@@ -1303,7 +1345,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     private class ResponseHandlerResult implements Serializable
     {
         /**
-         * Serializable version identifier
+         * Serializable version identifier.
          */
         private static final long serialVersionUID = 7831097958568769220L;
         private ManagerResponse response;
@@ -1330,10 +1372,10 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     private class DefaultSendActionCallback implements SendActionCallback, Serializable
     {
         /**
-         * Serializable version identifier
+         * Serializable version identifier.
          */
         private static final long serialVersionUID = 2926598671855316803L;
-        private ResponseHandlerResult result;
+        private final ResponseHandlerResult result;
 
         /**
          * Creates a new instance.
@@ -1363,7 +1405,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     private class ResponseEventHandler implements ManagerEventListener, SendActionCallback, Serializable
     {
         /**
-         * Serializable version identifier
+         * Serializable version identifier.
          */
         private static final long serialVersionUID = 2926598671855316803L;
         private final ResponseEventsImpl events;
@@ -1375,8 +1417,6 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
          * @param events the ResponseEventsImpl to store the events in
          * @param actionCompleteEventClass the type of event that indicates that
          *            all events have been received
-         * @param thread the thread to interrupt when the
-         *            actionCompleteEventClass has been received
          */
         public ResponseEventHandler(ResponseEventsImpl events, Class actionCompleteEventClass)
         {
