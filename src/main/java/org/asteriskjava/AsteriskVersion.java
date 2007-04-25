@@ -25,7 +25,7 @@ import java.io.Serializable;
  * @author srt
  * @version $Id$
  */
-public class AsteriskVersion implements Comparable, Serializable
+public class AsteriskVersion implements Comparable<AsteriskVersion>, Serializable
 {
     private final int version;
     private final String versionString;
@@ -81,11 +81,11 @@ public class AsteriskVersion implements Comparable, Serializable
         }
     }
 
-    public int compareTo(Object o)
+    public int compareTo(AsteriskVersion o)
     {
         int otherVersion;
 
-        otherVersion = ((AsteriskVersion) o).version;
+        otherVersion = o.version;
         if (version < otherVersion)
         {
             return -1;
@@ -98,6 +98,33 @@ public class AsteriskVersion implements Comparable, Serializable
         {
             return 0;
         }
+    }
+
+
+    public boolean equals(Object o)
+    {
+        if (this == o)
+        {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass())
+        {
+            return false;
+        }
+
+        AsteriskVersion that = (AsteriskVersion) o;
+
+        if (version != that.version)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    public int hashCode()
+    {
+        return version;
     }
 
     public String toString()
