@@ -1,5 +1,5 @@
 /*
- *  Copyright 2004-2006 Stefan Reuter
+ *  Copyright 2004-2006 Stefan Reuter and others
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -18,15 +18,18 @@ package org.asteriskjava.manager.internal;
 
 import java.lang.reflect.Method;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
+import java.util.HashSet;
 
 import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.manager.action.ManagerAction;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 import org.asteriskjava.util.ReflectionUtil;
-
-
+import org.asteriskjava.manager.action.UserEventAction;
+import org.asteriskjava.manager.event.UserEvent;
 
 /**
  * Default implementation of the ActionBuilder interface.
@@ -65,10 +68,8 @@ class ActionBuilderImpl implements ActionBuilder
     @SuppressWarnings("unchecked")
     public String buildAction(final ManagerAction action, final String internalActionId)
     {
-        StringBuffer sb;
-        Map<String, Method> getters;
+        StringBuffer sb = new StringBuffer();
 
-        sb = new StringBuffer();
         sb.append("action: ");
         sb.append(action.getAction());
         sb.append(LINE_SEPARATOR);
@@ -84,50 +85,30 @@ class ActionBuilderImpl implements ActionBuilder
             sb.append(action.getActionId());
             sb.append(LINE_SEPARATOR);
         }
-        
-        getters = ReflectionUtil.getGetters(action.getClass());
-        for (String name : getters.keySet())
+
+        /*
+         * When using the Reflection API to get all of the getters for building
+         * actions to send, we ignore some of the getters
+         */
+        Set<String> ignore = new HashSet<String>();
+        ignore.add("class");
+        ignore.add("action");
+        ignore.add("actionid");
+
+        // if this is a user event action, we need to grab the internal event,
+        // otherwise do below as normal
+        if (action instanceof UserEventAction)
         {
-            Method getter;
-            Object value;
+            UserEvent userEvent = ((UserEventAction) action).getUserEvent();
+            appendUserEvent(sb, userEvent);
 
-            if ("class".equals(name) || "action".equals(name) || "actionid".equals(name))
-            {
-                continue;
-            }
-
-            getter = getters.get(name);
-            try
-            {
-                value = getter.invoke(action, new Object[]{});
-            }
-            catch (Exception ex)
-            {
-                logger.error("Unable to retrieve property '" + name + "' of "
-                        + action.getClass(), ex);
-                continue;
-            }
-
-            if (value == null)
-            {
-                continue;
-            }
-            else if (value instanceof Class)
-            {
-                continue;
-            }
-            else if (value instanceof Map)
-            {
-                appendMap(sb, name, (Map) value);
-            }
-            else if (value instanceof String)
-            {
-                appendString(sb, name, (String) value);
-            }
-            else
-            {
-                appendString(sb, name, value.toString());
-            }
+            // eventually we may want to add more Map keys for events to ignore
+            // when appending
+            appendGetters(sb, userEvent, ignore);
+        }
+        else
+        {
+            appendGetters(sb, action, ignore);
         }
 
         sb.append(LINE_SEPARATOR);
@@ -208,5 +189,68 @@ class ActionBuilderImpl implements ActionBuilder
         sb.append(": ");
         sb.append(value);
         sb.append(LINE_SEPARATOR);
+    }
+
+    private void appendUserEvent(StringBuffer sb, UserEvent event)
+    {
+        Class clazz = event.getClass();
+
+        String className = clazz.getName();
+        String eventType = className.substring(className.lastIndexOf('.') + 1).toLowerCase(Locale.ENGLISH);
+
+        if (eventType.endsWith("event"))
+        {
+            eventType = eventType.substring(0, eventType.length() - "event".length());
+        }
+
+        appendString(sb, "UserEvent", eventType);
+    }
+
+    private void appendGetters(StringBuffer sb, Object action, Set<String> membersToIgnore)
+    {
+        Map<String, Method> getters = ReflectionUtil.getGetters(action.getClass());
+        for (String name : getters.keySet())
+        {
+            Method getter;
+            Object value;
+
+            if (membersToIgnore.contains(name))
+                continue;
+
+            getter = getters.get(name);
+            try
+            {
+                value = getter.invoke(action, new Object[]{});
+            }
+            catch (Exception ex)
+            {
+                logger.error("Unable to retrieve property '" + name + "' of " + action.getClass(), ex);
+                continue;
+            }
+
+            if (value == null)
+            {
+                continue;
+            }
+            else if (value instanceof Class)
+            {
+                continue;
+            }
+            else if (value instanceof Map)
+            {
+                // is this a place where reflection can make sure we can cast
+                // the map to <String,String>?
+                appendMap(sb, name, (Map) value);
+            }
+            else if (value instanceof String)
+            {
+                appendString(sb, name, (String) value);
+            }
+            else
+            {
+                appendString(sb, name, value.toString());
+            }
+        }
+
     }
 }

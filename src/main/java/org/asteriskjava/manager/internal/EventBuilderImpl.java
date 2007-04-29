@@ -366,10 +366,14 @@ class EventBuilderImpl implements EventBuilder
                 setter = setters.get(stripIllegalCharacters(name));
             }
 
-            if (setter == null)
+            // it seems silly to warn if it's a user event -- maybe it was intentional
+            if (setter == null && !(event instanceof UserEvent))
             {
                 logger.error("Unable to set property '" + name + "' to '" + attributes.get(name) + "' on "
                         + event.getClass().getName() + ": no setter");
+            }
+            
+            if(setter == null) {
                 continue;
             }
 

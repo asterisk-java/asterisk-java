@@ -25,6 +25,7 @@ import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.manager.action.AbstractManagerAction;
 import org.asteriskjava.manager.action.AgentsAction;
 import org.asteriskjava.manager.action.OriginateAction;
+import org.asteriskjava.manager.action.UserEventAction;
 
 public class ActionBuilderImplTest extends TestCase
 {
@@ -86,6 +87,31 @@ public class ActionBuilderImplTest extends TestCase
                 actual.indexOf("action: Agents\r\n") >= 0);
         assertTrue("Action contains actionCompleteEventClass property", actual
                 .indexOf("actioncompleteeventclass:") == -1);
+        assertTrue("Missing trailing CRNL CRNL", actual.endsWith("\r\n\r\n"));
+    }
+    
+    public void testBuildUserEventAction()
+    {
+        UserEventAction action;
+        action = new UserEventAction();
+        
+        MyUserEvent event;
+        event = new MyUserEvent(this);
+        action.setUserEvent(event);
+        
+        Map<String,String> mapMemberTest = new LinkedHashMap<String,String>();
+        mapMemberTest.put("Key1", "Value1");
+        mapMemberTest.put("Key2", "Value2");
+        mapMemberTest.put("Key3", "Value3");
+        
+        event.setStringMember("stringMemberValue");
+        event.setMapMember(mapMemberTest);
+        
+        String actual = actionBuilder.buildAction(action);
+        assertTrue("Action name missing", actual.indexOf("action: UserEvent\r\n") >= 0);
+        assertTrue("Event name missing", actual.indexOf("UserEvent: myuser\r\n") >= 0);
+        assertTrue("Regular member missing", actual.indexOf("stringmember: stringMemberValue\r\n") >= 0);
+        assertTrue("Map member missing", actual.indexOf("mapmember: Key1=Value1|Key2=Value2|Key3=Value3\r\n") >= 0);
         assertTrue("Missing trailing CRNL CRNL", actual.endsWith("\r\n\r\n"));
     }
 

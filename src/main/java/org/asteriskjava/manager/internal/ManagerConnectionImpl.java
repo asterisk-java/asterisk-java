@@ -63,6 +63,7 @@ import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 import org.asteriskjava.util.SocketConnectionFacade;
 import org.asteriskjava.util.internal.SocketConnectionFacadeImpl;
+import org.asteriskjava.manager.action.UserEventAction;
 
 /**
  * Default implemention of the ManagerConnection interface.
@@ -779,6 +780,11 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         synchronized (result)
         {
             sendAction(action, callbackHandler);
+            
+            // definitely return null for the response of user events
+            if(action instanceof UserEventAction)
+                return null;
+            
             // only wait if we did not yet receive the response.
             // Responses may be returned really fast.
             if (result.getResponse() == null)

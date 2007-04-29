@@ -16,14 +16,50 @@
  */
 package org.asteriskjava.manager.internal;
 
-import org.asteriskjava.manager.event.ManagerEvent;
+import org.asteriskjava.manager.event.UserEvent;
+import java.util.Map;
 
-public class MyUserEvent extends ManagerEvent
+public class MyUserEvent extends UserEvent
 {
     private static final long serialVersionUID = 3689913989471418169L;
 
+    private String stringMember;
+    private Map<String,String> mapMember;
+    
     public MyUserEvent(Object source)
     {
         super(source);
+    }
+
+    /**
+     * @return the mapMember
+     */
+    public Map<String, String> getMapMember()
+    {
+        return mapMember;
+    }
+
+    /**
+     * @param mapMember the mapMember to set
+     */
+    public void setMapMember(Map<String, String> mapMember)
+    {
+        this.mapMember = mapMember;
+    }
+
+    /**
+     * @return the stringMember
+     */
+    public String getStringMember()
+    {
+        return stringMember;
+    }
+
+    /**
+     * @param stringMember the stringMember to set
+     */
+    public void setStringMember(String stringMember)
+    {
+        this.stringMember = stringMember;
     }
 }
