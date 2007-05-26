@@ -121,7 +121,8 @@ public class DatabasePutCommand extends AbstractAgiCommand
         this.value = value;
     }
 
-    public String buildCommand()
+    @Override
+   public String buildCommand()
     {
         return "DATABASE PUT " + escapeAndQuote(family) + " "
                 + escapeAndQuote(key) + " " + escapeAndQuote(value);

@@ -59,7 +59,8 @@ public class MailboxStatusAction extends AbstractManagerAction
     /**
      * Returns the name of this action, i.e. "MailboxStatus".
      */
-    public String getAction()
+    @Override
+   public String getAction()
     {
         return "MailboxStatus";
     }

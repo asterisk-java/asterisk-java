@@ -68,7 +68,8 @@ public class OriginateAction extends AbstractManagerAction
     /**
      * Returns the name of this action, i.e. "Originate".
      */
-    public String getAction()
+    @Override
+   public String getAction()
     {
         return "Originate";
     }

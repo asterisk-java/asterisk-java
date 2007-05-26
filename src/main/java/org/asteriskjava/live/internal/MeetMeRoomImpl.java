@@ -115,7 +115,8 @@ class MeetMeRoomImpl extends AbstractLiveObject implements MeetMeRoom
         server.sendAction(new CommandAction(sb.toString()));
     }
 
-    public String toString()
+    @Override
+   public String toString()
     {
         StringBuffer sb;
         int systemHashcode;

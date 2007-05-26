@@ -53,7 +53,8 @@ public class HangupAction extends AbstractManagerAction
     /**
      * Returns the name of this action, i.e. "Hangup".
      */
-    public String getAction()
+    @Override
+   public String getAction()
     {
         return "Hangup";
     }

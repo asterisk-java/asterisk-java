@@ -50,7 +50,8 @@ public abstract class AbstractManagerAction implements ManagerAction
         this.actionId = actionId;
     }
 
-    public String toString()
+    @Override
+   public String toString()
     {
         StringBuffer sb;
         Map<String, Method> getters;

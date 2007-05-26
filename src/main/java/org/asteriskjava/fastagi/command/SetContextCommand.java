@@ -65,7 +65,8 @@ public class SetContextCommand extends AbstractAgiCommand
         this.context = context;
     }
 
-    public String buildCommand()
+    @Override
+   public String buildCommand()
     {
         return "SET CONTEXT " + escapeAndQuote(context);
     }

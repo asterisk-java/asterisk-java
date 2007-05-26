@@ -31,7 +31,8 @@ public class DefaultAgiServerTest extends TestCase
     private MockedServerSocketFacade serverSocket;
     private SocketConnectionFacade socket;
 
-    protected void setUp() throws Exception
+    @Override
+   protected void setUp() throws Exception
     {
         super.setUp();
 
@@ -39,7 +40,8 @@ public class DefaultAgiServerTest extends TestCase
         server = new MockedDefaultAgiServer();
     }
 
-    protected void tearDown() throws Exception
+    @Override
+   protected void tearDown() throws Exception
     {
         super.tearDown();
         server.shutdown();
@@ -85,7 +87,8 @@ public class DefaultAgiServerTest extends TestCase
 
     class MockedDefaultAgiServer extends DefaultAgiServer
     {
-        protected ServerSocketFacade createServerSocket()
+        @Override
+      protected ServerSocketFacade createServerSocket()
         {
             return serverSocket;
         }

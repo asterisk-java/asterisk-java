@@ -96,7 +96,8 @@ public class VerboseCommand extends AbstractAgiCommand
         this.level = level;
     }
 
-    public String buildCommand()
+    @Override
+   public String buildCommand()
     {
         return "VERBOSE " + escapeAndQuote(message) + " " + level;
     }

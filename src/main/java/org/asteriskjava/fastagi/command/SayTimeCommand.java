@@ -110,7 +110,8 @@ public class SayTimeCommand extends AbstractAgiCommand
         this.escapeDigits = escapeDigits;
     }
 
-    public String buildCommand()
+    @Override
+   public String buildCommand()
     {
         return "SAY TIME " + time + " " + escapeAndQuote(escapeDigits);
     }

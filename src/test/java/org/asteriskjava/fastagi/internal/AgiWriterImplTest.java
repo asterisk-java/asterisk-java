@@ -28,7 +28,8 @@ public class AgiWriterImplTest extends TestCase
     private AgiWriter agiWriter;
     private SocketConnectionFacade socket;
 
-    protected void setUp() throws Exception
+    @Override
+   protected void setUp() throws Exception
     {
         super.setUp();
         this.socket = createMock(SocketConnectionFacade.class);

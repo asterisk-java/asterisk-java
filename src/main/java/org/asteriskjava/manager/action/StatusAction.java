@@ -48,7 +48,8 @@ public class StatusAction extends AbstractManagerAction
     /**
      * Returns the name of this action, i.e. "Status".
      */
-    public String getAction()
+    @Override
+   public String getAction()
     {
         return "Status";
     }

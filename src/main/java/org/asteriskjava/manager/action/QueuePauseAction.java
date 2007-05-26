@@ -106,7 +106,8 @@ public class QueuePauseAction extends AbstractManagerAction
      * 
      * @return the name of this action.
      */
-    public String getAction()
+    @Override
+   public String getAction()
     {
         return "QueuePause";
     }

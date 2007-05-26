@@ -53,7 +53,8 @@ public class ZapDndOnAction extends AbstractManagerAction
     /**
      * Returns the name of this action, i.e. "ZapDNDOn".
      */
-    public String getAction()
+    @Override
+   public String getAction()
     {
         return "ZapDNDOn";
     }

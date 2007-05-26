@@ -126,7 +126,8 @@ public enum HangupCause
         return causes.get(code);
     }
 
-    public String toString()
+    @Override
+   public String toString()
     {
         if (name().startsWith("AST_CAUSE_"))
         {

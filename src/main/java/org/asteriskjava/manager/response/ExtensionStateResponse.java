@@ -71,7 +71,8 @@ public class ExtensionStateResponse extends ManagerResponse
         this.status = status;
     }
     
-    public String toString()
+    @Override
+   public String toString()
     {
         StringBuffer sb;
 

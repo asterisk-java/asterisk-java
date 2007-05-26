@@ -31,7 +31,8 @@ public class ActionBuilderImplTest extends TestCase
 {
     private ActionBuilder actionBuilder;
 
-    public void setUp()
+    @Override
+   public void setUp()
     {
         this.actionBuilder = new ActionBuilderImpl();
     }
@@ -211,7 +212,8 @@ public class ActionBuilderImplTest extends TestCase
         private Integer secondProperty;
         private String nonPublicProperty;
 
-        public String getAction()
+        @Override
+      public String getAction()
         {
             return "My";
         }

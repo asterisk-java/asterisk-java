@@ -133,7 +133,8 @@ public class RedirectAction extends AbstractManagerAction
     /**
      * Returns the name of this action, i.e. "Redirect".
      */
-    public String getAction()
+    @Override
+   public String getAction()
     {
         return "Redirect";
     }

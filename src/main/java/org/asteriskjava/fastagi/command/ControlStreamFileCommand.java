@@ -253,7 +253,8 @@ public class ControlStreamFileCommand extends AbstractAgiCommand
         this.pauseDigit = pauseDigit;
     }
 
-    public String buildCommand()
+    @Override
+   public String buildCommand()
     {
         StringBuffer sb;
 

@@ -42,7 +42,8 @@ public class UserEventAction extends AbstractManagerAction
     /**
      * Get the name of this action
      */
-    public String getAction()
+    @Override
+   public String getAction()
     {
         return "UserEvent";
     }

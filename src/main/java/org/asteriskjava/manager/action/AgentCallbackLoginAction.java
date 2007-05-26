@@ -83,7 +83,8 @@ public class AgentCallbackLoginAction extends AbstractManagerAction
      * 
      * @return the name of this action
      */
-    public String getAction()
+    @Override
+   public String getAction()
     {
         return "AgentCallbackLogin";
     }

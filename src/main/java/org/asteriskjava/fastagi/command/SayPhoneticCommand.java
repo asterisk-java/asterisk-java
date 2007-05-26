@@ -108,7 +108,8 @@ public class SayPhoneticCommand extends AbstractAgiCommand
         this.escapeDigits = escapeDigits;
     }
 
-    public String buildCommand()
+    @Override
+   public String buildCommand()
     {
         return "SAY PHONETIC " + escapeAndQuote(text) + " "
                 + escapeAndQuote(escapeDigits);

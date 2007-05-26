@@ -183,7 +183,8 @@ public class GetDataCommand extends AbstractAgiCommand
         this.maxDigits = maxDigits;
     }
 
-    public String buildCommand()
+    @Override
+   public String buildCommand()
     {
         if (maxDigits == DEFAULT_MAX_DIGITS)
         {

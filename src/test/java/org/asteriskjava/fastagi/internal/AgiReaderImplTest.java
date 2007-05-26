@@ -32,7 +32,8 @@ public class AgiReaderImplTest extends TestCase
     private AgiReader agiReader;
     private SocketConnectionFacade socket;
 
-    protected void setUp() throws Exception
+    @Override
+   protected void setUp() throws Exception
     {
         super.setUp();
         this.socket = createMock(SocketConnectionFacade.class);

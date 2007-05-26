@@ -49,7 +49,8 @@ public class MailboxCountAction extends AbstractManagerAction
     /**
      * Returns the name of this action, i.e. "MailboxCount".
      */
-    public String getAction()
+    @Override
+   public String getAction()
     {
         return "MailboxCount";
     }

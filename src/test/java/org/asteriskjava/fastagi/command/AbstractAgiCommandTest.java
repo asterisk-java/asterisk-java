@@ -69,7 +69,8 @@ public class AbstractAgiCommandTest extends TestCase
             this.s = s;
         }
 
-        public String buildCommand()
+        @Override
+      public String buildCommand()
         {
             return "MY " + escapeAndQuote(s);
         }

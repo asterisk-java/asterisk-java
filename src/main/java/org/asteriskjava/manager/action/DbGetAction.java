@@ -62,7 +62,8 @@ public class DbGetAction extends AbstractManagerAction
         this.key = key;
     }
 
-    public String getAction()
+    @Override
+   public String getAction()
     {
         return "DBGet";
     }

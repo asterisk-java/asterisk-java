@@ -47,7 +47,8 @@ public class ManagerConnectionImplTest extends TestCase
     protected ManagerReaderMock mockReader;
     protected MockedManagerConnectionImpl mc;
 
-    protected void setUp() throws Exception
+    @Override
+   protected void setUp() throws Exception
     {
         mockWriter = new ManagerWriterMock();
         mockWriter.setExpectedUsername("username");
@@ -662,12 +663,14 @@ public class ManagerConnectionImplTest extends TestCase
             this.throwIOExceptionOnFirstSocketCreate = b;
         }
 
-        public String getUsername()
+        @Override
+      public String getUsername()
         {
             return username;
         }
 
-        public String getPassword()
+        @Override
+      public String getPassword()
         {
             return password;
         }
@@ -717,7 +720,8 @@ public class ManagerConnectionImplTest extends TestCase
             super.doLogin(timeout, events);
         }
         
-        protected AsteriskVersion determineVersion()
+        @Override
+      protected AsteriskVersion determineVersion()
         {
             return null;
         }

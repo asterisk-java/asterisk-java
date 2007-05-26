@@ -92,7 +92,8 @@ public class SetVariableCommand extends AbstractAgiCommand
         this.value = value;
     }
 
-    public String buildCommand()
+    @Override
+   public String buildCommand()
     {
         return "SET VARIABLE " + escapeAndQuote(variable) + " "
                 + escapeAndQuote(value);

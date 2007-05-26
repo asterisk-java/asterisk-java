@@ -22,7 +22,8 @@ public class ClassNameMappingStrategyTest extends TestCase
 {
     private ClassNameMappingStrategy mappingStrategy;
 
-    protected void setUp() throws Exception
+    @Override
+   protected void setUp() throws Exception
     {
         super.setUp();
         this.mappingStrategy = new ClassNameMappingStrategy();
@@ -35,6 +36,7 @@ public class ClassNameMappingStrategyTest extends TestCase
         AgiRequest request;
 
         request = new SimpleAgiRequest() {
+            @Override
             public String getScript()
             {
                 return "org.asteriskjava.fastagi.HelloAgiScript";
@@ -59,6 +61,7 @@ public class ClassNameMappingStrategyTest extends TestCase
 
         mappingStrategy.setShareInstances(false);
         request = new SimpleAgiRequest() {
+            @Override
             public String getScript()
             {
                 return "org.asteriskjava.fastagi.HelloAgiScript";

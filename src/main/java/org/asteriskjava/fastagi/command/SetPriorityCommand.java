@@ -68,7 +68,8 @@ public class SetPriorityCommand extends AbstractAgiCommand
         this.priority = priority;
     }
 
-    public String buildCommand()
+    @Override
+   public String buildCommand()
     {
         return "SET PRIORITY " + escapeAndQuote(priority);
     }

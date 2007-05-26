@@ -67,7 +67,8 @@ public class ChannelStateHistoryEntry implements Serializable
         return state;
     }
 
-    public String toString()
+    @Override
+   public String toString()
     {
         final StringBuffer sb;
 

@@ -26,7 +26,8 @@ import org.asteriskjava.fastagi.internal.AgiRequestImpl;
 
 public class AgiRequestImplTest extends TestCase
 {
-    protected void setUp()
+    @Override
+   protected void setUp()
     {
     }
 

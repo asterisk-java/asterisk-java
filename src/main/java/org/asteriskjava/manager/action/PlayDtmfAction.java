@@ -58,7 +58,8 @@ public class PlayDtmfAction extends AbstractManagerAction
     /**
      * Returns the name of this action, i.e. "PlayDTMF".
      */
-    public String getAction()
+    @Override
+   public String getAction()
     {
         return "PlayDTMF";
     }

@@ -88,7 +88,8 @@ public class ChannelStatusCommand extends AbstractAgiCommand
         this.channel = channel;
     }
 
-    public String buildCommand()
+    @Override
+   public String buildCommand()
     {
         return "CHANNEL STATUS"
                 + (channel == null ? "" : " " + escapeAndQuote(channel));

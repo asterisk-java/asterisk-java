@@ -67,7 +67,8 @@ public class AbsoluteTimeoutAction extends AbstractManagerAction
     /**
      * Returns the name of this action, i.e. "AbsoluteTimeout".
      */
-    public String getAction()
+    @Override
+   public String getAction()
     {
         return "AbsoluteTimeout";
     }

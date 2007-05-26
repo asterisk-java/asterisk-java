@@ -79,7 +79,8 @@ public class QueueAddAction extends AbstractManagerAction
     /**
      * Returns the name of this action, i.e. "QueueAdd".
      */
-    public String getAction()
+    @Override
+   public String getAction()
     {
         return "QueueAdd";
     }

@@ -67,7 +67,8 @@ public class DialedChannelHistoryEntry implements Serializable
         return channel;
     }
 
-    public String toString()
+    @Override
+   public String toString()
     {
         final StringBuffer sb;
 

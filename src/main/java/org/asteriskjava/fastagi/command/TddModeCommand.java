@@ -68,7 +68,8 @@ public class TddModeCommand extends AbstractAgiCommand
         this.mode = mode;
     }
 
-    public String buildCommand()
+    @Override
+   public String buildCommand()
     {
         return "TDD MODE " + escapeAndQuote(mode);
     }

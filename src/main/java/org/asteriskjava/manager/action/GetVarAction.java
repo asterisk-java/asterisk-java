@@ -93,7 +93,8 @@ public class GetVarAction extends AbstractManagerAction
     /**
      * Returns the name of this action, i.e. "GetVar".
      */
-    public String getAction()
+    @Override
+   public String getAction()
     {
         return "GetVar";
     }

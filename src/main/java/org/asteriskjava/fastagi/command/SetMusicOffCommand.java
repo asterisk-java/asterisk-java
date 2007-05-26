@@ -38,7 +38,8 @@ public class SetMusicOffCommand extends AbstractAgiCommand
         super();
     }
 
-    public String buildCommand()
+    @Override
+   public String buildCommand()
     {
         return "SET MUSIC OFF";
     }

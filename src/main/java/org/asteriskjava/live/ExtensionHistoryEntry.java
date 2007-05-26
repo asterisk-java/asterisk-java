@@ -65,7 +65,8 @@ public class ExtensionHistoryEntry implements Serializable
         return extension;
     }
 
-    public String toString()
+    @Override
+   public String toString()
     {
         final StringBuffer sb;
 

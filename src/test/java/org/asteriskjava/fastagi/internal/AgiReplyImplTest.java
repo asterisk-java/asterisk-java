@@ -27,7 +27,8 @@ public class AgiReplyImplTest extends TestCase
 {
     private List<String> lines;
 
-    protected void setUp()
+    @Override
+   protected void setUp()
     {
         this.lines = new ArrayList<String>();
     }

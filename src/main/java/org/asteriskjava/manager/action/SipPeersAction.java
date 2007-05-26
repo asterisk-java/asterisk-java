@@ -48,7 +48,8 @@ public class SipPeersAction extends AbstractManagerAction
 
     }
 
-    public String getAction()
+    @Override
+   public String getAction()
     {
         return "SIPPeers";
     }

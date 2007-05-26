@@ -1328,7 +1328,8 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         this.readerThread = null;
     }
 
-    public String toString()
+    @Override
+   public String toString()
     {
         StringBuffer sb;
 

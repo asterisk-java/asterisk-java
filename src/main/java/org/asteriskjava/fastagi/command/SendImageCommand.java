@@ -69,7 +69,8 @@ public class SendImageCommand extends AbstractAgiCommand
         this.image = image;
     }
 
-    public String buildCommand()
+    @Override
+   public String buildCommand()
     {
         return "SEND IMAGE " + escapeAndQuote(image);
     }

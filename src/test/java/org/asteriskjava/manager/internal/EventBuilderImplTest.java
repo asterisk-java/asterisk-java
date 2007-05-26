@@ -31,7 +31,8 @@ public class EventBuilderImplTest extends TestCase
 {
     private EventBuilder eventBuilder;
 
-    public void setUp()
+    @Override
+   public void setUp()
     {
         this.eventBuilder = new EventBuilderImpl();
     }

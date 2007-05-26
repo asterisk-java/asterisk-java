@@ -27,7 +27,8 @@ public class ResourceBundleMappingStrategyTest extends TestCase
 {
     private ResourceBundleMappingStrategy mappingStrategy;
 
-    protected void setUp() throws Exception
+    @Override
+   protected void setUp() throws Exception
     {
         super.setUp();
         this.mappingStrategy = new ResourceBundleMappingStrategy();

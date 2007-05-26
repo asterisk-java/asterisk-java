@@ -70,7 +70,8 @@ public class CommandAction extends AbstractManagerAction
     /**
      * Returns the name of this action, i.e. "Command".
      */
-    public String getAction()
+    @Override
+   public String getAction()
     {
         return "Command";
     }

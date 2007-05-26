@@ -34,7 +34,8 @@ public class AgiChannelImplTest extends TestCase
     private AgiReader agiReader;
     private AgiChannel agiChannel;
 
-    protected void setUp() throws Exception
+    @Override
+   protected void setUp() throws Exception
     {
         super.setUp();
 

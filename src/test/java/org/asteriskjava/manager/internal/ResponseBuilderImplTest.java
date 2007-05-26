@@ -34,7 +34,8 @@ public class ResponseBuilderImplTest extends TestCase
     private ResponseBuilder responseBuilder;
     private Map<String, String> attributes;
 
-    public void setUp()
+    @Override
+   public void setUp()
     {
         this.responseBuilder = new ResponseBuilderImpl();
         this.attributes = new HashMap<String, String>();

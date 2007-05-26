@@ -60,7 +60,8 @@ public class SipShowPeerAction extends AbstractManagerAction
         this.peer = peer;
     }
 
-    public String getAction()
+    @Override
+   public String getAction()
     {
         return "SIPShowPeer";
     }

@@ -108,7 +108,8 @@ public class SayAlphaCommand extends AbstractAgiCommand
         this.escapeDigits = escapeDigits;
     }
 
-    public String buildCommand()
+    @Override
+   public String buildCommand()
     {
         return "SAY ALPHA " + escapeAndQuote(text) + " "
                 + escapeAndQuote(escapeDigits);

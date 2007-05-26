@@ -146,7 +146,8 @@ public class GetOptionCommand extends AbstractAgiCommand
         this.timeout = timeout;
     }
 
-    public String buildCommand()
+    @Override
+   public String buildCommand()
     {
         return "GET OPTION " + escapeAndQuote(file) + " "
                 + escapeAndQuote(escapeDigits)

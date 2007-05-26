@@ -109,7 +109,8 @@ public class SayDigitsCommand extends AbstractAgiCommand
         this.escapeDigits = escapeDigits;
     }
 
-    public String buildCommand()
+    @Override
+   public String buildCommand()
     {
         return "SAY DIGITS " + escapeAndQuote(digits) + " "
                 + escapeAndQuote(escapeDigits);

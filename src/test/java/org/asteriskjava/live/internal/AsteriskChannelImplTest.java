@@ -13,7 +13,8 @@ public class AsteriskChannelImplTest extends TestCase
     private AsteriskChannelImpl channel;
     private int numberOfChanges;
 
-    public void setUp()
+    @Override
+   public void setUp()
     {
         AsteriskServerImpl server = new AsteriskServerImpl();
         channel = new AsteriskChannelImpl(server, "SIP/1234", "0123456789.123", DateUtil.getDate());

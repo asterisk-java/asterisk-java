@@ -48,7 +48,8 @@ public class ParkedCallsAction extends AbstractManagerAction
     /**
      * Returns the name of this action, i.e. "ParkedCalls".
      */
-    public String getAction()
+    @Override
+   public String getAction()
     {
         return "ParkedCalls";
     }

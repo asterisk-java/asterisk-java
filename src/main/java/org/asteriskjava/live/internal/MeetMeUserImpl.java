@@ -153,7 +153,8 @@ class MeetMeUserImpl extends AbstractLiveObject implements MeetMeUser
         server.sendAction(new CommandAction(sb.toString()));
     }
     
-    public String toString()
+    @Override
+   public String toString()
     {
         StringBuffer sb;
         int systemHashcode;

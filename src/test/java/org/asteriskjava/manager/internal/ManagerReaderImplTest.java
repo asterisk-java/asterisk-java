@@ -44,7 +44,8 @@ public class ManagerReaderImplTest extends TestCase
     private SocketConnectionFacade socketConnectionFacade;
     private ManagerReader managerReader;
 
-    protected void setUp()
+    @Override
+   protected void setUp()
     {
         now = new Date();
         DateUtil.overrideCurrentDate(now);
@@ -54,7 +55,8 @@ public class ManagerReaderImplTest extends TestCase
         socketConnectionFacade = createMock(SocketConnectionFacade.class);
     }
 
-    protected void tearDown()
+    @Override
+   protected void tearDown()
     {
         DateUtil.overrideCurrentDate(null);
     }

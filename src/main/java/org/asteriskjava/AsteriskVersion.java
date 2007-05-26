@@ -101,7 +101,8 @@ public class AsteriskVersion implements Comparable<AsteriskVersion>, Serializabl
     }
 
 
-    public boolean equals(Object o)
+    @Override
+   public boolean equals(Object o)
     {
         if (this == o)
         {
@@ -122,12 +123,14 @@ public class AsteriskVersion implements Comparable<AsteriskVersion>, Serializabl
         return true;
     }
 
-    public int hashCode()
+    @Override
+   public int hashCode()
     {
         return version;
     }
 
-    public String toString()
+    @Override
+   public String toString()
     {
         return versionString;
     }

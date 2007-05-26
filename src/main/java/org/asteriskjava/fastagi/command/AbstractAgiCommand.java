@@ -56,7 +56,8 @@ public abstract class AbstractAgiCommand implements Serializable, AgiCommand
         return "\"" + tmp + "\""; // add quotes
     }
 
-    public String toString()
+    @Override
+   public String toString()
     {
         StringBuffer sb;
 

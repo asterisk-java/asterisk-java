@@ -27,7 +27,8 @@ public class ManagerWriterImplTest extends TestCase
 {
     private ManagerWriter managerWriter;
     
-    public void setUp()
+    @Override
+   public void setUp()
     {
         managerWriter = new ManagerWriterImpl();
     }
