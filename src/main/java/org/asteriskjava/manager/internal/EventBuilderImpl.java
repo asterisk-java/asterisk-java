@@ -286,7 +286,7 @@ class EventBuilderImpl implements EventBuilder
             eventType = eventType + userEventType;
         }
 
-        eventClass = (Class) registeredEventClasses.get(eventType);
+        eventClass = registeredEventClasses.get(eventType);
         if (eventClass == null)
         {
             logger.info("No event class registered for event type '" + eventType + "', attributes: " + attributes);
@@ -305,7 +305,7 @@ class EventBuilderImpl implements EventBuilder
 
         try
         {
-            event = (ManagerEvent) constructor.newInstance(new Object[]{source});
+            event = (ManagerEvent) constructor.newInstance(source);
         }
         catch (Exception ex)
         {
@@ -381,7 +381,7 @@ class EventBuilderImpl implements EventBuilder
 
             if (dataType == Boolean.class)
             {
-                value = new Boolean(AstUtil.isTrue((String) attributes.get(name)));
+                value = AstUtil.isTrue(attributes.get(name));
             }
             else if (dataType.isAssignableFrom(String.class))
             {
@@ -392,7 +392,7 @@ class EventBuilderImpl implements EventBuilder
                 try
                 {
                     Constructor constructor = dataType.getConstructor(new Class[]{String.class});
-                    value = constructor.newInstance(new Object[]{attributes.get(name)});
+                    value = constructor.newInstance(attributes.get(name));
                 }
                 catch (Exception e)
                 {
@@ -404,13 +404,12 @@ class EventBuilderImpl implements EventBuilder
 
             try
             {
-                setter.invoke(event, new Object[]{value});
+                setter.invoke(event, value);
             }
             catch (Exception e)
             {
                 logger.error("Unable to set property '" + name + "' to '" + attributes.get(name) + "' on "
                         + event.getClass().getName(), e);
-                continue;
             }
         }
     }
@@ -437,11 +436,11 @@ class EventBuilderImpl implements EventBuilder
             c = s.charAt(i);
             if (c >= '0' && c <= '9')
             {
-                continue;
+                // continue
             }
             else if (c >= 'a' && c <= 'z')
             {
-                continue;
+                // continue
             }
             else
             {
