@@ -388,3 +388,15 @@ public class HelloEvents implements ManagerEventListener
   A list of the other {{{apidocs/org/asteriskjava/manager/event/package-summary.html}Events}}
   povided by the Manager API is available in the
   {{{apidocs/index.html}javadocs}}.
+
+The Live API
+
+  The live API is built on top of the Manager API and provides additional abstraction.
+  Instead of directly using actions and events to interact with Asterisk you can use
+  active domain objects (live objects) that represent Asterisk concepts like a channel
+  or an extension.
+
+  To get started have a look at the {{{apidocs/org/asteriskjava/live/package-summary.html}live package}}
+  in the {{{apidocs/index.html}javadocs}}, especially the
+  {{{apidocs/org/asteriskjava/live/DefaultAsteriskServer.html}DefaultAsteriskServer}} which serves as an
+  entry point.
