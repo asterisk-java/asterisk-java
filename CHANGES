@@ -1,3 +1,18 @@
+Asterisk-Java 0.3
+    * [AJ-30] - Fixed version detection when restarting Asterisk
+    * [AJ-59] - Fixed incorrect class and method names when using JavaLoggingLog
+    * [AJ-60] - Fixed DefaultManagerConnection.sendEventGeneratingAction()
+                for Asterisk 1.4.1
+    * [AJ-50] - Finished support for Asterisk 1.4
+    * [AJ-54] - Fixed AsteriskQueue observer and Park events
+    * [AJ-55] - Added "videoSupport" and "realtimeDevice" to PeerEntryEvent
+    * [AJ-56] - Added "callerIdNum" to AbstractChannelEvent
+    * [AJ-57] - Added "memberName" to AbstractQueueMemberEvent
+    * [AJ-58] - Added support for OpenPBX
+    * [AJ-43] - Added support for GetConfig and UpdateConfig actions
+    * [AJ-62] - Added executeCliCommand() method to AsteriskServer
+    * [AJ-2] - Updated design doc and tutorial according to AGI changes
+
 Asterisk-Java 0.3-m2
 	* Added getManagerConnection() to AsteriskServer (AJ-41)
 	* Added timestamp property to ManagerEvent (AJ-35)

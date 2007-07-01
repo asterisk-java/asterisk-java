@@ -16,14 +16,6 @@
  */
 package org.asteriskjava.manager.internal;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
-import org.asteriskjava.manager.DefaultManagerConnection;
 import org.asteriskjava.manager.event.DisconnectEvent;
 import org.asteriskjava.manager.event.ManagerEvent;
 import org.asteriskjava.manager.event.ProtocolIdentifierReceivedEvent;
@@ -34,11 +26,13 @@ import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 import org.asteriskjava.util.SocketConnectionFacade;
 
+import java.io.IOException;
+import java.util.*;
 
 
 /**
  * Default implementation of the ManagerReader interface.
- * 
+ *
  * @author srt
  * @version $Id$
  */
@@ -85,7 +79,7 @@ public class ManagerReaderImpl implements ManagerReader
      * <code>true</code> if the main loop has finished.
      */
     private boolean dead = false;
-    
+
     /**
      * Exception that caused this reader to terminate if any.
      */
@@ -93,9 +87,9 @@ public class ManagerReaderImpl implements ManagerReader
 
     /**
      * Creates a new ManagerReaderImpl.
-     * 
+     *
      * @param dispatcher the dispatcher to use for dispatching events and responses.
-     * @param source the source to use when creating {@link ManagerEvent}s
+     * @param source     the source to use when creating {@link ManagerEvent}s
      */
     public ManagerReaderImpl(final Dispatcher dispatcher, Object source)
     {
@@ -108,7 +102,7 @@ public class ManagerReaderImpl implements ManagerReader
 
     /**
      * Sets the socket to use for reading from the asterisk server.
-     * 
+     *
      * @param socket the socket to use for reading from the asterisk server.
      */
     public void setSocket(final SocketConnectionFacade socket)
@@ -122,12 +116,12 @@ public class ManagerReaderImpl implements ManagerReader
     }
 
     /**
-     * Reads line by line from the asterisk server, sets the protocol identifier as soon as it is
+     * Reads line by line from the asterisk server, sets the protocol identifier (using a
+     * generated {@link org.asteriskjava.manager.event.ProtocolIdentifierReceivedEvent}) as soon as it is
      * received and dispatches the received events and responses via the associated dispatcher.
-     * 
-     * @see DefaultManagerConnection#dispatchEvent(ManagerEvent)
-     * @see DefaultManagerConnection#dispatchResponse(ManagerResponse)
-     * @see DefaultManagerConnection#setProtocolIdentifier(String)
+     *
+     * @see org.asteriskjava.manager.internal.Dispatcher#dispatchEvent(ManagerEvent)
+     * @see org.asteriskjava.manager.internal.Dispatcher#dispatchResponse(ManagerResponse)
      */
     public void run()
     {
@@ -161,7 +155,7 @@ public class ManagerReaderImpl implements ManagerReader
 
                         for (int crIdx = 0; crIdx < commandResult.size(); crIdx++)
                         {
-                            String[] crNVPair = ((String) commandResult.get(crIdx)).split(" *: *", 2);
+                            String[] crNVPair = commandResult.get(crIdx).split(" *: *", 2);
 
                             if (crNVPair[0].equalsIgnoreCase("ActionID"))
                             {
@@ -178,7 +172,7 @@ public class ManagerReaderImpl implements ManagerReader
                                 // Remove the command response nvpair from the 
                                 // command result array and decrement index so we
                                 // don't skip the "new" current line
-                                commandResult.remove(crIdx--);                            	
+                                commandResult.remove(crIdx--);
                             }
                             else
                             {
@@ -254,7 +248,7 @@ public class ManagerReaderImpl implements ManagerReader
                         if (response != null)
                         {
                             dispatcher.dispatchResponse(response);
-                        } 
+                        }
                     }
                     else
                     {
@@ -308,7 +302,7 @@ public class ManagerReaderImpl implements ManagerReader
     {
         this.die = true;
     }
-    
+
     public boolean isDead()
     {
         return dead;
