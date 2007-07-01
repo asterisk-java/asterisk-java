@@ -20,16 +20,16 @@ the following Open Source projects:
     * Asterisk-JTAPI
       JTAPI implementation for Asterisk.
       http://asterisk-jtapi.sf.net/
-	* Asterisk-IM
-	  A plugin for the Openfire XMPP (jabber) server. It provides
-	  integrated presence between your IM client and phone, notification 
-	  of incoming calls by IM and originate calls from supported IM 
-	  clients.
-	  http://www.igniterealtime.org/projects/openfire/
-	* Asterisk Desktop Manager (ADM)
-	  A desktop application that will allow for automatic on-call volume 
-	  reduction, one click dial from clipboard, integrated phonebook
-	  and more.
-	  http://adm.hamnett.org/
+    * Asterisk-IM
+      A plugin for the Openfire XMPP (jabber) server. It provides
+      integrated presence between your IM client and phone, notification
+      of incoming calls by IM and originate calls from supported IM
+      clients.
+      http://www.igniterealtime.org/projects/openfire/
+    * Asterisk Desktop Manager (ADM)
+      A desktop application that will allow for automatic on-call volume
+      reduction, one click dial from clipboard, integrated phonebook
+      and more.
+      http://adm.hamnett.org/
 
 Asterisk-Java is available under Apache 2.0 license at http://asterisk-java.org
