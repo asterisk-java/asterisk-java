@@ -21,17 +21,17 @@ package org.asteriskjava.manager.event;
  * as a client at another SIP or IAX server.<p>
  * This event is implemented in <code>channels/chan_iax2.c</code> and
  * <code>channels/chan_sip.c</code>
- * 
+ *
  * @author srt
  * @version $Id$
  */
 public class RegistryEvent extends ManagerEvent
 {
     /**
-     * Serializable version identifier
+     * Serializable version identifier.
      */
-    private static final long serialVersionUID = 6243135032555863775L;
-    
+    private static final long serialVersionUID = 0L;
+
     public static final String STATUS_REGISTERED = "Registered";
     public static final String STATUS_UNREGISTERED = "Registered";
     public static final String STATUS_REQUEST_SENT = "Request Sent";
@@ -40,8 +40,8 @@ public class RegistryEvent extends ManagerEvent
     public static final String STATUS_TIMEOUT = "Timeout";
     public static final String STATUS_NO_AUTHENTICATION = "No Authentication";
     public static final String STATUS_UNREACHABLE = "Unreachable";
-    
-    private String channelDriver;
+
+    private String channelType;
     private String domain;
     private String username;
     private String status;
@@ -58,51 +58,80 @@ public class RegistryEvent extends ManagerEvent
     /**
      * Returns the type of channel that is registered, that is "IAX2" for an IAX2
      * channel or "SIP" for a SIP channel.
-     * 
-     * @since 0.3
+     *
+     * @return the type of channel that is registered.
+     * @since 1.0.0
      */
-    public String getChannelDriver()
+    public String getChannelType()
     {
-        return channelDriver;
+        return channelType;
     }
 
     /**
      * Sets the type of channel that is registered.
-     * 
-     * @since 0.3
+     *
+     * @param channelType the type of channel that is registered.
+     * @since 1.0.0
      */
-    public void setChannelDriver(String channelDriver)
+    public void setChannelType(String channelType)
     {
-        this.channelDriver = channelDriver;
+        this.channelType = channelType;
     }
 
     /**
      * Returns the type of channel that is registered, that is "IAX2" for an IAX2
      * channel or "SIP" for a SIP channel.
-     * 
+     *
+     * @see #getChannelType()
+     * @since 0.3
      * @deprecated
-     * @see #getChannelDriver()
      */
-    public String getChannel()
+    public String getChannelDriver()
     {
-        return channelDriver;
+        return channelType;
     }
 
     /**
      * Sets the type of channel that is registered.
-     * 
+     *
+     * @see #setChannelType(String)
+     * @since 0.3
      * @deprecated
-     * @see #setChannelDriver(String)
+     */
+    public void setChannelDriver(String channelDriver)
+    {
+        this.channelType = channelDriver;
+    }
+
+    /**
+     * Returns the type of channel that is registered, that is "IAX2" for an IAX2
+     * channel or "SIP" for a SIP channel.
+     *
+     * @see #getChannelType()
+     * @deprecated
+     */
+    public String getChannel()
+    {
+        return channelType;
+    }
+
+    /**
+     * Sets the type of channel that is registered.
+     *
+     * @see #setChannelType(String)
+     * @deprecated
      */
     public void setChannel(String channel)
     {
-        this.channelDriver = channel;
+        this.channelType = channel;
     }
 
     /**
      * Returns the domain or host name of the SIP or IAX2 server.<p>
      * This is the host part used in the <code>register</code> lines in
      * <code>iax.conf</code> and <code>sip.conf</code>.
+     *
+     * @return the domain or host name of the SIP or IAX2 server.
      */
     public String getDomain()
     {
@@ -111,6 +140,8 @@ public class RegistryEvent extends ManagerEvent
 
     /**
      * Sets the domain or host name of the SIP or IAX2 server.
+     *
+     * @param domain the domain or host name of the SIP or IAX2 server.
      */
     public void setDomain(String domain)
     {
@@ -121,6 +152,8 @@ public class RegistryEvent extends ManagerEvent
      * Returns the username used for registration.<p>
      * SIP send the username in case of a registration timeout, IAX2 in case of
      * a registration failure. Otherwise the username is <code>null</code>.
+     *
+     * @return the username used for registration.
      */
     public String getUsername()
     {
@@ -129,6 +162,8 @@ public class RegistryEvent extends ManagerEvent
 
     /**
      * Sets the username used for registration.
+     *
+     * @param username the username used for registration.
      */
     public void setUsername(String username)
     {
@@ -137,7 +172,8 @@ public class RegistryEvent extends ManagerEvent
 
     /**
      * Sets the username used for registration.
-     * 
+     *
+     * @see #setUsername(String)
      * @deprecated Please do not use this method it is a workaround for Asterisk
      *             1.0.x servers. See Asterisk bug 4916.
      */
@@ -165,6 +201,8 @@ public class RegistryEvent extends ManagerEvent
      * <li>Rejected</li>
      * </ul>
      * Successful IAX2 registrations do not use the this property at all.
+     *
+     * @return the registration state.
      */
     public String getStatus()
     {
@@ -173,6 +211,8 @@ public class RegistryEvent extends ManagerEvent
 
     /**
      * Sets the registration state.
+     *
+     * @param status the registration state.
      */
     public void setStatus(String status)
     {
@@ -181,7 +221,7 @@ public class RegistryEvent extends ManagerEvent
 
     /**
      * Returns the cause of a rejected registration.
-     * 
+     *
      * @return the cause of a rejected registration or "&lt;unknown&gt;" if the
      *         cause is unknown.
      * @since 0.2
@@ -193,7 +233,7 @@ public class RegistryEvent extends ManagerEvent
 
     /**
      * Sets the cause of a rejected registration.
-     * 
+     *
      * @param cause the cause of a rejected registration.
      * @since 0.2
      */
