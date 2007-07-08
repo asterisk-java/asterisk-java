@@ -136,11 +136,13 @@ class QueueManager
         AsteriskQueueImpl queue;
         final String name;
         final Integer max;
+        final String strategy;
         final Integer serviceLevel;
         final Integer weight;
 
         name = event.getQueue();
         max = event.getMax();
+        strategy = event.getStrategy();
         serviceLevel = event.getServiceLevel();
         weight = event.getServiceLevel();
 
@@ -148,7 +150,7 @@ class QueueManager
 
         if (queue == null)
         {
-            queue = new AsteriskQueueImpl(server, name, max, serviceLevel, weight);
+            queue = new AsteriskQueueImpl(server, name, max, strategy, serviceLevel, weight);
             logger.info("Adding new queue " + queue);
             addQueue(queue);
         }

@@ -46,6 +46,24 @@ public interface AsteriskQueue
     Integer getMax();
 
     /**
+     * Returns the strategy used for this queue.<p>
+     * Possible values are:<p>
+     * <ul>
+     * <li>ringall</li>
+     * <li>roundrobin</li>
+     * <li>leastrecent</li>
+     * <li>fewestcalls</li>
+     * <li>random</li>
+     * <li>rrmemory</li>
+     * </ul>
+     * Available since Asterisk 1.6
+     *
+     * @return the strategy used for this queue.
+     * @since 1.0.0
+     */
+    String getStrategy();
+
+    /**
      * Returns the service level (in seconds) as defined by the
      * <code>servicelevel</code> setting in <code>queues.conf</code>.
      * 

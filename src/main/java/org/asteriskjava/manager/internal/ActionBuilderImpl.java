@@ -220,7 +220,7 @@ class ActionBuilderImpl implements ActionBuilder
             getter = getters.get(name);
             try
             {
-                value = getter.invoke(action, new Object[]{});
+                value = getter.invoke(action);
             }
             catch (Exception ex)
             {
@@ -230,11 +230,11 @@ class ActionBuilderImpl implements ActionBuilder
 
             if (value == null)
             {
-                continue;
+                // continue
             }
             else if (value instanceof Class)
             {
-                continue;
+                // continue
             }
             else if (value instanceof Map)
             {

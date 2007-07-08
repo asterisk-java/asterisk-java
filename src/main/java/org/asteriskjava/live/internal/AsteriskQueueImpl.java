@@ -36,12 +36,13 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
 	private final Log logger = LogFactory.getLog(this.getClass());
     private final String name;
     private Integer max;
+    private String strategy;
     private Integer serviceLevel;
     private Integer weight;
     private final ArrayList<AsteriskChannel> entries;
     private final List<AsteriskQueueListener> listeners;
 
-    AsteriskQueueImpl(AsteriskServerImpl server, String name, Integer max, Integer serviceLevel, Integer weight)
+    AsteriskQueueImpl(AsteriskServerImpl server, String name, Integer max, String strategy, Integer serviceLevel, Integer weight)
     {
         super(server);
         this.name = name;
@@ -60,6 +61,11 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
     public Integer getMax()
     {
         return max;
+    }
+
+    public String getStrategy()
+    {
+        return strategy;
     }
 
     void setMax(Integer max)
