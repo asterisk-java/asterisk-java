@@ -20,20 +20,20 @@ package org.asteriskjava.manager.event;
  * A QueueParamsEvent is triggered in response to a QueueStatusAction and contains the parameters of
  * a queue.<p>
  * It is implemented in <code>apps/app_queue.c</code>
- * 
- * @see org.asteriskjava.manager.action.QueueStatusAction
- * 
+ *
  * @author srt
  * @version $Id$
+ * @see org.asteriskjava.manager.action.QueueStatusAction
  */
 public class QueueParamsEvent extends ResponseEvent
 {
     /**
-     * Serializable version identifier
+     * Serializable version identifier.
      */
     private static final long serialVersionUID = -170511596914604717L;
     private String queue;
     private Integer max;
+    private String strategy;
     private Integer calls;
     private Integer holdtime;
     private Integer completed;
@@ -42,9 +42,6 @@ public class QueueParamsEvent extends ResponseEvent
     private Double serviceLevelPerf;
     private Integer weight;
 
-    /**
-     * @param source
-     */
     public QueueParamsEvent(Object source)
     {
         super(source);
@@ -52,6 +49,8 @@ public class QueueParamsEvent extends ResponseEvent
 
     /**
      * Returns the name of the queue.
+     *
+     * @return the name of the queue.
      */
     public String getQueue()
     {
@@ -60,6 +59,8 @@ public class QueueParamsEvent extends ResponseEvent
 
     /**
      * Sets the name of the queue.
+     *
+     * @param queue the name of the queue.
      */
     public void setQueue(String queue)
     {
@@ -69,6 +70,8 @@ public class QueueParamsEvent extends ResponseEvent
     /**
      * Returns the maximum number of people waiting in the queue or 0 for unlimited.<p>
      * This corresponds to the <code>maxlen</code> setting in <code>queues.conf</code>.
+     *
+     * @return the maximum number of people waiting in the queue or 0 for unlimited.
      */
     public Integer getMax()
     {
@@ -77,6 +80,8 @@ public class QueueParamsEvent extends ResponseEvent
 
     /**
      * Sets the maximum number of people waiting in the queue.
+     *
+     * @param max the maximum number of people waiting in the queue or 0 for unlimited.
      */
     public void setMax(Integer max)
     {
@@ -84,7 +89,41 @@ public class QueueParamsEvent extends ResponseEvent
     }
 
     /**
+     * Returns the strategy used for this queue.<p>
+     * Possible values are:<p>
+     * <ul>
+     * <li>ringall</li>
+     * <li>roundrobin</li>
+     * <li>leastrecent</li>
+     * <li>fewestcalls</li>
+     * <li>random</li>
+     * <li>rrmemory</li>
+     * </ul>
+     * Available since Asterisk 1.6
+     *
+     * @return the strategy used for this queue.
+     * @since 1.0.0
+     */
+    public String getStrategy()
+    {
+        return strategy;
+    }
+
+    /**
+     * Sets the strategy used for this queue.
+     *
+     * @param strategy the strategy used for this queue.
+     * @since 1.0.0
+     */
+    public void setStrategy(String strategy)
+    {
+        this.strategy = strategy;
+    }
+
+    /**
      * Returns the number of calls currently waiting in the queue.
+     *
+     * @return the number of calls currently waiting in the queue.
      */
     public Integer getCalls()
     {
@@ -93,6 +132,8 @@ public class QueueParamsEvent extends ResponseEvent
 
     /**
      * Sets the number of calls currently waiting in the queue.
+     *
+     * @param calls the number of calls currently waiting in the queue.
      */
     public void setCalls(Integer calls)
     {
@@ -101,6 +142,8 @@ public class QueueParamsEvent extends ResponseEvent
 
     /**
      * Returns the current average holdtime for this queue (in seconds).
+     *
+     * @return the current average holdtime for this queue (in seconds).
      */
     public Integer getHoldtime()
     {
@@ -109,6 +152,8 @@ public class QueueParamsEvent extends ResponseEvent
 
     /**
      * Sets the current average holdtime for this queue.
+     *
+     * @param holdtime the current average holdtime for this queue (in seconds).
      */
     public void setHoldtime(Integer holdtime)
     {
@@ -117,6 +162,8 @@ public class QueueParamsEvent extends ResponseEvent
 
     /**
      * Returns the number of completed calls.
+     *
+     * @return the number of completed calls.
      */
     public Integer getCompleted()
     {
@@ -125,6 +172,8 @@ public class QueueParamsEvent extends ResponseEvent
 
     /**
      * Sets the number of completed calls.
+     *
+     * @param complete the number of completed calls.
      */
     public void setCompleted(Integer complete)
     {
@@ -133,6 +182,8 @@ public class QueueParamsEvent extends ResponseEvent
 
     /**
      * Returns the number of abandoned calls.
+     *
+     * @return the number of abandoned calls.
      */
     public Integer getAbandoned()
     {
@@ -141,6 +192,8 @@ public class QueueParamsEvent extends ResponseEvent
 
     /**
      * Sets the number of abandoned calls.
+     *
+     * @param abandoned the number of abandoned calls.
      */
     public void setAbandoned(Integer abandoned)
     {
@@ -150,6 +203,8 @@ public class QueueParamsEvent extends ResponseEvent
     /**
      * Returns the service level (in seconds) as defined by the <code>servicelevel</code> setting
      * in <code>queues.conf</code>.
+     *
+     * @return the service level (in seconds).
      */
     public Integer getServiceLevel()
     {
@@ -158,6 +213,8 @@ public class QueueParamsEvent extends ResponseEvent
 
     /**
      * Sets the service level.
+     *
+     * @param serviceLevel the service level (in seconds).
      */
     public void setServiceLevel(Integer serviceLevel)
     {
@@ -167,6 +224,9 @@ public class QueueParamsEvent extends ResponseEvent
     /**
      * Returns the ratio of calls answered within the specified service level per total completed
      * calls (in percent).
+     *
+     * @return the ratio of calls answered within the specified service level per total completed
+     *         calls (in percent).
      */
     public Double getServiceLevelPerf()
     {
@@ -176,6 +236,9 @@ public class QueueParamsEvent extends ResponseEvent
     /**
      * Sets the ratio of calls answered within the specified service level per total completed
      * calls.
+     *
+     * @param serviceLevelPerf the ratio of calls answered within the specified service level per total completed
+     *                         calls (in percent).
      */
     public void setServiceLevelPerf(Double serviceLevelPerf)
     {
@@ -184,13 +247,13 @@ public class QueueParamsEvent extends ResponseEvent
 
     /**
      * Returns the weight of this queue.<p>
-     * A queue can be assigned a 'weight' to ensure calls waiting in a 
-     * higher priority queue will deliver its calls first. Only delays 
-     * the lower weight queue's call if the member is also in the 
+     * A queue can be assigned a 'weight' to ensure calls waiting in a
+     * higher priority queue will deliver its calls first. Only delays
+     * the lower weight queue's call if the member is also in the
      * higher weight queue.<p>
      * Available since Asterisk 1.2
-     * 
-     * @return the weight of this queue or <code>null</code> if not 
+     *
+     * @return the weight of this queue or <code>null</code> if not
      *         supported by your version of Asterisk
      * @since 0.2
      */
@@ -201,7 +264,7 @@ public class QueueParamsEvent extends ResponseEvent
 
     /**
      * Sets the weight of this queue.
-     * 
+     *
      * @param weight the weight of this queue
      * @since 0.2
      */
