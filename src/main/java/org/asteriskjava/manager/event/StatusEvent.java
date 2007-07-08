@@ -18,16 +18,15 @@ package org.asteriskjava.manager.event;
 
 /**
  * A StatusEvent is triggered for each active channel in response to a StatusAction.
- * 
- * @see org.asteriskjava.manager.action.StatusAction
- * 
+ *
  * @author srt
  * @version $Id$
+ * @see org.asteriskjava.manager.action.StatusAction
  */
 public class StatusEvent extends ResponseEvent
 {
     /**
-     * Serial version identifier
+     * Serial version identifier.
      */
     private static final long serialVersionUID = -3619197512835308812L;
     private String channel;
@@ -42,9 +41,6 @@ public class StatusEvent extends ResponseEvent
     private String link;
     private String uniqueId;
 
-    /**
-     * @param source
-     */
     public StatusEvent(Object source)
     {
         super(source);
@@ -52,6 +48,8 @@ public class StatusEvent extends ResponseEvent
 
     /**
      * Returns the name of this channel.
+     *
+     * @return the name of this channel.
      */
     public String getChannel()
     {
@@ -60,6 +58,8 @@ public class StatusEvent extends ResponseEvent
 
     /**
      * Sets the name of this channel.
+     *
+     * @param channel the name of this channel.
      */
     public void setChannel(String channel)
     {
@@ -69,6 +69,7 @@ public class StatusEvent extends ResponseEvent
     /**
      * Returns the Caller*ID Number of this channel.<p>
      * This property is deprecated as of Asterisk 1.4, use {@link #getCallerIdNum()} instead.
+     *
      * @return the Caller*ID Number of this channel or "&lt;unknown&gt;" if none is available.
      * @deprecated
      */
@@ -80,7 +81,8 @@ public class StatusEvent extends ResponseEvent
     /**
      * Sets the Caller*ID Number of this channel.<p>
      * This property is deprecated as of Asterisk 1.4.
-     * @param callerId the Caller*ID Number to set.
+     *
+     * @param callerIdNum the Caller*ID Number to set.
      */
     public void setCallerId(String callerIdNum)
     {
@@ -89,6 +91,7 @@ public class StatusEvent extends ResponseEvent
 
     /**
      * Returns the Caller*ID Number of this channel.
+     *
      * @return the Caller*ID Number of this channel or "&lt;unknown&gt;" if none is available.
      * @since 0.3
      */
@@ -99,6 +102,7 @@ public class StatusEvent extends ResponseEvent
 
     /**
      * Sets the Caller*ID Number of this channel.
+     *
      * @param callerIdNum the Caller*ID Number to set.
      * @since 0.3
      */
@@ -109,6 +113,7 @@ public class StatusEvent extends ResponseEvent
 
     /**
      * Returns the Caller*ID Name of this channel.
+     *
      * @return the Caller*ID Name of this channel or "&lt;unknown&gt;" if none is available.
      */
     public String getCallerIdName()
@@ -118,6 +123,7 @@ public class StatusEvent extends ResponseEvent
 
     /**
      * Sets the Caller*ID Name of this channel.
+     *
      * @param callerIdName the Caller*ID Name of this channel.
      */
     public void setCallerIdName(String callerIdName)
@@ -127,6 +133,8 @@ public class StatusEvent extends ResponseEvent
 
     /**
      * Returns the account code of this channel.
+     *
+     * @return the account code of this channel.
      */
     public String getAccount()
     {
@@ -135,6 +143,8 @@ public class StatusEvent extends ResponseEvent
 
     /**
      * Sets the account code of this channel.
+     *
+     * @param account the account code of this channel.
      */
     public void setAccount(String account)
     {
@@ -183,6 +193,8 @@ public class StatusEvent extends ResponseEvent
 
     /**
      * Returns the number of elapsed seconds.
+     *
+     * @return the number of elapsed seconds.
      */
     public Integer getSeconds()
     {
@@ -191,6 +203,8 @@ public class StatusEvent extends ResponseEvent
 
     /**
      * Sets the number of elapsed seconds.
+     *
+     * @param seconds the number of elapsed seconds.
      */
     public void setSeconds(Integer seconds)
     {
@@ -199,6 +213,8 @@ public class StatusEvent extends ResponseEvent
 
     /**
      * Returns the name of the linked channel if this channel is bridged.
+     *
+     * @return the name of the linked channel if this channel is bridged.
      */
     public String getLink()
     {
@@ -207,6 +223,8 @@ public class StatusEvent extends ResponseEvent
 
     /**
      * Sets the name of the linked channel.
+     *
+     * @param link the name of the linked channel if this channel is bridged.
      */
     public void setLink(String link)
     {
@@ -215,6 +233,8 @@ public class StatusEvent extends ResponseEvent
 
     /**
      * Returns the unique id of this channel.
+     *
+     * @return the unique id of this channel.
      */
     public String getUniqueId()
     {
@@ -223,6 +243,8 @@ public class StatusEvent extends ResponseEvent
 
     /**
      * Sets the unique id of this channel.
+     *
+     * @param uniqueId the unique id of this channel.
      */
     public void setUniqueId(String uniqueId)
     {
