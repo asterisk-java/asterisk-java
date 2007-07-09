@@ -21,7 +21,7 @@ import java.util.Date;
 
 /**
  * An entry in the extension history of an {@link AsteriskChannel}.
- * 
+ *
  * @author srt
  * @version $Id$
  * @since 0.3
@@ -37,8 +37,8 @@ public class ExtensionHistoryEntry implements Serializable
 
     /**
      * Creates a new instance.
-     * 
-     * @param date the date the extension has been visited.
+     *
+     * @param date      the date the extension has been visited.
      * @param extension the extension that has been visited.
      */
     public ExtensionHistoryEntry(Date date, Extension extension)
@@ -49,6 +49,7 @@ public class ExtensionHistoryEntry implements Serializable
 
     /**
      * Returns the date the extension has been visited.
+     *
      * @return the date the extension has been visited.
      */
     public Date getDate()
@@ -58,6 +59,7 @@ public class ExtensionHistoryEntry implements Serializable
 
     /**
      * Returns the extension that has been visited.
+     *
      * @return the extension that has been visited.
      */
     public Extension getExtension()
@@ -66,14 +68,14 @@ public class ExtensionHistoryEntry implements Serializable
     }
 
     @Override
-   public String toString()
+    public String toString()
     {
-        final StringBuffer sb;
+        final StringBuilder sb;
 
-        sb = new StringBuffer(100);
+        sb = new StringBuilder(100);
         sb.append("ExtensionHistoryEntry[");
-        sb.append("date=" + date + ",");
-        sb.append("extension=" + extension + "]");
+        sb.append("date=").append(date).append(",");
+        sb.append("extension=").append(extension).append("]");
         return sb.toString();
     }
 }

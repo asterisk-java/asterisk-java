@@ -20,7 +20,7 @@ package org.asteriskjava.live;
 public class ManagerCommunicationException extends LiveException
 {
     /**
-     * Serial version identifier
+     * Serial version identifier.
      */
     private static final long serialVersionUID = -1183197752451685927L;
 

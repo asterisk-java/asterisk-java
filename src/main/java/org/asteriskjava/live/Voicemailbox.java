@@ -137,11 +137,11 @@ public class Voicemailbox implements Serializable
 
         sb = new StringBuffer(100);
         sb.append("Voicemailbox[");
-        sb.append("mailbox='" + getMailbox() + "',");
-        sb.append("context='" + getContext() + "',");
-        sb.append("user='" + getUser() + "',");
-        sb.append("newMessages=" + getNewMessages() + ",");
-        sb.append("oldMessages=" + getOldMessages() + "]");
+        sb.append("mailbox='").append(getMailbox()).append("',");
+        sb.append("context='").append(getContext()).append("',");
+        sb.append("user='").append(getUser()).append("',");
+        sb.append("newMessages=").append(getNewMessages()).append(",");
+        sb.append("oldMessages=").append(getOldMessages()).append("]");
 
         return sb.toString();
     }

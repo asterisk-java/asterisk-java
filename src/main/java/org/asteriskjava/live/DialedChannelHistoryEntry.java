@@ -21,7 +21,7 @@ import java.util.Date;
 
 /**
  * An entry in the dialed channels history of an {@link AsteriskChannel}.
- * 
+ *
  * @author srt
  * @version $Id$
  * @since 0.3
@@ -37,8 +37,8 @@ public class DialedChannelHistoryEntry implements Serializable
 
     /**
      * Creates a new instance.
-     * 
-     * @param date the date the channel was dialed.
+     *
+     * @param date    the date the channel was dialed.
      * @param channel the channel that has been dialed.
      */
     public DialedChannelHistoryEntry(Date date, AsteriskChannel channel)
@@ -49,7 +49,7 @@ public class DialedChannelHistoryEntry implements Serializable
 
     /**
      * Returns the date the channel was dialed.
-     * 
+     *
      * @return the date the channel was dialed.
      */
     public Date getDate()
@@ -59,7 +59,7 @@ public class DialedChannelHistoryEntry implements Serializable
 
     /**
      * Returns the channel that has been dialed.
-     * 
+     *
      * @return the channel that has been dialed.
      */
     public AsteriskChannel getChannel()
@@ -68,13 +68,13 @@ public class DialedChannelHistoryEntry implements Serializable
     }
 
     @Override
-   public String toString()
+    public String toString()
     {
-        final StringBuffer sb;
+        final StringBuilder sb;
 
-        sb = new StringBuffer("DialedChannelHistoryEntry[");
-        sb.append("date=" + date + ",");
-        sb.append("channel=" + channel + "]");
+        sb = new StringBuilder("DialedChannelHistoryEntry[");
+        sb.append("date=").append(date).append(",");
+        sb.append("channel=").append(channel).append("]");
         return sb.toString();
     }
 }

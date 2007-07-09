@@ -25,7 +25,7 @@ package org.asteriskjava.live;
 public class NoSuchChannelException extends LiveException
 {
     /**
-     * Serial version identifier 
+     * Serial version identifier.
      */
     private static final long serialVersionUID = -6751088178882822091L;
 

@@ -21,7 +21,7 @@ import java.util.Date;
 
 /**
  * An entry in the linked channels history of an {@link AsteriskChannel}.
- * 
+ *
  * @author srt
  * @version $Id$
  * @since 0.3
@@ -38,9 +38,9 @@ public class LinkedChannelHistoryEntry implements Serializable
 
     /**
      * Creates a new instance.
-     * 
+     *
      * @param dateLinked the date the channel was linked.
-     * @param channel the channel that has been linked.
+     * @param channel    the channel that has been linked.
      */
     public LinkedChannelHistoryEntry(Date dateLinked, AsteriskChannel channel)
     {
@@ -50,7 +50,7 @@ public class LinkedChannelHistoryEntry implements Serializable
 
     /**
      * Returns the date the channel was linked.
-     * 
+     *
      * @return the date the channel was linked.
      */
     public Date getDateLinked()
@@ -60,7 +60,7 @@ public class LinkedChannelHistoryEntry implements Serializable
 
     /**
      * Returns the date the channel was unlinked.
-     * 
+     *
      * @return the date the channel was unlinked.
      */
     public Date getDateUnlinked()
@@ -70,7 +70,7 @@ public class LinkedChannelHistoryEntry implements Serializable
 
     /**
      * Sets the date the channel was unlinked.
-     * 
+     *
      * @param dateUnlinked the date the channel was unlinked.
      */
     public void setDateUnlinked(Date dateUnlinked)
@@ -80,7 +80,7 @@ public class LinkedChannelHistoryEntry implements Serializable
 
     /**
      * Returns the channel that has been linked.
-     * 
+     *
      * @return the channel that has been linked.
      */
     public AsteriskChannel getChannel()
@@ -89,15 +89,15 @@ public class LinkedChannelHistoryEntry implements Serializable
     }
 
     @Override
-   public String toString()
+    public String toString()
     {
-        final StringBuffer sb;
+        final StringBuilder sb;
 
-        sb = new StringBuffer(100);
+        sb = new StringBuilder(100);
         sb.append("LinkedChannelHistoryEntry[");
-        sb.append("dateLinked=" + dateLinked + ",");
-        sb.append("dateUnlinked=" + dateUnlinked + ",");
-        sb.append("channel=" + channel + "]");
+        sb.append("dateLinked=").append(dateLinked).append(",");
+        sb.append("dateUnlinked=").append(dateUnlinked).append(",");
+        sb.append("channel=").append(channel).append("]");
         return sb.toString();
     }
 }

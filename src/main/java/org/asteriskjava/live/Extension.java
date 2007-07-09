@@ -48,7 +48,7 @@ public class Extension implements Serializable
      * @param appData
      */
     public Extension(String context, String extension,
-            Integer priority, String application, String appData)
+                     Integer priority, String application, String appData)
     {
         this.context = context;
         this.extension = extension;
@@ -83,16 +83,16 @@ public class Extension implements Serializable
     }
 
     @Override
-   public String toString()
+    public String toString()
     {
         StringBuffer sb;
 
         sb = new StringBuffer("Extension[");
-        sb.append("context='" + getContext() + "',");
-        sb.append("extension='" + getExtension() + "',");
-        sb.append("priority='" + getPriority() + "',");
-        sb.append("application='" + getApplication() + "',");
-        sb.append("appData=" + getAppData() + "]");
+        sb.append("context='").append(getContext()).append("',");
+        sb.append("extension='").append(getExtension()).append("',");
+        sb.append("priority='").append(getPriority()).append("',");
+        sb.append("application='").append(getApplication()).append("',");
+        sb.append("appData=").append(getAppData()).append("]");
 
         return sb.toString();
     }

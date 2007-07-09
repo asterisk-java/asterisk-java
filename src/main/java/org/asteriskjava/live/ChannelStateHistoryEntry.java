@@ -21,7 +21,7 @@ import java.util.Date;
 
 /**
  * An entry in the channel state history of an {@link AsteriskChannel}.
- * 
+ *
  * @author srt
  * @version $Id$
  * @since 0.3
@@ -37,8 +37,8 @@ public class ChannelStateHistoryEntry implements Serializable
 
     /**
      * Creates a new instance.
-     * 
-     * @param date the date the channel entered the state.
+     *
+     * @param date  the date the channel entered the state.
      * @param state the state the channel entered.
      */
     public ChannelStateHistoryEntry(Date date, ChannelState state)
@@ -49,7 +49,7 @@ public class ChannelStateHistoryEntry implements Serializable
 
     /**
      * Returns the date the channel entered the state.
-     * 
+     *
      * @return the date the channel entered the state.
      */
     public Date getDate()
@@ -59,7 +59,7 @@ public class ChannelStateHistoryEntry implements Serializable
 
     /**
      * The state the channel entered.
-     * 
+     *
      * @return the state the channel entered.
      */
     public ChannelState getState()
@@ -68,13 +68,13 @@ public class ChannelStateHistoryEntry implements Serializable
     }
 
     @Override
-   public String toString()
+    public String toString()
     {
-        final StringBuffer sb;
+        final StringBuilder sb;
 
-        sb = new StringBuffer("ChannelStateHistoryEntry[");
-        sb.append("date=" + date + ",");
-        sb.append("state=" + state + "]");
+        sb = new StringBuilder("ChannelStateHistoryEntry[");
+        sb.append("date=").append(date).append(",");
+        sb.append("state=").append(state).append("]");
         return sb.toString();
     }
 }
