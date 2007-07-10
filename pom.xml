@@ -37,6 +37,13 @@
 			<organization>Asteria Solutions Group, Inc.</organization>
 			<timezone>-6</timezone>
 		</developer>
+		<developer>
+			<name>Martin B. Smith</name>
+			<id>martins</id>
+			<email>martins at bebr.ufl.edu</email>
+			<organization>Bureau of Economic and Business Research, University of Florida</organization>
+			<timezone>-5</timezone>
+		</developer>
 	</developers>
 	<scm>
 		<connection>scm:svn:http://svn.reucon.net/repos/asterisk-java/trunk</connection>

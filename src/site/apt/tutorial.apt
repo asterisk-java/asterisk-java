@@ -316,7 +316,7 @@ public class HelloManager
 +--
 
   A list of the other {{{apidocs/org/asteriskjava/manager/action/package-summary.html}Actions}}
-  povided by the Manager API is available in the {{{apidocs/index.html}javadocs}}.
+  provided by the Manager API is available in the {{{apidocs/index.html}javadocs}}.
   
 * Hello Events!
 
@@ -394,9 +394,198 @@ The Live API
   The live API is built on top of the Manager API and provides additional abstraction.
   Instead of directly using actions and events to interact with Asterisk you can use
   active domain objects (live objects) that represent Asterisk concepts like a channel
-  or an extension.
+  or an extension. The behavior of live objects follows the pattern of the 
+  {{{http://java.sun.com/products/javabeans/reference/api/index.html}JavaBeans specification}} by Sun.
 
-  To get started have a look at the {{{apidocs/org/asteriskjava/live/package-summary.html}live package}}
-  in the {{{apidocs/index.html}javadocs}}, especially the
-  {{{apidocs/org/asteriskjava/live/DefaultAsteriskServer.html}DefaultAsteriskServer}} which serves as an
-  entry point.
+  To get started, have a look at the the {{{apidocs/org/asteriskjava/live/package-summary.html}live package}} 
+  in the {{{apidocs/index.html}javadocs}}, especially the interfaces for {{{apidocs/org/asteriskjava/live/AsteriskServer.html}AsteriskServer}}, 
+  {{{apidocs/org/asteriskjava/live/AsteriskChannel.html}AsteriskChannel}}, and 
+  {{{apidocs/org/asteriskjava/live/AsteriskQueue.html}AsteriskQueue}}. Asterisk-Java provides implementations
+  for these interfaces, such as {{{apidocs/org/asteriskjava/live/DefaultAsteriskServer.html}DefaultAsteriskServer}}
+  for {{{apidocs/org/asteriskjava/live/AsteriskServer.html}AsteriskServer}}. DefaultAsteriskServer, in turn, relies
+  on other implementation classes provided.
+
+* HelloLive
+ 
+ To run commands using the live API, you need to create an AsteriskServer using the DefaultAsteriskServer implementation.
+ Alternatively, if you already have a manager connection (see "The Manager API" above), you can pass that to the DefaultAsteriskServer.
+ Once connected, this sample program prints all channels, queues, and meet me objects. In a real project, you will probably do this at
+ the start, and perhaps perform some actions based on the current state of Asterisk. Continue below to see how to use events in the live package.
+ 
+ The following code shows a simple example of how to connect to Asterisk using the live API:
+ 
++--
+import org.asteriskjava.live.AsteriskServer;
+import org.asteriskjava.live.AsteriskChannel;
+import org.asteriskjava.live.AsteriskQueue;
+import org.asteriskjava.live.MeetMeRoom;
+import org.asteriskjava.live.DefaultAsteriskServer;
+
+import org.asteriskjava.live.ManagerCommunicationException;
+
+public class HelloLive
+{
+    private AsteriskServer asteriskServer;
+
+    public HelloLive()
+    {
+        asteriskServer = new DefaultAsteriskServer("localhost", "manager", "pa55w0rd");
+    }
+
+    public void run() throws ManagerCommunicationException
+    {
+        for (AsteriskChannel asteriskChannel : asteriskServer.getChannels())
+        {
+            System.out.println(asteriskChannel);
+        }
+
+        for (AsteriskQueue asteriskQueue : asteriskServer.getQueues())
+        {
+            System.out.println(asteriskQueue);
+        }
+
+        for (MeetMeRoom meetMeRoom : asteriskServer.getMeetMeRooms())
+        {
+            System.out.println(meetMeRoom);
+        }
+    }
+
+    public static void main(String[] args) throws Exception
+    {
+        HelloLive helloLive = new HelloLive();
+        helloLive.run();
+    }
+}
++--
+
+* HelloLiveEvents
+ 
+ To process events using the live API, you need to implement an {{{apidocs/org/asteriskjava/live/AsteriskServerListener.html}AsteriskServerListener}}.
+ Once you have a class that implements that interface, you can add it via the DefaultAsteriskServer in order to hear about new channels.
+ 
+ The following code snippet shows a simple example of how to listen for new channels or meet me users:
+
++--
+import org.asteriskjava.live.AsteriskChannel;
+import org.asteriskjava.live.AsteriskServer;
+import org.asteriskjava.live.AsteriskServerListener;
+import org.asteriskjava.live.DefaultAsteriskServer;
+import org.asteriskjava.live.ManagerCommunicationException;
+import org.asteriskjava.live.MeetMeUser;
+
+public class HelloLiveEvents implements AsteriskServerListener
+{
+    private AsteriskServer asteriskServer;
+
+    public HelloLiveEvents()
+    {
+        asteriskServer = new DefaultAsteriskServer("localhost", "manager", "pa55w0rd");
+    }
+
+    public void run() throws ManagerCommunicationException
+    {
+        asteriskServer.addAsteriskServerListener(this);
+    }
+
+    public void onNewAsteriskChannel(AsteriskChannel channel)
+    {
+        System.out.println(channel);
+    }
+
+    public void onNewMeetMeUser(MeetMeUser user)
+    {
+        System.out.println(user);
+    }
+
+    public static void main(String[] args) throws Exception
+    {
+        HelloLiveEvents helloLiveEvents = new HelloLiveEvents();
+        helloLiveEvents.run();
+    }
+}
++--
+
+* HelloLiveEverything
+ 
+ Finally, for every AsteriskChannel or MeetMeUser you can get examine through the live API, you can also add a listener
+ for properties that change on that object.
+  
+ The following code snippet shows a longer example that adds event listeners for new channels or meet me users, and 
+ property change listeners to new and old channels and users:
+
++--
+import org.asteriskjava.live.AsteriskChannel;
+import org.asteriskjava.live.AsteriskQueue;
+import org.asteriskjava.live.AsteriskServer;
+import org.asteriskjava.live.AsteriskServerListener;
+import org.asteriskjava.live.DefaultAsteriskServer;
+import org.asteriskjava.live.ManagerCommunicationException;
+import org.asteriskjava.live.MeetMeRoom;
+import org.asteriskjava.live.MeetMeUser;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeEvent;
+
+public class HelloLiveEverything implements AsteriskServerListener, PropertyChangeListener
+{
+    private AsteriskServer asteriskServer;
+
+    public HelloLiveEverything()
+    {
+        asteriskServer = new DefaultAsteriskServer("localhost", "manager", "pa55w0rd");
+    }
+
+    public void run() throws ManagerCommunicationException
+    {
+        // listen for new events
+        asteriskServer.addAsteriskServerListener(this);
+
+        // add property change listeners to existing objects
+        for (AsteriskChannel asteriskChannel : asteriskServer.getChannels())
+        {
+            System.out.println(asteriskChannel);
+            asteriskChannel.addPropertyChangeListener(this);
+        }
+
+        for (AsteriskQueue asteriskQueue : asteriskServer.getQueues())
+        {
+            System.out.println(asteriskQueue);
+            for (AsteriskChannel asteriskChannel : asteriskQueue.getEntries())
+            {
+                asteriskChannel.addPropertyChangeListener(this);
+            }
+        }
+
+        for (MeetMeRoom meetMeRoom : asteriskServer.getMeetMeRooms())
+        {
+            System.out.println(meetMeRoom);
+            for (MeetMeUser user : meetMeRoom.getUsers())
+            {
+                user.addPropertyChangeListener(this);
+            }
+        }
+    }
+
+    public void onNewAsteriskChannel(AsteriskChannel channel)
+    {
+        System.out.println(channel);
+        channel.addPropertyChangeListener(this);
+    }
+
+    public void onNewMeetMeUser(MeetMeUser user)
+    {
+        System.out.println(user);
+        user.addPropertyChangeListener(this);
+    }
+
+    public void propertyChange(PropertyChangeEvent propertyChangeEvent)
+    {
+        System.out.println(propertyChangeEvent);
+    }
+
+    public static void main(String[] args) throws Exception
+    {
+        HelloLiveEvents helloLiveEvents = new HelloLiveEvents();
+        helloLiveEvents.run();
+    }
+}
++--
