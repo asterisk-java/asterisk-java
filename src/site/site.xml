@@ -34,7 +34,7 @@
 	<skin>
 		<groupId>org.asteriskjava</groupId>
 		<artifactId>asterisk-java-skin</artifactId>
-		<version>0.1-SNAPSHOT</version>
+		<version>1.0.0</version>
 	</skin>
 
 	<body>
