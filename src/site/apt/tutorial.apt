@@ -323,7 +323,7 @@ public class HelloManager
   To receive events from Asterisk you have to implement the 
   {{{apidocs/org/asteriskjava/manager/ManagerEventListener.html}ManagerEventListener}}
   interface and add it to the 
-  {{{apidocs/org/asteriskjava/manager/ManagerConnection.html}ManagerConnection}}
+  {{{apidocs/org/asteriskjava/manager/ManagerConnection.html}ManagerConnection}}.
   
   The following code shows a simple example of how to do this:
   
