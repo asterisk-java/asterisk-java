@@ -692,7 +692,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         final ManagerResponse response;
 
         initializeIfNeeded();
-        response = sendAction(new CommandAction(SHOW_VOICEMAIL_USERS_COMMAND));
+        response = sendAction(new CommandAction(command));
         if (!(response instanceof CommandResponse))
         {
             throw new ManagerCommunicationException("Response to CommandAction(\"" + command
