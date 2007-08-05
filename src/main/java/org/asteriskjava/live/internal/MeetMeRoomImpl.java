@@ -35,7 +35,7 @@ class MeetMeRoomImpl extends AbstractLiveObject implements MeetMeRoom
     private final String roomNumber;
     
     /**
-     * Maps userNumber to user
+     * Maps userNumber to user.
      */
     private final Map<Integer, MeetMeUserImpl> users;
 
@@ -56,6 +56,14 @@ class MeetMeRoomImpl extends AbstractLiveObject implements MeetMeRoom
         synchronized (users)
         {
             return new ArrayList<MeetMeUser>(users.values());
+        }
+    }
+
+    public boolean isEmpty()
+    {
+        synchronized (users)
+        {
+            return users.isEmpty();
         }
     }
 

@@ -43,6 +43,14 @@ public interface MeetMeRoom
     Collection<MeetMeUser> getUsers();
 
     /**
+     * Checks whether there are users in this room or not.
+     *
+     * @return <code>true</code> if this room is empty, <code>false</code> if there are users in it.
+     * @since 1.0.0
+     */
+    boolean isEmpty();
+
+    /**
      * Locks this room so no addtional users can join.
      * 
      * @throws ManagerCommunicationException if the room can't be locked.

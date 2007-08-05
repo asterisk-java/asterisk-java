@@ -41,7 +41,7 @@ import org.asteriskjava.util.LogFactory;
 
 /**
  * Manages MeetMe events on behalf of an AsteriskServer.
- * 
+ *
  * @author srt
  */
 class MeetMeManager
@@ -88,10 +88,20 @@ class MeetMeManager
 
     Collection<MeetMeRoom> getMeetMeRooms()
     {
+        final Collection<MeetMeRoom> result;
+
+        result = new ArrayList<MeetMeRoom>();
         synchronized (rooms)
         {
-            return new ArrayList<MeetMeRoom>(rooms.values());
+            for (MeetMeRoom room : rooms.values())
+            {
+                if (!room.isEmpty())
+                {
+                    result.add(room);
+                }
+            }
         }
+        return result;
     }
 
     void handleMeetMeEvent(AbstractMeetMeEvent event)
@@ -283,12 +293,12 @@ class MeetMeManager
                 }
             }
         }
-        
+
         Collection<MeetMeUserImpl> users = room.getUserImpls();
         Collection<MeetMeUserImpl> usersToRemove = new ArrayList<MeetMeUserImpl>();
         for (MeetMeUserImpl user : users)
         {
-            if (! userNumbers.contains(user.getUserNumber()))
+            if (!userNumbers.contains(user.getUserNumber()))
             {
                 // remove user as he is no longer in the room
                 usersToRemove.add(user);
@@ -357,7 +367,7 @@ class MeetMeManager
     /**
      * Returns the room with the given number or creates a new one if none is
      * there yet.
-     * 
+     *
      * @param roomNumber number of the room to get or create.
      * @return the room with the given number.
      */
