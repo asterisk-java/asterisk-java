@@ -28,7 +28,7 @@ package org.asteriskjava.manager.event;
 public class PeerStatusEvent extends ManagerEvent
 {
     /**
-     * Serializable version identifier
+     * Serializable version identifier.
      */
     private static final long serialVersionUID = 8384939771592846892L;
     
@@ -53,9 +53,13 @@ public class PeerStatusEvent extends ManagerEvent
     }
 
     /**
-     * Returns the name of the peer that registered. The peer's name starts with "IAX2/" if it is an
-     * IAX client or "SIP/" if it is a SIP client. It is followed by the username that is used for
-     * registration.
+     * Returns the name of the peer that registered.<p>
+     * The peer name includes the channel type prefix. So if you receive a PeerStatusEvent for a
+     * SIP peer defined as "john" in <code>sip.conf</code> this method returns "SIP/john".
+     * <p>
+     * Peer names for IAX clients start with "IAX2/", peer names for SIP clients start with "SIP/".
+     *
+     * @return the peer's name including the channel type.
      */
     public String getPeer()
     {

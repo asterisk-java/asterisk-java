@@ -35,7 +35,7 @@ public class SipShowPeerAction extends AbstractManagerAction
             EventGeneratingAction
 {
     /**
-     * Serial version identifier
+     * Serial version identifier.
      */
     private static final long serialVersionUID = 921037572305993779L;
     private String peer;
@@ -51,6 +51,9 @@ public class SipShowPeerAction extends AbstractManagerAction
     /**
      * Creates a new SipShowPeerAction that requests the details about the given
      * SIP peer.
+     * <p>
+     * This is just the peer name without the channel type prefix. For example
+     * if your channel is called "SIP/john", the peer name is just "john".
      * 
      * @param peer the name of the SIP peer to retrieve details for.
      * @since 0.2
@@ -70,7 +73,7 @@ public class SipShowPeerAction extends AbstractManagerAction
      * Returns the name of the peer to retrieve.<p>
      * This parameter is mandatory.
      * 
-     * @return the name of the peer to retrieve.
+     * @return the name of the peer to retrieve without the channel type prefix.
      */
     public String getPeer()
     {
@@ -78,10 +81,14 @@ public class SipShowPeerAction extends AbstractManagerAction
     }
 
     /**
-     * Sets the name of the peer to retrieve.<p>
+     * Sets the name of the peer to retrieve.
+     * <p>
+     * This is just the peer name without the channel type prefix. For example
+     * if your channel is called "SIP/john", the peer name is just "john".
+     * <p>
      * This parameter is mandatory.
      * 
-     * @param peer the name of the peer to retrieve.
+     * @param peer the name of the peer to retrieve without the channel type prefix.
      */
     public void setPeer(String peer)
     {
