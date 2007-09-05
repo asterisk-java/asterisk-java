@@ -1,4 +1,11 @@
-Asterisk-Java 1.0.0
+Asterisk-Java 0.3.1
+    * [AJ-81] - executeCliCommand() always executes "show voicemail users"
+    * [AJ-86] - getChannelByName doesn't return the latest channel
+    * [AJ-79] - Support for the CallWeaver protocol identifier
+    * [AJ-80] - getMeetMeRooms() should only return active rooms
+    * [AJ-68] - Support for Bridge Action
+    * [AJ-74] - Support Strategy property in QueueParamsEvent
+    * [AJ-78] - Documentation needs thorough examples of the Live API
 
 Asterisk-Java 0.3
     * [AJ-30] - Fixed version detection when restarting Asterisk

@@ -292,7 +292,7 @@ class ChannelManager
                 if (tmp.getName() != null && tmp.getName().equals(name))
                 {
                     // return the most recent channel
-                    if (dateOfCreation == null || channel.getDateOfCreation().after(dateOfCreation))
+                    if (dateOfCreation == null || tmp.getDateOfCreation().after(dateOfCreation))
                     {
                         channel = tmp;
                         dateOfCreation = channel.getDateOfCreation();
