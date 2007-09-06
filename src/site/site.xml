@@ -50,7 +50,7 @@
 			<item name="Mailing Lists" href="mail-lists.html" />
 			<item name="Patch Howto" href="patch.html" />
 			<item name="Bug Tracker"
-				href="http://jira.reucon.com/browse/AJ" />
+				href="http://jira.reucon.org/browse/AJ" />
 		</menu>
 		<menu name="Documentation">
 			<item name="Design" href="design.html" />
