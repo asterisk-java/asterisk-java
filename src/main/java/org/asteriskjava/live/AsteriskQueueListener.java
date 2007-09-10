@@ -20,7 +20,7 @@ public interface AsteriskQueueListener
     /**
      * Called whenever a channel (entry) leaves the queue
      * 
-     * @param the channel that leaves the queue.
+     * @param channel the channel that leaves the queue.
      */
     void onEntryLeave(AsteriskChannel channel);
 }

@@ -159,7 +159,7 @@ public class QueueMemberAddedEvent extends AbstractQueueMemberEvent
     /**
      * Sets the status of this queue member.
      * 
-     * @param the status of this queue member
+     * @param status the status of this queue member
      */
     public void setStatus(Integer status)
     {

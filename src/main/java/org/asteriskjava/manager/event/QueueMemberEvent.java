@@ -96,7 +96,7 @@ public class QueueMemberEvent extends ResponseEvent
     /**
      * Sets the name of the member's interface.
      * 
-     * @param member the name of the member's interface.
+     * @param location the name of the member's interface.
      */
     public void setLocation(String location)
     {
@@ -251,7 +251,7 @@ public class QueueMemberEvent extends ResponseEvent
     /**
      * Sets the status of this queue member.
      * 
-     * @param the status of this queue member
+     * @param status the status of this queue member
      * @since 0.2
      */
     public void setStatus(Integer status)

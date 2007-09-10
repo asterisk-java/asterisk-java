@@ -47,6 +47,7 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
         super(server);
         this.name = name;
         this.max = max;
+        this.strategy = strategy;
         this.serviceLevel = serviceLevel;
         this.weight = weight;
         this.entries = new ArrayList<AsteriskChannel>(25);
@@ -131,15 +132,16 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
         final StringBuffer sb;
 
         sb = new StringBuffer("AsteriskQueue[");
-        sb.append("name='" + getName() + "',");
-        sb.append("max='" + getMax() + "',");
-        sb.append("serviceLevel='" + getServiceLevel() + "',");
-        sb.append("weight='" + getWeight() + "',");
+        sb.append("name='").append(getName()).append("',");
+        sb.append("max='").append(getMax()).append("',");
+        sb.append("strategy='").append(getStrategy()).append("',");
+        sb.append("serviceLevel='").append(getServiceLevel()).append("',");
+        sb.append("weight='").append(getWeight()).append("',");
         synchronized (entries)
         {
-            sb.append("entries='" + entries.toString() + "',");
+            sb.append("entries='").append(entries.toString()).append("',");
         }
-        sb.append("systemHashcode=" + System.identityHashCode(this));
+        sb.append("systemHashcode=").append(System.identityHashCode(this));
         sb.append("]");
 
         return sb.toString();
@@ -173,7 +175,7 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
                 }
                 catch (Exception e)
                 {
-                    logger.warn("Exception in onNewEntryl()", e);
+                    logger.warn("Exception in onNewEntry()", e);
                 }
             }
         }
