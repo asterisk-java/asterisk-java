@@ -1,5 +1,7 @@
 package org.asteriskjava.live;
 
+import org.asteriskjava.live.internal.AsteriskAgentImpl;
+
 /**
  * You can register an AsteriskServerListener with an
  * {@link org.asteriskjava.live.AsteriskServer} to be notified about new
@@ -28,4 +30,11 @@ public interface AsteriskServerListener
      * @param user the user that joined.
      */
     void onNewMeetMeUser(MeetMeUser user);
+
+    /**
+     * Called whenever a new agent will be registered at Asterisk server.
+     * 
+     * @param agent
+     */
+    void onNewAgent(AsteriskAgentImpl agent);
 }
