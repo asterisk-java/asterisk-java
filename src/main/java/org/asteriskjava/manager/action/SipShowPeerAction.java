@@ -16,28 +16,23 @@
  */
 package org.asteriskjava.manager.action;
 
-import org.asteriskjava.manager.event.PeerlistCompleteEvent;
-
 /**
  * Retrieves a the details about a given SIP peer.<p>
- * For a PeerEntryEvent is sent by Asterisk containing the details of the peer
- * followed by a PeerlistCompleteEvent.<p>
+ * The result is returned in the response received in reply to this action.<p>
+ * Use {@link org.asteriskjava.manager.response.ManagerResponse#getAttribute(String)}
+ * to retrieve the properties.<p>
  * Available since Asterisk 1.2
  * 
- * @see org.asteriskjava.manager.event.PeerEntryEvent
- * @see org.asteriskjava.manager.event.PeerlistCompleteEvent
  * @author srt
  * @version $Id$
  * @since 0.2
  */
 public class SipShowPeerAction extends AbstractManagerAction
-        implements
-            EventGeneratingAction
 {
     /**
      * Serial version identifier.
      */
-    private static final long serialVersionUID = 921037572305993779L;
+    private static final long serialVersionUID = 1L;
     private String peer;
 
     /**
@@ -93,10 +88,5 @@ public class SipShowPeerAction extends AbstractManagerAction
     public void setPeer(String peer)
     {
         this.peer = peer;
-    }
-
-    public Class getActionCompleteEventClass()
-    {
-        return PeerlistCompleteEvent.class;
     }
 }
