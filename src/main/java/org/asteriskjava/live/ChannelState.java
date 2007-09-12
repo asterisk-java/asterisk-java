@@ -18,6 +18,8 @@ package org.asteriskjava.live;
 
 /**
  * The lifecycle status of an {@link org.asteriskjava.live.AsteriskChannel}.
+ * <br>
+ * Defined in <code>channel.c</code> function <code>ast_state2str</code>.
  * 
  * @author srt
  * @version $Id$
@@ -28,7 +30,7 @@ public enum ChannelState
      * The initial state of the channel when it is not yet in use.
      */
     DOWN,
-    OFF_HOOK,
+    OFFHOOK,
     DIALING,
     RING,
     RINGING,
