@@ -73,6 +73,7 @@ import org.asteriskjava.manager.event.NewChannelEvent;
 import org.asteriskjava.manager.event.NewExtenEvent;
 import org.asteriskjava.manager.event.NewStateEvent;
 import org.asteriskjava.manager.event.OriginateResponseEvent;
+import org.asteriskjava.manager.event.QueueMemberStatusEvent;
 import org.asteriskjava.manager.event.RenameEvent;
 import org.asteriskjava.manager.event.ResponseEvent;
 import org.asteriskjava.manager.event.UnlinkEvent;
@@ -879,6 +880,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
      */
     public void onManagerEvent(ManagerEvent event)
     {
+	// Handle Channel related events
 	if (event instanceof ConnectEvent)
 	{
 	    handleConnectEvent((ConnectEvent) event);
@@ -915,13 +917,23 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
 	} else if (event instanceof CdrEvent)
 	{
 	    channelManager.handleCdrEvent((CdrEvent) event);
-	} else if (event instanceof JoinEvent)
+	}
+	// End of channel related events
+	// Handle queue related event
+	else if (event instanceof JoinEvent)
 	{
 	    queueManager.handleJoinEvent((JoinEvent) event);
 	} else if (event instanceof LeaveEvent)
 	{
 	    queueManager.handleLeaveEvent((LeaveEvent) event);
-	} else if (event instanceof AbstractMeetMeEvent)
+	} else if (event instanceof QueueMemberStatusEvent)
+	{
+	    queueManager
+		    .handleQueueMemberStatusEvent((QueueMemberStatusEvent) event);
+	}
+	// End of queue related events
+	// Handle meetMeEvents
+	else if (event instanceof AbstractMeetMeEvent)
 	{
 	    meetMeManager.handleMeetMeEvent((AbstractMeetMeEvent) event);
 	} else if (event instanceof OriginateResponseEvent)

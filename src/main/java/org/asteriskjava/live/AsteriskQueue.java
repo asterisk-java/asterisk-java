@@ -16,6 +16,7 @@
  */
 package org.asteriskjava.live;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -46,8 +47,10 @@ public interface AsteriskQueue
     Integer getMax();
 
     /**
-     * Returns the strategy used for this queue.<p>
-     * Possible values are:<p>
+     * Returns the strategy used for this queue.
+     * <p>
+     * Possible values are:
+     * <p>
      * <ul>
      * <li>ringall</li>
      * <li>roundrobin</li>
@@ -57,7 +60,7 @@ public interface AsteriskQueue
      * <li>rrmemory</li>
      * </ul>
      * Available since Asterisk 1.6
-     *
+     * 
      * @return the strategy used for this queue.
      * @since 1.0.0
      */
@@ -91,7 +94,16 @@ public interface AsteriskQueue
      * @return the list of channels currently waiting in this queue.
      */
     List<AsteriskChannel> getEntries();
-    
+
+    /**
+     * Returns the list of Asterisk members of this queue.
+     * 
+     * @return the list of Asterisk members of this queue.
+     * @author pbreucking
+     * @since 0.3.1
+     */
+    Collection<AsteriskQueueMember> getMembers();
+
     /**
      * Registers a new queue listener.
      * 

@@ -17,11 +17,14 @@
 package org.asteriskjava.live.internal;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 
 import org.asteriskjava.live.AsteriskChannel;
 import org.asteriskjava.live.AsteriskQueue;
 import org.asteriskjava.live.AsteriskQueueListener;
+import org.asteriskjava.live.AsteriskQueueMember;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
@@ -33,169 +36,279 @@ import org.asteriskjava.util.LogFactory;
  */
 class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
 {
-	private final Log logger = LogFactory.getLog(this.getClass());
+    private final Log logger = LogFactory.getLog(this.getClass());
     private final String name;
     private Integer max;
     private String strategy;
     private Integer serviceLevel;
     private Integer weight;
     private final ArrayList<AsteriskChannel> entries;
+    private final HashMap<String, AsteriskQueueMemberImpl> members;
     private final List<AsteriskQueueListener> listeners;
 
-    AsteriskQueueImpl(AsteriskServerImpl server, String name, Integer max, String strategy, Integer serviceLevel, Integer weight)
+    AsteriskQueueImpl(AsteriskServerImpl server, String name, Integer max,
+	    String strategy, Integer serviceLevel, Integer weight)
     {
-        super(server);
-        this.name = name;
-        this.max = max;
-        this.strategy = strategy;
-        this.serviceLevel = serviceLevel;
-        this.weight = weight;
-        this.entries = new ArrayList<AsteriskChannel>(25);
-        listeners = new ArrayList<AsteriskQueueListener>();
+	super(server);
+	this.name = name;
+	this.max = max;
+	this.strategy = strategy;
+	this.serviceLevel = serviceLevel;
+	this.weight = weight;
+	this.entries = new ArrayList<AsteriskChannel>(25);
+	listeners = new ArrayList<AsteriskQueueListener>();
+	members = new HashMap<String, AsteriskQueueMemberImpl>();
     }
 
     public String getName()
     {
-        return name;
+	return name;
     }
 
     public Integer getMax()
     {
-        return max;
+	return max;
     }
 
     public String getStrategy()
     {
-        return strategy;
+	return strategy;
     }
 
     void setMax(Integer max)
     {
-        this.max = max;
+	this.max = max;
     }
 
     public Integer getServiceLevel()
     {
-        return serviceLevel;
+	return serviceLevel;
     }
 
     void setServiceLevel(Integer serviceLevel)
     {
-        this.serviceLevel = serviceLevel;
+	this.serviceLevel = serviceLevel;
     }
 
     public Integer getWeight()
     {
-        return weight;
+	return weight;
     }
 
     void setWeight(Integer weight)
     {
-        this.weight = weight;
+	this.weight = weight;
     }
 
     @SuppressWarnings("unchecked")
     public List<AsteriskChannel> getEntries()
     {
-        synchronized (entries)
-        {
-            return (List<AsteriskChannel>) entries.clone();
-        }
+	synchronized (entries)
+	{
+	    return (List<AsteriskChannel>) entries.clone();
+	}
     }
 
     void addEntry(AsteriskChannel entry)
     {
-        synchronized (entries)
-        {
-            // only add if not yet there
-            if (entries.contains(entry))
-            {
-                return;
-            }
-            entries.add(entry);
-        }
-        fireNewEntry(entry);
+	synchronized (entries)
+	{
+	    // only add if not yet there
+	    if (entries.contains(entry))
+	    {
+		return;
+	    }
+	    entries.add(entry);
+	}
+	fireNewEntry(entry);
     }
 
     void removeEntry(AsteriskChannel entry)
     {
-        synchronized (entries)
-        {
-            entries.remove(entry);
-        }
-        fireEntryLeave(entry);
+	synchronized (entries)
+	{
+	    entries.remove(entry);
+	}
+	fireEntryLeave(entry);
     }
 
     @Override
-   public String toString()
+    public String toString()
     {
-        final StringBuffer sb;
+	final StringBuffer sb;
 
-        sb = new StringBuffer("AsteriskQueue[");
-        sb.append("name='").append(getName()).append("',");
-        sb.append("max='").append(getMax()).append("',");
-        sb.append("strategy='").append(getStrategy()).append("',");
-        sb.append("serviceLevel='").append(getServiceLevel()).append("',");
-        sb.append("weight='").append(getWeight()).append("',");
-        synchronized (entries)
-        {
-            sb.append("entries='").append(entries.toString()).append("',");
-        }
-        sb.append("systemHashcode=").append(System.identityHashCode(this));
-        sb.append("]");
+	sb = new StringBuffer("AsteriskQueue[");
+	sb.append("name='").append(getName()).append("',");
+	sb.append("max='").append(getMax()).append("',");
+	sb.append("strategy='").append(getStrategy()).append("',");
+	sb.append("serviceLevel='").append(getServiceLevel()).append("',");
+	sb.append("weight='").append(getWeight()).append("',");
+	synchronized (entries)
+	{
+	    sb.append("entries='").append(entries.toString()).append("',");
+	}
+	synchronized (members)
+	{
+	    sb.append("members='").append(members.toString()).append("',");
+	}
+	sb.append("systemHashcode=").append(System.identityHashCode(this));
+	sb.append("]");
 
-        return sb.toString();
+	return sb.toString();
     }
-    
+
     public void addAsteriskQueueListener(AsteriskQueueListener listener)
     {
-        synchronized (listeners)
-        {
-            listeners.add(listener);
-        }
+	synchronized (listeners)
+	{
+	    listeners.add(listener);
+	}
     }
 
     public void removeAsteriskQueueListener(AsteriskQueueListener listener)
     {
-        synchronized (listeners)
-        {
-            listeners.remove(listener);
-        }
+	synchronized (listeners)
+	{
+	    listeners.remove(listener);
+	}
     }
 
+    /**
+     * Notifies all registered listener that an entry joins the queue.
+     * 
+     * @param channel that joins the queue
+     */
     void fireNewEntry(AsteriskChannel channel)
     {
-        synchronized (listeners)
-        {
-            for (AsteriskQueueListener listener : listeners)
-            {
-                try
-                {
-                    listener.onNewEntry(channel);
-                }
-                catch (Exception e)
-                {
-                    logger.warn("Exception in onNewEntry()", e);
-                }
-            }
-        }
+	synchronized (listeners)
+	{
+	    for (AsteriskQueueListener listener : listeners)
+	    {
+		try
+		{
+		    listener.onNewEntry(channel);
+		} catch (Exception e)
+		{
+		    logger.warn("Exception in onNewEntry()", e);
+		}
+	    }
+	}
     }
 
+    /**
+     * Notifies all registered listener that an entry leaves the queue.
+     * @param channel that leaves the queue.
+     */
     void fireEntryLeave(AsteriskChannel channel)
     {
-        synchronized (listeners)
-        {
-            for (AsteriskQueueListener listener : listeners)
-            {
-                try
-                {
-                    listener.onEntryLeave(channel);
-                }
-                catch (Exception e)
-                {
-                    logger.warn("Exception in onEntryLeave()", e);
-                }
-            }
-        }
+	synchronized (listeners)
+	{
+	    for (AsteriskQueueListener listener : listeners)
+	    {
+		try
+		{
+		    listener.onEntryLeave(channel);
+		} catch (Exception e)
+		{
+		    logger.warn("Exception in onEntryLeave()", e);
+		}
+	    }
+	}
+    }
+
+    /**
+     * Returns a collection of members of this queue.
+     * @see org.asteriskjava.live.AsteriskQueue#getMembers()
+     */
+    public Collection<AsteriskQueueMember> getMembers()
+    {
+	ArrayList<AsteriskQueueMember> listOfMembers = new ArrayList<AsteriskQueueMember>(
+		members.size());
+	synchronized (members)
+	{
+	    for (AsteriskQueueMemberImpl asteriskQueueMember : members.values())
+	    {
+		listOfMembers.add(asteriskQueueMember);
+	    }
+	}
+	return listOfMembers;
+    }
+
+    /**
+     * Returns a member by its location.
+     * @param location ot the member
+     * @return the member by its location.
+     */
+    AsteriskQueueMemberImpl getMember(String location)
+    {
+	synchronized (members)
+	{
+	    if (members.containsKey(location))
+	    {
+		return members.get(location);
+	    }
+	}
+	return null;
+    }
+
+    /**
+     * Add a new member to this queue
+     * @param member to add
+     */
+    void addMember(AsteriskQueueMemberImpl member)
+    {
+	synchronized (members)
+	{
+	    // Check if member already exists
+	    if (members.containsValue(member))
+	    {
+		return;
+	    }
+	    // If not, add the new member.
+	    logger.info("Adding new member to the queue " + getName() + ": "
+		    + member.toString());
+	    members.put(member.getLocation(), member);
+	}
+    }
+
+    /**
+     * Retrieves a member by its location.
+     * @param location of the member
+     * @return the requested member.
+     */
+    AsteriskQueueMemberImpl getMemberByLocation(String location)
+    {
+	AsteriskQueueMemberImpl member = null;
+	synchronized (members)
+	{
+	    member = members.get(location);
+	}
+	if (member == null)
+	{
+	    logger.error("Requested member at location " + location
+		    + " not found!");
+	}
+	return member;
+    }
+
+    /**
+     * Notifies all registered listener that a queue member changes its state.
+     * @param member
+     */
+    void fireMemberStateChanged(AsteriskQueueMemberImpl member)
+    {
+	synchronized (listeners)
+	{
+	    for (AsteriskQueueListener listener : listeners)
+	    {
+		try
+		{
+		    listener.onMemberStateChange(member);
+		} catch (Exception e)
+		{
+		    logger.warn("Exception in onMemberStateChange()", e);
+		}
+	    }
+	}
     }
 }
