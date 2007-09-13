@@ -228,11 +228,18 @@ public class AgentManager
      */
     void handleAgentCallbackLoginEvent(AgentCallbackLoginEvent event)
     {
-	AsteriskAgentImpl agent = getAgentByAgentId(event.getAgent());
+	AsteriskAgentImpl agent = getAgentByAgentId("Agent/" + event.getAgent());
 	if (agent == null)
 	{
-	    logger.error("Ignored AgentCallbackLoginEvent for unknown agent "
-		    + event.getAgent());
+	    synchronized (agents)
+	    {
+		logger
+			.error("Ignored AgentCallbackLoginEvent for unknown agent "
+				+ event.getAgent()
+				+ ". Agents: "
+				+ agents.values().toString());
+
+	    }
 	    return;
 	}
 	agent.updateStatus(AgentState.AGENT_IDLE);
@@ -245,11 +252,12 @@ public class AgentManager
      */
     void handleAgentCallbackLogoffEvent(AgentCallbackLogoffEvent event)
     {
-	AsteriskAgentImpl agent = getAgentByAgentId(event.getAgent());
+	AsteriskAgentImpl agent = getAgentByAgentId("Agent/" + event.getAgent());
 	if (agent == null)
 	{
 	    logger.error("Ignored AgentCallbackLogoffEvent for unknown agent "
-		    + event.getAgent());
+		    + event.getAgent() + ". Agents: "
+		    + agents.values().toString());
 	    return;
 	}
 	agent.updateStatus(AgentState.AGENT_LOGGEDOFF);
