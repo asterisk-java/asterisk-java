@@ -61,8 +61,6 @@ public class AsteriskAgentImplTest
 	assertEquals(AgentState.AGENT_IDLE, agent.getStatus());
 	agent.addPropertyChangeListener(new PropertyChangeListener()
 	{
-
-	    @Override
 	    public void propertyChange(PropertyChangeEvent evt)
 	    {
 		assertEquals("wrong propertyName", "status", evt
