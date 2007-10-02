@@ -27,22 +27,22 @@ import org.asteriskjava.util.ReflectionUtil;
 /**
  * Abstract base class for all Events that can be received from the Asterisk
  * server.
- * <p>
+ * <p/>
  * Events contain data pertaining to an event generated from within the Asterisk
  * core or an extension module.
- * <p>
+ * <p/>
  * There is one conrete subclass of ManagerEvent per each supported Asterisk
  * Event.
- * 
+ *
  * @author srt
  * @version $Id$
  */
 public abstract class ManagerEvent extends EventObject implements Serializable
 {
     /**
-     * Serializable version identifier
+     * Serializable version identifier.
      */
-    static final long serialVersionUID = 4299374743315152040L;
+    static final long serialVersionUID = 1L;
 
     /**
      * AMI authorization class.
@@ -57,6 +57,11 @@ public abstract class ManagerEvent extends EventObject implements Serializable
     private Double timestamp;
 
     /**
+     * The server from which this event has been received (only used with AstManProxy).
+     */
+    private String server;
+
+    /**
      * @param source
      */
     public ManagerEvent(Object source)
@@ -68,7 +73,7 @@ public abstract class ManagerEvent extends EventObject implements Serializable
     /**
      * Returns the point in time this event was received from the Asterisk
      * server.
-     * <p>
+     * <p/>
      * Pseudo events that are not directly received from the asterisk server
      * (for example ConnectEvent and DisconnectEvent) may return
      * <code>null</code>.
@@ -88,12 +93,12 @@ public abstract class ManagerEvent extends EventObject implements Serializable
 
     /**
      * Returns the AMI authorization class of this event.
-     * <p>
+     * <p/>
      * This is one or more of system, call, log, verbose, command, agent or
      * user. Multiple privileges are separated by comma.
-     * <p>
+     * <p/>
      * Note: This property is not available from Asterisk 1.0 servers.
-     * 
+     *
      * @since 0.2
      */
     public String getPrivilege()
@@ -103,7 +108,7 @@ public abstract class ManagerEvent extends EventObject implements Serializable
 
     /**
      * Sets the AMI authorization class of this event.
-     * 
+     *
      * @since 0.2
      */
     public void setPrivilege(String privilege)
@@ -113,15 +118,15 @@ public abstract class ManagerEvent extends EventObject implements Serializable
 
     /**
      * Returns the timestamp for this event.
-     * <p>
+     * <p/>
      * The timestamp property is available in Asterisk since 1.4 if enabled in
      * <code>manager.conf</code> by setting <code>timestampevents = yes</code>.
-     * <p>
+     * <p/>
      * In contains the time the event was generated in seconds since the epoch.
-     * <p>
+     * <p/>
      * Example: 1159310429.569108
-     * 
-     * @return
+     *
+     * @return the timestamp for this event.
      * @since 0.3
      */
     public final Double getTimestamp()
@@ -131,13 +136,39 @@ public abstract class ManagerEvent extends EventObject implements Serializable
 
     /**
      * Sets the timestamp for this event.
-     * 
+     *
      * @param timestamp the timestamp to set.
      * @since 0.3
      */
     public final void setTimestamp(Double timestamp)
     {
         this.timestamp = timestamp;
+    }
+
+    /**
+     * Returns the name of the Asterisk server from which this event has been received.
+     * <p/>
+     * This property is only available when using to AstManProxy.
+     *
+     * @return the name of the Asterisk server from which this event has been received
+     *         or <code>null</code> when directly connected to an Asterisk server
+     *         instead of AstManProxy.
+     * @since 1.0.0
+     */
+    public final String getServer()
+    {
+        return server;
+    }
+
+    /**
+     * Sets the name of the Asterisk server from which this event has been received.
+     *
+     * @param server the name of the Asterisk server from which this event has been received.
+     * @since 1.0.0
+     */
+    public final void setServer(String server)
+    {
+        this.server = server;
     }
 
     @Override
@@ -147,10 +178,10 @@ public abstract class ManagerEvent extends EventObject implements Serializable
         Map<String, Method> getters;
 
         sb = new StringBuffer(getClass().getName() + "[");
-        sb.append("dateReceived=" + getDateReceived() + ",");
+        sb.append("dateReceived=").append(getDateReceived()).append(",");
         if (getPrivilege() != null)
         {
-            sb.append("privilege='" + getPrivilege() + "',");
+            sb.append("privilege='").append(getPrivilege()).append("',");
         }
         getters = ReflectionUtil.getGetters(getClass());
         for (String attribute : getters.keySet())
@@ -165,13 +196,14 @@ public abstract class ManagerEvent extends EventObject implements Serializable
             {
                 Object value;
                 value = getters.get(attribute).invoke(this);
-                sb.append(attribute + "='" + value + "',");
+                sb.append(attribute).append("='").append(value).append("',");
             }
             catch (Exception e) // NOPMD
             {
+                // swallow
             }
         }
-        sb.append("systemHashcode=" + System.identityHashCode(this));
+        sb.append("systemHashcode=").append(System.identityHashCode(this));
         sb.append("]");
 
         return sb.toString();
