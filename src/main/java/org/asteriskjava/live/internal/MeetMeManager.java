@@ -152,6 +152,7 @@ class MeetMeManager
                             + " but is user of no room");
                 }
             }
+            // Mmmm should remove from the room before firing PropertyChangeEvents ?
             user.left(event.getDateReceived());
             room.removeUser(user);
             channel.setMeetMeUserImpl(null);

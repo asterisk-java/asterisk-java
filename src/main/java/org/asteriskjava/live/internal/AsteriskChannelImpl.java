@@ -128,6 +128,12 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
     private MeetMeUserImpl meetMeUserImpl;
 
     /**
+     * Extension where the call is parked if it is parked, <code>null</code>
+     * otherwise.
+     */
+    
+    private Extension parkedAt;
+    /**
      * Creates a new Channel.
      *
      * @param server server this channel belongs to.
@@ -786,4 +792,15 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
 
         return sb.toString();
     }
+
+	public Extension getParkedAt() {
+		return parkedAt;
+	}
+
+	public void setParkedAt(Extension parkedAt) {
+		final Extension oldParkedAt = this.parkedAt;
+
+		this.parkedAt = parkedAt;
+        firePropertyChange(PROPERTY_PARKED_AT, oldParkedAt, parkedAt);
+	}
 }

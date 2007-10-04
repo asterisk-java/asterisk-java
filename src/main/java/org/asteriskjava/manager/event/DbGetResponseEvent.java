@@ -104,4 +104,16 @@ public class DbGetResponseEvent extends ResponseEvent
     {
         this.val = val;
     }
+    
+    /**
+     * Sets the value of the database entry that was queried.
+     * It seems that in ast 1.2 ( 1.2.9 +BRIStuff ? ) at least the key is
+     * not val anymore but value.
+     * 
+     * @param val the value of the database entry that was queried.
+     */
+    public void setValue(String val)
+    {
+        this.val = val;
+    }
 }

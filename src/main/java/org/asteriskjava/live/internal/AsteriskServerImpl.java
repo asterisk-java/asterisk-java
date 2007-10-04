@@ -46,12 +46,15 @@ import org.asteriskjava.manager.ManagerEventListener;
 import org.asteriskjava.manager.ManagerEventListenerProxy;
 import org.asteriskjava.manager.ResponseEvents;
 import org.asteriskjava.manager.action.CommandAction;
+import org.asteriskjava.manager.action.DbGetAction;
+import org.asteriskjava.manager.action.DbPutAction;
 import org.asteriskjava.manager.action.EventGeneratingAction;
 import org.asteriskjava.manager.action.GetVarAction;
 import org.asteriskjava.manager.action.MailboxCountAction;
 import org.asteriskjava.manager.action.ManagerAction;
 import org.asteriskjava.manager.action.OriginateAction;
 import org.asteriskjava.manager.action.SetVarAction;
+import org.asteriskjava.manager.action.SipPeersAction;
 import org.asteriskjava.manager.event.AbstractMeetMeEvent;
 import org.asteriskjava.manager.event.AgentCallbackLoginEvent;
 import org.asteriskjava.manager.event.AgentCallbackLogoffEvent;
@@ -61,6 +64,7 @@ import org.asteriskjava.manager.event.AgentConnectEvent;
 import org.asteriskjava.manager.event.AgentsEvent;
 import org.asteriskjava.manager.event.CdrEvent;
 import org.asteriskjava.manager.event.ConnectEvent;
+import org.asteriskjava.manager.event.DbGetResponseEvent;
 import org.asteriskjava.manager.event.DialEvent;
 import org.asteriskjava.manager.event.DisconnectEvent;
 import org.asteriskjava.manager.event.HangupEvent;
@@ -73,10 +77,15 @@ import org.asteriskjava.manager.event.NewChannelEvent;
 import org.asteriskjava.manager.event.NewExtenEvent;
 import org.asteriskjava.manager.event.NewStateEvent;
 import org.asteriskjava.manager.event.OriginateResponseEvent;
+import org.asteriskjava.manager.event.ParkedCallEvent;
+import org.asteriskjava.manager.event.ParkedCallGiveUpEvent;
+import org.asteriskjava.manager.event.ParkedCallTimeOutEvent;
+import org.asteriskjava.manager.event.PeerEntryEvent;
 import org.asteriskjava.manager.event.QueueMemberStatusEvent;
 import org.asteriskjava.manager.event.RenameEvent;
 import org.asteriskjava.manager.event.ResponseEvent;
 import org.asteriskjava.manager.event.UnlinkEvent;
+import org.asteriskjava.manager.event.UnparkedCallEvent;
 import org.asteriskjava.manager.response.CommandResponse;
 import org.asteriskjava.manager.response.MailboxCountResponse;
 import org.asteriskjava.manager.response.ManagerError;
@@ -919,6 +928,24 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
 	    channelManager.handleCdrEvent((CdrEvent) event);
 	}
 	// End of channel related events
+	// Handle parking related event
+	else if (event instanceof ParkedCallEvent)
+    {
+        channelManager.handleParkedCallEvent((ParkedCallEvent) event);
+    }
+    else if (event instanceof ParkedCallGiveUpEvent)
+    {
+        channelManager.handleParkedCallGiveUpEvent((ParkedCallGiveUpEvent) event);
+    }
+    else if (event instanceof ParkedCallTimeOutEvent)
+    {
+        channelManager.handleParkedCallTimeOutEvent((ParkedCallTimeOutEvent) event);
+    }
+    else if (event instanceof UnparkedCallEvent)
+    {
+        channelManager.handleUnparkedCallEvent((UnparkedCallEvent) event);
+    }
+	// End of parking related events
 	// Handle queue related event
 	else if (event instanceof JoinEvent)
 	{
@@ -1108,7 +1135,49 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
 	managerEventListenerProxy = null;
 	eventListener = null;
     }
+    
+    public List<PeerEntryEvent> getPeerEntries() throws ManagerCommunicationException
+    {
+    ResponseEvents responseEvents = sendEventGeneratingAction(new SipPeersAction(),2000);
+    List <PeerEntryEvent> peerEntries = new ArrayList<PeerEntryEvent>(30);
+    for (ResponseEvent re : responseEvents.getEvents()) {
+    	if (re instanceof PeerEntryEvent) {
+    		peerEntries.add((PeerEntryEvent)re);
+    	}
+   	} 
+   	return peerEntries;
+    }
+    
+    public DbGetResponseEvent dbGet(String family, String key)
+    	throws ManagerCommunicationException
+    {
+    ResponseEvents responseEvents = sendEventGeneratingAction(new DbGetAction(family,key),2000);
+   	DbGetResponseEvent dbgre = null;
+   	for (ResponseEvent re: responseEvents.getEvents()) {
+   		dbgre = (DbGetResponseEvent)re;
+    }
+    return dbgre;
+    }
+    
+    public void dbDel (String family, String key)
+    	throws ManagerCommunicationException 
+    {
+    // The following only works with BRIStuffed asrterisk: sendAction(new DbDelAction(family,key));
+    // Use cli command instead ...
+    sendAction(new CommandAction("database del " + family + " " + key));
+    }
+    
+    public void dbPut (String family, String key, String value) 
+    	throws ManagerCommunicationException 
+    {
+    sendAction(new DbPutAction(family,key,value));
+    }
 
+    public AsteriskChannel getChannelByNameAndActive(String name) throws ManagerCommunicationException
+    {
+        initializeIfNeeded();
+        return channelManager.getChannelImplByNameAndActive(name);
+    }
     /**
      * @return a Collection of agents
      * @throws ManagerCommunicationException if there is a problem communication

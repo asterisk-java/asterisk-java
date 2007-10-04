@@ -124,4 +124,14 @@ public class DbPutAction extends AbstractManagerAction
     {
         this.val = val;
     }
+    
+    /**
+     * Returns the value to set for bristuffed versions.
+     * 
+     * @return the value to set.
+     */
+    public String getValue()
+    {
+        return val;
+    }
 }

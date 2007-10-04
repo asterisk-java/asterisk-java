@@ -41,9 +41,13 @@ import org.asteriskjava.manager.event.NewCallerIdEvent;
 import org.asteriskjava.manager.event.NewChannelEvent;
 import org.asteriskjava.manager.event.NewExtenEvent;
 import org.asteriskjava.manager.event.NewStateEvent;
+import org.asteriskjava.manager.event.ParkedCallEvent;
+import org.asteriskjava.manager.event.ParkedCallGiveUpEvent;
+import org.asteriskjava.manager.event.ParkedCallTimeOutEvent;
 import org.asteriskjava.manager.event.RenameEvent;
 import org.asteriskjava.manager.event.StatusEvent;
 import org.asteriskjava.manager.event.UnlinkEvent;
+import org.asteriskjava.manager.event.UnparkedCallEvent;
 import org.asteriskjava.util.DateUtil;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
@@ -274,7 +278,15 @@ class ChannelManager
             server.fireNewAsteriskChannel(channel);
         }
     }
-
+    
+    /**
+     * Returns a channel from the ChannelManager's cache with the given name
+     * If multiple channels are found, returns the most recently CREATED one.
+     * If two channels with the very same date exist, avoid HUNGUP ones.
+     * 
+     * @param name the name of the requested channel.
+     * @return the (most recent) channel if found, in any state, or null if none found.
+     */
     AsteriskChannelImpl getChannelImplByName(String name)
     {
         Date dateOfCreation = null;
@@ -291,12 +303,50 @@ class ChannelManager
             {
                 if (tmp.getName() != null && tmp.getName().equals(name))
                 {
-                    // return the most recent channel
-                    if (dateOfCreation == null || tmp.getDateOfCreation().after(dateOfCreation))
+                    // return the most recent channel or when dates are similar, the active one
+                    if (dateOfCreation == null || 
+                    		tmp.getDateOfCreation().after(dateOfCreation) ||
+                    		(tmp.getDateOfCreation().equals(dateOfCreation) && tmp.getState() != ChannelState.HUNGUP)
+                    				
+                    )
                     {
                         channel = tmp;
                         dateOfCreation = channel.getDateOfCreation();
                     }
+                }
+            }
+        }
+        return channel;
+    }
+    
+    /**
+     * Returns a NON-HUNGUP channel from the ChannelManager's cache with the given name.
+     * 
+     * @param name the name of the requested channel.
+     * @return the NON-HUNGUP channel if found, or null if none is found.
+     */
+    AsteriskChannelImpl getChannelImplByNameAndActive(String name)  {
+    	
+    	// In non bristuffed AST 1.2, we don't have uniqueid header to match the channel
+    	// So we must use the channel name
+    	// Channel name is unique at any give moment in the  * server
+    	// But asterisk-java keeps Hungup channels for a while.
+    	// We don't want to retrieve hungup channels.
+    	
+    	AsteriskChannelImpl channel = null;
+
+        if (name == null)
+        {
+            return null;
+        }
+
+        synchronized (channels)
+        {
+            for (AsteriskChannelImpl tmp : channels.values())
+            {
+                if (tmp.getName() != null && tmp.getName().equals(name) && tmp.getState() != ChannelState.HUNGUP )
+                {
+                    channel = tmp;
                 }
             }
         }
@@ -615,4 +665,103 @@ class ChannelManager
         //logger.info("TraceId for channel " + channel.getName() + " is " + traceId);
         return traceId;
     }
+    
+        void handleParkedCallEvent(ParkedCallEvent event) {
+    	// Only bristuffed versions: AsteriskChannelImpl channel = getChannelImplById(event.getUniqueId());
+    	AsteriskChannelImpl channel = getChannelImplByNameAndActive(event.getChannel());
+        
+        if (channel == null)
+        {
+            logger.info("Ignored ParkedCallEvent for unknown channel "
+                            + event.getChannel());
+            return;
+        }
+
+        synchronized (channel)
+        {
+        	// We are always parked at the given Extension, priority 1 and same context as current
+        	Extension ext = new Extension(channel.getCurrentExtension().getContext(),event.getExten(),1);
+            channel.setParkedAt(ext);
+            logger.info("Channel " + channel.getName() + " is parked at " + channel.getParkedAt().getExtension());
+        }
+    }
+    
+    void handleParkedCallGiveUpEvent(ParkedCallGiveUpEvent event) {
+    	// Only bristuffed versions: AsteriskChannelImpl channel = getChannelImplById(event.getUniqueId());
+    	AsteriskChannelImpl channel = getChannelImplByNameAndActive(event.getChannel());
+        
+        if (channel == null)
+        {
+            logger.info("Ignored ParkedCallGiveUpEvent for unknown channel "
+                            + event.getChannel());
+            return;
+        }
+
+        Extension wasParkedAt = channel.getParkedAt();
+        
+        if (wasParkedAt == null)
+        {
+            logger.info("Ignored ParkedCallGiveUpEvent as the channel was not parked");
+            return;
+        }
+        
+        synchronized (channel)
+        {
+            channel.setParkedAt(null);
+        }
+        logger.info("Channel " + channel.getName() + " is unparked (GiveUp) from " + wasParkedAt.getExtension());
+    }
+    
+    void handleParkedCallTimeOutEvent(ParkedCallTimeOutEvent event) {
+    	// Only bristuffed versions: AsteriskChannelImpl channel = getChannelImplById(event.getUniqueId());
+    	AsteriskChannelImpl channel = getChannelImplByNameAndActive(event.getChannel());
+        
+        if (channel == null)
+        {
+            logger.info("Ignored ParkedCallTimeOutEvent for unknown channel "
+                            + event.getChannel());
+            return;
+        }
+
+        Extension wasParkedAt = channel.getParkedAt();
+        
+        if (wasParkedAt == null)
+        {
+            logger.info("Ignored ParkedCallTimeOutEvent as the channel was not parked");
+            return;
+        }
+        
+        synchronized (channel)
+        {
+            channel.setParkedAt(null);
+        }
+        logger.info("Channel " + channel.getName() + " is unparked (Timeout) from " + wasParkedAt.getExtension());
+    }
+    
+    void handleUnparkedCallEvent(UnparkedCallEvent event) {
+    	// Only bristuffed versions: AsteriskChannelImpl channel = getChannelImplById(event.getUniqueId());
+    	AsteriskChannelImpl channel = getChannelImplByNameAndActive(event.getChannel());
+        
+        if (channel == null)
+        {
+            logger.info("Ignored UnparkedCallEvent for unknown channel "
+                            + event.getChannel());
+            return;
+        }
+
+        Extension wasParkedAt = channel.getParkedAt();
+        
+        if (wasParkedAt == null)
+        {
+            logger.info("Ignored UnparkedCallEvent as the channel was not parked");
+            return;
+        }
+        
+        synchronized (channel)
+        {
+            channel.setParkedAt(null);
+        }
+        logger.info("Channel " + channel.getName() + " is unparked (moved away) from " + wasParkedAt.getExtension());
+    }
+    
 }
