@@ -81,6 +81,8 @@ import org.asteriskjava.manager.event.ParkedCallEvent;
 import org.asteriskjava.manager.event.ParkedCallGiveUpEvent;
 import org.asteriskjava.manager.event.ParkedCallTimeOutEvent;
 import org.asteriskjava.manager.event.PeerEntryEvent;
+import org.asteriskjava.manager.event.QueueMemberAddedEvent;
+import org.asteriskjava.manager.event.QueueMemberRemovedEvent;
 import org.asteriskjava.manager.event.QueueMemberStatusEvent;
 import org.asteriskjava.manager.event.RenameEvent;
 import org.asteriskjava.manager.event.ResponseEvent;
@@ -930,21 +932,20 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
 	// End of channel related events
 	// Handle parking related event
 	else if (event instanceof ParkedCallEvent)
-    {
-        channelManager.handleParkedCallEvent((ParkedCallEvent) event);
-    }
-    else if (event instanceof ParkedCallGiveUpEvent)
-    {
-        channelManager.handleParkedCallGiveUpEvent((ParkedCallGiveUpEvent) event);
-    }
-    else if (event instanceof ParkedCallTimeOutEvent)
-    {
-        channelManager.handleParkedCallTimeOutEvent((ParkedCallTimeOutEvent) event);
-    }
-    else if (event instanceof UnparkedCallEvent)
-    {
-        channelManager.handleUnparkedCallEvent((UnparkedCallEvent) event);
-    }
+	{
+	    channelManager.handleParkedCallEvent((ParkedCallEvent) event);
+	} else if (event instanceof ParkedCallGiveUpEvent)
+	{
+	    channelManager
+		    .handleParkedCallGiveUpEvent((ParkedCallGiveUpEvent) event);
+	} else if (event instanceof ParkedCallTimeOutEvent)
+	{
+	    channelManager
+		    .handleParkedCallTimeOutEvent((ParkedCallTimeOutEvent) event);
+	} else if (event instanceof UnparkedCallEvent)
+	{
+	    channelManager.handleUnparkedCallEvent((UnparkedCallEvent) event);
+	}
 	// End of parking related events
 	// Handle queue related event
 	else if (event instanceof JoinEvent)
@@ -958,6 +959,17 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
 	    queueManager
 		    .handleQueueMemberStatusEvent((QueueMemberStatusEvent) event);
 	}
+	// <<<<<< AJ-94
+	else if (event instanceof QueueMemberAddedEvent)
+	{
+	    queueManager
+		    .handleQueueMemberAddedEvent((QueueMemberAddedEvent) event);
+	} else if (event instanceof QueueMemberRemovedEvent)
+	{
+	    queueManager
+		    .handleQueueMemberRemovedEvent((QueueMemberRemovedEvent) event);
+	}
+	// >>>>>> AJ 94
 	// End of queue related events
 	// Handle meetMeEvents
 	else if (event instanceof AbstractMeetMeEvent)
@@ -1135,49 +1147,58 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
 	managerEventListenerProxy = null;
 	eventListener = null;
     }
-    
-    public List<PeerEntryEvent> getPeerEntries() throws ManagerCommunicationException
+
+    public List<PeerEntryEvent> getPeerEntries()
+	    throws ManagerCommunicationException
     {
-    ResponseEvents responseEvents = sendEventGeneratingAction(new SipPeersAction(),2000);
-    List <PeerEntryEvent> peerEntries = new ArrayList<PeerEntryEvent>(30);
-    for (ResponseEvent re : responseEvents.getEvents()) {
-    	if (re instanceof PeerEntryEvent) {
-    		peerEntries.add((PeerEntryEvent)re);
-    	}
-   	} 
-   	return peerEntries;
-    }
-    
-    public DbGetResponseEvent dbGet(String family, String key)
-    	throws ManagerCommunicationException
-    {
-    ResponseEvents responseEvents = sendEventGeneratingAction(new DbGetAction(family,key),2000);
-   	DbGetResponseEvent dbgre = null;
-   	for (ResponseEvent re: responseEvents.getEvents()) {
-   		dbgre = (DbGetResponseEvent)re;
-    }
-    return dbgre;
-    }
-    
-    public void dbDel (String family, String key)
-    	throws ManagerCommunicationException 
-    {
-    // The following only works with BRIStuffed asrterisk: sendAction(new DbDelAction(family,key));
-    // Use cli command instead ...
-    sendAction(new CommandAction("database del " + family + " " + key));
-    }
-    
-    public void dbPut (String family, String key, String value) 
-    	throws ManagerCommunicationException 
-    {
-    sendAction(new DbPutAction(family,key,value));
+	ResponseEvents responseEvents = sendEventGeneratingAction(
+		new SipPeersAction(), 2000);
+	List<PeerEntryEvent> peerEntries = new ArrayList<PeerEntryEvent>(30);
+	for (ResponseEvent re : responseEvents.getEvents())
+	{
+	    if (re instanceof PeerEntryEvent)
+	    {
+		peerEntries.add((PeerEntryEvent) re);
+	    }
+	}
+	return peerEntries;
     }
 
-    public AsteriskChannel getChannelByNameAndActive(String name) throws ManagerCommunicationException
+    public DbGetResponseEvent dbGet(String family, String key)
+	    throws ManagerCommunicationException
     {
-        initializeIfNeeded();
-        return channelManager.getChannelImplByNameAndActive(name);
+	ResponseEvents responseEvents = sendEventGeneratingAction(
+		new DbGetAction(family, key), 2000);
+	DbGetResponseEvent dbgre = null;
+	for (ResponseEvent re : responseEvents.getEvents())
+	{
+	    dbgre = (DbGetResponseEvent) re;
+	}
+	return dbgre;
     }
+
+    public void dbDel(String family, String key)
+	    throws ManagerCommunicationException
+    {
+	// The following only works with BRIStuffed asrterisk: sendAction(new
+    // DbDelAction(family,key));
+	// Use cli command instead ...
+	sendAction(new CommandAction("database del " + family + " " + key));
+    }
+
+    public void dbPut(String family, String key, String value)
+	    throws ManagerCommunicationException
+    {
+	sendAction(new DbPutAction(family, key, value));
+    }
+
+    public AsteriskChannel getChannelByNameAndActive(String name)
+	    throws ManagerCommunicationException
+    {
+	initializeIfNeeded();
+	return channelManager.getChannelImplByNameAndActive(name);
+    }
+
     /**
      * @return a Collection of agents
      * @throws ManagerCommunicationException if there is a problem communication

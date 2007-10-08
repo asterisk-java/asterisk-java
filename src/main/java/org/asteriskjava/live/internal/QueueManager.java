@@ -31,7 +31,9 @@ import org.asteriskjava.manager.event.JoinEvent;
 import org.asteriskjava.manager.event.LeaveEvent;
 import org.asteriskjava.manager.event.ManagerEvent;
 import org.asteriskjava.manager.event.QueueEntryEvent;
+import org.asteriskjava.manager.event.QueueMemberAddedEvent;
 import org.asteriskjava.manager.event.QueueMemberEvent;
+import org.asteriskjava.manager.event.QueueMemberRemovedEvent;
 import org.asteriskjava.manager.event.QueueMemberStatusEvent;
 import org.asteriskjava.manager.event.QueueParamsEvent;
 import org.asteriskjava.util.Log;
@@ -294,6 +296,56 @@ class QueueManager
 	    logger.error("Requested queue " + queue + " not found!");
 	    return null;
 	}
+    }
+
+    /**
+     * Challange a QueueMemberAddedEvent.
+     * @param event - the generated QueueMemberAddedEvent.
+     */
+    public void handleQueueMemberAddedEvent(QueueMemberAddedEvent event)
+    {
+	final AsteriskQueueImpl queue = queues.get(event.getQueue());
+	if (queue == null)
+	{
+	    logger.error("Ignored QueueMemberAddedEvent for unknown queue "
+		    + event.getQueue());
+	    return;
+	}
+	AsteriskQueueMemberImpl member = queue.getMember(event.getLocation());
+	if (member == null)
+	{
+	    member = new AsteriskQueueMemberImpl(server, queue, event
+		    .getLocation(), QueueMemberState.valueOf(event.getStatus()));
+	}
+	queue.addMember(member);
+    }
+
+    /**
+     * Challange a QueueMemberRemovedEvent.
+     * @param event - the generated QueueMemberRemovedEvent.
+     */
+    public void handleQueueMemberRemovedEvent(QueueMemberRemovedEvent event)
+    {
+	final AsteriskQueueImpl queue = queues.get(event.getQueue());
+	if (queue == null)
+	{
+	    logger.error("Ignored QueueMemberRemovedEvent for unknown queue "
+		    + event.getQueue());
+	    return;
+	}
+	AsteriskQueueMemberImpl member = queue.getMember(event.getLocation());
+	if (member == null)
+	{
+	    logger
+		    .error("Ignored QueueMemberRemovedEvent for unknown agent name: "
+			    + event.getMemberName()
+			    + " location: "
+			    + event.getLocation()
+			    + " queue: "
+			    + event.getQueue());
+	    return;
+	}
+	queue.removeMember(member);
     }
 
 }

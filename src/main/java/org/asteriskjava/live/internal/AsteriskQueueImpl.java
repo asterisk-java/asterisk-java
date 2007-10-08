@@ -311,4 +311,24 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
 	    }
 	}
     }
+
+    /**
+     * Removes a member from this queue.
+     * @param member
+     */
+    public void removeMember(AsteriskQueueMemberImpl member)
+    {
+	synchronized (members)
+	{
+	    // Check if member exists
+	    if (!members.containsValue(member))
+	    {
+		return;
+	    }
+	    // If so, remove the member.
+	    logger.info("Remove member from the queue " + getName() + ": "
+		    + member.toString());
+	    members.remove(member.getLocation());
+	}
+    }
 }
