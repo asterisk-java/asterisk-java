@@ -176,7 +176,7 @@ class QueueManager
 	if (member == null)
 	{
 	    member = new AsteriskQueueMemberImpl(server, queue, event
-		    .getLocation(), QueueMemberState.DEVICE_NOT_INUSE);
+		    .getLocation(), QueueMemberState.valueOf(event.getStatus()));
 	}
 	queue.addMember(member);
 
