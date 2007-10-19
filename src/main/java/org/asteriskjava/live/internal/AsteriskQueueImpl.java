@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.asteriskjava.live.AsteriskChannel;
 import org.asteriskjava.live.AsteriskQueue;
@@ -36,6 +38,39 @@ import org.asteriskjava.util.LogFactory;
  */
 class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
 {
+    /**
+     * @author <a href="mailto:patrick.breucking{@nospam}gonicus.de">Patrick
+     *         Breucking</a>
+     * @since 0.1
+     * @version $Id$
+     * 
+     */
+    public class ServiceLevelTimerTask extends TimerTask
+    {
+
+	private AsteriskChannel channel;
+
+	/**
+	 * 
+	 */
+	public ServiceLevelTimerTask(AsteriskChannel channel)
+	{
+	    this.channel = channel;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see java.util.TimerTask#run()
+	 */
+	@Override
+	public void run()
+	{
+	    System.out.println("Run Timer");
+	    fireServiceLevelExceeded(channel);
+	}
+
+    }
+
     private final Log logger = LogFactory.getLog(this.getClass());
     private final String name;
     private Integer max;
@@ -43,6 +78,7 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
     private Integer serviceLevel;
     private Integer weight;
     private final ArrayList<AsteriskChannel> entries;
+    private final Timer timer;
     private final HashMap<String, AsteriskQueueMemberImpl> members;
     private final List<AsteriskQueueListener> listeners;
 
@@ -58,6 +94,7 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
 	this.entries = new ArrayList<AsteriskChannel>(25);
 	listeners = new ArrayList<AsteriskQueueListener>();
 	members = new HashMap<String, AsteriskQueueMemberImpl>();
+	timer = new Timer();
     }
 
     public String getName()
@@ -111,6 +148,11 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
 
     void addEntry(AsteriskChannel entry)
     {
+	long delay = serviceLevel.longValue() * 1000;
+	if (delay > 0)
+	{
+	    timer.schedule(new ServiceLevelTimerTask(entry), delay);
+	}
 	synchronized (entries)
 	{
 	    // only add if not yet there
@@ -329,6 +371,26 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
 	    logger.info("Remove member from the queue " + getName() + ": "
 		    + member.toString());
 	    members.remove(member.getLocation());
+	}
+    }
+
+    /**
+     * @param channel2
+     */
+    void fireServiceLevelExceeded(AsteriskChannel channel)
+    {
+	synchronized (listeners)
+	{
+	    for (AsteriskQueueListener listener : listeners)
+	    {
+		try
+		{
+		    listener.onEntryServiceLevelExceeded(channel);
+		} catch (Exception e)
+		{
+		    logger.warn("Exception in fireServiceLevelExceeded()", e);
+		}
+	    }
 	}
     }
 }

@@ -31,4 +31,9 @@ public interface AsteriskQueueListener
      * @author pbreucking
      */
     void onMemberStateChange(AsteriskQueueMember member);
+
+    /**
+     * @param channel
+     */
+    void onEntryServiceLevelExceeded(AsteriskChannel channel);
 }
