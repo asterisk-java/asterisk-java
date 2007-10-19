@@ -81,6 +81,7 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
     private final Timer timer;
     private final HashMap<String, AsteriskQueueMemberImpl> members;
     private final List<AsteriskQueueListener> listeners;
+    private final HashMap<AsteriskChannel, ServiceLevelTimerTask> timers;
 
     AsteriskQueueImpl(AsteriskServerImpl server, String name, Integer max,
 	    String strategy, Integer serviceLevel, Integer weight)
@@ -95,6 +96,7 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
 	listeners = new ArrayList<AsteriskQueueListener>();
 	members = new HashMap<String, AsteriskQueueMemberImpl>();
 	timer = new Timer();
+	timers = new HashMap<AsteriskChannel, ServiceLevelTimerTask>();
     }
 
     public String getName()
@@ -151,7 +153,9 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
 	long delay = serviceLevel.longValue() * 1000;
 	if (delay > 0)
 	{
-	    timer.schedule(new ServiceLevelTimerTask(entry), delay);
+	    ServiceLevelTimerTask timerTask = new ServiceLevelTimerTask(entry);
+	    timer.schedule(timerTask, delay);
+	    timers.put(entry, timerTask);
 	}
 	synchronized (entries)
 	{
@@ -167,6 +171,12 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
 
     void removeEntry(AsteriskChannel entry)
     {
+	if (timers.containsKey(entry))
+	{
+	    ServiceLevelTimerTask timerTask = timers.get(entry);
+	    timerTask.cancel();
+	    timers.remove(timerTask);
+	}
 	synchronized (entries)
 	{
 	    entries.remove(entry);
