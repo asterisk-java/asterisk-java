@@ -594,51 +594,55 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     protected AsteriskVersion determineVersion() throws IOException, TimeoutException
     {
         int attempts = 0;
-        while (attempts < MAX_VERSION_ATTEMPTS)
+        while (attempts++ < MAX_VERSION_ATTEMPTS)
         {
-            ManagerResponse showVersionFilesResponse;
+            final ManagerResponse showVersionFilesResponse;
+            final List<String> showVersionFilesResult;
 
             // increase timeout as output is quite large
             showVersionFilesResponse = sendAction(new CommandAction("show version files pbx.c"), defaultResponseTimeout * 2);
-            if (showVersionFilesResponse instanceof CommandResponse)
+            if (!(showVersionFilesResponse instanceof CommandResponse))
             {
-                List<String> showVersionFilesResult;
+                // return early in case of permission problems
+                // org.asteriskjava.manager.response.ManagerError:
+                // actionId='null'; message='Permission denied'; response='Error';
+                // uniqueId='null'; systemHashcode=15231583
+                break;
+            }
 
-                showVersionFilesResult = ((CommandResponse) showVersionFilesResponse).getResult();
-                if (showVersionFilesResult != null && showVersionFilesResult.size() > 0)
+            showVersionFilesResult = ((CommandResponse) showVersionFilesResponse).getResult();
+            if (showVersionFilesResult != null && showVersionFilesResult.size() > 0)
+            {
+                final String line1;
+
+                line1 = showVersionFilesResult.get(0);
+                if (line1 != null && line1.startsWith("File"))
                 {
-                    String line1;
+                    final String rawVersion;
 
-                    line1 = showVersionFilesResult.get(0);
-                    if (line1 != null && line1.startsWith("File"))
+                    rawVersion = getRawVersion();
+                    if (rawVersion != null && rawVersion.startsWith("Asterisk 1.4"))
                     {
-                        final String rawVersion;
+                        return AsteriskVersion.ASTERISK_1_4;
+                    }
 
-                        rawVersion = getRawVersion();
-                        if (rawVersion != null && rawVersion.startsWith("Asterisk 1.4"))
-                        {
-                            return AsteriskVersion.ASTERISK_1_4;
-                        }
-
-                        return AsteriskVersion.ASTERISK_1_2;
-                    }
-                    else if (line1 != null && line1.contains("No such command"))
+                    return AsteriskVersion.ASTERISK_1_2;
+                }
+                else if (line1 != null && line1.contains("No such command"))
+                {
+                    try
                     {
-                        try
-                        {
-                            attempts++;
-                            Thread.sleep(RECONNECTION_VERSION_INTERVAL);
-                        }
-                        catch (Exception ex)
-                        {
-                            // ingnore
-                        }
+                        Thread.sleep(RECONNECTION_VERSION_INTERVAL);
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        // if it isn't the "no such command", break and return the lowest version immediately
-                        break;
+                        // ingnore
                     }
+                }
+                else
+                {
+                    // if it isn't the "no such command", break and return the lowest version immediately
+                    break;
                 }
             }
         }
