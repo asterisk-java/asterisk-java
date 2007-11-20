@@ -242,6 +242,15 @@ public class AgiChannelImpl implements AgiChannel
         return reply.getResultCodeAsChar();
     }
 
+    public char streamFile(String file, String escapeDigits, int offset)
+    throws AgiException
+    {
+        AgiReply reply;
+
+        reply = sendCommand(new StreamFileCommand(file, escapeDigits, offset));
+        return reply.getResultCodeAsChar();
+    }
+
     public void sayDigits(String digits) throws AgiException
     {
         sendCommand(new SayDigitsCommand(digits));

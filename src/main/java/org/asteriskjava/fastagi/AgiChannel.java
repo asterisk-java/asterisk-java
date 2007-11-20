@@ -276,6 +276,19 @@ public interface AgiChannel
     char streamFile(String file, String escapeDigits) throws AgiException;
 
     /**
+     * Plays the given file starting at the specified offset and allows the 
+     * user to escape by pressing one of the given digit.
+     * 
+     * @param file name of the file to play.
+     * @param escapeDigits a String containing the DTMF digits that allow the
+     *            user to escape.
+     * @param offset the offset samples to skip before streaming.
+     * @return the DTMF digit pressed or 0x0 if none was pressed.
+     * @since 1.0.0
+     */
+    char streamFile(String file, String escapeDigits, int offset) throws AgiException;
+
+    /**
      * Says the given digit string.
      * 
      * @param digits the digit string to say.
