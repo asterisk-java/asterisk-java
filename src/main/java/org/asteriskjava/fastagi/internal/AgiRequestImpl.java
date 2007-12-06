@@ -100,7 +100,7 @@ public class AgiRequestImpl implements Serializable, AgiRequest
     }
 
     /**
-     * Builds a map containing variable names as key (with the "agi_" prefix
+     * Builds a map containing variable names as key (with the "agi_" or "ogi_" prefix
      * stripped) and the corresponding values.<p>
      * Syntactically invalid and empty variables are skipped.
      * 
@@ -128,8 +128,8 @@ public class AgiRequestImpl implements Serializable, AgiRequest
                 continue;
             }
 
-            // key doesn't start with agi_?
-            if (!line.startsWith("agi_"))
+            // key doesn't start with agi_ or ogi_?
+            if (!line.startsWith("agi_") && !line.startsWith("ogi_"))
             {
                 continue;
             }
