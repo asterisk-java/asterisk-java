@@ -14,7 +14,7 @@ import org.asteriskjava.manager.event.ManagerEvent;
 
 /**
  * @author srt
- * @version $Id: TestDefaultManagerConnection.java 309 2006-05-19 15:32:51Z srt $
+ * @version $Id$
  */
 public class TestConcurrentUseOfDefaultManagerConnection extends TestCase
 {

@@ -8,7 +8,7 @@ package org.asteriskjava.live;
 
 /**
  * @author srt
- * @version $Id: OriginateTest.java 506 2006-07-23 20:24:18Z srt $
+ * @version $Id$
  */
 public class OriginateCauseAsyncTest extends AsteriskServerTestCase
 {
