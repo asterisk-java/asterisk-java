@@ -66,6 +66,8 @@ public class DefaultAgiServer implements AgiServer
 
     private ServerSocketFacade serverSocket;
 
+    private String configResourceBundleName = DEFAULT_CONFIG_RESOURCE_BUNDLE_NAME;
+
     /**
      * The port to listen on.
      */
@@ -102,6 +104,16 @@ public class DefaultAgiServer implements AgiServer
      */
     public DefaultAgiServer()
     {
+        this(null);
+    }
+
+    /**
+     * Creates a new DefaultAgiServer and loads its configuration from an alternative resource bundle.
+     *
+     * @param configResourceBundleName the name of the conifiguration resource bundle (default is "fastagi").
+     */
+    public DefaultAgiServer(String configResourceBundleName)
+    {
         this.port = DEFAULT_BIND_PORT;
         this.poolSize = DEFAULT_POOL_SIZE;
         this.maximumPoolSize = DEFAULT_MAXIMUM_POOL_SIZE;
@@ -109,8 +121,14 @@ public class DefaultAgiServer implements AgiServer
         this.mappingStrategy = new CompositeMappingStrategy(new ResourceBundleMappingStrategy(),
                 new ClassNameMappingStrategy());
 
+        if (configResourceBundleName != null)
+        {
+            this.configResourceBundleName = configResourceBundleName;
+        }
+
         loadConfig();
     }
+
 
     /**
      * Sets the number of worker threads in the thread pool.
@@ -167,6 +185,17 @@ public class DefaultAgiServer implements AgiServer
     }
 
     /**
+     * Returns the TCP port this server is configured to bind to.
+     *
+     * @return the TCP port this server is configured to bind to.
+     * @since 1.0.0
+     */
+    public int getPort()
+    {
+        return port;
+    }
+
+    /**
      * Sets the strategy to use for mapping AgiRequests to AgiScripts that serve them.
      * <p>
      * The default mapping strategy is a ResourceBundleMappingStrategy.
@@ -185,7 +214,7 @@ public class DefaultAgiServer implements AgiServer
 
         try
         {
-            resourceBundle = ResourceBundle.getBundle(DEFAULT_CONFIG_RESOURCE_BUNDLE_NAME);
+            resourceBundle = ResourceBundle.getBundle(configResourceBundleName);
         }
         catch (MissingResourceException e)
         {
@@ -196,8 +225,11 @@ public class DefaultAgiServer implements AgiServer
         {
             String portString;
 
-            portString = resourceBundle.getString("port");
-            if (portString == null)
+            try
+            {
+                portString = resourceBundle.getString("port");
+            }
+            catch (MissingResourceException e)
             {
                 // for backward compatibility only
                 portString = resourceBundle.getString("bindPort");

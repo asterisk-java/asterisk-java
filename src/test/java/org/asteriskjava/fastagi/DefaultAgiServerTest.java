@@ -108,6 +108,7 @@ public class DefaultAgiServerTest extends TestCase
             }
             catch (InterruptedException e)
             {
+                // ignore
             }
 
             if (acceptCalls == 1)
@@ -124,5 +125,30 @@ public class DefaultAgiServerTest extends TestCase
         {
             closeCalls++;
         }
+    }
+
+    public void testLoadConfigWithDefaultPort()
+    {
+        DefaultAgiServer defaultAgiServer;
+
+        defaultAgiServer = new DefaultAgiServer();
+        assertEquals("Invalid default port", 4573, defaultAgiServer.getPort());
+    }
+
+    public void testLoadConfigWithPort()
+    {
+        DefaultAgiServer defaultAgiServer;
+
+        defaultAgiServer = new DefaultAgiServer("test1-fastagi");
+        assertEquals("Port property not recognized", 1234, defaultAgiServer.getPort());
+
+    }
+
+    public void testLoadConfigWithBindPort()
+    {
+        DefaultAgiServer defaultAgiServer;
+
+        defaultAgiServer = new DefaultAgiServer("test2-fastagi");
+        assertEquals("BindPort property not recognized", 2345, defaultAgiServer.getPort());
     }
 }
