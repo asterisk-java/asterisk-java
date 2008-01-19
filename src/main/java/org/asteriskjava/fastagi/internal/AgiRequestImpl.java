@@ -87,7 +87,7 @@ public class AgiRequestImpl implements Serializable, AgiRequest
         }
         request = buildMap(environment);
 
-        script = (String) request.get("network_script");
+        script = request.get("network_script");
         if (script != null)
         {
             Matcher scriptMatcher = SCRIPT_PATTERN.matcher(script);
@@ -176,7 +176,7 @@ public class AgiRequestImpl implements Serializable, AgiRequest
      */
     public String getRequestURL()
     {
-        return (String) request.get("request");
+        return request.get("request");
     }
 
     /**
@@ -186,7 +186,7 @@ public class AgiRequestImpl implements Serializable, AgiRequest
      */
     public String getChannel()
     {
-        return (String) request.get("channel");
+        return request.get("channel");
     }
 
     /**
@@ -196,17 +196,17 @@ public class AgiRequestImpl implements Serializable, AgiRequest
      */
     public String getUniqueId()
     {
-        return (String) request.get("uniqueid");
+        return request.get("uniqueid");
     }
 
     public String getType()
     {
-        return (String) request.get("type");
+        return request.get("type");
     }
 
     public String getLanguage()
     {
-        return (String) request.get("language");
+        return request.get("language");
     }
 
     public String getCallerId()
@@ -219,8 +219,8 @@ public class AgiRequestImpl implements Serializable, AgiRequest
         String callerIdName;
         String callerId;
 
-        callerIdName = (String) request.get("calleridname");
-        callerId = (String) request.get("callerid");
+        callerIdName = request.get("calleridname");
+        callerId = request.get("callerid");
         if (callerIdName != null)
         {
             // Asterisk 1.2
@@ -242,7 +242,7 @@ public class AgiRequestImpl implements Serializable, AgiRequest
     {
         String callerIdName;
 
-        callerIdName = (String) request.get("calleridname");
+        callerIdName = request.get("calleridname");
         if (callerIdName != null)
         {
             // Asterisk 1.2
@@ -271,7 +271,7 @@ public class AgiRequestImpl implements Serializable, AgiRequest
 
         if (!callerIdCreated)
         {
-            rawCallerId = (String) request.get("callerid");
+            rawCallerId = request.get("callerid");
             callerIdCreated = true;
         }
 
@@ -295,13 +295,7 @@ public class AgiRequestImpl implements Serializable, AgiRequest
     {
         if (!callerIdCreated)
         {
-            rawCallerId = (String) request.get("callerid");
-            callerIdCreated = true;
-        }
-
-        if (!callerIdCreated)
-        {
-            rawCallerId = (String) request.get("callerid");
+            rawCallerId = request.get("callerid");
             callerIdCreated = true;
         }
 
@@ -312,7 +306,7 @@ public class AgiRequestImpl implements Serializable, AgiRequest
     {
         String dnid;
         
-        dnid = (String) request.get("dnid");
+        dnid = request.get("dnid");
         
         if (dnid == null || "unknown".equals(dnid))
         {
@@ -326,7 +320,7 @@ public class AgiRequestImpl implements Serializable, AgiRequest
     {
         String rdnis;
         
-        rdnis = (String) request.get("rdnis");
+        rdnis = request.get("rdnis");
         
         if (rdnis == null || "unknown".equals(rdnis))
         {
@@ -338,19 +332,19 @@ public class AgiRequestImpl implements Serializable, AgiRequest
 
     public String getContext()
     {
-        return (String) request.get("context");
+        return request.get("context");
     }
 
     public String getExtension()
     {
-        return (String) request.get("extension");
+        return request.get("extension");
     }
 
     public Integer getPriority()
     {
         if (request.get("priority") != null)
         {
-            return Integer.valueOf((String) request.get("priority"));
+            return Integer.valueOf(request.get("priority"));
         }
         return null;
     }
@@ -359,7 +353,7 @@ public class AgiRequestImpl implements Serializable, AgiRequest
     {
         if (request.get("enhanced") != null)
         {
-            if ("1.0".equals((String) request.get("enhanced")))
+            if ("1.0".equals(request.get("enhanced")))
             {
                 return Boolean.TRUE;
             }
@@ -611,22 +605,22 @@ public class AgiRequestImpl implements Serializable, AgiRequest
         StringBuffer sb;
 
         sb = new StringBuffer("AgiRequest[");
-        sb.append("script='" + getScript() + "',");
-        sb.append("requestURL='" + getRequestURL() + "',");
-        sb.append("channel='" + getChannel() + "',");
-        sb.append("uniqueId='" + getUniqueId() + "',");
-        sb.append("type='" + getType() + "',");
-        sb.append("language='" + getLanguage() + "',");
-        sb.append("callerId='" + getCallerId() + "',");
-        sb.append("callerIdName='" + getCallerIdName() + "',");
-        sb.append("dnid='" + getDnid() + "',");
-        sb.append("rdnis='" + getRdnis() + "',");
-        sb.append("context='" + getContext() + "',");
-        sb.append("extension='" + getExtension() + "',");
-        sb.append("priority='" + getPriority() + "',");
-        sb.append("enhanced='" + getEnhanced() + "',");
-        sb.append("accountCode='" + getAccountCode() + "',");
-        sb.append("systemHashcode=" + System.identityHashCode(this));
+        sb.append("script='").append(getScript()).append("',");
+        sb.append("requestURL='").append(getRequestURL()).append("',");
+        sb.append("channel='").append(getChannel()).append("',");
+        sb.append("uniqueId='").append(getUniqueId()).append("',");
+        sb.append("type='").append(getType()).append("',");
+        sb.append("language='").append(getLanguage()).append("',");
+        sb.append("callerId='").append(getCallerId()).append("',");
+        sb.append("callerIdName='").append(getCallerIdName()).append("',");
+        sb.append("dnid='").append(getDnid()).append("',");
+        sb.append("rdnis='").append(getRdnis()).append("',");
+        sb.append("context='").append(getContext()).append("',");
+        sb.append("extension='").append(getExtension()).append("',");
+        sb.append("priority='").append(getPriority()).append("',");
+        sb.append("enhanced='").append(getEnhanced()).append("',");
+        sb.append("accountCode='").append(getAccountCode()).append("',");
+        sb.append("systemHashcode=").append(System.identityHashCode(this));
         sb.append("]");
 
         return sb.toString();
