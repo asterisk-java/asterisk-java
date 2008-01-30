@@ -24,7 +24,7 @@ package org.asteriskjava.manager.action;
  * Asterisk's dialplan, you don't need to know the agent's password when logging
  * in an agent.<p>
  * Available since Asterisk 1.2
- * 
+ *
  * @author srt
  * @version $Id$
  * @since 0.2
@@ -52,10 +52,10 @@ public class AgentCallbackLoginAction extends AbstractManagerAction
     /**
      * Creates a new AgentCallbackLoginAction, that logs in the given agent at
      * the given callback extension.
-     * 
+     *
      * @param agent the name of the agent to log in
      * @param exten the extension that is called to connect a queue member with
-     *            this agent
+     *              this agent
      */
     public AgentCallbackLoginAction(String agent, String exten)
     {
@@ -66,10 +66,10 @@ public class AgentCallbackLoginAction extends AbstractManagerAction
     /**
      * Creates a new AgentCallbackLoginAction, that logs in the given agent at
      * the given callback extension in the given context.
-     * 
-     * @param agent the name of the agent to log in
-     * @param exten the extension that is called to connect a queue member with
-     *            this agent
+     *
+     * @param agent   the name of the agent to log in
+     * @param exten   the extension that is called to connect a queue member with
+     *                this agent
      * @param context the context of the extension to use for callback
      */
     public AgentCallbackLoginAction(String agent, String exten, String context)
@@ -79,19 +79,41 @@ public class AgentCallbackLoginAction extends AbstractManagerAction
     }
 
     /**
+     * Creates a new AgentCallbackLoginAction, that logs in the given agent at
+     * the given callback extension in the given context.
+     *
+     * @param agent      the name of the agent to log in
+     * @param exten      the extension that is called to connect a queue member with
+     *                   this agent
+     * @param context    the context of the extension to use for callback
+     * @param ackCall    <code>Boolean.TRUE</code> to require an acknowledgement by
+     *                   '#' when agent is called back, <code>Boolean.FALSE</code> otherwise.
+     *                   <code>null</code> if default should be used.
+     * @param wrapupTime the minimum amount of time (in seconds) after disconnecting before
+     *                   the caller can receive a new call.
+     * @since 1.0.0
+     */
+    public AgentCallbackLoginAction(String agent, String exten, String context, Boolean ackCall, long wrapupTime)
+    {
+        this(agent, exten, context);
+        this.ackCall = ackCall;
+        this.wrapupTime = wrapupTime;
+    }
+
+    /**
      * Returns the name of this action, i.e. "AgentCallbackLogin".
-     * 
+     *
      * @return the name of this action
      */
     @Override
-   public String getAction()
+    public String getAction()
     {
         return "AgentCallbackLogin";
     }
 
     /**
      * Returns the name of the agent to log in, for example "1002".
-     * 
+     *
      * @return the name of the agent to log in
      */
     public String getAgent()
@@ -102,7 +124,7 @@ public class AgentCallbackLoginAction extends AbstractManagerAction
     /**
      * Sets the name of the agent to log in, for example "1002".<p>
      * This is property is mandatory.
-     * 
+     *
      * @param agent the name of the agent to log in
      */
     public void setAgent(String agent)
@@ -112,7 +134,7 @@ public class AgentCallbackLoginAction extends AbstractManagerAction
 
     /**
      * Returns the extension to use for callback.
-     * 
+     *
      * @return the extension to use for callback.
      */
     public String getExten()
@@ -123,7 +145,7 @@ public class AgentCallbackLoginAction extends AbstractManagerAction
     /**
      * Sets the extension to use for callback.<p>
      * This is property is mandatory.
-     * 
+     *
      * @param exten the extension to use for callback.
      */
     public void setExten(String exten)
@@ -133,7 +155,7 @@ public class AgentCallbackLoginAction extends AbstractManagerAction
 
     /**
      * Returns the context of the extension to use for callback.
-     * 
+     *
      * @return the context of the extension to use for callback.
      */
     public String getContext()
@@ -143,7 +165,7 @@ public class AgentCallbackLoginAction extends AbstractManagerAction
 
     /**
      * Sets the context of the extension to use for callback.
-     * 
+     *
      * @param context the context of the extension to use for callback.
      */
     public void setContext(String context)
@@ -153,9 +175,9 @@ public class AgentCallbackLoginAction extends AbstractManagerAction
 
     /**
      * Returns if an acknowledgement is needed when agent is called back.
-     * 
-     * @return Boolean.TRUE if acknowledgement by '#' is required when agent is
-     *         called back, Boolean.FALSE otherwise. <code>null</code> if
+     *
+     * @return <code>Boolean.TRUE</code> if acknowledgement by '#' is required when agent is
+     *         called back, <code>Boolean.FALSE</code> otherwise. <code>null</code> if
      *         default should be used.
      */
     public Boolean getAckCall()
@@ -167,10 +189,10 @@ public class AgentCallbackLoginAction extends AbstractManagerAction
      * Sets if an acknowledgement is needed when agent is called back.<p>
      * This property is optional, it allows you to override the defaults defined
      * in Asterisk's configuration.
-     * 
-     * @param ackCall Boolean.TRUE to 'true' to require an acknowledgement by
-     *            '#' when agent is called back, Boolean.FALSE otherwise.
-     *            <code>null</code> if default should be used.
+     *
+     * @param ackCall <code>Boolean.TRUE</code> to require an acknowledgement by
+     *                '#' when agent is called back, <code>Boolean.FALSE</code> otherwise.
+     *                <code>null</code> if default should be used.
      */
     public void setAckCall(Boolean ackCall)
     {
@@ -180,9 +202,9 @@ public class AgentCallbackLoginAction extends AbstractManagerAction
     /**
      * Returns the minimum amount of time after disconnecting before the caller
      * can receive a new call.
-     * 
+     *
      * @return the minimum amount of time after disconnecting before the caller
-     *         can receive a new call in milliseconds.
+     *         can receive a new call in seconds.
      */
     public Long getWrapupTime()
     {
@@ -194,9 +216,9 @@ public class AgentCallbackLoginAction extends AbstractManagerAction
      * receive a new call.<p>
      * This property is optional, it allows you to override the defaults defined
      * in Asterisk's configuration.
-     * 
-     * @param wrapupTime the minimum amount of time after disconnecting before
-     *            the caller can receive a new call in milliseconds.
+     *
+     * @param wrapupTime the minimum amount of time (in seconds) after disconnecting before
+     *                   the caller can receive a new call.
      */
     public void setWrapupTime(Long wrapupTime)
     {
