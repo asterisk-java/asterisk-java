@@ -29,7 +29,7 @@ package org.asteriskjava.manager.event;
  * @see org.asteriskjava.manager.action.VoicemailUsersListAction
  * @since 1.0.0
  */
-public class VoicemailUserEntryEvent extends ManagerEvent
+public class VoicemailUserEntryEvent extends ResponseEvent
 {
     /**
      * Serial version identifier.
@@ -400,9 +400,9 @@ public class VoicemailUserEntryEvent extends ManagerEvent
     }
 
     /**
-     * Returns the maximum number of messages per folder.
+     * Returns the maximum number of messages per folder. 0 indicated unlimited.
      *
-     * @return the maximum number of messages per folder.
+     * @return the maximum number of messages per folder or 0 for unlimited.
      */
     public Integer getMaxMessageCount()
     {
