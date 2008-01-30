@@ -20,10 +20,10 @@ import java.io.Serializable;
 
 /**
  * Represents the version of an Asterisk server.
- * 
- * @since 0.2
+ *
  * @author srt
  * @version $Id$
+ * @since 0.2
  */
 public class AsteriskVersion implements Comparable<AsteriskVersion>, Serializable
 {
@@ -33,22 +33,26 @@ public class AsteriskVersion implements Comparable<AsteriskVersion>, Serializabl
     /**
      * Represents the Asterisk 1.0 series.
      */
-    public static final AsteriskVersion ASTERISK_1_0 = new AsteriskVersion(100,
-            "Asterisk 1.0");
+    public static final AsteriskVersion ASTERISK_1_0 = new AsteriskVersion(100, "Asterisk 1.0");
 
     /**
      * Represents the Asterisk 1.2 series.
      */
-    public static final AsteriskVersion ASTERISK_1_2 = new AsteriskVersion(120,
-            "Asterisk 1.2");
+    public static final AsteriskVersion ASTERISK_1_2 = new AsteriskVersion(120, "Asterisk 1.2");
 
     /**
      * Represents the Asterisk 1.4 series.
      *
      * @since 0.3
      */
-    public static final AsteriskVersion ASTERISK_1_4 = new AsteriskVersion(140,
-            "Asterisk 1.4");
+    public static final AsteriskVersion ASTERISK_1_4 = new AsteriskVersion(140, "Asterisk 1.4");
+
+    /**
+     * Represents the Asterisk 1.6 series.
+     *
+     * @since 1.0.0
+     */
+    public static final AsteriskVersion ASTERISK_1_6 = new AsteriskVersion(160, "Asterisk 1.6");
 
     /**
      * Serial version identifier.
@@ -64,21 +68,14 @@ public class AsteriskVersion implements Comparable<AsteriskVersion>, Serializabl
     /**
      * Returns <code>true</code> if this version is equal to or higher than
      * the given version.
-     * 
+     *
      * @param o the version to compare to
      * @return <code>true</code> if this version is equal to or higher than
-     *         the given version.
+     *         the given version, <code>false</code> otherwise.
      */
     public boolean isAtLeast(AsteriskVersion o)
     {
-        if (version >= o.version)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return version >= o.version;
     }
 
     public int compareTo(AsteriskVersion o)
@@ -100,9 +97,8 @@ public class AsteriskVersion implements Comparable<AsteriskVersion>, Serializabl
         }
     }
 
-
     @Override
-   public boolean equals(Object o)
+    public boolean equals(Object o)
     {
         if (this == o)
         {
@@ -124,13 +120,13 @@ public class AsteriskVersion implements Comparable<AsteriskVersion>, Serializabl
     }
 
     @Override
-   public int hashCode()
+    public int hashCode()
     {
         return version;
     }
 
     @Override
-   public String toString()
+    public String toString()
     {
         return versionString;
     }
