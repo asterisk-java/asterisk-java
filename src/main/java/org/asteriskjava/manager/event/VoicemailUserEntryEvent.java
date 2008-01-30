@@ -236,21 +236,49 @@ public class VoicemailUserEntryEvent extends ResponseEvent
         this.timezone = timezone;
     }
 
+    /**
+     * Returns the dialplan context used by the "return phone call" feature in the advanced
+     * voicemail features menu.
+     *
+     * @return the dialplan context used by the "return phone call" feature in the advanced
+     *         voicemail features menu.
+     */
     public String getCallback()
     {
         return callback;
     }
 
+    /**
+     * Sets the dialplan context used by the "return phone call" feature in the advanced
+     * voicemail features menu.
+     *
+     * @param callback the dialplan context used by the "return phone call" feature in the advanced
+     *                 voicemail features menu.
+     */
     public void setCallback(String callback)
     {
         this.callback = callback;
     }
 
+    /**
+     * Returns the dialplan context used by the "place an outgoing call" feature in the advanced
+     * voicemail features menu.
+     *
+     * @return the dialplan context used by the "place an outgoing call" feature in the advanced
+     *         voicemail features menu.
+     */
     public String getDialout()
     {
         return dialout;
     }
 
+    /**
+     * Sets the dialplan context used by the "place an outgoing call" feature in the advanced
+     * voicemail features menu.
+     *
+     * @param dialout the dialplan context used by the "place an outgoing call" feature in the advanced
+     *                voicemail features menu.
+     */
     public void setDialout(String dialout)
     {
         this.dialout = dialout;
@@ -266,11 +294,21 @@ public class VoicemailUserEntryEvent extends ResponseEvent
         this.uniqueId = uniqueId;
     }
 
+    /**
+     * Returns the dialplan context the user is dropped into after he has pressed * or 0 to exit voicemail.
+     *
+     * @return the dialplan context the user is dropped into after he has pressed * or 0 to exit voicemail.
+     */
     public String getExitContext()
     {
         return exitContext;
     }
 
+    /**
+     * Sets the dialplan context the user is dropped into after he has pressed * or 0 to exit voicemail.
+     *
+     * @param exitContext the dialplan context the user is dropped into after he has pressed * or 0 to exit voicemail.
+     */
     public void setExitContext(String exitContext)
     {
         this.exitContext = exitContext;
