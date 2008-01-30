@@ -32,7 +32,7 @@ package org.asteriskjava.manager.action;
 public class AgentCallbackLoginAction extends AbstractManagerAction
 {
     /**
-     * Serializable version identifier
+     * Serializable version identifier.
      */
     private static final long serialVersionUID = 5239805071977668779L;
     private String agent;
@@ -91,9 +91,10 @@ public class AgentCallbackLoginAction extends AbstractManagerAction
      *                   <code>null</code> if default should be used.
      * @param wrapupTime the minimum amount of time (in seconds) after disconnecting before
      *                   the caller can receive a new call.
+     *                   <code>null</code> if default should be used.
      * @since 1.0.0
      */
-    public AgentCallbackLoginAction(String agent, String exten, String context, Boolean ackCall, long wrapupTime)
+    public AgentCallbackLoginAction(String agent, String exten, String context, Boolean ackCall, Long wrapupTime)
     {
         this(agent, exten, context);
         this.ackCall = ackCall;
@@ -219,6 +220,7 @@ public class AgentCallbackLoginAction extends AbstractManagerAction
      *
      * @param wrapupTime the minimum amount of time (in seconds) after disconnecting before
      *                   the caller can receive a new call.
+     *                   <code>null</code> if default should be used.
      */
     public void setWrapupTime(Long wrapupTime)
     {

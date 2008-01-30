@@ -23,15 +23,15 @@ import org.asteriskjava.manager.event.DbGetResponseEvent;
  * If an entry is found a DBGetResponseEvent is sent by Asterisk containing the
  * value, otherwise a ManagerError indicates that no entry matches.<p>
  * Available since Asterisk 1.2
- * 
- * @see org.asteriskjava.manager.event.DBGetResponseEvent
+ *
  * @author srt
  * @version $Id$
+ * @see org.asteriskjava.manager.event.DbGetResponseEvent
  * @since 0.2
  */
 public class DbGetAction extends AbstractManagerAction
         implements
-            EventGeneratingAction
+        EventGeneratingAction
 {
     /**
      * Serial version identifier
@@ -51,9 +51,9 @@ public class DbGetAction extends AbstractManagerAction
     /**
      * Creates a new DbGetAction that retrieves the value of the database entry
      * with the given key in the given family.
-     * 
+     *
      * @param family the family of the key
-     * @param key the key of the entry to retrieve
+     * @param key    the key of the entry to retrieve
      * @since 0.2
      */
     public DbGetAction(String family, String key)
@@ -63,14 +63,14 @@ public class DbGetAction extends AbstractManagerAction
     }
 
     @Override
-   public String getAction()
+    public String getAction()
     {
         return "DBGet";
     }
 
     /**
      * Returns the family of the key.
-     * 
+     *
      * @return the family of the key.
      */
     public String getFamily()
@@ -80,7 +80,7 @@ public class DbGetAction extends AbstractManagerAction
 
     /**
      * Sets the family of the key.
-     * 
+     *
      * @param family the family of the key.
      */
     public void setFamily(String family)
@@ -90,7 +90,7 @@ public class DbGetAction extends AbstractManagerAction
 
     /**
      * Returns the the key of the entry to retrieve.
-     * 
+     *
      * @return the key of the entry to retrieve.
      */
     public String getKey()
@@ -100,7 +100,7 @@ public class DbGetAction extends AbstractManagerAction
 
     /**
      * Sets the key of the entry to retrieve.
-     * 
+     *
      * @param key the key of the entry to retrieve.
      */
     public void setKey(String key)

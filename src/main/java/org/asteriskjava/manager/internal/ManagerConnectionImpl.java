@@ -66,16 +66,7 @@ import org.asteriskjava.util.internal.SocketConnectionFacadeImpl;
 import org.asteriskjava.manager.action.UserEventAction;
 
 /**
- * Default implemention of the ManagerConnection interface.
- * <p/>
- * Generelly avoid direct use of this class. Use the ManagerConnectionFactory to
- * obtain a ManagerConnection instead.
- * <p/>
- * When using a dependency injection framework like Spring direct usage for
- * wiring up beans that require a ManagerConnection property is fine though.
- * <p/>
- * Note that the DefaultManagerConnection will create one new Thread for reading
- * data from Asterisk on the first call to on of the login() methods.
+ * Internal implemention of the ManagerConnection interface.
  *
  * @author srt
  * @version $Id$
@@ -1006,7 +997,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
     public String getProtocolIdentifier()
     {
-        return protocolIdentifier.value;
+        return protocolIdentifier == null ? null : protocolIdentifier.value;
     }
 
     public ManagerConnectionState getState()
@@ -1234,7 +1225,8 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         logger.info("Connected via " + identifier);
 
         if (!"Asterisk Call Manager/1.0".equals(identifier)
-                && !"Asterisk Call Manager/1.2".equals(identifier) // bri stuffed 
+                && !"Asterisk Call Manager/1.1".equals(identifier) // Asterisk 1.6 
+                && !"Asterisk Call Manager/1.2".equals(identifier) // bri stuffed
                 && !"OpenPBX Call Manager/1.0".equals(identifier)
                 && !"CallWeaver Call Manager/1.0".equals(identifier))
         {

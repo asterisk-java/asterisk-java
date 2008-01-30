@@ -32,7 +32,7 @@ import org.asteriskjava.util.ReflectionUtil;
 public abstract class AbstractManagerAction implements ManagerAction
 {
     /**
-     * Serializable version identifier
+     * Serializable version identifier.
      */
     static final long serialVersionUID = -7667827187378395689L;
 
@@ -51,13 +51,13 @@ public abstract class AbstractManagerAction implements ManagerAction
     }
 
     @Override
-   public String toString()
+    public String toString()
     {
         StringBuffer sb;
         Map<String, Method> getters;
 
         sb = new StringBuffer(getClass().getName() + "[");
-        sb.append("action='" + getAction() + "',");
+        sb.append("action='").append(getAction()).append("',");
         getters = ReflectionUtil.getGetters(getClass());
         for (String attribute : getters.keySet())
         {
@@ -70,13 +70,13 @@ public abstract class AbstractManagerAction implements ManagerAction
             {
                 Object value;
                 value = getters.get(attribute).invoke(this);
-                sb.append(attribute + "='" + value + "',");
+                sb.append(attribute).append("='").append(value).append("',");
             }
             catch (Exception e) //NOPMD
             {
             }
         }
-        sb.append("systemHashcode=" + System.identityHashCode(this));
+        sb.append("systemHashcode=").append(System.identityHashCode(this));
         sb.append("]");
 
         return sb.toString();
