@@ -18,14 +18,10 @@ package org.asteriskjava.manager.internal;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
 
-import org.asteriskjava.manager.response.GetConfigResponse;
-import org.asteriskjava.manager.response.ChallengeResponse;
-import org.asteriskjava.manager.response.ExtensionStateResponse;
-import org.asteriskjava.manager.response.MailboxCountResponse;
-import org.asteriskjava.manager.response.MailboxStatusResponse;
-import org.asteriskjava.manager.response.ManagerError;
-import org.asteriskjava.manager.response.ManagerResponse;
+import org.asteriskjava.manager.response.*;
 
 
 /**
@@ -61,15 +57,32 @@ class ResponseBuilderImpl implements ResponseBuilder
         else if (attributes.containsKey("challenge"))
         {
             final ChallengeResponse challengeResponse = new ChallengeResponse();
-            challengeResponse.setChallenge((String) attributes.get("challenge"));
+            challengeResponse.setChallenge(attributes.get("challenge"));
             response = challengeResponse;
+        }
+        else if ("Follows".equals(responseType) && attributes.containsKey("result"))
+        {
+            final CommandResponse commandResponse = new CommandResponse();
+
+            List<String> result = new ArrayList<String>();
+            for (String resultLine : attributes.get("result").split("\n"))
+            {
+                // on error there is a leading space
+                if (!resultLine.equals("--END COMMAND--") && !resultLine.equals(" --END COMMAND--"))
+                {
+                    //logger.info("Adding '" + resultLine + "'");
+                    result.add(resultLine);
+                }
+            }
+            commandResponse.setResult(result);
+            response = commandResponse;
         }
         else if (attributes.containsKey("mailbox") && attributes.containsKey("waiting"))
         {
             final MailboxStatusResponse mailboxStatusResponse = new MailboxStatusResponse();
-            mailboxStatusResponse.setMailbox((String) attributes.get("mailbox"));
+            mailboxStatusResponse.setMailbox(attributes.get("mailbox"));
             
-            if ("1".equals((String) attributes.get("waiting")))
+            if ("1".equals(attributes.get("waiting")))
             {
                 mailboxStatusResponse.setWaiting(Boolean.TRUE);
             }
@@ -84,19 +97,19 @@ class ResponseBuilderImpl implements ResponseBuilder
                 && attributes.containsKey("oldmessages"))
         {
             final MailboxCountResponse mailboxCountResponse = new MailboxCountResponse();
-            mailboxCountResponse.setMailbox((String) attributes.get("mailbox"));
-            mailboxCountResponse.setNewMessages(Integer.valueOf((String) attributes.get("newmessages")));
-            mailboxCountResponse.setOldMessages(Integer.valueOf((String) attributes.get("oldmessages")));
+            mailboxCountResponse.setMailbox(attributes.get("mailbox"));
+            mailboxCountResponse.setNewMessages(Integer.valueOf(attributes.get("newmessages")));
+            mailboxCountResponse.setOldMessages(Integer.valueOf(attributes.get("oldmessages")));
             response = mailboxCountResponse;
         }
         else if (attributes.containsKey("exten") && attributes.containsKey("context") && attributes.containsKey("hint")
                 && attributes.containsKey("status"))
         {
             final ExtensionStateResponse extensionStateResponse = new ExtensionStateResponse();
-            extensionStateResponse.setExten((String) attributes.get("exten"));
-            extensionStateResponse.setContext((String) attributes.get("context"));
-            extensionStateResponse.setHint((String) attributes.get("hint"));
-            extensionStateResponse.setStatus(Integer.valueOf((String) attributes.get("status")));
+            extensionStateResponse.setExten(attributes.get("exten"));
+            extensionStateResponse.setContext(attributes.get("context"));
+            extensionStateResponse.setHint(attributes.get("hint"));
+            extensionStateResponse.setStatus(Integer.valueOf(attributes.get("status")));
             response = extensionStateResponse;
         }
         else if(attributes.containsKey("line-000000-000000"))

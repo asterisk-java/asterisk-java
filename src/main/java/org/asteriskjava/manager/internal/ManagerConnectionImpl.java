@@ -585,6 +585,12 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     protected AsteriskVersion determineVersion() throws IOException, TimeoutException
     {
         int attempts = 0;
+        
+        if ("Asterisk Call Manager/1.1".equals(protocolIdentifier.value))
+        {
+            return AsteriskVersion.ASTERISK_1_6;
+        }
+
         while (attempts++ < MAX_VERSION_ATTEMPTS)
         {
             final ManagerResponse showVersionFilesResponse;
@@ -997,7 +1003,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
     public String getProtocolIdentifier()
     {
-        return protocolIdentifier == null ? null : protocolIdentifier.value;
+        return protocolIdentifier.value;
     }
 
     public ManagerConnectionState getState()

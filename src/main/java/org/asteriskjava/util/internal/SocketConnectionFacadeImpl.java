@@ -26,6 +26,10 @@ import java.io.OutputStreamWriter;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.util.Scanner;
+import java.util.NoSuchElementException;
+import java.util.InputMismatchException;
+import java.util.regex.Pattern;
 
 import javax.net.SocketFactory;
 import javax.net.ssl.SSLSocketFactory;
@@ -41,54 +45,81 @@ import org.asteriskjava.util.SocketConnectionFacade;
  */
 public class SocketConnectionFacadeImpl implements SocketConnectionFacade
 {
-    private final Socket socket;
-    private final BufferedReader reader;
-    private final BufferedWriter writer;
+    private Socket socket;
+    private Scanner scanner;
+    private BufferedWriter writer;
+    static final Pattern CRNL_PATTERN = Pattern.compile("\r\n");
+    static final Pattern NL_PATTERN = Pattern.compile("\n");
 
     /**
-     * Creates a new instance.
+     * Creates a new instance for use with the Manager API that uses CRNL as line delimiter.
      * 
      * @param host the foreign host to connect to.
      * @param port the foreign port to connect to.
      * @param ssl <code>true</code> to use SSL, <code>false</code> otherwise.
      * @param timeout 0 incidcates default
      * @param readTimeout see {@link Socket#setSoTimeout(int)} 
-     * @throws IOException
+     * @throws IOException if the connection cannot be established.
      */
     public SocketConnectionFacadeImpl(String host, int port, boolean ssl, int timeout, int readTimeout) throws IOException
     {
+        Socket socket;
+
         if (ssl)
         {
-            this.socket = SSLSocketFactory.getDefault().createSocket();
+            socket = SSLSocketFactory.getDefault().createSocket();
         }
         else
         {
-            this.socket = SocketFactory.getDefault().createSocket();
+            socket = SocketFactory.getDefault().createSocket();
         }
-        this.socket.setSoTimeout(readTimeout);
-    	this.socket.connect(new InetSocketAddress(host, port), timeout);
+        socket.setSoTimeout(readTimeout);
+    	socket.connect(new InetSocketAddress(host, port), timeout);
 
-        InputStream inputStream = socket.getInputStream();
-        OutputStream outputStream = socket.getOutputStream();
-
-        this.reader = new BufferedReader(new InputStreamReader(inputStream));
-        this.writer = new BufferedWriter(new OutputStreamWriter(outputStream));
+        initialize(socket, CRNL_PATTERN);
     }
 
+    /**
+     * Creates a new instance for use with FastAGI that uses NL as line delimiter.
+     *
+     * @param socket the underlying socket.
+     * @throws IOException if the connection cannot be initialized.
+     */
     SocketConnectionFacadeImpl(Socket socket) throws IOException
+    {
+        initialize(socket, NL_PATTERN);
+    }
+
+    private void initialize(Socket socket, Pattern pattern) throws IOException
     {
         this.socket = socket;
 
         InputStream inputStream = socket.getInputStream();
         OutputStream outputStream = socket.getOutputStream();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 
-        this.reader = new BufferedReader(new InputStreamReader(inputStream));
+        this.scanner = new Scanner(reader);
+        this.scanner.useDelimiter(pattern);
         this.writer = new BufferedWriter(new OutputStreamWriter(outputStream));
     }
 
     public String readLine() throws IOException
     {
-        return reader.readLine();
+        try
+        {
+            return scanner.next();
+        }
+        catch (NoSuchElementException e)
+        {
+            if (scanner.ioException() != null)
+            {
+                throw scanner.ioException();
+            }
+            else
+            {
+                throw new IOException("No more lines available", e);
+            }
+        }
     }
 
     public void write(String s) throws IOException
@@ -103,7 +134,8 @@ public class SocketConnectionFacadeImpl implements SocketConnectionFacade
 
     public void close() throws IOException
     {
-        this.socket.close();
+        scanner.close();
+        socket.close();
     }
 
     public boolean isConnected()

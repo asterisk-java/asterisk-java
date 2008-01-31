@@ -96,20 +96,16 @@ public class ManagerReaderImplTest extends TestCase
 
         assertEquals("ProtocolIdentifierReceivedEvent contains incorrect protocol identifier",
                 "Asterisk Call Manager/1.0",
-                ((ProtocolIdentifierReceivedEvent) dispatcher.dispatchedEvents.get(0))
-                        .getProtocolIdentifier());
+                ((ProtocolIdentifierReceivedEvent) dispatcher.dispatchedEvents.get(0)).getProtocolIdentifier());
 
         assertEquals("ProtocolIdentifierReceivedEvent contains incorrect dateReceived", now,
-                ((ProtocolIdentifierReceivedEvent) dispatcher.dispatchedEvents.get(0))
-                        .getDateReceived());
+                dispatcher.dispatchedEvents.get(0).getDateReceived());
 
         assertEquals("second event must be a DisconnectEvent",
-                DisconnectEvent.class, dispatcher.dispatchedEvents.get(1)
-                        .getClass());
+                DisconnectEvent.class, dispatcher.dispatchedEvents.get(1).getClass());
 
         assertEquals("DisconnectEvent contains incorrect dateReceived", now,
-                ((DisconnectEvent) dispatcher.dispatchedEvents.get(1))
-                        .getDateReceived());
+                dispatcher.dispatchedEvents.get(1).getDateReceived());
     }
 
     public void testRunReceivingEvent() throws Exception
@@ -129,12 +125,10 @@ public class ManagerReaderImplTest extends TestCase
                 dispatcher.dispatchedEvents.size());
 
         assertEquals("first event must be a StatusCompleteEvent",
-                StatusCompleteEvent.class, dispatcher.dispatchedEvents.get(0)
-                        .getClass());
+                StatusCompleteEvent.class, dispatcher.dispatchedEvents.get(0).getClass());
 
         assertEquals("second event must be a DisconnectEvent",
-                DisconnectEvent.class, dispatcher.dispatchedEvents.get(1)
-                        .getClass());
+                DisconnectEvent.class, dispatcher.dispatchedEvents.get(1).getClass());
     }
 
     // todo fix testRunReceivingUserEvent
@@ -182,33 +176,27 @@ public class ManagerReaderImplTest extends TestCase
                 dispatcher.dispatchedResponses.size());
 
         assertEquals("first response must be a ManagerResponse",
-                ManagerResponse.class, dispatcher.dispatchedResponses.get(0)
-                        .getClass());
+                ManagerResponse.class, dispatcher.dispatchedResponses.get(0).getClass());
 
         assertEquals("ManagerResponse contains incorrect response", "Success",
-                ((ManagerResponse) dispatcher.dispatchedResponses.get(0))
-                        .getResponse());
+                dispatcher.dispatchedResponses.get(0).getResponse());
 
         assertEquals("ManagerResponse contains incorrect message",
                 "Authentication accepted",
-                ((ManagerResponse) dispatcher.dispatchedResponses.get(0))
-                        .getMessage());
+                dispatcher.dispatchedResponses.get(0).getMessage());
 
         assertEquals("ManagerResponse contains incorrect message (via getAttribute)",
                 "Authentication accepted",
-                ((ManagerResponse) dispatcher.dispatchedResponses.get(0))
-                        .getAttribute("MESSAGE"));
+                dispatcher.dispatchedResponses.get(0).getAttribute("MESSAGE"));
 
         assertEquals("ManagerResponse contains incorrect dateReceived", now,
-                ((ManagerResponse) dispatcher.dispatchedResponses.get(0))
-                        .getDateReceived());
+                dispatcher.dispatchedResponses.get(0).getDateReceived());
 
         assertEquals("not exactly one events dispatched", 1,
                 dispatcher.dispatchedEvents.size());
 
         assertEquals("first event must be a DisconnectEvent",
-                DisconnectEvent.class, dispatcher.dispatchedEvents.get(0)
-                        .getClass());
+                DisconnectEvent.class, dispatcher.dispatchedEvents.get(0).getClass());
     }
 
     public void testRunReceivingCommandResponse() throws Exception
@@ -217,9 +205,7 @@ public class ManagerReaderImplTest extends TestCase
 
         expect(socketConnectionFacade.readLine()).andReturn("Response: Follows");
         expect(socketConnectionFacade.readLine()).andReturn("ActionID: 12345");
-        expect(socketConnectionFacade.readLine()).andReturn("Line1");
-        expect(socketConnectionFacade.readLine()).andReturn("Line2");
-        expect(socketConnectionFacade.readLine()).andReturn("--END COMMAND--");
+        expect(socketConnectionFacade.readLine()).andReturn("Line1\nLine2\n--END COMMAND--");
         expect(socketConnectionFacade.readLine()).andReturn("");
         expect(socketConnectionFacade.readLine()).andReturn(null);
 
@@ -241,30 +227,24 @@ public class ManagerReaderImplTest extends TestCase
                         .getClass());
 
         assertEquals("CommandResponse contains incorrect response", "Follows",
-                ((CommandResponse) dispatcher.dispatchedResponses.get(0))
-                        .getResponse());
+                dispatcher.dispatchedResponses.get(0).getResponse());
 
         assertEquals("CommandResponse contains incorrect actionId", "12345",
-                ((CommandResponse) dispatcher.dispatchedResponses.get(0))
-                        .getActionId());
+                dispatcher.dispatchedResponses.get(0).getActionId());
 
         assertEquals("CommandResponse contains incorrect actionId (via getAttribute)", "12345",
-                ((CommandResponse) dispatcher.dispatchedResponses.get(0))
-                        .getAttribute("actionId"));
+                dispatcher.dispatchedResponses.get(0).getAttribute("actionId"));
 
         assertEquals("CommandResponse contains incorrect result", result,
-                ((CommandResponse) dispatcher.dispatchedResponses.get(0))
-                        .getResult());
+                ((CommandResponse) dispatcher.dispatchedResponses.get(0)).getResult());
 
         assertEquals("CommandResponse contains incorrect dateReceived", now,
-                ((CommandResponse) dispatcher.dispatchedResponses.get(0))
-                        .getDateReceived());
+                dispatcher.dispatchedResponses.get(0).getDateReceived());
     }
 
     public void testRunCatchingIOException() throws Exception
     {
-        expect(socketConnectionFacade.readLine()).andThrow(new IOException(
-                "Something happened to the network..."));
+        expect(socketConnectionFacade.readLine()).andThrow(new IOException("Something happened to the network..."));
 
         replay(socketConnectionFacade);
 

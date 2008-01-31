@@ -34,15 +34,17 @@ public class TestAsyncAgi extends AbstractManagerTestCase
             }
         });
         dmc.login();
+        /*
         ManagerResponse response = dmc.sendAction(new AgiAction(
                 "IAX2/iax0-cgn_reucon_net-2",
                 "EXEC Playback tt-monkeysintro",
                 "myCommandId"));
-
         System.out.println(response);
+        */
 
-        // wait for 3 seconds to receive events
-        Thread.sleep(15000);
+        // wait to receive events
+        Thread.sleep(20000);
         dmc.logoff();
+        Thread.sleep(3000);
     }
 }
