@@ -15,7 +15,8 @@ Asterisk-Java
   protocol and the
   {{{http://www.voip-info.org/wiki-Asterisk+manager+API}Manager API}}.
 
-  Asterisk-Java is compatible with Asterisk 1.0, 1.2 and 1.4.
+  Asterisk-Java is compatible with Asterisk 1.0, 1.2 and 1.4. The upcoming
+  1.0.0 release will add full support for Asterisk 1.6.
 
   The FastAGI implementation supports all
   {{{apidocs/org/asteriskjava/fastagi/command/package-summary.html}commands}}
@@ -39,26 +40,22 @@ Asterisk-Java
   
 * Status
 
-  Asterisk-Java 0.3 will be released shortly after Asterisk 1.4 and be 
-  available from the
-  {{{http://sourceforge.net/projects/asterisk-java/}sourceforge project page}}
-  as well as our
-  {{{http://maven.reucon.com/public/org/asteriskjava/asterisk-java/}distribution site}}.
+  We plan to release Asterisk-Java 1.0.0 shortly after Asterisk 1.6. It will be
+  available
+  {{{http://maven.reucon.com/public/org/asteriskjava/asterisk-java/}distribution site}}
+  where you also find the previous releases.
   
-  For the future a stateful higher level API 
-  that supports operations like "get list of currently active 
-  calls" or "place call" with objects like "Call" or 
-  "Channel" that are transparently updated as the state of 
-  the corresponding object within the asterisk server 
-  changes is on the way. You can have a look at
+  Asterisk-Java 1.0.0 will further enhance the new stateful higher level API
+  with operations like "get list of currently active calls" or "place call"
+  with objects like "Channel" or "Agent" that are transparently updated
+  as the state of the corresponding object within the Asterisk server
+  changes. You can have a look at
   {{{apidocs/org/asteriskjava/live/package-summary.html}org.asteriskjava.live}}
   that represents its current state.
 
 * Download
 
-  Official releases and release candidates are available from the
-  {{{http://sourceforge.net/projects/asterisk-java/}sourceforge project page}}
-  as well as our
+  Official releases and release candidates are available from the our
   {{{http://maven.reucon.com/public/org/asteriskjava/asterisk-java/}distribution site}}.
 
   The
@@ -66,7 +63,7 @@ Asterisk-Java
   hosts the latest snapshot releases.
   
   Please feel free to provide any feedback or ask for support via the
-  {{{mail-lists.html}Asterisk-Java user's mailing list}}.
+  {{{mail-lists.html}Asterisk-Java users mailing list}}.
   
   The latest development version of Asterisk-Java is always available via SVN:
 
@@ -173,24 +170,22 @@ Asterisk-Java
 
   Thanks to our sponsors:
 
-  * {{{http://www.sourceforge.net}Sourceforge.net}} for hosting
-    the development infrastructure for Asterisk-Java.
-  
-  * Cenqua for providing free licenses
-    of {{{http://www.cenqua.com/clover/}Clover}} and
-    {{{http://www.cenqua.com/fisheye/}FishEye}}.
-  
-  * ej-technologies for providing free licenses
-    of {{{http://www.ej-technologies.com/products/jprofiler/overview.html}JProfiler}}
-    and {{{http://www.ej-technologies.com/products/install4j/overview.html}install4j}}.
-
   * JetBrains for providing a free license of
     {{{http://www.jetbrains.com/idea/}IntelliJ Idea}}.
 
   * {{{http://www.atlassian.com/}Atlassian}} for providing a free license of
-    the excellent {{{http://www.atlassian.com/software/jira/}JIRA}} Bug tracker.
+    the excellent {{{http://www.atlassian.com/software/jira/}JIRA}} Bug tracker
+    as well as {{{http://www.cenqua.com/clover/}Clover}} and
+    {{{http://www.cenqua.com/fisheye/}FishEye}}.
 
   * YourKit {{{http://www.yourkit.com/}Java Profiler}}.
+
+  * ej-technologies for providing free licenses
+    of {{{http://www.ej-technologies.com/products/jprofiler/overview.html}JProfiler}}
+    and {{{http://www.ej-technologies.com/products/install4j/overview.html}install4j}}.
+
+  * {{{http://www.sourceforge.net}Sourceforge.net}} for hosting
+    the original development infrastructure for Asterisk-Java.
 
 * Contact
 
