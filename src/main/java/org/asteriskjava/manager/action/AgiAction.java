@@ -16,19 +16,22 @@
  */
 package org.asteriskjava.manager.action;
 
+import org.asteriskjava.manager.event.AsyncAgiEvent;
+
 /**
  * Add a new AGI command to execute by the Async AGI application.<p>
  * It will append the application to the specified channel's queue.
- * If the channel is not inside Async AGI application it will return an error.
+ * If the channel is not inside Async AGI application it will return an error.<p>
  * It is implemented in <code>res/res_agi.c</code>
  * <p/>
  * Available since Asterisk 1.6
  *
+ * @see org.asteriskjava.manager.event.AsyncAgiEvent
  * @author srt
  * @version $Id$
  * @since 1.0.0
  */
-public class AgiAction extends AbstractManagerAction
+public class AgiAction extends AbstractManagerAction implements EventGeneratingAction
 {
     /**
      * Serializable version identifier.
@@ -80,6 +83,11 @@ public class AgiAction extends AbstractManagerAction
     public String getAction()
     {
         return "AGI";
+    }
+
+    public Class getActionCompleteEventClass()
+    {
+        return AsyncAgiEvent.class;
     }
 
     /**

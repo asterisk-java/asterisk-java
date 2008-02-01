@@ -98,7 +98,7 @@ import org.asteriskjava.util.LogFactory;
 
 /**
  * Default implementation of the {@link AsteriskServer} interface.
- * 
+ *
  * @author srt
  * @version $Id$
  */
@@ -108,10 +108,10 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
     private static final String SHOW_VERSION_COMMAND = "show version";
     private static final String SHOW_VERSION_FILES_COMMAND = "show version files";
     private static final Pattern SHOW_VERSION_FILES_PATTERN = Pattern
-	    .compile("^([\\S]+)\\s+Revision: ([0-9\\.]+)");
+            .compile("^([\\S]+)\\s+Revision: ([0-9\\.]+)");
     private static final String SHOW_VOICEMAIL_USERS_COMMAND = "show voicemail users";
     private static final Pattern SHOW_VOICEMAIL_USERS_PATTERN = Pattern
-	    .compile("^(\\S+)\\s+(\\S+)\\s+(.{25})");
+            .compile("^(\\S+)\\s+(\\S+)\\s+(.{25})");
 
     private final Log logger = LogFactory.getLog(this.getClass());
 
@@ -138,17 +138,17 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
 
     /**
      * The exact version string of the Asterisk server we are connected to.
-     * <p>
+     * <p/>
      * Contains <code>null</code> until lazily initialized.
      */
     private String version;
 
     /**
      * Holds the version of Asterisk's source files.
-     * <p>
+     * <p/>
      * That corresponds to the output of the CLI command
      * <code>show version files</code>.
-     * <p>
+     * <p/>
      * Contains <code>null</code> until lazily initialized.
      */
     private Map<String, String> versions;
@@ -179,26 +179,26 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
      */
     public AsteriskServerImpl()
     {
-	connectionPool = new ManagerConnectionPool(1);
-	idCounter = new AtomicLong();
-	listeners = new ArrayList<AsteriskServerListener>();
-	originateCallbacks = new HashMap<String, OriginateCallbackData>();
-	channelManager = new ChannelManager(this);
-	agentManager = new AgentManager(this);
-	meetMeManager = new MeetMeManager(this, channelManager);
-	queueManager = new QueueManager(this, channelManager);
+        connectionPool = new ManagerConnectionPool(1);
+        idCounter = new AtomicLong();
+        listeners = new ArrayList<AsteriskServerListener>();
+        originateCallbacks = new HashMap<String, OriginateCallbackData>();
+        channelManager = new ChannelManager(this);
+        agentManager = new AgentManager(this);
+        meetMeManager = new MeetMeManager(this, channelManager);
+        queueManager = new QueueManager(this, channelManager);
     }
 
     /**
      * Creates a new instance.
-     * 
+     *
      * @param eventConnection the ManagerConnection to use for receiving events
-     *        from Asterisk.
+     *                        from Asterisk.
      */
     public AsteriskServerImpl(ManagerConnection eventConnection)
     {
-	this();
-	setManagerConnection(eventConnection);
+        this();
+        setManagerConnection(eventConnection);
     }
 
     /**
@@ -206,802 +206,814 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
      * queue information and still run Asterisk 1.0.x you can set this to
      * <code>true</code> to circumvent the startup delay caused by the missing
      * QueueStatusComplete event.
-     * <p>
+     * <p/>
      * Default is <code>false</code>.
-     * 
+     *
      * @param skipQueues <code>true</code> to skip queue initialization,
-     *        <code>false</code> to not skip.
+     *                   <code>false</code> to not skip.
      * @since 0.2
      */
     public void setSkipQueues(boolean skipQueues)
     {
-	this.skipQueues = skipQueues;
+        this.skipQueues = skipQueues;
     }
 
     public void setManagerConnection(ManagerConnection eventConnection)
     {
-	if (this.eventConnection != null)
-	{
-	    throw new IllegalStateException("ManagerConnection already set.");
-	}
+        if (this.eventConnection != null)
+        {
+            throw new IllegalStateException("ManagerConnection already set.");
+        }
 
-	this.eventConnection = eventConnection;
-	this.connectionPool.clear();
-	this.connectionPool.add(eventConnection);
+        this.eventConnection = eventConnection;
+        this.connectionPool.clear();
+        this.connectionPool.add(eventConnection);
     }
 
     public ManagerConnection getManagerConnection()
     {
-	return eventConnection;
+        return eventConnection;
     }
 
     public void initialize() throws ManagerCommunicationException
     {
-	initializeIfNeeded();
+        initializeIfNeeded();
     }
 
-    private synchronized void initializeIfNeeded()
-	    throws ManagerCommunicationException
+    private synchronized void initializeIfNeeded() throws ManagerCommunicationException
     {
-	if (initialized)
-	{
-	    return;
-	}
+        if (initialized)
+        {
+            return;
+        }
 
-	if (eventConnection.getState() == ManagerConnectionState.INITIAL
-		|| eventConnection.getState() == ManagerConnectionState.DISCONNECTED)
-	{
-	    try
-	    {
-		eventConnection.login();
-	    } catch (Exception e)
-	    {
-		throw new ManagerCommunicationException("Unable to login", e);
-	    }
-	}
+        if (eventConnection.getState() == ManagerConnectionState.INITIAL
+                || eventConnection.getState() == ManagerConnectionState.DISCONNECTED)
+        {
+            try
+            {
+                eventConnection.login();
+            }
+            catch (Exception e)
+            {
+                throw new ManagerCommunicationException("Unable to login: " + e.getMessage(), e);
+            }
+        }
 
-	channelManager.initialize();
-	// Initialize the agent manager
-	agentManager.initialize();
-	meetMeManager.initialize();
-	if (!skipQueues)
-	{
-	    queueManager.initialize();
-	}
+        channelManager.initialize();
+        // Initialize the agent manager
+        agentManager.initialize();
+        meetMeManager.initialize();
+        if (!skipQueues)
+        {
+            queueManager.initialize();
+        }
 
-	if (asyncEventHandling && managerEventListenerProxy == null)
-	{
-	    managerEventListenerProxy = new ManagerEventListenerProxy(this);
-	    eventConnection.addEventListener(managerEventListenerProxy);
-	} else if (!asyncEventHandling && eventListener == null)
-	{
-	    eventListener = this;
-	    eventConnection.addEventListener(eventListener);
-	}
-	logger.info("Initializing done");
-	initialized = true;
+        if (asyncEventHandling && managerEventListenerProxy == null)
+        {
+            managerEventListenerProxy = new ManagerEventListenerProxy(this);
+            eventConnection.addEventListener(managerEventListenerProxy);
+        }
+        else if (!asyncEventHandling && eventListener == null)
+        {
+            eventListener = this;
+            eventConnection.addEventListener(eventListener);
+        }
+        logger.info("Initializing done");
+        initialized = true;
     }
 
     /* Implementation of the AsteriskServer interface */
 
     public AsteriskChannel originateToExtension(String channel, String context,
-	    String exten, int priority, long timeout)
-	    throws ManagerCommunicationException, NoSuchChannelException
+                                                String exten, int priority, long timeout)
+            throws ManagerCommunicationException, NoSuchChannelException
     {
-	return originateToExtension(channel, context, exten, priority, timeout,
-		null, null);
+        return originateToExtension(channel, context, exten, priority, timeout, null, null);
     }
 
     public AsteriskChannel originateToExtension(String channel, String context,
-	    String exten, int priority, long timeout, CallerId callerId,
-	    Map<String, String> variables)
-	    throws ManagerCommunicationException, NoSuchChannelException
+                                                String exten, int priority, long timeout, CallerId callerId,
+                                                Map<String, String> variables)
+            throws ManagerCommunicationException, NoSuchChannelException
     {
-	final OriginateAction originateAction;
+        final OriginateAction originateAction;
 
-	originateAction = new OriginateAction();
-	originateAction.setChannel(channel);
-	originateAction.setContext(context);
-	originateAction.setExten(exten);
-	originateAction.setPriority(priority);
-	originateAction.setTimeout(timeout);
-	if (callerId != null)
-	{
-	    originateAction.setCallerId(callerId.toString());
-	}
-	originateAction.setVariables(variables);
+        originateAction = new OriginateAction();
+        originateAction.setChannel(channel);
+        originateAction.setContext(context);
+        originateAction.setExten(exten);
+        originateAction.setPriority(priority);
+        originateAction.setTimeout(timeout);
+        if (callerId != null)
+        {
+            originateAction.setCallerId(callerId.toString());
+        }
+        originateAction.setVariables(variables);
 
-	return originate(originateAction);
+        return originate(originateAction);
     }
 
     public AsteriskChannel originateToApplication(String channel,
-	    String application, String data, long timeout)
-	    throws ManagerCommunicationException, NoSuchChannelException
+                                                  String application, String data, long timeout)
+            throws ManagerCommunicationException, NoSuchChannelException
     {
-	return originateToApplication(channel, application, data, timeout,
-		null, null);
+        return originateToApplication(channel, application, data, timeout, null, null);
     }
 
     public AsteriskChannel originateToApplication(String channel,
-	    String application, String data, long timeout, CallerId callerId,
-	    Map<String, String> variables)
-	    throws ManagerCommunicationException, NoSuchChannelException
+                                                  String application, String data, long timeout, CallerId callerId,
+                                                  Map<String, String> variables)
+            throws ManagerCommunicationException, NoSuchChannelException
     {
-	final OriginateAction originateAction;
+        final OriginateAction originateAction;
 
-	originateAction = new OriginateAction();
-	originateAction.setChannel(channel);
-	originateAction.setApplication(application);
-	originateAction.setData(data);
-	originateAction.setTimeout(timeout);
-	if (callerId != null)
-	{
-	    originateAction.setCallerId(callerId.toString());
-	}
-	originateAction.setVariables(variables);
+        originateAction = new OriginateAction();
+        originateAction.setChannel(channel);
+        originateAction.setApplication(application);
+        originateAction.setData(data);
+        originateAction.setTimeout(timeout);
+        if (callerId != null)
+        {
+            originateAction.setCallerId(callerId.toString());
+        }
+        originateAction.setVariables(variables);
 
-	return originate(originateAction);
+        return originate(originateAction);
     }
 
-    private AsteriskChannel originate(OriginateAction originateAction)
-	    throws ManagerCommunicationException, NoSuchChannelException
+    private AsteriskChannel originate(OriginateAction originateAction) throws ManagerCommunicationException, NoSuchChannelException
     {
-	final ResponseEvents responseEvents;
-	final Iterator<ResponseEvent> responseEventIterator;
-	String uniqueId = null;
-	AsteriskChannel channel = null;
+        final ResponseEvents responseEvents;
+        final Iterator<ResponseEvent> responseEventIterator;
+        String uniqueId = null;
+        AsteriskChannel channel = null;
 
-	// must set async to true to receive OriginateEvents.
-	originateAction.setAsync(Boolean.TRUE);
+        // must set async to true to receive OriginateEvents.
+        originateAction.setAsync(Boolean.TRUE);
 
-	initializeIfNeeded();
+        initializeIfNeeded();
 
-	// 2000 ms extra for the OriginateFailureEvent should be fine
-	responseEvents = sendEventGeneratingAction(originateAction,
-		originateAction.getTimeout() + 2000);
+        // 2000 ms extra for the OriginateFailureEvent should be fine
+        responseEvents = sendEventGeneratingAction(originateAction, originateAction.getTimeout() + 2000);
 
-	responseEventIterator = responseEvents.getEvents().iterator();
-	if (responseEventIterator.hasNext())
-	{
-	    ResponseEvent responseEvent;
+        responseEventIterator = responseEvents.getEvents().iterator();
+        if (responseEventIterator.hasNext())
+        {
+            ResponseEvent responseEvent;
 
-	    responseEvent = responseEventIterator.next();
-	    if (responseEvent instanceof OriginateResponseEvent)
-	    {
-		uniqueId = ((OriginateResponseEvent) responseEvent)
-			.getUniqueId();
-		logger.debug(responseEvent.getClass().getName()
-			+ " received with uniqueId " + uniqueId);
-		channel = getChannelById(uniqueId);
-	    }
-	}
+            responseEvent = responseEventIterator.next();
+            if (responseEvent instanceof OriginateResponseEvent)
+            {
+                uniqueId = ((OriginateResponseEvent) responseEvent).getUniqueId();
+                logger.debug(responseEvent.getClass().getName() + " received with uniqueId " + uniqueId);
+                channel = getChannelById(uniqueId);
+            }
+        }
 
-	if (channel == null)
-	{
-	    throw new NoSuchChannelException("Channel '"
-		    + originateAction.getChannel() + "' is not available");
-	}
+        if (channel == null)
+        {
+            throw new NoSuchChannelException("Channel '" + originateAction.getChannel() + "' is not available");
+        }
 
-	return channel;
+        return channel;
     }
 
     public void originateToExtensionAsync(String channel, String context,
-	    String exten, int priority, long timeout, OriginateCallback cb)
-	    throws ManagerCommunicationException
+                                          String exten, int priority, long timeout, OriginateCallback cb)
+            throws ManagerCommunicationException
     {
-	originateToExtensionAsync(channel, context, exten, priority, timeout,
-		null, null, cb);
+        originateToExtensionAsync(channel, context, exten, priority, timeout, null, null, cb);
     }
 
     public void originateToExtensionAsync(String channel, String context,
-	    String exten, int priority, long timeout, CallerId callerId,
-	    Map<String, String> variables, OriginateCallback cb)
-	    throws ManagerCommunicationException
+                                          String exten, int priority, long timeout, CallerId callerId,
+                                          Map<String, String> variables, OriginateCallback cb)
+            throws ManagerCommunicationException
     {
-	final OriginateAction originateAction;
+        final OriginateAction originateAction;
 
-	originateAction = new OriginateAction();
-	originateAction.setChannel(channel);
-	originateAction.setContext(context);
-	originateAction.setExten(exten);
-	originateAction.setPriority(priority);
-	originateAction.setTimeout(timeout);
-	if (callerId != null)
-	{
-	    originateAction.setCallerId(callerId.toString());
-	}
-	originateAction.setVariables(variables);
+        originateAction = new OriginateAction();
+        originateAction.setChannel(channel);
+        originateAction.setContext(context);
+        originateAction.setExten(exten);
+        originateAction.setPriority(priority);
+        originateAction.setTimeout(timeout);
+        if (callerId != null)
+        {
+            originateAction.setCallerId(callerId.toString());
+        }
+        originateAction.setVariables(variables);
 
-	originateAsync(originateAction, cb);
+        originateAsync(originateAction, cb);
     }
 
     public void originateToApplicationAsync(String channel, String application,
-	    String data, long timeout, OriginateCallback cb)
-	    throws ManagerCommunicationException
+                                            String data, long timeout, OriginateCallback cb)
+            throws ManagerCommunicationException
     {
-	originateToApplicationAsync(channel, application, data, timeout, null,
-		null, cb);
+        originateToApplicationAsync(channel, application, data, timeout, null, null, cb);
     }
 
     public void originateToApplicationAsync(String channel, String application,
-	    String data, long timeout, CallerId callerId,
-	    Map<String, String> variables, OriginateCallback cb)
-	    throws ManagerCommunicationException
+                                            String data, long timeout, CallerId callerId,
+                                            Map<String, String> variables, OriginateCallback cb)
+            throws ManagerCommunicationException
     {
-	final OriginateAction originateAction;
+        final OriginateAction originateAction;
 
-	originateAction = new OriginateAction();
-	originateAction.setChannel(channel);
-	originateAction.setApplication(application);
-	originateAction.setData(data);
-	originateAction.setTimeout(timeout);
-	if (callerId != null)
-	{
-	    originateAction.setCallerId(callerId.toString());
-	}
-	originateAction.setVariables(variables);
+        originateAction = new OriginateAction();
+        originateAction.setChannel(channel);
+        originateAction.setApplication(application);
+        originateAction.setData(data);
+        originateAction.setTimeout(timeout);
+        if (callerId != null)
+        {
+            originateAction.setCallerId(callerId.toString());
+        }
+        originateAction.setVariables(variables);
 
-	originateAsync(originateAction, cb);
+        originateAsync(originateAction, cb);
     }
 
     private void originateAsync(OriginateAction originateAction,
-	    OriginateCallback cb) throws ManagerCommunicationException
+                                OriginateCallback cb) throws ManagerCommunicationException
     {
-	final Map<String, String> variables;
-	final String traceId;
+        final Map<String, String> variables;
+        final String traceId;
 
-	traceId = ACTION_ID_PREFIX_ORIGINATE + idCounter.getAndIncrement();
-	if (originateAction.getVariables() == null)
-	{
-	    variables = new HashMap<String, String>();
-	} else
-	{
-	    variables = new HashMap<String, String>(originateAction
-		    .getVariables());
-	}
-	// prefix variable name by "__" to enable variable inheritence across
-	// channels
-	variables.put("__" + Constants.VARIABLE_TRACE_ID, traceId);
-	originateAction.setVariables(variables);
+        traceId = ACTION_ID_PREFIX_ORIGINATE + idCounter.getAndIncrement();
+        if (originateAction.getVariables() == null)
+        {
+            variables = new HashMap<String, String>();
+        }
+        else
+        {
+            variables = new HashMap<String, String>(originateAction
+                    .getVariables());
+        }
+        // prefix variable name by "__" to enable variable inheritence across
+        // channels
+        variables.put("__" + Constants.VARIABLE_TRACE_ID, traceId);
+        originateAction.setVariables(variables);
 
-	// must set async to true to receive OriginateEvents.
-	originateAction.setAsync(Boolean.TRUE);
-	originateAction.setActionId(traceId);
+        // must set async to true to receive OriginateEvents.
+        originateAction.setAsync(Boolean.TRUE);
+        originateAction.setActionId(traceId);
 
-	if (cb != null)
-	{
-	    OriginateCallbackData callbackData;
+        if (cb != null)
+        {
+            OriginateCallbackData callbackData;
 
-	    callbackData = new OriginateCallbackData(originateAction, DateUtil
-		    .getDate(), cb);
-	    // register callback
-	    synchronized (originateCallbacks)
-	    {
-		originateCallbacks.put(traceId, callbackData);
-	    }
-	}
+            callbackData = new OriginateCallbackData(originateAction, DateUtil.getDate(), cb);
+            // register callback
+            synchronized (originateCallbacks)
+            {
+                originateCallbacks.put(traceId, callbackData);
+            }
+        }
 
-	initializeIfNeeded();
-	sendActionOnEventConnection(originateAction);
+        initializeIfNeeded();
+        sendActionOnEventConnection(originateAction);
     }
 
     public Collection<AsteriskChannel> getChannels()
-	    throws ManagerCommunicationException
+            throws ManagerCommunicationException
     {
-	initializeIfNeeded();
-	return channelManager.getChannels();
+        initializeIfNeeded();
+        return channelManager.getChannels();
     }
 
     public AsteriskChannel getChannelByName(String name)
-	    throws ManagerCommunicationException
+            throws ManagerCommunicationException
     {
-	initializeIfNeeded();
-	return channelManager.getChannelImplByName(name);
+        initializeIfNeeded();
+        return channelManager.getChannelImplByName(name);
     }
 
     public AsteriskChannel getChannelById(String id)
-	    throws ManagerCommunicationException
+            throws ManagerCommunicationException
     {
-	initializeIfNeeded();
-	return channelManager.getChannelImplById(id);
+        initializeIfNeeded();
+        return channelManager.getChannelImplById(id);
     }
 
     public Collection<MeetMeRoom> getMeetMeRooms()
-	    throws ManagerCommunicationException
+            throws ManagerCommunicationException
     {
-	initializeIfNeeded();
-	return meetMeManager.getMeetMeRooms();
+        initializeIfNeeded();
+        return meetMeManager.getMeetMeRooms();
     }
 
     public MeetMeRoom getMeetMeRoom(String name)
-	    throws ManagerCommunicationException
+            throws ManagerCommunicationException
     {
-	initializeIfNeeded();
-	return meetMeManager.getOrCreateRoomImpl(name);
+        initializeIfNeeded();
+        return meetMeManager.getOrCreateRoomImpl(name);
     }
 
     public Collection<AsteriskQueue> getQueues()
-	    throws ManagerCommunicationException
+            throws ManagerCommunicationException
     {
-	initializeIfNeeded();
-	return queueManager.getQueues();
+        initializeIfNeeded();
+        return queueManager.getQueues();
     }
 
     public synchronized String getVersion()
-	    throws ManagerCommunicationException
+            throws ManagerCommunicationException
     {
-	final ManagerResponse response;
+        final ManagerResponse response;
 
-	initializeIfNeeded();
-	if (version == null)
-	{
-	    response = sendAction(new CommandAction(SHOW_VERSION_COMMAND));
-	    if (response instanceof CommandResponse)
-	    {
-		final List result;
+        initializeIfNeeded();
+        if (version == null)
+        {
+            response = sendAction(new CommandAction(SHOW_VERSION_COMMAND));
+            if (response instanceof CommandResponse)
+            {
+                final List result;
 
-		result = ((CommandResponse) response).getResult();
-		if (result.size() > 0)
-		{
-		    version = (String) result.get(0);
-		}
-	    } else
-	    {
-		logger.error("Response to CommandAction(\""
-			+ SHOW_VERSION_COMMAND
-			+ "\") was not a CommandResponse but " + response);
-	    }
-	}
+                result = ((CommandResponse) response).getResult();
+                if (result.size() > 0)
+                {
+                    version = (String) result.get(0);
+                }
+            }
+            else
+            {
+                logger.error("Response to CommandAction(\""
+                        + SHOW_VERSION_COMMAND
+                        + "\") was not a CommandResponse but " + response);
+            }
+        }
 
-	return version;
+        return version;
     }
 
     public int[] getVersion(String file) throws ManagerCommunicationException
     {
-	String fileVersion = null;
-	String[] parts;
-	int[] intParts;
+        String fileVersion = null;
+        String[] parts;
+        int[] intParts;
 
-	initializeIfNeeded();
-	if (versions == null)
-	{
-	    Map<String, String> map;
-	    ManagerResponse response;
+        initializeIfNeeded();
+        if (versions == null)
+        {
+            Map<String, String> map;
+            ManagerResponse response;
 
-	    map = new HashMap<String, String>();
-	    try
-	    {
-		response = sendAction(new CommandAction(
-			SHOW_VERSION_FILES_COMMAND));
-		if (response instanceof CommandResponse)
-		{
-		    List<String> result;
+            map = new HashMap<String, String>();
+            try
+            {
+                response = sendAction(new CommandAction(SHOW_VERSION_FILES_COMMAND));
+                if (response instanceof CommandResponse)
+                {
+                    List<String> result;
 
-		    result = ((CommandResponse) response).getResult();
-		    for (int i = 2; i < result.size(); i++)
-		    {
-			String line;
-			Matcher matcher;
+                    result = ((CommandResponse) response).getResult();
+                    for (int i = 2; i < result.size(); i++)
+                    {
+                        String line;
+                        Matcher matcher;
 
-			line = result.get(i);
-			matcher = SHOW_VERSION_FILES_PATTERN.matcher(line);
-			if (matcher.find())
-			{
-			    String key = matcher.group(1);
-			    String value = matcher.group(2);
+                        line = result.get(i);
+                        matcher = SHOW_VERSION_FILES_PATTERN.matcher(line);
+                        if (matcher.find())
+                        {
+                            String key = matcher.group(1);
+                            String value = matcher.group(2);
 
-			    map.put(key, value);
-			}
-		    }
+                            map.put(key, value);
+                        }
+                    }
 
-		    fileVersion = map.get(file);
-		    versions = map;
-		} else
-		{
-		    logger.error("Response to CommandAction(\""
-			    + SHOW_VERSION_FILES_COMMAND
-			    + "\") was not a CommandResponse but " + response);
-		}
-	    } catch (Exception e)
-	    {
-		logger.warn("Unable to send '" + SHOW_VERSION_FILES_COMMAND
-			+ "' command.", e);
-	    }
-	} else
-	{
-	    synchronized (versions)
-	    {
-		fileVersion = versions.get(file);
-	    }
-	}
+                    fileVersion = map.get(file);
+                    versions = map;
+                }
+                else
+                {
+                    logger.error("Response to CommandAction(\""
+                            + SHOW_VERSION_FILES_COMMAND
+                            + "\") was not a CommandResponse but " + response);
+                }
+            }
+            catch (Exception e)
+            {
+                logger.warn("Unable to send '" + SHOW_VERSION_FILES_COMMAND + "' command.", e);
+            }
+        }
+        else
+        {
+            synchronized (versions)
+            {
+                fileVersion = versions.get(file);
+            }
+        }
 
-	if (fileVersion == null)
-	{
-	    return null;
-	}
+        if (fileVersion == null)
+        {
+            return null;
+        }
 
-	parts = fileVersion.split("\\.");
-	intParts = new int[parts.length];
+        parts = fileVersion.split("\\.");
+        intParts = new int[parts.length];
 
-	for (int i = 0; i < parts.length; i++)
-	{
-	    try
-	    {
-		intParts[i] = Integer.parseInt(parts[i]);
-	    } catch (NumberFormatException e)
-	    {
-		intParts[i] = 0;
-	    }
-	}
+        for (int i = 0; i < parts.length; i++)
+        {
+            try
+            {
+                intParts[i] = Integer.parseInt(parts[i]);
+            }
+            catch (NumberFormatException e)
+            {
+                intParts[i] = 0;
+            }
+        }
 
-	return intParts;
+        return intParts;
     }
 
-    public String getGlobalVariable(String variable)
-	    throws ManagerCommunicationException
+    public String getGlobalVariable(String variable) throws ManagerCommunicationException
     {
-	ManagerResponse response;
-	String value;
+        ManagerResponse response;
+        String value;
 
-	initializeIfNeeded();
-	response = sendAction(new GetVarAction(variable));
-	if (response instanceof ManagerError)
-	{
-	    return null;
-	}
-	value = response.getAttribute("Value");
-	if (value == null)
-	{
-	    value = response.getAttribute(variable); // for Asterisk 1.0.x
-	}
-	return value;
+        initializeIfNeeded();
+        response = sendAction(new GetVarAction(variable));
+        if (response instanceof ManagerError)
+        {
+            return null;
+        }
+        value = response.getAttribute("Value");
+        if (value == null)
+        {
+            value = response.getAttribute(variable); // for Asterisk 1.0.x
+        }
+        return value;
     }
 
-    public void setGlobalVariable(String variable, String value)
-	    throws ManagerCommunicationException
+    public void setGlobalVariable(String variable, String value) throws ManagerCommunicationException
     {
-	ManagerResponse response;
+        ManagerResponse response;
 
-	initializeIfNeeded();
-	response = sendAction(new SetVarAction(variable, value));
-	if (response instanceof ManagerError)
-	{
-	    logger.error("Unable to set global variable '" + variable
-		    + "' to '" + value + "':" + response.getMessage());
-	}
+        initializeIfNeeded();
+        response = sendAction(new SetVarAction(variable, value));
+        if (response instanceof ManagerError)
+        {
+            logger.error("Unable to set global variable '" + variable
+                    + "' to '" + value + "':" + response.getMessage());
+        }
     }
 
     public Collection<Voicemailbox> getVoicemailboxes()
-	    throws ManagerCommunicationException
+            throws ManagerCommunicationException
     {
-	final Collection<Voicemailbox> voicemailboxes;
-	ManagerResponse response;
-	final List<String> result;
+        final Collection<Voicemailbox> voicemailboxes;
+        ManagerResponse response;
+        final List<String> result;
 
-	initializeIfNeeded();
-	voicemailboxes = new ArrayList<Voicemailbox>();
-	response = sendAction(new CommandAction(SHOW_VOICEMAIL_USERS_COMMAND));
-	if (!(response instanceof CommandResponse))
-	{
-	    logger.error("Response to CommandAction(\""
-		    + SHOW_VOICEMAIL_USERS_COMMAND
-		    + "\") was not a CommandResponse but " + response);
-	    return voicemailboxes;
-	}
+        initializeIfNeeded();
+        voicemailboxes = new ArrayList<Voicemailbox>();
+        response = sendAction(new CommandAction(SHOW_VOICEMAIL_USERS_COMMAND));
+        if (!(response instanceof CommandResponse))
+        {
+            logger.error("Response to CommandAction(\""
+                    + SHOW_VOICEMAIL_USERS_COMMAND
+                    + "\") was not a CommandResponse but " + response);
+            return voicemailboxes;
+        }
 
-	result = ((CommandResponse) response).getResult();
-	if (result == null || result.size() < 1)
-	{
-	    return voicemailboxes;
-	}
+        result = ((CommandResponse) response).getResult();
+        if (result == null || result.size() < 1)
+        {
+            return voicemailboxes;
+        }
 
-	// remove headline
-	result.remove(0);
+        // remove headline
+        result.remove(0);
 
-	for (String line : result)
-	{
-	    final Matcher matcher;
-	    final Voicemailbox voicemailbox;
-	    final String context;
-	    final String mailbox;
-	    final String user;
+        for (String line : result)
+        {
+            final Matcher matcher;
+            final Voicemailbox voicemailbox;
+            final String context;
+            final String mailbox;
+            final String user;
 
-	    matcher = SHOW_VOICEMAIL_USERS_PATTERN.matcher(line);
-	    if (!matcher.find())
-	    {
-		continue;
-	    }
+            matcher = SHOW_VOICEMAIL_USERS_PATTERN.matcher(line);
+            if (!matcher.find())
+            {
+                continue;
+            }
 
-	    context = matcher.group(1);
-	    mailbox = matcher.group(2);
-	    user = matcher.group(3).trim();
+            context = matcher.group(1);
+            mailbox = matcher.group(2);
+            user = matcher.group(3).trim();
 
-	    voicemailbox = new Voicemailbox(mailbox, context, user);
-	    voicemailboxes.add(voicemailbox);
-	}
+            voicemailbox = new Voicemailbox(mailbox, context, user);
+            voicemailboxes.add(voicemailbox);
+        }
 
-	// get message count for each mailbox
-	for (Voicemailbox voicemailbox : voicemailboxes)
-	{
-	    final String fullname;
+        // get message count for each mailbox
+        for (Voicemailbox voicemailbox : voicemailboxes)
+        {
+            final String fullname;
 
-	    fullname = voicemailbox.getMailbox() + "@"
-		    + voicemailbox.getContext();
-	    response = sendAction(new MailboxCountAction(fullname));
-	    if (response instanceof MailboxCountResponse)
-	    {
-		MailboxCountResponse mailboxCountResponse;
+            fullname = voicemailbox.getMailbox() + "@"
+                    + voicemailbox.getContext();
+            response = sendAction(new MailboxCountAction(fullname));
+            if (response instanceof MailboxCountResponse)
+            {
+                MailboxCountResponse mailboxCountResponse;
 
-		mailboxCountResponse = (MailboxCountResponse) response;
-		voicemailbox.setNewMessages(mailboxCountResponse
-			.getNewMessages());
-		voicemailbox.setOldMessages(mailboxCountResponse
-			.getOldMessages());
-	    } else
-	    {
-		logger
-			.error("Response to MailboxCountAction was not a MailboxCountResponse but "
-				+ response);
-	    }
-	}
+                mailboxCountResponse = (MailboxCountResponse) response;
+                voicemailbox.setNewMessages(mailboxCountResponse.getNewMessages());
+                voicemailbox.setOldMessages(mailboxCountResponse.getOldMessages());
+            }
+            else
+            {
+                logger.error("Response to MailboxCountAction was not a MailboxCountResponse but " + response);
+            }
+        }
 
-	return voicemailboxes;
+        return voicemailboxes;
     }
 
     public List<String> executeCliCommand(String command)
-	    throws ManagerCommunicationException
+            throws ManagerCommunicationException
     {
-	final ManagerResponse response;
+        final ManagerResponse response;
 
-	initializeIfNeeded();
-	response = sendAction(new CommandAction(command));
-	if (!(response instanceof CommandResponse))
-	{
-	    throw new ManagerCommunicationException(
-		    "Response to CommandAction(\"" + command
-			    + "\") was not a CommandResponse but " + response,
-		    null);
-	}
+        initializeIfNeeded();
+        response = sendAction(new CommandAction(command));
+        if (!(response instanceof CommandResponse))
+        {
+            throw new ManagerCommunicationException("Response to CommandAction(\"" + command
+                    + "\") was not a CommandResponse but " + response, null);
+        }
 
-	return ((CommandResponse) response).getResult();
+        return ((CommandResponse) response).getResult();
     }
 
     public void addAsteriskServerListener(AsteriskServerListener listener)
-	    throws ManagerCommunicationException
+            throws ManagerCommunicationException
     {
-	initializeIfNeeded();
-	synchronized (listeners)
-	{
-	    listeners.add(listener);
-	}
+        initializeIfNeeded();
+        synchronized (listeners)
+        {
+            listeners.add(listener);
+        }
     }
 
     public void removeAsteriskServerListener(AsteriskServerListener listener)
     {
-	synchronized (listeners)
-	{
-	    listeners.remove(listener);
-	}
+        synchronized (listeners)
+        {
+            listeners.remove(listener);
+        }
     }
 
     void fireNewAsteriskChannel(AsteriskChannel channel)
     {
-	synchronized (listeners)
-	{
-	    for (AsteriskServerListener listener : listeners)
-	    {
-		try
-		{
-		    listener.onNewAsteriskChannel(channel);
-		} catch (Exception e)
-		{
-		    logger.warn("Exception in onNewAsteriskChannel()", e);
-		}
-	    }
-	}
+        synchronized (listeners)
+        {
+            for (AsteriskServerListener listener : listeners)
+            {
+                try
+                {
+                    listener.onNewAsteriskChannel(channel);
+                }
+                catch (Exception e)
+                {
+                    logger.warn("Exception in onNewAsteriskChannel()", e);
+                }
+            }
+        }
     }
 
     void fireNewMeetMeUser(MeetMeUser user)
     {
-	synchronized (listeners)
-	{
-	    for (AsteriskServerListener listener : listeners)
-	    {
-		try
-		{
-		    listener.onNewMeetMeUser(user);
-		} catch (Exception e)
-		{
-		    logger.warn("Exception in onNewMeetMeUser()", e);
-		}
-	    }
-	}
+        synchronized (listeners)
+        {
+            for (AsteriskServerListener listener : listeners)
+            {
+                try
+                {
+                    listener.onNewMeetMeUser(user);
+                }
+                catch (Exception e)
+                {
+                    logger.warn("Exception in onNewMeetMeUser()", e);
+                }
+            }
+        }
     }
 
-    ManagerResponse sendActionOnEventConnection(ManagerAction action)
-	    throws ManagerCommunicationException
+    ManagerResponse sendActionOnEventConnection(ManagerAction action) throws ManagerCommunicationException
     {
-	try
-	{
-	    return eventConnection.sendAction(action);
-	} catch (Exception e)
-	{
-	    throw ManagerCommunicationExceptionMapper.mapSendActionException(
-		    action.getAction(), e);
-	}
+        try
+        {
+            return eventConnection.sendAction(action);
+        }
+        catch (Exception e)
+        {
+            throw ManagerCommunicationExceptionMapper.mapSendActionException(
+                    action.getAction(), e);
+        }
     }
 
     ManagerResponse sendAction(ManagerAction action)
-	    throws ManagerCommunicationException
+            throws ManagerCommunicationException
     {
-	// return connectionPool.sendAction(action);
-	try
-	{
-	    return eventConnection.sendAction(action);
-	} catch (Exception e)
-	{
-	    throw ManagerCommunicationExceptionMapper.mapSendActionException(
-		    action.getAction(), e);
-	}
+        // return connectionPool.sendAction(action);
+        try
+        {
+            return eventConnection.sendAction(action);
+        }
+        catch (Exception e)
+        {
+            throw ManagerCommunicationExceptionMapper.mapSendActionException(action.getAction(), e);
+        }
     }
 
-    ResponseEvents sendEventGeneratingAction(EventGeneratingAction action)
-	    throws ManagerCommunicationException
+    ResponseEvents sendEventGeneratingAction(EventGeneratingAction action) throws ManagerCommunicationException
     {
-	// return connectionPool.sendEventGeneratingAction(action);
-	try
-	{
-	    return eventConnection.sendEventGeneratingAction(action);
-	} catch (Exception e)
-	{
-	    throw ManagerCommunicationExceptionMapper.mapSendActionException(
-		    action.getAction(), e);
-	}
+        // return connectionPool.sendEventGeneratingAction(action);
+        try
+        {
+            return eventConnection.sendEventGeneratingAction(action);
+        }
+        catch (Exception e)
+        {
+            throw ManagerCommunicationExceptionMapper.mapSendActionException(action.getAction(), e);
+        }
     }
 
     ResponseEvents sendEventGeneratingAction(EventGeneratingAction action,
-	    long timeout) throws ManagerCommunicationException
+                                             long timeout) throws ManagerCommunicationException
     {
-	// return connectionPool.sendEventGeneratingAction(action, timeout);
-	try
-	{
-	    return eventConnection.sendEventGeneratingAction(action, timeout);
-	} catch (Exception e)
-	{
-	    throw ManagerCommunicationExceptionMapper.mapSendActionException(
-		    action.getAction(), e);
-	}
+        // return connectionPool.sendEventGeneratingAction(action, timeout);
+        try
+        {
+            return eventConnection.sendEventGeneratingAction(action, timeout);
+        }
+        catch (Exception e)
+        {
+            throw ManagerCommunicationExceptionMapper.mapSendActionException(action.getAction(), e);
+        }
     }
 
     OriginateCallbackData getOriginateCallbackDataByTraceId(String traceId)
     {
-	synchronized (originateCallbacks)
-	{
-	    return originateCallbacks.get(traceId);
-	}
+        synchronized (originateCallbacks)
+        {
+            return originateCallbacks.get(traceId);
+        }
     }
 
     /* Implementation of the ManagerEventListener interface */
 
     /**
      * Handles all events received from the Asterisk server.
-     * <p>
+     * <p/>
      * Events are queued until channels and queues are initialized and then
      * delegated to the dispatchEvent method.
      */
     public void onManagerEvent(ManagerEvent event)
     {
-	// Handle Channel related events
-	if (event instanceof ConnectEvent)
-	{
-	    handleConnectEvent((ConnectEvent) event);
-	} else if (event instanceof DisconnectEvent)
-	{
-	    handleDisconnectEvent((DisconnectEvent) event);
-	} else if (event instanceof NewChannelEvent)
-	{
-	    channelManager.handleNewChannelEvent((NewChannelEvent) event);
-	} else if (event instanceof NewExtenEvent)
-	{
-	    channelManager.handleNewExtenEvent((NewExtenEvent) event);
-	} else if (event instanceof NewStateEvent)
-	{
-	    channelManager.handleNewStateEvent((NewStateEvent) event);
-	} else if (event instanceof NewCallerIdEvent)
-	{
-	    channelManager.handleNewCallerIdEvent((NewCallerIdEvent) event);
-	} else if (event instanceof DialEvent)
-	{
-	    channelManager.handleDialEvent((DialEvent) event);
-	} else if (event instanceof LinkEvent)
-	{
-	    channelManager.handleLinkEvent((LinkEvent) event);
-	} else if (event instanceof UnlinkEvent)
-	{
-	    channelManager.handleUnlinkEvent((UnlinkEvent) event);
-	} else if (event instanceof RenameEvent)
-	{
-	    channelManager.handleRenameEvent((RenameEvent) event);
-	} else if (event instanceof HangupEvent)
-	{
-	    channelManager.handleHangupEvent((HangupEvent) event);
-	} else if (event instanceof CdrEvent)
-	{
-	    channelManager.handleCdrEvent((CdrEvent) event);
-	}
-	// End of channel related events
-	// Handle parking related event
-	else if (event instanceof ParkedCallEvent)
-	{
-	    channelManager.handleParkedCallEvent((ParkedCallEvent) event);
-	} else if (event instanceof ParkedCallGiveUpEvent)
-	{
-	    channelManager
-		    .handleParkedCallGiveUpEvent((ParkedCallGiveUpEvent) event);
-	} else if (event instanceof ParkedCallTimeOutEvent)
-	{
-	    channelManager
-		    .handleParkedCallTimeOutEvent((ParkedCallTimeOutEvent) event);
-	} else if (event instanceof UnparkedCallEvent)
-	{
-	    channelManager.handleUnparkedCallEvent((UnparkedCallEvent) event);
-	}
-	// End of parking related events
-	// Handle queue related event
-	else if (event instanceof JoinEvent)
-	{
-	    queueManager.handleJoinEvent((JoinEvent) event);
-	} else if (event instanceof LeaveEvent)
-	{
-	    queueManager.handleLeaveEvent((LeaveEvent) event);
-	} else if (event instanceof QueueMemberStatusEvent)
-	{
-	    queueManager
-		    .handleQueueMemberStatusEvent((QueueMemberStatusEvent) event);
-	}
-	// <<<<<< AJ-94
-	else if (event instanceof QueueMemberAddedEvent)
-	{
-	    queueManager
-		    .handleQueueMemberAddedEvent((QueueMemberAddedEvent) event);
-	} else if (event instanceof QueueMemberRemovedEvent)
-	{
-	    queueManager
-		    .handleQueueMemberRemovedEvent((QueueMemberRemovedEvent) event);
-	}
-	// >>>>>> AJ 94
-	// End of queue related events
-	// Handle meetMeEvents
-	else if (event instanceof AbstractMeetMeEvent)
-	{
-	    meetMeManager.handleMeetMeEvent((AbstractMeetMeEvent) event);
-	} else if (event instanceof OriginateResponseEvent)
-	{
-	    handleOriginateEvent((OriginateResponseEvent) event);
-	}
-	// Handle agents-related events
-	else if (event instanceof AgentsEvent)
-	{
-	    agentManager.handleAgentsEvent((AgentsEvent) event);
-	} else if (event instanceof AgentCalledEvent)
-	{
-	    agentManager.handleAgentCalledEvent((AgentCalledEvent) event);
-	} else if (event instanceof AgentConnectEvent)
-	{
-	    agentManager.handleAgentConnectEvent((AgentConnectEvent) event);
-	} else if (event instanceof AgentCompleteEvent)
-	{
-	    agentManager.handleAgentCompleteEvent((AgentCompleteEvent) event);
-	} else if (event instanceof AgentCallbackLoginEvent)
-	{
-	    agentManager
-		    .handleAgentCallbackLoginEvent((AgentCallbackLoginEvent) event);
-	} else if (event instanceof AgentCallbackLogoffEvent)
-	{
-	    agentManager
-		    .handleAgentCallbackLogoffEvent((AgentCallbackLogoffEvent) event);
-	}
-	// End of agent-related events
+        // Handle Channel related events
+        if (event instanceof ConnectEvent)
+        {
+            handleConnectEvent((ConnectEvent) event);
+        }
+        else if (event instanceof DisconnectEvent)
+        {
+            handleDisconnectEvent((DisconnectEvent) event);
+        }
+        else if (event instanceof NewChannelEvent)
+        {
+            channelManager.handleNewChannelEvent((NewChannelEvent) event);
+        }
+        else if (event instanceof NewExtenEvent)
+        {
+            channelManager.handleNewExtenEvent((NewExtenEvent) event);
+        }
+        else if (event instanceof NewStateEvent)
+        {
+            channelManager.handleNewStateEvent((NewStateEvent) event);
+        }
+        else if (event instanceof NewCallerIdEvent)
+        {
+            channelManager.handleNewCallerIdEvent((NewCallerIdEvent) event);
+        }
+        else if (event instanceof DialEvent)
+        {
+            channelManager.handleDialEvent((DialEvent) event);
+        }
+        else if (event instanceof LinkEvent)
+        {
+            channelManager.handleLinkEvent((LinkEvent) event);
+        }
+        else if (event instanceof UnlinkEvent)
+        {
+            channelManager.handleUnlinkEvent((UnlinkEvent) event);
+        }
+        else if (event instanceof RenameEvent)
+        {
+            channelManager.handleRenameEvent((RenameEvent) event);
+        }
+        else if (event instanceof HangupEvent)
+        {
+            channelManager.handleHangupEvent((HangupEvent) event);
+        }
+        else if (event instanceof CdrEvent)
+        {
+            channelManager.handleCdrEvent((CdrEvent) event);
+        }
+        // End of channel related events
+        // Handle parking related event
+        else if (event instanceof ParkedCallEvent)
+        {
+            channelManager.handleParkedCallEvent((ParkedCallEvent) event);
+        }
+        else if (event instanceof ParkedCallGiveUpEvent)
+        {
+            channelManager
+                    .handleParkedCallGiveUpEvent((ParkedCallGiveUpEvent) event);
+        }
+        else if (event instanceof ParkedCallTimeOutEvent)
+        {
+            channelManager
+                    .handleParkedCallTimeOutEvent((ParkedCallTimeOutEvent) event);
+        }
+        else if (event instanceof UnparkedCallEvent)
+        {
+            channelManager.handleUnparkedCallEvent((UnparkedCallEvent) event);
+        }
+        // End of parking related events
+        // Handle queue related event
+        else if (event instanceof JoinEvent)
+        {
+            queueManager.handleJoinEvent((JoinEvent) event);
+        }
+        else if (event instanceof LeaveEvent)
+        {
+            queueManager.handleLeaveEvent((LeaveEvent) event);
+        }
+        else if (event instanceof QueueMemberStatusEvent)
+        {
+            queueManager
+                    .handleQueueMemberStatusEvent((QueueMemberStatusEvent) event);
+        }
+        // <<<<<< AJ-94
+        else if (event instanceof QueueMemberAddedEvent)
+        {
+            queueManager
+                    .handleQueueMemberAddedEvent((QueueMemberAddedEvent) event);
+        }
+        else if (event instanceof QueueMemberRemovedEvent)
+        {
+            queueManager
+                    .handleQueueMemberRemovedEvent((QueueMemberRemovedEvent) event);
+        }
+        // >>>>>> AJ 94
+        // End of queue related events
+        // Handle meetMeEvents
+        else if (event instanceof AbstractMeetMeEvent)
+        {
+            meetMeManager.handleMeetMeEvent((AbstractMeetMeEvent) event);
+        }
+        else if (event instanceof OriginateResponseEvent)
+        {
+            handleOriginateEvent((OriginateResponseEvent) event);
+        }
+        // Handle agents-related events
+        else if (event instanceof AgentsEvent)
+        {
+            agentManager.handleAgentsEvent((AgentsEvent) event);
+        }
+        else if (event instanceof AgentCalledEvent)
+        {
+            agentManager.handleAgentCalledEvent((AgentCalledEvent) event);
+        }
+        else if (event instanceof AgentConnectEvent)
+        {
+            agentManager.handleAgentConnectEvent((AgentConnectEvent) event);
+        }
+        else if (event instanceof AgentCompleteEvent)
+        {
+            agentManager.handleAgentCompleteEvent((AgentCompleteEvent) event);
+        }
+        else if (event instanceof AgentCallbackLoginEvent)
+        {
+            agentManager
+                    .handleAgentCallbackLoginEvent((AgentCallbackLoginEvent) event);
+        }
+        else if (event instanceof AgentCallbackLogoffEvent)
+        {
+            agentManager
+                    .handleAgentCallbackLogoffEvent((AgentCallbackLogoffEvent) event);
+        }
+        // End of agent-related events
     }
 
     /*
@@ -1010,16 +1022,16 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
      */
     private void handleDisconnectEvent(DisconnectEvent disconnectEvent)
     {
-	// reset version information as it might have changed while Asterisk
-	// restarted
-	version = null;
-	versions = null;
+        // reset version information as it might have changed while Asterisk
+        // restarted
+        version = null;
+        versions = null;
 
-	// same for channels and queues, they are reinitialized when reconnected
-	channelManager.disconnected();
-	meetMeManager.disconnected();
-	queueManager.disconnected();
-	initialized = false;
+        // same for channels and queues, they are reinitialized when reconnected
+        channelManager.disconnected();
+        meetMeManager.disconnected();
+        queueManager.disconnected();
+        initialized = false;
     }
 
     /*
@@ -1028,188 +1040,183 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
      */
     private void handleConnectEvent(ConnectEvent connectEvent)
     {
-	try
-	{
-	    initialize();
-	} catch (Exception e)
-	{
-	    logger.error("Unable to reinitialize state after reconnection", e);
-	}
+        try
+        {
+            initialize();
+        }
+        catch (Exception e)
+        {
+            logger.error("Unable to reinitialize state after reconnection", e);
+        }
     }
 
     private void handleOriginateEvent(OriginateResponseEvent originateEvent)
     {
-	final String traceId;
-	final OriginateCallbackData callbackData;
-	final OriginateCallback cb;
-	final AsteriskChannelImpl channel;
-	final AsteriskChannelImpl otherChannel; // the other side if local
-	// channel
+        final String traceId;
+        final OriginateCallbackData callbackData;
+        final OriginateCallback cb;
+        final AsteriskChannelImpl channel;
+        final AsteriskChannelImpl otherChannel; // the other side if local
+        // channel
 
-	traceId = originateEvent.getActionId();
-	if (traceId == null)
-	{
-	    return;
-	}
+        traceId = originateEvent.getActionId();
+        if (traceId == null)
+        {
+            return;
+        }
 
-	synchronized (originateCallbacks)
-	{
-	    callbackData = originateCallbacks.get(traceId);
-	    if (callbackData == null)
-	    {
-		return;
-	    }
-	    originateCallbacks.remove(traceId);
-	}
+        synchronized (originateCallbacks)
+        {
+            callbackData = originateCallbacks.get(traceId);
+            if (callbackData == null)
+            {
+                return;
+            }
+            originateCallbacks.remove(traceId);
+        }
 
-	cb = callbackData.getCallback();
-	channel = channelManager.getChannelImplById(originateEvent
-		.getUniqueId());
+        cb = callbackData.getCallback();
+        channel = channelManager.getChannelImplById(originateEvent
+                .getUniqueId());
 
-	try
-	{
-	    if (channel == null)
-	    {
-		LiveException cause;
+        try
+        {
+            if (channel == null)
+            {
+                LiveException cause;
 
-		cause = new NoSuchChannelException("Channel '"
-			+ callbackData.getOriginateAction().getChannel()
-			+ "' is not available");
-		cb.onFailure(cause);
-		return;
-	    }
+                cause = new NoSuchChannelException("Channel '"
+                        + callbackData.getOriginateAction().getChannel()
+                        + "' is not available");
+                cb.onFailure(cause);
+                return;
+            }
 
-	    if (channel.wasInState(ChannelState.UP))
-	    {
-		cb.onSuccess(channel);
-		return;
-	    }
+            if (channel.wasInState(ChannelState.UP))
+            {
+                cb.onSuccess(channel);
+                return;
+            }
 
-	    if (channel.wasBusy())
-	    {
-		cb.onBusy(channel);
-		return;
-	    }
+            if (channel.wasBusy())
+            {
+                cb.onBusy(channel);
+                return;
+            }
 
-	    otherChannel = channelManager.getOtherSideOfLocalChannel(channel);
-	    // special treatment of local channels:
-	    // the interesting things happen to the other side so we have a look
-	    // at that
-	    if (otherChannel != null)
-	    {
-		final AsteriskChannel dialedChannel;
+            otherChannel = channelManager.getOtherSideOfLocalChannel(channel);
+            // special treatment of local channels:
+            // the interesting things happen to the other side so we have a look
+            // at that
+            if (otherChannel != null)
+            {
+                final AsteriskChannel dialedChannel;
 
-		dialedChannel = otherChannel.getDialedChannel();
+                dialedChannel = otherChannel.getDialedChannel();
 
-		// on busy the other channel is in state busy when we receive
-		// the originate event
-		if (otherChannel.wasBusy())
-		{
-		    cb.onBusy(channel);
-		    return;
-		}
+                // on busy the other channel is in state busy when we receive
+                // the originate event
+                if (otherChannel.wasBusy())
+                {
+                    cb.onBusy(channel);
+                    return;
+                }
 
-		// alternative:
-		// on busy the dialed channel is hung up when we receive the
-		// originate event having a look at the hangup cause reveals the
-		// information we are interested in
-		// this alternative has the drawback that there might by
-		// multiple channels that have been dialed by the local channel
-		// but we only look at the last one.
-		if (dialedChannel != null && dialedChannel.wasBusy())
-		{
-		    cb.onBusy(channel);
-		    return;
-		}
-	    }
+                // alternative:
+                // on busy the dialed channel is hung up when we receive the
+                // originate event having a look at the hangup cause reveals the
+                // information we are interested in
+                // this alternative has the drawback that there might by
+                // multiple channels that have been dialed by the local channel
+                // but we only look at the last one.
+                if (dialedChannel != null && dialedChannel.wasBusy())
+                {
+                    cb.onBusy(channel);
+                    return;
+                }
+            }
 
-	    // if nothing else matched we asume no answer
-	    cb.onNoAnswer(channel);
-	} catch (Throwable t)
-	{
-	    logger.warn("Exception dispatching originate progress", t);
-	}
+            // if nothing else matched we asume no answer
+            cb.onNoAnswer(channel);
+        }
+        catch (Throwable t)
+        {
+            logger.warn("Exception dispatching originate progress", t);
+        }
     }
 
     public void shutdown()
     {
 
-	if (eventConnection != null
-		&& eventConnection.getState() == ManagerConnectionState.CONNECTED)
-	{
-	    eventConnection.logoff();
-	    eventConnection = null;
-	}
-	if (managerEventListenerProxy != null)
-	{
-	    managerEventListenerProxy.shutdown();
-	}
-	managerEventListenerProxy = null;
-	eventListener = null;
+        if (eventConnection != null
+                && eventConnection.getState() == ManagerConnectionState.CONNECTED)
+        {
+            eventConnection.logoff();
+            eventConnection = null;
+        }
+        if (managerEventListenerProxy != null)
+        {
+            managerEventListenerProxy.shutdown();
+        }
+        managerEventListenerProxy = null;
+        eventListener = null;
     }
 
-    public List<PeerEntryEvent> getPeerEntries()
-	    throws ManagerCommunicationException
+    public List<PeerEntryEvent> getPeerEntries() throws ManagerCommunicationException
     {
-	ResponseEvents responseEvents = sendEventGeneratingAction(
-		new SipPeersAction(), 2000);
-	List<PeerEntryEvent> peerEntries = new ArrayList<PeerEntryEvent>(30);
-	for (ResponseEvent re : responseEvents.getEvents())
-	{
-	    if (re instanceof PeerEntryEvent)
-	    {
-		peerEntries.add((PeerEntryEvent) re);
-	    }
-	}
-	return peerEntries;
+        ResponseEvents responseEvents = sendEventGeneratingAction(new SipPeersAction(), 2000);
+        List<PeerEntryEvent> peerEntries = new ArrayList<PeerEntryEvent>(30);
+        for (ResponseEvent re : responseEvents.getEvents())
+        {
+            if (re instanceof PeerEntryEvent)
+            {
+                peerEntries.add((PeerEntryEvent) re);
+            }
+        }
+        return peerEntries;
     }
 
-    public DbGetResponseEvent dbGet(String family, String key)
-	    throws ManagerCommunicationException
+    public DbGetResponseEvent dbGet(String family, String key) throws ManagerCommunicationException
     {
-	ResponseEvents responseEvents = sendEventGeneratingAction(
-		new DbGetAction(family, key), 2000);
-	DbGetResponseEvent dbgre = null;
-	for (ResponseEvent re : responseEvents.getEvents())
-	{
-	    dbgre = (DbGetResponseEvent) re;
-	}
-	return dbgre;
+        ResponseEvents responseEvents = sendEventGeneratingAction(new DbGetAction(family, key), 2000);
+        DbGetResponseEvent dbgre = null;
+        for (ResponseEvent re : responseEvents.getEvents())
+        {
+            dbgre = (DbGetResponseEvent) re;
+        }
+        return dbgre;
     }
 
     public void dbDel(String family, String key)
-	    throws ManagerCommunicationException
+            throws ManagerCommunicationException
     {
-	// The following only works with BRIStuffed asrterisk: sendAction(new
-    // DbDelAction(family,key));
-	// Use cli command instead ...
-	sendAction(new CommandAction("database del " + family + " " + key));
+        // The following only works with BRIStuffed asrterisk: sendAction(new
+        // DbDelAction(family,key));
+        // Use cli command instead ...
+        sendAction(new CommandAction("database del " + family + " " + key));
     }
 
-    public void dbPut(String family, String key, String value)
-	    throws ManagerCommunicationException
+    public void dbPut(String family, String key, String value) throws ManagerCommunicationException
     {
-	sendAction(new DbPutAction(family, key, value));
+        sendAction(new DbPutAction(family, key, value));
     }
 
-    public AsteriskChannel getChannelByNameAndActive(String name)
-	    throws ManagerCommunicationException
+    public AsteriskChannel getChannelByNameAndActive(String name) throws ManagerCommunicationException
     {
-	initializeIfNeeded();
-	return channelManager.getChannelImplByNameAndActive(name);
+        initializeIfNeeded();
+        return channelManager.getChannelImplByNameAndActive(name);
     }
 
     /**
      * @return a Collection of agents
      * @throws ManagerCommunicationException if there is a problem communication
-     *         with Asterisk
+     *                                       with Asterisk
      * @see org.asteriskjava.live.AsteriskServer#getAgents()
      */
-    public Collection<AsteriskAgent> getAgents()
-	    throws ManagerCommunicationException
+    public Collection<AsteriskAgent> getAgents() throws ManagerCommunicationException
     {
-	initializeIfNeeded();
-	return agentManager.getAgents();
+        initializeIfNeeded();
+        return agentManager.getAgents();
     }
 
     /**
@@ -1217,19 +1224,19 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
      */
     void fireNewAgent(AsteriskAgentImpl agent)
     {
-	synchronized (listeners)
-	{
-	    for (AsteriskServerListener listener : listeners)
-	    {
-		try
-		{
-		    listener.onNewAgent(agent);
-		} catch (Exception e)
-		{
-		    logger.warn("Exception in onNewAgent()", e);
-		}
-	    }
-	}
-
+        synchronized (listeners)
+        {
+            for (AsteriskServerListener listener : listeners)
+            {
+                try
+                {
+                    listener.onNewAgent(agent);
+                }
+                catch (Exception e)
+                {
+                    logger.warn("Exception in onNewAgent()", e);
+                }
+            }
+        }
     }
 }

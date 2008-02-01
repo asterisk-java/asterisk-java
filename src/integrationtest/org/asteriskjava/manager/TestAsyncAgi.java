@@ -10,6 +10,7 @@ import org.asteriskjava.manager.action.StatusAction;
 import org.asteriskjava.manager.action.VoicemailUsersListAction;
 import org.asteriskjava.manager.action.AgiAction;
 import org.asteriskjava.manager.event.ManagerEvent;
+import org.asteriskjava.manager.event.AsyncAgiEvent;
 import org.asteriskjava.manager.response.CommandResponse;
 import org.asteriskjava.manager.response.ManagerResponse;
 
@@ -31,16 +32,20 @@ public class TestAsyncAgi extends AbstractManagerTestCase
             public void onManagerEvent(ManagerEvent event)
             {
                 System.out.println("Got event: " + event);
+                if (event instanceof AsyncAgiEvent)
+                {
+                    System.out.println("Decoded env: " + ((AsyncAgiEvent) event).decodeEnv());
+                }
             }
         });
         dmc.login();
-        /*
+        System.out.println("Dial 1296");
+        Thread.sleep(5000);
         ManagerResponse response = dmc.sendAction(new AgiAction(
                 "IAX2/iax0-cgn_reucon_net-2",
                 "EXEC Playback tt-monkeysintro",
                 "myCommandId"));
         System.out.println(response);
-        */
 
         // wait to receive events
         Thread.sleep(20000);
