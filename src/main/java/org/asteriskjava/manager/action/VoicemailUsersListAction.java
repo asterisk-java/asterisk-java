@@ -23,17 +23,12 @@ import org.asteriskjava.manager.event.VoicemailUserEntryCompleteEvent;
  * For each user that is found a VoicemailUserEntryEvent event is sent by Asterisk containing
  * the details. When all peers have been reported a VoicemailUserEntryCompleteEvent is
  * sent.<p>
- * If no voicemail users are defined you only receive a success response with message
- * "There are no voicemail users currently defined." and no VoicemailUserEntryCompleteEvent.
- * As Asterisk-Java waits for the VoicemailUserEntryCompleteEvent you will run into a timeout
- * in this case. This issue has been reported to Digium at http://bugs.digium.com/view.php?id=11874.<p>
  * It is implemented in <code>apps/app_voicemail.c</code>
  * <p/>
  * Available since Asterisk 1.6
  *
  * @author srt
  * @version $Id$
- * @todo Asterisk bug: update if http://bugs.digium.com/view.php?id=11874 is resolved
  * @see org.asteriskjava.manager.event.VoicemailUserEntryEvent
  * @see org.asteriskjava.manager.event.VoicemailUserEntryCompleteEvent
  * @since 1.0.0
