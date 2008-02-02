@@ -52,7 +52,7 @@ public class SocketConnectionFacadeImpl implements SocketConnectionFacade
     static final Pattern NL_PATTERN = Pattern.compile("\n");
 
     /**
-     * Creates a new instance for use with the Manager API that uses CRNL as line delimiter.
+     * Creates a new instance for use with the Manager API that uses CRNL ("\r\n") as line delimiter.
      * 
      * @param host the foreign host to connect to.
      * @param port the foreign port to connect to.
@@ -80,7 +80,7 @@ public class SocketConnectionFacadeImpl implements SocketConnectionFacade
     }
 
     /**
-     * Creates a new instance for use with FastAGI that uses NL as line delimiter.
+     * Creates a new instance for use with FastAGI that uses NL ("\n") as line delimiter.
      *
      * @param socket the underlying socket.
      * @throws IOException if the connection cannot be initialized.
@@ -117,7 +117,8 @@ public class SocketConnectionFacadeImpl implements SocketConnectionFacade
             }
             else
             {
-                throw new IOException("No more lines available", e);
+                // throw new IOException("No more lines available", e); // JDK6
+                throw new IOException("No more lines available: " + e.getMessage());
             }
         }
     }
