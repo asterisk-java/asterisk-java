@@ -1,6 +1,6 @@
 ANNOUNCEMENT: Asterisk-Java 0.3.1 released
 
-Asterisk-Java 0.3.1, a free Java library for Asterisk PBX integration,
+Asterisk-Java 0.3.1, the free Java library for Asterisk PBX integration,
 has been released.
 
 The Asterisk-Java package consists of a set of Java classes that allow
@@ -16,7 +16,7 @@ following issues:
     * [AJ-68] - Support for Bridge Action
     * [AJ-74] - Support Strategy property in QueueParamsEvent
 
-Asterisk-Java takes advantage of the features of Java 5.0 and therfore
+Asterisk-Java takes advantage of the features of Java 5.0 and therefore
 requires a Java Virtual Machine of at least version 1.5.0.
 
 Asterisk-Java is used in several commercial environments and by

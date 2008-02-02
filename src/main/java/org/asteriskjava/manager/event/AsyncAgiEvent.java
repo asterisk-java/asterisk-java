@@ -122,7 +122,7 @@ public class AsyncAgiEvent extends ManagerEvent
      * 200%20result%3d0
      * </pre>
      *
-     * @return the result.
+     * @return the URL encoded result.
      */
     public String getResult()
     {
@@ -155,7 +155,7 @@ public class AsyncAgiEvent extends ManagerEvent
     /**
      * Sets the raw result.
      *
-     * @param result the result.
+     * @param result the URL encoded result.
      */
     public void setResult(String result)
     {
@@ -178,7 +178,7 @@ public class AsyncAgiEvent extends ManagerEvent
      * ...
      * </pre>
      *
-     * @return the AGI environment.
+     * @return the URL encoded AGI environment.
      */
     public String getEnv()
     {
@@ -227,7 +227,7 @@ public class AsyncAgiEvent extends ManagerEvent
     /**
      * Sets the AGI environment.
      *
-     * @param env the AGI environment.
+     * @param env the URL encoded AGI environment.
      */
     public void setEnv(String env)
     {
@@ -268,5 +268,4 @@ public class AsyncAgiEvent extends ManagerEvent
     {
         return this.subEvent != null && this.subEvent.equalsIgnoreCase(subEvent);
     }
-
 }

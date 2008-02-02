@@ -5,7 +5,7 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * A ThreadFactory that creates daemon threads for use with an {@link Executor}
+ * A ThreadFactory that creates daemon threads for use with an {@link Executor}.
  * 
  * @author srt
  * @version $Id$

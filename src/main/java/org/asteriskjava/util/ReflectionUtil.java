@@ -50,11 +50,10 @@ public class ReflectionUtil
         final Map<String, Method> accessors = new HashMap<String, Method>();
         final Method[] methods = clazz.getMethods();
 
-        for (int i = 0; i < methods.length; i++)
+        for (Method method : methods)
         {
             String name;
             String methodName;
-            final Method method = methods[i];
 
             methodName = method.getName();
             if (!methodName.startsWith("get"))
@@ -97,11 +96,10 @@ public class ReflectionUtil
         final Map<String, Method> accessors = new HashMap<String, Method>();
         final Method[] methods = clazz.getMethods();
 
-        for (int i = 0; i < methods.length; i++)
+        for (Method method : methods)
         {
             String name;
             String methodName;
-            Method method = methods[i];
 
             methodName = method.getName();
             if (!methodName.startsWith("set"))

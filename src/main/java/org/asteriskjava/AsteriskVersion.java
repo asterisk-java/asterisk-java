@@ -57,7 +57,7 @@ public class AsteriskVersion implements Comparable<AsteriskVersion>, Serializabl
     /**
      * Serial version identifier.
      */
-    private static final long serialVersionUID = -5696160640576385797L;
+    private static final long serialVersionUID = 1L;
 
     private AsteriskVersion(int version, String versionString)
     {

@@ -3,7 +3,7 @@ package org.asteriskjava.manager.event;
 /**
  * AgiExecEvents are triggered when an AGI command is executed. For each command two events are triggered:
  * one before excution ("Start") and one after execution ("End").
- * <p>
+ * <p/>
  * The following sub events are reported:
  * <ul>
  * <li>Start: Execution of an AGI command has started.</li>
@@ -39,6 +39,7 @@ public class AgiExecEvent extends ManagerEvent
     private String commandId;
     private String command;
     private Integer resultCode;
+    private String result;
 
     /**
      * Creates a new AgiExecEvent.
@@ -74,6 +75,8 @@ public class AgiExecEvent extends ManagerEvent
      * Returns the sub event type. This is either "Start" or "End".
      *
      * @return the sub event type.
+     * @see #SUB_EVENT_START
+     * @see #SUB_EVENT_END
      */
     public String getSubEvent()
     {
@@ -131,16 +134,55 @@ public class AgiExecEvent extends ManagerEvent
         this.command = command;
     }
 
+    /**
+     * Returns the result code.
+     *
+     * @return the result code.
+     */
     public Integer getResultCode()
     {
         return resultCode;
     }
 
+    /**
+     * Sets the result code.
+     *
+     * @param resultCode the result code.
+     */
     public void setResultCode(Integer resultCode)
     {
         this.resultCode = resultCode;
     }
 
+    /**
+     * Returns the result as a string.<p>
+     * They correspond to the numeric values returned by {@link #getResultCode()}. Usually you will want to
+     * stick with the numeric values.<p>
+     * Possible values are:
+     * <ul>
+     * <li>Failure (corresponds to result code -1)</li>
+     * <li>Success (corresponds to result code 200)</li>
+     * <li>KeepAlive (corresponds to result code 210)</li>
+     * <li>Command not permitted on a dead channel (corresponds to result code 511)</li>
+     * <li>Usage (corresponds to result code 520)</li>
+     * </ul>
+     *
+     * @return a string respresentation of the result.
+     */
+    public String getResult()
+    {
+        return result;
+    }
+
+    /**
+     * Sets the string respresentation of the result.
+     *
+     * @param result a string respresentation of the result.
+     */
+    public void setResult(String result)
+    {
+        this.result = result;
+    }
 
     /**
      * Checks is this a start sub event.

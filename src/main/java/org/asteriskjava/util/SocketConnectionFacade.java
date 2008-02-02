@@ -33,9 +33,11 @@ public interface SocketConnectionFacade
     /**
      * Reads a line of text from the socket connection. The current thread is
      * blocked until either the next line is received or an IOException
-     * encounters.
+     * encounters.<p>
+     * Depending on the implementation different newline delimiters are used
+     * ("\r\n" for the Manager API and "\n" for AGI).
      * 
-     * @return the line of text received excluding any newline character
+     * @return the line of text received excluding the newline delimiter.
      * @throws IOException if the connection has been closed.
      */
     String readLine() throws IOException;
@@ -50,7 +52,7 @@ public interface SocketConnectionFacade
     void write(String s) throws IOException;
 
     /**
-     * Flushes the socket connection, that is sends any buffered but yet unsent
+     * Flushes the socket connection by sending any buffered but yet unsent
      * data.
      * 
      * @throws IOException if the connection cannot be flushed.

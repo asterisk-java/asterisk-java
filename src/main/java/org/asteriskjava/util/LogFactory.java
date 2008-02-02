@@ -71,7 +71,7 @@ public final class LogFactory
                 log4jLoggingAvailable = Boolean.FALSE;
             }
         }
-        if (log4jLoggingAvailable.booleanValue())
+        if (log4jLoggingAvailable)
         {
             return new Log4JLogger(clazz);
         }
@@ -89,7 +89,7 @@ public final class LogFactory
                     javaLoggingAvailable = Boolean.FALSE;
                 }
             }
-            if (javaLoggingAvailable.booleanValue())
+            if (javaLoggingAvailable)
             {
                 return new JavaLoggingLog(clazz);
             }
