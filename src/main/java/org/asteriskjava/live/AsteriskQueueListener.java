@@ -11,18 +11,18 @@ package org.asteriskjava.live;
 public interface AsteriskQueueListener
 {
     /**
-     * Called whenever a new channel (entry) appears in the queue
+     * Called whenever an entry appears in the queue
      * 
-     * @param channel the new channel.
+     * @param entry the new entry.
      */
-    void onNewEntry(AsteriskChannel channel);
+    void onNewEntry(AsteriskQueueEntry entry);
 
     /**
-     * Called whenever a channel (entry) leaves the queue
+     * Called whenever an entry leaves the queue
      * 
-     * @param channel the channel that leaves the queue.
+     * @param entry the entry that leaves the queue.
      */
-    void onEntryLeave(AsteriskChannel channel);
+    void onEntryLeave(AsteriskQueueEntry entry);
 
     /**
      * Called whenever a member changes his state
@@ -33,7 +33,7 @@ public interface AsteriskQueueListener
     void onMemberStateChange(AsteriskQueueMember member);
 
     /**
-     * @param channel
+     * @param entry
      */
-    void onEntryServiceLevelExceeded(AsteriskChannel channel);
+    void onEntryServiceLevelExceeded(AsteriskQueueEntry entry);
 }

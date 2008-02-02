@@ -29,6 +29,7 @@ import java.util.regex.Pattern;
 import org.asteriskjava.live.AsteriskAgent;
 import org.asteriskjava.live.AsteriskChannel;
 import org.asteriskjava.live.AsteriskQueue;
+import org.asteriskjava.live.AsteriskQueueEntry;
 import org.asteriskjava.live.AsteriskServer;
 import org.asteriskjava.live.AsteriskServerListener;
 import org.asteriskjava.live.CallerId;
@@ -929,7 +930,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         {
             channelManager.handleCdrEvent((CdrEvent) event);
         }
-        // End of channel related events
+		// End of channel related events
         // Handle parking related event
         else if (event instanceof ParkedCallEvent)
         {
@@ -1235,6 +1236,25 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
                 catch (Exception e)
                 {
                     logger.warn("Exception in onNewAgent()", e);
+                }
+            }
+        }
+    }
+
+    
+    void fireNewQueueEntry(AsteriskQueueEntry entry)
+    {
+        synchronized (listeners)
+        {
+            for (AsteriskServerListener listener : listeners)
+            {
+                try
+                {
+                    listener.onNewQueueEntry(entry);
+                }
+                catch (Exception e)
+                {
+                    logger.warn("Exception in onNewQueueEntry()", e);
                 }
             }
         }

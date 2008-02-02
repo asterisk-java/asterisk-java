@@ -18,13 +18,15 @@ package org.asteriskjava.live.internal;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import org.asteriskjava.live.AsteriskChannel;
 import org.asteriskjava.live.AsteriskQueue;
+import org.asteriskjava.live.AsteriskQueueEntry;
 import org.asteriskjava.live.AsteriskQueueListener;
 import org.asteriskjava.live.AsteriskQueueMember;
 import org.asteriskjava.util.Log;
@@ -48,14 +50,14 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
     public class ServiceLevelTimerTask extends TimerTask
     {
 
-	private AsteriskChannel channel;
+	private AsteriskQueueEntry entry;
 
 	/**
 	 * 
 	 */
-	public ServiceLevelTimerTask(AsteriskChannel channel)
+	public ServiceLevelTimerTask(AsteriskQueueEntry entry)
 	{
-	    this.channel = channel;
+	    this.entry = entry;
 	}
 
 	/*
@@ -66,7 +68,7 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
 	public void run()
 	{
 	    System.out.println("Run Timer");
-	    fireServiceLevelExceeded(channel);
+	    fireServiceLevelExceeded(entry);
 	}
 
     }
@@ -77,11 +79,11 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
     private String strategy;
     private Integer serviceLevel;
     private Integer weight;
-    private final ArrayList<AsteriskChannel> entries;
+    private final ArrayList<AsteriskQueueEntryImpl> entries;
     private final Timer timer;
     private final HashMap<String, AsteriskQueueMemberImpl> members;
     private final List<AsteriskQueueListener> listeners;
-    private final HashMap<AsteriskChannel, ServiceLevelTimerTask> timers;
+    private final HashMap<AsteriskQueueEntry, ServiceLevelTimerTask> timers;
 
     AsteriskQueueImpl(AsteriskServerImpl server, String name, Integer max,
 	    String strategy, Integer serviceLevel, Integer weight)
@@ -92,11 +94,11 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
 	this.strategy = strategy;
 	this.serviceLevel = serviceLevel;
 	this.weight = weight;
-	this.entries = new ArrayList<AsteriskChannel>(25);
+	this.entries = new ArrayList<AsteriskQueueEntryImpl>(25);
 	listeners = new ArrayList<AsteriskQueueListener>();
 	members = new HashMap<String, AsteriskQueueMemberImpl>();
 	timer = new Timer();
-	timers = new HashMap<AsteriskChannel, ServiceLevelTimerTask>();
+	timers = new HashMap<AsteriskQueueEntry, ServiceLevelTimerTask>();
     }
 
     public String getName()
@@ -140,50 +142,142 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
     }
 
     @SuppressWarnings("unchecked")
-    public List<AsteriskChannel> getEntries()
+    public List<AsteriskQueueEntry> getEntries()
     {
-	synchronized (entries)
-	{
-	    return (List<AsteriskChannel>) entries.clone();
-	}
+    	List<AsteriskQueueEntry> copy = null;
+    	
+    	synchronized (entries)
+        {
+    		copy = new ArrayList<AsteriskQueueEntry>(entries.size());
+    		for (AsteriskQueueEntryImpl entry : entries) {
+    			copy.add(entry);
+    		}
+        }
+    	return copy;
     }
 
-    void addEntry(AsteriskChannel entry)
+    @SuppressWarnings("unchecked")
+    List<AsteriskQueueEntryImpl> getEntryImpls()
     {
-	long delay = serviceLevel.longValue() * 1000;
+    	List<AsteriskQueueEntryImpl> copy = null;
+    	
+    	synchronized (entries)
+        {
+    		copy = new ArrayList<AsteriskQueueEntryImpl>(entries.size());
+    		for (AsteriskQueueEntryImpl entry : entries) {
+    			copy.add(entry);
+    		}
+        }
+    	return copy;
+    }
+    
+    /**
+     * Shifts the position of the queue entries if needed
+     * (and fire PCE on queue entries if appropriate)
+     *
+     */
+    private void shift() {
+    	synchronized (entries) {
+    		
+    		Iterator<AsteriskQueueEntryImpl> i = entries.iterator(); // ordered
+    		int currentPos = 1; // Asterisk starts at 1
+    		
+    		while (i.hasNext()) {
+    			AsteriskQueueEntryImpl qe = i.next();
+    			// Only set (and fire PCE on qe) if necessary
+    			if (qe.getPosition() != currentPos) {
+    				qe.setPosition(currentPos);
+    			}
+    			currentPos++;
+    		}
+    	}
+    }
+    
+    /**
+     * Creates a new AsteriskQueueEntry, adds it to this queue.<p>
+     * Fires:<br>
+     * - PCE on channel<br>
+     * - NewEntry on this queue<br>
+     * - PCE on other queue entries if shifted (never happens)<br>
+     * - NewQueueEntry on server<br>
+     * 
+     * @param channel the channel that joined the queue
+     * @param reportedPosition the position as given by Asterisk (currently not used)
+     * @param dateReceived the date the hannel joined the queue
+     */
+    void createNewEntry(AsteriskChannelImpl channel, int reportedPosition, Date dateReceived)
+    {
+    
+    AsteriskQueueEntryImpl qe = new AsteriskQueueEntryImpl(server,this,channel,reportedPosition,dateReceived);
+    	
+    long delay = serviceLevel.longValue() * 1000;
 	if (delay > 0)
 	{
-	    ServiceLevelTimerTask timerTask = new ServiceLevelTimerTask(entry);
+	    ServiceLevelTimerTask timerTask = new ServiceLevelTimerTask(qe);
 	    timer.schedule(timerTask, delay);
-	    timers.put(entry, timerTask);
+	    timers.put(qe, timerTask);
 	}
+		
 	synchronized (entries)
 	{
-	    // only add if not yet there
-	    if (entries.contains(entry))
-	    {
-		return;
-	    }
-	    entries.add(entry);
+	    
+	    entries.add(qe); // at the end of the list
+	    
+	    // Keep the lock !
+	    // This will fire PCE on the newly created queue entry
+	    // but hopefully this one has no listeners yet
+	    shift();
+	    
 	}
-	fireNewEntry(entry);
+	
+	// Set the channel property ony here as queue entries and channels
+	// maintain a reciprocal reference.
+	// That way property change on channel and new entry event on queue will be
+	// lanched when BOTH channel and queue are correctly set.
+	
+	channel.setQueueEntry(qe);
+	fireNewEntry(qe);
+	server.fireNewQueueEntry(qe);
     }
 
-    void removeEntry(AsteriskChannel entry)
+    /**
+     * Removes the given queue entry from the queue.<p>
+     * Fires if needed:<br>
+     * - PCE on channel<br>
+     * - EntryLeave on this queue<br>
+     * - PCE on other queue entries if shifted<br>
+     * 
+     * @param entry an existing entry object
+     */
+    void removeEntry(AsteriskQueueEntryImpl entry, Date dateReceived)
     {
-	if (timers.containsKey(entry))
+    if (timers.containsKey(entry))
 	{
 	    ServiceLevelTimerTask timerTask = timers.get(entry);
 	    timerTask.cancel();
 	    timers.remove(timerTask);
 	}
+	
+    boolean changed = false;
 	synchronized (entries)
 	{
-	    entries.remove(entry);
+	    changed = entries.remove(entry);
+	    
+	    if (changed) {
+	    	// Keep the lock !
+	    	shift();
+	    }
 	}
-	fireEntryLeave(entry);
+	
+	// Fire outside lock
+	if (changed) {
+		entry.getChannel().setQueueEntry(null);
+		entry.left(dateReceived);
+		fireEntryLeave(entry);
+	}
     }
 
+    
     @Override
     public String toString()
     {
@@ -230,7 +324,7 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
      * 
      * @param channel that joins the queue
      */
-    void fireNewEntry(AsteriskChannel channel)
+    void fireNewEntry(AsteriskQueueEntryImpl entry)
     {
 	synchronized (listeners)
 	{
@@ -238,7 +332,7 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
 	    {
 		try
 		{
-		    listener.onNewEntry(channel);
+		    listener.onNewEntry(entry);
 		} catch (Exception e)
 		{
 		    logger.warn("Exception in onNewEntry()", e);
@@ -251,7 +345,7 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
      * Notifies all registered listener that an entry leaves the queue.
      * @param channel that leaves the queue.
      */
-    void fireEntryLeave(AsteriskChannel channel)
+    void fireEntryLeave(AsteriskQueueEntryImpl entry)
     {
 	synchronized (listeners)
 	{
@@ -259,7 +353,7 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
 	    {
 		try
 		{
-		    listener.onEntryLeave(channel);
+		    listener.onEntryLeave(entry);
 		} catch (Exception e)
 		{
 		    logger.warn("Exception in onEntryLeave()", e);
@@ -363,7 +457,25 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
 	    }
 	}
     }
-
+    
+	/**
+	 * Gets an entry of the queue by its channel name.
+	 * @param channelName The entry's channel name.
+	 * @return the queue entry if found, null otherwise.
+	 */
+    AsteriskQueueEntryImpl getEntry(String channelName) {
+    	synchronized (entries)
+        {
+    		for (AsteriskQueueEntryImpl entry : entries) {
+    			if (entry.getChannel().getName().equals(channelName)) {
+    				return entry;
+    			}
+    		}
+        }
+    	return null;
+    }
+    
+       
     /**
      * Removes a member from this queue.
      * @param member
@@ -383,11 +495,11 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
 	    members.remove(member.getLocation());
 	}
     }
-
+    
     /**
      * @param channel2
      */
-    void fireServiceLevelExceeded(AsteriskChannel channel)
+    void fireServiceLevelExceeded(AsteriskQueueEntry entry)
     {
 	synchronized (listeners)
 	{
@@ -395,7 +507,7 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
 	    {
 		try
 		{
-		    listener.onEntryServiceLevelExceeded(channel);
+		    listener.onEntryServiceLevelExceeded(entry);
 		} catch (Exception e)
 		{
 		    logger.warn("Exception in fireServiceLevelExceeded()", e);
@@ -403,4 +515,28 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
 	    }
 	}
     }
+    
+    
+    /**
+     * Gets an entry by its (estimated) position in the queue.
+     * @param position the position, starting at 1.
+     * @return the queue entry if exiting at this position, null otherwise.
+     */
+    AsteriskQueueEntryImpl getEntry(int position) {
+    	// positions in asterisk start at 1, but list starts at 0
+    	position--;
+    	AsteriskQueueEntryImpl foundEntry = null;
+    	synchronized (entries)
+        {
+    		try {
+    			foundEntry = entries.get(position);
+    		}
+    		catch (IndexOutOfBoundsException e) {
+    			// For consistency with the above method, 
+    			// swallow. We might indeed request the 1st one from time to time
+    		}
+        }
+    	return foundEntry;
+    }
+    
 }

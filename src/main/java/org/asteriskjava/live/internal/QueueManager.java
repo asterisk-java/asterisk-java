@@ -112,6 +112,11 @@ class QueueManager
 	}
     }
 
+    /**
+     * Gets (a copy of) the list of the queues.
+     * 
+     * @return a copy of the list of the queues.
+     */
     Collection<AsteriskQueue> getQueues()
     {
 	Collection<AsteriskQueue> copy;
@@ -123,6 +128,11 @@ class QueueManager
 	return copy;
     }
 
+    /**
+     * Adds a queue to the internal map, keyed by name
+     * 
+     * @param queue - the AsteriskQueueImpl to be added
+     */
     private void addQueue(AsteriskQueueImpl queue)
     {
 	synchronized (queues)
@@ -131,7 +141,12 @@ class QueueManager
 	}
     }
 
-    void handleQueueParamsEvent(QueueParamsEvent event)
+    /**
+     * Called during initialization to populate the list of queues
+     * 
+     * @param event - the event received
+     */
+    private void handleQueueParamsEvent(QueueParamsEvent event)
     {
 	AsteriskQueueImpl queue;
 	final String name;
@@ -156,6 +171,8 @@ class QueueManager
 	    addQueue(queue);
 	} else
 	{
+		// We should never reach that code as this method is only called for initialization
+		// So the queue should never be in the queues list
 	    synchronized (queue)
 	    {
 		queue.setMax(max);
@@ -165,7 +182,12 @@ class QueueManager
 	}
     }
 
-    void handleQueueMemberEvent(QueueMemberEvent event)
+    /**
+     * Called during initialization to populate the members of the queues
+     * 
+     * @param event - the QueueMemberEvent received
+     */
+    private void handleQueueMemberEvent(QueueMemberEvent event)
     {
 	final AsteriskQueueImpl queue = queues.get(event.getQueue());
 	if (queue == null)
@@ -184,9 +206,15 @@ class QueueManager
 
     }
 
-    void handleQueueEntryEvent(QueueEntryEvent event)
+    /**
+     * Called during initialization to populate entries of the queues.
+     * Currently does the same as handleJoinEvent()
+     * 
+     * @param event - the QueueEntryEvent received
+     */
+    private void handleQueueEntryEvent(QueueEntryEvent event)
     {
-	final AsteriskQueueImpl queue = queues.get(event.getQueue());
+	final AsteriskQueueImpl queue = getQueueByName(event.getQueue());
 	final AsteriskChannelImpl channel = channelManager
 		.getChannelImplByName(event.getChannel());
 
@@ -202,13 +230,31 @@ class QueueManager
 		    + event.getChannel());
 	    return;
 	}
-
-	queue.addEntry(channel);
+	
+	if (queue.getEntry(event.getChannel()) != null) {
+		logger.error("Ignored duplicate queue entry during population in queue " 
+				+ event.getQueue() + " for channel " + event.getChannel());
+		return;
+	}
+	// Asterisk gives us an initial position but doesn't tell us when he shifts the others
+	// We won't use this data for ordering until there is a appropriate event in AMI.
+	// (and refreshing the whole queue is too intensive and suffers incoherencies
+	// due to asynchronous shift that leaves holes if requested too fast)
+	
+	int reportedPosition = event.getPosition();
+	
+	queue.createNewEntry(channel,reportedPosition,event.getDateReceived());
+	
     }
-
+    
+    /**
+     * Called from AsteriskServerImpl whenever a new entry appears in a queue.
+     * 
+     * @param event - the JoinEvent received
+     */
     void handleJoinEvent(JoinEvent event)
     {
-	final AsteriskQueueImpl queue = queues.get(event.getQueue());
+	final AsteriskQueueImpl queue = getQueueByName(event.getQueue());
 	final AsteriskChannelImpl channel = channelManager
 		.getChannelImplByName(event.getChannel());
 
@@ -225,12 +271,30 @@ class QueueManager
 	    return;
 	}
 
-	queue.addEntry(channel);
+	if (queue.getEntry(event.getChannel()) != null) {
+		logger.error("Ignored duplicate queue entry in queue " 
+				+ event.getQueue() + " for channel " + event.getChannel());
+		return;
+	}
+	
+	// Asterisk gives us an initial position but doesn't tell us when he shifts the others
+	// We won't use this data for ordering until there is a appropriate event in AMI.
+	// (and refreshing the whole queue is too intensive and suffers incoherencies
+	// due to asynchronous shift that leaves holes if requested too fast)
+	
+	int reportedPosition = event.getPosition();
+	
+	queue.createNewEntry(channel,reportedPosition,event.getDateReceived());
     }
 
+    /**
+     * Called from AsteriskServerImpl whenever an enty leaves a queue.
+     * 
+     * @param event - the LeaveEvent received
+     */
     void handleLeaveEvent(LeaveEvent event)
     {
-	final AsteriskQueueImpl queue = queues.get(event.getQueue());
+	final AsteriskQueueImpl queue = getQueueByName(event.getQueue());
 	final AsteriskChannelImpl channel = channelManager
 		.getChannelImplByName(event.getChannel());
 
@@ -246,12 +310,24 @@ class QueueManager
 		    + event.getChannel());
 	    return;
 	}
-
-	queue.removeEntry(channel);
+	
+	AsteriskQueueEntryImpl existingQueueEntry = queue.getEntry(event.getChannel());
+	
+	if (existingQueueEntry == null) {
+		logger.error("Ignored leave event for non existing queue entry in queue " 
+				+ event.getQueue() + " for channel " + event.getChannel());
+		return;
+	}
+	
+	queue.removeEntry(existingQueueEntry,event.getDateReceived());
+	
+	
     }
 
     /**
      * Challange a QueueMemberStatusEvent.
+     * Called from AsteriskServerImpl whenever a member state changes.
+     * 
      * @param event that was triggered by Asterisk server.
      */
     void handleQueueMemberStatusEvent(QueueMemberStatusEvent event)
@@ -284,18 +360,16 @@ class QueueManager
      */
     private AsteriskQueueImpl getQueueByName(String queue)
     {
-	synchronized (queues)
-	{
-	    for (AsteriskQueueImpl asteriskQueue : queues.values())
-	    {
-		if (asteriskQueue.getName().equals(queue))
+    	AsteriskQueueImpl aQueue = null;
+		synchronized (queues)
 		{
-		    return asteriskQueue;
+			aQueue = queues.get(queue);
+			
 		}
-	    }
-	    logger.error("Requested queue " + queue + " not found!");
-	    return null;
-	}
+		if (aQueue == null) {
+			logger.error("Requested queue " + queue + " not found!");
+		}   
+	    return aQueue;
     }
 
     /**

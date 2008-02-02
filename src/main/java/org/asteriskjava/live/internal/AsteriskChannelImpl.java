@@ -21,6 +21,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.asteriskjava.live.AsteriskChannel;
+import org.asteriskjava.live.AsteriskQueueEntry;
 import org.asteriskjava.live.CallDetailRecord;
 import org.asteriskjava.live.CallerId;
 import org.asteriskjava.live.ChannelState;
@@ -126,6 +127,12 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
      * otherwise.
      */
     private MeetMeUserImpl meetMeUserImpl;
+
+    /** 
+     * Queue entry associated with this channel, if any, <code>null</code>
+     * otherwise
+     */
+    private AsteriskQueueEntryImpl queueEntryImpl;
 
     /**
      * Extension where the call is parked if it is parked, <code>null</code>
@@ -803,4 +810,21 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
 		this.parkedAt = parkedAt;
         firePropertyChange(PROPERTY_PARKED_AT, oldParkedAt, parkedAt);
 	}
+	
+	/**
+	 * Gets the queue entry associated with this channel if any, <code>null</code>
+	 * otherwise
+	 * @return the queue entry
+	 */
+	public AsteriskQueueEntryImpl getQueueEntry()
+    {
+        return queueEntryImpl;
+    }
+
+    void setQueueEntry(AsteriskQueueEntryImpl queueEntry)
+    {
+        final AsteriskQueueEntry oldQueueEntry = this.queueEntryImpl;
+        this.queueEntryImpl = queueEntry;
+        firePropertyChange(PROPERTY_QUEUE_ENTRY, oldQueueEntry, queueEntry);
+    }
 }

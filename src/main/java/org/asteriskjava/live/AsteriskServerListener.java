@@ -37,4 +37,11 @@ public interface AsteriskServerListener
      * @param agent
      */
     void onNewAgent(AsteriskAgentImpl agent);
+    
+    /**
+     * Called whenever a queue entry ( ~ wapper over channel) joins a {@link AstriskQueue}.
+     * 
+     * @param entry the queue entry that joined.
+     */
+    void onNewQueueEntry(AsteriskQueueEntry entry);
 }

@@ -89,11 +89,11 @@ public interface AsteriskQueue
     Integer getWeight();
 
     /**
-     * Returns the list of channels currently waiting in this queue.
+     * Returns the list of entries currently waiting in this queue.
      * 
-     * @return the list of channels currently waiting in this queue.
+     * @return the (ordered) list of entries currently waiting in this queue.
      */
-    List<AsteriskChannel> getEntries();
+    List<AsteriskQueueEntry> getEntries();
 
     /**
      * Returns the list of Asterisk members of this queue.

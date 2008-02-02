@@ -34,6 +34,7 @@ import java.util.List;
  * <li>dialingChannel
  * <li>linkedChannel
  * <li>meetMeUser
+ * <li>queueEntry
  * <li>parkedAt
  * </ul>
  * 
@@ -51,6 +52,7 @@ public interface AsteriskChannel extends LiveObject
     String PROPERTY_DIALING_CHANNEL = "dialingChannel";
     String PROPERTY_LINKED_CHANNEL = "linkedChannel";
     String PROPERTY_MEET_ME_USER = "meetMeUser";
+    String PROPERTY_QUEUE_ENTRY = "queueEntry";
     String PROPERTY_PARKED_AT = "parkedAt";
 
     String VARIABLE_MONITOR_EXEC = "MONITOR_EXEC";
@@ -255,6 +257,8 @@ public interface AsteriskChannel extends LiveObject
      */
     MeetMeUser getMeetMeUser();
 
+    AsteriskQueueEntry getQueueEntry();
+    
     /**
      * Return the extension to dial to pickup he channel of the parking if the channel is
      * currently parked
