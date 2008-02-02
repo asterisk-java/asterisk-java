@@ -16,12 +16,32 @@ import org.asteriskjava.manager.response.ManagerResponse;
 
 import junit.framework.TestCase;
 
+import java.util.Iterator;
+
 /**
  * @author srt
  * @version $Id$
  */
 public class TestAsyncAgi extends AbstractManagerTestCase
 {
+    public void testDialplanShow() throws Exception
+    {
+        DefaultManagerConnection managerConnection;
+
+        managerConnection = getDefaultManagerConnection();
+        managerConnection.login();
+
+        CommandAction commandAction = new CommandAction("sip show peers");
+        ManagerResponse response = managerConnection.sendAction(commandAction);
+        if (response instanceof CommandResponse)
+        {
+            for (String item : ((CommandResponse) response).getResult())
+            {
+                System.out.println(item);
+            }
+        }
+    }
+
     public void testAgiAction() throws Exception
     {
         DefaultManagerConnection dmc;

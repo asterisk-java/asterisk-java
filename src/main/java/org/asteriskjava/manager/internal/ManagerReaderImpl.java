@@ -156,7 +156,10 @@ public class ManagerReaderImpl implements ManagerReader
                     continue;
                 }
 
-                // Special handling for "Response: Follows" (CommandResponse)
+                /* Special handling for "Response: Follows" (CommandResponse)
+                 * As we are using "\r\n" as the delimiter for line this also handles multiline
+                 * results as long as they only contain "\n".
+                 */
                 if ("Follows".equals(buffer.get("response")) && line.endsWith("--END COMMAND--"))
                 {
                     buffer.put("result", line);

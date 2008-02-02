@@ -896,7 +896,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         if (state != CONNECTED)
         {
             throw new IllegalStateException("Actions may only be sent when in state "
-                    + "CONNECTED, but connection is in state " + state);
+                    + "CONNECTED but connection is in state " + state);
         }
 
         responseEvents = new ResponseEventsImpl();
