@@ -20,69 +20,31 @@ package org.asteriskjava.manager.event;
  * An UnholdEvent is triggered by the SIP channel driver when a channel is no
  * longer put on hold.<p>
  * It is implemented in <code>channels/chan_sip.c</code>.<p>
- * Available since Asterisk 1.2
- * 
- * @see org.asteriskjava.manager.event.HoldEvent
+ * Available since Asterisk 1.2, as of Asterisk 1.6 only {@link org.asteriskjava.manager.event.HoldEvent} is sent
+ * with the status set to <code>false</code> to indicate unhold.
+ *
  * @author srt
  * @version $Id$
+ * @see org.asteriskjava.manager.event.HoldEvent
  * @since 0.2
+ * @deprecated as of 1.0.0, use {@link org.asteriskjava.manager.event.HoldEvent} and its
+ *             {@link #isUnhold()} method instead.
  */
-public class UnholdEvent extends ManagerEvent
+public class UnholdEvent extends HoldEvent
 {
     /**
-     * Serializable version identifier
+     * Serializable version identifier.
      */
-    static final long serialVersionUID = 5906599407896179295L;
-
-    /**
-     * The name of the channel.
-     */
-    private String channel;
-
-    /**
-     * The unique id of the channel.
-     */
-    private String uniqueId;
+    static final long serialVersionUID = 1L;
 
     /**
      * Creates a new UnholdEvent.
-     * 
+     *
      * @param source
      */
     public UnholdEvent(Object source)
     {
         super(source);
-    }
-
-    /**
-     * Returns the name of the channel.
-     */
-    public String getChannel()
-    {
-        return channel;
-    }
-
-    /**
-     * Sets the name of the channel.
-     */
-    public void setChannel(String channel)
-    {
-        this.channel = channel;
-    }
-
-    /**
-     * Returns the unique id of the channel.
-     */
-    public String getUniqueId()
-    {
-        return uniqueId;
-    }
-
-    /**
-     * Sets the unique id of the channel.
-     */
-    public void setUniqueId(String uniqueId)
-    {
-        this.uniqueId = uniqueId;
+        setStatus(false);
     }
 }

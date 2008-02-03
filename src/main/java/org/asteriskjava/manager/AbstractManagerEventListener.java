@@ -1,73 +1,6 @@
 package org.asteriskjava.manager;
 
-import org.asteriskjava.manager.event.AgentCallbackLoginEvent;
-import org.asteriskjava.manager.event.AgentCallbackLogoffEvent;
-import org.asteriskjava.manager.event.AgentCalledEvent;
-import org.asteriskjava.manager.event.AgentCompleteEvent;
-import org.asteriskjava.manager.event.AgentConnectEvent;
-import org.asteriskjava.manager.event.AgentDumpEvent;
-import org.asteriskjava.manager.event.AgentLoginEvent;
-import org.asteriskjava.manager.event.AgentLogoffEvent;
-import org.asteriskjava.manager.event.AgentsCompleteEvent;
-import org.asteriskjava.manager.event.AgentsEvent;
-import org.asteriskjava.manager.event.AlarmClearEvent;
-import org.asteriskjava.manager.event.AlarmEvent;
-import org.asteriskjava.manager.event.CdrEvent;
-import org.asteriskjava.manager.event.ConnectEvent;
-import org.asteriskjava.manager.event.DbGetResponseEvent;
-import org.asteriskjava.manager.event.DialEvent;
-import org.asteriskjava.manager.event.DisconnectEvent;
-import org.asteriskjava.manager.event.DndStateEvent;
-import org.asteriskjava.manager.event.ExtensionStatusEvent;
-import org.asteriskjava.manager.event.FaxReceivedEvent;
-import org.asteriskjava.manager.event.HangupEvent;
-import org.asteriskjava.manager.event.HoldEvent;
-import org.asteriskjava.manager.event.HoldedCallEvent;
-import org.asteriskjava.manager.event.JoinEvent;
-import org.asteriskjava.manager.event.LeaveEvent;
-import org.asteriskjava.manager.event.LinkEvent;
-import org.asteriskjava.manager.event.LogChannelEvent;
-import org.asteriskjava.manager.event.ManagerEvent;
-import org.asteriskjava.manager.event.MeetMeJoinEvent;
-import org.asteriskjava.manager.event.MeetMeLeaveEvent;
-import org.asteriskjava.manager.event.MeetMeMuteEvent;
-import org.asteriskjava.manager.event.MeetMeStopTalkingEvent;
-import org.asteriskjava.manager.event.MeetMeTalkingEvent;
-import org.asteriskjava.manager.event.MessageWaitingEvent;
-import org.asteriskjava.manager.event.NewCallerIdEvent;
-import org.asteriskjava.manager.event.NewChannelEvent;
-import org.asteriskjava.manager.event.NewExtenEvent;
-import org.asteriskjava.manager.event.NewStateEvent;
-import org.asteriskjava.manager.event.OriginateResponseEvent;
-import org.asteriskjava.manager.event.ParkedCallEvent;
-import org.asteriskjava.manager.event.ParkedCallGiveUpEvent;
-import org.asteriskjava.manager.event.ParkedCallTimeOutEvent;
-import org.asteriskjava.manager.event.ParkedCallsCompleteEvent;
-import org.asteriskjava.manager.event.PeerEntryEvent;
-import org.asteriskjava.manager.event.PeerStatusEvent;
-import org.asteriskjava.manager.event.PeerlistCompleteEvent;
-import org.asteriskjava.manager.event.ProtocolIdentifierReceivedEvent;
-import org.asteriskjava.manager.event.QueueEntryEvent;
-import org.asteriskjava.manager.event.QueueEvent;
-import org.asteriskjava.manager.event.QueueMemberAddedEvent;
-import org.asteriskjava.manager.event.QueueMemberEvent;
-import org.asteriskjava.manager.event.QueueMemberPausedEvent;
-import org.asteriskjava.manager.event.QueueMemberRemovedEvent;
-import org.asteriskjava.manager.event.QueueMemberStatusEvent;
-import org.asteriskjava.manager.event.QueueParamsEvent;
-import org.asteriskjava.manager.event.QueueStatusCompleteEvent;
-import org.asteriskjava.manager.event.RegistryEvent;
-import org.asteriskjava.manager.event.ReloadEvent;
-import org.asteriskjava.manager.event.RenameEvent;
-import org.asteriskjava.manager.event.ShutdownEvent;
-import org.asteriskjava.manager.event.StatusCompleteEvent;
-import org.asteriskjava.manager.event.StatusEvent;
-import org.asteriskjava.manager.event.UnholdEvent;
-import org.asteriskjava.manager.event.UnlinkEvent;
-import org.asteriskjava.manager.event.UnparkedCallEvent;
-import org.asteriskjava.manager.event.UserEvent;
-import org.asteriskjava.manager.event.ZapShowChannelsCompleteEvent;
-import org.asteriskjava.manager.event.ZapShowChannelsEvent;
+import org.asteriskjava.manager.event.*;
 
 /**
  * Utility class that provides a protected handler method for each concrete manager event.
@@ -223,10 +156,6 @@ public abstract class AbstractManagerEventListener implements ManagerEventListen
     }
 
     protected void handleEvent(ShutdownEvent event)
-    {
-    }
-
-    protected void handleEvent(UnholdEvent event)
     {
     }
 
@@ -500,10 +429,6 @@ public abstract class AbstractManagerEventListener implements ManagerEventListen
         else if (event instanceof ShutdownEvent)
         {
             handleEvent((ShutdownEvent) event);
-        }
-        else if (event instanceof UnholdEvent)
-        {
-            handleEvent((UnholdEvent) event);
         }
         else if (event instanceof UserEvent)
         {
