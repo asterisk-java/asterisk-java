@@ -56,39 +56,7 @@ import org.asteriskjava.manager.action.ManagerAction;
 import org.asteriskjava.manager.action.OriginateAction;
 import org.asteriskjava.manager.action.SetVarAction;
 import org.asteriskjava.manager.action.SipPeersAction;
-import org.asteriskjava.manager.event.AbstractMeetMeEvent;
-import org.asteriskjava.manager.event.AgentCallbackLoginEvent;
-import org.asteriskjava.manager.event.AgentCallbackLogoffEvent;
-import org.asteriskjava.manager.event.AgentCalledEvent;
-import org.asteriskjava.manager.event.AgentCompleteEvent;
-import org.asteriskjava.manager.event.AgentConnectEvent;
-import org.asteriskjava.manager.event.AgentsEvent;
-import org.asteriskjava.manager.event.CdrEvent;
-import org.asteriskjava.manager.event.ConnectEvent;
-import org.asteriskjava.manager.event.DbGetResponseEvent;
-import org.asteriskjava.manager.event.DialEvent;
-import org.asteriskjava.manager.event.DisconnectEvent;
-import org.asteriskjava.manager.event.HangupEvent;
-import org.asteriskjava.manager.event.JoinEvent;
-import org.asteriskjava.manager.event.LeaveEvent;
-import org.asteriskjava.manager.event.LinkEvent;
-import org.asteriskjava.manager.event.ManagerEvent;
-import org.asteriskjava.manager.event.NewCallerIdEvent;
-import org.asteriskjava.manager.event.NewChannelEvent;
-import org.asteriskjava.manager.event.NewExtenEvent;
-import org.asteriskjava.manager.event.NewStateEvent;
-import org.asteriskjava.manager.event.OriginateResponseEvent;
-import org.asteriskjava.manager.event.ParkedCallEvent;
-import org.asteriskjava.manager.event.ParkedCallGiveUpEvent;
-import org.asteriskjava.manager.event.ParkedCallTimeOutEvent;
-import org.asteriskjava.manager.event.PeerEntryEvent;
-import org.asteriskjava.manager.event.QueueMemberAddedEvent;
-import org.asteriskjava.manager.event.QueueMemberRemovedEvent;
-import org.asteriskjava.manager.event.QueueMemberStatusEvent;
-import org.asteriskjava.manager.event.RenameEvent;
-import org.asteriskjava.manager.event.ResponseEvent;
-import org.asteriskjava.manager.event.UnlinkEvent;
-import org.asteriskjava.manager.event.UnparkedCallEvent;
+import org.asteriskjava.manager.event.*;
 import org.asteriskjava.manager.response.CommandResponse;
 import org.asteriskjava.manager.response.MailboxCountResponse;
 import org.asteriskjava.manager.response.ManagerError;
@@ -817,8 +785,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         }
         catch (Exception e)
         {
-            throw ManagerCommunicationExceptionMapper.mapSendActionException(
-                    action.getAction(), e);
+            throw ManagerCommunicationExceptionMapper.mapSendActionException(action.getAction(), e);
         }
     }
 
@@ -938,13 +905,11 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         }
         else if (event instanceof ParkedCallGiveUpEvent)
         {
-            channelManager
-                    .handleParkedCallGiveUpEvent((ParkedCallGiveUpEvent) event);
+            channelManager.handleParkedCallGiveUpEvent((ParkedCallGiveUpEvent) event);
         }
         else if (event instanceof ParkedCallTimeOutEvent)
         {
-            channelManager
-                    .handleParkedCallTimeOutEvent((ParkedCallTimeOutEvent) event);
+            channelManager.handleParkedCallTimeOutEvent((ParkedCallTimeOutEvent) event);
         }
         else if (event instanceof UnparkedCallEvent)
         {
@@ -962,22 +927,21 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         }
         else if (event instanceof QueueMemberStatusEvent)
         {
-            queueManager
-                    .handleQueueMemberStatusEvent((QueueMemberStatusEvent) event);
+            queueManager.handleQueueMemberStatusEvent((QueueMemberStatusEvent) event);
         }
-        // <<<<<< AJ-94
+        else if (event instanceof QueueMemberPenaltyEvent)
+        {
+            queueManager.handleQueueMemberPenaltyEvent((QueueMemberPenaltyEvent) event);
+        }
         else if (event instanceof QueueMemberAddedEvent)
         {
-            queueManager
-                    .handleQueueMemberAddedEvent((QueueMemberAddedEvent) event);
+            queueManager.handleQueueMemberAddedEvent((QueueMemberAddedEvent) event);
         }
         else if (event instanceof QueueMemberRemovedEvent)
         {
-            queueManager
-                    .handleQueueMemberRemovedEvent((QueueMemberRemovedEvent) event);
+            queueManager.handleQueueMemberRemovedEvent((QueueMemberRemovedEvent) event);
         }
         // >>>>>> AJ 94
-        // End of queue related events
         // Handle meetMeEvents
         else if (event instanceof AbstractMeetMeEvent)
         {
@@ -1006,13 +970,11 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         }
         else if (event instanceof AgentCallbackLoginEvent)
         {
-            agentManager
-                    .handleAgentCallbackLoginEvent((AgentCallbackLoginEvent) event);
+            agentManager.handleAgentCallbackLoginEvent((AgentCallbackLoginEvent) event);
         }
         else if (event instanceof AgentCallbackLogoffEvent)
         {
-            agentManager
-                    .handleAgentCallbackLogoffEvent((AgentCallbackLogoffEvent) event);
+            agentManager.handleAgentCallbackLogoffEvent((AgentCallbackLogoffEvent) event);
         }
         // End of agent-related events
     }

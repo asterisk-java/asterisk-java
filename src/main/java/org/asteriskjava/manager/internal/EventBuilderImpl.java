@@ -104,6 +104,7 @@ class EventBuilderImpl implements EventBuilder
         registerEventClass(QueueMemberAddedEvent.class);
         registerEventClass(QueueMemberEvent.class);
         registerEventClass(QueueMemberPausedEvent.class);
+        registerEventClass(QueueMemberPenaltyEvent.class);
         registerEventClass(QueueMemberRemovedEvent.class);
         registerEventClass(QueueMemberStatusEvent.class);
         registerEventClass(QueueParamsEvent.class);

@@ -27,15 +27,7 @@ import org.asteriskjava.live.QueueMemberState;
 import org.asteriskjava.manager.EventTimeoutException;
 import org.asteriskjava.manager.ResponseEvents;
 import org.asteriskjava.manager.action.QueueStatusAction;
-import org.asteriskjava.manager.event.JoinEvent;
-import org.asteriskjava.manager.event.LeaveEvent;
-import org.asteriskjava.manager.event.ManagerEvent;
-import org.asteriskjava.manager.event.QueueEntryEvent;
-import org.asteriskjava.manager.event.QueueMemberAddedEvent;
-import org.asteriskjava.manager.event.QueueMemberEvent;
-import org.asteriskjava.manager.event.QueueMemberRemovedEvent;
-import org.asteriskjava.manager.event.QueueMemberStatusEvent;
-import org.asteriskjava.manager.event.QueueParamsEvent;
+import org.asteriskjava.manager.event.*;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
@@ -201,7 +193,7 @@ class QueueManager
         if (member == null)
         {
             member = new AsteriskQueueMemberImpl(server, queue, event.getLocation(),
-                    QueueMemberState.valueOf(event.getStatus()));
+                    QueueMemberState.valueOf(event.getStatus()), event.getPenalty());
         }
         queue.addMember(member);
     }
@@ -340,7 +332,28 @@ class QueueManager
         }
 
         member.stateChanged(QueueMemberState.valueOf(event.getStatus()));
+        member.penaltyChanged(event.getPenalty());
         queue.fireMemberStateChanged(member);
+    }
+
+    void handleQueueMemberPenaltyEvent(QueueMemberPenaltyEvent event)
+    {
+        AsteriskQueueImpl queue = getQueueByName(event.getQueue());
+
+        if (queue == null)
+        {
+            logger.error("Ignored QueueMemberStatusEvent for unknown queue " + event.getQueue());
+            return;
+        }
+
+        AsteriskQueueMemberImpl member = queue.getMemberByLocation(event.getLocation());
+        if (member == null)
+        {
+            logger.error("Ignored QueueMemberStatusEvent for unknown member " + event.getLocation());
+            return;
+        }
+
+        member.penaltyChanged(event.getPenalty());
     }
 
     /**
@@ -382,7 +395,7 @@ class QueueManager
         if (member == null)
         {
             member = new AsteriskQueueMemberImpl(server, queue, event.getLocation(),
-                    QueueMemberState.valueOf(event.getStatus()));
+                    QueueMemberState.valueOf(event.getStatus()), event.getPenalty());
         }
 
         queue.addMember(member);

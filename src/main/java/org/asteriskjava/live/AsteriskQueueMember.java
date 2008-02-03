@@ -22,6 +22,7 @@ package org.asteriskjava.live;
  * PropertyChangeEvents are fired for the following properties:
  * <ul>
  * <li>state</li>
+ * <li>penalty (since Asterisk 1.6)</li>
  * </ul>
  *
  * @author <a href="mailto:patrick.breucking{@nospam}gonicus.de">Patrick Breucking</a>
@@ -31,6 +32,7 @@ package org.asteriskjava.live;
 public interface AsteriskQueueMember extends LiveObject
 {
     public String PROPERTY_STATE = "state";
+    public String PROPERTY_PENALTY = "penalty";
 
     /**
      * Returns the location of this member.
@@ -53,4 +55,10 @@ public interface AsteriskQueueMember extends LiveObject
      */
     public QueueMemberState getState();
 
+    /**
+     * Returns the penalty of this member.
+     *
+     * @return the penalty of this member.
+     */
+    public Integer getPenalty();
 }

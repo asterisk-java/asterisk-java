@@ -31,7 +31,7 @@ public class QueueMemberEvent extends ResponseEvent
     public static final int AST_DEVICE_UNKNOWN = 0;
 
     /**
-     * Queue member is available
+     * Queue member is available.
      */
     public static final int AST_DEVICE_NOT_INUSE = 1;
     public static final int AST_DEVICE_INUSE = 2;
@@ -40,7 +40,7 @@ public class QueueMemberEvent extends ResponseEvent
     public static final int AST_DEVICE_UNAVAILABLE = 5;
 
     /**
-     * Serializable version identifier
+     * Serializable version identifier.
      */
     private static final long serialVersionUID = -2293926744791895763L;
     private String queue;

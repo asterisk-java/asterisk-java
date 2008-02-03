@@ -25,7 +25,7 @@ import org.asteriskjava.live.QueueMemberState;
  *
  * @author <a href="mailto:patrick.breucking{@nospam}gonicus.de">Patrick Breucking</a>
  * @version $Id$
- * @see {@link AsteriskQueueMember}
+ * @see AsteriskQueueMember
  * @since 0.3.1
  */
 class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueueMember
@@ -33,53 +33,45 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
     private AsteriskQueue queue;
     private QueueMemberState state;
     private String location;
+    private Integer penalty;
 
     /**
      * Creates a new queue member.
      *
-     * @param server   - server this channel belongs to.
-     * @param queue    - queue this member is registered to.
-     * @param location - location of member.
-     * @param state    - state of this member.
+     * @param server   server this channel belongs to.
+     * @param queue    queue this member is registered to.
+     * @param location location of member.
+     * @param state    state of this member.
+     * @param penalty  penalty of this member.
      */
     AsteriskQueueMemberImpl(final AsteriskServerImpl server,
                             final AsteriskQueueImpl queue, String location,
-                            QueueMemberState state)
+                            QueueMemberState state, Integer penalty)
     {
         super(server);
-        this.state = state;
-        this.location = location;
         this.queue = queue;
+        this.location = location;
+        this.state = state;
     }
 
-    /**
-     * Returns the state of this member.
-     *
-     * @return the state of this member.
-     */
-    public QueueMemberState getState()
-    {
-        return state;
-    }
-
-    /**
-     * Returns the queue this member is registered to.
-     *
-     * @return the queue this member is registered to.
-     */
     public AsteriskQueue getQueue()
     {
         return queue;
     }
 
-    /**
-     * Returns the location of this member.
-     *
-     * @return the location of this member.
-     */
     public String getLocation()
     {
         return location;
+    }
+
+    public QueueMemberState getState()
+    {
+        return state;
+    }
+
+    public Integer getPenalty()
+    {
+        return penalty;
     }
 
     @Override
@@ -106,11 +98,14 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
     synchronized void stateChanged(QueueMemberState state)
     {
         QueueMemberState oldState = this.state;
-        if (oldState == state)
-        {
-            return;
-        }
         this.state = state;
         firePropertyChange(PROPERTY_STATE, oldState, state);
+    }
+
+    synchronized void penaltyChanged(Integer penalty)
+    {
+        Integer oldPenalty = this.penalty;
+        this.penalty = penalty;
+        firePropertyChange(PROPERTY_PENALTY, oldPenalty, penalty);
     }
 }
