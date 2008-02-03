@@ -259,7 +259,7 @@ public abstract class AbstractManagerEventListener implements ManagerEventListen
     {
     }
 
-    protected void handleEvent(LinkEvent event)
+    protected void handleEvent(BridgeEvent event)
     {
     }
 
@@ -308,10 +308,6 @@ public abstract class AbstractManagerEventListener implements ManagerEventListen
     }
 
     protected void handleEvent(StatusEvent event)
-    {
-    }
-
-    protected void handleEvent(UnlinkEvent event)
     {
     }
 
@@ -530,9 +526,9 @@ public abstract class AbstractManagerEventListener implements ManagerEventListen
         {
             handleEvent((LeaveEvent) event);
         }
-        else if (event instanceof LinkEvent)
+        else if (event instanceof BridgeEvent)
         {
-            handleEvent((LinkEvent) event);
+            handleEvent((BridgeEvent) event);
         }
         else if (event instanceof OriginateResponseEvent)
         {
@@ -581,10 +577,6 @@ public abstract class AbstractManagerEventListener implements ManagerEventListen
         else if (event instanceof StatusEvent)
         {
             handleEvent((StatusEvent) event);
-        }
-        else if (event instanceof UnlinkEvent)
-        {
-            handleEvent((UnlinkEvent) event);
         }
         else if (event instanceof ZapShowChannelsCompleteEvent)
         {

@@ -206,6 +206,7 @@ class ActionBuilderImpl implements ActionBuilder
         appendString(sb, "UserEvent", eventType);
     }
 
+    @SuppressWarnings("unchecked")
     private void appendGetters(StringBuffer sb, Object action, Set<String> membersToIgnore)
     {
         Map<String, Method> getters = ReflectionUtil.getGetters(action.getClass());
@@ -238,8 +239,6 @@ class ActionBuilderImpl implements ActionBuilder
             }
             else if (value instanceof Map)
             {
-                // is this a place where reflection can make sure we can cast
-                // the map to <String,String>?
                 appendMap(sb, name, (Map) value);
             }
             else if (value instanceof String)

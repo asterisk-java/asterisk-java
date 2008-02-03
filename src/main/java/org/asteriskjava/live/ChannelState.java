@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.live;
 
+import org.asteriskjava.manager.event.AbstractChannelStateEvent;
+
 /**
  * The lifecycle status of an {@link org.asteriskjava.live.AsteriskChannel}.
  * <br>
@@ -27,19 +29,106 @@ package org.asteriskjava.live;
 public enum ChannelState
 {
     /**
-     * The initial state of the channel when it is not yet in use.
+     * Channel is down and available.
+     * This is the initial state of the channel when it is not yet in use.
      */
-    DOWN,
-    OFFHOOK,
-    DIALING,
-    RING,
-    RINGING,
-    UP,
-    BUSY,
-    RSRVD,
+    DOWN(AbstractChannelStateEvent.AST_STATE_DOWN),
 
     /**
-     * The channel has been hung up.
+     * Channel is down, but reserved.
      */
-    HUNGUP
+    RESERVED(AbstractChannelStateEvent.AST_STATE_RESERVED),
+
+    /**
+     * Channel is off hook.
+     */
+    OFFHOOK(AbstractChannelStateEvent.AST_STATE_OFFHOOK),
+
+    /**
+     * Digits (or equivalent) have been dialed.
+     */
+    DIALING(AbstractChannelStateEvent.AST_STATE_DIALING),
+
+    /**
+     * Line is ringing.
+     */
+    RING(AbstractChannelStateEvent.AST_STATE_RING),
+
+    /**
+     * Remote end is ringing.
+     */
+    RINGING(AbstractChannelStateEvent.AST_STATE_RINGING),
+
+    /**
+     * Line is up.
+     */
+    UP(AbstractChannelStateEvent.AST_STATE_UP),
+
+    /**
+     * Line is busy.
+     */
+    BUSY(AbstractChannelStateEvent.AST_STATE_BUSY),
+
+    /**
+     * Digits (or equivalent) have been dialed while offhook.
+     */
+    DIALING_OFFHOOK(AbstractChannelStateEvent.AST_STATE_DIALING_OFFHOOK),
+
+    /**
+     * Channel has detected an incoming call and is waiting for ring.
+     */
+    PRERING(AbstractChannelStateEvent.AST_STATE_PRERING),
+
+    /**
+     * The channel has been hung up and is not longer available on the Asterisk server.
+     */
+    HUNGUP(-1);
+
+    private int status;
+
+    /**
+     * Creates a new instance.
+     *
+     * @param status the numerical status code.
+     */
+    ChannelState(int status)
+    {
+        this.status = status;
+    }
+
+    /**
+     * Returns the numerical status code.
+     *
+     * @return the numerical status code.
+     * @see org.asteriskjava.manager.event.AbstractChannelStateEvent#getChannelState() 
+     */
+    public int getStatus()
+    {
+        return status;
+    }
+
+    /**
+     * Returns value specified by int. Use this to transform
+     * {@link org.asteriskjava.manager.event.AbstractChannelStateEvent#getChannelState()}.
+     *
+     * @param status integer representation of the status.
+     * @return corresponding ChannelState object or <code>null</code> if none matches.
+     */
+    public static ChannelState valueOf(Integer status)
+    {
+        if (status == null)
+        {
+            return null;
+        }
+
+        for (ChannelState tmp : ChannelState.values())
+        {
+            if (tmp.getStatus() == status)
+            {
+                return tmp;
+            }
+        }
+
+        return null;
+    }
 }

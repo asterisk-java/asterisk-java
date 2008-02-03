@@ -89,7 +89,7 @@ public interface AgiRequest
      * 
      * @return the Caller*ID number, for example "1234", if no Caller*ID is set or it
      *         is "unknown" <code>null</code> is returned.
-     * @deprecated will be removed in 0.4, use {@link #getCallerIdNumber()} instead.
+     * @deprecated as of 0.3, use {@link #getCallerIdNumber()} instead.
      */
     String getCallerId();
 

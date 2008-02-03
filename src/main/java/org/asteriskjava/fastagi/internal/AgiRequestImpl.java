@@ -209,6 +209,15 @@ public class AgiRequestImpl implements Serializable, AgiRequest
         return request.get("language");
     }
 
+    /**
+     * Returns the Caller*ID number, for example "1234".<p>
+     * Note: even with Asterisk 1.0 is contains only the numerical part
+     * of the Caller ID.
+     *
+     * @return the Caller*ID number, for example "1234", if no Caller*ID is set or it
+     *         is "unknown" <code>null</code> is returned.
+     * @deprecated as of 0.3, use {@link #getCallerIdNumber()} instead.
+     */
     public String getCallerId()
     {
         return getCallerIdNumber();

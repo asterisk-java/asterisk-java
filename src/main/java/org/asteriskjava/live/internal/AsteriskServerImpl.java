@@ -315,7 +315,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
     {
         final ResponseEvents responseEvents;
         final Iterator<ResponseEvent> responseEventIterator;
-        String uniqueId = null;
+        String uniqueId;
         AsteriskChannel channel = null;
 
         // must set async to true to receive OriginateEvents.
@@ -877,13 +877,9 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         {
             channelManager.handleDialEvent((DialEvent) event);
         }
-        else if (event instanceof LinkEvent)
+        else if (event instanceof BridgeEvent)
         {
-            channelManager.handleLinkEvent((LinkEvent) event);
-        }
-        else if (event instanceof UnlinkEvent)
-        {
-            channelManager.handleUnlinkEvent((UnlinkEvent) event);
+            channelManager.handleBridgeEvent((BridgeEvent) event);
         }
         else if (event instanceof RenameEvent)
         {
@@ -1170,21 +1166,12 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         return channelManager.getChannelImplByNameAndActive(name);
     }
 
-    /**
-     * @return a Collection of agents
-     * @throws ManagerCommunicationException if there is a problem communication
-     *                                       with Asterisk
-     * @see org.asteriskjava.live.AsteriskServer#getAgents()
-     */
     public Collection<AsteriskAgent> getAgents() throws ManagerCommunicationException
     {
         initializeIfNeeded();
         return agentManager.getAgents();
     }
 
-    /**
-     * @param agent
-     */
     void fireNewAgent(AsteriskAgentImpl agent)
     {
         synchronized (listeners)

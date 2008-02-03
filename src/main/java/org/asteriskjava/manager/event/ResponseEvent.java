@@ -20,32 +20,29 @@ package org.asteriskjava.manager.event;
  * Abstract base class for events triggered in response to a ManagerAction.<p>
  * All ResponseEvents contain an additional action id property that links the
  * event to the action that caused it.
- * 
- * @see org.asteriskjava.manager.action.ManagerAction
+ *
  * @author srt
  * @version $Id$
+ * @see org.asteriskjava.manager.action.ManagerAction
  */
 public abstract class ResponseEvent extends ManagerEvent
 {
     private String actionId;
     private String internalActionId;
 
-    /**
-     * @param source
-     */
     public ResponseEvent(Object source)
     {
         super(source);
     }
 
     /**
-     * Returns the user provided action id of the ManagerAction that caused 
+     * Returns the user provided action id of the ManagerAction that caused
      * this event. If the application did not set an action id this method
      * returns <code>null</code>.
-     * 
+     *
      * @return the action id of the ManagerAction that caused this event or
      *         <code>null</code> if none was set.
-     * @see org.asteriskjava.manager.action.ManagerAction#setActionId()
+     * @see org.asteriskjava.manager.action.ManagerAction#setActionId(String)
      */
     public String getActionId()
     {
@@ -54,9 +51,9 @@ public abstract class ResponseEvent extends ManagerEvent
 
     /**
      * Sets the action id of the ManagerAction that caused this event.
-     * 
+     *
      * @param actionId the action id of the ManagerAction that caused this
-     *            event.
+     *                 event.
      */
     public void setActionId(String actionId)
     {
@@ -68,7 +65,7 @@ public abstract class ResponseEvent extends ManagerEvent
      * event.<p>
      * Warning: This method is internal to Asterisk-Java and should never be
      * used in application code.
-     * 
+     *
      * @return the internal action id of the ManagerAction that caused this
      *         event.
      * @since 0.2
@@ -80,9 +77,9 @@ public abstract class ResponseEvent extends ManagerEvent
 
     /**
      * Sets the internal action id of the ManagerAction that caused this event.
-     * 
+     *
      * @param internalActionId the internal action id of the ManagerAction that
-     *            caused this event.
+     *                         caused this event.
      * @since 0.2
      */
     public void setInternalActionId(String internalActionId)
