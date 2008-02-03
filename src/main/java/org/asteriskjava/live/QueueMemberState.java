@@ -16,10 +16,8 @@
  */
 package org.asteriskjava.live;
 
-import org.asteriskjava.manager.event.QueueMemberEvent;
-
 /**
- * <p>
+ * <p/>
  * Valid status codes are:
  * <dl>
  * <dt>AST_DEVICE_UNKNOWN (0)</dt>
@@ -35,65 +33,78 @@ import org.asteriskjava.manager.event.QueueMemberEvent;
  * <dt>AST_DEVICE_UNAVAILABLE (5)</dt>
  * <dd>?</dd>
  * </dl>
- * @since 0.3.1
- * @author <a href="mailto:patrick.breucking{@nospam}gonicus.de">Patrick
- *         Breucking</a>
+ *
+ * @author <a href="mailto:patrick.breucking{@nospam}gonicus.de">Patrick Breucking</a>
  * @version $Id$
+ * @since 0.3.1
  */
 public enum QueueMemberState
 {
-    /**
-     * Busy means, phone is in action, eg. is ringing, in call.
-     */
-    DEVICE_BUSY, // 3
-
-    DEVICE_INUSE, // 2
-
-    DEVICE_INVALID, // 4
+    DEVICE_UNKNOWN(0),
 
     /**
      * Queue member is available, eg. Agent is logged in but idle.
      */
-    DEVICE_NOT_INUSE, // 1
+    DEVICE_NOT_INUSE(1),
+
+    DEVICE_INUSE(2),
+
+    /**
+     * Busy means, phone is in action, eg. is ringing, in call.
+     */
+    DEVICE_BUSY(3),
+
+    DEVICE_INVALID(4),
+
     /**
      * Device is not availible for call, eg. Agent is logged off.
      */
-    DEVICE_UNAVAILABLE, // 5
+    DEVICE_UNAVAILABLE(5);
 
-    DEVICE_UNKNOWN; // 0
+    private final int status;
+
+    /**
+     * Creates a new instance.
+     *
+     * @param status the numerical status code.
+     */
+    QueueMemberState(int status)
+    {
+        this.status = status;
+    }
+
+    /**
+     * Returns the numerical status code.
+     *
+     * @return the numerical status code.
+     */
+    public int getStatus()
+    {
+        return status;
+    }
 
     /**
      * Returns value specified by int. Use this to transform
-     * {@link QueueMemberEvent.getStatus}
-     * 
-     * @param status
-     * @return
+     * {@link org.asteriskjava.manager.event.QueueMemberEvent#getStatus()}.
+     *
+     * @param status integer representation of the status.
+     * @return corresponding QueueMemberState object or <code>null</code> if none matches.
      */
     public static QueueMemberState valueOf(Integer status)
     {
-	QueueMemberState resultedStatus;
-	switch (status)
-	{
-	case 0:
-	default:
-	    resultedStatus = DEVICE_UNKNOWN;
-	    break;
-	case 1:
-	    resultedStatus = DEVICE_NOT_INUSE;
-	    break;
-	case 2:
-	    resultedStatus = DEVICE_INUSE;
-	    break;
-	case 3:
-	    resultedStatus = DEVICE_BUSY;
-	    break;
-	case 4:
-	    resultedStatus = DEVICE_INVALID;
-	    break;
-	case 5:
-	    resultedStatus = DEVICE_UNAVAILABLE;
-	    break;
-	}
-	return resultedStatus;
+        if (status == null)
+        {
+            return null;
+        }
+
+        for (QueueMemberState tmp : QueueMemberState.values())
+        {
+            if (tmp.getStatus() == status)
+            {
+                return tmp;
+            }
+        }
+
+        return null;
     }
 }

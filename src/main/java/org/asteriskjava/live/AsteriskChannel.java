@@ -257,13 +257,18 @@ public interface AsteriskChannel extends LiveObject
      */
     MeetMeUser getMeetMeUser();
 
+    /**
+     * Returns the queue entry associated with this channel.
+     *
+     * @return the queue entry associated with this channel if any, <code>null</code> otherwise.
+     */
     AsteriskQueueEntry getQueueEntry();
     
     /**
      * Return the extension to dial to pickup he channel of the parking if the channel is
-     * currently parked
-     * 
-     * @return the Extension to dial, null if not currently parked
+     * currently parked.
+     *
+     * @return the Extension to dial, <code>null</code> if not currently parked.
      */
     Extension getParkedAt();
     

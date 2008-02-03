@@ -40,12 +40,9 @@ public class Voicemailbox implements Serializable
     /**
      * Creates a new instance.
      * 
-     * @param mailbox the name of this mailbox as defined in
-     *            <code>voicemail.conf</code>.
-     * @param context the context of this mailbox as defined in
-     *            <code>voicemail.conf</code>.
-     * @param user the user of this mailbox as defined in
-     *            <code>voicemail.conf</code>.
+     * @param mailbox the name of this mailbox as defined in <code>voicemail.conf</code>.
+     * @param context the context of this mailbox as defined in <code>voicemail.conf</code>.
+     * @param user the user of this mailbox as defined in <code>voicemail.conf</code>.
      */
     public Voicemailbox(String mailbox, String context, String user)
     {
@@ -55,11 +52,9 @@ public class Voicemailbox implements Serializable
     }
 
     /**
-     * Returns the name of this mailbox as defined in
-     * <code>voicemail.conf</code>.
+     * Returns the name of this mailbox as defined in <code>voicemail.conf</code>.
      * 
-     * @return the name of this mailbox as defined in
-     *         <code>voicemail.conf</code>.
+     * @return the name of this mailbox as defined in <code>voicemail.conf</code>.
      */
     public String getMailbox()
     {
@@ -67,11 +62,9 @@ public class Voicemailbox implements Serializable
     }
 
     /**
-     * Returns the context of this mailbox as defined in
-     * <code>voicemail.conf</code>.
+     * Returns the context of this mailbox as defined in <code>voicemail.conf</code>.
      * 
-     * @return the context of this mailbox as defined in
-     *         <code>voicemail.conf</code>.
+     * @return the context of this mailbox as defined in <code>voicemail.conf</code>.
      */
     public String getContext()
     {
@@ -79,11 +72,9 @@ public class Voicemailbox implements Serializable
     }
 
     /**
-     * Returns the user (usually the full name) of this mailbox as defined in
-     * <code>voicemail.conf</code>.
+     * Returns the user (usually the full name) of this mailbox as defined in <code>voicemail.conf</code>.
      * 
-     * @return the user of this mailbox as defined in
-     *         <code>voicemail.conf</code>.
+     * @return the user of this mailbox as defined in <code>voicemail.conf</code>.
      */
     public String getUser()
     {
