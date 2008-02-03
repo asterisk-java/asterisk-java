@@ -19,23 +19,20 @@ package org.asteriskjava.manager.event;
 /**
  * A HangupEvent is triggered when a channel is hung up.<p>
  * It is implemented in <code>channel.c</code>
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public class HangupEvent extends AbstractChannelStateEvent
+public class HangupEvent extends AbstractChannelEvent
 {
     /**
-     * Serializable version identifier
+     * Serializable version identifier.
      */
-    static final long serialVersionUID = 650153034857116588L;
+    static final long serialVersionUID = 0L;
 
     private Integer cause;
     private String causeTxt;
 
-    /**
-     * @param source
-     */
     public HangupEvent(Object source)
     {
         super(source);
@@ -43,6 +40,8 @@ public class HangupEvent extends AbstractChannelStateEvent
 
     /**
      * Returns the cause of the hangup.
+     *
+     * @return the hangup cause.
      * @see org.asteriskjava.live.HangupCause
      */
     public Integer getCause()
@@ -52,6 +51,8 @@ public class HangupEvent extends AbstractChannelStateEvent
 
     /**
      * Sets the cause of the hangup.
+     *
+     * @param cause the hangup cause.
      */
     public void setCause(Integer cause)
     {
@@ -60,7 +61,7 @@ public class HangupEvent extends AbstractChannelStateEvent
 
     /**
      * Returns the textual representation of the hangup cause.
-     * 
+     *
      * @return the textual representation of the hangup cause.
      * @since 0.2
      */
@@ -71,7 +72,7 @@ public class HangupEvent extends AbstractChannelStateEvent
 
     /**
      * Sets the textual representation of the hangup cause.
-     * 
+     *
      * @param causeTxt the textual representation of the hangup cause.
      * @since 0.2
      */

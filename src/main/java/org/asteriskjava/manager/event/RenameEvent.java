@@ -27,7 +27,7 @@ package org.asteriskjava.manager.event;
 public class RenameEvent extends ManagerEvent
 {
     /**
-     * Serializable version identifier
+     * Serializable version identifier.
      */
     static final long serialVersionUID = 3400165738000349767L;
 
@@ -51,9 +51,6 @@ public class RenameEvent extends ManagerEvent
      */
     protected String uniqueId;
 
-    /**
-     * @param source
-     */
     public RenameEvent(Object source)
     {
         super(source);

@@ -25,7 +25,7 @@ package org.asteriskjava.manager.event;
 public abstract class AbstractChannelEvent extends ManagerEvent
 {
     /**
-     * Serializable version identifier
+     * Serializable version identifier.
      */
     static final long serialVersionUID = 5906599407896179295L;
 
@@ -49,9 +49,6 @@ public abstract class AbstractChannelEvent extends ManagerEvent
      */
     private String uniqueId;
 
-    /**
-     * @param source
-     */
     protected AbstractChannelEvent(Object source)
     {
         super(source);
@@ -99,7 +96,8 @@ public abstract class AbstractChannelEvent extends ManagerEvent
 
     /**
      * Returns the Caller*ID of the channel if set or "&lt;unknown&gt;" if none has been set.
-     * 
+     *
+     * @return the Caller*ID
      * @deprecated
      * @see #getCallerIdNum()
      */
@@ -120,8 +118,10 @@ public abstract class AbstractChannelEvent extends ManagerEvent
     }
 
     /**
-     * Returns the Caller*ID numbe of the channel if set or "&lt;unknown&gt;" if none has been set.
-     * 
+     * Returns the Caller*ID number of the channel if set or "&lt;unknown&gt;" if none has been set.<p>
+     * Since Asterisk 1.6 an empty value is returned instead of "&lt;unknown&gt;" for most events.
+     *
+     * @return the Caller*ID number
      * @since 0.3
      */
     public String getCallerIdNum()

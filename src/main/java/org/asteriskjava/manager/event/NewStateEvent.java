@@ -26,13 +26,10 @@ package org.asteriskjava.manager.event;
 public class NewStateEvent extends AbstractChannelStateEvent
 {
     /**
-     * Serializable version identifier
+     * Serializable version identifier.
      */
-    static final long serialVersionUID = -3660049241052945802L;
+    static final long serialVersionUID = -0L;
 
-    /**
-     * @param source
-     */
     public NewStateEvent(Object source)
     {
         super(source);
