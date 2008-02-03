@@ -26,7 +26,7 @@ package org.asteriskjava.manager.event;
  * @version $Id$
  * @since 1.0.0
  */
-public abstract class QueueMemberPenaltyEvent extends ManagerEvent
+public class QueueMemberPenaltyEvent extends ManagerEvent
 {
     /**
      * Serializable version identifier.
