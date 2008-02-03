@@ -64,6 +64,7 @@ class EventBuilderImpl implements EventBuilder
         registerEventClass(AsyncAgiEvent.class);
         registerEventClass(AlarmEvent.class);
         registerEventClass(AlarmClearEvent.class);
+        registerEventClass(BridgeEvent.class);
         registerEventClass(CdrEvent.class);
         registerEventClass(ChannelReloadEvent.class);
         registerEventClass(DbGetResponseEvent.class);

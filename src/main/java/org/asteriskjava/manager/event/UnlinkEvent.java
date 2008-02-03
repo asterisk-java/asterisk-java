@@ -23,19 +23,19 @@ package org.asteriskjava.manager.event;
  * 
  * @author srt
  * @version $Id$
+ * @deprecated as of 1.0.0, use {@link org.asteriskjava.manager.event.BridgeEvent} and
+ *             {@link BridgeEvent#isUnlink()} ()} instead
  */
-public class UnlinkEvent extends LinkageEvent
+public class UnlinkEvent extends BridgeEvent
 {
     /**
-     * Serial version identifier
+     * Serial version identifier.
      */
     static final long serialVersionUID = -2943257621137870024L;
 
-    /**
-     * @param source
-     */
     public UnlinkEvent(Object source)
     {
         super(source);
+        setBridgeState(BRIDGE_STATE_UNLINK);
     }
 }

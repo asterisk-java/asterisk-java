@@ -20,7 +20,7 @@ package org.asteriskjava.manager.event;
  * A dial event is triggered whenever a phone attempts to dial someone.<p>
  * This event is implemented in <code>apps/app_dial.c</code>.<p>
  * Available since Asterisk 1.2.
- * 
+ *
  * @author Asteria Solutions Group, Inc. <http://www.asteriasgi.com/>
  * @version $Id$
  * @since 0.2
@@ -28,14 +28,14 @@ package org.asteriskjava.manager.event;
 public class DialEvent extends ManagerEvent
 {
     /**
-     * Serializable version identifier
+     * Serializable version identifier.
      */
-    private static final long serialVersionUID = 3258130241292417336L;
+    private static final long serialVersionUID = 0L;
 
     /**
      * The name of the source channel.
      */
-    private String src;
+    private String channel;
 
     /**
      * The name of the destination channel.
@@ -55,18 +55,13 @@ public class DialEvent extends ManagerEvent
     /**
      * The unique id of the source channel.
      */
-    private String srcUniqueId;
+    private String unqiueId;
 
     /**
      * The unique id of the destination channel.
      */
     private String destUniqueId;
 
-    /**
-     * Creates a new DialEvent.
-     * 
-     * @param source
-     */
     public DialEvent(Object source)
     {
         super(source);
@@ -74,27 +69,51 @@ public class DialEvent extends ManagerEvent
 
     /**
      * Returns the name of the source channel.
-     * 
+     *
      * @return the name of the source channel.
+     * @since 1.0.0
      */
-    public String getSrc()
+    public String getChannel()
     {
-        return src;
+        return channel;
     }
 
     /**
-     * Sets the name of the source channel.
-     * 
+     * Returns the name of the source channel.
+     *
+     * @param channel the name of the source channel.
+     * @since 1.0.0
+     */
+    public void setChannel(String channel)
+    {
+        this.channel = channel;
+    }
+
+    /**
+     * Returns the name of the source channel.
+     *
+     * @return the name of the source channel.
+     * @deprecated as of 1.0.0, use {@link #getChannel()} instead.
+     */
+    public String getSrc()
+    {
+        return channel;
+    }
+
+    /**
+     * Sets the name of the source channel.<p>
+     * Asterisk versions up to 1.4 use the "Source" property instead of "Channel".
+     *
      * @param src the name of the source channel.
      */
     public void setSrc(String src)
     {
-        this.src = src;
+        this.channel = src;
     }
 
     /**
      * Returns the name of the destination channel.
-     * 
+     *
      * @return the name of the destination channel.
      */
     public String getDestination()
@@ -104,7 +123,7 @@ public class DialEvent extends ManagerEvent
 
     /**
      * Sets the name of the destination channel.
-     * 
+     *
      * @param destination the name of the destination channel.
      */
     public void setDestination(String destination)
@@ -114,7 +133,7 @@ public class DialEvent extends ManagerEvent
 
     /**
      * Returns the Caller*ID.
-     * 
+     *
      * @return the Caller*ID or "<unknown>" if none has been set.
      */
     public String getCallerId()
@@ -124,7 +143,7 @@ public class DialEvent extends ManagerEvent
 
     /**
      * Sets the caller*ID.
-     * 
+     *
      * @param callerId the caller*ID.
      */
     public void setCallerId(String callerId)
@@ -134,7 +153,7 @@ public class DialEvent extends ManagerEvent
 
     /**
      * Returns the Caller*ID Name.
-     * 
+     *
      * @return the Caller*ID Name or "<unknown>" if none has been set.
      */
     public String getCallerIdName()
@@ -144,7 +163,7 @@ public class DialEvent extends ManagerEvent
 
     /**
      * Sets the Caller*Id Name.
-     * 
+     *
      * @param callerIdName the Caller*Id Name to set.
      */
     public void setCallerIdName(String callerIdName)
@@ -154,28 +173,52 @@ public class DialEvent extends ManagerEvent
 
     /**
      * Returns the unique ID of the source channel.
-     * 
+     *
      * @return the unique ID of the source channel.
+     * @since 1.0.0
      */
-    public String getSrcUniqueId()
+    public String getUniqueId()
     {
-        return srcUniqueId;
+        return unqiueId;
     }
 
     /**
      * Sets the unique ID of the source channel.
-     * 
+     *
+     * @param srcUniqueId the unique ID of the source channel.
+     * @since 1.0.0
+     */
+    public void setUniqueId(String srcUniqueId)
+    {
+        this.unqiueId = srcUniqueId;
+    }
+
+    /**
+     * Returns the unique ID of the source channel.
+     *
+     * @return the unique ID of the source channel.
+     * @deprecated as of 1.0.0, use {@link #getUniqueId()} instead.
+     */
+    public String getSrcUniqueId()
+    {
+        return unqiueId;
+    }
+
+    /**
+     * Sets the unique ID of the source channel.<p>
+     * Asterisk versions up to 1.4 use the "SrcUniqueId" property instead of "UniqueId".
+     *
      * @param srcUniqueId the unique ID of the source channel.
      */
     public void setSrcUniqueId(String srcUniqueId)
     {
-        this.srcUniqueId = srcUniqueId;
+        this.unqiueId = srcUniqueId;
     }
 
     /**
-     * Returns the unique ID of the distination channel.
-     * 
-     * @return the unique ID of the distination channel.
+     * Returns the unique ID of the destination channel.
+     *
+     * @return the unique ID of the destination channel.
      */
     public String getDestUniqueId()
     {
@@ -183,9 +226,9 @@ public class DialEvent extends ManagerEvent
     }
 
     /**
-     * Sets the unique ID of the distination channel.
-     * 
-     * @param destUniqueId the unique ID of the distination channel.
+     * Sets the unique ID of the destination channel.
+     *
+     * @param destUniqueId the unique ID of the destination channel.
      */
     public void setDestUniqueId(String destUniqueId)
     {

@@ -23,22 +23,22 @@ package org.asteriskjava.manager.event;
  * native bridge for the call.This is when Asterisk must sit between two telephones and perform
  * CODEC conversion on their behalf.<p>
  * It is implemented in <code>channel.c</code>
- * 
+ *
  * @author srt
  * @version $Id$
+ * @deprecated as of 1.0.0, use {@link org.asteriskjava.manager.event.BridgeEvent} and
+ *             {@link BridgeEvent#isLink()} instead
  */
-public class LinkEvent extends LinkageEvent
+public class LinkEvent extends BridgeEvent
 {
     /**
-     * Serializable version identifier
+     * Serializable version identifier.
      */
     static final long serialVersionUID = -4023240534975776225L;
 
-    /**
-     * @param source
-     */
     public LinkEvent(Object source)
     {
         super(source);
+        setBridgeState(BRIDGE_STATE_LINK);
     }
 }
