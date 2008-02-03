@@ -29,15 +29,37 @@ package org.asteriskjava.manager.event;
 public class StatusCompleteEvent extends ResponseEvent
 {
     /**
-     * Serial version identifier
+     * Serial version identifier.
      */
-    private static final long serialVersionUID = -1177773673509373296L;
+    private static final long serialVersionUID = 0L;
+    private Integer items;
 
-    /**
-     * @param source
-     */
     public StatusCompleteEvent(Object source)
     {
         super(source);
+    }
+
+    /**
+     * Returns the number of channels reported.<p>
+     * Available since Asterisk 1.6.
+     *
+     * @return the number of channels reported.
+     * @since 1.0.0
+     */
+    public Integer getItems()
+    {
+        return items;
+    }
+
+    /**
+     * Sets the number of channels reported.<p>
+     * Available since Asterisk 1.6.
+     *
+     * @param items the number of channels reported.
+     * @since 1.0.0
+     */
+    public void setItems(Integer items)
+    {
+        this.items = items;
     }
 }
