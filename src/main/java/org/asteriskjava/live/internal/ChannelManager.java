@@ -167,13 +167,14 @@ class ChannelManager
 
     private AsteriskChannelImpl addNewChannel(String uniqueId, String name,
                                               Date dateOfCreation, String callerIdNumber, String callerIdName,
-                                              ChannelState state)
+                                              ChannelState state, String account)
     {
         final AsteriskChannelImpl channel;
         final String traceId;
 
         channel = new AsteriskChannelImpl(server, name, uniqueId, dateOfCreation);
         channel.setCallerId(new CallerId(callerIdName, callerIdNumber));
+        channel.setAccount(account);
         channel.stateChanged(dateOfCreation, state);
         logger.info("Adding channel " + channel.getName() + "(" + channel.getId() + ")");
 
@@ -355,7 +356,7 @@ class ChannelManager
 
     AsteriskChannelImpl getChannelImplById(String id)
     {
-        AsteriskChannelImpl channel = null;
+        AsteriskChannelImpl channel;
 
         if (id == null)
         {
@@ -421,7 +422,7 @@ class ChannelManager
             addNewChannel(
                     event.getUniqueId(), event.getChannel(), event.getDateReceived(),
                     event.getCallerIdNum(), event.getCallerIdName(),
-                    string2ChannelState(event.getState()));
+                    string2ChannelState(event.getState()), event.getAccountCode());
         }
         else
         {
@@ -466,7 +467,8 @@ class ChannelManager
             // NewStateEvent can occur instead of a NewChannelEvent
             channel = addNewChannel(
                     event.getUniqueId(), event.getChannel(), event.getDateReceived(),
-                    event.getCallerIdNum(), event.getCallerIdName(), string2ChannelState(event.getState()));
+                    event.getCallerIdNum(), event.getCallerIdName(),
+                    string2ChannelState(event.getState()), null /* account code not available */);
         }
         if (event.getState() != null)
         {
@@ -486,7 +488,8 @@ class ChannelManager
             // NewCallerIdEvent can occur before NewChannelEvent
             addNewChannel(
                     event.getUniqueId(), event.getChannel(), event.getDateReceived(),
-                    event.getCallerIdNum(), event.getCallerIdName(), ChannelState.DOWN);
+                    event.getCallerIdNum(), event.getCallerIdName(),
+                    ChannelState.DOWN, null /* account code not available */);
         }
         else
         {
