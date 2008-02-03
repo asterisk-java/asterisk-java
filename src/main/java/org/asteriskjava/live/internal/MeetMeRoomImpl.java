@@ -26,6 +26,9 @@ import org.asteriskjava.live.MeetMeRoom;
 import org.asteriskjava.live.MeetMeUser;
 import org.asteriskjava.manager.action.CommandAction;
 
+/**
+ * Default implementation of the MeetMeRoom interface.
+ */
 class MeetMeRoomImpl extends AbstractLiveObject implements MeetMeRoom
 {
     private static final String COMMAND_PREFIX = "meetme";
@@ -133,10 +136,10 @@ class MeetMeRoomImpl extends AbstractLiveObject implements MeetMeRoom
 
         synchronized (this)
         {
-            sb.append("roomNumber='" + getRoomNumber() + "',");
+            sb.append("roomNumber='").append(getRoomNumber()).append("',");
             systemHashcode = System.identityHashCode(this);
         }
-        sb.append("systemHashcode=" + systemHashcode);
+        sb.append("systemHashcode=").append(systemHashcode);
         sb.append("]");
 
         return sb.toString();

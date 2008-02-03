@@ -16,7 +16,11 @@
  */
 package org.asteriskjava.live;
 
+import org.asteriskjava.manager.event.QueueMemberEvent;
+
 /**
+ * Represents the status of a Queue memeber.
+ *
  * <p/>
  * Valid status codes are:
  * <dl>
@@ -37,29 +41,30 @@ package org.asteriskjava.live;
  * @author <a href="mailto:patrick.breucking{@nospam}gonicus.de">Patrick Breucking</a>
  * @version $Id$
  * @since 0.3.1
+ * @see org.asteriskjava.manager.event.QueueMemberEvent
  */
 public enum QueueMemberState
 {
-    DEVICE_UNKNOWN(0),
+    DEVICE_UNKNOWN(QueueMemberEvent.AST_DEVICE_UNKNOWN),
 
     /**
      * Queue member is available, eg. Agent is logged in but idle.
      */
-    DEVICE_NOT_INUSE(1),
+    DEVICE_NOT_INUSE(QueueMemberEvent.AST_DEVICE_NOT_INUSE),
 
-    DEVICE_INUSE(2),
+    DEVICE_INUSE(QueueMemberEvent.AST_DEVICE_INUSE),
 
     /**
      * Busy means, phone is in action, eg. is ringing, in call.
      */
-    DEVICE_BUSY(3),
+    DEVICE_BUSY(QueueMemberEvent.AST_DEVICE_BUSY),
 
-    DEVICE_INVALID(4),
+    DEVICE_INVALID(QueueMemberEvent.AST_DEVICE_INVALID),
 
     /**
      * Device is not availible for call, eg. Agent is logged off.
      */
-    DEVICE_UNAVAILABLE(5);
+    DEVICE_UNAVAILABLE(QueueMemberEvent.AST_DEVICE_UNAVAILABLE);
 
     private final int status;
 
@@ -77,6 +82,7 @@ public enum QueueMemberState
      * Returns the numerical status code.
      *
      * @return the numerical status code.
+     * @see org.asteriskjava.manager.event.QueueMemberEvent#getStatus() 
      */
     public int getStatus()
     {

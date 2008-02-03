@@ -22,93 +22,95 @@ import org.asteriskjava.live.QueueMemberState;
 
 /**
  * Default implementation of a queue member.
- * 
- * @since 0.3.1
- * @author <a href="mailto:patrick.breucking{@nospam}gonicus.de">Patrick
- *         Breucking</a>
+ *
+ * @author <a href="mailto:patrick.breucking{@nospam}gonicus.de">Patrick Breucking</a>
  * @version $Id$
  * @see {@link AsteriskQueueMember}
+ * @since 0.3.1
  */
-class AsteriskQueueMemberImpl extends AbstractLiveObject implements
-	AsteriskQueueMember
+class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueueMember
 {
-
     private AsteriskQueue queue;
     private QueueMemberState state;
     private String location;
 
     /**
      * Creates a new queue member.
-     * @param server - server this channel belongs to.
-     * @param queue - queue this member is registered to.
+     *
+     * @param server   - server this channel belongs to.
+     * @param queue    - queue this member is registered to.
      * @param location - location of member.
-     * @param state - state of this member.
+     * @param state    - state of this member.
      */
     AsteriskQueueMemberImpl(final AsteriskServerImpl server,
-	    final AsteriskQueueImpl queue, String location,
-	    QueueMemberState state)
+                            final AsteriskQueueImpl queue, String location,
+                            QueueMemberState state)
     {
-	super(server);
-	this.state = state;
-	this.location = location;
-	this.queue = queue;
+        super(server);
+        this.state = state;
+        this.location = location;
+        this.queue = queue;
     }
 
     /**
      * Returns the state of this member.
+     *
      * @return the state of this member.
      */
     public QueueMemberState getState()
     {
-	return state;
+        return state;
     }
 
     /**
      * Returns the queue this member is registered to.
+     *
      * @return the queue this member is registered to.
      */
     public AsteriskQueue getQueue()
     {
-	return queue;
+        return queue;
     }
 
     /**
      * Returns the location of this member.
+     *
      * @return the location of this member.
      */
     public String getLocation()
     {
-	return location;
+        return location;
     }
 
     @Override
     public String toString()
     {
-	final StringBuffer sb;
+        final StringBuffer sb;
 
-	sb = new StringBuffer("AsteriskQueueMember[");
-	sb.append("location='").append(location).append("'");
-	sb.append("state='").append(state).append("'");
-	sb.append("queue='").append(queue.getName()).append("'");
-	sb.append("systemHashcode=").append(System.identityHashCode(this));
-	sb.append("]");
+        sb = new StringBuffer("AsteriskQueueMember[");
+        sb.append("location='").append(location).append("'");
+        sb.append("state='").append(state).append("'");
+        sb.append("queue='").append(queue.getName()).append("'");
+        sb.append("systemHashcode=").append(System.identityHashCode(this));
+        sb.append("]");
 
-	return sb.toString();
+        return sb.toString();
     }
 
     /**
      * Notifies all PropertyChangeListener that the state of this member has
      * changed.
+     *
      * @param state - The new state.
      */
     synchronized void stateChanged(QueueMemberState state)
     {
-	QueueMemberState oldState = this.state;
-	if (oldState == state)
-	{
-	    return;
-	}
-	this.state = state;
-	firePropertyChange(PROPERTY_STATE, oldState, state);
+        QueueMemberState oldState = this.state;
+        if (oldState == state)
+        {
+            return;
+        }
+        this.state = state;
+        firePropertyChange(PROPERTY_STATE, oldState, state);
     }
 }

@@ -1,7 +1,7 @@
 package org.asteriskjava.live;
 
 /**
- * The lifecycle status of a {@link org.asteriskjava.live.QueueEntry}.
+ * The lifecycle status of a {@link org.asteriskjava.live.AsteriskQueueEntry}.
  * 
  * @author gmi
  */

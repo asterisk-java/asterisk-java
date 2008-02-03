@@ -280,7 +280,7 @@ class MeetMeManager
                 channelUser.setMuted(muted);
                 room.addUser(channelUser);
             }
-            else if (channelUser == null && roomUser != null)
+            else if (channelUser == null)
             {
                 roomUser.setMuted(muted);
                 channel.setMeetMeUserImpl(roomUser);

@@ -16,17 +16,20 @@
  */
 package org.asteriskjava.live.internal;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TimeZone;
-
 import org.asteriskjava.live.AmaFlags;
 import org.asteriskjava.live.AsteriskChannel;
 import org.asteriskjava.live.CallDetailRecord;
 import org.asteriskjava.live.Disposition;
 import org.asteriskjava.manager.event.CdrEvent;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TimeZone;
+
+/**
+ * Default implementation of the CallDetailRecord interface.
+ */
 public class CallDetailRecordImpl implements CallDetailRecord
 {
     private static final Map<String, Disposition> DISPOSITION_MAP;

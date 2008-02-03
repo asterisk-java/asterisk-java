@@ -20,13 +20,11 @@ package org.asteriskjava.live;
  * The lifecycle status of an {@link org.asteriskjava.live.AsteriskAgent}.
  * 
  * @since 0.3.1
- * @author <a href="mailto:patrick.breucking{@nospam}gonicus.de">Patrick
- *         Breucking</a>
+ * @author <a href="mailto:patrick.breucking{@nospam}gonicus.de">Patrick Breucking</a>
  * @version $Id$
  */
 public enum AgentState
 {
-
     /**
      * Agent isn't logged in.
      */

@@ -18,17 +18,15 @@ package org.asteriskjava.live;
 
 /**
  * A queue member. Queue Member can be an agent or a direkt sip account, eg. a
- * Phone.
- * <p>
+ * Phone.<p>
  * PropertyChangeEvents are fired for the following properties:
  * <ul>
  * <li>state</li>
  * </ul>
- * </p>
- * @since 0.3.1
- * @author <a href="mailto:patrick.breucking{@nospam}gonicus.de">Patrick
- *         Breucking</a>
+ *
+ * @author <a href="mailto:patrick.breucking{@nospam}gonicus.de">Patrick Breucking</a>
  * @version $Id$
+ * @since 0.3.1
  */
 public interface AsteriskQueueMember extends LiveObject
 {
@@ -36,18 +34,21 @@ public interface AsteriskQueueMember extends LiveObject
 
     /**
      * Returns the location of this member.
+     *
      * @return the location of this member.
      */
     public String getLocation();
 
     /**
      * Returns the queue this member is registerd to.
+     *
      * @return the queue this member is registerd to.
      */
     public AsteriskQueue getQueue();
 
     /**
      * Returns the state of this member.
+     *
      * @return the state of this member.
      */
     public QueueMemberState getState();

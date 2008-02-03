@@ -22,7 +22,7 @@ import java.util.Map;
 /**
  * Asterisk hangup cause.<p>
  * Definitions from <code>/include/asterisk/causes.h</code>.
- * 
+ *
  * @author srt
  * @version $Id$
  */
@@ -96,7 +96,7 @@ public enum HangupCause
     /**
      * Returns the numeric cause code.<p>
      * Using this method in client code is discouraged.
-     * 
+     *
      * @return the numeric cause code.
      */
     public int getCode()
@@ -107,9 +107,9 @@ public enum HangupCause
     /**
      * Returns the HangupCode by its numeric cause code.<p>
      * Using this method in client code is discouraged.
-     * 
+     *
      * @param code the numeric cause code.
-     * @return the corresponding HangupCode enum or 
+     * @return the corresponding HangupCode enum or
      *         <code>null</code> if there is no such HangupCause.
      */
     public static synchronized HangupCause getByCode(int code)
@@ -122,12 +122,12 @@ public enum HangupCause
                 causes.put(cause.code, cause);
             }
         }
-        
+
         return causes.get(code);
     }
 
     @Override
-   public String toString()
+    public String toString()
     {
         if (name().startsWith("AST_CAUSE_"))
         {
