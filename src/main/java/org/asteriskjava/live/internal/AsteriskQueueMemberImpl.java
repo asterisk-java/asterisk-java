@@ -16,9 +16,11 @@
  */
 package org.asteriskjava.live.internal;
 
-import org.asteriskjava.live.AsteriskQueue;
-import org.asteriskjava.live.AsteriskQueueMember;
-import org.asteriskjava.live.QueueMemberState;
+import org.asteriskjava.live.*;
+import org.asteriskjava.manager.response.ManagerResponse;
+import org.asteriskjava.manager.response.ManagerError;
+import org.asteriskjava.manager.action.AbsoluteTimeoutAction;
+import org.asteriskjava.manager.action.QueuePenaltyAction;
 
 /**
  * Default implementation of a queue member.
@@ -52,6 +54,7 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
         this.queue = queue;
         this.location = location;
         this.state = state;
+        this.penalty = penalty;
     }
 
     public AsteriskQueue getQueue()
@@ -72,6 +75,23 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
     public Integer getPenalty()
     {
         return penalty;
+    }
+
+    public void setPenalty(int penalty) throws IllegalArgumentException, ManagerCommunicationException, InvalidPenaltyException
+    {
+        ManagerResponse response;
+
+        if (penalty < 0)
+        {
+            throw new IllegalArgumentException("Penalty must not be negative");
+        }
+
+        response = server.sendAction(new QueuePenaltyAction(location, penalty, queue.getName()));
+        if (response instanceof ManagerError)
+        {
+            throw new InvalidPenaltyException("Unable to set penalty for '" + location + "' on '" +
+                    queue.getName() + "': " + response.getMessage());
+        }
     }
 
     @Override

@@ -41,7 +41,7 @@ public class QueueMemberPenaltyEvent extends ManagerEvent
      *
      * @param source
      */
-    protected QueueMemberPenaltyEvent(Object source)
+    public QueueMemberPenaltyEvent(Object source)
     {
         super(source);
     }
