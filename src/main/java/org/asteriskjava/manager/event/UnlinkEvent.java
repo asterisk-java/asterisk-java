@@ -24,7 +24,7 @@ package org.asteriskjava.manager.event;
  * @author srt
  * @version $Id$
  * @deprecated as of 1.0.0, use {@link org.asteriskjava.manager.event.BridgeEvent} and
- *             {@link BridgeEvent#isUnlink()} ()} instead
+ *             {@link BridgeEvent#isUnlink()} instead
  */
 public class UnlinkEvent extends BridgeEvent
 {

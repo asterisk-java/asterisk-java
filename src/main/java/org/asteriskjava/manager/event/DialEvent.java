@@ -55,12 +55,14 @@ public class DialEvent extends ManagerEvent
     /**
      * The unique id of the source channel.
      */
-    private String unqiueId;
+    private String uniqueId;
 
     /**
      * The unique id of the destination channel.
      */
     private String destUniqueId;
+
+    private String dialString;
 
     public DialEvent(Object source)
     {
@@ -179,7 +181,7 @@ public class DialEvent extends ManagerEvent
      */
     public String getUniqueId()
     {
-        return unqiueId;
+        return uniqueId;
     }
 
     /**
@@ -190,7 +192,7 @@ public class DialEvent extends ManagerEvent
      */
     public void setUniqueId(String srcUniqueId)
     {
-        this.unqiueId = srcUniqueId;
+        this.uniqueId = srcUniqueId;
     }
 
     /**
@@ -201,7 +203,7 @@ public class DialEvent extends ManagerEvent
      */
     public String getSrcUniqueId()
     {
-        return unqiueId;
+        return uniqueId;
     }
 
     /**
@@ -212,7 +214,7 @@ public class DialEvent extends ManagerEvent
      */
     public void setSrcUniqueId(String srcUniqueId)
     {
-        this.unqiueId = srcUniqueId;
+        this.uniqueId = srcUniqueId;
     }
 
     /**
@@ -233,5 +235,27 @@ public class DialEvent extends ManagerEvent
     public void setDestUniqueId(String destUniqueId)
     {
         this.destUniqueId = destUniqueId;
+    }
+
+    /**
+     * Returns the dial string passed to the Dial application.<p>
+     * Available since Asterisk 1.6.
+     *
+     * @return the dial string passed to the Dial application.
+     * @since 1.0.0
+     */
+    public String getDialString()
+    {
+        return dialString;
+    }
+
+    /**
+     * Sets the dial string passed to the Dial application.
+     * @param dialString the dial string passed to the Dial application.
+     * @since 1.0.0
+     */
+    public void setDialString(String dialString)
+    {
+        this.dialString = dialString;
     }
 }
