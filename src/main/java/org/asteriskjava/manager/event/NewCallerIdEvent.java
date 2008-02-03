@@ -27,7 +27,7 @@ package org.asteriskjava.manager.event;
 public class NewCallerIdEvent extends AbstractChannelEvent
 {
     /**
-     * Serializable version identifier
+     * Serializable version identifier.
      */
     static final long serialVersionUID = 6639570533512201213L;
 
@@ -37,9 +37,6 @@ public class NewCallerIdEvent extends AbstractChannelEvent
     private Integer cidCallingPres;
     private String cidCallingPresTxt;
 
-    /**
-     * @param source
-     */
     public NewCallerIdEvent(Object source)
     {
         super(source);
@@ -57,11 +54,9 @@ public class NewCallerIdEvent extends AbstractChannelEvent
     }
 
     /**
-     * Returns the textual respresentation of the CallerId
-     * presentation/screening.
+     * Returns the textual respresentation of the CallerId presentation/screening.
      * 
-     * @return the textual respresentation of the CallerId
-     *         presentation/screening.
+     * @return the textual respresentation of the CallerId presentation/screening.
      * @since 0.2
      */
     public String getCidCallingPresTxt()

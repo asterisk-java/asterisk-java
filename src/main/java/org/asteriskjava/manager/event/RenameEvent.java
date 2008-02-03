@@ -89,7 +89,7 @@ public class RenameEvent extends ManagerEvent
 
     /**
      * Sets the old name of the channel.<p>
-     * The oldchannel property has been renamed to channel as of Asterisk 1.6.
+     * The "Oldchannel" property has been renamed to "Channel" as of Asterisk 1.6.
      *
      * @param channel the old name of the channel.
      * @since 1.0.0
@@ -112,7 +112,7 @@ public class RenameEvent extends ManagerEvent
 
     /**
      * Sets the old name of the channel.<p>
-     * The oldchannel property is used by Asterisk up to 1.4 and has been renamed to channel
+     * The "Oldchannel" property is used by Asterisk up to 1.4 and has been renamed to "Channel"
      * as of Asterisk 1.6.
      * 
      * @param oldname the old name of the channel.
