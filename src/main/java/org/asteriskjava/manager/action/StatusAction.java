@@ -19,7 +19,8 @@ package org.asteriskjava.manager.action;
 import org.asteriskjava.manager.event.StatusCompleteEvent;
 
 /**
- * The StatusAction requests the state of all active channels.<p>
+ * The StatusAction requests the state of all active channels. Alternativly (as of Asterisk 1.6)
+ * you can also pass a channel name to only retrive the status of one specific channel.<p>
  * For each active channel a StatusEvent is generated. After the state of all
  * channels has been reported a StatusCompleteEvent is generated.
  *
@@ -46,7 +47,7 @@ public class StatusAction extends AbstractManagerAction implements EventGenerati
     }
 
     /**
-     * Creates a new StatusAction that retrieves the status of the given channels.<p>
+     * Creates a new StatusAction that retrieves the status of the given channel.<p>
      * Available since Asterisk 1.6.
      *
      * @param channel name of the channel.
