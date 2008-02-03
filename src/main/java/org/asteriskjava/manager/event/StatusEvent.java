@@ -32,13 +32,14 @@ public class StatusEvent extends ResponseEvent
     private String channel;
     private String callerIdNum;
     private String callerIdName;
-    private String account;
+    private String accountCode;
     private String state;
     private String context;
     private String extension;
     private Integer priority;
     private Integer seconds;
-    private String link;
+    private String bridgedChannel;
+    private String bridgedUniqueId;
     private String uniqueId;
 
     public StatusEvent(Object source)
@@ -135,20 +136,44 @@ public class StatusEvent extends ResponseEvent
      * Returns the account code of this channel.
      *
      * @return the account code of this channel.
+     * @since 1.0.0
      */
-    public String getAccount()
+    public String getAccountCode()
     {
-        return account;
+        return accountCode;
     }
 
     /**
      * Sets the account code of this channel.
      *
+     * @param accountCode the account code of this channel.
+     * @since 1.0.0
+     */
+    public void setAccountCode(String accountCode)
+    {
+        this.accountCode = accountCode;
+    }
+
+    /**
+     * Returns the account code of this channel.
+     *
+     * @return the account code of this channel.
+     * @deprecated since 1.0.0, use {@link #getAccountCode()} instead.
+     */
+    public String getAccount()
+    {
+        return accountCode;
+    }
+
+    /**
+     * Sets the account code of this channel.<p>
+     * Asterisk versions up to 1.4 use the "Account" property instead of "AccountCode".
+     *
      * @param account the account code of this channel.
      */
     public void setAccount(String account)
     {
-        this.account = account;
+        this.accountCode = account;
     }
 
     public String getState()
@@ -215,20 +240,68 @@ public class StatusEvent extends ResponseEvent
      * Returns the name of the linked channel if this channel is bridged.
      *
      * @return the name of the linked channel if this channel is bridged.
+     * @since 1.0.0
      */
-    public String getLink()
+    public String getBridgedChannel()
     {
-        return link;
+        return bridgedChannel;
     }
 
     /**
      * Sets the name of the linked channel.
      *
+     * @param bridgedChannel the name of the linked channel if this channel is bridged.
+     * @since 1.0.0
+     */
+    public void setBridgedChannel(String bridgedChannel)
+    {
+        this.bridgedChannel = bridgedChannel;
+    }
+
+    /**
+     * Returns the name of the linked channel if this channel is bridged.
+     *
+     * @return the name of the linked channel if this channel is bridged.
+     * @deprecated as of 1.0.0, use {@link #getBridgedChannel()} instead.
+     */
+    public String getLink()
+    {
+        return bridgedChannel;
+    }
+
+    /**
+     * Sets the name of the linked channel.<p>
+     * Asterisk versions up to 1.4 use "Link" instead of "BridgedChannel".
+     *
      * @param link the name of the linked channel if this channel is bridged.
      */
     public void setLink(String link)
     {
-        this.link = link;
+        this.bridgedChannel = link;
+    }
+
+    /**
+     * Returns the unique id of the linked channel if this channel is bridged.<p>
+     * Available since Asterisk 1.6.
+     *
+     * @return the unique id of the linked channel if this channel is bridged.
+     * @since 1.0.0
+     */
+    public String getBridgedUniqueId()
+    {
+        return bridgedUniqueId;
+    }
+
+    /**
+     * Sets the unique id of the linked channel if this channel is bridged.<p>
+     * Available since Asterisk 1.6.
+     *
+     * @param bridgedUniqueId the unique id of the linked channel if this channel is bridged.
+     * @since 1.0.0
+     */
+    public void setBridgedUniqueId(String bridgedUniqueId)
+    {
+        this.bridgedUniqueId = bridgedUniqueId;
     }
 
     /**
