@@ -34,7 +34,7 @@ public class RenameEvent extends ManagerEvent
     /**
      * Old name of the channel before renaming occured.
      */
-    protected String oldname;
+    protected String channel;
 
     /**
      * New name of the channel after renaming occured.
@@ -81,22 +81,48 @@ public class RenameEvent extends ManagerEvent
 
     /**
      * Returns the old name of the channel.
-     * 
+     *
      * @return the old name of the channel.
+     * @since 1.0.0
      */
-    public final String getOldname()
+    public String getChannel()
     {
-        return oldname;
+        return channel;
     }
 
     /**
-     * Sets the old name of the channel.
+     * Sets the old name of the channel.<p>
+     * The oldchannel property has been renamed to channel as of Asterisk 1.6.
+     *
+     * @param channel the old name of the channel.
+     * @since 1.0.0
+     */
+    public void setChannel(String channel)
+    {
+        this.channel = channel;
+    }
+
+    /**
+     * Returns the old name of the channel.
+     * 
+     * @return the old name of the channel.
+     * @deprecated use {@link @getChannel} instead.
+     */
+    public final String getOldname()
+    {
+        return channel;
+    }
+
+    /**
+     * Sets the old name of the channel.<p>
+     * The oldchannel property is used by Asterisk up to 1.4 and has been renamed to channel
+     * as of Asterisk 1.6.
      * 
      * @param oldname the old name of the channel.
      */
     public final void setOldname(final String oldname)
     {
-        this.oldname = oldname;
+        this.channel = oldname;
     }
 
     /**

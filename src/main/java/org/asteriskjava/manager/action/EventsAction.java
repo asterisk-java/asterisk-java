@@ -26,7 +26,7 @@ package org.asteriskjava.manager.action;
 public class EventsAction extends AbstractManagerAction
 {
     /**
-     * Serializable version identifier
+     * Serializable version identifier.
      */
     static final long serialVersionUID = -8042435402644984875L;
 

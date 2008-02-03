@@ -17,8 +17,9 @@
 package org.asteriskjava.manager.action;
 
 /**
- * The PingAction will ellicit a 'Pong' response, it is used to keep the manager
- * connection open and performs no operation.
+ * The PingAction is used to keep the manager connection open and performs no operation.<p>
+ * Asterisk versions prior to 1.6 send a "Pong" response, since Asterisk 1.6 a
+ * "Success" response is sent with a "Ping" property set to "pong".
  * 
  * @author srt
  * @version $Id$
@@ -26,7 +27,7 @@ package org.asteriskjava.manager.action;
 public class PingAction extends AbstractManagerAction
 {
     /**
-     * Serializable version identifier
+     * Serializable version identifier.
      */
     private static final long serialVersionUID = -2930397629192323391L;
 

@@ -26,7 +26,7 @@ package org.asteriskjava.manager.event;
 public abstract class AbstractChannelStateEvent extends AbstractChannelEvent
 {
     /**
-     * Serializable version identifier
+     * Serializable version identifier.
      */
     static final long serialVersionUID = 5906599407896179295L;
 
