@@ -69,6 +69,7 @@ class EventBuilderImpl implements EventBuilder
         registerEventClass(DbGetResponseEvent.class);
         registerEventClass(DialEvent.class);
         registerEventClass(DndStateEvent.class);
+        registerEventClass(DtmfEvent.class);
         registerEventClass(ExtensionStatusEvent.class);
         registerEventClass(FaxReceivedEvent.class);
         registerEventClass(HangupEvent.class);
