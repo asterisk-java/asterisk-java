@@ -21,19 +21,18 @@ package org.asteriskjava.live;
  * <p>
  * PropertyChangeEvents are fired for the following properties:
  * <ul>
- * <li>status</li>
+ * <li>state</li>
  * </ul>
  * 
  * </p>
  * 
  * @since 0.3.1
- * @author <a href="mailto:patrick.breucking{@nospam}gonicus.de">Patrick
- *         Breucking</a>
+ * @author <a href="mailto:patrick.breucking{@nospam}gonicus.de">Patrick Breucking</a>
  * @version $Id$
  */
 public interface AsteriskAgent extends LiveObject
 {
-    String PROPERTY_STATUS = "status";
+    String PROPERTY_STATE = "state";
 
     /**
      * @return the name
@@ -46,8 +45,10 @@ public interface AsteriskAgent extends LiveObject
     public String getAgentId();
 
     /**
-     * @return the status
+     * Returns the state of this agent.
+     *
+     * @return the state the state of this agent.
      */
-    public AgentState getStatus();
+    public AgentState getState();
 
 }

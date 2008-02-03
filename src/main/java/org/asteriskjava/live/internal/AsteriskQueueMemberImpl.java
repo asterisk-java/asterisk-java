@@ -109,12 +109,6 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
         return sb.toString();
     }
 
-    /**
-     * Notifies all PropertyChangeListener that the state of this member has
-     * changed.
-     *
-     * @param state - The new state.
-     */
     synchronized void stateChanged(QueueMemberState state)
     {
         QueueMemberState oldState = this.state;

@@ -53,17 +53,17 @@ public class AsteriskAgentImplTest
 
     /**
      * Test method for
-     * {@link org.asteriskjava.live.internal.AsteriskAgentImpl#updateStatus(org.asteriskjava.live.AgentState)}.
+     * {@link org.asteriskjava.live.internal.AsteriskAgentImpl#updateState(org.asteriskjava.live.AgentState)}.
      */
     @Test
     public void testUpdateStatus()
     {
-	assertEquals(AgentState.AGENT_IDLE, agent.getStatus());
+	assertEquals(AgentState.AGENT_IDLE, agent.getState());
 	agent.addPropertyChangeListener(new PropertyChangeListener()
 	{
 	    public void propertyChange(PropertyChangeEvent evt)
 	    {
-		assertEquals("wrong propertyName", "status", evt
+		assertEquals("wrong propertyName", "state", evt
 			.getPropertyName());
 		assertEquals("wrong oldValue", AgentState.AGENT_IDLE, evt
 			.getOldValue());
@@ -74,7 +74,7 @@ public class AsteriskAgentImplTest
 	    }
 
 	});
-	agent.updateStatus(AgentState.AGENT_RINGING);
+	agent.updateState(AgentState.AGENT_RINGING);
 	assertEquals("wrong number of propagated changes", 1, numberOfChanges);
     }
 

@@ -30,9 +30,9 @@ public class AsteriskAgentImpl extends AbstractLiveObject implements AsteriskAge
 {
     public String name;
     public String agentId;
-    public AgentState status;
+    public AgentState state;
 
-    AsteriskAgentImpl(AsteriskServerImpl server, String name, String agentId, AgentState status)
+    AsteriskAgentImpl(AsteriskServerImpl server, String name, String agentId, AgentState state)
     {
         super(server);
         if (server == null || name == null || agentId == null)
@@ -41,7 +41,7 @@ public class AsteriskAgentImpl extends AbstractLiveObject implements AsteriskAge
         }
         this.name = name;
         this.agentId = agentId;
-        this.status = status;
+        this.state = state;
     }
 
     public String getName()
@@ -54,16 +54,16 @@ public class AsteriskAgentImpl extends AbstractLiveObject implements AsteriskAge
         return agentId;
     }
 
-    public AgentState getStatus()
+    public AgentState getState()
     {
-        return status;
+        return state;
     }
 
-    synchronized void updateStatus(AgentState agentState)
+    synchronized void updateState(AgentState state)
     {
-        final AgentState oldStatus = status;
-        this.status = agentState;
-        firePropertyChange(PROPERTY_STATUS, oldStatus, status);
+        final AgentState oldState = this.state;
+        this.state = state;
+        firePropertyChange(PROPERTY_STATE, oldState, this.state);
     }
 
     @Override
@@ -74,7 +74,7 @@ public class AsteriskAgentImpl extends AbstractLiveObject implements AsteriskAge
         sb = new StringBuffer("AsteriskAgent[");
         sb.append("agentId='").append(getAgentId()).append("',");
         sb.append("name='").append(getName()).append("',");
-        sb.append("state=").append(getStatus()).append(",");
+        sb.append("state=").append(getState()).append(",");
         sb.append("systemHashcode=").append(System.identityHashCode(this));
         sb.append("]");
 

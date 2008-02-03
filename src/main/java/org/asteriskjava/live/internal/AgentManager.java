@@ -178,7 +178,7 @@ public class AgentManager
 		+ newState);
 	synchronized (agent)
 	{
-	    agent.updateStatus(newState);
+	    agent.updateState(newState);
 	}
     }
 
@@ -218,7 +218,7 @@ public class AgentManager
 		    + event.getChannel());
 	    return;
 	}
-	agent.updateStatus(AgentState.AGENT_ONCALL);
+	agent.updateState(AgentState.AGENT_ONCALL);
     }
 
     /**
@@ -242,7 +242,7 @@ public class AgentManager
 	    }
 	    return;
 	}
-	agent.updateStatus(AgentState.AGENT_IDLE);
+	agent.updateState(AgentState.AGENT_IDLE);
     }
 
     /**
@@ -260,7 +260,7 @@ public class AgentManager
 		    + agents.values().toString());
 	    return;
 	}
-	agent.updateStatus(AgentState.AGENT_LOGGEDOFF);
+	agent.updateState(AgentState.AGENT_LOGGEDOFF);
 
     }
 
@@ -294,6 +294,6 @@ public class AgentManager
 		    + event.getChannel());
 	    return;
 	}
-	agent.updateStatus(AgentState.AGENT_IDLE);
+	agent.updateState(AgentState.AGENT_IDLE);
     }
 }
