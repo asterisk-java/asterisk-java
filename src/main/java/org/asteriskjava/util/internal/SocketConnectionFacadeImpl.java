@@ -135,8 +135,8 @@ public class SocketConnectionFacadeImpl implements SocketConnectionFacade
 
     public void close() throws IOException
     {
-        scanner.close();
         socket.close();
+        scanner.close();
     }
 
     public boolean isConnected()

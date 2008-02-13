@@ -139,7 +139,7 @@ public class ManagerReaderImpl implements ManagerReader
         try
         {
             // main loop
-            while ((line = socket.readLine()) != null && !this.die)
+            while (!this.die && (line = socket.readLine()) != null)
             {
                 // maybe we will find a better way to identify the protocol identifier but for now
                 // this works quite well.
