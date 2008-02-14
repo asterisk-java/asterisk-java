@@ -21,20 +21,20 @@ public class HtmlEventTracer implements ManagerEventListener
     private PrintWriter writer;
     private final List<String> uniqueIds;
     private final List<ManagerEvent> events;
-    private final Map<Class, String> colors;
+    private final Map<Class<? extends ManagerEvent>, String> colors;
 
     public HtmlEventTracer()
     {
         uniqueIds = new ArrayList<String>();
         events = new ArrayList<ManagerEvent>();
-        colors = new HashMap<Class, String>();
+        colors = new HashMap<Class<? extends ManagerEvent>, String>();
 
         colors.put(NewChannelEvent.class, "#7cd300"); // green
         colors.put(NewStateEvent.class, "#a4b6c8");
-        colors.put(NewExtenEvent.class, "#efefef");
-        colors.put(BridgeEvent.class, "#71ab6b");
+        colors.put(NewExtenEvent.class, "#efefef"); // grey
         colors.put(RenameEvent.class, "#ddeeff"); // light blue
         colors.put(DialEvent.class, "#feec30"); // yellow
+        colors.put(BridgeEvent.class, "#fff8ae"); // light yellow
         colors.put(HangupEvent.class, "#ff6c17"); // orange
 
         try
@@ -132,11 +132,7 @@ public class HtmlEventTracer implements ManagerEventListener
                 }
                 else
                 {
-                    String color = colors.get(event.getClass());
-                    if (color == null)
-                    {
-                        color = "#ffffff";
-                    }
+                    String color = getColor(event.getClass());
                     line.append("<td bgcolor='").append(color).append("'><tt>").append(text).append("</tt></td>");
                     print = true;
                 }
@@ -150,6 +146,18 @@ public class HtmlEventTracer implements ManagerEventListener
         writer.append("</table>");
         writer.close();
         System.err.println("Trace file successfully written to " + filename + ".");
+    }
+
+    private String getColor(Class<? extends ManagerEvent> clazz)
+    {
+        for (Map.Entry<Class<? extends ManagerEvent>, String> entry : colors.entrySet())
+        {
+            if (entry.getKey().isAssignableFrom(clazz))
+            {
+                return entry.getValue();
+            }
+        }
+        return "#ffffff";
     }
 
     protected String getProperty(Object obj, String property)
@@ -213,7 +221,7 @@ public class HtmlEventTracer implements ManagerEventListener
             }
             else if (event instanceof HoldEvent)
             {
-                format = "Hold";
+                format = "%s";
                 properties = new String[]{"status"};
             }
             else if (event instanceof AbstractParkedCallEvent)
@@ -232,13 +240,13 @@ public class HtmlEventTracer implements ManagerEventListener
         {
             if (uniqueId.equals(getProperty(event, "uniqueId1")))
             {
-                format = "%s<br>%s";
-                properties = new String[]{"uniqueId2", "channel2"};
+                format = "%s<br>%s<br>%s";
+                properties = new String[]{"uniqueId2", "channel2", "bridgeState"};
             }
             else if (uniqueId.equals(getProperty(event, "uniqueId2")))
             {
-                format = "%s<br>%s";
-                properties = new String[]{"uniqueId1", "channel1"};
+                format = "%s<br>%s<br>%s";
+                properties = new String[]{"uniqueId1", "channel1", "bridgeState"};
             }
         }
 
