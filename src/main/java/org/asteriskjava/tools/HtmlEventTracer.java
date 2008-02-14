@@ -1,9 +1,8 @@
 package org.asteriskjava.tools;
 
+import org.asteriskjava.live.DefaultAsteriskServer;
 import org.asteriskjava.manager.ManagerEventListener;
 import org.asteriskjava.manager.event.*;
-import org.asteriskjava.live.DefaultAsteriskServer;
-import org.asteriskjava.live.AsteriskServer;
 
 import java.beans.BeanInfo;
 import java.beans.Introspector;
@@ -15,6 +14,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * A diagnostic tool that creates an HTML file showing the state changing events
+ * received from Asterisk on the Manager API.<p>
+ * The following events are shown:
+ * <ul>
+ * <li>NewChannel</li>
+ * <li>NewState</li>
+ * <li>Rename</li>
+ * <li>Dial</li>
+ * <li>Bridge (Link and Unlink)</li>
+ * <li>Hangup</li>
+ * </ul>
+ * Usage: java org.asteriskjava.tools.HtmlEventTracer host username password
+ *
+ * @version $Id:$
+ */
 public class HtmlEventTracer implements ManagerEventListener
 {
     private String filename = "trace.html";
