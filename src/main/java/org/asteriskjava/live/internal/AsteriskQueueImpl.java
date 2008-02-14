@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -71,7 +70,7 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
     private final Timer timer;
     private final HashMap<String, AsteriskQueueMemberImpl> members;
     private final List<AsteriskQueueListener> listeners;
-    private final HashMap<AsteriskQueueEntry, ServiceLevelTimerTask> timers;
+    private final HashMap<AsteriskQueueEntry, ServiceLevelTimerTask> serviceLevelTimerTasks;
 
     AsteriskQueueImpl(AsteriskServerImpl server, String name, Integer max,
                       String strategy, Integer serviceLevel, Integer weight)
@@ -82,11 +81,11 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
         this.strategy = strategy;
         this.serviceLevel = serviceLevel;
         this.weight = weight;
-        this.entries = new ArrayList<AsteriskQueueEntryImpl>(25);
+        entries = new ArrayList<AsteriskQueueEntryImpl>(25);
         listeners = new ArrayList<AsteriskQueueListener>();
         members = new HashMap<String, AsteriskQueueMemberImpl>();
-        timer = new Timer();
-        timers = new HashMap<AsteriskQueueEntry, ServiceLevelTimerTask>();
+        timer = new Timer("ServiceLevelTimer-" + name, true);
+        serviceLevelTimerTasks = new HashMap<AsteriskQueueEntry, ServiceLevelTimerTask>();
     }
 
     public String getName()
@@ -148,7 +147,7 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
     @SuppressWarnings("unchecked")
     List<AsteriskQueueEntryImpl> getEntryImpls()
     {
-        List<AsteriskQueueEntryImpl> copy = null;
+        List<AsteriskQueueEntryImpl> copy;
 
         synchronized (entries)
         {
@@ -167,15 +166,12 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
      */
     private void shift()
     {
+        int currentPos = 1; // Asterisk starts at 1
+
         synchronized (entries)
         {
-
-            Iterator<AsteriskQueueEntryImpl> i = entries.iterator(); // ordered
-            int currentPos = 1; // Asterisk starts at 1
-
-            while (i.hasNext())
+            for (AsteriskQueueEntryImpl qe : entries)
             {
-                AsteriskQueueEntryImpl qe = i.next();
                 // Only set (and fire PCE on qe) if necessary
                 if (qe.getPosition() != currentPos)
                 {
@@ -202,15 +198,17 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
      */
     void createNewEntry(AsteriskChannelImpl channel, int reportedPosition, Date dateReceived)
     {
-
         AsteriskQueueEntryImpl qe = new AsteriskQueueEntryImpl(server, this, channel, reportedPosition, dateReceived);
 
-        long delay = serviceLevel.longValue() * 1000;
+        long delay = serviceLevel * 1000L;
         if (delay > 0)
         {
             ServiceLevelTimerTask timerTask = new ServiceLevelTimerTask(qe);
             timer.schedule(timerTask, delay);
-            timers.put(qe, timerTask);
+            synchronized (serviceLevelTimerTasks)
+            {
+                serviceLevelTimerTasks.put(qe, timerTask);
+            }
         }
 
         synchronized (entries)
@@ -241,16 +239,19 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
      * <li>PCE on other queue entries if shifted</li>
      * </ul>
      *
-     * @param entry an existing entry object.
+     * @param entry        an existing entry object.
      * @param dateReceived the remove event was received.
      */
     void removeEntry(AsteriskQueueEntryImpl entry, Date dateReceived)
     {
-        if (timers.containsKey(entry))
+        synchronized (serviceLevelTimerTasks)
         {
-            ServiceLevelTimerTask timerTask = timers.get(entry);
-            timerTask.cancel();
-            timers.remove(entry);
+            if (serviceLevelTimerTasks.containsKey(entry))
+            {
+                ServiceLevelTimerTask timerTask = serviceLevelTimerTasks.get(entry);
+                timerTask.cancel();
+                serviceLevelTimerTasks.remove(entry);
+            }
         }
 
         boolean changed;

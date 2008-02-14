@@ -1106,9 +1106,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
 
     public void shutdown()
     {
-
-        if (eventConnection != null
-                && eventConnection.getState() == ManagerConnectionState.CONNECTED)
+        if (eventConnection != null && eventConnection.getState() == ManagerConnectionState.CONNECTED)
         {
             eventConnection.logoff();
             eventConnection = null;

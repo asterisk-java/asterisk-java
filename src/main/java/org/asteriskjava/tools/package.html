@@ -1,3 +1,6 @@
+<html>
+<head>
+<!--
 /*
  *  Copyright 2004-2006 Stefan Reuter
  *
@@ -14,23 +17,11 @@
  *  limitations under the License.
  *
  */
-package org.asteriskjava.live;
+-->
+</head>
+<body>
 
-import junit.framework.TestCase;
+<p>Tools for debugging Asterisk and Asterisk-Java.</p>
 
-public class AsteriskServerTestCase extends TestCase
-{
-    protected AsteriskServer server;
-
-    @Override
-    public void setUp() throws Exception
-    {
-        server = new DefaultAsteriskServer("pbx0", "manager", "obelisk");
-    }
-
-    @Override
-    public void tearDown() throws Exception
-    {
-        server.getManagerConnection().logoff();
-    }
-}
+</body>
+</html>

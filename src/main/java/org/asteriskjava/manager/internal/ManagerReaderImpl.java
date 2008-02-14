@@ -19,7 +19,6 @@ package org.asteriskjava.manager.internal;
 import org.asteriskjava.manager.event.DisconnectEvent;
 import org.asteriskjava.manager.event.ManagerEvent;
 import org.asteriskjava.manager.event.ProtocolIdentifierReceivedEvent;
-import org.asteriskjava.manager.response.CommandResponse;
 import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.util.DateUtil;
 import org.asteriskjava.util.Log;
@@ -27,7 +26,9 @@ import org.asteriskjava.util.LogFactory;
 import org.asteriskjava.util.SocketConnectionFacade;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
 
 /**
@@ -73,7 +74,7 @@ public class ManagerReaderImpl implements ManagerReader
     /**
      * If set to <code>true</code>, terminates and closes the reader.
      */
-    private boolean die = false;
+    private volatile boolean die = false;
 
     /**
      * <code>true</code> if the main loop has finished.

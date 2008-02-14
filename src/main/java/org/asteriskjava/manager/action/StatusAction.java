@@ -73,7 +73,8 @@ public class StatusAction extends AbstractManagerAction implements EventGenerati
     }
 
     /**
-     * Returns the name of the channel.
+     * Returns the name of the channel.<p>
+     * Available since Asterisk 1.6.
      *
      * @return the name of the channel or <code>null</code> for all channels.
      * @since 1.0.0

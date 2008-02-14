@@ -109,6 +109,18 @@ public class SocketConnectionFacadeImpl implements SocketConnectionFacade
         {
             return scanner.next();
         }
+        catch (IllegalStateException e)
+        {
+            if (scanner.ioException() != null)
+            {
+                throw scanner.ioException();
+            }
+            else
+            {
+                // throw new IOException("No more lines available", e); // JDK6
+                throw new IOException("No more lines available: " + e.getMessage());
+            }
+        }
         catch (NoSuchElementException e)
         {
             if (scanner.ioException() != null)

@@ -92,7 +92,7 @@ public class DefaultAgiServer implements AgiServer
     /**
      * True while this server is shut down.
      */
-    private boolean die;
+    private volatile boolean die;
 
     /**
      * The strategy to use for mapping AgiRequests to AgiScripts that serve them.

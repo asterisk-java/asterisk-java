@@ -49,6 +49,13 @@ public class AstUtilTest extends TestCase
         assertEquals(null, AstUtil.parseCallerId(" ")[1]);
     }
 
+    public void testAJ120()
+    {
+        String s = "\"3496853210\" <3496853210>";
+        assertEquals("3496853210", AstUtil.parseCallerId(s)[0]);
+        assertEquals("3496853210", AstUtil.parseCallerId(s)[1]);
+    }
+
     public void testIsNull()
     {
         assertTrue("null must be null", AstUtil.isNull(null));
