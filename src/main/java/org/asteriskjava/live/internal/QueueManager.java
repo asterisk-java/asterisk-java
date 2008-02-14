@@ -101,6 +101,10 @@ class QueueManager
     {
         synchronized (queues)
         {
+            for(AsteriskQueueImpl queue : queues.values())
+            {
+                queue.cancelServiceLevelTimer();
+            }
             queues.clear();
         }
     }

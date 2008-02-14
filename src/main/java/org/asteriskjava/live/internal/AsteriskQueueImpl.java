@@ -88,6 +88,11 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
         serviceLevelTimerTasks = new HashMap<AsteriskQueueEntry, ServiceLevelTimerTask>();
     }
 
+    void cancelServiceLevelTimer()
+    {
+        timer.cancel();
+    }
+
     public String getName()
     {
         return name;

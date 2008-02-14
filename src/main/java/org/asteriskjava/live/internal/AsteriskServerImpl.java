@@ -230,7 +230,6 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         }
 
         channelManager.initialize();
-        // Initialize the agent manager
         agentManager.initialize();
         meetMeManager.initialize();
         if (!skipQueues)
@@ -986,8 +985,9 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         version = null;
         versions = null;
 
-        // same for channels and queues, they are reinitialized when reconnected
+        // same for channels, agents and queues rooms, they are reinitialized when reconnected
         channelManager.disconnected();
+        agentManager.disconnected();
         meetMeManager.disconnected();
         queueManager.disconnected();
         initialized = false;

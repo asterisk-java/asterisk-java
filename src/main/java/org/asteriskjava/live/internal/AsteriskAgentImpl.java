@@ -24,7 +24,6 @@ import org.asteriskjava.live.AsteriskAgent;
  *
  * @author <a href="mailto:patrick.breucking{@nospam}gonicus.de">Patrick Breucking</a>
  * @version $Id$
- * @since 0.1
  */
 public class AsteriskAgentImpl extends AbstractLiveObject implements AsteriskAgent
 {

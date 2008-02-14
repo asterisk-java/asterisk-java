@@ -94,6 +94,14 @@ public class AgentManager
         }
     }
 
+    void disconnected()
+    {
+        synchronized (agents)
+        {
+            agents.clear();
+        }
+    }
+
     /**
      * On AgentsEvent create a new Agent.
      *
