@@ -17,6 +17,7 @@ import java.util.Map;
 
 public class HtmlEventTracer implements ManagerEventListener
 {
+    private String filename = "trace.html";
     private PrintWriter writer;
     private final List<String> uniqueIds;
     private final List<ManagerEvent> events;
@@ -38,7 +39,7 @@ public class HtmlEventTracer implements ManagerEventListener
 
         try
         {
-            writer = new PrintWriter("trace.html");
+            writer = new PrintWriter(filename);
         }
         catch (IOException e)
         {
@@ -54,18 +55,30 @@ public class HtmlEventTracer implements ManagerEventListener
             System.exit(1);
         }
 
-        HtmlEventTracer tracer;
-        DefaultAsteriskServer server;
+        final HtmlEventTracer tracer;
+        final DefaultAsteriskServer server;
 
         tracer = new HtmlEventTracer();
         server = new DefaultAsteriskServer(args[0], args[1], args[2]);
         server.initialize();
         server.getManagerConnection().addEventListener(tracer);
 
-        Thread.sleep(20000);
+        System.err.println("Event tracer successfully started. Press Ctrl-C to write trace file and exit.");
 
-        tracer.write();
-        server.shutdown();
+        Runtime.getRuntime().addShutdownHook(new Thread()
+        {
+            public void run()
+            {
+                tracer.write();
+                server.shutdown();
+            }
+        }
+        );
+
+        while(true)
+        {
+            Thread.sleep(1000);
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -136,6 +149,7 @@ public class HtmlEventTracer implements ManagerEventListener
         }
         writer.append("</table>");
         writer.close();
+        System.err.println("Trace file successfully written to " + filename + ".");
     }
 
     protected String getProperty(Object obj, String property)
