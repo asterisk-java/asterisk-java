@@ -16,9 +16,9 @@
  */
 package org.asteriskjava.manager.response;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 /**
  * Response that is received when sending a GetConfigAction.
@@ -35,22 +35,22 @@ import java.util.Set;
  */
 public class GetConfigResponse extends ManagerResponse
 {
-
     private static final long serialVersionUID = -2044248427247227390L;
-    Map<Integer, String> categories;
-    Map<Integer, Map<Integer, String>> lines;
+    
+    private Map<Integer, String> categories;
+    private Map<Integer, Map<Integer, String>> lines;
 
     /**
-     * Returns the map of category numbers to category names
+     * Returns the map of category numbers to category names.
      * 
-     * @returns the map of category numbers to names
+     * @return the map of category numbers to names.
      * @see org.asteriskjava.manager.response.GetConfigResponse#getLines
      */
     public Map<Integer, String> getCategories()
     {
         if (categories == null)
         {
-            categories = new HashMap<Integer, String>();
+            categories = new TreeMap<Integer, String>();
         }
 
         Map<String, String> responseMap = super.getAttributes();
@@ -84,17 +84,17 @@ public class GetConfigResponse extends ManagerResponse
     }
 
     /**
-     * Returns the map of line number to line value for a given category
+     * Returns the map of line number to line value for a given category.
      * 
-     * @param categoryNumber a valid category number from getCategories
-     * @returns the map of category numbers to names
+     * @param categoryNumber a valid category number from getCategories.
+     * @return the map of category numbers to names.
      * @see org.asteriskjava.manager.response.GetConfigResponse#getCategories
      */
     public Map<Integer, String> getLines(int categoryNumber)
     {
         if (lines == null)
         {
-            lines = new HashMap<Integer, Map<Integer, String>>();
+            lines = new TreeMap<Integer, Map<Integer, String>>();
         }
 
         Map<String, String> responseMap = super.getAttributes();
@@ -107,7 +107,9 @@ public class GetConfigResponse extends ManagerResponse
 
                 // if it doesn't have at least line-XXXXXX-XXXXXX, skip
                 if (keyParts.length < 3)
+                {
                     continue;
+                }
 
                 // try to get the number of this category, skip if we mess up
                 Integer potentialCategoryNumber;
@@ -134,13 +136,16 @@ public class GetConfigResponse extends ManagerResponse
                 // get the List out for placing stuff in
                 Map<Integer, String> linesForCategory = lines.get(potentialCategoryNumber);
                 if (linesForCategory == null)
-                    linesForCategory = new HashMap<Integer, String>();
+                {
+                    linesForCategory = new TreeMap<Integer, String>();
+                }
 
-                // put the line we just parsed into the line map for this
-                // category
+                // put the line we just parsed into the line map for this category
                 linesForCategory.put(potentialLineNumber, responseMap.get(key));
                 if (!lines.containsKey(potentialCategoryNumber))
+                {
                     lines.put(potentialCategoryNumber, linesForCategory);
+                }
             }
         }
 
