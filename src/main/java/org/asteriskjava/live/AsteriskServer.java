@@ -376,6 +376,14 @@ public interface AsteriskServer
 	    throws ManagerCommunicationException;
 
     /**
+     * Reads the given Asterisk configuration file.
+     *
+     * @param filename the filename, for example "voicemail.conf".
+     * @return the configuration file.
+     */
+    ConfigFile getConfig(String filename) throws ManagerCommunicationException;
+
+    /**
      * Adds a listener to this AsteriskServer. <p/> If this server is not yet
      * connected it will be implicitly connected.
      * 

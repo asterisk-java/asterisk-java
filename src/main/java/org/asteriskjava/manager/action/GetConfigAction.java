@@ -26,7 +26,7 @@ package org.asteriskjava.manager.action;
 public class GetConfigAction extends AbstractManagerAction
 {
     /**
-     * Serializable version identifier
+     * Serializable version identifier.
      */
     static final long serialVersionUID = 4753117770471622025L;
 

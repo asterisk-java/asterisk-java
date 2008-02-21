@@ -16,54 +16,19 @@
  */
 package org.asteriskjava.live.internal;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.asteriskjava.live.AsteriskAgent;
-import org.asteriskjava.live.AsteriskChannel;
-import org.asteriskjava.live.AsteriskQueue;
-import org.asteriskjava.live.AsteriskQueueEntry;
-import org.asteriskjava.live.AsteriskServer;
-import org.asteriskjava.live.AsteriskServerListener;
-import org.asteriskjava.live.CallerId;
-import org.asteriskjava.live.ChannelState;
-import org.asteriskjava.live.LiveException;
-import org.asteriskjava.live.ManagerCommunicationException;
-import org.asteriskjava.live.MeetMeRoom;
-import org.asteriskjava.live.MeetMeUser;
-import org.asteriskjava.live.NoSuchChannelException;
-import org.asteriskjava.live.OriginateCallback;
-import org.asteriskjava.live.Voicemailbox;
-import org.asteriskjava.manager.ManagerConnection;
-import org.asteriskjava.manager.ManagerConnectionState;
-import org.asteriskjava.manager.ManagerEventListener;
-import org.asteriskjava.manager.ManagerEventListenerProxy;
-import org.asteriskjava.manager.ResponseEvents;
-import org.asteriskjava.manager.action.CommandAction;
-import org.asteriskjava.manager.action.DbGetAction;
-import org.asteriskjava.manager.action.DbPutAction;
-import org.asteriskjava.manager.action.EventGeneratingAction;
-import org.asteriskjava.manager.action.GetVarAction;
-import org.asteriskjava.manager.action.MailboxCountAction;
-import org.asteriskjava.manager.action.ManagerAction;
-import org.asteriskjava.manager.action.OriginateAction;
-import org.asteriskjava.manager.action.SetVarAction;
-import org.asteriskjava.manager.action.SipPeersAction;
+import org.asteriskjava.live.*;
+import org.asteriskjava.manager.*;
+import org.asteriskjava.manager.action.*;
 import org.asteriskjava.manager.event.*;
-import org.asteriskjava.manager.response.CommandResponse;
-import org.asteriskjava.manager.response.MailboxCountResponse;
-import org.asteriskjava.manager.response.ManagerError;
-import org.asteriskjava.manager.response.ManagerResponse;
+import org.asteriskjava.manager.response.*;
 import org.asteriskjava.util.DateUtil;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
+
+import java.util.*;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Default implementation of the {@link AsteriskServer} interface.
@@ -706,8 +671,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         return voicemailboxes;
     }
 
-    public List<String> executeCliCommand(String command)
-            throws ManagerCommunicationException
+    public List<String> executeCliCommand(String command) throws ManagerCommunicationException
     {
         final ManagerResponse response;
 
@@ -722,8 +686,44 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         return ((CommandResponse) response).getResult();
     }
 
-    public void addAsteriskServerListener(AsteriskServerListener listener)
-            throws ManagerCommunicationException
+    public ConfigFile getConfig(String filename) throws ManagerCommunicationException
+    {
+        final ManagerResponse response;
+        final GetConfigResponse getConfigResponse;
+
+        initializeIfNeeded();
+        response = sendAction(new GetConfigAction(filename));
+        if (!(response instanceof GetConfigResponse))
+        {
+            throw new ManagerCommunicationException("Response to GetConfigAction(\"" + filename
+                    + "\") was not a CommandResponse but " + response, null);
+        }
+
+        getConfigResponse = (GetConfigResponse) response;
+
+        final Map<String, List<String>> categories = new LinkedHashMap<String, List<String>>();
+        final Map<Integer, String> categoryMap = getConfigResponse.getCategories();
+        for (Map.Entry<Integer, String> categoryEntry : categoryMap.entrySet())
+        {
+            final List<String> lines;
+            final Map<Integer, String> lineMap = getConfigResponse.getLines(categoryEntry.getKey());
+            
+            if (lineMap == null)
+            {
+                lines = new ArrayList<String>();
+            }
+            else
+            {
+                lines = new ArrayList<String>(lineMap.values());
+            }
+
+            categories.put(categoryEntry.getValue(), lines);
+        }
+
+        return new ConfigFile(filename, categories);
+    }
+
+    public void addAsteriskServerListener(AsteriskServerListener listener) throws ManagerCommunicationException
     {
         initializeIfNeeded();
         synchronized (listeners)
@@ -788,8 +788,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         }
     }
 
-    ManagerResponse sendAction(ManagerAction action)
-            throws ManagerCommunicationException
+    ManagerResponse sendAction(ManagerAction action) throws ManagerCommunicationException
     {
         // return connectionPool.sendAction(action);
         try

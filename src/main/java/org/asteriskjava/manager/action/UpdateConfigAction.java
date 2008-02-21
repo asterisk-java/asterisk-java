@@ -44,7 +44,7 @@ import java.util.HashMap;
 public class UpdateConfigAction extends AbstractManagerAction
 {
     /**
-     * Serializable version identifier
+     * Serializable version identifier.
      */
     static final long serialVersionUID = 4753117770471622025L;
 
@@ -138,7 +138,7 @@ public class UpdateConfigAction extends AbstractManagerAction
     }
 
     /**
-     * Returns the name of this action, i.e. "GetConfig".
+     * Returns the name of this action, i.e. "UpdateConfig".
      */
     @Override
    public String getAction()

@@ -250,6 +250,11 @@ public class DefaultAsteriskServer implements AsteriskServer
         return impl.executeCliCommand(command);
     }
 
+    public ConfigFile getConfig(String filename) throws ManagerCommunicationException
+    {
+        return impl.getConfig(filename);
+    }
+
     public void addAsteriskServerListener(AsteriskServerListener listener) throws ManagerCommunicationException
     {
         impl.addAsteriskServerListener(listener);

@@ -25,7 +25,8 @@ public class AsteriskServerTestCase extends TestCase
     @Override
     public void setUp() throws Exception
     {
-        server = new DefaultAsteriskServer("pbx0", "manager", "obelisk");
+        //server = new DefaultAsteriskServer("pbx0", "manager", "obelisk");
+        server = new DefaultAsteriskServer("localhost", "manager", "obelisk");
     }
 
     @Override

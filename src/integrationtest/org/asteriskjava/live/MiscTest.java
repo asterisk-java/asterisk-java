@@ -26,4 +26,15 @@ public class MiscTest extends AsteriskServerTestCase
     {
         System.err.println("mailboxes: " + server.getVoicemailboxes());
     }
+
+    public void testGetConfig() throws Exception
+    {
+        ConfigFile config;
+
+        config = server.getConfig("voicemail.conf");
+        assertEquals("voicemail.conf", config.getFilename());
+
+        System.err.println(config.getCategories());
+    }
+
 }
