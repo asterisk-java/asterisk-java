@@ -23,6 +23,7 @@ import java.util.List;
 import org.asteriskjava.live.internal.AsteriskServerImpl;
 import org.asteriskjava.manager.DefaultManagerConnection;
 import org.asteriskjava.manager.ManagerConnection;
+import org.asteriskjava.config.ConfigFile;
 
 /**
  * Default implementation of the AsteriskServer interface.

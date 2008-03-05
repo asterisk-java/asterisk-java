@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.List;
 
 import org.asteriskjava.manager.ManagerConnection;
+import org.asteriskjava.config.ConfigFile;
 
 /**
  * The AsteriskServer is built on top of the
