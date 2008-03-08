@@ -21,7 +21,6 @@ public class ConfigFileReader
     private static final int MAX_LINE_LENGTH = 8192;
     private static char COMMENT_META = ';';
     private static char COMMENT_TAG = '-';
-    private static final String COMMENT_PREFIX = ";";
     private static final Set<Class> WARNING_CLASSES;
 
     static
@@ -32,13 +31,12 @@ public class ConfigFileReader
         WARNING_CLASSES.add(MissingDirectiveParameterException.class);
     }
 
-    int commentLevel = 0;
-
-    private final StringBuilder commentBlock;
+    private StringBuilder commentBlock;
     private final Map<String, Category> categories;
     private final List<ConfigParseException> warnings;
 
     private Category currentCategory;
+    private int currentCommentLevel = 0;
 
     public ConfigFileReader()
     {
@@ -47,8 +45,9 @@ public class ConfigFileReader
         this.warnings = new ArrayList<ConfigParseException>();
     }
 
-    void readFile(String configfile) throws IOException, ConfigParseException
+    public ConfigFile readFile(String configfile) throws IOException, ConfigParseException
     {
+        final ConfigFile result;
         final BufferedReader reader;
 
         reader = new BufferedReader(new FileReader(configfile));
@@ -67,11 +66,30 @@ public class ConfigFileReader
                 // ignore
             }
         }
+
+        result = new ConfigFileImpl(configfile, new TreeMap<String, Category>(categories));
+
+
+        return result;
     }
 
-    Collection<Category> getCategories()
+    void reset()
+    {
+        commentBlock = new StringBuilder();
+        categories.clear();
+        warnings.clear();
+        currentCategory = null;
+        currentCommentLevel = 0;
+    }
+
+    protected Collection<Category> getCategories()
     {
         return categories.values();
+    }
+
+    public Collection<ConfigParseException> getWarnings()
+    {
+        return new ArrayList<ConfigParseException>(warnings);
     }
 
     void readFile(String configfile, BufferedReader reader) throws IOException, ConfigParseException
@@ -80,6 +98,7 @@ public class ConfigFileReader
         int lineno = 0;
         CharBuffer buffer = CharBuffer.allocate(MAX_LINE_LENGTH);
 
+        reset();
         while ((line = reader.readLine()) != null)
         {
             lineno++;
@@ -123,8 +142,8 @@ public class ConfigFileReader
                 {
                     /* Meta-Comment start detected ";--" */
 
-                    commentLevel++;
-                    System.out.println("Comment start, new level: " + commentLevel);
+                    currentCommentLevel++;
+                    System.out.println("Comment start, new level: " + currentCommentLevel);
 
                     if (!inComment())
                     {
@@ -141,7 +160,7 @@ public class ConfigFileReader
                 {
                     /* Meta-Comment end detected */
 
-                    commentLevel--;
+                    currentCommentLevel--;
 
                     if (!inComment())
                     {
@@ -253,7 +272,7 @@ public class ConfigFileReader
 
     boolean inComment()
     {
-        return commentLevel != 0;
+        return currentCommentLevel != 0;
     }
 
     ConfigElement processTextLine(String configfile, int lineno, String line) throws ConfigParseException

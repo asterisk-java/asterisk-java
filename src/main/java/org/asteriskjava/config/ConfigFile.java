@@ -26,34 +26,23 @@ import java.util.List;
  * @version $Id$
  * @since 1.0.0
  */
-public class ConfigFile
+public interface ConfigFile
 {
-    private final String filename;
-    private final Map<String, List<String>> categories;
-
-    public ConfigFile(String filename, Map<String, List<String>> categories)
-    {
-        this.filename = filename;
-        this.categories = categories;
-    }
-
     /**
      * Returns the filename.
      *
      * @return the filename, for example "voicemail.conf".
      */
-    public String getFilename()
-    {
-        return filename;
-    }
+    String getFilename();
 
     /**
      * Returns the lines per category.
      *
      * @return the lines per category.
      */
-    public Map<String, List<String>> getCategories()
-    {
-        return categories;
-    }
+    Map<String, List<String>> getCategories();
+
+    String getValue(String category, String key);
+
+    List<String> getValues(String category, String key);
 }

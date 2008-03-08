@@ -721,7 +721,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
             categories.put(categoryEntry.getValue(), lines);
         }
 
-        return new ConfigFile(filename, categories);
+        return new ConfigFileImpl(filename, categories);
     }
 
     public void addAsteriskServerListener(AsteriskServerListener listener) throws ManagerCommunicationException
