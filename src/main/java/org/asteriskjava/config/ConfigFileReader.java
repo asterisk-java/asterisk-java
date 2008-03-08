@@ -224,7 +224,7 @@ public class ConfigFileReader
         lineCommentString = lineCommentBuilder.toString().trim();
 
         System.out.println("process line: '" + processLineString + "'");
-        if (processLineString.isEmpty())
+        if (processLineString.length() == 0)
         {
             if (lineCommentString.length() != 0)
             {
@@ -256,7 +256,7 @@ public class ConfigFileReader
             }
         }
 
-        if (!lineCommentString.isEmpty())
+        if (lineCommentString.length() != 0)
         {
             configElement.setComment(lineCommentString);
         }
@@ -441,7 +441,7 @@ public class ConfigFileReader
                     "Unknown directive '%s' at line %d of %s", name, lineno, configfile);
         }
 
-        if (param.isEmpty())
+        if (param.length() == 0)
         {
             throw new MissingDirectiveParameterException(configfile, lineno,
                     "Directive '#%s' needs an argument (%s) at line %d of %s",

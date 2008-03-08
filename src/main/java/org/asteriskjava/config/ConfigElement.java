@@ -66,14 +66,14 @@ public abstract class ConfigElement
 
     protected StringBuilder format(StringBuilder sb)
     {
-        if (preComment != null && ! preComment.isEmpty())
+        if (preComment != null && preComment.length() != 0)
         {
             sb.append(preComment);
         }
 
         rawFormat(sb);
 
-        if (samelineComment != null && ! samelineComment.isEmpty())
+        if (samelineComment != null && samelineComment.length() != 0)
         {
             sb.append(" ; ").append(samelineComment);
         }
