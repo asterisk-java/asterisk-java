@@ -5,6 +5,8 @@
  */
 package org.asteriskjava.live;
 
+import org.asteriskjava.config.ConfigFile;
+
 /**
  * @author srt
  * @version $Id$

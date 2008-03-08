@@ -1,12 +1,10 @@
 package org.asteriskjava.config;
 
-import org.asteriskjava.config.Category;
-
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.FileReader;
-import java.util.*;
+import java.io.IOException;
 import java.nio.CharBuffer;
+import java.util.*;
 
 /**
  * Reads and parses Asterisk configuration files.
@@ -53,7 +51,7 @@ public class ConfigFileReader
     {
         final BufferedReader reader;
 
-        reader = new BufferedReader(new FileReader("/etc/asterisk/sip.conf"));
+        reader = new BufferedReader(new FileReader(configfile));
         try
         {
             readFile(configfile, reader);
@@ -462,7 +460,6 @@ public class ConfigFileReader
         return new ConfigVariable(configfile, lineno, name, value);
     }
 
-
     void inheritCategory(Category category, Category baseCategory)
     {
         category.addBaseCategory(baseCategory);
@@ -472,11 +469,5 @@ public class ConfigFileReader
     {
         categories.put(category.getName(), category);
         currentCategory = category;
-    }
-
-
-    private static boolean isBlankOrComment(String line)
-    {
-        return line.trim().length() == 0 || line.startsWith(COMMENT_PREFIX);
     }
 }
