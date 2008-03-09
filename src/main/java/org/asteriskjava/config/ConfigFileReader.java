@@ -127,7 +127,7 @@ public class ConfigFileReader
 
             position = buffer.position();
             c = buffer.get();
-            System.out.println(position + ": " + c);
+            //System.out.println(position + ": " + c);
 
             if (c == COMMENT_META)
             {
@@ -143,7 +143,7 @@ public class ConfigFileReader
                     /* Meta-Comment start detected ";--" */
 
                     currentCommentLevel++;
-                    System.out.println("Comment start, new level: " + currentCommentLevel);
+                    //System.out.println("Comment start, new level: " + currentCommentLevel);
 
                     if (!inComment())
                     {
@@ -175,13 +175,13 @@ public class ConfigFileReader
                         //}
 
                         commentBlock.append(c);
-                        System.out.println("Comment end at " + position + ": '" + commentBlock.toString() + "'");
+                        //System.out.println("Comment end at " + position + ": '" + commentBlock.toString() + "'");
 
                         buffer.position(position + 1);
                         buffer.compact();
                         buffer.flip();
 
-                        System.out.println("Buffer compacted");
+                        //System.out.println("Buffer compacted");
                         continue;
                     }
                 }
@@ -190,7 +190,7 @@ public class ConfigFileReader
                     if (!inComment())
                     {
                         /* If ; is found, and we are not nested in a comment, we immediately stop all comment processing */
-                        System.out.println("Found ; while not in comment");
+                        //System.out.println("Found ; while not in comment");
                         while (buffer.hasRemaining())
                         {
                             lineCommentBuilder.append(buffer.get());
@@ -211,7 +211,7 @@ public class ConfigFileReader
             }
             else
             {
-                System.out.println("Added '" + c + "' to processLine");
+                //System.out.println("Added '" + c + "' to processLine");
                 processLineBuilder.append(c);
             }
         }
@@ -223,7 +223,7 @@ public class ConfigFileReader
         processLineString = processLineBuilder.toString().trim();
         lineCommentString = lineCommentBuilder.toString().trim();
 
-        System.out.println("process line: '" + processLineString + "'");
+        //System.out.println("process line: '" + processLineString + "'");
         if (processLineString.length() == 0)
         {
             if (lineCommentString.length() != 0)
