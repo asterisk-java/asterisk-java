@@ -54,7 +54,8 @@
 		</menu>
 		<menu name="Documentation">
 			<item name="Design" href="design.html" />
-			<item name="Tutorial" href="tutorial.html" />
+			<item name="Tutorials" href="tutorial.html" />
+			<item name="Frequently Asked Questions" href="faq.html" />
 			<item name="API Reference" href="apidocs/index.html" />
 		</menu>
 		<menu name="Sponsors">

@@ -1,0 +1,39 @@
+  ---
+  Frequently Asked Questions
+  ---
+  Martin Smith
+  ---
+  $Id$
+
+Frequently Asked Questions
+
+* How can I track a call I've originated through the Manager interface?
+
+  With the Live API, you can use the originateToXXXAsync methods in org.asteriskjava.live.DefaultAsteriskServer and provide a unique call-back for your originates. When initiating a call using the Manager API and the Originate command, set a variable on that call. Then track the events the Manager API emits, if you encounter a NewChannelEvent get the variable from that channel and match it to a call. From there on you can use the channel name to track events.
+
+* How do I disable the debug or "INFO" output from asterisk-java?
+
+  Asterisk-Java uses commons-logging and log4j (http://logging.apache.org/log4j/docs/) so you can easily configure what kind of messages you want to log and where the messages should be written to. If you configure log4j to the OFF level for Asterisk-Java classes, you should get the behavior you are looking for.
+  Basically there are two options: By default commons-logging uses java.util logging so you can have a look at the JDK documentation on how to configure it. The second option is to put a log4j.jar on your classpath along with a log4j.properties file to configure it.
+
+* How do I prevent Asterisk-Java from deadlocking when I fire actions in response to a received event?
+
+  Asterisk-Java dispatches events to your classes on an event-dispatch thread. You must use the Live API or send actions on another thread if you don't want actions to block incoming events.
+
+* Can I send media or files through Manager interface?
+
+  Currently, there is no support for sending media or files across the Manager interface or the Gateway interface. Having access to the media stream without participating in the call would require saving it to a file or modifications to Asterisk itself, and you can expose any files (media or otherwise) through some other means (HTTP, SSH, etc). 
+
+* Does Asterisk-Java work with Java 6? Java 5?
+
+  Asterisk-Java does work with Java 6. Stefan has used it while running Java 6 and 7 for development, and Martin uses Asterisk-Java inside a JBoss service bean all running under Java 6. Asterisk-Java currently supports Java 5 as well, and all source should remain 1.5-compatible for the time being. 
+
+* Can I use Asterisk-Java with AstMan Proxy?
+
+  AstMan proxy requires some modifications in order to be successfully used with Asterisk-Java. Gaetan Minet has created a patch to AstMan Proxy that he has offered for download, with some documentation, at {{http://dev.mcit.be/various/astmanproxy-asterisk-java.html}}.
+
+* What are some ways of securing an AGI script?
+
+  The FastAGI protocol itself has no support for authentication and encryption. You can add authentication at the application level using username and password parameters and verifying those. For encryption you have to revert to a VPN or other network-layer solutions.
+  You could also consider writing a FastAGI 'proxy' which sits on the Asterisk server so that the clear unauthenticated text is only transmitted locally. The proxy could then demand authentication/encryption using something like SOAP to the actual end point.
+  

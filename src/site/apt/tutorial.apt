@@ -5,7 +5,13 @@
   ---
   $Id$
 
-The FastAGI Protocol
+  This page provides a basic introduction and some sample code for 
+  {{{#The FastAGI Protocol}The FastAGI Protocol}}, {{{#The Manager API}The Manager API}}, and {{{#The Live API}The Live API}}. If 
+  you don't see a tutorial for the part of Asterisk-Java that you're 
+  interested in, please scroll down to make sure it isn't further down the 
+  page, or send us more examples that you would like to see included.    
+
+{The FastAGI Protocol}
 
   The easiest way to interact with Asterisk from Java applications is via
   the FastAGI protocol. AGI scripts can handle either incoming calls or
@@ -25,12 +31,12 @@ The FastAGI Protocol
   standard input and standard output as communication medium.
   
   Using FastAGI you can run a Java application (on the same machine that runs
-  Asterisk or on a seperate machine) that is only started once and serves AGI
+  Asterisk or on a separate machine) that is only started once and serves AGI
   scripts until it is shut down. Combined with Java's multithreading support
   you can build pretty fast AGI scripts using this protocol.
   
   Asterisk-Java helps you with running your Java based AGI scripts by providing
-  a container that recives connections from the Asterisk server, parses the
+  a container that receives connections from the Asterisk server, parses the
   request and calls your scripts mapped to the called URL.
   
 * Hello AGI!
@@ -162,7 +168,7 @@ exten => 1300,1,Agi(agi://localhost/hello.agi?user=john)
   must be URL encoded.
   
   If you are about to write more complex scripts please note that your AgiScript 
-  must be threadsafe. Only one instance will be used to serve all requests.
+  must be thread-safe. Only one instance will be used to serve all requests.
   This is kind of similar to the constraints a servlet engine places on the 
   implementation of servlets.
   
@@ -197,7 +203,7 @@ bindPort = 1234
 poolSize = 20
 +--
 
-The Manager API
+{The Manager API}
 
   The Manager API is the other way for remote interaction with an Asterisk server.
   In contrast to the FastAGI protocol Asterisk does not explicitly pass control
@@ -389,7 +395,7 @@ public class HelloEvents implements ManagerEventListener
   povided by the Manager API is available in the
   {{{apidocs/index.html}javadocs}}.
 
-The Live API
+{The Live API}
 
   The live API is built on top of the Manager API and provides additional abstraction.
   Instead of directly using actions and events to interact with Asterisk you can use

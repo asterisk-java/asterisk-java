@@ -70,7 +70,7 @@ Design
   there were two implementations of FastAGI for Java
   but none for the Manager API. So I decided to build
   a library to make those interfaces accessible from
-  Java applications. This is what became Asterisk-Java.</p>
+  Java applications. This is what became Asterisk-Java.
 
   Regarding IAX there is a C library available and a
   Java wrapper using Java Native Interface (JNI).
