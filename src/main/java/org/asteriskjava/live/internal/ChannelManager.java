@@ -51,6 +51,7 @@ class ChannelManager
      * How long we wait before we remove hung up channels from memory (in milliseconds).
      */
     private static final long REMOVAL_THRESHOLD = 15 * 60 * 1000L; // 15 minutes
+    private static final long SLEEP_TIME_BEFORE_GET_VAR = 50L;
 
     private final AsteriskServerImpl server;
 
@@ -162,6 +163,18 @@ class ChannelManager
         channel.setAccount(account);
         channel.stateChanged(dateOfCreation, state);
         logger.info("Adding channel " + channel.getName() + "(" + channel.getId() + ")");
+
+        if (SLEEP_TIME_BEFORE_GET_VAR > 0)
+        {
+            try
+            {
+                Thread.sleep(SLEEP_TIME_BEFORE_GET_VAR);
+            }
+            catch (InterruptedException e)
+            {
+                // ignore
+            }
+        }
 
         traceId = getTraceId(channel);
         channel.setTraceId(traceId);
