@@ -280,7 +280,7 @@ public interface ManagerConnection
      * <p>
      * Examples for EventGeneratingActions are
      * {@link org.asteriskjava.manager.action.StatusAction},
-     * {@link org.asteriskjava.manager.action.QueueAction} or
+     * {@link org.asteriskjava.manager.action.QueueStatusAction} or
      * {@link org.asteriskjava.manager.action.AgentsAction}.
      * 
      * @param action the action to send to the Asterisk server
@@ -318,7 +318,7 @@ public interface ManagerConnection
      * <p>
      * Examples for EventGeneratingActions are the
      * {@link org.asteriskjava.manager.action.StatusAction}, the
-     * {@link org.asteriskjava.manager.action.QueueAction} or the
+     * {@link org.asteriskjava.manager.action.QueueStatusAction} or the
      * {@link org.asteriskjava.manager.action.AgentsAction}.
      * 
      * @param action the action to send to the Asterisk server
