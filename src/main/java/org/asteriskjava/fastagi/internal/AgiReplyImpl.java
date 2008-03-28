@@ -57,7 +57,7 @@ public class AgiReplyImpl implements Serializable, AgiReply
     /**
      * The status code.
      */
-    private int status;
+    private Integer status;
 
     /**
      * Additional attributes contained in this reply, for example endpos.
@@ -142,11 +142,9 @@ public class AgiReplyImpl implements Serializable, AgiReply
         return (char) resultCode;
     }
 
-    private boolean resultCreated;
-
     public String getResult()
     {
-        if (resultCreated)
+        if (result != null)
         {
             return result;
         }
@@ -156,15 +154,12 @@ public class AgiReplyImpl implements Serializable, AgiReply
         {
             result = matcher.group(1);
         }
-        resultCreated = true;
         return result;
     }
 
-    private boolean statusCreated;
-
     public int getStatus()
     {
-        if (statusCreated)
+        if (status != null)
         {
             return status;
         }
@@ -174,7 +169,6 @@ public class AgiReplyImpl implements Serializable, AgiReply
         {
             status = Integer.parseInt(matcher.group(1));
         }
-        statusCreated = true;
         return status;
     }
 
@@ -195,30 +189,31 @@ public class AgiReplyImpl implements Serializable, AgiReply
 
     protected Map<String, String> getAttributes()
     {
-        if (attributes == null)
+        if (attributes != null)
         {
-            attributes = new HashMap<String, String>();
-
-            matcher = ADDITIONAL_ATTRIBUTES_PATTERN.matcher(firstLine);
-            if (matcher.find())
-            {
-                String s;
-                Matcher attributeMatcher;
-
-                s = matcher.group(2);
-                attributeMatcher = ADDITIONAL_ATTRIBUTE_PATTERN.matcher(s);
-                while (attributeMatcher.find())
-                {
-                    String key;
-                    String value;
-
-                    key = attributeMatcher.group(1);
-                    value = attributeMatcher.group(2);
-                    attributes.put(key.toLowerCase(Locale.ENGLISH), value);
-                }
-            }
+            return attributes;
         }
 
+        attributes = new HashMap<String, String>();
+
+        matcher = ADDITIONAL_ATTRIBUTES_PATTERN.matcher(firstLine);
+        if (matcher.find())
+        {
+            String s;
+            Matcher attributeMatcher;
+
+            s = matcher.group(2);
+            attributeMatcher = ADDITIONAL_ATTRIBUTE_PATTERN.matcher(s);
+            while (attributeMatcher.find())
+            {
+                String key;
+                String value;
+
+                key = attributeMatcher.group(1);
+                value = attributeMatcher.group(2);
+                attributes.put(key.toLowerCase(Locale.ENGLISH), value);
+            }
+        }
         return attributes;
     }
 
