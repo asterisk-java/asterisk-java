@@ -31,18 +31,12 @@ import org.asteriskjava.fastagi.reply.AgiReply;
  */
 public class AgiReplyImpl implements Serializable, AgiReply
 {
-    private static final Pattern STATUS_PATTERN = Pattern
-            .compile("^(\\d{3})[ -]");
-    private static final Pattern RESULT_PATTERN = Pattern
-            .compile("^200 result= *(\\S+)");
-    private static final Pattern PARENTHESIS_PATTERN = Pattern
-            .compile("^200 result=\\S* +\\((.*)\\)");
-    private static final Pattern ADDITIONAL_ATTRIBUTES_PATTERN = Pattern
-            .compile("^200 result=\\S* +(\\(.*\\) )?(.+)$");
-    private static final Pattern ADDITIONAL_ATTRIBUTE_PATTERN = Pattern
-            .compile("(\\S+)=(\\S+)");
-    private static final Pattern SYNOPSIS_PATTERN = Pattern
-            .compile("^\\s*Usage:\\s*(.*)\\s*$");
+    private static final Pattern STATUS_PATTERN = Pattern.compile("^(\\d{3})[ -]");
+    private static final Pattern RESULT_PATTERN = Pattern.compile("^200 result= *(\\S+)");
+    private static final Pattern PARENTHESIS_PATTERN = Pattern.compile("^200 result=\\S* +\\((.*)\\)");
+    private static final Pattern ADDITIONAL_ATTRIBUTES_PATTERN = Pattern.compile("^200 result=\\S* +(\\(.*\\) )?(.+)$");
+    private static final Pattern ADDITIONAL_ATTRIBUTE_PATTERN = Pattern.compile("(\\S+)=(\\S+)");
+    private static final Pattern SYNOPSIS_PATTERN = Pattern.compile("^\\s*Usage:\\s*(.*)\\s*$");
     private static final String END_OF_PROPER_USAGE = "520 End of proper usage.";
 
     private Matcher matcher;
@@ -115,11 +109,6 @@ public class AgiReplyImpl implements Serializable, AgiReply
         return lines;
     }
 
-    /**
-     * Returns the return code (the result as int).
-     *
-     * @return the return code or -1 if the result is not an int.
-     */
     public int getResultCode()
     {
         String result;
@@ -140,11 +129,6 @@ public class AgiReplyImpl implements Serializable, AgiReply
         }
     }
 
-    /**
-     * Returns the return code as character.
-     *
-     * @return the return code as character.
-     */
     public char getResultCodeAsChar()
     {
         int resultCode;
@@ -160,12 +144,6 @@ public class AgiReplyImpl implements Serializable, AgiReply
 
     private boolean resultCreated;
 
-    /**
-     * Returns the result, that is the part directly following the "result="
-     * string.
-     *
-     * @return the result.
-     */
     public String getResult()
     {
         if (resultCreated)
@@ -184,17 +162,6 @@ public class AgiReplyImpl implements Serializable, AgiReply
 
     private boolean statusCreated;
 
-    /**
-     * Returns the status code.<p>
-     * Supported status codes are:
-     * <ul>
-     * <li>200 Success
-     * <li>510 Invalid or unknown command
-     * <li>520 Invalid command syntax
-     * </ul>
-     *
-     * @return the status code.
-     */
     public int getStatus()
     {
         if (statusCreated)
@@ -211,18 +178,6 @@ public class AgiReplyImpl implements Serializable, AgiReply
         return status;
     }
 
-    /**
-     * Returns an additional attribute contained in the reply.<p>
-     * For example the reply to the StreamFileCommand contains an additional
-     * endpos attribute indicating the frame where the playback was stopped.
-     * This can be retrieved by calling getAttribute("endpos") on the
-     * corresponding reply.
-     *
-     * @param name the name of the attribute to retrieve. The name is case
-     *             insensitive.
-     * @return the value of the attribute or <code>null</code> if it is not
-     *         set.
-     */
     public String getAttribute(String name)
     {
         if (getStatus() != SC_SUCCESS)
@@ -269,14 +224,6 @@ public class AgiReplyImpl implements Serializable, AgiReply
 
     private boolean extraCreated;
 
-    /**
-     * Returns the text in parenthesis contained in this reply.<p>
-     * The meaning of this property depends on the command sent. Sometimes it
-     * contains a flag like "timeout" or "hangup" or - in case of the
-     * GetVariableCommand - the value of the variable.
-     *
-     * @return the text in the parenthesis or <code>null</code> if not set.
-     */
     public String getExtra()
     {
         if (getStatus() != SC_SUCCESS)
@@ -298,15 +245,6 @@ public class AgiReplyImpl implements Serializable, AgiReply
         return extra;
     }
 
-    private boolean synopsisCreated;
-
-    /**
-     * Returns the synopsis of the command sent if Asterisk expected a different
-     * syntax (getStatus() == SC_INVALID_COMMAND_SYNTAX).
-     *
-     * @return the synopsis of the command sent, <code>null</code> if there
-     *         were no syntax errors.
-     */
     public String getSynopsis()
     {
         if (getStatus() != SC_INVALID_COMMAND_SYNTAX)
@@ -314,10 +252,8 @@ public class AgiReplyImpl implements Serializable, AgiReply
             return null;
         }
 
-        if (!synopsisCreated)
+        if (synopsis == null)
         {
-            StringBuilder usageSB;
-
             if (lines.size() > 1)
             {
                 String secondLine;
@@ -330,7 +266,22 @@ public class AgiReplyImpl implements Serializable, AgiReply
                     synopsis = synopsisMatcher.group(1);
                 }
             }
-            synopsisCreated = true;
+        }
+        return synopsis;
+    }
+
+    /**
+     * Returns the usage of the command sent if Asterisk expected a different
+     * syntax (getStatus() == SC_INVALID_COMMAND_SYNTAX).
+     *
+     * @return the usage of the command sent, <code>null</code> if there were
+     *         no syntax errors.
+     */
+    public String getUsage()
+    {
+        if (usage == null)
+        {
+            StringBuilder usageSB;
 
             usageSB = new StringBuilder();
             for (int i = 2; i < lines.size(); i++)
@@ -348,18 +299,6 @@ public class AgiReplyImpl implements Serializable, AgiReply
             }
             usage = usageSB.toString().trim();
         }
-        return synopsis;
-    }
-
-    /**
-     * Returns the usage of the command sent if Asterisk expected a different
-     * syntax (getStatus() == SC_INVALID_COMMAND_SYNTAX).
-     *
-     * @return the usage of the command sent, <code>null</code> if there were
-     *         no syntax errors.
-     */
-    public String getUsage()
-    {
         return usage;
     }
 
