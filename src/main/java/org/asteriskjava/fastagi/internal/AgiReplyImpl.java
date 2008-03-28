@@ -25,7 +25,7 @@ import org.asteriskjava.fastagi.reply.AgiReply;
 
 /**
  * Default implementation of the AgiReply interface.
- * 
+ *
  * @author srt
  * @version $Id$
  */
@@ -100,7 +100,7 @@ public class AgiReplyImpl implements Serializable, AgiReply
             this.lines = new ArrayList<String>(lines);
             if (!lines.isEmpty())
             {
-                firstLine = (String) lines.get(0);
+                firstLine = lines.get(0);
             }
         }
     }
@@ -117,7 +117,7 @@ public class AgiReplyImpl implements Serializable, AgiReply
 
     /**
      * Returns the return code (the result as int).
-     * 
+     *
      * @return the return code or -1 if the result is not an int.
      */
     public int getResultCode()
@@ -142,7 +142,7 @@ public class AgiReplyImpl implements Serializable, AgiReply
 
     /**
      * Returns the return code as character.
-     * 
+     *
      * @return the return code as character.
      */
     public char getResultCodeAsChar()
@@ -163,7 +163,7 @@ public class AgiReplyImpl implements Serializable, AgiReply
     /**
      * Returns the result, that is the part directly following the "result="
      * string.
-     * 
+     *
      * @return the result.
      */
     public String getResult()
@@ -192,7 +192,7 @@ public class AgiReplyImpl implements Serializable, AgiReply
      * <li>510 Invalid or unknown command
      * <li>520 Invalid command syntax
      * </ul>
-     * 
+     *
      * @return the status code.
      */
     public int getStatus()
@@ -211,17 +211,15 @@ public class AgiReplyImpl implements Serializable, AgiReply
         return status;
     }
 
-    private boolean attributesCreated;
-
     /**
      * Returns an additional attribute contained in the reply.<p>
      * For example the reply to the StreamFileCommand contains an additional
      * endpos attribute indicating the frame where the playback was stopped.
      * This can be retrieved by calling getAttribute("endpos") on the
      * corresponding reply.
-     * 
+     *
      * @param name the name of the attribute to retrieve. The name is case
-     *            insensitive.
+     *             insensitive.
      * @return the value of the attribute or <code>null</code> if it is not
      *         set.
      */
@@ -237,15 +235,21 @@ public class AgiReplyImpl implements Serializable, AgiReply
             return getResult();
         }
 
-        if (!attributesCreated)
+        return getAttributes().get(name.toLowerCase(Locale.ENGLISH));
+    }
+
+    protected Map<String, String> getAttributes()
+    {
+        if (attributes == null)
         {
+            attributes = new HashMap<String, String>();
+
             matcher = ADDITIONAL_ATTRIBUTES_PATTERN.matcher(firstLine);
             if (matcher.find())
             {
                 String s;
                 Matcher attributeMatcher;
 
-                attributes = new HashMap<String, String>();
                 s = matcher.group(2);
                 attributeMatcher = ADDITIONAL_ATTRIBUTE_PATTERN.matcher(s);
                 while (attributeMatcher.find())
@@ -258,15 +262,9 @@ public class AgiReplyImpl implements Serializable, AgiReply
                     attributes.put(key.toLowerCase(Locale.ENGLISH), value);
                 }
             }
-            attributesCreated = true;
         }
 
-        if (attributes == null || attributes.isEmpty())
-        {
-            return null;
-        }
-
-        return (String) attributes.get(name.toLowerCase(Locale.ENGLISH));
+        return attributes;
     }
 
     private boolean extraCreated;
@@ -276,7 +274,7 @@ public class AgiReplyImpl implements Serializable, AgiReply
      * The meaning of this property depends on the command sent. Sometimes it
      * contains a flag like "timeout" or "hangup" or - in case of the
      * GetVariableCommand - the value of the variable.
-     * 
+     *
      * @return the text in the parenthesis or <code>null</code> if not set.
      */
     public String getExtra()
@@ -305,7 +303,7 @@ public class AgiReplyImpl implements Serializable, AgiReply
     /**
      * Returns the synopsis of the command sent if Asterisk expected a different
      * syntax (getStatus() == SC_INVALID_COMMAND_SYNTAX).
-     * 
+     *
      * @return the synopsis of the command sent, <code>null</code> if there
      *         were no syntax errors.
      */
@@ -318,14 +316,14 @@ public class AgiReplyImpl implements Serializable, AgiReply
 
         if (!synopsisCreated)
         {
-            StringBuffer usageSB;
+            StringBuilder usageSB;
 
             if (lines.size() > 1)
             {
                 String secondLine;
                 Matcher synopsisMatcher;
 
-                secondLine = (String) lines.get(1);
+                secondLine = lines.get(1);
                 synopsisMatcher = SYNOPSIS_PATTERN.matcher(secondLine);
                 if (synopsisMatcher.find())
                 {
@@ -334,12 +332,12 @@ public class AgiReplyImpl implements Serializable, AgiReply
             }
             synopsisCreated = true;
 
-            usageSB = new StringBuffer();
+            usageSB = new StringBuilder();
             for (int i = 2; i < lines.size(); i++)
             {
                 String line;
 
-                line = (String) lines.get(i);
+                line = lines.get(i);
                 if (END_OF_PROPER_USAGE.equals(line))
                 {
                     break;
@@ -356,7 +354,7 @@ public class AgiReplyImpl implements Serializable, AgiReply
     /**
      * Returns the usage of the command sent if Asterisk expected a different
      * syntax (getStatus() == SC_INVALID_COMMAND_SYNTAX).
-     * 
+     *
      * @return the usage of the command sent, <code>null</code> if there were
      *         no syntax errors.
      */
@@ -366,23 +364,23 @@ public class AgiReplyImpl implements Serializable, AgiReply
     }
 
     @Override
-   public String toString()
+    public String toString()
     {
-        StringBuffer sb;
+        StringBuilder sb;
 
-        sb = new StringBuffer("AgiReply[");
-        sb.append("status='" + getStatus() + "',");
+        sb = new StringBuilder("AgiReply[");
+        sb.append("status=").append(getStatus()).append(",");
         if (status == SC_SUCCESS)
         {
-            sb.append("result='" + getResult() + "',");
-            sb.append("extra='" + getExtra() + "',");
-            sb.append("attributes=" + attributes + ",");
+            sb.append("result='").append(getResult()).append("',");
+            sb.append("extra='").append(getExtra()).append("',");
+            sb.append("attributes=").append(getAttributes()).append(",");
         }
         if (status == SC_INVALID_COMMAND_SYNTAX)
         {
-            sb.append("synopsis='" + getSynopsis() + "',");
+            sb.append("synopsis='").append(getSynopsis()).append("',");
         }
-        sb.append("systemHashcode=" + System.identityHashCode(this));
+        sb.append("systemHashcode=").append(System.identityHashCode(this));
         sb.append("]");
 
         return sb.toString();
