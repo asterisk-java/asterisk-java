@@ -68,6 +68,8 @@ public class AgiChannelImpl implements AgiChannel
     private final AgiWriter agiWriter;
     private final AgiReader agiReader;
 
+    private AgiReply lastReply;
+
     AgiChannelImpl(AgiRequest request, SocketConnectionFacade socket)
     {
         this.request = request;
@@ -92,23 +94,26 @@ public class AgiChannelImpl implements AgiChannel
         return request.getUniqueId();
     }
 
+    public AgiReply getLastReply()
+    {
+        return lastReply;
+    }
+
     public synchronized AgiReply sendCommand(AgiCommand command) throws AgiException
     {
-        AgiReply reply;
-
         agiWriter.sendCommand(command);
-        reply = agiReader.readReply();
+        lastReply = agiReader.readReply();
 
-        if (reply.getStatus() == AgiReply.SC_INVALID_OR_UNKNOWN_COMMAND)
+        if (lastReply.getStatus() == AgiReply.SC_INVALID_OR_UNKNOWN_COMMAND)
         {
             throw new InvalidOrUnknownCommandException(command.buildCommand());
         }
-        if (reply.getStatus() == AgiReply.SC_INVALID_COMMAND_SYNTAX)
+        if (lastReply.getStatus() == AgiReply.SC_INVALID_COMMAND_SYNTAX)
         {
-            throw new InvalidCommandSyntaxException(reply.getSynopsis(), reply.getUsage());
+            throw new InvalidCommandSyntaxException(lastReply.getSynopsis(), lastReply.getUsage());
         }
 
-        return reply;
+        return lastReply;
     }
     
     public void answer() throws AgiException
@@ -148,69 +153,50 @@ public class AgiChannelImpl implements AgiChannel
 
     public int getChannelStatus() throws AgiException
     {
-        AgiReply reply;
-
-        reply = sendCommand(new ChannelStatusCommand());
-        return reply.getResultCode();
+        sendCommand(new ChannelStatusCommand());
+        return lastReply.getResultCode();
     }
 
     public String getData(String file) throws AgiException
     {
-        AgiReply reply;
-
-        reply = sendCommand(new GetDataCommand(file));
-        return reply.getResult();
+        sendCommand(new GetDataCommand(file));
+        return lastReply.getResult();
     }
 
     public String getData(String file, long timeout) throws AgiException
     {
-        AgiReply reply;
-
-        reply = sendCommand(new GetDataCommand(file, timeout));
-        return reply.getResult();
+        sendCommand(new GetDataCommand(file, timeout));
+        return lastReply.getResult();
     }
 
-    public String getData(String file, long timeout, int maxDigits)
-            throws AgiException
+    public String getData(String file, long timeout, int maxDigits) throws AgiException
     {
-        AgiReply reply;
-
-        reply = sendCommand(new GetDataCommand(file, timeout, maxDigits));
-        return reply.getResult();
+        sendCommand(new GetDataCommand(file, timeout, maxDigits));
+        return lastReply.getResult();
     }
 
-    public char getOption(String file, String escapeDigits)
-            throws AgiException
+    public char getOption(String file, String escapeDigits) throws AgiException
     {
-        AgiReply reply;
-
-        reply = sendCommand(new GetOptionCommand(file, escapeDigits));
-        return reply.getResultCodeAsChar();
+        sendCommand(new GetOptionCommand(file, escapeDigits));
+        return lastReply.getResultCodeAsChar();
     }
 
-    public char getOption(String file, String escapeDigits, int timeout)
-            throws AgiException
+    public char getOption(String file, String escapeDigits, int timeout) throws AgiException
     {
-        AgiReply reply;
-
-        reply = sendCommand(new GetOptionCommand(file, escapeDigits, timeout));
-        return reply.getResultCodeAsChar();
+        sendCommand(new GetOptionCommand(file, escapeDigits, timeout));
+        return lastReply.getResultCodeAsChar();
     }
 
     public int exec(String application) throws AgiException
     {
-        AgiReply reply;
-
-        reply = sendCommand(new ExecCommand(application));
-        return reply.getResultCode();
+        sendCommand(new ExecCommand(application));
+        return lastReply.getResultCode();
     }
 
     public int exec(String application, String options) throws AgiException
     {
-        AgiReply reply;
-
-        reply = sendCommand(new ExecCommand(application, options));
-        return reply.getResultCode();
+        sendCommand(new ExecCommand(application, options));
+        return lastReply.getResultCode();
     }
 
     public void setContext(String context) throws AgiException
@@ -233,22 +219,16 @@ public class AgiChannelImpl implements AgiChannel
         sendCommand(new StreamFileCommand(file));
     }
 
-    public char streamFile(String file, String escapeDigits)
-            throws AgiException
+    public char streamFile(String file, String escapeDigits) throws AgiException
     {
-        AgiReply reply;
-
-        reply = sendCommand(new StreamFileCommand(file, escapeDigits));
-        return reply.getResultCodeAsChar();
+        sendCommand(new StreamFileCommand(file, escapeDigits));
+        return lastReply.getResultCodeAsChar();
     }
 
-    public char streamFile(String file, String escapeDigits, int offset)
-    throws AgiException
+    public char streamFile(String file, String escapeDigits, int offset) throws AgiException
     {
-        AgiReply reply;
-
-        reply = sendCommand(new StreamFileCommand(file, escapeDigits, offset));
-        return reply.getResultCodeAsChar();
+        sendCommand(new StreamFileCommand(file, escapeDigits, offset));
+        return lastReply.getResultCodeAsChar();
     }
 
     public void sayDigits(String digits) throws AgiException
@@ -256,13 +236,10 @@ public class AgiChannelImpl implements AgiChannel
         sendCommand(new SayDigitsCommand(digits));
     }
 
-    public char sayDigits(String digits, String escapeDigits)
-            throws AgiException
+    public char sayDigits(String digits, String escapeDigits) throws AgiException
     {
-        AgiReply reply;
-
-        reply = sendCommand(new SayDigitsCommand(digits, escapeDigits));
-        return reply.getResultCodeAsChar();
+        sendCommand(new SayDigitsCommand(digits, escapeDigits));
+        return lastReply.getResultCodeAsChar();
     }
 
     public void sayNumber(String number) throws AgiException
@@ -270,13 +247,10 @@ public class AgiChannelImpl implements AgiChannel
         sendCommand(new SayNumberCommand(number));
     }
 
-    public char sayNumber(String number, String escapeDigits)
-            throws AgiException
+    public char sayNumber(String number, String escapeDigits) throws AgiException
     {
-        AgiReply reply;
-
-        reply = sendCommand(new SayNumberCommand(number, escapeDigits));
-        return reply.getResultCodeAsChar();
+        sendCommand(new SayNumberCommand(number, escapeDigits));
+        return lastReply.getResultCodeAsChar();
     }
 
     public void sayPhonetic(String text) throws AgiException
@@ -284,13 +258,10 @@ public class AgiChannelImpl implements AgiChannel
         sendCommand(new SayPhoneticCommand(text));
     }
 
-    public char sayPhonetic(String text, String escapeDigits)
-            throws AgiException
+    public char sayPhonetic(String text, String escapeDigits) throws AgiException
     {
-        AgiReply reply;
-
-        reply = sendCommand(new SayPhoneticCommand(text, escapeDigits));
-        return reply.getResultCodeAsChar();
+        sendCommand(new SayPhoneticCommand(text, escapeDigits));
+        return lastReply.getResultCodeAsChar();
     }
 
     public void sayAlpha(String text) throws AgiException
@@ -298,13 +269,10 @@ public class AgiChannelImpl implements AgiChannel
         sendCommand(new SayAlphaCommand(text));
     }
 
-    public char sayAlpha(String text, String escapeDigits)
-            throws AgiException
+    public char sayAlpha(String text, String escapeDigits) throws AgiException
     {
-        AgiReply reply;
-
-        reply = sendCommand(new SayAlphaCommand(text, escapeDigits));
-        return reply.getResultCodeAsChar();
+        sendCommand(new SayAlphaCommand(text, escapeDigits));
+        return lastReply.getResultCodeAsChar();
     }
 
     public void sayTime(long time) throws AgiException
@@ -314,22 +282,18 @@ public class AgiChannelImpl implements AgiChannel
 
     public char sayTime(long time, String escapeDigits) throws AgiException
     {
-        AgiReply reply;
-
-        reply = sendCommand(new SayTimeCommand(time, escapeDigits));
-        return reply.getResultCodeAsChar();
+        sendCommand(new SayTimeCommand(time, escapeDigits));
+        return lastReply.getResultCodeAsChar();
     }
 
     public String getVariable(String name) throws AgiException
     {
-        AgiReply reply;
-
-        reply = sendCommand(new GetVariableCommand(name));
-        if (reply.getResultCode() != 1)
+        sendCommand(new GetVariableCommand(name));
+        if (lastReply.getResultCode() != 1)
         {
             return null;
         }
-        return reply.getExtra();
+        return lastReply.getExtra();
     }
 
     public void setVariable(String name, String value) throws AgiException
@@ -339,58 +303,46 @@ public class AgiChannelImpl implements AgiChannel
 
     public char waitForDigit(int timeout) throws AgiException
     {
-        AgiReply reply;
-
-        reply = sendCommand(new WaitForDigitCommand(timeout));
-        return reply.getResultCodeAsChar();
+        sendCommand(new WaitForDigitCommand(timeout));
+        return lastReply.getResultCodeAsChar();
     }
 
     public String getFullVariable(String name) throws AgiException
     {
-        AgiReply reply;
-
-        reply = sendCommand(new GetFullVariableCommand(name));
-        if (reply.getResultCode() != 1)
+        sendCommand(new GetFullVariableCommand(name));
+        if (lastReply.getResultCode() != 1)
         {
             return null;
         }
-        return reply.getExtra();
+        return lastReply.getExtra();
     }
 
     public String getFullVariable(String name, String channel) throws AgiException
     {
-        AgiReply reply;
-
-        reply = sendCommand(new GetFullVariableCommand(name, channel));
-        if (reply.getResultCode() != 1)
+        sendCommand(new GetFullVariableCommand(name, channel));
+        if (lastReply.getResultCode() != 1)
         {
             return null;
         }
-        return reply.getExtra();
+        return lastReply.getExtra();
     }
 
     public char sayDateTime(long time, String escapeDigits, String format, String timezone) throws AgiException
     {
-        AgiReply reply;
-
-        reply = sendCommand(new SayDateTimeCommand(time, escapeDigits, format, timezone));
-        return reply.getResultCodeAsChar();
+        sendCommand(new SayDateTimeCommand(time, escapeDigits, format, timezone));
+        return lastReply.getResultCodeAsChar();
     }
 
     public char sayDateTime(long time, String escapeDigits, String format) throws AgiException
     {
-        AgiReply reply;
-
-        reply = sendCommand(new SayDateTimeCommand(time, escapeDigits, format));
-        return reply.getResultCodeAsChar();
+        sendCommand(new SayDateTimeCommand(time, escapeDigits, format));
+        return lastReply.getResultCodeAsChar();
     }
 
     public char sayDateTime(long time, String escapeDigits) throws AgiException
     {
-        AgiReply reply;
-
-        reply = sendCommand(new SayDateTimeCommand(time, escapeDigits));
-        return reply.getResultCodeAsChar();
+        sendCommand(new SayDateTimeCommand(time, escapeDigits));
+        return lastReply.getResultCodeAsChar();
     }
 
     public void sayDateTime(long time) throws AgiException
@@ -400,14 +352,12 @@ public class AgiChannelImpl implements AgiChannel
     
     public String databaseGet(String family, String key) throws AgiException
     {
-        AgiReply reply;
-
-        reply = sendCommand(new DatabaseGetCommand(family, key));
-        if (reply.getResultCode() != 1)
+        sendCommand(new DatabaseGetCommand(family, key));
+        if (lastReply.getResultCode() != 1)
         {
             return null;
         }
-        return reply.getExtra();
+        return lastReply.getExtra();
     }
 
     public void databasePut(String family, String key, String value) throws AgiException
@@ -452,25 +402,19 @@ public class AgiChannelImpl implements AgiChannel
 
     public char controlStreamFile(String file, String escapeDigits) throws AgiException
     {
-        AgiReply reply;
-
-        reply = sendCommand(new ControlStreamFileCommand(file, escapeDigits));
-        return reply.getResultCodeAsChar();
+        sendCommand(new ControlStreamFileCommand(file, escapeDigits));
+        return lastReply.getResultCodeAsChar();
     }
 
     public char controlStreamFile(String file, String escapeDigits, int offset) throws AgiException
     {
-        AgiReply reply;
-
-        reply = sendCommand(new ControlStreamFileCommand(file, escapeDigits, offset));
-        return reply.getResultCodeAsChar();
+        sendCommand(new ControlStreamFileCommand(file, escapeDigits, offset));
+        return lastReply.getResultCodeAsChar();
     }
 
     public char controlStreamFile(String file, String escapeDigits, int offset, String forwardDigit, String rewindDigit, String pauseDigit) throws AgiException
     {
-        AgiReply reply;
-
-        reply = sendCommand(new ControlStreamFileCommand(file, escapeDigits, offset, forwardDigit, rewindDigit, pauseDigit));
-        return reply.getResultCodeAsChar();
+        sendCommand(new ControlStreamFileCommand(file, escapeDigits, offset, forwardDigit, rewindDigit, pauseDigit));
+        return lastReply.getResultCodeAsChar();
     }
 }
