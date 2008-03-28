@@ -51,6 +51,7 @@ public interface AgiChannel
      *
      * @return the reply received in response to the last command sent to Asterisk
      *         or <code>null</code> if none has yet been received.
+     * @since 1.0.0
      */
     AgiReply getLastReply();
 
