@@ -21,38 +21,7 @@ import org.asteriskjava.fastagi.AgiException;
 import org.asteriskjava.fastagi.AgiRequest;
 import org.asteriskjava.fastagi.InvalidCommandSyntaxException;
 import org.asteriskjava.fastagi.InvalidOrUnknownCommandException;
-import org.asteriskjava.fastagi.command.AgiCommand;
-import org.asteriskjava.fastagi.command.AnswerCommand;
-import org.asteriskjava.fastagi.command.ChannelStatusCommand;
-import org.asteriskjava.fastagi.command.ControlStreamFileCommand;
-import org.asteriskjava.fastagi.command.DatabaseDelCommand;
-import org.asteriskjava.fastagi.command.DatabaseDelTreeCommand;
-import org.asteriskjava.fastagi.command.DatabaseGetCommand;
-import org.asteriskjava.fastagi.command.DatabasePutCommand;
-import org.asteriskjava.fastagi.command.ExecCommand;
-import org.asteriskjava.fastagi.command.GetDataCommand;
-import org.asteriskjava.fastagi.command.GetFullVariableCommand;
-import org.asteriskjava.fastagi.command.GetOptionCommand;
-import org.asteriskjava.fastagi.command.GetVariableCommand;
-import org.asteriskjava.fastagi.command.HangupCommand;
-import org.asteriskjava.fastagi.command.RecordFileCommand;
-import org.asteriskjava.fastagi.command.SayAlphaCommand;
-import org.asteriskjava.fastagi.command.SayDateTimeCommand;
-import org.asteriskjava.fastagi.command.SayDigitsCommand;
-import org.asteriskjava.fastagi.command.SayNumberCommand;
-import org.asteriskjava.fastagi.command.SayPhoneticCommand;
-import org.asteriskjava.fastagi.command.SayTimeCommand;
-import org.asteriskjava.fastagi.command.SetAutoHangupCommand;
-import org.asteriskjava.fastagi.command.SetCallerIdCommand;
-import org.asteriskjava.fastagi.command.SetContextCommand;
-import org.asteriskjava.fastagi.command.SetExtensionCommand;
-import org.asteriskjava.fastagi.command.SetMusicOffCommand;
-import org.asteriskjava.fastagi.command.SetMusicOnCommand;
-import org.asteriskjava.fastagi.command.SetPriorityCommand;
-import org.asteriskjava.fastagi.command.SetVariableCommand;
-import org.asteriskjava.fastagi.command.StreamFileCommand;
-import org.asteriskjava.fastagi.command.VerboseCommand;
-import org.asteriskjava.fastagi.command.WaitForDigitCommand;
+import org.asteriskjava.fastagi.command.*;
 import org.asteriskjava.fastagi.reply.AgiReply;
 import org.asteriskjava.util.SocketConnectionFacade;
 
@@ -418,5 +387,50 @@ public class AgiChannelImpl implements AgiChannel
     {
         sendCommand(new ControlStreamFileCommand(file, escapeDigits, offset, forwardDigit, rewindDigit, pauseDigit));
         return lastReply.getResultCodeAsChar();
+    }
+
+    public void speechCreate(String engine) throws AgiException
+    {
+        sendCommand(new SpeechCreateCommand(engine));
+    }
+
+    public void speechSet(String name, String value) throws AgiException
+    {
+        sendCommand(new SpeechSetCommand(name, value));
+    }
+
+    public void speechDestroy() throws AgiException
+    {
+        sendCommand(new SpeechDestroyCommand());
+    }
+
+    public void speechLoadGrammar(String name, String path) throws AgiException
+    {
+        sendCommand(new SpeechLoadGrammarCommand(name, path));
+    }
+
+    public void speechUnloadGrammar(String name) throws AgiException
+    {
+        sendCommand(new SpeechUnloadGrammarCommand(name));
+    }
+
+    public void speechActivateGrammar(String name) throws AgiException
+    {
+        sendCommand(new SpeechActivateGrammarCommand(name));
+    }
+
+    public void speechDeactivateGrammar(String name) throws AgiException
+    {
+        sendCommand(new SpeechDeactivateGrammarCommand(name));
+    }
+
+    public void speechRecognize(String prompt, int timeout) throws AgiException
+    {
+        sendCommand(new SpeechRecognizeCommand(prompt, timeout));
+    }
+
+    public void speechRecognize(String prompt, int timeout, int offset) throws AgiException
+    {
+        sendCommand(new SpeechRecognizeCommand(prompt, timeout, offset));
     }
 }

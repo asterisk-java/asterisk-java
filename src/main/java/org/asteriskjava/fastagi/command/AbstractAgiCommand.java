@@ -61,9 +61,9 @@ public abstract class AbstractAgiCommand implements Serializable, AgiCommand
     {
         StringBuffer sb;
 
-        sb = new StringBuffer(getClass().getName() + ": ");
-        sb.append("command='" + buildCommand() + "'; ");
-        sb.append("systemHashcode=" + System.identityHashCode(this));
+        sb = new StringBuffer(getClass().getName()).append("[");
+        sb.append("command='").append(buildCommand()).append("', ");
+        sb.append("systemHashcode=").append(System.identityHashCode(this)).append("]");
 
         return sb.toString();
     }

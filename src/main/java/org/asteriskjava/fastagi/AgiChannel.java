@@ -662,4 +662,74 @@ public interface AgiChannel
     char controlStreamFile(String file, String escapeDigits,
                            int offset, String forwardDigit, String rewindDigit,
                            String pauseDigit) throws AgiException;
+
+    /**
+     * Creates a speech object to be used by the other speech methods.
+     *
+     * @param engine the name of the speech engine.
+     * @see #speechDestroy()
+     * @since 1.0.0
+     */
+    void speechCreate(String engine) throws AgiException;
+
+    /**
+     * Sets the setting indicated by name to the given value.
+     *
+     * @param name  the name of the setting to set.
+     * @param value the value to set.
+     * @since 1.0.0
+     */
+    void speechSet(String name, String value) throws AgiException;
+
+    /**
+     * Destroys the current speech object.
+     *
+     * @see #speechCreate(String)
+     * @since 1.0.0
+     */
+    void speechDestroy() throws AgiException;
+
+    /**
+     * Loads the specified grammar as the specified name.
+     *
+     * @param name the name of the grammar, used for subsequent calls to {@link #speechActivateGrammar(String)},
+     *             {@link #speechDeactivateGrammar(String)} and {@link #speechUnloadGrammar(String)}.
+     * @param path the path to the grammar to load.
+     * @see #speechUnloadGrammar(String)
+     * @see #speechActivateGrammar(String)
+     * @since 1.0.0
+     */
+    void speechLoadGrammar(String name, String path) throws AgiException;
+
+    /**
+     * Unloads the specified grammar.
+     *
+     * @param name the name of the grammar to unload.
+     * @see #speechLoadGrammar(String, String)
+     * @since 1.0.0
+     */
+    void speechUnloadGrammar(String name) throws AgiException;
+
+    /**
+     * Activates the specified grammar.
+     *
+     * @param name the name of the grammar to activate.
+     * @see #speechDeactivateGrammar(String)
+     * @see #speechLoadGrammar(String, String)
+     * @since 1.0.0
+     */
+    void speechActivateGrammar(String name) throws AgiException;
+
+    /**
+     * Deactivates the specified grammar.
+     *
+     * @param name the name to the grammar to deactivate.
+     * @see #speechActivateGrammar(String)
+     * @since 1.0.0
+     */
+    void speechDeactivateGrammar(String name) throws AgiException;
+
+    void speechRecognize(String prompt, int timeout) throws AgiException;
+
+    void speechRecognize(String prompt, int timeout, int offset) throws AgiException;
 }

@@ -411,4 +411,58 @@ public class AgiOperations implements AgiChannel
     {
         return getChannel().controlStreamFile(file, escapeDigits, offset, forwardDigit, rewindDigit, pauseDigit);
     }
+
+    public void speechCreate(String engine)
+            throws AgiException
+    {
+        getChannel().speechCreate(engine);
+    }
+
+    public void speechSet(String name, String value)
+            throws AgiException
+    {
+        getChannel().speechSet(name, value);
+    }
+
+    public void speechDestroy()
+            throws AgiException
+    {
+        getChannel().speechDestroy();
+    }
+
+    public void speechLoadGrammar(String name, String path)
+            throws AgiException
+    {
+        getChannel().speechLoadGrammar(name, path);
+    }
+
+    public void speechUnloadGrammar(String name)
+            throws AgiException
+    {
+        getChannel().speechUnloadGrammar(name);
+    }
+
+    public void speechActivateGrammar(String name)
+            throws AgiException
+    {
+        getChannel().speechActivateGrammar(name);
+    }
+
+    public void speechDeactivateGrammar(String name)
+            throws AgiException
+    {
+        getChannel().speechDeactivateGrammar(name);
+    }
+
+    public void speechRecognize(String prompt, int timeout)
+            throws AgiException
+    {
+        getChannel().speechRecognize(prompt, timeout);
+    }
+
+    public void speechRecognize(String prompt, int timeout, int offset)
+            throws AgiException
+    {
+        getChannel().speechRecognize(prompt, timeout, offset);
+    }
 }
