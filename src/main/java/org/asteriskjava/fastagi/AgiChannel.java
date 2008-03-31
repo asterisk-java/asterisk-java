@@ -673,7 +673,7 @@ public interface AgiChannel
     void speechCreate(String engine) throws AgiException;
 
     /**
-     * Sets the setting indicated by name to the given value.
+     * Sets the speech engine setting indicated by name to the given value.
      *
      * @param name  the name of the setting to set.
      * @param value the value to set.
