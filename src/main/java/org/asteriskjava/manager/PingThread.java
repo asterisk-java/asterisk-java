@@ -17,6 +17,8 @@
 package org.asteriskjava.manager;
 
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.Set;
+import java.util.HashSet;
 
 import org.asteriskjava.manager.action.PingAction;
 import org.asteriskjava.manager.response.ManagerResponse;
@@ -25,19 +27,19 @@ import org.asteriskjava.util.LogFactory;
 
 /**
  * A Thread that pings the Asterisk server at a given interval.
- * <p>
  * You can use this to prevent the connection being shut down when there is no
  * traffic.
- * 
+ * <p>
+ * Since 1.0.0 PingThread supports mutliple connections so do don't have to
+ * start multiple threads to keep several connections alive. 
+ *
  * @author srt
  * @version $Id$
  */
 public class PingThread extends Thread
 {
-    /**
-     * Default value for the interval attribute.
-     */
     private static final long DEFAULT_INTERVAL = 20 * 1000L;
+    private static final long DEFAULT_TIMEOUT = 0L;
     private static final AtomicLong idCounter = new AtomicLong(0);
 
     /**
@@ -46,19 +48,20 @@ public class PingThread extends Thread
     private final Log logger = LogFactory.getLog(getClass());
 
     private long interval = DEFAULT_INTERVAL;
-    private long timeout = 0;
+    private long timeout = DEFAULT_TIMEOUT;
     private volatile boolean die;
-    private final ManagerConnection connection;
+    private final Set<ManagerConnection> connections;
 
     /**
-     * Creates a new PingThread that uses the given ManagerConnection.
-     * 
-     * @param connection ManagerConnection that is pinged
+     * Creates a new PingThread. Use {@link #addConnection(ManagerConnection)} to add connections
+     * that will be pinged.
+     *
+     * @since 1.0.0
      */
-    public PingThread(ManagerConnection connection)
+    public PingThread()
     {
         super();
-        this.connection = connection;
+        this.connections = new HashSet<ManagerConnection>();
         this.die = false;
         long id = idCounter.getAndIncrement();
         setName("Asterisk-Java Ping-" + id);
@@ -66,10 +69,21 @@ public class PingThread extends Thread
     }
 
     /**
+     * Creates a new PingThread that uses the given ManagerConnection.
+     *
+     * @param connection ManagerConnection that is pinged
+     */
+    public PingThread(ManagerConnection connection)
+    {
+        this();
+        this.connections.add(connection);
+    }
+
+    /**
      * Adjusts how often a PingAction is sent.
-     * <p>
+     * <p/>
      * Default is 20000ms, i.e. 20 seconds.
-     * 
+     *
      * @param interval the interval in milliseconds
      */
     public void setInterval(long interval)
@@ -80,18 +94,46 @@ public class PingThread extends Thread
     /**
      * Sets the timeout to wait for the ManagerResponse before throwing an
      * excpetion.
-     * <p>
+     * <p/>
      * If set to 0 the response will be ignored an no exception will be thrown
      * at all.
-     * <p>
+     * <p/>
      * Default is 0.
-     * 
+     *
      * @param timeout the timeout in milliseconds or 0 to indicate no timeout.
      * @since 0.3
      */
     public void setTimeout(long timeout)
     {
         this.timeout = timeout;
+    }
+
+    /**
+     * Adds a connection to the list of pinged connections.
+     *
+     * @param connection the connection to ping.
+     * @since 1.0.0
+     */
+    public void addConnection(ManagerConnection connection)
+    {
+        synchronized (connections)
+        {
+            connections.add(connection);
+        }
+    }
+
+    /**
+     * Removes a connection from the list of pinged connections.
+     *
+     * @param connection the connection that will no longer be pinged.
+     * @since 1.0.0
+     */
+    public void removeConnection(ManagerConnection connection)
+    {
+        synchronized (connections)
+        {
+            connections.remove(connection);
+        }
     }
 
     /**
@@ -104,7 +146,7 @@ public class PingThread extends Thread
     }
 
     @Override
-   public void run()
+    public void run()
     {
         while (!die)
         {
@@ -123,37 +165,46 @@ public class PingThread extends Thread
                 break;
             }
 
-            // skip if not connected
-            if (connection.getState() != ManagerConnectionState.CONNECTED)
+            synchronized (connections)
             {
-                continue;
-            }
+                for (ManagerConnection c : connections)
+                {
+                    // skip if not connected
+                    if (c.getState() != ManagerConnectionState.CONNECTED)
+                    {
+                        continue;
+                    }
 
-            ping();
+                    ping(c);
+                }
+            }
         }
     }
 
     /**
      * Sends a ping to Asterisk and logs any errors that may occur.
+     *
+     * @param c the connection to ping.
      */
-    protected void ping()
+    protected void ping(ManagerConnection c)
     {
-        ManagerResponse response;
         try
         {
             if (timeout <= 0)
             {
-                connection.sendAction(new PingAction(), null);
+                c.sendAction(new PingAction(), null);
             }
             else
             {
-                response = connection.sendAction(new PingAction(), timeout);
-                logger.debug("Ping response: " + response);
+                final ManagerResponse response;
+
+                response = c.sendAction(new PingAction(), timeout);
+                logger.debug("Ping response '" + response + "' for " + c.toString());
             }
         }
         catch (Exception e)
         {
-            logger.warn("Exception on sending Ping", e);
+            logger.warn("Exception on sending Ping to " + c.toString(), e);
         }
     }
 }

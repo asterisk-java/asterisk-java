@@ -326,4 +326,12 @@ public class DefaultManagerConnection implements ManagerConnection
     {
         return impl.getState();
     }
+
+    public String toString()
+    {
+        final StringBuilder sb = new StringBuilder("DefaultManagerConnection[");
+        sb.append("hostname='").append(getHostname()).append("',");
+        sb.append("port=").append(getPort()).append("]");
+        return sb.toString();
+    }
 }
