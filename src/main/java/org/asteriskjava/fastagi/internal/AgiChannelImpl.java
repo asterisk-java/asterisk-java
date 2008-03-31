@@ -385,14 +385,16 @@ public class AgiChannelImpl implements AgiChannel
         sendCommand(new VerboseCommand(message, level));
     }
 
-    public void recordFile(String file, String format, String escapeDigits, int timeout) throws AgiException
+    public char recordFile(String file, String format, String escapeDigits, int timeout) throws AgiException
     {
         sendCommand(new RecordFileCommand(file, format, escapeDigits, timeout));
+        return lastReply.getResultCodeAsChar();
     }
 
-    public void recordFile(String file, String format, String escapeDigits, int timeout, int offset, boolean beep, int maxSilence) throws AgiException
+    public char recordFile(String file, String format, String escapeDigits, int timeout, int offset, boolean beep, int maxSilence) throws AgiException
     {
         sendCommand(new RecordFileCommand(file, format, escapeDigits, timeout, offset, beep, maxSilence));
+        return lastReply.getResultCodeAsChar();
     }
 
     public void controlStreamFile(String file) throws AgiException

@@ -490,8 +490,7 @@ public interface AgiChannel
      * @return the DTMF digit pressed or 0x0 if none was pressed.
      * @since 0.2
      */
-    char sayDateTime(long time, String escapeDigits, String format)
-            throws AgiException;
+    char sayDateTime(long time, String escapeDigits, String format) throws AgiException;
 
     /**
      * Says the given time in the given format and timezone and allows
@@ -578,9 +577,10 @@ public interface AgiChannel
      *                     recording.
      * @param timeout      the maximum record time in milliseconds, or -1 for no
      *                     timeout.
+     * @return the DTMF digit pressed or 0x0 if none was pressed.
      * @since 0.3
      */
-    void recordFile(String file, String format, String escapeDigits,
+    char recordFile(String file, String format, String escapeDigits,
                     int timeout) throws AgiException;
 
     /**
@@ -597,9 +597,10 @@ public interface AgiChannel
      *                     recording.
      * @param maxSilence   The amount of silence (in seconds) to allow before
      *                     returning despite the lack of dtmf digits or reaching timeout.
+     * @return the DTMF digit pressed or 0x0 if none was pressed.
      * @since 0.3
      */
-    void recordFile(String file, String format, String escapeDigits,
+    char recordFile(String file, String format, String escapeDigits,
                     int timeout, int offset, boolean beep, int maxSilence) throws AgiException;
 
     /**
