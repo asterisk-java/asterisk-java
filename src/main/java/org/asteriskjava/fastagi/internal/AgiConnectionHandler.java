@@ -16,29 +16,22 @@
  */
 package org.asteriskjava.fastagi.internal;
 
-import java.io.IOException;
-
-import org.asteriskjava.fastagi.AgiChannel;
-import org.asteriskjava.fastagi.AgiException;
-import org.asteriskjava.fastagi.AgiRequest;
-import org.asteriskjava.fastagi.AgiScript;
-import org.asteriskjava.fastagi.MappingStrategy;
+import org.asteriskjava.fastagi.*;
 import org.asteriskjava.fastagi.command.VerboseCommand;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
-import org.asteriskjava.util.SocketConnectionFacade;
 
 /**
  * An AgiConnectionHandler is created and run by the AgiServer whenever a new
- * socket connection from an Asterisk Server is received.
+ * AGI connection from an Asterisk Server is received.
  * <p>
  * It reads the request using an AgiReader and runs the AgiScript configured to
- * handle this type of request. Finally it closes the socket connection.
+ * handle this type of request. Finally it closes the AGI connection.
  * 
  * @author srt
  * @version $Id$
  */
-public class AgiConnectionHandler implements Runnable
+public abstract class AgiConnectionHandler implements Runnable
 {
     private static final String AJ_AGISTATUS_VARIABLE = "AJ_AGISTATUS";
     private static final String AJ_AGISTATUS_NOT_FOUND = "NOT_FOUND";
@@ -48,11 +41,6 @@ public class AgiConnectionHandler implements Runnable
     private static final ThreadLocal<AgiChannel> channel = new ThreadLocal<AgiChannel>();
 
     /**
-     * The socket connection.
-     */
-    private final SocketConnectionFacade socket;
-
-    /**
      * The strategy to use to determine which script to run.
      */
     private final MappingStrategy mappingStrategy;
@@ -60,25 +48,18 @@ public class AgiConnectionHandler implements Runnable
     /**
      * Creates a new AGIConnectionHandler to handle the given socket connection.
      * 
-     * @param socket the socket connection to handle.
-     * @param mappingStrategy the strategy to use to determine which script to
-     *            run.
+     * @param mappingStrategy the strategy to use to determine which script to run.
      */
-    public AgiConnectionHandler(SocketConnectionFacade socket, MappingStrategy mappingStrategy)
+    protected AgiConnectionHandler(MappingStrategy mappingStrategy)
     {
-        this.socket = socket;
         this.mappingStrategy = mappingStrategy;
     }
 
-    protected AgiReader createReader()
-    {
-        return new AgiReaderImpl(socket);
-    }
+    protected abstract AgiReader createReader();
 
-    protected AgiWriter createWriter()
-    {
-        return new AgiWriterImpl(socket);
-    }
+    protected abstract AgiWriter createWriter();
+
+    protected abstract void release();
 
     public void run()
     {
@@ -89,7 +70,7 @@ public class AgiConnectionHandler implements Runnable
             AgiReader reader;
             AgiWriter writer;
             AgiRequest request;
-            AgiScript script;
+            AgiScript script = null;
 
             reader = createReader();
             writer = createWriter();
@@ -99,13 +80,16 @@ public class AgiConnectionHandler implements Runnable
 
             AgiConnectionHandler.channel.set(channel);
 
-            script = mappingStrategy.determineScript(request);
+            if (mappingStrategy != null)
+            {
+                script = mappingStrategy.determineScript(request);
+            }
+            
             if (script == null)
             {
                 final String errorMessage;
 
-                errorMessage = "No script configured for URL '" + request.getRequestURL() + "' (script '"
-                        + request.getScript() + "')";
+                errorMessage = "No script configured for URL '" + request.getRequestURL() + "' (script '" + request.getScript() + "')";
                 logger.error(errorMessage);
 
                 setStatusVariable(channel, AJ_AGISTATUS_NOT_FOUND);
@@ -129,14 +113,7 @@ public class AgiConnectionHandler implements Runnable
         finally
         {
             AgiConnectionHandler.channel.set(null);
-            try
-            {
-                socket.close();
-            }
-            catch (IOException e) // NOPMD
-            {
-                // swallow
-            }
+            release();
         }
     }
 

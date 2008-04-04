@@ -18,6 +18,7 @@ package org.asteriskjava.fastagi.internal;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import junit.framework.TestCase;
 
@@ -27,14 +28,14 @@ import org.asteriskjava.fastagi.internal.AgiRequestImpl;
 public class AgiRequestImplTest extends TestCase
 {
     @Override
-   protected void setUp()
+    protected void setUp()
     {
     }
 
     @SuppressWarnings("deprecation")
     public void testBuildRequest()
     {
-        Collection<String> lines;
+        List<String> lines;
         AgiRequest request;
 
         lines = new ArrayList<String>();
@@ -77,7 +78,7 @@ public class AgiRequestImplTest extends TestCase
 
     public void testBuildRequestWithAccountCode()
     {
-        Collection<String> lines;
+        List<String> lines;
         AgiRequest request;
 
         lines = new ArrayList<String>();
@@ -94,7 +95,7 @@ public class AgiRequestImplTest extends TestCase
     @SuppressWarnings("deprecation")
     public void testBuildRequestWithoutCallerIdName()
     {
-        Collection<String> lines;
+        List<String> lines;
         AgiRequest request;
 
         lines = new ArrayList<String>();
@@ -111,7 +112,7 @@ public class AgiRequestImplTest extends TestCase
     @SuppressWarnings("deprecation")
     public void testBuildRequestWithoutCallerIdNameButBracket()
     {
-        Collection<String> lines;
+        List<String> lines;
         AgiRequest request;
 
         lines = new ArrayList<String>();
@@ -128,7 +129,7 @@ public class AgiRequestImplTest extends TestCase
     @SuppressWarnings("deprecation")
     public void testBuildRequestWithoutCallerIdNameButBracketAndQuotesAndSpace()
     {
-        Collection<String> lines;
+        List<String> lines;
         AgiRequest request;
 
         lines = new ArrayList<String>();
@@ -145,7 +146,7 @@ public class AgiRequestImplTest extends TestCase
     @SuppressWarnings("deprecation")
     public void testBuildRequestWithQuotedCallerIdName()
     {
-        Collection<String> lines;
+        List<String> lines;
         AgiRequest request;
 
         lines = new ArrayList<String>();
@@ -162,7 +163,7 @@ public class AgiRequestImplTest extends TestCase
     @SuppressWarnings("deprecation")
     public void testBuildRequestWithQuotedCallerIdNameAndSpace()
     {
-        Collection<String> lines;
+        List<String> lines;
         AgiRequest request;
 
         lines = new ArrayList<String>();
@@ -179,7 +180,7 @@ public class AgiRequestImplTest extends TestCase
     @SuppressWarnings("deprecation")
     public void testBuildRequestWithoutCallerId()
     {
-        Collection<String> lines;
+        List<String> lines;
         AgiRequest request;
 
         lines = new ArrayList<String>();
@@ -200,7 +201,7 @@ public class AgiRequestImplTest extends TestCase
     @SuppressWarnings("deprecation")
     public void testBuildRequestCallerIdAsterisk12()
     {
-        Collection<String> lines;
+        List<String> lines;
         AgiRequest request;
 
         lines = new ArrayList<String>();
@@ -218,7 +219,7 @@ public class AgiRequestImplTest extends TestCase
     @SuppressWarnings("deprecation")
     public void testBuildRequestCallerIdAsterisk12WithUnknownCallerId()
     {
-        Collection<String> lines;
+        List<String> lines;
         AgiRequest request;
 
         lines = new ArrayList<String>();
@@ -236,7 +237,7 @@ public class AgiRequestImplTest extends TestCase
     @SuppressWarnings("deprecation")
     public void testBuildRequestCallerIdAsterisk12WithUnknownCallerIdName()
     {
-        Collection<String> lines;
+        List<String> lines;
         AgiRequest request;
 
         lines = new ArrayList<String>();
@@ -253,7 +254,7 @@ public class AgiRequestImplTest extends TestCase
 
     public void testBuildRequestCallerIdWithUnknownDnid()
     {
-        Collection<String> lines;
+        List<String> lines;
         AgiRequest request;
 
         lines = new ArrayList<String>();
@@ -267,7 +268,7 @@ public class AgiRequestImplTest extends TestCase
 
     public void testBuildRequestCallerIdWithUnknownRdnis()
     {
-        Collection<String> lines;
+        List<String> lines;
         AgiRequest request;
 
         lines = new ArrayList<String>();
@@ -283,7 +284,7 @@ public class AgiRequestImplTest extends TestCase
     {
         try
         {
-            new AgiRequestImpl(null);
+            new AgiRequestImpl((List<String>) null);
             fail("No IllegalArgumentException thrown.");
         }
         catch (IllegalArgumentException e)
@@ -293,7 +294,7 @@ public class AgiRequestImplTest extends TestCase
 
     public void testBuildRequestWithUnusualInput()
     {
-        Collection<String> lines;
+        List<String> lines;
         AgiRequest request;
 
         lines = new ArrayList<String>();
@@ -310,7 +311,7 @@ public class AgiRequestImplTest extends TestCase
 
     public void testBuildRequestWithoutParameters()
     {
-        Collection<String> lines;
+        List<String> lines;
         AgiRequest request;
 
         lines = new ArrayList<String>();
@@ -330,7 +331,7 @@ public class AgiRequestImplTest extends TestCase
 
     public void testBuildRequestWithSingleValueParameters()
     {
-        Collection<String> lines;
+        List<String> lines;
         AgiRequest request;
 
         lines = new ArrayList<String>();
@@ -351,7 +352,7 @@ public class AgiRequestImplTest extends TestCase
 
     public void testBuildRequestWithMultiValueParameter()
     {
-        Collection<String> lines;
+        List<String> lines;
         AgiRequest request;
 
         lines = new ArrayList<String>();
@@ -362,7 +363,7 @@ public class AgiRequestImplTest extends TestCase
         request = new AgiRequestImpl(lines);
 
         assertEquals("incorrect script", "myscript.agi", request.getScript());
-        assertEquals("incorrect requestURL", 
+        assertEquals("incorrect requestURL",
                 "agi://host/myscript.agi?param1=value1&param1=value2", request.getRequestURL());
         assertEquals("incorrect number of values for parameter 'param1'", 2, request.getParameterValues("param1").length);
         assertEquals("incorrect value[0] for parameter 'param1'", "value1", request.getParameterValues("param1")[0]);
@@ -371,7 +372,7 @@ public class AgiRequestImplTest extends TestCase
 
     public void testBuildRequestWithEmptyValueParameter()
     {
-        Collection<String> lines;
+        List<String> lines;
         AgiRequest request;
 
         lines = new ArrayList<String>();
@@ -390,7 +391,7 @@ public class AgiRequestImplTest extends TestCase
 
     public void testBuildRequestWithUrlEncodedParameter()
     {
-        Collection<String> lines;
+        List<String> lines;
         AgiRequest request;
 
         lines = new ArrayList<String>();
@@ -407,7 +408,7 @@ public class AgiRequestImplTest extends TestCase
 
     public void testGetParameter()
     {
-        Collection<String> lines;
+        List<String> lines;
         AgiRequest request;
 
         lines = new ArrayList<String>();

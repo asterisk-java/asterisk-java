@@ -23,7 +23,7 @@ import static org.easymock.EasyMock.*;
 
 import org.asteriskjava.fastagi.AgiHangupException;
 import org.asteriskjava.fastagi.AgiRequest;
-import org.asteriskjava.fastagi.internal.AgiReaderImpl;
+import org.asteriskjava.fastagi.internal.FastAgiReader;
 import org.asteriskjava.fastagi.reply.AgiReply;
 import org.asteriskjava.util.SocketConnectionFacade;
 
@@ -37,7 +37,7 @@ public class AgiReaderImplTest extends TestCase
     {
         super.setUp();
         this.socket = createMock(SocketConnectionFacade.class);
-        this.agiReader = new AgiReaderImpl(socket);
+        this.agiReader = new FastAgiReader(socket);
     }
 
     public void testReadRequest() throws Exception

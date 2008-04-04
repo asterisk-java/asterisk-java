@@ -24,6 +24,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import org.asteriskjava.fastagi.internal.AgiConnectionHandler;
+import org.asteriskjava.fastagi.internal.FastAgiConnectionHandler;
 import org.asteriskjava.util.DaemonThreadFactory;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
@@ -37,8 +38,10 @@ import org.asteriskjava.util.internal.ServerSocketFacadeImpl;
  * @author srt
  * @version $Id$
  */
-public class DefaultAgiServer implements AgiServer
+public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
 {
+    private final Log logger = LogFactory.getLog(getClass());
+
     /**
      * The default name of the resource bundle that contains the config.
      */
@@ -49,55 +52,9 @@ public class DefaultAgiServer implements AgiServer
      */
     private static final int DEFAULT_BIND_PORT = 4573;
 
-    /**
-     * The default thread pool size.
-     */
-    private static final int DEFAULT_POOL_SIZE = 10;
-
-    /**
-     * The default thread pool size.
-     */
-    private static final int DEFAULT_MAXIMUM_POOL_SIZE = 100;
-
-    /**
-     * Instance logger.
-     */
-    private final Log logger = LogFactory.getLog(DefaultAgiServer.class);
-
     private ServerSocketFacade serverSocket;
-
     private String configResourceBundleName = DEFAULT_CONFIG_RESOURCE_BUNDLE_NAME;
-
-    /**
-     * The port to listen on.
-     */
-    private int port;
-
-    /**
-     * The thread pool that contains the worker threads to process incoming requests.
-     */
-    private ThreadPoolExecutor pool;
-
-    /**
-     * The minimum number of worker threads in the thread pool.
-     */
-    private int poolSize;
-
-    /**
-     * The maximum number of worker threads in the thread pool. This equals the maximum number of
-     * concurrent requests this AgiServer can serve.
-     */
-    private int maximumPoolSize;
-
-    /**
-     * True while this server is shut down.
-     */
-    private volatile boolean die;
-
-    /**
-     * The strategy to use for mapping AgiRequests to AgiScripts that serve them.
-     */
-    private MappingStrategy mappingStrategy;
+    private int port = DEFAULT_BIND_PORT;
 
     /**
      * Creates a new DefaultAgiServer.
@@ -114,12 +71,8 @@ public class DefaultAgiServer implements AgiServer
      */
     public DefaultAgiServer(String configResourceBundleName)
     {
-        this.port = DEFAULT_BIND_PORT;
-        this.poolSize = DEFAULT_POOL_SIZE;
-        this.maximumPoolSize = DEFAULT_MAXIMUM_POOL_SIZE;
-        this.maximumPoolSize = this.poolSize;
-        this.mappingStrategy = new CompositeMappingStrategy(new ResourceBundleMappingStrategy(),
-                new ClassNameMappingStrategy());
+        super();
+        setMappingStrategy(new CompositeMappingStrategy(new ResourceBundleMappingStrategy(), new ClassNameMappingStrategy()));
 
         if (configResourceBundleName != null)
         {
@@ -129,34 +82,6 @@ public class DefaultAgiServer implements AgiServer
         loadConfig();
     }
 
-
-    /**
-     * Sets the number of worker threads in the thread pool.
-     * <p>
-     * This is the number of threads that are available even if they are idle.
-     * <p>
-     * The default pool size is 10.
-     * 
-     * @param poolSize the size of the worker thread pool.
-     */
-    public void setPoolSize(int poolSize)
-    {
-        this.poolSize = poolSize;
-    }
-
-    /**
-     * Sets the maximum number of worker threads in the thread pool.
-     * <p>
-     * This equals the maximum number of concurrent requests this AgiServer can serve.
-     * <p>
-     * The default maximum pool size is 100.
-     * 
-     * @param maximumPoolSize the maximum size of the worker thread pool.
-     */
-    public void setMaximumPoolSize(int maximumPoolSize)
-    {
-        this.maximumPoolSize = maximumPoolSize;
-    }
 
     /**
      * Sets the TCP port to listen on for new connections.
@@ -195,19 +120,6 @@ public class DefaultAgiServer implements AgiServer
         return port;
     }
 
-    /**
-     * Sets the strategy to use for mapping AgiRequests to AgiScripts that serve them.
-     * <p>
-     * The default mapping strategy is a ResourceBundleMappingStrategy.
-     * 
-     * @param mappingStrategy the mapping strategy to use.
-     * @see ResourceBundleMappingStrategy
-     */
-    public void setMappingStrategy(MappingStrategy mappingStrategy)
-    {
-        this.mappingStrategy = mappingStrategy;
-    }
-
     private void loadConfig()
     {
         final ResourceBundle resourceBundle;
@@ -243,10 +155,7 @@ public class DefaultAgiServer implements AgiServer
 
         try
         {
-            String poolSizeString;
-
-            poolSizeString = resourceBundle.getString("poolSize");
-            poolSize = Integer.parseInt(poolSizeString);
+            setPoolSize(Integer.parseInt(resourceBundle.getString("poolSize")));
         }
         catch (Exception e) // NOPMD
         {
@@ -255,10 +164,7 @@ public class DefaultAgiServer implements AgiServer
 
         try
         {
-            String maximumPoolSizeString;
-
-            maximumPoolSizeString = resourceBundle.getString("maximumPoolSize");
-            maximumPoolSize = Integer.parseInt(maximumPoolSizeString);
+            setMaximumPoolSize(Integer.parseInt(resourceBundle.getString("maximumPoolSize")));
         }
         catch (Exception e) // NOPMD
         {
@@ -275,11 +181,6 @@ public class DefaultAgiServer implements AgiServer
     {
         SocketConnectionFacade socket;
         AgiConnectionHandler connectionHandler;
-
-        die = false;
-        pool = new ThreadPoolExecutor(poolSize, (maximumPoolSize < poolSize) ? poolSize : maximumPoolSize, 50000L,
-                TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>(), new DaemonThreadFactory());
-        logger.info("Thread pool started.");
 
         try
         {
@@ -301,13 +202,13 @@ public class DefaultAgiServer implements AgiServer
             {
                 socket = serverSocket.accept();
                 logger.info("Received connection from " + socket.getRemoteAddress());
-                connectionHandler = new AgiConnectionHandler(socket, mappingStrategy);
-                pool.execute(connectionHandler);
+                connectionHandler = new FastAgiConnectionHandler(getMappingStrategy(), socket);
+                execute(connectionHandler);
             }
             catch (IOException e)
             {
                 // swallow only if shutdown
-                if (die)
+                if (isDie())
                 {
                     break;
                 }
@@ -334,11 +235,11 @@ public class DefaultAgiServer implements AgiServer
         }
     }
 
-    public void die()
+    public void shutdown() throws IllegalStateException
     {
-        // setting the death flag causes the accept() loop to exit when an 
+        // setting the death flag causes the accept() loop to exit when a
         // SocketException occurs.
-        die = true;
+        super.shutdown();
 
         if (serverSocket != null)
         {
@@ -353,26 +254,12 @@ public class DefaultAgiServer implements AgiServer
                 logger.warn("IOException while closing server socket.", e);
             }
         }
-
-        if (pool != null)
-        {
-            pool.shutdown();
-        }
-    }
-
-    public void shutdown() throws IllegalStateException
-    {
-        die();
     }
 
     @Override
     protected void finalize() throws Throwable
     {
         super.finalize();
-        if (pool != null)
-        {
-            pool.shutdown();
-        }
 
         if (serverSocket != null)
         {
@@ -389,7 +276,7 @@ public class DefaultAgiServer implements AgiServer
 
     public static void main(String[] args) throws Exception
     {
-        AgiServer server;
+        final AgiServer server;
 
         server = new DefaultAgiServer();
         server.startup();

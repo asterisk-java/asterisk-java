@@ -18,6 +18,7 @@ package org.asteriskjava.fastagi;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Arrays;
 
 /**
  * A mapping strategy that tries a sequence of other mapping strategies to find
@@ -61,11 +62,7 @@ public class CompositeMappingStrategy implements MappingStrategy
     public CompositeMappingStrategy(MappingStrategy... strategies)
     {
         super();
-        this.strategies = new ArrayList<MappingStrategy>();
-        for (MappingStrategy strategy : strategies)
-        {
-            this.strategies.add(strategy);
-        }
+        this.strategies = new ArrayList<MappingStrategy>(Arrays.asList(strategies));
     }
 
     /**

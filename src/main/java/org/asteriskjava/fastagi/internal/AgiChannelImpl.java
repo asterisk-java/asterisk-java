@@ -42,8 +42,8 @@ public class AgiChannelImpl implements AgiChannel
     AgiChannelImpl(AgiRequest request, SocketConnectionFacade socket)
     {
         this.request = request;
-        this.agiWriter = new AgiWriterImpl(socket);
-        this.agiReader = new AgiReaderImpl(socket);
+        this.agiWriter = new FastAgiWriter(socket);
+        this.agiReader = new FastAgiReader(socket);
     }
 
     AgiChannelImpl(AgiRequest request, AgiWriter agiWriter, AgiReader agiReader)

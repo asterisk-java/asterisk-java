@@ -20,7 +20,7 @@ import junit.framework.TestCase;
 import static org.easymock.EasyMock.*;
 
 import org.asteriskjava.fastagi.command.StreamFileCommand;
-import org.asteriskjava.fastagi.internal.AgiWriterImpl;
+import org.asteriskjava.fastagi.internal.FastAgiWriter;
 import org.asteriskjava.util.SocketConnectionFacade;
 
 public class AgiWriterImplTest extends TestCase
@@ -33,7 +33,7 @@ public class AgiWriterImplTest extends TestCase
     {
         super.setUp();
         this.socket = createMock(SocketConnectionFacade.class);
-        this.agiWriter = new AgiWriterImpl(socket);
+        this.agiWriter = new FastAgiWriter(socket);
     }
 
     public void testSendCommand() throws Exception

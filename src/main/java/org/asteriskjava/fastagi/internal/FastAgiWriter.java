@@ -30,11 +30,11 @@ import org.asteriskjava.util.SocketConnectionFacade;
  * @author srt
  * @version $Id$
  */
-class AgiWriterImpl implements AgiWriter
+class FastAgiWriter implements AgiWriter
 {
     private final SocketConnectionFacade socket;
 
-    AgiWriterImpl(SocketConnectionFacade socket)
+    FastAgiWriter(SocketConnectionFacade socket)
     {
         this.socket = socket;
     }

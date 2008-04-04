@@ -2,8 +2,7 @@ package org.asteriskjava.manager.event;
 
 import java.net.URLDecoder;
 import java.io.UnsupportedEncodingException;
-import java.util.Map;
-import java.util.HashMap;
+import java.util.*;
 
 /**
  * 
@@ -134,22 +133,9 @@ public class AsyncAgiEvent extends ManagerEvent
      *
      * @return the decoded result.
      */
-    public String decodeResult()
+    public List<String> decodeResult()
     {
-        if (result == null)
-        {
-            return null;
-        }
-
-        try
-        {
-            return URLDecoder.decode(result, "ISO-8859-1");
-        }
-        catch (UnsupportedEncodingException e)
-        {
-            // won't happen as JDK ships with ISO-8859-1
-            return null;
-        }
+        return decode(getResult());
     }
 
     /**
@@ -186,42 +172,41 @@ public class AsyncAgiEvent extends ManagerEvent
     }
 
     /**
-     * Decodes the AGI environment and returns a map with the keys and values.
+     * Decodes the AGI environment and returns a list of lines.
      *
-     * @return The decoded AGI environment or an empty map if the environment is not available (that is
+     * @return The decoded AGI environment or an empty list if the environment is not available (that is
      *         if {@link #getEnv()} returns <code>null</code>).
      * @see #getEnv()
      */
-    public Map<String, String> decodeEnv()
+    public List<String> decodeEnv()
     {
-        final Map<String, String> decodedEnv = new HashMap<String, String>();
+        return decode(getEnv());
+    }
 
-        if (env == null)
+    private List<String> decode(String s)
+    {
+        final List<String> result = new ArrayList<String>();
+
+        if (s == null)
         {
-            return decodedEnv;
+            return result;
         }
 
         try
         {
-            for (String line : env.split("\n"))
+            for (String line : s.split("\n"))
             {
-                String decodedLine = URLDecoder.decode(line, "ISO-8859-1");
-                String[] nv = decodedLine.split(": ");
-                if (nv.length != 2)
-                {
-                    // there should always be two tokens except for the last line that is empty.
-                    continue;
-                }
-
-                decodedEnv.put(nv[0], nv[1]);
+                final String decodedLine = URLDecoder.decode(line, "ISO-8859-1");
+                result.add(decodedLine);
             }
         }
         catch (UnsupportedEncodingException e)
         {
             // won't happen as JDK ships with ISO-8859-1
+            throw new RuntimeException("This JDK does not support ISO-8859-1 encoding", e);
         }
 
-        return decodedEnv;
+        return result;
     }
 
     /**

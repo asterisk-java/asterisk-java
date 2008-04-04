@@ -45,10 +45,8 @@ import org.asteriskjava.util.LogFactory;
 public class AgiRequestImpl implements Serializable, AgiRequest
 {
     private final Log logger = LogFactory.getLog(getClass());
-    private static final Pattern SCRIPT_PATTERN = Pattern
-            .compile("^([^\\?]*)\\?(.*)$");
-    private static final Pattern PARAMETER_PATTERN = Pattern
-            .compile("^(.*)=(.*)$");
+    private static final Pattern SCRIPT_PATTERN = Pattern.compile("^([^\\?]*)\\?(.*)$");
+    private static final Pattern PARAMETER_PATTERN = Pattern.compile("^(.*)=(.*)$");
 
     private String rawCallerId;
 
@@ -79,13 +77,20 @@ public class AgiRequestImpl implements Serializable, AgiRequest
      * @param environment the first lines as received from Asterisk containing
      *            the environment.
      */
-    AgiRequestImpl(final Collection<String> environment)
+    AgiRequestImpl(final List<String> environment)
     {
-        if (environment == null)
-        {
-            throw new IllegalArgumentException("Environment must not be null.");
-        }
-        request = buildMap(environment);
+        this(buildMap(environment));
+    }
+
+    /**
+     * Creates a new AgiRequestImpl based on a preparsed map of parameters.
+     *
+     * @param request a map representing the AGI request. Keys must not contain the "agi_" or "ogi_" prefix.
+     * @since 1.0.0
+     */
+    private AgiRequestImpl(final Map<String, String> request)
+    {
+        this.request = request;
 
         script = request.get("network_script");
         if (script != null)
@@ -105,12 +110,17 @@ public class AgiRequestImpl implements Serializable, AgiRequest
      * Syntactically invalid and empty variables are skipped.
      * 
      * @param lines the environment to transform.
-     * @return a map with the variables set corresponding to the given
-     *         environment.
+     * @return a map with the variables set corresponding to the given environment.
+     * @throws IllegalArgumentException if lines is <code>null</code>
      */
-    private Map<String, String> buildMap(final Collection<String> lines)
+    private static Map<String, String> buildMap(final Collection<String> lines) throws IllegalArgumentException
     {
-        Map<String, String> map;
+        final Map<String, String> map;
+
+        if (lines == null)
+        {
+            throw new IllegalArgumentException("Environment must not be null.");
+        }
 
         map = new HashMap<String, String>();
 
@@ -209,15 +219,6 @@ public class AgiRequestImpl implements Serializable, AgiRequest
         return request.get("language");
     }
 
-    /**
-     * Returns the Caller*ID number, for example "1234".<p>
-     * Note: even with Asterisk 1.0 is contains only the numerical part
-     * of the Caller ID.
-     *
-     * @return the Caller*ID number, for example "1234", if no Caller*ID is set or it
-     *         is "unknown" <code>null</code> is returned.
-     * @deprecated as of 0.3, use {@link #getCallerIdNumber()} instead.
-     */
     public String getCallerId()
     {
         return getCallerIdNumber();
@@ -515,15 +516,12 @@ public class AgiRequestImpl implements Serializable, AgiRequest
             {
                 try
                 {
-                    name = URLDecoder
-                            .decode(parameterMatcher.group(1), "UTF-8");
-                    value = URLDecoder.decode(parameterMatcher.group(2),
-                            "UTF-8");
+                    name = URLDecoder.decode(parameterMatcher.group(1), "UTF-8");
+                    value = URLDecoder.decode(parameterMatcher.group(2), "UTF-8");
                 }
                 catch (UnsupportedEncodingException e)
                 {
-                    logger.error("Unable to decode parameter '" + parameter
-                            + "'", e);
+                    logger.error("Unable to decode parameter '" + parameter + "'", e);
                     continue;
                 }
             }
@@ -536,8 +534,7 @@ public class AgiRequestImpl implements Serializable, AgiRequest
                 }
                 catch (UnsupportedEncodingException e)
                 {
-                    logger.error("Unable to decode parameter '" + parameter
-                            + "'", e);
+                    logger.error("Unable to decode parameter '" + parameter + "'", e);
                     continue;
                 }
             }
@@ -620,7 +617,7 @@ public class AgiRequestImpl implements Serializable, AgiRequest
         sb.append("uniqueId='").append(getUniqueId()).append("',");
         sb.append("type='").append(getType()).append("',");
         sb.append("language='").append(getLanguage()).append("',");
-        sb.append("callerId='").append(getCallerId()).append("',");
+        sb.append("callerIdNumber='").append(getCallerIdNumber()).append("',");
         sb.append("callerIdName='").append(getCallerIdName()).append("',");
         sb.append("dnid='").append(getDnid()).append("',");
         sb.append("rdnis='").append(getRdnis()).append("',");
