@@ -37,8 +37,10 @@ public abstract class AgiConnectionHandler implements Runnable
     private static final String AJ_AGISTATUS_NOT_FOUND = "NOT_FOUND";
     private static final String AJ_AGISTATUS_SUCCESS = "SUCCESS";
     private static final String AJ_AGISTATUS_FAILED = "FAILED";
-    private final Log logger = LogFactory.getLog(getClass());
     private static final ThreadLocal<AgiChannel> channel = new ThreadLocal<AgiChannel>();
+    private final Log logger = LogFactory.getLog(getClass());
+    private boolean ignoreMissingScripts = false;
+    private AgiScript script = null;
 
     /**
      * The strategy to use to determine which script to run.
@@ -53,6 +55,21 @@ public abstract class AgiConnectionHandler implements Runnable
     protected AgiConnectionHandler(MappingStrategy mappingStrategy)
     {
         this.mappingStrategy = mappingStrategy;
+    }
+
+    protected boolean isIgnoreMissingScripts()
+    {
+        return ignoreMissingScripts;
+    }
+
+    protected void setIgnoreMissingScripts(boolean ignoreMissingScripts)
+    {
+        this.ignoreMissingScripts = ignoreMissingScripts;
+    }
+
+    protected AgiScript getScript()
+    {
+        return script;
     }
 
     protected abstract AgiReader createReader();
@@ -70,7 +87,6 @@ public abstract class AgiConnectionHandler implements Runnable
             AgiReader reader;
             AgiWriter writer;
             AgiRequest request;
-            AgiScript script = null;
 
             reader = createReader();
             writer = createWriter();
@@ -85,7 +101,7 @@ public abstract class AgiConnectionHandler implements Runnable
                 script = mappingStrategy.determineScript(request);
             }
             
-            if (script == null)
+            if (script == null && ! ignoreMissingScripts)
             {
                 final String errorMessage;
 
@@ -95,7 +111,7 @@ public abstract class AgiConnectionHandler implements Runnable
                 setStatusVariable(channel, AJ_AGISTATUS_NOT_FOUND);
                 logToAsterisk(channel, errorMessage);
             }
-            else
+            else if (script != null)
             {
                 runScript(script, request, channel);
             }

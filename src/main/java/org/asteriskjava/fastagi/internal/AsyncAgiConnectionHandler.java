@@ -69,6 +69,7 @@ public class AsyncAgiConnectionHandler extends AgiConnectionHandler
         channelName = asyncAgiStartEvent.getChannel();
         environment = asyncAgiStartEvent.decodeEnv();
         asyncAgiEvents = new LinkedBlockingQueue<AsyncAgiEvent>();
+        setIgnoreMissingScripts(true);
     }
 
     protected AgiReader createReader()
@@ -84,7 +85,7 @@ public class AsyncAgiConnectionHandler extends AgiConnectionHandler
 
     protected void release()
     {
-        if (writer != null)
+        if (writer != null && (getScript() != null || ! isIgnoreMissingScripts()))
         {
             try
             {
