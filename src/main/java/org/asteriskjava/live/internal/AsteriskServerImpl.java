@@ -455,19 +455,21 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
     public synchronized String getVersion() throws ManagerCommunicationException
     {
         final ManagerResponse response;
+        final String command;
 
         initializeIfNeeded();
         if (version == null)
         {
             if (eventConnection.getVersion().isAtLeast(AsteriskVersion.ASTERISK_1_6))
             {
-                response = sendAction(new CommandAction(SHOW_VERSION_1_6_COMMAND));
+                command = SHOW_VERSION_1_6_COMMAND;
             }
             else
             {
-                response = sendAction(new CommandAction(SHOW_VERSION_COMMAND));
+                command = SHOW_VERSION_COMMAND;
             }
 
+            response = sendAction(new CommandAction(command));
             if (response instanceof CommandResponse)
             {
                 final List result;
@@ -480,9 +482,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
             }
             else
             {
-                logger.error("Response to CommandAction(\""
-                        + SHOW_VERSION_COMMAND
-                        + "\") was not a CommandResponse but " + response);
+                logger.error("Response to CommandAction(\"" + command + "\") was not a CommandResponse but " + response);
             }
         }
 
