@@ -19,6 +19,7 @@ package org.asteriskjava.manager;
 import java.io.IOException;
 import java.net.InetAddress;
 
+import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.manager.action.EventGeneratingAction;
 import org.asteriskjava.manager.action.ManagerAction;
 import org.asteriskjava.manager.internal.ManagerConnectionImpl;
@@ -39,7 +40,7 @@ import org.asteriskjava.manager.response.ManagerResponse;
  * Note that the DefaultManagerConnection will create one new Thread for reading
  * data from Asterisk once it is
  * {@link org.asteriskjava.manager.ManagerConnectionState#CONNECTING}.
- * 
+ *
  * @see org.asteriskjava.manager.ManagerConnectionFactory
  * @author srt
  * @version $Id$
@@ -59,7 +60,7 @@ public class DefaultManagerConnection implements ManagerConnection
     /**
      * Creates a new instance with the given connection parameters using
      * Asterisk's default port.
-     * 
+     *
      * @param hostname the hostname of the Asterisk server to connect to.
      * @param username the username to use for login
      * @param password the password to use for login
@@ -74,7 +75,7 @@ public class DefaultManagerConnection implements ManagerConnection
 
     /**
      * Creates a new instance with the given connection parameters.
-     * 
+     *
      * @param hostname the hostname of the Asterisk server to connect to.
      * @param port the port where Asterisk listens for incoming Manager API
      *            connections, usually 5038.
@@ -94,7 +95,7 @@ public class DefaultManagerConnection implements ManagerConnection
      * Sets the hostname of the Asterisk server to connect to.
      * <p>
      * Default is <code>localhost</code>.
-     * 
+     *
      * @param hostname the hostname to connect to
      */
     public void setHostname(String hostname)
@@ -107,7 +108,7 @@ public class DefaultManagerConnection implements ManagerConnection
      * specified in Asterisk's <code>manager.conf</code> file.
      * <p>
      * Default is 5038.
-     * 
+     *
      * @param port the port to connect to
      */
     public void setPort(int port)
@@ -119,7 +120,7 @@ public class DefaultManagerConnection implements ManagerConnection
      * Sets whether to use SSL.
      * <p>
      * Default is false.
-     * 
+     *
      * @param ssl <code>true</code> to use SSL for the connection,
      *            <code>false</code> for a plain text connection.
      * @since 0.3
@@ -132,7 +133,7 @@ public class DefaultManagerConnection implements ManagerConnection
     /**
      * Sets the username to use to connect to the Asterisk server. This is the
      * username specified in Asterisk's <code>manager.conf</code> file.
-     * 
+     *
      * @param username the username to use for login
      */
     public void setUsername(String username)
@@ -143,7 +144,7 @@ public class DefaultManagerConnection implements ManagerConnection
     /**
      * Sets the password to use to connect to the Asterisk server. This is the
      * password specified in Asterisk's <code>manager.conf</code> file.
-     * 
+     *
      * @param password the password to use for login
      */
     public void setPassword(String password)
@@ -157,7 +158,7 @@ public class DefaultManagerConnection implements ManagerConnection
      * throwing a TimeoutException.
      * <p>
      * Default is 2000.
-     * 
+     *
      * @param defaultTimeout default timeout in milliseconds
      * @deprecated use {@link #setDefaultResponseTimeout(long)} instead
      */
@@ -172,7 +173,7 @@ public class DefaultManagerConnection implements ManagerConnection
      * throwing a TimeoutException.
      * <p>
      * Default is 2000.
-     * 
+     *
      * @param defaultResponseTimeout default response timeout in milliseconds
      * @since 0.2
      */
@@ -187,7 +188,7 @@ public class DefaultManagerConnection implements ManagerConnection
      * response and the last response event before throwing a TimeoutException.
      * <p>
      * Default is 5000.
-     * 
+     *
      * @param defaultEventTimeout default event timeout in milliseconds
      * @since 0.2
      */
@@ -200,7 +201,7 @@ public class DefaultManagerConnection implements ManagerConnection
      * This method is deprecated and will be removed in Asterisk-Java 0.4.
      * <p>
      * It does nothing.
-     * 
+     *
      * @deprecated no longer needed as we now use an interrupt based response
      *             checking approach.
      */
@@ -240,6 +241,11 @@ public class DefaultManagerConnection implements ManagerConnection
     public String getPassword()
     {
         return impl.getPassword();
+    }
+
+    public AsteriskVersion getVersion()
+    {
+        return impl.getVersion();
     }
 
     public boolean isSsl()

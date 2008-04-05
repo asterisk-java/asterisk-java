@@ -19,6 +19,7 @@ package org.asteriskjava.manager;
 import java.io.IOException;
 import java.net.InetAddress;
 
+import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.manager.action.EventGeneratingAction;
 import org.asteriskjava.manager.action.ManagerAction;
 import org.asteriskjava.manager.event.ManagerEvent;
@@ -40,7 +41,7 @@ import org.asteriskjava.manager.response.ManagerResponse;
  * <p>
  * A concrete implementation of this interface can be obtained from a
  * {@link org.asteriskjava.manager.ManagerConnectionFactory}.
- * 
+ *
  * @see org.asteriskjava.manager.ManagerConnectionFactory
  * @author srt
  * @version $Id$
@@ -49,7 +50,7 @@ public interface ManagerConnection
 {
     /**
      * Returns the hostname of the connected Asterisk server.
-     * 
+     *
      * @return the hostname of the connected Asterisk server.
      * @since 0.3
      */
@@ -57,7 +58,7 @@ public interface ManagerConnection
 
     /**
      * Returns the Manager API port of the connected Asterisk server.
-     * 
+     *
      * @return the Manager API port of the connected Asterisk server.
      * @since 0.3
      */
@@ -66,7 +67,7 @@ public interface ManagerConnection
     /**
      * Returns the username to use to connect to the Asterisk server. This is
      * the username specified in Asterisk's <code>manager.conf</code> file.
-     * 
+     *
      * @return the username to use for login
      * @since 0.3
      */
@@ -75,17 +76,25 @@ public interface ManagerConnection
     /**
      * Returns the password to use to connect to the Asterisk server. This is
      * the username specified in Asterisk's <code>manager.conf</code> file.
-     * 
+     *
      * @return the password to use for login
      * @since 0.3
      */
     String getPassword();
 
     /**
+     * Returns the version of Asterisk running in the server.
+     *
+     * @return the Asterisk version running in the server.
+     * @since 1.0.0
+     */
+    AsteriskVersion getVersion();
+
+    /**
      * Returns whether to use SSL.
      * <p>
      * Default is false.
-     * 
+     *
      * @return <code>true</code> if SSL is used for the connection,
      *         <code>false</code> for a plain text connection.
      * @since 0.3

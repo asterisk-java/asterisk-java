@@ -25,6 +25,7 @@ import org.asteriskjava.util.DateUtil;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 import org.asteriskjava.config.ConfigFile;
+import org.asteriskjava.AsteriskVersion;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
@@ -41,12 +42,11 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
 {
     private static final String ACTION_ID_PREFIX_ORIGINATE = "AJ_ORIGINATE_";
     private static final String SHOW_VERSION_COMMAND = "show version";
+    private static final String SHOW_VERSION_1_6_COMMAND = "core show version";
     private static final String SHOW_VERSION_FILES_COMMAND = "show version files";
-    private static final Pattern SHOW_VERSION_FILES_PATTERN = Pattern
-            .compile("^([\\S]+)\\s+Revision: ([0-9\\.]+)");
+    private static final Pattern SHOW_VERSION_FILES_PATTERN = Pattern.compile("^([\\S]+)\\s+Revision: ([0-9\\.]+)");
     private static final String SHOW_VOICEMAIL_USERS_COMMAND = "show voicemail users";
-    private static final Pattern SHOW_VOICEMAIL_USERS_PATTERN = Pattern
-            .compile("^(\\S+)\\s+(\\S+)\\s+(.{25})");
+    private static final Pattern SHOW_VOICEMAIL_USERS_PATTERN = Pattern.compile("^(\\S+)\\s+(\\S+)\\s+(.{25})");
 
     private final Log logger = LogFactory.getLog(this.getClass());
 
@@ -446,22 +446,28 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         return meetMeManager.getOrCreateRoomImpl(name);
     }
 
-    public Collection<AsteriskQueue> getQueues()
-            throws ManagerCommunicationException
+    public Collection<AsteriskQueue> getQueues() throws ManagerCommunicationException
     {
         initializeIfNeeded();
         return queueManager.getQueues();
     }
 
-    public synchronized String getVersion()
-            throws ManagerCommunicationException
+    public synchronized String getVersion() throws ManagerCommunicationException
     {
         final ManagerResponse response;
 
         initializeIfNeeded();
         if (version == null)
         {
-            response = sendAction(new CommandAction(SHOW_VERSION_COMMAND));
+            if (eventConnection.getVersion().isAtLeast(AsteriskVersion.ASTERISK_1_6))
+            {
+                response = sendAction(new CommandAction(SHOW_VERSION_1_6_COMMAND));
+            }
+            else
+            {
+                response = sendAction(new CommandAction(SHOW_VERSION_COMMAND));
+            }
+
             if (response instanceof CommandResponse)
             {
                 final List result;
@@ -708,7 +714,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         {
             final List<String> lines;
             final Map<Integer, String> lineMap = getConfigResponse.getLines(categoryEntry.getKey());
-            
+
             if (lineMap == null)
             {
                 lines = new ArrayList<String>();
@@ -892,7 +898,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         {
             channelManager.handleCdrEvent((CdrEvent) event);
         }
-		// End of channel related events
+        // End of channel related events
         // Handle parking related event
         else if (event instanceof ParkedCallEvent)
         {
@@ -1188,7 +1194,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         }
     }
 
-    
+
     void fireNewQueueEntry(AsteriskQueueEntry entry)
     {
         synchronized (listeners)

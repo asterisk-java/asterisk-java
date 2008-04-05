@@ -371,6 +371,11 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         return password;
     }
 
+    public AsteriskVersion getVersion()
+    {
+        return version;
+    }
+
     public String getHostname()
     {
         return hostname;
