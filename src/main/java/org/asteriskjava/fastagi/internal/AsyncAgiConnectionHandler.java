@@ -46,7 +46,7 @@ import org.asteriskjava.manager.ManagerConnection;
 public class AsyncAgiConnectionHandler extends AgiConnectionHandler
 {
     private final ManagerConnection connection;
-    private final String channelName;
+    private String channelName;
     private final List<String> environment;
     private final BlockingQueue<AsyncAgiEvent> asyncAgiEvents;
     private AsyncAgiWriter writer;
@@ -105,5 +105,11 @@ public class AsyncAgiConnectionHandler extends AgiConnectionHandler
     public void onAsyncAgiEndEvent(AsyncAgiEvent event)
     {
         asyncAgiEvents.offer(event);
+    }
+
+    public void updateChannelName(String channelName)
+    {
+        this.channelName = channelName;
+        writer.updateChannelName(channelName);
     }
 }

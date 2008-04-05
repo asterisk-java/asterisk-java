@@ -21,7 +21,7 @@ import java.io.IOException;
 public class AsyncAgiWriter implements AgiWriter
 {
     private final ManagerConnection connection;
-    private final String channelName;
+    private String channelName;
 
     public AsyncAgiWriter(ManagerConnection connection, String channelName)
     {
@@ -56,5 +56,10 @@ public class AsyncAgiWriter implements AgiWriter
             throw new AgiException("Unable to send AsyncAGI command to " + connection.getHostname() +
                     " for channel " + channelName + ": " + response.getMessage());
         }
+    }
+
+    public void updateChannelName(String channelName)
+    {
+        this.channelName = channelName;
     }
 }

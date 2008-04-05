@@ -4,6 +4,7 @@ import org.asteriskjava.manager.ManagerEventListener;
 import org.asteriskjava.manager.ManagerConnection;
 import org.asteriskjava.manager.event.ManagerEvent;
 import org.asteriskjava.manager.event.AsyncAgiEvent;
+import org.asteriskjava.manager.event.RenameEvent;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 import org.asteriskjava.fastagi.internal.AsyncAgiConnectionHandler;
@@ -50,6 +51,10 @@ public class AsyncAgiServer extends AbstractAgiServer implements ManagerEventLis
         {
             handleAsyncAgiEvent((AsyncAgiEvent) event);
         }
+        else if (event instanceof RenameEvent)
+        {
+            handleRenameEvent((RenameEvent) event);
+        }
     }
 
     private void handleAsyncAgiEvent(AsyncAgiEvent asyncAgiEvent)
@@ -90,6 +95,22 @@ public class AsyncAgiServer extends AbstractAgiServer implements ManagerEventLis
                 logger.warn("Ignored unknown AsyncAgiEvent of sub type '" + asyncAgiEvent.getSubEvent() + "'");
             }
         }
+    }
+
+    private void handleRenameEvent(RenameEvent renameEvent)
+    {
+        final ManagerConnection connection = (ManagerConnection) renameEvent.getSource();
+        final AsyncAgiConnectionHandler connectionHandler = getConnectionHandler(connection, renameEvent.getChannel());
+
+        if (connectionHandler == null)
+        {
+            return;
+        }
+
+        removeConnectionHandler(connection, renameEvent.getChannel());
+        setConnectionHandler(connection,  renameEvent.getNewname(), connectionHandler);
+
+        connectionHandler.updateChannelName(renameEvent.getNewname());
     }
 
     private AsyncAgiConnectionHandler getConnectionHandler(ManagerConnection connection, String channelName)
