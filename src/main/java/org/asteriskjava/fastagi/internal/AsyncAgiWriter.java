@@ -21,7 +21,7 @@ import java.io.IOException;
 public class AsyncAgiWriter implements AgiWriter
 {
     private final ManagerConnection connection;
-    private String channelName;
+    private volatile String channelName;
 
     public AsyncAgiWriter(ManagerConnection connection, String channelName)
     {
