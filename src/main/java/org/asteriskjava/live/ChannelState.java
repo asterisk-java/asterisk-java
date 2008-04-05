@@ -37,7 +37,7 @@ public enum ChannelState
     /**
      * Channel is down, but reserved.
      */
-    RESERVED(AbstractChannelStateEvent.AST_STATE_RESERVED),
+    RSRVD(AbstractChannelStateEvent.AST_STATE_RSRVD),
 
     /**
      * Channel is off hook.

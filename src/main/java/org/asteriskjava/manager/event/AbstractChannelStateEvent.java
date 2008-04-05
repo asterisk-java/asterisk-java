@@ -46,7 +46,7 @@ public abstract class AbstractChannelStateEvent extends AbstractChannelEvent
     /**
      * Channel is down, but reserved.
      */
-    public static final int AST_STATE_RESERVED = 1;
+    public static final int AST_STATE_RSRVD = 1;
 
     /**
      * Channel is off hook.
@@ -95,7 +95,7 @@ public abstract class AbstractChannelStateEvent extends AbstractChannelEvent
         final Map<String, Integer> tmpInverseStateMap = new HashMap<String, Integer>();
 
         tmpInverseStateMap.put("Down", AST_STATE_DOWN);
-        tmpInverseStateMap.put("Rsrvd", AST_STATE_RESERVED);
+        tmpInverseStateMap.put("Rsrvd", AST_STATE_RSRVD);
         tmpInverseStateMap.put("OffHook", AST_STATE_OFFHOOK);
         tmpInverseStateMap.put("Dialing", AST_STATE_DIALING);
         tmpInverseStateMap.put("Ring", AST_STATE_RING);
