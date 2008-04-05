@@ -34,7 +34,7 @@ import org.asteriskjava.util.internal.ServerSocketFacadeImpl;
 
 /**
  * Default implementation of the {@link org.asteriskjava.fastagi.AgiServer} interface.
- * 
+ *
  * @author srt
  * @version $Id$
  */
@@ -61,7 +61,7 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
      */
     public DefaultAgiServer()
     {
-        this(null);
+        this(null, null);
     }
 
     /**
@@ -71,8 +71,51 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
      */
     public DefaultAgiServer(String configResourceBundleName)
     {
+        this(configResourceBundleName, null);
+    }
+
+    /**
+     * Creates a new DefaultAgiServer that uses the given {@link MappingStrategy}.
+     *
+     * @param mappingStrategy the MappingStrategy to use to determine the AgiScript to run.
+     * @since 1.0.0
+     */
+    public DefaultAgiServer(MappingStrategy mappingStrategy)
+    {
+        this(null, mappingStrategy);
+    }
+
+    /**
+     * Creates a new DefaultAgiServer that runs the given {@link AgiScript} for all requests.
+     *
+     * @param agiScript the AgiScript to run.
+     * @since 1.0.0
+     */
+    public DefaultAgiServer(AgiScript agiScript)
+    {
+        this(null, new StaticMappingStrategy(agiScript));
+    }
+
+    /**
+     * Creates a new DefaultAgiServer and loads its configuration from an alternative resource bundle and
+     * uses the given {@link MappingStrategy}..
+     *
+     * @param configResourceBundleName the name of the conifiguration resource bundle (default is "fastagi").
+     * @param mappingStrategy          the MappingStrategy to use to determine the AgiScript to run.
+     * @since 1.0.0
+     */
+    public DefaultAgiServer(String configResourceBundleName, MappingStrategy mappingStrategy)
+    {
         super();
-        setMappingStrategy(new CompositeMappingStrategy(new ResourceBundleMappingStrategy(), new ClassNameMappingStrategy()));
+        if (mappingStrategy == null)
+        {
+            setMappingStrategy(new CompositeMappingStrategy(
+                    new ResourceBundleMappingStrategy(), new ClassNameMappingStrategy()));
+        }
+        else
+        {
+            setMappingStrategy(mappingStrategy);
+        }
 
         if (configResourceBundleName != null)
         {
@@ -85,9 +128,9 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
 
     /**
      * Sets the TCP port to listen on for new connections.
-     * <p>
+     * <p/>
      * The default port is 4573.
-     * 
+     *
      * @param bindPort the port to bind to.
      * @deprecated use {@see #setPort(int)} instead
      */
@@ -98,9 +141,9 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
 
     /**
      * Sets the TCP port to listen on for new connections.
-     * <p>
+     * <p/>
      * The default port is 4573.
-     * 
+     *
      * @param port the port to bind to.
      * @since 0.2
      */
