@@ -73,7 +73,7 @@ public class AsyncAgiConnectionHandler extends AgiConnectionHandler
 
     protected AgiReader createReader()
     {
-        return new AsyncAgiReader(environment, asyncAgiEvents);
+        return new AsyncAgiReader(connection, environment, asyncAgiEvents);
     }
 
     protected AgiWriter createWriter()

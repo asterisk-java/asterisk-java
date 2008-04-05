@@ -17,6 +17,7 @@
 package org.asteriskjava.manager;
 
 import java.io.IOException;
+import java.net.InetAddress;
 
 import org.asteriskjava.manager.action.EventGeneratingAction;
 import org.asteriskjava.manager.action.ManagerAction;
@@ -90,6 +91,38 @@ public interface ManagerConnection
      * @since 0.3
      */
     boolean isSsl();
+
+    /**
+     * Returns the local address of the underlying socket connection.
+     *
+     * @return the local address of the underlying socket connection.
+     * @since 1.0.0
+     */
+    InetAddress getLocalAddress();
+
+    /**
+     * Returns the local port of the underlying socket connection.
+     *
+     * @return the local port of the underlying socket connection.
+     * @since 1.0.0
+     */
+    int getLocalPort();
+
+    /**
+     * Returns the remote address of the underlying socket connection.
+     *
+     * @return the remote address of the underlying socket connection.
+     * @since 1.0.0
+     */
+    InetAddress getRemoteAddress();
+
+    /**
+     * Returns the remote port of the underlying socket connection.
+     *
+     * @return the remote port of the underlying socket connection.
+     * @since 1.0.0
+     */
+    int getRemotePort();
 
     /**
      * Registers a new user event type.

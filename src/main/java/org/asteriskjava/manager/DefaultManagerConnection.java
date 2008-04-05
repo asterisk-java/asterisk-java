@@ -17,6 +17,7 @@
 package org.asteriskjava.manager;
 
 import java.io.IOException;
+import java.net.InetAddress;
 
 import org.asteriskjava.manager.action.EventGeneratingAction;
 import org.asteriskjava.manager.action.ManagerAction;
@@ -244,6 +245,26 @@ public class DefaultManagerConnection implements ManagerConnection
     public boolean isSsl()
     {
         return impl.isSsl();
+    }
+
+    public InetAddress getLocalAddress()
+    {
+        return impl.getLocalAddress();
+    }
+
+    public int getLocalPort()
+    {
+        return impl.getLocalPort();
+    }
+
+    public InetAddress getRemoteAddress()
+    {
+        return impl.getRemoteAddress();
+    }
+
+    public int getRemotePort()
+    {
+        return impl.getRemotePort();
     }
 
     public void registerUserEventClass(Class userEventClass)

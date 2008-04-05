@@ -26,6 +26,7 @@ import static org.asteriskjava.manager.ManagerConnectionState.RECONNECTING;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.Socket;
+import java.net.InetAddress;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -383,6 +384,26 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     public boolean isSsl()
     {
         return ssl;
+    }
+
+    public InetAddress getLocalAddress()
+    {
+        return socket.getLocalAddress();
+    }
+
+    public int getLocalPort()
+    {
+        return socket.getLocalPort();
+    }
+
+    public InetAddress getRemoteAddress()
+    {
+        return socket.getRemoteAddress();
+    }
+
+    public int getRemotePort()
+    {
+        return socket.getRemotePort();
     }
 
     public void registerUserEventClass(Class userEventClass)
