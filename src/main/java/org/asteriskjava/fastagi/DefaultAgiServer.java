@@ -16,24 +16,20 @@
  */
 package org.asteriskjava.fastagi;
 
-import java.io.IOException;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-
 import org.asteriskjava.fastagi.internal.AgiConnectionHandler;
 import org.asteriskjava.fastagi.internal.FastAgiConnectionHandler;
-import org.asteriskjava.util.DaemonThreadFactory;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 import org.asteriskjava.util.ServerSocketFacade;
 import org.asteriskjava.util.SocketConnectionFacade;
 import org.asteriskjava.util.internal.ServerSocketFacadeImpl;
 
+import java.io.IOException;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
+
 /**
- * Default implementation of the {@link org.asteriskjava.fastagi.AgiServer} interface.
+ * Default implementation of the {@link org.asteriskjava.fastagi.AgiServer} interface for FastAGI.
  *
  * @author srt
  * @version $Id$
@@ -98,7 +94,7 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
 
     /**
      * Creates a new DefaultAgiServer and loads its configuration from an alternative resource bundle and
-     * uses the given {@link MappingStrategy}..
+     * uses the given {@link MappingStrategy}.
      *
      * @param configResourceBundleName the name of the conifiguration resource bundle (default is "fastagi").
      * @param mappingStrategy          the MappingStrategy to use to determine the AgiScript to run.

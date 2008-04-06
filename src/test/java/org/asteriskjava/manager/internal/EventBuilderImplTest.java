@@ -23,10 +23,6 @@ import junit.framework.TestCase;
 
 import org.asteriskjava.manager.event.*;
 
-/**
- * @author srt
- * @version $Id$
- */
 public class EventBuilderImplTest extends TestCase
 {
     private EventBuilder eventBuilder;
@@ -154,7 +150,7 @@ public class EventBuilderImplTest extends TestCase
     {
         Map<String, String> properties = new HashMap<String, String>();
         String channel = "SIP/1234";
-        Integer priority = Integer.valueOf(1);
+        Integer priority = 1;
         NewExtenEvent event;
 
         properties.put("event", "newexten");
@@ -163,12 +159,9 @@ public class EventBuilderImplTest extends TestCase
         event = (NewExtenEvent) eventBuilder.buildEvent(this, properties);
 
         assertNotNull(event);
-        assertEquals("Returned event is of wrong type", NewExtenEvent.class,
-                event.getClass());
-        assertEquals("String property not set correctly", channel, event
-                .getChannel());
-        assertEquals("Integer property not set correctly", priority, event
-                .getPriority());
+        assertEquals("Returned event is of wrong type", NewExtenEvent.class, event.getClass());
+        assertEquals("String property not set correctly", channel, event.getChannel());
+        assertEquals("Integer property not set correctly", priority, event.getPriority());
     }
 
     public void testBuildEventWithBooleanProperty()
@@ -182,10 +175,8 @@ public class EventBuilderImplTest extends TestCase
         event = (ShutdownEvent) eventBuilder.buildEvent(this, properties);
 
         assertNotNull(event);
-        assertEquals("Returned event is of wrong type", ShutdownEvent.class,
-                event.getClass());
-        assertEquals("Boolean property not set correctly", Boolean.TRUE, event
-                .getRestart());
+        assertEquals("Returned event is of wrong type", ShutdownEvent.class, event.getClass());
+        assertEquals("Boolean property not set correctly", Boolean.TRUE, event.getRestart());
     }
 
     public void testBuildEventWithBooleanPropertyOfValueYes()
@@ -199,10 +190,8 @@ public class EventBuilderImplTest extends TestCase
         event = (ShutdownEvent) eventBuilder.buildEvent(this, properties);
 
         assertNotNull(event);
-        assertEquals("Returned event is of wrong type", ShutdownEvent.class,
-                event.getClass());
-        assertEquals("Boolean property not set correctly", Boolean.TRUE, event
-                .getRestart());
+        assertEquals("Returned event is of wrong type", ShutdownEvent.class, event.getClass());
+        assertEquals("Boolean property not set correctly", Boolean.TRUE, event.getRestart());
     }
 
     public void testBuildEventWithBooleanPropertyOfValueNo()
@@ -216,10 +205,8 @@ public class EventBuilderImplTest extends TestCase
         event = (ShutdownEvent) eventBuilder.buildEvent(this, properties);
 
         assertNotNull(event);
-        assertEquals("Returned event is of wrong type", ShutdownEvent.class,
-                event.getClass());
-        assertEquals("Boolean property not set correctly", Boolean.FALSE, event
-                .getRestart());
+        assertEquals("Returned event is of wrong type", ShutdownEvent.class, event.getClass());
+        assertEquals("Boolean property not set correctly", Boolean.FALSE, event.getRestart());
     }
 
     public void testBuildEventWithUnregisteredEvent()
@@ -253,10 +240,8 @@ public class EventBuilderImplTest extends TestCase
         event = eventBuilder.buildEvent(this, properties);
 
         assertNotNull(event);
-        assertEquals("Returned event is of wrong type",
-                StatusCompleteEvent.class, event.getClass());
-        assertEquals("ActionId not set correctly", "origId",
-                ((ResponseEvent) event).getActionId());
+        assertEquals("Returned event is of wrong type", StatusCompleteEvent.class, event.getClass());
+        assertEquals("ActionId not set correctly", "origId", ((ResponseEvent) event).getActionId());
     }
 
     public void testBuildEventWithSourceProperty()
@@ -269,8 +254,7 @@ public class EventBuilderImplTest extends TestCase
         event = eventBuilder.buildEvent(this, properties);
 
         assertNotNull(event);
-        assertEquals("Src property not set correctly", "source value",
-                ((CdrEvent) event).getSrc());
+        assertEquals("Src property not set correctly", "source value", ((CdrEvent) event).getSrc());
     }
 
     public void testBuildEventWithSpecialCharacterProperty()
@@ -283,8 +267,7 @@ public class EventBuilderImplTest extends TestCase
         event = eventBuilder.buildEvent(this, properties);
 
         assertNotNull(event);
-        assertEquals("CauseTxt property not set correctly", "some text",
-                ((HangupEvent) event).getCauseTxt());
+        assertEquals("CauseTxt property not set correctly", "some text", ((HangupEvent) event).getCauseTxt());
     }
 
     public void testBuildEventWithCidCallingPres()
@@ -377,8 +360,7 @@ public class EventBuilderImplTest extends TestCase
         event = eventBuilder.buildEvent(this, properties);
 
         assertNotNull(event);
-        assertEquals("Timestamp property not set correctly", 1159310429.569108D, 
-                ((NewChannelEvent) event).getTimestamp());
+        assertEquals("Timestamp property not set correctly", 1159310429.569108D, event.getTimestamp());
     }
 
     public void testBuildEventWithLong()
