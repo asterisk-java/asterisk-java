@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.util.AstState;
+
 /**
  * A StatusEvent is triggered for each active channel in response to a StatusAction.
  *
@@ -33,7 +35,8 @@ public class StatusEvent extends ResponseEvent
     private String callerIdNum;
     private String callerIdName;
     private String accountCode;
-    private String state;
+    private Integer channelState;
+    private String channelStateDesc;
     private String context;
     private String extension;
     private Integer priority;
@@ -176,14 +179,60 @@ public class StatusEvent extends ResponseEvent
         this.accountCode = account;
     }
 
+    /**
+     * Returns the state of the channel.<p>
+     * For Asterisk versions prior to 1.6 (that do not send the numeric value) it is derived
+     * from the descriptive text.
+     *
+     * @return the state of the channel.
+     * @since 1.0.0
+     */
+    public Integer getChannelState()
+    {
+        return channelState == null ? AstState.str2state(channelStateDesc) : channelState;
+    }
+
+    /**
+     * Sets the state of the channel.
+     *
+     * @param channelState the state of the channel.
+     * @since 1.0.0
+     */
+    public void setChannelState(Integer channelState)
+    {
+        this.channelState = channelState;
+    }
+
+    /**
+     * Returns the state of the channel as a descriptive text.
+     *
+     * @return the state of the channel as a descriptive text.
+     * @since 1.0.0
+     */
+    public String getChannelStateDesc()
+    {
+        return channelStateDesc;
+    }
+
+    public void setChannelStateDesc(String channelStateDesc)
+    {
+        this.channelStateDesc = channelStateDesc;
+    }
+
+    /**
+     * Returns the state of the channel as a descriptive text.
+     *
+     * @return the state of the channel as a descriptive text.
+     * @deprecated use {@link #getChannelStateDesc()} instead.
+     */
     public String getState()
     {
-        return state;
+        return channelStateDesc;
     }
 
     public void setState(String state)
     {
-        this.state = state;
+        this.channelStateDesc = state;
     }
 
     public String getContext()

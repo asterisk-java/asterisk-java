@@ -16,7 +16,7 @@
  */
 package org.asteriskjava.live;
 
-import org.asteriskjava.manager.event.AbstractChannelStateEvent;
+import org.asteriskjava.util.AstState;
 
 /**
  * The lifecycle status of an {@link org.asteriskjava.live.AsteriskChannel}.
@@ -32,52 +32,52 @@ public enum ChannelState
      * Channel is down and available.
      * This is the initial state of the channel when it is not yet in use.
      */
-    DOWN(AbstractChannelStateEvent.AST_STATE_DOWN),
+    DOWN(AstState.AST_STATE_DOWN),
 
     /**
      * Channel is down, but reserved.
      */
-    RSRVD(AbstractChannelStateEvent.AST_STATE_RSRVD),
+    RSRVD(AstState.AST_STATE_RSRVD),
 
     /**
      * Channel is off hook.
      */
-    OFFHOOK(AbstractChannelStateEvent.AST_STATE_OFFHOOK),
+    OFFHOOK(AstState.AST_STATE_OFFHOOK),
 
     /**
      * Digits (or equivalent) have been dialed.
      */
-    DIALING(AbstractChannelStateEvent.AST_STATE_DIALING),
+    DIALING(AstState.AST_STATE_DIALING),
 
     /**
      * Line is ringing.
      */
-    RING(AbstractChannelStateEvent.AST_STATE_RING),
+    RING(AstState.AST_STATE_RING),
 
     /**
      * Remote end is ringing.
      */
-    RINGING(AbstractChannelStateEvent.AST_STATE_RINGING),
+    RINGING(AstState.AST_STATE_RINGING),
 
     /**
      * Line is up.
      */
-    UP(AbstractChannelStateEvent.AST_STATE_UP),
+    UP(AstState.AST_STATE_UP),
 
     /**
      * Line is busy.
      */
-    BUSY(AbstractChannelStateEvent.AST_STATE_BUSY),
+    BUSY(AstState.AST_STATE_BUSY),
 
     /**
      * Digits (or equivalent) have been dialed while offhook.
      */
-    DIALING_OFFHOOK(AbstractChannelStateEvent.AST_STATE_DIALING_OFFHOOK),
+    DIALING_OFFHOOK(AstState.AST_STATE_DIALING_OFFHOOK),
 
     /**
      * Channel has detected an incoming call and is waiting for ring.
      */
-    PRERING(AbstractChannelStateEvent.AST_STATE_PRERING),
+    PRERING(AstState.AST_STATE_PRERING),
 
     /**
      * The channel has been hung up and is not longer available on the Asterisk server.
@@ -100,7 +100,6 @@ public enum ChannelState
      * Returns the numerical status code.
      *
      * @return the numerical status code.
-     * @see org.asteriskjava.manager.event.AbstractChannelStateEvent#getChannelState() 
      */
     public int getStatus()
     {

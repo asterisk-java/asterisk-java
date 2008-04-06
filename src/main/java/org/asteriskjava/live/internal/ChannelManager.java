@@ -16,26 +16,15 @@
  */
 package org.asteriskjava.live.internal;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Locale;
-import java.util.Map;
-
-import org.asteriskjava.live.AsteriskChannel;
-import org.asteriskjava.live.CallerId;
-import org.asteriskjava.live.ChannelState;
-import org.asteriskjava.live.Extension;
-import org.asteriskjava.live.HangupCause;
-import org.asteriskjava.live.ManagerCommunicationException;
+import org.asteriskjava.live.*;
 import org.asteriskjava.manager.ResponseEvents;
 import org.asteriskjava.manager.action.StatusAction;
 import org.asteriskjava.manager.event.*;
 import org.asteriskjava.util.DateUtil;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
+
+import java.util.*;
 
 /**
  * Manages channel events on behalf of an AsteriskServer.
@@ -239,9 +228,9 @@ class ChannelManager
         {
             channel.setCallerId(new CallerId(event.getCallerIdName(), event.getCallerIdNum()));
             channel.setAccount(event.getAccountCode());
-            if (event.getState() != null)
+            if (event.getChannelState() != null)
             {
-                channel.stateChanged(event.getDateReceived(), ChannelState.valueOf(event.getState().toUpperCase()));
+                channel.stateChanged(event.getDateReceived(), ChannelState.valueOf(event.getChannelState()));
             }
             channel.extensionVisited(event.getDateReceived(), extension);
 
