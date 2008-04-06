@@ -21,7 +21,7 @@ package org.asteriskjava.manager.event;
  * server.<p>
  * This event is implemented in <code>channels/chan_iax2.c</code> and
  * <code>channels/chan_sip.c</code>
- * 
+ *
  * @author srt
  * @version $Id$
  */
@@ -30,8 +30,8 @@ public class PeerStatusEvent extends ManagerEvent
     /**
      * Serializable version identifier.
      */
-    private static final long serialVersionUID = 8384939771592846892L;
-    
+    private static final long serialVersionUID = 1L;
+
     public static final String STATUS_REGISTERED = "Registered";
     public static final String STATUS_UNREGISTERED = "Unregistered";
     public static final String STATUS_REACHABLE = "Reachable";
@@ -39,10 +39,13 @@ public class PeerStatusEvent extends ManagerEvent
     public static final String STATUS_UNREACHABLE = "Unreachable";
     public static final String STATUS_REJECTED = "Rejected";
 
+    private String channelType;
     private String peer;
     private String peerStatus;
     private String cause;
     private Integer time;
+    private String address;
+    private Integer port;
 
     /**
      * @param source
@@ -53,10 +56,34 @@ public class PeerStatusEvent extends ManagerEvent
     }
 
     /**
+     * Returns the type of channel that registers, that is "IAX2" for an IAX2
+     * channel or "SIP" for a SIP channel.<p>
+     * Available since Asterisk 1.6.
+     *
+     * @return the type of channel that registers.
+     * @since 1.0.0
+     */
+    public String getChannelType()
+    {
+        return channelType;
+    }
+
+    /**
+     * Sets the type of channel that registers.
+     *
+     * @param channelType the type of channel that registers
+     * @since 1.0.0
+     */
+    public void setChannelType(String channelType)
+    {
+        this.channelType = channelType;
+    }
+
+    /**
      * Returns the name of the peer that registered.<p>
      * The peer name includes the channel type prefix. So if you receive a PeerStatusEvent for a
      * SIP peer defined as "john" in <code>sip.conf</code> this method returns "SIP/john".
-     * <p>
+     * <p/>
      * Peer names for IAX clients start with "IAX2/", peer names for SIP clients start with "SIP/".
      *
      * @return the peer's name including the channel type.
@@ -104,6 +131,8 @@ public class PeerStatusEvent extends ManagerEvent
      * For IAX peers this is set only if the status equals "Rejected".<p>
      * For SIP peers this is set if the status equals "Unregistered" and the peer was unregistered
      * due to an expiration. In that case the cause is set to "Expired".
+     *
+     * @return the cause of a rejection or unregistration.
      */
     public String getCause()
     {
@@ -131,5 +160,39 @@ public class PeerStatusEvent extends ManagerEvent
     public void setTime(Integer time)
     {
         this.time = time;
+    }
+
+    /**
+     * Returns the IP address of the peer that registered. Only available for SIP channels.<p>
+     * Available since Asterisk 1.6.
+     *
+     * @return the IP address of the peer that registered or <code>null</code> if not available.
+     * @since 1.0.0
+     */
+    public String getAddress()
+    {
+        return address;
+    }
+
+    public void setAddress(String address)
+    {
+        this.address = address;
+    }
+
+    /**
+     * Returns the port of the peer that registered. Only available for SIP channels.<p>
+     * Available since Asterisk 1.6.
+     *
+     * @return the port of the peer that registered or <code>null</code> if not available.
+     * @since 1.0.0
+     */
+    public Integer getPort()
+    {
+        return port;
+    }
+
+    public void setPort(Integer port)
+    {
+        this.port = port;
     }
 }
