@@ -7,6 +7,22 @@
 
 Frequently Asked Questions
 
+* Where is the mailing list?
+
+  From {{{http://blogs.reucon.com/asterisk-java/2008/01/17/faq_where_is_the_mailing_list.html}this blog post}}: 
+
+    It seems we've hidden the link to our mailing lists a bit too well.
+
+    We have two mailing lists:
+  
+      * Asterisk-Java Users for users of Asterisk-Java seeking help
+    
+      * Asterisk-Java Devel for developers of Asterisk-Java, i.e. the guys enhancing the library code itself. This list not intended to provide support regarding the use of Asterisk-Java.
+  
+    You can find the subscription details for both lists {{{http://asterisk-java.org/development/mail-lists.html}here}}.
+	
+    You might also be interested in our {{{http://jira.reucon.org}Bug Tracker}} where you can look for known issues, post new bug reports and submit patches.
+        
 * How can I track a call I've originated through the Manager interface?
 
   With the Live API, you can use the originateToXXXAsync methods in org.asteriskjava.live.DefaultAsteriskServer and provide a unique call-back for your originates. When initiating a call using the Manager API and the Originate command, set a variable on that call. Then track the events the Manager API emits, if you encounter a NewChannelEvent get the variable from that channel and match it to a call. From there on you can use the channel name to track events.
