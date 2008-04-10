@@ -6,7 +6,7 @@ import org.asteriskjava.util.LogFactory;
 
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.SynchronousQueue;
 
 /**
  * Abstract base class for FastAGI and AsyncAGI servers.
@@ -146,7 +146,7 @@ public abstract class AbstractAgiServer
                 poolSize,
                 (maximumPoolSize < poolSize) ? poolSize : maximumPoolSize,
                 50000L, TimeUnit.MILLISECONDS,
-                new LinkedBlockingQueue<Runnable>(),
+                new SynchronousQueue<Runnable>(),
                 new DaemonThreadFactory()
         );
     }
