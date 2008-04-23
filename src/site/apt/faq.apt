@@ -52,4 +52,74 @@ Frequently Asked Questions
 
   The FastAGI protocol itself has no support for authentication and encryption. You can add authentication at the application level using username and password parameters and verifying those. For encryption you have to revert to a VPN or other network-layer solutions.
   You could also consider writing a FastAGI 'proxy' which sits on the Asterisk server so that the clear unauthenticated text is only transmitted locally. The proxy could then demand authentication/encryption using something like SOAP to the actual end point.
-  
+ 
+* Can I have an example of using an AGI server in a container like JBoss?
+ 
+  Yes. Here's a JBoss EJB3 MBean that creates and destroys an AGI server.
+ 
++--
+@Depends({"JNDI name of anything your Agi scripts depend on"})
+@Management(AgiManagement.class)
+@Service
+public class AgiMBean implements AgiManagement
+{
+
+	private static final Logger log = Logger.getLogger(AgiMBean.class);
+
+	private AgiServerThread agiServerThread = null;
+	
+	class AgiServerThread extends Thread implements Runnable
+	{
+		private AgiServer agiServer;
+		
+		public AgiServerThread(AgiServer agiServer) { this.agiServer = agiServer; }
+
+		public void run()
+		{
+			try
+			{
+				agiServer.startup();
+				log.info("Asterisk Gatway Interface server MBean has been started");
+			} catch (IOException e) // NOPMD
+			{
+				// nothing we can do about that and exceptions have already been
+				// logged by startup().
+				log.trace("Exception from startUp(), probably already logged", e);
+			}
+			
+		}
+
+		public AgiServer getAgiServer() { return agiServer; }
+	}
+
+	public void start() throws Exception
+	{
+		try
+		{
+			// get agi server & start it
+			DefaultAgiServer agiServer = new DefaultAgiServer();
+			agiServer.setMappingStrategy(new ClassNameMappingStrategy(false));
+			agiServerThread = new AgiServerThread(agiServer);
+			agiServerThread.start();
+		} catch (Exception ex)
+		{
+			log.error("Startup failed in MBean AgiMBean -- attempting to continue", ex);
+		}
+	}
+
+	/**
+	 * Note that on JBoss 4.0.5, this method is accidentally called twice by JBoss. It is a known bug; reports can be found at:
+	 * <p>
+	 * http://jira.jboss.org/jira/browse/EJBTHREE-711<br/>
+	 * http://jira.jboss.org/jira/browse/EJBTHREE-766<br/>
+	 * http://jira.jboss.org/jira/browse/EJBTHREE-781<br/>
+	 */
+	public void stop() throws Exception
+	{
+		if (agiServerThread != null && agiServerThread.getAgiServer() != null)
+		{
+			agiServerThread.getAgiServer().shutdown();
+		}
+	}
+}
++--
