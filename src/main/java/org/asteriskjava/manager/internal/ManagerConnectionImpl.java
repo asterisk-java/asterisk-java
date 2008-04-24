@@ -143,12 +143,15 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     private int socketTimeout = 0;
 
     /**
+     * Closes the connection (and reconnects) if no input has been read for the given amount
+     * of milliseconds. A timeout of zero is interpreted as an infinite timeout. 
+     *
      * @see Socket#setSoTimeout(int)
      */
     private int socketReadTimeout = 0;
 
     /**
-     * Should we continue to reconnect after an authentication failure?
+     * <code>true</code> to continue to reconnect after an authentication failure.
      */
     private boolean keepAliveAfterAuthenticationFailure = true;
 
@@ -167,6 +170,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
      * The thread that performs reconnect.
      */
     private Thread reconnectThread;
+
     private final AtomicLong reconnectThreadCounter = new AtomicLong(0);
 
     /**
