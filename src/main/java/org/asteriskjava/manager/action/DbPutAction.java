@@ -28,7 +28,7 @@ package org.asteriskjava.manager.action;
 public class DbPutAction extends AbstractManagerAction
 {
     /**
-     * Serial version identifier
+     * Serial version identifier.
      */
     private static final long serialVersionUID = 921037572305993779L;
     private String family;
@@ -126,9 +126,10 @@ public class DbPutAction extends AbstractManagerAction
     }
     
     /**
-     * Returns the value to set for bristuffed versions.
+     * Returns the value to set for BRIstuffed versions.
      * 
      * @return the value to set.
+     * @since 1.0.0
      */
     public String getValue()
     {
