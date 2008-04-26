@@ -501,7 +501,7 @@ public class ManagerConnectionImplTest extends TestCase
         mc.dispatchEvent(disconnectEvent);
         
         // wait for reconnect thread to do its work
-        Thread.sleep(500);
+        Thread.sleep(1000);
 
         assertEquals("createSocket not called 1 time", 1, mc.createSocketCalls);
         assertEquals("createWriter not called 1 time", 1, mc.createWriterCalls);
