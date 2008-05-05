@@ -32,10 +32,10 @@ public class ConfigFileReader
     }
 
     private StringBuilder commentBlock;
-    private final Map<String, Category> categories;
+    protected final Map<String, Category> categories;
     private final List<ConfigParseException> warnings;
 
-    private Category currentCategory;
+    protected Category currentCategory;
     private int currentCommentLevel = 0;
 
     public ConfigFileReader()
@@ -82,7 +82,7 @@ public class ConfigFileReader
         currentCommentLevel = 0;
     }
 
-    protected Collection<Category> getCategories()
+    Collection<Category> getCategories()
     {
         return categories.values();
     }
@@ -275,7 +275,7 @@ public class ConfigFileReader
         return currentCommentLevel != 0;
     }
 
-    ConfigElement processTextLine(String configfile, int lineno, String line) throws ConfigParseException
+    protected ConfigElement processTextLine(String configfile, int lineno, String line) throws ConfigParseException
     {
         ConfigElement configElement;
 
@@ -302,7 +302,7 @@ public class ConfigFileReader
         return configElement;
     }
 
-    Category parseCategoryHeader(String configfile, int lineno, String line) throws ConfigParseException
+    protected Category parseCategoryHeader(String configfile, int lineno, String line) throws ConfigParseException
     {
         final Category category;
         final String name;
@@ -454,7 +454,7 @@ public class ConfigFileReader
         return directive;
     }
 
-    ConfigVariable parseVariable(String configfile, int lineno, String line) throws ConfigParseException
+    protected ConfigVariable parseVariable(String configfile, int lineno, String line) throws ConfigParseException
     {
         int pos;
         String name;

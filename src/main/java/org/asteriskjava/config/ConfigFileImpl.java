@@ -31,7 +31,7 @@ import java.util.ArrayList;
 public class ConfigFileImpl implements ConfigFile
 {
     private final String filename;
-    private final Map<String, Category> categories;
+    protected final Map<String, Category> categories;
 
     public ConfigFileImpl(String filename, Map<String, Category> categories)
     {

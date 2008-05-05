@@ -79,7 +79,7 @@ public class Category extends ConfigElement
         return elements;
     }
 
-    void addElement(ConfigElement element)
+    public void addElement(ConfigElement element)
     {
         if (element instanceof Category)
         {
@@ -129,5 +129,10 @@ public class Category extends ConfigElement
         }
 
         return sb;
+    }
+    
+    public String toString()
+    {
+        return name;
     }
 }

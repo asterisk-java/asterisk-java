@@ -54,4 +54,9 @@ public class ConfigVariable extends ConfigElement
         }
         return sb;
     }
+    
+    public String toString()
+    {
+        return name+"="+value;
+    }
 }
