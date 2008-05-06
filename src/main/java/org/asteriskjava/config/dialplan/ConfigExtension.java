@@ -39,4 +39,19 @@ public class ConfigExtension extends ConfigElement
         return "exten => " + name + "," + priority + "," + Arrays.asList(application);   
     }
 
+    public String getName()
+    {
+        return name;
+    }
+
+    public String getPriority()
+    {
+        return priority;
+    }
+
+    public String[] getApplication()
+    {
+        return application;
+    }
+
 }
