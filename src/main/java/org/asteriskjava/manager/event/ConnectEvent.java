@@ -22,11 +22,12 @@ package org.asteriskjava.manager.event;
  * 
  * @author srt
  * @version $Id$
+ * @see org.asteriskjava.manager.event.DisconnectEvent
  */
 public class ConnectEvent extends ManagerEvent
 {
     /**
-     * Serializable version identifier
+     * Serializable version identifier.
      */
     private static final long serialVersionUID = 3257845467831284784L;
 
@@ -50,7 +51,8 @@ public class ConnectEvent extends ManagerEvent
     }
 
     /**
-     * Returns the version of the protocol.
+     * Returns the version of the protocol. For example "Asterisk Call Manager/1.0" for Asterisk up to 1.4 and
+     * "Asterisk Call Manager/1.1" for Asterisk 1.6.
      * 
      * @return the version of the protocol.
      */

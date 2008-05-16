@@ -22,11 +22,12 @@ package org.asteriskjava.manager.event;
  * 
  * @author srt
  * @version $Id$
+ * @see org.asteriskjava.manager.event.ConnectEvent
  */
 public class DisconnectEvent extends ManagerEvent
 {
     /**
-     * Serializable version identifier
+     * Serializable version identifier.
      */
     private static final long serialVersionUID = 3689355411862206518L;
 
