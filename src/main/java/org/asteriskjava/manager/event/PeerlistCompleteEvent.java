@@ -22,8 +22,8 @@ package org.asteriskjava.manager.event;
  * Available since Asterisk 1.2
  * 
  * @see org.asteriskjava.manager.event.PeerEntryEvent
- * @see org.asteriskjava.manager.action.SIPPeersAction
- * @see org.asteriskjava.manager.action.SIPShowPeerAction
+ * @see org.asteriskjava.manager.action.SipPeersAction
+ * @see org.asteriskjava.manager.action.SipShowPeerAction
  * @author srt
  * @version $Id$
  * @since 0.2
@@ -31,10 +31,11 @@ package org.asteriskjava.manager.event;
 public class PeerlistCompleteEvent extends ResponseEvent
 {
     /**
-     * Serial version identifier
+     * Serial version identifier.
      */
     private static final long serialVersionUID = -1177773673509373296L;
     private Integer listItems;
+    private String eventList;
 
     /**
      * Creates a new instance.
@@ -64,5 +65,22 @@ public class PeerlistCompleteEvent extends ResponseEvent
     public void setListItems(Integer listItems)
     {
         this.listItems = listItems;
+    }
+
+    /**
+     * Returns always "Complete".<p>
+     * Available since Asterisk 1.6.
+     *
+     * @return always returns "Complete" confirming that all PeerEntry events have been sent.
+     * @since 1.0.0
+     */
+    public String getEventList()
+    {
+        return eventList;
+    }
+
+    public void setEventList(String eventList)
+    {
+        this.eventList = eventList;
     }
 }
