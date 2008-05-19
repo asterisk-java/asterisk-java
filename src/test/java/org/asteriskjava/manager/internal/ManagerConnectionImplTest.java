@@ -158,7 +158,7 @@ public class ManagerConnectionImplTest extends TestCase
                 listener.eventsHandled.get(0) instanceof ConnectEvent);
 
         verify(mockSocket);
-        assertTrue("login() took longer than 2 second, probably a notify error (duration was " + duration + " msec)", duration <= 2000);
+        assertTrue("login() took longer than 2 second, probably a notify error (duration was " + duration + " is msec)", duration <= 2000);
     }
 
     public void testLoginIncorrectKey() throws Exception

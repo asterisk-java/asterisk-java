@@ -123,3 +123,16 @@ public class AgiMBean implements AgiManagement
 	}
 }
 +--
+
+* What happens when using the Manager API and Asterisk-Java looses the connection to Asterisk?
+
+  Asterisk-Java automatically reconnects if it looses the connection to Asterisk. Automatic reconnection attempts
+  happens quite fast (with a 50 msec delay) for the first 10 attempts and at 5 seconds intervals later on.
+  This is to make sure Asterisk-Java reconnects instantly when you reload Asterisk and does not consume too much
+  resources for longer downtimes of Asterisk. Your application is notified of disconnect and reconnects by the
+  two pseudo-events DisconnectEvent and ConnectEvent so you can take appropriate action like clearing internal
+  caches. By calling getState() on the ManagerConnection you can determine whether the connection is currently
+  established or not and whether Asterisk-Java tries to reconnect.
+
+[images/managerconnection-state.png]
+
