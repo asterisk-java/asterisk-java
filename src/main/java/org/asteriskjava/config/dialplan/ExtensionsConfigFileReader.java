@@ -71,16 +71,13 @@ public class ExtensionsConfigFileReader extends ConfigFileReader
     {
         String dupline = new String(line);
         
-        int extenIndex = dupline.indexOf("exten");
-        if(extenIndex == -1)
+        ConfigVariable initialVariable = parseVariable(configfile, lineno, dupline);
+        
+        
+        if(!initialVariable.getName().equals("exten"))
             throw new ConfigParseException(configfile, lineno, "missing 'exten' near " + dupline);
-        dupline = dupline.substring(extenIndex+"exten".length(), dupline.length() - extenIndex).trim();
-        
-        int equalsgreaterIndex = dupline.indexOf("=>");
-        if(equalsgreaterIndex == -1)
-            throw new ConfigParseException(configfile, lineno, "missing '=>' near " + dupline);
-        dupline = dupline.substring(extenIndex + "=>".length() - 1 + 2, dupline.length()).trim();
-        
+        dupline = initialVariable.getValue().trim();
+
         int nameIndex = dupline.indexOf(",", 0);
         if(nameIndex == -1)
             throw new ConfigParseException(configfile, lineno, "missing extension name near " + dupline);
