@@ -306,8 +306,8 @@ class EventBuilderImpl implements EventBuilder
             // it seems silly to warn if it's a user event -- maybe it was intentional
             if (setter == null && !(event instanceof UserEvent))
             {
-                logger.error("Unable to set property '" + name + "' to '" + attributes.get(name) + "' on "
-                        + event.getClass().getName() + ": no setter");
+                logger.warn("Unable to set property '" + name + "' to '" + attributes.get(name) + "' on "
+                        + event.getClass().getName() + ": no setter. Please report at http://jira.reucon.org/browse/AJ");
             }
             
             if(setter == null) {
