@@ -30,7 +30,22 @@ public class DialEvent extends ManagerEvent
     /**
      * Serializable version identifier.
      */
-    private static final long serialVersionUID = 0L;
+    private static final long serialVersionUID = 1L;
+
+    public static final String SUBEVENT_BEGIN = "Begin";
+    public static final String SUBEVENT_END = "End";
+
+    public static final String DIALSTATUS_CHANUNAVAIL = "CHANUNAVAIL";
+    public static final String DIALSTATUS_CONGESTION = "CONGESTION";
+    public static final String DIALSTATUS_NOANSWER = "NOANSWER";
+    public static final String DIALSTATUS_BUSY = "BUSY";
+    public static final String DIALSTATUS_ANSWER = "ANSWER";
+    public static final String DIALSTATUS_CANCEL = "CANCEL";
+    public static final String DIALSTATUS_DONTCALL = "DONTCALL";
+    public static final String DIALSTATUS_TORTURE = "TORTURE";
+    public static final String DIALSTATUS_INVALIDARGS = "INVALIDARGS";
+
+    private String subEvent = SUBEVENT_BEGIN;
 
     /**
      * The name of the source channel.
@@ -45,7 +60,7 @@ public class DialEvent extends ManagerEvent
     /**
      * The new Caller*ID.
      */
-    private String callerId;
+    private String callerIdNum;
 
     /**
      * The new Caller*ID Name.
@@ -63,10 +78,30 @@ public class DialEvent extends ManagerEvent
     private String destUniqueId;
 
     private String dialString;
+    private String dialStatus;
 
     public DialEvent(Object source)
     {
         super(source);
+    }
+
+    /**
+     * Since Asterisk 1.6 the begin and the end of a dial command generate a Dial event. The
+     * subEvent property returns whether the dial started execution ("Begin") or completed ("End").
+     * As Asterisk prior to 1.6 only sends one event per Dial command this always returns "Begin"
+     * for Asterisk prior to 1.6.
+     *
+     * @return "Begin" or "End" for Asterisk since 1.6, "Begin" for Asterisk prior to 1.6.
+     * @since 1.0.0
+     */
+    public String getSubEvent()
+    {
+        return subEvent;
+    }
+
+    public void setSubEvent(String subEvent)
+    {
+        this.subEvent = subEvent;
     }
 
     /**
@@ -134,13 +169,30 @@ public class DialEvent extends ManagerEvent
     }
 
     /**
+     * Returns the the Caller*ID Number.
+     *
+     * @return the the Caller*ID Number or "<unknown>" if none has been set.
+     * @since 1.0.0
+     */
+    public String getCallerIdNum()
+    {
+        return callerIdNum;
+    }
+
+    public void setCallerIdNum(String callerIdNum)
+    {
+        this.callerIdNum = callerIdNum;
+    }
+
+    /**
      * Returns the Caller*ID.
      *
      * @return the Caller*ID or "<unknown>" if none has been set.
+     * @deprecated as of 1.0.0, use {@link #getCallerIdNum()} instead.
      */
     public String getCallerId()
     {
-        return callerId;
+        return callerIdNum;
     }
 
     /**
@@ -150,7 +202,7 @@ public class DialEvent extends ManagerEvent
      */
     public void setCallerId(String callerId)
     {
-        this.callerId = callerId;
+        this.callerIdNum = callerId;
     }
 
     /**
@@ -251,11 +303,42 @@ public class DialEvent extends ManagerEvent
 
     /**
      * Sets the dial string passed to the Dial application.
+     *
      * @param dialString the dial string passed to the Dial application.
      * @since 1.0.0
      */
     public void setDialString(String dialString)
     {
         this.dialString = dialString;
+    }
+
+    /**
+     * For end subevents this returns whether the completion status of the dial application.<br>
+     * Possible values are:
+     * <ul>
+     * <li>CHANUNAVAIL</li>
+     * <li>CONGESTION</li>
+     * <li>NOANSWER</li>
+     * <li>BUSY</li>
+     * <li>ANSWER</li>
+     * <li>CANCEL</li>
+     * <li>DONTCALL</li>
+     * <li>TORTURE</li>
+     * <li>INVALIDARGS</li>
+     * </ul>
+     * It corresponds the the DIALSTATUS variable used in the dialplan.<p>
+     * Available since Asterisk 1.6.
+     *
+     * @return the completion status of the dial application.
+     * @since 1.0.0
+     */
+    public String getDialStatus()
+    {
+        return dialStatus;
+    }
+
+    public void setDialStatus(String dialStatus)
+    {
+        this.dialStatus = dialStatus;
     }
 }
