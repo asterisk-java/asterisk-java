@@ -31,7 +31,7 @@ package org.asteriskjava.manager.event;
 public class MeetMeTalkingEvent extends AbstractMeetMeEvent
 {
     /**
-     * Serializable version identifier
+     * Serializable version identifier.
      */
     private static final long serialVersionUID = -8554403451985143184L;
 
@@ -53,7 +53,7 @@ public class MeetMeTalkingEvent extends AbstractMeetMeEvent
      * only this MeetMeTalkingEvent is used with the status property indicating
      * start and stop. For backwards compatibility this property defaults to
      * <code>true</code> so when used with version 1.2 of Asterisk you get
-     * <code>true</code> when calling {@link #getStatus()}.
+     * <code>true</code>.
      * 
      * @return <code>true</code> if ther user has started talking,
      *         <code>false</code> if the user has stopped talking.
@@ -64,13 +64,6 @@ public class MeetMeTalkingEvent extends AbstractMeetMeEvent
         return status;
     }
 
-    /**
-     * Sets whether the user has started or stopped talking.
-     * 
-     * @return <code>true</code> if ther user has started talking,
-     *         <code>false</code> if the user has stopped talking.
-     * @since 0.3
-     */
     public void setStatus(Boolean status)
     {
         this.status = status;
