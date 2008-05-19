@@ -132,14 +132,14 @@ public class ManagerConnectionImplTest extends TestCase
         // called.
         try
         {
-            Thread.sleep(10);
+            Thread.sleep(100);
         }
         catch (InterruptedException e)
         {
             // ugly hack to make this work when the thread is interrupted coz a
             // response has been received but the ManagerConnection was not yet 
             // sleeping
-            Thread.sleep(10);
+            Thread.sleep(100);
         }
         assertEquals("run() not called 1 time", 1, mockReader.runCalls);
         assertEquals("unexpected call to die()", 0, mockReader.dieCalls);
@@ -158,7 +158,7 @@ public class ManagerConnectionImplTest extends TestCase
                 listener.eventsHandled.get(0) instanceof ConnectEvent);
 
         verify(mockSocket);
-        assertTrue("login() took longer than 1 second, probably a notify error", duration <= 1000);
+        assertTrue("login() took longer than 2 second, probably a notify error (duration was " + duration + " msec)", duration <= 2000);
     }
 
     public void testLoginIncorrectKey() throws Exception
