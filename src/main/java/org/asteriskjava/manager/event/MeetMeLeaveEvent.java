@@ -27,7 +27,7 @@ package org.asteriskjava.manager.event;
 public class MeetMeLeaveEvent extends AbstractMeetMeEvent
 {
     /**
-     * Serializable version identifier
+     * Serializable version identifier.
      */
     private static final long serialVersionUID = 7692361610793036224L;
 
