@@ -90,6 +90,7 @@ class EventBuilderImpl implements EventBuilder
         registerEventClass(MessageWaitingEvent.class);
         registerEventClass(MonitorStartEvent.class);
         registerEventClass(MonitorStopEvent.class);
+        registerEventClass(NewAccountCodeEvent.class);
         registerEventClass(NewCallerIdEvent.class);
         registerEventClass(NewChannelEvent.class);
         registerEventClass(NewExtenEvent.class);
