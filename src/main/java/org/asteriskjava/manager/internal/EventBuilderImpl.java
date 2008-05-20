@@ -80,10 +80,12 @@ class EventBuilderImpl implements EventBuilder
         registerEventClass(LeaveEvent.class);
         registerEventClass(LinkEvent.class);
         registerEventClass(LogChannelEvent.class);
+        registerEventClass(MeetMeEndEvent.class);
         registerEventClass(MeetMeJoinEvent.class);
         registerEventClass(MeetMeLeaveEvent.class);
         registerEventClass(MeetMeMuteEvent.class);
         registerEventClass(MeetMeTalkingEvent.class);
+        registerEventClass(MeetMeTalkingRequestEvent.class);
         registerEventClass(MeetMeStopTalkingEvent.class);
         registerEventClass(MessageWaitingEvent.class);
         registerEventClass(NewCallerIdEvent.class);

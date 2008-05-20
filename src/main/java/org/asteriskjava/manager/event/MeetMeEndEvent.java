@@ -25,7 +25,7 @@ package org.asteriskjava.manager.event;
  * @version $Id$
  * @since 1.0.0
  */
-public abstract class MeetMeEndEvent extends ManagerEvent
+public class MeetMeEndEvent extends ManagerEvent
 {
     private String meetMe;
 
