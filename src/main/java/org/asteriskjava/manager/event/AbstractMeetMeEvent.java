@@ -18,7 +18,8 @@ package org.asteriskjava.manager.event;
 
 /**
  * Abstract base class providing common properties for MeetMe
- * (Asterisk's conference system) events.
+ * (Asterisk's conference system) events.<p>
+ * MeetMe events are implemented in <code>apps/app_meetme.c</code>
  * 
  * @author srt
  * @version $Id$

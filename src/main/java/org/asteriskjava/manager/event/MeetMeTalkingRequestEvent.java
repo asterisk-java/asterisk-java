@@ -17,48 +17,46 @@
 package org.asteriskjava.manager.event;
 
 /**
- * A MeetMeMuteEvent is triggered when a user in a MeetMe room is muted or
- * unmuted.<p>
+ * A MeetMeTalkingEvent is triggered when a muted user requests talking in a meet me
+ * conference.<p>
+ * To enable talker detection you must pass the option 'T' to the MeetMe application.<p>
  * It is implemented in <code>apps/app_meetme.c</code><p>
- * Available since Asterisk 1.4.
- * 
+ * Available since Asterisk 1.6
+ *
  * @author srt
  * @version $Id$
+ * @since 1.0.0
  */
-public class MeetMeMuteEvent extends AbstractMeetMeEvent
+public class MeetMeTalkingRequestEvent extends AbstractMeetMeEvent
 {
     /**
      * Serializable version identifier.
      */
-    private static final long serialVersionUID = -8554403451985143184L;
+    private static final long serialVersionUID = 0L;
 
     private Boolean status;
 
     /**
      * @param source
      */
-    public MeetMeMuteEvent(Object source)
+    public MeetMeTalkingRequestEvent(Object source)
     {
         super(source);
     }
 
+    // see http://bugs.digium.com/view.php?id=9418
+
     /**
-     * Returns whether the user was muted or unmuted.
-     * 
-     * @return <code>true</code> if ther user was muted,
-     *         <code>false</code> if the user was unmuted.
+     * Returns whether the user has started or stopped requesting talking.
+     *
+     * @return <code>true</code> if ther user has started requesting talking,
+     *         <code>false</code> if the user has stopped requesting talking.
      */
     public Boolean getStatus()
     {
         return status;
     }
 
-    /**
-     * Sets whether the user was muted or unmuted.
-     * 
-     * @param status <code>true</code> if ther user was muted, 
-     *               <code>false</code> if the user was unmuted.
-     */
     public void setStatus(Boolean status)
     {
         this.status = status;

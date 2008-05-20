@@ -89,7 +89,9 @@ public class DialEvent extends ManagerEvent
      * Since Asterisk 1.6 the begin and the end of a dial command generate a Dial event. The
      * subEvent property returns whether the dial started execution ("Begin") or completed ("End").
      * As Asterisk prior to 1.6 only sends one event per Dial command this always returns "Begin"
-     * for Asterisk prior to 1.6.
+     * for Asterisk prior to 1.6.<br>
+     * For an "End" sub event only the properies channel, unqiue id and dial status are available,
+     * for a "Begin" sub event all properties are available except for the dial status.
      *
      * @return "Begin" or "End" for Asterisk since 1.6, "Begin" for Asterisk prior to 1.6.
      * @since 1.0.0
