@@ -17,10 +17,11 @@
 package org.asteriskjava.manager.event;
 
 /**
- * A NewAccountCodeEvent indicates that the account code used for CDR has
- * changed.<p>
+ * A ChannelUpdateEvent provides additional channel type specific information like
+ * the SIP call id or IAX2 call numbers about a channel.<p>
  * Available since Asterisk 1.6.<p>
- * It is implemented in <code>main/cdr.c</code>
+ * It is implemented in <code>channels/chan_sip.c</code>, <code>channels/chan_iax2.c</code> and
+ * <code>channels/chan_gtalk.c</code>
  *
  * @author srt
  * @version $Id$

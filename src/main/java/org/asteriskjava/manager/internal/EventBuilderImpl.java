@@ -31,10 +31,10 @@ import org.asteriskjava.util.ReflectionUtil;
 
 /**
  * Default implementation of the EventBuilder interface.
- * 
- * @see org.asteriskjava.manager.event.ManagerEvent
+ *
  * @author srt
  * @version $Id$
+ * @see org.asteriskjava.manager.event.ManagerEvent
  */
 class EventBuilderImpl implements EventBuilder
 {
@@ -67,6 +67,7 @@ class EventBuilderImpl implements EventBuilder
         registerEventClass(BridgeEvent.class);
         registerEventClass(CdrEvent.class);
         registerEventClass(ChannelReloadEvent.class);
+        registerEventClass(ChannelUpdateEvent.class);
         registerEventClass(DbGetResponseEvent.class);
         registerEventClass(DialEvent.class);
         registerEventClass(DndStateEvent.class);
@@ -155,11 +156,11 @@ class EventBuilderImpl implements EventBuilder
 
     /**
      * Registers a new event class for the event given by eventType.
-     * 
+     *
      * @param eventType the name of the event to register the class for. For
-     *            example "Join".
-     * @param clazz the event class to register, must extend
-     *            {@link ManagerEvent}.
+     *                  example "Join".
+     * @param clazz     the event class to register, must extend
+     *                  {@link ManagerEvent}.
      * @throws IllegalArgumentException if clazz is not a valid event class.
      */
     @SuppressWarnings("unchecked")
@@ -231,7 +232,8 @@ class EventBuilderImpl implements EventBuilder
         eventClass = registeredEventClasses.get(eventType);
         if (eventClass == null)
         {
-            logger.info("No event class registered for event type '" + eventType + "', attributes: " + attributes);
+            logger.info("No event class registered for event type '" + eventType + "', attributes: " + attributes
+                    + ". Please report at http://jira.reucon.org/browse/AJ");
             return null;
         }
 
@@ -314,8 +316,9 @@ class EventBuilderImpl implements EventBuilder
                 logger.warn("Unable to set property '" + name + "' to '" + attributes.get(name) + "' on "
                         + event.getClass().getName() + ": no setter. Please report at http://jira.reucon.org/browse/AJ");
             }
-            
-            if(setter == null) {
+
+            if (setter == null)
+            {
                 continue;
             }
 
@@ -358,7 +361,7 @@ class EventBuilderImpl implements EventBuilder
 
     /**
      * Strips all illegal charaters from the given lower case string.
-     * 
+     *
      * @param s the original string
      * @return the string with all illegal characters stripped
      */
