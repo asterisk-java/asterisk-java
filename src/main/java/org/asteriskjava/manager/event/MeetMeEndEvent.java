@@ -32,7 +32,7 @@ public class MeetMeEndEvent extends ManagerEvent
     /**
      * @param source
      */
-    protected MeetMeEndEvent(Object source)
+    public MeetMeEndEvent(Object source)
     {
         super(source);
     }

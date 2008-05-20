@@ -19,11 +19,12 @@ package org.asteriskjava.manager.event;
 /**
  * A MonitorStopEvent indicates that monitoring was stopped on a channel.<p>
  * Available since Asterisk 1.6.<p>
- * It is defined in <code>res/res_monitor.c</code>
+ * It is implemented in <code>res/res_monitor.c</code>
  *
  * @author srt
  * @version $Id$
  * @since 1.0.0
+ * @see org.asteriskjava.manager.event.MonitorStartEvent
  */
 public class MonitorStopEvent extends AbstractMonitorEvent
 {
