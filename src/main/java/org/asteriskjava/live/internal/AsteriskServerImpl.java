@@ -1021,8 +1021,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         final OriginateCallbackData callbackData;
         final OriginateCallback cb;
         final AsteriskChannelImpl channel;
-        final AsteriskChannelImpl otherChannel; // the other side if local
-        // channel
+        final AsteriskChannelImpl otherChannel; // the other side if local channel
 
         traceId = originateEvent.getActionId();
         if (traceId == null)
@@ -1041,8 +1040,14 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         }
 
         cb = callbackData.getCallback();
-        channel = channelManager.getChannelImplById(originateEvent
-                .getUniqueId());
+        if (originateEvent.getUniqueId() != null)
+        {
+            channel = channelManager.getChannelImplById(originateEvent.getUniqueId());
+        }
+        else
+        {
+            channel = callbackData.getChannel();
+        }
 
         try
         {

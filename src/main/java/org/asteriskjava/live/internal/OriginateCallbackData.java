@@ -20,7 +20,7 @@ class OriginateCallbackData
     private OriginateAction originateAction;
     private Date dateSent;
     private OriginateCallback callback;
-    private AsteriskChannel channel;
+    private AsteriskChannelImpl channel;
 
     /**
      * Creates a new instance.
@@ -53,12 +53,12 @@ class OriginateCallbackData
         return callback;
     }
 
-    AsteriskChannel getChannel()
+    AsteriskChannelImpl getChannel()
     {
         return channel;
     }
 
-    void setChannel(AsteriskChannel channel)
+    void setChannel(AsteriskChannelImpl channel)
     {
         this.channel = channel;
     }
