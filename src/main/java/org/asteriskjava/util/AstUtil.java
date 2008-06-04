@@ -38,6 +38,7 @@ public class AstUtil
         NULL_LITERALS.add("(not set)");
         NULL_LITERALS.add("<no name>");
         NULL_LITERALS.add("n/a"); // channel in AgentsEvent
+        NULL_LITERALS.add("<null>");
     }
     
     private AstUtil()
