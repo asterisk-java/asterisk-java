@@ -368,6 +368,52 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
     }
 
     /**
+     * Notifies all registered listener that a member has been added to the queue.
+     *
+     * @param member added to the queue
+     */
+    void fireMemberAdded(AsteriskQueueMemberImpl member)
+    {
+        synchronized (listeners)
+        {
+            for (AsteriskQueueListener listener : listeners)
+            {
+                try
+                {
+                    listener.onMemberAdded(member);
+                }
+                catch (Exception e)
+                {
+                    logger.warn("Exception in onMemberAdded()", e);
+                }
+            }
+        }
+    }
+
+    /**
+     * Notifies all registered listener that a member has been removed from the queue.
+     *
+     * @param member that has been removed.
+     */
+    void fireMemberRemoved(AsteriskQueueMemberImpl member)
+    {
+        synchronized (listeners)
+        {
+            for (AsteriskQueueListener listener : listeners)
+            {
+                try
+                {
+                    listener.onMemberRemoved(member);
+                }
+                catch (Exception e)
+                {
+                    logger.warn("Exception in onMemberRemoved()", e);
+                }
+            }
+        }
+    }
+    
+    /**
      * Returns a collection of members of this queue.
      *
      * @see org.asteriskjava.live.AsteriskQueue#getMembers()
@@ -421,6 +467,8 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
             logger.info("Adding new member to the queue " + getName() + ": " + member.toString());
             members.put(member.getLocation(), member);
         }
+        
+        fireMemberAdded(member);
     }
 
     /**
@@ -507,6 +555,8 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
                     + member.toString());
             members.remove(member.getLocation());
         }
+        
+        fireMemberRemoved(member);
     }
 
     void fireServiceLevelExceeded(AsteriskQueueEntry entry)

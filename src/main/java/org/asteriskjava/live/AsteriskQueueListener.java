@@ -36,4 +36,18 @@ public interface AsteriskQueueListener
      * @param entry
      */
     void onEntryServiceLevelExceeded(AsteriskQueueEntry entry);
+    
+    /**
+     * Called whenever a new member is added to the queue.
+     *
+     * @param member the new member.
+     */
+    void onMemberAdded(AsteriskQueueMember member);
+
+    /**
+     * Called whenever a member is removed from this queue.
+     *
+     * @param member the member that has been removed from the queue.
+     */
+    void onMemberRemoved(AsteriskQueueMember member);
 }
