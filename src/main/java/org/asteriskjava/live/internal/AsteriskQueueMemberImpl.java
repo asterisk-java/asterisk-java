@@ -36,6 +36,7 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
     private QueueMemberState state;
     private String location;
     private Integer penalty;
+    private boolean paused;
 
     /**
      * Creates a new queue member.
@@ -48,13 +49,15 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
      */
     AsteriskQueueMemberImpl(final AsteriskServerImpl server,
                             final AsteriskQueueImpl queue, String location,
-                            QueueMemberState state, Integer penalty)
+                            QueueMemberState state, boolean paused, 
+                            Integer penalty)
     {
         super(server);
         this.queue = queue;
         this.location = location;
         this.state = state;
         this.penalty = penalty;
+        this.paused = paused;
     }
 
     public AsteriskQueue getQueue()
@@ -70,6 +73,10 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
     public QueueMemberState getState()
     {
         return state;
+    }
+    
+    public boolean getPaused() {
+        return paused;
     }
 
     public Integer getPenalty()
@@ -102,6 +109,7 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
         sb = new StringBuffer("AsteriskQueueMember[");
         sb.append("location='").append(location).append("'");
         sb.append("state='").append(state).append("'");
+        sb.append("paused='").append(paused).append("'");
         sb.append("queue='").append(queue.getName()).append("'");
         sb.append("systemHashcode=").append(System.identityHashCode(this));
         sb.append("]");
@@ -121,5 +129,12 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
         Integer oldPenalty = this.penalty;
         this.penalty = penalty;
         firePropertyChange(PROPERTY_PENALTY, oldPenalty, penalty);
+    }
+    
+    synchronized void pausedChanged(boolean paused)
+    {
+        boolean oldPaused = this.paused;
+        this.paused = paused;
+        firePropertyChange(PROPERTY_PAUSED, oldPaused, paused);
     }
 }

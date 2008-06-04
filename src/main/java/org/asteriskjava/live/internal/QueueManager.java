@@ -197,7 +197,7 @@ class QueueManager
         if (member == null)
         {
             member = new AsteriskQueueMemberImpl(server, queue, event.getLocation(),
-                    QueueMemberState.valueOf(event.getStatus()), event.getPenalty());
+                    QueueMemberState.valueOf(event.getStatus()), event.getPaused(), event.getPenalty());
         }
         queue.addMember(member);
     }
@@ -340,6 +340,25 @@ class QueueManager
         queue.fireMemberStateChanged(member);
     }
 
+    void handleQueueMemberPausedEvent(QueueMemberPausedEvent event) {
+        AsteriskQueueImpl queue = getQueueByName(event.getQueue());
+
+        if (queue == null)
+        {
+            logger.error("Ignored QueueMemberPausedEvent for unknown queue " + event.getQueue());
+            return;
+        }
+
+        AsteriskQueueMemberImpl member = queue.getMemberByLocation(event.getLocation());
+        if (member == null)
+        {
+            logger.error("Ignored QueueMemberPausedEvent for unknown member " + event.getLocation());
+            return;
+        }
+
+        member.pausedChanged(event.getPaused());
+    }
+    
     void handleQueueMemberPenaltyEvent(QueueMemberPenaltyEvent event)
     {
         AsteriskQueueImpl queue = getQueueByName(event.getQueue());
@@ -399,7 +418,7 @@ class QueueManager
         if (member == null)
         {
             member = new AsteriskQueueMemberImpl(server, queue, event.getLocation(),
-                    QueueMemberState.valueOf(event.getStatus()), event.getPenalty());
+                    QueueMemberState.valueOf(event.getStatus()), event.getPaused(), event.getPenalty());
         }
 
         queue.addMember(member);
