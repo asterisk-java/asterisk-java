@@ -133,7 +133,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
     public AsteriskServerImpl(ManagerConnection eventConnection)
     {
         this();
-        setManagerConnection(eventConnection);
+        setManagerConnection(eventConnection);  //todo: !!! Possible bug !!!: call to overridable method over object construction 
     }
 
     /**
@@ -1121,10 +1121,9 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
 
     public void shutdown()
     {
-        if (eventConnection != null && eventConnection.getState() == ManagerConnectionState.CONNECTED)
+        if (eventConnection != null && (eventConnection.getState() == ManagerConnectionState.CONNECTED || eventConnection.getState() == ManagerConnectionState.RECONNECTING))
         {
             eventConnection.logoff();
-            eventConnection = null;
         }
         if (managerEventListenerProxy != null)
         {

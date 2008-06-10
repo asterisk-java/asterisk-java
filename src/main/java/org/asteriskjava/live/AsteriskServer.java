@@ -429,4 +429,10 @@ public interface AsteriskServer
      * Closes the connection to this server.
      */
     void shutdown();
+
+	/**
+	 * Open connection to this server
+	 * @throws ManagerCommunicationException - if login fails
+	 */
+	void initialize() throws ManagerCommunicationException;
 }

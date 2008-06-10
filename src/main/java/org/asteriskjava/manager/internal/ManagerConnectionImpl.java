@@ -166,11 +166,6 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     private Thread readerThread;
     private final AtomicLong readerThreadCounter = new AtomicLong(0);
 
-    /**
-     * The thread that performs reconnect.
-     */
-    private Thread reconnectThread;
-
     private final AtomicLong reconnectThreadCounter = new AtomicLong(0);
 
     /**
@@ -215,11 +210,6 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
      * Contains the event handlers that users registered.
      */
     private final List<ManagerEventListener> eventListeners;
-
-    /**
-     * <code>true</code> while reconnecting.
-     */
-    private boolean reconnecting = false;
 
     protected ManagerConnectionState state = INITIAL;
 
@@ -755,7 +745,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
         state = DISCONNECTING;
 
-        if (socket != null && !reconnecting)
+        if (socket != null)
         {
             try
             {
@@ -1187,7 +1177,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                 // After sending the DisconnectThread that thread will die
                 // anyway.
                 cleanup();
-                reconnectThread = new Thread(new Runnable()
+                Thread reconnectThread = new Thread(new Runnable()
                 {
                     public void run()
                     {
