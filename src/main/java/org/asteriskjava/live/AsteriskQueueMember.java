@@ -65,6 +65,36 @@ public interface AsteriskQueueMember extends LiveObject
     boolean getPaused();
 
     /**
+     * Returns if this member has been dynamically added by the QueueAdd command
+     * (in the dialplan or via the Manager API) or if this member is has been
+     * statically defined in <code>queues.conf</code>.
+     * 
+     * @return "dynamic" if the added member is a dynamic queue member, "static"
+     *         if the added member is a static queue member.
+     */
+    public String getMembership();
+    
+    /**
+     * Convenience method that checks whether this member has been statically
+     * defined in <code>queues.conf</code>.
+     * 
+     * @return <code>true</code> if this member has been statically defined in
+     *         <code>queues.conf</code>, <code>false</code> otherwise.
+     * @since 0.3
+     */
+    public boolean isStatic();
+
+    /**
+     * Convenience method that checks whether this member has been dynamically
+     * added by the QueueAdd command.
+     * 
+     * @return <code>true</code> if this member has been dynamically added by
+     *         the QueueAdd command, <code>false</code> otherwise.
+     * @since 0.3
+     */
+    public boolean isDynamic();
+    
+    /**
      * Returns the penalty of this member.
      *
      * @return the penalty of this member.

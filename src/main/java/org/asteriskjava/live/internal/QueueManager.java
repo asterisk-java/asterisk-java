@@ -197,7 +197,8 @@ class QueueManager
         if (member == null)
         {
             member = new AsteriskQueueMemberImpl(server, queue, event.getLocation(),
-                    QueueMemberState.valueOf(event.getStatus()), event.getPaused(), event.getPenalty());
+                    QueueMemberState.valueOf(event.getStatus()), event.getPaused(), 
+                    event.getPenalty(), event.getMembership());
         }
         queue.addMember(member);
     }
@@ -418,7 +419,8 @@ class QueueManager
         if (member == null)
         {
             member = new AsteriskQueueMemberImpl(server, queue, event.getLocation(),
-                    QueueMemberState.valueOf(event.getStatus()), event.getPaused(), event.getPenalty());
+                    QueueMemberState.valueOf(event.getStatus()), event.getPaused(),
+                    event.getPenalty(), event.getMembership());
         }
 
         queue.addMember(member);

@@ -37,6 +37,7 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
     private String location;
     private Integer penalty;
     private boolean paused;
+    private String membership;
 
     /**
      * Creates a new queue member.
@@ -50,7 +51,7 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
     AsteriskQueueMemberImpl(final AsteriskServerImpl server,
                             final AsteriskQueueImpl queue, String location,
                             QueueMemberState state, boolean paused, 
-                            Integer penalty)
+                            Integer penalty, String membership)
     {
         super(server);
         this.queue = queue;
@@ -58,6 +59,7 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
         this.state = state;
         this.penalty = penalty;
         this.paused = paused;
+        this.membership = membership;
     }
 
     public AsteriskQueue getQueue()
@@ -79,11 +81,25 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
         return paused;
     }
 
+    public String getMembership() {
+        return membership;
+    }
+    
+    public boolean isStatic()
+    {
+        return membership != null && "static".equals(membership);
+    }
+
+    public boolean isDynamic()
+    {
+        return membership != null && "dynamic".equals(membership);
+    }
+    
     public Integer getPenalty()
     {
         return penalty;
     }
-
+    
     public void setPenalty(int penalty) throws IllegalArgumentException, ManagerCommunicationException, InvalidPenaltyException
     {
         ManagerResponse response;

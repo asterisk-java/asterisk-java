@@ -48,7 +48,7 @@ public class AsteriskQueueMemberImplTest extends TestCase
         // qManager = new QueueManager(server, channelManager);
         queue = new AsteriskQueueImpl(server, "test", 25, "RoundRobin", 15, 5);
         queueMember = new AsteriskQueueMemberImpl(server, queue, "Agent/777",
-                QueueMemberState.DEVICE_UNKNOWN, false, 10);
+                QueueMemberState.DEVICE_UNKNOWN, false, 10, "dynamic");
 
         numberOfChanges = 0;
     }
