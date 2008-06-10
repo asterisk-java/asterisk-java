@@ -276,7 +276,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         return originate(originateAction);
     }
 
-    private AsteriskChannel originate(OriginateAction originateAction) throws ManagerCommunicationException, NoSuchChannelException
+    public AsteriskChannel originate(OriginateAction originateAction) throws ManagerCommunicationException, NoSuchChannelException
     {
         final ResponseEvents responseEvents;
         final Iterator<ResponseEvent> responseEventIterator;
@@ -370,7 +370,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         originateAsync(originateAction, cb);
     }
 
-    private void originateAsync(OriginateAction originateAction,
+    public void originateAsync(OriginateAction originateAction,
                                 OriginateCallback cb) throws ManagerCommunicationException
     {
         final Map<String, String> variables;

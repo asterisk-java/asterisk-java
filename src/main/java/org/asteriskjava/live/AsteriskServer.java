@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.List;
 
 import org.asteriskjava.manager.ManagerConnection;
+import org.asteriskjava.manager.action.OriginateAction;
 import org.asteriskjava.config.ConfigFile;
 
 /**
@@ -44,6 +45,28 @@ public interface AsteriskServer
      */
     ManagerConnection getManagerConnection();
 
+    /**
+     * Generates an outgoing channel.
+     * @param originateAction the action that contains parameters for the originate
+     * @return the generated channel
+     * @throws NoSuchChannelException if the channel is not available on the
+     *         Asterisk server, for example because you used "SIP/1310" and 1310
+     *         is not a valid SIP user, the SIP channel module hasn't been
+     *         loaded or the SIP or IAX peer is not registered currently.
+     * @throws ManagerCommunicationException if the originate action cannot be
+     *         sent to Asterisk
+     */
+    public AsteriskChannel originate(OriginateAction originateAction) throws ManagerCommunicationException, NoSuchChannelException;
+    
+    /**
+     * Asynchronously generates an outgoing channel.
+     * @param originateAction the action that contains parameters for the originate
+     * @param callback callback to inform about the result
+     * @throws ManagerCommunicationException if the originate action cannot be
+     *         sent to Asterisk
+     */
+    public void originateAsync(OriginateAction originateAction, OriginateCallback cb) throws ManagerCommunicationException;
+    
     /**
      * Generates an outgoing channel to a dialplan entry (extension, context,
      * priority).

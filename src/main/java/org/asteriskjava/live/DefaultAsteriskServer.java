@@ -23,6 +23,7 @@ import java.util.List;
 import org.asteriskjava.live.internal.AsteriskServerImpl;
 import org.asteriskjava.manager.DefaultManagerConnection;
 import org.asteriskjava.manager.ManagerConnection;
+import org.asteriskjava.manager.action.OriginateAction;
 import org.asteriskjava.config.ConfigFile;
 
 /**
@@ -130,6 +131,12 @@ public class DefaultAsteriskServer implements AsteriskServer
     {
         return impl.getManagerConnection();
     }
+    
+    public AsteriskChannel originate(OriginateAction originateAction) throws ManagerCommunicationException, NoSuchChannelException
+	{
+    	return impl.originate(originateAction);
+	}
+
 
     public AsteriskChannel originateToExtension(String channel, String context,
                                                 String exten, int priority, long timeout)
@@ -160,6 +167,12 @@ public class DefaultAsteriskServer implements AsteriskServer
     {
         return impl.originateToApplication(channel, application, data, timeout, callerId, variables);
     }
+    
+    public void originateAsync(OriginateAction originateAction,
+            OriginateCallback cb) throws ManagerCommunicationException
+	{
+    	impl.originateAsync(originateAction, cb);
+	}
 
     public void originateToApplicationAsync(String channel, String application,
                                             String data, long timeout, CallerId callerId,
