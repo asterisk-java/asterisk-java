@@ -71,6 +71,7 @@ public interface AsteriskQueueMember extends LiveObject
      * 
      * @return "dynamic" if the added member is a dynamic queue member, "static"
      *         if the added member is a static queue member.
+     * @since 1.0.0
      */
     public String getMembership();
     
@@ -80,7 +81,7 @@ public interface AsteriskQueueMember extends LiveObject
      * 
      * @return <code>true</code> if this member has been statically defined in
      *         <code>queues.conf</code>, <code>false</code> otherwise.
-     * @since 0.3
+     * @since 1.0.0
      */
     public boolean isStatic();
 
@@ -90,7 +91,7 @@ public interface AsteriskQueueMember extends LiveObject
      * 
      * @return <code>true</code> if this member has been dynamically added by
      *         the QueueAdd command, <code>false</code> otherwise.
-     * @since 0.3
+     * @since 1.0.0
      */
     public boolean isDynamic();
     

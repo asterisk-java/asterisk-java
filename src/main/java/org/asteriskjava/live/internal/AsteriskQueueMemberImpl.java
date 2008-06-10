@@ -42,15 +42,18 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
     /**
      * Creates a new queue member.
      *
-     * @param server   server this channel belongs to.
-     * @param queue    queue this member is registered to.
-     * @param location location of member.
-     * @param state    state of this member.
-     * @param penalty  penalty of this member.
+     * @param server     server this channel belongs to.
+     * @param queue      queue this member is registered to.
+     * @param location   location of member.
+     * @param state      state of this member.
+     * @param paused     <code>true</code> if this member is currently paused, <code>false</code> otherwise.
+     * @param penalty    penalty of this member.
+     * @param membership "dynamic" if the added member is a dynamic queue member, "static"
+     *                   if the added member is a static queue member.
      */
     AsteriskQueueMemberImpl(final AsteriskServerImpl server,
                             final AsteriskQueueImpl queue, String location,
-                            QueueMemberState state, boolean paused, 
+                            QueueMemberState state, boolean paused,
                             Integer penalty, String membership)
     {
         super(server);
@@ -76,15 +79,17 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
     {
         return state;
     }
-    
-    public boolean getPaused() {
+
+    public boolean getPaused()
+    {
         return paused;
     }
 
-    public String getMembership() {
+    public String getMembership()
+    {
         return membership;
     }
-    
+
     public boolean isStatic()
     {
         return membership != null && "static".equals(membership);
@@ -94,12 +99,12 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
     {
         return membership != null && "dynamic".equals(membership);
     }
-    
+
     public Integer getPenalty()
     {
         return penalty;
     }
-    
+
     public void setPenalty(int penalty) throws IllegalArgumentException, ManagerCommunicationException, InvalidPenaltyException
     {
         ManagerResponse response;
@@ -126,6 +131,7 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
         sb.append("location='").append(location).append("'");
         sb.append("state='").append(state).append("'");
         sb.append("paused='").append(paused).append("'");
+        sb.append("membership='").append(membership).append("'");
         sb.append("queue='").append(queue.getName()).append("'");
         sb.append("systemHashcode=").append(System.identityHashCode(this));
         sb.append("]");
@@ -146,7 +152,7 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
         this.penalty = penalty;
         firePropertyChange(PROPERTY_PENALTY, oldPenalty, penalty);
     }
-    
+
     synchronized void pausedChanged(boolean paused)
     {
         boolean oldPaused = this.paused;
