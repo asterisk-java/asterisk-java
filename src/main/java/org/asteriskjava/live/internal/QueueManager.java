@@ -156,7 +156,7 @@ class QueueManager
         max = event.getMax();
         strategy = event.getStrategy();
         serviceLevel = event.getServiceLevel();
-        weight = event.getServiceLevel();
+        weight = event.getWeight();
 
         queue = queues.get(name);
 
