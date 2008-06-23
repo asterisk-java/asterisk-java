@@ -30,7 +30,7 @@ public class ParkedCallEvent extends AbstractParkedCallEvent
     /**
      * Serializable version identifier
      */
-    private static final long serialVersionUID = -7437833328723536814L;
+    private static final long serialVersionUID = 0L;
     
     private String from;
     private Integer timeout;

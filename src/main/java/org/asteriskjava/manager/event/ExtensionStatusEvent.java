@@ -109,10 +109,11 @@ public class ExtensionStatusEvent extends ManagerEvent
     }
 
     /**
-     * Returns the hint assigned to the extension.<p>
+     * Returns the hint assigned to the extension. The hint is used to map a channel (e.g. "SIP/123") to an
+     * extension (e.g. "123").<p>
      * Available since Asterisk 1.6.
      *
-     * @return the hint assigned to the extension.
+     * @return the hint (channel name) assigned to the extension.
      * @since 1.0.0
      */
     public String getHint()

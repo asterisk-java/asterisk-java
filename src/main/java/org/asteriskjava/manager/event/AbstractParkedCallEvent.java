@@ -28,10 +28,10 @@ public abstract class AbstractParkedCallEvent extends ManagerEvent
     /**
      * Serializable version identifier
      */
-    private static final long serialVersionUID = -7437833328723536814L;
+    private static final long serialVersionUID = 0L;
     private String exten;
     private String channel;
-    private String callerId;
+    private String callerIdNum;
     private String callerIdName;
     private String uniqueId;
    
@@ -78,22 +78,34 @@ public abstract class AbstractParkedCallEvent extends ManagerEvent
 
     /**
      * Returns the Caller*ID number of the parked channel.
-     * 
+     *
      * @return the Caller*ID number of the parked channel.
+     * @since 1.0.0
      */
-    public String getCallerId()
+    public String getCallerIdNum()
     {
-        return callerId;
+        return callerIdNum;
+    }
+
+    public void setCallerIdNum(String callerIdNum)
+    {
+        this.callerIdNum = callerIdNum;
     }
 
     /**
-     * Sets the Caller*ID number of the parked channel.
+     * Returns the Caller*ID number of the parked channel.
      * 
-     * @param callerId the Caller*ID number of the parked channel.
+     * @return the Caller*ID number of the parked channel.
+     * @deprecated since 1.0.0. Use {@link #getCallerIdNum()} instead.
      */
+    public String getCallerId()
+    {
+        return callerIdNum;
+    }
+
     public void setCallerId(String callerId)
     {
-        this.callerId = callerId;
+        this.callerIdNum = callerId;
     }
 
     /**
