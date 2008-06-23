@@ -67,6 +67,7 @@ public class ExtensionStatusEvent extends ManagerEvent
 
     private String exten;
     private String context;
+    private String hint;
     private Integer status;
     private String callerId;
 
@@ -105,6 +106,23 @@ public class ExtensionStatusEvent extends ManagerEvent
     public void setContext(String context)
     {
         this.context = context;
+    }
+
+    /**
+     * Returns the hint assigned to the extension.<p>
+     * Available since Asterisk 1.6.
+     *
+     * @return the hint assigned to the extension.
+     * @since 1.0.0
+     */
+    public String getHint()
+    {
+        return hint;
+    }
+
+    public void setHint(String hint)
+    {
+        this.hint = hint;
     }
 
     /**
