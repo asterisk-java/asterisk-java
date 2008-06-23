@@ -735,6 +735,8 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
 
     public Extension getParkedAt()
     {
+        // warning: the context of this extension will be null until we get the context property from
+        // the parked call event!
         return parkedAt;
     }
 

@@ -680,8 +680,9 @@ class ChannelManager
 
         synchronized (channel)
         {
-            // We are always parked at the given Extension, priority 1 and same context as current
-            Extension ext = new Extension(channel.getCurrentExtension().getContext(), event.getExten(), 1);
+            // todo The context should be "parkedcalls" or whatever has been configured in features.conf
+            // unfortunately we don't get the context in the ParkedCallEvent so for now we'll set it to null.
+            Extension ext = new Extension(null, event.getExten(), 1);
             channel.setParkedAt(ext);
             logger.info("Channel " + channel.getName() + " is parked at " + channel.getParkedAt().getExtension());
         }
