@@ -448,6 +448,39 @@ class ChannelManager
                     event.getCallerIdNum(), event.getCallerIdName(),
                     ChannelState.valueOf(event.getChannelState()), null /* account code not available */);
         }
+        else
+        {
+            // NewStateEvent can provide a new CallerIdNum or CallerIdName not previously received through a
+            // NewCallerIdEvent. This happens at least on outgoing legs from the queue application to agents.
+
+            if (event.getCallerIdNum() != null || event.getCallerIdName() != null)
+            {
+                String cidnum = "";
+                String cidname = "";
+                CallerId currentCallerId = channel.getCallerId();
+
+                if (currentCallerId != null)
+                {
+                    cidnum = currentCallerId.getNumber();
+                    cidname = currentCallerId.getName();
+                }
+
+                if (event.getCallerIdNum() != null)
+                {
+                    cidnum = event.getCallerIdNum();
+                }
+
+                if (event.getCallerIdName() != null)
+                {
+                    cidname = event.getCallerIdName();
+                }
+
+                CallerId newCallerId = new CallerId(cidname, cidnum);
+                logger.debug("Updating CallerId (following NewStateEvent) to: " + newCallerId.toString());
+                channel.setCallerId(newCallerId);
+            }
+        }
+
         if (event.getChannelState() != null)
         {
             synchronized (channel)
