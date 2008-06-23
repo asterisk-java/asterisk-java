@@ -39,14 +39,17 @@ public class QueueMemberEvent extends ResponseEvent
     public static final int AST_DEVICE_INVALID = 4;
     public static final int AST_DEVICE_UNAVAILABLE = 5;
 
+    public static final String MEMBERSHIP_STATIC = "static";
+    public static final String MEMBERSHIP_DYNAMIC = "dynamic";
+
     /**
      * Serializable version identifier.
      */
-    private static final long serialVersionUID = -2293926744791895763L;
+    private static final long serialVersionUID = 0L;
     private String queue;
     private String location;
     private String membership;
-    private String memberName;
+    private String name;
     private Integer penalty;
     private Integer callsTaken;
     private Long lastCall;
@@ -126,7 +129,7 @@ public class QueueMemberEvent extends ResponseEvent
      */
     public boolean isStatic()
     {
-        return membership != null && "static".equals(membership);
+        return MEMBERSHIP_STATIC.equals(membership);
     }
 
     /**
@@ -139,7 +142,7 @@ public class QueueMemberEvent extends ResponseEvent
      */
     public boolean isDynamic()
     {
-        return membership != null && "dynamic".equals(membership);
+        return MEMBERSHIP_DYNAMIC.equals(membership);
     }
 
     /**
@@ -285,18 +288,35 @@ public class QueueMemberEvent extends ResponseEvent
     }
 
     /**
-     * @return the member name supplied for logging when the member is added
+     * Returns the name of the member.
+     *
+     * @return the name of the member supplied for logging when the member is added
+     * @since 1.0.0
      */
-    public String getMemberName()
+    public String getName()
     {
-        return memberName;
+        return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
     }
 
     /**
-     * @param memberName the member name supplied for logging when the member is added
+     * Returns the name of the member.
+     *
+     * @return the name of the member supplied for logging when the member is added
+     * @deprecated since 1.0.0. Use {@link #getName()} instead.
      */
+    public String getMemberName()
+    {
+        return name;
+    }
+
+    // Renamed to "name" in Asterisk 1.6
     public void setMemberName(String memberName)
     {
-        this.memberName = memberName;
+        this.name = memberName;
     }
 }
