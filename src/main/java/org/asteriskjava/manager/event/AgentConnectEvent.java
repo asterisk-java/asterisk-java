@@ -30,10 +30,11 @@ public class AgentConnectEvent extends AbstractAgentEvent
     /**
      * Serial version identifier.
      */
-    private static final long serialVersionUID = 2108033737226142194L;
+    private static final long serialVersionUID = 0L;
 
     private Long holdTime;
     private String bridgedChannel;
+    private Long ringtime;
 
     public AgentConnectEvent(Object source)
     {
@@ -85,4 +86,20 @@ public class AgentConnectEvent extends AbstractAgentEvent
         this.bridgedChannel = bridgedChannel;
     }
 
+    /**
+     * Returns the amount of time the agent's channel was ringing before answered.<p>
+     * Available since Asterisk 1.6.
+     *
+     * @return the amount of time the agent's channel was ringing before answered in seconds.
+     * @since 1.0.0
+     */
+    public Long getRingtime()
+    {
+        return ringtime;
+    }
+
+    public void setRingtime(Long ringtime)
+    {
+        this.ringtime = ringtime;
+    }
 }
