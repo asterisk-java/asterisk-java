@@ -31,7 +31,7 @@ public class AgentsEvent extends ResponseEvent
     /**
      * Serial version identifier
      */
-    private static final long serialVersionUID = -3619197512835308812L;
+    private static final long serialVersionUID = 0L;
 
     /**
      * Agent isn't logged in.
@@ -59,6 +59,7 @@ public class AgentsEvent extends ResponseEvent
     private String loggedInChan;
     private Long loggedInTime;
     private String talkingTo;
+    private String talkingToChan;
 
     /**
      * @param source
@@ -202,5 +203,22 @@ public class AgentsEvent extends ResponseEvent
     public void setTalkingTo(String talkingTo)
     {
         this.talkingTo = talkingTo;
+    }
+
+    /**
+     * Returns the name of the channel this agent is talking to.<p>
+     * Available since Asterisk 1.6.
+     * 
+     * @return the name of the channel this agent is talking to.
+     * @since 1.0.0
+     */
+    public String getTalkingToChan()
+    {
+        return talkingToChan;
+    }
+
+    public void setTalkingToChan(String talkingToChan)
+    {
+        this.talkingToChan = talkingToChan;
     }
 }
