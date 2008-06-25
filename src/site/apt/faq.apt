@@ -122,6 +122,12 @@ public class AgiMBean implements AgiManagement
 		}
 	}
 }
+
+public interface AgiManagement
+{
+	public void start() throws Exception;
+	public void stop() throws Exception;
+}
 +--
 
 * What happens when using the Manager API and Asterisk-Java looses the connection to Asterisk?
