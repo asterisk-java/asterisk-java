@@ -479,6 +479,19 @@ class ChannelManager
                 logger.debug("Updating CallerId (following NewStateEvent) to: " + newCallerId.toString());
                 channel.setCallerId(newCallerId);
             }
+            
+            // Also, NewStateEvent can return a new channel name for the same channel uniqueid, indicating the channel has been
+            // renamed but no related RenameEvent has been received.
+            // This happens with mISDN channels (see AJ-153)
+        	if (event.getChannel() != null && ! event.getChannel().equals(channel.getName()) )
+        	{
+        		logger.info("Renaming channel (following NewStateEvent) '" + channel.getName() + "' to '"
+                        + event.getChannel() + "'");
+                synchronized (channel)
+                {
+                    channel.nameChanged(event.getDateReceived(), event.getChannel());
+                }
+        	}
         }
 
         if (event.getChannelState() != null)
