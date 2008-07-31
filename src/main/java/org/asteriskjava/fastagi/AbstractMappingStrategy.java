@@ -37,13 +37,13 @@ public abstract class AbstractMappingStrategy implements MappingStrategy
     protected Log logger = LogFactory.getLog(getClass());
 
     /**
-     * Returns the class loader to use for loading AgiScript classes and load
+     * Returns the ClassLoader to use for loading AgiScript classes and load
      * other resources like the mapping properties file.<p>
      * By default this method returns the context ClassLoader of the current
      * thread.
-     * You can override this method if you like to use a different class loader.
+     * You can override this method if you prefer using a different class loader.
      *
-     * @return the class loader to use for loading AgiScript classes and load
+     * @return the ClassLoader to use for loading AgiScript classes and load
      *         other resources like the mapping properties file.
      * @since 1.0.0
      */
