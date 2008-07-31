@@ -143,8 +143,7 @@ public class ResourceBundleMappingStrategy extends AbstractMappingStrategy
 
         try
         {
-            ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-            resourceBundle = ResourceBundle.getBundle(resourceBundleName, Locale.getDefault(), classLoader);
+            resourceBundle = ResourceBundle.getBundle(resourceBundleName, Locale.getDefault(), getClassLoader());
         }
         catch (MissingResourceException e)
         {

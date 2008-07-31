@@ -23,9 +23,9 @@ import org.asteriskjava.util.LogFactory;
 
 /**
  * Abstract base class for common mapping strategies.
- * <p>
+ * <p/>
  * If you implement your own mapping strategy you can derive from this class.
- * 
+ *
  * @author srt
  * @since 0.3
  */
@@ -37,10 +37,26 @@ public abstract class AbstractMappingStrategy implements MappingStrategy
     protected Log logger = LogFactory.getLog(getClass());
 
     /**
+     * Returns the class loader to use for loading AgiScript classes and load
+     * other resources like the mapping properties file.<p>
+     * By default this method returns the context ClassLoader of the current
+     * thread.
+     * You can override this method if you like to use a different class loader.
+     *
+     * @return the class loader to use for loading AgiScript classes and load
+     *         other resources like the mapping properties file.
+     * @since 1.0.0
+     */
+    protected ClassLoader getClassLoader()
+    {
+        return Thread.currentThread().getContextClassLoader();
+    }
+
+    /**
      * Creates a new instance of an AGI script.
-     * 
+     *
      * @param className Class name of the AGI script. The class must implement
-     *            {@link AgiScript}.
+     *                  {@link AgiScript}.
      * @return the created instance of the AGI script class. If the instance
      *         can't be created an error is logged and <code>null</code> is
      *         returned.
@@ -57,8 +73,7 @@ public abstract class AbstractMappingStrategy implements MappingStrategy
 
         try
         {
-            ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-            tmpClass = classLoader.loadClass(className);
+            tmpClass = getClassLoader().loadClass(className);
         }
         catch (ClassNotFoundException e1)
         {
