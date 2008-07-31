@@ -16,11 +16,7 @@
  */
 package org.asteriskjava.fastagi;
 
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  * A MappingStrategy that is configured via a resource bundle.<p>
@@ -147,7 +143,8 @@ public class ResourceBundleMappingStrategy extends AbstractMappingStrategy
 
         try
         {
-            resourceBundle = ResourceBundle.getBundle(resourceBundleName);
+            ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+            resourceBundle = ResourceBundle.getBundle(resourceBundleName, Locale.getDefault(), classLoader);
         }
         catch (MissingResourceException e)
         {

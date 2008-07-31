@@ -57,7 +57,8 @@ public abstract class AbstractMappingStrategy implements MappingStrategy
 
         try
         {
-            tmpClass = Class.forName(className);
+            ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+            tmpClass = classLoader.loadClass(className);
         }
         catch (ClassNotFoundException e1)
         {
