@@ -24,6 +24,7 @@ import org.asteriskjava.manager.response.*;
 import org.asteriskjava.util.DateUtil;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
+import org.asteriskjava.util.AstUtil;
 import org.asteriskjava.config.ConfigFile;
 import org.asteriskjava.AsteriskVersion;
 
@@ -1044,7 +1045,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         }
 
         cb = callbackData.getCallback();
-        if (originateEvent.getUniqueId() != null)
+        if (! AstUtil.isNull(originateEvent.getUniqueId()))
         {
             channel = channelManager.getChannelImplById(originateEvent.getUniqueId());
         }
