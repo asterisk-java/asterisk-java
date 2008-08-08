@@ -292,7 +292,7 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
      */
     public void setTimeout(Integer timeout)
     {
-        this.timeout = new Long(timeout.longValue());
+        this.timeout = timeout.longValue();
     }
 
     /**

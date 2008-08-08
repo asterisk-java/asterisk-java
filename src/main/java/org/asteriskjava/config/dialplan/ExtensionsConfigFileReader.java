@@ -69,28 +69,25 @@ public class ExtensionsConfigFileReader extends ConfigFileReader
     /* Roughly corresponds to pbx_config.c:2222 */
     protected ConfigExtension parseExtension(String configfile, int lineno, String line) throws ConfigParseException
     {
-        String dupline = new String(line);
-        
-        ConfigVariable initialVariable = parseVariable(configfile, lineno, dupline);
-        
+        ConfigVariable initialVariable = parseVariable(configfile, lineno, line);
         
         if(!initialVariable.getName().equals("exten"))
-            throw new ConfigParseException(configfile, lineno, "missing 'exten' near " + dupline);
-        dupline = initialVariable.getValue().trim();
+            throw new ConfigParseException(configfile, lineno, "missing 'exten' near " + line);
+        line = initialVariable.getValue().trim();
 
-        int nameIndex = dupline.indexOf(",", 0);
+        int nameIndex = line.indexOf(",", 0);
         if(nameIndex == -1)
-            throw new ConfigParseException(configfile, lineno, "missing extension name near " + dupline);
-        String name = dupline.substring(0, nameIndex);
-        dupline = dupline.substring(name.length()+1, dupline.length()).trim();
+            throw new ConfigParseException(configfile, lineno, "missing extension name near " + line);
+        String name = line.substring(0, nameIndex);
+        line = line.substring(name.length()+1, line.length()).trim();
         
-        int priorityDelimiter = dupline.indexOf(",", 0);
+        int priorityDelimiter = line.indexOf(",", 0);
         if(priorityDelimiter == -1)
-            throw new ConfigParseException(configfile, lineno, "missing extension priority near " + dupline);
-        String priority = dupline.substring(0, priorityDelimiter);
-        dupline = dupline.substring(priority.length()+1, dupline.length()).trim();
+            throw new ConfigParseException(configfile, lineno, "missing extension priority near " + line);
+        String priority = line.substring(0, priorityDelimiter);
+        line = line.substring(priority.length()+1, line.length()).trim();
 
-        String [] application = harvestApplicationWithArguments(dupline);
+        String [] application = harvestApplicationWithArguments(line);
         
         return new ConfigExtension(configfile,lineno,name,priority,application);
     }
@@ -139,13 +136,15 @@ public class ExtensionsConfigFileReader extends ConfigFileReader
                 if(!data.trim().equals(""))
                 {
                     String [] dataSplit = data.split("\\|");
-                    for(int i = 0; i < dataSplit.length; i++)
-                        args.add(dataSplit[i].trim());
+                    for (String aDataSplit : dataSplit)
+                    {
+                        args.add(aDataSplit.trim());
+                    }
                 }
             }
         }
         
-        return args.toArray(new String[0]);
+        return args.toArray(new String[args.size()]);
     }
 
     public ExtensionsConfigFile readExtensionsFile(String configfile) throws IOException, ConfigParseException
@@ -164,18 +163,27 @@ public class ExtensionsConfigFileReader extends ConfigFileReader
         int inQuotes = 0;
         
         char [] startChars = start.toCharArray();
-        for (int i = 0; i < startChars.length; i++) {
-            if (inEscape != 0) {
-                dataPut += startChars[i];       /* Always goes verbatim */
+        for (char startChar : startChars)
+        {
+            if (inEscape != 0)
+            {
+                dataPut += startChar;       /* Always goes verbatim */
                 inEscape = 0;
-            } else {
-                if (startChars[i] == '\\') {
+            }
+            else
+            {
+                if (startChar == '\\')
+                {
                     inEscape = 1;      /* Do not copy \ into the data */
-                } else if (startChars[i] == '\'') {
+                }
+                else if (startChar == '\'')
+                {
                     inQuotes = 1 - inQuotes;   /* Do not copy ' into the data */
-                } else {
+                }
+                else
+                {
                     /* Replace , with |, unless in quotes */
-                    dataPut += inQuotes != 0 ? startChars[i] : ((startChars[i] == find) ? replace_with : startChars[i]);
+                    dataPut += inQuotes != 0 ? startChar : ((startChar == find) ? replace_with : startChar);
                 }
             }
         }

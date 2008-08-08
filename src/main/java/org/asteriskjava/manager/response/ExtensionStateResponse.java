@@ -77,15 +77,15 @@ public class ExtensionStateResponse extends ManagerResponse
         StringBuffer sb;
 
         sb = new StringBuffer(getClass().getName() + ": ");
-        sb.append("actionId='" + getActionId() + "'; ");
-        sb.append("message='" + getMessage() + "'; ");
-        sb.append("response='" + getResponse() + "'; ");
-        sb.append("uniqueId='" + getUniqueId() + "'; ");
-        sb.append("exten='" + getExten() + "'; ");
-        sb.append("context='" + getContext() + "'; ");
-        sb.append("hint='" + getHint() + "'; ");
-        sb.append("status='" + getStatus() + "'; ");
-        sb.append("systemHashcode=" + System.identityHashCode(this));
+        sb.append("actionId='").append(getActionId()).append("'; ");
+        sb.append("message='").append(getMessage()).append("'; ");
+        sb.append("response='").append(getResponse()).append("'; ");
+        sb.append("uniqueId='").append(getUniqueId()).append("'; ");
+        sb.append("exten='").append(getExten()).append("'; ");
+        sb.append("context='").append(getContext()).append("'; ");
+        sb.append("hint='").append(getHint()).append("'; ");
+        sb.append("status='").append(getStatus()).append("'; ");
+        sb.append("systemHashcode=").append(System.identityHashCode(this));
 
         return sb.toString();
     }

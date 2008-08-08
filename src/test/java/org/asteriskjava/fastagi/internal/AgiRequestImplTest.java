@@ -284,7 +284,7 @@ public class AgiRequestImplTest extends TestCase
     {
         try
         {
-            new AgiRequestImpl((List<String>) null);
+            new AgiRequestImpl(null);
             fail("No IllegalArgumentException thrown.");
         }
         catch (IllegalArgumentException e)

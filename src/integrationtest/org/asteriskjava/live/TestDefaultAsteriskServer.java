@@ -69,6 +69,7 @@ public class TestDefaultAsteriskServer extends AsteriskServerTestCase
         }
         catch (InterruptedException e)
         {
+            // swallow
         }
 
         Collection<AsteriskQueue> queues = server.getQueues();

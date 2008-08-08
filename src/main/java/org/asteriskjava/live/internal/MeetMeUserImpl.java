@@ -163,20 +163,20 @@ class MeetMeUserImpl extends AbstractLiveObject implements MeetMeUser
 
         synchronized (this)
         {
-            sb.append("dateJoined='" + getDateJoined() + "',");
-            sb.append("dateLeft='" + getDateLeft() + "',");
-            sb.append("talking=" + isTalking() + ",");
-            sb.append("muted=" + isMuted() + ",");
-            sb.append("room=" + room + ",");
+            sb.append("dateJoined='").append(getDateJoined()).append("',");
+            sb.append("dateLeft='").append(getDateLeft()).append("',");
+            sb.append("talking=").append(isTalking()).append(",");
+            sb.append("muted=").append(isMuted()).append(",");
+            sb.append("room=").append(room).append(",");
             systemHashcode = System.identityHashCode(this);
         }
         sb.append("channel=AsteriskChannel[");
         synchronized (channel)
         {
-            sb.append("id='" + channel.getId() + "',");
-            sb.append("name='" + channel.getName() + "'],");
+            sb.append("id='").append(channel.getId()).append("',");
+            sb.append("name='").append(channel.getName()).append("'],");
         }
-        sb.append("systemHashcode=" + systemHashcode);
+        sb.append("systemHashcode=").append(systemHashcode);
         sb.append("]");
 
         return sb.toString();

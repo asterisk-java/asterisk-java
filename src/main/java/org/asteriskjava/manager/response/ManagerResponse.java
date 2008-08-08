@@ -195,12 +195,12 @@ public class ManagerResponse implements Serializable
         StringBuffer sb;
 
         sb = new StringBuffer(100);
-        sb.append(getClass().getName() + ": ");
-        sb.append("actionId='" + getActionId() + "'; ");
-        sb.append("message='" + getMessage() + "'; ");
-        sb.append("response='" + getResponse() + "'; ");
-        sb.append("uniqueId='" + getUniqueId() + "'; ");
-        sb.append("systemHashcode=" + System.identityHashCode(this));
+        sb.append(getClass().getName()).append(": ");
+        sb.append("actionId='").append(getActionId()).append("'; ");
+        sb.append("message='").append(getMessage()).append("'; ");
+        sb.append("response='").append(getResponse()).append("'; ");
+        sb.append("uniqueId='").append(getUniqueId()).append("'; ");
+        sb.append("systemHashcode=").append(System.identityHashCode(this));
 
         return sb.toString();
     }

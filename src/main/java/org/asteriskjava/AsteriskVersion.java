@@ -111,12 +111,7 @@ public class AsteriskVersion implements Comparable<AsteriskVersion>, Serializabl
 
         AsteriskVersion that = (AsteriskVersion) o;
 
-        if (version != that.version)
-        {
-            return false;
-        }
-
-        return true;
+        return version == that.version;
     }
 
     @Override

@@ -21,7 +21,7 @@ public class SofthangupTest extends AsteriskServerTestCase
         originate.setChannel("Local/1310");
         originate.setContext("default");
         originate.setExten("1340");
-        originate.setPriority(new Integer(1));
+        originate.setPriority(1);
         
         //ManagerResponse response = managerConnection.sendAction(originate);
         //System.out.println("Response: " + response);

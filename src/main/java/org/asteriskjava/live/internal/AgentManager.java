@@ -138,12 +138,10 @@ public class AgentManager
      */
     AsteriskAgentImpl getAgentByAgentId(String agentId)
     {
-        AsteriskAgentImpl agent = null;
         synchronized (agents)
         {
-            agent = agents.get(agentId);
+            return agents.get(agentId);
         }
-        return agent;
     }
 
     /**

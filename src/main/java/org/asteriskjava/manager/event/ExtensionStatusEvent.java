@@ -48,7 +48,7 @@ public class ExtensionStatusEvent extends ManagerEvent
     /**
      * One or more devices INUSE.
      */
-    public static final int INUSE = 1 << 0;
+    public static final int INUSE = 1;
 
     /**
      * All devices BUSY.

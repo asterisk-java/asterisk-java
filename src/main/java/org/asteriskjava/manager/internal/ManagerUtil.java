@@ -50,10 +50,10 @@ public class ManagerUtil
         final StringBuilder sb;
         
         sb = new StringBuilder(b.length * 2);
-        for (int i = 0; i < b.length; i++)
+        for (byte aB : b)
         {
-            sb.append(hexChar[(b[i] & 0xf0) >>> 4]);
-            sb.append(hexChar[b[i] & 0x0f]);
+            sb.append(hexChar[(aB & 0xf0) >>> 4]);
+            sb.append(hexChar[aB & 0x0f]);
         }
         return sb.toString();
     }

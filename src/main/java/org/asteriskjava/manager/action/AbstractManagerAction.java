@@ -74,6 +74,7 @@ public abstract class AbstractManagerAction implements ManagerAction
             }
             catch (Exception e) //NOPMD
             {
+                // swallow
             }
         }
         sb.append("systemHashcode=").append(System.identityHashCode(this));

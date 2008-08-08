@@ -136,7 +136,7 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
     @SuppressWarnings("unchecked")
     public List<AsteriskQueueEntry> getEntries()
     {
-        List<AsteriskQueueEntry> copy = null;
+        List<AsteriskQueueEntry> copy;
 
         synchronized (entries)
         {
@@ -479,7 +479,7 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
      */
     AsteriskQueueMemberImpl getMemberByLocation(String location)
     {
-        AsteriskQueueMemberImpl member = null;
+        AsteriskQueueMemberImpl member;
         synchronized (members)
         {
             member = members.get(location);

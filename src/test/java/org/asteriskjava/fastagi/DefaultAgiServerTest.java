@@ -73,7 +73,7 @@ public class DefaultAgiServerTest extends TestCase
         }
         catch (IOException e)
         {
-            
+            // swallow
         }
         Thread.sleep(500);
 

@@ -44,7 +44,7 @@ public class ActionBuilderImplTest extends TestCase
 
         myAction = new MyAction();
         myAction.setFirstProperty("first value");
-        myAction.setSecondProperty(Integer.valueOf(2));
+        myAction.setSecondProperty(2);
         myAction.setNonPublicProperty("private");
 
         actual = actionBuilder.buildAction(myAction);

@@ -115,8 +115,7 @@ class ResponseBuilderImpl implements ResponseBuilder
         else if(attributes.containsKey("line-000000-000000"))
         {
         	// this attribute will be there if the file has any lines at all
-        	final GetConfigResponse getConfigResponse = new GetConfigResponse();
-        	response = getConfigResponse;
+        	response = new GetConfigResponse();
         }
         else
         {

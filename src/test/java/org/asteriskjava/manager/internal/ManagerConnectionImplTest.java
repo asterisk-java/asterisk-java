@@ -597,12 +597,12 @@ public class ManagerConnectionImplTest extends TestCase
         for (int i = 0; i < count; i++)
         {
             final int index = i;
-            expect(list.add(new Integer(index))).andReturn(true);
+            expect(list.add(index)).andReturn(true);
             mc.addEventListener(new ManagerEventListener()
             {
                 public void onManagerEvent(ManagerEvent event)
                 {
-                    list.add(new Integer(index));
+                    list.add(index);
                 }
             });
         }
