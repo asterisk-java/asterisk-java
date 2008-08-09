@@ -274,6 +274,7 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
         }
     }
 
+    @Override
     public void shutdown() throws IllegalStateException
     {
         // setting the death flag causes the accept() loop to exit when a
