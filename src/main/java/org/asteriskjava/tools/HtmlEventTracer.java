@@ -28,7 +28,7 @@ import java.util.Map;
  * </ul>
  * Usage: java org.asteriskjava.tools.HtmlEventTracer host username password
  *
- * @version $Id:$
+ * @version $Id$
  */
 public class HtmlEventTracer implements ManagerEventListener
 {
@@ -82,6 +82,7 @@ public class HtmlEventTracer implements ManagerEventListener
 
         Runtime.getRuntime().addShutdownHook(new Thread()
         {
+            @Override
             public void run()
             {
                 tracer.write();
