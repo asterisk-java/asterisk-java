@@ -52,6 +52,7 @@ public class DbDelAction extends AbstractManagerAction
         this.key = key;
     }
 
+    @Override
     public String getAction()
     {
         return "DBDel";
