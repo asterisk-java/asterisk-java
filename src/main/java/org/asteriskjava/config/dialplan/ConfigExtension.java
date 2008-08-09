@@ -34,6 +34,7 @@ public class ConfigExtension extends ConfigElement
         return sb.append(toString());
     }
     
+    @Override
     public String toString()
     {
         return "exten => " + name + "," + priority + "," + Arrays.asList(application);   

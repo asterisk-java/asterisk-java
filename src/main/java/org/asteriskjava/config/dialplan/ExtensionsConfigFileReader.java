@@ -1,16 +1,10 @@
 package org.asteriskjava.config.dialplan;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
-import org.asteriskjava.config.Category;
 import org.asteriskjava.config.ConfigElement;
-import org.asteriskjava.config.ConfigFile;
-import org.asteriskjava.config.ConfigFileImpl;
 import org.asteriskjava.config.ConfigFileReader;
 import org.asteriskjava.config.ConfigParseException;
 import org.asteriskjava.config.ConfigVariable;
@@ -26,6 +20,7 @@ public class ExtensionsConfigFileReader extends ConfigFileReader
      *      1. [general] and [globals] are allowed to be a context here if they contain only configvariables
      *      2. switch and ignorepat are treated like regular ConfigVariable.
      */
+    @Override
     protected ConfigElement processTextLine(String configfile, int lineno, String line) throws ConfigParseException
     {
         ConfigElement configElement;
