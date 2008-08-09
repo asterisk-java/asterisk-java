@@ -354,6 +354,7 @@ public class DefaultManagerConnection implements ManagerConnection
         return impl.getState();
     }
 
+    @Override
     public String toString()
     {
         final StringBuilder sb = new StringBuilder("DefaultManagerConnection[");
