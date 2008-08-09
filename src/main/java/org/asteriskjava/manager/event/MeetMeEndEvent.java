@@ -27,6 +27,7 @@ package org.asteriskjava.manager.event;
  */
 public class MeetMeEndEvent extends ManagerEvent
 {
+    private static final long serialVersionUID = 510266716726148586L;
     private String meetMe;
 
     /**

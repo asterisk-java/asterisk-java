@@ -29,6 +29,7 @@ package org.asteriskjava.manager.event;
  */
 public class ChannelUpdateEvent extends ManagerEvent
 {
+    private static final long serialVersionUID = 3141630567125429466L;
     private String channelType;
     private String channel;
     private String uniqueId;

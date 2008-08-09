@@ -28,6 +28,7 @@ package org.asteriskjava.manager.event;
  */
 public class NewAccountCodeEvent extends ManagerEvent
 {
+    private static final long serialVersionUID = -1786512014173534223L;
     private String channel;
     private String uniqueId;
     private String accountCode;

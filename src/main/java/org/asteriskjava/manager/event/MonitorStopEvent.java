@@ -28,6 +28,7 @@ package org.asteriskjava.manager.event;
  */
 public class MonitorStopEvent extends AbstractMonitorEvent
 {
+    private static final long serialVersionUID = -2605389608972504362L;
     public MonitorStopEvent(Object source)
     {
         super(source);
