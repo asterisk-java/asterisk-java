@@ -24,6 +24,7 @@ public class IncludeDirective extends ConfigDirective
         return includeFile;
     }
 
+    @Override
     protected StringBuilder rawFormat(StringBuilder sb)
     {
         sb.append("#include \"").append(includeFile).append("\"");

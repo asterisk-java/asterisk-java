@@ -45,6 +45,7 @@ public class ConfigVariable extends ConfigElement
         this.value = value;
     }
 
+    @Override
     protected StringBuilder rawFormat(StringBuilder sb)
     {
         sb.append(name).append(" = ");
@@ -55,6 +56,7 @@ public class ConfigVariable extends ConfigElement
         return sb;
     }
     
+    @Override
     public String toString()
     {
         return name+"="+value;

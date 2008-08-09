@@ -6,6 +6,7 @@ package org.asteriskjava.config;
  */
 public class MissingEqualSignException extends ConfigParseException
 {
+    private static final long serialVersionUID = 2694490330074765342L;
     public MissingEqualSignException(String filename, int lineno, String format, Object... params)
     {
         super(filename, lineno, format, params);

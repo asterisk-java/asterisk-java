@@ -6,6 +6,7 @@ package org.asteriskjava.config;
  */
 public class MissingDirectiveParameterException extends ConfigParseException
 {
+    private static final long serialVersionUID = -3802754628756681515L;
     public MissingDirectiveParameterException(String filename, int lineno, String format, Object... params)
     {
         super(filename, lineno, format, params);

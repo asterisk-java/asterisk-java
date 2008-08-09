@@ -102,6 +102,7 @@ public class Category extends ConfigElement
         return sb.toString();
     }
 
+    @Override
     protected StringBuilder rawFormat(StringBuilder sb)
     {
         sb.append("[").append(name).append("]");
@@ -131,6 +132,7 @@ public class Category extends ConfigElement
         return sb;
     }
     
+    @Override
     public String toString()
     {
         return name;
