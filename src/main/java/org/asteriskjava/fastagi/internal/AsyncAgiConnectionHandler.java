@@ -16,21 +16,13 @@
  */
 package org.asteriskjava.fastagi.internal;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import org.asteriskjava.fastagi.AgiChannel;
 import org.asteriskjava.fastagi.AgiException;
-import org.asteriskjava.fastagi.AgiRequest;
-import org.asteriskjava.fastagi.AgiScript;
 import org.asteriskjava.fastagi.MappingStrategy;
-import org.asteriskjava.fastagi.command.VerboseCommand;
 import org.asteriskjava.fastagi.command.AsyncAgiBreakCommand;
-import org.asteriskjava.util.Log;
-import org.asteriskjava.util.LogFactory;
-import org.asteriskjava.util.SocketConnectionFacade;
 import org.asteriskjava.manager.event.AsyncAgiEvent;
 import org.asteriskjava.manager.ManagerConnection;
 
@@ -72,17 +64,20 @@ public class AsyncAgiConnectionHandler extends AgiConnectionHandler
         setIgnoreMissingScripts(true);
     }
 
+    @Override
     protected AgiReader createReader()
     {
         return new AsyncAgiReader(connection, environment, asyncAgiEvents);
     }
 
+    @Override
     protected AgiWriter createWriter()
     {
         writer = new AsyncAgiWriter(connection, channelName);
         return writer;
     }
 
+    @Override
     protected void release()
     {
         if (writer != null && (getScript() != null || ! isIgnoreMissingScripts()))

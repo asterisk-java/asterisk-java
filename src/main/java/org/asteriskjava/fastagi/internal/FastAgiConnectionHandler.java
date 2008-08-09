@@ -18,14 +18,7 @@ package org.asteriskjava.fastagi.internal;
 
 import java.io.IOException;
 
-import org.asteriskjava.fastagi.AgiChannel;
-import org.asteriskjava.fastagi.AgiException;
-import org.asteriskjava.fastagi.AgiRequest;
-import org.asteriskjava.fastagi.AgiScript;
 import org.asteriskjava.fastagi.MappingStrategy;
-import org.asteriskjava.fastagi.command.VerboseCommand;
-import org.asteriskjava.util.Log;
-import org.asteriskjava.util.LogFactory;
 import org.asteriskjava.util.SocketConnectionFacade;
 
 /**
@@ -56,16 +49,19 @@ public class FastAgiConnectionHandler extends AgiConnectionHandler
         this.socket = socket;
     }
 
+    @Override
     protected AgiReader createReader()
     {
         return new FastAgiReader(socket);
     }
 
+    @Override
     protected AgiWriter createWriter()
     {
         return new FastAgiWriter(socket);
     }
 
+    @Override
     protected void release()
     {
         try

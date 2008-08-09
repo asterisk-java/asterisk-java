@@ -6,7 +6,6 @@ import org.asteriskjava.fastagi.reply.AgiReply;
 import org.asteriskjava.manager.event.AsyncAgiEvent;
 import org.asteriskjava.manager.ManagerConnection;
 
-import java.util.Map;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 
