@@ -166,7 +166,7 @@ public class ConfigFileReader
                     {
                         buffer.reset();
 
-                        int commentLength = (position + 1) - buffer.position();
+                        //int commentLength = (position + 1) - buffer.position();
 
                         //buffer.reset();
                         //for (int i = 0; i < commentLength; i++)

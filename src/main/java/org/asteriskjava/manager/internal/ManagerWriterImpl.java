@@ -20,8 +20,6 @@ import java.io.IOException;
 
 import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.manager.action.ManagerAction;
-import org.asteriskjava.util.Log;
-import org.asteriskjava.util.LogFactory;
 import org.asteriskjava.util.SocketConnectionFacade;
 
 
@@ -36,7 +34,7 @@ public class ManagerWriterImpl implements ManagerWriter
     /**
      * Instance logger.
      */
-    private final Log logger = LogFactory.getLog(getClass());
+    //private final Log logger = LogFactory.getLog(getClass());
 
     /**
      * The action builder utility to convert ManagerAction to a String suitable to be sent to the

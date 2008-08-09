@@ -36,7 +36,7 @@ public class AsteriskQueueMemberImplTest extends TestCase
     private AsteriskQueueMemberImpl queueMember;
     private int numberOfChanges;
     private AsteriskServerImpl server;
-    private QueueManager qManager;
+    //private QueueManager qManager;
     private AsteriskQueueImpl queue;
 
     @Override

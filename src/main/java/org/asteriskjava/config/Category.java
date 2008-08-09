@@ -17,7 +17,7 @@ public class Category extends ConfigElement
     /**
      * The last object in the list will get assigned any trailing comments when EOF is hit.
      */
-    private String trailingComment;
+    //private String trailingComment;
 
     public Category(String name)
     {
