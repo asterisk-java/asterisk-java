@@ -5,7 +5,6 @@ package org.asteriskjava.live.internal;
 
 import java.util.Date;
 
-import org.asteriskjava.live.AsteriskChannel;
 import org.asteriskjava.live.OriginateCallback;
 import org.asteriskjava.manager.action.OriginateAction;
 

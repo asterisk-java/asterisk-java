@@ -130,6 +130,7 @@ class AsteriskQueueEntryImpl extends AbstractLiveObject implements AsteriskQueue
         firePropertyChange(PROPERTY_REPORTED_POSITION, oldPosition, reportedPosition);
     }
 
+    @Override
     public String toString()
     {
         StringBuffer sb;

@@ -19,7 +19,6 @@ package org.asteriskjava.live.internal;
 import org.asteriskjava.live.*;
 import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.manager.response.ManagerError;
-import org.asteriskjava.manager.action.AbsoluteTimeoutAction;
 import org.asteriskjava.manager.action.QueuePenaltyAction;
 
 /**
