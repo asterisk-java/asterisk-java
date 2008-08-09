@@ -8,6 +8,7 @@ public class ConfigFileParserTest extends TestCase
 {
     ConfigFileReader configFileReader;
 
+    @Override
     public void setUp()
     {
         configFileReader = new ConfigFileReader();

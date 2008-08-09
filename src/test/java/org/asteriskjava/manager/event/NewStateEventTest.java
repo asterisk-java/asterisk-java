@@ -6,6 +6,7 @@ public class NewStateEventTest extends TestCase
 {
     private NewStateEvent newStateEvent;
 
+    @Override
     public void setUp()
     {
         newStateEvent = new NewStateEvent(this);

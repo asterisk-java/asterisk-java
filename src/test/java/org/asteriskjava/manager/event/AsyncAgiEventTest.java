@@ -2,7 +2,6 @@ package org.asteriskjava.manager.event;
 
 import junit.framework.TestCase;
 
-import java.util.Map;
 import java.util.List;
 
 public class AsyncAgiEventTest extends TestCase
