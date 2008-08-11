@@ -465,4 +465,9 @@ public class AgiOperations implements AgiChannel
     {
         getChannel().speechRecognize(prompt, timeout, offset);
     }
+
+    public void continueAt(String context, String extension, String priority) throws AgiException
+    {
+        getChannel().continueAt(context, extension, priority);
+    }
 }

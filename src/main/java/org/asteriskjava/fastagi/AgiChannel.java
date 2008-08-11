@@ -732,4 +732,22 @@ public interface AgiChannel
     void speechRecognize(String prompt, int timeout) throws AgiException;
 
     void speechRecognize(String prompt, int timeout, int offset) throws AgiException;
+
+    /**
+     * Defines the point in the dialplan where the call will continue when the AGI script
+     * returns.<p>
+     * This is a shortcut for calling {@link #setContext(String)}, {@link #setExtension(String)}
+     * and {@link #setPriority(String)} in series. 
+     *
+     * @param context   the context for continuation upon exiting the application.
+     * @param extension the extension for continuation upon exiting the
+     *                  application.
+     * @param priority  the priority or label for continuation upon exiting the
+     *                  application.
+     * @see #setContext(String)
+     * @see #setExtension(String)
+     * @see #setPriority(String)
+     * @since 1.0.0
+     */
+    void continueAt(String context, String extension, String priority) throws AgiException;
 }

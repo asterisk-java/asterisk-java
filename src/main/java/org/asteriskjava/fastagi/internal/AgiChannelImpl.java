@@ -433,4 +433,11 @@ public class AgiChannelImpl implements AgiChannel
     {
         sendCommand(new SpeechRecognizeCommand(prompt, timeout, offset));
     }
+
+    public void continueAt(String context, String extension, String priority) throws AgiException
+    {
+        setContext(context);
+        setExtension(extension);
+        setPriority(priority);
+    }
 }
