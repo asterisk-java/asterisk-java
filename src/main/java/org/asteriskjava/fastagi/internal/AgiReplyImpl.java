@@ -32,7 +32,7 @@ import org.asteriskjava.fastagi.reply.AgiReply;
 public class AgiReplyImpl implements Serializable, AgiReply
 {
     private static final Pattern STATUS_PATTERN = Pattern.compile("^(\\d{3})[ -]");
-    private static final Pattern RESULT_PATTERN = Pattern.compile("^200 result= *(\\S+)");
+    private static final Pattern RESULT_PATTERN = Pattern.compile("^200 result=(\\S+)");
     private static final Pattern PARENTHESIS_PATTERN = Pattern.compile("^200 result=\\S* +\\((.*)\\)");
     private static final Pattern ADDITIONAL_ATTRIBUTES_PATTERN = Pattern.compile("^200 result=\\S* +(\\(.*\\) )?(.+)$");
     private static final Pattern ADDITIONAL_ATTRIBUTE_PATTERN = Pattern.compile("(\\S+)=(\\S+)");
@@ -154,6 +154,8 @@ public class AgiReplyImpl implements Serializable, AgiReply
         {
             result = matcher.group(1);
         }
+        else
+            result = "";
         return result;
     }
 

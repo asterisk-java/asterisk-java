@@ -168,4 +168,19 @@ public class AgiReplyImplTest extends TestCase
         assertEquals("Incorrect status", AgiReplyImpl.SC_SUCCESS, reply.getStatus());
         assertEquals("Incorrect extra", "timeout", reply.getExtra());
     }
+    
+    public void testBuildReplyWithEmptyResultAndTimeout()
+    {
+        AgiReplyImpl reply;
+
+        lines.add("200 result= (timeout)");
+
+        reply = new AgiReplyImpl(lines);
+
+        assertFalse("Incorrect result",reply.getResult().equals("timeout"));
+        assertEquals("Incorrect result", "", reply.getResult());
+        assertEquals("Incorrect extra", "timeout", reply.getExtra());
+        
+
+    }
 }
