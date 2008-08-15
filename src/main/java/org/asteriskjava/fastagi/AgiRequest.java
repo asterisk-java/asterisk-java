@@ -39,7 +39,9 @@ public interface AgiRequest
     /**
      * Returns the name of the script to execute including its full path.<p>
      * This corresponds to the request url with protocol, host, port and
-     * parameters stripped off.
+     * parameters stripped off.<p>
+     * As Async AGI does not yet pass a script parameter this property will
+     * be <code>null</code> for requests received through Async AGI.
      * 
      * @return the name of the script to execute.
      */

@@ -23,17 +23,38 @@ public class AsyncAgiServer extends AbstractAgiServer implements ManagerEventLis
     private final Log logger = LogFactory.getLog(getClass());
     private final Map<Integer, AsyncAgiConnectionHandler> connectionHandlers;
 
+    /**
+     * Creates a new AsyncAgiServer.<p>
+     * Note that you must set a {@link org.asteriskjava.fastagi.MappingStrategy} before using it.
+     * @see #setMappingStrategy(MappingStrategy) 
+     */
     public AsyncAgiServer()
     {
         this.connectionHandlers = new HashMap<Integer, AsyncAgiConnectionHandler>();
     }
 
+    /**
+     * Creates a new AsyncAgiServer with the given MappingStrategy.<p>
+     * Please note that Async AGI does not currently support passing a script name, so your
+     * MappingStrategy must be aware that the {@link org.asteriskjava.fastagi.AgiRequest#getScript() script}
+     * property of the AgiRequests will likely be <code>null</code>.
+     *
+     * @param mappingStrategy the MappingStrategy to use to determine which AGI script to run
+     *                        for a certain request.
+     */
     public AsyncAgiServer(MappingStrategy mappingStrategy)
     {
         this();
         setMappingStrategy(mappingStrategy);
     }
 
+    /**
+     * Creates a new AsyncAgiServer that will execute the given AGI script for every
+     * request.<p>
+     * Internally this constructor uses a {@link org.asteriskjava.fastagi.StaticMappingStrategy}.
+     *
+     * @param agiScript the AGI script to execute.
+     */
     public AsyncAgiServer(AgiScript agiScript)
     {
         this();
@@ -109,7 +130,7 @@ public class AsyncAgiServer extends AbstractAgiServer implements ManagerEventLis
         }
 
         removeConnectionHandler(connection, renameEvent.getChannel());
-        setConnectionHandler(connection,  renameEvent.getNewname(), connectionHandler);
+        setConnectionHandler(connection, renameEvent.getNewname(), connectionHandler);
 
         connectionHandler.updateChannelName(renameEvent.getNewname());
     }
