@@ -33,6 +33,7 @@ public class AstUtil
         NULL_LITERALS.add("<unknown>");
         NULL_LITERALS.add("unknown");
         NULL_LITERALS.add("<none>");
+        NULL_LITERALS.add("-none-");
         NULL_LITERALS.add("(None)");
         NULL_LITERALS.add("<Not set>");
         NULL_LITERALS.add("(not set)");

@@ -62,4 +62,9 @@ public class AstUtilTest extends TestCase
         assertTrue("unknown must be null", AstUtil.isNull("unknown"));
         assertTrue("<unknown> must be null", AstUtil.isNull("<unknown>"));
     }
+
+    public void testIsNullForIpAddressInPeerEntryEvent()
+    {
+        assertTrue("\"-none-\" must be considered null", AstUtil.isNull("-none-"));
+    }
 }
