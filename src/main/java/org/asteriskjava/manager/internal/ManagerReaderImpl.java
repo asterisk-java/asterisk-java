@@ -170,15 +170,27 @@ public class ManagerReaderImpl implements ManagerReader
                 if (line.length() > 0)
                 {
                     int delimiterIndex;
+                    int delimiterLength;
 
-                    delimiterIndex = line.indexOf(": ");
-                    if (delimiterIndex > 0 && line.length() > delimiterIndex + 2)
+                    //delimiterIndex = line.indexOf(": ");
+                    // begin of workaround for Astersik bug 13319
+                    // see AJ-77
+                    delimiterIndex = line.indexOf(" ");
+                    delimiterLength = 1;
+                    if (delimiterIndex > 0 && line.charAt(delimiterIndex - 1) == ':')
+                    {
+                        delimiterIndex--;
+                        delimiterLength++;
+                    }
+                    // end of workaround for Astersik bug 13319
+
+                    if (delimiterIndex > 0 && line.length() > delimiterIndex + delimiterLength)
                     {
                         String name;
                         String value;
 
                         name = line.substring(0, delimiterIndex).toLowerCase(Locale.ENGLISH);
-                        value = line.substring(delimiterIndex + 2);
+                        value = line.substring(delimiterIndex + delimiterLength);
 
                         buffer.put(name, value);
                         // TODO tracing

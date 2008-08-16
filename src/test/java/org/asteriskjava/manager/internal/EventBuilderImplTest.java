@@ -376,4 +376,18 @@ public class EventBuilderImplTest extends TestCase
         assertEquals("Duration property not set correctly", new Long(569108),
                 ((MeetMeLeaveEvent) event).getDuration());
     }
+
+    public void testBuildEventWithDouble()
+    {
+        Map<String, String> properties = new HashMap<String, String>();
+        ManagerEvent event;
+
+        properties.put("event", "RTPReceiverStat");
+        properties.put("transit", "12.3456");
+        event = eventBuilder.buildEvent(this, properties);
+
+        assertNotNull(event);
+        assertEquals("Transit property not set correctly", 12.3456,
+                ((RtpReceiverStatEvent) event).getTransit());
+    }
 }

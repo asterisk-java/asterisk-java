@@ -121,6 +121,10 @@ class EventBuilderImpl implements EventBuilder
         registerEventClass(RegistryEvent.class);
         registerEventClass(ReloadEvent.class);
         registerEventClass(RenameEvent.class);
+        registerEventClass(RtcpReceivedEvent.class);
+        registerEventClass(RtcpSentEvent.class);
+        registerEventClass(RtpReceiverStatEvent.class);
+        registerEventClass(RtpSenderStatEvent.class);
         registerEventClass(ShutdownEvent.class);
         registerEventClass(StatusEvent.class);
         registerEventClass(StatusCompleteEvent.class);

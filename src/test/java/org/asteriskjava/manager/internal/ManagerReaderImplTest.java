@@ -28,10 +28,7 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-import org.asteriskjava.manager.event.DisconnectEvent;
-import org.asteriskjava.manager.event.ManagerEvent;
-import org.asteriskjava.manager.event.ProtocolIdentifierReceivedEvent;
-import org.asteriskjava.manager.event.StatusCompleteEvent;
+import org.asteriskjava.manager.event.*;
 import org.asteriskjava.manager.response.CommandResponse;
 import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.util.DateUtil;
@@ -126,6 +123,36 @@ public class ManagerReaderImplTest extends TestCase
 
         assertEquals("first event must be a StatusCompleteEvent",
                 StatusCompleteEvent.class, dispatcher.dispatchedEvents.get(0).getClass());
+
+        assertEquals("second event must be a DisconnectEvent",
+                DisconnectEvent.class, dispatcher.dispatchedEvents.get(1).getClass());
+    }
+
+    public void testWorkaroundForAsteriskBug13319() throws Exception
+    {
+        expect(socketConnectionFacade.readLine()).andReturn("Event: RTCPReceived");
+        expect(socketConnectionFacade.readLine()).andReturn("From 192.168.0.1:1234");
+        expect(socketConnectionFacade.readLine()).andReturn("HighestSequence: 999");
+        expect(socketConnectionFacade.readLine()).andReturn("");
+        expect(socketConnectionFacade.readLine()).andReturn(null);
+
+        replay(socketConnectionFacade);
+
+        managerReader.setSocket(socketConnectionFacade);
+        managerReader.run();
+
+        verify(socketConnectionFacade);
+
+        assertEquals("not exactly two events dispatched", 2,
+                dispatcher.dispatchedEvents.size());
+
+        assertEquals("first event must be a StatusCompleteEvent",
+                RtcpReceivedEvent.class, dispatcher.dispatchedEvents.get(0).getClass());
+
+        RtcpReceivedEvent rtcpReceivedEvent = (RtcpReceivedEvent) dispatcher.dispatchedEvents.get(0);
+        assertEquals("Invalid from address on RtcpReceivedEvent", "192.168.0.1", rtcpReceivedEvent.getFromAddress().getHostAddress());
+        assertEquals("Invalid from port on RtcpReceivedEvent", new Integer(1234), rtcpReceivedEvent.getFromPort());
+        assertEquals("Invalid highest sequence on RtcpReceivedEvent", new Long(999), rtcpReceivedEvent.getHighestSequence());
 
         assertEquals("second event must be a DisconnectEvent",
                 DisconnectEvent.class, dispatcher.dispatchedEvents.get(1).getClass());

@@ -1,0 +1,82 @@
+/*
+ *  Copyright 2004-2006 Stefan Reuter
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ */
+package org.asteriskjava.manager.event;
+
+import java.net.InetAddress;
+
+/**
+ * An RtpReceiverStatEvent is triggered at the end of an RTP transmission and reports
+ * transmission statistics.<p>
+ * It is implemented in <code>main/rtp.c</code>
+ *
+ * @author srt
+ * @version $Id$
+ * @since 1.0.0
+ */
+public class RtpReceiverStatEvent extends AbstractRtpStatEvent
+{
+    private static final long serialVersionUID = 1L;
+
+    private Integer receivedPacktes;
+    private Double transit;
+    private Integer rrCount;
+
+    public RtpReceiverStatEvent(Object source)
+    {
+        super(source);
+    }
+
+    /**
+     * Returns the number of packets received.
+     *
+     * @return the number of packets received.
+     */
+    public Integer getReceivedPacktes()
+    {
+        return receivedPacktes;
+    }
+
+    public void setReceivedPacktes(Integer receivedPacktes)
+    {
+        this.receivedPacktes = receivedPacktes;
+    }
+
+    public Double getTransit()
+    {
+        return transit;
+    }
+
+    public void setTransit(Double transit)
+    {
+        this.transit = transit;
+    }
+
+    /**
+     * Returns the number of receiver reports.
+     *
+     * @return the number of receiver reports.
+     */
+    public Integer getRrCount()
+    {
+        return rrCount;
+    }
+
+    public void setRrCount(Integer rrCount)
+    {
+        this.rrCount = rrCount;
+    }
+}
