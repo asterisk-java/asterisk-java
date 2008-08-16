@@ -26,9 +26,6 @@ package org.asteriskjava.manager.event;
  */
 public abstract class AbstractAgentEvent extends ManagerEvent
 {
-    /**
-     * Serializable version identifier
-     */
     private static final long serialVersionUID = -7437833328723536814L;
     private String channel;
     private String uniqueId;
@@ -36,9 +33,6 @@ public abstract class AbstractAgentEvent extends ManagerEvent
     private String member;
     private String memberName;
 
-    /**
-     * @param source
-     */
     protected AbstractAgentEvent(Object source)
     {
         super(source);
@@ -46,15 +40,14 @@ public abstract class AbstractAgentEvent extends ManagerEvent
 
     /**
      * Returns the name of the channel.
+     *
+     * @return the name of the channel.
      */
     public String getChannel()
     {
         return channel;
     }
 
-    /**
-     * Sets the name of the channel.
-     */
     public void setChannel(String channel)
     {
         this.channel = channel;
@@ -70,11 +63,6 @@ public abstract class AbstractAgentEvent extends ManagerEvent
         return uniqueId;
     }
 
-    /**
-     * Sets the unique id of the channel.
-     * 
-     * @param uniqueId the unique id of the channel.
-     */
     public void setUniqueId(String uniqueId)
     {
         this.uniqueId = uniqueId;
@@ -90,11 +78,6 @@ public abstract class AbstractAgentEvent extends ManagerEvent
         return queue;
     }
 
-    /**
-     * Sets the name of the queue.
-     * 
-     * @param queue the name of the queue.
-     */
     public void setQueue(String queue)
     {
         this.queue = queue;
@@ -110,11 +93,6 @@ public abstract class AbstractAgentEvent extends ManagerEvent
         return member;
     }
 
-    /**
-     * Sets the name of the member's interface.
-     * 
-     * @param member the name of the member's interface.
-     */
     public void setMember(String member)
     {
         this.member = member;
@@ -132,9 +110,6 @@ public abstract class AbstractAgentEvent extends ManagerEvent
         return memberName;
     }
 
-    /**
-     * @param memberName the member name supplied for logging when the member is added
-     */
     public void setMemberName(String memberName)
     {
         this.memberName = memberName;

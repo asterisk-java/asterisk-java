@@ -58,6 +58,7 @@ class EventBuilderImpl implements EventBuilder
         registerEventClass(AgentDumpEvent.class);
         registerEventClass(AgentLoginEvent.class);
         registerEventClass(AgentLogoffEvent.class);
+        registerEventClass(AgentRingNoAnswerEvent.class);
         registerEventClass(AgentsEvent.class);
         registerEventClass(AgentsCompleteEvent.class);
         registerEventClass(AgiExecEvent.class);
