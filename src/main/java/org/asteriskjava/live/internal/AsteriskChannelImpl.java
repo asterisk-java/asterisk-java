@@ -16,9 +16,7 @@
  */
 package org.asteriskjava.live.internal;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import org.asteriskjava.live.AsteriskChannel;
 import org.asteriskjava.live.AsteriskQueueEntry;
@@ -140,6 +138,8 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
      */
     private Extension parkedAt;
 
+    private final Map<String, String> variables;
+
     /**
      * Creates a new Channel.
      *
@@ -165,6 +165,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         this.stateHistory = new ArrayList<ChannelStateHistoryEntry>();
         this.linkedChannelHistory = new ArrayList<LinkedChannelHistoryEntry>();
         this.dialedChannelHistory = new ArrayList<DialedChannelHistoryEntry>();
+        this.variables = new HashMap<String, String>();
     }
 
     public String getId()
@@ -738,6 +739,24 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         // warning: the context of this extension will be null until we get the context property from
         // the parked call event!
         return parkedAt;
+    }
+
+    void updateVariable(String name, String value)
+    {
+        synchronized (variables)
+        {
+            final String oldValue = variables.get(name);
+            variables.put(name, value);
+            // TODO add notification for updated channel variables
+        }
+    }
+
+    public Map<String, String> getVariables()
+    {
+        synchronized (variables)
+        {
+            return new HashMap<String, String>(variables);
+        }
     }
 
     public void setParkedAt(Extension parkedAt)

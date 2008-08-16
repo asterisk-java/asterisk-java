@@ -899,6 +899,10 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         {
             channelManager.handleCdrEvent((CdrEvent) event);
         }
+        else if (event instanceof VarSetEvent)
+        {
+            channelManager.handleVarSetEvent((VarSetEvent) event);
+        }
         // End of channel related events
         // Handle parking related event
         else if (event instanceof ParkedCallEvent)

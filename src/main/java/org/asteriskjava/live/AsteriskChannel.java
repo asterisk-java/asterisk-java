@@ -18,6 +18,7 @@ package org.asteriskjava.live;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Represents an Asterisk channel.
@@ -271,6 +272,18 @@ public interface AsteriskChannel extends LiveObject
      * @return the Extension to dial, <code>null</code> if not currently parked.
      */
     Extension getParkedAt();
+
+    /**
+     * Returns the channel variables as received by
+     * {@link org.asteriskjava.manager.event.VarSetEvent VarSetEvents}.<p>
+     * Available since Asterisk 1.6.
+     *
+     * @return the channel variables.
+     * @since 1.0.0
+     */
+    Map<String, String> getVariables();
+
+    /* Actions */
     
     /**
      * Hangs up this channel.
