@@ -20,6 +20,7 @@ import java.net.InetAddress;
 
 /**
  * An RtcpSentEvent is triggered when Asterisk sends an RTCP message.<p>
+ * Available since Asterisk 1.6<p>
  * It is implemented in <code>main/rtp.c</code>
  *
  * @author srt

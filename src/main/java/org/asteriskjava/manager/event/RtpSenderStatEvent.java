@@ -19,6 +19,7 @@ package org.asteriskjava.manager.event;
 /**
  * An RtpSenderStatEvent is triggered at the end of an RTP transmission and reports
  * transmission statistics.<p>
+ * Available since Asterisk 1.6<p>
  * It is implemented in <code>main/rtp.c</code>
  *
  * @author srt

@@ -131,6 +131,7 @@ class EventBuilderImpl implements EventBuilder
         registerEventClass(UnholdEvent.class);
         registerEventClass(UnlinkEvent.class);
         registerEventClass(UnparkedCallEvent.class);
+        registerEventClass(VarSetEvent.class);
         registerEventClass(VoicemailUserEntryCompleteEvent.class);
         registerEventClass(VoicemailUserEntryEvent.class);
         registerEventClass(ZapShowChannelsEvent.class);
