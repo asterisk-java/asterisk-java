@@ -392,4 +392,18 @@ public class EventBuilderImplTest extends TestCase
         assertEquals("Returned event is of wrong type", CdrEvent.class, event.getClass());
         assertNull("Property with value \"<none>\" is not null", event.getChannel());
     }
+
+    public void testBuildEventWithDashInPropertyName()
+    {
+        Map<String, String> properties = new HashMap<String, String>();
+        TransferEvent event;
+
+        properties.put("event", "Transfer");
+        properties.put("sip-callid", "12345");
+        event = (TransferEvent) eventBuilder.buildEvent(this, properties);
+
+        assertNotNull(event);
+        assertEquals("Returned event is of wrong type", TransferEvent.class, event.getClass());
+        assertEquals("Property SIP-Callid is not set correctly", "12345", event.getSipCallId());
+    }
 }
