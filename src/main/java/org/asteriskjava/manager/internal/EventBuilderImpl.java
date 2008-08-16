@@ -47,7 +47,7 @@ class EventBuilderImpl implements EventBuilder
         registerBuiltinEventClasses();
     }
 
-    @SuppressWarnings("deprecation")
+    @SuppressWarnings({"deprecation"})
     private void registerBuiltinEventClasses()
     {
         registerEventClass(AgentCallbackLoginEvent.class);
@@ -139,7 +139,7 @@ class EventBuilderImpl implements EventBuilder
         registerEventClass(ZapShowChannelsCompleteEvent.class);
     }
 
-    public final void registerEventClass(Class clazz) throws IllegalArgumentException
+    public final void registerEventClass(Class<? extends ManagerEvent> clazz) throws IllegalArgumentException
     {
         String className;
         String eventType;
@@ -169,8 +169,7 @@ class EventBuilderImpl implements EventBuilder
      *                  {@link ManagerEvent}.
      * @throws IllegalArgumentException if clazz is not a valid event class.
      */
-    @SuppressWarnings("unchecked")
-    public final void registerEventClass(String eventType, Class clazz) throws IllegalArgumentException
+    public final void registerEventClass(String eventType, Class<? extends ManagerEvent> clazz) throws IllegalArgumentException
     {
         Constructor defaultConstructor;
 
@@ -203,7 +202,6 @@ class EventBuilderImpl implements EventBuilder
         logger.debug("Registered event type '" + eventType + "' (" + clazz + ")");
     }
 
-    @SuppressWarnings("unchecked")
     public ManagerEvent buildEvent(Object source, Map<String, String> attributes)
     {
         ManagerEvent event;

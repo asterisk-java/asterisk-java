@@ -43,7 +43,7 @@ interface EventBuilder
      * @param clazz the event class to register, must extend {@link ManagerEvent}.
      * @throws IllegalArgumentException if clazz is not a valid event class
      */
-    void registerEventClass(Class clazz) throws IllegalArgumentException;
+    void registerEventClass(Class<? extends ManagerEvent> clazz) throws IllegalArgumentException;
 
     /**
      * Builds the event based on the given map of attributes and the registered
