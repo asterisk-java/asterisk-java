@@ -35,7 +35,7 @@ public class ChannelUpdateEvent extends ManagerEvent
     private String uniqueId;
     // SIP
     private String sipCallId;
-    private String SipFullContact;
+    private String sipFullContact;
     private String peerName;
     // Gtalk
     private String gtalkSid;
@@ -112,12 +112,12 @@ public class ChannelUpdateEvent extends ManagerEvent
 
     public String getSipFullContact()
     {
-        return SipFullContact;
+        return sipFullContact;
     }
 
     public void setSipFullContact(String sipFullContact)
     {
-        SipFullContact = sipFullContact;
+        this.sipFullContact = sipFullContact;
     }
 
     public String getPeerName()

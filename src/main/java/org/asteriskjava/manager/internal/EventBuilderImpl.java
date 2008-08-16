@@ -77,6 +77,7 @@ class EventBuilderImpl implements EventBuilder
         registerEventClass(HangupEvent.class);
         registerEventClass(HoldedCallEvent.class);
         registerEventClass(HoldEvent.class);
+        registerEventClass(JitterBufStatsEvent.class);
         registerEventClass(JoinEvent.class);
         registerEventClass(LeaveEvent.class);
         registerEventClass(LinkEvent.class);
