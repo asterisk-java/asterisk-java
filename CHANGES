@@ -1,3 +1,12 @@
+Asterisk-Java 1.0.0
+    Warning:
+    Values for event properties of type String that match one of the null
+    literals used by Asterisk are automatically set to null in A-J 1.0.0.
+    The null literals are:
+     "<unknown>", "unknown", "none", "<none>", "-none-", "(none)",
+     "<not set>", "(not set)", "<no name>", "n/a" and "<null>".
+
+
 Asterisk-Java 0.3.1
     * [AJ-81] - executeCliCommand() always executes "show voicemail users"
     * [AJ-86] - getChannelByName doesn't return the latest channel

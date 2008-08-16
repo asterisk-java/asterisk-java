@@ -390,4 +390,18 @@ public class EventBuilderImplTest extends TestCase
         assertEquals("Transit property not set correctly", 12.3456,
                 ((RtpReceiverStatEvent) event).getTransit());
     }
+
+    public void testBuildEventWithNullLiteral()
+    {
+        Map<String, String> properties = new HashMap<String, String>();
+        CdrEvent event;
+
+        properties.put("event", "Cdr");
+        properties.put("channel", "<none>");
+        event = (CdrEvent) eventBuilder.buildEvent(this, properties);
+
+        assertNotNull(event);
+        assertEquals("Returned event is of wrong type", CdrEvent.class, event.getClass());
+        assertNull("Property with value \"<none>\" is not null", event.getChannel());
+    }
 }

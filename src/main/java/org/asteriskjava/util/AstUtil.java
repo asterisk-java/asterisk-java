@@ -1,7 +1,6 @@
 package org.asteriskjava.util;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Some static utility methods to imitate Asterisk specific logic.
@@ -15,28 +14,28 @@ import java.util.List;
  */
 public class AstUtil
 {
-    private static final List<String> TRUE_LITERALS;
-    private static final List<String> NULL_LITERALS;
+    private static final Set<String> TRUE_LITERALS;
+    private static final Set<String> NULL_LITERALS;
     
     static
     {
-        TRUE_LITERALS = new ArrayList<String>(20);
+        TRUE_LITERALS = new HashSet<String>(20);
         TRUE_LITERALS.add("yes");
         TRUE_LITERALS.add("true");
         TRUE_LITERALS.add("y");
         TRUE_LITERALS.add("t");
         TRUE_LITERALS.add("1");
         TRUE_LITERALS.add("on");
-        TRUE_LITERALS.add("Enabled");
+        TRUE_LITERALS.add("enabled");
         
-        NULL_LITERALS = new ArrayList<String>(20);
+        NULL_LITERALS = new HashSet<String>(20);
         NULL_LITERALS.add("<unknown>");
         NULL_LITERALS.add("unknown");
         NULL_LITERALS.add("none"); // VarSet event in pbx.c
         NULL_LITERALS.add("<none>");
         NULL_LITERALS.add("-none-");
-        NULL_LITERALS.add("(None)");
-        NULL_LITERALS.add("<Not set>");
+        NULL_LITERALS.add("(none)");
+        NULL_LITERALS.add("<not set>");
         NULL_LITERALS.add("(not set)");
         NULL_LITERALS.add("<no name>");
         NULL_LITERALS.add("n/a"); // channel in AgentsEvent
@@ -87,15 +86,7 @@ public class AstUtil
             return false;
         }
 
-        for (String literal : TRUE_LITERALS)
-        {
-            if (literal.equalsIgnoreCase(s))
-            {
-                return true;
-            }
-        }
-
-        return false;
+        return TRUE_LITERALS.contains(s.toLowerCase(Locale.US));
     }
 
     /**
@@ -186,14 +177,6 @@ public class AstUtil
             return true;
         }
 
-        for (String literal : NULL_LITERALS)
-        {
-            if (literal.equalsIgnoreCase(s))
-            {
-                return true;
-            }
-        }
-
-        return false;
+        return NULL_LITERALS.contains(s.toLowerCase(Locale.US));
     }
 }
