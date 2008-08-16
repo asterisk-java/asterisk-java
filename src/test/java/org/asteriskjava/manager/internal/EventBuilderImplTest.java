@@ -111,18 +111,6 @@ public class EventBuilderImplTest extends TestCase
         }
     }
 
-    public void testRegisterEventWithWrongClass()
-    {
-        try
-        {
-            eventBuilder.registerEventClass(String.class);
-            fail("registerEvent() must only accept subclasses of ManagerEvent");
-        }
-        catch (IllegalArgumentException ex)
-        {
-        }
-    }
-
     /*
      * public void testGetSetters() { Map setters; EventBuilderImpl eventBuilder =
      * getEventBuilder(); setters =
