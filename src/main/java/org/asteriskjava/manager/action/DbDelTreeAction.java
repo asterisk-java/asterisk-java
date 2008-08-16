@@ -17,32 +17,33 @@
 package org.asteriskjava.manager.action;
 
 /**
- * Deletes an entry in the Asterisk database for a given family and key.<p>
- * Available since Asterisk 1.2 with BRIStuff patches and since Asterisk 1.6
- * 
+ * Recursivly deletes entries in the Asterisk database for a given family and key.<p>
+ * Available since Asterisk 1.6
+ *
  * @author gmi
+ * @since 1.0.0
  */
-public class DbDelAction extends AbstractManagerAction
+public class DbDelTreeAction extends AbstractManagerAction
 {
-    private static final long serialVersionUID = 921037572305993779L;
+    private static final long serialVersionUID = 1L;
     private String family;
     private String key;
 
     /**
-     * Creates a new empty DbDelAction.
+     * Creates a new empty DbDelTreeAction.
      */
-    public DbDelAction()
+    public DbDelTreeAction()
     {
 
     }
 
     /**
-     * Creates a new DbDelAction that deletes the value of the database
-     * 
+     * Creates a new DbDelTreeAction.
+     *
      * @param family the family of the key
-     * @param key the key of the entry to delete
+     * @param key the key of the entries to delete
      */
-    public DbDelAction(String family, String key)
+    public DbDelTreeAction(String family, String key)
     {
         this.family = family;
         this.key = key;
@@ -51,12 +52,12 @@ public class DbDelAction extends AbstractManagerAction
     @Override
     public String getAction()
     {
-        return "DBDel";
+        return "DBDelTree";
     }
 
     /**
-     * Returns the family of the key to delete
-     * 
+     * Returns the family of the key to delete.
+     *
      * @return the family of the key to delete
      */
     public String getFamily()
@@ -65,8 +66,8 @@ public class DbDelAction extends AbstractManagerAction
     }
 
     /**
-     * Sets the family of the key to delete
-     * 
+     * Sets the family of the key to delete.
+     *
      * @param family the family of the key to delete
      */
     public void setFamily(String family)
@@ -75,8 +76,8 @@ public class DbDelAction extends AbstractManagerAction
     }
 
     /**
-     * Returns the the key to delete
-     * 
+     * Returns the the key to delete.
+     *
      * @return the key to delete
      */
     public String getKey()
@@ -85,8 +86,8 @@ public class DbDelAction extends AbstractManagerAction
     }
 
     /**
-     * Sets the key to delete
-     * 
+     * Sets the key to delete.
+     *
      * @param key the key to delete
      */
     public void setKey(String key)
