@@ -39,6 +39,11 @@ public abstract class AbstractRtpStatEvent extends ManagerEvent
         super(source);
     }
 
+    /**
+     * Returns the synchronization source identifier that uniquely identifies the source of a stream.
+     *
+     * @return the synchronization source identifier.
+     */
     public Integer getSsrc()
     {
         return ssrc;

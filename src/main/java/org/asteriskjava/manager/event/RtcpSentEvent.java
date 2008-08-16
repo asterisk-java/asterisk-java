@@ -46,11 +46,21 @@ public class RtcpSentEvent extends AbstractRtcpEvent
         super(source);
     }
 
+    /**
+     * Returns the IP address the RTCP message has been sent to.
+     *
+     * @return the IP address the RTCP message has been sent to.
+     */
     public InetAddress getToAddress()
     {
         return toAddress;
     }
 
+    /**
+     * Returns the port the RTCP message has been sent to.
+     *
+     * @return the port the RTCP message has been sent to.
+     */
     public Integer getToPort()
     {
         return toPort;
@@ -63,6 +73,10 @@ public class RtcpSentEvent extends AbstractRtcpEvent
         this.toPort = stringToPort(to);
     }
 
+    /**
+     * Returns our synchronization source identifier that uniquely identifies the source of a stream.
+     * @return our synchronization source identifier.
+     */
     public Integer getOurSsrc()
     {
         return ourSsrc;

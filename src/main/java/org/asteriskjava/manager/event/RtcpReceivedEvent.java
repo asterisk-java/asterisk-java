@@ -31,7 +31,14 @@ public class RtcpReceivedEvent extends AbstractRtcpEvent
 {
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Payload identifier for a sender report.
+     */
     public static final int PT_SENDER_REPORT = 200;
+
+    /**
+     * Payload identifier for a receiver report.
+     */
     public static final int PT_RECEIVER_REPORT = 201;
     public static final int PT_H261_FUR = 192;
 
@@ -51,11 +58,21 @@ public class RtcpReceivedEvent extends AbstractRtcpEvent
         super(source);
     }
 
+    /**
+     * Returns the IP address the RTCP message has been received from.
+     *
+     * @return the IP address the RTCP message has been received from.
+     */
     public InetAddress getFromAddress()
     {
         return fromAddress;
     }
 
+    /**
+     * Returns the port of the RTCP message has been received from.
+     *
+     * @return the port of the RTCP message has been received from.
+     */
     public Integer getFromPort()
     {
         return fromPort;
@@ -68,6 +85,14 @@ public class RtcpReceivedEvent extends AbstractRtcpEvent
         this.fromPort = stringToPort(from);
     }
 
+    /**
+     * Indicates the format of the payload, typical values are 200 for sender reports and
+     * 201 for receiver reports.
+     *
+     * @return the format of the payload.
+     * @see #PT_SENDER_REPORT
+     * @see #PT_RECEIVER_REPORT
+     */
     public Integer getPt()
     {
         return pt;
@@ -102,6 +127,11 @@ public class RtcpReceivedEvent extends AbstractRtcpEvent
         this.receptionReports = receptionReports;
     }
 
+    /**
+     * Returns the synchronization source identifier of the sender.
+     *
+     * @return the synchronization source identifier of the sender.
+     */
     public Integer getSenderSsrc()
     {
         return senderSsrc;
