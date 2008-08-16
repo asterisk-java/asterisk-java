@@ -64,11 +64,6 @@ public abstract class AbstractChannelEvent extends ManagerEvent
         return channel;
     }
 
-    /**
-     * Sets the name of the channel.
-     * 
-     * @param channel the name of the channel.
-     */
     public void setChannel(String channel)
     {
         this.channel = channel;
@@ -84,18 +79,13 @@ public abstract class AbstractChannelEvent extends ManagerEvent
         return uniqueId;
     }
 
-    /**
-     * Sets the unique id of the channel.
-     * 
-     * @param uniqueId the unique id of the channel.
-     */
     public void setUniqueId(String uniqueId)
     {
         this.uniqueId = uniqueId;
     }
 
     /**
-     * Returns the Caller*ID of the channel if set or "&lt;unknown&gt;" if none has been set.
+     * Returns the Caller*ID of the channel if set or <code>null</code> if none has been set.
      *
      * @return the Caller*ID
      * @deprecated
@@ -118,8 +108,7 @@ public abstract class AbstractChannelEvent extends ManagerEvent
     }
 
     /**
-     * Returns the Caller*ID number of the channel if set or "&lt;unknown&gt;" if none has been set.<p>
-     * Since Asterisk 1.6 an empty value is returned instead of "&lt;unknown&gt;" for most events.
+     * Returns the Caller*ID number of the channel if set or <code>null</code> if none has been set.
      *
      * @return the Caller*ID number
      * @since 0.3
@@ -129,19 +118,13 @@ public abstract class AbstractChannelEvent extends ManagerEvent
         return callerIdNum;
     }
 
-    /**
-     * Sets the Caller*ID number of the channel.
-     * 
-     * @param callerIdNum the Caller*ID number of the channel.
-     * @since 0.3
-     */
     public void setCallerIdNum(String callerIdNum)
     {
         this.callerIdNum = callerIdNum;
     }
 
     /**
-     * Returns the Caller*ID Name of the channel if set or "&lt;unknown&gt;" if none has been set.
+     * Returns the Caller*ID Name of the channel if set or <code>null</code> if none has been set.
      * 
      * @return the Caller*ID Name of the channel.
      */
@@ -150,11 +133,6 @@ public abstract class AbstractChannelEvent extends ManagerEvent
         return callerIdName;
     }
 
-    /**
-     * Sets the Caller*ID Name of the channel.
-     * 
-     * @param callerIdName the Caller*ID Name of the channel.
-     */
     public void setCallerIdName(String callerIdName)
     {
         this.callerIdName = callerIdName;

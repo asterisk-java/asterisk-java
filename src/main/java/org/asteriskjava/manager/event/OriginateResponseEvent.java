@@ -150,8 +150,7 @@ public class OriginateResponseEvent extends ResponseEvent
      * <p>
      * Available sind Asterisk 1.4.
      * 
-     * @return the Caller*ID Number of the originated channel or
-     *         "&lt;unknown&gt;" if none was set.
+     * @return the Caller*ID Number of the originated channel or <code>null</code> if none was set.
      * @since 0.3
      */
     public String getCallerIdNum()
@@ -178,8 +177,7 @@ public class OriginateResponseEvent extends ResponseEvent
      * <p>
      * Available sind Asterisk 1.4.
      * 
-     * @return the Caller*ID Name of the originated channel or "&lt;unknown&gt;"
-     *         if none was set.
+     * @return the Caller*ID Name of the originated channel or <code>null</code> if none was set.
      */
     public String getCallerIdName()
     {

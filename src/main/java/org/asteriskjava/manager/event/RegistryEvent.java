@@ -222,8 +222,7 @@ public class RegistryEvent extends ManagerEvent
     /**
      * Returns the cause of a rejected registration.
      *
-     * @return the cause of a rejected registration or "&lt;unknown&gt;" if the
-     *         cause is unknown.
+     * @return the cause of a rejected registration or <code>null</code> if the cause is unknown.
      * @since 0.2
      */
     public String getCause()

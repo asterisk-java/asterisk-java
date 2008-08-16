@@ -74,7 +74,7 @@ public class StatusEvent extends ResponseEvent
      * Returns the Caller*ID Number of this channel.<p>
      * This property is deprecated as of Asterisk 1.4, use {@link #getCallerIdNum()} instead.
      *
-     * @return the Caller*ID Number of this channel or "&lt;unknown&gt;" if none is available.
+     * @return the Caller*ID Number of this channel or <code>null</code> if none is available.
      * @deprecated
      */
     public String getCallerId()
@@ -96,7 +96,7 @@ public class StatusEvent extends ResponseEvent
     /**
      * Returns the Caller*ID Number of this channel.
      *
-     * @return the Caller*ID Number of this channel or "&lt;unknown&gt;" if none is available.
+     * @return the Caller*ID Number of this channel or <code>null</code> if none is available.
      * @since 0.3
      */
     public String getCallerIdNum()
@@ -118,7 +118,7 @@ public class StatusEvent extends ResponseEvent
     /**
      * Returns the Caller*ID Name of this channel.
      *
-     * @return the Caller*ID Name of this channel or "&lt;unknown&gt;" if none is available.
+     * @return the Caller*ID Name of this channel or <code>null</code> if none is available.
      */
     public String getCallerIdName()
     {
