@@ -17,6 +17,7 @@
 package org.asteriskjava.manager.action;
 
 import org.asteriskjava.manager.event.DbGetResponseEvent;
+import org.asteriskjava.manager.event.ResponseEvent;
 
 /**
  * Retrieves an entry in the Asterisk database for a given family and key.<p>
@@ -108,7 +109,7 @@ public class DbGetAction extends AbstractManagerAction
         this.key = key;
     }
 
-    public Class getActionCompleteEventClass()
+    public Class<? extends ResponseEvent> getActionCompleteEventClass()
     {
         return DbGetResponseEvent.class;
     }

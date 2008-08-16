@@ -4,7 +4,8 @@ Asterisk-Java 1.0.0
     literals used by Asterisk are automatically set to null in A-J 1.0.0.
     The null literals are:
      "<unknown>", "unknown", "none", "<none>", "-none-", "(none)",
-     "<not set>", "(not set)", "<no name>", "n/a" and "<null>".
+     "<not set>", "(not set)", "<no name>", "n/a", "<null>" and
+     "(null)".
 
 
 Asterisk-Java 0.3.1

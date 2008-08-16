@@ -17,6 +17,7 @@
 package org.asteriskjava.manager.action;
 
 import org.asteriskjava.manager.event.ZapShowChannelsCompleteEvent;
+import org.asteriskjava.manager.event.ResponseEvent;
 
 /**
  * The ZapShowChannelsAction requests the state of all zap channels.<p>
@@ -54,7 +55,7 @@ public class ZapShowChannelsAction extends AbstractManagerAction
         return "ZapShowChannels";
     }
 
-    public Class getActionCompleteEventClass()
+    public Class<? extends ResponseEvent> getActionCompleteEventClass()
     {
         return ZapShowChannelsCompleteEvent.class;
     }

@@ -17,6 +17,7 @@
 package org.asteriskjava.manager.action;
 
 import org.asteriskjava.manager.event.ParkedCallsCompleteEvent;
+import org.asteriskjava.manager.event.ResponseEvent;
 
 /**
  * The ParkedCallsAction requests a list of all currently parked calls.<p>
@@ -54,7 +55,7 @@ public class ParkedCallsAction extends AbstractManagerAction
         return "ParkedCalls";
     }
 
-    public Class getActionCompleteEventClass()
+    public Class<? extends ResponseEvent> getActionCompleteEventClass()
     {
         return ParkedCallsCompleteEvent.class;
     }

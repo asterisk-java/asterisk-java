@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.asteriskjava.manager.event.OriginateResponseEvent;
+import org.asteriskjava.manager.event.ResponseEvent;
 
 
 /**
@@ -402,7 +403,7 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
         this.async = async;
     }
 
-    public Class getActionCompleteEventClass()
+    public Class<? extends ResponseEvent> getActionCompleteEventClass()
     {
         return OriginateResponseEvent.class;
     }

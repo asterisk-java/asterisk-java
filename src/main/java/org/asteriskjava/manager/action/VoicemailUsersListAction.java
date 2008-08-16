@@ -17,6 +17,7 @@
 package org.asteriskjava.manager.action;
 
 import org.asteriskjava.manager.event.VoicemailUserEntryCompleteEvent;
+import org.asteriskjava.manager.event.ResponseEvent;
 
 /**
  * Retrieves a list of all defined voicemail users.<p>
@@ -54,7 +55,7 @@ public class VoicemailUsersListAction extends AbstractManagerAction implements E
         return "VoicemailUsersList";
     }
 
-    public Class getActionCompleteEventClass()
+    public Class<? extends ResponseEvent> getActionCompleteEventClass()
     {
         return VoicemailUserEntryCompleteEvent.class;
     }

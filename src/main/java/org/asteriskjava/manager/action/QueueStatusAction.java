@@ -17,6 +17,7 @@
 package org.asteriskjava.manager.action;
 
 import org.asteriskjava.manager.event.QueueStatusCompleteEvent;
+import org.asteriskjava.manager.event.ResponseEvent;
 
 /**
  * The QueueStatusAction requests the state of all defined queues their members
@@ -110,7 +111,7 @@ public class QueueStatusAction extends AbstractManagerAction
         this.member = member;
     }
 
-    public Class getActionCompleteEventClass()
+    public Class<? extends ResponseEvent> getActionCompleteEventClass()
     {
         return QueueStatusCompleteEvent.class;
     }

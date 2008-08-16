@@ -82,6 +82,7 @@ class EventBuilderImpl implements EventBuilder
         registerEventClass(JoinEvent.class);
         registerEventClass(LeaveEvent.class);
         registerEventClass(LinkEvent.class);
+        registerEventClass(ListDialplanEvent.class);
         registerEventClass(LogChannelEvent.class);
         registerEventClass(MasqueradeEvent.class);
         registerEventClass(MeetMeEndEvent.class);
@@ -128,6 +129,7 @@ class EventBuilderImpl implements EventBuilder
         registerEventClass(RtcpSentEvent.class);
         registerEventClass(RtpReceiverStatEvent.class);
         registerEventClass(RtpSenderStatEvent.class);
+        registerEventClass(ShowDialplanCompleteEvent.class);
         registerEventClass(ShutdownEvent.class);
         registerEventClass(StatusEvent.class);
         registerEventClass(StatusCompleteEvent.class);

@@ -16,45 +16,42 @@
  */
 package org.asteriskjava.manager.action;
 
-import org.asteriskjava.manager.event.PeerlistCompleteEvent;
 import org.asteriskjava.manager.event.ResponseEvent;
+import org.asteriskjava.manager.event.ShowDialplanCompleteEvent;
 
 /**
- * Retrieves a list of all defined SIP peers.<p>
- * For each peer that is found a PeerEntryEvent is sent by Asterisk containing
- * the details. When all peers have been reported a PeerlistCompleteEvent is
+ * Retrieves a list of all priorities defined in the dialplan.<p>
+ * For each priority a ListDialplanEvent is sent by Asterisk containing
+ * the details. When all priorities have been reported a ShowDialplanCompleteEvent is
  * sent.<p>
- * Available since Asterisk 1.2
- * 
- * @see org.asteriskjava.manager.event.PeerEntryEvent
- * @see org.asteriskjava.manager.event.PeerlistCompleteEvent
+ * Available since Asterisk 1.6
+ *
  * @author srt
  * @version $Id$
- * @since 0.2
+ * @see org.asteriskjava.manager.event.ListDialplanEvent
+ * @see org.asteriskjava.manager.event.ShowDialplanCompleteEvent
+ * @since 1.0.0
  */
-public class SipPeersAction extends AbstractManagerAction implements EventGeneratingAction
+public class ShowDialplanAction extends AbstractManagerAction implements EventGeneratingAction
 {
-    /**
-     * Serial version identifier.
-     */
-    private static final long serialVersionUID = 921037572305993779L;
+    private static final long serialVersionUID = 1L;
 
     /**
-     * Creates a new SipPeersAction.
+     * Creates a new ShowDialplanAction.
      */
-    public SipPeersAction()
+    public ShowDialplanAction()
     {
 
     }
 
     @Override
-   public String getAction()
+    public String getAction()
     {
-        return "SIPPeers";
+        return "ShowDialplan";
     }
 
     public Class<? extends ResponseEvent> getActionCompleteEventClass()
     {
-        return PeerlistCompleteEvent.class;
+        return ShowDialplanCompleteEvent.class;
     }
 }

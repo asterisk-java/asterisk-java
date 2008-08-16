@@ -17,6 +17,7 @@
 package org.asteriskjava.manager.action;
 
 import org.asteriskjava.manager.event.StatusCompleteEvent;
+import org.asteriskjava.manager.event.ResponseEvent;
 
 /**
  * The StatusAction requests the state of all active channels. Alternativly (as of Asterisk 1.6)
@@ -67,7 +68,7 @@ public class StatusAction extends AbstractManagerAction implements EventGenerati
         return "Status";
     }
 
-    public Class getActionCompleteEventClass()
+    public Class<? extends ResponseEvent> getActionCompleteEventClass()
     {
         return StatusCompleteEvent.class;
     }

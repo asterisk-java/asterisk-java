@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.action;
 
+import org.asteriskjava.manager.event.ResponseEvent;
+
 /**
  * The EventGeneratingAction interface is implemented by ManagerActions that
  * return their result not in a ManagerResponse but by sending a series of
@@ -37,5 +39,5 @@ public interface EventGeneratingAction extends ManagerAction
      * @return a Class that is an instance of ResponseEvent.
      * @see org.asteriskjava.manager.event.ResponseEvent
      */
-    Class getActionCompleteEventClass();
+    Class<? extends ResponseEvent> getActionCompleteEventClass();
 }

@@ -2,6 +2,7 @@ package org.asteriskjava.manager.action;
 
 import org.asteriskjava.manager.event.QueueSummaryCompleteEvent;
 import org.asteriskjava.manager.event.QueueSummaryEvent;
+import org.asteriskjava.manager.event.ResponseEvent;
 
 /**
  * The QueueSummaryAction retrieves the summary for one or all queues.
@@ -51,7 +52,7 @@ public class QueueSummaryAction extends AbstractManagerAction implements EventGe
         return "QueueSummary";
     }
 
-    public Class getActionCompleteEventClass()
+    public Class<? extends ResponseEvent> getActionCompleteEventClass()
     {
         return QueueSummaryCompleteEvent.class;
     }
