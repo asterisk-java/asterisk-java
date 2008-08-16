@@ -34,7 +34,7 @@ public class VarSetEvent extends ManagerEvent
     private String variable;
     private String value;
 
-    protected VarSetEvent(Object source)
+    public VarSetEvent(Object source)
     {
         super(source);
     }
