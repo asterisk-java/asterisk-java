@@ -32,6 +32,7 @@ public class AstUtil
         NULL_LITERALS = new ArrayList<String>(20);
         NULL_LITERALS.add("<unknown>");
         NULL_LITERALS.add("unknown");
+        NULL_LITERALS.add("none"); // VarSet event in pbx.c
         NULL_LITERALS.add("<none>");
         NULL_LITERALS.add("-none-");
         NULL_LITERALS.add("(None)");

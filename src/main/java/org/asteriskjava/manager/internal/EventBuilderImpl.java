@@ -335,6 +335,10 @@ class EventBuilderImpl implements EventBuilder
             else if (dataType.isAssignableFrom(String.class))
             {
                 value = attributes.get(name);
+                if (AstUtil.isNull((String) value))
+                {
+                    value = null;
+                }
             }
             else
             {
