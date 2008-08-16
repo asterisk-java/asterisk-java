@@ -81,6 +81,7 @@ class EventBuilderImpl implements EventBuilder
         registerEventClass(LeaveEvent.class);
         registerEventClass(LinkEvent.class);
         registerEventClass(LogChannelEvent.class);
+        registerEventClass(MasqueradeEvent.class);
         registerEventClass(MeetMeEndEvent.class);
         registerEventClass(MeetMeJoinEvent.class);
         registerEventClass(MeetMeLeaveEvent.class);
