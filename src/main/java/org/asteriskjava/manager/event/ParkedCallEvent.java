@@ -79,8 +79,8 @@ public class ParkedCallEvent extends AbstractParkedCallEvent
     }
   
     /**
-     * Sets the unique id of the parked channel,
-     * workaround for a typo in asterisk manager event
+     * Sets the unique id of the parked channel as a
+     * workaround for a typo in asterisk manager event.
      */
     public void setUnqiueId(String unqiueId)
     {

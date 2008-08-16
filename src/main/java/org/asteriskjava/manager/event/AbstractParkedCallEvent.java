@@ -25,9 +25,6 @@ package org.asteriskjava.manager.event;
  */
 public abstract class AbstractParkedCallEvent extends ManagerEvent
 {
-    /**
-     * Serializable version identifier
-     */
     private static final long serialVersionUID = 0L;
     private String exten;
     private String channel;
@@ -46,15 +43,14 @@ public abstract class AbstractParkedCallEvent extends ManagerEvent
 
     /**
      * Returns the extension the channel is or was parked at.
+     *
+     * @return the extension the channel is or was parked at.
      */
     public String getExten()
     {
         return exten;
     }
 
-    /**
-     * Sets the extension the channel is or was parked at.
-     */
     public void setExten(String exten)
     {
         this.exten = exten;
@@ -62,15 +58,14 @@ public abstract class AbstractParkedCallEvent extends ManagerEvent
 
     /**
      * Returns the name of the channel that is or was parked.
+     *
+     * @return the name of the channel that is or was parked.
      */
     public String getChannel()
     {
         return channel;
     }
 
-    /**
-     * Sets the name of the channel that is or was parked.
-     */
     public void setChannel(String channel)
     {
         this.channel = channel;
@@ -129,16 +124,18 @@ public abstract class AbstractParkedCallEvent extends ManagerEvent
     }
     
     /**
-     * Returns the unique id of the parked channel.
+     * Returns the unique id of the parked channel.<p>
+     * Note: This property is not set properly by all versions of Asterisk, see
+     * <a href="http://bugs.digium.com/view.php?id=13323">http://bugs.digium.com/view.php?id=13323</a>
+     * for more information. Use {@link #getChannel()} instead.
+     *
+     * @return the unique id of the parked channel.
      */
     public String getUniqueId()
     {
         return uniqueId;
     }
 
-    /**
-     * Sets the unique id of the parked channel.
-     */
     public void setUniqueId(String uniqueId)
     {
         this.uniqueId = uniqueId;
