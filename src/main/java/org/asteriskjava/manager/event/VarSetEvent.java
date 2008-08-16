@@ -17,7 +17,7 @@
 package org.asteriskjava.manager.event;
 
 /**
- * A VarSetEvent is triggered when a channel variable is set in Asterisk.<p>
+ * A VarSetEvent is triggered when a channel or global variable is set in Asterisk.<p>
  * Available since Asterisk 1.6<p>
  * It is implemented in <code>main/pbx.c</code>
  *
