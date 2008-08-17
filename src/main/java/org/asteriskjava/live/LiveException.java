@@ -22,7 +22,7 @@ package org.asteriskjava.live;
  * @author srt
  * @version $Id$
  */
-public class LiveException extends Exception
+public abstract class LiveException extends Exception
 {
     /**
      * Serial version identifier.

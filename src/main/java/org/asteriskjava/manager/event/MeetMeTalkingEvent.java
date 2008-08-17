@@ -35,11 +35,8 @@ public class MeetMeTalkingEvent extends AbstractMeetMeEvent
      */
     private static final long serialVersionUID = -8554403451985143184L;
 
-    private Boolean status = Boolean.TRUE;
+    protected Boolean status = Boolean.TRUE;
 
-    /**
-     * @param source
-     */
     public MeetMeTalkingEvent(Object source)
     {
         super(source);

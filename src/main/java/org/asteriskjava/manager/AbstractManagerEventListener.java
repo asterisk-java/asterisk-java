@@ -207,10 +207,6 @@ public abstract class AbstractManagerEventListener implements ManagerEventListen
     {
     }
 
-    protected void handleEvent(MeetMeStopTalkingEvent event)
-    {
-    }
-
     protected void handleEvent(MeetMeTalkingEvent event)
     {
     }
@@ -473,10 +469,6 @@ public abstract class AbstractManagerEventListener implements ManagerEventListen
         else if (event instanceof MeetMeMuteEvent)
         {
             handleEvent((MeetMeMuteEvent) event);
-        }
-        else if (event instanceof MeetMeStopTalkingEvent)
-        {
-            handleEvent((MeetMeStopTalkingEvent) event);
         }
         else if (event instanceof MeetMeTalkingEvent)
         {

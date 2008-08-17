@@ -269,6 +269,26 @@ public class DefaultAsteriskServer implements AsteriskServer
         return impl.getConfig(filename);
     }
 
+    public void reloadAllModules() throws ManagerCommunicationException
+    {
+        impl.reloadAllModules();
+    }
+
+    public void reloadModule(String module) throws ManagerCommunicationException
+    {
+        impl.reloadModule(module);
+    }
+
+    public void unloadModule(String module) throws ManagerCommunicationException
+    {
+        impl.unloadModule(module);
+    }
+
+    public void loadModule(String module) throws ManagerCommunicationException
+    {
+        impl.loadModule(module);
+    }
+
     public void addAsteriskServerListener(AsteriskServerListener listener) throws ManagerCommunicationException
     {
         impl.addAsteriskServerListener(listener);

@@ -32,18 +32,16 @@ package org.asteriskjava.manager.event;
  * @deprecated as of 1.0.0, use {@link org.asteriskjava.manager.event.MeetMeTalkingEvent} instead and check for
  *             {@link MeetMeTalkingEvent#getStatus()}.
  */
-public class MeetMeStopTalkingEvent extends AbstractMeetMeEvent
+public class MeetMeStopTalkingEvent extends MeetMeTalkingEvent
 {
     /**
      * Serializable version identifier.
      */
-    private static final long serialVersionUID = -8554403451985143184L;
+    private static final long serialVersionUID = 1L;
 
-    /**
-     * @param source
-     */
     public MeetMeStopTalkingEvent(Object source)
     {
         super(source);
+        this.status = Boolean.FALSE;
     }
 }

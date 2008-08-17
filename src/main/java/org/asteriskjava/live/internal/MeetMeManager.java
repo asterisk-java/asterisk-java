@@ -16,21 +16,12 @@
  */
 package org.asteriskjava.live.internal;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.asteriskjava.live.ManagerCommunicationException;
 import org.asteriskjava.live.MeetMeRoom;
 import org.asteriskjava.manager.action.CommandAction;
 import org.asteriskjava.manager.event.AbstractMeetMeEvent;
 import org.asteriskjava.manager.event.MeetMeLeaveEvent;
 import org.asteriskjava.manager.event.MeetMeMuteEvent;
-import org.asteriskjava.manager.event.MeetMeStopTalkingEvent;
 import org.asteriskjava.manager.event.MeetMeTalkingEvent;
 import org.asteriskjava.manager.response.CommandResponse;
 import org.asteriskjava.manager.response.ManagerError;
@@ -38,6 +29,10 @@ import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.util.DateUtil;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
+
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Manages MeetMe events on behalf of an AsteriskServer.
@@ -170,11 +165,6 @@ class MeetMeManager
             {
                 user.setTalking(true);
             }
-        }
-        else if (event instanceof MeetMeStopTalkingEvent) // only for Asterisk
-        // 1.2
-        {
-            user.setTalking(false);
         }
         else if (event instanceof MeetMeMuteEvent)
         {

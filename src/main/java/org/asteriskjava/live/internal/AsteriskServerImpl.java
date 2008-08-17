@@ -694,6 +694,38 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         return ((CommandResponse) response).getResult();
     }
 
+    public void loadModule(String module) throws ManagerCommunicationException
+    {
+        sendModuleLoadAction(module, ModuleLoadAction.LOAD_TYPE_LOAD);
+    }
+
+    public void unloadModule(String module) throws ManagerCommunicationException
+    {
+        sendModuleLoadAction(module, ModuleLoadAction.LOAD_TYPE_UNLOAD);
+    }
+
+    public void reloadModule(String module) throws ManagerCommunicationException
+    {
+        sendModuleLoadAction(module, ModuleLoadAction.LOAD_TYPE_RELOAD);
+    }
+
+    public void reloadAllModules() throws ManagerCommunicationException
+    {
+        sendModuleLoadAction(null, ModuleLoadAction.LOAD_TYPE_RELOAD);
+    }
+
+    protected void sendModuleLoadAction(String module, String loadType) throws ManagerCommunicationException
+    {
+        final ManagerResponse response;
+
+        response = sendAction(new ModuleLoadAction(module, loadType));
+        if (response instanceof ManagerError)
+        {
+            final ManagerError error = (ManagerError) response;
+            throw new ManagerCommunicationException(error.getMessage(), null);
+        }
+    }
+
     public ConfigFile getConfig(String filename) throws ManagerCommunicationException
     {
         final ManagerResponse response;

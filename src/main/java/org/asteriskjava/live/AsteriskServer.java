@@ -61,7 +61,7 @@ public interface AsteriskServer
     /**
      * Asynchronously generates an outgoing channel.
      * @param originateAction the action that contains parameters for the originate
-     * @param callback callback to inform about the result
+     * @param cb callback to inform about the result
      * @throws ManagerCommunicationException if the originate action cannot be
      *         sent to Asterisk
      */
@@ -383,8 +383,7 @@ public interface AsteriskServer
      *         retrieved.
      * @since 0.3
      */
-    Collection<Voicemailbox> getVoicemailboxes()
-	    throws ManagerCommunicationException;
+    Collection<Voicemailbox> getVoicemailboxes() throws ManagerCommunicationException;
 
     /**
      * Executes a command line interface (CLI) command.
@@ -396,27 +395,65 @@ public interface AsteriskServer
      * @see org.asteriskjava.manager.action.CommandAction
      * @since 0.3
      */
-    List<String> executeCliCommand(String command)
-	    throws ManagerCommunicationException;
+    List<String> executeCliCommand(String command) throws ManagerCommunicationException;
+
+    /**
+     * Loads a module or subsystem<p>
+     * Available since Asterisk 1.6
+     *
+     * @param module name of the module to load (including ".so" extension) or subsystem name.
+     * @throws ManagerCommunicationException if the module cannot be loaded.
+     * @since 1.0.0
+     */
+    void loadModule(String module) throws ManagerCommunicationException;
+
+    /**
+     * Unloads a module or subsystem.<p>
+     * Available since Asterisk 1.6
+     *
+     * @param module name of the module to unload (including ".so" extension) or subsystem name.
+     * @throws ManagerCommunicationException if the module cannot be unloaded.
+     * @since 1.0.0
+     */
+    void unloadModule(String module) throws ManagerCommunicationException;
+
+    /**
+     * Reloads a module or subsystem.<p>
+     * Available since Asterisk 1.6
+     *
+     * @param module name of the module to reload (including ".so" extension) or subsystem name.
+     * @throws ManagerCommunicationException if the module cannot be reloaded.
+     * @since 1.0.0
+     */
+    void reloadModule(String module) throws ManagerCommunicationException;
+
+    /**
+     * Reloads all currently loaded modules.<p>
+     * Available since Asterisk 1.6
+     *
+     * @throws ManagerCommunicationException if the modules cannot be reloaded.
+     * @since 1.0.0
+     */
+    void reloadAllModules() throws ManagerCommunicationException;
 
     /**
      * Reads the given Asterisk configuration file.
      *
      * @param filename the filename, for example "voicemail.conf".
      * @return the configuration file.
+     * @throws ManagerCommunicationException if the command can't be executed.
      */
     ConfigFile getConfig(String filename) throws ManagerCommunicationException;
 
     /**
-     * Adds a listener to this AsteriskServer. <p/> If this server is not yet
-     * connected it will be implicitly connected.
+     * Adds a listener to this AsteriskServer.<p/>
+     * If this server is not yet connected it will be implicitly connected.
      * 
      * @param listener the listener to add.
      * @throws ManagerCommunicationException if the server is not yet connected
      *         and the connection or initialization fails.
      */
-    void addAsteriskServerListener(AsteriskServerListener listener)
-	    throws ManagerCommunicationException;
+    void addAsteriskServerListener(AsteriskServerListener listener) throws ManagerCommunicationException;
 
     /**
      * Removes a listener from this Asterisk server.
@@ -431,8 +468,9 @@ public interface AsteriskServer
     void shutdown();
 
 	/**
-	 * Open connection to this server
-	 * @throws ManagerCommunicationException - if login fails
+	 * Opens the connection to this server.
+     * 
+	 * @throws ManagerCommunicationException if login fails
 	 */
 	void initialize() throws ManagerCommunicationException;
 }
