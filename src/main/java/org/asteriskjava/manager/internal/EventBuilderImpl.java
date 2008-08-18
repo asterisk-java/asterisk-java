@@ -89,6 +89,7 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
         registerEventClass(MessageWaitingEvent.class);
         registerEventClass(MonitorStartEvent.class);
         registerEventClass(MonitorStopEvent.class);
+        registerEventClass(MusicOnHoldEvent.class);
         registerEventClass(NewAccountCodeEvent.class);
         registerEventClass(NewCallerIdEvent.class);
         registerEventClass(NewChannelEvent.class);

@@ -31,7 +31,7 @@ public class HoldEvent extends ManagerEvent
     /**
      * Serializable version identifier.
      */
-    static final long serialVersionUID = 0L;
+    private static final long serialVersionUID = 0L;
 
     /**
      * The name of the channel.
