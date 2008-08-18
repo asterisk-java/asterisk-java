@@ -405,7 +405,7 @@ public interface AsteriskServer
      * @return <code>true</code> if the module is currently loaded, <code>false</code> otherwise.
      * @throws ManagerCommunicationException if the module can't be checked.
      */
-    boolean checkModule(String module) throws ManagerCommunicationException;
+    boolean isModuleLoaded(String module) throws ManagerCommunicationException;
 
     /**
      * Loads a module or subsystem<p>

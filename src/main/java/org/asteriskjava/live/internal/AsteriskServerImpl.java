@@ -704,7 +704,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         return ((CommandResponse) response).getResult();
     }
 
-    public boolean checkModule(String module) throws ManagerCommunicationException
+    public boolean isModuleLoaded(String module) throws ManagerCommunicationException
     {
         return sendAction(new ModuleCheckAction(module)) instanceof ModuleCheckResponse;
     }
