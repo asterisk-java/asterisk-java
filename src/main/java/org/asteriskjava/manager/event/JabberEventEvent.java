@@ -19,7 +19,7 @@ package org.asteriskjava.manager.event;
 /**
  * A JabberEventEvent is triggered when Asterisk receives a Jabber (XMPP) message.<p>
  * It is implemented in <code>res/res_jabber.c</code><p>
- * Available since Asterisk 1.6
+ * Available since Asterisk 1.4
  *
  * @author srt
  * @version $Id$
