@@ -264,6 +264,11 @@ public class DefaultAsteriskServer implements AsteriskServer
         return impl.executeCliCommand(command);
     }
 
+    public boolean checkModule(String module) throws ManagerCommunicationException
+    {
+        return impl.checkModule(module);
+    }
+
     public ConfigFile getConfig(String filename) throws ManagerCommunicationException
     {
         return impl.getConfig(filename);

@@ -398,6 +398,16 @@ public interface AsteriskServer
     List<String> executeCliCommand(String command) throws ManagerCommunicationException;
 
     /**
+     * Checks whether a module is currently loaded.<p>
+     * Available since Asterisk 1.6
+     *
+     * @param module name of the module to load (with out without the ".so" extension).
+     * @return <code>true</code> if the module is currently loaded, <code>false</code> otherwise.
+     * @throws ManagerCommunicationException if the module can't be checked.
+     */
+    boolean checkModule(String module) throws ManagerCommunicationException;
+
+    /**
      * Loads a module or subsystem<p>
      * Available since Asterisk 1.6
      *
