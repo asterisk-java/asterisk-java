@@ -56,12 +56,8 @@ public class ManagerConnectionImplTest extends TestCase
         mockWriter.setExpectedKey("40b1b887502902a8ce61a16e44630f7c");
 
         mockReader = new ManagerReaderMock();
-
         mockSocket = createMock(SocketConnectionFacade.class);
-
-        mc = new MockedManagerConnectionImpl(mockReader, mockWriter,
-                mockSocket);
-
+        mc = new MockedManagerConnectionImpl(mockReader, mockWriter, mockSocket);
         mockWriter.setDispatcher(mc);
     }
 
@@ -80,14 +76,11 @@ public class ManagerConnectionImplTest extends TestCase
         managerReader.registerEventClass(MyUserEvent.class);
         replay(managerReader);
 
-        mc = new MockedManagerConnectionImpl(managerReader, mockWriter,
-                mockSocket);
+        mc = new MockedManagerConnectionImpl(managerReader, mockWriter, mockSocket);
         mc.registerUserEventClass(MyUserEvent.class);
 
-        assertEquals("unexpected call to createSocket", 0,
-                mc.createSocketCalls);
-        assertEquals("unexpected call to createWriter", 0,
-                mc.createWriterCalls);
+        assertEquals("unexpected call to createSocket", 0, mc.createSocketCalls);
+        assertEquals("unexpected call to createWriter", 0, mc.createWriterCalls);
         assertEquals("createReader not called 1 time", 1, mc.createReaderCalls);
 
         verify(managerReader);
@@ -118,15 +111,10 @@ public class ManagerConnectionImplTest extends TestCase
         assertEquals("createWriter not called 1 time", 1, mc.createWriterCalls);
         assertEquals("createReader not called 1 time", 1, mc.createReaderCalls);
 
-        assertEquals("challenge action not sent 1 time", 1,
-                mockWriter.challengeActionsSent);
-        assertEquals("login action not sent 1 time", 1,
-                mockWriter.loginActionsSent);
-        assertEquals("unexpected other actions sent", 0,
-                mockWriter.otherActionsSent);
-
-        assertEquals("setSocket() not called 1 time", 1,
-                mockReader.setSocketCalls);
+        assertEquals("challenge action not sent 1 time", 1, mockWriter.challengeActionsSent);
+        assertEquals("login action not sent 1 time", 1, mockWriter.loginActionsSent);
+        assertEquals("unexpected other actions sent", 0, mockWriter.otherActionsSent);
+        assertEquals("setSocket() not called 1 time", 1, mockReader.setSocketCalls);
         // Some time for the reader thread to be started. Otherwise run() might
         // not yet have been
         // called.
@@ -146,15 +134,13 @@ public class ManagerConnectionImplTest extends TestCase
 
         assertEquals("state is not CONNECTED", ManagerConnectionState.CONNECTED, mc.getState());
 
-        assertEquals("must have handled exactly one events", 1,
-                listener.eventsHandled.size());
+        assertEquals("must have handled exactly one events", 1, listener.eventsHandled.size());
 /*
         assertTrue(
                 "first event handled must be a ProtocolIdentifierReceivedEvent",
                 listener.eventsHandled.get(0) instanceof ProtocolIdentifierReceivedEvent);
 */
-        assertTrue(
-                "event handled must be a ConnectEvent",
+        assertTrue("event handled must be a ConnectEvent",
                 listener.eventsHandled.get(0) instanceof ConnectEvent);
 
         verify(mockSocket);
@@ -186,15 +172,10 @@ public class ManagerConnectionImplTest extends TestCase
         assertEquals("createWriter not called 1 time", 1, mc.createWriterCalls);
         assertEquals("createReader not called 1 time", 1, mc.createReaderCalls);
 
-        assertEquals("challenge action not sent 1 time", 1,
-                mockWriter.challengeActionsSent);
-        assertEquals("login action not sent 1 time", 1,
-                mockWriter.loginActionsSent);
-        assertEquals("unexpected other actions sent", 0,
-                mockWriter.otherActionsSent);
-
-        assertEquals("setSocket() not called 1 time", 1,
-                mockReader.setSocketCalls);
+        assertEquals("challenge action not sent 1 time", 1, mockWriter.challengeActionsSent);
+        assertEquals("login action not sent 1 time", 1, mockWriter.loginActionsSent);
+        assertEquals("unexpected other actions sent", 0, mockWriter.otherActionsSent);
+        assertEquals("setSocket() not called 1 time", 1, mockReader.setSocketCalls);
         // Some time for the reader thread to be started. Otherwise run() might
         // not yet have been
         // called.
@@ -233,15 +214,11 @@ public class ManagerConnectionImplTest extends TestCase
         assertEquals("createWriter not called 1 time", 1, mc.createWriterCalls);
         assertEquals("createReader not called 1 time", 1, mc.createReaderCalls);
 
-        assertEquals("unexpected challenge action sent", 0,
-                mockWriter.challengeActionsSent);
-        assertEquals("unexpected login action sent", 0,
-                mockWriter.loginActionsSent);
-        assertEquals("unexpected other actions sent", 0,
-                mockWriter.otherActionsSent);
+        assertEquals("unexpected challenge action sent", 0, mockWriter.challengeActionsSent);
+        assertEquals("unexpected login action sent", 0, mockWriter.loginActionsSent);
+        assertEquals("unexpected other actions sent", 0, mockWriter.otherActionsSent);
 
-        assertEquals("unexpected call to setSocket()", 0,
-                mockReader.setSocketCalls);
+        assertEquals("unexpected call to setSocket()", 0, mockReader.setSocketCalls);
         assertEquals("unexpected call to run()", 0, mockReader.runCalls);
         assertEquals("unexpected call to die()", 0, mockReader.dieCalls);
 
@@ -276,8 +253,7 @@ public class ManagerConnectionImplTest extends TestCase
         assertEquals("unexpected login action sent", 0, mockWriter.loginActionsSent);
         assertEquals("unexpected other actions sent", 0, mockWriter.otherActionsSent);
 
-        assertEquals("setSocket() not called 1 time", 1,
-                mockReader.setSocketCalls);
+        assertEquals("setSocket() not called 1 time", 1, mockReader.setSocketCalls);
         // Some time for the reader thread to be started. Otherwise run() might
         // not yet have been
         // called.
@@ -359,8 +335,7 @@ public class ManagerConnectionImplTest extends TestCase
             // fine
         }
 
-        assertEquals("unexpected logoff action sent", 0,
-                mockWriter.logoffActionsSent);
+        assertEquals("unexpected logoff action sent", 0, mockWriter.logoffActionsSent);
         verify(mockSocket);
     }
 
@@ -411,8 +386,7 @@ public class ManagerConnectionImplTest extends TestCase
         assertEquals("incorrect actionId in response", "123", response.getActionId());
         assertEquals("incorrect response", "Success", response.getResponse());
 
-        assertEquals("other actions not sent 1 time", 1,
-                mockWriter.otherActionsSent);
+        assertEquals("other actions not sent 1 time", 1, mockWriter.otherActionsSent);
     }
 
     public void testSendActionTimeout() throws Exception
@@ -438,8 +412,7 @@ public class ManagerConnectionImplTest extends TestCase
         {
         }
 
-        assertEquals("other actions not sent 1 time", 1,
-                mockWriter.otherActionsSent);
+        assertEquals("other actions not sent 1 time", 1, mockWriter.otherActionsSent);
     }
 
     public void testDispatchResponseUnexpectedResponse()
@@ -664,13 +637,13 @@ public class ManagerConnectionImplTest extends TestCase
         }
 
         @Override
-      public String getUsername()
+        public String getUsername()
         {
             return username;
         }
 
         @Override
-      public String getPassword()
+        public String getPassword()
         {
             return password;
         }

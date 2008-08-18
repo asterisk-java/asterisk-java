@@ -17,14 +17,14 @@
 package org.asteriskjava.manager.response;
 
 /**
+ * Response to an {@link org.asteriskjava.manager.action.ExtensionStateAction}.  
+ *
  * @author srt
  * @version $Id$
+ * @see org.asteriskjava.manager.action.ExtensionStateAction
  */
 public class ExtensionStateResponse extends ManagerResponse
 {
-    /**
-     * Serial version identifier
-     */
     private static final long serialVersionUID = -2044248427247227390L;
     private String exten;
     private String context;
@@ -70,9 +70,9 @@ public class ExtensionStateResponse extends ManagerResponse
     {
         this.status = status;
     }
-    
+
     @Override
-   public String toString()
+    public String toString()
     {
         StringBuffer sb;
 

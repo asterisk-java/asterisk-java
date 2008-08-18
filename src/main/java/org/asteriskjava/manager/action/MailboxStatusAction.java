@@ -16,19 +16,20 @@
  */
 package org.asteriskjava.manager.action;
 
+import org.asteriskjava.manager.ExpectedResponse;
+import org.asteriskjava.manager.response.MailboxStatusResponse;
+
 /**
  * The MailboxStatusAction checks if a mailbox contains waiting messages.<p>
  * The MailboxStatusAction returns a MailboxStatusResponse.
- * 
- * @see org.asteriskjava.manager.response.MailboxStatusResponse
+ *
  * @author srt
  * @version $Id$
+ * @see org.asteriskjava.manager.response.MailboxStatusResponse
  */
+@ExpectedResponse(MailboxStatusResponse.class)
 public class MailboxStatusAction extends AbstractManagerAction
 {
-    /**
-     * Serializable version identifier
-     */
     static final long serialVersionUID = -3845028207155711950L;
 
     private String mailbox;
@@ -44,11 +45,11 @@ public class MailboxStatusAction extends AbstractManagerAction
     /**
      * Creates a new MailboxStatusAction that checks for waiting messages in the
      * given mailbox.
-     * 
+     *
      * @param mailbox the name of the mailbox to check.<p>
-     *            This can either be only the number of the mailbox or a string
-     *            of the form mailboxnumber@context. If no context is specified
-     *            "default" is assumed.
+     *                This can either be only the number of the mailbox or a string
+     *                of the form mailboxnumber@context. If no context is specified
+     *                "default" is assumed.
      * @since 0.2
      */
     public MailboxStatusAction(String mailbox)
@@ -60,7 +61,7 @@ public class MailboxStatusAction extends AbstractManagerAction
      * Returns the name of this action, i.e. "MailboxStatus".
      */
     @Override
-   public String getAction()
+    public String getAction()
     {
         return "MailboxStatus";
     }

@@ -118,7 +118,7 @@ public class ManagerResponse implements Serializable
      * 
      * @return the action id of the ManagerAction that caused this response or
      *         <code>null</code> if none was set.
-     * @see org.asteriskjava.manager.action.ManagerAction#setActionId()
+     * @see org.asteriskjava.manager.action.ManagerAction#setActionId(String)
      */
     public String getActionId()
     {

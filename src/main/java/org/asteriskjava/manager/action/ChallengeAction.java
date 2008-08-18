@@ -16,21 +16,22 @@
  */
 package org.asteriskjava.manager.action;
 
+import org.asteriskjava.manager.ExpectedResponse;
+import org.asteriskjava.manager.response.ChallengeResponse;
+
 /**
  * The ChallengeAction requests a challenge from the server to use when logging
  * in using challenge/response. Sending this action to the asterisk server
  * results in a ChallengeResponse being received from the server.
- * 
- * @see org.asteriskjava.manager.action.LoginAction
- * @see org.asteriskjava.manager.response.ChallengeResponse
+ *
  * @author srt
  * @version $Id$
+ * @see org.asteriskjava.manager.action.LoginAction
+ * @see org.asteriskjava.manager.response.ChallengeResponse
  */
+@ExpectedResponse(ChallengeResponse.class)
 public class ChallengeAction extends AbstractManagerAction
 {
-    /**
-     * Serializable version identifier
-     */
     static final long serialVersionUID = 7240516124871953971L;
     private String authType;
 
@@ -45,7 +46,7 @@ public class ChallengeAction extends AbstractManagerAction
     /**
      * Creates a new ChallengeAction that requests a new login challenge for use
      * with the given digest algorithm.
-     * 
+     *
      * @param authType the digest alogrithm to use.
      * @since 0.2
      */
@@ -58,7 +59,7 @@ public class ChallengeAction extends AbstractManagerAction
      * Returns Returns the name of this action, i.e. "Challenge".
      */
     @Override
-   public String getAction()
+    public String getAction()
     {
         return "Challenge";
     }

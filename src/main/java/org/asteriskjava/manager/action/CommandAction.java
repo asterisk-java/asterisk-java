@@ -16,6 +16,9 @@
  */
 package org.asteriskjava.manager.action;
 
+import org.asteriskjava.manager.ExpectedResponse;
+import org.asteriskjava.manager.response.CommandResponse;
+
 /**
  * The CommandAction sends a command line interface (CLI) command to the
  * asterisk server.<p>
@@ -32,20 +35,17 @@ package org.asteriskjava.manager.action;
  *     System.out.println(line);
  * }
  * </pre>
- * Where <code>c</code> is an instance of 
+ * Where <code>c</code> is an instance of
  * {@link org.asteriskjava.manager.ManagerConnection}.
- * 
- * @see org.asteriskjava.manager.response.CommandResponse
+ *
  * @author srt
  * @version $Id$
+ * @see org.asteriskjava.manager.response.CommandResponse
  */
+@ExpectedResponse(CommandResponse.class)
 public class CommandAction extends AbstractManagerAction
 {
-    /**
-     * Serializable version identifier
-     */
     static final long serialVersionUID = 4753117770471622025L;
-
     protected String command;
 
     /**
@@ -58,7 +58,7 @@ public class CommandAction extends AbstractManagerAction
 
     /**
      * Creates a new CommandAction with the given command.
-     * 
+     *
      * @param command the CLI command to execute.
      * @since 0.2
      */
@@ -71,7 +71,7 @@ public class CommandAction extends AbstractManagerAction
      * Returns the name of this action, i.e. "Command".
      */
     @Override
-   public String getAction()
+    public String getAction()
     {
         return "Command";
     }

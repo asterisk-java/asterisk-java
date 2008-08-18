@@ -5,20 +5,21 @@
  */
 package org.asteriskjava.manager.action;
 
+import org.asteriskjava.manager.ExpectedResponse;
+import org.asteriskjava.manager.response.MailboxCountResponse;
+
 /**
  * The MailboxCountAction queries the number of unread and read messages in a
  * mailbox.<p>
  * The MailboxCountAction returns a MailboxStatusResponse.
- * 
- * @see org.asteriskjava.manager.response.MailboxCountResponse
+ *
  * @author srt
  * @version $Id$
+ * @see org.asteriskjava.manager.response.MailboxCountResponse
  */
+@ExpectedResponse(MailboxCountResponse.class)
 public class MailboxCountAction extends AbstractManagerAction
 {
-    /**
-     * Serializable version identifier
-     */
     static final long serialVersionUID = -6900421919824575941L;
 
     private String mailbox;
@@ -34,11 +35,11 @@ public class MailboxCountAction extends AbstractManagerAction
     /**
      * Creates a new MailboxCountAction that queries the number of unread and
      * read messages in the given mailbox.
-     * 
+     *
      * @param mailbox the name of the mailbox to query.<p>
-     *            This can either be only the number of the mailbox or a string
-     *            of the form mailboxnumber@context. If no context is specified
-     *            "default" is assumed.
+     *                This can either be only the number of the mailbox or a string
+     *                of the form mailboxnumber@context. If no context is specified
+     *                "default" is assumed.
      * @since 0.2
      */
     public MailboxCountAction(String mailbox)
@@ -50,7 +51,7 @@ public class MailboxCountAction extends AbstractManagerAction
      * Returns the name of this action, i.e. "MailboxCount".
      */
     @Override
-   public String getAction()
+    public String getAction()
     {
         return "MailboxCount";
     }

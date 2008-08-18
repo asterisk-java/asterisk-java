@@ -16,10 +16,7 @@
  */
 package org.asteriskjava.manager.internal;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.List;
-import java.util.ArrayList;
+import java.util.*;
 
 import org.asteriskjava.manager.response.*;
 
@@ -31,122 +28,66 @@ import org.asteriskjava.manager.response.*;
  * @author srt
  * @version $Id$
  */
-class ResponseBuilderImpl implements ResponseBuilder
+class ResponseBuilderImpl extends AbstractBuilder implements ResponseBuilder
 {
-    /**
-     * Constructs an instance of ManagerResponse based on a map of attributes.
-     * 
-     * @param attributes the attributes and their values. The keys of this map must be all lower
-     * case.
-     * @return the response with the given attributes.
-     */
-    public ManagerResponse buildResponse(final Map<String, String> attributes)
-    {
-        ManagerResponse response;
-        String responseType;
-        String proxyResponseType;
-        
-        responseType = attributes.get("response");
-        proxyResponseType = attributes.get("proxyresponse");
+    private static final Set<String> ignoredAttributes = new HashSet<String>(Arrays.asList(
+            "attributes", "proxyresponse", ManagerReader.COMMAND_RESULT_RESPONSE_KEY));
 
-        // determine type
-        if ("error".equalsIgnoreCase(responseType))
+    private static final String RESPONSE_KEY = "response";
+    private static final String PROXY_RESPONSE_KEY = "proxyresponse";
+    private static final String RESPONSE_TYPE_ERROR = "error";
+
+    public ManagerResponse buildResponse(Class<? extends ManagerResponse> responseClass, Map<String, String> attributes)
+    {
+        final ManagerResponse response;
+        final String responseType = attributes.get(RESPONSE_KEY);
+
+        if (RESPONSE_TYPE_ERROR.equalsIgnoreCase(responseType))
         {
             response = new ManagerError();
         }
-        else if (attributes.containsKey("challenge"))
+        else if (responseClass == null)
         {
-            final ChallengeResponse challengeResponse = new ChallengeResponse();
-            challengeResponse.setChallenge(attributes.get("challenge"));
-            response = challengeResponse;
+            response = new ManagerResponse();
         }
-        else if ("Follows".equals(responseType) && attributes.containsKey("result"))
+        else
         {
-            final CommandResponse commandResponse = new CommandResponse();
+            try
+            {
+                response = responseClass.newInstance();
+            }
+            catch (Exception ex)
+            {
+                logger.error("Unable to create new instance of " + responseClass.getName(), ex);
+                return null;
+            }
+        }
 
-            List<String> result = new ArrayList<String>();
-            for (String resultLine : attributes.get("result").split("\n"))
+        setAttributes(response, attributes, ignoredAttributes);
+
+        if (response instanceof CommandResponse)
+        {
+            final CommandResponse commandResponse = (CommandResponse) response;
+            final List<String> result = new ArrayList<String>();
+            for (String resultLine : attributes.get(ManagerReader.COMMAND_RESULT_RESPONSE_KEY).split("\n"))
             {
                 // on error there is a leading space
                 if (!resultLine.equals("--END COMMAND--") && !resultLine.equals(" --END COMMAND--"))
                 {
-                    //logger.info("Adding '" + resultLine + "'");
                     result.add(resultLine);
                 }
             }
             commandResponse.setResult(result);
-            response = commandResponse;
-        }
-        else if (attributes.containsKey("mailbox") && attributes.containsKey("waiting"))
-        {
-            final MailboxStatusResponse mailboxStatusResponse = new MailboxStatusResponse();
-            mailboxStatusResponse.setMailbox(attributes.get("mailbox"));
-            
-            if ("1".equals(attributes.get("waiting")))
-            {
-                mailboxStatusResponse.setWaiting(Boolean.TRUE);
-            }
-            else
-            {
-                mailboxStatusResponse.setWaiting(Boolean.FALSE);
-            }
-            
-            response = mailboxStatusResponse;
-        }
-        else if (attributes.containsKey("mailbox") && attributes.containsKey("newmessages")
-                && attributes.containsKey("oldmessages"))
-        {
-            final MailboxCountResponse mailboxCountResponse = new MailboxCountResponse();
-            mailboxCountResponse.setMailbox(attributes.get("mailbox"));
-            mailboxCountResponse.setNewMessages(Integer.valueOf(attributes.get("newmessages")));
-            mailboxCountResponse.setOldMessages(Integer.valueOf(attributes.get("oldmessages")));
-            response = mailboxCountResponse;
-        }
-        else if (attributes.containsKey("exten") && attributes.containsKey("context") && attributes.containsKey("hint")
-                && attributes.containsKey("status"))
-        {
-            final ExtensionStateResponse extensionStateResponse = new ExtensionStateResponse();
-            extensionStateResponse.setExten(attributes.get("exten"));
-            extensionStateResponse.setContext(attributes.get("context"));
-            extensionStateResponse.setHint(attributes.get("hint"));
-            extensionStateResponse.setStatus(Integer.valueOf(attributes.get("status")));
-            response = extensionStateResponse;
-        }
-        else if(attributes.containsKey("line-000000-000000"))
-        {
-        	// this attribute will be there if the file has any lines at all
-        	response = new GetConfigResponse();
-        }
-        else
-        {
-            response = new ManagerResponse();
         }
 
-        // fill known attributes
-        if (responseType != null)
+        if (response.getResponse() != null && attributes.get(PROXY_RESPONSE_KEY) != null)
         {
-            response.setResponse(responseType);
-        }
-        else if (proxyResponseType != null)
-        {
-            response.setResponse(proxyResponseType);
+            response.setResponse(attributes.get(PROXY_RESPONSE_KEY));
         }
 
-        // clone this map as it is reused by the ManagerReader
+        // make the map of all attributes available to the response
+        // but clone it as it is reused by the ManagerReader
         response.setAttributes(new HashMap<String, String>(attributes));
-
-        if (attributes.containsKey("actionid"))
-        {
-            response.setActionId(attributes.get("actionid"));
-        }
-        if (attributes.containsKey("message"))
-        {
-            response.setMessage(attributes.get("message"));
-        }
-        if (attributes.containsKey("uniqueid"))
-        {
-            response.setUniqueId(attributes.get("uniqueid"));
-        }
 
         return response;
     }

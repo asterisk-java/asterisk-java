@@ -16,21 +16,22 @@
  */
 package org.asteriskjava.manager.action;
 
+import org.asteriskjava.manager.ExpectedResponse;
+import org.asteriskjava.manager.response.GetConfigResponse;
+
 /**
- * The GetConfigAction sends a GetConfig command to the asterisk server.
- * 
- * @see org.asteriskjava.manager.response.GetConfigResponse
+ * The GetConfigAction sends a GetConfig command to the Asterisk server.<p>
+ * The GetConfigAction returns a GetConfigResponse.
+ *
  * @author martins
+ * @see org.asteriskjava.manager.response.GetConfigResponse
  * @since 0.3
  */
+@ExpectedResponse(GetConfigResponse.class)
 public class GetConfigAction extends AbstractManagerAction
 {
-    /**
-     * Serializable version identifier.
-     */
     static final long serialVersionUID = 4753117770471622025L;
-
-    protected String filename;
+    private String filename;
 
     /**
      * Creates a new GetConfigAction.
@@ -42,7 +43,7 @@ public class GetConfigAction extends AbstractManagerAction
 
     /**
      * Creates a new GetConfigAction with the given filename.
-     * 
+     *
      * @param filename the name of the file to get.
      */
     public GetConfigAction(String filename)
@@ -54,7 +55,7 @@ public class GetConfigAction extends AbstractManagerAction
      * Returns the name of this action, i.e. "GetConfig".
      */
     @Override
-   public String getAction()
+    public String getAction()
     {
         return "GetConfig";
     }

@@ -68,8 +68,13 @@ public class ManagerUtil
      */
     public static String getInternalActionId(String actionId)
     {
-        int delimiterIndex;
+        final int delimiterIndex;
 
+        if (actionId == null)
+        {
+            return null;
+        }
+        
         delimiterIndex = actionId.indexOf(INTERNAL_ACTION_ID_DELIMITER);
         if (delimiterIndex > 0)
         {

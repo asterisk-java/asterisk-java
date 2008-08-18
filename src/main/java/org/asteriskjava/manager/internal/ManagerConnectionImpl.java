@@ -36,14 +36,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.asteriskjava.AsteriskVersion;
-import org.asteriskjava.manager.AuthenticationFailedException;
-import org.asteriskjava.manager.EventTimeoutException;
-import org.asteriskjava.manager.ManagerConnection;
-import org.asteriskjava.manager.ManagerConnectionState;
-import org.asteriskjava.manager.ManagerEventListener;
-import org.asteriskjava.manager.SendActionCallback;
-import org.asteriskjava.manager.ResponseEvents;
-import org.asteriskjava.manager.TimeoutException;
+import org.asteriskjava.manager.*;
 import org.asteriskjava.manager.action.ChallengeAction;
 import org.asteriskjava.manager.action.CommandAction;
 import org.asteriskjava.manager.action.EventGeneratingAction;
@@ -878,7 +871,24 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
             }
         }
 
+        Class<? extends ManagerResponse> responseClass = getExpectedResponseClass(action.getClass());
+        if (responseClass != null)
+        {
+            reader.expectResponseClass(internalActionId, responseClass);
+        }
+
         writer.sendAction(action, internalActionId);
+    }
+
+    private Class<? extends ManagerResponse> getExpectedResponseClass(Class<? extends ManagerAction> actionClass)
+    {
+        final ExpectedResponse annotation = actionClass.getAnnotation(ExpectedResponse.class);
+        if (annotation == null)
+        {
+            return null;
+        }
+
+        return annotation.value();
     }
 
     public ResponseEvents sendEventGeneratingAction(EventGeneratingAction action) throws IOException, EventTimeoutException,

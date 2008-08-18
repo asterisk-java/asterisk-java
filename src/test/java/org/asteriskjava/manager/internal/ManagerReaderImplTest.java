@@ -42,7 +42,7 @@ public class ManagerReaderImplTest extends TestCase
     private ManagerReader managerReader;
 
     @Override
-   protected void setUp()
+    protected void setUp()
     {
         now = new Date();
         DateUtil.overrideCurrentDate(now);
@@ -53,7 +53,7 @@ public class ManagerReaderImplTest extends TestCase
     }
 
     @Override
-   protected void tearDown()
+    protected void tearDown()
     {
         DateUtil.overrideCurrentDate(null);
     }
@@ -87,7 +87,7 @@ public class ManagerReaderImplTest extends TestCase
         assertEquals("not exactly two events dispatched", 2,
                 dispatcher.dispatchedEvents.size());
 
-        assertEquals("first event must be a ProtocolIdentifierReceivedEvent", 
+        assertEquals("first event must be a ProtocolIdentifierReceivedEvent",
                 ProtocolIdentifierReceivedEvent.class,
                 dispatcher.dispatchedEvents.get(0).getClass());
 
@@ -231,7 +231,7 @@ public class ManagerReaderImplTest extends TestCase
         List<String> result = new ArrayList<String>();
 
         expect(socketConnectionFacade.readLine()).andReturn("Response: Follows");
-        expect(socketConnectionFacade.readLine()).andReturn("ActionID: 12345");
+        expect(socketConnectionFacade.readLine()).andReturn("ActionID: 678#12345");
         expect(socketConnectionFacade.readLine()).andReturn("Line1\nLine2\n--END COMMAND--");
         expect(socketConnectionFacade.readLine()).andReturn("");
         expect(socketConnectionFacade.readLine()).andReturn(null);
@@ -242,6 +242,7 @@ public class ManagerReaderImplTest extends TestCase
         replay(socketConnectionFacade);
 
         managerReader.setSocket(socketConnectionFacade);
+        managerReader.expectResponseClass("678", CommandResponse.class);
         managerReader.run();
 
         verify(socketConnectionFacade);
@@ -250,16 +251,15 @@ public class ManagerReaderImplTest extends TestCase
                 dispatcher.dispatchedResponses.size());
 
         assertEquals("first response must be a CommandResponse",
-                CommandResponse.class, dispatcher.dispatchedResponses.get(0)
-                        .getClass());
+                CommandResponse.class, dispatcher.dispatchedResponses.get(0).getClass());
 
         assertEquals("CommandResponse contains incorrect response", "Follows",
                 dispatcher.dispatchedResponses.get(0).getResponse());
 
-        assertEquals("CommandResponse contains incorrect actionId", "12345",
+        assertEquals("CommandResponse contains incorrect actionId", "678#12345",
                 dispatcher.dispatchedResponses.get(0).getActionId());
 
-        assertEquals("CommandResponse contains incorrect actionId (via getAttribute)", "12345",
+        assertEquals("CommandResponse contains incorrect actionId (via getAttribute)", "678#12345",
                 dispatcher.dispatchedResponses.get(0).getAttribute("actionId"));
 
         assertEquals("CommandResponse contains incorrect result", result,

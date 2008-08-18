@@ -120,4 +120,63 @@ public class ReflectionUtil
 
         return accessors;
     }
+
+
+    /**
+     * Strips all illegal charaters from the given lower case string.
+     * Illegal characters are all characters that are neither characters ('a' to 'z') nor digits ('0' to '9').
+     *
+     * @param s the original string
+     * @return the string with all illegal characters stripped
+     */
+    public static String stripIllegalCharacters(String s)
+    {
+        char c;
+        boolean needsStrip = false;
+        StringBuffer sb;
+
+        if (s == null)
+        {
+            return null;
+        }
+
+        for (int i = 0; i < s.length(); i++)
+        {
+            c = s.charAt(i);
+            if (c >= '0' && c <= '9')
+            {
+                // continue
+            }
+            else if (c >= 'a' && c <= 'z')
+            {
+                // continue
+            }
+            else
+            {
+                needsStrip = true;
+                break;
+            }
+        }
+
+        if (!needsStrip)
+        {
+            return s;
+        }
+
+        sb = new StringBuffer(s.length());
+        for (int i = 0; i < s.length(); i++)
+        {
+            c = s.charAt(i);
+            if (c >= '0' && c <= '9')
+            {
+                sb.append(c);
+            }
+            else if (c >= 'a' && c <= 'z')
+            {
+                sb.append(c);
+            }
+        }
+
+        return sb.toString();
+    }
 }

@@ -16,18 +16,11 @@
  */
 package org.asteriskjava.manager.internal;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-
 import org.asteriskjava.manager.event.*;
-import org.asteriskjava.util.AstUtil;
-import org.asteriskjava.util.Log;
-import org.asteriskjava.util.LogFactory;
-import org.asteriskjava.util.ReflectionUtil;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Modifier;
+import java.util.*;
 
 /**
  * Default implementation of the EventBuilder interface.
@@ -36,9 +29,9 @@ import org.asteriskjava.util.ReflectionUtil;
  * @version $Id$
  * @see org.asteriskjava.manager.event.ManagerEvent
  */
-class EventBuilderImpl implements EventBuilder
+class EventBuilderImpl extends AbstractBuilder implements EventBuilder
 {
-    private final Log logger = LogFactory.getLog(getClass());
+    private static final Set<String> ignoredAttributes = new HashSet<String>(Arrays.asList("event"));
     private Map<String, Class> registeredEventClasses;
 
     EventBuilderImpl()
@@ -266,7 +259,7 @@ class EventBuilderImpl implements EventBuilder
             return null;
         }
 
-        setAttributes(event, attributes);
+        setAttributes(event, attributes, ignoredAttributes);
 
         // ResponseEvents are sent in response to a ManagerAction if the
         // response contains lots of data. They include the actionId of
@@ -286,146 +279,5 @@ class EventBuilderImpl implements EventBuilder
         }
 
         return event;
-    }
-
-    @SuppressWarnings("unchecked")
-    private void setAttributes(ManagerEvent event, Map<String, String> attributes)
-    {
-        Map<String, Method> setters;
-
-        setters = ReflectionUtil.getSetters(event.getClass());
-        for (String name : attributes.keySet())
-        {
-            Object value;
-            Class dataType;
-            Method setter;
-
-            if ("event".equals(name))
-            {
-                continue;
-            }
-
-            /*
-             * The source property needs special handling as it is already
-             * defined in java.util.EventObject (the base class of
-             * ManagerEvent), so we have to translate it.
-             */
-            if ("source".equals(name))
-            {
-                setter = setters.get("src");
-            }
-            else
-            {
-                setter = setters.get(stripIllegalCharacters(name));
-            }
-
-            // it seems silly to warn if it's a user event -- maybe it was intentional
-            if (setter == null && !(event instanceof UserEvent))
-            {
-                logger.warn("Unable to set property '" + name + "' to '" + attributes.get(name) + "' on "
-                        + event.getClass().getName() + ": no setter. Please report at http://jira.reucon.org/browse/AJ");
-            }
-
-            if (setter == null)
-            {
-                continue;
-            }
-
-            dataType = setter.getParameterTypes()[0];
-
-            if (dataType == Boolean.class)
-            {
-                value = AstUtil.isTrue(attributes.get(name));
-            }
-            else if (dataType.isAssignableFrom(String.class))
-            {
-                value = attributes.get(name);
-                if (AstUtil.isNull((String) value))
-                {
-                    value = null;
-                }
-            }
-            else
-            {
-                try
-                {
-                    Constructor constructor = dataType.getConstructor(new Class[]{String.class});
-                    value = constructor.newInstance(attributes.get(name));
-                }
-                catch (Exception e)
-                {
-                    logger.error("Unable to convert value '" + attributes.get(name) + "' of property '" + name + "' on "
-                            + event.getClass().getName() + " to required type " + dataType, e);
-                    continue;
-                }
-            }
-
-            try
-            {
-                setter.invoke(event, value);
-            }
-            catch (Exception e)
-            {
-                logger.error("Unable to set property '" + name + "' to '" + attributes.get(name) + "' on "
-                        + event.getClass().getName(), e);
-            }
-        }
-    }
-
-    /**
-     * Strips all illegal charaters from the given lower case string.
-     *
-     * @param s the original string
-     * @return the string with all illegal characters stripped
-     */
-    private String stripIllegalCharacters(String s)
-    {
-        char c;
-        boolean needsStrip = false;
-        StringBuffer sb;
-
-        if (s == null)
-        {
-            return null;
-        }
-
-        for (int i = 0; i < s.length(); i++)
-        {
-            c = s.charAt(i);
-            if (c >= '0' && c <= '9')
-            {
-                // continue
-            }
-            else if (c >= 'a' && c <= 'z')
-            {
-                // continue
-            }
-            else
-            {
-                needsStrip = true;
-                break;
-            }
-        }
-
-        if (!needsStrip)
-        {
-            return s;
-        }
-
-        sb = new StringBuffer(s.length());
-        for (int i = 0; i < s.length(); i++)
-        {
-            c = s.charAt(i);
-            if (c >= '0' && c <= '9')
-            {
-                sb.append(c);
-            }
-            else if (c >= 'a' && c <= 'z')
-            {
-                sb.append(c);
-            }
-        }
-
-        return sb.toString();
     }
 }

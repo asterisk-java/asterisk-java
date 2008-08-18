@@ -16,33 +16,59 @@
  */
 package org.asteriskjava.manager.action;
 
+import org.asteriskjava.manager.ExpectedResponse;
+import org.asteriskjava.manager.response.ExtensionStateResponse;
+
 /**
  * The ExtensionStateAction queries the state of an extension in a given context.
- * 
+ * If the extension has a hint, will use devicestate to check the status of the
+ * device connected to the extension.
+ *
  * @author srt
  * @version $Id$
  */
+@ExpectedResponse(ExtensionStateResponse.class)
 public class ExtensionStateAction extends AbstractManagerAction
 {
-    /**
-     * Serializable version identifier
-     */
     static final long serialVersionUID = 6537408784388696403L;
 
     private String exten;
     private String context;
 
     /**
+     * Creates a new ExtensionStateAction.
+     */
+    public ExtensionStateAction()
+    {
+    }
+
+    /**
+     * Creates a new ExtensionStateAction that queries the state of the given extension in
+     * the given context.
+     *
+     * @param exten the extension to query.
+     * @param context the name of the context that contains the extension to query.
+     * @since 1.0.0
+     */
+    public ExtensionStateAction(String exten, String context)
+    {
+        this.exten = exten;
+        this.context = context;
+    }
+
+    /**
      * Returns the name of this action, i.e. "ExtensionState".
      */
     @Override
-   public String getAction()
+    public String getAction()
     {
         return "ExtensionState";
     }
 
     /**
      * Returns the extension to query.
+     *
+     * @return the extension to query.
      */
     public String getExten()
     {
@@ -51,6 +77,8 @@ public class ExtensionStateAction extends AbstractManagerAction
 
     /**
      * Sets the extension to query.
+     *
+     * @param exten the extension to query.
      */
     public void setExten(String exten)
     {
@@ -59,6 +87,8 @@ public class ExtensionStateAction extends AbstractManagerAction
 
     /**
      * Returns the name of the context that contains the extension to query.
+     *
+     * @return the name of the context that contains the extension to query.
      */
     public String getContext()
     {
@@ -67,6 +97,8 @@ public class ExtensionStateAction extends AbstractManagerAction
 
     /**
      * Sets the name of the context that contains the extension to query.
+     *
+     * @param context the name of the context that contains the extension to query.
      */
     public void setContext(String context)
     {

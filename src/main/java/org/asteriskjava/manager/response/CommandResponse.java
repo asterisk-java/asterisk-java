@@ -32,15 +32,31 @@ import java.util.List;
  */
 public class CommandResponse extends ManagerResponse
 {
+    private static final long serialVersionUID = 1L;
+
+    private String privilege;
+    private List<String> result;
+
     /**
-     * Serial version identifier
+     * Returns the AMI authorization class of this response.
+     *
+     * @return always "Command"
+     * @since 1.0.0
      */
-    private static final long serialVersionUID = -350763332794275049L;
+    public String getPrivilege()
+    {
+        return privilege;
+    }
 
-    protected List<String> result;
+    public void setPrivilege(String privilege)
+    {
+        this.privilege = privilege;
+    }
 
     /**
-     * Returns a List containing strings representing the lines returned by the CLI command.
+     * Returns a List of strings representing the lines returned by the CLI command.
+     *
+     * @return a List of strings representing the lines returned by the CLI command.
      */
     public List<String> getResult()
     {

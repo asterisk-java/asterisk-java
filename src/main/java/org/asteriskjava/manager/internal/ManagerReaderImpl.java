@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -60,6 +61,8 @@ public class ManagerReaderImpl implements ManagerReader
      * The dispatcher to use for dispatching events and responses.
      */
     private final Dispatcher dispatcher;
+
+    private final Map<String, Class<? extends ManagerResponse>> expectedResponseClasses;
 
     /**
      * The source to use when creating {@link ManagerEvent}s.
@@ -99,6 +102,7 @@ public class ManagerReaderImpl implements ManagerReader
 
         this.eventBuilder = new EventBuilderImpl();
         this.responseBuilder = new ResponseBuilderImpl();
+        this.expectedResponseClasses = new ConcurrentHashMap<String, Class<? extends ManagerResponse>>();
     }
 
     /**
@@ -111,9 +115,14 @@ public class ManagerReaderImpl implements ManagerReader
         this.socket = socket;
     }
 
-    public void registerEventClass(Class eventClass)
+    public void registerEventClass(Class<? extends ManagerEvent> eventClass)
     {
         eventBuilder.registerEventClass(eventClass);
+    }
+
+    public void expectResponseClass(String internalActionId, Class<? extends ManagerResponse> responseClass)
+    {
+        expectedResponseClasses.put(internalActionId, responseClass);
     }
 
     /**
@@ -163,7 +172,7 @@ public class ManagerReaderImpl implements ManagerReader
                  */
                 if ("Follows".equals(buffer.get("response")) && line.endsWith("--END COMMAND--"))
                 {
-                    buffer.put("result", line);
+                    buffer.put(COMMAND_RESULT_RESPONSE_KEY, line);
                     continue;
                 }
 
@@ -274,9 +283,19 @@ public class ManagerReaderImpl implements ManagerReader
 
     private ManagerResponse buildResponse(Map<String, String> buffer)
     {
-        ManagerResponse response;
+        Class<? extends ManagerResponse> responseClass = null;
+        final String actionId = buffer.get("actionid");
+        final String internalActionId = ManagerUtil.getInternalActionId(actionId);
+        if (internalActionId != null)
+        {
+            responseClass = expectedResponseClasses.get(internalActionId);
+            if (responseClass != null)
+            {
+                expectedResponseClasses.remove(internalActionId);
+            }
+        }
 
-        response = responseBuilder.buildResponse(buffer);
+        final ManagerResponse response = responseBuilder.buildResponse(responseClass, buffer);
 
         if (response != null)
         {

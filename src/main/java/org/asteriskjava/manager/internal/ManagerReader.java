@@ -19,6 +19,7 @@ package org.asteriskjava.manager.internal;
 import java.io.IOException;
 
 import org.asteriskjava.manager.event.ManagerEvent;
+import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.util.SocketConnectionFacade;
 
 /**
@@ -36,6 +37,7 @@ import org.asteriskjava.util.SocketConnectionFacade;
  */
 public interface ManagerReader extends Runnable
 {
+    String COMMAND_RESULT_RESPONSE_KEY = "__result__";
 
     /**
      * Sets the socket to use for reading from the asterisk server.
@@ -52,7 +54,9 @@ public interface ManagerReader extends Runnable
      * @see ManagerEvent
      * @param event class of the event to register.
      */
-    void registerEventClass(Class event);
+    void registerEventClass(Class<? extends ManagerEvent> event);
+
+    void expectResponseClass(String internalActionId, Class<? extends ManagerResponse> responseClass);
 
     void die();
 
