@@ -16,8 +16,6 @@
  */
 package org.asteriskjava.manager.event;
 
-import java.net.InetAddress;
-
 /**
  * An RtpReceiverStatEvent is triggered at the end of an RTP transmission and reports
  * transmission statistics.<p>
@@ -32,7 +30,7 @@ public class RtpReceiverStatEvent extends AbstractRtpStatEvent
 {
     private static final long serialVersionUID = 1L;
 
-    private Integer receivedPacktes;
+    private Integer receivedPackets;
     private Double transit;
     private Integer rrCount;
 
@@ -46,14 +44,14 @@ public class RtpReceiverStatEvent extends AbstractRtpStatEvent
      *
      * @return the number of packets received.
      */
-    public Integer getReceivedPacktes()
+    public Integer getReceivedPackets()
     {
-        return receivedPacktes;
+        return receivedPackets;
     }
 
-    public void setReceivedPacktes(Integer receivedPacktes)
+    public void setReceivedPackets(Integer receivedPackets)
     {
-        this.receivedPacktes = receivedPacktes;
+        this.receivedPackets = receivedPackets;
     }
 
     public Double getTransit()

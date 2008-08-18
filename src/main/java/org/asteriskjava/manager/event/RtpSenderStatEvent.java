@@ -30,7 +30,7 @@ public class RtpSenderStatEvent extends AbstractRtpStatEvent
 {
     private static final long serialVersionUID = 1L;
 
-    private Integer sentPacktes;
+    private Integer sentPackets;
     private Integer srCount;
     private Double rtt;
 
@@ -44,14 +44,14 @@ public class RtpSenderStatEvent extends AbstractRtpStatEvent
      *
      * @return the number of packets sent.
      */
-    public Integer getSentPacktes()
+    public Integer getSentPackets()
     {
-        return sentPacktes;
+        return sentPackets;
     }
 
-    public void setSentPacktes(Integer sentPacktes)
+    public void setSentPackets(Integer sentPackets)
     {
-        this.sentPacktes = sentPacktes;
+        this.sentPackets = sentPackets;
     }
 
     /**

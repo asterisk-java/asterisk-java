@@ -414,10 +414,25 @@ public class EventBuilderImplTest extends TestCase
 
         properties.put("event", "RtpReceiverStat");
         properties.put("ssrc", "3776236237");
+        properties.put("receivedpackets", "0");
         event = (RtpReceiverStatEvent) eventBuilder.buildEvent(this, properties);
 
         assertNotNull(event);
         assertEquals("Returned event is of wrong type", RtpReceiverStatEvent.class, event.getClass());
         assertEquals("Property SSRC is not set correctly", 3776236237l, (long) event.getSsrc());
+    }
+
+    public void testBuildEventForRtpReceiverStatEventAJ139()
+    {
+        Map<String, String> properties = new HashMap<String, String>();
+        RtpReceiverStatEvent event;
+
+        properties.put("event", "RtpReceiverStat");
+        properties.put("receivedpackets", "0");
+        event = (RtpReceiverStatEvent) eventBuilder.buildEvent(this, properties);
+
+        assertNotNull(event);
+        assertEquals("Returned event is of wrong type", RtpReceiverStatEvent.class, event.getClass());
+        assertEquals("Property receivedPacket is not set correctly", 0, (int) event.getReceivedPackets());
     }
 }
