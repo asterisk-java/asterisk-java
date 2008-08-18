@@ -37,7 +37,7 @@ import org.asteriskjava.util.ReflectionUtil;
  * @author srt
  * @version $Id$
  */
-public abstract class ManagerEvent extends EventObject implements Serializable
+public abstract class ManagerEvent extends EventObject
 {
     /**
      * Serializable version identifier.
@@ -61,9 +61,6 @@ public abstract class ManagerEvent extends EventObject implements Serializable
      */
     private String server;
 
-    /**
-     * @param source
-     */
     public ManagerEvent(Object source)
     {
         super(source);
@@ -184,8 +181,9 @@ public abstract class ManagerEvent extends EventObject implements Serializable
             sb.append("privilege='").append(getPrivilege()).append("',");
         }
         getters = ReflectionUtil.getGetters(getClass());
-        for (String attribute : getters.keySet())
+        for (Map.Entry<String, Method> entry: getters.entrySet())
         {
+            final String attribute = entry.getKey();
             if ("class".equals(attribute) || "datereceived".equals(attribute) || "privilege".equals(attribute)
                     || "source".equals(attribute))
             {
@@ -194,8 +192,8 @@ public abstract class ManagerEvent extends EventObject implements Serializable
 
             try
             {
-                Object value;
-                value = getters.get(attribute).invoke(this);
+                final Object value;
+                value = entry.getValue().invoke(this);
                 sb.append(attribute).append("='").append(value).append("',");
             }
             catch (Exception e) // NOPMD

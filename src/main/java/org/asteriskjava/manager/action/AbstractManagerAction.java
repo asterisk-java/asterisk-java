@@ -59,8 +59,9 @@ public abstract class AbstractManagerAction implements ManagerAction
         sb = new StringBuffer(getClass().getName() + "[");
         sb.append("action='").append(getAction()).append("',");
         getters = ReflectionUtil.getGetters(getClass());
-        for (String attribute : getters.keySet())
+        for (Map.Entry<String, Method> entry : getters.entrySet())
         {
+            final String attribute = entry.getKey();
             if ("action".equals(attribute) || "class".equals(attribute))
             {
                 continue;
@@ -69,10 +70,10 @@ public abstract class AbstractManagerAction implements ManagerAction
             try
             {
                 Object value;
-                value = getters.get(attribute).invoke(this);
+                value = entry.getValue().invoke(this);
                 sb.append(attribute).append("='").append(value).append("',");
             }
-            catch (Exception e) //NOPMD
+            catch (Exception e) // NOPMD
             {
                 // swallow
             }

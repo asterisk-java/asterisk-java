@@ -32,7 +32,7 @@ public class EventTimeoutException extends TimeoutException
      * Serial version identifier.
      */
     private static final long serialVersionUID = 5461825583966922L;
-    private final ResponseEvents partialResult;
+    private transient final ResponseEvents partialResult;
 
     /**
      * Creates a new EventTimeoutException with the given message and partial

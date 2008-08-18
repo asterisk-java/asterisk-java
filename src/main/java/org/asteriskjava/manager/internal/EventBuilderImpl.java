@@ -197,7 +197,7 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
             throw new IllegalArgumentException(clazz + " has no public default constructor");
         }
 
-        registeredEventClasses.put(eventType.toLowerCase(), clazz);
+        registeredEventClasses.put(eventType.toLowerCase(Locale.US), clazz);
 
         logger.debug("Registered event type '" + eventType + "' (" + clazz + ")");
     }
@@ -215,7 +215,7 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
             return null;
         }
 
-        eventType = attributes.get("event").toLowerCase();
+        eventType = attributes.get("event").toLowerCase(Locale.US);
 
         // Change in Asterisk 1.4 where the name of the UserEvent is sent as property instead
         // of the event name (AJ-48)

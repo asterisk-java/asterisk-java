@@ -34,9 +34,6 @@ import java.util.Map;
  */
 public class ManagerResponse implements Serializable
 {
-    /**
-     * Serial version identifier
-     */
     private static final long serialVersionUID = -935845815108584292L;
 
     private Date dateReceived;
@@ -45,6 +42,11 @@ public class ManagerResponse implements Serializable
     private String message;
     private String uniqueId;
     private Map<String, String> attributes;
+
+    public ManagerResponse()
+    {
+        this.attributes = null;
+    }
 
     /**
      * Returns a Map with all attributes of this response.<p>

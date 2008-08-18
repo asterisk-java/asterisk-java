@@ -39,8 +39,6 @@ public class AgiReplyImpl implements Serializable, AgiReply
     private static final Pattern SYNOPSIS_PATTERN = Pattern.compile("^\\s*Usage:\\s*(.*)\\s*$");
     private static final String END_OF_PROPER_USAGE = "520 End of proper usage.";
 
-    private Matcher matcher;
-
     /**
      * Serial version identifier.
      */
@@ -84,11 +82,12 @@ public class AgiReplyImpl implements Serializable, AgiReply
     AgiReplyImpl()
     {
         super();
+        this.status = null;
     }
 
     AgiReplyImpl(List<String> lines)
     {
-        super();
+        this();
         if (lines != null)
         {
             this.lines = new ArrayList<String>(lines);
@@ -149,7 +148,7 @@ public class AgiReplyImpl implements Serializable, AgiReply
             return result;
         }
 
-        matcher = RESULT_PATTERN.matcher(firstLine);
+        final Matcher matcher = RESULT_PATTERN.matcher(firstLine);
         if (matcher.find())
         {
             result = matcher.group(1);
@@ -166,12 +165,13 @@ public class AgiReplyImpl implements Serializable, AgiReply
             return status;
         }
 
-        matcher = STATUS_PATTERN.matcher(firstLine);
+        final Matcher matcher = STATUS_PATTERN.matcher(firstLine);
         if (matcher.find())
         {
             status = Integer.parseInt(matcher.group(1));
+            return status;
         }
-        return status;
+        return -1;
     }
 
     public String getAttribute(String name)
@@ -198,7 +198,7 @@ public class AgiReplyImpl implements Serializable, AgiReply
 
         attributes = new HashMap<String, String>();
 
-        matcher = ADDITIONAL_ATTRIBUTES_PATTERN.matcher(firstLine);
+        final Matcher matcher = ADDITIONAL_ATTRIBUTES_PATTERN.matcher(firstLine);
         if (matcher.find())
         {
             String s;
@@ -233,7 +233,7 @@ public class AgiReplyImpl implements Serializable, AgiReply
             return extra;
         }
 
-        matcher = PARENTHESIS_PATTERN.matcher(firstLine);
+        final Matcher matcher = PARENTHESIS_PATTERN.matcher(firstLine);
         if (matcher.find())
         {
             extra = matcher.group(1);

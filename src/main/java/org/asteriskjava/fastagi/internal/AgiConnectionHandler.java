@@ -118,12 +118,18 @@ public abstract class AgiConnectionHandler implements Runnable
         }
         catch (AgiException e)
         {
-            setStatusVariable(channel, AJ_AGISTATUS_FAILED);
+            if (channel != null)
+            {
+                setStatusVariable(channel, AJ_AGISTATUS_FAILED);
+            }
             logger.error("AgiException while handling request", e);
         }
         catch (Exception e)
         {
-            setStatusVariable(channel, AJ_AGISTATUS_FAILED);
+            if (channel != null)
+            {
+                setStatusVariable(channel, AJ_AGISTATUS_FAILED);
+            }
             logger.error("Unexpected Exception while handling request", e);
         }
         finally

@@ -61,7 +61,7 @@ public class ConfigFileReader
             {
                 reader.close();
             }
-            catch (Exception e)//NOPMD
+            catch (Exception e) // NOPMD
             {
                 // ignore
             }
@@ -131,10 +131,10 @@ public class ConfigFileReader
 
             if (c == COMMENT_META)
             {
-                if (position >= 1 && buffer.get(position - 1) == '\\')//NOPMD
+                if (position >= 1 && buffer.get(position - 1) == '\\')
                 {
                     /* Escaped semicolons aren't comments. */
-                }
+                } // NOPMD
                 else if (buffer.remaining() >= 3
                         && buffer.get(position + 1) == COMMENT_TAG
                         && buffer.get(position + 2) == COMMENT_TAG
@@ -197,10 +197,10 @@ public class ConfigFileReader
                         }
                         break;
                     }
-                    else//NOPMD
+                    else
                     {
                         /* Found ';' while in comment */
-                    }
+                    } // NOPMD
                 }
             }
 
@@ -445,7 +445,7 @@ public class ConfigFileReader
         {
             throw new MissingDirectiveParameterException(configfile, lineno,
                     "Directive '#%s' needs an argument (%s) at line %d of %s",
-                    name.toLowerCase(),
+                    name.toLowerCase(Locale.US),
                     "include".equalsIgnoreCase(name) ? "filename" : "/path/to/executable",
                     lineno,
                     configfile);

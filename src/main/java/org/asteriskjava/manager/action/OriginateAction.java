@@ -320,11 +320,12 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
      */
     public void setVariable(String variable)
     {
-        StringTokenizer st;
+        final StringTokenizer st;
 
         if (variable == null)
         {
             this.variables = null;
+            return;
         }
 
         st = new StringTokenizer(variable, "|");

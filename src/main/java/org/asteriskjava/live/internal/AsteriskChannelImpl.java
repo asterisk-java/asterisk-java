@@ -745,7 +745,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
     {
         synchronized (variables)
         {
-            final String oldValue = variables.get(name);
+            // final String oldValue = variables.get(name);
             variables.put(name, value);
             // TODO add notification for updated channel variables
         }

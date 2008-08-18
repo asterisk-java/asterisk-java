@@ -462,7 +462,7 @@ public class AgiRequestImpl implements Serializable, AgiRequest
         return values[0];
     }
 
-    public String[] getParameterValues(String name)
+    public synchronized String[] getParameterValues(String name)
     {
         if (getParameterMap().isEmpty())
         {
@@ -552,14 +552,12 @@ public class AgiRequestImpl implements Serializable, AgiRequest
             }
         }
 
-        for (String name : parameterMap.keySet())
+        for (Map.Entry<String, List<String>> entry : parameterMap.entrySet())
         {
-            List<String> values;
             String[] valueArray;
 
-            values = parameterMap.get(name);
-            valueArray = new String[values.size()];
-            result.put(name, values.toArray(valueArray));
+            valueArray = new String[entry.getValue().size()];
+            result.put(entry.getKey(), entry.getValue().toArray(valueArray));
         }
 
         return result;

@@ -25,13 +25,13 @@ abstract class AbstractBuilder
         Map<String, Method> setters;
 
         setters = ReflectionUtil.getSetters(target.getClass());
-        for (String name : attributes.keySet())
+        for (Map.Entry<String, String> entry : attributes.entrySet())
         {
             Object value;
             final Class dataType;
             final Method setter;
 
-            if (ignoredAttributes != null && ignoredAttributes.contains(name))
+            if (ignoredAttributes != null && ignoredAttributes.contains(entry.getKey()))
             {
                 continue;
             }
@@ -41,19 +41,19 @@ abstract class AbstractBuilder
              * defined in java.util.EventObject (the base class of
              * ManagerEvent), so we have to translate it.
              */
-            if ("source".equals(name))
+            if ("source".equals(entry.getKey()))
             {
                 setter = setters.get("src");
             }
             else
             {
-                setter = setters.get(ReflectionUtil.stripIllegalCharacters(name));
+                setter = setters.get(ReflectionUtil.stripIllegalCharacters(entry.getKey()));
             }
 
             // it seems silly to warn if it's a user event -- maybe it was intentional
             if (setter == null && !(target instanceof UserEvent))
             {
-                logger.warn("Unable to set property '" + name + "' to '" + attributes.get(name) + "' on "
+                logger.warn("Unable to set property '" + entry.getKey() + "' to '" + entry.getValue() + "' on "
                         + target.getClass().getName() + ": no setter. Please report at http://jira.reucon.org/browse/AJ");
             }
 
@@ -66,11 +66,11 @@ abstract class AbstractBuilder
 
             if (dataType == Boolean.class)
             {
-                value = AstUtil.isTrue(attributes.get(name));
+                value = AstUtil.isTrue(entry.getValue());
             }
             else if (dataType.isAssignableFrom(String.class))
             {
-                value = attributes.get(name);
+                value = entry.getValue();
                 if (AstUtil.isNull((String) value))
                 {
                     value = null;
@@ -81,11 +81,11 @@ abstract class AbstractBuilder
                 try
                 {
                     Constructor constructor = dataType.getConstructor(new Class[]{String.class});
-                    value = constructor.newInstance(attributes.get(name));
+                    value = constructor.newInstance(entry.getValue());
                 }
                 catch (Exception e)
                 {
-                    logger.error("Unable to convert value '" + attributes.get(name) + "' of property '" + name + "' on "
+                    logger.error("Unable to convert value '" + entry.getValue() + "' of property '" + entry.getKey() + "' on "
                             + target.getClass().getName() + " to required type " + dataType, e);
                     continue;
                 }
@@ -97,7 +97,7 @@ abstract class AbstractBuilder
             }
             catch (Exception e)
             {
-                logger.error("Unable to set property '" + name + "' to '" + attributes.get(name) + "' on "
+                logger.error("Unable to set property '" + entry.getKey() + "' to '" + entry.getValue() + "' on "
                         + target.getClass().getName(), e);
             }
         }

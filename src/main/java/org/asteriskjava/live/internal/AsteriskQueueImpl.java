@@ -598,7 +598,7 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
             {
                 // For consistency with the above method,
                 // swallow. We might indeed request the 1st one from time to time
-            }
+            } // NOPMD
         }
         return foundEntry;
     }

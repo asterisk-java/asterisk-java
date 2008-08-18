@@ -647,7 +647,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                     catch (Exception ex)
                     {
                         // ingnore
-                    }
+                    } // NOPMD
                 }
                 else
                 {
@@ -1272,7 +1272,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         synchronized (protocolIdentifier)
         {
             protocolIdentifier.value = identifier;
-            protocolIdentifier.notify();
+            protocolIdentifier.notifyAll();
         }
     }
 
@@ -1383,7 +1383,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     /**
      * A simple data object to store a ManagerResult.
      */
-    private class ResponseHandlerResult implements Serializable
+    private static class ResponseHandlerResult implements Serializable
     {
         /**
          * Serializable version identifier.
@@ -1410,7 +1410,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
      * A simple response handler that stores the received response in a
      * ResponseHandlerResult for further processing.
      */
-    private class DefaultSendActionCallback implements SendActionCallback, Serializable
+    private static class DefaultSendActionCallback implements SendActionCallback, Serializable
     {
         /**
          * Serializable version identifier.
@@ -1433,7 +1433,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
             synchronized (result)
             {
                 result.setResponse(response);
-                result.notify();
+                result.notifyAll();
             }
         }
     }
@@ -1443,12 +1443,8 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
      * response to a ResponseEvents object.
      */
     @SuppressWarnings("unchecked")
-    private class ResponseEventHandler implements ManagerEventListener, SendActionCallback, Serializable
+    private static class ResponseEventHandler implements ManagerEventListener, SendActionCallback
     {
-        /**
-         * Serializable version identifier.
-         */
-        private static final long serialVersionUID = 2926598671855316803L;
         private final ResponseEventsImpl events;
         private final Class actionCompleteEventClass;
 
@@ -1486,7 +1482,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                     // received
                     if (events.getResponse() != null)
                     {
-                        events.notify();
+                        events.notifyAll();
                     }
                 }
             }
@@ -1507,7 +1503,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                 // received
                 if (events.isComplete())
                 {
-                    events.notify();
+                    events.notifyAll();
                 }
             }
         }

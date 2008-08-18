@@ -396,7 +396,7 @@ class QueueManager
         }
         if (queue == null)
         {
-            logger.error("Requested queue " + queue + " not found!");
+            logger.error("Requested queue '" + queueName + "' not found!");
         }
         return queue;
     }

@@ -19,6 +19,7 @@ package org.asteriskjava.manager.response;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.Locale;
 
 /**
  * Response that is received when sending a GetConfigAction.
@@ -57,7 +58,7 @@ public class GetConfigResponse extends ManagerResponse
         Set<String> responseKeys = responseMap.keySet();
         for (String key : responseKeys)
         {
-            if (key.toLowerCase().contains("category"))
+            if (key.toLowerCase(Locale.US).contains("category"))
             {
                 String[] keyParts = key.split("-");
 
@@ -101,7 +102,7 @@ public class GetConfigResponse extends ManagerResponse
         Set<String> responseKeys = responseMap.keySet();
         for (String key : responseKeys)
         {
-            if (key.toLowerCase().contains("line"))
+            if (key.toLowerCase(Locale.US).contains("line"))
             {
                 String[] keyParts = key.split("-");
 

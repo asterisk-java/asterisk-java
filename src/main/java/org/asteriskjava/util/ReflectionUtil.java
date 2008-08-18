@@ -114,7 +114,7 @@ public class ReflectionUtil
             }
 
             // ok seems to be an accessor
-            name = methodName.substring("set".length()).toLowerCase();
+            name = methodName.substring("set".length()).toLowerCase(Locale.US);
             accessors.put(name, method);
         }
 
@@ -146,11 +146,11 @@ public class ReflectionUtil
             if (c >= '0' && c <= '9')
             {
                 // continue
-            }
+            } // NOPMD
             else if (c >= 'a' && c <= 'z')
             {
                 // continue
-            }
+            } // NOPMD
             else
             {
                 needsStrip = true;

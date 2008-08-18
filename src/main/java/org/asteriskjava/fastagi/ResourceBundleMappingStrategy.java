@@ -125,7 +125,7 @@ public class ResourceBundleMappingStrategy extends AbstractMappingStrategy
      *                       each request.
      * @since 0.3
      */
-    public void setShareInstances(boolean shareInstances)
+    public synchronized void setShareInstances(boolean shareInstances)
     {
         this.shareInstances = shareInstances;
     }
@@ -178,14 +178,11 @@ public class ResourceBundleMappingStrategy extends AbstractMappingStrategy
         }
     }
 
-    public AgiScript determineScript(AgiRequest request)
+    public synchronized AgiScript determineScript(AgiRequest request)
     {
-        synchronized (this)
+        if (mappings == null || (shareInstances && instances == null))
         {
-            if (mappings == null || (shareInstances && instances == null))
-            {
-                loadResourceBundle();
-            }
+            loadResourceBundle();
         }
 
         if (shareInstances)

@@ -26,12 +26,8 @@ import java.util.Date;
  * @version $Id$
  * @since 0.3
  */
-public class LinkedChannelHistoryEntry implements Serializable
+public class LinkedChannelHistoryEntry
 {
-    /**
-     * Serial version identifier.
-     */
-    private static final long serialVersionUID = 5437551192335452460L;
     private final Date dateLinked;
     private Date dateUnlinked;
     private final AsteriskChannel channel;

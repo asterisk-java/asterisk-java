@@ -239,6 +239,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-pmd-plugin</artifactId>
+                <version>2.3</version>
                 <configuration>
                     <targetJdk>1.5</targetJdk>
                     <minimumTokens>100</minimumTokens>
@@ -247,6 +248,11 @@
                         <ruleset>/rulesets/basic.xml</ruleset>
                     </rulesets>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>findbugs-maven-plugin</artifactId>
+                <version>1.2</version>
             </plugin>
             <!--
                    <plugin>

@@ -44,6 +44,7 @@ public class AgiChannelImpl implements AgiChannel
         this.request = request;
         this.agiWriter = new FastAgiWriter(socket);
         this.agiReader = new FastAgiReader(socket);
+        this.lastReply = null;
     }
 
     AgiChannelImpl(AgiRequest request, AgiWriter agiWriter, AgiReader agiReader)
@@ -51,6 +52,7 @@ public class AgiChannelImpl implements AgiChannel
         this.request = request;
         this.agiWriter = agiWriter;
         this.agiReader = agiReader;
+        this.lastReply = null;
     }
 
     public String getName()

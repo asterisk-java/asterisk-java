@@ -75,7 +75,7 @@ public class ClassNameMappingStrategy extends AbstractMappingStrategy
      *                       each request.
      * @since 0.3
      */
-    public void setShareInstances(boolean shareInstances)
+    public synchronized void setShareInstances(boolean shareInstances)
     {
         this.shareInstances = shareInstances;
     }

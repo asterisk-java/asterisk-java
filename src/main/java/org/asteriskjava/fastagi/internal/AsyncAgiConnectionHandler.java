@@ -86,7 +86,7 @@ public class AsyncAgiConnectionHandler extends AgiConnectionHandler
             {
                 writer.sendCommand(new AsyncAgiBreakCommand());
             }
-            catch (AgiException e)//NOPMD
+            catch (AgiException e) // NOPMD
             {
                 // ignore
             }

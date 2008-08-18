@@ -210,15 +210,17 @@ class ActionBuilderImpl implements ActionBuilder
     private void appendGetters(StringBuffer sb, Object action, Set<String> membersToIgnore)
     {
         Map<String, Method> getters = ReflectionUtil.getGetters(action.getClass());
-        for (String name : getters.keySet())
+        for (Map.Entry<String,Method> entry : getters.entrySet())
         {
-            Method getter;
-            Object value;
+            final String name = entry.getKey();
+            final Method getter = entry.getValue();
+            final Object value;
 
             if (membersToIgnore.contains(name))
+            {
                 continue;
+            }
 
-            getter = getters.get(name);
             try
             {
                 value = getter.invoke(action);
