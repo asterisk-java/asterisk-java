@@ -406,4 +406,18 @@ public class EventBuilderImplTest extends TestCase
         assertEquals("Returned event is of wrong type", TransferEvent.class, event.getClass());
         assertEquals("Property SIP-Callid is not set correctly", "12345", event.getSipCallId());
     }
+
+    public void testBuildEventForRtpReceiverStatEventAJ162()
+    {
+        Map<String, String> properties = new HashMap<String, String>();
+        RtpReceiverStatEvent event;
+
+        properties.put("event", "RtpReceiverStat");
+        properties.put("ssrc", "3776236237");
+        event = (RtpReceiverStatEvent) eventBuilder.buildEvent(this, properties);
+
+        assertNotNull(event);
+        assertEquals("Returned event is of wrong type", RtpReceiverStatEvent.class, event.getClass());
+        assertEquals("Property SSRC is not set correctly", 3776236237l, (long) event.getSsrc());
+    }
 }

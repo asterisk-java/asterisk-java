@@ -30,7 +30,7 @@ public abstract class AbstractRtpStatEvent extends ManagerEvent
 {
     private static final long serialVersionUID = 1L;
 
-    private Integer ssrc;
+    private Long ssrc;
     private Integer lostPackets;
     private Double jitter;
 
@@ -44,12 +44,12 @@ public abstract class AbstractRtpStatEvent extends ManagerEvent
      *
      * @return the synchronization source identifier.
      */
-    public Integer getSsrc()
+    public Long getSsrc()
     {
         return ssrc;
     }
 
-    public void setSsrc(Integer ssrc)
+    public void setSsrc(Long ssrc)
     {
         this.ssrc = ssrc;
     }
