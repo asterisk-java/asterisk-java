@@ -17,33 +17,32 @@
 package org.asteriskjava.manager.response;
 
 /**
- * Corresponds to a ChallengeAction and contains the challenge needed to log in using
- * challenge/response.
+ * Corresponds to a CoreStatusAction and contains the current status summary of the
+ * Asterisk server.
  *
  * @author srt
  * @version $Id$
- * @see org.asteriskjava.manager.action.ChallengeAction
- * @see org.asteriskjava.manager.action.LoginAction
+ * @see org.asteriskjava.manager.action.CoreStatusAction
+ * @since 1.0.0
  */
-public class ChallengeResponse extends ManagerResponse
+public class CoreStatusResponse extends ManagerResponse
 {
-    private static final long serialVersionUID = -7253724086340850957L;
+    private static final long serialVersionUID = 1L;
 
-    private String challenge;
+    private Integer coreCurrentCalls;
 
     /**
-     * Returns the challenge to use when creating the key for log in.
+     * Returns the number of currently active channels on the server.
      *
-     * @return the challenge to use when creating the key for log in.
-     * @see org.asteriskjava.manager.action.LoginAction#setKey(String)
+     * @return the number of currently active channels on the server.
      */
-    public String getChallenge()
+    public Integer getCoreCurrentCalls()
     {
-        return challenge;
+        return coreCurrentCalls;
     }
 
-    public void setChallenge(String challenge)
+    public void setCoreCurrentCalls(Integer coreCurrentCalls)
     {
-        this.challenge = challenge;
+        this.coreCurrentCalls = coreCurrentCalls;
     }
 }
