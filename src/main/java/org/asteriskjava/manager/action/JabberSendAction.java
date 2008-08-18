@@ -60,7 +60,7 @@ public class JabberSendAction extends AbstractManagerAction
     @Override
     public String getAction()
     {
-        return "Ping";
+        return "JabberSend";
     }
 
     public String getJabber()
