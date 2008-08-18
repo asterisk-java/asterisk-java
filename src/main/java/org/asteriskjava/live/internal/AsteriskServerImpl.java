@@ -45,6 +45,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
     private static final String SHOW_VERSION_COMMAND = "show version";
     private static final String SHOW_VERSION_1_6_COMMAND = "core show version";
     private static final String SHOW_VERSION_FILES_COMMAND = "show version files";
+    private static final String SHOW_VERSION_FILES_1_6_COMMAND = "core show file version";
     private static final Pattern SHOW_VERSION_FILES_PATTERN = Pattern.compile("^([\\S]+)\\s+Revision: ([0-9\\.]+)");
     private static final String SHOW_VOICEMAIL_USERS_COMMAND = "show voicemail users";
     private static final Pattern SHOW_VOICEMAIL_USERS_PATTERN = Pattern.compile("^(\\S+)\\s+(\\S+)\\s+(.{25})");
@@ -505,7 +506,17 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
             map = new HashMap<String, String>();
             try
             {
-                response = sendAction(new CommandAction(SHOW_VERSION_FILES_COMMAND));
+                final String command;
+
+                if (eventConnection.getVersion().isAtLeast(AsteriskVersion.ASTERISK_1_6))
+                {
+                    command = SHOW_VERSION_FILES_1_6_COMMAND;
+                }
+                else
+                {
+                    command = SHOW_VERSION_FILES_COMMAND;
+                }
+                response = sendAction(new CommandAction(command));
                 if (response instanceof CommandResponse)
                 {
                     List<String> result;
