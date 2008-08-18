@@ -121,6 +121,7 @@ public class AstState
                 catch (NumberFormatException e)
                 {
                     // should not happen as the pattern requires \d+ for the state.
+                    throw new IllegalArgumentException("Unable to convert state '" + str + "' to integer representation", e);
                 }
             }
         }

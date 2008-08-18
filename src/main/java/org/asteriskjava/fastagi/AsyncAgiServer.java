@@ -61,12 +61,6 @@ public class AsyncAgiServer extends AbstractAgiServer implements ManagerEventLis
         setMappingStrategy(new StaticMappingStrategy(agiScript));
     }
 
-    @Override
-    public void shutdown()
-    {
-        super.shutdown();
-    }
-
     public void onManagerEvent(ManagerEvent event)
     {
         if (event instanceof AsyncAgiEvent)

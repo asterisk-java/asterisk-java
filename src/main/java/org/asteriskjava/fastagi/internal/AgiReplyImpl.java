@@ -249,19 +249,16 @@ public class AgiReplyImpl implements Serializable, AgiReply
             return null;
         }
 
-        if (synopsis == null)
+        if (synopsis == null && lines.size() > 1)
         {
-            if (lines.size() > 1)
-            {
-                String secondLine;
-                Matcher synopsisMatcher;
+            final String secondLine;
+            final Matcher synopsisMatcher;
 
-                secondLine = lines.get(1);
-                synopsisMatcher = SYNOPSIS_PATTERN.matcher(secondLine);
-                if (synopsisMatcher.find())
-                {
-                    synopsis = synopsisMatcher.group(1);
-                }
+            secondLine = lines.get(1);
+            synopsisMatcher = SYNOPSIS_PATTERN.matcher(secondLine);
+            if (synopsisMatcher.find())
+            {
+                synopsis = synopsisMatcher.group(1);
             }
         }
         return synopsis;

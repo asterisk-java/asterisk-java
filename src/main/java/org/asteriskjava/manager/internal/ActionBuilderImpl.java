@@ -231,11 +231,11 @@ class ActionBuilderImpl implements ActionBuilder
 
             if (value == null)
             {
-                // continue
+                continue;
             }
             else if (value instanceof Class)
             {
-                // continue
+                continue;
             }
             else if (value instanceof Map)
             {

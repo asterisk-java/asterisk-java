@@ -284,9 +284,7 @@ class ChannelManager
                     // return the most recent channel or when dates are similar, the active one
                     if (dateOfCreation == null ||
                             tmp.getDateOfCreation().after(dateOfCreation) ||
-                            (tmp.getDateOfCreation().equals(dateOfCreation) && tmp.getState() != ChannelState.HUNGUP)
-
-                            )
+                            (tmp.getDateOfCreation().equals(dateOfCreation) && tmp.getState() != ChannelState.HUNGUP))
                     {
                         channel = tmp;
                         dateOfCreation = channel.getDateOfCreation();

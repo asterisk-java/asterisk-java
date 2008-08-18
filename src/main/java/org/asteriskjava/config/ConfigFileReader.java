@@ -61,7 +61,7 @@ public class ConfigFileReader
             {
                 reader.close();
             }
-            catch (Exception e)
+            catch (Exception e)//NOPMD
             {
                 // ignore
             }
@@ -131,7 +131,7 @@ public class ConfigFileReader
 
             if (c == COMMENT_META)
             {
-                if (position >= 1 && buffer.get(position - 1) == '\\')
+                if (position >= 1 && buffer.get(position - 1) == '\\')//NOPMD
                 {
                     /* Escaped semicolons aren't comments. */
                 }
@@ -197,7 +197,7 @@ public class ConfigFileReader
                         }
                         break;
                     }
-                    else
+                    else//NOPMD
                     {
                         /* Found ';' while in comment */
                     }
