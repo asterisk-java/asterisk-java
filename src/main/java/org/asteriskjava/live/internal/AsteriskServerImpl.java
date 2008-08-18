@@ -544,8 +544,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
                 else
                 {
                     logger.error("Response to CommandAction(\""
-                            + SHOW_VERSION_FILES_COMMAND
-                            + "\") was not a CommandResponse but " + response);
+                            + command + "\") was not a CommandResponse but " + response);
                 }
             }
             catch (Exception e)
