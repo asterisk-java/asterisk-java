@@ -30,9 +30,9 @@ public abstract class AbstractRtcpEvent extends ManagerEvent
 {
     private static final long serialVersionUID = 1L;
 
-    private Integer fractionLost;
+    private Long fractionLost;
     private Double dlSr;
-    private Integer iaJitter;
+    private Double iaJitter;
 
     public AbstractRtcpEvent(Object source)
     {
@@ -45,12 +45,12 @@ public abstract class AbstractRtcpEvent extends ManagerEvent
      *
      * @return the short term loss ratio.
      */
-    public Integer getFractionLost()
+    public Long getFractionLost()
     {
         return fractionLost;
     }
 
-    public void setFractionLost(Integer fractionLost)
+    public void setFractionLost(Long fractionLost)
     {
         this.fractionLost = fractionLost;
     }
@@ -60,12 +60,12 @@ public abstract class AbstractRtcpEvent extends ManagerEvent
      *
      * @return the interarrival jitter.
      */
-    public Integer getIaJitter()
+    public Double getIaJitter()
     {
         return iaJitter;
     }
 
-    public void setIaJitter(Integer iaJitter)
+    public void setIaJitter(Double iaJitter)
     {
         this.iaJitter = iaJitter;
     }
@@ -85,7 +85,7 @@ public abstract class AbstractRtcpEvent extends ManagerEvent
         this.dlSr = secStringToDouble(dlSrString);
     }
 
-    protected Integer secStringToInteger(String s)
+    protected Long secStringToLong(String s)
     {
         if (s == null || s.length() == 0)
         {
@@ -94,11 +94,11 @@ public abstract class AbstractRtcpEvent extends ManagerEvent
 
         if (s.endsWith("(sec)"))
         {
-            return Integer.parseInt(s.substring(0, s.length() - "(sec)".length()));
+            return Long.parseLong(s.substring(0, s.length() - "(sec)".length()));
         }
         else
         {
-            return Integer.parseInt(s);
+            return Long.parseLong(s);
         }
     }
 

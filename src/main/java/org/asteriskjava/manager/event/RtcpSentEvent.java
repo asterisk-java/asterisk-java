@@ -33,13 +33,13 @@ public class RtcpSentEvent extends AbstractRtcpEvent
 
     private InetAddress toAddress;
     private Integer toPort;
-    private Integer ourSsrc;
+    private Long ourSsrc;
     private Double sentNtp;
-    private Integer sentRtp;
-    private Integer sentPackets;
-    private Integer sentOctets;
-    private Integer cumulativeLoss;
-    private Integer theirLastSr;
+    private Long sentRtp;
+    private Long sentPackets;
+    private Long sentOctets;
+    private Long cumulativeLoss;
+    private Long theirLastSr;
 
     public RtcpSentEvent(Object source)
     {
@@ -77,12 +77,12 @@ public class RtcpSentEvent extends AbstractRtcpEvent
      * Returns our synchronization source identifier that uniquely identifies the source of a stream.
      * @return our synchronization source identifier.
      */
-    public Integer getOurSsrc()
+    public Long getOurSsrc()
     {
         return ourSsrc;
     }
 
-    public void setOurSsrc(Integer ourSsrc)
+    public void setOurSsrc(Long ourSsrc)
     {
         this.ourSsrc = ourSsrc;
     }
@@ -97,12 +97,12 @@ public class RtcpSentEvent extends AbstractRtcpEvent
         this.sentNtp = sentNtp;
     }
 
-    public Integer getSentRtp()
+    public Long getSentRtp()
     {
         return sentRtp;
     }
 
-    public void setSentRtp(Integer sentRtp)
+    public void setSentRtp(Long sentRtp)
     {
         this.sentRtp = sentRtp;
     }
@@ -112,12 +112,12 @@ public class RtcpSentEvent extends AbstractRtcpEvent
      *
      * @return the number of packets sent.
      */
-    public Integer getSentPackets()
+    public Long getSentPackets()
     {
         return sentPackets;
     }
 
-    public void setSentPackets(Integer sentPackets)
+    public void setSentPackets(Long sentPackets)
     {
         this.sentPackets = sentPackets;
     }
@@ -127,32 +127,32 @@ public class RtcpSentEvent extends AbstractRtcpEvent
      *
      * @return the number of octets (bytes) sent.
      */
-    public Integer getSentOctets()
+    public Long getSentOctets()
     {
         return sentOctets;
     }
 
-    public void setSentOctets(Integer sentOctets)
+    public void setSentOctets(Long sentOctets)
     {
         this.sentOctets = sentOctets;
     }
 
-    public Integer getCumulativeLoss()
+    public Long getCumulativeLoss()
     {
         return cumulativeLoss;
     }
 
-    public void setCumulativeLoss(Integer cumulativeLoss)
+    public void setCumulativeLoss(Long cumulativeLoss)
     {
         this.cumulativeLoss = cumulativeLoss;
     }
 
-    public Integer getTheirLastSr()
+    public Long getTheirLastSr()
     {
         return theirLastSr;
     }
 
-    public void setTheirLastSr(Integer theirLastSr)
+    public void setTheirLastSr(Long theirLastSr)
     {
         this.theirLastSr = theirLastSr;
     }

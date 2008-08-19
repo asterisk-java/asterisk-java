@@ -30,9 +30,9 @@ public class RtpReceiverStatEvent extends AbstractRtpStatEvent
 {
     private static final long serialVersionUID = 1L;
 
-    private Integer receivedPackets;
+    private Long receivedPackets;
     private Double transit;
-    private Integer rrCount;
+    private Long rrCount;
 
     public RtpReceiverStatEvent(Object source)
     {
@@ -44,12 +44,12 @@ public class RtpReceiverStatEvent extends AbstractRtpStatEvent
      *
      * @return the number of packets received.
      */
-    public Integer getReceivedPackets()
+    public Long getReceivedPackets()
     {
         return receivedPackets;
     }
 
-    public void setReceivedPackets(Integer receivedPackets)
+    public void setReceivedPackets(Long receivedPackets)
     {
         this.receivedPackets = receivedPackets;
     }
@@ -69,12 +69,12 @@ public class RtpReceiverStatEvent extends AbstractRtpStatEvent
      *
      * @return the number of receiver reports.
      */
-    public Integer getRrCount()
+    public Long getRrCount()
     {
         return rrCount;
     }
 
-    public void setRrCount(Integer rrCount)
+    public void setRrCount(Long rrCount)
     {
         this.rrCount = rrCount;
     }

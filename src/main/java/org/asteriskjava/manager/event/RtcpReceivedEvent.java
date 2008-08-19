@@ -44,14 +44,14 @@ public class RtcpReceivedEvent extends AbstractRtcpEvent
 
     private InetAddress fromAddress;
     private Integer fromPort;
-    private Integer pt;
-    private Integer receptionReports;
-    private Integer senderSsrc;
-    private Integer packetsLost;
+    private Long pt;
+    private Long receptionReports;
+    private Long senderSsrc;
+    private Long packetsLost;
     private Long highestSequence;
     private Long squenceNumberCycles;
     private Double lastSr;
-    private Integer rtt;
+    private Long rtt;
 
     public RtcpReceivedEvent(Object source)
     {
@@ -93,7 +93,7 @@ public class RtcpReceivedEvent extends AbstractRtcpEvent
      * @see #PT_SENDER_REPORT
      * @see #PT_RECEIVER_REPORT
      */
-    public Integer getPt()
+    public Long getPt()
     {
         return pt;
     }
@@ -109,20 +109,20 @@ public class RtcpReceivedEvent extends AbstractRtcpEvent
 
         if (ptString.indexOf('(') > 0)
         {
-            this.pt = Integer.parseInt(ptString.substring(0, ptString.indexOf('(')));
+            this.pt = Long.parseLong(ptString.substring(0, ptString.indexOf('(')));
         }
         else
         {
-            this.pt = Integer.parseInt(ptString);
+            this.pt = Long.parseLong(ptString);
         }
     }
 
-    public Integer getReceptionReports()
+    public Long getReceptionReports()
     {
         return receptionReports;
     }
 
-    public void setReceptionReports(Integer receptionReports)
+    public void setReceptionReports(Long receptionReports)
     {
         this.receptionReports = receptionReports;
     }
@@ -132,12 +132,12 @@ public class RtcpReceivedEvent extends AbstractRtcpEvent
      *
      * @return the synchronization source identifier of the sender.
      */
-    public Integer getSenderSsrc()
+    public Long getSenderSsrc()
     {
         return senderSsrc;
     }
 
-    public void setSenderSsrc(Integer senderSsrc)
+    public void setSenderSsrc(Long senderSsrc)
     {
         this.senderSsrc = senderSsrc;
     }
@@ -147,12 +147,12 @@ public class RtcpReceivedEvent extends AbstractRtcpEvent
      *
      * @return the number of packets lost.
      */
-    public Integer getPacketsLost()
+    public Long getPacketsLost()
     {
         return packetsLost;
     }
 
-    public void setPacketsLost(Integer packetsLost)
+    public void setPacketsLost(Long packetsLost)
     {
         this.packetsLost = packetsLost;
     }
@@ -192,13 +192,13 @@ public class RtcpReceivedEvent extends AbstractRtcpEvent
      *
      * @return the round trip time in seconds, may be <code>null</code>.
      */
-    public Integer getRtt()
+    public Long getRtt()
     {
         return rtt;
     }
 
     public void setRtt(String rttString)
     {
-        this.rtt = secStringToInteger(rttString);
+        this.rtt = secStringToLong(rttString);
     }
 }

@@ -31,7 +31,7 @@ public abstract class AbstractRtpStatEvent extends ManagerEvent
     private static final long serialVersionUID = 1L;
 
     private Long ssrc;
-    private Integer lostPackets;
+    private Long lostPackets;
     private Double jitter;
 
     public AbstractRtpStatEvent(Object source)
@@ -59,12 +59,12 @@ public abstract class AbstractRtpStatEvent extends ManagerEvent
      *
      * @return the number of lost packets.
      */
-    public Integer getLostPackets()
+    public Long getLostPackets()
     {
         return lostPackets;
     }
 
-    public void setLostPackets(Integer lostPackets)
+    public void setLostPackets(Long lostPackets)
     {
         this.lostPackets = lostPackets;
     }
