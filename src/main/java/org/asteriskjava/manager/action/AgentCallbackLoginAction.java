@@ -23,11 +23,12 @@ package org.asteriskjava.manager.action;
  * In contrast to the AgentCallbackLogin application that you can use within
  * Asterisk's dialplan, you don't need to know the agent's password when logging
  * in an agent.<p>
- * Available since Asterisk 1.2
+ * Available since Asterisk 1.2, deprecated in Asterisk 1.4 and removed in Asterisk 1.6.
  *
  * @author srt
  * @version $Id$
  * @since 0.2
+ * @deprecated use {@link org.asteriskjava.manager.action.QueueAddAction} instead.
  */
 public class AgentCallbackLoginAction extends AbstractManagerAction
 {
