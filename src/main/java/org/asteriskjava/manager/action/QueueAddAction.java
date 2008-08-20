@@ -18,21 +18,22 @@ package org.asteriskjava.manager.action;
 
 /**
  * The QueueAddAction adds a new member to a queue.<p>
- * It is implemented in <code>apps/app_queue.c</code>
- * 
+ * It is implemented in <code>apps/app_queue.c</code><p>
+ * The <code>memberName</code> property was added in Asterisk 1.4, the
+ * <code>stateInterface</code> property in Asterisk 1.6.
+ *
  * @author srt
  * @version $Id$
  */
 public class QueueAddAction extends AbstractManagerAction
 {
-    /**
-     * Serializable version identifier
-     */
-    private static final long serialVersionUID = -7022129266332219953L;
+    private static final long serialVersionUID = 2L;
     private String queue;
     private String iface;
     private Integer penalty;
     private Boolean paused;
+    private String memberName;
+    private String stateInterface;
 
     /**
      * Creates a new empty QueueAddAction.
@@ -45,10 +46,10 @@ public class QueueAddAction extends AbstractManagerAction
     /**
      * Creates a new QueueAddAction that adds a new member on the given
      * interface to the given queue.
-     * 
+     *
      * @param queue the name of the queue the new member will be added to
      * @param iface Sets the interface to add. To add a specific channel just
-     *            use the channel name, e.g. "SIP/1234".
+     *              use the channel name, e.g. "SIP/1234".
      * @since 0.2
      */
     public QueueAddAction(String queue, String iface)
@@ -60,13 +61,13 @@ public class QueueAddAction extends AbstractManagerAction
     /**
      * Creates a new QueueAddAction that adds a new member on the given
      * interface to the given queue with the given penalty.
-     * 
-     * @param queue the name of the queue the new member will be added to
-     * @param iface Sets the interface to add. To add a specific channel just
-     *            use the channel name, e.g. "SIP/1234".
+     *
+     * @param queue   the name of the queue the new member will be added to
+     * @param iface   Sets the interface to add. To add a specific channel just
+     *                use the channel name, e.g. "SIP/1234".
      * @param penalty the penalty for this member. The penalty must be a
-     *            positive integer or 0 for no penalty. When calls are
-     *            distributed members with higher penalties are considered last.
+     *                positive integer or 0 for no penalty. When calls are
+     *                distributed members with higher penalties are considered last.
      * @since 0.2
      */
     public QueueAddAction(String queue, String iface, Integer penalty)
@@ -80,13 +81,15 @@ public class QueueAddAction extends AbstractManagerAction
      * Returns the name of this action, i.e. "QueueAdd".
      */
     @Override
-   public String getAction()
+    public String getAction()
     {
         return "QueueAdd";
     }
 
     /**
      * Returns the name of the queue the new member will be added to.
+     *
+     * @return the name of the queue the new member will be added to.
      */
     public String getQueue()
     {
@@ -96,6 +99,8 @@ public class QueueAddAction extends AbstractManagerAction
     /**
      * Sets the name of the queue the new member will be added to.<p>
      * This property is mandatory.
+     *
+     * @param queue the name of the queue the new member will be added to.
      */
     public void setQueue(String queue)
     {
@@ -103,7 +108,9 @@ public class QueueAddAction extends AbstractManagerAction
     }
 
     /**
-     * Returns the interface to add.
+     * Returns the name of the channel to dial to reach this member.
+     *
+     * @return the name of the channel to dial to reach this member.
      */
     public String getInterface()
     {
@@ -111,9 +118,10 @@ public class QueueAddAction extends AbstractManagerAction
     }
 
     /**
-     * Sets the interface to add.<p>
-     * To add a specific channel just use the channel name, e.g. "SIP/1234".<p>
+     * Sets the name of the channel (Technology/Location) to dial to reach this member.<p>
      * This property is mandatory.
+     *
+     * @param iface the name of the channel to dial to reach this member, e.g. "SIP/1234".
      */
     public void setInterface(String iface)
     {
@@ -122,6 +130,8 @@ public class QueueAddAction extends AbstractManagerAction
 
     /**
      * Returns the penalty for this member.
+     *
+     * @return the penalty for this member.
      */
     public Integer getPenalty()
     {
@@ -134,6 +144,8 @@ public class QueueAddAction extends AbstractManagerAction
      * not set 0 is assumed.<p>
      * When calls are distributed members with higher penalties are considered
      * last.
+     *
+     * @param penalty the penalty for this member.
      */
     public void setPenalty(Integer penalty)
     {
@@ -142,7 +154,7 @@ public class QueueAddAction extends AbstractManagerAction
 
     /**
      * Returns if the queue member should be paused when added.
-     * 
+     *
      * @return Boolean.TRUE if the queue member should be paused when added.
      * @since 0.2
      */
@@ -153,13 +165,61 @@ public class QueueAddAction extends AbstractManagerAction
 
     /**
      * Sets if the queue member should be paused when added.
-     * 
+     *
      * @param paused Boolean.TRUE if the queue member should be paused when
-     *            added.
+     *               added.
      * @since 0.2
      */
     public void setPaused(Boolean paused)
     {
         this.paused = paused;
+    }
+
+    /**
+     * Returns the name of the queue memeber (agent name).<p>
+     * Available since Asterisk 1.4
+     *
+     * @return the name of the queue memeber (agent name).
+     * @since 1.0.0
+     */
+    public String getMemberName()
+    {
+        return memberName;
+    }
+
+    /**
+     * Sets the name of the queue memeber (agent name).<p>
+     * Available since Asterisk 1.4
+     *
+     * @param memberName the name of the queue memeber (agent name).
+     * @since 1.0.0
+     */
+    public void setMemberName(String memberName)
+    {
+        this.memberName = memberName;
+    }
+
+    /**
+     * Returns the name of the channel from which to read devicestate changes.<p>
+     * Available since Asterisk 1.6
+     *
+     * @return the name of the channel from which to read devicestate changes.
+     * @since 1.0.0
+     */
+    public String getStateInterface()
+    {
+        return stateInterface;
+    }
+
+    /**
+     * Sets the name of the channel (Technology/Location) from which to read devicestate changes.<p>
+     * Available since Asterisk 1.6
+     *
+     * @param stateInterface the name of the channel from which to read devicestate changes.
+     * @since 1.0.0
+     */
+    public void setStateInterface(String stateInterface)
+    {
+        this.stateInterface = stateInterface;
     }
 }
