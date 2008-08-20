@@ -16,6 +16,9 @@
  */
 package org.asteriskjava.manager.action;
 
+import org.asteriskjava.manager.ExpectedResponse;
+import org.asteriskjava.manager.response.SipShowPeerResponse;
+
 /**
  * Retrieves a the details about a given SIP peer.<p>
  * The result is returned in the response received in reply to this action.<p>
@@ -28,7 +31,9 @@ package org.asteriskjava.manager.action;
  * @version $Id$
  * @since 0.2
  * @see org.asteriskjava.manager.action.SipPeersAction
+ * @see org.asteriskjava.manager.response.SipShowPeerResponse
  */
+@ExpectedResponse(SipShowPeerResponse.class)
 public class SipShowPeerAction extends AbstractManagerAction
 {
     /**

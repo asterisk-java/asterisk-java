@@ -27,18 +27,19 @@ import java.util.Map;
  * The response can be linked with the action that caused it by looking the
  * action id attribute that will match the action id of the corresponding
  * action.
- * 
- * @see org.asteriskjava.manager.action.ManagerAction
+ *
  * @author srt
  * @version $Id$
+ * @see org.asteriskjava.manager.action.ManagerAction
  */
 public class ManagerResponse implements Serializable
 {
-    private static final long serialVersionUID = -935845815108584292L;
+    private static final long serialVersionUID = 1L;
 
     private Date dateReceived;
     private String actionId;
     private String response;
+    private String eventList;
     private String message;
     private String uniqueId;
     private Map<String, String> attributes;
@@ -51,6 +52,7 @@ public class ManagerResponse implements Serializable
     /**
      * Returns a Map with all attributes of this response.<p>
      * The keys are all lower case!
+     *
      * @see #getAttribute(String)
      */
     public Map<String, String> getAttributes()
@@ -60,8 +62,9 @@ public class ManagerResponse implements Serializable
 
     /**
      * Sets the Map with all attributes.
-     * @param attributes Map with containing the attributes with all lower 
-     * case keys. 
+     *
+     * @param attributes Map with containing the attributes with all lower
+     *                   case keys.
      */
     public void setAttributes(Map<String, String> attributes)
     {
@@ -70,7 +73,7 @@ public class ManagerResponse implements Serializable
 
     /**
      * Returns the value of the attribute with the given key.<p>
-     * This is particulary important when a response contains special 
+     * This is particulary important when a response contains special
      * attributes that are dependent on the action that has been sent.<p>
      * An example of this is the response to the GetVarAction.
      * It contains the value of the channel variable as an attribute
@@ -85,7 +88,7 @@ public class ManagerResponse implements Serializable
      * </pre>
      * As all attributes are internally stored in lower case the key is
      * automatically converted to lower case before lookup.
-     * 
+     *
      * @param key the key to lookup.
      * @return the value of the attribute stored under this key or
      *         <code>null</code> if there is no such attribute.
@@ -114,10 +117,10 @@ public class ManagerResponse implements Serializable
     }
 
     /**
-     * Returns the user provided action id of the ManagerAction that caused 
+     * Returns the user provided action id of the ManagerAction that caused
      * this response. If the application did not set an action id this method
      * returns <code>null</code>.
-     * 
+     *
      * @return the action id of the ManagerAction that caused this response or
      *         <code>null</code> if none was set.
      * @see org.asteriskjava.manager.action.ManagerAction#setActionId(String)
@@ -128,10 +131,32 @@ public class ManagerResponse implements Serializable
     }
 
     /**
+     * Sent for manager events that reply with a list of events.
+     *
+     * @return "start", "stop" or "complete"
+     * @since 1.0.0
+     */
+    public String getEventList()
+    {
+        return eventList;
+    }
+
+    /**
+     * Sets the eventList.
+     *
+     * @param eventList the eventList.
+     * @since 1.0.0
+     */
+    public void setEventList(String eventList)
+    {
+        this.eventList = eventList;
+    }
+
+    /**
      * Sets the action id of the ManagerAction that caused this response.
-     * 
+     *
      * @param actionId the action id of the ManagerAction that caused this
-     *            response.
+     *                 response.
      */
     public void setActionId(String actionId)
     {
@@ -191,8 +216,36 @@ public class ManagerResponse implements Serializable
         this.uniqueId = uniqueId;
     }
 
+    protected Integer stringToInteger(String s, String suffix)
+    {
+        if (s == null || s.length() == 0)
+        {
+            return null;
+        }
+
+        if (suffix != null && s.endsWith(suffix))
+        {
+            return Integer.parseInt(s.substring(0, s.length() - suffix.length()));
+        }
+        return Integer.parseInt(s.substring(0, s.length() - suffix.length()));
+    }
+
+    protected Long stringToLong(String s, String suffix)
+    {
+        if (s == null || s.length() == 0)
+        {
+            return null;
+        }
+
+        if (suffix != null && s.endsWith(suffix))
+        {
+            return Long.parseLong(s.substring(0, s.length() - suffix.length()));
+        }
+        return Long.parseLong(s.substring(0, s.length() - suffix.length()));
+    }
+
     @Override
-   public String toString()
+    public String toString()
     {
         StringBuffer sb;
 
