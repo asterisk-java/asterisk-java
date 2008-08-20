@@ -22,8 +22,8 @@ public class RtcpReceivedEventTest extends TestCase
     public void testPt()
     {
         rtcpReceivedEvent.setPt("200(Sender Report)");
-        assertEquals(new Integer(200), rtcpReceivedEvent.getPt());
-        assertEquals(new Integer(RtcpReceivedEvent.PT_SENDER_REPORT), rtcpReceivedEvent.getPt());
+        assertEquals(new Long(200), rtcpReceivedEvent.getPt());
+        assertEquals(new Long(RtcpReceivedEvent.PT_SENDER_REPORT), rtcpReceivedEvent.getPt());
     }
 
     public void testDlSr()
@@ -41,6 +41,6 @@ public class RtcpReceivedEventTest extends TestCase
     public void testRtt()
     {
         rtcpReceivedEvent.setRtt("12345(sec)");
-        assertEquals(new Integer(12345), rtcpReceivedEvent.getRtt());
+        assertEquals(new Long(12345), rtcpReceivedEvent.getRtt());
     }
 }
