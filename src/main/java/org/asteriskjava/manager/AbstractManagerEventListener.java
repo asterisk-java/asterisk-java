@@ -143,6 +143,10 @@ public abstract class AbstractManagerEventListener implements ManagerEventListen
     {
     }
 
+    protected void handleEvent(RegistryEntryEvent event)
+    {
+    }
+
     protected void handleEvent(RegistryEvent event)
     {
     }
@@ -299,6 +303,10 @@ public abstract class AbstractManagerEventListener implements ManagerEventListen
     {
     }
 
+    protected void handleEvent(RegistrationsCompleteEvent event)
+    {
+    }
+
     protected void handleEvent(StatusCompleteEvent event)
     {
     }
@@ -405,6 +413,14 @@ public abstract class AbstractManagerEventListener implements ManagerEventListen
         else if (event instanceof QueueEvent)
         {
             handleEvent((QueueEvent) event);
+        }
+        else if (event instanceof RegistrationsCompleteEvent)
+        {
+            handleEvent((RegistrationsCompleteEvent) event);
+        }
+        else if (event instanceof RegistryEntryEvent)
+        {
+            handleEvent((RegistryEntryEvent) event);
         }
         else if (event instanceof RegistryEvent)
         {
