@@ -225,9 +225,9 @@ public class ManagerResponse implements Serializable
 
         if (suffix != null && s.endsWith(suffix))
         {
-            return Integer.parseInt(s.substring(0, s.length() - suffix.length()));
+            return Integer.parseInt(s.substring(0, s.length() - suffix.length()).trim());
         }
-        return Integer.parseInt(s.substring(0, s.length() - suffix.length()));
+        return Integer.parseInt(s.substring(0, s.length() - suffix.length()).trim());
     }
 
     protected Long stringToLong(String s, String suffix)
@@ -239,9 +239,9 @@ public class ManagerResponse implements Serializable
 
         if (suffix != null && s.endsWith(suffix))
         {
-            return Long.parseLong(s.substring(0, s.length() - suffix.length()));
+            return Long.parseLong(s.substring(0, s.length() - suffix.length()).trim());
         }
-        return Long.parseLong(s.substring(0, s.length() - suffix.length()));
+        return Long.parseLong(s.substring(0, s.length() - suffix.length()).trim());
     }
 
     @Override

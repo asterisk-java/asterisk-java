@@ -15,8 +15,8 @@ public class SipShowPeerResponse extends ManagerResponse
     private String channelType;
     private String objectName;
     private String chanObjectType;
-    private Boolean secretExists;
-    private Boolean md5SecretExists;
+    private Boolean secretExist;
+    private Boolean md5SecretExist;
     private String context;
     private String language;
     private String amaFlags;
@@ -27,7 +27,7 @@ public class SipShowPeerResponse extends ManagerResponse
     private String transferMode;
     private Integer lastMsgsSent;
     private Integer callLimit;
-    private Integer busyLimit;
+    private Integer busyLevel;
     private Integer maxCallBr; // "%d kbps"
     private Boolean dynamic;
     private String callerId;
@@ -51,11 +51,12 @@ public class SipShowPeerResponse extends ManagerResponse
     private String defaultAddrIp;
     private Integer defaultAddrPort;
     private String defaultUsername;
+    private String regExtension;
     private String codecs;
     private String codecOrder;
     private String status;
     private String sipUserAgent;
-    private String regContext;
+    private String regContact;
     private Integer qualifyFreq; // "%d ms"
 
     // TODO support for ChanVariable properties
@@ -90,24 +91,24 @@ public class SipShowPeerResponse extends ManagerResponse
         this.chanObjectType = chanObjectType;
     }
 
-    public Boolean getSecretExists()
+    public Boolean getSecretExist()
     {
-        return secretExists;
+        return secretExist;
     }
 
-    public void setSecretExists(Boolean secretExists)
+    public void setSecretExist(Boolean secretExist)
     {
-        this.secretExists = secretExists;
+        this.secretExist = secretExist;
     }
 
-    public Boolean getMd5SecretExists()
+    public Boolean getMd5SecretExist()
     {
-        return md5SecretExists;
+        return md5SecretExist;
     }
 
-    public void setMd5SecretExists(Boolean md5SecretExists)
+    public void setMd5SecretExist(Boolean md5SecretExist)
     {
-        this.md5SecretExists = md5SecretExists;
+        this.md5SecretExist = md5SecretExist;
     }
 
     public String getContext()
@@ -210,14 +211,14 @@ public class SipShowPeerResponse extends ManagerResponse
         this.callLimit = callLimit;
     }
 
-    public Integer getBusyLimit()
+    public Integer getBusyLevel()
     {
-        return busyLimit;
+        return busyLevel;
     }
 
-    public void setBusyLimit(Integer busyLimit)
+    public void setBusyLevel(Integer busyLevel)
     {
-        this.busyLimit = busyLimit;
+        this.busyLevel = busyLevel;
     }
 
     public Integer getMaxCallBr()
@@ -450,6 +451,16 @@ public class SipShowPeerResponse extends ManagerResponse
         this.defaultUsername = defaultUsername;
     }
 
+    public String getRegExtension()
+    {
+        return regExtension;
+    }
+
+    public void setRegExtension(String regExtension)
+    {
+        this.regExtension = regExtension;
+    }
+
     public String getCodecs()
     {
         return codecs;
@@ -490,14 +501,19 @@ public class SipShowPeerResponse extends ManagerResponse
         this.sipUserAgent = sipUserAgent;
     }
 
-    public String getRegContext()
+    public String getRegContact()
     {
-        return regContext;
+        return regContact;
     }
 
-    public void setRegContext(String regContext)
+    public void setRegContact(String regContact)
     {
-        this.regContext = regContext;
+        // workaround for Asterisk bug:
+        if (regContact.startsWith(": "))
+        {
+            regContact = regContact.substring(2);
+        }
+        this.regContact = regContact;
     }
 
     public Integer getQualifyFreq()
@@ -507,6 +523,15 @@ public class SipShowPeerResponse extends ManagerResponse
 
     public void setQualifyFreq(String qualifyFreq)
     {
+        // workaround for Asterisk bugs:
+        if (qualifyFreq.startsWith(": "))
+        {
+            qualifyFreq = qualifyFreq.substring(2);
+        }
+        if (qualifyFreq.lastIndexOf('\n') > -1)
+        {
+            qualifyFreq = qualifyFreq.substring(0, qualifyFreq.lastIndexOf('\n'));
+        }
         this.qualifyFreq = stringToInteger(qualifyFreq, "ms");
     }
 }

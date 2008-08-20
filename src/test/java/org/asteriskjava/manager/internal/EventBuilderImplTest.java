@@ -433,6 +433,6 @@ public class EventBuilderImplTest extends TestCase
 
         assertNotNull(event);
         assertEquals("Returned event is of wrong type", RtpReceiverStatEvent.class, event.getClass());
-        assertEquals("Property receivedPacket is not set correctly", 0, (int) event.getReceivedPackets());
+        assertEquals("Property receivedPacket is not set correctly", 0, (long) event.getReceivedPackets());
     }
 }
