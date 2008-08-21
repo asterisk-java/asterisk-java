@@ -19,8 +19,11 @@ public class SipShowPeerResponse extends ManagerResponse
     private Boolean md5SecretExist;
     private String context;
     private String language;
+    private String accountCode;
     private String amaFlags;
     private String cidCallingPres;
+    private String sipFromUser;
+    private String sipFromDomain;
     private String callGroup;
     private String pickupGroup;
     private String voiceMailbox;
@@ -131,6 +134,16 @@ public class SipShowPeerResponse extends ManagerResponse
         this.language = language;
     }
 
+    public String getAccountCode()
+    {
+        return accountCode;
+    }
+
+    public void setAccountCode(String accountCode)
+    {
+        this.accountCode = accountCode;
+    }
+
     public String getAmaFlags()
     {
         return amaFlags;
@@ -149,6 +162,26 @@ public class SipShowPeerResponse extends ManagerResponse
     public void setCidCallingPres(String cidCallingPres)
     {
         this.cidCallingPres = cidCallingPres;
+    }
+
+    public String getSipFromUser()
+    {
+        return sipFromUser;
+    }
+
+    public void setSipFromUser(String sipFromUser)
+    {
+        this.sipFromUser = sipFromUser;
+    }
+
+    public String getSipFromDomain()
+    {
+        return sipFromDomain;
+    }
+
+    public void setSipFromDomain(String sipFromDomain)
+    {
+        this.sipFromDomain = sipFromDomain;
     }
 
     public String getCallGroup()
