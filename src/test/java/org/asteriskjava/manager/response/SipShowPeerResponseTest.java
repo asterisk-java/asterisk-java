@@ -22,4 +22,10 @@ public class SipShowPeerResponseTest extends TestCase
         response.setQualifyFreq(": 6000 ms\n");
         assertEquals("Incorrect qualifyFreq", 6000, (int) response.getQualifyFreq());
     }
+
+    public void testSetQualifyFreqWithWorkaroundAndChanVariable()
+    {
+        response.setQualifyFreq(": 60000 ms\nChanVariable:\n PHBX_ID,191");
+        assertEquals("Incorrect qualifyFreq", 60000, (int) response.getQualifyFreq());
+    }
 }

@@ -528,9 +528,9 @@ public class SipShowPeerResponse extends ManagerResponse
         {
             qualifyFreq = qualifyFreq.substring(2);
         }
-        if (qualifyFreq.lastIndexOf('\n') > -1)
+        if (qualifyFreq.indexOf('\n') > -1)
         {
-            qualifyFreq = qualifyFreq.substring(0, qualifyFreq.lastIndexOf('\n'));
+            qualifyFreq = qualifyFreq.substring(0, qualifyFreq.indexOf('\n'));
         }
         this.qualifyFreq = stringToInteger(qualifyFreq, "ms");
     }
