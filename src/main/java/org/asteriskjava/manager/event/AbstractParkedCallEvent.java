@@ -18,7 +18,7 @@ package org.asteriskjava.manager.event;
 
 /**
  * Abstract base class for several call parking related events.
- * 
+ *
  * @author srt
  * @version $Id$
  * @since 0.2
@@ -28,14 +28,11 @@ public abstract class AbstractParkedCallEvent extends ManagerEvent
     private static final long serialVersionUID = 0L;
     private String exten;
     private String channel;
+    private String parkingLot;
     private String callerIdNum;
     private String callerIdName;
     private String uniqueId;
-   
 
-    /**
-     * @param source
-     */
     protected AbstractParkedCallEvent(Object source)
     {
         super(source);
@@ -72,6 +69,28 @@ public abstract class AbstractParkedCallEvent extends ManagerEvent
     }
 
     /**
+     * Returns the parking lot.<p>
+     * Available since Asterisk 1.6.
+     *
+     * @return the parking lot.
+     * @since 1.0.0
+     */
+    public String getParkingLot()
+    {
+        return parkingLot;
+    }
+
+    /**
+     * Sets the parking lot.
+     *
+     * @param parkingLot the parking lot.
+     */
+    public void setParkingLot(String parkingLot)
+    {
+        this.parkingLot = parkingLot;
+    }
+
+    /**
      * Returns the Caller*ID number of the parked channel.
      *
      * @return the Caller*ID number of the parked channel.
@@ -89,7 +108,7 @@ public abstract class AbstractParkedCallEvent extends ManagerEvent
 
     /**
      * Returns the Caller*ID number of the parked channel.
-     * 
+     *
      * @return the Caller*ID number of the parked channel.
      * @deprecated since 1.0.0. Use {@link #getCallerIdNum()} instead.
      */
@@ -105,7 +124,7 @@ public abstract class AbstractParkedCallEvent extends ManagerEvent
 
     /**
      * Returns the Caller*ID name of the parked channel.
-     * 
+     *
      * @return the Caller*ID name of the parked channel.
      */
     public String getCallerIdName()
@@ -115,18 +134,20 @@ public abstract class AbstractParkedCallEvent extends ManagerEvent
 
     /**
      * Sets the Caller*ID name of the parked channel.
-     * 
+     *
      * @param callerIdName the Caller*ID name of the parked channel.
      */
     public void setCallerIdName(String callerIdName)
     {
         this.callerIdName = callerIdName;
     }
-    
+
     /**
      * Returns the unique id of the parked channel.<p>
      * Note: This property is not set properly by all versions of Asterisk, see
      * <a href="http://bugs.digium.com/view.php?id=13323">http://bugs.digium.com/view.php?id=13323</a>
+     * and
+     * <a href="http://bugs.digium.com/view.php?id=13358">http://bugs.digium.com/view.php?id=13358</a>
      * for more information. Use {@link #getChannel()} instead.
      *
      * @return the unique id of the parked channel.
