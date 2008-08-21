@@ -87,6 +87,7 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
         registerEventClass(MeetMeTalkingRequestEvent.class);
         registerEventClass(MeetMeStopTalkingEvent.class);
         registerEventClass(MessageWaitingEvent.class);
+        registerEventClass(ModuleLoadReportEvent.class);
         registerEventClass(MonitorStartEvent.class);
         registerEventClass(MonitorStopEvent.class);
         registerEventClass(MusicOnHoldEvent.class);
