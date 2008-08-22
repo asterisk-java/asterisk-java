@@ -22,17 +22,14 @@ import java.util.Map;
 import junit.framework.TestCase;
 
 import org.asteriskjava.AsteriskVersion;
-import org.asteriskjava.manager.action.AbstractManagerAction;
-import org.asteriskjava.manager.action.AgentsAction;
-import org.asteriskjava.manager.action.OriginateAction;
-import org.asteriskjava.manager.action.UserEventAction;
+import org.asteriskjava.manager.action.*;
 
 public class ActionBuilderImplTest extends TestCase
 {
     private ActionBuilder actionBuilder;
 
     @Override
-   public void setUp()
+    public void setUp()
     {
         this.actionBuilder = new ActionBuilderImpl();
     }
@@ -50,10 +47,8 @@ public class ActionBuilderImplTest extends TestCase
         actual = actionBuilder.buildAction(myAction);
 
         assertTrue("Action name missing", actual.indexOf("action: My\r\n") >= 0);
-        assertTrue("First property missing", actual
-                .indexOf("firstproperty: first value\r\n") >= 0);
-        assertTrue("Second property missing", actual
-                .indexOf("secondproperty: 2\r\n") >= 0);
+        assertTrue("First property missing", actual.indexOf("firstproperty: first value\r\n") >= 0);
+        assertTrue("Second property missing", actual.indexOf("secondproperty: 2\r\n") >= 0);
         assertTrue("Missing trailing CRNL CRNL", actual.endsWith("\r\n\r\n"));
         assertEquals("Incorrect length", 61, actual.length());
     }
@@ -69,8 +64,7 @@ public class ActionBuilderImplTest extends TestCase
         actual = actionBuilder.buildAction(myAction);
 
         assertTrue("Action name missing", actual.indexOf("action: My\r\n") >= 0);
-        assertTrue("First property missing", actual
-                .indexOf("firstproperty: first value\r\n") >= 0);
+        assertTrue("First property missing", actual.indexOf("firstproperty: first value\r\n") >= 0);
         assertTrue("Missing trailing CRNL CRNL", actual.endsWith("\r\n\r\n"));
         assertEquals("Incorrect length", 42, actual.length());
     }
@@ -84,30 +78,28 @@ public class ActionBuilderImplTest extends TestCase
 
         actual = actionBuilder.buildAction(action);
 
-        assertTrue("Action name missing",
-                actual.indexOf("action: Agents\r\n") >= 0);
-        assertTrue("Action contains actionCompleteEventClass property", actual
-                .indexOf("actioncompleteeventclass:") == -1);
+        assertTrue("Action name missing", actual.indexOf("action: Agents\r\n") >= 0);
+        assertTrue("Action contains actionCompleteEventClass property", actual.indexOf("actioncompleteeventclass:") == -1);
         assertTrue("Missing trailing CRNL CRNL", actual.endsWith("\r\n\r\n"));
     }
-    
+
     public void testBuildUserEventAction()
     {
         UserEventAction action;
         action = new UserEventAction();
-        
+
         MyUserEvent event;
         event = new MyUserEvent(this);
         action.setUserEvent(event);
-        
-        Map<String,String> mapMemberTest = new LinkedHashMap<String,String>();
+
+        Map<String, String> mapMemberTest = new LinkedHashMap<String, String>();
         mapMemberTest.put("Key1", "Value1");
         mapMemberTest.put("Key2", "Value2");
         mapMemberTest.put("Key3", "Value3");
-        
+
         event.setStringMember("stringMemberValue");
         event.setMapMember(mapMemberTest);
-        
+
         String actual = actionBuilder.buildAction(action);
         assertTrue("Action name missing", actual.indexOf("action: UserEvent\r\n") >= 0);
         assertTrue("Event name missing", actual.indexOf("UserEvent: myuser\r\n") >= 0);
@@ -142,8 +134,7 @@ public class ActionBuilderImplTest extends TestCase
 
         actual = actionBuilder.buildAction(originateAction);
 
-        assertTrue(
-                "Incorrect mapping of variable property for Asterisk 1.0",
+        assertTrue("Incorrect mapping of variable property for Asterisk 1.0",
                 actual.indexOf("variable: var1=value1|var2=|var3=value3\r\n") >= 0);
     }
 
@@ -159,10 +150,8 @@ public class ActionBuilderImplTest extends TestCase
         actionBuilder.setTargetVersion(AsteriskVersion.ASTERISK_1_2);
         actual = actionBuilder.buildAction(originateAction);
 
-        assertTrue(
-                "Incorrect mapping of variable property for Asterisk 1.2",
-                actual
-                        .indexOf("variable: var1=value1\r\nvariable: var2=value2\r\n") >= 0);
+        assertTrue("Incorrect mapping of variable property for Asterisk 1.2",
+                actual.indexOf("variable: var1=value1\r\nvariable: var2=value2\r\n") >= 0);
     }
 
     @SuppressWarnings("deprecation")
@@ -177,10 +166,8 @@ public class ActionBuilderImplTest extends TestCase
         actionBuilder.setTargetVersion(AsteriskVersion.ASTERISK_1_2);
         actual = actionBuilder.buildAction(originateAction);
 
-        assertTrue(
-                "Incorrect mapping of variable property for Asterisk 1.2",
-                actual
-                        .indexOf("variable: var1=value1\r\nvariable: var2=\r\nvariable: var3=value3\r\n") >= 0);
+        assertTrue("Incorrect mapping of variable property for Asterisk 1.2",
+                actual.indexOf("variable: var1=value1\r\nvariable: var2=\r\nvariable: var3=value3\r\n") >= 0);
     }
 
     public void testBuildActionWithVariableMapForAsterisk12()
@@ -200,9 +187,24 @@ public class ActionBuilderImplTest extends TestCase
         actionBuilder.setTargetVersion(AsteriskVersion.ASTERISK_1_2);
         actual = actionBuilder.buildAction(originateAction);
 
-        assertTrue(
-                "Incorrect mapping of variable property for Asterisk 1.2",
+        assertTrue("Incorrect mapping of variable property for Asterisk 1.2",
                 actual.indexOf("variable: var1=value1\r\nvariable: VAR2=value2\r\n") >= 0);
+    }
+
+    public void testBuildActionForNipNotifyAction()
+    {
+        SipNotifyAction action;
+        String actual;
+
+        action = new SipNotifyAction("peer");
+        action.setVariable("var1", "value1");
+        action.setVariable("var2", "value2");
+
+        actionBuilder.setTargetVersion(AsteriskVersion.ASTERISK_1_6);
+        actual = actionBuilder.buildAction(action);
+
+        assertTrue("Incorrect mapping of variable property",
+                actual.indexOf("variable: var1=value1\r\nvariable: var2=value2\r\n") >= 0);
     }
 
     class MyAction extends AbstractManagerAction
@@ -213,7 +215,7 @@ public class ActionBuilderImplTest extends TestCase
         private String nonPublicProperty;
 
         @Override
-      public String getAction()
+        public String getAction()
         {
             return "My";
         }
