@@ -26,9 +26,7 @@ import org.asteriskjava.util.LogFactory;
 import org.asteriskjava.util.SocketConnectionFacade;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 
@@ -135,7 +133,7 @@ public class ManagerReaderImpl implements ManagerReader
      */
     public void run()
     {
-        final Map<String, String> buffer = new HashMap<String, String>();
+        final Map<String, Object> buffer = new HashMap<String, Object>();
         String line;
 
         if (socket == null)
@@ -201,7 +199,7 @@ public class ManagerReaderImpl implements ManagerReader
                         name = line.substring(0, delimiterIndex).toLowerCase(Locale.ENGLISH);
                         value = line.substring(delimiterIndex + delimiterLength);
 
-                        buffer.put(name, value);
+                        addToBuffer(buffer, name, value);
                         // TODO tracing
                         //logger.debug("Got name [" + name + "], value: [" + value + "]");
                     }
@@ -266,6 +264,37 @@ public class ManagerReaderImpl implements ManagerReader
         }
     }
 
+    @SuppressWarnings("unchecked")
+    private void addToBuffer(Map<String, Object> buffer, String name, String value)
+    {
+        // if we already have a value for that key, convert the value to a list and add
+        // the new value to that list.
+        if (buffer.containsKey(name))
+        {
+            Object currentValue = buffer.get(name);
+            if (currentValue instanceof List)
+            {
+                ((List<String>) currentValue).add(value);
+                return;
+            }
+            List<String> list = new ArrayList<String>();
+            if (currentValue instanceof String)
+            {
+                list.add((String) currentValue);
+            }
+            else
+            {
+                list.add(currentValue.toString());
+            }
+            list.add(value);
+            buffer.put(name, list);
+        }
+        else
+        {
+            buffer.put(name, value);
+        }
+    }
+
     public void die()
     {
         this.die = true;
@@ -281,10 +310,10 @@ public class ManagerReaderImpl implements ManagerReader
         return terminationException;
     }
 
-    private ManagerResponse buildResponse(Map<String, String> buffer)
+    private ManagerResponse buildResponse(Map<String, Object> buffer)
     {
         Class<? extends ManagerResponse> responseClass = null;
-        final String actionId = buffer.get("actionid");
+        final String actionId = (String) buffer.get("actionid");
         final String internalActionId = ManagerUtil.getInternalActionId(actionId);
         if (internalActionId != null)
         {
@@ -305,7 +334,7 @@ public class ManagerReaderImpl implements ManagerReader
         return response;
     }
 
-    private ManagerEvent buildEvent(Object source, Map<String, String> buffer)
+    private ManagerEvent buildEvent(Object source, Map<String, Object> buffer)
     {
         ManagerEvent event;
 

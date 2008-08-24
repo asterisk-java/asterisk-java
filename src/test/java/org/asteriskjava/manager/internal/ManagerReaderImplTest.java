@@ -128,6 +128,66 @@ public class ManagerReaderImplTest extends TestCase
                 DisconnectEvent.class, dispatcher.dispatchedEvents.get(1).getClass());
     }
 
+    public void testRunReceivingEventWithMapProperty() throws Exception
+    {
+        expect(socketConnectionFacade.readLine()).andReturn("Event: AgentCalled");
+        expect(socketConnectionFacade.readLine()).andReturn("Variable: var1=val1");
+        expect(socketConnectionFacade.readLine()).andReturn("Variable: var2=val2");
+        expect(socketConnectionFacade.readLine()).andReturn("");
+        expect(socketConnectionFacade.readLine()).andReturn(null);
+
+        replay(socketConnectionFacade);
+
+        managerReader.setSocket(socketConnectionFacade);
+        managerReader.run();
+
+        verify(socketConnectionFacade);
+
+        assertEquals("not exactly two events dispatched", 2,
+                dispatcher.dispatchedEvents.size());
+
+        assertEquals("first event must be a AgentCalledEvent",
+                AgentCalledEvent.class, dispatcher.dispatchedEvents.get(0).getClass());
+
+        AgentCalledEvent event = (AgentCalledEvent) dispatcher.dispatchedEvents.get(0);
+        assertEquals("Returned event is of wrong type", AgentCalledEvent.class, event.getClass());
+        assertEquals("Property variables[var1] is not set correctly", "val1", event.getVariables().get("var1"));
+        assertEquals("Property variables[var2] is not set correctly", "val2", event.getVariables().get("var2"));
+        assertEquals("Invalid size of variables property", 2, event.getVariables().size());
+
+        assertEquals("second event must be an DisconnectEvent",
+                DisconnectEvent.class, dispatcher.dispatchedEvents.get(1).getClass());
+    }
+
+    public void testRunReceivingEventWithMapPropertyAndOnlyOneEntry() throws Exception
+    {
+        expect(socketConnectionFacade.readLine()).andReturn("Event: AgentCalled");
+        expect(socketConnectionFacade.readLine()).andReturn("Variable: var1=val1");
+        expect(socketConnectionFacade.readLine()).andReturn("");
+        expect(socketConnectionFacade.readLine()).andReturn(null);
+
+        replay(socketConnectionFacade);
+
+        managerReader.setSocket(socketConnectionFacade);
+        managerReader.run();
+
+        verify(socketConnectionFacade);
+
+        assertEquals("not exactly two events dispatched", 2,
+                dispatcher.dispatchedEvents.size());
+
+        assertEquals("first event must be a AgentCalledEvent",
+                AgentCalledEvent.class, dispatcher.dispatchedEvents.get(0).getClass());
+
+        AgentCalledEvent event = (AgentCalledEvent) dispatcher.dispatchedEvents.get(0);
+        assertEquals("Returned event is of wrong type", AgentCalledEvent.class, event.getClass());
+        assertEquals("Property variables[var1] is not set correctly", "val1", event.getVariables().get("var1"));
+        assertEquals("Invalid size of variables property", 1, event.getVariables().size());
+
+        assertEquals("second event must be an DisconnectEvent",
+                DisconnectEvent.class, dispatcher.dispatchedEvents.get(1).getClass());
+    }
+
     public void testWorkaroundForAsteriskBug13319() throws Exception
     {
         expect(socketConnectionFacade.readLine()).andReturn("Event: RTCPReceived");
@@ -146,7 +206,7 @@ public class ManagerReaderImplTest extends TestCase
         assertEquals("not exactly two events dispatched", 2,
                 dispatcher.dispatchedEvents.size());
 
-        assertEquals("first event must be a StatusCompleteEvent",
+        assertEquals("first event must be a RtcpReceivedEvent",
                 RtcpReceivedEvent.class, dispatcher.dispatchedEvents.get(0).getClass());
 
         RtcpReceivedEvent rtcpReceivedEvent = (RtcpReceivedEvent) dispatcher.dispatchedEvents.get(0);

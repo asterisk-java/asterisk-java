@@ -76,17 +76,31 @@ public class AstUtil
      * {@link org.asteriskjava.manager.event.ZapShowChannelsEvent} this method
      * also consideres the string "Enabled" as true.
      * 
-     * @param s the String to check for <code>true</code>.
+     * @param o the Object (usually a String) to check for <code>true</code>.
      * @return <code>true</code> if s represents <code>true</code>,
      *         <code>false</code> otherwise.
      */
-    public static boolean isTrue(String s)
+    public static boolean isTrue(Object o)
     {
-        if (s == null || s.length() == 0)
+        if (o == null)
         {
             return false;
         }
 
+        if (o instanceof Boolean)
+        {
+            return (Boolean) o;
+        }
+
+        final String s;
+        if (o instanceof String)
+        {
+            s = (String) o;
+        }
+        else
+        {
+            s = o.toString();
+        }
         return TRUE_LITERALS.contains(s.toLowerCase(Locale.US));
     }
 

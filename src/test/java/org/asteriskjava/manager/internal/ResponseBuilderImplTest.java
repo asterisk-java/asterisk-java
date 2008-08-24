@@ -25,13 +25,13 @@ import java.util.Map;
 public class ResponseBuilderImplTest extends TestCase
 {
     private ResponseBuilderImpl responseBuilder;
-    private Map<String, String> attributes;
+    private Map<String, Object> attributes;
 
     @Override
     public void setUp()
     {
         this.responseBuilder = new ResponseBuilderImpl();
-        this.attributes = new HashMap<String, String>();
+        this.attributes = new HashMap<String, Object>();
     }
 
     public void testBuildResponse()

@@ -205,7 +205,7 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
         logger.debug("Registered event type '" + eventType + "' (" + clazz + ")");
     }
 
-    public ManagerEvent buildEvent(Object source, Map<String, String> attributes)
+    public ManagerEvent buildEvent(Object source, Map<String, Object> attributes)
     {
         ManagerEvent event;
         String eventType;
@@ -214,11 +214,16 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
 
         if (attributes.get("event") == null)
         {
-            logger.error("No event event type in properties");
+            logger.error("No event type in properties");
+            return null;
+        }
+        if (! (attributes.get("event") instanceof String))
+        {
+            logger.error("Event type is not a String");
             return null;
         }
 
-        eventType = attributes.get("event").toLowerCase(Locale.US);
+        eventType = ((String) attributes.get("event")).toLowerCase(Locale.US);
 
         // Change in Asterisk 1.4 where the name of the UserEvent is sent as property instead
         // of the event name (AJ-48)
@@ -231,8 +236,13 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
                 logger.error("No user event type in properties");
                 return null;
             }
+            if (! (attributes.get("userevent") instanceof String))
+            {
+                logger.error("User event type is not a String");
+                return null;
+            }
 
-            userEventType = attributes.get("userevent").toLowerCase();
+            userEventType = ((String) attributes.get("userevent")).toLowerCase();
             eventType = eventType + userEventType;
         }
 

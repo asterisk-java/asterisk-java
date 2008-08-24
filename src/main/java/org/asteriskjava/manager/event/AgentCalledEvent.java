@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.event;
 
+import java.util.Map;
+
 /**
  * An AgentCalledEvent is triggered when an agent is rung.
  * <p/>
@@ -32,7 +34,7 @@ public class AgentCalledEvent extends ManagerEvent
     /**
      * Serializable version identifier.
      */
-    private static final long serialVersionUID = 0L;
+    private static final long serialVersionUID = 1L;
     private String queue;
     private String agentCalled;
     private String agentName;
@@ -44,6 +46,7 @@ public class AgentCalledEvent extends ManagerEvent
     private String extension;
     private String priority;
     private String uniqueId;
+    private Map<String, String> variables;
 
     /**
      * @param source
@@ -252,5 +255,30 @@ public class AgentCalledEvent extends ManagerEvent
     public void setUniqueId(String uniqueId)
     {
         this.uniqueId = uniqueId;
+    }
+
+    /**
+     * Returns the channel variables if <code>eventwhencalled</code> is set to <code>vars</code>
+     * in <code>queues.conf</code>.<p>
+     * Available since Asterisk 1.6
+     *
+     * @return the channel variables.
+     * @since 1.0.0
+     */
+    public Map<String, String> getVariables()
+    {
+        return variables;
+    }
+
+    /**
+     * Sets the channel variables.<p>
+     * Available since Asterisk 1.6
+     *
+     * @param variables the channel variables.
+     * @since 1.0.0
+     */
+    public void setVariables(Map<String, String> variables)
+    {
+        this.variables = variables;
     }
 }

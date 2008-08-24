@@ -42,7 +42,7 @@ public class ManagerResponse implements Serializable
     private String eventList;
     private String message;
     private String uniqueId;
-    private Map<String, String> attributes;
+    private Map<String, Object> attributes;
 
     public ManagerResponse()
     {
@@ -55,7 +55,7 @@ public class ManagerResponse implements Serializable
      *
      * @see #getAttribute(String)
      */
-    public Map<String, String> getAttributes()
+    public Map<String, Object> getAttributes()
     {
         return attributes;
     }
@@ -66,7 +66,7 @@ public class ManagerResponse implements Serializable
      * @param attributes Map with containing the attributes with all lower
      *                   case keys.
      */
-    public void setAttributes(Map<String, String> attributes)
+    public void setAttributes(Map<String, Object> attributes)
     {
         this.attributes = attributes;
     }
@@ -95,7 +95,7 @@ public class ManagerResponse implements Serializable
      */
     public String getAttribute(String key)
     {
-        return attributes.get(key.toLowerCase(Locale.ENGLISH));
+        return (String) attributes.get(key.toLowerCase(Locale.ENGLISH));
     }
 
     /**

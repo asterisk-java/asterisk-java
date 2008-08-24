@@ -54,7 +54,7 @@ public class GetConfigResponse extends ManagerResponse
             categories = new TreeMap<Integer, String>();
         }
 
-        Map<String, String> responseMap = super.getAttributes();
+        Map<String, Object> responseMap = super.getAttributes();
         Set<String> responseKeys = responseMap.keySet();
         for (String key : responseKeys)
         {
@@ -77,7 +77,7 @@ public class GetConfigResponse extends ManagerResponse
                     continue;
                 }
 
-                categories.put(categoryNumber, responseMap.get(key));
+                categories.put(categoryNumber, (String) responseMap.get(key));
             }
         }
 
@@ -98,7 +98,7 @@ public class GetConfigResponse extends ManagerResponse
             lines = new TreeMap<Integer, Map<Integer, String>>();
         }
 
-        Map<String, String> responseMap = super.getAttributes();
+        Map<String, Object> responseMap = super.getAttributes();
         Set<String> responseKeys = responseMap.keySet();
         for (String key : responseKeys)
         {
@@ -142,7 +142,7 @@ public class GetConfigResponse extends ManagerResponse
                 }
 
                 // put the line we just parsed into the line map for this category
-                linesForCategory.put(potentialLineNumber, responseMap.get(key));
+                linesForCategory.put(potentialLineNumber, (String) responseMap.get(key));
                 if (!lines.containsKey(potentialCategoryNumber))
                 {
                     lines.put(potentialCategoryNumber, linesForCategory);

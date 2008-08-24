@@ -37,10 +37,10 @@ class ResponseBuilderImpl extends AbstractBuilder implements ResponseBuilder
     private static final String PROXY_RESPONSE_KEY = "proxyresponse";
     private static final String RESPONSE_TYPE_ERROR = "error";
 
-    public ManagerResponse buildResponse(Class<? extends ManagerResponse> responseClass, Map<String, String> attributes)
+    public ManagerResponse buildResponse(Class<? extends ManagerResponse> responseClass, Map<String, Object> attributes)
     {
         final ManagerResponse response;
-        final String responseType = attributes.get(RESPONSE_KEY);
+        final String responseType = (String) attributes.get(RESPONSE_KEY);
 
         if (RESPONSE_TYPE_ERROR.equalsIgnoreCase(responseType))
         {
@@ -69,7 +69,7 @@ class ResponseBuilderImpl extends AbstractBuilder implements ResponseBuilder
         {
             final CommandResponse commandResponse = (CommandResponse) response;
             final List<String> result = new ArrayList<String>();
-            for (String resultLine : attributes.get(ManagerReader.COMMAND_RESULT_RESPONSE_KEY).split("\n"))
+            for (String resultLine : ((String) attributes.get(ManagerReader.COMMAND_RESULT_RESPONSE_KEY)).split("\n"))
             {
                 // on error there is a leading space
                 if (!resultLine.equals("--END COMMAND--") && !resultLine.equals(" --END COMMAND--"))
@@ -82,12 +82,12 @@ class ResponseBuilderImpl extends AbstractBuilder implements ResponseBuilder
 
         if (response.getResponse() != null && attributes.get(PROXY_RESPONSE_KEY) != null)
         {
-            response.setResponse(attributes.get(PROXY_RESPONSE_KEY));
+            response.setResponse((String) attributes.get(PROXY_RESPONSE_KEY));
         }
 
         // make the map of all attributes available to the response
         // but clone it as it is reused by the ManagerReader
-        response.setAttributes(new HashMap<String, String>(attributes));
+        response.setAttributes(new HashMap<String, Object>(attributes));
 
         return response;
     }

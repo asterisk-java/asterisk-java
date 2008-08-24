@@ -18,6 +18,7 @@ package org.asteriskjava.manager.internal;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Arrays;
 
 import junit.framework.TestCase;
 
@@ -26,11 +27,13 @@ import org.asteriskjava.manager.event.*;
 public class EventBuilderImplTest extends TestCase
 {
     private EventBuilder eventBuilder;
+    private Map<String, Object> properties;
 
     @Override
-   public void setUp()
+    public void setUp()
     {
         this.eventBuilder = new EventBuilderImpl();
+        this.properties = new HashMap<String, Object>();
     }
 
     public void testRegisterEvent()
@@ -40,7 +43,6 @@ public class EventBuilderImplTest extends TestCase
 
     public void testRegisterUserEventWithA()
     {
-        Map<String, String> properties = new HashMap<String, String>();
         ManagerEvent event;
 
         eventBuilder.registerEventClass(A.class);
@@ -52,7 +54,6 @@ public class EventBuilderImplTest extends TestCase
 
     public void testRegisterUserEventWithBEvent()
     {
-        Map<String, String> properties = new HashMap<String, String>();
         ManagerEvent event;
 
         eventBuilder.registerEventClass(BEvent.class);
@@ -64,7 +65,6 @@ public class EventBuilderImplTest extends TestCase
 
     public void testRegisterUserEventWithUserEventC()
     {
-        Map<String, String> properties = new HashMap<String, String>();
         ManagerEvent event;
 
         eventBuilder.registerEventClass(UserEventC.class);
@@ -76,7 +76,6 @@ public class EventBuilderImplTest extends TestCase
 
     public void testRegisterUserEventWithUserEventCAndAsterisk14()
     {
-        Map<String, String> properties = new HashMap<String, String>();
         ManagerEvent event;
 
         eventBuilder.registerEventClass(UserEventC.class);
@@ -89,7 +88,6 @@ public class EventBuilderImplTest extends TestCase
 
     public void testRegisterUserEventWithUserEventDEvent()
     {
-        Map<String, String> properties = new HashMap<String, String>();
         ManagerEvent event;
 
         eventBuilder.registerEventClass(UserEventDEvent.class);
@@ -120,7 +118,6 @@ public class EventBuilderImplTest extends TestCase
 
     public void testBuildEventWithMixedCaseSetter()
     {
-        Map<String, String> properties = new HashMap<String, String>();
         String callerid = "1234";
         NewChannelEvent event;
 
@@ -136,7 +133,6 @@ public class EventBuilderImplTest extends TestCase
 
     public void testBuildEventWithIntegerProperty()
     {
-        Map<String, String> properties = new HashMap<String, String>();
         String channel = "SIP/1234";
         Integer priority = 1;
         NewExtenEvent event;
@@ -154,7 +150,6 @@ public class EventBuilderImplTest extends TestCase
 
     public void testBuildEventWithBooleanProperty()
     {
-        Map<String, String> properties = new HashMap<String, String>();
         ShutdownEvent event;
 
         eventBuilder.registerEventClass(ShutdownEvent.class);
@@ -169,7 +164,6 @@ public class EventBuilderImplTest extends TestCase
 
     public void testBuildEventWithBooleanPropertyOfValueYes()
     {
-        Map<String, String> properties = new HashMap<String, String>();
         ShutdownEvent event;
 
         eventBuilder.registerEventClass(ShutdownEvent.class);
@@ -184,7 +178,6 @@ public class EventBuilderImplTest extends TestCase
 
     public void testBuildEventWithBooleanPropertyOfValueNo()
     {
-        Map<String, String> properties = new HashMap<String, String>();
         ShutdownEvent event;
 
         eventBuilder.registerEventClass(ShutdownEvent.class);
@@ -199,7 +192,6 @@ public class EventBuilderImplTest extends TestCase
 
     public void testBuildEventWithUnregisteredEvent()
     {
-        Map<String, String> properties = new HashMap<String, String>();
         ManagerEvent event;
 
         properties.put("event", "Nonexisting");
@@ -210,7 +202,6 @@ public class EventBuilderImplTest extends TestCase
 
     public void testBuildEventWithEmptyAttributes()
     {
-        Map<String, String> properties = new HashMap<String, String>();
         ManagerEvent event;
 
         event = eventBuilder.buildEvent(this, properties);
@@ -220,7 +211,6 @@ public class EventBuilderImplTest extends TestCase
 
     public void testBuildEventWithResponseEvent()
     {
-        Map<String, String> properties = new HashMap<String, String>();
         ManagerEvent event;
 
         properties.put("event", "StatusComplete");
@@ -234,7 +224,6 @@ public class EventBuilderImplTest extends TestCase
 
     public void testBuildEventWithSourceProperty()
     {
-        Map<String, String> properties = new HashMap<String, String>();
         ManagerEvent event;
 
         properties.put("event", "Cdr");
@@ -247,7 +236,6 @@ public class EventBuilderImplTest extends TestCase
 
     public void testBuildEventWithSpecialCharacterProperty()
     {
-        Map<String, String> properties = new HashMap<String, String>();
         ManagerEvent event;
 
         properties.put("event", "Hangup");
@@ -260,7 +248,6 @@ public class EventBuilderImplTest extends TestCase
 
     public void testBuildEventWithCidCallingPres()
     {
-        Map<String, String> properties = new HashMap<String, String>();
         ManagerEvent event;
 
         properties.put("event", "Newcallerid");
@@ -276,7 +263,6 @@ public class EventBuilderImplTest extends TestCase
 
     public void testBuildEventWithCidCallingPresAndEmptyTxt()
     {
-        Map<String, String> properties = new HashMap<String, String>();
         ManagerEvent event;
 
         properties.put("event", "Newcallerid");
@@ -292,7 +278,6 @@ public class EventBuilderImplTest extends TestCase
 
     public void testBuildEventWithCidCallingPresAndMissingTxt()
     {
-        Map<String, String> properties = new HashMap<String, String>();
         ManagerEvent event;
 
         properties.put("event", "Newcallerid");
@@ -308,7 +293,6 @@ public class EventBuilderImplTest extends TestCase
 
     public void testBuildEventWithInvalidCidCallingPres()
     {
-        Map<String, String> properties = new HashMap<String, String>();
         ManagerEvent event;
 
         properties.put("event", "Newcallerid");
@@ -324,7 +308,6 @@ public class EventBuilderImplTest extends TestCase
 
     public void testBuildEventWithReason()
     {
-        Map<String, String> properties = new HashMap<String, String>();
         ManagerEvent event;
 
         properties.put("event", "LogChannel");
@@ -334,13 +317,12 @@ public class EventBuilderImplTest extends TestCase
         assertNotNull(event);
         assertEquals("Reason property not set correctly", Integer.valueOf(123),
                 ((LogChannelEvent) event).getReason());
-        assertEquals("ReasonTxt property not set correctly", "a reason", 
+        assertEquals("ReasonTxt property not set correctly", "a reason",
                 ((LogChannelEvent) event).getReasonTxt());
     }
 
     public void testBuildEventWithTimestamp()
     {
-        Map<String, String> properties = new HashMap<String, String>();
         ManagerEvent event;
 
         properties.put("event", "NewChannel");
@@ -353,7 +335,6 @@ public class EventBuilderImplTest extends TestCase
 
     public void testBuildEventWithLong()
     {
-        Map<String, String> properties = new HashMap<String, String>();
         ManagerEvent event;
 
         properties.put("event", "MeetmeLeave");
@@ -367,7 +348,6 @@ public class EventBuilderImplTest extends TestCase
 
     public void testBuildEventWithDouble()
     {
-        Map<String, String> properties = new HashMap<String, String>();
         ManagerEvent event;
 
         properties.put("event", "RTPReceiverStat");
@@ -381,7 +361,6 @@ public class EventBuilderImplTest extends TestCase
 
     public void testBuildEventWithNullLiteral()
     {
-        Map<String, String> properties = new HashMap<String, String>();
         CdrEvent event;
 
         properties.put("event", "Cdr");
@@ -395,7 +374,6 @@ public class EventBuilderImplTest extends TestCase
 
     public void testBuildEventWithDashInPropertyName()
     {
-        Map<String, String> properties = new HashMap<String, String>();
         TransferEvent event;
 
         properties.put("event", "Transfer");
@@ -409,7 +387,6 @@ public class EventBuilderImplTest extends TestCase
 
     public void testBuildEventForRtpReceiverStatEventAJ162()
     {
-        Map<String, String> properties = new HashMap<String, String>();
         RtpReceiverStatEvent event;
 
         properties.put("event", "RtpReceiverStat");
@@ -424,7 +401,6 @@ public class EventBuilderImplTest extends TestCase
 
     public void testBuildEventForRtpReceiverStatEventAJ139()
     {
-        Map<String, String> properties = new HashMap<String, String>();
         RtpReceiverStatEvent event;
 
         properties.put("event", "RtpReceiverStat");
@@ -435,4 +411,34 @@ public class EventBuilderImplTest extends TestCase
         assertEquals("Returned event is of wrong type", RtpReceiverStatEvent.class, event.getClass());
         assertEquals("Property receivedPacket is not set correctly", 0, (long) event.getReceivedPackets());
     }
+
+    public void testBuildEventWithMapProperty()
+    {
+        AgentCalledEvent event;
+
+        properties.put("event", "AgentCalled");
+        properties.put("variable", Arrays.asList("var1=val1", "var2=val2"));
+        event = (AgentCalledEvent) eventBuilder.buildEvent(this, properties);
+
+        assertNotNull(event);
+        assertEquals("Returned event is of wrong type", AgentCalledEvent.class, event.getClass());
+        assertEquals("Property variables[var1] is not set correctly", "val1", event.getVariables().get("var1"));
+        assertEquals("Property variables[var2] is not set correctly", "val2", event.getVariables().get("var2"));
+        assertEquals("Invalid size of variables property", 2, event.getVariables().size());
+    }
+
+    public void testBuildEventWithMapPropertyAndOnlyOneEntry()
+    {
+        AgentCalledEvent event;
+
+        properties.put("event", "AgentCalled");
+        properties.put("variable", "var1=val1");
+        event = (AgentCalledEvent) eventBuilder.buildEvent(this, properties);
+
+        assertNotNull(event);
+        assertEquals("Returned event is of wrong type", AgentCalledEvent.class, event.getClass());
+        assertEquals("Property variables[var1] is not set correctly", "val1", event.getVariables().get("var1"));
+        assertEquals("Invalid size of variables property", 1, event.getVariables().size());
+    }
+
 }

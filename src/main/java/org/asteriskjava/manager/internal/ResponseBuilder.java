@@ -38,5 +38,5 @@ interface ResponseBuilder
      *                      case.
      * @return the response with the given attributes.
      */
-    ManagerResponse buildResponse(Class<? extends ManagerResponse> responseClass, Map<String, String> attributes);
+    ManagerResponse buildResponse(Class<? extends ManagerResponse> responseClass, Map<String, Object> attributes);
 }

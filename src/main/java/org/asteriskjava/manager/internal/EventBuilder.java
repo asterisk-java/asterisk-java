@@ -54,5 +54,5 @@ interface EventBuilder
      * @return a concrete instance of ManagerEvent or <code>null</code> if no
      *         event class was registered for the event type.
      */
-    ManagerEvent buildEvent(Object source, Map<String, String> attributes);
+    ManagerEvent buildEvent(Object source, Map<String, Object> attributes);
 }
