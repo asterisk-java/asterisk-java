@@ -398,7 +398,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         return socket.getRemotePort();
     }
 
-    public void registerUserEventClass(Class userEventClass)
+    public void registerUserEventClass(Class<? extends ManagerEvent> userEventClass)
     {
         if (reader == null)
         {
