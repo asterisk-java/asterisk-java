@@ -56,29 +56,58 @@ public interface AsteriskQueueMember extends LiveObject
      * @return the state of this member.
      */
     QueueMemberState getState();
-    
-     /**
-     * Returns the paused status of this member.
+
+    /**
+     * Returns whether this member is currently paused..
      *
-     * @return paused status if this member.
+     * @return paused <code>true</code> is this queue member is paused, <code>false</code> otherwise.
+     * @deprecated as of 1.0.0. Use {@link #isPaused()} instead.
      */
     boolean getPaused();
+
+    /**
+     * Returns whether this member is currently paused..
+     *
+     * @return paused <code>true</code> is this queue member is paused, <code>false</code> otherwise.
+     * @since 1.0.0
+     */
+    boolean isPaused();
+
+    /**
+     * Pauses or unpauses this member on this queue.
+     *
+     * @param paused <code>true</code> to pause this member, <code>false</code> to unpause.
+     * @throws ManagerCommunicationException if the QueuePauseAction could not be send to Asterisk.
+     * @throws NoSuchInterfaceException      if the interface or the queue do not exist.
+     * @since 1.0.0
+     */
+    void setPaused(boolean paused) throws ManagerCommunicationException, NoSuchInterfaceException;
+
+    /**
+     * Pauses or unpauses this member on all queues.
+     *
+     * @param paused <code>true</code> to pause this member, <code>false</code> to unpause.
+     * @throws ManagerCommunicationException if the QueuePauseAction could not be send to Asterisk.
+     * @throws NoSuchInterfaceException      if the interface or the queue do not exist.
+     * @since 1.0.0
+     */
+    void setPausedAll(boolean paused) throws ManagerCommunicationException, NoSuchInterfaceException;
 
     /**
      * Returns if this member has been dynamically added by the QueueAdd command
      * (in the dialplan or via the Manager API) or if this member is has been
      * statically defined in <code>queues.conf</code>.
-     * 
+     *
      * @return "dynamic" if the added member is a dynamic queue member, "static"
      *         if the added member is a static queue member.
      * @since 1.0.0
      */
     public String getMembership();
-    
+
     /**
      * Convenience method that checks whether this member has been statically
      * defined in <code>queues.conf</code>.
-     * 
+     *
      * @return <code>true</code> if this member has been statically defined in
      *         <code>queues.conf</code>, <code>false</code> otherwise.
      * @since 1.0.0
@@ -88,13 +117,13 @@ public interface AsteriskQueueMember extends LiveObject
     /**
      * Convenience method that checks whether this member has been dynamically
      * added by the QueueAdd command.
-     * 
+     *
      * @return <code>true</code> if this member has been dynamically added by
      *         the QueueAdd command, <code>false</code> otherwise.
      * @since 1.0.0
      */
     public boolean isDynamic();
-    
+
     /**
      * Returns the penalty of this member.
      *
@@ -108,9 +137,9 @@ public interface AsteriskQueueMember extends LiveObject
      * Available since Asterisk 1.6.
      *
      * @param penalty the new penalty value, must not be negative.
-     * @throws IllegalArgumentException if the penalty is negative.
+     * @throws IllegalArgumentException      if the penalty is negative.
      * @throws ManagerCommunicationException if the QueuePenaltyAction could not be send to Asterisk.
-     * @throws InvalidPenaltyException if Asterisk refused to set the new penalty.
+     * @throws InvalidPenaltyException       if Asterisk refused to set the new penalty.
      * @since 1.0.0
      */
     void setPenalty(int penalty) throws IllegalArgumentException, ManagerCommunicationException, InvalidPenaltyException;

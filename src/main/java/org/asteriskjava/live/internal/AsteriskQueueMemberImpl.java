@@ -20,6 +20,7 @@ import org.asteriskjava.live.*;
 import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.manager.response.ManagerError;
 import org.asteriskjava.manager.action.QueuePenaltyAction;
+import org.asteriskjava.manager.action.QueuePauseAction;
 
 /**
  * Default implementation of a queue member.
@@ -81,7 +82,43 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
 
     public boolean getPaused()
     {
+        return isPaused();
+    }
+
+    public boolean isPaused()
+    {
         return paused;
+    }
+
+    public void setPaused(boolean paused) throws ManagerCommunicationException, NoSuchInterfaceException
+    {
+        sendPauseAction(new QueuePauseAction(location, queue.getName(), paused));
+    }
+
+    public void setPausedAll(boolean paused) throws ManagerCommunicationException, NoSuchInterfaceException
+    {
+        sendPauseAction(new QueuePauseAction(location, paused));
+    }
+
+    private void sendPauseAction(QueuePauseAction action) throws ManagerCommunicationException, NoSuchInterfaceException
+    {
+        final ManagerResponse response = server.sendAction(action);
+
+        if (response instanceof ManagerError)
+        {
+            //Message: Interface not found
+            if (action.getQueue() != null)
+            {
+                //Message: Interface not found
+                throw new NoSuchInterfaceException("Unable to change paused state for '" + action.getInterface() + "' on '" +
+                        action.getQueue() + "': " + response.getMessage());
+            }
+            else
+            {
+                throw new NoSuchInterfaceException("Unable to change paused state for '" + action.getInterface() +
+                        "' on all queues: " + response.getMessage());
+            }
+        }
     }
 
     public String getMembership()
@@ -106,14 +143,13 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
 
     public void setPenalty(int penalty) throws IllegalArgumentException, ManagerCommunicationException, InvalidPenaltyException
     {
-        ManagerResponse response;
-
         if (penalty < 0)
         {
             throw new IllegalArgumentException("Penalty must not be negative");
         }
 
-        response = server.sendAction(new QueuePenaltyAction(location, penalty, queue.getName()));
+        final ManagerResponse response = server.sendAction(
+                new QueuePenaltyAction(location, penalty, queue.getName()));
         if (response instanceof ManagerError)
         {
             throw new InvalidPenaltyException("Unable to set penalty for '" + location + "' on '" +
