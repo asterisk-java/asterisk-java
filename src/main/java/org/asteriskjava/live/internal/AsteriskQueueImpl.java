@@ -133,36 +133,12 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
         this.weight = weight;
     }
 
-    @SuppressWarnings("unchecked")
     public List<AsteriskQueueEntry> getEntries()
     {
-        List<AsteriskQueueEntry> copy;
-
         synchronized (entries)
         {
-            copy = new ArrayList<AsteriskQueueEntry>(entries.size());
-            for (AsteriskQueueEntryImpl entry : entries)
-            {
-                copy.add(entry);
-            }
+            return new ArrayList<AsteriskQueueEntry>(entries);
         }
-        return copy;
-    }
-
-    @SuppressWarnings("unchecked")
-    List<AsteriskQueueEntryImpl> getEntryImpls()
-    {
-        List<AsteriskQueueEntryImpl> copy;
-
-        synchronized (entries)
-        {
-            copy = new ArrayList<AsteriskQueueEntryImpl>(entries.size());
-            for (AsteriskQueueEntryImpl entry : entries)
-            {
-                copy.add(entry);
-            }
-        }
-        return copy;
     }
 
     /**
@@ -286,18 +262,18 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
         final StringBuffer sb;
 
         sb = new StringBuffer("AsteriskQueue[");
-        sb.append("name='").append(getName()).append("',");
-        sb.append("max='").append(getMax()).append("',");
+        sb.append("name=;").append(getName()).append("',");
+        sb.append("max=").append(getMax()).append(",");
         sb.append("strategy='").append(getStrategy()).append("',");
-        sb.append("serviceLevel='").append(getServiceLevel()).append("',");
-        sb.append("weight='").append(getWeight()).append("',");
+        sb.append("serviceLevel=").append(getServiceLevel()).append(",");
+        sb.append("weight=").append(getWeight()).append(",");
         synchronized (entries)
         {
-            sb.append("entries='").append(entries.toString()).append("',");
+            sb.append("entries=").append(entries.toString()).append(",");
         }
         synchronized (members)
         {
-            sb.append("members='").append(members.toString()).append("',");
+            sb.append("members=").append(members.toString()).append(",");
         }
         sb.append("systemHashcode=").append(System.identityHashCode(this));
         sb.append("]");
@@ -435,7 +411,7 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
      * Returns a member by its location.
      *
      * @param location ot the member
-     * @return the member by its location.
+     * @return the member by its location or <code>null</code>.
      */
     AsteriskQueueMemberImpl getMember(String location)
     {

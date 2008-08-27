@@ -250,8 +250,7 @@ class QueueManager
     void handleJoinEvent(JoinEvent event)
     {
         final AsteriskQueueImpl queue = getQueueByName(event.getQueue());
-        final AsteriskChannelImpl channel = channelManager
-                .getChannelImplByName(event.getChannel());
+        final AsteriskChannelImpl channel = channelManager.getChannelImplByName(event.getChannel());
 
         if (queue == null)
         {
@@ -288,8 +287,7 @@ class QueueManager
     void handleLeaveEvent(LeaveEvent event)
     {
         final AsteriskQueueImpl queue = getQueueByName(event.getQueue());
-        final AsteriskChannelImpl channel = channelManager
-                .getChannelImplByName(event.getChannel());
+        final AsteriskChannelImpl channel = channelManager.getChannelImplByName(event.getChannel());
 
         if (queue == null)
         {

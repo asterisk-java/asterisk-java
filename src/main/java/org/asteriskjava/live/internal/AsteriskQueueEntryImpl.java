@@ -140,16 +140,23 @@ class AsteriskQueueEntryImpl extends AbstractLiveObject implements AsteriskQueue
 
         synchronized (this)
         {
-            sb.append("dateJoined='").append(getDateJoined()).append("',");
-            sb.append("postition='").append(getPosition()).append("',");
-            sb.append("dateLeft='").append(getDateLeft()).append("',");
+            sb.append("dateJoined=").append(getDateJoined()).append(",");
+            sb.append("postition=").append(getPosition()).append(",");
+            sb.append("dateLeft=").append(getDateLeft()).append(",");
             systemHashcode = System.identityHashCode(this);
         }
-        sb.append("channel=AsteriskChannel[");
-        synchronized (channel)
+        if (channel != null)
         {
-            sb.append("id='").append(channel.getId()).append("',");
-            sb.append("name='").append(channel.getName()).append("'],");
+            sb.append("channel=AsteriskChannel[");
+            synchronized (channel)
+            {
+                sb.append("id='").append(channel.getId()).append("',");
+                sb.append("name='").append(channel.getName()).append("'],");
+            }
+        }
+        else
+        {
+            sb.append("channel=null,");
         }
         sb.append("systemHashcode=").append(systemHashcode);
         sb.append("]");
