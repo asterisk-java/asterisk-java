@@ -26,7 +26,7 @@ import org.asteriskjava.manager.action.*;
 
 public class ActionBuilderImplTest extends TestCase
 {
-    private ActionBuilder actionBuilder;
+    private ActionBuilderImpl actionBuilder;
 
     @Override
     public void setUp()
@@ -191,7 +191,7 @@ public class ActionBuilderImplTest extends TestCase
                 actual.indexOf("variable: var1=value1\r\nvariable: VAR2=value2\r\n") >= 0);
     }
 
-    public void testBuildActionForNipNotifyAction()
+    public void testBuildActionForSipNotifyAction()
     {
         SipNotifyAction action;
         String actual;
@@ -205,6 +205,46 @@ public class ActionBuilderImplTest extends TestCase
 
         assertTrue("Incorrect mapping of variable property",
                 actual.indexOf("variable: var1=value1\r\nvariable: var2=value2\r\n") >= 0);
+    }
+
+    public void testBuildActionWithAnnotatedGetter()
+    {
+        AnnotatedAction action = new AnnotatedAction("value1", "value2", "value3");
+        String actual = actionBuilder.buildAction(action);
+
+        assertTrue("Incorrect mapping of property with annotated getter",
+                actual.indexOf("property-1: value1\r\n") >= 0);
+    }
+
+    public void testDetermineSetterName()
+    {
+        assertEquals("setProperty1", actionBuilder.determineSetterName("getProperty1"));
+        assertEquals("setProperty1", actionBuilder.determineSetterName("isProperty1"));
+    }
+
+    public void testBuildActionWithAnnotatedSetter()
+    {
+        AnnotatedAction action = new AnnotatedAction("value1", "value2", "value3");
+        String actual = actionBuilder.buildAction(action);
+
+        assertTrue("Incorrect mapping of property with annotated setter",
+                actual.indexOf("property-2: value2\r\n") >= 0);
+    }
+
+    public void testDetermineFieldName()
+    {
+        assertEquals("property1", actionBuilder.determineFieldName("getProperty1"));
+        assertEquals("property1", actionBuilder.determineFieldName("isProperty1"));
+        assertEquals("property1", actionBuilder.determineFieldName("setProperty1"));
+    }
+
+    public void testBuildActionWithAnnotatedField()
+    {
+        AnnotatedAction action = new AnnotatedAction("value1", "value2", "value3");
+        String actual = actionBuilder.buildAction(action);
+
+        assertTrue("Incorrect mapping of property with annotated field",
+                actual.indexOf("property-3: value3\r\n") >= 0);
     }
 
     class MyAction extends AbstractManagerAction

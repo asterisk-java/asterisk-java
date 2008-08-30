@@ -16,24 +16,22 @@
  */
 package org.asteriskjava.manager.internal;
 
-import java.lang.reflect.Method;
-import java.util.Iterator;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.HashSet;
-
 import org.asteriskjava.AsteriskVersion;
+import org.asteriskjava.manager.AsteriskMapping;
 import org.asteriskjava.manager.action.ManagerAction;
+import org.asteriskjava.manager.action.UserEventAction;
+import org.asteriskjava.manager.event.UserEvent;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 import org.asteriskjava.util.ReflectionUtil;
-import org.asteriskjava.manager.action.UserEventAction;
-import org.asteriskjava.manager.event.UserEvent;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.*;
 
 /**
  * Default implementation of the ActionBuilder interface.
- * 
+ *
  * @author srt
  * @version $Id$
  */
@@ -210,7 +208,7 @@ class ActionBuilderImpl implements ActionBuilder
     private void appendGetters(StringBuffer sb, Object action, Set<String> membersToIgnore)
     {
         Map<String, Method> getters = ReflectionUtil.getGetters(action.getClass());
-        for (Map.Entry<String,Method> entry : getters.entrySet())
+        for (Map.Entry<String, Method> entry : getters.entrySet())
         {
             final String name = entry.getKey();
             final Method getter = entry.getValue();
@@ -231,27 +229,123 @@ class ActionBuilderImpl implements ActionBuilder
                 continue;
             }
 
-            if (value == null)
+            if (value == null || value instanceof Class)
             {
                 continue;
             }
-            else if (value instanceof Class)
+
+            final String mappedName = mapToAsterisk(getter);
+            if (value instanceof Map)
             {
-                continue;
-            }
-            else if (value instanceof Map)
-            {
-                appendMap(sb, name, (Map) value);
+                appendMap(sb, mappedName, (Map) value);
             }
             else if (value instanceof String)
             {
-                appendString(sb, name, (String) value);
+                appendString(sb, mappedName, (String) value);
             }
             else
             {
-                appendString(sb, name, value.toString());
+                appendString(sb, mappedName, value.toString());
             }
         }
+    }
 
+    private String mapToAsterisk(Method getter)
+    {
+        AsteriskMapping annotation;
+
+        // check annotation of getter method
+        annotation = getter.getAnnotation(AsteriskMapping.class);
+        if (annotation != null)
+        {
+            return annotation.value();
+        }
+
+        // check annotation of setter method
+        String setterName = determineSetterName(getter.getName());
+        try
+        {
+            Method setter = getter.getDeclaringClass().getDeclaredMethod(setterName, getter.getReturnType());
+            annotation = setter.getAnnotation(AsteriskMapping.class);
+            if (annotation != null)
+            {
+                return annotation.value();
+            }
+        }
+        catch (NoSuchMethodException e)
+        {
+            // ok, no setter method
+        }
+
+        // check annotation of field
+        String fieldName = determineFieldName(getter.getName());
+        try
+        {
+            Field field = getter.getDeclaringClass().getDeclaredField(fieldName);
+            annotation = field.getAnnotation(AsteriskMapping.class);
+            if (annotation != null)
+            {
+                return annotation.value();
+            }
+        }
+        catch (NoSuchFieldException e)
+        {
+            // ok, no field
+        }
+
+        return fieldName.toLowerCase(Locale.US);
+    }
+
+    String determineSetterName(String getterName)
+    {
+        if (getterName.startsWith("get"))
+        {
+            return "set" + getterName.substring(3);
+        }
+        else if (getterName.startsWith("is"))
+        {
+            return "set" + getterName.substring(2);
+        }
+        else
+        {
+            throw new IllegalArgumentException("Getter '" + getterName + "' doesn't start with either 'get' or 'is'");
+        }
+    }
+
+    String determineFieldName(String accessorName)
+    {
+        if (accessorName.startsWith("get"))
+        {
+            return lcFirst(accessorName.substring(3));
+        }
+        else if (accessorName.startsWith("is"))
+        {
+            return lcFirst(accessorName.substring(2));
+        }
+        else if (accessorName.startsWith("set"))
+        {
+            return lcFirst(accessorName.substring(3));
+        }
+        else
+        {
+            throw new IllegalArgumentException("Accessor '" + accessorName + "' doesn't start with either 'get', 'is' or 'set'");
+        }
+    }
+
+    /**
+     * Converts the first character to lower case.
+     *
+     * @param s the string to convert.
+     * @return the converted string.
+     */
+    String lcFirst(String s)
+    {
+        if (s == null || s.length() < 1)
+        {
+            return s;
+        }
+
+        char first = s.charAt(0);
+        return Character.toLowerCase(first) + s.substring(1);
     }
 }
