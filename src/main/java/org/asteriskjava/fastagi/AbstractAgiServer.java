@@ -140,7 +140,7 @@ public abstract class AbstractAgiServer
         return pool;
     }
 
-    private synchronized ThreadPoolExecutor createPool()
+    protected ThreadPoolExecutor createPool()
     {
         return new ThreadPoolExecutor(
                 poolSize,
