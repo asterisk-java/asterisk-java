@@ -22,7 +22,7 @@ import java.util.*;
  * @see org.asteriskjava.manager.action.AgiAction
  * @since 1.0.0
  */
-public class AsyncAgiEvent extends ManagerEvent
+public class AsyncAgiEvent extends ResponseEvent
 {
     /**
      * Serializable version identifier.

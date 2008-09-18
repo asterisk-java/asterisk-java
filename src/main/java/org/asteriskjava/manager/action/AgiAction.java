@@ -17,6 +17,7 @@
 package org.asteriskjava.manager.action;
 
 import org.asteriskjava.manager.event.AsyncAgiEvent;
+import org.asteriskjava.manager.event.ResponseEvent;
 
 /**
  * Add a new AGI command to execute by the Async AGI application.<p>
@@ -85,7 +86,7 @@ public class AgiAction extends AbstractManagerAction implements EventGeneratingA
         return "AGI";
     }
 
-    public Class getActionCompleteEventClass()
+    public Class<? extends ResponseEvent> getActionCompleteEventClass()
     {
         return AsyncAgiEvent.class;
     }
