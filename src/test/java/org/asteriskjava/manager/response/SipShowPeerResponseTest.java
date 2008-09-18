@@ -6,7 +6,8 @@ public class SipShowPeerResponseTest extends TestCase
 {
     private SipShowPeerResponse response;
     
-    public void setUp()
+    @Override
+   public void setUp()
     {
         response = new SipShowPeerResponse();
     }
