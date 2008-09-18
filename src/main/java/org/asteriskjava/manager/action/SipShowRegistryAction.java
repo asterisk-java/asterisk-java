@@ -36,6 +36,11 @@ import org.asteriskjava.manager.event.ResponseEvent;
 public class SipShowRegistryAction extends AbstractManagerAction implements EventGeneratingAction
 {
     /**
+    * 
+    */
+   private static final long serialVersionUID = -4501597578392156556L;
+
+   /**
      * Creates a new SipShowRegistryAction.
      */
     public SipShowRegistryAction()
