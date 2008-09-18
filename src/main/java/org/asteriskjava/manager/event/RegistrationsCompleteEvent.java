@@ -30,7 +30,11 @@ package org.asteriskjava.manager.event;
 public class RegistrationsCompleteEvent extends ResponseEvent
 {
 
-    private Integer listItems;
+    /**
+    * 
+    */
+   private static final long serialVersionUID = 6269829662009989518L;
+   private Integer listItems;
     private String eventList;
 
     /**
