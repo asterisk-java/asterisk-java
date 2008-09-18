@@ -17,6 +17,7 @@
 package org.asteriskjava.manager.action;
 
 import org.asteriskjava.manager.event.AgentsCompleteEvent;
+import org.asteriskjava.manager.event.ResponseEvent;
 
 /**
  * The AgentsAction requests the state of all agents.<p>
@@ -55,7 +56,7 @@ public class AgentsAction extends AbstractManagerAction implements EventGenerati
         return "Agents";
     }
 
-    public Class getActionCompleteEventClass()
+   public Class<? extends ResponseEvent> getActionCompleteEventClass()
     {
         return AgentsCompleteEvent.class;
     }
