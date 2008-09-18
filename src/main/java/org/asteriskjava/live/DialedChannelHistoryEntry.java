@@ -16,7 +16,6 @@
  */
 package org.asteriskjava.live;
 
-import java.io.Serializable;
 import java.util.Date;
 
 /**
