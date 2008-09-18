@@ -16,7 +16,6 @@
  */
 package org.asteriskjava.manager.event;
 
-import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.Date;
 import java.util.EventObject;

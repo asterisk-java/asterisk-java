@@ -16,9 +16,6 @@
  */
 package org.asteriskjava.manager.event;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-
 /**
  * Abstract base class for RTP statistics events.<p>
  *
