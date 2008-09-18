@@ -16,7 +16,6 @@
  */
 package org.asteriskjava.manager.internal;
 
-import org.asteriskjava.manager.event.UserEvent;
 import org.asteriskjava.manager.action.AbstractManagerAction;
 import org.asteriskjava.manager.AsteriskMapping;
 
@@ -40,7 +39,8 @@ public class AnnotatedAction extends AbstractManagerAction
         this.property3 = property3;
     }
 
-    public String getAction()
+    @Override
+   public String getAction()
     {
         return "Custom";
     }
