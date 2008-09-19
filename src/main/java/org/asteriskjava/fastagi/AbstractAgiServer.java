@@ -140,6 +140,20 @@ public abstract class AbstractAgiServer
         return pool;
     }
 
+    /**
+     * Creates a new ThreadPoolExecutor to serve the AGI requests. The nature of this pool
+     * defines how many concurrent requests can be handled. The default implementation
+     * returns a dynamic thread pool defined by the poolSize and maximumPoolSize properties.<p>
+     * You can override this method to change this behavior. For example you can use a cached
+     * pool with
+     * <pre>
+     * return Executors.newCachedThreadPool(new DaemonThreadFactory());
+     * </pre>
+     *
+     * @return the ThreadPoolExecutor to use for serving AGI requests.
+     * @see #setPoolSize(int)
+     * @see #setMaximumPoolSize(int)
+     */
     protected ThreadPoolExecutor createPool()
     {
         return new ThreadPoolExecutor(
