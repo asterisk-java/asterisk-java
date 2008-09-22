@@ -18,6 +18,8 @@ package org.asteriskjava.manager.event;
 
 import org.asteriskjava.util.AstState;
 
+import java.util.Map;
+
 /**
  * A StatusEvent is triggered for each active channel in response to a StatusAction.
  *
@@ -44,6 +46,7 @@ public class StatusEvent extends ResponseEvent
     private String bridgedChannel;
     private String bridgedUniqueId;
     private String uniqueId;
+    private Map<String, String> variables;
 
     public StatusEvent(Object source)
     {
@@ -371,5 +374,30 @@ public class StatusEvent extends ResponseEvent
     public void setUniqueId(String uniqueId)
     {
         this.uniqueId = uniqueId;
+    }
+
+    /**
+     * Returns the channel variables if the {@link org.asteriskjava.manager.action.StatusAction#setVariables(String)}
+     * property has been set.<p>
+     * Available since Asterisk 1.6
+     *
+     * @return the channel variables.
+     * @since 1.0.0
+     */
+    public Map<String, String> getVariables()
+    {
+        return variables;
+    }
+
+    /**
+     * Sets the channel variables.<p>
+     * Available since Asterisk 1.6
+     *
+     * @param variables the channel variables.
+     * @since 1.0.0
+     */
+    public void setVariables(Map<String, String> variables)
+    {
+        this.variables = variables;
     }
 }

@@ -416,7 +416,7 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
 
     /**
      * Sets the codecs to use for the call. For example "alaw, ulaw, h264".<p>
-     * Available since Asterisk 1.6.0
+     * Available since Asterisk 1.6.
      *
      * @param codecs comma separated list of codecs to use for the call.
      * @since 1.0.0
@@ -428,7 +428,7 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
 
     /**
      * Sets the codecs to use for the call.<p>
-     * Available since Asterisk 1.6.0
+     * Available since Asterisk 1.6.
      *
      * @param codecs list of codecs to use for the call.
      * @since 1.0.0

@@ -19,6 +19,9 @@ package org.asteriskjava.manager.action;
 import org.asteriskjava.manager.event.StatusCompleteEvent;
 import org.asteriskjava.manager.event.ResponseEvent;
 
+import java.util.List;
+import java.util.Iterator;
+
 /**
  * The StatusAction requests the state of all active channels. Alternativly (as of Asterisk 1.6)
  * you can also pass a channel name to only retrive the status of one specific channel.<p>
@@ -38,6 +41,7 @@ public class StatusAction extends AbstractManagerAction implements EventGenerati
     static final long serialVersionUID = 0L;
 
     private String channel;
+    private String variables;
 
     /**
      * Creates a new StatusAction that retrieves the status of all channels.
@@ -86,7 +90,8 @@ public class StatusAction extends AbstractManagerAction implements EventGenerati
     }
 
     /**
-     * Sets the name of the channel.
+     * Sets the name of the channel.<p>
+     * Available since Asterisk 1.6.
      *
      * @param channel the name of the channel or <code>null</code> for all channels.
      * @since 1.0.0
@@ -94,5 +99,48 @@ public class StatusAction extends AbstractManagerAction implements EventGenerati
     public void setChannel(String channel)
     {
         this.channel = channel;
+    }
+
+    public String getVariables()
+    {
+        return variables;
+    }
+
+    /**
+     * Sets the names of the channel variables to return for each reported channel.<p>
+     * Available since Asterisk 1.6.
+     *
+     * @param variables comma separated list of variables to return for each reported channel.
+     * @see org.asteriskjava.manager.event.StatusEvent#getVariables() 
+     * @since 1.0.0
+     */
+    public void setVariables(String variables)
+    {
+        this.variables = variables;
+    }
+
+    /**
+     * Sets the names of the channel variables to return for each reported channel.<p>
+     * Available since Asterisk 1.6.
+     *
+     * @param variables list of variables to return for each reported channel.
+     * @see org.asteriskjava.manager.event.StatusEvent#getVariables()
+     * @since 1.0.0
+     */
+    public void setVariables(List<String> variables)
+    {
+        if (variables == null || variables.isEmpty())
+        {
+            this.variables = null;
+            return;
+        }
+
+        Iterator<String> iter = variables.iterator();
+        StringBuffer buffer = new StringBuffer(iter.next());
+        while (iter.hasNext())
+        {
+            buffer.append(",").append(iter.next());
+        }
+        this.variables = buffer.toString();
     }
 }
