@@ -16,12 +16,10 @@
  */
 package org.asteriskjava.manager.action;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.StringTokenizer;
-
 import org.asteriskjava.manager.event.OriginateResponseEvent;
 import org.asteriskjava.manager.event.ResponseEvent;
+
+import java.util.*;
 
 
 /**
@@ -63,6 +61,7 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
     private String application;
     private String data;
     private Boolean async;
+    private String codecs;
 
     /**
      * Returns the name of this action, i.e. "Originate".
@@ -402,6 +401,53 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
     public void setAsync(Boolean async)
     {
         this.async = async;
+    }
+
+    /**
+     * Returns the codecs to use for the call.
+     *
+     * @return the codecs to use for the call.
+     * @since 1.0.0
+     */
+    public String getCodecs()
+    {
+        return codecs;
+    }
+
+    /**
+     * Sets the codecs to use for the call. For example "alaw, ulaw, h264".<p>
+     * Available since Asterisk 1.6.0
+     *
+     * @param codecs comma separated list of codecs to use for the call.
+     * @since 1.0.0
+     */
+    public void setCodecs(String codecs)
+    {
+        this.codecs = codecs;
+    }
+
+    /**
+     * Sets the codecs to use for the call.<p>
+     * Available since Asterisk 1.6.0
+     *
+     * @param codecs list of codecs to use for the call.
+     * @since 1.0.0
+     */
+    public void setCodecs(List<String> codecs)
+    {
+        if (codecs == null)
+        {
+            this.codecs = null;
+            return;
+        }
+
+        Iterator<String> iter = codecs.iterator();
+        StringBuffer buffer = new StringBuffer(iter.next());
+        while (iter.hasNext())
+        {
+            buffer.append(",").append(iter.next());
+        }
+        this.codecs = buffer.toString();
     }
 
     public Class<? extends ResponseEvent> getActionCompleteEventClass()
