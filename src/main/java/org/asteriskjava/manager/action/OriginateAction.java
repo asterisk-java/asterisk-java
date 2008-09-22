@@ -435,7 +435,7 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
      */
     public void setCodecs(List<String> codecs)
     {
-        if (codecs == null)
+        if (codecs == null || codecs.isEmpty())
         {
             this.codecs = null;
             return;
