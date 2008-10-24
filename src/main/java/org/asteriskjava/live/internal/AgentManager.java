@@ -31,6 +31,8 @@ import org.asteriskjava.manager.event.AgentCallbackLogoffEvent;
 import org.asteriskjava.manager.event.AgentCalledEvent;
 import org.asteriskjava.manager.event.AgentCompleteEvent;
 import org.asteriskjava.manager.event.AgentConnectEvent;
+import org.asteriskjava.manager.event.AgentLoginEvent;
+import org.asteriskjava.manager.event.AgentLogoffEvent;
 import org.asteriskjava.manager.event.AgentsEvent;
 import org.asteriskjava.manager.event.ManagerEvent;
 import org.asteriskjava.util.Log;
@@ -209,6 +211,45 @@ public class AgentManager
             return;
         }
         agent.updateState(AgentState.AGENT_ONCALL);
+    }
+    
+    /**
+     * Change state if agent logs in.
+     *
+     * @param event
+     */
+    void handleAgentLoginEvent(AgentLoginEvent event)
+    {
+        AsteriskAgentImpl agent = getAgentByAgentId("Agent/" + event.getAgent());
+        if (agent == null)
+        {
+            synchronized (agents)
+            {
+                logger.error("Ignored AgentLoginEvent for unknown agent "
+                                + event.getAgent() + ". Agents: " + agents.values().toString());
+
+            }
+            return;
+        }
+        agent.updateState(AgentState.AGENT_IDLE);
+    }
+
+    /**
+     * Change state if agent logs out.
+     *
+     * @param event
+     */
+    void handleAgentLogoffEvent(AgentLogoffEvent event)
+    {
+        AsteriskAgentImpl agent = getAgentByAgentId("Agent/" + event.getAgent());
+        if (agent == null)
+        {
+            logger.error("Ignored AgentLogoffEvent for unknown agent "
+                    + event.getAgent() + ". Agents: "
+                    + agents.values().toString());
+            return;
+        }
+        agent.updateState(AgentState.AGENT_LOGGEDOFF);
     }
 
     /**

@@ -1033,6 +1033,12 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         {
             agentManager.handleAgentCallbackLogoffEvent((AgentCallbackLogoffEvent) event);
         }
+        else if (event instanceof AgentLoginEvent) {
+            agentManager.handleAgentLoginEvent((AgentLoginEvent) event);
+        }
+        else if (event instanceof AgentLogoffEvent) {
+            agentManager.handleAgentLogoffEvent((AgentLogoffEvent) event);
+        }
         // End of agent-related events
     }
 
