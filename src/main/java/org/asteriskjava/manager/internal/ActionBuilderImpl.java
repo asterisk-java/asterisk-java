@@ -133,7 +133,8 @@ class ActionBuilderImpl implements ActionBuilder
                 Map<Object,Object> attributes = (Map)value;
                 for (Map.Entry entry : attributes.entrySet())
                 {
-                    appendString(sb, entry.getKey().toString(), entry.getValue().toString());
+                    appendString(sb, entry.getKey() == null ? "null" : entry.getKey().toString(),
+                            entry.getValue().toString() == null ? "null" : entry.getValue().toString());
                 }   
             }
         }
