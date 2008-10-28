@@ -38,6 +38,7 @@ import java.util.*;
 class ActionBuilderImpl implements ActionBuilder
 {
     private static final String LINE_SEPARATOR = "\r\n";
+    private static final String ATTRIBUTES_PROPERTY_NAME = "attributes";
 
     /**
      * Instance logger.
@@ -92,7 +93,7 @@ class ActionBuilderImpl implements ActionBuilder
         ignore.add("class");
         ignore.add("action");
         ignore.add("actionid");
-        ignore.add("attributes");
+        ignore.add(ATTRIBUTES_PROPERTY_NAME);
 
         // if this is a user event action, we need to grab the internal event,
         // otherwise do below as normal
@@ -112,12 +113,11 @@ class ActionBuilderImpl implements ActionBuilder
 
         // actions that have the special getAttributes method will
         // have their Map appended without a singular key or separator
-        String attributesPropertyName = "attributes";
         Map<String, Method> getters = ReflectionUtil.getGetters(action.getClass());
         
-        if(getters.containsKey(attributesPropertyName))
+        if(getters.containsKey(ATTRIBUTES_PROPERTY_NAME))
         {
-            Method getter = getters.get(attributesPropertyName);
+            Method getter = getters.get(ATTRIBUTES_PROPERTY_NAME);
             Object value = null;
             try
             {
@@ -125,10 +125,10 @@ class ActionBuilderImpl implements ActionBuilder
             }
             catch (Exception ex)
             {
-                logger.error("Unable to retrieve property '" + attributesPropertyName + "' of " + action.getClass(), ex);
+                logger.error("Unable to retrieve property '" + ATTRIBUTES_PROPERTY_NAME + "' of " + action.getClass(), ex);
             }
             
-            if(value != null && value instanceof Map)
+            if(value instanceof Map)
             {
                 Map<Object,Object> attributes = (Map)value;
                 for (Map.Entry entry : attributes.entrySet())
