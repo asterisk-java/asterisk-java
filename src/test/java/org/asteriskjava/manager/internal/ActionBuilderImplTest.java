@@ -82,6 +82,27 @@ public class ActionBuilderImplTest extends TestCase
         assertTrue("Action contains actionCompleteEventClass property", actual.indexOf("actioncompleteeventclass:") == -1);
         assertTrue("Missing trailing CRNL CRNL", actual.endsWith("\r\n\r\n"));
     }
+    
+    public void testBuildUpdateConfigAction()
+    {
+        UpdateConfigAction action;
+        action = new UpdateConfigAction();
+        action.setSrcFilename("sourcefile.conf");
+        action.setDstFilename("destfile.conf");
+        action.setReload(true);
+        action.addCommand(UpdateConfigAction.ACTION_NEWCAT, "testcategory", null, null, null);
+
+        String actual = actionBuilder.buildAction(action);
+        
+        assertTrue("Action name missing", actual.indexOf("action: UpdateConfig") >= 0);
+        assertTrue("Source filename missing", actual.indexOf("srcfilename: sourcefile.conf") >= 0);
+        assertTrue("Destination filename missing", actual.indexOf("dstfilename: destfile.conf") >= 0);
+        assertTrue("Correct reload setting missing", actual.indexOf("reload: Yes") >= 0);
+        
+        assertFalse("Action must have zero-padded 6 digit numbering", actual.indexOf("Action-0:") >= 0);
+        assertFalse("UpdateConfig actions must not have more than one 'action' header", actual.indexOf("action: Action") >= 0);
+        assertTrue("Action missing category testcategory - " + actual, actual.indexOf("Cat-000000: testcategory") >= 0);
+    }
 
     public void testBuildUserEventAction()
     {

@@ -92,6 +92,7 @@ class ActionBuilderImpl implements ActionBuilder
         ignore.add("class");
         ignore.add("action");
         ignore.add("actionid");
+        ignore.add("attributes");
 
         // if this is a user event action, we need to grab the internal event,
         // otherwise do below as normal
@@ -109,6 +110,34 @@ class ActionBuilderImpl implements ActionBuilder
             appendGetters(sb, action, ignore);
         }
 
+        // actions that have the special getAttributes method will
+        // have their Map appended without a singular key or separator
+        String attributesPropertyName = "attributes";
+        Map<String, Method> getters = ReflectionUtil.getGetters(action.getClass());
+        
+        if(getters.containsKey(attributesPropertyName))
+        {
+            Method getter = getters.get(attributesPropertyName);
+            Object value = null;
+            try
+            {
+                value = getter.invoke(action);
+            }
+            catch (Exception ex)
+            {
+                logger.error("Unable to retrieve property '" + attributesPropertyName + "' of " + action.getClass(), ex);
+            }
+            
+            if(value != null && value instanceof Map)
+            {
+                Map<Object,Object> attributes = (Map)value;
+                for (Map.Entry entry : attributes.entrySet())
+                {
+                    appendString(sb, entry.getKey().toString(), entry.getValue().toString());
+                }   
+            }
+        }
+        
         sb.append(LINE_SEPARATOR);
         return sb.toString();
     }

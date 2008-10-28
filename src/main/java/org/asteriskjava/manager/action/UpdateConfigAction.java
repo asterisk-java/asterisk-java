@@ -16,6 +16,7 @@
  */
 package org.asteriskjava.manager.action;
 
+import java.util.Formatter;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -58,7 +59,7 @@ public class UpdateConfigAction extends AbstractManagerAction
     public static final String ACTION_UPDATE = "Update";
     public static final String ACTION_DELETE = "Delete";
     public static final String ACTION_APPEND = "Append";
-
+    
     protected String srcFilename;
     protected String dstFilename;
     protected String reload;
@@ -107,31 +108,31 @@ public class UpdateConfigAction extends AbstractManagerAction
     public void addCommand(String action, String cat, String var, String value, String match)
     {
         // for convienence of reference, shorter!
-        int i = this.actionCounter;
+        final String stringCounter = String.format("%06d", this.actionCounter);
 
         if (action != null)
         {
-            actions.put("Action-" + i, action);
+            actions.put("Action-" + stringCounter, action);
         }
 
         if (cat != null)
         {
-            actions.put("Cat-" + i, cat);
+            actions.put("Cat-" + stringCounter, cat);
         }
 
         if (var != null)
         {
-            actions.put("Var-" + i, var);
+            actions.put("Var-" + stringCounter, var);
         }
 
         if (value != null)
         {
-            actions.put("Value-" + i, value);
+            actions.put("Value-" + stringCounter, value);
         }
 
         if (match != null)
         {
-            actions.put("Match-" + i, match);
+            actions.put("Match-" + stringCounter, match);
         }
 
         this.actionCounter++;
@@ -221,7 +222,7 @@ public class UpdateConfigAction extends AbstractManagerAction
      * @see org.asteriskjava.manager.action.UpdateConfigAction#addCommand
      * @return a Map of the actions that should be taken
      */
-    public Map<String, String> getActions()
+    public Map<String, String> getAttributes()
     {
         return actions;
     }
@@ -235,7 +236,7 @@ public class UpdateConfigAction extends AbstractManagerAction
      * @see org.asteriskjava.manager.action.UpdateConfigAction#addCommand
      * @param actions the actions to set
      */
-    public void setActions(Map<String, String> actions)
+    public void setAttributes(Map<String, String> actions)
     {
         this.actions = actions;
         this.actionCounter = actions.keySet().size();
