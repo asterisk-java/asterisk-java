@@ -49,7 +49,7 @@ public class RtcpReceivedEvent extends AbstractRtcpEvent
     private Long senderSsrc;
     private Long packetsLost;
     private Long highestSequence;
-    private Long squenceNumberCycles;
+    private Long sequenceNumberCycles;
     private Double lastSr;
     private Long rtt;
 
@@ -167,14 +167,14 @@ public class RtcpReceivedEvent extends AbstractRtcpEvent
         this.highestSequence = highestSequence;
     }
 
-    public Long getSquenceNumberCycles()
+    public Long getSequenceNumberCycles()
     {
-        return squenceNumberCycles;
+        return sequenceNumberCycles;
     }
 
-    public void setSquenceNumberCycles(Long squenceNumberCycles)
+    public void setSequenceNumberCycles(Long sequenceNumberCycles)
     {
-        this.squenceNumberCycles = squenceNumberCycles;
+        this.sequenceNumberCycles = sequenceNumberCycles;
     }
 
     public Double getLastSr()
