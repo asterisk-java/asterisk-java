@@ -42,7 +42,7 @@ public class JitterBufStatsEvent extends ManagerEvent
     private Integer remoteJitter;
     private Integer remoteJbDelay;
     private Integer remoteTotalLost;
-    private Integer remoterLossPercent;
+    private Integer remoteLossPercent;
     private Integer remoteDropped;
     private Integer remoteooo;
     private Integer remoteReceived;
@@ -177,14 +177,14 @@ public class JitterBufStatsEvent extends ManagerEvent
         this.remoteTotalLost = remoteTotalLost;
     }
 
-    public Integer getRemoterLossPercent()
+    public Integer getRemoteLossPercent()
     {
-        return remoterLossPercent;
+        return remoteLossPercent;
     }
 
-    public void setRemoterLossPercent(Integer remoterLossPercent)
+    public void setRemoteLossPercent(Integer remoteLossPercent)
     {
-        this.remoterLossPercent = remoterLossPercent;
+        this.remoteLossPercent = remoteLossPercent;
     }
 
     public Integer getRemoteDropped()
