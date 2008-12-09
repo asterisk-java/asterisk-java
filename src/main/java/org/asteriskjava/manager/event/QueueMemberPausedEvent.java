@@ -21,7 +21,7 @@ package org.asteriskjava.manager.event;
  * unpaused.<p>
  * It is implemented in <code>apps/app_queue.c</code>.<p>
  * Available since Asterisk 1.2
- * 
+ *
  * @author srt
  * @version $Id$
  * @since 0.2
@@ -31,9 +31,14 @@ public class QueueMemberPausedEvent extends AbstractQueueMemberEvent
     /**
      * Serial version identifier.
      */
-    private static final long serialVersionUID = 2108033737226142194L;
+    private static final long serialVersionUID = 1L;
 
     private Boolean paused;
+
+    /**
+     * The reason why the queue member has been paused (optional).
+     */
+    private String reason;
 
     public QueueMemberPausedEvent(Object source)
     {
@@ -42,7 +47,7 @@ public class QueueMemberPausedEvent extends AbstractQueueMemberEvent
 
     /**
      * Returns if this queue member is paused (not accepting calls).<p>
-     * 
+     *
      * @return <code>Boolean.TRUE</code> if this member has been paused or
      *         <code>Boolean.FALSE</code> if not.
      */
@@ -53,12 +58,34 @@ public class QueueMemberPausedEvent extends AbstractQueueMemberEvent
 
     /**
      * Sets if this member is paused.
-     * 
+     *
      * @param paused <code>Boolean.TRUE</code> if this member has been paused
-     *            or <code>Boolean.FALSE</code> if not.
+     *               or <code>Boolean.FALSE</code> if not.
      */
     public void setPaused(Boolean paused)
     {
         this.paused = paused;
+    }
+
+    /**
+     * Returns the reason why the queue member has been paused. Will be set to
+     * <code>Auto-Pause</code> for the case that the queue member has been
+     * paused for not answering the call.
+     *
+     * @return the reason specified for the pause.
+     */
+    public String getReason()
+    {
+        return reason;
+    }
+
+    /**
+     * Sets the reason why the queue member has been paused.
+     *
+     * @param reason the reason why the queue member has been paused.
+     */
+    public void setReason(String reason)
+    {
+        this.reason = reason;
     }
 }
