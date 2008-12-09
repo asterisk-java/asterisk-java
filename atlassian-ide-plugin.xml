@@ -1,0 +1,11 @@
+<atlassian-ide-plugin>
+  <project-configuration>
+    <servers>
+      <jira>
+        <server-id>e88a6130-6bd2-45dd-aa5d-57b845f76d0f</server-id>
+        <name>jira.reucon.org</name>
+        <url>http://jira.reucon.org</url>
+      </jira>
+    </servers>
+  </project-configuration>
+</atlassian-ide-plugin>
