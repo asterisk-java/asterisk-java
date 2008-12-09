@@ -4,11 +4,11 @@ import java.util.*;
 
 /**
  * Some static utility methods to imitate Asterisk specific logic.
- * <p>
+ * <p/>
  * See Asterisk's <code>util.c</code>.
- * <p>
+ * <p/>
  * Client code is not supposed to use this class.
- * 
+ *
  * @author srt
  * @version $Id$
  */
@@ -16,7 +16,7 @@ public class AstUtil
 {
     private static final Set<String> TRUE_LITERALS;
     private static final Set<String> NULL_LITERALS;
-    
+
     static
     {
         TRUE_LITERALS = new HashSet<String>(20);
@@ -27,7 +27,7 @@ public class AstUtil
         TRUE_LITERALS.add("1");
         TRUE_LITERALS.add("on");
         TRUE_LITERALS.add("enabled");
-        
+
         NULL_LITERALS = new HashSet<String>(20);
         NULL_LITERALS.add("<unknown>");
         NULL_LITERALS.add("unknown");
@@ -42,7 +42,7 @@ public class AstUtil
         NULL_LITERALS.add("<null>");
         NULL_LITERALS.add("(null)"); // appData in ListDialplanEvent
     }
-    
+
     private AstUtil()
     {
         //hide constructor
@@ -51,15 +51,15 @@ public class AstUtil
     /**
      * Checks if a String represents <code>true</code> or <code>false</code>
      * according to Asterisk's logic.
-     * <p>
+     * <p/>
      * The original implementation is <code>util.c</code> is as follows:
-     * 
+     * <p/>
      * <pre>
      *     int ast_true(const char *s)
      *     {
      *         if (!s || ast_strlen_zero(s))
      *             return 0;
-     *      
+     * <p/>
      *         if (!strcasecmp(s, &quot;yes&quot;) ||
      *             !strcasecmp(s, &quot;true&quot;) ||
      *             !strcasecmp(s, &quot;y&quot;) ||
@@ -67,15 +67,15 @@ public class AstUtil
      *             !strcasecmp(s, &quot;1&quot;) ||
      *             !strcasecmp(s, &quot;on&quot;))
      *             return -1;
-     *     
+     * <p/>
      *         return 0;
      *     }
      * </pre>
-     * 
+     * <p/>
      * To support the dnd property of
      * {@link org.asteriskjava.manager.event.ZapShowChannelsEvent} this method
      * also consideres the string "Enabled" as true.
-     * 
+     *
      * @param o the Object (usually a String) to check for <code>true</code>.
      * @return <code>true</code> if s represents <code>true</code>,
      *         <code>false</code> otherwise.
@@ -106,12 +106,12 @@ public class AstUtil
 
     /**
      * Parses a string for caller id information.
-     * <p>
+     * <p/>
      * The caller id string should be in the form <code>"Some Name" &lt;1234&gt;</code>.
-     * <p>
+     * <p/>
      * This resembles <code>ast_callerid_parse</code> in
      * <code>callerid.c</code> but strips any whitespace.
-     * 
+     *
      * @param s the string to parse
      * @return a String[] with name (index 0) and number (index 1)
      */
@@ -168,11 +168,11 @@ public class AstUtil
 
     /**
      * Checks if the value of s was <code>null</code> in Asterisk.
-     * <p>
+     * <p/>
      * This method is useful as Asterisk likes to replace <code>null</code>
      * values with different string values like "unknown", "&lt;unknown&gt;"
      * or "&lt;null&gt;".
-     * <p>
+     * <p/>
      * To find such replacements search for <code>S_OR</code> in Asterisk's
      * source code. You will find things like
      * <pre>
@@ -180,18 +180,24 @@ public class AstUtil
      * fdprintf(fd, "agi_callerid: %s\n", S_OR(chan-&gt;cid.cid_num, "unknown"));
      * </pre>
      * and more...
-     * 
-     * @param s the string to test, may be <code>null</code>.
+     *
+     * @param s the string to test, may be <code>null</code>. If s is not a string
+     *          the only test that is performed is a check for <code>null</code>.
      * @return <code>true</code> if the s was <code>null</code> in Asterisk;
-     *         <code>false</code> otherwise. 
+     *         <code>false</code> otherwise.
      */
-    public static boolean isNull(String s)
+    public static boolean isNull(Object s)
     {
         if (s == null)
         {
             return true;
         }
 
-        return NULL_LITERALS.contains(s.toLowerCase(Locale.US));
+        if (!(s instanceof String))
+        {
+            return false;
+        }
+
+        return NULL_LITERALS.contains(((String) s).toLowerCase(Locale.US));
     }
 }

@@ -81,7 +81,7 @@ abstract class AbstractBuilder
             else if (dataType.isAssignableFrom(String.class))
             {
                 value = entry.getValue();
-                if (AstUtil.isNull((String) value))
+                if (AstUtil.isNull(value))
                 {
                     value = null;
                 }
