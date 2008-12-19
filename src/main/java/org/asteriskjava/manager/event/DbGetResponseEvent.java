@@ -21,7 +21,7 @@ package org.asteriskjava.manager.event;
  * entry that was queried.<p>
  * Available since Asterisk 1.2
  * 
- * @see org.asteriskjava.manager.action.DBGetAction
+ * @see org.asteriskjava.manager.action.DbGetAction
  * @author srt
  * @version $Id$
  * @since 0.2
