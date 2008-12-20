@@ -106,7 +106,7 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
         registerEventClass(PeerEntryEvent.class);
         registerEventClass(PeerlistCompleteEvent.class);
         registerEventClass(PeerStatusEvent.class);
-        registerEventClass(PRIEventEvent.class);
+        registerEventClass(PriEventEvent.class);
         registerEventClass(QueueCallerAbandonEvent.class);
         registerEventClass(QueueEntryEvent.class);
         registerEventClass(QueueMemberAddedEvent.class);
