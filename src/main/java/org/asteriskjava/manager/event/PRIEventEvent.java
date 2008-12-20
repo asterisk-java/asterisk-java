@@ -8,14 +8,14 @@ package org.asteriskjava.manager.event;
  * @version $Id$
  * @since 1.0.0
  */
-public class PRIEvent extends ManagerEvent
+public class PRIEventEvent extends ManagerEvent
 {
     private String priEvent;
     private Integer priEventCode;
     private String dChannel;
     private Integer span;
 
-    public PRIEvent(Object source)
+    public PRIEventEvent(Object source)
     {
         super(source);
     }
