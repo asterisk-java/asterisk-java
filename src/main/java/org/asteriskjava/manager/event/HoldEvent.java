@@ -20,7 +20,9 @@ package org.asteriskjava.manager.event;
  * A HoldEvent is triggered when a channel is put on hold (or no longer on hold).<p>
  * It is implemented in <code>channels/chan_sip.c</code>.<p>
  * Available since Asterisk 1.2 for SIP channels, as of Asterisk 1.6 this event
- * is also supported for IAX2 channels.
+ * is also supported for IAX2 channels.<p>
+ * To receive HoldEvents for SIP channels you must set <code>callevents = yes</code>
+ * in <code>sip.conf</code>.
  *
  * @author srt
  * @version $Id$
