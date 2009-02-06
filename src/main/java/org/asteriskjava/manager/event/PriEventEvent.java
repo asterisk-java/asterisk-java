@@ -10,7 +10,8 @@ package org.asteriskjava.manager.event;
  */
 public class PriEventEvent extends ManagerEvent
 {
-    private String priEvent;
+   private static final long serialVersionUID = 3257069450639290810L;
+   private String priEvent;
     private Integer priEventCode;
     private String dChannel;
     private Integer span;
