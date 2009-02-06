@@ -16,7 +16,6 @@
  */
 package org.asteriskjava.manager.action;
 
-import java.util.Formatter;
 import java.util.Map;
 import java.util.HashMap;
 
