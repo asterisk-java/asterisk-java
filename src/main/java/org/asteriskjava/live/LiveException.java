@@ -22,12 +22,12 @@ package org.asteriskjava.live;
  * @author srt
  * @version $Id$
  */
-public abstract class LiveException extends Exception
+public abstract class LiveException extends RuntimeException
 {
     /**
      * Serial version identifier.
      */
-    private static final long serialVersionUID = -7422839292479814036L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates a new instance with the given message.

@@ -7,8 +7,10 @@ package org.asteriskjava.manager;
 
 import org.asteriskjava.manager.action.CommandAction;
 import org.asteriskjava.manager.action.StatusAction;
+import org.asteriskjava.manager.action.SipShowPeerAction;
 import org.asteriskjava.manager.event.ManagerEvent;
 import org.asteriskjava.manager.response.CommandResponse;
+import org.asteriskjava.manager.response.SipShowPeerResponse;
 
 import junit.framework.TestCase;
 
@@ -25,9 +27,9 @@ public class TestDefaultManagerConnection extends TestCase
         dmc = new DefaultManagerConnection();
         dmc.setUsername("manager");
         dmc.setPassword("obelisk");
-        dmc.setHostname("pbx0.cologne.reucon.net");
-        dmc.setPort(5039);
-        dmc.setSsl(true);
+        dmc.setHostname("pbx0.reucon.net");
+        dmc.setPort(5038);
+        //dmc.setSsl(true);
 
         return dmc;
     }
@@ -87,7 +89,6 @@ public class TestDefaultManagerConnection extends TestCase
         }
     }
 
-
     public void testCommandAction() throws Exception
     {
         DefaultManagerConnection dmc;
@@ -99,6 +100,20 @@ public class TestDefaultManagerConnection extends TestCase
         response = (CommandResponse) dmc.sendAction(new CommandAction("show voicemail users"));
         System.out.println("Got response: " + response.getResult());
         
+        dmc.logoff();
+    }
+
+    public void testSipShowPeerAction() throws Exception
+    {
+        DefaultManagerConnection dmc;
+        SipShowPeerResponse response;
+
+        dmc = getDefaultManagerConnection();
+        dmc.login();
+
+        response = (SipShowPeerResponse) dmc.sendAction(new SipShowPeerAction("phone-02"));
+        System.out.println("Got response: " + response);
+
         dmc.logoff();
     }
 }

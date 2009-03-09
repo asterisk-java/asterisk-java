@@ -262,18 +262,18 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
         final StringBuffer sb;
 
         sb = new StringBuffer("AsteriskQueue[");
-        sb.append("name=;").append(getName()).append("',");
-        sb.append("max=").append(getMax()).append(",");
+        sb.append("name='").append(getName()).append("',");
+        sb.append("max='").append(getMax()).append("',");
         sb.append("strategy='").append(getStrategy()).append("',");
-        sb.append("serviceLevel=").append(getServiceLevel()).append(",");
-        sb.append("weight=").append(getWeight()).append(",");
+        sb.append("serviceLevel='").append(getServiceLevel()).append("',");
+        sb.append("weight='").append(getWeight()).append("',");
         synchronized (entries)
         {
-            sb.append("entries=").append(entries.toString()).append(",");
+            sb.append("entries='").append(entries.toString()).append("',");
         }
         synchronized (members)
         {
-            sb.append("members=").append(members.toString()).append(",");
+            sb.append("members='").append(members.toString()).append("',");
         }
         sb.append("systemHashcode=").append(System.identityHashCode(this));
         sb.append("]");
@@ -388,7 +388,7 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
             }
         }
     }
-    
+
     /**
      * Returns a collection of members of this queue.
      *
@@ -411,7 +411,7 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
      * Returns a member by its location.
      *
      * @param location ot the member
-     * @return the member by its location or <code>null</code>.
+     * @return the member by its location.
      */
     AsteriskQueueMemberImpl getMember(String location)
     {

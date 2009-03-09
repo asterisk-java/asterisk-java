@@ -27,6 +27,13 @@ import java.util.List;
  */
 public interface AsteriskQueue
 {
+    String STRATEGY_RINGALL = "ringall";
+    String STRATEGY_ROUNDROBIN = "roundrobin";
+    String STRATAGY_LEAST_RECENT = "leastrecent";
+    String STRATEGY_FEWEST_CALLS = "fewestcalls";
+    String STRATEGY_RANDOM = "random";
+    String STRATEGY_RRMEMORY = "rrmemory";
+
     /**
      * Returns the name of this queue as defined in Asterisk's
      * <code>queues.conf</code>.
@@ -98,10 +105,19 @@ public interface AsteriskQueue
      * Returns the list of Asterisk members of this queue.
      *
      * @return the list of Asterisk members of this queue.
-     * @author pbreucking
      * @since 0.3.1
      */
     Collection<AsteriskQueueMember> getMembers();
+
+    /*
+    void addMember(String iface);
+
+    void addMember(String iface, int penality);
+
+    void addMember(String iface, String memberName);
+
+    void addMember(String iface, String memberName, String stateInterface);
+    */
 
     /**
      * Registers a new queue listener.

@@ -91,7 +91,7 @@
     </repositories>
     <issueManagement>
         <system>JIRA</system>
-        <url>http://jira.reucon.org/secure/BrowseProject.jspa?id=10000</url>
+        <url>http://jira.reucon.org/browse/AJ</url>
     </issueManagement>
     <ciManagement>
         <system>continuum</system>
