@@ -172,7 +172,7 @@ public class AgiOperations implements AgiChannel
         return getChannel().getOption(file, escapeDigits);
     }
 
-    public char getOption(String file, String escapeDigits, int timeout)
+    public char getOption(String file, String escapeDigits, long timeout)
             throws AgiException
     {
         return getChannel().getOption(file, escapeDigits, timeout);

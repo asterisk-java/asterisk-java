@@ -207,12 +207,12 @@ public interface AgiChannel
      * @param file         the name of the file to stream, must not include extension.
      * @param escapeDigits contains the digits that the user is expected to
      *                     press.
-     * @param timeout      the timeout in seconds to wait if none of the defined
+     * @param timeout      the timeout in milliseconds to wait if none of the defined
      *                     esacpe digits was presses while streaming.
      * @return the DTMF digit pressed or 0x0 if none was pressed.
      * @since 0.2
      */
-    char getOption(String file, String escapeDigits, int timeout)
+    char getOption(String file, String escapeDigits, long timeout)
             throws AgiException;
 
     /**

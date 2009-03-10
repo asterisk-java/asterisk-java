@@ -152,7 +152,7 @@ public class AgiChannelImpl implements AgiChannel
         return lastReply.getResultCodeAsChar();
     }
 
-    public char getOption(String file, String escapeDigits, int timeout) throws AgiException
+    public char getOption(String file, String escapeDigits, long timeout) throws AgiException
     {
         sendCommand(new GetOptionCommand(file, escapeDigits, timeout));
         return lastReply.getResultCodeAsChar();

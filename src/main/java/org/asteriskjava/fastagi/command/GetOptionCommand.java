@@ -23,12 +23,12 @@ package org.asteriskjava.fastagi.command;
  * digit. Streaming always begins at the beginning.<p>
  * Returns 0 if no digit being pressed, or the ASCII numerical value of the
  * digit if one was pressed, or -1 on error or if the channel was disconnected.
- * <p>
+ * <p/>
  * Remember, the file extension must not be included in the filename.
- * 
- * @see org.asteriskjava.fastagi.command.StreamFileCommand
+ *
  * @author srt
  * @version $Id$
+ * @see org.asteriskjava.fastagi.command.StreamFileCommand
  */
 public class GetOptionCommand extends AbstractAgiCommand
 {
@@ -48,16 +48,16 @@ public class GetOptionCommand extends AbstractAgiCommand
     private String escapeDigits;
 
     /**
-     * The timeout in seconds.
+     * The timeout in milliseconds.
      */
-    private int timeout;
+    private long timeout;
 
     /**
      * Creates a new GetOptionCommand with a default timeout of 5 seconds.
-     * 
-     * @param file the name of the file to stream, must not include extension.
+     *
+     * @param file         the name of the file to stream, must not include extension.
      * @param escapeDigits contains the digits that the user is expected to
-     *            press.
+     *                     press.
      */
     public GetOptionCommand(String file, String escapeDigits)
     {
@@ -69,14 +69,14 @@ public class GetOptionCommand extends AbstractAgiCommand
 
     /**
      * Creates a new GetOptionCommand with the given timeout.
-     * 
-     * @param file the name of the file to stream, must not include extension.
+     *
+     * @param file         the name of the file to stream, must not include extension.
      * @param escapeDigits contains the digits that the user is expected to
-     *            press.
-     * @param timeout the timeout in seconds to wait if none of the defined
-     *            esacpe digits was presses while streaming.
+     *                     press.
+     * @param timeout      the timeout in milliseconds to wait if none of the defined
+     *                     esacpe digits was presses while streaming.
      */
-    public GetOptionCommand(String file, String escapeDigits, int timeout)
+    public GetOptionCommand(String file, String escapeDigits, long timeout)
     {
         super();
         this.file = file;
@@ -86,7 +86,7 @@ public class GetOptionCommand extends AbstractAgiCommand
 
     /**
      * Returns the name of the file to stream.
-     * 
+     *
      * @return the name of the file to stream.
      */
     public String getFile()
@@ -96,7 +96,7 @@ public class GetOptionCommand extends AbstractAgiCommand
 
     /**
      * Sets the name of the file to stream.
-     * 
+     *
      * @param file the name of the file to stream, must not include extension.
      */
     public void setFile(String file)
@@ -106,7 +106,7 @@ public class GetOptionCommand extends AbstractAgiCommand
 
     /**
      * Returns the digits that the user is expected to press.
-     * 
+     *
      * @return the digits that the user is expected to press.
      */
     public String getEscapeDigits()
@@ -116,7 +116,7 @@ public class GetOptionCommand extends AbstractAgiCommand
 
     /**
      * Sets the digits that the user is expected to press.
-     * 
+     *
      * @param escapeDigits the digits that the user is expected to press.
      */
     public void setEscapeDigits(String escapeDigits)
@@ -127,10 +127,10 @@ public class GetOptionCommand extends AbstractAgiCommand
     /**
      * Returns the timeout to wait if none of the defined esacpe digits was
      * presses while streaming.
-     * 
-     * @return the timeout in seconds.
+     *
+     * @return the timeout in milliseconds.
      */
-    public int getTimeout()
+    public long getTimeout()
     {
         return timeout;
     }
@@ -138,16 +138,16 @@ public class GetOptionCommand extends AbstractAgiCommand
     /**
      * Sets the timeout to wait if none of the defined esacpe digits was presses
      * while streaming.
-     * 
-     * @param timeout the timeout in seconds.
+     *
+     * @param timeout the timeout in milliks,seconds.
      */
-    public void setTimeout(int timeout)
+    public void setTimeout(long timeout)
     {
         this.timeout = timeout;
     }
 
     @Override
-   public String buildCommand()
+    public String buildCommand()
     {
         return "GET OPTION " + escapeAndQuote(file) + " "
                 + escapeAndQuote(escapeDigits)
