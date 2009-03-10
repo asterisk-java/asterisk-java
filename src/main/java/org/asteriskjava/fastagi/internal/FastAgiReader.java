@@ -90,7 +90,8 @@ class FastAgiReader implements AgiReader
         }
         catch (IOException e)
         {
-            throw new AgiNetworkException("Unable to read reply from Asterisk: " + e.getMessage(), e);
+            // readline throws IOException if the connection has been closed
+            throw new AgiHangupException();
         }
 
         if (line == null)
