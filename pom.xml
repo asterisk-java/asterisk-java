@@ -150,6 +150,36 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <!-- to sign the jar add to the command line:
+                      -Dkeystore=Stefan_Reuter_Code_Signing.jks
+                      -Dstorepass=secret
+                      -Dmaven.jar.skip.sign=false
+                    -->
+                    <alias>Stefan_Reuter_Code_Signing</alias>
+                    <verify>true</verify>
+                    <skip>true</skip>
+                    <!--
+                    <keystore>Stefan_Reuter_Code_Signing.jks</keystore>
+                    <storepass>secret</storepass>
+                    -->
+                    <archive>
+                        <manifest>
+                            <mainClass>org.asteriskjava.fastagi.DefaultAgiServer</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
                     <descriptorRefs>
