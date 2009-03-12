@@ -152,26 +152,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>sign</goal>
-                        </goals>
-                    </execution>
-                </executions>
                 <configuration>
-                    <!-- to sign the jar add to the command line:
-                      -Dkeystore=Stefan_Reuter_Code_Signing.jks
-                      -Dstorepass=secret
-                      -Dmaven.jar.skip.sign=false
-                    -->
-                    <alias>Stefan_Reuter_Code_Signing</alias>
-                    <verify>true</verify>
-                    <skip>true</skip>
-                    <!--
-                    <keystore>Stefan_Reuter_Code_Signing.jks</keystore>
-                    <storepass>secret</storepass>
-                    -->
                     <archive>
                         <manifest>
                             <mainClass>org.asteriskjava.fastagi.DefaultAgiServer</mainClass>
@@ -293,4 +274,46 @@
                -->
         </plugins>
     </reporting>
+    <profiles>
+        <profile>
+            <id>release</id>
+            <activation>
+                <property>
+                    <name>release</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-jar-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <!-- Add to the command line:
+                              -Dkeystore=Stefan_Reuter_Code_Signing.jks
+                              -Dstorepass=secret
+                            -->
+                            <alias>Stefan_Reuter_Code_Signing</alias>
+                            <verify>true</verify>
+                            <!--
+                            <keystore>Stefan_Reuter_Code_Signing.jks</keystore>
+                            <storepass>secret</storepass>
+                            -->
+                            <archive>
+                                <manifest>
+                                    <mainClass>org.asteriskjava.iax.ui.BeanCan</mainClass>
+                                </manifest>
+                            </archive>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
