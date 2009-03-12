@@ -305,11 +305,6 @@
                             <keystore>Stefan_Reuter_Code_Signing.jks</keystore>
                             <storepass>secret</storepass>
                             -->
-                            <archive>
-                                <manifest>
-                                    <mainClass>org.asteriskjava.iax.ui.BeanCan</mainClass>
-                                </manifest>
-                            </archive>
                         </configuration>
                     </plugin>
                 </plugins>
