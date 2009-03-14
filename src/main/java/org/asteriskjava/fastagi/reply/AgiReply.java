@@ -105,10 +105,15 @@ public interface AgiReply
      * <ul>
      * <li>200 Success
      * <li>510 Invalid or unknown command
+     * <li>511 Command Not Permitted on a dead channel (since Asterisk 1.6)
      * <li>520 Invalid command syntax
      * </ul>
      * 
      * @return the status code.
+     * @see #SC_SUCCESS
+     * @see #SC_INVALID_OR_UNKNOWN_COMMAND
+     * @see #SC_DEAD_CHANNEL
+     * @see #SC_INVALID_COMMAND_SYNTAX
      */
     int getStatus();
 
