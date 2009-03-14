@@ -99,6 +99,20 @@ class FastAgiReader implements AgiReader
             throw new AgiHangupException();
         }
 
+        // TODO Asterisk 1.6 sends "HANGUP" when the channel is hung up.
+        //System.out.println(line);
+        if (line.startsWith("HANGUP"))
+        {
+            if (line.length() > 6)
+            {
+                line = line.substring(6);
+            }
+            else
+            {
+                return readReply();
+            }
+        }
+
         lines.add(line);
 
         // read synopsis and usage if statuscode is 520
