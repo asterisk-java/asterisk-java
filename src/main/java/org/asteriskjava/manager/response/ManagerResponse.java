@@ -38,6 +38,11 @@ public class ManagerResponse implements Serializable
 
     private Date dateReceived;
     private String actionId;
+
+    /**
+     * The server from which this response has been received (only used with AstManProxy).
+     */
+    private String server;
     private String response;
     private String eventList;
     private String message;
@@ -128,6 +133,32 @@ public class ManagerResponse implements Serializable
     public String getActionId()
     {
         return actionId;
+    }
+
+    /**
+     * Returns the name of the Asterisk server from which this response has been received.
+     * <p/>
+     * This property is only available when using to AstManProxy.
+     *
+     * @return the name of the Asterisk server from which this response has been received
+     *         or <code>null</code> when directly connected to an Asterisk server
+     *         instead of AstManProxy.
+     * @since 1.0.0
+     */
+    public final String getServer()
+    {
+        return server;
+    }
+
+    /**
+     * Sets the name of the Asterisk server from which this response has been received.
+     *
+     * @param server the name of the Asterisk server from which this response has been received.
+     * @since 1.0.0
+     */
+    public final void setServer(String server)
+    {
+        this.server = server;
     }
 
     /**

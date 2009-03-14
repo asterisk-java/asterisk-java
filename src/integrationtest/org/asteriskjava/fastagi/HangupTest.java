@@ -39,7 +39,7 @@ public class HangupTest extends BaseAgiScript
         agiServerThread.setDaemon(false);
         agiServerThread.startup();
 
-        DefaultAsteriskServer server = new DefaultAsteriskServer("pbx0", "manager", "obelisk");
+        DefaultAsteriskServer server = new DefaultAsteriskServer("localhost", 1234, "manager", "obelisk");
         server.initialize();
         server.originateToApplication("SIP/phone-02", "AGI",
                 "agi://" + InetAddress.getLocalHost().getHostAddress() + "/" + HangupTest.class.getName()

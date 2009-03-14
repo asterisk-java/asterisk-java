@@ -1264,7 +1264,8 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                 && !"Asterisk Call Manager/1.1".equals(identifier) // Asterisk 1.6 
                 && !"Asterisk Call Manager/1.2".equals(identifier) // bri stuffed
                 && !"OpenPBX Call Manager/1.0".equals(identifier)
-                && !"CallWeaver Call Manager/1.0".equals(identifier))
+                && !"CallWeaver Call Manager/1.0".equals(identifier)
+                && !(identifier != null && identifier.startsWith("Asterisk Call Manager Proxy/")))
         {
             logger.warn("Unsupported protocol version '" + identifier + "'. Use at your own risk.");
         }
