@@ -44,6 +44,16 @@ public interface AgiReply
     int SC_INVALID_OR_UNKNOWN_COMMAND = 510;
 
     /**
+     * Status code (511) indicating Asterisk was unable to execute the command
+     * because the channel has been hung up. Up to Asterisk 1.4 the TCP connection
+     * was closed on hangup, since Asterisk 1.6 the connection stays alive and
+     * commands that require a channel return a reply with this status code.
+     *
+     * @since 1.0.0
+     */
+    int SC_DEAD_CHANNEL = 511;
+
+    /**
      * Status code (520) indicating Asterisk was unable to process the
      * AgiCommand because the syntax used was not correct. This is most likely
      * due to missing required parameters or additional parameters sent that are
