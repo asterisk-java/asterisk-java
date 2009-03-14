@@ -6,6 +6,7 @@ import org.asteriskjava.live.DefaultAsteriskServer;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.util.Arrays;
 
 public class HangupTest extends BaseAgiScript
 {
@@ -13,7 +14,7 @@ public class HangupTest extends BaseAgiScript
 
     public void service(AgiRequest request, AgiChannel channel) throws AgiException
     {
-        System.out.println(request.getParameterMap());
+        System.out.println(Arrays.toString(request.getArguments()));
         answer();
 
         try
@@ -22,7 +23,6 @@ public class HangupTest extends BaseAgiScript
             {
                 System.out.println("Saying " + i);
                 sayDigits(String.valueOf(i));
-                Thread.sleep(1000);
             }
         }
         catch (Exception e)
@@ -43,6 +43,6 @@ public class HangupTest extends BaseAgiScript
         server.initialize();
         server.originateToApplication("SIP/phone-02", "AGI",
                 "agi://" + InetAddress.getLocalHost().getHostAddress() + "/" + HangupTest.class.getName()
-                + ", arg1,arg2", 30000);
+                + ", arg1,,arg3", 30000);
     }
 }

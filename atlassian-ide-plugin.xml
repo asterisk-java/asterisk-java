@@ -17,7 +17,7 @@
         <name>reucon</name>
         <url>https://secure.reucon.net/build</url>
         <use-favourites>false</use-favourites>
-        <bamboo2>false</bamboo2>
+        <bamboo2>true</bamboo2>
         <plans>
           <plan key="AJ-DEF" />
           <plan key="AJ-NIGHTLY" />
