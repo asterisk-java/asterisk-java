@@ -63,6 +63,8 @@ public class AgiRequestImpl implements Serializable, AgiRequest
      */
     private Map<String, String[]> parameterMap;
 
+    private String[] arguments;
+
     private String parameters;
     private String script;
     private boolean callerIdCreated;
@@ -472,7 +474,7 @@ public class AgiRequestImpl implements Serializable, AgiRequest
         return parameterMap.get(name);
     }
 
-    public synchronized Map getParameterMap()
+    public synchronized Map<String, String[]> getParameterMap()
     {
         if (parameterMap == null)
         {
@@ -561,6 +563,39 @@ public class AgiRequestImpl implements Serializable, AgiRequest
         }
 
         return result;
+    }
+
+    public synchronized String[] getArguments()
+    {
+        if (arguments != null)
+        {
+            return arguments;
+        }
+
+        final Map<Integer, String> map = new HashMap<Integer, String>();
+        int maxIndex = 0;
+        for (Map.Entry<String, String> entry : request.entrySet())
+        {
+            if (! entry.getKey().startsWith("arg_"))
+            {
+                continue;
+            }
+
+            int index = Integer.valueOf(entry.getKey().substring(4));
+            if (index > maxIndex)
+            {
+                maxIndex = index;
+            }
+            map.put(index, entry.getValue());
+        }
+
+        arguments = new String[maxIndex];
+        for (int i = 0; i < maxIndex; i++)
+        {
+            arguments[i] = map.get(i + 1);
+        }
+        
+        return arguments;
     }
 
     public InetAddress getLocalAddress()

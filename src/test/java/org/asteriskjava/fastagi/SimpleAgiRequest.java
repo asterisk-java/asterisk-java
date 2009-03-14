@@ -161,7 +161,12 @@ public class SimpleAgiRequest implements AgiRequest
         throw new UnsupportedOperationException();
     }
 
-    public Map getParameterMap()
+    public Map<String, String[]> getParameterMap()
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    public String[] getArguments()
     {
         throw new UnsupportedOperationException();
     }

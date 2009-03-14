@@ -239,13 +239,25 @@ public interface AgiRequest
     String[] getParameterValues(String name);
 
     /**
-     * Returns a java.util.Map of the parameters of this request.
+     * Returns a Map of the parameters of this request.
      * 
      * @return a java.util.Map containing parameter names as keys and parameter
      *         values as map values. The keys in the parameter map are of type
      *         String. The values in the parameter map are of type String array.
      */
-    Map getParameterMap();
+    Map<String, String[]> getParameterMap();
+
+    /**
+     * Returns the array of arguments passed from the AGI dialplan command.<p>
+     * Example: {@code AGI(agi://localhost/HelloWorld,value1,,value2)} results in
+     * {@code getArguments()[0] = "value1"}, {@code getArguments()[1] = null}
+     * and {@code getArguments()[2] = "value2"}.<p>
+     * Available since Asterisk 1.6
+     *
+     * @return the array of arguments passed from the AGI command, never <code>null</code>.
+     * @since 1.0.0
+     */
+    String[] getArguments();
 
     /**
      * Returns the local address this channel, that is the IP address of the AGI

@@ -420,4 +420,63 @@ public class AgiRequestImplTest extends TestCase
         assertEquals("incorrect requestURL", "agi://host/myscript.agi?param1=my%20value", request.getRequestURL());
         assertEquals("incorrect value for parameter 'param1'", "my value", request.getParameter("param1"));
     }
+
+    public void testGetArguments()
+    {
+        List<String> lines;
+        AgiRequest request;
+
+        lines = new ArrayList<String>();
+
+        lines.add("agi_network_script: myscript.agi");
+        lines.add("agi_request: agi://host/myscript.agi");
+        lines.add("agi_arg_1: value1");
+        lines.add("agi_arg_2: value2");
+
+        request = new AgiRequestImpl(lines);
+
+        assertEquals("incorrect requestURL", "agi://host/myscript.agi", request.getRequestURL());
+        assertEquals("invalid number of arguments", 2, request.getArguments().length);
+        assertEquals("incorrect value for first argument", "value1", request.getArguments()[0]);
+        assertEquals("incorrect value for second argument", "value2", request.getArguments()[1]);
+    }
+
+    public void testGetArgumentsWithEmptyArgument()
+    {
+        List<String> lines;
+        AgiRequest request;
+
+        lines = new ArrayList<String>();
+
+        lines.add("agi_network_script: myscript.agi");
+        lines.add("agi_request: agi://host/myscript.agi");
+        lines.add("agi_arg_1: value1");
+        lines.add("agi_arg_2: ");
+        lines.add("agi_arg_3: value3");
+
+        request = new AgiRequestImpl(lines);
+
+        assertEquals("incorrect requestURL", "agi://host/myscript.agi", request.getRequestURL());
+        assertEquals("invalid number of arguments", 3, request.getArguments().length);
+        assertEquals("incorrect value for first argument", "value1", request.getArguments()[0]);
+        assertEquals("incorrect value for second argument", null, request.getArguments()[1]);
+        assertEquals("incorrect value for third argument", "value3", request.getArguments()[2]);
+    }
+
+    public void testGetArgumentsWithNoArgumentsPassed()
+    {
+        List<String> lines;
+        AgiRequest request;
+
+        lines = new ArrayList<String>();
+
+        lines.add("agi_network_script: myscript.agi");
+        lines.add("agi_request: agi://host/myscript.agi");
+
+        request = new AgiRequestImpl(lines);
+
+        assertEquals("incorrect requestURL", "agi://host/myscript.agi", request.getRequestURL());
+        assertNotNull("getArguments() must never return null", request.getArguments());
+        assertEquals("invalid number of arguments", 0, request.getArguments().length);
+    }
 }

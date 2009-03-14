@@ -13,6 +13,7 @@ public class HangupTest extends BaseAgiScript
 
     public void service(AgiRequest request, AgiChannel channel) throws AgiException
     {
+        System.out.println(request.getParameterMap());
         answer();
 
         try
@@ -41,6 +42,7 @@ public class HangupTest extends BaseAgiScript
         DefaultAsteriskServer server = new DefaultAsteriskServer("pbx0", "manager", "obelisk");
         server.initialize();
         server.originateToApplication("SIP/phone-02", "AGI",
-                "agi://" + InetAddress.getLocalHost().getHostAddress() + "/" + HangupTest.class.getName(), 30000);
+                "agi://" + InetAddress.getLocalHost().getHostAddress() + "/" + HangupTest.class.getName()
+                + ", arg1,arg2", 30000);
     }
 }
