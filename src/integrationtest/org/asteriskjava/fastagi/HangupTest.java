@@ -9,7 +9,6 @@ import java.net.InetAddress;
 
 public class HangupTest extends BaseAgiScript
 {
-    private DefaultAsteriskServer server = null;
     private Logger logger = Logger.getLogger(HangupTest.class);
 
     public void service(AgiRequest request, AgiChannel channel) throws AgiException
@@ -42,6 +41,6 @@ public class HangupTest extends BaseAgiScript
         DefaultAsteriskServer server = new DefaultAsteriskServer("pbx0", "manager", "obelisk");
         server.initialize();
         server.originateToApplication("SIP/phone-02", "AGI",
-                "agi://" + InetAddress.getLocalHost().getHostAddress() + "/org.asteriskjava.fastagi.HangupTest", 30000);
+                "agi://" + InetAddress.getLocalHost().getHostAddress() + "/" + HangupTest.class.getName(), 30000);
     }
 }
