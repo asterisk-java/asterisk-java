@@ -24,5 +24,9 @@
         </plans>
       </bamboo>
     </servers>
+    <default-crucible-server>89c4100c-3c20-4d7d-8611-0dbe1bee742e</default-crucible-server>
+    <default-fisheye-server>89c4100c-3c20-4d7d-8611-0dbe1bee742e</default-fisheye-server>
+    <default-fisheye-repo>repos</default-fisheye-repo>
+    <fisheye-project-path>asterisk-java/trunk</fisheye-project-path>
   </project-configuration>
 </atlassian-ide-plugin>
