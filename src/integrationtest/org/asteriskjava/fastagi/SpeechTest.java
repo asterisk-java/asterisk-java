@@ -1,18 +1,12 @@
 package org.asteriskjava.fastagi;
 
 
-import org.apache.log4j.Logger;
-import org.asteriskjava.live.DefaultAsteriskServer;
 import org.asteriskjava.fastagi.reply.AgiReply;
 
 import java.io.IOException;
-import java.net.InetAddress;
-import java.util.Arrays;
 
 public class SpeechTest extends BaseAgiScript
 {
-    private Logger logger = Logger.getLogger(SpeechTest.class);
-
     public void service(AgiRequest request, AgiChannel channel) throws AgiException
     {
         try
@@ -20,7 +14,7 @@ public class SpeechTest extends BaseAgiScript
             answer();
             speechCreate();
 
-            while(true)
+            while (true)
             {
                 doService(request, channel);
             }
@@ -29,6 +23,7 @@ public class SpeechTest extends BaseAgiScript
         {
             try
             {
+                // make sure to destroy the speech object otherwise licenses might leak.
                 speechDestroy();
             }
             catch (Exception e)
@@ -40,12 +35,15 @@ public class SpeechTest extends BaseAgiScript
 
     public void doService(AgiRequest request, AgiChannel channel) throws AgiException
     {
-        SpeechRecognitionResult result;
+        final String grammarLabel = "test";
+        final String grammarPath = "/etc/asterisk/grammars/test.gram";
 
-        speechLoadGrammar("digits", "/etc/asterisk/grammars/test.gram");
-        speechActivateGrammar("digits");
-        result = speechRecognize("tt-allbusy", 10);
+        speechLoadGrammar(grammarLabel, grammarPath);
+        speechActivateGrammar(grammarLabel);
+        SpeechRecognitionResult result = speechRecognize("tt-allbusy", 10);
         AgiReply reply = channel.getLastReply();
+        speechDeactivateGrammar(grammarLabel);
+
         System.out.println(reply);
         System.out.println(reply.getFirstLine());
         System.out.println(result);
