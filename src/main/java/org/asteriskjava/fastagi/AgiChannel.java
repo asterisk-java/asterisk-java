@@ -399,9 +399,12 @@ public interface AgiChannel
     char sayTime(long time, String escapeDigits) throws AgiException;
 
     /**
-     * Returns the value of the current channel variable.
+     * Returns the value of the current channel or global variable.<p>
+     * Supports functions and builtin variables. To retrieve
+     * the caller id you can use <code>getVariable("CALLERID(name)");<code><p>
+     * Does not support expression parsing, use {@link #getFullVariable(String)} in those cases.
      *
-     * @param name the name of the variable to retrieve.
+     * @param name the name of the variable (or function call) to retrieve.
      * @return the value of the given variable or <code>null</code> if not
      *         set.
      * @since 0.2
@@ -409,9 +412,11 @@ public interface AgiChannel
     String getVariable(String name) throws AgiException;
 
     /**
-     * Sets the value of the current channel variable to a new value.
+     * Sets the value of the current channel or global variable to a new value.<p>
+     * Supports functions and builtin variables. To set the caller id
+     * you can use <code>setVariable("CALLERID(name)", "John Doe");</code>
      *
-     * @param name  the name of the variable to retrieve.
+     * @param name  the name of the variable (or function call) to set.
      * @param value the new value to set.
      * @since 0.2
      */
@@ -428,30 +433,30 @@ public interface AgiChannel
     char waitForDigit(int timeout) throws AgiException;
 
     /**
-     * Returns the value of the current channel variable, unlike getVariable()
-     * this method understands complex variable names and builtin variables.<p>
-     * You can also use this method to use custom Asterisk functions. Syntax is
-     * "func(args)".<p>
+     * Evaluates a channel expression for the current channel. To extract
+     * the caller id use <code>getFullVariable("${CALLERID(name)}");</code>.<p>
      * Available since Asterisk 1.2.
      *
-     * @param name the name of the variable to retrieve.
-     * @return the value of the given variable or <code>null</code> if not
+     * @param expr the expression to evaluate.
+     * @return the value of the given expression or <code>null</code> if not
      *         set.
+     * @see #getVariable(String)
      * @since 0.2
      */
-    String getFullVariable(String name) throws AgiException;
+    String getFullVariable(String expr) throws AgiException;
 
     /**
-     * Returns the value of the given channel variable.<p>
+     * Evaluates a channel expression for the given channel.To extract
+     * the caller id use <code>getFullVariable("${CALLERID(name)}");</code>.<p>
      * Available since Asterisk 1.2.
      *
-     * @param name    the name of the variable to retrieve.
+     * @param expr    the the expression to evaluate.
      * @param channel the name of the channel.
-     * @return the value of the given variable or <code>null</code> if not
+     * @return the value of the given expression or <code>null</code> if not
      *         set.
      * @since 0.2
      */
-    String getFullVariable(String name, String channel) throws AgiException;
+    String getFullVariable(String expr, String channel) throws AgiException;
 
     /**
      * Says the given time.<p>
