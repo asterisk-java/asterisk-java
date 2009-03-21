@@ -447,7 +447,7 @@ public interface AgiChannel
 
     /**
      * Evaluates a channel expression for the given channel.To extract
-     * the caller id use <code>getFullVariable("${CALLERID(name)}");</code>.<p>
+     * the caller id of channel use <code>getFullVariable("${CALLERID(name)}", "SIP/john-0085d860");</code>.<p>
      * Available since Asterisk 1.2.
      *
      * @param expr    the the expression to evaluate.
