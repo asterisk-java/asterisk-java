@@ -391,49 +391,105 @@ public class AgiChannelImpl implements AgiChannel
         return lastReply.getResultCodeAsChar();
     }
 
+    public void speechCreate() throws AgiException
+    {
+        speechCreate("");
+    }
+
     public void speechCreate(String engine) throws AgiException
     {
         sendCommand(new SpeechCreateCommand(engine));
+        if (lastReply.getResultCode() != 1)
+        {
+            if (engine == null || "".equals(engine))
+            {
+                throw new AgiSpeechException("Speech object for default engine cannot be created");
+            }
+            else
+            {
+                throw new AgiSpeechException("Speech object for engine '" + engine + "' cannot be created");
+            }
+        }
     }
 
     public void speechSet(String name, String value) throws AgiException
     {
         sendCommand(new SpeechSetCommand(name, value));
+        if (lastReply.getResultCode() != 1)
+        {
+            throw new AgiSpeechException("Setting '" + name + "' cannot be set to '" + value + "'");
+        }
     }
 
     public void speechDestroy() throws AgiException
     {
         sendCommand(new SpeechDestroyCommand());
+        if (lastReply.getResultCode() != 1)
+        {
+            throw new AgiSpeechException("Speech object cannot be destroyed");
+        }
     }
 
     public void speechLoadGrammar(String name, String path) throws AgiException
     {
         sendCommand(new SpeechLoadGrammarCommand(name, path));
+        if (lastReply.getResultCode() != 1)
+        {
+            throw new AgiSpeechException("Grammar '" + name + "' cannot be loaded from '" + path + "'");
+        }
     }
 
     public void speechUnloadGrammar(String name) throws AgiException
     {
         sendCommand(new SpeechUnloadGrammarCommand(name));
+        if (lastReply.getResultCode() != 1)
+        {
+            throw new AgiSpeechException("Grammar '" + name + "' cannot be unloaded");
+        }
     }
 
     public void speechActivateGrammar(String name) throws AgiException
     {
         sendCommand(new SpeechActivateGrammarCommand(name));
+        if (lastReply.getResultCode() != 1)
+        {
+            throw new AgiSpeechException("Grammar '" + name + "' cannot be activated");
+        }
     }
 
     public void speechDeactivateGrammar(String name) throws AgiException
     {
         sendCommand(new SpeechDeactivateGrammarCommand(name));
+        if (lastReply.getResultCode() != 1)
+        {
+            throw new AgiSpeechException("Grammar '" + name + "' cannot be deactivated");
+        }
     }
 
-    public void speechRecognize(String prompt, int timeout) throws AgiException
+    public SpeechRecognitionResult speechRecognize(String prompt, int timeout) throws AgiException
     {
-        sendCommand(new SpeechRecognizeCommand(prompt, timeout));
+        return speechRecognize(new SpeechRecognizeCommand(prompt, timeout));
     }
 
-    public void speechRecognize(String prompt, int timeout, int offset) throws AgiException
+    public SpeechRecognitionResult speechRecognize(String prompt, int timeout, int offset) throws AgiException
     {
-        sendCommand(new SpeechRecognizeCommand(prompt, timeout, offset));
+        return speechRecognize(new SpeechRecognizeCommand(prompt, timeout, offset));
+    }
+
+    private SpeechRecognitionResult speechRecognize(SpeechRecognizeCommand command) throws AgiException
+    {
+        sendCommand(command);
+        if (lastReply.getResultCode() != 1)
+        {
+            throw new AgiSpeechException("Cannot recognize speech");
+        }
+
+        if ("hangup".equals(lastReply.getExtra()))
+        {
+            throw new AgiHangupException();
+        }
+        final AgiReply speechRecognizeReply = lastReply;
+        return new SpeechRecognitionResult(speechRecognizeReply);
     }
 
     public void continueAt(String context, String extension, String priority) throws AgiException

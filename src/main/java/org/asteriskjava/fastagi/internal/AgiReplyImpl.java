@@ -29,13 +29,12 @@ import org.asteriskjava.fastagi.reply.AgiReply;
  * @author srt
  * @version $Id$
  */
-public class AgiReplyImpl implements Serializable, AgiReply
+public class AgiReplyImpl implements AgiReply
 {
     private static final Pattern STATUS_PATTERN = Pattern.compile("^(\\d{3})[ -]");
     private static final Pattern RESULT_PATTERN = Pattern.compile("^200 result=(\\S+)");
     private static final Pattern PARENTHESIS_PATTERN = Pattern.compile("^200 result=\\S* +\\((.*)\\)");
     private static final Pattern ADDITIONAL_ATTRIBUTES_PATTERN = Pattern.compile("^200 result=\\S* +(\\(.*\\) )?(.+)$");
-    private static final Pattern ADDITIONAL_ATTRIBUTE_PATTERN = Pattern.compile("(\\S+)=(\\S+)");
     private static final Pattern SYNOPSIS_PATTERN = Pattern.compile("^\\s*Usage:\\s*(.*)\\s*$");
     private static final String END_OF_PROPER_USAGE = "520 End of proper usage.";
 
@@ -201,22 +200,67 @@ public class AgiReplyImpl implements Serializable, AgiReply
         final Matcher matcher = ADDITIONAL_ATTRIBUTES_PATTERN.matcher(firstLine);
         if (matcher.find())
         {
-            String s;
-            Matcher attributeMatcher;
-
-            s = matcher.group(2);
-            attributeMatcher = ADDITIONAL_ATTRIBUTE_PATTERN.matcher(s);
-            while (attributeMatcher.find())
-            {
-                String key;
-                String value;
-
-                key = attributeMatcher.group(1);
-                value = attributeMatcher.group(2);
-                attributes.put(key.toLowerCase(Locale.ENGLISH), value);
-            }
+            attributes.putAll(parseAttributes(matcher.group(2)));
         }
         return attributes;
+    }
+
+    Map<String, String> parseAttributes(String s)
+    {
+        StringBuilder keyBuilder = new StringBuilder();
+        StringBuilder valueBuilder = new StringBuilder();
+        Map<String, String> map = new HashMap<String, String>();
+
+        boolean inKey = true;
+        boolean inQuotes = false;
+        char previousChar = 0x0;
+        for (int i = 0; i < s.length(); i++)
+        {
+            char c = s.charAt(i);
+            if (c == '=' && inKey)
+            {
+                inKey = false;
+                inQuotes = false;
+            }
+            else if ((c == ' ' && !inKey && !inQuotes))
+            {
+                map.put(keyBuilder.toString().toLowerCase(Locale.ENGLISH), valueBuilder.toString());
+                keyBuilder.delete(0, keyBuilder.length());
+                valueBuilder.delete(0, valueBuilder.length());
+                inKey = true;
+            }
+            else if (c == '"' && !inKey)
+            {
+                if (previousChar == '\\')
+                {
+                    valueBuilder.deleteCharAt(valueBuilder.length() - 1);
+                    valueBuilder.append(c);
+                }
+                else
+                {
+                    inQuotes = !inQuotes;
+                }
+            }
+            else
+            {
+                if (inKey)
+                {
+                    keyBuilder.append(c);
+                }
+                else
+                {
+                    valueBuilder.append(c);
+                }
+            }
+
+            previousChar = c;
+        }
+
+        if (keyBuilder.length() > 0)
+        {
+            map.put(keyBuilder.toString().toLowerCase(Locale.ENGLISH), valueBuilder.toString());
+        }
+        return map;
     }
 
     private boolean extraCreated;

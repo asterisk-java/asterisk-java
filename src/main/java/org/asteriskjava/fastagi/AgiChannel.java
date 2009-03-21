@@ -664,9 +664,21 @@ public interface AgiChannel
                            String pauseDigit) throws AgiException;
 
     /**
-     * Creates a speech object to be used by the other speech methods.
+     * Creates a speech object that uses the default speech engine. The speech object is
+     * used by the other speech methods and must be created before they are called.
      *
-     * @param engine the name of the speech engine.
+     * @throws AgiSpeechException if the speech object cannot be created.
+     * @see #speechDestroy()
+     * @since 1.0.0
+     */
+    void speechCreate() throws AgiException;
+
+    /**
+     * Creates a speech object that uses the given speech engine. The speech object is
+     * used by the other speech methods and must be created before they are called.
+     *
+     * @param engine the name of the speech engine. For example "lumenvox".
+     * @throws AgiSpeechException if the speech object cannot be created.
      * @see #speechDestroy()
      * @since 1.0.0
      */
@@ -677,6 +689,7 @@ public interface AgiChannel
      *
      * @param name  the name of the setting to set.
      * @param value the value to set.
+     * @throws AgiSpeechException if the setting cannot be set.
      * @since 1.0.0
      */
     void speechSet(String name, String value) throws AgiException;
@@ -684,60 +697,88 @@ public interface AgiChannel
     /**
      * Destroys the current speech object.
      *
+     * @throws AgiSpeechException if the speech engine cannot be destroyed.
      * @see #speechCreate(String)
      * @since 1.0.0
      */
     void speechDestroy() throws AgiException;
 
     /**
-     * Loads the specified grammar as the specified name.
+     * Loads the specified grammar. The grammer is then available for calls to {@link #speechActivateGrammar(String)}
+     * under the given name. Eplicitly loading a grammer is only required if the grammer has not been defined in the
+     * speech engine configuration, e.g. the <code>[grammars]</code> section of <code>lumenvox.conf</code>.
      *
-     * @param name the name of the grammar, used for subsequent calls to {@link #speechActivateGrammar(String)},
-     *             {@link #speechDeactivateGrammar(String)} and {@link #speechUnloadGrammar(String)}.
-     * @param path the path to the grammar to load.
+     * @param label the name of the grammar, used for subsequent calls to {@link #speechActivateGrammar(String)},
+     *              {@link #speechDeactivateGrammar(String)} and {@link #speechUnloadGrammar(String)}.
+     * @param path  the path to the grammar to load.
+     * @throws AgiSpeechException if the grammar cannot be loaded.
      * @see #speechUnloadGrammar(String)
      * @see #speechActivateGrammar(String)
      * @since 1.0.0
      */
-    void speechLoadGrammar(String name, String path) throws AgiException;
+    void speechLoadGrammar(String label, String path) throws AgiException;
 
     /**
      * Unloads the specified grammar.
      *
-     * @param name the name of the grammar to unload.
+     * @param label the name of the grammar to unload.
+     * @throws AgiSpeechException if the grammar cannot be unloaded.
      * @see #speechLoadGrammar(String, String)
      * @since 1.0.0
      */
-    void speechUnloadGrammar(String name) throws AgiException;
+    void speechUnloadGrammar(String label) throws AgiException;
 
     /**
      * Activates the specified grammar.
      *
-     * @param name the name of the grammar to activate.
+     * @param label the name of the grammar to activate.
+     * @throws AgiSpeechException if the grammar cannot be activated.
      * @see #speechDeactivateGrammar(String)
      * @see #speechLoadGrammar(String, String)
      * @since 1.0.0
      */
-    void speechActivateGrammar(String name) throws AgiException;
+    void speechActivateGrammar(String label) throws AgiException;
 
     /**
      * Deactivates the specified grammar.
      *
-     * @param name the name to the grammar to deactivate.
+     * @param label the name to the grammar to deactivate.
+     * @throws AgiSpeechException if the grammar cannot be deactivated.
      * @see #speechActivateGrammar(String)
      * @since 1.0.0
      */
-    void speechDeactivateGrammar(String name) throws AgiException;
+    void speechDeactivateGrammar(String label) throws AgiException;
 
-    void speechRecognize(String prompt, int timeout) throws AgiException;
+    /**
+     * Plays the given prompt while listening for speech and DTMF.
+     *
+     * @param prompt  the name of the file to stream, must not include extension.
+     * @param timeout the timeout in milliseconds to wait for user input.<p>
+     *                0 means standard timeout value, -1 means "ludicrous time"
+     *                (essentially never times out).
+     * @return the recognition result
+     * @since 1.0.0
+     */
+    SpeechRecognitionResult speechRecognize(String prompt, int timeout) throws AgiException;
 
-    void speechRecognize(String prompt, int timeout, int offset) throws AgiException;
+    /**
+     * Plays the given prompt while listening for speech and DTMF.
+     *
+     * @param prompt  the name of the file to stream, must not include extension.
+     * @param timeout the timeout in milliseconds to wait for user input.<p>
+     *                0 means standard timeout value, -1 means "ludicrous time"
+     *                (essentially never times out).
+     * @param offset  the offset samples to skip before streaming, use 0 to start at the beginning.
+     * @return the recognition result
+     * @since 1.0.0
+     */
+    SpeechRecognitionResult speechRecognize(String prompt, int timeout, int offset) throws AgiException, AgiSpeechException;
 
     /**
      * Defines the point in the dialplan where the call will continue when the AGI script
      * returns.<p>
      * This is a shortcut for calling {@link #setContext(String)}, {@link #setExtension(String)}
-     * and {@link #setPriority(String)} in series. 
+     * and {@link #setPriority(String)} in series.
      *
      * @param context   the context for continuation upon exiting the application.
      * @param extension the extension for continuation upon exiting the

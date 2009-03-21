@@ -412,6 +412,11 @@ public class AgiOperations implements AgiChannel
         return getChannel().controlStreamFile(file, escapeDigits, offset, forwardDigit, rewindDigit, pauseDigit);
     }
 
+    public void speechCreate() throws AgiException
+    {
+        getChannel().speechCreate();
+    }
+
     public void speechCreate(String engine)
             throws AgiException
     {
@@ -454,16 +459,16 @@ public class AgiOperations implements AgiChannel
         getChannel().speechDeactivateGrammar(name);
     }
 
-    public void speechRecognize(String prompt, int timeout)
+    public SpeechRecognitionResult speechRecognize(String prompt, int timeout)
             throws AgiException
     {
-        getChannel().speechRecognize(prompt, timeout);
+        return getChannel().speechRecognize(prompt, timeout);
     }
 
-    public void speechRecognize(String prompt, int timeout, int offset)
+    public SpeechRecognitionResult speechRecognize(String prompt, int timeout, int offset)
             throws AgiException
     {
-        getChannel().speechRecognize(prompt, timeout, offset);
+        return getChannel().speechRecognize(prompt, timeout, offset);
     }
 
     public void continueAt(String context, String extension, String priority) throws AgiException

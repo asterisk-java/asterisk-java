@@ -78,6 +78,43 @@ public class AgiReplyImplTest extends TestCase
         assertEquals("Incorrect endpos attribute", "2240", reply.getAttribute("endpos"));
     }
 
+    public void testBuildReplyWithQuotedAttribute()
+    {
+        AgiReplyImpl reply;
+
+        lines.add("200 result=1 (speech) endpos=0 results=1 score0=969 text0=\"123456789\" grammar0=digits");
+
+        reply = new AgiReplyImpl(lines);
+
+        assertEquals("Incorrect status", AgiReplyImpl.SC_SUCCESS, reply.getStatus());
+        assertEquals("Incorrect result", 1, reply.getResultCode());
+        assertEquals("Incorrect result when get via getAttribute()", "1", reply.getAttribute("result"));
+        assertEquals("Incorrect endpos attribute", "0", reply.getAttribute("endpos"));
+        assertEquals("Incorrect extra", "speech", reply.getExtra());
+        assertEquals("Incorrect text0 attribute", "123456789", reply.getAttribute("text0"));
+    }
+
+    public void testBuildReplyWithQuotedAttribute2()
+    {
+        AgiReplyImpl reply;
+
+        lines.add("200 result=1 (speech) endpos=0 results=1 score0=969 text0=\"hi \\\"joe!\\\"\" grammar0=digits");
+
+        reply = new AgiReplyImpl(lines);
+
+        assertEquals("Incorrect status", AgiReplyImpl.SC_SUCCESS, reply.getStatus());
+        assertEquals("Incorrect result", 1, reply.getResultCode());
+        assertEquals("Incorrect result when get via getAttribute()", "1", reply.getAttribute("result"));
+        assertEquals("Incorrect endpos attribute", "0", reply.getAttribute("endpos"));
+        assertEquals("Incorrect extra", "speech", reply.getExtra());
+        assertEquals("Incorrect text0 attribute", "hi \"joe!\"", reply.getAttribute("text0"));
+    }
+
+    public void testBla()
+    {
+        System.out.println(005);
+    }
+
     public void testBuildReplyWithParenthesis()
     {
         AgiReplyImpl reply;
