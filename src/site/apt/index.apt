@@ -9,29 +9,17 @@ Asterisk-Java
 
   The Asterisk-Java package consists of a set of Java classes 
   that allow you to easily build Java applications that interact with an 
-  {{{http://www.asterisk.org/}Asterisk PBX Server}}. Asterisk-Java
-  supports both interfaces that Asterisk provides for this scenario:
-  The {{{http://www.voip-info.org/wiki-Asterisk+AGI}FastAGI}}
-  protocol and the
-  {{{http://www.voip-info.org/wiki-Asterisk+manager+API}Manager API}}.
-
-  Asterisk-Java is compatible with Asterisk 1.0, 1.2 and 1.4. The upcoming
-  1.0.0 release will add full support for Asterisk 1.6.
-
-  The FastAGI implementation supports all
-  {{{apidocs/org/asteriskjava/fastagi/command/package-summary.html}commands}}
-  currently available from Asterisk.
-
-  The Manager API implementation supports receiving events from the Asterisk 
-  server (e.g. call progess, registered peers, channel state) and sending 
-  actions to Asterisk (e.g. originate call, agent 
-  login/logoff, start/stop voice recording).
+  {{{http://www.asterisk.org/}Asterisk PBX Server}}. 
   
-  A complete list of the available
-  {{{apidocs/org/asteriskjava/manager/event/package-summary.html}events}}
-  and
-  {{{apidocs/org/asteriskjava/manager/action/package-summary.html}actions}}
-  is available in the {{{apidocs/index.html}javadocs}}
+  Asterisk-Java supports most features of the following Asterisk interfaces:
+  
+   * {{{http://www.voip-info.org/wiki-Asterisk+AGI}Fast Asterisk Gateway Interface}} (FastAGI)  ({{{apidocs/org/asteriskjava/manager/event/package-summary.html}javadocs}})
+   
+   * {{{http://www.voip-info.org/wiki-Asterisk+manager+API}Asterisk Manager interface}} (AMI) ({{{apidocs/org/asteriskjava/fastagi/command/package-summary.html}javadocs}}).
+   
+   * Inter-Asterisk eXchange (IAX) Protocol (<<coming soon!>>)
+   
+  <<Please start with the {{{tutorial.html}tutorials}}, the {{{faq.html}frequently asked questions}}, or the {{{apidocs/index.html}API reference}}.>> 
 
 * License
 
@@ -41,9 +29,9 @@ Asterisk-Java
 * Status
 
   We plan to release Asterisk-Java 1.0.0 shortly after Asterisk 1.6. It will be
-  available
+  available at the 
   {{{http://maven.reucon.com/public/org/asteriskjava/asterisk-java/}distribution site}}
-  where you also find the previous releases.
+  where you can also find the previous releases.
   
   Asterisk-Java 1.0.0 will further enhance the new stateful higher level API
   with operations like "get list of currently active calls" or "place call"
@@ -72,6 +60,9 @@ Asterisk-Java
 +-----------------------------------------------------------------------+
 
 * Requirements
+
+  Asterisk-Java is compatible with Asterisk 1.0, 1.2 and 1.4. The upcoming
+  1.0.0 release will add full support for Asterisk 1.6.
 
   At runtime Asterisk-Java requires a Java Runtime 
   Environment (JRE) of at least version 1.5 (J2SE 5.0). It has

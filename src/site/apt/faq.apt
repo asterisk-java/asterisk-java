@@ -22,6 +22,25 @@ Frequently Asked Questions
     You can find the subscription details for both lists {{{http://asterisk-java.org/development/mail-lists.html}here}}.
 	
     You might also be interested in our {{{http://jira.reucon.org}Bug Tracker}} where you can look for known issues, post new bug reports and submit patches.
+
+* What are the different components I can use to integrate my application with Asterisk? Which one should I choose for my particular task?
+
+*-----------------------*---*---*---*--------*
+|Feature                |AMI|AGI|IAX|C Module|
+*-----------------------*---*---*---*--------*
+|Make/redirect calls	|x	|-	|x	|x       |
+|Query active calls	    |x	|-	|-	|x       |
+|Query extension status	|x	|-	|-	|x       |
+|Stop/start recording	|x	|x	|-	|x       |
+|Receive/send media	    |-	|-	|x	|x       |
+|Modify/add dialplan	|x	|-	|-	|x       |
+|Act as IVR application	|-	|x	|-	|x       |
+|Act as soft phone	    |-	|-	|x	|x       |
+|Act as endpoint/caller	|-	|x	|x	|x       |
+|Click to call	        |x	|-	|-	|-       |
+|Dashboard/status	    |x	|-	|-	|x       |
+*-----------------------*---*---*---*--------*
+ 
         
 * How can I track a call I've originated through the Manager interface?
 
