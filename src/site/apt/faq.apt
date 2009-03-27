@@ -67,6 +67,10 @@ Frequently Asked Questions
 
   AstMan proxy requires some modifications in order to be successfully used with Asterisk-Java. Gaetan Minet has created a patch to AstMan Proxy that he has offered for download, with some documentation, at {{http://dev.mcit.be/various/astmanproxy-asterisk-java.html}}.
 
+  As of AstManProxy 1.23 most of the issues have been fixed and the patch is no longer required. You will not be
+  able to use the CommandAction however as AstManProxy currently converts all NL characters to CR/NL. This issue still
+  has to be fixed by AstManProxy in a future version.
+
 * What are some ways of securing an AGI script?
 
   The FastAGI protocol itself has no support for authentication and encryption. You can add authentication at the application level using username and password parameters and verifying those. For encryption you have to revert to a VPN or other network-layer solutions.
