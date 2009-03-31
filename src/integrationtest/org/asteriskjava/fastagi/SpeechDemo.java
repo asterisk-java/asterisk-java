@@ -36,7 +36,7 @@ public class SpeechDemo extends BaseAgiScript
         {
             while (true)
             {
-                recognizeDigits(request, channel);
+                recognizeDigits();
             }
         }
         catch (AgiHangupException e)
@@ -57,7 +57,7 @@ public class SpeechDemo extends BaseAgiScript
         }
     }
 
-    public void recognizeDigits(AgiRequest request, AgiChannel channel) throws AgiException
+    public void recognizeDigits() throws AgiException
     {
         final String grammarLabel = "digits";
 

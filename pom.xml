@@ -157,6 +157,9 @@
                         <manifest>
                             <mainClass>org.asteriskjava.fastagi.DefaultAgiServer</mainClass>
                         </manifest>
+                        <mainfestEntries>
+                            <Class-Path>.</Class-Path>
+                        </mainfestEntries>
                     </archive>
                 </configuration>
             </plugin>
