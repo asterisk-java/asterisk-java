@@ -556,22 +556,29 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
 
     public void hangup() throws ManagerCommunicationException, NoSuchChannelException
     {
-        ManagerResponse response;
-
-        response = server.sendAction(new HangupAction(name));
-        if (response instanceof ManagerError)
-        {
-            throw new NoSuchChannelException("Channel '" + name + "' is not available: " + response.getMessage());
-        }
+        hangup(null);
     }
 
     public void hangup(HangupCause cause) throws ManagerCommunicationException, NoSuchChannelException
     {
+        final HangupAction action;
+        final ManagerResponse response;
+
         if (cause != null)
         {
             setVariable(CAUSE_VARIABLE_NAME, Integer.toString(cause.getCode()));
+            action = new HangupAction(name, cause.getCode());
         }
-        hangup();
+        else
+        {
+            action = new HangupAction(name);
+        }
+
+        response = server.sendAction(action);
+        if (response instanceof ManagerError)
+        {
+            throw new NoSuchChannelException("Channel '" + name + "' is not available: " + response.getMessage());
+        }
     }
 
     public void setAbsoluteTimeout(int seconds) throws ManagerCommunicationException, NoSuchChannelException
