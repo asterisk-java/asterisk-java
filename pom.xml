@@ -155,11 +155,11 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>org.asteriskjava.fastagi.DefaultAgiServer</mainClass>
+                            <mainClass>org.asteriskjava.Cli</mainClass>
                         </manifest>
-                        <mainfestEntries>
+                        <manifestEntries>
                             <Class-Path>.</Class-Path>
-                        </mainfestEntries>
+                        </manifestEntries>
                     </archive>
                 </configuration>
             </plugin>
