@@ -63,7 +63,7 @@ public class Cli
 
     private String getVersion()
     {
-        String version = "unknown";
+        String version = "<unknown>";
         final InputStream is;
         final Properties properties;
 
