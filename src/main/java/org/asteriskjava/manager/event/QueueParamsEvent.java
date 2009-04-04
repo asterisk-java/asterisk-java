@@ -35,7 +35,7 @@ public class QueueParamsEvent extends ResponseEvent
     private Integer max;
     private String strategy;
     private Integer calls;
-    private Integer holdtime;
+    private Integer holdTime;
     private Integer completed;
     private Integer abandoned;
     private Integer serviceLevel;
@@ -145,19 +145,19 @@ public class QueueParamsEvent extends ResponseEvent
      *
      * @return the current average holdtime for this queue (in seconds).
      */
-    public Integer getHoldtime()
+    public Integer getHoldTime()
     {
-        return holdtime;
+        return holdTime;
     }
 
     /**
      * Sets the current average holdtime for this queue.
      *
-     * @param holdtime the current average holdtime for this queue (in seconds).
+     * @param holdTime the current average holdtime for this queue (in seconds).
      */
-    public void setHoldtime(Integer holdtime)
+    public void setHoldTime(Integer holdTime)
     {
-        this.holdtime = holdtime;
+        this.holdTime = holdTime;
     }
 
     /**

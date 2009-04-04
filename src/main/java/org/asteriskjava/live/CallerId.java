@@ -117,53 +117,36 @@ public class CallerId implements Serializable
     }
 
     @Override
-    public int hashCode()
+    public boolean equals(Object o)
     {
-        final int PRIME = 31;
-        int result = 1;
-        result = PRIME * result + ((name == null) ? 0 : name.hashCode());
-        result = PRIME * result + ((number == null) ? 0 : number.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj)
-    {
-        if (this == obj)
+        if (this == o)
         {
             return true;
         }
-        if (obj == null)
+        if (o == null || getClass() != o.getClass())
         {
             return false;
         }
-        if (getClass() != obj.getClass())
+
+        CallerId callerId = (CallerId) o;
+
+        if (name != null ? !name.equals(callerId.name) : callerId.name != null)
         {
             return false;
         }
-        final CallerId other = (CallerId) obj;
-        if (name == null)
-        {
-            if (other.name != null)
-            {
-                return false;
-            }
-        }
-        else if (!name.equals(other.name))
+        if (number != null ? !number.equals(callerId.number) : callerId.number != null)
         {
             return false;
         }
-        if (number == null)
-        {
-            if (other.number != null)
-            {
-                return false;
-            }
-        }
-        else if (!number.equals(other.number))
-        {
-            return false;
-        }
+
         return true;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        int result = name != null ? name.hashCode() : 0;
+        result = 31 * result + (number != null ? number.hashCode() : 0);
+        return result;
     }
 }

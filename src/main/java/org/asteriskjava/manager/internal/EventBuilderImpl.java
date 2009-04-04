@@ -244,7 +244,7 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
                 return null;
             }
 
-            userEventType = ((String) attributes.get("userevent")).toLowerCase();
+            userEventType = ((String) attributes.get("userevent")).toLowerCase(Locale.US);
             eventType = eventType + userEventType;
         }
 

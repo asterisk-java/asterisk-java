@@ -38,7 +38,7 @@ public class DatabaseDelTreeCommand extends AbstractAgiCommand
     /**
      * The keytree to delete.
      */
-    private String keytree;
+    private String keyTree;
 
     /**
      * Creates a new DatabaseDelCommand to delete a whole family.
@@ -55,13 +55,13 @@ public class DatabaseDelTreeCommand extends AbstractAgiCommand
      * Creates a new DatabaseDelCommand to delete a keytree within a given family.
      * 
      * @param family the family of the keytree to delete.
-     * @param keytree the keytree to delete.
+     * @param keyTree the keytree to delete.
      */
-    public DatabaseDelTreeCommand(String family, String keytree)
+    public DatabaseDelTreeCommand(String family, String keyTree)
     {
         super();
         this.family = family;
-        this.keytree = keytree;
+        this.keyTree = keyTree;
     }
 
     /**
@@ -89,27 +89,27 @@ public class DatabaseDelTreeCommand extends AbstractAgiCommand
      * 
      * @return the keytree to delete.
      */
-    public String getKeytree()
+    public String getKeyTree()
     {
-        return keytree;
+        return keyTree;
     }
 
     /**
      * Sets the keytree to delete.
      * 
-     * @param keytree the keytree to delete, <code>null</code> to delete the whole family.
+     * @param keyTree the keytree to delete, <code>null</code> to delete the whole family.
      */
-    public void setKeytree(String keytree)
+    public void setKeyTree(String keyTree)
     {
-        this.keytree = keytree;
+        this.keyTree = keyTree;
     }
 
     @Override
    public String buildCommand()
     {
-        if (keytree == null)
+        if (keyTree == null)
         {
-            return "DATABASE DELTREE " + escapeAndQuote(family) + " " + escapeAndQuote(keytree);
+            return "DATABASE DELTREE " + escapeAndQuote(family) + " " + escapeAndQuote(keyTree);
         }
         else
         {

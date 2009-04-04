@@ -1510,7 +1510,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         }
     }
 
-    private class ProtocolIdentifierWrapper
+    private static class ProtocolIdentifierWrapper
     {
         String value;
     }

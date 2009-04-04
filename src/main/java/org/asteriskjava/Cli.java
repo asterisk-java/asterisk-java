@@ -102,7 +102,7 @@ public class Cli
             return version;
         }
 
-        version = properties.getProperty("version", "unknown");
+        version = properties.getProperty("version", version);
         return version;
     }
 

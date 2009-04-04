@@ -134,7 +134,7 @@ class ActionBuilderImpl implements ActionBuilder
                 for (Map.Entry entry : attributes.entrySet())
                 {
                     appendString(sb, entry.getKey() == null ? "null" : entry.getKey().toString(),
-                            entry.getValue().toString() == null ? "null" : entry.getValue().toString());
+                            entry.getValue() == null ? "null" : entry.getValue().toString());
                 }   
             }
         }

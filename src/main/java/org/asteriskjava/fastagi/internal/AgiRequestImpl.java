@@ -16,24 +16,17 @@
  */
 package org.asteriskjava.fastagi.internal;
 
-import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
-import java.net.InetAddress;
-import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.StringTokenizer;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.asteriskjava.fastagi.AgiRequest;
 import org.asteriskjava.util.AstUtil;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
+
+import java.io.UnsupportedEncodingException;
+import java.net.InetAddress;
+import java.net.URLDecoder;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**
@@ -42,18 +35,13 @@ import org.asteriskjava.util.LogFactory;
  * @author srt
  * @version $Id$
  */
-public class AgiRequestImpl implements Serializable, AgiRequest
+public class AgiRequestImpl implements AgiRequest
 {
     private final Log logger = LogFactory.getLog(getClass());
     private static final Pattern SCRIPT_PATTERN = Pattern.compile("^([^\\?]*)\\?(.*)$");
     private static final Pattern PARAMETER_PATTERN = Pattern.compile("^(.*)=(.*)$");
 
     private String rawCallerId;
-
-    /**
-     * Serial version identifier.
-     */
-    private static final long serialVersionUID = 3257001047145789496L;
 
     private Map<String, String> request;
 
@@ -468,10 +456,11 @@ public class AgiRequestImpl implements Serializable, AgiRequest
     {
         if (getParameterMap().isEmpty())
         {
-            return null;
+            return new String[0];
         }
 
-        return parameterMap.get(name);
+        final String[] values = parameterMap.get(name);
+        return values == null ? new String[0] : values;
     }
 
     public synchronized Map<String, String[]> getParameterMap()
@@ -569,7 +558,7 @@ public class AgiRequestImpl implements Serializable, AgiRequest
     {
         if (arguments != null)
         {
-            return arguments;
+            return Arrays.copyOf(arguments, arguments.length);
         }
 
         final Map<Integer, String> map = new HashMap<Integer, String>();
@@ -595,7 +584,7 @@ public class AgiRequestImpl implements Serializable, AgiRequest
             arguments[i] = map.get(i + 1);
         }
         
-        return arguments;
+        return Arrays.copyOf(arguments, arguments.length);
     }
 
     public InetAddress getLocalAddress()
