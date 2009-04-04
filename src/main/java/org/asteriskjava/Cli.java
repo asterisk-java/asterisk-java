@@ -31,6 +31,7 @@ public class Cli
         if (args.length == 0)
         {
             startAgiServer();
+            return;
         }
 
         final String arg = args[0];
@@ -38,11 +39,11 @@ public class Cli
         {
             showHelp();
         }
-        if ("-v".equals(arg) || "-version".equals(arg))
+        else if ("-v".equals(arg) || "-version".equals(arg))
         {
             showVersion();
         }
-        if ("-a".equals(arg) || "-agi".equals(arg))
+        else if ("-a".equals(arg) || "-agi".equals(arg))
         {
             if (args.length >= 2)
             {
@@ -53,11 +54,15 @@ public class Cli
                 }
                 catch (NumberFormatException e)
                 {
-                    System.err.println("Invalid port '" + args[1] + "'.");
+                    System.err.println("Invalid port '" + args[1] + "'. Port must be a number.");
                     exit(1);
                 }
                 startAgiServer(port);
             }
+        }
+        else
+        {
+            showHelp();
         }
     }
 
