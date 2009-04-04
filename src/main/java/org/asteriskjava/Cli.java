@@ -7,12 +7,25 @@ import java.io.InputStream;
 import java.util.Properties;
 
 /**
- * Simple command line interface for Asterisk-Java.
+ * Simple command line interface for Asterisk-Java. This class is run when Asterisk-Java is started
+ * with {@code java -jar asterisk-java.jar}. It is configured as Main-Class in the manifest.<p>
+ * The command line interface supports the following options:
+ * <dl>
+ * <dt>{@code -a}, {@code -agi [port]<dt>
+ * <dd>Starts a FastAGI server</dd>
+ *
+ * <dt>{@code -h}, {@code -help}<dt>
+ * <dd>Displays the available options</dd>
+ *
+ * <dt>{@code -v}, {@code -version}</dt>
+ * <dd>Displays the version of Asterisk-Java</dd>
+ * </dl>
+ * If no option is given a FastAGI server is started on the default port.
+ * 
+ * @since 1.0.0
  */
 public class Cli
 {
-
-
     private void parseOptions(String[] args) throws Exception
     {
         if (args.length == 0)
@@ -52,8 +65,9 @@ public class Cli
     {
         showVersion();
         System.err.println();
+        System.err.println("-a, -agi [port]\n\tStarts a FastAGI server");
+        System.err.println("-h, -help\n\tDisplays the available options\n");
         System.err.println("-v, -version\n\tDisplays the version of Asterisk-Java\n");
-        System.err.println("-a, -agi [port]\n\tStarts an AGI server");
     }
 
     private void showVersion()
