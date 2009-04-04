@@ -11,7 +11,7 @@ import java.util.Properties;
  * with {@code java -jar asterisk-java.jar}. It is configured as Main-Class in the manifest.<p>
  * The command line interface supports the following options:
  * <dl>
- * <dt>{@code -a}, {@code -agi [port]<dt>
+ * <dt>{@code -a}, {@code -agi [port]}<dt>
  * <dd>Starts a FastAGI server</dd>
  *
  * <dt>{@code -h}, {@code -help}<dt>
