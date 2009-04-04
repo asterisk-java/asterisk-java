@@ -558,7 +558,7 @@ public class AgiRequestImpl implements AgiRequest
     {
         if (arguments != null)
         {
-            return Arrays.copyOf(arguments, arguments.length);
+            return arguments.clone();
         }
 
         final Map<Integer, String> map = new HashMap<Integer, String>();
@@ -584,7 +584,7 @@ public class AgiRequestImpl implements AgiRequest
             arguments[i] = map.get(i + 1);
         }
         
-        return Arrays.copyOf(arguments, arguments.length);
+        return arguments.clone();
     }
 
     public InetAddress getLocalAddress()
