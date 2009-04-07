@@ -116,7 +116,19 @@ $ ls -l
   Finally we start the AgiServer:
 
 +--
+$ java -jar asterisk-java.jar
++--
+
+  For Asterisk-Java 0.3.1 and earlier you would use
+
++--
 $ java -cp asterisk-java.jar:. org.asteriskjava.fastagi.DefaultAgiServer
++--
+
+  or on Windows:
+
++--
+$ java -cp asterisk-java.jar;. org.asteriskjava.fastagi.DefaultAgiServer
 +--
 
   You should see some logging output indicating that the AgiServer has
