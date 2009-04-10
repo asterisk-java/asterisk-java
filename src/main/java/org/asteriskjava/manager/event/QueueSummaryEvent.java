@@ -5,15 +5,15 @@ import org.asteriskjava.manager.action.QueueSummaryAction;
 /**
  * A QueueSummaryEvent is triggered in response to a QueueSummaryAction and
  * contains a summary of the current state of a queue.
- * <p>
+ * <p/>
  * Available in Asterisk post-1.4.
- * <p>
+ * <p/>
  * It is implemented in <code>apps/app_queue.c</code>
- * 
- * @see QueueSummaryCompleteEvent
- * @see QueueSummaryAction
+ *
  * @author srt
  * @version $Id$
+ * @see QueueSummaryCompleteEvent
+ * @see QueueSummaryAction
  * @since 0.3
  */
 public class QueueSummaryEvent extends ResponseEvent
@@ -27,6 +27,8 @@ public class QueueSummaryEvent extends ResponseEvent
     private Integer available;
     private Integer callers;
     private Integer holdTime;
+    private Integer talkTime;
+    private Integer longestHoldTime;
 
     public QueueSummaryEvent(Object source)
     {
@@ -35,7 +37,7 @@ public class QueueSummaryEvent extends ResponseEvent
 
     /**
      * Returns the name of queue.
-     * 
+     *
      * @return the name of queue.
      */
     public String getQueue()
@@ -45,7 +47,7 @@ public class QueueSummaryEvent extends ResponseEvent
 
     /**
      * Sets the name of queue.
-     * 
+     *
      * @param queue the name of queue.
      */
     public void setQueue(String queue)
@@ -55,7 +57,7 @@ public class QueueSummaryEvent extends ResponseEvent
 
     /**
      * Returns the number of members logged in.
-     * 
+     *
      * @return the number of members logged in.
      */
     public Integer getLoggedIn()
@@ -65,7 +67,7 @@ public class QueueSummaryEvent extends ResponseEvent
 
     /**
      * Sets the number of members logged in.
-     * 
+     *
      * @param loggedIn the number of members logged in.
      */
     public void setLoggedIn(Integer loggedIn)
@@ -75,9 +77,9 @@ public class QueueSummaryEvent extends ResponseEvent
 
     /**
      * Returns the number of members logged in and not in a call.
-     * <p>
+     * <p/>
      * This is the number of queue members currently available for calls.
-     * 
+     *
      * @return the number of members logged in and not in a call.
      */
     public Integer getAvailable()
@@ -87,7 +89,7 @@ public class QueueSummaryEvent extends ResponseEvent
 
     /**
      * Sets the number of members logged in and not in a call.
-     * 
+     *
      * @param available the number of members logged in and not in a call.
      */
     public void setAvailable(Integer available)
@@ -97,7 +99,7 @@ public class QueueSummaryEvent extends ResponseEvent
 
     /**
      * Returns the number of callers currently waiting in the queue.
-     * 
+     *
      * @return the number of callers currently waiting in the queue.
      */
     public Integer getCallers()
@@ -107,7 +109,7 @@ public class QueueSummaryEvent extends ResponseEvent
 
     /**
      * Sets the number of callers currently waiting in the queue.
-     * 
+     *
      * @param callers the number of callers currently waiting in the queue.
      */
     public void setCallers(Integer callers)
@@ -116,9 +118,9 @@ public class QueueSummaryEvent extends ResponseEvent
     }
 
     /**
-     * Returns the avarage hold time for this queue.
-     * 
-     * @return the avarage hold time for this queue.
+     * Returns the current avarage hold time for this queue based on an exponential average.
+     *
+     * @return the current avarage hold time for this queue.
      */
     public Integer getHoldTime()
     {
@@ -126,12 +128,56 @@ public class QueueSummaryEvent extends ResponseEvent
     }
 
     /**
-     * Sets the avarage hold time for this queue.
-     * 
-     * @param holdTime the avarage hold time for this queue.
+     * Sets the current avarage hold time for this queue based on an exponential average.
+     *
+     * @param holdTime the current avarage hold time for this queue.
      */
     public void setHoldTime(Integer holdTime)
     {
         this.holdTime = holdTime;
+    }
+
+    /**
+     * Returns the current avarage talk time for this queue based on an exponential average.
+     *
+     * @return the current avarage talk time for this queue.
+     * @since 1.0.0
+     */
+    public Integer getTalkTime()
+    {
+        return talkTime;
+    }
+
+    /**
+     * Sets the current avarage talk time for this queue based on an exponential average.
+     *
+     * @param talkTime the current avarage talk time for this queue.
+     * @since 1.0.0
+     */
+    public void setTalkTime(Integer talkTime)
+    {
+        this.talkTime = talkTime;
+    }
+
+    /**
+     * Returns the longest hold time of the a queue entry currently in the queue.
+     *
+     * @return the longest hold time of the a queue entry currently in the queue.
+     * @since 1.0.0
+     */
+    public Integer getLongestHoldTime()
+    {
+        return longestHoldTime;
+    }
+
+    /**
+     * Sets the longest hold time of the a queue entry currently in the queue.
+     *
+     * @param longestHoldTime the longest hold time of the a queue entry currently in the queue.
+     * @since 1.0.0
+     */
+    public void setLongestHoldTime(Integer longestHoldTime)
+    {
+        this.longestHoldTime = longestHoldTime;
     }
 }
