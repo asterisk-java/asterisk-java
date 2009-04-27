@@ -36,6 +36,7 @@ public class QueueParamsEvent extends ResponseEvent
     private String strategy;
     private Integer calls;
     private Integer holdTime;
+    private Integer talkTime;
     private Integer completed;
     private Integer abandoned;
     private Integer serviceLevel;
@@ -158,6 +159,28 @@ public class QueueParamsEvent extends ResponseEvent
     public void setHoldTime(Integer holdTime)
     {
         this.holdTime = holdTime;
+    }
+
+    /**
+     * Returns the current avarage talk time for this queue based on an exponential average.
+     *
+     * @return the current avarage talk time for this queue.
+     * @since 1.0.0
+     */
+    public Integer getTalkTime()
+    {
+        return talkTime;
+    }
+
+    /**
+     * Sets the current avarage talk time for this queue based on an exponential average.
+     *
+     * @param talkTime the current avarage talk time for this queue.
+     * @since 1.0.0
+     */
+    public void setTalkTime(Integer talkTime)
+    {
+        this.talkTime = talkTime;
     }
 
     /**
