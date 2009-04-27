@@ -38,6 +38,9 @@ public class QueueMemberEvent extends ResponseEvent
     public static final int AST_DEVICE_BUSY = 3;
     public static final int AST_DEVICE_INVALID = 4;
     public static final int AST_DEVICE_UNAVAILABLE = 5;
+    public static final int AST_DEVICE_RINGING = 6;
+    public static final int AST_DEVICE_RINGINUSE = 7;
+    public static final int AST_DEVICE_ONHOLD = 8;
 
     public static final String MEMBERSHIP_STATIC = "static";
     public static final String MEMBERSHIP_DYNAMIC = "dynamic";
@@ -229,17 +232,24 @@ public class QueueMemberEvent extends ResponseEvent
      * Valid status codes are:
      * <dl>
      * <dt>AST_DEVICE_UNKNOWN (0)</dt>
-     * <dd>Queue member is available</dd>
+     * <dd>Device valid but unknown channel state</dd>
      * <dt>AST_DEVICE_NOT_INUSE (1)</dt>
-     * <dd>?</dd>
+     * <dd>Device is not used</dd>
      * <dt>AST_DEVICE_INUSE (2)</dt>
-     * <dd>?</dd>
+     * <dd>Device is in use</dd>
      * <dt>AST_DEVICE_BUSY (3)</dt>
-     * <dd>?</dd>
+     * <dd>Device is Busy</dd>
      * <dt>AST_DEVICE_INVALID (4)</dt>
-     * <dd>?</dd>
+     * <dd>Device is invalid</dd>
      * <dt>AST_DEVICE_UNAVAILABLE (5)</dt>
-     * <dd>?</dd>
+     * <dd>Device is unavaiable</dd>
+     * <dt>AST_DEVICE_RINGING (6)</dt>
+     * <dd>Device is ringing</dd>
+     * <dt>AST_DEVICE_RINGINUSE (7)</dt>
+     * <dd>Device is ringing and in use</dd>
+     * <dt>AST_DEVICE_ONHOLD (8)</dt>
+     * <dd>Device is on hold</dd>
+
      * </dl>
      * 
      * @return the status of this queue member or <code>null</code> if this
