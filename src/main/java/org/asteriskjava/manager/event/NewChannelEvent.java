@@ -28,7 +28,7 @@ public class NewChannelEvent extends AbstractChannelStateEvent
     /**
      * Serializable version identifier.
      */
-    static final long serialVersionUID = 0L;
+    static final long serialVersionUID = 1L;
 
     private String accountCode;
     private String context;
