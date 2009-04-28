@@ -19,24 +19,21 @@ package org.asteriskjava.manager.event;
 /**
  * A JoinEvent is triggered when a channel joines a queue.<p>
  * It is implemented in <code>apps/app_queue.c</code>
- * 
+ *
  * @author srt
  * @version $Id$
  */
 public class JoinEvent extends QueueEvent
 {
     /**
-     * Serializable version identifier
+     * Serializable version identifier.
      */
-    static final long serialVersionUID = 4961288508235470985L;
+    static final long serialVersionUID = 0L;
 
-    protected String callerId;
+    protected String callerIdNum;
     protected String callerIdName;
     protected Integer position;
 
-    /**
-     * @param source
-     */
     public JoinEvent(Object source)
     {
         super(source);
@@ -45,23 +42,51 @@ public class JoinEvent extends QueueEvent
     /**
      * Returns the Caller*ID number of the channel that joined the queue if set.
      * If the channel has no caller id set "unknown" is returned.
+     *
+     * @return the Caller*ID number of the channel that joined the queue
+     * @deprecated since 1.0.0, use {@link #getCallerIdNum()} instead.
      */
     public String getCallerId()
     {
-        return callerId;
+        return callerIdNum;
     }
 
     /**
      * Sets the Caller*ID number of the channel that joined the queue.
+     *
+     * @param callerId the Caller*ID number of the channel that joined the queue.
      */
     public void setCallerId(String callerId)
     {
-        this.callerId = callerId;
+        this.callerIdNum = callerId;
+    }
+
+    /**
+     * Returns the Caller*ID number of the channel that joined the queue if set.
+     * If the channel has no caller id set "unknown" is returned.
+     *
+     * @return the Caller*ID number of the channel that joined the queue
+     * @since 1.0.0
+     */
+    public String getCallerIdNum()
+    {
+        return callerIdNum;
+    }
+
+    /**
+     * Sets the Caller*ID number of the channel that joined the queue.
+     *
+     * @param callerIdNum the Caller*ID number of the channel that joined the queue.
+     */
+    public void setCallerIdNum(String callerIdNum)
+    {
+        this.callerIdNum = callerIdNum;
     }
 
     /**
      * Returns the Caller*ID name of the channel that joined the queue if set.
      * If the channel has no caller id set "unknown" is returned.
+     *
      * @since 0.2
      */
     public String getCallerIdName()
@@ -71,6 +96,7 @@ public class JoinEvent extends QueueEvent
 
     /**
      * Sets the Caller*ID name of the channel that joined the queue.
+     *
      * @since 0.2
      */
     public void setCallerIdName(String callerIdName)
