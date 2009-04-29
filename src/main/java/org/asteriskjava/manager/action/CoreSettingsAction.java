@@ -17,7 +17,7 @@
 package org.asteriskjava.manager.action;
 
 import org.asteriskjava.manager.ExpectedResponse;
-import org.asteriskjava.manager.response.CoreStatusResponse;
+import org.asteriskjava.manager.response.CoreSettingsResponse;
 
 /**
  * The CoreStatusAction requests a settings summary from the server. The settings
@@ -30,7 +30,7 @@ import org.asteriskjava.manager.response.CoreStatusResponse;
  * @see org.asteriskjava.manager.response.CoreSettingsResponse
  * @since 1.0.0
  */
-@ExpectedResponse(CoreStatusResponse.class)
+@ExpectedResponse(CoreSettingsResponse.class)
 public class CoreSettingsAction extends AbstractManagerAction
 {
     static final long serialVersionUID = 1L;

@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.response;
 
+import java.util.Date;
+
 /**
  * Corresponds to a CoreStatusAction and contains the current status summary of the
  * Asterisk server.
@@ -29,7 +31,41 @@ public class CoreStatusResponse extends ManagerResponse
 {
     private static final long serialVersionUID = 1L;
 
+    private Date coreStartupTime;
+    private Date coreReloadTime;
     private Integer coreCurrentCalls;
+
+    /**
+     * Returns the date the server was started.
+     * @return the date the server was started.
+     */
+    public Date getCoreStartupTime()
+    {
+        return coreStartupTime;
+    }
+
+    public void setCoreStartupTime(String s)
+    {
+        // format is %H:%M:%S
+        final long now = new Date().getTime();
+        this.coreStartupTime = new Date(now - str2milliSeconds(s));
+    }
+
+    /**
+     * Returns the date the server (core module) was last reloaded.
+     * @return the date the server (core module) was last reloaded.
+     */
+    public Date getCoreReloadTime()
+    {
+        return coreReloadTime;
+    }
+
+    public void setCoreReloadTime(String s)
+    {
+        // format is %H:%M:%S
+        final long now = new Date().getTime();
+        this.coreReloadTime = new Date(now - str2milliSeconds(s));
+    }
 
     /**
      * Returns the number of currently active channels on the server.
@@ -44,5 +80,31 @@ public class CoreStatusResponse extends ManagerResponse
     public void setCoreCurrentCalls(Integer coreCurrentCalls)
     {
         this.coreCurrentCalls = coreCurrentCalls;
+    }
+    
+    /**
+     * Converts a string formatted as %H:%M:%S to milliseconds.
+     *
+     * @param s the string formatted as %H:%M:%S to convert
+     * @return the milliseconds the string represents
+     */
+    protected long str2milliSeconds(String s)
+    {
+        if (s == null || "".equals(s))
+        {
+            return 0;
+        }
+
+        String[] parts = s.split(":");
+        if (s.length() != 3)
+        {
+            throw new IllegalArgumentException("Time must be formatted %H:%M:%S but is '" + s + "'");
+        }
+
+        final long hours = Integer.valueOf(parts[0]);
+        final long minutes = Integer.valueOf(parts[1]);
+        final long seconds = Integer.valueOf(parts[2]);
+
+        return (hours * 60l * 60l + minutes * 60l + seconds) * 1000l;
     }
 }
