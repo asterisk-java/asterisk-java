@@ -17,9 +17,10 @@
 package org.asteriskjava.manager.event;
 
 /**
- * A PeerEntryEvent is triggered in response to a SIPPeersAction or SIPShowPeerAction and contains
- * information about a peer.<p>
- * It is implemented in <code>channels/chan_sip.c</code>
+ * A PeerEntryEvent is triggered in response to a {@link org.asteriskjava.manager.action.SipPeersAction},
+ * {@link org.asteriskjava.manager.action.SipShowPeerAction} or {@link org.asteriskjava.manager.action.IaxPeerListAction}
+ * and contains information about a SIP or IAX peer.<p>
+ * It is implemented in <code>channels/chan_sip.c</code> and <code>channels/chan_iax.c</code>
  *
  * @author srt
  * @version $Id$
@@ -28,15 +29,19 @@ package org.asteriskjava.manager.event;
 public class PeerEntryEvent extends ResponseEvent
 {
     /**
-     * Serial version identifier
+     * Serial version identifier.
      */
-    private static final long serialVersionUID = 1443711349135777437L;
+    private static final long serialVersionUID = 0L;
+
+    public static final String CHANNEL_TYPE_SIP = "SIP";
+    public static final String CHANNEL_TYPE_IAX = "IAX";
 
     private String channelType;
     private String objectName;
+    private String objectUserName;
     private String chanObjectType;
     private String ipAddress;
-    private Integer ipPort;
+    private Integer port;
     private Boolean dynamic;
     private Boolean natSupport;
     private Boolean videoSupport;
@@ -44,6 +49,8 @@ public class PeerEntryEvent extends ResponseEvent
     private Boolean acl;
     private String status;
     private String realtimeDevice;
+    private Boolean trunk;
+    private String encryption;
 
     /**
      * Creates a new instance.
@@ -56,9 +63,11 @@ public class PeerEntryEvent extends ResponseEvent
     }
 
     /**
-     * For SIP peers and users this is "SIP".
+     * Returns whether this event represents a SIP or an IAX peer.
      *
-     * @return "SIP"
+     * @return "SIP" or "IAX".
+     * @see #CHANNEL_TYPE_SIP
+     * @see #CHANNEL_TYPE_IAX
      */
     public String getChannelType()
     {
@@ -78,6 +87,20 @@ public class PeerEntryEvent extends ResponseEvent
     public void setObjectName(String objectName)
     {
         this.objectName = objectName;
+    }
+
+    /**
+     * @return
+     * @since 1.0.0
+     */
+    public String getObjectUserName()
+    {
+        return objectUserName;
+    }
+
+    public void setObjectUserName(String objectUserName)
+    {
+        this.objectUserName = objectUserName;
     }
 
     /**
@@ -115,14 +138,36 @@ public class PeerEntryEvent extends ResponseEvent
         this.ipAddress = ipAddress;
     }
 
+    /**
+     * Returns the port of the peer.
+     *
+     * @return the port of the peer.
+     * @deprecated since 1.0.0, use {@link #getPort()} instead.
+     */
     public Integer getIpPort()
     {
-        return ipPort;
+        return port;
     }
 
     public void setIpPort(Integer ipPort)
     {
-        this.ipPort = ipPort;
+        this.port = ipPort;
+    }
+
+    /**
+     * Returns the port of the peer.
+     *
+     * @return the port of the peer.
+     * @since 1.0.0
+     */
+    public Integer getPort()
+    {
+        return port;
+    }
+
+    public void setPort(Integer port)
+    {
+        this.port = port;
     }
 
     public Boolean getDynamic()
@@ -244,5 +289,32 @@ public class PeerEntryEvent extends ResponseEvent
     public void setRealtimeDevice(String realtimeDevice)
     {
         this.realtimeDevice = realtimeDevice;
+    }
+
+    /**
+     * Returns whether to use IAX2 trunking with this peer.<p>
+     * Available since Asterisk 1.6.
+     *
+     * @return <code>true</code> if trunking is used, <code>false</code> if not or <code>null</code> if not set.
+     * @since 1.0.0
+     */
+    public Boolean getTrunk()
+    {
+        return trunk;
+    }
+
+    public void setTrunk(Boolean trunk)
+    {
+        this.trunk = trunk;
+    }
+
+    public String getEncryption()
+    {
+        return encryption;
+    }
+
+    public void setEncryption(String encryption)
+    {
+        this.encryption = encryption;
     }
 }
