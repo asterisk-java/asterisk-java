@@ -42,6 +42,7 @@ Frequently Asked Questions
 *-----------------------*---*---*---*--------*
 
 * How do I produce trace files that be sent to the mailing list for help?
+
   We recommend you use NetCat (http://netcat.sourceforge.net/) or Wireshark (http://www.wireshark.org/). Wireshark is a better option for less technically adept users. Either way, we need a capture of the conversation between your program and the Asterisk server, and we'd also like the output from Asterisk-Java's logging. Furthermore, it usually helps to see the source in order to follow what we're seeing in the traces.  
         
 * How can I track a call I've originated through the Manager interface?
@@ -155,7 +156,7 @@ public interface AgiManagement
 }
 +--
 
-* What happens when using the Manager API and Asterisk-Java looses the connection to Asterisk?
+* What happens when using the Manager API and Asterisk-Java loses the connection to Asterisk?
 
   Asterisk-Java automatically reconnects if it looses the connection to Asterisk. Automatic reconnection attempts
   happens quite fast (with a 50 msec delay) for the first 10 attempts and at 5 seconds intervals later on.
