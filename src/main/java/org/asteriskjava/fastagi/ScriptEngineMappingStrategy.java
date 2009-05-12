@@ -51,7 +51,11 @@ public class ScriptEngineMappingStrategy implements MappingStrategy
      */
     public static final String CHANNEL = "channel";
 
-    protected String[] path;
+    private static final String[] DEFAULT_SCRIPT_PATH = new String[]{"agi"};
+    private static final String[] DEFAULT_LIB_PATH = new String[]{"lib"};
+
+    protected String[] scriptPath;
+    protected String[] libPath;
     protected ScriptEngineManager scriptEngineManager = null;
 
     /**
@@ -59,33 +63,46 @@ public class ScriptEngineMappingStrategy implements MappingStrategy
      */
     public ScriptEngineMappingStrategy()
     {
-        this(new String[]{"."});
+        this(DEFAULT_SCRIPT_PATH, DEFAULT_LIB_PATH);
     }
 
     /**
      * Creates a new ScriptEngineMappingStrategy that searches for scripts on the given path.
      *
-     * @param path array of directory names to search for scripts.
+     * @param scriptPath array of directory names to search for script files.
+     * @param libPath    array of directory names to search for additional libraries (jar files).
      */
-    public ScriptEngineMappingStrategy(String[] path)
+    public ScriptEngineMappingStrategy(String[] scriptPath, String[] libPath)
     {
-        this.path = path;
+        this.scriptPath = scriptPath;
     }
 
     /**
-     * Sets the path to search for scripts.
+     * Sets the path to search for script files.<p>
+     * Default is "agi".
      *
-     * @param path array of directory names to search for scripts.
+     * @param scriptPath array of directory names to search for script files.
      */
-    public void setPath(String[] path)
+    public void setScriptPath(String[] scriptPath)
     {
-        this.path = path;
+        this.scriptPath = scriptPath;
+    }
+
+    /**
+     * Sets the path to search for additional libraries (jar files).<p>
+     * Default is "lib".
+     *
+     * @param libPath array of directory names to search for additional libraries (jar files).
+     */
+    public void setLibPath(String[] libPath)
+    {
+        this.libPath = libPath;
     }
 
     public AgiScript determineScript(AgiRequest request)
     {
-        // check is a file corresponding to the AGI request is found on the path
-        final File file = searchFile(request.getScript(), path);
+        // check is a file corresponding to the AGI request is found on the scriptPath
+        final File file = searchFile(request.getScript(), scriptPath);
         if (file == null)
         {
             return null;
@@ -145,31 +162,45 @@ public class ScriptEngineMappingStrategy implements MappingStrategy
     protected ClassLoader getClassLoader()
     {
         final ClassLoader parentClassLoader = Thread.currentThread().getContextClassLoader();
-        final File libDir = new File("lib");
-        if (!libDir.isDirectory())
+        final List<URL> jarFileUrls = new ArrayList<URL>();
+
+        if (libPath == null || libPath.length == 0)
         {
             return parentClassLoader;
         }
 
-        final File[] jarFiles = libDir.listFiles(new FilenameFilter()
+        for (String libPathEntry : libPath)
         {
-            public boolean accept(File dir, String name)
+            final File libDir = new File(libPathEntry);
+            if (!libDir.isDirectory())
             {
-                return name.endsWith(".jar");
+                continue;
             }
-        });
 
-        final List<URL> jarFileUrls = new ArrayList<URL>();
-        for (File jarFile : jarFiles)
+            final File[] jarFiles = libDir.listFiles(new FilenameFilter()
+            {
+                public boolean accept(File dir, String name)
+                {
+                    return name.endsWith(".jar");
+                }
+            });
+
+            for (File jarFile : jarFiles)
+            {
+                try
+                {
+                    jarFileUrls.add(jarFile.toURI().toURL());
+                }
+                catch (MalformedURLException e)
+                {
+                    // should not happen
+                }
+            }
+        }
+
+        if (jarFileUrls.size() == 0)
         {
-            try
-            {
-                jarFileUrls.add(jarFile.toURI().toURL());
-            }
-            catch (MalformedURLException e)
-            {
-                // should not happen
-            }
+            return parentClassLoader;
         }
 
         return new URLClassLoader(jarFileUrls.toArray(new URL[jarFileUrls.size()]), parentClassLoader);

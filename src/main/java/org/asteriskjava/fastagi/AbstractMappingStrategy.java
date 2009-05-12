@@ -17,6 +17,12 @@
 package org.asteriskjava.fastagi;
 
 import java.lang.reflect.Constructor;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.net.MalformedURLException;
+import java.util.List;
+import java.util.ArrayList;
+import java.io.File;
 
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
@@ -35,21 +41,56 @@ public abstract class AbstractMappingStrategy implements MappingStrategy
      * Reference to Asterisk-Java's logging subsystem.
      */
     protected Log logger = LogFactory.getLog(getClass());
+    private static final String[] DEFAULT_SCRIPT_PATH = new String[]{"agi"};
+    
+    private ClassLoader defaultClassLoader = null;
 
     /**
      * Returns the ClassLoader to use for loading AgiScript classes and load
      * other resources like the mapping properties file.<p>
-     * By default this method returns the context ClassLoader of the current
-     * thread.
+     * By default this method returns a class loader that searches for classes in the
+     * "agi" subdirectory (if it exists) and uses the context class loader of the
+     * current thread as the parent class loader.<p>
      * You can override this method if you prefer using a different class loader.
      *
      * @return the ClassLoader to use for loading AgiScript classes and load
      *         other resources like the mapping properties file.
      * @since 1.0.0
      */
-    protected ClassLoader getClassLoader()
+    protected synchronized ClassLoader getClassLoader()
     {
-        return Thread.currentThread().getContextClassLoader();
+        if (defaultClassLoader == null)
+        {
+            final ClassLoader parentClassLoader = Thread.currentThread().getContextClassLoader();
+            final List<URL> dirUrls = new ArrayList<URL>();
+
+            for (String scriptPathEntry : DEFAULT_SCRIPT_PATH)
+            {
+                final File scriptDir = new File(scriptPathEntry);
+                if (! scriptDir.isDirectory())
+                {
+                    continue;
+                }
+
+                try
+                {
+                    dirUrls.add(scriptDir.toURI().toURL());
+                }
+                catch (MalformedURLException e)
+                {
+                    // should not happen
+                }
+            }
+
+            if (dirUrls.size() == 0)
+            {
+                return parentClassLoader;
+            }
+
+            defaultClassLoader = new URLClassLoader(dirUrls.toArray(new URL[dirUrls.size()]), parentClassLoader);
+        }
+
+        return defaultClassLoader;
     }
 
     /**
