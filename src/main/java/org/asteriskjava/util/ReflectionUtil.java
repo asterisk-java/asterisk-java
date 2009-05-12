@@ -24,8 +24,8 @@ import java.util.Map;
 /**
  * Utility class that provides helper methods for reflection that is used by the
  * fastagi and manager packages to access getter and setter methods.<p>
- * Client code is not supposed to use this class. 
- * 
+ * Client code is not supposed to use this class.
+ *
  * @author srt
  */
 public class ReflectionUtil
@@ -41,7 +41,7 @@ public class ReflectionUtil
      * accessed by the getter, the value the getter itself (an instance of
      * java.lang.reflect.Method). A method is considered a getter if its name
      * starts with "get", it is declared public and takes no arguments.
-     * 
+     *
      * @param clazz the class to return the getters for
      * @return a Map of attributes and their accessor methods (getters)
      */
@@ -87,7 +87,7 @@ public class ReflectionUtil
      * accessed by the setter, the value the setter itself (an instance of
      * java.lang.reflect.Method). A method is considered a setter if its name
      * starts with "set", it is declared public and takes exactly one argument.
-     * 
+     *
      * @param clazz the class to return the setters for
      * @return a Map of attributes and their accessor methods (setters)
      */
@@ -178,5 +178,56 @@ public class ReflectionUtil
         }
 
         return sb.toString();
+    }
+
+    /**
+     * Checks if the class is available on the current thread's context class loader.
+     *
+     * @param s fully qualified name of the class to check.
+     * @return <code>true</code> if the class is available, <code>false</code> otherwise.
+     */
+    public static boolean isClassAvailable(String s)
+    {
+        final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+
+        try
+        {
+            classLoader.loadClass(s);
+            return true;
+        }
+        catch (ClassNotFoundException e)
+        {
+            return false;
+        }
+    }
+
+    /**
+     * Creates a new instance of the given class. The class is loaded using the current thread's context
+     * class loader and instantiated using its default constructor.
+     *
+     * @param s fully qualified name of the class to instantiate.
+     * @return the new instance or <code>null</code> on failure.
+     */
+    public static Object newInstance(String s)
+    {
+        final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+
+        try
+        {
+            Class clazz = classLoader.loadClass(s);
+            return clazz.newInstance();
+        }
+        catch (ClassNotFoundException e)
+        {
+            return null;
+        }
+        catch (IllegalAccessException e)
+        {
+            return null;
+        }
+        catch (InstantiationException e)
+        {
+            return null;
+        }
     }
 }

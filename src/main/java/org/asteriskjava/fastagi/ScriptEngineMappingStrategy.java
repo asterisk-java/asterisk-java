@@ -75,6 +75,7 @@ public class ScriptEngineMappingStrategy implements MappingStrategy
     public ScriptEngineMappingStrategy(String[] scriptPath, String[] libPath)
     {
         this.scriptPath = scriptPath;
+        this.libPath = libPath;
     }
 
     /**

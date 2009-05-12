@@ -18,10 +18,7 @@ package org.asteriskjava.fastagi;
 
 import org.asteriskjava.fastagi.internal.AgiConnectionHandler;
 import org.asteriskjava.fastagi.internal.FastAgiConnectionHandler;
-import org.asteriskjava.util.Log;
-import org.asteriskjava.util.LogFactory;
-import org.asteriskjava.util.ServerSocketFacade;
-import org.asteriskjava.util.SocketConnectionFacade;
+import org.asteriskjava.util.*;
 import org.asteriskjava.util.internal.ServerSocketFacadeImpl;
 
 import java.io.IOException;
@@ -105,10 +102,25 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
         super();
         if (mappingStrategy == null)
         {
-            setMappingStrategy(new CompositeMappingStrategy(
-                    new ResourceBundleMappingStrategy(),
-                    new ClassNameMappingStrategy(),
-                    new ScriptEngineMappingStrategy()));
+            final CompositeMappingStrategy compositeMappingStrategy = new CompositeMappingStrategy();
+
+            compositeMappingStrategy.addStrategy(new ResourceBundleMappingStrategy());
+            compositeMappingStrategy.addStrategy(new ClassNameMappingStrategy());
+            if (ReflectionUtil.isClassAvailable("javax.script.ScriptEngineManager"))
+            {
+                MappingStrategy scriptEngineMappingStrategy =
+                        (MappingStrategy) ReflectionUtil.newInstance("org.asteriskjava.fastagi.ScriptEngineMappingStrategy");
+                if (scriptEngineMappingStrategy != null)
+                {
+                    compositeMappingStrategy.addStrategy(scriptEngineMappingStrategy);
+                }
+            }
+            else
+            {
+                logger.warn("ScriptEngine support disabled: It is only availble when running at least Java 6");
+            }
+
+            setMappingStrategy(compositeMappingStrategy);
         }
         else
         {
