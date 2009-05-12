@@ -106,7 +106,9 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
         if (mappingStrategy == null)
         {
             setMappingStrategy(new CompositeMappingStrategy(
-                    new ResourceBundleMappingStrategy(), new ClassNameMappingStrategy()));
+                    new ResourceBundleMappingStrategy(),
+                    new ClassNameMappingStrategy(),
+                    new ScriptEngineMappingStrategy()));
         }
         else
         {

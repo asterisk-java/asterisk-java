@@ -77,14 +77,14 @@ public abstract class AbstractMappingStrategy implements MappingStrategy
         }
         catch (ClassNotFoundException e1)
         {
-            logger.error("Unable to create AgiScript instance of type " + className
+            logger.debug("Unable to create AgiScript instance of type " + className
                     + ": Class not found, make sure the class exists and is available on the CLASSPATH");
             return null;
         }
 
         if (!AgiScript.class.isAssignableFrom(tmpClass))
         {
-            logger.error("Unable to create AgiScript instance of type " + className
+            logger.warn("Unable to create AgiScript instance of type " + className
                     + ": Class does not implement the AgiScript interface");
             return null;
         }
@@ -97,7 +97,7 @@ public abstract class AbstractMappingStrategy implements MappingStrategy
         }
         catch (Exception e)
         {
-            logger.error("Unable to create AgiScript instance of type " + className, e);
+            logger.warn("Unable to create AgiScript instance of type " + className, e);
         }
 
         return agiScript;

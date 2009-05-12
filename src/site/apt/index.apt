@@ -65,8 +65,7 @@ Asterisk-Java
   1.0.0 release will add full support for Asterisk 1.6.
 
   At runtime Asterisk-Java requires a Java Runtime 
-  Environment (JRE) of at least version 1.5 (J2SE 5.0). It has
-  been successfully tested on Sun's JVM and Bea's JRockit.
+  Environment (JRE) of at least version 1.6 (Java SE 6).
 
   Of course you also need a working Asterisk server. When 
   using the Manager API be sure that it has been enabled (see
@@ -78,7 +77,7 @@ Asterisk-Java
   Asterisk-Java will use java.util.logging.
   
   If you choose to compile Asterisk-Java on your own you need a
-  Java Developer Kit (JDK) of at least version 1.5 (J2SE 5.0). To run the unit
+  Java Developer Kit (JDK) of at least version 1.6 (Java SE 6). To run the unit
   tests you need {{{http://www.junit.org/}JUnit}} and
   {{{http://www.easymock.org/}EasyMock}} in addition.
 
