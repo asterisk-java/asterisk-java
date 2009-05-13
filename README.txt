@@ -12,9 +12,9 @@ The FastAGI implementation supports all commands currently available from
 Asterisk.
 
 The Manager API implementation supports receiving events from the Asterisk
-server (e.g. call progess, registered peers, channel state) and sending actions
-to Asterisk (e.g. originate call, agent login/logoff, start/stop voice
-recording).
+server (e.g. call progess, registered peers, channel state) and sending
+actions to Asterisk (e.g. originate call, agent login/logoff, start/stop
+voice recording).
 
 A complete list of the available events and actions is available in the
 javadocs.
@@ -32,4 +32,5 @@ Asterisk-Java is available from http://asterisk-java.org
 
 == SYSTEM REQUIREMENTS ==
 
-Asterisk-Java needs a Java Virtual Machine of at least version 1.5 (J2SE 5.0).
+Asterisk-Java needs a Java Virtual Machine of at least version 1.6
+(Java SE 6.0).
