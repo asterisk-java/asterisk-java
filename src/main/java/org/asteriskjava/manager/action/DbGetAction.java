@@ -23,6 +23,7 @@ import org.asteriskjava.manager.event.ResponseEvent;
  * Retrieves an entry in the Asterisk database for a given family and key.<p>
  * If an entry is found a DBGetResponseEvent is sent by Asterisk containing the
  * value, otherwise a ManagerError indicates that no entry matches.<p>
+ * It is implemented in <code>main/db.c</code>.<p>
  * Available since Asterisk 1.2
  *
  * @author srt
@@ -30,9 +31,7 @@ import org.asteriskjava.manager.event.ResponseEvent;
  * @see org.asteriskjava.manager.event.DbGetResponseEvent
  * @since 0.2
  */
-public class DbGetAction extends AbstractManagerAction
-        implements
-        EventGeneratingAction
+public class DbGetAction extends AbstractManagerAction implements EventGeneratingAction
 {
     /**
      * Serial version identifier
