@@ -1,6 +1,7 @@
 package org.asteriskjava.util;
 
 import java.util.TimeZone;
+import java.util.Date;
 
 import junit.framework.TestCase;
 
@@ -24,12 +25,16 @@ public class DateUtilTest extends TestCase
 
     public void testGetStartTimeAsDate()
     {
-        assertEquals(1148039688000L, DateUtil.parseDateTime(dateString).getTime());
+        final Date result = DateUtil.parseDateTime(dateString);
+        assertEquals(1148039688000L, result.getTime());
+        assertEquals("Fri May 19 11:54:48 GMT 2006", result.toString());
     }
 
     public void testGetStartTimeAsDateWithTimeZone()
     {
-        TimeZone tz = TimeZone.getTimeZone("GMT+2");
-        assertEquals(1148032488000L, DateUtil.parseDateTime(dateString, tz).getTime());
+        final TimeZone tz = TimeZone.getTimeZone("GMT+2");
+        final Date result = DateUtil.parseDateTime(dateString, tz);
+        assertEquals(1148032488000L, result.getTime());
+        assertEquals("Fri May 19 09:54:48 GMT 2006", result.toString());
     }
 }

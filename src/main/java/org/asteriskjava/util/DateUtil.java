@@ -74,10 +74,10 @@ public class DateUtil
 
     /**
      * Converts a date in the form of "yy-MM-dd HH:mm:ss" to a Date object using
-     * the default timezone.
+     * the default time zone.
      * 
      * @param s date string in the form of "yy-MM-dd HH:mm:ss"
-     * @return the corresponding Java date object
+     * @return the corresponding Java date object or <code>null</code> if it is not parsable.
      */
     public static Date parseDateTime(String s)
     {
@@ -86,11 +86,11 @@ public class DateUtil
 
     /**
      * Converts a date in the form of "yy-MM-dd HH:mm:ss" to a Date object using
-     * the given timezone.
+     * the given time zone.
      * 
      * @param s date string in the form of "yy-MM-dd HH:mm:ss"
-     * @param tz the timezone to use
-     * @return the corresponding Java date object
+     * @param tz the timezone to use or <code>null</code> for the default time zone.
+     * @return the corresponding Java date object or <code>null</code> if it is not parsable.
      */
     public static Date parseDateTime(String s, TimeZone tz)
     {
