@@ -47,7 +47,7 @@ class ChannelManager
     /**
      * A map of all active channel by their unique id.
      */
-    private final Map<String, AsteriskChannelImpl> channels;
+    private final Set<AsteriskChannelImpl> channels;
 
     /**
      * Creates a new instance.
@@ -57,7 +57,7 @@ class ChannelManager
     ChannelManager(AsteriskServerImpl server)
     {
         this.server = server;
-        this.channels = new HashMap<String, AsteriskChannelImpl>();
+        this.channels = new HashSet<AsteriskChannelImpl>();
     }
 
     void initialize() throws ManagerCommunicationException
@@ -95,7 +95,7 @@ class ChannelManager
         synchronized (channels)
         {
             copy = new ArrayList<AsteriskChannel>(channels.size() + 2);
-            for (AsteriskChannel channel : channels.values())
+            for (AsteriskChannel channel : channels)
             {
                 if (channel.getState() != ChannelState.HUNGUP)
                 {
@@ -110,7 +110,7 @@ class ChannelManager
     {
         synchronized (channels)
         {
-            channels.put(channel.getId(), channel);
+            channels.add(channel);
         }
     }
 
@@ -123,7 +123,7 @@ class ChannelManager
 
         synchronized (channels)
         {
-            i = channels.values().iterator();
+            i = channels.iterator();
             while (i.hasNext())
             {
                 final AsteriskChannel channel = i.next();
@@ -170,7 +170,7 @@ class ChannelManager
 
         addChannel(channel);
 
-        if (traceId != null && (!name.toLowerCase(Locale.ENGLISH).startsWith("local/") || name.endsWith(",1")))
+        if (traceId != null && (!name.toLowerCase(Locale.ENGLISH).startsWith("local/") || (name.endsWith(",1") || name.endsWith(";1"))))
         {
             final OriginateCallbackData callbackData;
             callbackData = server.getOriginateCallbackDataByTraceId(traceId);
@@ -277,7 +277,7 @@ class ChannelManager
 
         synchronized (channels)
         {
-            for (AsteriskChannelImpl tmp : channels.values())
+            for (AsteriskChannelImpl tmp : channels)
             {
                 if (tmp.getName() != null && tmp.getName().equals(name))
                 {
@@ -319,7 +319,7 @@ class ChannelManager
 
         synchronized (channels)
         {
-            for (AsteriskChannelImpl tmp : channels.values())
+            for (AsteriskChannelImpl tmp : channels)
             {
                 if (tmp.getName() != null && tmp.getName().equals(name) && tmp.getState() != ChannelState.HUNGUP)
                 {
@@ -332,8 +332,6 @@ class ChannelManager
 
     AsteriskChannelImpl getChannelImplById(String id)
     {
-        AsteriskChannelImpl channel;
-
         if (id == null)
         {
             return null;
@@ -341,16 +339,23 @@ class ChannelManager
 
         synchronized (channels)
         {
-            channel = channels.get(id);
+            for (AsteriskChannelImpl channel : channels)
+            {
+                if (id.equals(channel.getId()))
+                {
+                    return channel;
+                }
+            }
         }
-        return channel;
+        return null;
     }
 
     /**
      * Returns the other side of a local channel.
      * <p/>
      * Local channels consist of two sides, like
-     * "Local/1234@from-local-60b5,1" and "Local/1234@from-local-60b5,2"
+     * "Local/1234@from-local-60b5,1" and "Local/1234@from-local-60b5,2" (for Asterisk 1.4) or
+     * "Local/1234@from-local-60b5;1" and "Local/1234@from-local-60b5;2" (for Asterisk 1.6)
      * this method returns the other side.
      *
      * @param localChannel one side
@@ -368,7 +373,7 @@ class ChannelManager
         }
 
         name = localChannel.getName();
-        if (name == null || !name.startsWith("Local/") || name.charAt(name.length() - 2) != ',')
+        if (name == null || !name.startsWith("Local/") || (name.charAt(name.length() - 2) != ',' && name.charAt(name.length() - 2) != ';'))
         {
             return null;
         }
@@ -440,56 +445,64 @@ class ChannelManager
 
         if (channel == null)
         {
-            // NewStateEvent can occur instead of a NewChannelEvent
-            channel = addNewChannel(
-                    event.getUniqueId(), event.getChannel(), event.getDateReceived(),
-                    event.getCallerIdNum(), event.getCallerIdName(),
-                    ChannelState.valueOf(event.getChannelState()), null /* account code not available */);
-        }
-        else
-        {
-            // NewStateEvent can provide a new CallerIdNum or CallerIdName not previously received through a
-            // NewCallerIdEvent. This happens at least on outgoing legs from the queue application to agents.
-
-            if (event.getCallerIdNum() != null || event.getCallerIdName() != null)
+            // NewStateEvent can occur for an existing channel that now has a different unique id (originate with Local/)
+            channel = getChannelImplByNameAndActive(event.getChannel());
+            if (channel != null)
             {
-                String cidnum = "";
-                String cidname = "";
-                CallerId currentCallerId = channel.getCallerId();
-
-                if (currentCallerId != null)
-                {
-                    cidnum = currentCallerId.getNumber();
-                    cidname = currentCallerId.getName();
-                }
-
-                if (event.getCallerIdNum() != null)
-                {
-                    cidnum = event.getCallerIdNum();
-                }
-
-                if (event.getCallerIdName() != null)
-                {
-                    cidname = event.getCallerIdName();
-                }
-
-                CallerId newCallerId = new CallerId(cidname, cidnum);
-                logger.debug("Updating CallerId (following NewStateEvent) to: " + newCallerId.toString());
-                channel.setCallerId(newCallerId);
+                logger.info("Changing unique id for '" + channel.getName() + "' from " + channel.getId() + " to " + event.getUniqueId());
+                channel.idChanged(event.getDateReceived(), event.getUniqueId());
             }
-            
+
+            if (channel == null)
+            {
+                logger.info("Creating new channel due to NewStateEvent '" + event.getChannel() + "' unique id " + event.getUniqueId());
+                // NewStateEvent can occur instead of a NewChannelEvent
+                channel = addNewChannel(
+                        event.getUniqueId(), event.getChannel(), event.getDateReceived(),
+                        event.getCallerIdNum(), event.getCallerIdName(),
+                        ChannelState.valueOf(event.getChannelState()), null /* account code not available */);
+            }
+        }
+
+        // NewStateEvent can provide a new CallerIdNum or CallerIdName not previously received through a
+        // NewCallerIdEvent. This happens at least on outgoing legs from the queue application to agents.
+        if (event.getCallerIdNum() != null || event.getCallerIdName() != null)
+        {
+            String cidnum = "";
+            String cidname = "";
+            CallerId currentCallerId = channel.getCallerId();
+
+            if (currentCallerId != null)
+            {
+                cidnum = currentCallerId.getNumber();
+                cidname = currentCallerId.getName();
+            }
+
+            if (event.getCallerIdNum() != null)
+            {
+                cidnum = event.getCallerIdNum();
+            }
+
+            if (event.getCallerIdName() != null)
+            {
+                cidname = event.getCallerIdName();
+            }
+
+            CallerId newCallerId = new CallerId(cidname, cidnum);
+            logger.debug("Updating CallerId (following NewStateEvent) to: " + newCallerId.toString());
+            channel.setCallerId(newCallerId);
+
             // Also, NewStateEvent can return a new channel name for the same channel uniqueid, indicating the channel has been
             // renamed but no related RenameEvent has been received.
             // This happens with mISDN channels (see AJ-153)
-        	if (event.getChannel() != null && ! event.getChannel().equals(channel.getName()) )
-        	{
-        		logger.info("Renaming channel (following NewStateEvent) '" + channel.getName() + "' to '"
-                        + event.getChannel() + "'");
+            if (event.getChannel() != null && !event.getChannel().equals(channel.getName()))
+            {
+                logger.info("Renaming channel (following NewStateEvent) '" + channel.getName() + "' to '" + event.getChannel() + "'");
                 synchronized (channel)
                 {
                     channel.nameChanged(event.getDateReceived(), event.getChannel());
                 }
-        	}
+            }
         }
 
         if (event.getChannelState() != null)
@@ -503,22 +516,31 @@ class ChannelManager
 
     void handleNewCallerIdEvent(NewCallerIdEvent event)
     {
-        final AsteriskChannelImpl channel = getChannelImplById(event.getUniqueId());
+        AsteriskChannelImpl channel = getChannelImplById(event.getUniqueId());
 
         if (channel == null)
         {
-            // NewCallerIdEvent can occur before NewChannelEvent
-            addNewChannel(
-                    event.getUniqueId(), event.getChannel(), event.getDateReceived(),
-                    event.getCallerIdNum(), event.getCallerIdName(),
-                    ChannelState.DOWN, null /* account code not available */);
-        }
-        else
-        {
-            synchronized (channel)
+            // NewCallerIdEvent can occur for an existing channel that now has a different unique id (originate with Local/)
+            channel = getChannelImplByNameAndActive(event.getChannel());
+            if (channel != null)
             {
-                channel.setCallerId(new CallerId(event.getCallerIdName(), event.getCallerIdNum()));
+                logger.info("Changing unique id for '" + channel.getName() + "' from " + channel.getId() + " to " + event.getUniqueId());
+                channel.idChanged(event.getDateReceived(), event.getUniqueId());
             }
+
+            if (channel == null)
+            {
+                // NewCallerIdEvent can occur before NewChannelEvent
+                channel = addNewChannel(
+                        event.getUniqueId(), event.getChannel(), event.getDateReceived(),
+                        event.getCallerIdNum(), event.getCallerIdName(),
+                        ChannelState.DOWN, null /* account code not available */);
+            }
+        }
+
+        synchronized (channel)
+        {
+            channel.setCallerId(new CallerId(event.getCallerIdName(), event.getCallerIdNum()));
         }
     }
 
@@ -554,12 +576,12 @@ class ChannelManager
 
         if (sourceChannel == null)
         {
-            logger.error("Ignored LinkEvent for unknown source channel " + event.getChannel());
+            logger.error("Ignored DialEvent for unknown source channel " + event.getChannel() + " with unique id " + event.getUniqueId());
             return;
         }
         if (destinationChannel == null)
         {
-            logger.error("Ignored DialEvent for unknown destination channel " + event.getDestination());
+            logger.error("Ignored DialEvent for unknown destination channel " + event.getDestination() + " with unique id " + event.getDestUniqueId());
             return;
         }
 
@@ -627,13 +649,11 @@ class ChannelManager
 
         if (channel == null)
         {
-            logger.error("Ignored RenameEvent for unknown channel with uniqueId "
-                    + event.getUniqueId());
+            logger.error("Ignored RenameEvent for unknown channel with uniqueId " + event.getUniqueId());
             return;
         }
 
-        logger.info("Renaming channel '" + channel.getName() + "' to '"
-                + event.getNewname() + "'");
+        logger.info("Renaming channel '" + channel.getName() + "' to '" + event.getNewname() + "', uniqueId is " + event.getUniqueId());
         synchronized (channel)
         {
             channel.nameChanged(event.getDateReceived(), event.getNewname());

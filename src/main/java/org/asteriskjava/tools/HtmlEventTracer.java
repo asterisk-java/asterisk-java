@@ -222,8 +222,8 @@ public class HtmlEventTracer implements ManagerEventListener
             }
             else if (event instanceof NewStateEvent)
             {
-                format = "%s";
-                properties = new String[]{"state"};
+                format = "%s<br>%s";
+                properties = new String[]{"channel", "state"};
             }
             else if (event instanceof NewExtenEvent)
             {

@@ -25,6 +25,7 @@ import java.util.Map;
  * <p>
  * PropertyChangeEvents are fired for the following properties:
  * <ul>
+ * <li>id
  * <li>name
  * <li>callerId
  * <li>state
@@ -43,6 +44,7 @@ import java.util.Map;
  */
 public interface AsteriskChannel extends LiveObject
 {
+    String PROPERTY_ID = "id";
     String PROPERTY_NAME = "name";
     String PROPERTY_CALLER_ID = "callerId";
     String PROPERTY_STATE = "state";
@@ -61,9 +63,6 @@ public interface AsteriskChannel extends LiveObject
 
     /**
      * Returns the unique id of this channel, for example "1099015093.165".
-     * <p>
-     * The unique id of an AsteriskChannel is immutable for the whole lifecycle
-     * of the channel.
      * 
      * @return the unique id of this channel.
      */
@@ -71,9 +70,6 @@ public interface AsteriskChannel extends LiveObject
 
     /**
      * Returns the name of this channel, for example "SIP/1310-20da".
-     * <p>
-     * In contrast to the unique id the name of an AsteriskChannel can change
-     * while the call is processed.
      * 
      * @return the name of this channel.
      */

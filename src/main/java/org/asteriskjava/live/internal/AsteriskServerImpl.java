@@ -373,7 +373,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
     }
 
     public void originateAsync(OriginateAction originateAction,
-                                OriginateCallback cb) throws ManagerCommunicationException
+                               OriginateCallback cb) throws ManagerCommunicationException
     {
         final Map<String, String> variables;
         final String traceId;
@@ -385,21 +385,20 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         }
         else
         {
-            variables = new HashMap<String, String>(originateAction
-                    .getVariables());
+            variables = new HashMap<String, String>(originateAction.getVariables());
         }
-        // prefix variable name by "__" to enable variable inheritence across
-        // channels
+
+        // prefix variable name by "__" to enable variable inheritence across channels
         variables.put("__" + Constants.VARIABLE_TRACE_ID, traceId);
         originateAction.setVariables(variables);
 
-        // must set async to true to receive OriginateEvents.
+        // async must be set to true to receive OriginateEvents.
         originateAction.setAsync(Boolean.TRUE);
         originateAction.setActionId(traceId);
 
         if (cb != null)
         {
-            OriginateCallbackData callbackData;
+            final OriginateCallbackData callbackData;
 
             callbackData = new OriginateCallbackData(originateAction, DateUtil.getDate(), cb);
             // register callback
@@ -413,36 +412,31 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         sendActionOnEventConnection(originateAction);
     }
 
-    public Collection<AsteriskChannel> getChannels()
-            throws ManagerCommunicationException
+    public Collection<AsteriskChannel> getChannels() throws ManagerCommunicationException
     {
         initializeIfNeeded();
         return channelManager.getChannels();
     }
 
-    public AsteriskChannel getChannelByName(String name)
-            throws ManagerCommunicationException
+    public AsteriskChannel getChannelByName(String name) throws ManagerCommunicationException
     {
         initializeIfNeeded();
         return channelManager.getChannelImplByName(name);
     }
 
-    public AsteriskChannel getChannelById(String id)
-            throws ManagerCommunicationException
+    public AsteriskChannel getChannelById(String id) throws ManagerCommunicationException
     {
         initializeIfNeeded();
         return channelManager.getChannelImplById(id);
     }
 
-    public Collection<MeetMeRoom> getMeetMeRooms()
-            throws ManagerCommunicationException
+    public Collection<MeetMeRoom> getMeetMeRooms() throws ManagerCommunicationException
     {
         initializeIfNeeded();
         return meetMeManager.getMeetMeRooms();
     }
 
-    public MeetMeRoom getMeetMeRoom(String name)
-            throws ManagerCommunicationException
+    public MeetMeRoom getMeetMeRoom(String name) throws ManagerCommunicationException
     {
         initializeIfNeeded();
         return meetMeManager.getOrCreateRoomImpl(name);
@@ -615,8 +609,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         }
     }
 
-    public Collection<Voicemailbox> getVoicemailboxes()
-            throws ManagerCommunicationException
+    public Collection<Voicemailbox> getVoicemailboxes() throws ManagerCommunicationException
     {
         final Collection<Voicemailbox> voicemailboxes;
         ManagerResponse response;
@@ -627,9 +620,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         response = sendAction(new CommandAction(SHOW_VOICEMAIL_USERS_COMMAND));
         if (!(response instanceof CommandResponse))
         {
-            logger.error("Response to CommandAction(\""
-                    + SHOW_VOICEMAIL_USERS_COMMAND
-                    + "\") was not a CommandResponse but " + response);
+            logger.error("Response to CommandAction(\"" + SHOW_VOICEMAIL_USERS_COMMAND + "\") was not a CommandResponse but " + response);
             return voicemailboxes;
         }
 
@@ -1033,10 +1024,12 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         {
             agentManager.handleAgentCallbackLogoffEvent((AgentCallbackLogoffEvent) event);
         }
-        else if (event instanceof AgentLoginEvent) {
+        else if (event instanceof AgentLoginEvent)
+        {
             agentManager.handleAgentLoginEvent((AgentLoginEvent) event);
         }
-        else if (event instanceof AgentLogoffEvent) {
+        else if (event instanceof AgentLogoffEvent)
+        {
             agentManager.handleAgentLogoffEvent((AgentLogoffEvent) event);
         }
         // End of agent-related events
@@ -1048,8 +1041,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
      */
     private void handleDisconnectEvent(DisconnectEvent disconnectEvent)
     {
-        // reset version information as it might have changed while Asterisk
-        // restarted
+        // reset version information as it might have changed while Asterisk restarted
         version = null;
         versions = null;
 
@@ -1102,7 +1094,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         }
 
         cb = callbackData.getCallback();
-        if (! AstUtil.isNull(originateEvent.getUniqueId()))
+        if (!AstUtil.isNull(originateEvent.getUniqueId()))
         {
             channel = channelManager.getChannelImplById(originateEvent.getUniqueId());
         }
@@ -1115,11 +1107,9 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         {
             if (channel == null)
             {
-                LiveException cause;
+                final LiveException cause;
 
-                cause = new NoSuchChannelException("Channel '"
-                        + callbackData.getOriginateAction().getChannel()
-                        + "' is not available");
+                cause = new NoSuchChannelException("Channel '" + callbackData.getOriginateAction().getChannel() + "' is not available");
                 cb.onFailure(cause);
                 return;
             }
@@ -1138,16 +1128,14 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
 
             otherChannel = channelManager.getOtherSideOfLocalChannel(channel);
             // special treatment of local channels:
-            // the interesting things happen to the other side so we have a look
-            // at that
+            // the interesting things happen to the other side so we have a look at that
             if (otherChannel != null)
             {
                 final AsteriskChannel dialedChannel;
 
                 dialedChannel = otherChannel.getDialedChannel();
 
-                // on busy the other channel is in state busy when we receive
-                // the originate event
+                // on busy the other channel is in state busy when we receive the originate event
                 if (otherChannel.wasBusy())
                 {
                     cb.onBusy(channel);
@@ -1216,11 +1204,9 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         return dbgre;
     }
 
-    public void dbDel(String family, String key)
-            throws ManagerCommunicationException
+    public void dbDel(String family, String key) throws ManagerCommunicationException
     {
-        // The following only works with BRIStuffed asrterisk: sendAction(new
-        // DbDelAction(family,key));
+        // The following only works with BRIStuffed asrterisk: sendAction(new DbDelAction(family,key));
         // Use cli command instead ...
         sendAction(new CommandAction("database del " + family + " " + key));
     }
@@ -1259,7 +1245,6 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
             }
         }
     }
-
 
     void fireNewQueueEntry(AsteriskQueueEntry entry)
     {

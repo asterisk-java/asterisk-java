@@ -30,7 +30,7 @@ public class OriginateTest extends AsteriskServerTestCase
     public void xtestOriginate() throws Exception
     {
         AsteriskChannel channel;
-        channel = server.originateToExtension("SIP/1310", "from-local", "1330", 1, timeout);
+                            channel = server.originateToExtension("SIP/1310", "from-local", "1330", 1, timeout);
         System.err.println(channel);
         System.err.println(channel.getVariable("AJ_TRACE_ID"));
 
@@ -44,9 +44,9 @@ public class OriginateTest extends AsteriskServerTestCase
         final String source;
 
         //source = "SIP/1310";
-        source = "Local/1337@from-local";
+        source = "Local/1218@from-local";
         // source = "Local/1310@from-local/n";
-        server.originateToExtensionAsync(source, "conference", "1399", 1, timeout, new CallerId("AJ Test Call",
+        server.originateToExtensionAsync(source, "from-local", "1299", 1, timeout, new CallerId("AJ Test Call",
                 "08003301000"), null, new OriginateCallback()
         {
             public void onDialing(final AsteriskChannel c)
@@ -68,6 +68,7 @@ public class OriginateTest extends AsteriskServerTestCase
                         System.out.println("Tata");
                         try
                         {
+                            System.out.println("Hanging up channel from onDial " + c);
                             c.hangup();
                         }
                         catch (Exception e)

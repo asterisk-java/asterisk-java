@@ -58,7 +58,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
     /**
      * Unique id of this channel.
      */
-    private final String id;
+    private String id;
 
     /**
      * The traceId is used to trace originated channels.
@@ -171,6 +171,25 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
     public String getId()
     {
         return id;
+    }
+
+    /**
+     * Changes the id of this channel.
+     *
+     * @param date date of the name change.
+     * @param id the new unique id of this channel.
+     */
+    void idChanged(Date date, String id)
+    {
+        final String oldId = this.id;
+
+        if (oldId != null && oldId.equals(id))
+        {
+            return;
+        }
+
+        this.id = id;
+        firePropertyChange(PROPERTY_ID, oldId, id);
     }
 
     String getTraceId()

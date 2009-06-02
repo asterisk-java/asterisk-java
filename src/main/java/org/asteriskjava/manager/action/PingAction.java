@@ -22,7 +22,7 @@ import org.asteriskjava.manager.response.PingResponse;
 /**
  * The PingAction is used to keep the manager connection open and performs no operation.<p>
  * Asterisk versions prior to 1.6 send a "Pong" response, since Asterisk 1.6 a
- * "Success" response is sent with a "Ping" property set to "pong".
+ * "Success" response is sent with a "Ping" property set to "Pong".
  * 
  * @author srt
  * @version $Id$
