@@ -8,11 +8,20 @@ public class CoreStatusResponseTest extends TestCase
 {
     private TimeZone tz = TimeZone.getTimeZone("Europe/Berlin");
     private CoreStatusResponse response;
+    private TimeZone defaultTimeZone;
 
     @Override
     protected void setUp() throws Exception
     {
         this.response = new CoreStatusResponse();
+        defaultTimeZone = TimeZone.getDefault();
+        TimeZone.setDefault(tz);
+    }
+
+    @Override
+    protected void tearDown() throws Exception
+    {
+        TimeZone.setDefault(defaultTimeZone);
     }
 
     public void testGetCoreStartupTimeAsDate()
