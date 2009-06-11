@@ -52,60 +52,22 @@
     </scm>
     <distributionManagement>
         <repository>
-            <id>reucon-public-repository</id>
-            <url>dav:https://secure.reucon.net/maven/public</url>
+            <id>reucon</id>
+            <url>https://secure.reucon.net/nexus/content/repositories/opensource</url>
         </repository>
         <snapshotRepository>
-            <id>reucon-public-snapshot-repository</id>
-            <url>dav:https://secure.reucon.net/maven/public-snapshot</url>
+            <id>reucon</id>
+            <url>https://secure.reucon.net/nexus/content/repositories/opensource-snapshots</url>
         </snapshotRepository>
         <site>
-            <id>asterisk-java-website</id>
+            <id>reucon</id>
             <url>dav:https://secure.reucon.net/maven/projects/public/${artifactId}/${version}</url>
         </site>
     </distributionManagement>
-    <repositories>
-        <repository>
-            <id>reucon-public-repository</id>
-            <name>reucon public repository</name>
-            <url>http://maven.reucon.com/public</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <layout>default</layout>
-        </repository>
-        <repository>
-            <id>reucon-public-snapshot-repository</id>
-            <name>reucon public snapshot repository</name>
-            <url>http://maven.reucon.com/public-snapshot</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <layout>default</layout>
-        </repository>
-    </repositories>
     <issueManagement>
         <system>JIRA</system>
         <url>http://jira.reucon.org/browse/AJ</url>
     </issueManagement>
-    <ciManagement>
-        <system>continuum</system>
-        <notifiers>
-            <notifier>
-                <type>mail</type>
-                <configuration>
-                    <address>dev@asterisk-java.org</address>
-                </configuration>
-            </notifier>
-        </notifiers>
-        <url>http://ci.reucon.net/continuum</url>
-    </ciManagement>
     <mailingLists>
         <mailingList>
             <name>Asterisk-Java User List</name>
