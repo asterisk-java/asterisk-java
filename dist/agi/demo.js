@@ -7,9 +7,10 @@ for (var i = 10; i >= 0; i--)
 channel.streamFile('beep');
 
 // read a few dtmf digits
-var digit;
-while ((digit = channel.waitForDigit(10000)) != 0)
+var code;
+while ((code = channel.waitForDigit(10000)) != 0)
 {
+  var digit = String.fromCharCode(code);
   if (digit == '#' || digit == '*')
   {
     break;
