@@ -3,8 +3,8 @@
     <servers>
       <jira>
         <server-id>e88a6130-6bd2-45dd-aa5d-57b845f76d0f</server-id>
-        <name>jira.reucon.org</name>
-        <url>http://jira.reucon.org</url>
+        <name>reucon</name>
+        <url>https://secure.reucon.net/issues</url>
       </jira>
       <crucible>
         <server-id>89c4100c-3c20-4d7d-8611-0dbe1bee742e</server-id>
