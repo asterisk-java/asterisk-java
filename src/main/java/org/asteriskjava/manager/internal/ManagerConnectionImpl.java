@@ -137,7 +137,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
     /**
      * Closes the connection (and reconnects) if no input has been read for the given amount
-     * of milliseconds. A timeout of zero is interpreted as an infinite timeout. 
+     * of milliseconds. A timeout of zero is interpreted as an infinite timeout.
      *
      * @see Socket#setSoTimeout(int)
      */
@@ -598,7 +598,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     protected AsteriskVersion determineVersion() throws IOException, TimeoutException
     {
         int attempts = 0;
-        
+
         if ("Asterisk Call Manager/1.1".equals(protocolIdentifier.value))
         {
             return AsteriskVersion.ASTERISK_1_6;
@@ -657,7 +657,8 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
             }
         }
 
-        return AsteriskVersion.ASTERISK_1_0;
+        // as a fallback assume 1.6
+        return AsteriskVersion.ASTERISK_1_6;
     }
 
     protected String getRawVersion()
