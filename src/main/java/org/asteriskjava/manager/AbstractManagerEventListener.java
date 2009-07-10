@@ -323,6 +323,14 @@ public abstract class AbstractManagerEventListener implements ManagerEventListen
     {
     }
 
+    protected void handleEvent(CoreShowChannelEvent event)
+    {
+    }
+
+    protected void handleEvent(CoreShowChannelsCompleteEvent event)
+    {
+    }
+
     /**
      * Dispatches to the appropriate handleEvent(...) method.
      * 
@@ -593,6 +601,14 @@ public abstract class AbstractManagerEventListener implements ManagerEventListen
         else if (event instanceof ZapShowChannelsEvent)
         {
             handleEvent((ZapShowChannelsEvent) event);
+        }
+        else if (event instanceof CoreShowChannelEvent)
+        {
+            handleEvent((CoreShowChannelEvent) event);
+        }
+        else if (event instanceof CoreShowChannelsCompleteEvent)
+        {
+            handleEvent((CoreShowChannelsCompleteEvent) event);
         }
     }
 }

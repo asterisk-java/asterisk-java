@@ -43,6 +43,7 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
     @SuppressWarnings({"deprecation"})
     private void registerBuiltinEventClasses()
     {
+        // please add new event classes alphabetically
         registerEventClass(AgentCallbackLoginEvent.class);
         registerEventClass(AgentCallbackLogoffEvent.class);
         registerEventClass(AgentCalledEvent.class);
@@ -63,6 +64,8 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
         registerEventClass(CdrEvent.class);
         registerEventClass(ChannelReloadEvent.class);
         registerEventClass(ChannelUpdateEvent.class);
+        registerEventClass(CoreShowChannelEvent.class);
+        registerEventClass(CoreShowChannelsCompleteEvent.class);
         registerEventClass(DbGetResponseEvent.class);
         registerEventClass(DialEvent.class);
         registerEventClass(DndStateEvent.class);
@@ -219,7 +222,7 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
             logger.error("No event type in properties");
             return null;
         }
-        if (! (attributes.get("event") instanceof String))
+        if (!(attributes.get("event") instanceof String))
         {
             logger.error("Event type is not a String");
             return null;
@@ -238,7 +241,7 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
                 logger.error("No user event type in properties");
                 return null;
             }
-            if (! (attributes.get("userevent") instanceof String))
+            if (!(attributes.get("userevent") instanceof String))
             {
                 logger.error("User event type is not a String");
                 return null;
