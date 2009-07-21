@@ -119,6 +119,11 @@ public abstract class AbstractAgiServer
         }
     }
 
+    /**
+     * Execute the runnable using the configured ThreadPoolExecutor obtained from {@link #getPool()}.
+     *
+     * @param command the command to run.
+     */
     protected void execute(Runnable command)
     {
         if (isDie())
@@ -126,7 +131,20 @@ public abstract class AbstractAgiServer
             logger.warn("AgiServer is shutting down: Refused to execute AgiScript");
             return;
         }
-        getPool().execute(command);
+
+        try
+        {
+            getPool().execute(command);
+        }
+        catch (Exception e)
+        {
+            handleException("Unable to execute " + command.getClass().getName(), e);
+        }
+    }
+
+    protected void handleException(String message, Exception e)
+    {
+        logger.warn(message, e);
     }
 
     private synchronized ThreadPoolExecutor getPool()

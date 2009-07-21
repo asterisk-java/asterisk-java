@@ -267,8 +267,8 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
                 }
                 else
                 {
-                    logger.error("IOException while waiting for connections.", e);
-                    // log error but continue
+                    handleException("IOException while waiting for connections.", e);
+                    // handle exception but continue to run
                 }
             }
         }
