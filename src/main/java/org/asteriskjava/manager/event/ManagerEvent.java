@@ -260,8 +260,8 @@ public abstract class ManagerEvent extends EventObject
     @Override
     public String toString()
     {
-        final List<String> localProperties = Arrays.asList(
-                "datereceived", "privilege", "file", "func", "line", "sequenceNumber", "source", "class");
+        final List<String> ignoredProperties = Arrays.asList(
+                "file", "func", "line", "sequenceNumber", "datereceived", "privilege", "source", "class");
         final StringBuilder sb = new StringBuilder(getClass().getName() + "[");
         appendPropertyIfNotNull(sb, "file", getFile());
         appendPropertyIfNotNull(sb, "func", getFunc());
@@ -273,17 +273,16 @@ public abstract class ManagerEvent extends EventObject
         final Map<String, Method> getters = ReflectionUtil.getGetters(getClass());
         for (Map.Entry<String, Method> entry : getters.entrySet())
         {
-            final String attribute = entry.getKey();
-            if (localProperties.contains(attribute))
+            final String property = entry.getKey();
+            if (ignoredProperties.contains(property))
             {
                 continue;
             }
 
             try
             {
-                final Object value;
-                value = entry.getValue().invoke(this);
-                sb.append(attribute).append("='").append(value).append("',");
+                final Object value = entry.getValue().invoke(this);
+                appendProperty(sb, property, value);
             }
             catch (Exception e) // NOPMD
             {
