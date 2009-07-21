@@ -17,9 +17,7 @@
 package org.asteriskjava.manager.event;
 
 import java.lang.reflect.Method;
-import java.util.Date;
-import java.util.EventObject;
-import java.util.Map;
+import java.util.*;
 
 import org.asteriskjava.util.ReflectionUtil;
 
@@ -41,7 +39,7 @@ public abstract class ManagerEvent extends EventObject
     /**
      * Serializable version identifier.
      */
-    static final long serialVersionUID = 1L;
+    static final long serialVersionUID = 2L;
 
     /**
      * AMI authorization class.
@@ -59,6 +57,12 @@ public abstract class ManagerEvent extends EventObject
      * The server from which this event has been received (only used with AstManProxy).
      */
     private String server;
+
+    // AJ-213 only used when debugging is turned on
+    private String file;
+    private Integer line;
+    private String func;
+    private Integer sequenceNumber;
 
     public ManagerEvent(Object source)
     {
@@ -167,24 +171,110 @@ public abstract class ManagerEvent extends EventObject
         this.server = server;
     }
 
+    /**
+     * Returns the name of the file in Asterisk's source code that triggered this event. For example
+     * <code>pbx.c</code>.<p>
+     * This property is only available if debugging for the Manager API has been turned on in Asterisk. This can be
+     * done by calling <code>manager debug on</code> on Asterisk's command line interface or by adding
+     * <code>debug=on</code> to Asterisk's <code>manager.conf</code>. This feature is availble in Asterisk since 1.6.0.
+     *
+     * @return the name of the file in that triggered this event or <code>null</code> if debgging is turned off.
+     * @see #getFunc()
+     * @see #getLine()
+     * @since 1.0.0
+     */
+    public String getFile()
+    {
+        return file;
+    }
+
+    public void setFile(String file)
+    {
+        this.file = file;
+    }
+
+    /**
+     * Returns the line number in Asterisk's source code where this event was triggered.<p>
+     * This property is only available if debugging for the Manager API has been turned on in Asterisk. This can be
+     * done by calling <code>manager debug on</code> on Asterisk's command line interface or by adding
+     * <code>debug=on</code> to Asterisk's <code>manager.conf</code>. This feature is availble in Asterisk since 1.6.0.
+     *
+     * @return the line number where this event was triggered or <code>null</code> if debgging is turned off.
+     * @see #getFile()
+     * @see #getFunc()
+     * @since 1.0.0
+     */
+    public Integer getLine()
+    {
+        return line;
+    }
+
+    public void setLine(Integer line)
+    {
+        this.line = line;
+    }
+
+    /**
+     * Returns the name of the C function in Asterisk's source code that triggered this event. For example
+     * <code>pbx_builtin_setvar_helper</code><p>
+     * This property is only available if debugging for the Manager API has been turned on in Asterisk. This can be
+     * done by calling <code>manager debug on</code> on Asterisk's command line interface or by adding
+     * <code>debug=on</code> to Asterisk's <code>manager.conf</code>. This feature is availble in Asterisk since 1.6.0.
+     *
+     * @return the name of the C function that triggered this event or <code>null</code> if debgging is turned off.
+     * @see #getFile()
+     * @see #getLine()
+     * @since 1.0.0
+     */
+    public String getFunc()
+    {
+        return func;
+    }
+
+    public void setFunc(String func)
+    {
+        this.func = func;
+    }
+
+    /**
+     * Returns the sequence numbers of this event. Sequence numbers are only incremented while debugging is enabled.<p>
+     * This property is only available if debugging for the Manager API has been turned on in Asterisk. This can be
+     * done by calling <code>manager debug on</code> on Asterisk's command line interface or by adding
+     * <code>debug=on</code> to Asterisk's <code>manager.conf</code>. This feature is availble in Asterisk since 1.6.0.
+     *
+     * @return the sequence number of this event or <code>null</code> if debgging is turned off.
+     * @see #getFile()
+     * @see #getLine()
+     * @since 1.0.0
+     */
+    public Integer getSequenceNumber()
+    {
+        return sequenceNumber;
+    }
+
+    public void setSequenceNumber(Integer sequenceNumber)
+    {
+        this.sequenceNumber = sequenceNumber;
+    }
+
     @Override
     public String toString()
     {
-        StringBuffer sb;
-        Map<String, Method> getters;
+        final List<String> localProperties = Arrays.asList(
+                "datereceived", "privilege", "file", "func", "line", "sequenceNumber", "source", "class");
+        final StringBuilder sb = new StringBuilder(getClass().getName() + "[");
+        appendPropertyIfNotNull(sb, "file", getFile());
+        appendPropertyIfNotNull(sb, "func", getFunc());
+        appendPropertyIfNotNull(sb, "line", getLine());
+        appendPropertyIfNotNull(sb, "sequenceNumber", getSequenceNumber());
+        appendPropertyIfNotNull(sb, "dateReceived", getDateReceived());
+        appendPropertyIfNotNull(sb, "privilege", getPrivilege());
 
-        sb = new StringBuffer(getClass().getName() + "[");
-        sb.append("dateReceived=").append(getDateReceived()).append(",");
-        if (getPrivilege() != null)
-        {
-            sb.append("privilege='").append(getPrivilege()).append("',");
-        }
-        getters = ReflectionUtil.getGetters(getClass());
-        for (Map.Entry<String, Method> entry: getters.entrySet())
+        final Map<String, Method> getters = ReflectionUtil.getGetters(getClass());
+        for (Map.Entry<String, Method> entry : getters.entrySet())
         {
             final String attribute = entry.getKey();
-            if ("class".equals(attribute) || "datereceived".equals(attribute) || "privilege".equals(attribute)
-                    || "source".equals(attribute))
+            if (localProperties.contains(attribute))
             {
                 continue;
             }
@@ -204,5 +294,28 @@ public abstract class ManagerEvent extends EventObject
         sb.append("]");
 
         return sb.toString();
+    }
+
+    protected void appendPropertyIfNotNull(StringBuilder sb, String property, Object value)
+    {
+        if (value != null)
+        {
+            appendProperty(sb, property, value);
+        }
+    }
+
+    private void appendProperty(StringBuilder sb, String property, Object value)
+    {
+        sb.append(property).append("=");
+        if (value == null)
+        {
+            sb.append("null");
+        }
+        else
+        {
+            sb.append("'").append(value).append("'");
+        }
+        sb.append(",");
+
     }
 }
