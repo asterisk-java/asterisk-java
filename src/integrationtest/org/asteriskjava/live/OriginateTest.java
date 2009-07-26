@@ -30,7 +30,7 @@ public class OriginateTest extends AsteriskServerTestCase
     public void xtestOriginate() throws Exception
     {
         AsteriskChannel channel;
-                            channel = server.originateToExtension("SIP/1310", "from-local", "1330", 1, timeout);
+        channel = server.originateToExtension("SIP/1310", "from-local", "1330", 1, timeout);
         System.err.println(channel);
         System.err.println(channel.getVariable("AJ_TRACE_ID"));
 

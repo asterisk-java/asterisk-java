@@ -138,6 +138,16 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
      */
     private Extension parkedAt;
 
+    /**
+     * Last dtmf digit recieved on this channel if any, <code>null</code> otherwise.
+     */
+    private Character dtmfReceived;
+
+    /**
+     * Last dtmf digit sent on this channel if any, <code>null</code> otherwise.
+     */
+    private Character dtmfSent;
+
     private final Map<String, String> variables;
 
     /**
@@ -785,7 +795,33 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         }
     }
 
-    public void setParkedAt(Extension parkedAt)
+    public Character getDtmfReceived()
+    {
+        return this.dtmfReceived;
+    }
+
+    public Character getDtmfSent()
+    {
+        return this.dtmfSent;
+    }
+
+    void dtmfReceived(Character digit)
+    {
+        final Character oldDtmfReceived = this.dtmfReceived;
+
+        this.dtmfReceived = digit;
+        firePropertyChange(PROPERTY_DTMF_RECEIVED, oldDtmfReceived, digit);
+    }
+
+    void dtmfSent(Character digit)
+    {
+        final Character oldDtmfSent = this.dtmfSent;
+
+        this.dtmfSent = digit;
+        firePropertyChange(PROPERTY_DTMF_SENT, oldDtmfSent, digit);
+    }
+
+    void setParkedAt(Extension parkedAt)
     {
         final Extension oldParkedAt = this.parkedAt;
 

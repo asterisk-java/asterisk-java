@@ -38,6 +38,8 @@ import java.util.Map;
  * <li>meetMeUser
  * <li>queueEntry
  * <li>parkedAt
+ * <li>dtmfReceived
+ * <li>dtmfSent
  * </ul>
  * 
  * @author srt
@@ -57,6 +59,8 @@ public interface AsteriskChannel extends LiveObject
     String PROPERTY_MEET_ME_USER = "meetMeUser";
     String PROPERTY_QUEUE_ENTRY = "queueEntry";
     String PROPERTY_PARKED_AT = "parkedAt";
+    String PROPERTY_DTMF_RECEIVED = "dtmfReceived";
+    String PROPERTY_DTMF_SENT = "dtmfSent";
 
     String VARIABLE_MONITOR_EXEC = "MONITOR_EXEC";
     String VARIABLE_MONITOR_EXEC_ARGS = "MONITOR_EXEC_ARGS";
@@ -278,6 +282,22 @@ public interface AsteriskChannel extends LiveObject
      * @since 1.0.0
      */
     Map<String, String> getVariables();
+
+    /**
+     * Returns the last DTMF digit received on this channels.
+     *
+     * @return the last DTMF digit received on this channels or <code>null</code> if none has yet been received.
+     * @since 1.0.0
+     */
+    Character getDtmfReceived();
+
+    /**
+     * Returns the last DTMF digit sent on this channels.
+     *
+     * @return the last DTMF digit sent on this channels or <code>null</code> if none has yet been sent.
+     * @since 1.0.0
+     */
+    Character getDtmfSent();
 
     /* Actions */
     
