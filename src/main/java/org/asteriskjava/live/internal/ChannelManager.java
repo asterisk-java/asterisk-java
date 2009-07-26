@@ -819,6 +819,12 @@ class ChannelManager
 
     void handleDtmfEvent(DtmfEvent event)
     {
+        // we are only intrested in END events
+        if (event.isBegin())
+        {
+            return;
+        }
+
         if (event.getUniqueId() == null)
         {
             return;
