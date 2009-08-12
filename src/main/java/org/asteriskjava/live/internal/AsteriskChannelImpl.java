@@ -187,7 +187,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
      * Changes the id of this channel.
      *
      * @param date date of the name change.
-     * @param id the new unique id of this channel.
+     * @param id   the new unique id of this channel.
      */
     void idChanged(Date date, String id)
     {
@@ -659,15 +659,27 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         ManagerResponse response;
         String value;
 
-        response = server.sendAction(new GetVarAction(name, variable));
-        if (response instanceof ManagerError)
+        synchronized (variables)
         {
-            throw new NoSuchChannelException("Channel '" + name + "' is not available: " + response.getMessage());
-        }
-        value = response.getAttribute("Value");
-        if (value == null)
-        {
-            value = response.getAttribute(variable); // for Asterisk 1.0.x
+
+            value = variables.get(variable);
+            if (value != null)
+            {
+                return value;
+            }
+
+            response = server.sendAction(new GetVarAction(name, variable));
+            if (response instanceof ManagerError)
+            {
+                throw new NoSuchChannelException("Channel '" + name + "' is not available: " + response.getMessage());
+            }
+            value = response.getAttribute("Value");
+            if (value == null)
+            {
+                value = response.getAttribute(variable); // for Asterisk 1.0.x
+            }
+
+            variables.put(variable, value);
         }
         return value;
     }
@@ -680,6 +692,10 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         if (response instanceof ManagerError)
         {
             throw new NoSuchChannelException("Channel '" + name + "' is not available: " + response.getMessage());
+        }
+        synchronized (variables)
+        {
+            variables.put(variable, value);
         }
     }
 

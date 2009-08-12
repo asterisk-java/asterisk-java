@@ -62,10 +62,17 @@ class ChannelManager
 
     void initialize() throws ManagerCommunicationException
     {
+        initialize(null);
+    }
+
+    void initialize(List<String> variables) throws ManagerCommunicationException
+    {
         ResponseEvents re;
 
         disconnected();
-        re = server.sendEventGeneratingAction(new StatusAction());
+        StatusAction sa = new StatusAction();
+        sa.setVariables(variables);
+        re = server.sendEventGeneratingAction(sa);
         for (ManagerEvent event : re.getEvents())
         {
             if (event instanceof StatusEvent)
@@ -196,6 +203,7 @@ class ChannelManager
         AsteriskChannelImpl channel;
         final Extension extension;
         boolean isNew = false;
+        Map<String, String> variables = event.getVariables();
 
         channel = getChannelImplById(event.getUniqueId());
         if (channel == null)
@@ -212,6 +220,13 @@ class ChannelManager
             }
             channel = new AsteriskChannelImpl(server, event.getChannel(), event.getUniqueId(), dateOfCreation);
             isNew = true;
+            if (variables != null)
+            {
+                for (String variable : variables.keySet())
+                {
+                    channel.updateVariable(variable, variables.get(variable));
+                }
+            }
         }
 
         if (event.getContext() == null && event.getExtension() == null
