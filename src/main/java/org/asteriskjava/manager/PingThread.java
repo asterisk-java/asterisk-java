@@ -156,7 +156,7 @@ public class PingThread extends Thread
             }
             catch (InterruptedException e) // NOPMD
             {
-                // swallow
+                Thread.currentThread().interrupt();
             }
 
             // exit if die is set

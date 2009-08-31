@@ -120,6 +120,7 @@ class ManagerConnectionPool
         catch (InterruptedException e)
         {
             logger.error("Interrupted while waiting for ManagerConnection to become available", e);
+            Thread.currentThread().interrupt();
             return null;
         }
     }
@@ -132,6 +133,7 @@ class ManagerConnectionPool
         }
         catch (InterruptedException e)
         {
+            Thread.currentThread().interrupt();
             throw new RuntimeException("Interrupted while trying to add connection to pool");
         }
     }

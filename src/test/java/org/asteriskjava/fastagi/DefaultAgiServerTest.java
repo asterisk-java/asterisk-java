@@ -108,7 +108,7 @@ public class DefaultAgiServerTest extends TestCase
             }
             catch (InterruptedException e)
             {
-                // ignore
+                Thread.currentThread().interrupt();
             }
 
             if (acceptCalls == 1)

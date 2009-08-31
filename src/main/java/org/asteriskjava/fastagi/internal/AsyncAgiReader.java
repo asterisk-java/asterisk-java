@@ -38,6 +38,7 @@ public class AsyncAgiReader implements AgiReader
         }
         catch (InterruptedException e)
         {
+            Thread.currentThread().interrupt();
             throw new AgiException("Interrupted while waiting for AsyncAgiEvent", e);
         }
     }

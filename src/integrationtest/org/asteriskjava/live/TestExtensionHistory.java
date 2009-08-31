@@ -23,6 +23,7 @@ public class TestExtensionHistory extends AsteriskServerTestCase
         }
         catch (InterruptedException e)
         {
+            Thread.currentThread().interrupt();
         }
 
         channels = server.getChannels();

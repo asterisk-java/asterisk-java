@@ -95,7 +95,7 @@ public class ManagerWriterMock implements ManagerWriter
                     }
                     catch (InterruptedException e)
                     {
-                        // ignore
+                        Thread.currentThread().interrupt();
                     }
                     ProtocolIdentifierReceivedEvent protocolIdentifierReceivedEvent;
                     protocolIdentifierReceivedEvent = new ProtocolIdentifierReceivedEvent(this);
@@ -216,7 +216,7 @@ public class ManagerWriterMock implements ManagerWriter
                 }
                 catch (InterruptedException e)
                 {
-                    // ignore
+                    Thread.currentThread().interrupt();
                 }
                 dispatcher.dispatchResponse(response);
             }

@@ -178,6 +178,7 @@ public class AgiServerThread
             catch (InterruptedException e)
             {
                 logger.warn("Interrupted while waiting for AgiServer to shutdown.");
+                Thread.currentThread().interrupt();
             }
             thread = null; // NOPMD by srt on 7/5/06 11:23 PM
         }

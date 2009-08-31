@@ -168,7 +168,7 @@ class ChannelManager
             }
             catch (InterruptedException e)
             {
-                // ignore
+                Thread.currentThread().interrupt();
             }
         }
 

@@ -25,6 +25,7 @@ public class TestDefaultAsteriskServer extends AsteriskServerTestCase
         }
         catch (InterruptedException e)
         {
+            Thread.currentThread().interrupt();
         }
 
         Collection<AsteriskChannel> channels = server.getChannels();
@@ -37,6 +38,7 @@ public class TestDefaultAsteriskServer extends AsteriskServerTestCase
         }
         catch (InterruptedException e)
         {
+            Thread.currentThread().interrupt();
         }
 
         for (AsteriskChannel channel : channels)
@@ -69,7 +71,7 @@ public class TestDefaultAsteriskServer extends AsteriskServerTestCase
         }
         catch (InterruptedException e)
         {
-            // swallow
+            Thread.currentThread().interrupt();
         }
 
         Collection<AsteriskQueue> queues = server.getQueues();
