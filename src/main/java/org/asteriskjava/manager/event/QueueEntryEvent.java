@@ -33,6 +33,7 @@ public class QueueEntryEvent extends ResponseEvent
     private static final long serialVersionUID = 3419114730595151514L;
     private String queue;
     private Integer position;
+    private String uniqueId;
     private String channel;
     private String callerId;
     private String callerIdName;
@@ -84,6 +85,23 @@ public class QueueEntryEvent extends ResponseEvent
     public String getChannel()
     {
         return channel;
+    }
+
+    /**
+     * Returns the unique id of the channel of this entry.<p>
+     * Available since Asterisk 1.6.
+     *
+     * @return the unique id of the channel of this entry.
+     * @since 1.0.0
+     */
+    public String getUniqueId()
+    {
+        return uniqueId;
+    }
+
+    public void setUniqueId(String uniqueId)
+    {
+        this.uniqueId = uniqueId;
     }
 
     /**
