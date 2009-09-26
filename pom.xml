@@ -152,6 +152,9 @@ org.asteriskjava.live.internal;version="${project.version}",
 org.asteriskjava.util;version="${project.version}",
 org.asteriskjava.util.internal;version="${project.version}"
                             </Export-Package>
+                            <Import-Package>
+javax.net                                
+                            </Import-Package>
                         </manifestEntries>
                     </archive>
                 </configuration>
