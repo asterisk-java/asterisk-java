@@ -5,6 +5,7 @@
         <server-id>e88a6130-6bd2-45dd-aa5d-57b845f76d0f</server-id>
         <name>reucon</name>
         <url>https://secure.reucon.net/issues</url>
+        <dontUseBasicAuth>false</dontUseBasicAuth>
       </jira>
       <crucible>
         <server-id>89c4100c-3c20-4d7d-8611-0dbe1bee742e</server-id>
@@ -18,6 +19,7 @@
         <url>https://secure.reucon.net/build</url>
         <use-favourites>false</use-favourites>
         <bamboo2>true</bamboo2>
+        <isBamboo2M9>false</isBamboo2M9>
         <plans>
           <plan key="AJ-DEF" />
           <plan key="AJ-NIGHTLY" />
