@@ -4,7 +4,7 @@
     <groupId>org.asteriskjava</groupId>
     <artifactId>asterisk-java</artifactId>
     <name>Asterisk-Java</name>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0.CI-SNAPSHOT</version>
     <description>The free Java library for Asterisk PBX integration.</description>
     <url>http://asterisk-java.org/</url>
     <licenses>
@@ -126,6 +126,26 @@
                         </manifest>
                         <manifestEntries>
                             <Class-Path>.</Class-Path>
+                            <Bundle-ManifestVersion>2</Bundle-ManifestVersion>
+                            <Bundle-SymbolicName>org.asteriskjava</Bundle-SymbolicName>
+                            <Bundle-Version>${project.version}</Bundle-Version>
+                            <Bundle-Name>${project.name}</Bundle-Name>
+                            <Bundle-Description>${project.description}</Bundle-Description>
+                            <Bundle-Vendor>reucon</Bundle-Vendor>
+                            <Export-Package>
+org.asteriskjava;version="${project.version}",
+org.asteriskjava.config;version="${project.version}",
+org.asteriskjava.config.dialplan;version="${project.version}",
+org.asteriskjava.fastagi;version="${project.version}",
+org.asteriskjava.fastagi.command;version="${project.version}",
+org.asteriskjava.fastagi.reply;version="${project.version}",
+org.asteriskjava.manager;version="${project.version}",
+org.asteriskjava.manager.action;version="${project.version}",
+org.asteriskjava.manager.event;version="${project.version}",
+org.asteriskjava.manager.response;version="${project.version}",
+org.asteriskjava.manager.util;version="${project.version}",
+org.asteriskjava.live;version="${project.version}"
+                            </Export-Package>
                         </manifestEntries>
                     </archive>
                 </configuration>
@@ -154,13 +174,6 @@
                 <version>2.0</version>
             </plugin>
         </plugins>
-        <extensions>
-            <extension>
-                <groupId>org.apache.maven.wagon</groupId>
-                <artifactId>wagon-webdav</artifactId>
-                <version>1.0-beta-2</version>
-            </extension>
-        </extensions>
         <finalName>${artifactId}</finalName>
     </build>
     <dependencies>
