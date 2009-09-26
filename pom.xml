@@ -1,28 +1,21 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.asteriskjava</groupId>
+    <parent>
+        <groupId>org.asteriskjava</groupId>
+        <artifactId>asterisk-java-parent</artifactId>
+        <version>1</version>
+    </parent>
     <artifactId>asterisk-java</artifactId>
     <name>Asterisk-Java</name>
     <version>1.0.0.CI-SNAPSHOT</version>
     <description>The free Java library for Asterisk PBX integration.</description>
-    <url>http://asterisk-java.org/</url>
-    <licenses>
-        <license>
-            <name>Apache License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-        </license>
-    </licenses>
-    <organization>
-        <name>Stefan Reuter</name>
-        <url>http://asterisk-java.org/</url>
-    </organization>
     <inceptionYear>2004</inceptionYear>
     <developers>
         <developer>
             <name>Stefan Reuter</name>
             <id>srt</id>
-            <email>srt at users.sourceforge.net</email>
+            <email>stefan.reuter at reucon.com</email>
             <timezone>+1</timezone>
         </developer>
         <developer>
@@ -50,72 +43,8 @@
         <connection>scm:svn:http://svn.reucon.net/repos/asterisk-java/trunk</connection>
         <developerConnection>scm:svn:https://secure.reucon.net/svn/repos/asterisk-java/trunk</developerConnection>
     </scm>
-    <distributionManagement>
-        <repository>
-            <id>reucon</id>
-            <url>https://secure.reucon.net/nexus/content/repositories/opensource</url>
-        </repository>
-        <snapshotRepository>
-            <id>reucon</id>
-            <url>https://secure.reucon.net/nexus/content/repositories/opensource-snapshots</url>
-        </snapshotRepository>
-        <site>
-            <id>reucon</id>
-            <url>dav:https://secure.reucon.net/maven/projects/public/${artifactId}/${version}</url>
-        </site>
-    </distributionManagement>
-    <issueManagement>
-        <system>JIRA</system>
-        <url>http://jira.reucon.org/browse/AJ</url>
-    </issueManagement>
-    <mailingLists>
-        <mailingList>
-            <name>Asterisk-Java User List</name>
-            <subscribe>http://lists.sourceforge.net/mailman/listinfo/asterisk-java-users</subscribe>
-            <unsubscribe>http://lists.sourceforge.net/mailman/listinfo/asterisk-java-users</unsubscribe>
-            <archive>http://sourceforge.net/mailarchive/forum.php?forum=asterisk-java-users</archive>
-        </mailingList>
-        <mailingList>
-            <name>Asterisk-Java Developer List</name>
-            <subscribe>http://lists.sourceforge.net/mailman/listinfo/asterisk-java-devel</subscribe>
-            <unsubscribe>http://lists.sourceforge.net/mailman/listinfo/asterisk-java-devel</unsubscribe>
-            <archive>http://sourceforge.net/mailarchive/forum.php?forum=asterisk-java-devel</archive>
-        </mailingList>
-    </mailingLists>
     <build>
         <plugins>
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.5</source>
-                    <target>1.5</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.3</version>
-            </plugin>
-            <plugin>
-                <artifactId>maven-release-plugin</artifactId>
-                <version>2.0-beta-9</version>
-                <configuration>
-                    <remoteTagging>true</remoteTagging>
-                    <preparationGoals>clean install</preparationGoals>
-                    <autoVersionSubmodules>true</autoVersionSubmodules>
-                    <tagBase>https://secure.reucon.net/svn/repos/${artifactId}/tags</tagBase>
-                </configuration>
-            </plugin>
-            <plugin>
-                <artifactId>maven-source-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
@@ -281,59 +210,4 @@ javax.net
                -->
         </plugins>
     </reporting>
-    <profiles>
-        <profile>
-            <id>release</id>
-            <activation>
-                <property>
-                    <name>release</name>
-                </property>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-jar-plugin</artifactId>
-                        <version>2.2</version>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                        <configuration>
-                            <!-- Add to the command line:
-                              -Dkeystore=Stefan_Reuter_Code_Signing.jks
-                              -Dstorepass=secret
-                            -->
-                            <alias>Stefan_Reuter_Code_Signing</alias>
-                            <verify>true</verify>
-                            <!--
-                            <keystore>Stefan_Reuter_Code_Signing.jks</keystore>
-                            <storepass>secret</storepass>
-                            -->
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.0-alpha-4</version>
-                        <executions>
-                            <execution>
-                                <id>sign-artifacts</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                        <configuration>
-                            <keyname>C47292FB</keyname>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
 </project>
