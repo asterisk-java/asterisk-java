@@ -51,7 +51,8 @@ public abstract class AbstractAgiCommand implements Serializable, AgiCommand
         }
 
         tmp = s;
-        tmp = tmp.replaceAll("\\\"", "\\\\\""); // escape quotes
+        tmp = tmp.replaceAll("\\\\", "\\\\\\\\");
+        tmp = tmp.replaceAll("\\\"", "\\\\\"");
         tmp = tmp.replaceAll("\\\n", ""); // filter newline
         return "\"" + tmp + "\""; // add quotes
     }

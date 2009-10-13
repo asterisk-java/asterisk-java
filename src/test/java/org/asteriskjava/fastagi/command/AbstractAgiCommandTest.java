@@ -18,8 +18,6 @@ package org.asteriskjava.fastagi.command;
 
 import junit.framework.TestCase;
 
-import org.asteriskjava.fastagi.command.AbstractAgiCommand;
-
 public class AbstractAgiCommandTest extends TestCase
 {
     private MyCommand myCommand;
@@ -57,6 +55,12 @@ public class AbstractAgiCommandTest extends TestCase
         myCommand = new MyCommand("Caller is:\nJohn Doe");
 
         assertEquals("MY \"Caller is:John Doe\"", myCommand.buildCommand());
+    }
+
+    public void testEscapedQuotesAJ192() {
+        myCommand = new MyCommand("first \\\" second \\\" third");
+
+        assertEquals("MY \"first \\\\\\\" second \\\\\\\" third\"", myCommand.buildCommand());
     }
 
     public class MyCommand extends AbstractAgiCommand
