@@ -39,7 +39,12 @@ import org.asteriskjava.config.ConfigFile;
 public interface AsteriskServer
 {
     /**
-     * Returns the underlying ManagerConnection.
+     * Returns the underlying ManagerConnection.<p>
+     * Unlike the methods operating on the manager connection this method does not implicitly initialize the
+     * connection. Thus you can use this method to add custom
+     * {@linkplain org.asteriskjava.manager.ManagerEventListener ManagerEventListeners} before the connection
+     * to the Asterisk server is established. If you want to ensure that the connection is established call
+     * {@link #initialize()}.
      * 
      * @return the underlying ManagerConnection.
      */
