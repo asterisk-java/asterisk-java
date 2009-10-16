@@ -19,6 +19,7 @@ package org.asteriskjava.util;
 import org.asteriskjava.util.internal.JavaLoggingLog;
 import org.asteriskjava.util.internal.Log4JLogger;
 import org.asteriskjava.util.internal.NullLog;
+import org.asteriskjava.util.internal.Slf4JLogger;
 
 /**
  * Facade to hide details of the underlying logging system.<p>
@@ -33,12 +34,14 @@ import org.asteriskjava.util.internal.NullLog;
  * </pre>
  * Asterisk-Java's logging abstraction layer uses log4j when available
  * and falls back to java.util.logging otherwise.
- * 
+ *
  * @author srt
  * @version $Id$
  */
 public final class LogFactory
 {
+    private static Boolean slf4jLoggingAvailable = null;
+
     /**
      * Indicates if log4j is available on the classpath or not. If the
      * check has not yet performed this is <code>null</code>.
@@ -50,15 +53,33 @@ public final class LogFactory
      * check has not yet performed this is <code>null</code>.
      */
     private static Boolean javaLoggingAvailable = null;
-    
+
     /**
      * Returns an instance of Log suitable for logging from the given class.
-     * 
+     *
      * @param clazz the class to create the logger for.
      * @return the created logger.
      */
     public static Log getLog(Class clazz)
     {
+        if (slf4jLoggingAvailable == null)
+        {
+            try
+            {
+                Class.forName("org.slf4j.Logger");
+                slf4jLoggingAvailable = Boolean.TRUE;
+            }
+            catch (Exception e)
+            {
+                slf4jLoggingAvailable = Boolean.FALSE;
+            }
+        }
+
+        if (slf4jLoggingAvailable)
+        {
+            return new Slf4JLogger(clazz);
+        }
+
         if (log4jLoggingAvailable == null)
         {
             try
@@ -71,32 +92,31 @@ public final class LogFactory
                 log4jLoggingAvailable = Boolean.FALSE;
             }
         }
+
         if (log4jLoggingAvailable)
         {
             return new Log4JLogger(clazz);
         }
+
+        if (javaLoggingAvailable == null)
+        {
+            try
+            {
+                Class.forName("java.util.logging.Logger");
+                javaLoggingAvailable = Boolean.TRUE;
+            }
+            catch (Exception e)
+            {
+                javaLoggingAvailable = Boolean.FALSE;
+            }
+        }
+        if (javaLoggingAvailable)
+        {
+            return new JavaLoggingLog(clazz);
+        }
         else
         {
-            if (javaLoggingAvailable == null)
-            {
-                try
-                {
-                    Class.forName("java.util.logging.Logger");
-                    javaLoggingAvailable = Boolean.TRUE;
-                }
-                catch (Exception e)
-                {
-                    javaLoggingAvailable = Boolean.FALSE;
-                }
-            }
-            if (javaLoggingAvailable)
-            {
-                return new JavaLoggingLog(clazz);
-            }
-            else
-            {
-                return new NullLog();
-            }
+            return new NullLog();
         }
     }
 }
