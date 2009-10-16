@@ -77,7 +77,14 @@ public final class LogFactory
 
         if (slf4jLoggingAvailable)
         {
-            return new Slf4JLogger(clazz);
+            try
+            {
+                return new Slf4JLogger(clazz);
+            }
+            catch (Exception e)
+            {
+                slf4jLoggingAvailable = Boolean.FALSE;
+            }
         }
 
         if (log4jLoggingAvailable == null)
