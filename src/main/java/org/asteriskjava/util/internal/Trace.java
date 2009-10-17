@@ -1,7 +1,5 @@
 package org.asteriskjava.util.internal;
 
-import java.io.IOException;
-
 /**
  * Interface for tracing network traffic.
  */
