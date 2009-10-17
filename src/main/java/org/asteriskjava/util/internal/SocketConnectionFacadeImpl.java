@@ -38,26 +38,27 @@ import org.asteriskjava.util.SocketConnectionFacade;
 
 /**
  * Default implementation of the SocketConnectionFacade interface using java.io.
- * 
+ *
  * @author srt
  * @version $Id$
  */
 public class SocketConnectionFacadeImpl implements SocketConnectionFacade
 {
+    static final Pattern CRNL_PATTERN = Pattern.compile("\r\n");
+    static final Pattern NL_PATTERN = Pattern.compile("\n");
     private Socket socket;
     private Scanner scanner;
     private BufferedWriter writer;
-    static final Pattern CRNL_PATTERN = Pattern.compile("\r\n");
-    static final Pattern NL_PATTERN = Pattern.compile("\n");
+    private Trace trace;
 
     /**
      * Creates a new instance for use with the Manager API that uses CRNL ("\r\n") as line delimiter.
-     * 
-     * @param host the foreign host to connect to.
-     * @param port the foreign port to connect to.
-     * @param ssl <code>true</code> to use SSL, <code>false</code> otherwise.
-     * @param timeout 0 incidcates default
-     * @param readTimeout see {@link Socket#setSoTimeout(int)} 
+     *
+     * @param host        the foreign host to connect to.
+     * @param port        the foreign port to connect to.
+     * @param ssl         <code>true</code> to use SSL, <code>false</code> otherwise.
+     * @param timeout     0 incidcates default
+     * @param readTimeout see {@link Socket#setSoTimeout(int)}
      * @throws IOException if the connection cannot be established.
      */
     public SocketConnectionFacadeImpl(String host, int port, boolean ssl, int timeout, int readTimeout) throws IOException
@@ -73,9 +74,13 @@ public class SocketConnectionFacadeImpl implements SocketConnectionFacade
             socket = SocketFactory.getDefault().createSocket();
         }
         socket.setSoTimeout(readTimeout);
-    	socket.connect(new InetSocketAddress(host, port), timeout);
+        socket.connect(new InetSocketAddress(host, port), timeout);
 
         initialize(socket, CRNL_PATTERN);
+        if (System.getProperty(Trace.TRACE_PROPERTY, "false").equalsIgnoreCase("true"))
+        {
+            trace = new FileTrace(socket);
+        }
     }
 
     /**
@@ -104,9 +109,10 @@ public class SocketConnectionFacadeImpl implements SocketConnectionFacade
 
     public String readLine() throws IOException
     {
+        String line;
         try
         {
-            return scanner.next();
+            line = scanner.next();
         }
         catch (IllegalStateException e)
         {
@@ -132,11 +138,21 @@ public class SocketConnectionFacadeImpl implements SocketConnectionFacade
                 throw new IOException("No more lines available: " + e.getMessage());
             }
         }
+
+        if (trace != null)
+        {
+            trace.received(line);
+        }
+        return line;
     }
 
     public void write(String s) throws IOException
     {
         writer.write(s);
+        if (trace != null)
+        {
+            trace.sent(s);
+        }
     }
 
     public void flush() throws IOException
