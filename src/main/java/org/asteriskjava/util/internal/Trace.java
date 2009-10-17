@@ -7,6 +7,10 @@ import java.io.IOException;
  */
 public interface Trace
 {
+    /**
+     * Name of the system property to enable tracing.<p>
+     * To enable tracing add <code>-Dorg.asteriskjava.trace=true</code> to the vm parameters when running Asterisk-Java.
+     */
     String TRACE_PROPERTY = "org.asteriskjava.trace";
 
     /**
