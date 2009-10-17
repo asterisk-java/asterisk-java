@@ -88,7 +88,7 @@ public final class LogFactory
             {
                 return new Slf4JLogger(clazz);
             }
-            catch (Exception e)
+            catch (Throwable e)
             {
                 slf4jLoggingAvailable = Boolean.FALSE;
             }
