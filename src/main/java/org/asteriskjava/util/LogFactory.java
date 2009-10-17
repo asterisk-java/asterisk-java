@@ -54,6 +54,13 @@ public final class LogFactory
      */
     private static Boolean javaLoggingAvailable = null;
 
+    private static ClassLoader classLoader = LogFactory.class.getClassLoader();
+
+    public static void setClassLoader(ClassLoader classLoader)
+    {
+        LogFactory.classLoader = classLoader;
+    }
+
     /**
      * Returns an instance of Log suitable for logging from the given class.
      *
@@ -66,7 +73,7 @@ public final class LogFactory
         {
             try
             {
-                Class.forName("org.slf4j.Logger");
+                classLoader.loadClass("org.slf4j.Logger");
                 slf4jLoggingAvailable = Boolean.TRUE;
             }
             catch (Exception e)
@@ -91,7 +98,7 @@ public final class LogFactory
         {
             try
             {
-                Class.forName("org.apache.log4j.Logger");
+                classLoader.loadClass("org.apache.log4j.Logger");
                 log4jLoggingAvailable = Boolean.TRUE;
             }
             catch (Exception e)
@@ -109,7 +116,7 @@ public final class LogFactory
         {
             try
             {
-                Class.forName("java.util.logging.Logger");
+                classLoader.loadClass("java.util.logging.Logger");
                 javaLoggingAvailable = Boolean.TRUE;
             }
             catch (Exception e)
