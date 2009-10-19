@@ -415,10 +415,17 @@ class ChannelManager
 
         if (channel == null)
         {
-            addNewChannel(
-                    event.getUniqueId(), event.getChannel(), event.getDateReceived(),
-                    event.getCallerIdNum(), event.getCallerIdName(),
-                    ChannelState.valueOf(event.getChannelState()), event.getAccountCode());
+            if (event.getChannel() == null)
+            {
+                logger.info("Ignored NewChannelEvent with empty channel name (uniqueId=" + event.getUniqueId() + ")");
+            }
+            else
+            {
+                addNewChannel(
+                        event.getUniqueId(), event.getChannel(), event.getDateReceived(),
+                        event.getCallerIdNum(), event.getCallerIdName(),
+                        ChannelState.valueOf(event.getChannelState()), event.getAccountCode());
+            }
         }
         else
         {
