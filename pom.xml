@@ -7,7 +7,7 @@
     </parent>
     <artifactId>asterisk-java</artifactId>
     <name>Asterisk-Java</name>
-    <version>1.0.0.M3</version>
+    <version>1.0.0.CI-SNAPSHOT</version>
     <description>The free Java library for Asterisk PBX integration.</description>
     <inceptionYear>2004</inceptionYear>
     <developers>
@@ -39,8 +39,8 @@
         </developer>
     </developers>
     <scm>
-        <connection>scm:svn:http://svn.reucon.net/repos/asterisk-java/tags/asterisk-java-1.0.0.M3</connection>
-        <developerConnection>scm:svn:https://secure.reucon.net/svn/repos/asterisk-java/tags/asterisk-java-1.0.0.M3</developerConnection>
+        <connection>scm:svn:http://svn.reucon.net/repos/asterisk-java/trunk</connection>
+        <developerConnection>scm:svn:https://secure.reucon.net/svn/repos/asterisk-java/trunk</developerConnection>
     </scm>
     <build>
         <plugins>
