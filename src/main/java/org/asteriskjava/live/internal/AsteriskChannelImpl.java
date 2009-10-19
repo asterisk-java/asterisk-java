@@ -164,10 +164,23 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
     {
         super(server);
 
-        if (server == null || name == null || id == null || dateOfCreation == null)
+        if (server == null)
         {
-            throw new IllegalArgumentException("Parameters passed to AsteriskChannelImpl() must not be null.");
+            throw new IllegalArgumentException("Parameter 'server' passed to AsteriskChannelImpl() must not be null.");
         }
+        if (name == null)
+        {
+            throw new IllegalArgumentException("Parameter 'name' passed to AsteriskChannelImpl() must not be null.");
+        }
+        if (id == null)
+        {
+            throw new IllegalArgumentException("Parameter 'id' passed to AsteriskChannelImpl() must not be null.");
+        }
+        if (dateOfCreation == null)
+        {
+            throw new IllegalArgumentException("Parameter 'dateOfCreation' passed to AsteriskChannelImpl() must not be null.");
+        }
+
         this.name = name;
         this.id = id;
         this.dateOfCreation = dateOfCreation;
