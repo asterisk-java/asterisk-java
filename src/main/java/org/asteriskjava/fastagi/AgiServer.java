@@ -25,7 +25,7 @@ import java.io.IOException;
  * To pass a call from Asterisk to the AGI server add an extension to your
  * dialplan that makes use of the AGI() application. For example:
  * <pre>
- * exten => 5551212,1,AGI(agi://192.168.0.2/GetCallerRecord)
+ * exten =&gt; 5551212,1,AGI(agi://192.168.0.2/GetCallerRecord)
  * </pre>
  * Before Asterisk-Java returns control to the dialplan it sets the
  * channel variable <code>AJ_AGISTATUS</code> to one of the following
