@@ -19,9 +19,27 @@ package org.asteriskjava.fastagi;
 import java.io.IOException;
 
 /**
- * Listens for incoming AGI connections, reads the inital data and builds an
+ * Listens for incoming FastAGI connections, reads the inital data and builds an
  * {@link AgiRequest} that is then handed over to the appropriate 
- * {@link org.asteriskjava.fastagi.AgiScript} for processing.
+ * {@link org.asteriskjava.fastagi.AgiScript} for processing.<p>
+ * To pass a call from Asterisk to the AGI server add an extension to your
+ * dialplan that makes use of the AGI() application. For example:
+ * <pre>
+ * exten => 5551212,1,AGI(agi://192.168.0.2/GetCallerRecord)
+ * </pre>
+ * Before Asterisk-Java returns control to the dialplan it sets the
+ * channel variable <code>AJ_AGISTATUS</code> to one of the following
+ * values:
+ * <ul>
+ * <li><code>NOT_FOUND</code> if no AGI script had been configured to
+ * handle the request.
+ * <li><code>SUCCESS</code> if the AGI script was executed successfully. 
+ * <li><code>FAILED</code> if the AGI script terminated abnormally by
+ * throwing an exception or there was an internal error processing it.
+ * </ul>
+ * The <code>AJ_AGISTATUS</code> variable complements the <code>AGISTATUS</code>
+ * variable that is set by Asterisk to <code>SUCCESS</code>, <code>FAILURE</code>
+ * or <code>HANGUP</code> and is available since Asterisk 1.4. 
  * 
  * @see org.asteriskjava.fastagi.AgiServerThread
  * @author srt
