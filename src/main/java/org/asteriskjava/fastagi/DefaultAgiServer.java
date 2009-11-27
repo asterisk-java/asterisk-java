@@ -342,6 +342,13 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
         }
     }
 
+    /**
+     * Creates a new DefaultAgiServer and starts it.
+     *
+     * @param args not used
+     * @throws Exception if the server can't be started
+     * @deprecated since 1.0.0 use {@link org.asteriskjava.Cli} instead.
+     */
     public static void main(String[] args) throws Exception
     {
         final AgiServer server;
