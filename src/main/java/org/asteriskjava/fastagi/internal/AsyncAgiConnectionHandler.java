@@ -78,7 +78,7 @@ public class AsyncAgiConnectionHandler extends AgiConnectionHandler
     }
 
     @Override
-    protected void release()
+    public void release()
     {
         if (writer != null && (getScript() != null || ! isIgnoreMissingScripts()))
         {

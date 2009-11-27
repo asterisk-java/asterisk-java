@@ -4,6 +4,7 @@ import org.asteriskjava.util.DaemonThreadFactory;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
+import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.SynchronousQueue;
@@ -123,8 +124,9 @@ public abstract class AbstractAgiServer
      * Execute the runnable using the configured ThreadPoolExecutor obtained from {@link #getPool()}.
      *
      * @param command the command to run.
+     * @throws RejectedExecutionException if the runnable can't be executed
      */
-    protected void execute(Runnable command)
+    protected void execute(Runnable command) throws RejectedExecutionException
     {
         if (isDie())
         {
@@ -132,14 +134,7 @@ public abstract class AbstractAgiServer
             return;
         }
 
-        try
-        {
-            getPool().execute(command);
-        }
-        catch (Exception e)
-        {
-            handleException("Unable to execute " + command.getClass().getName(), e);
-        }
+        getPool().execute(command);
     }
 
     protected void handleException(String message, Exception e)

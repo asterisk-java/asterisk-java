@@ -11,6 +11,7 @@ import org.asteriskjava.fastagi.internal.AsyncAgiConnectionHandler;
 
 import java.util.Map;
 import java.util.HashMap;
+import java.util.concurrent.RejectedExecutionException;
 
 /**
  * AGI server for AGI over the Manager API (AsyncAGI).<p>
@@ -86,7 +87,16 @@ public class AsyncAgiServer extends AbstractAgiServer implements ManagerEventLis
         {
             connectionHandler = new AsyncAgiConnectionHandler(getMappingStrategy(), asyncAgiEvent);
             setConnectionHandler(connection, channelName, connectionHandler);
-            execute(connectionHandler);
+            try
+            {
+                execute(connectionHandler);
+            }
+            catch (RejectedExecutionException e)
+            {
+                logger.warn("Execution was rejected by pool. Try to increase the pool size.");
+                // release resources if execution was rejected due to the pool size
+                connectionHandler.release();
+            }
         }
         else
         {

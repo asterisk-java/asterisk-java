@@ -76,7 +76,10 @@ public abstract class AgiConnectionHandler implements Runnable
 
     protected abstract AgiWriter createWriter();
 
-    protected abstract void release();
+    /**
+     * Release any open resources like closing a socket.
+     */
+    public abstract void release();
 
     public void run()
     {

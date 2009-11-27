@@ -24,6 +24,7 @@ import org.asteriskjava.util.internal.ServerSocketFacadeImpl;
 import java.io.IOException;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+import java.util.concurrent.RejectedExecutionException;
 
 /**
  * Default implementation of the {@link org.asteriskjava.fastagi.AgiServer} interface for FastAGI.
@@ -232,9 +233,6 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
 
     public void startup() throws IOException, IllegalStateException
     {
-        SocketConnectionFacade socket;
-        AgiConnectionHandler connectionHandler;
-
         try
         {
             serverSocket = createServerSocket();
@@ -251,12 +249,12 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
         // ServerSocket is closed.
         while (true)
         {
+            final SocketConnectionFacade socket;
+
+            // accept connection
             try
             {
                 socket = serverSocket.accept();
-                logger.info("Received connection from " + socket.getRemoteAddress());
-                connectionHandler = new FastAgiConnectionHandler(getMappingStrategy(), socket);
-                execute(connectionHandler);
             }
             catch (IOException e)
             {
@@ -267,9 +265,25 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
                 }
                 else
                 {
-                    handleException("IOException while waiting for connections.", e);
                     // handle exception but continue to run
+                    handleException("IOException while waiting for connections.", e);
+                    continue;
                 }
+            }
+
+            logger.info("Received connection from " + socket.getRemoteAddress());
+
+            // execute connection handler
+            final AgiConnectionHandler connectionHandler = new FastAgiConnectionHandler(getMappingStrategy(), socket);
+            try
+            {
+                execute(connectionHandler);
+            }
+            catch(RejectedExecutionException e)
+            {
+                logger.warn("Execution was rejected by pool. Try to increase the pool size.");
+                // release resources like closing the socket if execution was rejected due to the pool size
+                connectionHandler.release();
             }
         }
         logger.info("AgiServer shut down.");

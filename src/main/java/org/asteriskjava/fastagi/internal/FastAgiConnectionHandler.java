@@ -62,7 +62,7 @@ public class FastAgiConnectionHandler extends AgiConnectionHandler
     }
 
     @Override
-    protected void release()
+    public void release()
     {
         try
         {
