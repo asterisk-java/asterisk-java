@@ -37,6 +37,9 @@ import java.io.IOException;
  * <li><code>FAILED</code> if the AGI script terminated abnormally by
  * throwing an exception or there was an internal error processing it.
  * </ul>
+ * If Asterisk-Java was not able to process the request because its thread
+ * pool was exhausted the <code>AJ_AGISTATUS</code> variable is not set. 
+ * <p>
  * The <code>AJ_AGISTATUS</code> variable complements the <code>AGISTATUS</code>
  * variable that is set by Asterisk to <code>SUCCESS</code>, <code>FAILURE</code>
  * or <code>HANGUP</code> and is available since Asterisk 1.4. 
