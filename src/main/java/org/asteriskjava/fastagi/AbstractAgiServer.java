@@ -52,17 +52,50 @@ public abstract class AbstractAgiServer
     private volatile boolean die = false;
 
     /**
-     * Sets the number of worker threads in the thread pool.
+     * Returns the default number of worker threads in the thread pool.
+     *
+     * @return the default number of worker threads in the thread pool.
+     * @since 1.0.0
+     */
+    public int getPoolSize()
+    {
+        return poolSize;
+    }
+
+    /**
+     * Sets the default number of worker threads in the thread pool.
      * <p/>
      * This is the number of threads that are available even if they are idle.
      * <p/>
      * The default pool size is 10.
      *
      * @param poolSize the size of the worker thread pool.
+     * @throws IllegalArgumentException if the new pool size is negative
+     * @see {@link java.util.concurrent.ThreadPoolExecutor#setCorePoolSize(int)}
      */
-    public void setPoolSize(int poolSize)
+    public synchronized void setPoolSize(int poolSize)
     {
+        if (poolSize < 0)
+        {
+            throw new IllegalArgumentException("New poolSize (" + poolSize + ") is must not be negative");
+        }
+
+        if (pool != null)
+        {
+            pool.setCorePoolSize(poolSize);
+        }
         this.poolSize = poolSize;
+    }
+
+    /**
+     * Returns the maximum number of worker threads in the thread pool.
+     *
+     * @return the maximum number of worker threads in the thread pool.
+     * @since 1.0.0
+     */
+    public int getMaximumPoolSize()
+    {
+        return maximumPoolSize;
     }
 
     /**
@@ -73,9 +106,25 @@ public abstract class AbstractAgiServer
      * The default maximum pool size is 100.
      *
      * @param maximumPoolSize the maximum size of the worker thread pool.
+     * @throws IllegalArgumentException if maximumPoolSize is less than current pool size or less than or equal to 0.
+     * @see {@link java.util.concurrent.ThreadPoolExecutor#setMaximumPoolSize(int)}
      */
-    public void setMaximumPoolSize(int maximumPoolSize)
+    public synchronized void setMaximumPoolSize(int maximumPoolSize)
     {
+        if (maximumPoolSize <= 0)
+        {
+            throw new IllegalArgumentException("New maximumPoolSize (" + maximumPoolSize + ") is must be positive");
+        }
+
+        if (maximumPoolSize < poolSize)
+        {
+            throw new IllegalArgumentException("New maximumPoolSize (" + maximumPoolSize + ") is less than current pool size (" + poolSize + ")");
+        }
+
+        if (pool != null)
+        {
+            pool.setMaximumPoolSize(maximumPoolSize);
+        }
         this.maximumPoolSize = maximumPoolSize;
     }
 

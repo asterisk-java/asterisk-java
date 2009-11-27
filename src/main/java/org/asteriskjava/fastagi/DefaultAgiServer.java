@@ -289,6 +289,9 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
         logger.info("AgiServer shut down.");
     }
 
+    /**
+     * @deprecated use {@link #startup()} instead.
+     */
     public void run()
     {
         try
