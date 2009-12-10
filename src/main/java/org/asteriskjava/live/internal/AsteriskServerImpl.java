@@ -48,6 +48,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
     private static final String SHOW_VERSION_FILES_1_6_COMMAND = "core show file version";
     private static final Pattern SHOW_VERSION_FILES_PATTERN = Pattern.compile("^([\\S]+)\\s+Revision: ([0-9\\.]+)");
     private static final String SHOW_VOICEMAIL_USERS_COMMAND = "show voicemail users";
+    private static final String SHOW_VOICEMAIL_USERS_1_6_COMMAND = "voicemail show users";
     private static final Pattern SHOW_VOICEMAIL_USERS_PATTERN = Pattern.compile("^(\\S+)\\s+(\\S+)\\s+(.{25})");
 
     private final Log logger = LogFactory.getLog(this.getClass());
@@ -617,7 +618,14 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
 
         initializeIfNeeded();
         voicemailboxes = new ArrayList<Voicemailbox>();
-        response = sendAction(new CommandAction(SHOW_VOICEMAIL_USERS_COMMAND));
+        if (eventConnection.getVersion().isAtLeast(AsteriskVersion.ASTERISK_1_6))
+        {
+            response = sendAction(new CommandAction(SHOW_VOICEMAIL_USERS_1_6_COMMAND));
+        }
+        else
+        {
+            response = sendAction(new CommandAction(SHOW_VOICEMAIL_USERS_COMMAND));
+        }
         if (!(response instanceof CommandResponse))
         {
             logger.error("Response to CommandAction(\"" + SHOW_VOICEMAIL_USERS_COMMAND + "\") was not a CommandResponse but " + response);
@@ -1043,6 +1051,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
      * Resets the internal state when the connection to the asterisk server is
      * lost.
      */
+
     private void handleDisconnectEvent(DisconnectEvent disconnectEvent)
     {
         // reset version information as it might have changed while Asterisk restarted
@@ -1061,6 +1070,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
      * Requests the current state from the asterisk server after the connection
      * to the asterisk server is restored.
      */
+
     private void handleConnectEvent(ConnectEvent connectEvent)
     {
         try
