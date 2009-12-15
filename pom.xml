@@ -3,7 +3,7 @@
     <parent>
         <groupId>org.asteriskjava</groupId>
         <artifactId>asterisk-java-parent</artifactId>
-        <version>1</version>
+        <version>2-SNAPSHOT</version>
     </parent>
     <artifactId>asterisk-java</artifactId>
     <name>Asterisk-Java</name>
@@ -113,7 +113,7 @@ org.apache.log4j;resolution:=optional
                 <version>2.0</version>
             </plugin>
         </plugins>
-        <finalName>${artifactId}</finalName>
+        <finalName>${project.artifactId}</finalName>
     </build>
     <dependencies>
         <dependency>
