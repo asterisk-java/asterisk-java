@@ -47,6 +47,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
+                <version>2.3</version>
                 <configuration>
                     <archive>
                         <manifest>
@@ -91,7 +92,7 @@ org.apache.log4j;resolution:=optional
             </plugin>
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
-                <version>2.2-beta-2</version>
+                <version>2.2-beta-5</version>
                 <configuration>
                     <descriptors>
                         <descriptor>src/main/assembly/bin.xml</descriptor>
@@ -110,7 +111,7 @@ org.apache.log4j;resolution:=optional
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>cobertura-maven-plugin</artifactId>
-                <version>2.0</version>
+                <version>2.3</version>
             </plugin>
         </plugins>
         <finalName>${project.artifactId}</finalName>
@@ -119,13 +120,13 @@ org.apache.log4j;resolution:=optional
         <dependency>
             <groupId>org.easymock</groupId>
             <artifactId>easymock</artifactId>
-            <version>2.4</version>
+            <version>2.5.2</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.5</version>
+            <version>4.7</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -145,7 +146,7 @@ org.apache.log4j;resolution:=optional
         <plugins>
             <plugin>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.5</version>
+                <version>2.6.1</version>
                 <configuration>
                     <groups>
                         <group>
@@ -167,7 +168,7 @@ org.apache.log4j;resolution:=optional
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>cobertura-maven-plugin</artifactId>
-                <version>2.2</version>
+                <version>2.3</version>
                 <configuration>
                     <formats>
                         <format>html</format>

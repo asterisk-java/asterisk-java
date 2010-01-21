@@ -19,11 +19,12 @@
         <url>https://secure.reucon.net/build</url>
         <use-favourites>false</use-favourites>
         <bamboo2>true</bamboo2>
-        <isBamboo2M9>false</isBamboo2M9>
+        <isBamboo2M9>true</isBamboo2M9>
         <plans>
           <plan key="AJ-DEF" />
           <plan key="AJ-NIGHTLY" />
         </plans>
+        <isBamboo24>false</isBamboo24>
       </bamboo>
     </servers>
     <default-crucible-server>89c4100c-3c20-4d7d-8611-0dbe1bee742e</default-crucible-server>
