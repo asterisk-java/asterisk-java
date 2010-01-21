@@ -27,7 +27,7 @@ public class FileTrace implements Trace
     private final Log logger = LogFactory.getLog(FileTrace.class);
 
     // ok to share instance as access to this object is synchronized anyway
-    private final DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSzzz");
+    private final DateFormat df = new SimpleDateFormat("yyyyMMddHHmmsszzz");
     private Charset charset = Charset.forName("UTF-8");
     private FileChannel channel;
     private boolean exceptionLogged = false;
@@ -72,11 +72,11 @@ public class FileTrace implements Trace
         sb.append(df.format(new Date()));
         sb.append("_");
         sb.append(socket.getLocalAddress().getHostAddress());
-        sb.append(":");
+        sb.append("_");
         sb.append(socket.getLocalPort());
         sb.append("_");
         sb.append(socket.getInetAddress().getHostAddress());
-        sb.append(":");
+        sb.append("_");
         sb.append(socket.getPort());
         sb.append(FILE_SUFFIX);
         return sb.toString();
