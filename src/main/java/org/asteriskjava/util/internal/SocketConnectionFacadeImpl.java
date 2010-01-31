@@ -44,8 +44,8 @@ import org.asteriskjava.util.SocketConnectionFacade;
  */
 public class SocketConnectionFacadeImpl implements SocketConnectionFacade
 {
-    static final Pattern CRNL_PATTERN = Pattern.compile("\r\n");
-    static final Pattern NL_PATTERN = Pattern.compile("\n");
+    public static final Pattern CRNL_PATTERN = Pattern.compile("\r\n");
+    public static final Pattern NL_PATTERN = Pattern.compile("\n");
     private Socket socket;
     private Scanner scanner;
     private BufferedWriter writer;
@@ -63,6 +63,22 @@ public class SocketConnectionFacadeImpl implements SocketConnectionFacade
      */
     public SocketConnectionFacadeImpl(String host, int port, boolean ssl, int timeout, int readTimeout) throws IOException
     {
+        this(host, port, ssl, timeout, readTimeout, CRNL_PATTERN);
+    }
+    
+    /**
+     * Creates a new instance for use with the Manager API that uses the given line delimiter.
+     *
+     * @param host        the foreign host to connect to.
+     * @param port        the foreign port to connect to.
+     * @param ssl         <code>true</code> to use SSL, <code>false</code> otherwise.
+     * @param timeout     0 incidcates default
+     * @param readTimeout see {@link Socket#setSoTimeout(int)}
+     * @param lineDelimiter a {@link Pattern} for matching the line delimiter for the socket
+     * @throws IOException if the connection cannot be established.
+     */
+    public SocketConnectionFacadeImpl(String host, int port, boolean ssl, int timeout, int readTimeout, Pattern lineDelimiter) throws IOException
+    {
         Socket socket;
 
         if (ssl)
@@ -76,7 +92,7 @@ public class SocketConnectionFacadeImpl implements SocketConnectionFacade
         socket.setSoTimeout(readTimeout);
         socket.connect(new InetSocketAddress(host, port), timeout);
 
-        initialize(socket, CRNL_PATTERN);
+        initialize(socket, lineDelimiter);
         if (System.getProperty(Trace.TRACE_PROPERTY, "false").equalsIgnoreCase("true"))
         {
             trace = new FileTrace(socket);
