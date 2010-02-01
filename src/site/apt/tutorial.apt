@@ -602,8 +602,8 @@ public class HelloLiveEverything implements AsteriskServerListener, PropertyChan
 
     public static void main(String[] args) throws Exception
     {
-        HelloLiveEvents helloLiveEvents = new HelloLiveEvents();
-        helloLiveEvents.run();
+        HelloLiveEverything helloLiveEverything = new HelloLiveEverything();
+        helloLiveEverything.run();
     }
 }
 +--
