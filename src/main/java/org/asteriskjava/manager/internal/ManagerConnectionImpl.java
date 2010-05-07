@@ -578,11 +578,12 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
             throw new AuthenticationFailedException(loginResponse.getMessage());
         }
 
-        state = CONNECTED;
-
         logger.info("Successfully logged in");
 
         version = determineVersion();
+
+        state = CONNECTED;
+
         writer.setTargetVersion(version);
 
         logger.info("Determined Asterisk version: " + version);
@@ -842,7 +843,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         // In general sending actions is only allowed while connected, though
         // there are a few exceptions, these are handled here:
         if ((state == CONNECTING || state == RECONNECTING)
-                && (action instanceof ChallengeAction || action instanceof LoginAction))
+                && (action instanceof ChallengeAction || action instanceof LoginAction || isShowVersionCommandAction(action)))
         {
             // when (re-)connecting challenge and login actions are ok.
         } // NOPMD
@@ -880,6 +881,11 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         }
 
         writer.sendAction(action, internalActionId);
+    }
+
+    private boolean isShowVersionCommandAction(ManagerAction action)
+    {
+        return action instanceof CommandAction && ((CommandAction)action).getCommand().startsWith("show version");
     }
 
     private Class<? extends ManagerResponse> getExpectedResponseClass(Class<? extends ManagerAction> actionClass)
