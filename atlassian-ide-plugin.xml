@@ -6,6 +6,11 @@
         <name>reucon</name>
         <url>https://secure.reucon.net/issues</url>
         <dontUseBasicAuth>false</dontUseBasicAuth>
+        <basicHttpUser>
+          <username />
+          <password />
+          <passwordStored>true</passwordStored>
+        </basicHttpUser>
       </jira>
       <crucible>
         <server-id>89c4100c-3c20-4d7d-8611-0dbe1bee742e</server-id>
