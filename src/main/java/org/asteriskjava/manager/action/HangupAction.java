@@ -62,6 +62,7 @@ public class HangupAction extends AbstractManagerAction
     public HangupAction(String channel, int cause)
     {
         this.channel = channel;
+        this.cause = cause;
     }
 
     /**
