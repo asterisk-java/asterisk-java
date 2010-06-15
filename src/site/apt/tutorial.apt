@@ -252,8 +252,8 @@ bindaddr = 0.0.0.0
 [manager]
 secret=pa55w0rd
 permit=0.0.0.0/0.0.0.0
-read=system,call,log,verbose,agent,command,user
-write=system,call,log,verbose,agent,command,user
+read=all
+write=all
 +--
 
   This will enable the Manager AP, allow access from any IP address using the
