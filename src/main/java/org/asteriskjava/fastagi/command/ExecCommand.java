@@ -39,7 +39,7 @@ public class ExecCommand extends AbstractAgiCommand
     /**
      * The options to pass to the application.
      */
-    private String options;
+    private String[] options;
 
     /**
      * Creates a new ExecCommand.
@@ -58,7 +58,7 @@ public class ExecCommand extends AbstractAgiCommand
      * @param application the name of the application to execute.
      * @param options the options to pass to the application.
      */
-    public ExecCommand(String application, String options)
+    public ExecCommand(String application, String... options)
     {
         super();
         this.application = application;
@@ -90,24 +90,23 @@ public class ExecCommand extends AbstractAgiCommand
      * 
      * @return the options to pass to the application.
      */
-    public String getOptions()
+    public String[] getOptions()
     {
         return options;
     }
 
     /**
-     * Sets the options to pass to the application. Multiple options are
-     * separated by the pipe character ('|').
+     * Sets the options to pass to the application.
      * 
      * @param options the options to pass to the application.
      */
-    public void setOptions(String options)
+    public void setOptions(String... options)
     {
         this.options = options;
     }
 
     @Override
-   public String buildCommand()
+    public String buildCommand()
     {
         return "EXEC " + escapeAndQuote(application) + " "
                 + escapeAndQuote(options);

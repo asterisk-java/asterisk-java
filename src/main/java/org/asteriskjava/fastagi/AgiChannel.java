@@ -237,7 +237,7 @@ public interface AgiChannel
      *         not found.
      * @since 0.2
      */
-    int exec(String application, String options) throws AgiException;
+    int exec(String application, String... options) throws AgiException;
 
     /**
      * Sets the context for continuation upon exiting the application.

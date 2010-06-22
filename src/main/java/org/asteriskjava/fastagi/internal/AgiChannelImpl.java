@@ -164,7 +164,7 @@ public class AgiChannelImpl implements AgiChannel
         return lastReply.getResultCode();
     }
 
-    public int exec(String application, String options) throws AgiException
+    public int exec(String application, String... options) throws AgiException
     {
         sendCommand(new ExecCommand(application, options));
         return lastReply.getResultCode();

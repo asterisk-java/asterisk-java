@@ -57,8 +57,28 @@ public abstract class AbstractAgiCommand implements Serializable, AgiCommand
         return "\"" + tmp + "\""; // add quotes
     }
 
+    protected String escapeAndQuote(String[] options)
+    {
+        if (options == null)
+        {
+            return escapeAndQuote((String) null);
+        }
+
+        final StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < options.length; i++)
+        {
+            if (i > 0)
+            {
+                sb.append(",");
+            }
+            sb.append(options[i]);
+        }
+
+        return escapeAndQuote(sb.toString());
+    }
+
     @Override
-   public String toString()
+    public String toString()
     {
         StringBuffer sb;
 

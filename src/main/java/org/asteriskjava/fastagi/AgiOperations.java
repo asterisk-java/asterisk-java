@@ -184,7 +184,7 @@ public class AgiOperations implements AgiChannel
         return getChannel().exec(application);
     }
 
-    public int exec(String application, String options)
+    public int exec(String application, String... options)
             throws AgiException
     {
         return getChannel().exec(application, options);
