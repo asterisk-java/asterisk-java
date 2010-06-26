@@ -137,6 +137,14 @@ class FastAgiReader implements AgiReader
 
         reply = new AgiReplyImpl(lines);
 
-        return reply;
+        // Special handling for gosub, see AJ-257
+        if (reply.getStatus() == AgiReply.SC_TRYING)
+        {
+        	return readReply();
+        }
+        else
+        {
+        	return reply;
+        }
     }
 }

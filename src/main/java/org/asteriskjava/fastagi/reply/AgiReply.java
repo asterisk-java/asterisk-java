@@ -33,6 +33,15 @@ import java.io.Serializable;
 public interface AgiReply extends Serializable
 {
     /**
+     * Status code (100) indicating Asterisk needs to process the
+     * AgiCommand and will report a final result code soon.
+     * <p>
+     * This code is only used by Asterisk-Java as an intermediate status and is
+     * never returned to the user.
+     */
+    int SC_TRYING = 100;
+
+    /**
      * Status code (200) indicating Asterisk successfully processed the
      * AgiCommand.
      */
@@ -104,6 +113,7 @@ public interface AgiReply extends Serializable
      * Returns the status code.<p>
      * Supported status codes are:
      * <ul>
+     * <li>100 Trying
      * <li>200 Success
      * <li>510 Invalid or unknown command
      * <li>511 Command Not Permitted on a dead channel (since Asterisk 1.6)
@@ -111,6 +121,7 @@ public interface AgiReply extends Serializable
      * </ul>
      * 
      * @return the status code.
+     * @see #SC_TRYING
      * @see #SC_SUCCESS
      * @see #SC_INVALID_OR_UNKNOWN_COMMAND
      * @see #SC_DEAD_CHANNEL

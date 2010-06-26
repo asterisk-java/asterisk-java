@@ -796,4 +796,31 @@ public interface AgiChannel
      * @since 1.0.0
      */
     void continueAt(String context, String extension, String priority) throws AgiException;
+
+    /**
+     * Calls a subroutine in the dialplan
+     * <p/>
+     * This method is available since Asterisk 1.6.
+     *
+     * @param context   the context of the called subroutine.
+     * @param extension the extension in the called context.
+     * @param priority  the priority of the called extension.
+     * @since 1.0.0
+     */
+    public void gosub(String context, String extension, String priority) throws AgiException;
+
+    /**
+     * Calls a subroutine in the dialplan<p>
+     * <p/>
+     * This method is available since Asterisk 1.6.
+     *
+     * @param context   the context of the called subroutine.
+     * @param extension the extension in the called context.
+     * @param priority  the priority of the called extension.
+     * @param arguments optional arguments to be passed to the subroutine. They should be separated by comma.
+     *                  They will accessible in the form of ${ARG1}, ${ARG2}, etc in the subroutine body.
+     * @since 1.0.0
+     */
+    public void gosub(String context, String extension, String priority, String... arguments) throws AgiException;
+
 }

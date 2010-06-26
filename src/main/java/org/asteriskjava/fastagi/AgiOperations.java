@@ -475,4 +475,14 @@ public class AgiOperations implements AgiChannel
     {
         getChannel().continueAt(context, extension, priority);
     }
+    
+    public void gosub(String context, String extension, String priority) throws AgiException
+    {
+    	getChannel().gosub(context, extension, priority);
+    }
+    
+    public void gosub(String context, String extension, String priority, String... arguments) throws AgiException
+    {
+    	getChannel().gosub(context, extension, priority, arguments);
+    }
 }

@@ -498,4 +498,14 @@ public class AgiChannelImpl implements AgiChannel
         setExtension(extension);
         setPriority(priority);
     }
+    
+    public void gosub(String context, String extension, String priority) throws AgiException
+    {
+        sendCommand(new GosubCommand(context, extension, priority));
+    }
+
+    public void gosub(String context, String extension, String priority, String... arguments) throws AgiException
+    {
+        sendCommand(new GosubCommand(context, extension, priority, arguments));
+    }
 }
