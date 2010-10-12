@@ -319,7 +319,7 @@ public class QueueMemberEvent extends ResponseEvent
      * @return the name of the member supplied for logging when the member is added
      * @deprecated since 1.0.0. Use {@link #getName()} instead.
      */
-    public String getMemberName()
+    @Deprecated public String getMemberName()
     {
         return name;
     }

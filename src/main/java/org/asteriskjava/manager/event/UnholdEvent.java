@@ -30,7 +30,7 @@ package org.asteriskjava.manager.event;
  * @deprecated as of 1.0.0, use {@link org.asteriskjava.manager.event.HoldEvent} and its
  *             {@link #isUnhold()} method instead.
  */
-public class UnholdEvent extends HoldEvent
+@Deprecated public class UnholdEvent extends HoldEvent
 {
     /**
      * Serializable version identifier.

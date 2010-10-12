@@ -86,7 +86,7 @@ public class RegistryEvent extends ManagerEvent
      * @since 0.3
      * @deprecated
      */
-    public String getChannelDriver()
+    @Deprecated public String getChannelDriver()
     {
         return channelType;
     }
@@ -98,7 +98,7 @@ public class RegistryEvent extends ManagerEvent
      * @since 0.3
      * @deprecated
      */
-    public void setChannelDriver(String channelDriver)
+    @Deprecated public void setChannelDriver(String channelDriver)
     {
         this.channelType = channelDriver;
     }
@@ -110,7 +110,7 @@ public class RegistryEvent extends ManagerEvent
      * @see #getChannelType()
      * @deprecated
      */
-    public String getChannel()
+    @Deprecated public String getChannel()
     {
         return channelType;
     }
@@ -121,7 +121,7 @@ public class RegistryEvent extends ManagerEvent
      * @see #setChannelType(String)
      * @deprecated
      */
-    public void setChannel(String channel)
+    @Deprecated public void setChannel(String channel)
     {
         this.channelType = channel;
     }
@@ -177,7 +177,7 @@ public class RegistryEvent extends ManagerEvent
      * @deprecated Please do not use this method it is a workaround for Asterisk
      *             1.0.x servers. See Asterisk bug 4916.
      */
-    public void setUser(String username)
+    @Deprecated public void setUser(String username)
     {
         this.username = username;
     }

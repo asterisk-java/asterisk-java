@@ -144,7 +144,7 @@ public class PeerEntryEvent extends ResponseEvent
      * @return the port of the peer.
      * @deprecated since 1.0.0, use {@link #getPort()} instead.
      */
-    public Integer getIpPort()
+    @Deprecated public Integer getIpPort()
     {
         return port;
     }

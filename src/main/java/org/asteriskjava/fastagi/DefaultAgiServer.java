@@ -145,7 +145,7 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
      * @param bindPort the port to bind to.
      * @deprecated use {@see #setPort(int)} instead
      */
-    public void setBindPort(int bindPort)
+    @Deprecated public void setBindPort(int bindPort)
     {
         this.port = bindPort;
     }
@@ -292,7 +292,7 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
     /**
      * @deprecated use {@link #startup()} instead.
      */
-    public void run()
+    @Deprecated public void run()
     {
         try
         {
@@ -352,7 +352,7 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
      * @throws Exception if the server can't be started
      * @deprecated since 1.0.0 use {@link org.asteriskjava.Cli} instead.
      */
-    public static void main(String[] args) throws Exception
+    @Deprecated public static void main(String[] args) throws Exception
     {
         final AgiServer server;
 

@@ -163,7 +163,7 @@ public class DefaultManagerConnection implements ManagerConnection
      * @param defaultTimeout default timeout in milliseconds
      * @deprecated use {@link #setDefaultResponseTimeout(long)} instead
      */
-    public void setDefaultTimeout(long defaultTimeout)
+    @Deprecated public void setDefaultTimeout(long defaultTimeout)
     {
         impl.setDefaultResponseTimeout(defaultTimeout);
     }
@@ -206,7 +206,7 @@ public class DefaultManagerConnection implements ManagerConnection
      * @deprecated no longer needed as we now use an interrupt based response
      *             checking approach.
      */
-    public void setSleepTime(long sleepTime)
+    @Deprecated public void setSleepTime(long sleepTime)
     {
 
     }

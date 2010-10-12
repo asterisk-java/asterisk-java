@@ -91,7 +91,7 @@ public abstract class AbstractChannelEvent extends ManagerEvent
      * @deprecated
      * @see #getCallerIdNum()
      */
-    public String getCallerId()
+    @Deprecated public String getCallerId()
     {
         return callerIdNum;
     }
@@ -102,7 +102,7 @@ public abstract class AbstractChannelEvent extends ManagerEvent
      * @param callerId the Caller*ID of the channel.
      * @deprecated
      */
-    public void setCallerId(String callerId)
+    @Deprecated public void setCallerId(String callerId)
     {
         this.callerIdNum = callerId;
     }

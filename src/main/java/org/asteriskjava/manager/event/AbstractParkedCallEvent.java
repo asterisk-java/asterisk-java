@@ -112,7 +112,7 @@ public abstract class AbstractParkedCallEvent extends ManagerEvent
      * @return the Caller*ID number of the parked channel.
      * @deprecated since 1.0.0. Use {@link #getCallerIdNum()} instead.
      */
-    public String getCallerId()
+    @Deprecated public String getCallerId()
     {
         return callerIdNum;
     }

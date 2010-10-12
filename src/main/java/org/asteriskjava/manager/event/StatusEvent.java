@@ -80,7 +80,7 @@ public class StatusEvent extends ResponseEvent
      * @return the Caller*ID Number of this channel or <code>null</code> if none is available.
      * @deprecated
      */
-    public String getCallerId()
+    @Deprecated public String getCallerId()
     {
         return callerIdNum;
     }
@@ -166,7 +166,7 @@ public class StatusEvent extends ResponseEvent
      * @return the account code of this channel.
      * @deprecated since 1.0.0, use {@link #getAccountCode()} instead.
      */
-    public String getAccount()
+    @Deprecated public String getAccount()
     {
         return accountCode;
     }
@@ -228,7 +228,7 @@ public class StatusEvent extends ResponseEvent
      * @return the state of the channel as a descriptive text.
      * @deprecated use {@link #getChannelStateDesc()} instead.
      */
-    public String getState()
+    @Deprecated public String getState()
     {
         return channelStateDesc;
     }
@@ -316,7 +316,7 @@ public class StatusEvent extends ResponseEvent
      * @return the name of the linked channel if this channel is bridged.
      * @deprecated as of 1.0.0, use {@link #getBridgedChannel()} instead.
      */
-    public String getLink()
+    @Deprecated public String getLink()
     {
         return bridgedChannel;
     }

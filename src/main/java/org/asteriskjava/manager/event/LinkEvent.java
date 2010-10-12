@@ -29,7 +29,7 @@ package org.asteriskjava.manager.event;
  * @deprecated as of 1.0.0, use {@link org.asteriskjava.manager.event.BridgeEvent} and
  *             {@link BridgeEvent#isLink()} instead
  */
-public class LinkEvent extends BridgeEvent
+@Deprecated public class LinkEvent extends BridgeEvent
 {
     /**
      * Serializable version identifier.

@@ -80,7 +80,7 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
         return state;
     }
 
-    public boolean getPaused()
+    @Deprecated public boolean getPaused()
     {
         return isPaused();
     }

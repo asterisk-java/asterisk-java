@@ -209,7 +209,7 @@ public class AgiRequestImpl implements AgiRequest
         return request.get("language");
     }
 
-    public String getCallerId()
+    @Deprecated public String getCallerId()
     {
         return getCallerIdNumber();
     }

@@ -32,7 +32,7 @@ package org.asteriskjava.manager.event;
  * @deprecated as of 1.0.0, use {@link org.asteriskjava.manager.event.MeetMeTalkingEvent} instead and check for
  *             {@link MeetMeTalkingEvent#getStatus()}.
  */
-public class MeetMeStopTalkingEvent extends MeetMeTalkingEvent
+@Deprecated public class MeetMeStopTalkingEvent extends MeetMeTalkingEvent
 {
     /**
      * Serializable version identifier.

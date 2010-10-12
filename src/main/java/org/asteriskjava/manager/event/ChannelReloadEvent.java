@@ -130,7 +130,7 @@ public class ChannelReloadEvent extends ManagerEvent
      * @return the type of channel that was reloaded (e.g. SIP)
      * @deprecated use {@link #getChannelType()} instead.
      */
-    public String getChannel()
+    @Deprecated public String getChannel()
     {
         return channelType;
     }

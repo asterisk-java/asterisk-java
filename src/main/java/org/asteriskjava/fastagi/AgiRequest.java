@@ -93,7 +93,7 @@ public interface AgiRequest
      *         is "unknown" <code>null</code> is returned.
      * @deprecated as of 0.3, use {@link #getCallerIdNumber()} instead.
      */
-    String getCallerId();
+    @Deprecated String getCallerId();
 
     /**
      * Returns the Caller*ID number, for example "1234".<p>

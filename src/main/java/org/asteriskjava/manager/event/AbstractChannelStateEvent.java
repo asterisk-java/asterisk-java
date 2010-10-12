@@ -107,7 +107,7 @@ public abstract class AbstractChannelStateEvent extends AbstractChannelEvent
      * @deprecated as of 1.0.0, use {@link #getChannelStateDesc()} instead or even better switch to numeric
      *             values as returned by {@link #getChannelState()}.
      */
-    public String getState()
+    @Deprecated public String getState()
     {
         return channelStateDesc;
     }

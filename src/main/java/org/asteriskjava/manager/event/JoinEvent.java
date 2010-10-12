@@ -46,7 +46,7 @@ public class JoinEvent extends QueueEvent
      * @return the Caller*ID number of the channel that joined the queue
      * @deprecated since 1.0.0, use {@link #getCallerIdNum()} instead.
      */
-    public String getCallerId()
+    @Deprecated public String getCallerId()
     {
         return callerIdNum;
     }

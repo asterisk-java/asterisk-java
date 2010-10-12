@@ -172,7 +172,7 @@ public class AgentCalledEvent extends ManagerEvent
      * @return the Caller ID number of the caller's channel.
      * @deprecated as of 1.0.0, use {@link #getCallerIdNum()} instead.
      */
-    public String getCallerId()
+    @Deprecated public String getCallerId()
     {
         return callerIdNum;
     }

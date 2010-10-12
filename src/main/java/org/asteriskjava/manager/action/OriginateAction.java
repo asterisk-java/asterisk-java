@@ -290,7 +290,7 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
      * @param timeout the timeout in milliseconds
      * @deprecated use {@see #setTimeout(Long)} instead.
      */
-    public void setTimeout(Integer timeout)
+    @Deprecated public void setTimeout(Integer timeout)
     {
         this.timeout = timeout.longValue();
     }
@@ -317,7 +317,7 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
      *
      * @deprecated use {@link #setVariables(Map)} instead.
      */
-    public void setVariable(String variable)
+    @Deprecated public void setVariable(String variable)
     {
         final StringTokenizer st;
 

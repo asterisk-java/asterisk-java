@@ -30,7 +30,7 @@ package org.asteriskjava.manager.action;
  * @since 0.2
  * @deprecated use {@link org.asteriskjava.manager.action.QueueAddAction} instead.
  */
-public class AgentCallbackLoginAction extends AbstractManagerAction
+@Deprecated public class AgentCallbackLoginAction extends AbstractManagerAction
 {
     /**
      * Serializable version identifier.

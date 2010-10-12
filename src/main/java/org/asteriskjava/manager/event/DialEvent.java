@@ -134,7 +134,7 @@ public class DialEvent extends ManagerEvent
      * @return the name of the source channel.
      * @deprecated as of 1.0.0, use {@link #getChannel()} instead.
      */
-    public String getSrc()
+    @Deprecated public String getSrc()
     {
         return channel;
     }
@@ -192,7 +192,7 @@ public class DialEvent extends ManagerEvent
      * @return the Caller*ID or "<unknown>" if none has been set.
      * @deprecated as of 1.0.0, use {@link #getCallerIdNum()} instead.
      */
-    public String getCallerId()
+    @Deprecated public String getCallerId()
     {
         return callerIdNum;
     }
@@ -255,7 +255,7 @@ public class DialEvent extends ManagerEvent
      * @return the unique ID of the source channel.
      * @deprecated as of 1.0.0, use {@link #getUniqueId()} instead.
      */
-    public String getSrcUniqueId()
+    @Deprecated public String getSrcUniqueId()
     {
         return uniqueId;
     }

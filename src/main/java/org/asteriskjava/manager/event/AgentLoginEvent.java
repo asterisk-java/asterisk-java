@@ -63,7 +63,7 @@ public class AgentLoginEvent extends ManagerEvent
      * 
      * @deprecated use {@link #getChannel()} instead.
      */
-    public String getLoginChan()
+    @Deprecated public String getLoginChan()
     {
         return channel;
     }

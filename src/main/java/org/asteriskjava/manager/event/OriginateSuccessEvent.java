@@ -27,7 +27,7 @@ package org.asteriskjava.manager.event;
  * @author srt
  * @version $Id$
  */
-public class OriginateSuccessEvent extends OriginateResponseEvent
+@Deprecated public class OriginateSuccessEvent extends OriginateResponseEvent
 {
     /**
      * Serializable version identifier

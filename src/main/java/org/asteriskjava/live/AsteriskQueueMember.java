@@ -63,7 +63,7 @@ public interface AsteriskQueueMember extends LiveObject
      * @return paused <code>true</code> is this queue member is paused, <code>false</code> otherwise.
      * @deprecated as of 1.0.0. Use {@link #isPaused()} instead.
      */
-    boolean getPaused();
+    @Deprecated boolean getPaused();
 
     /**
      * Returns whether this member is currently paused..
