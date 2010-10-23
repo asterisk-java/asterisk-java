@@ -179,15 +179,21 @@ public class ManagerReaderImpl implements ManagerReader
                     int delimiterIndex;
                     int delimiterLength;
 
-                    //delimiterIndex = line.indexOf(": ");
                     // begin of workaround for Astersik bug 13319
                     // see AJ-77
-                    delimiterIndex = line.indexOf(" ");
-                    delimiterLength = 1;
-                    if (delimiterIndex > 0 && line.charAt(delimiterIndex - 1) == ':')
+                    // Use this workaround only when line starts from "From " and "To "
+                    int isFromAtStart, isToAtStart;
+                    isFromAtStart = line.indexOf("From ");
+                    isToAtStart = line.indexOf("To ");
+                    if (isFromAtStart == 0 || isToAtStart == 0)
                     {
-                        delimiterIndex--;
-                        delimiterLength++;
+                        delimiterIndex = line.indexOf(" ");
+                        delimiterLength = 1;
+                    }
+                    else
+                    {
+                        delimiterIndex = line.indexOf(": ");
+                        delimiterLength = 2;
                     }
                     // end of workaround for Astersik bug 13319
 

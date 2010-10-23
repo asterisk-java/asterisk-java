@@ -29,14 +29,13 @@ package org.asteriskjava.manager.event;
  * @version $Id$
  * @since 0.2
  */
-public class FaxReceivedEvent extends ManagerEvent
+public class FaxReceivedEvent extends AbstractFaxEvent
 {
     /**
      * Serial version identifier.
      */
-    private static final long serialVersionUID = -1409738380177538949L;
+    private static final long serialVersionUID = 1L;
 
-    private String channel;
     private String exten;
     private String callerId;
     private String remoteStationId;
@@ -49,26 +48,6 @@ public class FaxReceivedEvent extends ManagerEvent
     public FaxReceivedEvent(Object source)
     {
         super(source);
-    }
-
-    /**
-     * Returns the name of the channel the fax has been recieved on.
-     * 
-     * @return the name of the channel the fax has been recieved on.
-     */
-    public String getChannel()
-    {
-        return channel;
-    }
-
-    /**
-     * Sets the name of the channel the fax has been recieved on.
-     * 
-     * @param channel the name of the channel the fax has been recieved on.
-     */
-    public void setChannel(String channel)
-    {
-        this.channel = channel;
     }
 
     /**

@@ -71,7 +71,9 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
         registerEventClass(DndStateEvent.class);
         registerEventClass(DtmfEvent.class);
         registerEventClass(ExtensionStatusEvent.class);
+        registerEventClass(FaxDocumentStatusEvent.class);
         registerEventClass(FaxReceivedEvent.class);
+        registerEventClass(FaxStatusEvent.class);
         registerEventClass(HangupEvent.class);
         registerEventClass(HoldedCallEvent.class);
         registerEventClass(HoldEvent.class);
@@ -132,10 +134,13 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
         registerEventClass(RtcpSentEvent.class);
         registerEventClass(RtpReceiverStatEvent.class);
         registerEventClass(RtpSenderStatEvent.class);
+        registerEventClass(SendFaxStatusEvent.class);
+        registerEventClass(SendFaxEvent.class);
         registerEventClass(ShowDialplanCompleteEvent.class);
         registerEventClass(ShutdownEvent.class);
         registerEventClass(StatusEvent.class);
         registerEventClass(StatusCompleteEvent.class);
+        registerEventClass(T38FaxStatusEvent.class);
         registerEventClass(TransferEvent.class);
         registerEventClass(UnholdEvent.class);
         registerEventClass(UnlinkEvent.class);
