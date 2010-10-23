@@ -1,5 +1,7 @@
 package org.asteriskjava.manager.response;
 
+import java.util.Map;
+
 /**
  * Response to a {@link org.asteriskjava.manager.action.SipShowPeerAction}.
  *
@@ -17,6 +19,7 @@ public class SipShowPeerResponse extends ManagerResponse
     private String chanObjectType;
     private Boolean secretExist;
     private Boolean md5SecretExist;
+	private Boolean remoteSecretExist;
     private String context;
     private String language;
     private String accountCode;
@@ -38,6 +41,10 @@ public class SipShowPeerResponse extends ManagerResponse
     private Boolean sipAuthInsecure;
     private Boolean sipNatSupport;
     private Boolean acl;
+	private Boolean sipT38support;
+	private String sipT38ec;
+	private Integer sipT38MaxDtgrm;
+	private Boolean sipDirectMedia;
     private Boolean sipCanReinvite;
     private Boolean sipPromiscRedir;
     private Boolean sipUserPhone;
@@ -61,8 +68,9 @@ public class SipShowPeerResponse extends ManagerResponse
     private String sipUserAgent;
     private String regContact;
     private Integer qualifyFreq; // "%d ms"
+	private String parkingLot;
 
-    // TODO support for ChanVariable properties
+	private Map<String, String> chanVariable;
 
     public String getChannelType()
     {
@@ -114,7 +122,17 @@ public class SipShowPeerResponse extends ManagerResponse
         this.md5SecretExist = md5SecretExist;
     }
 
-    public String getContext()
+	public Boolean getRemoteSecretExist()
+	{
+		return remoteSecretExist;
+	}
+
+	public void setRemoteSecretExist(Boolean remoteSecretExist)
+	{
+		this.remoteSecretExist = remoteSecretExist;
+	}
+
+	public String getContext()
     {
         return context;
     }
@@ -324,7 +342,47 @@ public class SipShowPeerResponse extends ManagerResponse
         this.acl = acl;
     }
 
-    public Boolean getSipCanReinvite()
+	public Boolean getSipT38support()
+	{
+		return sipT38support;
+	}
+
+	public void setSipT38support(Boolean sipT38support)
+	{
+		this.sipT38support = sipT38support;
+	}
+
+	public String getSipT38ec()
+	{
+		return sipT38ec;
+	}
+
+	public void setSipT38ec(String sipT38ec)
+	{
+		this.sipT38ec = sipT38ec;
+	}
+
+	public Integer getSipT38MaxDtgrm()
+	{
+		return sipT38MaxDtgrm;
+	}
+
+	public void setSipT38MaxDtgrm(Integer sipT38MaxDtgrm)
+	{
+		this.sipT38MaxDtgrm = sipT38MaxDtgrm;
+	}
+
+	public Boolean getSipDirectMedia()
+	{
+		return sipDirectMedia;
+	}
+
+	public void setSipDirectMedia(Boolean sipDirectMedia)
+	{
+		this.sipDirectMedia = sipDirectMedia;
+	}
+
+	public Boolean getSipCanReinvite()
     {
         return sipCanReinvite;
     }
@@ -534,7 +592,17 @@ public class SipShowPeerResponse extends ManagerResponse
         this.sipUserAgent = sipUserAgent;
     }
 
-    public String getRegContact()
+	public String getParkingLot()
+	{
+		return parkingLot;
+	}
+
+	public void setParkingLot(String parkingLot)
+	{
+		this.parkingLot = parkingLot;
+	}
+
+	public String getRegContact()
     {
         return regContact;
     }
@@ -567,4 +635,12 @@ public class SipShowPeerResponse extends ManagerResponse
         }
         this.qualifyFreq = stringToInteger(qualifyFreq, "ms");
     }
+
+	public Map<String, String> getChanVariable() {
+		return chanVariable;
+	}
+
+	public void setChanVariable(final Map<String, String> chanVariable) {
+		this.chanVariable = chanVariable;
+	}
 }
