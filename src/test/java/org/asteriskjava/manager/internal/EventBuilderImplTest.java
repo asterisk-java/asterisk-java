@@ -16,13 +16,12 @@
  */
 package org.asteriskjava.manager.internal;
 
+import junit.framework.TestCase;
+import org.asteriskjava.manager.event.*;
+
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Arrays;
-
-import junit.framework.TestCase;
-
-import org.asteriskjava.manager.event.*;
 
 public class EventBuilderImplTest extends TestCase
 {
@@ -441,4 +440,16 @@ public class EventBuilderImplTest extends TestCase
         assertEquals("Invalid size of variables property", 1, event.getVariables().size());
     }
 
+    public void testBuildEventWithSpace()
+    {
+        T38FaxStatusEvent event;
+
+        properties.put("event", "T38FaxStatus");
+        properties.put("t38 session duration", "120");
+        event = (T38FaxStatusEvent) eventBuilder.buildEvent(this, properties);
+
+        assertNotNull(event);
+        assertEquals("Returned event is of wrong type", T38FaxStatusEvent.class, event.getClass());
+        assertEquals("Property 'T38 Session Duration' is not set correctly", new Integer(120), event.getT38SessionDuration());
+    }
 }
