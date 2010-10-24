@@ -16,6 +16,9 @@
  */
 package org.asteriskjava.manager.event;
 
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+
 /**
  * A FaxDocumentStatusEvent is an event of Digium's Fax For Asterisk add-on.
  */
@@ -25,8 +28,6 @@ public class T38FaxStatusEvent extends AbstractFaxEvent
      * Serial version identifier.
      */
     private static final long serialVersionUID = -1L;
-    private String channel;
-    private Integer faxSession;
     private String maxLag;
     private String totalLag;
     private String averageLag;
@@ -272,5 +273,55 @@ public class T38FaxStatusEvent extends AbstractFaxEvent
         this.unrecoverablePackets = unrecoverablePackets;
     }
 
+    // convenience methods
+    public Integer getTotalLagInMilliSeconds()
+    {
+        final String totalLagStripped = stripUnit(this.totalLag);
+        return totalLagStripped == null ? null : Integer.valueOf(totalLagStripped);
+    }
 
+    public Integer getMaxLagInMilliSeconds()
+    {
+        final String maxLagStripped = stripUnit(this.maxLag);
+        return maxLagStripped == null ? null : Integer.valueOf(maxLagStripped);
+    }
+
+    public Double getT38SessionDurationInSeconds()
+    {
+        final String t38SessionDurationStripped = stripUnit(this.t38SessionDuration);
+        return t38SessionDurationStripped == null ? null : Double.valueOf(t38SessionDurationStripped);
+    }
+
+    public Double getAverageLagInMilliSeconds()
+    {
+        final String averageLagStripped = stripUnit(this.averageLag);
+        return averageLagStripped == null ? null : Double.valueOf(averageLagStripped);
+    }
+
+    public Integer getAverageTxDataRateInBps()
+    {
+        final String averageTxDataRateStripped = stripUnit(this.averageTxDataRate);
+        return averageTxDataRateStripped == null ? null : Integer.valueOf(averageTxDataRateStripped);
+    }
+
+    public Integer getAverageRxDataRateInBps()
+    {
+        final String averageRxDataRateStripped = stripUnit(this.averageRxDataRate);
+        return averageRxDataRateStripped == null ? null : Integer.valueOf(averageRxDataRateStripped);
+    }
+
+    String stripUnit(String s)
+    {
+        if (s == null || s.length() == 0)
+        {
+            return null;
+        }
+
+        int index = s.indexOf(' ');
+        if (index < 0)
+        {
+            return s;
+        }
+        return s.substring(0, index);
+    }
 }
