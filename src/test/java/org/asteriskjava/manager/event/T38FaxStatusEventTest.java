@@ -7,7 +7,7 @@ import junit.framework.TestCase;
  */
 public class T38FaxStatusEventTest extends TestCase
 {
-    public void testStringUnit()
+    public void testStripUnit()
     {
         T38FaxStatusEvent event = new T38FaxStatusEvent(this);
         assertEquals("0.022", event.stripUnit("0.022 sec."));
