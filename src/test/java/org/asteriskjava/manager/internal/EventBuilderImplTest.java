@@ -450,6 +450,6 @@ public class EventBuilderImplTest extends TestCase
 
         assertNotNull(event);
         assertEquals("Returned event is of wrong type", T38FaxStatusEvent.class, event.getClass());
-        assertEquals("Property 'T38 Session Duration' is not set correctly", new Integer(120), event.getT38SessionDuration());
+        assertEquals("Property 'T38 Session Duration' is not set correctly", "120", event.getT38SessionDuration());
     }
 }
