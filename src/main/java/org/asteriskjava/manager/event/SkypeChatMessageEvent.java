@@ -17,6 +17,10 @@
 package org.asteriskjava.manager.event;
 
 /**
+ * A SkypeChatMessageEvent is triggered when a Skype Chat message is received.<p>
+ * It is implemented in <code>chan_skye.c</code>.<p>
+ * Available with Skype for Asterisk.
+ *
  * @since 1.0.0
  */
 public class SkypeChatMessageEvent extends ManagerEvent

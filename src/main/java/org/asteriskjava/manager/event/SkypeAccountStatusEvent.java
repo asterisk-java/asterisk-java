@@ -19,6 +19,11 @@
 package org.asteriskjava.manager.event;
 
 /**
+ * A SkypeAccountStatusEvent is sent when a Skype for Asterisk user logs in or out
+ * of the Skype community.<p>
+ * It is implemented in <code>chan_skye.c</code>.<p>
+ * Available with Skype for Asterisk.
+ *
  * @since 1.0.0
  */
 public class SkypeAccountStatusEvent extends ManagerEvent
