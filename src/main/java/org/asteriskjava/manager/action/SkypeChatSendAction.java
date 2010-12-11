@@ -16,10 +16,6 @@
  */
 package org.asteriskjava.manager.action;
 
-import org.asteriskjava.util.Base64;
-
-import java.nio.charset.Charset;
-
 /**
  * The SkypeChatSendAction sends a Skype Chat message to a buddy of a Skype for Asterisk user.<p>
  * Available with Skype for Asterisk.
@@ -49,7 +45,7 @@ public class SkypeChatSendAction extends AbstractManagerAction
      *
      * @param user the Skype username of the sender of this chat message.
      * @param skypename the Skype username of the recipient of this chat message.
-     * @param message the message to send. Must not contain newlines.
+     * @param message the message to send. Must not contain newlines but you can use "\r".
      */
     public SkypeChatSendAction(String user, String skypename, String message)
     {
@@ -109,7 +105,7 @@ public class SkypeChatSendAction extends AbstractManagerAction
     }
 
     /**
-     * Sets the message to send. Must not contain newlines.
+     * Sets the message to send. Must not contain newlines but you can use "\r".
      *
      * @param message the message to send.
      */
