@@ -138,6 +138,9 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
         registerEventClass(RtpSenderStatEvent.class);
         registerEventClass(SendFaxStatusEvent.class);
         registerEventClass(SendFaxEvent.class);
+        registerEventClass(SkypeAccountStatusEvent.class);
+        registerEventClass(SkypeBuddyStatusEvent.class);
+        registerEventClass(SkypeChatMessageEvent.class);
         registerEventClass(ShowDialplanCompleteEvent.class);
         registerEventClass(ShutdownEvent.class);
         registerEventClass(StatusEvent.class);
