@@ -17,7 +17,7 @@
 package org.asteriskjava.manager.event;
 
 /**
- * A SkypeBuddylistCompleteEvent is triggered in response to a SkypeBuddiesAction when
+ * A SkypeBuddyListCompleteEvent is triggered in response to a SkypeBuddiesAction when
  * all buddies have been reported.<p>
  * It is implemented in <code>chan_skype.c</code>.<p>
  * Available with Skype for Asterisk.
@@ -25,7 +25,7 @@ package org.asteriskjava.manager.event;
  * @see org.asteriskjava.manager.action.SkypeBuddiesAction
  * @since 1.0.0
  */
-public class SkypeBuddylistCompleteEvent extends ResponseEvent
+public class SkypeBuddyListCompleteEvent extends ResponseEvent
 {
     /**
      * Serial version identifier.
@@ -33,7 +33,7 @@ public class SkypeBuddylistCompleteEvent extends ResponseEvent
     private static final long serialVersionUID = 1L;
     private Integer listItems;
 
-    public SkypeBuddylistCompleteEvent(Object source)
+    public SkypeBuddyListCompleteEvent(Object source)
     {
         super(source);
     }

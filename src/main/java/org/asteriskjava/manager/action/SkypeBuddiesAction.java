@@ -16,19 +16,18 @@
  */
 package org.asteriskjava.manager.action;
 
-import org.asteriskjava.manager.event.AgentsCompleteEvent;
 import org.asteriskjava.manager.event.ResponseEvent;
-import org.asteriskjava.manager.event.SkypeBuddylistCompleteEvent;
+import org.asteriskjava.manager.event.SkypeBuddyListCompleteEvent;
 
 /**
  * The SkypeBuddiesAction retrieves the buddy list of a Skype for Asterisk user
  * including the full name and status of each buddy.<p>
  * For each agent a SkypeBuddyEntryEvent is generated. After the full buddy list has been
- * reported a SkypeBuddylistCompleteEvent is generated.<p>
+ * reported a SkypeBuddyListCompleteEvent is generated.<p>
  * Available with Skype for Asterisk.
  *
  * @see org.asteriskjava.manager.event.SkypeBuddyEntryEvent
- * @see org.asteriskjava.manager.event.SkypeBuddylistCompleteEvent
+ * @see org.asteriskjava.manager.event.SkypeBuddyListCompleteEvent
  * @since 1.0.0
  */
 public class SkypeBuddiesAction extends AbstractManagerAction implements EventGeneratingAction
@@ -89,6 +88,6 @@ public class SkypeBuddiesAction extends AbstractManagerAction implements EventGe
 
     public Class<? extends ResponseEvent> getActionCompleteEventClass()
     {
-        return SkypeBuddylistCompleteEvent.class;
+        return SkypeBuddyListCompleteEvent.class;
     }
 }
