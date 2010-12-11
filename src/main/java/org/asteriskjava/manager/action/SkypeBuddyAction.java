@@ -16,12 +16,16 @@
  */
 package org.asteriskjava.manager.action;
 
+import org.asteriskjava.manager.ExpectedResponse;
+import org.asteriskjava.manager.response.SkypeBuddyResponse;
+
 /**
  * The SkypeBuddyAction retrieves the detais of a buddy for a Skype for Asterisk user.<p>
  * Available with Skype for Asterisk.
  *
  * @since 1.0.0
  */
+@ExpectedResponse(SkypeBuddyResponse.class)
 public class SkypeBuddyAction extends AbstractManagerAction
 {
     /**

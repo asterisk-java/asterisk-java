@@ -18,6 +18,9 @@
  */
 package org.asteriskjava.manager.event;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * A SkypeBuddyStatusEvent indicates a status change for a contact in a Skype for Asterisk user's
  * contact list.<p>
@@ -47,6 +50,8 @@ public class SkypeBuddyStatusEvent extends ManagerEvent
     public static final String BUDDYSTATUS_OFFLINEFORWARDENABLEL = "Offline (Call Forwarding Enabled)";
     public static final String BUDDYSTATUS_UNKNOWN = "Unknown";
 
+    private static final Pattern BUDDY_PATTERN = Pattern.compile("Skype/(.*)@(.*)");
+
     /**
      * The name of the buddy
      */
@@ -64,9 +69,14 @@ public class SkypeBuddyStatusEvent extends ManagerEvent
     }
 
     /**
-     * Returns the name of the buddy.
+     * Returns the address of the buddy. The format is "Skype/user@buddy" where user is the Skype username of
+     * the Skype for Asterisk user and buddy is the Skype username of the buddy who changed his status.<p>
+     * For ease of use consider using {@link #getUser()} and {@link #getBuddySkypename()} which already do
+     * the parsing.
      *
-     * @return the name of the buddy.
+     * @return the address of the buddy.
+     * @see #getUser()
+     * @see #getBuddySkypename()
      */
     public String getBuddy()
     {
@@ -74,9 +84,43 @@ public class SkypeBuddyStatusEvent extends ManagerEvent
     }
 
     /**
-     * Sets the name of buddy.
+     * Returns the Skype username of the Skype for Asterisk user whose buddy changed his status.
      *
-     * @param buddy the name of the buddy.
+     * @return the Skype username of the Skype for Asterisk user.
+     */
+    public String getUser()
+    {
+        return buddyGroup(1);
+    }
+
+    /**
+     * Returns the Skype username of the buddy who changed his status.
+     *
+     * @return the Skype username of the buddy who changed his status.
+     */
+    public String getBuddySkypename()
+    {
+        return buddyGroup(2);
+    }
+
+    private String buddyGroup(int group)
+    {
+        if (buddy == null)
+        {
+            return null;
+        }
+        final Matcher buddyMatcher = BUDDY_PATTERN.matcher(buddy);
+        if (buddyMatcher.matches())
+        {
+            return buddyMatcher.group(group);
+        }
+        return null;
+    }
+
+    /**
+     * Sets the address of buddy.
+     *
+     * @param buddy the address of the buddy.
      */
     public void setBuddy(String buddy)
     {
