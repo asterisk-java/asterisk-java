@@ -35,6 +35,7 @@ public class SkypeBuddyResponse extends ManagerResponse
     private String phoneHome;
     private String phoneOffice;
     private String phoneMobile;
+    private String about;
 
     public String getSkypename()
     {
@@ -144,5 +145,15 @@ public class SkypeBuddyResponse extends ManagerResponse
     public void setPhoneMobile(String phoneMobile)
     {
         this.phoneMobile = phoneMobile;
+    }
+
+    public String getAbout()
+    {
+        return about;
+    }
+
+    public void setAbout(String about)
+    {
+        this.about = about;
     }
 }

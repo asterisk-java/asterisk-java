@@ -21,7 +21,7 @@ import org.asteriskjava.util.Base64;
 import java.nio.charset.Charset;
 
 /**
- * A SkypeChatMessageEvent is triggered when a Skype Chat message is received.<p>
+ * A SkypeChatMessageEvent is triggered when a Skype Chat message is sent or received.<p>
  * It is implemented in <code>chan_skye.c</code>.<p>
  * Available with Skype for Asterisk.
  *
@@ -105,6 +105,7 @@ public class SkypeChatMessageEvent extends ManagerEvent
 
     /**
      * Returns the decoded message.
+     *
      * @return the decoded message.
      */
     public String getDecodedMessage()

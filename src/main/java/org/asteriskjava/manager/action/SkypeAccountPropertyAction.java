@@ -43,6 +43,7 @@ public class SkypeAccountPropertyAction extends AbstractManagerAction
     public static final String PROPERTY_PHONE_HOME = "phone_home";
     public static final String PROPERTY_PHONE_OFFICE = "phone_office";
     public static final String PROPERTY_PHONE_MOBILE = "phone_mobile";
+    public static final String PROPERTY_ABOUT = "about";
 
     /**
      * Creates a new SkypeAccountPropertyAction.
@@ -153,6 +154,11 @@ public class SkypeAccountPropertyAction extends AbstractManagerAction
     public void setPhoneMobile(String phoneMobile)
     {
         variables.put(PROPERTY_PHONE_MOBILE, phoneMobile);
+    }
+
+    public void setAbout(String about)
+    {
+        variables.put(PROPERTY_ABOUT, about);
     }
 
     /**
