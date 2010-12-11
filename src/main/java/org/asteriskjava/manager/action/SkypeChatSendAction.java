@@ -21,7 +21,7 @@ import org.asteriskjava.util.Base64;
 import java.nio.charset.Charset;
 
 /**
- * The SkypeChatSendAction sends a Skype Chat message a buddy to the buddy list of a Skype for Asterisk user.<p>
+ * The SkypeChatSendAction sends a Skype Chat message to a buddy of a Skype for Asterisk user.<p>
  * Available with Skype for Asterisk.
  *
  * @since 1.0.0
@@ -33,8 +33,7 @@ public class SkypeChatSendAction extends AbstractManagerAction
      */
     static final long serialVersionUID = 1L;
     private String user;
-    private String from;
-    private String to;
+    private String skypename;
     private String message;
 
     /**
@@ -48,15 +47,15 @@ public class SkypeChatSendAction extends AbstractManagerAction
     /**
      * Creates a new SkypeChatSendAction with the given parameters.
      *
-     * @param from the Skype username of the sender of this chat message.
-     * @param to the Skype username of the recipient of this chat message.
-     * @param decodedMessage the message to send.
+     * @param user the Skype username of the sender of this chat message.
+     * @param skypename the Skype username of the recipient of this chat message.
+     * @param message the message to send. Must not contain newlines.
      */
-    public SkypeChatSendAction(String from, String to, String decodedMessage)
+    public SkypeChatSendAction(String user, String skypename, String message)
     {
-        this.from = from;
-        this.to = to;
-        setDecodedMessage(decodedMessage);
+        this.user = user;
+        this.skypename = skypename;
+        this.message = message;
     }
 
     /**
@@ -64,19 +63,19 @@ public class SkypeChatSendAction extends AbstractManagerAction
      *
      * @return the Skype username of the recipient of this chat message.
      */
-    public String getTo()
+    public String getSkypename()
     {
-        return to;
+        return skypename;
     }
 
     /**
      * Sets the Skype username of the recipient of this chat message.
      *
-     * @param to the Skype username of the recipient of this chat message.
+     * @param skypename the Skype username of the recipient of this chat message.
      */
-    public void setTo(String to)
+    public void setSkypename(String skypename)
     {
-        this.to = to;
+        this.skypename = skypename;
     }
 
     /**
@@ -84,25 +83,25 @@ public class SkypeChatSendAction extends AbstractManagerAction
      *
      * @return the Skype username of the sender of this chat message.
      */
-    public String getFrom()
+    public String getUser()
     {
-        return from;
+        return user;
     }
 
     /**
      * Sets the Skype username of the sender of this chat message.
      *
-     * @param from the Skype username of the sender of this chat message.
+     * @param user the Skype username of the sender of this chat message.
      */
-    public void setFrom(String from)
+    public void setUser(String user)
     {
-        this.from = from;
+        this.user = user;
     }
 
     /**
-     * Returns the Base64 encoded message.
+     * Returns the message to send.
      *
-     * @return the Base64 encoded message.
+     * @return the message to send.
      */
     public String getMessage()
     {
@@ -110,28 +109,13 @@ public class SkypeChatSendAction extends AbstractManagerAction
     }
 
     /**
-     * Sets the Base64 encoded message.
+     * Sets the message to send. Must not contain newlines.
      *
-     * @param message the Base64 encoded message.
+     * @param message the message to send.
      */
     public void setMessage(String message)
     {
         this.message = message;
-    }
-
-    /**
-     * Sets the message to send. The decoded message will be converted to Base64.
-     *
-     * @param decodedMessage the message to send.
-     * @see #setMessage(String)
-     */
-    public void setDecodedMessage(String decodedMessage)
-    {
-        if (decodedMessage == null)
-        {
-            this.message = null;
-        }
-        this.message = Base64.byteArrayToBase64(message.getBytes(Charset.forName("UTF-8")));
     }
 
     /**
