@@ -39,8 +39,8 @@
         </developer>
     </developers>
     <scm>
-        <connection>scm:svn:http://svn.reucon.net/repos/asterisk-java/trunk</connection>
-        <developerConnection>scm:svn:https://secure.reucon.net/svn/repos/asterisk-java/trunk</developerConnection>
+        <connection>scm:git:git://github.com/srt/asterisk-java.git</connection>
+        <developerConnection>scm:git:git@github.com:srt/asterisk-java.git</developerConnection>
     </scm>
     <build>
         <plugins>
@@ -152,7 +152,7 @@ org.apache.log4j;resolution:=optional
         <plugins>
             <plugin>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.6.1</version>
+                <version>2.7</version>
                 <configuration>
                     <groups>
                         <group>
@@ -183,24 +183,24 @@ org.apache.log4j;resolution:=optional
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>jxr-maven-plugin</artifactId>
-                <version>2.0-beta-1</version>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jxr-plugin</artifactId>
+                <version>2.2</version>
             </plugin>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>surefire-report-maven-plugin</artifactId>
-                <version>2.0-beta-1</version>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-report-plugin</artifactId>
+                <version>2.6</version>
             </plugin>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>changelog-maven-plugin</artifactId>
-                <version>2.0-beta-1</version>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-changelog-plugin</artifactId>
+                <version>2.2</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-pmd-plugin</artifactId>
-                <version>2.4</version>
+                <version>2.5</version>
                 <configuration>
                     <targetJdk>1.5</targetJdk>
                     <minimumTokens>100</minimumTokens>
@@ -213,7 +213,7 @@ org.apache.log4j;resolution:=optional
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>findbugs-maven-plugin</artifactId>
-                <version>1.2</version>
+                <version>2.3.1</version>
             </plugin>
             <!--
                    <plugin>
