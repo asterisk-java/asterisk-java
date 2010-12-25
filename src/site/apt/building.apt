@@ -7,13 +7,13 @@
 
 Building with Maven
 
-  Retrieve the latest version of Asterisk-Java from SVN:
+  Retrieve the latest version of Asterisk-Java from github:
 
 ---
-svn co http://svn.reucon.net/repos/asterisk-java/trunk asterisk-java
+git clone https://github.com/srt/asterisk-java.git
 ---
   
-  Then change to the created asterisk-java directory and use Maven2 to
+  Then change to the created asterisk-java directory and use Maven 3 to
   build the project
   
 ---
