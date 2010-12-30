@@ -600,10 +600,10 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     {
         int attempts = 0;
 
-        if ("Asterisk Call Manager/1.1".equals(protocolIdentifier.value))
-        {
-            return AsteriskVersion.ASTERISK_1_6;
-        }
+//        if ("Asterisk Call Manager/1.1".equals(protocolIdentifier.value))
+//        {
+//            return AsteriskVersion.ASTERISK_1_6;
+//        }
 
         while (attempts++ < MAX_VERSION_ATTEMPTS)
         {
@@ -636,11 +636,29 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                     {
                         return AsteriskVersion.ASTERISK_1_4;
                     }
-
                     return AsteriskVersion.ASTERISK_1_2;
                 }
                 else if (line1 != null && line1.contains("No such command"))
                 {
+                	final ManagerResponse coreShowVersionResponse = sendAction(new CommandAction("core show version"), defaultResponseTimeout * 2);
+                	
+                	if(coreShowVersionResponse != null && coreShowVersionResponse instanceof CommandResponse){
+                		final List<String> coreShowVersionResult = ((CommandResponse) coreShowVersionResponse).getResult();
+                		
+                		if(coreShowVersionResult != null && coreShowVersionResult.size() > 0){
+                			final String coreLine = coreShowVersionResult.get(0);
+                			
+                			 if (coreLine != null && coreLine.startsWith("Asterisk 1.6"))
+                             {
+                                 return AsteriskVersion.ASTERISK_1_6;
+                             }
+                             else if (coreLine != null && coreLine.startsWith("Asterisk 1.8"))
+                             {
+                                 return AsteriskVersion.ASTERISK_1_8;
+                             }
+                		}
+                	}
+                	
                     try
                     {
                         Thread.sleep(RECONNECTION_VERSION_INTERVAL);

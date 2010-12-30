@@ -53,7 +53,13 @@ public class AsteriskVersion implements Comparable<AsteriskVersion>, Serializabl
      * @since 1.0.0
      */
     public static final AsteriskVersion ASTERISK_1_6 = new AsteriskVersion(160, "Asterisk 1.6");
-
+    
+    /**
+     * Represents the Asterisk 1.8 series.
+     *
+     * @since 1.0.0
+     */
+    public static final AsteriskVersion ASTERISK_1_8 = new AsteriskVersion(180, "Asterisk 1.8");
     /**
      * Serial version identifier.
      */
