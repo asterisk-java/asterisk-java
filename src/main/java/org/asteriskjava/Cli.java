@@ -101,6 +101,17 @@ public class Cli
         {
             return version;
         }
+        finally
+        {
+            try
+            {
+                is.close();
+            }
+            catch (IOException e)
+            {
+                // ignore
+            }
+        }
 
         version = properties.getProperty("version", version);
         return version;

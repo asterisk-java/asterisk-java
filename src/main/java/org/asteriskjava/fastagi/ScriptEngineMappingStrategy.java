@@ -24,6 +24,7 @@ import javax.script.ScriptEngineManager;
 import javax.script.Bindings;
 import javax.script.ScriptException;
 import java.io.*;
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.List;
 import java.util.ArrayList;
@@ -74,8 +75,8 @@ public class ScriptEngineMappingStrategy implements MappingStrategy
      */
     public ScriptEngineMappingStrategy(String[] scriptPath, String[] libPath)
     {
-        this.scriptPath = scriptPath;
-        this.libPath = libPath;
+        setScriptPath(scriptPath);
+        setLibPath(libPath);
     }
 
     /**
@@ -86,7 +87,7 @@ public class ScriptEngineMappingStrategy implements MappingStrategy
      */
     public void setScriptPath(String[] scriptPath)
     {
-        this.scriptPath = scriptPath;
+        this.scriptPath = Arrays.copyOf(scriptPath, scriptPath.length);;
     }
 
     /**
@@ -97,7 +98,7 @@ public class ScriptEngineMappingStrategy implements MappingStrategy
      */
     public void setLibPath(String[] libPath)
     {
-        this.libPath = libPath;
+        this.libPath = Arrays.copyOf(libPath, libPath.length);
     }
 
     public AgiScript determineScript(AgiRequest request)
