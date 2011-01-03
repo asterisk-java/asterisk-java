@@ -34,6 +34,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.manager.*;
@@ -74,6 +76,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     private static final int DEFAULT_PORT = 5038;
     private static final int RECONNECTION_VERSION_INTERVAL = 500;
     private static final int MAX_VERSION_ATTEMPTS = 4;
+    private static final Pattern SHOW_VERSION_PATTERN = Pattern.compile("^(core )?show version.*");
 
     private static final AtomicLong idCounter = new AtomicLong(0);
 
@@ -901,9 +904,13 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         writer.sendAction(action, internalActionId);
     }
 
-    private boolean isShowVersionCommandAction(ManagerAction action)
+    boolean isShowVersionCommandAction(ManagerAction action)
     {
-        return action instanceof CommandAction && ((CommandAction)action).getCommand().startsWith("show version");
+        if (! (action instanceof CommandAction)) {
+            return false;
+        }
+        final Matcher showVersionMatcher = SHOW_VERSION_PATTERN.matcher(((CommandAction)action).getCommand());
+        return showVersionMatcher.matches();
     }
 
     private Class<? extends ManagerResponse> getExpectedResponseClass(Class<? extends ManagerAction> actionClass)
