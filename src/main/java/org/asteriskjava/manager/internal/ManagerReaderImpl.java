@@ -153,6 +153,7 @@ public class ManagerReaderImpl implements ManagerReader
                 // this works quite well.
                 if (line.startsWith("Asterisk Call Manager/") ||
                         line.startsWith("Asterisk Call Manager Proxy/") ||
+                        line.startsWith("Asterisk Manager Proxy/") ||
                         line.startsWith("OpenPBX Call Manager/") ||
                         line.startsWith("CallWeaver Call Manager/"))
                 {
