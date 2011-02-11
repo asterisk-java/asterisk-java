@@ -21,8 +21,8 @@ How To Create and Submit a Patch
 * Generating a Patch
   
   The preferred way of creating a patch is to create it against latest 
-  SVN. This ensures that the patch works with the latest version of 
-  the source code and makes it easier to apply the patch.
+  development branch. This ensures that the patch works with the latest
+  version of the source code and makes it easier to apply the patch.
   
   To generate the patch you need to check out a copy of the source code 
   from SVN. Look a the {{{cvs-usage.html}CVS Howto}} for

@@ -26,11 +26,6 @@
 		<alt>Asterisk-Java</alt>
 	</bannerLeft>
 
-	<bannerRight>
-		<name>Sourceforge-Banner</name>
-		<src>http://sourceforge.net/sflogo.php?group_id=118998&amp;type=5</src>
-	</bannerRight>
-
 	<skin>
 		<groupId>org.asteriskjava</groupId>
 		<artifactId>asterisk-java-skin</artifactId>
