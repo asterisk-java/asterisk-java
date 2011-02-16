@@ -3,7 +3,7 @@
     <parent>
         <groupId>org.asteriskjava</groupId>
         <artifactId>asterisk-java-parent</artifactId>
-        <version>2-SNAPSHOT</version>
+        <version>2</version>
     </parent>
     <artifactId>asterisk-java</artifactId>
     <name>Asterisk-Java</name>
@@ -202,7 +202,7 @@ org.apache.log4j;resolution:=optional
                 <artifactId>maven-pmd-plugin</artifactId>
                 <version>2.5</version>
                 <configuration>
-                    <targetJdk>1.5</targetJdk>
+                    <targetJdk>1.6</targetJdk>
                     <minimumTokens>100</minimumTokens>
                     <linkXRef>true</linkXRef>
                     <rulesets>

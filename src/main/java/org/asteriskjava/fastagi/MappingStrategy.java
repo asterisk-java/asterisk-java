@@ -38,8 +38,9 @@ public interface MappingStrategy
      * the given request.
      * 
      * @param request the request to lookup.
+     * @param channel the channel.
      * @return the AgiScript instance to handle this request 
      *         or <code>null</code> if none could be determined by this strategy.
      */
-    AgiScript determineScript(AgiRequest request);
+    AgiScript determineScript(AgiRequest request, AgiChannel channel);
 }

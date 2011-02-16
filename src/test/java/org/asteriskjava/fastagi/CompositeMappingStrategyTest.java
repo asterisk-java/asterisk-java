@@ -16,7 +16,7 @@ public class CompositeMappingStrategyTest extends TestCase
     public void testAJ37ResourceBundle()
     {
         AgiRequest request = new SimpleAgiRequest();
-        AgiScript script = strategy.determineScript(request);
+        AgiScript script = strategy.determineScript(request, null);
 
         assertNotNull("no script determined", script);
         assertEquals("incorrect script determined", script.getClass(), HelloAgiScript.class);
@@ -25,7 +25,7 @@ public class CompositeMappingStrategyTest extends TestCase
     public void testAJ37ClassName()
     {
         AgiRequest request = new SimpleAgiRequest("org.asteriskjava.fastagi.HelloAgiScript");
-        AgiScript script = strategy.determineScript(request);
+        AgiScript script = strategy.determineScript(request, null);
 
         assertNotNull("no script determined", script);
         assertEquals("incorrect script determined", script.getClass(), HelloAgiScript.class);

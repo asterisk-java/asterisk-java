@@ -33,7 +33,8 @@ public class StaticMappingStrategy implements MappingStrategy
         this.agiScript = agiScript;
     }
 
-    public AgiScript determineScript(AgiRequest request)
+    @Override
+    public AgiScript determineScript(AgiRequest request, AgiChannel channel)
     {
         return agiScript;
     }

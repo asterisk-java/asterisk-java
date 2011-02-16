@@ -101,7 +101,8 @@ public class ScriptEngineMappingStrategy implements MappingStrategy
         this.libPath = Arrays.copyOf(libPath, libPath.length);
     }
 
-    public AgiScript determineScript(AgiRequest request)
+    @Override
+    public AgiScript determineScript(AgiRequest request, AgiChannel channel)
     {
         // check is a file corresponding to the AGI request is found on the scriptPath
         final File file = searchFile(request.getScript(), scriptPath);

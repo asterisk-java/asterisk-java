@@ -100,7 +100,8 @@ public class CompositeMappingStrategy implements MappingStrategy
         this.strategies = new ArrayList<MappingStrategy>(strategies);
     }
 
-    public AgiScript determineScript(AgiRequest request)
+    @Override
+    public AgiScript determineScript(AgiRequest request, AgiChannel channel)
     {
         AgiScript script = null;
 
@@ -111,7 +112,7 @@ public class CompositeMappingStrategy implements MappingStrategy
 
         for (MappingStrategy strategy : strategies)
         {
-            script = strategy.determineScript(request);
+            script = strategy.determineScript(request, channel);
             if (script != null)
             {
                 break;

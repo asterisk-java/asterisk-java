@@ -101,7 +101,7 @@ public abstract class AgiConnectionHandler implements Runnable
 
             if (mappingStrategy != null)
             {
-                script = mappingStrategy.determineScript(request);
+                script = mappingStrategy.determineScript(request, channel);
             }
             
             if (script == null && ! ignoreMissingScripts)

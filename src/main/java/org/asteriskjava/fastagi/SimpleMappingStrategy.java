@@ -74,7 +74,8 @@ public class SimpleMappingStrategy implements MappingStrategy
         this.mappings = mappings;
     }
 
-    public AgiScript determineScript(AgiRequest request)
+    @Override
+    public AgiScript determineScript(AgiRequest request, AgiChannel channel)
     {
         if (mappings == null)
         {

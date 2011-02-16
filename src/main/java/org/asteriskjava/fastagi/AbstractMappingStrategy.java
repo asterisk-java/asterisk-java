@@ -45,6 +45,14 @@ public abstract class AbstractMappingStrategy implements MappingStrategy
     
     private ClassLoader defaultClassLoader = null;
 
+    @Override
+    public AgiScript determineScript(AgiRequest request, AgiChannel channel)
+    {
+        return determineScript(request);
+    }
+
+    public abstract AgiScript determineScript(AgiRequest request);
+
     /**
      * Returns the ClassLoader to use for loading AgiScript classes and load
      * other resources like the mapping properties file.<p>
