@@ -42,10 +42,11 @@ public class FastAgiConnectionHandler extends AgiConnectionHandler
      *
      * @param mappingStrategy the strategy to use to determine which script to run.
      * @param socket the socket connection to handle.
+     * @param agiChannelFactory The factory to use for creating new AgiChannel instances.
      */
-    public FastAgiConnectionHandler(MappingStrategy mappingStrategy, SocketConnectionFacade socket)
+    public FastAgiConnectionHandler(MappingStrategy mappingStrategy, SocketConnectionFacade socket, AgiChannelFactory agiChannelFactory)
     {
-        super(mappingStrategy);
+        super(mappingStrategy, agiChannelFactory);
         this.socket = socket;
     }
 

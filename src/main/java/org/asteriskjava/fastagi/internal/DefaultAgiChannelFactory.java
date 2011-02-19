@@ -1,0 +1,19 @@
+package org.asteriskjava.fastagi.internal;
+
+import org.asteriskjava.fastagi.AgiChannel;
+import org.asteriskjava.fastagi.AgiRequest;
+
+/**
+ * If no other factory  is passed to DefaultAgiServer's constructor,
+ * an instance of this one will be used. The DefaultAgiChannelFactory
+ * creates AgiChannelImpl instances, that are passed to the agi scripts.
+ */
+public class DefaultAgiChannelFactory extends BaseAgiChannelFactory  {
+
+	@Override
+	public AgiChannel Create(AgiRequest request, AgiWriter agiWriter,
+			AgiReader agiReader) {
+		return new AgiChannelImpl(request, agiWriter, agiReader);
+	}
+
+}

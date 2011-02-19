@@ -16,7 +16,9 @@
  */
 package org.asteriskjava.fastagi;
 
+import org.asteriskjava.fastagi.internal.AgiChannelFactory;
 import org.asteriskjava.fastagi.internal.AgiConnectionHandler;
+import org.asteriskjava.fastagi.internal.DefaultAgiChannelFactory;
 import org.asteriskjava.fastagi.internal.FastAgiConnectionHandler;
 import org.asteriskjava.util.*;
 import org.asteriskjava.util.internal.ServerSocketFacadeImpl;
@@ -47,6 +49,7 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
     private static final int DEFAULT_BIND_PORT = 4573;
 
     private ServerSocketFacade serverSocket;
+    
     private String configResourceBundleName = DEFAULT_CONFIG_RESOURCE_BUNDLE_NAME;
     private int port = DEFAULT_BIND_PORT;
 
@@ -56,8 +59,18 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
     public DefaultAgiServer()
     {
         this(null, null);
+        
     }
 
+    /**
+     * Creates a new DefaultAgiServer and set a custom factory for creating AgiChannels
+     *
+     * @param agiChannelFactory The factory to use for creating new AgiChannel instances.
+     */
+    public DefaultAgiServer(AgiChannelFactory agiChannelFactory) {
+    	this(null,null,agiChannelFactory);
+    }
+    
     /**
      * Creates a new DefaultAgiServer and loads its configuration from an alternative resource bundle.
      *
@@ -100,7 +113,22 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
      */
     public DefaultAgiServer(String configResourceBundleName, MappingStrategy mappingStrategy)
     {
-        super();
+    	this(configResourceBundleName, mappingStrategy, new DefaultAgiChannelFactory());
+    }
+    
+    /**
+     * Creates a new DefaultAgiServer and loads its configuration from an alternative resource bundle and
+     * uses the given {@link MappingStrategy}.
+     *
+     * @param configResourceBundleName the name of the conifiguration resource bundle (default is "fastagi").
+     * @param mappingStrategy          the MappingStrategy to use to determine the AgiScript to run.
+     * @param agiChannelFactory 	   The factory to use for creating new AgiChannel instances.
+     * @since 1.0.0
+     */
+    public DefaultAgiServer(String configResourceBundleName, MappingStrategy mappingStrategy, AgiChannelFactory agiChannelFactory)
+    {
+        super(agiChannelFactory);      
+        
         if (mappingStrategy == null)
         {
             final CompositeMappingStrategy compositeMappingStrategy = new CompositeMappingStrategy();
@@ -274,7 +302,7 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
             logger.info("Received connection from " + socket.getRemoteAddress());
 
             // execute connection handler
-            final AgiConnectionHandler connectionHandler = new FastAgiConnectionHandler(getMappingStrategy(), socket);
+            final AgiConnectionHandler connectionHandler = new FastAgiConnectionHandler(getMappingStrategy(), socket, this.getAgiChannelFactory());
             try
             {
                 execute(connectionHandler);

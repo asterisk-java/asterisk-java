@@ -35,15 +35,12 @@ public class AgiChannelImpl implements AgiChannel
 
     private AgiReply lastReply;
 
-    AgiChannelImpl(AgiRequest request, SocketConnectionFacade socket)
+    public AgiChannelImpl(AgiRequest request, SocketConnectionFacade socket)
     {
-        this.request = request;
-        this.agiWriter = new FastAgiWriter(socket);
-        this.agiReader = new FastAgiReader(socket);
-        this.lastReply = null;
+    	this(request,new FastAgiWriter(socket),new FastAgiReader(socket));
     }
 
-    AgiChannelImpl(AgiRequest request, AgiWriter agiWriter, AgiReader agiReader)
+    protected AgiChannelImpl(AgiRequest request, AgiWriter agiWriter, AgiReader agiReader)
     {
         this.request = request;
         this.agiWriter = agiWriter;

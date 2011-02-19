@@ -25,7 +25,7 @@ import org.asteriskjava.fastagi.command.AgiCommand;
  * @author srt
  * @version $Id$
  */
-interface AgiWriter
+public interface AgiWriter
 {
     /**
      * Sends the given command to the Asterisk server.

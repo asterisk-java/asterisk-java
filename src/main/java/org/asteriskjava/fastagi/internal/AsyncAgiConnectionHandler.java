@@ -48,11 +48,12 @@ public class AsyncAgiConnectionHandler extends AgiConnectionHandler
      *
      * @param mappingStrategy    the strategy to use to determine which script to run.
      * @param asyncAgiStartEvent the AsyncAgiEvent that started this connection, must be a start sub event.
+     * @param agiChannelFactory  The factory to use for creating new AgiChannel instances.
      * @throws IllegalArgumentException if asyncAgiStartEvent is not a start sub type".
      */
-    public AsyncAgiConnectionHandler(MappingStrategy mappingStrategy, AsyncAgiEvent asyncAgiStartEvent) throws IllegalArgumentException
+    public AsyncAgiConnectionHandler(MappingStrategy mappingStrategy, AsyncAgiEvent asyncAgiStartEvent, AgiChannelFactory agiChannelFactory) throws IllegalArgumentException
     {
-        super(mappingStrategy);
+        super(mappingStrategy, agiChannelFactory);
         if (!asyncAgiStartEvent.isStart())
         {
             throw new IllegalArgumentException("AsyncAgiEvent passed to AsyncAgiConnectionHandler is not a start sub event");

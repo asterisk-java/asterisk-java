@@ -41,7 +41,8 @@ public abstract class AgiConnectionHandler implements Runnable
     private final Log logger = LogFactory.getLog(getClass());
     private boolean ignoreMissingScripts = false;
     private AgiScript script = null;
-
+    private AgiChannelFactory agiChannelFactory;
+    
     /**
      * The strategy to use to determine which script to run.
      */
@@ -51,9 +52,17 @@ public abstract class AgiConnectionHandler implements Runnable
      * Creates a new AGIConnectionHandler to handle the given socket connection.
      * 
      * @param mappingStrategy the strategy to use to determine which script to run.
+     * @param agiChannelFactory the AgiFactory, that is used to create new AgiChannel objects.
      */
-    protected AgiConnectionHandler(MappingStrategy mappingStrategy)
+    protected AgiConnectionHandler(MappingStrategy mappingStrategy, AgiChannelFactory agiChannelFactory)
     {
+    	if (agiChannelFactory == null) {
+    		logger.error("no agiChannelFactory provided; create new DefaultAgiChannelFactory");
+    		this.agiChannelFactory = new DefaultAgiChannelFactory();
+    	} else {
+    		this.agiChannelFactory = agiChannelFactory;
+    	}
+    		
         this.mappingStrategy = mappingStrategy;
     }
 
@@ -95,7 +104,7 @@ public abstract class AgiConnectionHandler implements Runnable
             writer = createWriter();
 
             request = reader.readRequest();
-            channel = new AgiChannelImpl(request, writer, reader);
+            channel = this.agiChannelFactory.Create(request, writer, reader);
 
             AgiConnectionHandler.channel.set(channel);
 
