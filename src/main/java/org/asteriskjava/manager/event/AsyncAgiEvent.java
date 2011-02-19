@@ -194,11 +194,8 @@ public class AsyncAgiEvent extends ResponseEvent
 
         try
         {
-            for (String line : s.split("\n"))
-            {
-                final String decodedLine = URLDecoder.decode(line, "ISO-8859-1");
-                result.add(decodedLine);
-            }
+            final String decodedString = URLDecoder.decode(s, "ISO-8859-1");
+            result.addAll(Arrays.asList(decodedString.split("\n")));
         }
         catch (UnsupportedEncodingException e)
         {
