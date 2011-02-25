@@ -20,23 +20,24 @@ package org.asteriskjava.manager.event;
  * A QueueEntryEvent is triggered in response to a QueueStatusAction and
  * contains information about an entry in a queue.<p>
  * It is implemented in <code>apps/app_queue.c</code>
- * 
- * @see org.asteriskjava.manager.action.QueueStatusAction
+ *
  * @author srt
- * @version $Id$
+ * @version $Id: QueueEntryEvent.java 1360 2009-09-04 01:08:57Z srt $
+ * @see org.asteriskjava.manager.action.QueueStatusAction
  */
 public class QueueEntryEvent extends ResponseEvent
 {
     /**
      * Serializable version identifier
      */
-    private static final long serialVersionUID = 3419114730595151514L;
+    private static final long serialVersionUID = 1L;
     private String queue;
     private Integer position;
     private String uniqueId;
     private String channel;
     private String callerId;
     private String callerIdName;
+    private String callerIdNum;
     private Long wait;
 
     /**
@@ -106,6 +107,8 @@ public class QueueEntryEvent extends ResponseEvent
 
     /**
      * Sets the name of the channel of this entry.
+     *
+     * @param channel the name of the channel of this entry.
      */
     public void setChannel(String channel)
     {
@@ -114,7 +117,7 @@ public class QueueEntryEvent extends ResponseEvent
 
     /**
      * Returns the the Caller*ID number of this entry.
-     * 
+     *
      * @return the the Caller*ID number of this entry.
      */
     public String getCallerId()
@@ -124,7 +127,7 @@ public class QueueEntryEvent extends ResponseEvent
 
     /**
      * Sets the the Caller*ID number of this entry.
-     * 
+     *
      * @param callerId the the Caller*ID number of this entry.
      */
     public void setCallerId(String callerId)
@@ -134,7 +137,7 @@ public class QueueEntryEvent extends ResponseEvent
 
     /**
      * Returns the Caller*ID name of this entry.
-     * 
+     *
      * @return the Caller*ID name of this entry.
      * @since 0.2
      */
@@ -145,13 +148,35 @@ public class QueueEntryEvent extends ResponseEvent
 
     /**
      * Sets the Caller*ID name of this entry.
-     * 
+     *
      * @param callerIdName the Caller*ID name of this entry.
      * @since 0.2
      */
     public void setCallerIdName(String callerIdName)
     {
         this.callerIdName = callerIdName;
+    }
+
+    /**
+     * Gets the Caller*ID num of this entry.
+     *
+     * @return the Caller*ID num of this entry.
+     * @since 1.0.0
+     */
+    public String getCallerIdNum()
+    {
+        return callerIdNum;
+    }
+
+    /**
+     * Sets the Caller*ID num of this entry.
+     *
+     * @param callerIdNum the Caller*ID num of this entry.
+     * @since 1.0.0
+     */
+    public void setCallerIdNum(String callerIdNum)
+    {
+        this.callerIdNum = callerIdNum;
     }
 
     /**
