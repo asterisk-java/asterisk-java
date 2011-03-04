@@ -3,6 +3,8 @@ package org.asteriskjava.fastagi;
 import org.asteriskjava.util.DaemonThreadFactory;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
+import org.asteriskjava.fastagi.internal.AgiChannelFactory;
+import org.asteriskjava.fastagi.internal.DefaultAgiChannelFactory;
 
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -49,7 +51,44 @@ public abstract class AbstractAgiServer
      */
     private MappingStrategy mappingStrategy;
 
+    /**
+     * The factory to use for creating new AgiChannel instances.
+     */
+    private final AgiChannelFactory agiChannelFactory;
+
     private volatile boolean die = false;
+
+    public AbstractAgiServer()
+    {
+        this(new DefaultAgiChannelFactory());
+    }
+
+    /**
+     * Creates a new AbstractAgiServer with the given channel factory.
+     *
+     * @param agiChannelFactory the AgiChannelFactory to use for creating new AgiChannel instances.
+     * @since 1.0.0
+     */
+    public AbstractAgiServer(AgiChannelFactory agiChannelFactory)
+    {
+        if (agiChannelFactory == null)
+        {
+            throw new IllegalArgumentException("AgiChannelFactory must not be null");
+        }
+
+        logger.debug("Using channelFactory " + agiChannelFactory.getClass().getCanonicalName());
+        this.agiChannelFactory = agiChannelFactory;
+    }
+
+    /**
+     * Returns the AgiChannelFactory to use for creating new AgiChannel instances.
+     *
+     * @return the AgiChannelFactory to use for creating new AgiChannel instances.
+     */
+    protected AgiChannelFactory getAgiChannelFactory()
+    {
+        return this.agiChannelFactory;
+    }
 
     /**
      * Returns the default number of worker threads in the thread pool.
