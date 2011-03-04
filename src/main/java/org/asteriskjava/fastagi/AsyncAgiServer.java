@@ -27,24 +27,27 @@ public class AsyncAgiServer extends AbstractAgiServer implements ManagerEventLis
     private final Map<Integer, AsyncAgiConnectionHandler> connectionHandlers;
 
     /**
-     * Creates a new AsyncAgiServer.<p>
+     * Creates a new AsyncAgiServer with a {@link DefaultAgiChannelFactory}.<p>
      * Note that you must set a {@link org.asteriskjava.fastagi.MappingStrategy} before using it.
-     * @see #setMappingStrategy(MappingStrategy) 
+     *
+     * @see #setMappingStrategy(MappingStrategy)
      */
     public AsyncAgiServer()
     {
-    	this(new DefaultAgiChannelFactory());
+        this(new DefaultAgiChannelFactory());
     }
-    
+
     /**
-     * Creates a new AsyncAgiServer.<p>
+     * Creates a new AsyncAgiServer with a custom {@link AgiChannelFactory}.<p>
      * Note that you must set a {@link org.asteriskjava.fastagi.MappingStrategy} before using it.
-     * @see #setMappingStrategy(MappingStrategy)
+     *
      * @param agiChannelFactory The factory to use for creating new AgiChannel instances.
+     * @see #setMappingStrategy(MappingStrategy)
+     * @since 1.0.0
      */
     public AsyncAgiServer(AgiChannelFactory agiChannelFactory)
     {
-    	super(agiChannelFactory);
+        super(agiChannelFactory);
         this.connectionHandlers = new HashMap<Integer, AsyncAgiConnectionHandler>();
     }
 
@@ -59,18 +62,18 @@ public class AsyncAgiServer extends AbstractAgiServer implements ManagerEventLis
      */
     public AsyncAgiServer(MappingStrategy mappingStrategy)
     {
-    	this(mappingStrategy, new DefaultAgiChannelFactory());
-    	logger.debug("use default AgiChannelFactory");
+        this(mappingStrategy, new DefaultAgiChannelFactory());
+        logger.debug("use default AgiChannelFactory");
     }
-    
+
     /**
      * Creates a new AsyncAgiServer with the given MappingStrategy.<p>
      * Please note that Async AGI does not currently support passing a script name, so your
      * MappingStrategy must be aware that the {@link org.asteriskjava.fastagi.AgiRequest#getScript() script}
      * property of the AgiRequests will likely be <code>null</code>.
      *
-     * @param mappingStrategy the MappingStrategy to use to determine which AGI script to run
-     *                        for a certain request.
+     * @param mappingStrategy   the MappingStrategy to use to determine which AGI script to run
+     *                          for a certain request.
      * @param agiChannelFactory The factory to use for creating new AgiChannel instances.
      */
     public AsyncAgiServer(MappingStrategy mappingStrategy, AgiChannelFactory agiChannelFactory)
@@ -84,7 +87,7 @@ public class AsyncAgiServer extends AbstractAgiServer implements ManagerEventLis
      * request.<p>
      * Internally this constructor uses a {@link org.asteriskjava.fastagi.StaticMappingStrategy}.
      *
-     * @param agiScript the AGI script to execute.
+     * @param agiScript         the AGI script to execute.
      * @param agiChannelFactory The factory to use for creating new AgiChannel instances.
      */
     public AsyncAgiServer(AgiScript agiScript, AgiChannelFactory agiChannelFactory)
@@ -102,11 +105,11 @@ public class AsyncAgiServer extends AbstractAgiServer implements ManagerEventLis
      */
     public AsyncAgiServer(AgiScript agiScript)
     {
-    	this(agiScript, new DefaultAgiChannelFactory());
-    	logger.debug("use default AgiChannelFactory");
+        this(agiScript, new DefaultAgiChannelFactory());
+        logger.debug("use default AgiChannelFactory");
     }
 
-    
+
     public void onManagerEvent(ManagerEvent event)
     {
         if (event instanceof AsyncAgiEvent)
@@ -130,7 +133,7 @@ public class AsyncAgiServer extends AbstractAgiServer implements ManagerEventLis
 
         if (asyncAgiEvent.isStart())
         {
-            connectionHandler = new AsyncAgiConnectionHandler(getMappingStrategy(), asyncAgiEvent,this.getAgiChannelFactory());
+            connectionHandler = new AsyncAgiConnectionHandler(getMappingStrategy(), asyncAgiEvent, this.getAgiChannelFactory());
             setConnectionHandler(connection, channelName, connectionHandler);
             try
             {

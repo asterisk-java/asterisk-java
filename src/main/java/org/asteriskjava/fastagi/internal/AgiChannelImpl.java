@@ -23,7 +23,7 @@ import org.asteriskjava.util.SocketConnectionFacade;
 
 /**
  * Default implementation of the AgiChannel interface.
- * 
+ *
  * @author srt
  * @version $Id$
  */
@@ -34,11 +34,6 @@ public class AgiChannelImpl implements AgiChannel
     private final AgiReader agiReader;
 
     private AgiReply lastReply;
-
-    public AgiChannelImpl(AgiRequest request, SocketConnectionFacade socket)
-    {
-    	this(request,new FastAgiWriter(socket),new FastAgiReader(socket));
-    }
 
     protected AgiChannelImpl(AgiRequest request, AgiWriter agiWriter, AgiReader agiReader)
     {
@@ -83,7 +78,7 @@ public class AgiChannelImpl implements AgiChannel
 
         return lastReply;
     }
-    
+
     public void answer() throws AgiException
     {
         sendCommand(new AnswerCommand());
@@ -317,7 +312,7 @@ public class AgiChannelImpl implements AgiChannel
     {
         sendCommand(new SayDateTimeCommand(time));
     }
-    
+
     public String databaseGet(String family, String key) throws AgiException
     {
         sendCommand(new DatabaseGetCommand(family, key));
@@ -495,7 +490,7 @@ public class AgiChannelImpl implements AgiChannel
         setExtension(extension);
         setPriority(priority);
     }
-    
+
     public void gosub(String context, String extension, String priority) throws AgiException
     {
         sendCommand(new GosubCommand(context, extension, priority));

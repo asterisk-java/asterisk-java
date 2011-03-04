@@ -8,12 +8,11 @@ import org.asteriskjava.fastagi.AgiRequest;
  * an instance of this one will be used. The DefaultAgiChannelFactory
  * creates AgiChannelImpl instances, that are passed to the agi scripts.
  */
-public class DefaultAgiChannelFactory extends BaseAgiChannelFactory  {
-
-	@Override
-	public AgiChannel Create(AgiRequest request, AgiWriter agiWriter,
-			AgiReader agiReader) {
-		return new AgiChannelImpl(request, agiWriter, agiReader);
-	}
-
+public class DefaultAgiChannelFactory implements AgiChannelFactory
+{
+    @Override
+    public AgiChannel createAgiChannel(AgiRequest request, AgiWriter agiWriter, AgiReader agiReader)
+    {
+        return new AgiChannelImpl(request, agiWriter, agiReader);
+    }
 }

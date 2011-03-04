@@ -5,15 +5,23 @@ import org.asteriskjava.fastagi.AgiRequest;
 import org.asteriskjava.util.SocketConnectionFacade;
 
 /**
- * An AgiChannelFactory creates instances of AgiChannels, 
+ * An AgiChannelFactory creates instances of AgiChannels,
  * that are passed to agi scripts.
- * 
- * An instance of the AgiChannelFactory can be passed to the 
- * DefaultAgiServer's constructor. 
+ * <p/>
+ * An instance of the AgiChannelFactory can be passed to the
+ * DefaultAgiServer's constructor.
+ *
+ * @since 1.0.0
  */
-public interface AgiChannelFactory {
-
-	AgiChannel Create(AgiRequest request, SocketConnectionFacade socket);
-	
-	AgiChannel Create(AgiRequest request, AgiWriter agiWriter, AgiReader agiReader);
+public interface AgiChannelFactory
+{
+    /**
+     * Creates a new AgiChannel.
+     *
+     * @param request   the request to build the channel for.
+     * @param agiWriter the writer.
+     * @param agiReader the reader.
+     * @return the created channel.
+     */
+    AgiChannel createAgiChannel(AgiRequest request, AgiWriter agiWriter, AgiReader agiReader);
 }

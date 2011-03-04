@@ -54,31 +54,42 @@ public abstract class AbstractAgiServer
     /**
      * The factory to use for creating new AgiChannel instances.
      */
-    private AgiChannelFactory apiChannelFactory;
+    private final AgiChannelFactory agiChannelFactory;
 
     private volatile boolean die = false;
-    
-    public AbstractAgiServer() {
-		this(new DefaultAgiChannelFactory());
-	}
-    
-    public AbstractAgiServer(AgiChannelFactory apiChannelFactory) {
-    	if (apiChannelFactory == null) {
-    		logger.warn("apiChannelFactory is null; use default");
-    		this.apiChannelFactory = new DefaultAgiChannelFactory();
-    	} else {
-    		logger.debug("use channelFactory: " + apiChannelFactory.getClass().getCanonicalName());
-    		this.apiChannelFactory = apiChannelFactory;
-    	}
+
+    public AbstractAgiServer()
+    {
+        this(new DefaultAgiChannelFactory());
     }
-    
+
     /**
-     * The used factory for creating new AgiChannel instances.
+     * Creates a new AbstractAgiServer with the given channel factory.
+     *
+     * @param agiChannelFactory the AgiChannelFactory to use for creating new AgiChannel instances.
+     * @since 1.0.0
      */
-    protected AgiChannelFactory getAgiChannelFactory() {
-    	return this.apiChannelFactory;
+    public AbstractAgiServer(AgiChannelFactory agiChannelFactory)
+    {
+        if (agiChannelFactory == null)
+        {
+            throw new IllegalArgumentException("AgiChannelFactory must not be null");
+        }
+
+        logger.debug("Using channelFactory " + agiChannelFactory.getClass().getCanonicalName());
+        this.agiChannelFactory = agiChannelFactory;
     }
-    
+
+    /**
+     * Returns the AgiChannelFactory to use for creating new AgiChannel instances.
+     *
+     * @return the AgiChannelFactory to use for creating new AgiChannel instances.
+     */
+    protected AgiChannelFactory getAgiChannelFactory()
+    {
+        return this.agiChannelFactory;
+    }
+
     /**
      * Returns the default number of worker threads in the thread pool.
      *

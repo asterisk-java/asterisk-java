@@ -24,10 +24,10 @@ import org.asteriskjava.util.LogFactory;
 /**
  * An AgiConnectionHandler is created and run by the AgiServer whenever a new
  * AGI connection from an Asterisk Server is received.
- * <p>
+ * <p/>
  * It reads the request using an AgiReader and runs the AgiScript configured to
  * handle this type of request. Finally it closes the AGI connection.
- * 
+ *
  * @author srt
  * @version $Id$
  */
@@ -42,7 +42,7 @@ public abstract class AgiConnectionHandler implements Runnable
     private boolean ignoreMissingScripts = false;
     private AgiScript script = null;
     private AgiChannelFactory agiChannelFactory;
-    
+
     /**
      * The strategy to use to determine which script to run.
      */
@@ -50,19 +50,22 @@ public abstract class AgiConnectionHandler implements Runnable
 
     /**
      * Creates a new AGIConnectionHandler to handle the given socket connection.
-     * 
-     * @param mappingStrategy the strategy to use to determine which script to run.
+     *
+     * @param mappingStrategy   the strategy to use to determine which script to run.
      * @param agiChannelFactory the AgiFactory, that is used to create new AgiChannel objects.
      */
     protected AgiConnectionHandler(MappingStrategy mappingStrategy, AgiChannelFactory agiChannelFactory)
     {
-    	if (agiChannelFactory == null) {
-    		logger.error("no agiChannelFactory provided; create new DefaultAgiChannelFactory");
-    		this.agiChannelFactory = new DefaultAgiChannelFactory();
-    	} else {
-    		this.agiChannelFactory = agiChannelFactory;
-    	}
-    		
+        if (mappingStrategy == null)
+        {
+            throw new IllegalArgumentException("MappingStrategy must not be null");
+        }
+        if (agiChannelFactory == null)
+        {
+            throw new IllegalArgumentException("AgiChannelFactory must not be null");
+        }
+
+        this.agiChannelFactory = agiChannelFactory;
         this.mappingStrategy = mappingStrategy;
     }
 
@@ -104,7 +107,7 @@ public abstract class AgiConnectionHandler implements Runnable
             writer = createWriter();
 
             request = reader.readRequest();
-            channel = this.agiChannelFactory.Create(request, writer, reader);
+            channel = this.agiChannelFactory.createAgiChannel(request, writer, reader);
 
             AgiConnectionHandler.channel.set(channel);
 
@@ -112,8 +115,8 @@ public abstract class AgiConnectionHandler implements Runnable
             {
                 script = mappingStrategy.determineScript(request, channel);
             }
-            
-            if (script == null && ! ignoreMissingScripts)
+
+            if (script == null && !ignoreMissingScripts)
             {
                 final String errorMessage;
 
@@ -219,7 +222,7 @@ public abstract class AgiConnectionHandler implements Runnable
 
     /**
      * Returns the AgiChannel associated with the current thread.
-     * 
+     *
      * @return the AgiChannel associated with the current thread or
      *         <code>null</code> if none is associated.
      */

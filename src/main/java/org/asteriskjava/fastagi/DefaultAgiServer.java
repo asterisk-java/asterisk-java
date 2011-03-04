@@ -49,7 +49,7 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
     private static final int DEFAULT_BIND_PORT = 4573;
 
     private ServerSocketFacade serverSocket;
-    
+
     private String configResourceBundleName = DEFAULT_CONFIG_RESOURCE_BUNDLE_NAME;
     private int port = DEFAULT_BIND_PORT;
 
@@ -59,7 +59,7 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
     public DefaultAgiServer()
     {
         this(null, null);
-        
+
     }
 
     /**
@@ -67,10 +67,11 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
      *
      * @param agiChannelFactory The factory to use for creating new AgiChannel instances.
      */
-    public DefaultAgiServer(AgiChannelFactory agiChannelFactory) {
-    	this(null,null,agiChannelFactory);
+    public DefaultAgiServer(AgiChannelFactory agiChannelFactory)
+    {
+        this(null, null, agiChannelFactory);
     }
-    
+
     /**
      * Creates a new DefaultAgiServer and loads its configuration from an alternative resource bundle.
      *
@@ -113,22 +114,22 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
      */
     public DefaultAgiServer(String configResourceBundleName, MappingStrategy mappingStrategy)
     {
-    	this(configResourceBundleName, mappingStrategy, new DefaultAgiChannelFactory());
+        this(configResourceBundleName, mappingStrategy, new DefaultAgiChannelFactory());
     }
-    
+
     /**
      * Creates a new DefaultAgiServer and loads its configuration from an alternative resource bundle and
      * uses the given {@link MappingStrategy}.
      *
      * @param configResourceBundleName the name of the conifiguration resource bundle (default is "fastagi").
      * @param mappingStrategy          the MappingStrategy to use to determine the AgiScript to run.
-     * @param agiChannelFactory 	   The factory to use for creating new AgiChannel instances.
+     * @param agiChannelFactory        The factory to use for creating new AgiChannel instances.
      * @since 1.0.0
      */
     public DefaultAgiServer(String configResourceBundleName, MappingStrategy mappingStrategy, AgiChannelFactory agiChannelFactory)
     {
-        super(agiChannelFactory);      
-        
+        super(agiChannelFactory);
+
         if (mappingStrategy == null)
         {
             final CompositeMappingStrategy compositeMappingStrategy = new CompositeMappingStrategy();
@@ -173,7 +174,8 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
      * @param bindPort the port to bind to.
      * @deprecated use {@see #setPort(int)} instead
      */
-    @Deprecated public void setBindPort(int bindPort)
+    @Deprecated
+    public void setBindPort(int bindPort)
     {
         this.port = bindPort;
     }
@@ -307,7 +309,7 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
             {
                 execute(connectionHandler);
             }
-            catch(RejectedExecutionException e)
+            catch (RejectedExecutionException e)
             {
                 logger.warn("Execution was rejected by pool. Try to increase the pool size.");
                 // release resources like closing the socket if execution was rejected due to the pool size
@@ -320,7 +322,8 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
     /**
      * @deprecated use {@link #startup()} instead.
      */
-    @Deprecated public void run()
+    @Deprecated
+    public void run()
     {
         try
         {
@@ -380,7 +383,8 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
      * @throws Exception if the server can't be started
      * @deprecated since 1.0.0 use {@link org.asteriskjava.Cli} instead.
      */
-    @Deprecated public static void main(String[] args) throws Exception
+    @Deprecated
+    public static void main(String[] args) throws Exception
     {
         final AgiServer server;
 
