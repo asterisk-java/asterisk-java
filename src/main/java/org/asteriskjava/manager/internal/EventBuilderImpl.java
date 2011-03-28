@@ -168,6 +168,8 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
         registerEventClass(VoicemailUserEntryEvent.class);
         registerEventClass(ZapShowChannelsEvent.class);
         registerEventClass(ZapShowChannelsCompleteEvent.class);
+        registerEventClass(DAHDIShowChannelsEvent.class);
+        registerEventClass(DAHDIShowChannelsCompleteEvent.class);
     }
 
     public final void registerEventClass(Class<? extends ManagerEvent> clazz) throws IllegalArgumentException
