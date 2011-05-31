@@ -35,7 +35,7 @@ public class QueueEntryEvent extends ResponseEvent
     private Integer position;
     private String uniqueId;
     private String channel;
-    private String callerId;
+    private String callerIdNum;
     private String callerIdName;
     private Long wait;
 
@@ -117,9 +117,9 @@ public class QueueEntryEvent extends ResponseEvent
      * 
      * @return the the Caller*ID number of this entry.
      */
-    public String getCallerId()
+    public String getCallerIdNum()
     {
-        return callerId;
+        return callerIdNum;
     }
 
     /**
@@ -127,9 +127,9 @@ public class QueueEntryEvent extends ResponseEvent
      * 
      * @param callerId the the Caller*ID number of this entry.
      */
-    public void setCallerId(String callerId)
+    public void setCallerIdNum(String callerIdNum)
     {
-        this.callerId = callerId;
+        this.callerIdNum = callerIdNum;
     }
 
     /**
