@@ -140,7 +140,8 @@ public class AgiChannelImplTest extends TestCase
 
     public class SimpleAgiReply implements AgiReply
     {
-        private int status;
+		private static final long serialVersionUID = 1L;
+		private int status;
         private String result;
         private String synopsis;
         private String usage;

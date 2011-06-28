@@ -34,7 +34,7 @@ public interface AgiRequest
      * 
      * @return Map contain raw request name/value pairs.
      */
-    Map getRequest();
+    Map<String, String> getRequest();
 
     /**
      * Returns the name of the script to execute including its full path.<p>

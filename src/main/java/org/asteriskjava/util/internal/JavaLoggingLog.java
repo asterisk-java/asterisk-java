@@ -43,7 +43,7 @@ public class JavaLoggingLog implements Log
      * 
      * @param clazz the class to log for.
      */
-    public JavaLoggingLog(Class clazz)
+    public JavaLoggingLog(Class<?> clazz)
     {
         log = Logger.getLogger(clazz.getName());
     }

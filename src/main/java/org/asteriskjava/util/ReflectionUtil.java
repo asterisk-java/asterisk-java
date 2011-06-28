@@ -47,7 +47,7 @@ public class ReflectionUtil
      * @param clazz the class to return the getters for
      * @return a Map of attributes and their accessor methods (getters)
      */
-    public static Map<String, Method> getGetters(final Class clazz)
+    public static Map<String, Method> getGetters(final Class<?> clazz)
     {
         final Map<String, Method> accessors = new HashMap<String, Method>();
         final Method[] methods = clazz.getMethods();
@@ -93,7 +93,7 @@ public class ReflectionUtil
      * @param clazz the class to return the setters for
      * @return a Map of attributes and their accessor methods (setters)
      */
-    public static Map<String, Method> getSetters(Class clazz)
+    public static Map<String, Method> getSetters(Class<?> clazz)
     {
         final Map<String, Method> accessors = new HashMap<String, Method>();
         final Method[] methods = clazz.getMethods();
@@ -216,8 +216,8 @@ public class ReflectionUtil
 
         try
         {
-            Class clazz = classLoader.loadClass(s);
-            Constructor constructor = clazz.getConstructor();
+            Class<?> clazz = classLoader.loadClass(s);
+            Constructor<?> constructor = clazz.getConstructor();
             return constructor.newInstance();
         }
         catch (ClassNotFoundException e)
