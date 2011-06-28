@@ -67,7 +67,7 @@ public final class LogFactory
      * @param clazz the class to create the logger for.
      * @return the created logger.
      */
-    public static Log getLog(Class clazz)
+    public static Log getLog(Class<?> clazz)
     {
         if (slf4jLoggingAvailable == null)
         {

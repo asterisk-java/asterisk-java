@@ -469,7 +469,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
             response = sendAction(new CommandAction(command));
             if (response instanceof CommandResponse)
             {
-                final List result;
+                final List<?> result;
 
                 result = ((CommandResponse) response).getResult();
                 if (result.size() > 0)

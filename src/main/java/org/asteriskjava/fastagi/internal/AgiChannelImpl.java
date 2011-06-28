@@ -19,7 +19,6 @@ package org.asteriskjava.fastagi.internal;
 import org.asteriskjava.fastagi.*;
 import org.asteriskjava.fastagi.command.*;
 import org.asteriskjava.fastagi.reply.AgiReply;
-import org.asteriskjava.util.SocketConnectionFacade;
 
 /**
  * Default implementation of the AgiChannel interface.

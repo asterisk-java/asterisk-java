@@ -63,7 +63,7 @@ public class Log4JLogger implements Log, Serializable
     /**
      * Base constructor.
      */
-    public Log4JLogger(Class clazz)
+    public Log4JLogger(Class<?> clazz)
     {
         this.name = clazz.getName();
         this.logger = getLogger();

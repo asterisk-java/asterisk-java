@@ -17,8 +17,6 @@
 package org.asteriskjava.manager.action;
 
 import org.asteriskjava.manager.ExpectedResponse;
-import org.asteriskjava.manager.event.ResponseEvent;
-import org.asteriskjava.manager.event.SkypeBuddyListCompleteEvent;
 import org.asteriskjava.manager.response.SkypeLicenseStatusResponse;
 
 /**
