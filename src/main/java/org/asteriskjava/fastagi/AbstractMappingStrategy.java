@@ -113,7 +113,7 @@ public abstract class AbstractMappingStrategy implements MappingStrategy
     @SuppressWarnings("unchecked")
     protected AgiScript createAgiScriptInstance(String className)
     {
-        Class tmpClass;
+        Class<?> tmpClass;
         Class<AgiScript> agiScriptClass;
         Constructor<AgiScript> constructor;
         AgiScript agiScript;

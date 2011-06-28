@@ -37,7 +37,7 @@ public class SimpleAgiRequest implements AgiRequest
         this.script = script;
     }
     
-    public Map getRequest()
+    public Map<String, String> getRequest()
     {
         throw new UnsupportedOperationException();
     }

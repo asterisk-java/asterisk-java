@@ -29,7 +29,7 @@ abstract class AbstractBuilder
         for (Map.Entry<String, Object> entry : attributes.entrySet())
         {
             Object value;
-            final Class dataType;
+            final Class<?> dataType;
             Method setter;
             String setterName;
 
@@ -106,7 +106,7 @@ abstract class AbstractBuilder
             {
                 try
                 {
-                    Constructor constructor = dataType.getConstructor(new Class[]{String.class});
+                    Constructor<?> constructor = dataType.getConstructor(new Class[]{String.class});
                     value = constructor.newInstance(entry.getValue());
                 }
                 catch (Exception e)

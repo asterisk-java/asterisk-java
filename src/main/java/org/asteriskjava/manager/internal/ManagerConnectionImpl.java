@@ -1481,7 +1481,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     private static class ResponseEventHandler implements ManagerEventListener, SendActionCallback
     {
         private final ResponseEventsImpl events;
-        private final Class actionCompleteEventClass;
+        private final Class<?> actionCompleteEventClass;
 
         /**
          * Creates a new instance.
@@ -1490,7 +1490,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
          * @param actionCompleteEventClass the type of event that indicates that
          *                                 all events have been received
          */
-        public ResponseEventHandler(ResponseEventsImpl events, Class actionCompleteEventClass)
+        public ResponseEventHandler(ResponseEventsImpl events, Class<?> actionCompleteEventClass)
         {
             this.events = events;
             this.actionCompleteEventClass = actionCompleteEventClass;

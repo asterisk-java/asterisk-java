@@ -200,7 +200,7 @@ public class HtmlEventTracer implements ManagerEventListener
         return null;
     }
 
-    protected String getLocalName(Class c)
+    protected String getLocalName(Class<?> c)
     {
         String s;
 
