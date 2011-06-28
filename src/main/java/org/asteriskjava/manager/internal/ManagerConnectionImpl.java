@@ -1477,7 +1477,6 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
      * A combinded event and response handler that adds received events and the
      * response to a ResponseEvents object.
      */
-    @SuppressWarnings("unchecked")
     private static class ResponseEventHandler implements ManagerEventListener, SendActionCallback
     {
         private final ResponseEventsImpl events;

@@ -97,7 +97,6 @@ public class HtmlEventTracer implements ManagerEventListener
         }
     }
 
-    @SuppressWarnings("unchecked")
     public void onManagerEvent(ManagerEvent event)
     {
         events.add(event);
