@@ -133,7 +133,7 @@ public class ResourceBundleMappingStrategy extends AbstractMappingStrategy
     private synchronized void loadResourceBundle()
     {
         ResourceBundle resourceBundle;
-        Enumeration keys;
+        Enumeration<?> keys;
 
         mappings = new HashMap<String, String>();
         if (shareInstances)

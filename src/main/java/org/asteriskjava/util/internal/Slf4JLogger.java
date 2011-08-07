@@ -38,7 +38,7 @@ public class Slf4JLogger implements Log, Serializable
     private transient Logger logger = null;
 
     /** Logger name */
-    private Class clazz = null;
+    private Class<?> clazz = null;
 
     public Slf4JLogger()
     {
@@ -47,7 +47,7 @@ public class Slf4JLogger implements Log, Serializable
     /**
      * Base constructor.
      */
-    public Slf4JLogger(Class clazz)
+    public Slf4JLogger(Class<?> clazz)
     {
         this.clazz = clazz;
         this.logger = getLogger();

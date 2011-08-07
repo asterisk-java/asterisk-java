@@ -32,11 +32,11 @@ import java.util.*;
 class EventBuilderImpl extends AbstractBuilder implements EventBuilder
 {
     private static final Set<String> ignoredAttributes = new HashSet<String>(Arrays.asList("event"));
-    private Map<String, Class> registeredEventClasses;
+    private Map<String, Class<?>> registeredEventClasses;
 
     EventBuilderImpl()
     {
-        this.registeredEventClasses = new HashMap<String, Class>();
+        this.registeredEventClasses = new HashMap<String, Class<?>>();
         registerBuiltinEventClasses();
     }
 
@@ -193,7 +193,7 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
      */
     public final void registerEventClass(String eventType, Class<? extends ManagerEvent> clazz) throws IllegalArgumentException
     {
-        Constructor defaultConstructor;
+        Constructor<?> defaultConstructor;
 
         if (!ManagerEvent.class.isAssignableFrom(clazz))
         {
@@ -228,8 +228,8 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
     {
         ManagerEvent event;
         String eventType;
-        Class eventClass;
-        Constructor constructor;
+        Class<?> eventClass;
+        Constructor<?> constructor;
 
         if (attributes.get("event") == null)
         {

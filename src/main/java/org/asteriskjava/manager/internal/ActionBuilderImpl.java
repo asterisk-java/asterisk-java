@@ -130,8 +130,8 @@ class ActionBuilderImpl implements ActionBuilder
             
             if(value instanceof Map)
             {
-                Map<Object,Object> attributes = (Map)value;
-                for (Map.Entry entry : attributes.entrySet())
+                Map<Object,Object> attributes = (Map<Object, Object>)value;
+                for (Map.Entry<Object, Object> entry : attributes.entrySet())
                 {
                     appendString(sb, entry.getKey() == null ? "null" : entry.getKey().toString(),
                             entry.getValue() == null ? "null" : entry.getValue().toString());
@@ -176,7 +176,7 @@ class ActionBuilderImpl implements ActionBuilder
         entryIterator = values.entrySet().iterator();
         while (entryIterator.hasNext())
         {
-            Map.Entry entry;
+            Map.Entry<String, String> entry;
 
             entry = entryIterator.next();
             sb.append(entry.getKey());
@@ -196,7 +196,7 @@ class ActionBuilderImpl implements ActionBuilder
 
     private void appendMap12(StringBuffer sb, String singularKey, Map<String, String> values)
     {
-        for (Map.Entry entry : values.entrySet())
+        for (Map.Entry<String, String> entry : values.entrySet())
         {
             sb.append(singularKey);
             sb.append(": ");
@@ -221,7 +221,7 @@ class ActionBuilderImpl implements ActionBuilder
 
     private void appendUserEvent(StringBuffer sb, UserEvent event)
     {
-        Class clazz = event.getClass();
+        Class<?> clazz = event.getClass();
 
         String className = clazz.getName();
         String eventType = className.substring(className.lastIndexOf('.') + 1).toLowerCase(Locale.ENGLISH);
@@ -267,7 +267,7 @@ class ActionBuilderImpl implements ActionBuilder
             final String mappedName = mapToAsterisk(getter);
             if (value instanceof Map)
             {
-                appendMap(sb, mappedName, (Map) value);
+                appendMap(sb, mappedName, (Map<String, String>) value);
             }
             else if (value instanceof String)
             {

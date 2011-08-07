@@ -2,7 +2,6 @@ package org.asteriskjava.fastagi.internal;
 
 import org.asteriskjava.fastagi.AgiChannel;
 import org.asteriskjava.fastagi.AgiRequest;
-import org.asteriskjava.util.SocketConnectionFacade;
 
 /**
  * An AgiChannelFactory creates instances of AgiChannels,
