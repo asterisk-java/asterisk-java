@@ -97,7 +97,6 @@ public class HtmlEventTracer implements ManagerEventListener
         }
     }
 
-    @SuppressWarnings("unchecked")
     public void onManagerEvent(ManagerEvent event)
     {
         events.add(event);
@@ -200,7 +199,7 @@ public class HtmlEventTracer implements ManagerEventListener
         return null;
     }
 
-    protected String getLocalName(Class c)
+    protected String getLocalName(Class<?> c)
     {
         String s;
 

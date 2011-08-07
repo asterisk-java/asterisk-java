@@ -27,7 +27,8 @@ package org.asteriskjava.manager.event;
  */
 public abstract class ResponseEvent extends ManagerEvent
 {
-    private String actionId;
+	private static final long serialVersionUID = 1L;
+	private String actionId;
     private String internalActionId;
 
     public ResponseEvent(Object source)

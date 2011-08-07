@@ -32,8 +32,8 @@ public class SkypeAccountStatusEvent extends ManagerEvent
     private String username;
     private String status;
 
-    private static final String STATUS_LOGGED_IN = "Logged In";
-    private static final String STATUS_LOGGED_OUT = "Logged Out";
+    static final String STATUS_LOGGED_IN = "Logged In";
+    static final String STATUS_LOGGED_OUT = "Logged Out";
 
     public SkypeAccountStatusEvent(Object source)
     {

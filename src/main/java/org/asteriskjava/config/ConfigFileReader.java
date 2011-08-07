@@ -21,11 +21,11 @@ public class ConfigFileReader
     private static final int MAX_LINE_LENGTH = 8192;
     private static char COMMENT_META = ';';
     private static char COMMENT_TAG = '-';
-    private static final Set<Class> WARNING_CLASSES;
+    private static final Set<Class<?>> WARNING_CLASSES;
 
     static
     {
-        WARNING_CLASSES = new HashSet<Class>();
+        WARNING_CLASSES = new HashSet<Class<?>>();
         WARNING_CLASSES.add(MissingEqualSignException.class);
         WARNING_CLASSES.add(UnknownDirectiveException.class);
         WARNING_CLASSES.add(MissingDirectiveParameterException.class);

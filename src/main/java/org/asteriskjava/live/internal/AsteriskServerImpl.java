@@ -469,7 +469,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
             response = sendAction(new CommandAction(command));
             if (response instanceof CommandResponse)
             {
-                final List result;
+                final List<?> result;
 
                 result = ((CommandResponse) response).getResult();
                 if (result.size() > 0)
@@ -1128,12 +1128,6 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
                 return;
             }
 
-            if (channel.wasInState(ChannelState.UP))
-            {
-                cb.onSuccess(channel);
-                return;
-            }
-
             if (channel.wasBusy())
             {
                 cb.onBusy(channel);
@@ -1169,9 +1163,15 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
                     return;
                 }
             }
+            
+            if (channel.wasInState(ChannelState.DOWN))
+            {
+                cb.onNoAnswer(channel);
+                return;
+            }
 
-            // if nothing else matched we asume no answer
-            cb.onNoAnswer(channel);
+            // if nothing else matched we asume success
+            cb.onSuccess(channel);
         }
         catch (Throwable t)
         {
