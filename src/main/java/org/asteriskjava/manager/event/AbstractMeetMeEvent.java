@@ -26,7 +26,8 @@ package org.asteriskjava.manager.event;
  */
 public abstract class AbstractMeetMeEvent extends ManagerEvent
 {
-    private String channel;
+	private static final long serialVersionUID = 1L;
+	private String channel;
     private String uniqueId;
     private String meetMe;
     private Integer userNum;

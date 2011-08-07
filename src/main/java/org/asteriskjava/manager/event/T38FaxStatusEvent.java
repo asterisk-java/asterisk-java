@@ -16,9 +16,6 @@
  */
 package org.asteriskjava.manager.event;
 
-import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
-
 /**
  * A FaxDocumentStatusEvent is an event of Digium's Fax For Asterisk add-on.
  */
