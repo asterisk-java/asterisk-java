@@ -45,7 +45,7 @@ public abstract class ResponseEvent extends ManagerEvent
      *         <code>null</code> if none was set.
      * @see org.asteriskjava.manager.action.ManagerAction#setActionId(String)
      */
-    public String getActionId()
+    public final String getActionId()
     {
         return actionId;
     }
@@ -56,7 +56,7 @@ public abstract class ResponseEvent extends ManagerEvent
      * @param actionId the action id of the ManagerAction that caused this
      *                 event.
      */
-    public void setActionId(String actionId)
+    public final void setActionId(String actionId)
     {
         this.actionId = actionId;
     }
@@ -71,7 +71,7 @@ public abstract class ResponseEvent extends ManagerEvent
      *         event.
      * @since 0.2
      */
-    public String getInternalActionId()
+    public final String getInternalActionId()
     {
         return internalActionId;
     }
@@ -83,7 +83,7 @@ public abstract class ResponseEvent extends ManagerEvent
      *                         caused this event.
      * @since 0.2
      */
-    public void setInternalActionId(String internalActionId)
+    public final void setInternalActionId(String internalActionId)
     {
         this.internalActionId = internalActionId;
     }

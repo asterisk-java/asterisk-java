@@ -59,12 +59,12 @@ public abstract class AbstractChannelEvent extends ManagerEvent
      * 
      * @return the name of the channel.
      */
-    public String getChannel()
+    public final String getChannel()
     {
         return channel;
     }
 
-    public void setChannel(String channel)
+    public final void setChannel(String channel)
     {
         this.channel = channel;
     }
@@ -74,12 +74,12 @@ public abstract class AbstractChannelEvent extends ManagerEvent
      * 
      * @return the unique id of the channel.
      */
-    public String getUniqueId()
+    public final String getUniqueId()
     {
         return uniqueId;
     }
 
-    public void setUniqueId(String uniqueId)
+    public final void setUniqueId(String uniqueId)
     {
         this.uniqueId = uniqueId;
     }
@@ -91,7 +91,7 @@ public abstract class AbstractChannelEvent extends ManagerEvent
      * @deprecated
      * @see #getCallerIdNum()
      */
-    @Deprecated public String getCallerId()
+    @Deprecated public final String getCallerId()
     {
         return callerIdNum;
     }
@@ -102,7 +102,7 @@ public abstract class AbstractChannelEvent extends ManagerEvent
      * @param callerId the Caller*ID of the channel.
      * @deprecated
      */
-    @Deprecated public void setCallerId(String callerId)
+    @Deprecated public final void setCallerId(String callerId)
     {
         this.callerIdNum = callerId;
     }
@@ -113,12 +113,12 @@ public abstract class AbstractChannelEvent extends ManagerEvent
      * @return the Caller*ID number
      * @since 0.3
      */
-    public String getCallerIdNum()
+    public final String getCallerIdNum()
     {
         return callerIdNum;
     }
 
-    public void setCallerIdNum(String callerIdNum)
+    public final void setCallerIdNum(String callerIdNum)
     {
         this.callerIdNum = callerIdNum;
     }
@@ -128,12 +128,12 @@ public abstract class AbstractChannelEvent extends ManagerEvent
      * 
      * @return the Caller*ID Name of the channel.
      */
-    public String getCallerIdName()
+    public final String getCallerIdName()
     {
         return callerIdName;
     }
 
-    public void setCallerIdName(String callerIdName)
+    public final void setCallerIdName(String callerIdName)
     {
         this.callerIdName = callerIdName;
     }
