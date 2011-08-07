@@ -36,6 +36,7 @@ public class QueueEntryEvent extends ResponseEvent
     private String uniqueId;
     private String channel;
     private String callerId;
+    private String callerIdNum;
     private String callerIdName;
     private String callerIdNum;
     private Long wait;
@@ -115,24 +116,44 @@ public class QueueEntryEvent extends ResponseEvent
         this.channel = channel;
     }
 
-    /**
+	/**
      * Returns the the Caller*ID number of this entry.
      *
      * @return the the Caller*ID number of this entry.
      */
-    public String getCallerId()
+    public String getCallerId() 
     {
-        return callerId;
-    }
+		return callerId;
+	}
 
     /**
      * Sets the the Caller*ID number of this entry.
      *
      * @param callerId the the Caller*ID number of this entry.
      */
-    public void setCallerId(String callerId)
+	public void setCallerId(String callerId) 
+	{
+		this.callerId = callerId;
+	}
+
+	/**
+     * Returns the the Caller*ID number of this entry.  (Later Versions of Asterisk)
+     * 
+     * @return the the Caller*ID number of this entry.
+     */
+    public String getCallerIdNum()
     {
-        this.callerId = callerId;
+        return callerIdNum;
+    }
+
+    /**
+     * Sets the the Caller*ID number of this entry.  (Later Versions of Asterisk)
+     * 
+     * @param callerId the the Caller*ID number of this entry.
+     */
+    public void setCallerIdNum(String callerIdNum)
+    {
+        this.callerIdNum = callerIdNum;
     }
 
     /**
