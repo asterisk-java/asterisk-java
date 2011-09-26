@@ -17,16 +17,16 @@
 package org.asteriskjava.manager.event;
 
 /**
- * A DAHDIShowChannelsCompleteEvent is triggered after the state of all DAHDI channels has been reported
- * in response to a DAHDIShowChannelsAction.
+ * A DahdiShowChannelsCompleteEvent is triggered after the state of all Dahdi channels has been reported
+ * in response to a DahdiShowChannelsAction.
  * 
- * @see org.asteriskjava.manager.action.DAHDIShowChannelsAction
- * @see org.asteriskjava.manager.event.DAHDIShowChannelsEvent
+ * @see org.asteriskjava.manager.action.DahdiShowChannelsAction
+ * @see org.asteriskjava.manager.event.DahdiShowChannelsEvent
  * 
  * @author srt
  * @version $Id$
  */
-public class DAHDIShowChannelsCompleteEvent extends ResponseEvent
+public class DahdiShowChannelsCompleteEvent extends ResponseEvent
 {
     /**
      * Serial version identifier
@@ -48,7 +48,7 @@ public class DAHDIShowChannelsCompleteEvent extends ResponseEvent
     /**
      * @param source
      */
-    public DAHDIShowChannelsCompleteEvent(Object source)
+    public DahdiShowChannelsCompleteEvent(Object source)
     {
         super(source);
     }

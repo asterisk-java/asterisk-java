@@ -16,20 +16,20 @@
  */
 package org.asteriskjava.manager.action;
 
-import org.asteriskjava.manager.event.DAHDIShowChannelsCompleteEvent;
+import org.asteriskjava.manager.event.DahdiShowChannelsCompleteEvent;
 import org.asteriskjava.manager.event.ResponseEvent;
 
 /**
- * The DAHDIShowChannelsAction requests the state of all DAHDI channels.<p>
- * For each DAHDI channel aDAHDIShowChannelsEvent is generated. After all DAHDI
- * channels have been listed a DAHDIShowChannelsCompleteEvent is generated.
+ * The DahdiShowChannelsAction requests the state of all Dahdi channels.<p>
+ * For each Dahdi channel aDahdiShowChannelsEvent is generated. After all Dahdi
+ * channels have been listed a DahdiShowChannelsCompleteEvent is generated.
  * 
- * @see org.asteriskjava.manager.event.DAHDIShowChannelsEvent
- * @see org.asteriskjava.manager.event.DAHDIShowChannelsCompleteEvent
+ * @see org.asteriskjava.manager.event.DahdiShowChannelsEvent
+ * @see org.asteriskjava.manager.event.DahdiShowChannelsCompleteEvent
  * @author srt
  * @version $Id$
  */
-public class DAHDIShowChannelsAction extends AbstractManagerAction
+public class DahdiShowChannelsAction extends AbstractManagerAction
         implements
             EventGeneratingAction
 {
@@ -39,24 +39,24 @@ public class DAHDIShowChannelsAction extends AbstractManagerAction
     private static final long serialVersionUID = 8697000330085766825L;
 
     /**
-     * Creates a new DAHDIShowChannelsAction.
+     * Creates a new DahdiShowChannelsAction.
      */
-    public DAHDIShowChannelsAction()
+    public DahdiShowChannelsAction()
     {
 
     }
 
     /**
-     * Returns the name of this action, i.e. "DAHDIShowChannels".
+     * Returns the name of this action, i.e. "DahdiShowChannels".
      */
     @Override
    public String getAction()
     {
-        return "DAHDIShowChannels";
+        return "DahdiShowChannels";
     }
 
     public Class<? extends ResponseEvent> getActionCompleteEventClass()
     {
-        return DAHDIShowChannelsCompleteEvent.class;
+        return DahdiShowChannelsCompleteEvent.class;
     }
 }

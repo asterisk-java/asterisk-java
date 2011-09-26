@@ -17,21 +17,21 @@
 package org.asteriskjava.manager.event;
 
 /**
- * A DAHDIShowChannelsEvent is triggered in response to a DAHDIShowChannelsAction and shows the state of
- * a DAHDI channel.
+ * A DahdiShowChannelsEvent is triggered in response to a DahdiShowChannelsAction and shows the state of
+ * a Dahdi channel.
  * 
- * @see org.asteriskjava.manager.action.DAHDIShowChannelsAction
+ * @see org.asteriskjava.manager.action.DahdiShowChannelsAction
  * 
  * @author srt
  * @version $Id$
  */
-public class DAHDIShowChannelsEvent extends ResponseEvent
+public class DahdiShowChannelsEvent extends ResponseEvent
 {
     /**
      * Serial version identifier
      */
     private static final long serialVersionUID = -3613642267527361400L;
-    private Integer dahdichannel;
+    private Integer Dahdichannel;
     private String signalling;
     private String signallingcode;
     private String context;
@@ -58,11 +58,11 @@ public class DAHDIShowChannelsEvent extends ResponseEvent
     }
 
     public Integer getDahdichannel() {
-        return dahdichannel;
+        return Dahdichannel;
     }
 
-    public void setDahdichannel(Integer dahdichannel) {
-        this.dahdichannel = dahdichannel;
+    public void setDahdichannel(Integer Dahdichannel) {
+        this.Dahdichannel = Dahdichannel;
     }
 
     public String getSignallingcode() {
@@ -87,14 +87,14 @@ public class DAHDIShowChannelsEvent extends ResponseEvent
     /**
      * @param source
      */
-    public DAHDIShowChannelsEvent(Object source)
+    public DahdiShowChannelsEvent(Object source)
     {
         super(source);
     }
 
   
     /**
-     * Returns the signalling of this DAHDI channel.<p>
+     * Returns the signalling of this Dahdi channel.<p>
      * Possible values are:
      * <ul>
      * <li>E & M Immediate</li>
@@ -128,7 +128,7 @@ public class DAHDIShowChannelsEvent extends ResponseEvent
     }
 
     /**
-     * Sets the signalling of this DAHDI channel.
+     * Sets the signalling of this Dahdi channel.
      */
     public void setSignalling(String signalling)
     {
@@ -138,7 +138,7 @@ public class DAHDIShowChannelsEvent extends ResponseEvent
 
 
     /**
-     * Returns the context of this DAHDI channel as defined in <code>chan_dahdi.conf</code>.
+     * Returns the context of this Dahdi channel as defined in <code>chan_Dahdi.conf</code>.
      */
     public String getContext()
     {
@@ -146,7 +146,7 @@ public class DAHDIShowChannelsEvent extends ResponseEvent
     }
 
     /**
-     * Sets the context of this DAHDI channel.
+     * Sets the context of this Dahdi channel.
      */
     public void setContext(String context)
     {
@@ -154,7 +154,7 @@ public class DAHDIShowChannelsEvent extends ResponseEvent
     }
 
     /**
-     * Returns whether dnd (do not disturb) is enabled for this DAHDI channel.
+     * Returns whether dnd (do not disturb) is enabled for this Dahdi channel.
      * 
      * @return Boolean.TRUE if dnd is enabled, Boolean.FALSE if it is disabled,
      *         <code>null</code> if not set.
@@ -166,7 +166,7 @@ public class DAHDIShowChannelsEvent extends ResponseEvent
     }
 
     /**
-     * Sets whether dnd (do not disturb) is enabled for this DAHDI channel.
+     * Sets whether dnd (do not disturb) is enabled for this Dahdi channel.
      * 
      * @param dnd Boolean.TRUE if dnd is enabled, Boolean.FALSE if it is disabled.
      * @since 0.3
@@ -177,7 +177,7 @@ public class DAHDIShowChannelsEvent extends ResponseEvent
     }
 
     /**
-     * Returns the alarm state of this DAHDI channel.<p>
+     * Returns the alarm state of this Dahdi channel.<p>
      * This may be one of
      * <ul>
      * <li>Red Alarm</li>
@@ -195,7 +195,7 @@ public class DAHDIShowChannelsEvent extends ResponseEvent
     }
 
     /**
-     * Sets the alarm state of this DAHDI channel.
+     * Sets the alarm state of this Dahdi channel.
      */
     public void setAlarm(String alarm)
     {
