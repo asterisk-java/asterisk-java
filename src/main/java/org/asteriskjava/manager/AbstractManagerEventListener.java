@@ -319,10 +319,16 @@ public abstract class AbstractManagerEventListener implements ManagerEventListen
     {
     }
 
+    protected void handleEvent(DahdiShowChannelsCompleteEvent event)
+    {
+    }
     protected void handleEvent(ZapShowChannelsEvent event)
     {
     }
 
+    protected void handleEvent(DahdiShowChannelsEvent event)
+    {
+    }
     protected void handleEvent(CoreShowChannelEvent event)
     {
     }
@@ -598,9 +604,17 @@ public abstract class AbstractManagerEventListener implements ManagerEventListen
         {
             handleEvent((ZapShowChannelsCompleteEvent) event);
         }
+        else if (event instanceof DahdiShowChannelsCompleteEvent)
+        {
+            handleEvent((DahdiShowChannelsCompleteEvent) event);
+        }
         else if (event instanceof ZapShowChannelsEvent)
         {
             handleEvent((ZapShowChannelsEvent) event);
+        }
+        else if (event instanceof DahdiShowChannelsEvent)
+        {
+            handleEvent((DahdiShowChannelsEvent) event);
         }
         else if (event instanceof CoreShowChannelEvent)
         {
