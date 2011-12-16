@@ -115,25 +115,25 @@ public class QueueEntryEvent extends ResponseEvent
         this.channel = channel;
     }
 
-    /**
+	/**
      * Returns the the Caller*ID number of this entry.
      *
      * @return the the Caller*ID number of this entry.
      */
-    public String getCallerId()
+    public String getCallerId() 
     {
-        return callerId;
-    }
+		return callerId;
+	}
 
     /**
      * Sets the the Caller*ID number of this entry.
      *
      * @param callerId the the Caller*ID number of this entry.
      */
-    public void setCallerId(String callerId)
-    {
-        this.callerId = callerId;
-    }
+	public void setCallerId(String callerId) 
+	{
+		this.callerId = callerId;
+	}
 
     /**
      * Returns the Caller*ID name of this entry.

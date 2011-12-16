@@ -64,8 +64,19 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
         registerEventClass(CdrEvent.class);
         registerEventClass(ChannelReloadEvent.class);
         registerEventClass(ChannelUpdateEvent.class);
+        registerEventClass(ConfbridgeEndEvent.class);
+        registerEventClass(ConfbridgeJoinEvent.class);
+        registerEventClass(ConfbridgeLeaveEvent.class);
+        registerEventClass(ConfbridgeListEvent.class);
+        registerEventClass(ConfbridgeListCompleteEvent.class);
+        registerEventClass(ConfbridgeListRoomsEvent.class);
+        registerEventClass(ConfbridgeListRoomsCompleteEvent.class);
+        registerEventClass(ConfbridgeStartEvent.class);
+        registerEventClass(ConfbridgeTalkingEvent.class);
         registerEventClass(CoreShowChannelEvent.class);
         registerEventClass(CoreShowChannelsCompleteEvent.class);
+		registerEventClass(DahdiShowChannelsEvent.class);
+        registerEventClass(DahdiShowChannelsCompleteEvent.class);
         registerEventClass(DbGetResponseEvent.class);
         registerEventClass(DialEvent.class);
         registerEventClass(DndStateEvent.class);
@@ -159,6 +170,7 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
         registerEventClass(VoicemailUserEntryEvent.class);
         registerEventClass(ZapShowChannelsEvent.class);
         registerEventClass(ZapShowChannelsCompleteEvent.class);
+
     }
 
     public final void registerEventClass(Class<? extends ManagerEvent> clazz) throws IllegalArgumentException
