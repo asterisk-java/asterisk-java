@@ -459,6 +459,14 @@ class ChannelManager
         }
     }
 
+		private void idChanged (AsteriskChannelImpl channel, AbstractChannelEvent event) {
+			if (channel != null) {
+				logger.info("Changing unique_id for '" + channel.getName() + "' from " + channel.getId() + " to " + event.getUniqueId() +" < "+ event);
+				channel.idChanged(event.getDateReceived(), event.getUniqueId());
+			}
+		}//idChanged
+
+
     void handleNewStateEvent(NewStateEvent event)
     {
         AsteriskChannelImpl channel = getChannelImplById(event.getUniqueId());
@@ -467,11 +475,7 @@ class ChannelManager
         {
             // NewStateEvent can occur for an existing channel that now has a different unique id (originate with Local/)
             channel = getChannelImplByNameAndActive(event.getChannel());
-            if (channel != null)
-            {
-                logger.info("Changing unique id for '" + channel.getName() + "' from " + channel.getId() + " to " + event.getUniqueId());
-                channel.idChanged(event.getDateReceived(), event.getUniqueId());
-            }
+	          idChanged(channel, event);
 
             if (channel == null)
             {
@@ -542,11 +546,7 @@ class ChannelManager
         {
             // NewCallerIdEvent can occur for an existing channel that now has a different unique id (originate with Local/)
             channel = getChannelImplByNameAndActive(event.getChannel());
-            if (channel != null)
-            {
-                logger.info("Changing unique id for '" + channel.getName() + "' from " + channel.getId() + " to " + event.getUniqueId());
-                channel.idChanged(event.getDateReceived(), event.getUniqueId());
-            }
+	          idChanged(channel, event);
 
             if (channel == null)
             {
