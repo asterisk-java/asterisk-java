@@ -44,6 +44,7 @@ public class PeerEntryEvent extends ResponseEvent
     private Integer port;
     private Boolean dynamic;
     private Boolean natSupport;
+		private Boolean forceRport;
     private Boolean videoSupport;
     private Boolean textSupport;
     private Boolean acl;
@@ -189,6 +190,17 @@ public class PeerEntryEvent extends ResponseEvent
     {
         this.natSupport = natSupport;
     }
+
+     /**
+     * Returns whether the nat option is set to <code>force_rport</code>.<br/>
+     * Available since Asterisk 1.8
+     *
+     * @return <code>true</code> if the nat option is set to <code>force_rport</code>,
+     *         <code>false</code> otherwise or <code>null</code> if not supported by Asterisk.
+     */
+    public Boolean getForceRport() { return forceRport;}
+
+    public void setForceRport(Boolean forceRport) { this.forceRport = forceRport;}
 
     /**
      * Available since Asterisk 1.4.
