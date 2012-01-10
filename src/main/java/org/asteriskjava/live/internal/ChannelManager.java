@@ -50,7 +50,7 @@ class ChannelManager
     /**
      * A map of all active channel by their unique id.
      */
-    final Set<AsteriskChannelImpl> channels;
+    final LinkedHashMap<String,AsteriskChannelImpl> channels = new LinkedHashMap<String,AsteriskChannelImpl>();
 
 
 		ScheduledThreadPoolExecutor traceScheduledExecutorService;
@@ -63,7 +63,6 @@ class ChannelManager
     ChannelManager(AsteriskServerImpl server)
     {
         this.server = server;
-        this.channels = new HashSet<AsteriskChannelImpl>();
     }
 
     void initialize() throws ManagerCommunicationException
@@ -114,7 +113,7 @@ class ChannelManager
         synchronized (channels)
         {
             copy = new ArrayList<AsteriskChannel>(channels.size() + 2);
-            for (AsteriskChannel channel : channels)
+            for (AsteriskChannel channel : channels.values())
             {
                 if (channel.getState() != ChannelState.HUNGUP)
                 {
@@ -129,7 +128,7 @@ class ChannelManager
     {
         synchronized (channels)
         {
-            channels.add(channel);
+            channels.put(channel.getId(), channel);
         }
     }
 
@@ -142,7 +141,7 @@ class ChannelManager
 
         synchronized (channels)
         {
-            i = channels.iterator();
+            i = channels.values().iterator();
             while (i.hasNext())
             {
                 final AsteriskChannel channel = i.next();
@@ -290,9 +289,9 @@ class ChannelManager
 
         synchronized (channels)
         {
-            for (AsteriskChannelImpl tmp : channels)
+            for (AsteriskChannelImpl tmp : channels.values())
             {
-                if (tmp.getName() != null && tmp.getName().equals(name))
+                if (name.equals(tmp.getName()))
                 {
                     // return the most recent channel or when dates are similar, the active one
                     if (dateOfCreation == null ||
@@ -332,9 +331,9 @@ class ChannelManager
 
         synchronized (channels)
         {
-            for (AsteriskChannelImpl tmp : channels)
+            for (AsteriskChannelImpl tmp : channels.values())
             {
-                if (tmp.getName() != null && tmp.getName().equals(name) && tmp.getState() != ChannelState.HUNGUP)
+                if (name.equals(tmp.getName()) && tmp.getState() != ChannelState.HUNGUP)
                 {
                     channel = tmp;
                 }
@@ -343,25 +342,13 @@ class ChannelManager
         return channel;
     }
 
-    AsteriskChannelImpl getChannelImplById(String id)
-    {
-        if (id == null)
-        {
-            return null;
-        }
+    AsteriskChannelImpl getChannelImplById(String uniqueId) {
+      if (uniqueId == null) { return null;}
 
-        synchronized (channels)
-        {
-            for (AsteriskChannelImpl channel : channels)
-            {
-                if (id.equals(channel.getId()))
-                {
-                    return channel;
-                }
-            }
-        }
-        return null;
-    }
+      synchronized (channels) {
+	      return channels.get(uniqueId);
+      }
+    }//getChannelImplById
 
     /**
      * Returns the other side of a local channel.
@@ -461,8 +448,17 @@ class ChannelManager
 
 		private void idChanged (AsteriskChannelImpl channel, AbstractChannelEvent event) {
 			if (channel != null) {
-				logger.info("Changing unique_id for '" + channel.getName() + "' from " + channel.getId() + " to " + event.getUniqueId() +" < "+ event);
-				channel.idChanged(event.getDateReceived(), event.getUniqueId());
+				final String oldId = channel.getId();
+				final String newId = event.getUniqueId();
+
+				if (oldId != null && oldId.equals(newId)) { return;}
+
+				logger.info("Changing unique_id for '" + channel.getName() + "' from " + oldId + " to " + newId +" < "+ event);
+				synchronized(channels) {
+					channels.remove(oldId);
+					channels.put(newId, channel);
+					channel.idChanged(event.getDateReceived(), newId);
+				}
 			}
 		}//idChanged
 
