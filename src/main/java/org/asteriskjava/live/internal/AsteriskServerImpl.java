@@ -16,17 +16,21 @@
  */
 package org.asteriskjava.live.internal;
 
+import org.asteriskjava.AsteriskVersion;
+import org.asteriskjava.config.ConfigFile;
 import org.asteriskjava.live.*;
-import org.asteriskjava.manager.*;
+import org.asteriskjava.manager.ManagerConnection;
+import org.asteriskjava.manager.ManagerConnectionState;
+import org.asteriskjava.manager.ManagerEventListener;
+import org.asteriskjava.manager.ManagerEventListenerProxy;
+import org.asteriskjava.manager.ResponseEvents;
 import org.asteriskjava.manager.action.*;
 import org.asteriskjava.manager.event.*;
 import org.asteriskjava.manager.response.*;
+import org.asteriskjava.util.AstUtil;
 import org.asteriskjava.util.DateUtil;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
-import org.asteriskjava.util.AstUtil;
-import org.asteriskjava.config.ConfigFile;
-import org.asteriskjava.AsteriskVersion;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
@@ -58,21 +62,16 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
      */
     private ManagerConnection eventConnection;
     private ManagerEventListener eventListener = null;
-    private ManagerEventListenerProxy managerEventListenerProxy = null;
+    ManagerEventListenerProxy managerEventListenerProxy;
 
-    private boolean initialized = false;
+    boolean initialized = false;
 
-    /**
-     * A pool of manager connections to use for sending actions to Asterisk.
-     */
-    private final ManagerConnectionPool connectionPool;
+    final Set<AsteriskServerListener> listeners;
 
-    private final List<AsteriskServerListener> listeners;
-
-    private final ChannelManager channelManager;
-    private final MeetMeManager meetMeManager;
-    private final QueueManager queueManager;
-    private final AgentManager agentManager;
+    final ChannelManager channelManager;
+    final MeetMeManager meetMeManager;
+    final QueueManager queueManager;
+    final AgentManager agentManager;
 
     /**
      * The exact version string of the Asterisk server we are connected to.
@@ -117,9 +116,8 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
      */
     public AsteriskServerImpl()
     {
-        connectionPool = new ManagerConnectionPool(1);
         idCounter = new AtomicLong();
-        listeners = new ArrayList<AsteriskServerListener>();
+        listeners = new LinkedHashSet<AsteriskServerListener>();
         originateCallbacks = new HashMap<String, OriginateCallbackData>();
         channelManager = new ChannelManager(this);
         agentManager = new AgentManager(this);
@@ -136,7 +134,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
     public AsteriskServerImpl(ManagerConnection eventConnection)
     {
         this();
-        setManagerConnection(eventConnection);  //todo: !!! Possible bug !!!: call to overridable method over object construction 
+        setManagerConnection(eventConnection);  //todo: !!! Possible bug !!!: call to overridable method over object construction
     }
 
     /**
@@ -164,8 +162,6 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         }
 
         this.eventConnection = eventConnection;
-        this.connectionPool.clear();
-        this.connectionPool.add(eventConnection);
     }
 
     public ManagerConnection getManagerConnection()
@@ -1171,7 +1167,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
                     return;
                 }
             }
-            
+
             if (channel.wasInState(ChannelState.DOWN))
             {
                 cb.onNoAnswer(channel);
@@ -1187,19 +1183,31 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         }
     }
 
-    public void shutdown()
-    {
-        if (eventConnection != null && (eventConnection.getState() == ManagerConnectionState.CONNECTED || eventConnection.getState() == ManagerConnectionState.RECONNECTING))
-        {
-            eventConnection.logoff();
+    @Override public void shutdown() {
+        if (eventConnection != null && (eventConnection.getState() == ManagerConnectionState.CONNECTED || eventConnection.getState() == ManagerConnectionState.RECONNECTING)) {
+						try {
+							eventConnection.logoff();
+						} catch (Exception ignore) {}
         }
-        if (managerEventListenerProxy != null)
-        {
+				
+        if (managerEventListenerProxy != null) {
+						if (eventConnection != null) {
+							eventConnection.removeEventListener(managerEventListenerProxy);
+						}
             managerEventListenerProxy.shutdown();
         }
-        managerEventListenerProxy = null;
+
+		    if (eventConnection != null && eventListener != null) {
+			    eventConnection.removeEventListener(eventListener);
+	      }
+
+		    managerEventListenerProxy = null;
         eventListener = null;
-    }
+
+	      if (initialized) {//incredible, but it happened
+		      handleDisconnectEvent(null);
+	      }//i
+    }//shutdown
 
     public List<PeerEntryEvent> getPeerEntries() throws ManagerCommunicationException
     {
