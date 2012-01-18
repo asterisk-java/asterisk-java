@@ -60,6 +60,11 @@ public class MuteAudioAction extends AbstractManagerAction
 			this.value = value;
 		}
 		
+		public String toString()
+		{
+			return this.value;
+		}
+		
 	}
 
 	private State state;
