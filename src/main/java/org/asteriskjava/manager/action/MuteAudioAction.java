@@ -41,7 +41,7 @@ public class MuteAudioAction extends AbstractManagerAction
 	private String channel;
 
 	/** The audio direct (relative to the pbx) which is to be muted. */
-	enum Direction
+	public enum Direction
 	{
 		IN, OUT, ALL
 	}
@@ -49,7 +49,7 @@ public class MuteAudioAction extends AbstractManagerAction
 	private Direction direction;
 
 	/** Controls whether to mute (on) or unmute (off) the call **/
-	enum State
+	public enum State
 	{
 		MUTE("on"), UNMUTE("off");  //$NON-NLS-1$//$NON-NLS-2$
 		
