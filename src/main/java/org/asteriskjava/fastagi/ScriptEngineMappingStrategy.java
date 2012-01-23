@@ -38,6 +38,7 @@ import java.net.MalformedURLException;
  *
  * @since 1.0.0
  */
+@SuppressWarnings("restriction")
 public class ScriptEngineMappingStrategy implements MappingStrategy
 {
     protected final Log logger = LogFactory.getLog(getClass());
