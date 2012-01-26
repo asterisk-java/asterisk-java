@@ -33,9 +33,10 @@ public class MusicOnHoldEvent extends ManagerEvent
     public static final String STATE_STOP = "Stop";
 
     private String channel;
+    private String clazz;
     private String uniqueId;
     private String state;
-
+    
     public MusicOnHoldEvent(Object source)
     {
         super(source);
@@ -59,6 +60,16 @@ public class MusicOnHoldEvent extends ManagerEvent
     public void setChannel(String channel)
     {
         this.channel = channel;
+    }
+
+    public String getClazz()
+    {
+    	return this.clazz;
+    }
+    
+    public void setClazz(String clazz)
+    {
+    	this.clazz = clazz;
     }
 
     /**
