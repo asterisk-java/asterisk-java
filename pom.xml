@@ -3,7 +3,7 @@
     <parent>
         <groupId>org.asteriskjava</groupId>
         <artifactId>asterisk-java-parent</artifactId>
-        <version>3</version>
+        <version>4</version>
     </parent>
     <artifactId>asterisk-java</artifactId>
     <name>Asterisk-Java</name>
