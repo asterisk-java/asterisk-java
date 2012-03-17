@@ -224,4 +224,17 @@ org.apache.log4j;resolution:=optional
                -->
         </plugins>
     </reporting>
+    
+    <distributionManagement>
+		<repository>
+			<id>noojeeit-releases</id>
+			<name>Noojee IT Release Repository</name>
+			<url>http://artifactory.noojeeit.com.au/artifactory/libs-releases-local</url>
+		</repository>
+		<snapshotRepository>
+			<id>noojeeit-snapshots</id>
+			<name>Noojee IT Snapshot Repository</name>
+			<url>http://artifactory.noojeeit.com.au/artifactory/libs-snapshots-local</url>
+		</snapshotRepository>
+	</distributionManagement>
 </project>
