@@ -499,4 +499,7 @@ public class AgiChannelImpl implements AgiChannel
     {
         sendCommand(new GosubCommand(context, extension, priority, arguments));
     }
+		
+		
+		public AgiRequest getInternalAgiRequest () { return request;}
 }

@@ -65,6 +65,8 @@ public interface AsteriskChannel extends LiveObject
     String VARIABLE_MONITOR_EXEC = "MONITOR_EXEC";
     String VARIABLE_MONITOR_EXEC_ARGS = "MONITOR_EXEC_ARGS";
 
+		/** Pseudo-variable to store {@link org.asteriskjava.manager.event.DialEvent#getDialStatus()} */
+		String VAR_AJ_DIAL_STATUS = "AJ_DIAL_STATUS";
     /**
      * Returns the unique id of this channel, for example "1099015093.165".
      * 

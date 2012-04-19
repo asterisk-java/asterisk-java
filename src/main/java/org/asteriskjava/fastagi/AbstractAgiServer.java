@@ -1,15 +1,15 @@
 package org.asteriskjava.fastagi;
 
+import org.asteriskjava.fastagi.internal.AgiChannelFactory;
+import org.asteriskjava.fastagi.internal.DefaultAgiChannelFactory;
 import org.asteriskjava.util.DaemonThreadFactory;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
-import org.asteriskjava.fastagi.internal.AgiChannelFactory;
-import org.asteriskjava.fastagi.internal.DefaultAgiChannelFactory;
 
 import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.SynchronousQueue;
 
 /**
  * Abstract base class for FastAGI and AsyncAGI servers.
@@ -240,6 +240,27 @@ public abstract class AbstractAgiServer
 
         return pool;
     }
+
+
+	/**
+	 * Returns the approximate number of AgiConnectionHandler threads that are actively executing tasks.
+	 * @see ThreadPoolExecutor#getActiveCount()
+	 * @see #getPoolActiveThreadCount()
+	 * @see org.asteriskjava.fastagi.internal.AgiConnectionHandler#AGI_CONNECTION_HANDLERS
+	 */
+	public int getPoolActiveTaskCount () {
+		if (pool != null) {
+			return pool.getActiveCount();
+		}
+		return -1;
+	}//getPoolActiveCount
+
+	public int getPoolActiveThreadCount () {
+		if (pool != null) {
+			return pool.getPoolSize();
+		}
+		return -1;
+	}//getPoolActiveThreadCount
 
     /**
      * Creates a new ThreadPoolExecutor to serve the AGI requests. The nature of this pool
