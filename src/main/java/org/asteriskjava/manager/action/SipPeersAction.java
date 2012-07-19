@@ -25,6 +25,8 @@ import org.asteriskjava.manager.event.ResponseEvent;
  * the details. When all peers have been reported a PeerlistCompleteEvent is
  * sent.<p>
  * Available since Asterisk 1.2
+ * 
+ * Permission required: write=system
  *
  * @author srt
  * @version $Id$

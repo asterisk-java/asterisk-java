@@ -888,7 +888,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
 
 	}
 
-	public void removeChainListner(ManagerEventListener chainListener)
+	public void removeChainListener(ManagerEventListener chainListener)
 	{
 		this.chainListeners.remove(chainListener);
 	}
