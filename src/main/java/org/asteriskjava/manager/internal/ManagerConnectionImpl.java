@@ -1044,7 +1044,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 			// just in case it was never received.
 			synchronized (this.responseListeners)
 			{
-				this.responseListeners.put(internalActionId, responseEventHandler);
+				this.responseListeners.remove(internalActionId);
 			}
 
 		}
