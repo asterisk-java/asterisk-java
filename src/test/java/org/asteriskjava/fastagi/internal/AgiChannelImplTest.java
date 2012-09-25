@@ -16,34 +16,38 @@
  */
 package org.asteriskjava.fastagi.internal;
 
-import java.util.List;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
-import junit.framework.TestCase;
-import static org.easymock.EasyMock.*;
+import java.util.List;
 
 import org.asteriskjava.fastagi.AgiChannel;
 import org.asteriskjava.fastagi.InvalidCommandSyntaxException;
 import org.asteriskjava.fastagi.InvalidOrUnknownCommandException;
 import org.asteriskjava.fastagi.command.NoopCommand;
-import org.asteriskjava.fastagi.internal.AgiChannelImpl;
 import org.asteriskjava.fastagi.reply.AgiReply;
+import org.junit.Before;
+import org.junit.Test;
 
-public class AgiChannelImplTest extends TestCase
+public class AgiChannelImplTest
 {
     private AgiWriter agiWriter;
     private AgiReader agiReader;
     private AgiChannel agiChannel;
 
-    @Override
-   protected void setUp() throws Exception
+    @Before
+    public void setUp() throws Exception
     {
-        super.setUp();
-
         this.agiWriter = createMock(AgiWriter.class);
         this.agiReader = createMock(AgiReader.class);
         this.agiChannel = new AgiChannelImpl(null, agiWriter, agiReader);
     }
 
+    @Test
     public void testSendCommand() throws Exception
     {
         SimpleAgiReply reply;
@@ -67,8 +71,8 @@ public class AgiChannelImplTest extends TestCase
         verify(agiReader);
     }
 
-    public void testSendCommandWithInvalidOrUnknownCommandResponse()
-            throws Exception
+    @Test
+    public void testSendCommandWithInvalidOrUnknownCommandResponse() throws Exception
     {
         SimpleAgiReply reply;
         NoopCommand command;
@@ -92,16 +96,15 @@ public class AgiChannelImplTest extends TestCase
         }
         catch (InvalidOrUnknownCommandException e)
         {
-            assertEquals("Incorrect message",
-                    "Invalid or unknown command: NOOP", e.getMessage());
+            assertEquals("Incorrect message", "Invalid or unknown command: NOOP", e.getMessage());
         }
 
         verify(agiWriter);
         verify(agiReader);
     }
 
-    public void testSendCommandWithInvalidCommandSyntaxResponse()
-            throws Exception
+    @Test
+    public void testSendCommandWithInvalidCommandSyntaxResponse() throws Exception
     {
         SimpleAgiReply reply;
         NoopCommand command;
@@ -127,10 +130,8 @@ public class AgiChannelImplTest extends TestCase
         }
         catch (InvalidCommandSyntaxException e)
         {
-            assertEquals("Incorrect message",
-                    "Invalid command syntax: NOOP Synopsis", e.getMessage());
-            assertEquals("Incorrect sysnopsis", "NOOP Synopsis", e
-                    .getSynopsis());
+            assertEquals("Incorrect message", "Invalid command syntax: NOOP Synopsis", e.getMessage());
+            assertEquals("Incorrect sysnopsis", "NOOP Synopsis", e.getSynopsis());
             assertEquals("Incorrect usage", "NOOP Usage", e.getUsage());
         }
 
@@ -140,12 +141,12 @@ public class AgiChannelImplTest extends TestCase
 
     public class SimpleAgiReply implements AgiReply
     {
-		private static final long serialVersionUID = 1L;
-		private int status;
+        private static final long serialVersionUID = 1L;
+        private int status;
         private String result;
         private String synopsis;
         private String usage;
-        
+
         public String getFirstLine()
         {
             throw new UnsupportedOperationException();
