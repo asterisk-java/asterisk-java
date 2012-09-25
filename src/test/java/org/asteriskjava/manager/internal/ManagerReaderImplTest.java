@@ -20,29 +20,38 @@ import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import junit.framework.TestCase;
-
-import org.asteriskjava.manager.event.*;
+import org.asteriskjava.manager.event.AgentCalledEvent;
+import org.asteriskjava.manager.event.DisconnectEvent;
+import org.asteriskjava.manager.event.ManagerEvent;
+import org.asteriskjava.manager.event.ProtocolIdentifierReceivedEvent;
+import org.asteriskjava.manager.event.RtcpReceivedEvent;
+import org.asteriskjava.manager.event.StatusCompleteEvent;
 import org.asteriskjava.manager.response.CommandResponse;
 import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.util.DateUtil;
 import org.asteriskjava.util.SocketConnectionFacade;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
-public class ManagerReaderImplTest extends TestCase
+public class ManagerReaderImplTest
 {
     private Date now;
     private MockedDispatcher dispatcher;
     private SocketConnectionFacade socketConnectionFacade;
     private ManagerReader managerReader;
 
-    @Override
-    protected void setUp()
+    @Before
+    public void setUp()
     {
         now = new Date();
         DateUtil.overrideCurrentDate(now);
@@ -52,12 +61,13 @@ public class ManagerReaderImplTest extends TestCase
         socketConnectionFacade = createMock(SocketConnectionFacade.class);
     }
 
-    @Override
-    protected void tearDown()
+    @After
+    public void tearDown()
     {
         DateUtil.overrideCurrentDate(null);
     }
 
+    @Test
     public void testRunWithoutSocket() throws Exception
     {
         try
@@ -72,6 +82,7 @@ public class ManagerReaderImplTest extends TestCase
         }
     }
 
+    @Test
     public void testRunReceivingProtocolIdentifier() throws Exception
     {
         expect(socketConnectionFacade.readLine()).andReturn("Asterisk Call Manager/1.0");
@@ -105,6 +116,7 @@ public class ManagerReaderImplTest extends TestCase
                 dispatcher.dispatchedEvents.get(1).getDateReceived());
     }
 
+    @Test
     public void testRunReceivingEvent() throws Exception
     {
         expect(socketConnectionFacade.readLine()).andReturn("Event: StatusComplete");
@@ -128,6 +140,7 @@ public class ManagerReaderImplTest extends TestCase
                 DisconnectEvent.class, dispatcher.dispatchedEvents.get(1).getClass());
     }
 
+    @Test
     public void testRunReceivingEventWithMapProperty() throws Exception
     {
         expect(socketConnectionFacade.readLine()).andReturn("Event: AgentCalled");
@@ -159,6 +172,7 @@ public class ManagerReaderImplTest extends TestCase
                 DisconnectEvent.class, dispatcher.dispatchedEvents.get(1).getClass());
     }
 
+    @Test
     public void testRunReceivingEventWithMapPropertyAndOnlyOneEntry() throws Exception
     {
         expect(socketConnectionFacade.readLine()).andReturn("Event: AgentCalled");
@@ -188,6 +202,7 @@ public class ManagerReaderImplTest extends TestCase
                 DisconnectEvent.class, dispatcher.dispatchedEvents.get(1).getClass());
     }
 
+    @Test
     public void testWorkaroundForAsteriskBug13319() throws Exception
     {
         expect(socketConnectionFacade.readLine()).andReturn("Event: RTCPReceived");
@@ -245,6 +260,7 @@ public class ManagerReaderImplTest extends TestCase
                         .getClass());
     }
 
+    @Test
     public void testRunReceivingResponse() throws Exception
     {
         expect(socketConnectionFacade.readLine()).andReturn("Response: Success");
@@ -286,6 +302,7 @@ public class ManagerReaderImplTest extends TestCase
                 DisconnectEvent.class, dispatcher.dispatchedEvents.get(0).getClass());
     }
 
+    @Test
     public void testRunReceivingCommandResponse() throws Exception
     {
         List<String> result = new ArrayList<String>();
@@ -329,6 +346,7 @@ public class ManagerReaderImplTest extends TestCase
                 dispatcher.dispatchedResponses.get(0).getDateReceived());
     }
 
+    @Test
     public void testRunCatchingIOException() throws Exception
     {
         expect(socketConnectionFacade.readLine()).andThrow(new IOException("Something happened to the network..."));
