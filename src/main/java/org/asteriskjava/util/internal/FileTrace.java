@@ -31,10 +31,12 @@ public class FileTrace implements Trace
     private Charset charset = Charset.forName("UTF-8");
     private FileChannel channel;
     private boolean exceptionLogged = false;
+	private RandomAccessFile randomAccessFile;
 
-    public FileTrace(Socket socket) throws IOException
+	public FileTrace(Socket socket) throws IOException
     {
-        channel = new RandomAccessFile(getFile(socket), "rw").getChannel();
+        randomAccessFile = new RandomAccessFile(getFile(socket), "rw");
+		channel = randomAccessFile.getChannel();
         print(getHeader(socket));
     }
 
@@ -157,4 +159,15 @@ public class FileTrace implements Trace
             }
         }
     }
+
+	public void close() {
+		try 
+		{
+			randomAccessFile.close();
+		} 
+		catch (IOException e) 
+		{
+			logException(e);
+		}
+	}
 }
