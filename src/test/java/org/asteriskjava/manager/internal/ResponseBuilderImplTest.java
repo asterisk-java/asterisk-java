@@ -16,24 +16,33 @@
  */
 package org.asteriskjava.manager.internal;
 
-import junit.framework.TestCase;
-import org.asteriskjava.manager.response.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class ResponseBuilderImplTest extends TestCase
+import org.asteriskjava.manager.response.ChallengeResponse;
+import org.asteriskjava.manager.response.ExtensionStateResponse;
+import org.asteriskjava.manager.response.MailboxCountResponse;
+import org.asteriskjava.manager.response.MailboxStatusResponse;
+import org.asteriskjava.manager.response.ManagerError;
+import org.asteriskjava.manager.response.ManagerResponse;
+import org.junit.Before;
+import org.junit.Test;
+
+public class ResponseBuilderImplTest
 {
     private ResponseBuilderImpl responseBuilder;
     private Map<String, Object> attributes;
 
-    @Override
+    @Before
     public void setUp()
     {
         this.responseBuilder = new ResponseBuilderImpl();
         this.attributes = new HashMap<String, Object>();
     }
 
+    @Test
     public void testBuildResponse()
     {
         ManagerResponse response;
@@ -45,6 +54,7 @@ public class ResponseBuilderImplTest extends TestCase
         assertEquals("Response not set correctly", "Success", response.getResponse());
     }
 
+    @Test
     public void testBuildResponseWithoutResponseClass()
     {
         ManagerResponse response;
@@ -56,6 +66,7 @@ public class ResponseBuilderImplTest extends TestCase
         assertEquals("Response not set correctly", "Success", response.getResponse());
     }
 
+    @Test
     public void testBuildError()
     {
         ManagerResponse response;
@@ -68,6 +79,7 @@ public class ResponseBuilderImplTest extends TestCase
         assertEquals("Message not set correctly", "Missing action in request", response.getMessage());
     }
 
+    @Test
     public void testBuildErrorWithActionId()
     {
         ManagerResponse response;
@@ -80,6 +92,7 @@ public class ResponseBuilderImplTest extends TestCase
         assertEquals("ActionId not set correctly", "1234", response.getActionId());
     }
 
+    @Test
     public void testBuildChallengeResponse()
     {
         ManagerResponse response;
@@ -92,6 +105,7 @@ public class ResponseBuilderImplTest extends TestCase
         assertEquals("Challenge not set correctly", "131494410", ((ChallengeResponse) response).getChallenge());
     }
 
+    @Test
     public void testBuildMailboxStatusResponse()
     {
         ManagerResponse response;
@@ -109,6 +123,7 @@ public class ResponseBuilderImplTest extends TestCase
         assertEquals("Waiting not set correctly", Boolean.TRUE, mailboxStatusResponse.getWaiting());
     }
 
+    @Test
     public void testBuildMailboxStatusResponseWithNoWaiting()
     {
         ManagerResponse response;
@@ -126,6 +141,7 @@ public class ResponseBuilderImplTest extends TestCase
         assertEquals("Waiting not set correctly", Boolean.FALSE, mailboxStatusResponse.getWaiting());
     }
 
+    @Test
     public void testBuildMailboxCountResponse()
     {
         ManagerResponse response;
@@ -145,6 +161,7 @@ public class ResponseBuilderImplTest extends TestCase
         assertEquals("Old messages set correctly", Integer.valueOf(5), mailboxCountResponse.getOldMessages());
     }
 
+    @Test
     public void testBuildExtensionStateResponse()
     {
         ManagerResponse response;
