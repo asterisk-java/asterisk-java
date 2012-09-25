@@ -180,6 +180,7 @@ public class SocketConnectionFacadeImpl implements SocketConnectionFacade
     {
         socket.close();
         scanner.close();
+        trace.close();
     }
 
     public boolean isConnected()
