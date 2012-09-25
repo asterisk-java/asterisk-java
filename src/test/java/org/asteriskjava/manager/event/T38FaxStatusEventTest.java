@@ -1,18 +1,22 @@
 package org.asteriskjava.manager.event;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
 
 /**
  *
  */
-public class T38FaxStatusEventTest extends TestCase
+public class T38FaxStatusEventTest
 {
+    @Test
     public void testStripUnit()
     {
         T38FaxStatusEvent event = new T38FaxStatusEvent(this);
         assertEquals("0.022", event.stripUnit("0.022 sec."));
     }
 
+    @Test
     public void testParseProperties()
     {
         T38FaxStatusEvent event = new T38FaxStatusEvent(this);
@@ -25,8 +29,8 @@ public class T38FaxStatusEventTest extends TestCase
 
         assertEquals(-9, event.getTotalLagInMilliSeconds().intValue());
         assertEquals(4, event.getMaxLagInMilliSeconds().intValue());
-        assertEquals(0.022, event.getT38SessionDurationInSeconds());
-        assertEquals(-1.8, event.getAverageLagInMilliSeconds());
+        assertEquals(0.022, event.getT38SessionDurationInSeconds(), 0.00001);
+        assertEquals(-1.8, event.getAverageLagInMilliSeconds(), 0.00001);
         assertEquals(363, event.getAverageTxDataRateInBps().intValue());
         assertEquals(0, event.getAverageRxDataRateInBps().intValue());
     }
