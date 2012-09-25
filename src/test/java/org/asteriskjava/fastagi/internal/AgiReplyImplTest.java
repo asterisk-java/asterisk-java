@@ -16,23 +16,26 @@
  */
 package org.asteriskjava.fastagi.internal;
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
 
-import org.asteriskjava.fastagi.internal.AgiReplyImpl;
-
-public class AgiReplyImplTest extends TestCase
+public class AgiReplyImplTest
 {
     private List<String> lines;
 
-    @Override
-   protected void setUp()
+    @Before
+    public void setUp()
     {
         this.lines = new ArrayList<String>();
     }
 
+    @Test
     public void testBuildReply()
     {
         AgiReplyImpl reply;
@@ -47,6 +50,7 @@ public class AgiReplyImplTest extends TestCase
         assertEquals("Incorrect result when get via getAttribute()", "49", reply.getAttribute("result"));
     }
 
+    @Test
     public void testBuildReplyWithAdditionalAttribute()
     {
         AgiReplyImpl reply;
@@ -62,6 +66,7 @@ public class AgiReplyImplTest extends TestCase
         assertEquals("Incorrect endpos attribute", "2240", reply.getAttribute("endpos"));
     }
 
+    @Test
     public void testBuildReplyWithMultipleAdditionalAttribute()
     {
         AgiReplyImpl reply;
@@ -78,6 +83,7 @@ public class AgiReplyImplTest extends TestCase
         assertEquals("Incorrect endpos attribute", "2240", reply.getAttribute("endpos"));
     }
 
+    @Test
     public void testBuildReplyWithQuotedAttribute()
     {
         AgiReplyImpl reply;
@@ -94,6 +100,7 @@ public class AgiReplyImplTest extends TestCase
         assertEquals("Incorrect text0 attribute", "123456789", reply.getAttribute("text0"));
     }
 
+    @Test
     public void testBuildReplyWithQuotedAttribute2()
     {
         AgiReplyImpl reply;
@@ -115,6 +122,7 @@ public class AgiReplyImplTest extends TestCase
         System.out.println(005);
     }
 
+    @Test
     public void testBuildReplyWithParenthesis()
     {
         AgiReplyImpl reply;
@@ -128,6 +136,7 @@ public class AgiReplyImplTest extends TestCase
         assertEquals("Incorrect parenthesis", "(hello)(world)", reply.getExtra());
     }
 
+    @Test
     public void testBuildReplyWithAdditionalAttributeAndParenthesis()
     {
         AgiReplyImpl reply;
@@ -142,6 +151,7 @@ public class AgiReplyImplTest extends TestCase
         assertEquals("Incorrect endpos attribute", "2240", reply.getAttribute("endpos"));
     }
 
+    @Test
     public void testBuildReplyInvalidOrUnknownCommand()
     {
         AgiReplyImpl reply;
@@ -153,6 +163,7 @@ public class AgiReplyImplTest extends TestCase
         assertEquals("Incorrect status", AgiReplyImpl.SC_INVALID_OR_UNKNOWN_COMMAND, reply.getStatus());
     }
 
+    @Test
     public void testBuildReplyInvalidCommandSyntax()
     {
         AgiReplyImpl reply;
@@ -173,6 +184,7 @@ public class AgiReplyImplTest extends TestCase
                 reply.getUsage());
     }
 
+    @Test
     public void testBuildReplyInvalidCommandSyntaxWithOnlyUsage()
     {
         AgiReplyImpl reply;
@@ -187,13 +199,15 @@ public class AgiReplyImplTest extends TestCase
         reply = new AgiReplyImpl(lines);
 
         assertEquals("Incorrect status", AgiReplyImpl.SC_INVALID_COMMAND_SYNTAX, reply.getStatus());
-        // due to the lazy initialization in use this getUsage() could fail if we don't call it before getSynopsis()
+        // due to the lazy initialization in use this getUsage() could fail if
+        // we don't call it before getSynopsis()
         assertEquals("Incorrect usage",
                 "Deletes an entry in the Asterisk database for a given family and key. Returns 1 if succesful, 0 otherwise",
                 reply.getUsage());
         assertEquals("Incorrect synopsis", "DATABASE DEL <family> <key>", reply.getSynopsis());
     }
 
+    @Test
     public void testBuildReplyWithLeadingSpace()
     {
         AgiReplyImpl reply;
@@ -205,7 +219,8 @@ public class AgiReplyImplTest extends TestCase
         assertEquals("Incorrect status", AgiReplyImpl.SC_SUCCESS, reply.getStatus());
         assertEquals("Incorrect extra", "timeout", reply.getExtra());
     }
-    
+
+    @Test
     public void testBuildReplyWithEmptyResultAndTimeout()
     {
         AgiReplyImpl reply;
@@ -214,10 +229,9 @@ public class AgiReplyImplTest extends TestCase
 
         reply = new AgiReplyImpl(lines);
 
-        assertFalse("Incorrect result",reply.getResult().equals("timeout"));
+        assertFalse("Incorrect result", reply.getResult().equals("timeout"));
         assertEquals("Incorrect result", "", reply.getResult());
         assertEquals("Incorrect extra", "timeout", reply.getExtra());
-        
 
     }
 }

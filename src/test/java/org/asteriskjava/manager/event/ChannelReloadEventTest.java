@@ -1,18 +1,22 @@
 package org.asteriskjava.manager.event;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
-public class ChannelReloadEventTest extends TestCase
+import org.junit.Before;
+import org.junit.Test;
+
+public class ChannelReloadEventTest
 {
     private ChannelReloadEvent event;
 
-    @Override
-    protected void setUp() throws Exception
+    @Before
+    public void setUp() throws Exception
     {
-        super.setUp();
         this.event = new ChannelReloadEvent(this);
     }
 
+    @Test
     public void testNullReloadReason()
     {
         event.setReloadReason(null);
@@ -20,6 +24,7 @@ public class ChannelReloadEventTest extends TestCase
         assertNull(event.getReloadReasonDescription());
     }
 
+    @Test
     public void testGetReloadReasonCode()
     {
         event.setReloadReason("CLIRELOAD (Channel module reload by CLI command)");
@@ -27,6 +32,7 @@ public class ChannelReloadEventTest extends TestCase
         assertEquals(ChannelReloadEvent.REASON_CLI_RELOAD, event.getReloadReasonCode());
     }
 
+    @Test
     public void testGetReloadReasonDescription()
     {
         event.setReloadReason("CLIRELOAD (Channel module reload by CLI command)");

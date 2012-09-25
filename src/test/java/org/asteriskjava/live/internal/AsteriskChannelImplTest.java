@@ -1,20 +1,22 @@
 package org.asteriskjava.live.internal;
 
+import static org.junit.Assert.assertEquals;
+
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import junit.framework.TestCase;
-
 import org.asteriskjava.live.ChannelState;
 import org.asteriskjava.util.DateUtil;
+import org.junit.Before;
+import org.junit.Test;
 
-public class AsteriskChannelImplTest extends TestCase
+public class AsteriskChannelImplTest
 {
     private AsteriskChannelImpl channel;
     private int numberOfChanges;
 
-    @Override
-   public void setUp()
+    @Before
+    public void setUp()
     {
         AsteriskServerImpl server = new AsteriskServerImpl();
         channel = new AsteriskChannelImpl(server, "SIP/1234", "0123456789.123", DateUtil.getDate());
@@ -22,6 +24,7 @@ public class AsteriskChannelImplTest extends TestCase
         numberOfChanges = 0;
     }
 
+    @Test
     public void testStateChange()
     {
         channel.addPropertyChangeListener(new PropertyChangeListener()

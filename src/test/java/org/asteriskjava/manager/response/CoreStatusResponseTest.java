@@ -1,29 +1,36 @@
 package org.asteriskjava.manager.response;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.util.TimeZone;
 
-public class CoreStatusResponseTest extends TestCase
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+public class CoreStatusResponseTest
 {
     private TimeZone tz = TimeZone.getTimeZone("Europe/Berlin");
     private CoreStatusResponse response;
     private TimeZone defaultTimeZone;
 
-    @Override
-    protected void setUp() throws Exception
+    @Before
+    public void setUp() throws Exception
     {
         this.response = new CoreStatusResponse();
         defaultTimeZone = TimeZone.getDefault();
         TimeZone.setDefault(tz);
     }
 
-    @Override
-    protected void tearDown() throws Exception
+    @After
+    public void tearDown() throws Exception
     {
         TimeZone.setDefault(defaultTimeZone);
     }
 
+    @Test
     public void testGetCoreStartupTimeAsDate()
     {
         assertNotNull("TimeZone not found", tz);
@@ -33,6 +40,7 @@ public class CoreStatusResponseTest extends TestCase
         assertEquals("Wed May 27 02:49:15 CEST 2009", response.getCoreStartupDateTimeAsDate(tz).toString());
     }
 
+    @Test
     public void testGetCoreStartupTimeAsDateIfDateIsNull()
     {
         assertNotNull("TimeZone not found", tz);

@@ -16,42 +16,45 @@
  */
 package org.asteriskjava.fastagi;
 
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.Assert.assertEquals;
+
 import java.io.IOException;
 
-import junit.framework.TestCase;
-import static org.easymock.EasyMock.*;
-
-import org.asteriskjava.fastagi.DefaultAgiServer;
 import org.asteriskjava.util.ServerSocketFacade;
 import org.asteriskjava.util.SocketConnectionFacade;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
-public class DefaultAgiServerTest extends TestCase
+public class DefaultAgiServerTest
 {
     private DefaultAgiServer server;
     private MockedServerSocketFacade serverSocket;
     private SocketConnectionFacade socket;
 
-    @Override
-   protected void setUp() throws Exception
+    @Before
+    public void setUp() throws Exception
     {
-        super.setUp();
-
         serverSocket = new MockedServerSocketFacade();
         server = new MockedDefaultAgiServer();
     }
 
-    @Override
-   protected void tearDown() throws Exception
+    @After
+    public void tearDown() throws Exception
     {
-        super.tearDown();
         server.shutdown();
     }
 
+    @Test
     public void testDummy()
     {
-        
+
     }
-    
+
     public void XtestStartup() throws Exception
     {
         socket = createMock(SocketConnectionFacade.class);
@@ -77,18 +80,16 @@ public class DefaultAgiServerTest extends TestCase
         }
         Thread.sleep(500);
 
-        assertEquals("serverSocket.accept() not called 2 times", 2,
-                serverSocket.acceptCalls);
-        assertEquals("serverSocket.close() not called", 1,
-                serverSocket.closeCalls);
-        
+        assertEquals("serverSocket.accept() not called 2 times", 2, serverSocket.acceptCalls);
+        assertEquals("serverSocket.close() not called", 1, serverSocket.closeCalls);
+
         verify(socket);
     }
 
     class MockedDefaultAgiServer extends DefaultAgiServer
     {
         @Override
-      protected ServerSocketFacade createServerSocket()
+        protected ServerSocketFacade createServerSocket()
         {
             return serverSocket;
         }
@@ -127,6 +128,7 @@ public class DefaultAgiServerTest extends TestCase
         }
     }
 
+    @Test
     public void testLoadConfigWithDefaultPort()
     {
         DefaultAgiServer defaultAgiServer;
@@ -135,6 +137,7 @@ public class DefaultAgiServerTest extends TestCase
         assertEquals("Invalid default port", 4573, defaultAgiServer.getPort());
     }
 
+    @Test
     public void testLoadConfigWithPort()
     {
         DefaultAgiServer defaultAgiServer;
@@ -144,6 +147,7 @@ public class DefaultAgiServerTest extends TestCase
 
     }
 
+    @Test
     public void testLoadConfigWithBindPort()
     {
         DefaultAgiServer defaultAgiServer;

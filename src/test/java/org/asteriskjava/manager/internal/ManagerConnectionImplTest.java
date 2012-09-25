@@ -20,12 +20,14 @@ import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import junit.framework.TestCase;
 
 import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.manager.AuthenticationFailedException;
@@ -41,16 +43,18 @@ import org.asteriskjava.manager.event.ManagerEvent;
 import org.asteriskjava.manager.event.NewChannelEvent;
 import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.util.SocketConnectionFacade;
+import org.junit.Before;
+import org.junit.Test;
 
-public class ManagerConnectionImplTest extends TestCase
+public class ManagerConnectionImplTest
 {
     protected SocketConnectionFacade mockSocket;
     protected ManagerWriterMock mockWriter;
     protected ManagerReaderMock mockReader;
     protected MockedManagerConnectionImpl mc;
 
-    @Override
-   protected void setUp() throws Exception
+    @Before
+   public void setUp() throws Exception
     {
         mockWriter = new ManagerWriterMock();
         mockWriter.setExpectedUsername("username");
@@ -63,12 +67,14 @@ public class ManagerConnectionImplTest extends TestCase
         mockWriter.setDispatcher(mc);
     }
 
+    @Test
     public void testDefaultConstructor()
     {
         assertEquals("Invalid default hostname", "localhost", mc.getHostname());
         assertEquals("Invalid default port", 5038, mc.getPort());
     }
 
+    @Test
     public void testRegisterUserEventClass()
     {
         ManagerReader managerReader;
@@ -88,6 +94,7 @@ public class ManagerConnectionImplTest extends TestCase
         verify(managerReader);
     }
 
+    @Test
     public void testLogin() throws Exception
     {
         MockedManagerEventListener listener;
@@ -149,6 +156,7 @@ public class ManagerConnectionImplTest extends TestCase
         assertTrue("login() took longer than 2 second, probably a notify error (duration was " + duration + " is msec)", duration <= 2000);
     }
 
+    @Test
     public void testLoginIncorrectKey() throws Exception
     {
         mockSocket.close();
@@ -198,6 +206,7 @@ public class ManagerConnectionImplTest extends TestCase
         verify(mockSocket);
     }
 
+    @Test
     public void testLoginIOExceptionOnConnect() throws Exception
     {
         replay(mockSocket);
@@ -227,6 +236,7 @@ public class ManagerConnectionImplTest extends TestCase
         verify(mockSocket);
     }
 
+    @Test
     public void testLoginTimeoutOnConnect() throws Exception
     {
         mc.setDefaultResponseTimeout(50);
@@ -266,6 +276,7 @@ public class ManagerConnectionImplTest extends TestCase
         verify(mockSocket);
     }
 
+    @Test
     public void testLoginTimeoutOnChallengeAction() throws Exception
     {
         mc.setDefaultResponseTimeout(200);
@@ -307,6 +318,7 @@ public class ManagerConnectionImplTest extends TestCase
         verify(mockSocket);
     }
 
+    @Test
     public void testLogoffWhenConnected() throws Exception
     {
         mockSocket.close();
@@ -323,6 +335,7 @@ public class ManagerConnectionImplTest extends TestCase
         verify(mockSocket);
     }
 
+    @Test
     public void testLogoffWhenNotConnected() throws Exception
     {
         replay(mockSocket);
@@ -341,6 +354,7 @@ public class ManagerConnectionImplTest extends TestCase
         verify(mockSocket);
     }
 
+    @Test
     public void testSendActionWithNullAction() throws Exception
     {
         // fake connect
@@ -355,6 +369,7 @@ public class ManagerConnectionImplTest extends TestCase
         }
     }
 
+    @Test
     public void testSendActionWhenNotConnected() throws Exception
     {
         StatusAction statusAction;
@@ -371,6 +386,7 @@ public class ManagerConnectionImplTest extends TestCase
         }
     }
 
+    @Test
     public void testSendAction() throws Exception
     {
         StatusAction statusAction;
@@ -391,6 +407,7 @@ public class ManagerConnectionImplTest extends TestCase
         assertEquals("other actions not sent 1 time", 1, mockWriter.otherActionsSent);
     }
 
+    @Test
     public void testSendActionTimeout() throws Exception
     {
         StatusAction statusAction;
@@ -417,6 +434,7 @@ public class ManagerConnectionImplTest extends TestCase
         assertEquals("other actions not sent 1 time", 1, mockWriter.otherActionsSent);
     }
 
+    @Test
     public void testDispatchResponseUnexpectedResponse()
     {
         ManagerResponse response;
@@ -430,6 +448,7 @@ public class ManagerConnectionImplTest extends TestCase
         mc.dispatchResponse(response);
     }
 
+    @Test
     public void testDispatchResponseMissingInternalActionId()
     {
         ManagerResponse response;
@@ -442,6 +461,7 @@ public class ManagerConnectionImplTest extends TestCase
         mc.dispatchResponse(response);
     }
 
+    @Test
     public void testDispatchResponseNullActionId()
     {
         ManagerResponse response;
@@ -453,13 +473,15 @@ public class ManagerConnectionImplTest extends TestCase
         // expected result is ignoring the response and logging
         mc.dispatchResponse(response);
     }
-
+    
+    @Test
     public void testDispatchResponseNullResponse()
     {
         // expected result is ignoring and logging
         mc.dispatchResponse(null);
     }
 
+    @Test
     public void testReconnect() throws Exception
     {
         DisconnectEvent disconnectEvent;
@@ -491,6 +513,7 @@ public class ManagerConnectionImplTest extends TestCase
         verify(mockSocket);
     }
 
+    @Test
     public void testReconnectWithIOException() throws Exception
     {
         DisconnectEvent disconnectEvent;
@@ -524,7 +547,7 @@ public class ManagerConnectionImplTest extends TestCase
         verify(mockSocket);
     }
 
-
+    @Test
     public void testReconnectWithTimeoutException() throws Exception
     {
         DisconnectEvent disconnectEvent;
@@ -560,6 +583,7 @@ public class ManagerConnectionImplTest extends TestCase
     }
 
     @SuppressWarnings("unchecked")
+    @Test
     public void testDispatchEventWithMultipleEventHandlers()
     {
         final int count = 20;
@@ -587,6 +611,7 @@ public class ManagerConnectionImplTest extends TestCase
         verify(list);
     }
 
+    @Test
     public void testIsShowVersionCommandAction()
     {
         assertTrue(mc.isShowVersionCommandAction(new CommandAction("show version")));

@@ -1,28 +1,33 @@
 package org.asteriskjava.util;
 
-import java.util.TimeZone;
+import static org.junit.Assert.assertEquals;
+
 import java.util.Date;
+import java.util.TimeZone;
 
-import junit.framework.TestCase;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
-public class DateUtilTest extends TestCase
+public class DateUtilTest
 {
     TimeZone defaultTimeZone;
     final String dateString = "2006-05-19 11:54:48";
 
-    @Override
-    protected void setUp() throws Exception
+    @Before
+    public void setUp() throws Exception
     {
         defaultTimeZone = TimeZone.getDefault();
         TimeZone.setDefault(TimeZone.getTimeZone("GMT"));
     }
 
-    @Override
-    protected void tearDown() throws Exception
+    @After
+    public void tearDown() throws Exception
     {
         TimeZone.setDefault(defaultTimeZone);
     }
 
+    @Test
     public void testGetStartTimeAsDate()
     {
         final Date result = DateUtil.parseDateTime(dateString);
@@ -30,6 +35,7 @@ public class DateUtilTest extends TestCase
         assertEquals("Fri May 19 11:54:48 GMT 2006", result.toString());
     }
 
+    @Test
     public void testGetStartTimeAsDateWithTimeZone()
     {
         final TimeZone tz = TimeZone.getTimeZone("GMT+2");

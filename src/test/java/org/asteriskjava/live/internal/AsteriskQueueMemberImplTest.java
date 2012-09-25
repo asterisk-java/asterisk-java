@@ -16,39 +16,39 @@
  */
 package org.asteriskjava.live.internal;
 
+import static org.junit.Assert.assertEquals;
+
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-
-import junit.framework.TestCase;
 
 import org.asteriskjava.live.QueueMemberState;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
- * @author <a href="mailto:patrick.breucking{@nospam}gonicus.de">Patrick Breucking</a>
+ * @author <a href="mailto:patrick.breucking{@nospam}
+ *         gonicus.de">Patrick Breucking</a>
  * @version $Id$
  * @since 0.1
  */
-public class AsteriskQueueMemberImplTest extends TestCase
+public class AsteriskQueueMemberImplTest
 {
 
     private AsteriskQueueMemberImpl queueMember;
     private int numberOfChanges;
     private AsteriskServerImpl server;
-    //private QueueManager qManager;
+    // private QueueManager qManager;
     private AsteriskQueueImpl queue;
 
-    @Override
     @Before
-    public void setUp() throws Exception
+    public void setUp()
     {
         server = new AsteriskServerImpl();
         // ChannelManager channelManager = new ChannelManager(server);
         // qManager = new QueueManager(server, channelManager);
         queue = new AsteriskQueueImpl(server, "test", 25, "RoundRobin", 15, 5);
-        queueMember = new AsteriskQueueMemberImpl(server, queue, "Agent/777",
-                QueueMemberState.DEVICE_UNKNOWN, false, 10, "dynamic");
+        queueMember = new AsteriskQueueMemberImpl(server, queue, "Agent/777", QueueMemberState.DEVICE_UNKNOWN, false, 10,
+                "dynamic");
 
         numberOfChanges = 0;
     }
@@ -57,8 +57,8 @@ public class AsteriskQueueMemberImplTest extends TestCase
     public void testQueueMemberEvents() throws Exception
     {
         /*
-       * Test should generate a new member like queueMember = new
-       */
+         * Test should generate a new member like queueMember = new
+         */
         // queueMember = new AsteriskQueueMemberImpl(server, queue, "Agent/777",
         // QueueMemberState.DEVICE_UNKNOWN);
         // QueueParamsEvent qpe = new QueueParamsEvent(new Object());
@@ -84,12 +84,9 @@ public class AsteriskQueueMemberImplTest extends TestCase
         {
             public void propertyChange(PropertyChangeEvent evt)
             {
-                assertEquals("wrong propertyName", "state", evt
-                        .getPropertyName());
-                assertEquals("wrong oldValue", QueueMemberState.DEVICE_UNKNOWN,
-                        evt.getOldValue());
-                assertEquals("wrong newValue", QueueMemberState.DEVICE_BUSY,
-                        evt.getNewValue());
+                assertEquals("wrong propertyName", "state", evt.getPropertyName());
+                assertEquals("wrong oldValue", QueueMemberState.DEVICE_UNKNOWN, evt.getOldValue());
+                assertEquals("wrong newValue", QueueMemberState.DEVICE_BUSY, evt.getNewValue());
                 assertEquals("wrong queue member", queueMember, evt.getSource());
                 numberOfChanges++;
             }

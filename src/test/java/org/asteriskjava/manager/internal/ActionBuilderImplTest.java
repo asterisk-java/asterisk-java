@@ -16,24 +16,34 @@
  */
 package org.asteriskjava.manager.internal;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import junit.framework.TestCase;
-
 import org.asteriskjava.AsteriskVersion;
-import org.asteriskjava.manager.action.*;
+import org.asteriskjava.manager.action.AbstractManagerAction;
+import org.asteriskjava.manager.action.AgentsAction;
+import org.asteriskjava.manager.action.OriginateAction;
+import org.asteriskjava.manager.action.SipNotifyAction;
+import org.asteriskjava.manager.action.UpdateConfigAction;
+import org.asteriskjava.manager.action.UserEventAction;
+import org.junit.Before;
+import org.junit.Test;
 
-public class ActionBuilderImplTest extends TestCase
+public class ActionBuilderImplTest
 {
     private ActionBuilderImpl actionBuilder;
 
-    @Override
+    @Before
     public void setUp()
     {
         this.actionBuilder = new ActionBuilderImpl();
     }
 
+    @Test
     public void testBuildAction()
     {
         MyAction myAction;
@@ -53,6 +63,7 @@ public class ActionBuilderImplTest extends TestCase
         assertEquals("Incorrect length", 61, actual.length());
     }
 
+    @Test
     public void testBuildActionWithNullValue()
     {
         MyAction myAction;
@@ -69,6 +80,7 @@ public class ActionBuilderImplTest extends TestCase
         assertEquals("Incorrect length", 42, actual.length());
     }
 
+    @Test
     public void testBuildEventGeneratingAction()
     {
         AgentsAction action;
@@ -83,6 +95,7 @@ public class ActionBuilderImplTest extends TestCase
         assertTrue("Missing trailing CRNL CRNL", actual.endsWith("\r\n\r\n"));
     }
     
+    @Test
     public void testBuildUpdateConfigAction()
     {
         UpdateConfigAction action;
@@ -104,6 +117,7 @@ public class ActionBuilderImplTest extends TestCase
         assertTrue("Action missing category testcategory - " + actual, actual.indexOf("Cat-000000: testcategory") >= 0);
     }
 
+    @Test
     public void testBuildUserEventAction()
     {
         UserEventAction action;
@@ -130,6 +144,7 @@ public class ActionBuilderImplTest extends TestCase
     }
 
     @SuppressWarnings("deprecation")
+    @Test
     public void testBuildActionWithVariablesForAsterisk10()
     {
         OriginateAction originateAction;
@@ -145,6 +160,7 @@ public class ActionBuilderImplTest extends TestCase
     }
 
     @SuppressWarnings("deprecation")
+    @Test
     public void testBuildActionWithVariablesForAsterisk10WithNullValues()
     {
         OriginateAction originateAction;
@@ -160,6 +176,7 @@ public class ActionBuilderImplTest extends TestCase
     }
 
     @SuppressWarnings("deprecation")
+    @Test
     public void testBuildActionWithVariablesForAsterisk12()
     {
         OriginateAction originateAction;
@@ -176,6 +193,7 @@ public class ActionBuilderImplTest extends TestCase
     }
 
     @SuppressWarnings("deprecation")
+    @Test
     public void testBuildActionWithVariablesForAsterisk12WithNullValues()
     {
         OriginateAction originateAction;
@@ -191,6 +209,7 @@ public class ActionBuilderImplTest extends TestCase
                 actual.indexOf("variable: var1=value1\r\nvariable: var2=\r\nvariable: var3=value3\r\n") >= 0);
     }
 
+    @Test
     public void testBuildActionWithVariableMapForAsterisk12()
     {
         OriginateAction originateAction;
@@ -212,6 +231,7 @@ public class ActionBuilderImplTest extends TestCase
                 actual.indexOf("variable: var1=value1\r\nvariable: VAR2=value2\r\n") >= 0);
     }
 
+    @Test
     public void testBuildActionForSipNotifyAction()
     {
         SipNotifyAction action;
@@ -228,6 +248,7 @@ public class ActionBuilderImplTest extends TestCase
                 actual.indexOf("variable: var1=value1\r\nvariable: var2=value2\r\n") >= 0);
     }
 
+    @Test
     public void testBuildActionWithAnnotatedGetter()
     {
         AnnotatedAction action = new AnnotatedAction("value1", "value2", "value3");
@@ -237,12 +258,14 @@ public class ActionBuilderImplTest extends TestCase
                 actual.indexOf("property-1: value1\r\n") >= 0);
     }
 
+    @Test
     public void testDetermineSetterName()
     {
         assertEquals("setProperty1", actionBuilder.determineSetterName("getProperty1"));
         assertEquals("setProperty1", actionBuilder.determineSetterName("isProperty1"));
     }
 
+    @Test
     public void testBuildActionWithAnnotatedSetter()
     {
         AnnotatedAction action = new AnnotatedAction("value1", "value2", "value3");
@@ -252,6 +275,7 @@ public class ActionBuilderImplTest extends TestCase
                 actual.indexOf("property-2: value2\r\n") >= 0);
     }
 
+    @Test
     public void testDetermineFieldName()
     {
         assertEquals("property1", actionBuilder.determineFieldName("getProperty1"));
@@ -259,6 +283,7 @@ public class ActionBuilderImplTest extends TestCase
         assertEquals("property1", actionBuilder.determineFieldName("setProperty1"));
     }
 
+    @Test
     public void testBuildActionWithAnnotatedField()
     {
         AnnotatedAction action = new AnnotatedAction("value1", "value2", "value3");

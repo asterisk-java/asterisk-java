@@ -1,9 +1,12 @@
 package org.asteriskjava.manager.event;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
 
-public class SkypeChatMessageEventTest extends TestCase
+import org.junit.Test;
+
+public class SkypeChatMessageEventTest
 {
+    @Test
     public void testGetDecodedMessage()
     {
         final SkypeChatMessageEvent event = new SkypeChatMessageEvent(this);

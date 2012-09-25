@@ -16,23 +16,28 @@
  */
 package org.asteriskjava.manager.internal;
 
-import junit.framework.TestCase;
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import org.asteriskjava.manager.action.StatusAction;
-import org.asteriskjava.manager.internal.ManagerWriterImpl;
 import org.asteriskjava.util.SocketConnectionFacade;
+import org.junit.Before;
+import org.junit.Test;
 
-public class ManagerWriterImplTest extends TestCase
+public class ManagerWriterImplTest
 {
     private ManagerWriter managerWriter;
-    
-    @Override
-   public void setUp()
+
+    @Before
+    public void setUp()
     {
         managerWriter = new ManagerWriterImpl();
     }
-    
+
+    @Test
     public void testSendActionWithoutSocket() throws Exception
     {
         try
@@ -46,6 +51,7 @@ public class ManagerWriterImplTest extends TestCase
         }
     }
 
+    @Test
     public void testSendAction() throws Exception
     {
         SocketConnectionFacade socketConnectionFacade;
