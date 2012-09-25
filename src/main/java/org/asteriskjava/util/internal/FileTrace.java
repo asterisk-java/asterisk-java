@@ -23,7 +23,7 @@ public class FileTrace implements Trace
     public static final String TRACE_DIRECTORY_PROPERTY = "org.asteriskjava.trace.directory";
     protected static final String FILE_PREFIX = "aj-trace";
     protected static final String FILE_SUFFIX = ".txt";
-    
+
     private final Log logger = LogFactory.getLog(FileTrace.class);
 
     // ok to share instance as access to this object is synchronized anyway
@@ -31,12 +31,12 @@ public class FileTrace implements Trace
     private Charset charset = Charset.forName("UTF-8");
     private FileChannel channel;
     private boolean exceptionLogged = false;
-	private RandomAccessFile randomAccessFile;
+    private RandomAccessFile randomAccessFile;
 
-	public FileTrace(Socket socket) throws IOException
+    public FileTrace(Socket socket) throws IOException
     {
         randomAccessFile = new RandomAccessFile(getFile(socket), "rw");
-		channel = randomAccessFile.getChannel();
+        channel = randomAccessFile.getChannel();
         print(getHeader(socket));
     }
 
@@ -54,7 +54,7 @@ public class FileTrace implements Trace
         sb.append(socket.getPort());
         sb.append("\n");
         sb.append("\n");
-        
+
         return sb.toString();
     }
 
@@ -160,14 +160,15 @@ public class FileTrace implements Trace
         }
     }
 
-	public void close() {
-		try 
-		{
-			randomAccessFile.close();
-		} 
-		catch (IOException e) 
-		{
-			logException(e);
-		}
-	}
+    public void close()
+    {
+        try
+        {
+            randomAccessFile.close();
+        }
+        catch (IOException e)
+        {
+            logException(e);
+        }
+    }
 }
