@@ -16,12 +16,15 @@
  */
 package org.asteriskjava.fastagi.command;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
 
-public class AbstractAgiCommandTest extends TestCase
+import org.junit.Test;
+
+public class AbstractAgiCommandTest
 {
     private MyCommand myCommand;
 
+    @Test
     public void testEscapeAndQuote()
     {
         myCommand = new MyCommand("just a string");
@@ -29,6 +32,7 @@ public class AbstractAgiCommandTest extends TestCase
         assertEquals("MY \"just a string\"", myCommand.buildCommand());
     }
 
+    @Test
     public void testEscapeAndQuoteWithNullString()
     {
         myCommand = new MyCommand(null);
@@ -36,6 +40,7 @@ public class AbstractAgiCommandTest extends TestCase
         assertEquals("MY \"\"", myCommand.buildCommand());
     }
 
+    @Test
     public void testEscapeAndQuoteWithEmptyString()
     {
         myCommand = new MyCommand("");
@@ -43,6 +48,7 @@ public class AbstractAgiCommandTest extends TestCase
         assertEquals("MY \"\"", myCommand.buildCommand());
     }
 
+    @Test
     public void testEscapeAndQuoteWithStringContainingQuotes()
     {
         myCommand = new MyCommand("\"John Doe\" is calling");
@@ -50,6 +56,7 @@ public class AbstractAgiCommandTest extends TestCase
         assertEquals("MY \"\\\"John Doe\\\" is calling\"", myCommand.buildCommand());
     }
 
+    @Test
     public void testEscapeAndQuoteWithStringContainingNewline()
     {
         myCommand = new MyCommand("Caller is:\nJohn Doe");
@@ -57,6 +64,7 @@ public class AbstractAgiCommandTest extends TestCase
         assertEquals("MY \"Caller is:John Doe\"", myCommand.buildCommand());
     }
 
+    @Test
     public void testEscapedQuotesAJ192() {
         myCommand = new MyCommand("first \\\" second \\\" third");
 

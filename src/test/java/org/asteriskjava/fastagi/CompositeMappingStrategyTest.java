@@ -1,18 +1,23 @@
 package org.asteriskjava.fastagi;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
-public class CompositeMappingStrategyTest extends TestCase
+import org.junit.Before;
+import org.junit.Test;
+
+public class CompositeMappingStrategyTest
 {
     private CompositeMappingStrategy strategy;
 
-    @Override
+    @Before
     public void setUp()
     {
         strategy = new CompositeMappingStrategy(new ResourceBundleMappingStrategy("test-mapping"),
                 new ClassNameMappingStrategy());
     }
 
+    @Test
     public void testAJ37ResourceBundle()
     {
         AgiRequest request = new SimpleAgiRequest();
@@ -22,6 +27,7 @@ public class CompositeMappingStrategyTest extends TestCase
         assertEquals("incorrect script determined", script.getClass(), HelloAgiScript.class);
     }
 
+    @Test
     public void testAJ37ClassName()
     {
         AgiRequest request = new SimpleAgiRequest("org.asteriskjava.fastagi.HelloAgiScript");

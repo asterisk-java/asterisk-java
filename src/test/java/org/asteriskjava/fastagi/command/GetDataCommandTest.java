@@ -16,20 +16,22 @@
  */
 package org.asteriskjava.fastagi.command;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
 
-import org.asteriskjava.fastagi.command.GetDataCommand;
+import org.junit.Test;
 
-public class GetDataCommandTest extends TestCase
+public class GetDataCommandTest
 {
     private GetDataCommand getDataCommand;
 
+    @Test
     public void testDefault()
     {
         getDataCommand = new GetDataCommand("VAR1");
         assertEquals("GET DATA \"VAR1\"", getDataCommand.buildCommand());
     }
 
+    @Test
     public void testSetTimeout()
     {
         getDataCommand = new GetDataCommand("VAR1");
@@ -39,6 +41,7 @@ public class GetDataCommandTest extends TestCase
         assertEquals("GET DATA \"VAR1\" 10000", getDataCommand.buildCommand());
     }
 
+    @Test
     public void testSetMaxDigits()
     {
         getDataCommand = new GetDataCommand("VAR1");
@@ -48,6 +51,7 @@ public class GetDataCommandTest extends TestCase
         assertEquals("GET DATA \"VAR1\" 0 10", getDataCommand.buildCommand());
     }
 
+    @Test
     public void testSetTimeoutAndMaxDigits()
     {
         getDataCommand = new GetDataCommand("VAR1");

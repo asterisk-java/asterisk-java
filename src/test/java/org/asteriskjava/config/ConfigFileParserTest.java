@@ -1,19 +1,25 @@
 package org.asteriskjava.config;
 
-import junit.framework.TestCase;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.fail;
 
 import java.nio.CharBuffer;
 
-public class ConfigFileParserTest extends TestCase
+import org.junit.Before;
+import org.junit.Test;
+
+public class ConfigFileParserTest
 {
     ConfigFileReader configFileReader;
 
-    @Override
+    @Before
     public void setUp()
     {
         configFileReader = new ConfigFileReader();
     }
 
+    @Test
     public void testProcessLine() throws Exception
     {
         String s = " a ;-- comment --; = b ; a line comment";
@@ -32,6 +38,7 @@ public class ConfigFileParserTest extends TestCase
         assertEquals("Incorrect comment", "a line comment", configElement.getComment());
     }
 
+    @Test
     public void testParseCategoryHeader() throws Exception
     {
         Category category;
@@ -81,13 +88,15 @@ public class ConfigFileParserTest extends TestCase
         }
     }
 
+    @Test
     public void testParseDirective() throws ConfigParseException
     {
         ConfigDirective configDirective;
 
         configDirective = configFileReader.parseDirective("abc.conf", 20, "#include \"/etc/asterisk/inc.conf\"");
         assertEquals("Incorrect type of configDirective", IncludeDirective.class, configDirective.getClass());
-        assertEquals("Incorrect include file", "/etc/asterisk/inc.conf", ((IncludeDirective) configDirective).getIncludeFile());
+        assertEquals("Incorrect include file", "/etc/asterisk/inc.conf",
+                ((IncludeDirective) configDirective).getIncludeFile());
         assertEquals("Incorrect line number", 20, configDirective.getLineNumber());
         assertEquals("Incorrect file name", "abc.conf", configDirective.getFileName());
 
@@ -114,10 +123,12 @@ public class ConfigFileParserTest extends TestCase
         }
         catch (MissingDirectiveParameterException e)
         {
-            assertEquals("Directive '#include' needs an argument (filename) at line 805 of /etc/asterisk/sip.conf", e.getMessage());
+            assertEquals("Directive '#include' needs an argument (filename) at line 805 of /etc/asterisk/sip.conf",
+                    e.getMessage());
         }
     }
 
+    @Test
     public void testParseVariable() throws ConfigParseException
     {
         ConfigVariable variable;

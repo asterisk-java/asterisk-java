@@ -16,39 +16,41 @@
  */
 package org.asteriskjava.fastagi.internal;
 
-import junit.framework.TestCase;
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
 
 import org.asteriskjava.fastagi.command.StreamFileCommand;
-import org.asteriskjava.fastagi.internal.FastAgiWriter;
 import org.asteriskjava.util.SocketConnectionFacade;
+import org.junit.Before;
+import org.junit.Test;
 
-public class AgiWriterImplTest extends TestCase
+public class AgiWriterImplTest
 {
     private AgiWriter agiWriter;
     private SocketConnectionFacade socket;
 
-    @Override
-   protected void setUp() throws Exception
+    @Before
+    public void setUp() throws Exception
     {
-        super.setUp();
         this.socket = createMock(SocketConnectionFacade.class);
         this.agiWriter = new FastAgiWriter(socket);
     }
 
+    @Test
     public void testSendCommand() throws Exception
     {
         StreamFileCommand command;
-        
+
         command = new StreamFileCommand("welcome");
-        
+
         socket.write("STREAM FILE \"welcome\" \"\"\n");
         socket.flush();
-        
+
         replay(socket);
-        
+
         agiWriter.sendCommand(command);
-        
+
         verify(socket);
     }
 }

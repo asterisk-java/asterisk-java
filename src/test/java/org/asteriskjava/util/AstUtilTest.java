@@ -1,9 +1,14 @@
 package org.asteriskjava.util;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-public class AstUtilTest extends TestCase
+import org.junit.Test;
+
+public class AstUtilTest
 {
+    @Test
     public void testIsTrue()
     {
         assertTrue("on must be true", AstUtil.isTrue("on"));
@@ -14,6 +19,7 @@ public class AstUtilTest extends TestCase
         assertFalse("null must be false", AstUtil.isTrue(null));
     }
 
+    @Test
     public void testParseCallerIdName()
     {
         assertEquals("Hans Wurst", AstUtil.parseCallerId("\"Hans Wurst\"<1234>")[0]);
@@ -35,6 +41,7 @@ public class AstUtilTest extends TestCase
         assertEquals(null, AstUtil.parseCallerId(" ")[0]);
     }
 
+    @Test
     public void testParseCallerIdNumber()
     {
         assertEquals("1234", AstUtil.parseCallerId("\"Hans Wurst\"<1234>")[1]);
@@ -49,6 +56,7 @@ public class AstUtilTest extends TestCase
         assertEquals(null, AstUtil.parseCallerId(" ")[1]);
     }
 
+    @Test
     public void testAJ120()
     {
         String s = "\"3496853210\" <3496853210>";
@@ -56,6 +64,7 @@ public class AstUtilTest extends TestCase
         assertEquals("3496853210", AstUtil.parseCallerId(s)[1]);
     }
 
+    @Test
     public void testIsNull()
     {
         assertTrue("null must be null", AstUtil.isNull(null));
@@ -63,6 +72,7 @@ public class AstUtilTest extends TestCase
         assertTrue("<unknown> must be null", AstUtil.isNull("<unknown>"));
     }
 
+    @Test
     public void testIsNullForIpAddressInPeerEntryEvent()
     {
         assertTrue("\"-none-\" must be considered null", AstUtil.isNull("-none-"));
