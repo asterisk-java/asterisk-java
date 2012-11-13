@@ -20,6 +20,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.asteriskjava.util.MixMonitorDirection;
+
 /**
  * Represents an Asterisk channel.
  * <p>
@@ -586,7 +588,7 @@ public interface AsteriskChannel extends LiveObject
      * <p>
      * This method is available since Asterisk 1.4.
      * 
-     * @throws ManagerCommunicationException if the unpasue monitor action
+     * @throws ManagerCommunicationException if the unpause monitor action
      *             cannot be sent to Asterisk.
      * @throws NoSuchChannelException if this channel had been hung up before
      *             re-enabling monitoring.
@@ -594,4 +596,40 @@ public interface AsteriskChannel extends LiveObject
      * @since 0.3
      */
     void unpauseMonitoring() throws ManagerCommunicationException, NoSuchChannelException;
+    
+    
+    /**
+     * Temporarily stops monitoring this channel if this is monitored with MixMonitor.
+     * <p>
+     * If the channel exists but is not currently monitored your request is
+     * ignored.
+     * <p>
+     * 
+     * @throws ManagerCommunicationException if the pause monitor action cannot
+     *             be sent to Asterisk.
+     * @throws NoSuchChannelException if this channel had been hung up before
+     *             temporarily stopping monitoring.
+     * @see #unPauseMixMonitor()()
+     * @since 1.0.0
+     */
+    void pauseMixMonitor(MixMonitorDirection direction) throws ManagerCommunicationException, NoSuchChannelException;
+    
+    
+    /**
+     * Re-enables monitoring this channel after calling
+     * {@link #pauseMixMonitor()} if this is monitored with MixMonitor
+     * <p>
+     * If the channel exists but monitoring has not been paused your request is
+     * ignored.
+     * <p>
+     * 
+     * @throws ManagerCommunicationException if the unpause monitor action
+     *             cannot be sent to Asterisk.
+     * @throws NoSuchChannelException if this channel had been hung up before
+     *             re-enabling monitoring.
+     * @see #pauseMixMonitor()
+     * @since 1.0.0
+     */
+    void unPauseMixMonitor(MixMonitorDirection direction) throws ManagerCommunicationException, NoSuchChannelException;
+    
 }
