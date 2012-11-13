@@ -35,8 +35,8 @@ import org.asteriskjava.manager.action.AbsoluteTimeoutAction;
 import org.asteriskjava.manager.action.ChangeMonitorAction;
 import org.asteriskjava.manager.action.GetVarAction;
 import org.asteriskjava.manager.action.HangupAction;
+import org.asteriskjava.manager.action.MixMonitorMuteAction;
 import org.asteriskjava.manager.action.MonitorAction;
-import org.asteriskjava.manager.action.PauseMixMonitorAction;
 import org.asteriskjava.manager.action.PauseMonitorAction;
 import org.asteriskjava.manager.action.PlayDtmfAction;
 import org.asteriskjava.manager.action.RedirectAction;
@@ -802,20 +802,20 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
     }
 
     
-    public void pauseMixMonitor(MixMonitorDirection direction) throws ManagerCommunicationException, NoSuchChannelException
+    public void muteMixMonitor(MixMonitorDirection direction) throws ManagerCommunicationException, NoSuchChannelException
     {
         ManagerResponse response;
-        response = server.sendAction(new PauseMixMonitorAction(this.name,1,direction.getStateName()));
+        response = server.sendAction(new MixMonitorMuteAction(this.name,direction.getStateName(),1));
         if (response instanceof ManagerError) {
             throw new NoSuchChannelException("Channel '" + name + "' is not available: " + response.getMessage());
         }
     }
 
     
-    public void unPauseMixMonitor(MixMonitorDirection direction) throws ManagerCommunicationException, NoSuchChannelException
+    public void unMuteMixMonitor(MixMonitorDirection direction) throws ManagerCommunicationException, NoSuchChannelException
     {
         ManagerResponse response;
-        response = server.sendAction(new PauseMixMonitorAction(this.name,0,direction.getStateName()));        
+        response = server.sendAction(new MixMonitorMuteAction(this.name,direction.getStateName(),0));        
         if (response instanceof ManagerError) {
             throw new NoSuchChannelException("Channel '" + name + "' is not available: " + response.getMessage());
         }
