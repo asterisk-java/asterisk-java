@@ -16,24 +16,17 @@
  */
 package org.asteriskjava.util.internal;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.util.Scanner;
-import java.util.NoSuchElementException;
-import java.util.regex.Pattern;
+import org.asteriskjava.util.SocketConnectionFacade;
 
 import javax.net.SocketFactory;
 import javax.net.ssl.SSLSocketFactory;
-
-import org.asteriskjava.util.SocketConnectionFacade;
+import java.io.*;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
+import java.util.regex.Pattern;
 
 
 /**
@@ -65,7 +58,7 @@ public class SocketConnectionFacadeImpl implements SocketConnectionFacade
     {
         this(host, port, ssl, timeout, readTimeout, CRNL_PATTERN);
     }
-    
+
     /**
      * Creates a new instance for use with the Manager API that uses the given line delimiter.
      *
@@ -105,10 +98,14 @@ public class SocketConnectionFacadeImpl implements SocketConnectionFacade
      * @param socket the underlying socket.
      * @throws IOException if the connection cannot be initialized.
      */
-    SocketConnectionFacadeImpl(Socket socket) throws IOException
-    {
-        initialize(socket, NL_PATTERN);
+    SocketConnectionFacadeImpl(Socket socket) throws IOException {
+	    socket.setSoTimeout(MAX_SOCKET_READ_TIMEOUT_MILLIS);
+	    initialize(socket, NL_PATTERN);
     }
+
+	/** 70 mi = 70 * 60 * 1000 */
+	private static final int MAX_SOCKET_READ_TIMEOUT_MILLIS = 4200000;
+
 
     private void initialize(Socket socket, Pattern pattern) throws IOException
     {

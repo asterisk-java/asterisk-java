@@ -20,7 +20,11 @@ import org.asteriskjava.fastagi.internal.AgiChannelFactory;
 import org.asteriskjava.fastagi.internal.AgiConnectionHandler;
 import org.asteriskjava.fastagi.internal.DefaultAgiChannelFactory;
 import org.asteriskjava.fastagi.internal.FastAgiConnectionHandler;
-import org.asteriskjava.util.*;
+import org.asteriskjava.util.Log;
+import org.asteriskjava.util.LogFactory;
+import org.asteriskjava.util.ReflectionUtil;
+import org.asteriskjava.util.ServerSocketFacade;
+import org.asteriskjava.util.SocketConnectionFacade;
 import org.asteriskjava.util.internal.ServerSocketFacadeImpl;
 
 import java.io.IOException;
@@ -256,9 +260,12 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
         }
     }
 
+	/** Default 50?  Windows server max 200? */
+	private static final int BACKLOG = 200;
+
     protected ServerSocketFacade createServerSocket() throws IOException
     {
-        return new ServerSocketFacadeImpl(port, 0, null);
+        return new ServerSocketFacadeImpl(port, BACKLOG, null);
     }
 
     public void startup() throws IOException, IllegalStateException
@@ -301,7 +308,7 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
                 }
             }
 
-            logger.info("Received connection from " + socket.getRemoteAddress());
+            logger.debug("Received connection from " + socket.getRemoteAddress());
 
             // execute connection handler
             final AgiConnectionHandler connectionHandler = new FastAgiConnectionHandler(getMappingStrategy(), socket, this.getAgiChannelFactory());
