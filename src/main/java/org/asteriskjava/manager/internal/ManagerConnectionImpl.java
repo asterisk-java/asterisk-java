@@ -643,15 +643,15 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                 }
                 else if (line1 != null && line1.contains("No such command"))
                 {
-                	final ManagerResponse coreShowVersionResponse = sendAction(new CommandAction("core show version"), defaultResponseTimeout * 2);
-                	
-                	if(coreShowVersionResponse != null && coreShowVersionResponse instanceof CommandResponse){
-                		final List<String> coreShowVersionResult = ((CommandResponse) coreShowVersionResponse).getResult();
-                		
-                		if(coreShowVersionResult != null && coreShowVersionResult.size() > 0){
-                			final String coreLine = coreShowVersionResult.get(0);
-                			
-                			 if (coreLine != null && coreLine.startsWith("Asterisk 1.6"))
+                    final ManagerResponse coreShowVersionResponse = sendAction(new CommandAction("core show version"), defaultResponseTimeout * 2);
+
+                    if(coreShowVersionResponse != null && coreShowVersionResponse instanceof CommandResponse){
+                        final List<String> coreShowVersionResult = ((CommandResponse) coreShowVersionResponse).getResult();
+
+                        if(coreShowVersionResult != null && coreShowVersionResult.size() > 0){
+                            final String coreLine = coreShowVersionResult.get(0);
+
+                             if (coreLine != null && coreLine.startsWith("Asterisk 1.6"))
                              {
                                  return AsteriskVersion.ASTERISK_1_6;
                              }
@@ -659,9 +659,17 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                              {
                                  return AsteriskVersion.ASTERISK_1_8;
                              }
-                		}
-                	}
-                	
+                             else if (coreLine != null && coreLine.startsWith("Asterisk 10"))
+                             {
+                                 return AsteriskVersion.ASTERISK_10;
+                             }
+                             else if (coreLine != null && coreLine.startsWith("Asterisk 11"))
+                             {
+                                 return AsteriskVersion.ASTERISK_11;
+                             }
+                        }
+                    }
+
                     try
                     {
                         Thread.sleep(RECONNECTION_VERSION_INTERVAL);
@@ -1295,8 +1303,9 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         logger.info("Connected via " + identifier);
 
         if (!"Asterisk Call Manager/1.0".equals(identifier)
-                && !"Asterisk Call Manager/1.1".equals(identifier) // Asterisk 1.6 
+                && !"Asterisk Call Manager/1.1".equals(identifier) // Asterisk 1.6
                 && !"Asterisk Call Manager/1.2".equals(identifier) // bri stuffed
+                && !"Asterisk Call Manager/1.3".equals(identifier) // Asterisk 11
                 && !"OpenPBX Call Manager/1.0".equals(identifier)
                 && !"CallWeaver Call Manager/1.0".equals(identifier)
                 && !(identifier != null && identifier.startsWith("Asterisk Call Manager Proxy/")))
