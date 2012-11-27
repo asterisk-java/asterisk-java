@@ -32,6 +32,8 @@ public class HangupEvent extends AbstractChannelEvent
 
     private Integer cause;
     private String causeTxt;
+    private String connectedlinename;
+    private String connectedlinenum;
 
     public HangupEvent(Object source)
     {
@@ -79,5 +81,37 @@ public class HangupEvent extends AbstractChannelEvent
     public void setCauseTxt(String causeTxt)
     {
         this.causeTxt = causeTxt;
+    }
+
+    /**
+     * Returns the Caller*ID name of the channel connected if set.
+     * If the channel has no caller id set "unknown" is returned.
+     *
+     * @since 1.0.0
+     */
+    public String getConnectedlinename()
+    {
+        return connectedlinename;
+    }
+
+    public void setConnectedlinename(String connectedlinename)
+    {
+        this.connectedlinename = connectedlinename;
+    }
+
+    /**
+     * Returns the Caller*ID number of the channel connected if set.
+     * If the channel has no caller id set "unknown" is returned.
+     *
+     * @since 1.0.0
+     */
+    public String getConnectedlinenum()
+    {
+        return connectedlinenum;
+    }
+
+    public void setConnectedlinenum(String connectedlinenum)
+    {
+        this.connectedlinenum = connectedlinenum;
     }
 }

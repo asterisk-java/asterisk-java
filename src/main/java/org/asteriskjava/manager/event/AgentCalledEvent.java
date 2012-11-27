@@ -46,6 +46,9 @@ public class AgentCalledEvent extends ManagerEvent
     private String extension;
     private String priority;
     private String uniqueId;
+    private String connectedlinename;
+    private String connectedlinenum;
+
     private Map<String, String> variables;
 
     /**
@@ -281,4 +284,37 @@ public class AgentCalledEvent extends ManagerEvent
     {
         this.variables = variables;
     }
+
+    /**
+     * Returns the Caller*ID name of the channel connected if set.
+     * If the channel has no caller id set "unknown" is returned.
+     *
+     * @since 1.0.0
+     */
+    public String getConnectedlinename()
+    {
+        return connectedlinename;
+    }
+
+    public void setConnectedlinename(String connectedlinename)
+    {
+        this.connectedlinename = connectedlinename;
+    }
+
+    /**
+     * Returns the Caller*ID number of the channel connected if set.
+     * If the channel has no caller id set "unknown" is returned.
+     *
+     * @since 1.0.0
+     */
+    public String getConnectedlinenum()
+    {
+        return connectedlinenum;
+    }
+
+    public void setConnectedlinenum(String connectedlinenum)
+    {
+        this.connectedlinenum = connectedlinenum;
+    }
+
 }
