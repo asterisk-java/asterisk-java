@@ -47,6 +47,9 @@ public class DialEvent extends ManagerEvent
 
     private String subEvent = SUBEVENT_BEGIN;
 
+    private String connectedlinename;
+    private String connectedlinenum;
+
     /**
      * The name of the source channel.
      */
@@ -342,5 +345,37 @@ public class DialEvent extends ManagerEvent
     public void setDialStatus(String dialStatus)
     {
         this.dialStatus = dialStatus;
+    }
+
+    /**
+     * Returns the Caller*ID name of the channel connected if set.
+     * If the channel has no caller id set "unknown" is returned.
+     *
+     * @since 1.0.0
+     */
+    public String getConnectedlinename()
+    {
+        return connectedlinename;
+    }
+
+    public void setConnectedlinename(String connectedlinename)
+    {
+        this.connectedlinename = connectedlinename;
+    }
+
+    /**
+     * Returns the Caller*ID number of the channel connected if set.
+     * If the channel has no caller id set "unknown" is returned.
+     *
+     * @since 1.0.0
+     */
+    public String getConnectedlinenum()
+    {
+        return connectedlinenum;
+    }
+
+    public void setConnectedlinenum(String connectedlinenum)
+    {
+        this.connectedlinenum = connectedlinenum;
     }
 }

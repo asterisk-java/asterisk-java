@@ -26,22 +26,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.asteriskjava.manager.event.AbstractChannelEvent;
-import org.asteriskjava.manager.event.AgentCalledEvent;
-import org.asteriskjava.manager.event.CdrEvent;
-import org.asteriskjava.manager.event.HangupEvent;
-import org.asteriskjava.manager.event.LogChannelEvent;
-import org.asteriskjava.manager.event.ManagerEvent;
-import org.asteriskjava.manager.event.MeetMeLeaveEvent;
-import org.asteriskjava.manager.event.NewCallerIdEvent;
-import org.asteriskjava.manager.event.NewChannelEvent;
-import org.asteriskjava.manager.event.NewExtenEvent;
-import org.asteriskjava.manager.event.ResponseEvent;
-import org.asteriskjava.manager.event.RtpReceiverStatEvent;
-import org.asteriskjava.manager.event.ShutdownEvent;
-import org.asteriskjava.manager.event.StatusCompleteEvent;
-import org.asteriskjava.manager.event.T38FaxStatusEvent;
-import org.asteriskjava.manager.event.TransferEvent;
+import org.asteriskjava.manager.event.*;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -270,6 +255,19 @@ public class EventBuilderImplTest
         assertNotNull(event);
         assertEquals("Src property not set correctly", "source value", ((CdrEvent) event).getSrc());
     }
+
+	@Test
+	public void testBuildEventWithClassProperty()
+	{
+		ManagerEvent event;
+
+		properties.put("event", "MusicOnHold");
+		properties.put("class", "default");
+		event = eventBuilder.buildEvent(this, properties);
+
+		assertNotNull(event);
+		assertEquals("ClassName property not set correctly", "default", ((MusicOnHoldEvent) event).getClassName());
+	}
 
     @Test
     public void testBuildEventWithSpecialCharacterProperty()

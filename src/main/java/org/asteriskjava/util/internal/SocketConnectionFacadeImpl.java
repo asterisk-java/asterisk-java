@@ -65,7 +65,7 @@ public class SocketConnectionFacadeImpl implements SocketConnectionFacade
     {
         this(host, port, ssl, timeout, readTimeout, CRNL_PATTERN);
     }
-    
+
     /**
      * Creates a new instance for use with the Manager API that uses the given line delimiter.
      *
@@ -180,7 +180,9 @@ public class SocketConnectionFacadeImpl implements SocketConnectionFacade
     {
         socket.close();
         scanner.close();
-        trace.close();
+        if (trace != null) {
+            trace.close();
+        }
     }
 
     public boolean isConnected()

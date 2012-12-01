@@ -17,38 +17,41 @@
 package org.asteriskjava.manager.event;
 
 /**
- * A LeaveEvent is triggered when a channel leaves a queue.<p>
- * It is implemented in <code>apps/app_queue.c</code>
- * 
- * @author srt
+ * A HangupEvent is triggered when a channel is hung up.<p>
+ * It is implemented in <code>channel.c</code>
  */
-public class LeaveEvent extends QueueEvent
+public class SoftHangupRequestEvent extends AbstractChannelEvent
 {
     /**
-     * Serializable version identifier
+     * Serializable version identifier.
      */
-    static final long serialVersionUID = -7450401017732634240L;
+    static final long serialVersionUID = 0L;
 
-    private Integer position;
+    private Integer cause;
 
-    /**
-     * @param source
-     */
-    public LeaveEvent(Object source)
+    public SoftHangupRequestEvent(Object source)
     {
         super(source);
     }
 
     /**
-     * @return the position of the caller at the time they leave the queue
+     * Returns the cause of the hangup.
+     *
+     * @return the hangup cause.
+     * @see org.asteriskjava.live.HangupCause
      */
-    public Integer getPosition()
+    public Integer getCause()
     {
-        return position;
+        return cause;
     }
 
-    public void setPosition(Integer position)
+    /**
+     * Sets the cause of the hangup.
+     *
+     * @param cause the hangup cause.
+     */
+    public void setCause(Integer cause)
     {
-        this.position = position;
+        this.cause = cause;
     }
 }
