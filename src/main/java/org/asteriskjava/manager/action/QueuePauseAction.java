@@ -36,6 +36,7 @@ public class QueuePauseAction extends AbstractManagerAction
     private String iface;
     private Boolean paused;
     private String queue;
+    private String reason;
 
     /**
      * Creates a new empty QueuePauseAction.
@@ -179,5 +180,27 @@ public class QueuePauseAction extends AbstractManagerAction
     public void setPaused(Boolean paused)
     {
         this.paused = paused;
+    }
+
+    /**
+     * Sets the name of the local reason.<p>
+     * Available since Asterisk 1.6.
+     *
+     * @return Name of the local reason for clears the flag.
+     */
+    public String getReason()
+    {
+	return reason;
+    }
+
+    /**
+     * Returns the name of the reason.<p>
+     * Available since Asterisk 1.6.
+     *
+     * @param reason Name of the local reason for clears the flag.
+     */
+    public void setReason(String reason)
+    {
+	this.reason = reason;
     }
 }
