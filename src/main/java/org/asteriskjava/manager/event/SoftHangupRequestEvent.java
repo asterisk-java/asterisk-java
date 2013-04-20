@@ -28,6 +28,7 @@ public class SoftHangupRequestEvent extends AbstractChannelEvent
     static final long serialVersionUID = 0L;
 
     private Integer cause;
+    private String uniqueid;
 
     public SoftHangupRequestEvent(Object source)
     {
@@ -54,4 +55,18 @@ public class SoftHangupRequestEvent extends AbstractChannelEvent
     {
         this.cause = cause;
     }
+
+
+    public String getUniqueid() {
+        return uniqueid;
+    }
+
+    public void setUniqueid(String uniqueid) {
+        this.uniqueid = uniqueid;
+    }
+
+
+
+
+
 }
