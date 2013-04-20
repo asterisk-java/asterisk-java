@@ -34,11 +34,31 @@ public abstract class AbstractChannelStateEvent extends AbstractChannelEvent
 
     private Integer channelState;
     private String channelStateDesc;
+    private String connectedlinename;
+    private String connectedlinenum;
 
     protected AbstractChannelStateEvent(Object source)
     {
         super(source);
     }
+
+    public String getConnectedlinename() {
+        return connectedlinename;
+    }
+
+    public void setConnectedlinename(String connectedlinename) {
+        this.connectedlinename = connectedlinename;
+    }
+
+    public String getConnectedlinenum() {
+        return connectedlinenum;
+    }
+
+    public void setConnectedlinenum(String connectedlinenum) {
+        this.connectedlinenum = connectedlinenum;
+    }
+    
+    
 
     /**
      * Returns the new state of the channel.<p>

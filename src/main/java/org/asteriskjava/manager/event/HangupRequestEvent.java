@@ -27,8 +27,30 @@ public class HangupRequestEvent extends AbstractChannelEvent
      */
     static final long serialVersionUID = 0L;
 
+
+    private String uniqueid;
+    private String channel;
+
+
     public HangupRequestEvent(Object source)
     {
         super(source);
+    }
+
+
+    public String getUniqueid() {
+        return uniqueid;
+    }
+
+    public void setUniqueid(String uniqueid) {
+        this.uniqueid = uniqueid;
+    }
+
+    public String getChannel() {
+        return channel;
+    }
+
+    public void setChannel(String channel) {
+        this.channel = channel;
     }
 }
