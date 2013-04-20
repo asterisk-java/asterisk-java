@@ -91,7 +91,21 @@ public abstract class AbstractManagerEventListener implements ManagerEventListen
     {
     }
 
+    protected void handleEvent(ChanSpyStartEvent event)
+    {
+    }
+   
+    protected void handleEvent(ChanSpyStopEvent event)
+    {
+    }
+
     protected void handleEvent(ConnectEvent event)
+    {
+    }
+  protected void handleEvent(DAHDIChannelEvent event)
+    {
+    }
+  protected void handleEvent(SoftHangupRequestEvent event)
     {
     }
 
@@ -99,6 +113,10 @@ public abstract class AbstractManagerEventListener implements ManagerEventListen
     {
     }
 
+    
+    protected void handleEvent(HangupRequestEvent event)
+       {
+       }
     protected void handleEvent(DisconnectEvent event)
     {
     }
@@ -380,9 +398,21 @@ public abstract class AbstractManagerEventListener implements ManagerEventListen
         {
             handleEvent((ConnectEvent) event);
         }
+         else if (event instanceof DAHDIChannelEvent)
+        {
+            handleEvent((DAHDIChannelEvent) event);
+        }
+        else if (event instanceof SoftHangupRequestEvent)
+        {
+            handleEvent((SoftHangupRequestEvent) event);
+        }
         else if (event instanceof DialEvent)
         {
             handleEvent((DialEvent) event);
+        }
+        else if (event instanceof HangupRequestEvent)
+        {
+            handleEvent((HangupRequestEvent) event);
         }
         else if (event instanceof DisconnectEvent)
         {

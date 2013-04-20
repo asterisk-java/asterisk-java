@@ -64,6 +64,8 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
         registerEventClass(CdrEvent.class);
         registerEventClass(ChannelReloadEvent.class);
         registerEventClass(ChannelUpdateEvent.class);
+        registerEventClass(ChanSpyStartEvent.class);
+        registerEventClass(ChanSpyStopEvent.class);
         registerEventClass(ConfbridgeEndEvent.class);
         registerEventClass(ConfbridgeJoinEvent.class);
         registerEventClass(ConfbridgeLeaveEvent.class);
@@ -75,6 +77,7 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
         registerEventClass(ConfbridgeTalkingEvent.class);
         registerEventClass(CoreShowChannelEvent.class);
         registerEventClass(CoreShowChannelsCompleteEvent.class);
+        registerEventClass(DAHDIChannelEvent.class);
         registerEventClass(DahdiShowChannelsEvent.class);
         registerEventClass(DahdiShowChannelsCompleteEvent.class);
         registerEventClass(DbGetResponseEvent.class);
