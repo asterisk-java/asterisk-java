@@ -112,7 +112,6 @@ public abstract class AbstractManagerEventListener implements ManagerEventListen
     protected void handleEvent(DialEvent event)
     {
     }
-
     
     protected void handleEvent(HangupRequestEvent event)
        {
@@ -268,7 +267,27 @@ public abstract class AbstractManagerEventListener implements ManagerEventListen
     protected void handleEvent(DbGetResponseEvent event)
     {
     }
-
+    protected void handleEvent(DongleNewSMSBase64Event event)
+    {
+    }
+    protected void handleEvent(DongleStatusEvent event)
+    {
+    }
+    protected void handleEvent(DongleCENDEvent event)
+    {
+    }
+    protected void handleEvent(DongleCallStateChangeEvent event)
+    {
+    }
+    protected void handleEvent(DongleNewSMSEvent event)
+    {
+    }
+    protected void handleEvent(DongleNewCMGREvent event)
+    {
+    }
+    protected void handleEvent(DongleDeviceEntryEvent event)
+    {
+    }
     protected void handleEvent(JoinEvent event)
     {
     }
@@ -304,7 +323,7 @@ public abstract class AbstractManagerEventListener implements ManagerEventListen
     protected void handleEvent(QueueEntryEvent event)
     {
     }
-
+    
     protected void handleEvent(QueueMemberEvent event)
     {
     }
@@ -347,6 +366,7 @@ public abstract class AbstractManagerEventListener implements ManagerEventListen
     protected void handleEvent(DahdiShowChannelsEvent event)
     {
     }
+
     protected void handleEvent(CoreShowChannelEvent event)
     {
     }
@@ -360,6 +380,7 @@ public abstract class AbstractManagerEventListener implements ManagerEventListen
      * 
      * @param event the event to handle
      */
+    @Override
     public void onManagerEvent(ManagerEvent event)
     {
         if (event instanceof AgentCallbackLoginEvent)
@@ -521,6 +542,34 @@ public abstract class AbstractManagerEventListener implements ManagerEventListen
         else if (event instanceof MeetMeJoinEvent)
         {
             handleEvent((MeetMeJoinEvent) event);
+        }
+        else if (event instanceof DongleNewSMSBase64Event)
+        {
+            handleEvent((DongleNewSMSBase64Event) event);
+        }
+         else if (event instanceof DongleCENDEvent)
+        {
+            handleEvent((DongleCENDEvent) event);
+        }
+          else if (event instanceof DongleCallStateChangeEvent)
+        {
+            handleEvent((DongleCallStateChangeEvent) event);
+        }
+           else if (event instanceof DongleNewSMSEvent)
+        {
+            handleEvent((DongleNewSMSEvent) event);
+        }
+            else if (event instanceof DongleNewCMGREvent)
+        {
+            handleEvent((DongleNewCMGREvent) event);
+        }
+        else if (event instanceof DongleStatusEvent)
+        {
+            handleEvent((DongleStatusEvent) event);
+        }
+        else if (event instanceof DongleDeviceEntryEvent)
+        {
+            handleEvent((DongleDeviceEntryEvent) event);
         }
         else if (event instanceof MeetMeLeaveEvent)
         {
