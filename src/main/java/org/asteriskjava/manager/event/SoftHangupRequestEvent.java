@@ -29,7 +29,6 @@ public class SoftHangupRequestEvent extends AbstractChannelEvent
 
     private Integer cause;
     private String uniqueid;
-    private String channel;
 
     public SoftHangupRequestEvent(Object source)
     {
@@ -57,14 +56,6 @@ public class SoftHangupRequestEvent extends AbstractChannelEvent
         this.cause = cause;
     }
 
-      public Integer getCause() {
-        return cause;
-    }
-
-    public void setCause(Integer cause) {
-        this.cause = cause;
-    }
-
 
     public String getUniqueid() {
         return uniqueid;
@@ -74,13 +65,7 @@ public class SoftHangupRequestEvent extends AbstractChannelEvent
         this.uniqueid = uniqueid;
     }
 
-    public String getChannel() {
-        return channel;
-    }
 
-    public void setChannel(String channel) {
-        this.channel = channel;
-    }
 
 
 

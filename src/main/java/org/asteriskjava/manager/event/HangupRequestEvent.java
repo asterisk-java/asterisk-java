@@ -29,7 +29,6 @@ public class HangupRequestEvent extends AbstractChannelEvent
 
 
     private String uniqueid;
-    private String channel;
 
 
     public HangupRequestEvent(Object source)
@@ -46,11 +45,4 @@ public class HangupRequestEvent extends AbstractChannelEvent
         this.uniqueid = uniqueid;
     }
 
-    public String getChannel() {
-        return channel;
-    }
-
-    public void setChannel(String channel) {
-        this.channel = channel;
-    }
 }
