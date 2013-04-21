@@ -16,33 +16,37 @@
  */
 package org.asteriskjava.manager.event;
 
-/**
- * A HangupEvent is triggered when a channel is requested hung up.<p>
- * It is implemented in <code>channel.c</code>
- */
-public class HangupRequestEvent extends AbstractChannelEvent
+
+public class ChanSpyStopEvent extends ManagerEvent
 {
     /**
-     * Serializable version identifier.
+     * Serial version identifier
      */
-    static final long serialVersionUID = 0L;
+    private static final long serialVersionUID = 3256725065466000695L;
 
+    /**
+     * The name of the channel.
+     */
+    private String spyeechannel;
 
-    private String uniqueid;
+     
+    
 
-
-    public HangupRequestEvent(Object source)
+    public ChanSpyStopEvent(Object source)
     {
         super(source);
     }
 
-
-    public String getUniqueid() {
-        return uniqueid;
+   
+    public String getSpyeeChannel()
+    {
+        return spyeechannel;
     }
 
-    public void setUniqueid(String uniqueid) {
-        this.uniqueid = uniqueid;
+    public void setSpyeeChannel(String channel)
+    {
+        this.spyeechannel = channel;
     }
 
+    
 }
