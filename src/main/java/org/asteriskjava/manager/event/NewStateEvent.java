@@ -30,44 +30,9 @@ public class NewStateEvent extends AbstractChannelStateEvent
      */
     static final long serialVersionUID = -0L;
 
-    private String connectedlinename;
-    private String connectedlinenum;
-
     public NewStateEvent(Object source)
     {
         super(source);
-    }
-
-    /**
-     * Returns the Caller*ID name of the channel connected if set.
-     * If the channel has no caller id set "unknown" is returned.
-     *
-     * @since 1.0.0
-     */
-    public String getConnectedlinename()
-    {
-        return connectedlinename;
-    }
-
-    public void setConnectedlinename(String connectedlinename)
-    {
-        this.connectedlinename = connectedlinename;
-    }
-
-    /**
-     * Returns the Caller*ID number of the channel connected if set.
-     * If the channel has no caller id set "unknown" is returned.
-     *
-     * @since 1.0.0
-     */
-    public String getConnectedlinenum()
-    {
-        return connectedlinenum;
-    }
-
-    public void setConnectedlinenum(String connectedlinenum)
-    {
-        this.connectedlinenum = connectedlinenum;
     }
 
 }
