@@ -78,6 +78,11 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     private static final int MAX_VERSION_ATTEMPTS = 4;
     private static final Pattern SHOW_VERSION_PATTERN = Pattern.compile("^(core )?show version.*");
 
+    private static final Pattern VERSION_PATTERN_1_6 = Pattern.compile("^\\s*Asterisk (SVN-branch-)?1\\.6[- ].*");
+    private static final Pattern VERSION_PATTERN_1_8 = Pattern.compile("^\\s*Asterisk (SVN-branch-)?1\\.8[- ].*");
+    private static final Pattern VERSION_PATTERN_10  = Pattern.compile("^\\s*Asterisk (SVN-branch-)?10[- ].*");
+    private static final Pattern VERSION_PATTERN_11  = Pattern.compile("^\\s*Asterisk (SVN-branch-)?11[- ].*");
+
     private static final AtomicLong idCounter = new AtomicLong(0);
 
     /**
@@ -627,10 +632,9 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
             showVersionFilesResult = ((CommandResponse) showVersionFilesResponse).getResult();
             if (showVersionFilesResult != null && showVersionFilesResult.size() > 0)
             {
-                final String line1;
+                final String line1 = showVersionFilesResult.get(0);
 
-                line1 = showVersionFilesResult.get(0);
-                if (line1 != null && line1.startsWith("File"))
+                if (line1.startsWith("File"))
                 {
                     final String rawVersion;
 
@@ -641,32 +645,34 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                     }
                     return AsteriskVersion.ASTERISK_1_2;
                 }
-                else if (line1 != null && line1.contains("No such command"))
+                else if (line1.contains("No such command"))
                 {
                     final ManagerResponse coreShowVersionResponse = sendAction(new CommandAction("core show version"), defaultResponseTimeout * 2);
 
-                    if(coreShowVersionResponse != null && coreShowVersionResponse instanceof CommandResponse){
+                    if (coreShowVersionResponse != null && coreShowVersionResponse instanceof CommandResponse)
+                    {
                         final List<String> coreShowVersionResult = ((CommandResponse) coreShowVersionResponse).getResult();
 
-                        if(coreShowVersionResult != null && coreShowVersionResult.size() > 0){
+                        if (coreShowVersionResult != null && coreShowVersionResult.size() > 0)
+                        {
                             final String coreLine = coreShowVersionResult.get(0);
 
-                             if (coreLine != null && coreLine.startsWith("Asterisk 1.6"))
-                             {
-                                 return AsteriskVersion.ASTERISK_1_6;
-                             }
-                             else if (coreLine != null && coreLine.startsWith("Asterisk 1.8"))
-                             {
-                                 return AsteriskVersion.ASTERISK_1_8;
-                             }
-                             else if (coreLine != null && coreLine.startsWith("Asterisk 10"))
-                             {
-                                 return AsteriskVersion.ASTERISK_10;
-                             }
-                             else if (coreLine != null && coreLine.startsWith("Asterisk 11"))
-                             {
-                                 return AsteriskVersion.ASTERISK_11;
-                             }
+                            if (VERSION_PATTERN_1_6.matcher(coreLine).matches())
+                            {
+                                return AsteriskVersion.ASTERISK_1_6;
+                            }
+                            else if (VERSION_PATTERN_1_8.matcher(coreLine).matches())
+                            {
+                                return AsteriskVersion.ASTERISK_1_8;
+                            }
+                            else if (VERSION_PATTERN_10.matcher(coreLine).matches())
+                            {
+                                return AsteriskVersion.ASTERISK_10;
+                            }
+                            else if (VERSION_PATTERN_11.matcher(coreLine).matches())
+                            {
+                                return AsteriskVersion.ASTERISK_11;
+                            }
                         }
                     }
 
