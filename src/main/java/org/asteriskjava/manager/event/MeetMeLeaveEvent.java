@@ -33,6 +33,8 @@ public class MeetMeLeaveEvent extends AbstractMeetMeEvent
 
     private String callerIdNum;
     private String callerIdName;
+    private String connectedlinename;
+    private String connectedlinenum;    
     private Long duration;
 
     /**
@@ -105,4 +107,25 @@ public class MeetMeLeaveEvent extends AbstractMeetMeEvent
     {
         this.duration = duration;
     }
+
+	public String getConnectedlinename()
+	{
+		return connectedlinename;
+	}
+
+	public void setConnectedlinename(String connectedlinename)
+	{
+		this.connectedlinename = connectedlinename;
+	}
+
+	public String getConnectedlinenum()
+	{
+		return connectedlinenum;
+	}
+
+	public void setConnectedlinenum(String connectedlinenum)
+	{
+		this.connectedlinenum = connectedlinenum;
+	}
+    
 }
