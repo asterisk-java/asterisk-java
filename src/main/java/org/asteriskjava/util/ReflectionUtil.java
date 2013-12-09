@@ -54,11 +54,19 @@ public class ReflectionUtil
 
         for (Method method : methods)
         {
-            String name;
-            String methodName;
-
-            methodName = method.getName();
-            if (!methodName.startsWith("get"))
+            String name = null;
+            String methodName = method.getName();
+            
+            if (methodName.startsWith("get"))
+            {
+                name = methodName.substring(3);
+            }
+            else if (methodName.startsWith("is"))
+            {
+                name = methodName.substring(2);
+            }
+            
+            if (name == null || name.length() == 0)
             {
                 continue;
             }
@@ -69,15 +77,7 @@ public class ReflectionUtil
                 continue;
             }
 
-            // ok seems to be an accessor
-            name = methodName.substring("get".length()).toLowerCase(Locale.ENGLISH);
-
-            if (name.length() == 0)
-            {
-                continue;
-            }
-
-            accessors.put(name, method);
+            accessors.put(name.toLowerCase(Locale.ENGLISH), method);
         }
 
         return accessors;
