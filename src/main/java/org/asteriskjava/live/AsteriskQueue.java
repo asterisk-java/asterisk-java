@@ -17,12 +17,14 @@
 package org.asteriskjava.live;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 /**
  * An Asterisk ACD queue.
  *
  * @author srt
+ * @author itaqua
  * @version $Id$
  */
 public interface AsteriskQueue
@@ -134,4 +136,67 @@ public interface AsteriskQueue
      * @since 0.3
      */
     void removeAsteriskQueueListener(AsteriskQueueListener listener);
+
+    /**
+     * Returns the number of abandoned calls.
+     * @author itaqua
+     * @return the number of abandoned calls.
+     */
+    Integer getAbandoned();
+
+    /**
+     * Returns the ratio of calls answered within the specified service level per total completed
+     * calls (in percent).
+     * @author itaqua
+     * @return the ratio of calls answered within the specified service level per total completed
+     *         calls (in percent).
+     */
+	public Double getServiceLevelPerf();
+
+	/**
+     * Returns the number of completed calls.
+     * @author itaqua
+     * @return the number of completed calls.
+     */
+	public Integer getCompleted();
+
+	/**
+     * Returns the current average talk time for this queue based on an exponential average.
+     *
+     * @return the current average talk time for this queue.
+     */
+	public Integer getTalkTime();
+
+	/**
+     * Returns the current average holdtime for this queue (in seconds).
+     * @author itaqua
+     * @return the current average holdtime for this queue (in seconds).
+     */
+	public Integer getHoldTime();
+
+	/**
+     * Returns the number of calls currently waiting in the queue.
+     * Is better to use get Waiting()
+     * @author itaqua
+     * @see getWaiting()
+     * @return the number of calls currently waiting in the queue.
+     */
+	public Integer getCalls();
+
+	/**
+     * Returns the number of calls currently waiting in the queue.
+     * More verbose Method than getCalls()
+     * @author itaqua
+     * @return the number of calls currently waiting in the queue.
+     */
+	public Integer getWaiting();
+
+	/**
+     * timestamp (miliseconds) of last update of this object
+     * @todo maybe change this to an immutable object
+     * @author itaqua
+     * @return
+     */
+    long getLastUpdateMillis();
+
 }

@@ -16,13 +16,13 @@
  */
 package org.asteriskjava.live.internal;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
-
 import org.asteriskjava.live.AsteriskServer;
 import org.asteriskjava.live.LiveObject;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
+
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 
 /**
  * Abstract base class for all live objects.
@@ -36,10 +36,14 @@ abstract class AbstractLiveObject implements LiveObject
     private final PropertyChangeSupport changes;
     protected final AsteriskServerImpl server;
 
+  //last time this object was updated
+    private long lastUpdate;
+
     AbstractLiveObject(AsteriskServerImpl server)
     {
         this.server = server;
         this.changes = new PropertyChangeSupport(this);
+        stampLastUpdate();
     }
 
     public AsteriskServer getServer()
@@ -71,6 +75,7 @@ abstract class AbstractLiveObject implements LiveObject
     {
         if (oldValue != null || newValue != null)
         {
+        	stampLastUpdate();
             try
             {
                 changes.firePropertyChange(propertyName, oldValue, newValue);
@@ -80,5 +85,14 @@ abstract class AbstractLiveObject implements LiveObject
                 logger.warn("Uncaught exception in PropertyChangeListener", e);
             }
         }
+    }
+
+    @Override
+    public long getLastUpdateMillis() {
+    	return lastUpdate;
+    }
+
+    public void stampLastUpdate(){
+    	lastUpdate = System.currentTimeMillis();
     }
 }

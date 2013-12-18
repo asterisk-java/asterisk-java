@@ -449,6 +449,18 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         return queueManager.getQueues();
     }
 
+    @Override
+	public AsteriskQueue getQueueByName(String queueName){
+    	initializeIfNeeded();
+    	return queueManager.getQueueByName(queueName);
+    }
+
+    @Override
+	public List<AsteriskQueue> getQueuesUpdatedAfter(Date date){
+    	initializeIfNeeded();
+    	return queueManager.getQueuesUpdatedAfter(date);
+    }
+
     public synchronized String getVersion() throws ManagerCommunicationException
     {
         final ManagerResponse response;
@@ -469,7 +481,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
             response = sendAction(new CommandAction(command));
             if (response instanceof CommandResponse)
             {
-                final List<?> result;
+                final List<String> result;
 
                 result = ((CommandResponse) response).getResult();
                 if (result.size() > 0)
@@ -1128,6 +1140,12 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
                 return;
             }
 
+            if (channel.wasInState(ChannelState.UP))
+            {
+                cb.onSuccess(channel);
+                return;
+            }
+
             if (channel.wasBusy())
             {
                 cb.onBusy(channel);
@@ -1276,5 +1294,16 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
                 }
             }
         }
+    }
+
+    /* OCTAVIO LUNA */
+    @Override
+    public void forceQueuesMonitor(boolean force) {
+    	queueManager.forceQueuesMonitor(force);
+    }
+
+    @Override
+    public boolean isQueuesMonitorForced() {
+    	return queueManager.isQueuesMonitorForced();
     }
 }

@@ -37,6 +37,13 @@
             <organization>Bureau of Economic and Business Research, University of Florida</organization>
             <timezone>-5</timezone>
         </developer>
+        <developer>
+            <name>Octavio Luna</name>
+            <id>itaqua</id>
+            <email>octavio.luna at gmail.com</email>
+            <organization>N4Utilus Take your Business to the Cloud</organization>
+            <timezone>-6</timezone>
+        </developer>
     </developers>
     <scm>
         <connection>scm:git:git://github.com/srt/asterisk-java.git</connection>
@@ -128,6 +135,12 @@ org.apache.log4j;resolution:=optional
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
             <version>1.2.16</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.1</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

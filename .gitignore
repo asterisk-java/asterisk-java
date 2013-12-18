@@ -6,4 +6,5 @@ target
 .project
 .settings/*
 .idea
+.gradle
 classes
