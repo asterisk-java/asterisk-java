@@ -198,26 +198,6 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
             }
         }
 
-        channelManager.initialize();
-        agentManager.initialize();
-        meetMeManager.initialize();
-        if (!skipQueues)
-        {
-            queueManager.initialize();
-        }
-
-        if (asyncEventHandling && managerEventListenerProxy == null)
-        {
-            managerEventListenerProxy = new ManagerEventListenerProxy(this);
-            eventConnection.addEventListener(managerEventListenerProxy);
-        }
-        else if (!asyncEventHandling && eventListener == null)
-        {
-            eventListener = this;
-            eventConnection.addEventListener(eventListener);
-        }
-        logger.info("Initializing done");
-        initialized = true;
     }
 
     /* Implementation of the AsteriskServer interface */
@@ -767,8 +747,8 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
 
         getConfigResponse = (GetConfigResponse) response;
 
-        final Map<String, List<String>> categories = new LinkedHashMap<String, List<String>>();
         final Map<Integer, String> categoryMap = getConfigResponse.getCategories();
+        final Map<String, List<String>> categories = new LinkedHashMap<String, List<String>>();
         for (Map.Entry<Integer, String> categoryEntry : categoryMap.entrySet())
         {
             final List<String> lines;
@@ -1088,6 +1068,27 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         try
         {
             initialize();
+
+            channelManager.initialize();
+            agentManager.initialize();
+            meetMeManager.initialize();
+            if (!skipQueues)
+            {
+                queueManager.initialize();
+            }
+
+            if (asyncEventHandling && managerEventListenerProxy == null)
+            {
+                managerEventListenerProxy = new ManagerEventListenerProxy(this);
+                eventConnection.addEventListener(managerEventListenerProxy);
+            }
+            else if (!asyncEventHandling && eventListener == null)
+            {
+                eventListener = this;
+                eventConnection.addEventListener(eventListener);
+            }
+            logger.info("Initializing done");
+            initialized = true;
         }
         catch (Exception e)
         {
