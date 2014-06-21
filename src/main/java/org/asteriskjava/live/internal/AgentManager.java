@@ -90,7 +90,7 @@ public class AgentManager
         {
             if (event instanceof AgentsEvent)
             {
-                System.out.println(event);
+                logger.info( event );
                 handleAgentsEvent((AgentsEvent) event);
             }
         }
