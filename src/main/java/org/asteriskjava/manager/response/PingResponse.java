@@ -29,6 +29,8 @@ public class PingResponse extends ManagerResponse
 
     private String ping;
 
+    private String timestamp;
+    
     /**
      * Returns always "Pong".
      *
@@ -43,4 +45,13 @@ public class PingResponse extends ManagerResponse
     {
         this.ping = ping;
     }
+
+	public String getTimestamp() {
+		return timestamp;
+	}
+
+	public void setTimestamp(String timestamp) {
+		this.timestamp = timestamp;
+	}
+    
 }

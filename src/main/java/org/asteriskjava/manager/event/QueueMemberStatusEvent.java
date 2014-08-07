@@ -29,7 +29,18 @@ public class QueueMemberStatusEvent extends QueueMemberEvent
      */
     private static final long serialVersionUID = -2293926744791895763L;
 
-    /**
+    private String stateInterface;
+    
+    
+    public String getStateInterface() {
+		return stateInterface;
+	}
+
+	public void setStateInterface(String stateInterface) {
+		this.stateInterface = stateInterface;
+	}
+
+	/**
      * @param source
      */
     public QueueMemberStatusEvent(Object source)

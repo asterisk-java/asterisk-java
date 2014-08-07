@@ -33,6 +33,13 @@ public class HangupEvent extends AbstractChannelEvent
     private Integer cause;
     private String causeTxt;
 
+    private String accountCode;
+    
+    private String connectedLineNum;
+    
+    private String connectedLineName;
+    
+    
     public HangupEvent(Object source)
     {
         super(source);
@@ -80,4 +87,47 @@ public class HangupEvent extends AbstractChannelEvent
     {
         this.causeTxt = causeTxt;
     }
+
+	public String getAccountCode() {
+		return accountCode;
+	}
+
+	public void setAccountCode(String accountCode) {
+		this.accountCode = accountCode;
+	}
+
+	public String getConnectedLineNum() {
+		return connectedLineNum;
+	}
+
+	public void setConnectedLineNum(String connectedLineNum) {
+		this.connectedLineNum = connectedLineNum;
+	}
+
+	public String getConnectedLineName() {
+		return connectedLineName;
+	}
+
+	public void setConnectedLineName(String connectedLineName) {
+		this.connectedLineName = connectedLineName;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("HangupEvent [cause=");
+		builder.append(cause);
+		builder.append(", causeTxt=");
+		builder.append(causeTxt);
+		builder.append(", accountCode=");
+		builder.append(accountCode);
+		builder.append(", connectedLineNum=");
+		builder.append(connectedLineNum);
+		builder.append(", connectedLineName=");
+		builder.append(connectedLineName);
+		builder.append("]");
+		return builder.toString();
+	}
+    
+    
 }

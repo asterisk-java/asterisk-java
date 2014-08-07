@@ -659,6 +659,10 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                              {
                                  return AsteriskVersion.ASTERISK_1_8;
                              }
+                             else if (coreLine != null && coreLine.startsWith("Asterisk 11"))
+                             {
+                                 return AsteriskVersion.ASTERISK_11;
+                             }
                 		}
                 	}
                 	
