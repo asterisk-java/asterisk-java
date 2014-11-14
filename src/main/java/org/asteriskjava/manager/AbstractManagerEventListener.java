@@ -475,6 +475,14 @@ public abstract class AbstractManagerEventListener implements ManagerEventListen
         {
             handleEvent((ProtocolIdentifierReceivedEvent) event);
         }
+        else if (event instanceof JoinEvent)
+        {
+            handleEvent((JoinEvent) event);
+        }
+        else if (event instanceof LeaveEvent)
+        {
+            handleEvent((LeaveEvent) event);
+        }
         else if (event instanceof QueueEvent)
         {
             handleEvent((QueueEvent) event);
@@ -618,14 +626,6 @@ public abstract class AbstractManagerEventListener implements ManagerEventListen
         else if (event instanceof DbGetResponseEvent)
         {
             handleEvent((DbGetResponseEvent) event);
-        }
-        else if (event instanceof JoinEvent)
-        {
-            handleEvent((JoinEvent) event);
-        }
-        else if (event instanceof LeaveEvent)
-        {
-            handleEvent((LeaveEvent) event);
         }
         else if (event instanceof BridgeEvent)
         {
