@@ -881,4 +881,55 @@ class ChannelManager
             }
         }
     }
+
+    void handleMonitorStartEvent(MonitorStartEvent event)
+    {
+        final AsteriskChannelImpl channel = getChannelImplByNameAndActive(event.getChannel());
+
+        if (channel == null)
+        {
+            logger.info("Ignored MonitorStartEvent for unknown channel " + event.getChannel());
+            return;
+        }
+
+        boolean isMonitored = channel.isMonitored();
+
+        if (isMonitored == true)
+        {
+            logger.info("Ignored MonitorStartEvent as the channel was already monitored");
+            return;
+        }
+
+        synchronized (channel)
+        {
+            channel.setMonitored(true);
+        }
+        logger.info("Channel " + channel.getName() + " is monitored");
+    }
+
+    void handleMonitorStopEvent(MonitorStopEvent event)
+    {
+        final AsteriskChannelImpl channel = getChannelImplByNameAndActive(event.getChannel());
+
+        if (channel == null)
+        {
+            logger.info("Ignored MonitorStopEvent for unknown channel " + event.getChannel());
+            return;
+        }
+
+        boolean isMonitored = channel.isMonitored();
+
+        if (isMonitored == false)
+        {
+            logger.info("Ignored MonitorStopEvent as the channel was not monitored");
+            return;
+        }
+
+        synchronized (channel)
+        {
+            channel.setMonitored(false);
+        }
+        logger.info("Channel " + channel.getName() + " is not monitored");
+    }
+
 }
