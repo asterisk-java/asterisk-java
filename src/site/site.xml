@@ -53,14 +53,6 @@
 			<item name="Frequently Asked Questions" href="faq.html" />
 			<item name="API Reference" href="apidocs/index.html" />
 		</menu>
-		<menu name="Sponsors">
-			<item name="Code Coverage by Clover"
-				href="http://www.cenqua.com/clover/"
-				img="http://www.cenqua.com/clover/images/clovered1.gif" />
-			<item name="Source Perspective by FishEye"
-				href="http://fisheye.reucon.org/fisheye/changelog/repos/asterisk-java"
-				img="http://www.cenqua.com/images/fisheyed2.gif" />
-		</menu>
 		${reports}
 	</body>
 </project>
