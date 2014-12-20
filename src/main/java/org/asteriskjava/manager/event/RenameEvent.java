@@ -103,7 +103,7 @@ public class RenameEvent extends ManagerEvent
      * Returns the old name of the channel.
      * 
      * @return the old name of the channel.
-     * @deprecated use {@link @getChannel} instead.
+     * @deprecated use {@link #getChannel} instead.
      */
     @Deprecated public final String getOldname()
     {

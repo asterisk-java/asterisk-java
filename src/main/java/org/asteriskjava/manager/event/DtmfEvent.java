@@ -29,7 +29,7 @@ package org.asteriskjava.manager.event;
  * Generally it is safe to just ignore them and only react on <code>AST_FRAME_DTMF_END</code> frames.<br>
  * To check whether an DtmfEvent represents an <code>AST_FRAME_DTMF_BEGIN</code> or
  * <code>AST_FRAME_DTMF_END</code> frame use the {@link #isBegin()} and {@link #isEnd()} methods.
- * <p/>
+ * <br>
  * You can find more information on how Asterisk handles DTMF in the
  * <a href="http://www.voip-info.org/wiki/view/Asterisk+DTMF">DTMF article at voip-info.org</a><p>
  * It is implemented in <code>main/channel.c</code>.<p>

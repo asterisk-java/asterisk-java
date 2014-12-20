@@ -20,10 +20,10 @@ import java.util.Map;
 
 /**
  * An AgentCalledEvent is triggered when an agent is rung.
- * <p/>
+ * <br>
  * To enable AgentCalledEvents you have to set
  * <code>eventwhencalled = yes</code> in <code>queues.conf</code>.
- * <p/>
+ * <br>
  * This event is implemented in <code>apps/app_queue.c</code>
  *
  * @author srt

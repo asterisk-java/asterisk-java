@@ -99,7 +99,7 @@ class AsteriskQueueEntryImpl extends AbstractLiveObject implements AsteriskQueue
 
     /**
      * Gets the position in the queue based on the queue's internal list
-     * <p/>
+     * <br>
      * As Asterisk doesn't send events when it shifts entries in the queue
      * we'll base our positions on our internal queue entries ordered list.
      * It should be coherent as entries are always added at the end of the queue

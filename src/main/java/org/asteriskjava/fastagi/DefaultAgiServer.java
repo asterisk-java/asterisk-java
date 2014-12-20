@@ -170,11 +170,11 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
 
     /**
      * Sets the TCP port to listen on for new connections.
-     * <p/>
+     * <br>
      * The default port is 4573.
      *
      * @param bindPort the port to bind to.
-     * @deprecated use {@see #setPort(int)} instead
+     * @deprecated use {@link #setPort(int)} instead
      */
     @Deprecated
     public void setBindPort(int bindPort)
@@ -184,7 +184,7 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
 
     /**
      * Sets the TCP port to listen on for new connections.
-     * <p/>
+     * <br>
      * The default port is 4573.
      *
      * @param port the port to bind to.

@@ -22,7 +22,7 @@ import java.io.Serializable;
 
 /**
  * Represents a Caller*ID containing name and number.
- * <p/>
+ * <br>
  * Objects of this type are immutable.
  *
  * @author srt

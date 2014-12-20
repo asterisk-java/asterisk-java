@@ -103,7 +103,7 @@ public abstract class AbstractAgentEvent extends ManagerEvent
 
     /**
      * Returns the member name supplied for logging when the member is added.
-     * <p/>
+     * <br>
      * Available since Asterisk 1.4.
      *
      * @return the member name supplied for logging when the member is added.

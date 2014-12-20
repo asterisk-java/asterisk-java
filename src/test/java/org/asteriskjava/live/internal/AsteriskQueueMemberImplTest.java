@@ -26,8 +26,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * @author <a href="mailto:patrick.breucking{@nospam}
- *         gonicus.de">Patrick Breucking</a>
+ * @author Patrick Breucking
  * @version $Id$
  * @since 0.1
  */

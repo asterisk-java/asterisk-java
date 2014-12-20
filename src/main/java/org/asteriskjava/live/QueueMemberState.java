@@ -21,7 +21,7 @@ import org.asteriskjava.manager.event.QueueMemberEvent;
 /**
  * Represents the status of a Queue memeber.
  *
- * <p/>
+ * <br>
  * Valid status codes are:
  * <dl>
  * <dt>AST_DEVICE_UNKNOWN (0)</dt>
@@ -38,7 +38,7 @@ import org.asteriskjava.manager.event.QueueMemberEvent;
  * <dd>?</dd>
  * </dl>
  *
- * @author <a href="mailto:patrick.breucking{@nospam}gonicus.de">Patrick Breucking</a>
+ * @author Patrick Breucking
  * @version $Id$
  * @since 0.3.1
  * @see org.asteriskjava.manager.event.QueueMemberEvent

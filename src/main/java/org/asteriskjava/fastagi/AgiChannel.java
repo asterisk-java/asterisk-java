@@ -23,7 +23,7 @@ import org.asteriskjava.fastagi.reply.AgiReply;
 /**
  * Provides the functionality to send AgiCommands to Asterisk while handling an
  * AgiRequest.
- * <p/>
+ * <br>
  * This interface is supposed to be used by AgiScripts for interaction with the
  * Asterisk server.
  *
@@ -94,7 +94,7 @@ public interface AgiChannel
     /**
      * Sets the caller id on the current channel.
      *
-     * @param callerId the raw caller id to set, for example "John Doe<1234>".
+     * @param callerId the raw caller id to set, for example "John Doe&lt;1234&gt;".
      * @since 0.2
      */
     void setCallerId(String callerId) throws AgiException;
@@ -110,7 +110,7 @@ public interface AgiChannel
      * Plays music on hold from the given music on hold class.
      *
      * @param musicOnHoldClass the music on hold class to play music from as
-     *                         configures in Asterisk's <code><musiconhold.conf/code>.
+     *                         configures in Asterisk's <code>musiconhold.conf</code>.
      * @since 0.2
      */
     void playMusicOnHold(String musicOnHoldClass) throws AgiException;
@@ -399,9 +399,11 @@ public interface AgiChannel
     char sayTime(long time, String escapeDigits) throws AgiException;
 
     /**
-     * Returns the value of the current channel or global variable.<p>
+     * Returns the value of the current channel or global variable.
+     * <br>
      * Supports functions and builtin variables. To retrieve
-     * the caller id you can use <code>getVariable("CALLERID(name)");<code><p>
+     * the caller id you can use <code>getVariable("CALLERID(name)");</code>
+     * <br>
      * Does not support expression parsing, use {@link #getFullVariable(String)} in those cases.
      *
      * @param name the name of the variable (or function call) to retrieve.
@@ -412,7 +414,8 @@ public interface AgiChannel
     String getVariable(String name) throws AgiException;
 
     /**
-     * Sets the value of the current channel or global variable to a new value.<p>
+     * Sets the value of the current channel or global variable to a new value.
+     * <br>
      * Supports functions and builtin variables. To set the caller id
      * you can use <code>setVariable("CALLERID(name)", "John Doe");</code>
      *
@@ -799,7 +802,7 @@ public interface AgiChannel
 
     /**
      * Calls a subroutine in the dialplan
-     * <p/>
+     * <br>
      * This method is available since Asterisk 1.6.
      *
      * @param context   the context of the called subroutine.
@@ -811,7 +814,7 @@ public interface AgiChannel
 
     /**
      * Calls a subroutine in the dialplan<p>
-     * <p/>
+     * <br>
      * This method is available since Asterisk 1.6.
      *
      * @param context   the context of the called subroutine.

@@ -21,7 +21,7 @@ package org.asteriskjava.manager.event;
  * This event is implemented in <code>apps/app_dial.c</code>.<p>
  * Available since Asterisk 1.2.
  *
- * @author Asteria Solutions Group, Inc. <http://www.asteriasgi.com/>
+ * @author Asteria Solutions Group, Inc. http://www.asteriasgi.com/
  * @version $Id$
  * @since 0.2
  */
@@ -176,7 +176,7 @@ public class DialEvent extends ManagerEvent
     /**
      * Returns the the Caller*ID Number.
      *
-     * @return the the Caller*ID Number or "<unknown>" if none has been set.
+     * @return the the Caller*ID Number or "&lt;unknown&gt;" if none has been set.
      * @since 1.0.0
      */
     public String getCallerIdNum()
@@ -192,7 +192,7 @@ public class DialEvent extends ManagerEvent
     /**
      * Returns the Caller*ID.
      *
-     * @return the Caller*ID or "<unknown>" if none has been set.
+     * @return the Caller*ID or "&lt;unknown&gt;" if none has been set.
      * @deprecated as of 1.0.0, use {@link #getCallerIdNum()} instead.
      */
     @Deprecated public String getCallerId()
@@ -213,7 +213,7 @@ public class DialEvent extends ManagerEvent
     /**
      * Returns the Caller*ID Name.
      *
-     * @return the Caller*ID Name or "<unknown>" if none has been set.
+     * @return the Caller*ID Name or "&lt;unknown&gt;" if none has been set.
      */
     public String getCallerIdName()
     {

@@ -367,7 +367,7 @@ class ChannelManager
 
     /**
      * Returns the other side of a local channel.
-     * <p/>
+     * <br>
      * Local channels consist of two sides, like
      * "Local/1234@from-local-60b5,1" and "Local/1234@from-local-60b5,2" (for Asterisk 1.4) or
      * "Local/1234@from-local-60b5;1" and "Local/1234@from-local-60b5;2" (for Asterisk 1.6)

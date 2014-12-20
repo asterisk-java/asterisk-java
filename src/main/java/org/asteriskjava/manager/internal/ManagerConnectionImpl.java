@@ -192,7 +192,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
     /**
      * Contains the registered handlers that process the ManagerResponses.
-     * <p/>
+     * <br>
      * Key is the internalActionId of the Action sent and value the
      * corresponding ResponseListener.
      */
@@ -201,7 +201,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     /**
      * Contains the event handlers that handle ResponseEvents for the
      * sendEventGeneratingAction methods.
-     * <p/>
+     * <br>
      * Key is the internalActionId of the Action sent and value the
      * corresponding EventHandler.
      */
@@ -242,7 +242,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
     /**
      * Sets the hostname of the asterisk server to connect to.
-     * <p/>
+     * <br>
      * Default is <code>localhost</code>.
      *
      * @param hostname the hostname to connect to
@@ -255,7 +255,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     /**
      * Sets the port to use to connect to the asterisk server. This is the port
      * specified in asterisk's <code>manager.conf</code> file.
-     * <p/>
+     * <br>
      * Default is 5038.
      *
      * @param port the port to connect to
@@ -274,7 +274,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
     /**
      * Sets whether to use SSL.
-     * <p/>
+     * <br>
      * Default is false.
      *
      * @param ssl <code>true</code> to use SSL for the connection,
@@ -312,7 +312,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
      * Sets the time in milliseconds the synchronous method
      * {@link #sendAction(ManagerAction)} will wait for a response before
      * throwing a TimeoutException.
-     * <p/>
+     * <br>
      * Default is 2000.
      *
      * @param defaultResponseTimeout default response timeout in milliseconds
@@ -327,7 +327,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
      * Sets the time in milliseconds the synchronous method
      * {@link #sendEventGeneratingAction(EventGeneratingAction)} will wait for a
      * response and the last response event before throwing a TimeoutException.
-     * <p/>
+     * <br>
      * Default is 5000.
      *
      * @param defaultEventTimeout default event timeout in milliseconds
@@ -341,7 +341,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     /**
      * Set to <code>true</code> to try reconnecting to ther asterisk serve
      * even if the reconnection attempt threw an AuthenticationFailedException.
-     * <p/>
+     * <br>
      * Default is <code>true</code>.
      *
      * @param keepAliveAfterAuthenticationFailure
@@ -456,7 +456,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
     /**
      * Does the real login, following the steps outlined below.
-     * <p/>
+     * <br>
      * <ol>
      * <li>Connects to the asterisk server by calling {@link #connect()} if not
      * already connected
@@ -1328,14 +1328,14 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
     /**
      * Reconnects to the asterisk server when the connection is lost.
-     * <p/>
+     * <br>
      * While keepAlive is <code>true</code> we will try to reconnect.
      * Reconnection attempts will be stopped when the {@link #logoff()} method
      * is called or when the login after a successful reconnect results in an
      * {@link AuthenticationFailedException} suggesting that the manager
      * credentials have changed and keepAliveAfterAuthenticationFailure is not
      * set.
-     * <p/>
+     * <br>
      * This method is called when a {@link DisconnectEvent} is received from the
      * reader.
      */

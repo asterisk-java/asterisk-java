@@ -23,11 +23,9 @@ package org.asteriskjava.live;
  * <ul>
  * <li>state</li>
  * </ul>
- * 
- * </p>
- * 
+ *
  * @since 0.3.1
- * @author <a href="mailto:patrick.breucking{@nospam}gonicus.de">Patrick Breucking</a>
+ * @author Patrick Breucking
  * @version $Id$
  */
 public interface AsteriskAgent extends LiveObject

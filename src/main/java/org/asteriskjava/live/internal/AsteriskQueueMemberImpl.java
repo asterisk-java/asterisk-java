@@ -25,7 +25,7 @@ import org.asteriskjava.manager.action.QueuePauseAction;
 /**
  * Default implementation of a queue member.
  *
- * @author <a href="mailto:patrick.breucking{@nospam}gonicus.de">Patrick Breucking</a>
+ * @author Patrick Breucking
  * @version $Id$
  * @see AsteriskQueueMember
  * @since 0.3.1

@@ -24,10 +24,10 @@ import org.asteriskjava.util.ReflectionUtil;
 /**
  * Abstract base class for all Events that can be received from the Asterisk
  * server.
- * <p/>
+ * <br>
  * Events contain data pertaining to an event generated from within the Asterisk
  * core or an extension module.
- * <p/>
+ * <br>
  * There is one conrete subclass of ManagerEvent per each supported Asterisk
  * Event.
  *
@@ -73,7 +73,7 @@ public abstract class ManagerEvent extends EventObject
     /**
      * Returns the point in time this event was received from the Asterisk
      * server.
-     * <p/>
+     * <br>
      * Pseudo events that are not directly received from the asterisk server
      * (for example ConnectEvent and DisconnectEvent) may return
      * <code>null</code>.
@@ -93,10 +93,10 @@ public abstract class ManagerEvent extends EventObject
 
     /**
      * Returns the AMI authorization class of this event.
-     * <p/>
+     * <br>
      * This is one or more of system, call, log, verbose, command, agent or
      * user. Multiple privileges are separated by comma.
-     * <p/>
+     * <br>
      * Note: This property is not available from Asterisk 1.0 servers.
      *
      * @since 0.2
@@ -118,12 +118,12 @@ public abstract class ManagerEvent extends EventObject
 
     /**
      * Returns the timestamp for this event.
-     * <p/>
+     * <br>
      * The timestamp property is available in Asterisk since 1.4 if enabled in
      * <code>manager.conf</code> by setting <code>timestampevents = yes</code>.
-     * <p/>
+     * <br>
      * In contains the time the event was generated in seconds since the epoch.
-     * <p/>
+     * <br>
      * Example: 1159310429.569108
      *
      * @return the timestamp for this event.
@@ -147,7 +147,7 @@ public abstract class ManagerEvent extends EventObject
 
     /**
      * Returns the name of the Asterisk server from which this event has been received.
-     * <p/>
+     * <br>
      * This property is only available when using to AstManProxy.
      *
      * @return the name of the Asterisk server from which this event has been received

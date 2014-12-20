@@ -20,7 +20,7 @@ package org.asteriskjava.manager.event;
  * A VoicemailUserEntryCompleteEvent is triggered in response to a VoicemailUsersListAction
  * and contains the details about a voicemail user.<p>
  * It is implemented in <code>apps/app_voicemail.c</code>
- * <p/>
+ * <br>
  * Available since Asterisk 1.6
  *
  * @author srt

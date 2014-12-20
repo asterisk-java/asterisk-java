@@ -26,7 +26,7 @@ package org.asteriskjava.live;
  * <li>penalty (since Asterisk 1.6)</li>
  * </ul>
  *
- * @author <a href="mailto:patrick.breucking{@nospam}gonicus.de">Patrick Breucking</a>
+ * @author Patrick Breucking
  * @version $Id$
  * @since 0.3.1
  */

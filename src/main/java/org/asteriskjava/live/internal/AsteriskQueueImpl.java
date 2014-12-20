@@ -42,7 +42,7 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
     /**
      * TimerTask that monitors exceeding service levels.
      *
-     * @author <a href="mailto:patrick.breucking{@nospam}gonicus.de">Patrick Breucking</a>
+     * @author Patrick Breucking
      */
     private class ServiceLevelTimerTask extends TimerTask
     {

@@ -27,10 +27,10 @@ import org.asteriskjava.config.ConfigFile;
 /**
  * The AsteriskServer is built on top of the
  * {@link org.asteriskjava.manager.ManagerConnection} and is an attempt to
- * simplify interaction with Asterisk by abstracting the interface. <p/> You
+ * simplify interaction with Asterisk by abstracting the interface. <br> You
  * will certainly have less freedom using AsteriskServer but it will make life
  * easier for easy things (like originating a call or getting a list of open
- * channels). <p/> AsteriskServer is still in an early state of development. So,
+ * channels). <br> AsteriskServer is still in an early state of development. So,
  * when using AsteriskServer be aware that it might change in the future.
  * 
  * @author srt
@@ -323,7 +323,7 @@ public interface AsteriskServer
     Collection<AsteriskAgent> getAgents() throws ManagerCommunicationException;
 
     /**
-     * Returns the exact version string of this Asterisk server. <p/> This
+     * Returns the exact version string of this Asterisk server. <br> This
      * typically looks like "Asterisk 1.2.9.1-BRIstuffed-0.3.0-PRE-1q built by
      * root @ pbx0 on a i686 running Linux on 2006-06-20 20:21:30 UTC".
      * 
@@ -336,9 +336,9 @@ public interface AsteriskServer
 
     /**
      * Returns the CVS revision of a given source file of this Asterisk server.
-     * <p/> For example getVersion("app_meetme.c") may return {1, 102} for CVS
-     * revision "1.102". <p/> Note that this feature is not available with
-     * Asterisk 1.0.x. <p/> You can use this feature if you need to write
+     * <br> For example getVersion("app_meetme.c") may return {1, 102} for CVS
+     * revision "1.102". <br> Note that this feature is not available with
+     * Asterisk 1.0.x. <br> You can use this feature if you need to write
      * applications that behave different depending on specific modules being
      * available in a specific version or not.
      * 
@@ -461,7 +461,7 @@ public interface AsteriskServer
     ConfigFile getConfig(String filename) throws ManagerCommunicationException;
 
     /**
-     * Adds a listener to this AsteriskServer.<p/>
+     * Adds a listener to this AsteriskServer.<br>
      * If this server is not yet connected it will be implicitly connected.
      * 
      * @param listener the listener to add.

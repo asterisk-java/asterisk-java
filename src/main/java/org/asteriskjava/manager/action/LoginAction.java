@@ -53,7 +53,7 @@ public class LoginAction extends AbstractManagerAction
     /**
      * Creates a new LoginAction that performs a cleartext login.<p>
      * You should not use cleartext login if you are concerned about security,
-     * using {@see ChallengeAction} and login with a password hash instead.
+     * using {@link ChallengeAction} and login with a password hash instead.
      * 
      * @param username the username as configured in Asterisk's
      *            <code>manager.conf</code>

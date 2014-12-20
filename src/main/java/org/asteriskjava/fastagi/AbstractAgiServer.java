@@ -103,14 +103,14 @@ public abstract class AbstractAgiServer
 
     /**
      * Sets the default number of worker threads in the thread pool.
-     * <p/>
+     * <br>
      * This is the number of threads that are available even if they are idle.
-     * <p/>
+     * <br>
      * The default pool size is 10.
      *
      * @param poolSize the size of the worker thread pool.
      * @throws IllegalArgumentException if the new pool size is negative
-     * @see {@link java.util.concurrent.ThreadPoolExecutor#setCorePoolSize(int)}
+     * @see java.util.concurrent.ThreadPoolExecutor#setCorePoolSize(int)
      */
     public synchronized void setPoolSize(int poolSize)
     {
@@ -139,14 +139,14 @@ public abstract class AbstractAgiServer
 
     /**
      * Sets the maximum number of worker threads in the thread pool.
-     * <p/>
+     * <br>
      * This equals the maximum number of concurrent requests this AgiServer can serve.
-     * <p/>
+     * <br>
      * The default maximum pool size is 100.
      *
      * @param maximumPoolSize the maximum size of the worker thread pool.
      * @throws IllegalArgumentException if maximumPoolSize is less than current pool size or less than or equal to 0.
-     * @see {@link java.util.concurrent.ThreadPoolExecutor#setMaximumPoolSize(int)}
+     * @see java.util.concurrent.ThreadPoolExecutor#setMaximumPoolSize(int)
      */
     public synchronized void setMaximumPoolSize(int maximumPoolSize)
     {

@@ -23,7 +23,7 @@ import org.asteriskjava.util.SocketConnectionFacade;
 
 /**
  * An AgiConnectionHandler for FastAGI.
- * <p/>
+ * <br>
  * It reads the request using a FastAgiReader and runs the AgiScript configured to
  * handle this type of request. Finally it closes the socket connection.
  *

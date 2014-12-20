@@ -83,7 +83,7 @@ public class PeerStatusEvent extends ManagerEvent
      * Returns the name of the peer that registered.<p>
      * The peer name includes the channel type prefix. So if you receive a PeerStatusEvent for a
      * SIP peer defined as "john" in <code>sip.conf</code> this method returns "SIP/john".
-     * <p/>
+     * <br>
      * Peer names for IAX clients start with "IAX2/", peer names for SIP clients start with "SIP/".
      *
      * @return the peer's name including the channel type.

@@ -25,7 +25,7 @@ import org.asteriskjava.manager.event.ResponseEvent;
  * the details. When all peers have been reported a VoicemailUserEntryCompleteEvent is
  * sent.<p>
  * It is implemented in <code>apps/app_voicemail.c</code>
- * <p/>
+ * <br>
  * Available since Asterisk 1.6
  *
  * @author srt

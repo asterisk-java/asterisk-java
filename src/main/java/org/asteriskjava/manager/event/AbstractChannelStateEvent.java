@@ -98,7 +98,7 @@ public abstract class AbstractChannelStateEvent extends AbstractChannelEvent
      * <li>Busy</li>
      * <li>Dialing Offhook (since Asterik 1.6)</li>
      * <li>Pre-ring (since Asterik 1.6)</li>
-     * <ul>
+     * </ul>
      *
      * @return the new state of the channel as a descriptive text.
      * @since 1.0.0
@@ -120,8 +120,9 @@ public abstract class AbstractChannelStateEvent extends AbstractChannelEvent
     }
 
     /**
-     * Returns the new state of the channel as a descriptive text.<p>
-     * This is an alias for {@link @getChannelStateDesc}.
+     * Returns the new state of the channel as a descriptive text.
+     * <br>
+     * This is an alias for {@link #getChannelStateDesc()}.
      *
      * @return the new state of the channel as a descriptive text.
      * @deprecated as of 1.0.0, use {@link #getChannelStateDesc()} instead or even better switch to numeric

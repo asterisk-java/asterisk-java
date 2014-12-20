@@ -14,7 +14,7 @@ import java.util.*;
  * <li>End:   A channel has left the AGI("agi:async") application.</li>
  * </ul>
  * It is implemented in <code>res/res_agi.c</code>.
- * <p/>
+ * <br>
  * Available since Asterisk 1.6
  *
  * @author srt
