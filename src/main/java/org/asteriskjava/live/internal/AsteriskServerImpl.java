@@ -953,6 +953,14 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         {
             channelManager.handleDtmfEvent((DtmfEvent) event);
         }
+        else if (event instanceof MonitorStartEvent)
+        {
+            channelManager.handleMonitorStartEvent((MonitorStartEvent) event);
+        }
+        else if (event instanceof MonitorStopEvent)
+        {
+            channelManager.handleMonitorStopEvent((MonitorStopEvent) event);
+        }
         // End of channel related events
         // Handle parking related event
         else if (event instanceof ParkedCallEvent)

@@ -63,6 +63,7 @@ public interface AsteriskChannel extends LiveObject
     String PROPERTY_PARKED_AT = "parkedAt";
     String PROPERTY_DTMF_RECEIVED = "dtmfReceived";
     String PROPERTY_DTMF_SENT = "dtmfSent";
+    String PROPERTY_MONITORED = "monitored";
 
     String VARIABLE_MONITOR_EXEC = "MONITOR_EXEC";
     String VARIABLE_MONITOR_EXEC_ARGS = "MONITOR_EXEC_ARGS";
@@ -300,6 +301,14 @@ public interface AsteriskChannel extends LiveObject
      * @since 1.0.0
      */
     Character getDtmfSent();
+
+    /**
+     * Return the actual MONITOR state.
+     *
+     * @retrun the actual Monitor state of this channel.
+     * @since 1.0.1
+     */
+    boolean isMonitored();
 
     /* Actions */
     

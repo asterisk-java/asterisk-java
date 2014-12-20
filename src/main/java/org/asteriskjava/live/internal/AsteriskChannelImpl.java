@@ -150,6 +150,11 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
      */
     private Character dtmfSent;
 
+    /**
+     * Actual monitor state
+     */
+    private boolean isMonitored;
+
     private final Map<String, String> variables;
 
     /**
@@ -895,6 +900,15 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
 
         this.queueEntryImpl = queueEntry;
         firePropertyChange(PROPERTY_QUEUE_ENTRY, oldQueueEntry, queueEntry);
+    }
+
+    public boolean isMonitored() {return this.isMonitored; }
+
+    void setMonitored(boolean monitored) {
+        final boolean oldMonitored = this.isMonitored;
+
+        this.isMonitored = monitored;
+        firePropertyChange(PROPERTY_MONITORED, oldMonitored, monitored);
     }
 
     @Override
