@@ -305,7 +305,7 @@ public interface AsteriskChannel extends LiveObject
     /**
      * Return the actual MONITOR state.
      *
-     * @retrun the actual Monitor state of this channel.
+     * @return the actual Monitor state of this channel.
      * @since 1.0.1
      */
     boolean isMonitored();
