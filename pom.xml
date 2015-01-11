@@ -128,28 +128,28 @@
                             <Bundle-Vendor>reucon</Bundle-Vendor>
                             <Bundle-DocURL>${project.url}</Bundle-DocURL>
                             <Export-Package>
-org.asteriskjava;version="${project.version}",
-org.asteriskjava.config;version="${project.version}",
-org.asteriskjava.config.dialplan;version="${project.version}",
-org.asteriskjava.fastagi;version="${project.version}",
-org.asteriskjava.fastagi.command;version="${project.version}",
-org.asteriskjava.fastagi.internal;version="${project.version}",
-org.asteriskjava.fastagi.reply;version="${project.version}",
-org.asteriskjava.manager;version="${project.version}",
-org.asteriskjava.manager.action;version="${project.version}",
-org.asteriskjava.manager.event;version="${project.version}",
-org.asteriskjava.manager.internal;version="${project.version}",
-org.asteriskjava.manager.response;version="${project.version}",
-org.asteriskjava.manager.util;version="${project.version}",
-org.asteriskjava.live;version="${project.version}",
-org.asteriskjava.live.internal;version="${project.version}",
-org.asteriskjava.util;version="${project.version}",
-org.asteriskjava.util.internal;version="${project.version}"
+ org.asteriskjava;version="${project.version}",
+ org.asteriskjava.config;version="${project.version}",
+ org.asteriskjava.config.dialplan;version="${project.version}",
+ org.asteriskjava.fastagi;version="${project.version}",
+ org.asteriskjava.fastagi.command;version="${project.version}",
+ org.asteriskjava.fastagi.internal;version="${project.version}",
+ org.asteriskjava.fastagi.reply;version="${project.version}",
+ org.asteriskjava.manager;version="${project.version}",
+ org.asteriskjava.manager.action;version="${project.version}",
+ org.asteriskjava.manager.event;version="${project.version}",
+ org.asteriskjava.manager.internal;version="${project.version}",
+ org.asteriskjava.manager.response;version="${project.version}",
+ org.asteriskjava.manager.util;version="${project.version}",
+ org.asteriskjava.live;version="${project.version}",
+ org.asteriskjava.live.internal;version="${project.version}",
+ org.asteriskjava.util;version="${project.version}",
+ org.asteriskjava.util.internal;version="${project.version}"
                             </Export-Package>
                             <Import-Package>
-javax.net,
-org.slf4j;resolution:=optional,
-org.apache.log4j;resolution:=optional
+ javax.net,
+ org.slf4j;resolution:=optional,
+ org.apache.log4j;resolution:=optional
                             </Import-Package>
                         </manifestEntries>
                     </archive>
