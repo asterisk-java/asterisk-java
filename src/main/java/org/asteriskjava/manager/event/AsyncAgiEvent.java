@@ -38,6 +38,15 @@ public class AsyncAgiEvent extends ResponseEvent
     private String commandId;
     private String result;
     private String env;
+    private String uniqueId;
+
+    public String getUniqueId() {
+        return uniqueId;
+    }
+
+    public void setUniqueId(String uniqueId) {
+        this.uniqueId = uniqueId;
+    }
 
     /**
      * Creates a new AsyncAgiEvent.
