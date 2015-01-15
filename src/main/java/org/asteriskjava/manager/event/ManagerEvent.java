@@ -40,6 +40,95 @@ public abstract class ManagerEvent extends EventObject
      * Serializable version identifier.
      */
     static final long serialVersionUID = 2L;
+    protected String connectedLineNum;
+    protected String connectedLineName;
+    protected Integer priority;
+    protected Integer channelState;
+    protected String channelStateDesc;
+    protected String exten;
+    protected String callerIdNum;
+    protected String callerIdName;
+
+    /**
+     * Returns the Caller ID name of the caller's channel.
+     *
+     * @return the Caller ID name of the caller's channel or "unknown" if none has been set.
+     * @since 0.2
+     */
+
+    public String getCallerIdName() {
+        return callerIdName;
+    }
+
+    public void setCallerIdName(String callerIdName) {
+        this.callerIdName = callerIdName;
+    }
+
+    public String getConnectedLineNum() {
+        return connectedLineNum;
+    }
+
+    public void setConnectedLineNum(String connectedLineNum) {
+        this.connectedLineNum = connectedLineNum;
+    }
+
+    public String getConnectedLineName() {
+        return connectedLineName;
+    }
+
+    public void setConnectedLineName(String connectedLineName) {
+        this.connectedLineName = connectedLineName;
+    }
+
+    public Integer getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Integer priority) {
+        this.priority = priority;
+    }
+
+    public Integer getChannelState() {
+        return channelState;
+    }
+
+    public void setChannelState(Integer channelState) {
+        this.channelState = channelState;
+    }
+
+    public String getChannelStateDesc() {
+        return channelStateDesc;
+    }
+
+    public void setChannelStateDesc(String channelStateDesc) {
+        this.channelStateDesc = channelStateDesc;
+    }
+
+    public String getExten() {
+        return exten;
+    }
+
+    public void setExten(String exten) {
+        this.exten = exten;
+    }
+
+    public String getCallerIdNum() {
+        return callerIdNum;
+    }
+
+    public void setCallerIdNum(String callerIdNum) {
+        this.callerIdNum = callerIdNum;
+    }
+
+    public String getContext() {
+        return context;
+    }
+
+    public void setContext(String context) {
+        this.context = context;
+    }
+
+    protected String context;
 
     /**
      * AMI authorization class.

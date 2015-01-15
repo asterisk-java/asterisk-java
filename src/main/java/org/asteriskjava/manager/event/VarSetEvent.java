@@ -34,14 +34,6 @@ public class VarSetEvent extends ManagerEvent
     private String variable;
     private String value;
     private String callerIdName;
-    private String connectedLineNum;
-    private String connectedLineName;
-    private Integer priority;
-    private Integer channelState;
-    private String channelStateDesc;
-    private String exten;
-    private String callerIdNum;
-    private String context;
 
     public String getConnectedLineName() {
         return connectedLineName;
