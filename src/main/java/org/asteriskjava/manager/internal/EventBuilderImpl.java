@@ -187,6 +187,7 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
         registerEventClass(AsyncAgiEndEvent.class);
         registerEventClass(DeviceStateChangeEvent.class);
         registerEventClass(SuccessfulAuthEvent.class);
+        registerEventClass(ChallengeSentEvent.class);
 
     }
 
