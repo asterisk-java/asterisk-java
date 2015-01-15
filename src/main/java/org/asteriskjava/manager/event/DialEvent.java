@@ -61,6 +61,24 @@ public class DialEvent extends ManagerEvent
     private String destination;
 
     /**
+     * Destination channel state
+     */
+    private Integer destChannelState;
+    private String destChannelStateDesc;
+
+    private String destContext;
+
+    private Integer destPriority;
+
+    private String destExten;
+
+    private String destConnectedLineName;
+    private String destConnectedLineNum;
+
+    private String destCallerIdName;
+
+
+    /**
      * The new Caller*ID.
      */
     private String callerIdNum;
@@ -162,6 +180,7 @@ public class DialEvent extends ManagerEvent
     {
         return destination;
     }
+    public String getDestChannel() { return getDestination(); }
 
     /**
      * Sets the name of the destination channel.
@@ -172,7 +191,7 @@ public class DialEvent extends ManagerEvent
     {
         this.destination = destination;
     }
-
+    public void setDestChannel(String destination) { setDestination(destination); }
     /**
      * Returns the the Caller*ID Number.
      *
@@ -377,5 +396,69 @@ public class DialEvent extends ManagerEvent
     public void setConnectedlinenum(String connectedlinenum)
     {
         this.connectedlinenum = connectedlinenum;
+    }
+
+    public Integer getDestChannelState() {
+        return destChannelState;
+    }
+
+    public void setDestChannelState(Integer destChannelState) {
+        this.destChannelState = destChannelState;
+    }
+
+    public String getDestContext() {
+        return destContext;
+    }
+
+    public void setDestContext(String destContext) {
+        this.destContext = destContext;
+    }
+
+    public Integer getDestPriority() {
+        return destPriority;
+    }
+
+    public void setDestPriority(Integer destPriority) {
+        this.destPriority = destPriority;
+    }
+
+    public String getDestChannelStateDesc() {
+        return destChannelStateDesc;
+    }
+
+    public void setDestChannelStateDesc(String destChannelStateDesc) {
+        this.destChannelStateDesc = destChannelStateDesc;
+    }
+
+    public String getDestExten() {
+        return destExten;
+    }
+
+    public void setDestExten(String destExten) {
+        this.destExten = destExten;
+    }
+
+    public String getDestConnectedLineName() {
+        return destConnectedLineName;
+    }
+
+    public void setDestConnectedLineName(String destConnectedLineName) {
+        this.destConnectedLineName = destConnectedLineName;
+    }
+
+    public String getDestConnectedLineNum() {
+        return destConnectedLineNum;
+    }
+
+    public void setDestConnectedLineNum(String destConnectedLineNum) {
+        this.destConnectedLineNum = destConnectedLineNum;
+    }
+
+    public String getDestCallerIdName() {
+        return destCallerIdName;
+    }
+
+    public void setDestCallerIdName(String destCallerIdName) {
+        this.destCallerIdName = destCallerIdName;
     }
 }
