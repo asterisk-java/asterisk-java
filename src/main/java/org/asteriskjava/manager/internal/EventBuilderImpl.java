@@ -195,6 +195,8 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
         registerEventClass(DialEndEvent.class);
         registerEventClass(NewConnectedLineEvent.class);
         registerEventClass(InvalidPasswordEvent.class);
+        registerEventClass(BridgeCreateEvent.class);
+        registerEventClass(BridgeDestroyEvent.class);
     }
 
     public final void registerEventClass(Class<? extends ManagerEvent> clazz) throws IllegalArgumentException
