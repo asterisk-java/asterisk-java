@@ -76,6 +76,7 @@ public class DialEvent extends ManagerEvent
     private String destConnectedLineNum;
 
     private String destCallerIdName;
+    private String destCallerIdNum;
 
 
     /**
@@ -460,5 +461,13 @@ public class DialEvent extends ManagerEvent
 
     public void setDestCallerIdName(String destCallerIdName) {
         this.destCallerIdName = destCallerIdName;
+    }
+
+    public String getDestCallerIdNum() {
+        return destCallerIdNum;
+    }
+
+    public void setDestCallerIdNum(String destCallerIdNum) {
+        this.destCallerIdNum = destCallerIdNum;
     }
 }
