@@ -26,6 +26,7 @@ public class BlindTransferEvent extends AbstractBridgeEvent {
     private String transfereeChannelStateDesc;
     private Integer transfereePriority;
     private String transfereeContext;
+    private String transfereeExten;
 
     private String extension;
     private String isexternal;
@@ -215,5 +216,13 @@ public class BlindTransferEvent extends AbstractBridgeEvent {
 
     public void setResult(String result) {
         this.result = result;
+    }
+
+    public String getTransfereeExten() {
+        return transfereeExten;
+    }
+
+    public void setTransfereeExten(String transfereeExten) {
+        this.transfereeExten = transfereeExten;
     }
 }
