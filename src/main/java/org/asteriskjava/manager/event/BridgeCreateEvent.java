@@ -10,6 +10,7 @@ public class BridgeCreateEvent extends ManagerEvent {
     private Integer bridgeNumChannels;
     private String bridgeCreator;
     private String bridgeName;
+    private String bridgeTechnology;
 
     public BridgeCreateEvent (Object source) { super(source); }
 
@@ -61,5 +62,13 @@ public class BridgeCreateEvent extends ManagerEvent {
 
     public void setBridgeName(String bridgeName) {
         this.bridgeName = bridgeName;
+    }
+
+    public String getBridgeTechnology() {
+        return bridgeTechnology;
+    }
+
+    public void setBridgeTechnology(String bridgeTechnology) {
+        this.bridgeTechnology = bridgeTechnology;
     }
 }
