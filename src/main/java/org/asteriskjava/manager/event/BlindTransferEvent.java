@@ -13,7 +13,7 @@ public class BlindTransferEvent extends AbstractBridgeEvent {
     private String transfererChannelState;
     private String transfererChannelStateDesc;
     private Integer transfererPriority;
-    private Integer transfererContext;
+    private String transfererContext;
 
 
     private String transfereeUniqueId;
@@ -25,7 +25,7 @@ public class BlindTransferEvent extends AbstractBridgeEvent {
     private String transfereeChannelState;
     private String transfereeChannelStateDesc;
     private Integer transfereePriority;
-    private Integer transfereeContext;
+    private String transfereeContext;
 
     private String extension;
     private String isexternal;
@@ -105,11 +105,11 @@ public class BlindTransferEvent extends AbstractBridgeEvent {
         this.transfererPriority = transfererPriority;
     }
 
-    public Integer getTransfererContext() {
+    public String getTransfererContext() {
         return transfererContext;
     }
 
-    public void setTransfererContext(Integer transfererContext) {
+    public void setTransfererContext(String transfererContext) {
         this.transfererContext = transfererContext;
     }
 
@@ -185,11 +185,11 @@ public class BlindTransferEvent extends AbstractBridgeEvent {
         this.transfereePriority = transfereePriority;
     }
 
-    public Integer getTransfereeContext() {
+    public String getTransfereeContext() {
         return transfereeContext;
     }
 
-    public void setTransfereeContext(Integer transfereeContext) {
+    public void setTransfereeContext(String transfereeContext) {
         this.transfereeContext = transfereeContext;
     }
 
