@@ -197,6 +197,7 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
         registerEventClass(InvalidPasswordEvent.class);
         registerEventClass(BridgeCreateEvent.class);
         registerEventClass(BridgeDestroyEvent.class);
+        registerEventClass(BridgeEnterEvent.class);
         registerEventClass(MusicOnHoldStartEvent.class);
         registerEventClass(MusicOnHoldStopEvent.class);
         registerEventClass(DtmfBeginEvent.class);
