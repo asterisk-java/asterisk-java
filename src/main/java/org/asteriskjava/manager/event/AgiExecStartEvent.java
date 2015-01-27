@@ -4,9 +4,5 @@ package org.asteriskjava.manager.event;
  * Created by plhk on 1/15/15.
  */
 public class AgiExecStartEvent extends AgiExecEvent {
-    public AgiExecStartEvent(Object source) { super(source); }
-
-    public boolean isStart() {
-        return true;
-    }
+    public AgiExecStartEvent(Object source) { super(source); setSubEvent(SUB_EVENT_START); }
 }
