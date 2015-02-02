@@ -23,7 +23,7 @@ package org.asteriskjava.manager.event;
  * @author srt
  * @version $Id$
  */
-public class HangupEvent extends AbstractChannelEvent
+public class HangupEvent extends AbstractChannelStateEvent
 {
     /**
      * Serializable version identifier.
