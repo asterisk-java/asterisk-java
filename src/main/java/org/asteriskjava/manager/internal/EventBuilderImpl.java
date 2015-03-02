@@ -183,7 +183,27 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
         registerEventClass(VoicemailUserEntryEvent.class);
         registerEventClass(ZapShowChannelsEvent.class);
         registerEventClass(ZapShowChannelsCompleteEvent.class);
-
+        registerEventClass(AsyncAgiStartEvent.class);
+        registerEventClass(AsyncAgiExecEvent.class);
+        registerEventClass(AsyncAgiEndEvent.class);
+        registerEventClass(DeviceStateChangeEvent.class);
+        registerEventClass(SuccessfulAuthEvent.class);
+        registerEventClass(ChallengeSentEvent.class);
+        registerEventClass(AgiExecEndEvent.class);
+        registerEventClass(AgiExecStartEvent.class);
+        registerEventClass(DialBeginEvent.class);
+        registerEventClass(DialEndEvent.class);
+        registerEventClass(NewConnectedLineEvent.class);
+        registerEventClass(InvalidPasswordEvent.class);
+        registerEventClass(BridgeCreateEvent.class);
+        registerEventClass(BridgeDestroyEvent.class);
+        registerEventClass(BridgeEnterEvent.class);
+        registerEventClass(BridgeLeaveEvent.class);
+        registerEventClass(BlindTransferEvent.class);
+        registerEventClass(MusicOnHoldStartEvent.class);
+        registerEventClass(MusicOnHoldStopEvent.class);
+        registerEventClass(DtmfBeginEvent.class);
+        registerEventClass(DtmfEndEvent.class);
     }
 
     public final void registerEventClass(Class<? extends ManagerEvent> clazz) throws IllegalArgumentException
