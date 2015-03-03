@@ -34,12 +34,23 @@ public class HangupEvent extends AbstractChannelEvent
     private String causeTxt;
     private String connectedlinename;
     private String connectedlinenum;
+    private String language;
 
     public HangupEvent(Object source)
     {
         super(source);
     }
 
+    public String getLanguage()
+    {
+    	return language;
+    }
+    
+    public void setLanguage(String language)
+    {
+    	this.language = language;
+    }       
+    
     /**
      * Returns the cause of the hangup.
      *

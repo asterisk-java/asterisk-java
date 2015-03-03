@@ -6,8 +6,17 @@ package org.asteriskjava.manager.event;
 public class BridgeEnterEvent extends AbstractBridgeEvent {
     private String uniqueId;
     private String channel;
+    private String language;
 
     public BridgeEnterEvent(Object source) { super(source); }
+
+    public String getLanguage() {
+    	return language;
+    }
+    
+    public void setLanguage(String language) {
+    	this.language = language;
+    }       
 
     public String getChannel() {
         return channel;

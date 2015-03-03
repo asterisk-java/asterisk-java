@@ -36,12 +36,23 @@ public class NewCallerIdEvent extends AbstractChannelEvent
      */
     private Integer cidCallingPres;
     private String cidCallingPresTxt;
+    private String language;
 
     public NewCallerIdEvent(Object source)
     {
         super(source);
     }
 
+    public String getLanguage()
+    {
+    	return language;
+    }
+    
+    public void setLanguage(String language)
+    {
+    	this.language = language;
+    }
+    
     /**
      * Returns the CallerId presentation/screening.
      * 

@@ -34,7 +34,16 @@ public class VarSetEvent extends ManagerEvent
     private String variable;
     private String value;
     private String callerIdName;
-
+    private String language;
+    
+    public String getLanguage(){
+    	return language;
+    }
+    
+    public void setLanguage(String language){
+    	this.language = language;
+    }
+    
     public String getConnectedLineName() {
         return connectedLineName;
     }

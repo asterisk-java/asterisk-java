@@ -6,9 +6,18 @@ package org.asteriskjava.manager.event;
 public class NewConnectedLineEvent extends ManagerEvent {
     private String channel;
     private String uniqueId;
+    private String language;
 
     public NewConnectedLineEvent(Object source) { super(source); }
-
+  
+    public String getLanguage(){
+    	return language;
+    }
+    
+    public void setLanguage(String language){
+    	this.language = language;
+    }    
+    
     public String getChannel() {
         return channel;
     }
