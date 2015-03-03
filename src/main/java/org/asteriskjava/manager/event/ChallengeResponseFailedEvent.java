@@ -17,8 +17,6 @@ public class ChallengeResponseFailedEvent extends ManagerEvent
     private String service;
     private String remoteaddress;
     private String localaddress;
-    private org.asteriskjava.NetAddress netRemoteAddress;
-    private org.asteriskjava.NetAddress netLocalAddress;
 
     /**
      * @param source
@@ -26,15 +24,6 @@ public class ChallengeResponseFailedEvent extends ManagerEvent
 	public ChallengeResponseFailedEvent(Object source) {
 		super(source);
 	}
-
-	public org.asteriskjava.NetAddress getNetLocalAddress()
-    {
-    	return this.netLocalAddress;
-    }
-    public org.asteriskjava.NetAddress getNetRemoteAddress()
-    {
-    	return this.netRemoteAddress;
-    }
 
     public String getSeverity()
     {
@@ -71,7 +60,6 @@ public class ChallengeResponseFailedEvent extends ManagerEvent
     public void setRemoteAddress(String remoteaddress)
     {
         this.remoteaddress = remoteaddress;
-        this.netRemoteAddress = new org.asteriskjava.NetAddress(remoteaddress);
     }
 
     public String getLocalAddress()
@@ -81,7 +69,6 @@ public class ChallengeResponseFailedEvent extends ManagerEvent
     public void setLocalAddress(String localaddress)
     {
         this.localaddress = localaddress;
-        this.netLocalAddress = new org.asteriskjava.NetAddress(localaddress);
     }
 
     public void setEventtv(String eventv)
