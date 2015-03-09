@@ -249,6 +249,11 @@ public class HtmlEventTracer implements ManagerEventListener
                 format = "%s<br>%s (%s)";
                 properties = new String[]{"channel", "cause", "causeTxt"};
             }
+            else if (event instanceof AntennaLevelEvent)
+            {
+            	format = "%s";
+                properties = new String[]{"signal"};
+            }
         }
 
         if (event instanceof BridgeEvent)

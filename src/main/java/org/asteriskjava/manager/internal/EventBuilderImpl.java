@@ -183,6 +183,7 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
         registerEventClass(VoicemailUserEntryEvent.class);
         registerEventClass(ZapShowChannelsEvent.class);
         registerEventClass(ZapShowChannelsCompleteEvent.class);
+        registerEventClass(AntennaLevelEvent.class);
 
     }
 
