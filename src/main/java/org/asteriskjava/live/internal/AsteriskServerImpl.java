@@ -16,30 +16,108 @@
  */
 package org.asteriskjava.live.internal;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.config.ConfigFile;
-import org.asteriskjava.live.*;
+import org.asteriskjava.live.AsteriskAgent;
+import org.asteriskjava.live.AsteriskChannel;
+import org.asteriskjava.live.AsteriskQueue;
+import org.asteriskjava.live.AsteriskQueueEntry;
+import org.asteriskjava.live.AsteriskServer;
+import org.asteriskjava.live.AsteriskServerListener;
+import org.asteriskjava.live.CallerId;
+import org.asteriskjava.live.ChannelState;
+import org.asteriskjava.live.LiveException;
+import org.asteriskjava.live.ManagerCommunicationException;
+import org.asteriskjava.live.MeetMeRoom;
+import org.asteriskjava.live.MeetMeUser;
+import org.asteriskjava.live.NoSuchChannelException;
+import org.asteriskjava.live.OriginateCallback;
+import org.asteriskjava.live.Voicemailbox;
 import org.asteriskjava.manager.ManagerConnection;
 import org.asteriskjava.manager.ManagerConnectionState;
 import org.asteriskjava.manager.ManagerEventListener;
 import org.asteriskjava.manager.ManagerEventListenerProxy;
 import org.asteriskjava.manager.ResponseEvents;
-import org.asteriskjava.manager.action.*;
-import org.asteriskjava.manager.event.*;
-import org.asteriskjava.manager.response.*;
+import org.asteriskjava.manager.action.CommandAction;
+import org.asteriskjava.manager.action.DbGetAction;
+import org.asteriskjava.manager.action.DbPutAction;
+import org.asteriskjava.manager.action.EventGeneratingAction;
+import org.asteriskjava.manager.action.GetConfigAction;
+import org.asteriskjava.manager.action.GetVarAction;
+import org.asteriskjava.manager.action.MailboxCountAction;
+import org.asteriskjava.manager.action.ManagerAction;
+import org.asteriskjava.manager.action.ModuleCheckAction;
+import org.asteriskjava.manager.action.ModuleLoadAction;
+import org.asteriskjava.manager.action.OriginateAction;
+import org.asteriskjava.manager.action.SetVarAction;
+import org.asteriskjava.manager.action.SipPeersAction;
+import org.asteriskjava.manager.event.AbstractMeetMeEvent;
+import org.asteriskjava.manager.event.AgentCallbackLoginEvent;
+import org.asteriskjava.manager.event.AgentCallbackLogoffEvent;
+import org.asteriskjava.manager.event.AgentCalledEvent;
+import org.asteriskjava.manager.event.AgentCompleteEvent;
+import org.asteriskjava.manager.event.AgentConnectEvent;
+import org.asteriskjava.manager.event.AgentLoginEvent;
+import org.asteriskjava.manager.event.AgentLogoffEvent;
+import org.asteriskjava.manager.event.AgentsEvent;
+import org.asteriskjava.manager.event.BridgeEvent;
+import org.asteriskjava.manager.event.CdrEvent;
+import org.asteriskjava.manager.event.ConnectEvent;
+import org.asteriskjava.manager.event.DbGetResponseEvent;
+import org.asteriskjava.manager.event.DialEvent;
+import org.asteriskjava.manager.event.DisconnectEvent;
+import org.asteriskjava.manager.event.DtmfEvent;
+import org.asteriskjava.manager.event.HangupEvent;
+import org.asteriskjava.manager.event.JoinEvent;
+import org.asteriskjava.manager.event.LeaveEvent;
+import org.asteriskjava.manager.event.ManagerEvent;
+import org.asteriskjava.manager.event.MonitorStartEvent;
+import org.asteriskjava.manager.event.MonitorStopEvent;
+import org.asteriskjava.manager.event.NewCallerIdEvent;
+import org.asteriskjava.manager.event.NewChannelEvent;
+import org.asteriskjava.manager.event.NewExtenEvent;
+import org.asteriskjava.manager.event.NewStateEvent;
+import org.asteriskjava.manager.event.OriginateResponseEvent;
+import org.asteriskjava.manager.event.ParkedCallEvent;
+import org.asteriskjava.manager.event.ParkedCallGiveUpEvent;
+import org.asteriskjava.manager.event.ParkedCallTimeOutEvent;
+import org.asteriskjava.manager.event.PeerEntryEvent;
+import org.asteriskjava.manager.event.QueueMemberAddedEvent;
+import org.asteriskjava.manager.event.QueueMemberPausedEvent;
+import org.asteriskjava.manager.event.QueueMemberPenaltyEvent;
+import org.asteriskjava.manager.event.QueueMemberRemovedEvent;
+import org.asteriskjava.manager.event.QueueMemberStatusEvent;
+import org.asteriskjava.manager.event.RenameEvent;
+import org.asteriskjava.manager.event.ResponseEvent;
+import org.asteriskjava.manager.event.UnparkedCallEvent;
+import org.asteriskjava.manager.event.VarSetEvent;
+import org.asteriskjava.manager.response.CommandResponse;
+import org.asteriskjava.manager.response.GetConfigResponse;
+import org.asteriskjava.manager.response.MailboxCountResponse;
+import org.asteriskjava.manager.response.ManagerError;
+import org.asteriskjava.manager.response.ManagerResponse;
+import org.asteriskjava.manager.response.ModuleCheckResponse;
 import org.asteriskjava.util.AstUtil;
 import org.asteriskjava.util.DateUtil;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
-import java.util.*;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 /**
  * Default implementation of the {@link AsteriskServer} interface.
- *
+ * 
  * @author srt
  * @version $Id$
  */
@@ -112,6 +190,21 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
     private boolean asyncEventHandling = true;
 
     /**
+	 * The chainListener allows a listener to receive manager events after they
+	 * have been processed by the AsteriskServer. If the AsteriskServer is
+	 * handling messages using the asyncEventHandling then these messages will
+	 * also be async. You would use the chainListener if you are processing raw
+	 * events and using the AJ live ChannelManager. If you don't use the chain
+	 * listener then you can't be certain that a channel name passed in a raw
+	 * event will match the channel name held by the Channel Manager. By
+	 * chaining events you can be certain that events such as channel Rename
+	 * events have been processed by the live ChannelManager before you receive
+	 * an event and as such the names will always match.
+	 * 
+	 */
+	private List<ManagerEventListener> chainListeners = new ArrayList<ManagerEventListener>();
+
+	/**
      * Creates a new instance.
      */
     public AsteriskServerImpl()
@@ -790,6 +883,21 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         }
     }
 
+	public void addChainListener(ManagerEventListener chainListener)
+	{
+		synchronized (this.chainListeners)
+		{
+			if (!this.chainListeners.contains(chainListener))
+				this.chainListeners.add(chainListener);
+		}
+
+	}
+
+	public void removeChainListner(ManagerEventListener chainListener)
+	{
+		this.chainListeners.remove(chainListener);
+	}
+
     void fireNewAsteriskChannel(AsteriskChannel channel)
     {
         synchronized (listeners)
@@ -1049,7 +1157,24 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
             agentManager.handleAgentLogoffEvent((AgentLogoffEvent) event);
         }
         // End of agent-related events
+
+		// dispatch the events to the chainListener if they exist.
+		fireChainListeners(event);
     }
+
+	/**
+	 * dispatch the event to the chainListener if they exist.
+	 * 
+	 * @param event
+	 */
+	private void fireChainListeners(ManagerEvent event)
+	{
+		synchronized (this.chainListeners)
+		{
+			for (ManagerEventListener listener : this.chainListeners)
+				listener.onManagerEvent(event);
+		}
+	}
 
     /*
      * Resets the internal state when the connection to the asterisk server is
@@ -1197,100 +1322,103 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
             managerEventListenerProxy.shutdown();
         }
 
-		    if (eventConnection != null && eventListener != null) {
-			    eventConnection.removeEventListener(eventListener);
-	      }
+		if (eventConnection != null && eventListener != null)
+		{
+			eventConnection.removeEventListener(eventListener);
+		}
 
-		    managerEventListenerProxy = null;
-        eventListener = null;
+		managerEventListenerProxy = null;
+		eventListener = null;
 
-	      if (initialized) {//incredible, but it happened
-		      handleDisconnectEvent(null);
-	      }//i
-    }//shutdown
+		if (initialized)
+		{// incredible, but it happened
+			handleDisconnectEvent(null);
+		}// i
+	}// shutdown
 
-    public List<PeerEntryEvent> getPeerEntries() throws ManagerCommunicationException
-    {
-        ResponseEvents responseEvents = sendEventGeneratingAction(new SipPeersAction(), 2000);
-        List<PeerEntryEvent> peerEntries = new ArrayList<PeerEntryEvent>(30);
-        for (ResponseEvent re : responseEvents.getEvents())
-        {
-            if (re instanceof PeerEntryEvent)
-            {
-                peerEntries.add((PeerEntryEvent) re);
-            }
-        }
-        return peerEntries;
-    }
+	public List<PeerEntryEvent> getPeerEntries() throws ManagerCommunicationException
+	{
+		ResponseEvents responseEvents = sendEventGeneratingAction(new SipPeersAction(), 2000);
+		List<PeerEntryEvent> peerEntries = new ArrayList<PeerEntryEvent>(30);
+		for (ResponseEvent re : responseEvents.getEvents())
+		{
+			if (re instanceof PeerEntryEvent)
+			{
+				peerEntries.add((PeerEntryEvent) re);
+			}
+		}
+		return peerEntries;
+	}
 
-    public DbGetResponseEvent dbGet(String family, String key) throws ManagerCommunicationException
-    {
-        ResponseEvents responseEvents = sendEventGeneratingAction(new DbGetAction(family, key), 2000);
-        DbGetResponseEvent dbgre = null;
-        for (ResponseEvent re : responseEvents.getEvents())
-        {
-            dbgre = (DbGetResponseEvent) re;
-        }
-        return dbgre;
-    }
+	public DbGetResponseEvent dbGet(String family, String key) throws ManagerCommunicationException
+	{
+		ResponseEvents responseEvents = sendEventGeneratingAction(new DbGetAction(family, key), 2000);
+		DbGetResponseEvent dbgre = null;
+		for (ResponseEvent re : responseEvents.getEvents())
+		{
+			dbgre = (DbGetResponseEvent) re;
+		}
+		return dbgre;
+	}
 
-    public void dbDel(String family, String key) throws ManagerCommunicationException
-    {
-        // The following only works with BRIStuffed asrterisk: sendAction(new DbDelAction(family,key));
-        // Use cli command instead ...
-        sendAction(new CommandAction("database del " + family + " " + key));
-    }
+	public void dbDel(String family, String key) throws ManagerCommunicationException
+	{
+		// The following only works with BRIStuffed asrterisk: sendAction(new
+		// DbDelAction(family,key));
+		// Use cli command instead ...
+		sendAction(new CommandAction("database del " + family + " " + key));
+	}
 
-    public void dbPut(String family, String key, String value) throws ManagerCommunicationException
-    {
-        sendAction(new DbPutAction(family, key, value));
-    }
+	public void dbPut(String family, String key, String value) throws ManagerCommunicationException
+	{
+		sendAction(new DbPutAction(family, key, value));
+	}
 
-    public AsteriskChannel getChannelByNameAndActive(String name) throws ManagerCommunicationException
-    {
-        initializeIfNeeded();
-        return channelManager.getChannelImplByNameAndActive(name);
-    }
+	public AsteriskChannel getChannelByNameAndActive(String name) throws ManagerCommunicationException
+	{
+		initializeIfNeeded();
+		return channelManager.getChannelImplByNameAndActive(name);
+	}
 
-    public Collection<AsteriskAgent> getAgents() throws ManagerCommunicationException
-    {
-        initializeIfNeeded();
-        return agentManager.getAgents();
-    }
+	public Collection<AsteriskAgent> getAgents() throws ManagerCommunicationException
+	{
+		initializeIfNeeded();
+		return agentManager.getAgents();
+	}
 
-    void fireNewAgent(AsteriskAgentImpl agent)
-    {
-        synchronized (listeners)
-        {
-            for (AsteriskServerListener listener : listeners)
-            {
-                try
-                {
-                    listener.onNewAgent(agent);
-                }
-                catch (Exception e)
-                {
-                    logger.warn("Exception in onNewAgent()", e);
-                }
-            }
-        }
-    }
+	void fireNewAgent(AsteriskAgentImpl agent)
+	{
+		synchronized (listeners)
+		{
+			for (AsteriskServerListener listener : listeners)
+			{
+				try
+				{
+					listener.onNewAgent(agent);
+				}
+				catch (Exception e)
+				{
+					logger.warn("Exception in onNewAgent()", e);
+				}
+			}
+		}
+	}
 
-    void fireNewQueueEntry(AsteriskQueueEntry entry)
-    {
-        synchronized (listeners)
-        {
-            for (AsteriskServerListener listener : listeners)
-            {
-                try
-                {
-                    listener.onNewQueueEntry(entry);
-                }
-                catch (Exception e)
-                {
-                    logger.warn("Exception in onNewQueueEntry()", e);
-                }
-            }
-        }
-    }
+	void fireNewQueueEntry(AsteriskQueueEntry entry)
+	{
+		synchronized (listeners)
+		{
+			for (AsteriskServerListener listener : listeners)
+			{
+				try
+				{
+					listener.onNewQueueEntry(entry);
+				}
+				catch (Exception e)
+				{
+					logger.warn("Exception in onNewQueueEntry()", e);
+				}
+			}
+		}
+	}
 }
