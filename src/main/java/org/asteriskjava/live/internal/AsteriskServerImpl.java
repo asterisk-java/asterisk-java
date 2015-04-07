@@ -117,7 +117,7 @@ import org.asteriskjava.util.LogFactory;
 
 /**
  * Default implementation of the {@link AsteriskServer} interface.
- * 
+ *
  * @author srt
  * @version $Id$
  */
@@ -153,17 +153,17 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
 
     /**
      * The exact version string of the Asterisk server we are connected to.
-     * <br>
+	 * <p/>
      * Contains <code>null</code> until lazily initialized.
      */
     private String version;
 
     /**
      * Holds the version of Asterisk's source files.
-     * <br>
+	 * <p/>
      * That corresponds to the output of the CLI command
      * <code>show version files</code>.
-     * <br>
+	 * <p/>
      * Contains <code>null</code> until lazily initialized.
      */
     private Map<String, String> versions;
@@ -184,8 +184,8 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
     private boolean skipQueues;
 
     /**
-     * Set to <code>true</code> to not handle ManagerEvents in the reader
-     * tread but process them asynchronously. This is a good idea :)
+	 * Set to <code>true</code> to not handle ManagerEvents in the reader tread
+	 * but process them asynchronously. This is a good idea :)
      */
     private boolean asyncEventHandling = true;
 
@@ -221,13 +221,16 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
     /**
      * Creates a new instance.
      *
-     * @param eventConnection the ManagerConnection to use for receiving events
-     *                        from Asterisk.
+	 * @param eventConnection
+	 *            the ManagerConnection to use for receiving events from
+	 *            Asterisk.
      */
     public AsteriskServerImpl(ManagerConnection eventConnection)
     {
         this();
-        setManagerConnection(eventConnection);  //todo: !!! Possible bug !!!: call to overridable method over object construction
+		setManagerConnection(eventConnection); // todo: !!! Possible bug !!!:
+												// call to overridable method
+												// over object construction
     }
 
     /**
@@ -893,7 +896,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
 
 	}
 
-	public void removeChainListener(ManagerEventListener chainListener)
+	public void removeChainListner(ManagerEventListener chainListener)
 	{
 		this.chainListeners.remove(chainListener);
 	}
@@ -1322,103 +1325,100 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
             managerEventListenerProxy.shutdown();
         }
 
-		if (eventConnection != null && eventListener != null)
-		{
-			eventConnection.removeEventListener(eventListener);
-		}
+		    if (eventConnection != null && eventListener != null) {
+			    eventConnection.removeEventListener(eventListener);
+	      }
 
-		managerEventListenerProxy = null;
-		eventListener = null;
+		    managerEventListenerProxy = null;
+        eventListener = null;
 
-		if (initialized)
-		{// incredible, but it happened
-			handleDisconnectEvent(null);
-		}// i
-	}// shutdown
+	      if (initialized) {//incredible, but it happened
+		      handleDisconnectEvent(null);
+	      }//i
+    }//shutdown
 
-	public List<PeerEntryEvent> getPeerEntries() throws ManagerCommunicationException
-	{
-		ResponseEvents responseEvents = sendEventGeneratingAction(new SipPeersAction(), 2000);
-		List<PeerEntryEvent> peerEntries = new ArrayList<PeerEntryEvent>(30);
-		for (ResponseEvent re : responseEvents.getEvents())
-		{
-			if (re instanceof PeerEntryEvent)
-			{
-				peerEntries.add((PeerEntryEvent) re);
-			}
-		}
-		return peerEntries;
-	}
+    public List<PeerEntryEvent> getPeerEntries() throws ManagerCommunicationException
+    {
+        ResponseEvents responseEvents = sendEventGeneratingAction(new SipPeersAction(), 2000);
+        List<PeerEntryEvent> peerEntries = new ArrayList<PeerEntryEvent>(30);
+        for (ResponseEvent re : responseEvents.getEvents())
+        {
+            if (re instanceof PeerEntryEvent)
+            {
+                peerEntries.add((PeerEntryEvent) re);
+            }
+        }
+        return peerEntries;
+    }
 
-	public DbGetResponseEvent dbGet(String family, String key) throws ManagerCommunicationException
-	{
-		ResponseEvents responseEvents = sendEventGeneratingAction(new DbGetAction(family, key), 2000);
-		DbGetResponseEvent dbgre = null;
-		for (ResponseEvent re : responseEvents.getEvents())
-		{
-			dbgre = (DbGetResponseEvent) re;
-		}
-		return dbgre;
-	}
+    public DbGetResponseEvent dbGet(String family, String key) throws ManagerCommunicationException
+    {
+        ResponseEvents responseEvents = sendEventGeneratingAction(new DbGetAction(family, key), 2000);
+        DbGetResponseEvent dbgre = null;
+        for (ResponseEvent re : responseEvents.getEvents())
+        {
+            dbgre = (DbGetResponseEvent) re;
+        }
+        return dbgre;
+    }
 
-	public void dbDel(String family, String key) throws ManagerCommunicationException
-	{
-		// The following only works with BRIStuffed asrterisk: sendAction(new
-		// DbDelAction(family,key));
-		// Use cli command instead ...
-		sendAction(new CommandAction("database del " + family + " " + key));
-	}
+    public void dbDel(String family, String key) throws ManagerCommunicationException
+    {
+        // The following only works with BRIStuffed asrterisk: sendAction(new DbDelAction(family,key));
+        // Use cli command instead ...
+        sendAction(new CommandAction("database del " + family + " " + key));
+    }
 
-	public void dbPut(String family, String key, String value) throws ManagerCommunicationException
-	{
-		sendAction(new DbPutAction(family, key, value));
-	}
+    public void dbPut(String family, String key, String value) throws ManagerCommunicationException
+    {
+        sendAction(new DbPutAction(family, key, value));
+    }
 
-	public AsteriskChannel getChannelByNameAndActive(String name) throws ManagerCommunicationException
-	{
-		initializeIfNeeded();
-		return channelManager.getChannelImplByNameAndActive(name);
-	}
+    public AsteriskChannel getChannelByNameAndActive(String name) throws ManagerCommunicationException
+    {
+        initializeIfNeeded();
+        return channelManager.getChannelImplByNameAndActive(name);
+    }
 
-	public Collection<AsteriskAgent> getAgents() throws ManagerCommunicationException
-	{
-		initializeIfNeeded();
-		return agentManager.getAgents();
-	}
+    public Collection<AsteriskAgent> getAgents() throws ManagerCommunicationException
+    {
+        initializeIfNeeded();
+        return agentManager.getAgents();
+    }
 
-	void fireNewAgent(AsteriskAgentImpl agent)
-	{
-		synchronized (listeners)
-		{
-			for (AsteriskServerListener listener : listeners)
-			{
-				try
-				{
-					listener.onNewAgent(agent);
-				}
-				catch (Exception e)
-				{
-					logger.warn("Exception in onNewAgent()", e);
-				}
-			}
-		}
-	}
+    void fireNewAgent(AsteriskAgentImpl agent)
+    {
+        synchronized (listeners)
+        {
+            for (AsteriskServerListener listener : listeners)
+            {
+                try
+                {
+                    listener.onNewAgent(agent);
+                }
+                catch (Exception e)
+                {
+                    logger.warn("Exception in onNewAgent()", e);
+                }
+            }
+        }
+    }
 
-	void fireNewQueueEntry(AsteriskQueueEntry entry)
-	{
-		synchronized (listeners)
-		{
-			for (AsteriskServerListener listener : listeners)
-			{
-				try
-				{
-					listener.onNewQueueEntry(entry);
-				}
-				catch (Exception e)
-				{
-					logger.warn("Exception in onNewQueueEntry()", e);
-				}
-			}
-		}
-	}
+    void fireNewQueueEntry(AsteriskQueueEntry entry)
+    {
+        synchronized (listeners)
+        {
+            for (AsteriskServerListener listener : listeners)
+            {
+                try
+                {
+                    listener.onNewQueueEntry(entry);
+                }
+                catch (Exception e)
+                {
+                    logger.warn("Exception in onNewQueueEntry()", e);
+                }
+            }
+        }
+    }
 }

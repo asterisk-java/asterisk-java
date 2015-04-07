@@ -109,8 +109,13 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 	private int port = DEFAULT_PORT;
 
 	/**
+<<<<<<< HEAD
           * <code>true</code> to use SSL for the connection, <code>false</code>
      * for a plain text connection.
+=======
+	 * <code>true</code> to use SSL for the connection, <code>false</code> for a
+	 * plain text connection.
+>>>>>>> da53d55f889fc734bc7f597b4ebf4669145f3639
 	 */
 	private boolean ssl = false;
 
@@ -144,15 +149,26 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 	private int socketTimeout = 0;
 
 	/**
+<<<<<<< HEAD
      * Closes the connection (and reconnects) if no input has been read for the given amount
      * of milliseconds. A timeout of zero is interpreted as an infinite timeout.
+=======
+	 * Closes the connection (and reconnects) if no input has been read for the
+	 * given amount of milliseconds. A timeout of zero is interpreted as an
+	 * infinite timeout.
+>>>>>>> da53d55f889fc734bc7f597b4ebf4669145f3639
 	 * 
 	 * @see Socket#setSoTimeout(int)
 	 */
 	private int socketReadTimeout = 0;
 
 	/**
+<<<<<<< HEAD
           * <code>true</code> to continue to reconnect after an authentication failure.
+=======
+	 * <code>true</code> to continue to reconnect after an authentication
+	 * failure.
+>>>>>>> da53d55f889fc734bc7f597b4ebf4669145f3639
 	 */
 	private boolean keepAliveAfterAuthenticationFailure = true;
 
@@ -192,7 +208,11 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
 	/**
 	 * Contains the registered handlers that process the ManagerResponses.
+<<<<<<< HEAD
      * <br>
+=======
+	 * <p/>
+>>>>>>> da53d55f889fc734bc7f597b4ebf4669145f3639
 	 * Key is the internalActionId of the Action sent and value the
 	 * corresponding ResponseListener.
 	 */
@@ -201,7 +221,11 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 	/**
 	 * Contains the event handlers that handle ResponseEvents for the
 	 * sendEventGeneratingAction methods.
+<<<<<<< HEAD
      * <br>
+=======
+	 * <p/>
+>>>>>>> da53d55f889fc734bc7f597b4ebf4669145f3639
 	 * Key is the internalActionId of the Action sent and value the
 	 * corresponding EventHandler.
 	 */
@@ -242,10 +266,18 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
 	/**
 	 * Sets the hostname of the asterisk server to connect to.
+<<<<<<< HEAD
      * <br>
 	 * Default is <code>localhost</code>.
 	 * 
      * @param hostname the hostname to connect to
+=======
+	 * <p/>
+	 * Default is <code>localhost</code>.
+	 * 
+	 * @param hostname
+	 *            the hostname to connect to
+>>>>>>> da53d55f889fc734bc7f597b4ebf4669145f3639
 	 */
 	public void setHostname(String hostname)
 	{
@@ -255,10 +287,18 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 	/**
 	 * Sets the port to use to connect to the asterisk server. This is the port
 	 * specified in asterisk's <code>manager.conf</code> file.
+<<<<<<< HEAD
      * <br>
 	 * Default is 5038.
 	 * 
      * @param port the port to connect to
+=======
+	 * <p/>
+	 * Default is 5038.
+	 * 
+	 * @param port
+	 *            the port to connect to
+>>>>>>> da53d55f889fc734bc7f597b4ebf4669145f3639
 	 */
 	public void setPort(int port)
 	{
@@ -274,10 +314,18 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
 	/**
 	 * Sets whether to use SSL.
+<<<<<<< HEAD
      * <br>
 	 * Default is false.
 	 * 
      * @param ssl <code>true</code> to use SSL for the connection,
+=======
+	 * <p/>
+	 * Default is false.
+	 * 
+	 * @param ssl
+	 *            <code>true</code> to use SSL for the connection,
+>>>>>>> da53d55f889fc734bc7f597b4ebf4669145f3639
 	 *            <code>false</code> for a plain text connection.
 	 * @since 0.3
 	 */
@@ -290,7 +338,12 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 	 * Sets the username to use to connect to the asterisk server. This is the
 	 * username specified in asterisk's <code>manager.conf</code> file.
 	 * 
+<<<<<<< HEAD
      * @param username the username to use for login
+=======
+	 * @param username
+	 *            the username to use for login
+>>>>>>> da53d55f889fc734bc7f597b4ebf4669145f3639
 	 */
 	public void setUsername(String username)
 	{
@@ -301,7 +354,12 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 	 * Sets the password to use to connect to the asterisk server. This is the
 	 * password specified in Asterisk's <code>manager.conf</code> file.
 	 * 
+<<<<<<< HEAD
      * @param password the password to use for login
+=======
+	 * @param password
+	 *            the password to use for login
+>>>>>>> da53d55f889fc734bc7f597b4ebf4669145f3639
 	 */
 	public void setPassword(String password)
 	{
@@ -312,10 +370,18 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 	 * Sets the time in milliseconds the synchronous method
 	 * {@link #sendAction(ManagerAction)} will wait for a response before
 	 * throwing a TimeoutException.
+<<<<<<< HEAD
      * <br>
 	 * Default is 2000.
 	 * 
      * @param defaultResponseTimeout default response timeout in milliseconds
+=======
+	 * <p/>
+	 * Default is 2000.
+	 * 
+	 * @param defaultResponseTimeout
+	 *            default response timeout in milliseconds
+>>>>>>> da53d55f889fc734bc7f597b4ebf4669145f3639
 	 * @since 0.2
 	 */
 	public void setDefaultResponseTimeout(long defaultResponseTimeout)
@@ -327,10 +393,18 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 	 * Sets the time in milliseconds the synchronous method
 	 * {@link #sendEventGeneratingAction(EventGeneratingAction)} will wait for a
 	 * response and the last response event before throwing a TimeoutException.
+<<<<<<< HEAD
      * <br>
 	 * Default is 5000.
 	 * 
      * @param defaultEventTimeout default event timeout in milliseconds
+=======
+	 * <p/>
+	 * Default is 5000.
+	 * 
+	 * @param defaultEventTimeout
+	 *            default event timeout in milliseconds
+>>>>>>> da53d55f889fc734bc7f597b4ebf4669145f3639
 	 * @since 0.2
 	 */
 	public void setDefaultEventTimeout(long defaultEventTimeout)
@@ -339,15 +413,26 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 	}
 
 	/**
+<<<<<<< HEAD
      * Set to <code>true</code> to try reconnecting to ther asterisk serve
      * even if the reconnection attempt threw an AuthenticationFailedException.
      * <br>
+=======
+	 * Set to <code>true</code> to try reconnecting to ther asterisk serve even
+	 * if the reconnection attempt threw an AuthenticationFailedException.
+	 * <p/>
+>>>>>>> da53d55f889fc734bc7f597b4ebf4669145f3639
 	 * Default is <code>true</code>.
 	 * 
 	 * @param keepAliveAfterAuthenticationFailure
 	 *            <code>true</code> to try reconnecting to ther asterisk serve
+<<<<<<< HEAD
      *         even if the reconnection attempt threw an AuthenticationFailedException,
      *         <code>false</code> otherwise.
+=======
+	 *            even if the reconnection attempt threw an
+	 *            AuthenticationFailedException, <code>false</code> otherwise.
+>>>>>>> da53d55f889fc734bc7f597b4ebf4669145f3639
 	 */
 	public void setKeepAliveAfterAuthenticationFailure(boolean keepAliveAfterAuthenticationFailure)
 	{
@@ -456,7 +541,11 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
 	/**
 	 * Does the real login, following the steps outlined below.
+<<<<<<< HEAD
      * <br>
+=======
+	 * <p/>
+>>>>>>> da53d55f889fc734bc7f597b4ebf4669145f3639
 	 * <ol>
 	 * <li>Connects to the asterisk server by calling {@link #connect()} if not
 	 * already connected
@@ -469,6 +558,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 	 * the received challenge).
 	 * </ol>
 	 * 
+
      * @param timeout   the maximum time to wait for the protocol identifier (in
      *                  ms)
      * @param eventMask the event mask. Set to "on" if all events should be
@@ -634,7 +724,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 			{
                 final String line1 = showVersionFilesResult.get(0);
 
-                if (line1.startsWith("File"))
+                if (line1 != null && line1.startsWith("File"))
 				{
 					final String rawVersion;
 
@@ -647,6 +737,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 				}
 				else if (line1 != null && line1.contains("No such command"))
 				{
+
                     final ManagerResponse coreShowVersionResponse = sendAction(new CommandAction("core show version"), defaultResponseTimeout * 2);
 
 					if (coreShowVersionResponse != null && coreShowVersionResponse instanceof CommandResponse)
@@ -1109,7 +1200,12 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 	 * received. The response is dispatched to the associated
 	 * {@link SendActionCallback}.
 	 * 
+<<<<<<< HEAD
      * @param response the response received by the reader
+=======
+	 * @param response
+	 *            the response received by the reader
+>>>>>>> da53d55f889fc734bc7f597b4ebf4669145f3639
 	 * @see ManagerReader
 	 */
 	public void dispatchResponse(ManagerResponse response)
@@ -1290,7 +1386,12 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 	/**
 	 * Notifies all {@link ManagerEventListener}s registered by users.
 	 * 
+<<<<<<< HEAD
      * @param event the event to propagate
+=======
+	 * @param event
+	 *            the event to propagate
+>>>>>>> da53d55f889fc734bc7f597b4ebf4669145f3639
 	 */
 	private void fireEvent(ManagerEvent event)
 	{
@@ -1315,7 +1416,12 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 	 * received from the reader. Having received a correct protocol identifier
 	 * is the precodition for logging in.
 	 * 
+<<<<<<< HEAD
      * @param identifier the protocol version used by the Asterisk server.
+=======
+	 * @param identifier
+	 *            the protocol version used by the Asterisk server.
+>>>>>>> da53d55f889fc734bc7f597b4ebf4669145f3639
 	 */
 	private void setProtocolIdentifier(final String identifier)
 	{
@@ -1341,14 +1447,22 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
 	/**
 	 * Reconnects to the asterisk server when the connection is lost.
+<<<<<<< HEAD
      * <br>
+=======
+	 * <p/>
+>>>>>>> da53d55f889fc734bc7f597b4ebf4669145f3639
 	 * While keepAlive is <code>true</code> we will try to reconnect.
 	 * Reconnection attempts will be stopped when the {@link #logoff()} method
 	 * is called or when the login after a successful reconnect results in an
 	 * {@link AuthenticationFailedException} suggesting that the manager
 	 * credentials have changed and keepAliveAfterAuthenticationFailure is not
 	 * set.
+<<<<<<< HEAD
      * <br>
+=======
+	 * <p/>
+>>>>>>> da53d55f889fc734bc7f597b4ebf4669145f3639
 	 * This method is called when a {@link DisconnectEvent} is received from the
 	 * reader.
 	 */
@@ -1484,7 +1598,12 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 		/**
 		 * Creates a new instance.
 		 * 
+<<<<<<< HEAD
          * @param result the result to store the response in
+=======
+		 * @param result
+		 *            the result to store the response in
+>>>>>>> da53d55f889fc734bc7f597b4ebf4669145f3639
 		 */
 		public DefaultSendActionCallback(ResponseHandlerResult result)
 		{
@@ -1513,9 +1632,17 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 		/**
 		 * Creates a new instance.
 		 * 
+<<<<<<< HEAD
          * @param events                   the ResponseEventsImpl to store the events in
          * @param actionCompleteEventClass the type of event that indicates that
          *                                 all events have been received
+=======
+		 * @param events
+		 *            the ResponseEventsImpl to store the events in
+		 * @param actionCompleteEventClass
+		 *            the type of event that indicates that all events have been
+		 *            received
+>>>>>>> da53d55f889fc734bc7f597b4ebf4669145f3639
 		 */
 		public ResponseEventHandler(ResponseEventsImpl events, Class<?> actionCompleteEventClass)
 		{
@@ -1575,5 +1702,4 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 	{
 		String value;
 	}
-
 }

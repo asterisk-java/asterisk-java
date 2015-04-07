@@ -281,7 +281,6 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
         }
     }
 
-
     protected ServerSocketFacade createServerSocket() throws IOException
     {
         return new ServerSocketFacadeImpl(port, BACKLOG, address);
