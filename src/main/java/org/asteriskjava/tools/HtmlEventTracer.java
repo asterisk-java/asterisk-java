@@ -254,6 +254,16 @@ public class HtmlEventTracer implements ManagerEventListener
             	format = "%s";
                 properties = new String[]{"signal"};
             }
+            else if (event instanceof PausedEvent)
+            {
+            	format = "(%s) %s";
+                properties = new String[]{"header", "extension"};
+            }
+            else if (event instanceof UnpausedEvent)
+            {
+            	format = "(%s) %s";
+                properties = new String[]{"header", "extension"};
+            }
         }
 
         if (event instanceof BridgeEvent)

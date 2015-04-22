@@ -184,6 +184,8 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
         registerEventClass(ZapShowChannelsEvent.class);
         registerEventClass(ZapShowChannelsCompleteEvent.class);
         registerEventClass(AntennaLevelEvent.class);
+        registerEventClass(PausedEvent.class);
+        registerEventClass(UnpausedEvent.class);
 
     }
 
