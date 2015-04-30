@@ -45,7 +45,7 @@ public class MeetMeJoinEvent extends AbstractMeetMeEvent
     /**
      * Returns the Caller Id number.
      *
-     * @return the Caller Id number or "<unknown>" if not set.
+     * @return the Caller Id number or "&lt;unknown&gt;" if not set.
      * @since 1.0.0
      */
     public String getCallerIdNum()
@@ -61,7 +61,7 @@ public class MeetMeJoinEvent extends AbstractMeetMeEvent
     /**
      * Returns the Caller Id name.
      *
-     * @return the Caller Id name or "<unknown>" if not set.
+     * @return the Caller Id name or "&lt;unknown&gt;" if not set.
      * @since 1.0.0
      */
     public String getCallerIdName()

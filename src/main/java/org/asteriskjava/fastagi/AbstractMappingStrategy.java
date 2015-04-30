@@ -29,7 +29,7 @@ import org.asteriskjava.util.LogFactory;
 
 /**
  * Abstract base class for common mapping strategies.
- * <p/>
+ * <br>
  * If you implement your own mapping strategy you can derive from this class.
  *
  * @author srt

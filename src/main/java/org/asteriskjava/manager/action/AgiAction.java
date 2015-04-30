@@ -24,7 +24,7 @@ import org.asteriskjava.manager.event.ResponseEvent;
  * It will append the application to the specified channel's queue.
  * If the channel is not inside Async AGI application it will return an error.<p>
  * It is implemented in <code>res/res_agi.c</code>
- * <p/>
+ * <br>
  * Available since Asterisk 1.6
  *
  * @see org.asteriskjava.manager.event.AsyncAgiEvent

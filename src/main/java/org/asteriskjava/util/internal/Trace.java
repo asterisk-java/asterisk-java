@@ -22,4 +22,10 @@ public interface Trace
      * @param s the String that has been sent.
      */
     void sent(String s);
+    
+    
+    /**
+     * Closes allocated resources by trace implementation.
+     */
+    void close();
 }

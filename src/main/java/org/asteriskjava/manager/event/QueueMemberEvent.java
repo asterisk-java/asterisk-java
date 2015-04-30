@@ -58,6 +58,7 @@ public class QueueMemberEvent extends ResponseEvent
     private Long lastCall;
     private Integer status;
     private Boolean paused;
+    private String stateinterface;
 
     /**
      * @param source
@@ -328,5 +329,18 @@ public class QueueMemberEvent extends ResponseEvent
     public void setMemberName(String memberName)
     {
         this.name = memberName;
+    }
+
+    /**
+     * @return Name of the interface where device state is taken from.
+     */
+    public String getStateinterface()
+    {
+        return stateinterface;
+    }
+
+    public void setStateinterface(String stateinterface)
+    {
+        this.stateinterface = stateinterface;
     }
 }

@@ -14,7 +14,7 @@ import java.util.*;
  * <li>End:   A channel has left the AGI("agi:async") application.</li>
  * </ul>
  * It is implemented in <code>res/res_agi.c</code>.
- * <p/>
+ * <br>
  * Available since Asterisk 1.6
  *
  * @author srt
@@ -38,6 +38,15 @@ public class AsyncAgiEvent extends ResponseEvent
     private String commandId;
     private String result;
     private String env;
+    private String uniqueId;
+
+    public String getUniqueId() {
+        return uniqueId;
+    }
+
+    public void setUniqueId(String uniqueId) {
+        this.uniqueId = uniqueId;
+    }
 
     /**
      * Creates a new AsyncAgiEvent.

@@ -23,7 +23,7 @@ package org.asteriskjava.manager.event;
  * 1.4 report individual events: {@link org.asteriskjava.manager.event.LinkEvent} and
  * {@link org.asteriskjava.manager.event.UnlinkEvent}.For maximum compatibily do not use the Link and Unlink
  * events in your code. Just use the Bridge event and check for {@link #isLink()} and {@link #isUnlink()}.
- * <p/>
+ * <br>
  * It is implemented in <code>channel.c</code>
  *
  * @author srt

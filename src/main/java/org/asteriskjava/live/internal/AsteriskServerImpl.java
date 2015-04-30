@@ -16,22 +16,105 @@
  */
 package org.asteriskjava.live.internal;
 
-import org.asteriskjava.live.*;
-import org.asteriskjava.manager.*;
-import org.asteriskjava.manager.action.*;
-import org.asteriskjava.manager.event.*;
-import org.asteriskjava.manager.response.*;
-import org.asteriskjava.util.DateUtil;
-import org.asteriskjava.util.Log;
-import org.asteriskjava.util.LogFactory;
-import org.asteriskjava.util.AstUtil;
-import org.asteriskjava.config.ConfigFile;
-import org.asteriskjava.AsteriskVersion;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.asteriskjava.AsteriskVersion;
+import org.asteriskjava.config.ConfigFile;
+import org.asteriskjava.live.AsteriskAgent;
+import org.asteriskjava.live.AsteriskChannel;
+import org.asteriskjava.live.AsteriskQueue;
+import org.asteriskjava.live.AsteriskQueueEntry;
+import org.asteriskjava.live.AsteriskServer;
+import org.asteriskjava.live.AsteriskServerListener;
+import org.asteriskjava.live.CallerId;
+import org.asteriskjava.live.ChannelState;
+import org.asteriskjava.live.LiveException;
+import org.asteriskjava.live.ManagerCommunicationException;
+import org.asteriskjava.live.MeetMeRoom;
+import org.asteriskjava.live.MeetMeUser;
+import org.asteriskjava.live.NoSuchChannelException;
+import org.asteriskjava.live.OriginateCallback;
+import org.asteriskjava.live.Voicemailbox;
+import org.asteriskjava.manager.ManagerConnection;
+import org.asteriskjava.manager.ManagerConnectionState;
+import org.asteriskjava.manager.ManagerEventListener;
+import org.asteriskjava.manager.ManagerEventListenerProxy;
+import org.asteriskjava.manager.ResponseEvents;
+import org.asteriskjava.manager.action.CommandAction;
+import org.asteriskjava.manager.action.DbGetAction;
+import org.asteriskjava.manager.action.DbPutAction;
+import org.asteriskjava.manager.action.EventGeneratingAction;
+import org.asteriskjava.manager.action.GetConfigAction;
+import org.asteriskjava.manager.action.GetVarAction;
+import org.asteriskjava.manager.action.MailboxCountAction;
+import org.asteriskjava.manager.action.ManagerAction;
+import org.asteriskjava.manager.action.ModuleCheckAction;
+import org.asteriskjava.manager.action.ModuleLoadAction;
+import org.asteriskjava.manager.action.OriginateAction;
+import org.asteriskjava.manager.action.SetVarAction;
+import org.asteriskjava.manager.action.SipPeersAction;
+import org.asteriskjava.manager.event.AbstractMeetMeEvent;
+import org.asteriskjava.manager.event.AgentCallbackLoginEvent;
+import org.asteriskjava.manager.event.AgentCallbackLogoffEvent;
+import org.asteriskjava.manager.event.AgentCalledEvent;
+import org.asteriskjava.manager.event.AgentCompleteEvent;
+import org.asteriskjava.manager.event.AgentConnectEvent;
+import org.asteriskjava.manager.event.AgentLoginEvent;
+import org.asteriskjava.manager.event.AgentLogoffEvent;
+import org.asteriskjava.manager.event.AgentsEvent;
+import org.asteriskjava.manager.event.BridgeEvent;
+import org.asteriskjava.manager.event.CdrEvent;
+import org.asteriskjava.manager.event.ConnectEvent;
+import org.asteriskjava.manager.event.DbGetResponseEvent;
+import org.asteriskjava.manager.event.DialEvent;
+import org.asteriskjava.manager.event.DisconnectEvent;
+import org.asteriskjava.manager.event.DtmfEvent;
+import org.asteriskjava.manager.event.HangupEvent;
+import org.asteriskjava.manager.event.JoinEvent;
+import org.asteriskjava.manager.event.LeaveEvent;
+import org.asteriskjava.manager.event.ManagerEvent;
+import org.asteriskjava.manager.event.MonitorStartEvent;
+import org.asteriskjava.manager.event.MonitorStopEvent;
+import org.asteriskjava.manager.event.NewCallerIdEvent;
+import org.asteriskjava.manager.event.NewChannelEvent;
+import org.asteriskjava.manager.event.NewExtenEvent;
+import org.asteriskjava.manager.event.NewStateEvent;
+import org.asteriskjava.manager.event.OriginateResponseEvent;
+import org.asteriskjava.manager.event.ParkedCallEvent;
+import org.asteriskjava.manager.event.ParkedCallGiveUpEvent;
+import org.asteriskjava.manager.event.ParkedCallTimeOutEvent;
+import org.asteriskjava.manager.event.PeerEntryEvent;
+import org.asteriskjava.manager.event.QueueMemberAddedEvent;
+import org.asteriskjava.manager.event.QueueMemberPausedEvent;
+import org.asteriskjava.manager.event.QueueMemberPenaltyEvent;
+import org.asteriskjava.manager.event.QueueMemberRemovedEvent;
+import org.asteriskjava.manager.event.QueueMemberStatusEvent;
+import org.asteriskjava.manager.event.RenameEvent;
+import org.asteriskjava.manager.event.ResponseEvent;
+import org.asteriskjava.manager.event.UnparkedCallEvent;
+import org.asteriskjava.manager.event.VarSetEvent;
+import org.asteriskjava.manager.response.CommandResponse;
+import org.asteriskjava.manager.response.GetConfigResponse;
+import org.asteriskjava.manager.response.MailboxCountResponse;
+import org.asteriskjava.manager.response.ManagerError;
+import org.asteriskjava.manager.response.ManagerResponse;
+import org.asteriskjava.manager.response.ModuleCheckResponse;
+import org.asteriskjava.util.AstUtil;
+import org.asteriskjava.util.DateUtil;
+import org.asteriskjava.util.Log;
+import org.asteriskjava.util.LogFactory;
 
 /**
  * Default implementation of the {@link AsteriskServer} interface.
@@ -58,35 +141,30 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
      */
     private ManagerConnection eventConnection;
     private ManagerEventListener eventListener = null;
-    private ManagerEventListenerProxy managerEventListenerProxy = null;
+    ManagerEventListenerProxy managerEventListenerProxy;
 
-    private boolean initialized = false;
+    boolean initialized = false;
 
-    /**
-     * A pool of manager connections to use for sending actions to Asterisk.
-     */
-    private final ManagerConnectionPool connectionPool;
+    final Set<AsteriskServerListener> listeners;
 
-    private final List<AsteriskServerListener> listeners;
-
-    private final ChannelManager channelManager;
-    private final MeetMeManager meetMeManager;
-    private final QueueManager queueManager;
-    private final AgentManager agentManager;
+    final ChannelManager channelManager;
+    final MeetMeManager meetMeManager;
+    final QueueManager queueManager;
+    final AgentManager agentManager;
 
     /**
      * The exact version string of the Asterisk server we are connected to.
-     * <p/>
+	 * <p/>
      * Contains <code>null</code> until lazily initialized.
      */
     private String version;
 
     /**
      * Holds the version of Asterisk's source files.
-     * <p/>
+	 * <p/>
      * That corresponds to the output of the CLI command
      * <code>show version files</code>.
-     * <p/>
+	 * <p/>
      * Contains <code>null</code> until lazily initialized.
      */
     private Map<String, String> versions;
@@ -107,19 +185,33 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
     private boolean skipQueues;
 
     /**
-     * Set to <code>true</code> to not handle ManagerEvents in the reader
-     * tread but process them asynchronously. This is a good idea :)
+	 * Set to <code>true</code> to not handle ManagerEvents in the reader tread
+	 * but process them asynchronously. This is a good idea :)
      */
     private boolean asyncEventHandling = true;
 
     /**
+	 * The chainListener allows a listener to receive manager events after they
+	 * have been processed by the AsteriskServer. If the AsteriskServer is
+	 * handling messages using the asyncEventHandling then these messages will
+	 * also be async. You would use the chainListener if you are processing raw
+	 * events and using the AJ live ChannelManager. If you don't use the chain
+	 * listener then you can't be certain that a channel name passed in a raw
+	 * event will match the channel name held by the Channel Manager. By
+	 * chaining events you can be certain that events such as channel Rename
+	 * events have been processed by the live ChannelManager before you receive
+	 * an event and as such the names will always match.
+	 * 
+	 */
+	private List<ManagerEventListener> chainListeners = new ArrayList<ManagerEventListener>();
+
+	/**
      * Creates a new instance.
      */
     public AsteriskServerImpl()
     {
-        connectionPool = new ManagerConnectionPool(1);
         idCounter = new AtomicLong();
-        listeners = new ArrayList<AsteriskServerListener>();
+        listeners = new LinkedHashSet<AsteriskServerListener>();
         originateCallbacks = new HashMap<String, OriginateCallbackData>();
         channelManager = new ChannelManager(this);
         agentManager = new AgentManager(this);
@@ -130,13 +222,16 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
     /**
      * Creates a new instance.
      *
-     * @param eventConnection the ManagerConnection to use for receiving events
-     *                        from Asterisk.
+	 * @param eventConnection
+	 *            the ManagerConnection to use for receiving events from
+	 *            Asterisk.
      */
     public AsteriskServerImpl(ManagerConnection eventConnection)
     {
         this();
-        setManagerConnection(eventConnection);  //todo: !!! Possible bug !!!: call to overridable method over object construction 
+		setManagerConnection(eventConnection); // todo: !!! Possible bug !!!:
+												// call to overridable method
+												// over object construction
     }
 
     /**
@@ -144,7 +239,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
      * queue information and still run Asterisk 1.0.x you can set this to
      * <code>true</code> to circumvent the startup delay caused by the missing
      * QueueStatusComplete event.
-     * <p/>
+     * <br>
      * Default is <code>false</code>.
      *
      * @param skipQueues <code>true</code> to skip queue initialization,
@@ -164,8 +259,6 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         }
 
         this.eventConnection = eventConnection;
-        this.connectionPool.clear();
-        this.connectionPool.add(eventConnection);
     }
 
     public ManagerConnection getManagerConnection()
@@ -198,26 +291,6 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
             }
         }
 
-        channelManager.initialize();
-        agentManager.initialize();
-        meetMeManager.initialize();
-        if (!skipQueues)
-        {
-            queueManager.initialize();
-        }
-
-        if (asyncEventHandling && managerEventListenerProxy == null)
-        {
-            managerEventListenerProxy = new ManagerEventListenerProxy(this);
-            eventConnection.addEventListener(managerEventListenerProxy);
-        }
-        else if (!asyncEventHandling && eventListener == null)
-        {
-            eventListener = this;
-            eventConnection.addEventListener(eventListener);
-        }
-        logger.info("Initializing done");
-        initialized = true;
     }
 
     /* Implementation of the AsteriskServer interface */
@@ -449,6 +522,18 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         return queueManager.getQueues();
     }
 
+    @Override
+	public AsteriskQueue getQueueByName(String queueName){
+    	initializeIfNeeded();
+    	return queueManager.getQueueByName(queueName);
+    }
+
+    @Override
+	public List<AsteriskQueue> getQueuesUpdatedAfter(Date date){
+    	initializeIfNeeded();
+    	return queueManager.getQueuesUpdatedAfter(date);
+    }
+
     public synchronized String getVersion() throws ManagerCommunicationException
     {
         final ManagerResponse response;
@@ -469,7 +554,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
             response = sendAction(new CommandAction(command));
             if (response instanceof CommandResponse)
             {
-                final List<?> result;
+                final List<String> result;
 
                 result = ((CommandResponse) response).getResult();
                 if (result.size() > 0)
@@ -755,8 +840,8 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
 
         getConfigResponse = (GetConfigResponse) response;
 
-        final Map<String, List<String>> categories = new LinkedHashMap<String, List<String>>();
         final Map<Integer, String> categoryMap = getConfigResponse.getCategories();
+        final Map<String, List<String>> categories = new LinkedHashMap<String, List<String>>();
         for (Map.Entry<Integer, String> categoryEntry : categoryMap.entrySet())
         {
             final List<String> lines;
@@ -793,6 +878,21 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
             listeners.remove(listener);
         }
     }
+
+	public void addChainListener(ManagerEventListener chainListener)
+	{
+		synchronized (this.chainListeners)
+		{
+			if (!this.chainListeners.contains(chainListener))
+				this.chainListeners.add(chainListener);
+		}
+
+	}
+
+	public void removeChainListener(ManagerEventListener chainListener)
+	{
+		this.chainListeners.remove(chainListener);
+	}
 
     void fireNewAsteriskChannel(AsteriskChannel channel)
     {
@@ -894,7 +994,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
 
     /**
      * Handles all events received from the Asterisk server.
-     * <p/>
+     * <br>
      * Events are queued until channels and queues are initialized and then
      * delegated to the dispatchEvent method.
      */
@@ -952,6 +1052,14 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         else if (event instanceof DtmfEvent)
         {
             channelManager.handleDtmfEvent((DtmfEvent) event);
+        }
+        else if (event instanceof MonitorStartEvent)
+        {
+            channelManager.handleMonitorStartEvent((MonitorStartEvent) event);
+        }
+        else if (event instanceof MonitorStopEvent)
+        {
+            channelManager.handleMonitorStopEvent((MonitorStopEvent) event);
         }
         // End of channel related events
         // Handle parking related event
@@ -1045,7 +1153,24 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
             agentManager.handleAgentLogoffEvent((AgentLogoffEvent) event);
         }
         // End of agent-related events
+
+		// dispatch the events to the chainListener if they exist.
+		fireChainListeners(event);
     }
+
+	/**
+	 * dispatch the event to the chainListener if they exist.
+	 * 
+	 * @param event
+	 */
+	private void fireChainListeners(ManagerEvent event)
+	{
+		synchronized (this.chainListeners)
+		{
+			for (ManagerEventListener listener : this.chainListeners)
+				listener.onManagerEvent(event);
+		}
+	}
 
     /*
      * Resets the internal state when the connection to the asterisk server is
@@ -1076,6 +1201,27 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         try
         {
             initialize();
+
+            channelManager.initialize();
+            agentManager.initialize();
+            meetMeManager.initialize();
+            if (!skipQueues)
+            {
+                queueManager.initialize();
+            }
+
+            if (asyncEventHandling && managerEventListenerProxy == null)
+            {
+                managerEventListenerProxy = new ManagerEventListenerProxy(this);
+                eventConnection.addEventListener(managerEventListenerProxy);
+            }
+            else if (!asyncEventHandling && eventListener == null)
+            {
+                eventListener = this;
+                eventConnection.addEventListener(eventListener);
+            }
+            logger.info("Initializing done");
+            initialized = true;
         }
         catch (Exception e)
         {
@@ -1128,6 +1274,12 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
                 return;
             }
 
+            if (channel.wasInState(ChannelState.UP))
+            {
+                cb.onSuccess(channel);
+                return;
+            }
+
             if (channel.wasBusy())
             {
                 cb.onBusy(channel);
@@ -1163,7 +1315,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
                     return;
                 }
             }
-            
+
             if (channel.wasInState(ChannelState.DOWN))
             {
                 cb.onNoAnswer(channel);
@@ -1179,19 +1331,31 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         }
     }
 
-    public void shutdown()
-    {
-        if (eventConnection != null && (eventConnection.getState() == ManagerConnectionState.CONNECTED || eventConnection.getState() == ManagerConnectionState.RECONNECTING))
-        {
-            eventConnection.logoff();
+    @Override public void shutdown() {
+        if (eventConnection != null && (eventConnection.getState() == ManagerConnectionState.CONNECTED || eventConnection.getState() == ManagerConnectionState.RECONNECTING)) {
+						try {
+							eventConnection.logoff();
+						} catch (Exception ignore) {}
         }
-        if (managerEventListenerProxy != null)
-        {
+				
+        if (managerEventListenerProxy != null) {
+						if (eventConnection != null) {
+							eventConnection.removeEventListener(managerEventListenerProxy);
+						}
             managerEventListenerProxy.shutdown();
         }
-        managerEventListenerProxy = null;
+
+		    if (eventConnection != null && eventListener != null) {
+			    eventConnection.removeEventListener(eventListener);
+	      }
+
+		    managerEventListenerProxy = null;
         eventListener = null;
-    }
+
+	      if (initialized) {//incredible, but it happened
+		      handleDisconnectEvent(null);
+	      }//i
+    }//shutdown
 
     public List<PeerEntryEvent> getPeerEntries() throws ManagerCommunicationException
     {
@@ -1276,5 +1440,16 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
                 }
             }
         }
+    }
+
+    /* OCTAVIO LUNA */
+    @Override
+    public void forceQueuesMonitor(boolean force) {
+    	queueManager.forceQueuesMonitor(force);
+    }
+
+    @Override
+    public boolean isQueuesMonitorForced() {
+    	return queueManager.isQueuesMonitorForced();
     }
 }

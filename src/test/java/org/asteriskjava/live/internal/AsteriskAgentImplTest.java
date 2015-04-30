@@ -27,55 +27,36 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * @author <a href="mailto:patrick.breucking{@nospam}gonicus.de">Patrick
- *         Breucking</a>
+ * @author Patrick Breucking
  * @since 0.1
  * @version $Id$
- * 
  */
 public class AsteriskAgentImplTest
 {
-
     private AsteriskAgentImpl agent;
     private int numberOfChanges;
 
-    /**
-     * @throws java.lang.Exception
-     */
     @Before
-    public void setUp() throws Exception
-    {
-	AsteriskServerImpl server = new AsteriskServerImpl();
-	agent = new AsteriskAgentImpl(server, "Testagent", "Agent/999",
-		AgentState.AGENT_IDLE);
-	numberOfChanges = 0;
-    }
+	public void setUp() throws Exception {
+		AsteriskServerImpl server = new AsteriskServerImpl();
+		agent = new AsteriskAgentImpl(server, "Testagent", "Agent/999", AgentState.AGENT_IDLE);
+		numberOfChanges = 0;
+	}
 
-    /**
-     * Test method for
-     * {@link org.asteriskjava.live.internal.AsteriskAgentImpl#updateState(org.asteriskjava.live.AgentState)}.
-     */
     @Test
-    public void testUpdateStatus()
-    {
-	assertEquals(AgentState.AGENT_IDLE, agent.getState());
-	agent.addPropertyChangeListener(new PropertyChangeListener()
-	{
-	    public void propertyChange(PropertyChangeEvent evt)
-	    {
-		assertEquals("wrong propertyName", "state", evt
-			.getPropertyName());
-		assertEquals("wrong oldValue", AgentState.AGENT_IDLE, evt
-			.getOldValue());
-		assertEquals("wrong newValue", AgentState.AGENT_RINGING, evt
-			.getNewValue());
-		assertEquals("wrong queue", agent, evt.getSource());
-		numberOfChanges++;
-	    }
+	public void testUpdateStatus() {
+		assertEquals(AgentState.AGENT_IDLE, agent.getState());
+		agent.addPropertyChangeListener(new PropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent evt) {
+				assertEquals("wrong propertyName", "state", evt.getPropertyName());
+				assertEquals("wrong oldValue", AgentState.AGENT_IDLE, evt.getOldValue());
+				assertEquals("wrong newValue", AgentState.AGENT_RINGING, evt.getNewValue());
+				assertEquals("wrong queue", agent, evt.getSource());
+				numberOfChanges++;
+			}
 
-	});
-	agent.updateState(AgentState.AGENT_RINGING);
-	assertEquals("wrong number of propagated changes", 1, numberOfChanges);
-    }
-
+		});
+		agent.updateState(AgentState.AGENT_RINGING);
+		assertEquals("wrong number of propagated changes", 1, numberOfChanges);
+	}
 }

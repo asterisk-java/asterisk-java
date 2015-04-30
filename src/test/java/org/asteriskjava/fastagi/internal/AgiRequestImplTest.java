@@ -16,22 +16,21 @@
  */
 package org.asteriskjava.fastagi.internal;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.TestCase;
-
 import org.asteriskjava.fastagi.AgiRequest;
-import org.asteriskjava.fastagi.internal.AgiRequestImpl;
+import org.junit.Test;
 
-public class AgiRequestImplTest extends TestCase
+public class AgiRequestImplTest
 {
-    @Override
-    protected void setUp()
-    {
-    }
-
     @SuppressWarnings("deprecation")
+    @Test
     public void testBuildRequest()
     {
         List<String> lines;
@@ -75,6 +74,7 @@ public class AgiRequestImplTest extends TestCase
         assertNull("incorrect accountCode must not be set", request.getAccountCode());
     }
 
+    @Test
     public void testBuildRequestWithAccountCode()
     {
         List<String> lines;
@@ -92,6 +92,7 @@ public class AgiRequestImplTest extends TestCase
     }
 
     @SuppressWarnings("deprecation")
+    @Test
     public void testBuildRequestWithoutCallerIdName()
     {
         List<String> lines;
@@ -105,10 +106,12 @@ public class AgiRequestImplTest extends TestCase
 
         assertEquals("incorrect callerId", "1234", request.getCallerId());
         assertEquals("incorrect callerIdNumber", "1234", request.getCallerIdNumber());
-        //assertNull("callerIdName must not be set", request.getCallerIdName());
+        // assertNull("callerIdName must not be set",
+        // request.getCallerIdName());
     }
 
     @SuppressWarnings("deprecation")
+    @Test
     public void testBuildRequestWithoutCallerIdNameButBracket()
     {
         List<String> lines;
@@ -126,6 +129,7 @@ public class AgiRequestImplTest extends TestCase
     }
 
     @SuppressWarnings("deprecation")
+    @Test
     public void testBuildRequestWithoutCallerIdNameButBracketAndQuotesAndSpace()
     {
         List<String> lines;
@@ -143,6 +147,7 @@ public class AgiRequestImplTest extends TestCase
     }
 
     @SuppressWarnings("deprecation")
+    @Test
     public void testBuildRequestWithQuotedCallerIdName()
     {
         List<String> lines;
@@ -160,6 +165,7 @@ public class AgiRequestImplTest extends TestCase
     }
 
     @SuppressWarnings("deprecation")
+    @Test
     public void testBuildRequestWithQuotedCallerIdNameAndSpace()
     {
         List<String> lines;
@@ -177,6 +183,7 @@ public class AgiRequestImplTest extends TestCase
     }
 
     @SuppressWarnings("deprecation")
+    @Test
     public void testBuildRequestWithoutCallerId()
     {
         List<String> lines;
@@ -194,10 +201,11 @@ public class AgiRequestImplTest extends TestCase
     }
 
     /*
-     * Asterisk 1.2 now uses agi_callerid and agi_calleridname so we don't need to process
-     * it ourselves.
+     * Asterisk 1.2 now uses agi_callerid and agi_calleridname so we don't need
+     * to process it ourselves.
      */
     @SuppressWarnings("deprecation")
+    @Test
     public void testBuildRequestCallerIdAsterisk12()
     {
         List<String> lines;
@@ -216,6 +224,7 @@ public class AgiRequestImplTest extends TestCase
     }
 
     @SuppressWarnings("deprecation")
+    @Test
     public void testBuildRequestCallerIdAsterisk12WithUnknownCallerId()
     {
         List<String> lines;
@@ -234,6 +243,7 @@ public class AgiRequestImplTest extends TestCase
     }
 
     @SuppressWarnings("deprecation")
+    @Test
     public void testBuildRequestCallerIdAsterisk12WithUnknownCallerIdName()
     {
         List<String> lines;
@@ -251,6 +261,7 @@ public class AgiRequestImplTest extends TestCase
         assertNull("callerIdName must not be set if \"unknown\"", request.getCallerIdName());
     }
 
+    @Test
     public void testBuildRequestCallerIdWithUnknownDnid()
     {
         List<String> lines;
@@ -265,6 +276,7 @@ public class AgiRequestImplTest extends TestCase
         assertNull("dnid must not be set if \"unknown\"", request.getDnid());
     }
 
+    @Test
     public void testBuildRequestCallerIdWithUnknownRdnis()
     {
         List<String> lines;
@@ -279,6 +291,7 @@ public class AgiRequestImplTest extends TestCase
         assertNull("rdnis must not be set if \"unknown\"", request.getRdnis());
     }
 
+    @Test
     public void testBuildRequestWithNullEnvironment()
     {
         try
@@ -291,6 +304,7 @@ public class AgiRequestImplTest extends TestCase
         }
     }
 
+    @Test
     public void testBuildRequestWithUnusualInput()
     {
         List<String> lines;
@@ -308,6 +322,7 @@ public class AgiRequestImplTest extends TestCase
         assertEquals("incorrect channel", "SIP/1234-a892", request.getChannel());
     }
 
+    @Test
     public void testBuildRequestWithoutParameters()
     {
         List<String> lines;
@@ -329,6 +344,7 @@ public class AgiRequestImplTest extends TestCase
         assertEquals("incorrect size of getParameterMap()", 0, request.getParameterMap().size());
     }
 
+    @Test
     public void testBuildRequestWithSingleValueParameters()
     {
         List<String> lines;
@@ -347,9 +363,11 @@ public class AgiRequestImplTest extends TestCase
         assertEquals("incorrect value for parameter 'param2'", "value2", request.getParameter("param2"));
         assertEquals("incorrect value for unset parameter 'param3'", null, request.getParameter("param3"));
         assertEquals("incorrect size of getParameterMap()", 2, request.getParameterMap().size());
-        assertEquals("incorrect value for parameter 'param1' when obtained from map", "value1", ((String[]) request.getParameterMap().get("param1"))[0]);
+        assertEquals("incorrect value for parameter 'param1' when obtained from map", "value1", ((String[]) request
+                .getParameterMap().get("param1"))[0]);
     }
 
+    @Test
     public void testBuildRequestWithMultiValueParameter()
     {
         List<String> lines;
@@ -363,13 +381,13 @@ public class AgiRequestImplTest extends TestCase
         request = new AgiRequestImpl(lines);
 
         assertEquals("incorrect script", "myscript.agi", request.getScript());
-        assertEquals("incorrect requestURL",
-                "agi://host/myscript.agi?param1=value1&param1=value2", request.getRequestURL());
+        assertEquals("incorrect requestURL", "agi://host/myscript.agi?param1=value1&param1=value2", request.getRequestURL());
         assertEquals("incorrect number of values for parameter 'param1'", 2, request.getParameterValues("param1").length);
         assertEquals("incorrect value[0] for parameter 'param1'", "value1", request.getParameterValues("param1")[0]);
         assertEquals("incorrect value[1] for parameter 'param1'", "value2", request.getParameterValues("param1")[1]);
     }
 
+    @Test
     public void testBuildRequestWithEmptyValueParameter()
     {
         List<String> lines;
@@ -389,6 +407,7 @@ public class AgiRequestImplTest extends TestCase
         assertEquals("incorrect value[0] for parameter 'param1'", "", request.getParameterValues("param1")[0]);
     }
 
+    @Test
     public void testBuildRequestWithUrlEncodedParameter()
     {
         List<String> lines;
@@ -406,6 +425,7 @@ public class AgiRequestImplTest extends TestCase
         assertEquals("incorrect value for parameter 'param1'", "my value", request.getParameter("param1"));
     }
 
+    @Test
     public void testGetParameter()
     {
         List<String> lines;
@@ -422,6 +442,7 @@ public class AgiRequestImplTest extends TestCase
         assertEquals("incorrect value for parameter 'param1'", "my value", request.getParameter("param1"));
     }
 
+    @Test
     public void testGetArguments()
     {
         List<String> lines;
@@ -442,6 +463,7 @@ public class AgiRequestImplTest extends TestCase
         assertEquals("incorrect value for second argument", "value2", request.getArguments()[1]);
     }
 
+    @Test
     public void testGetArgumentsWithEmptyArgument()
     {
         List<String> lines;
@@ -464,6 +486,7 @@ public class AgiRequestImplTest extends TestCase
         assertEquals("incorrect value for third argument", "value3", request.getArguments()[2]);
     }
 
+    @Test
     public void testGetArgumentsWithNoArgumentsPassed()
     {
         List<String> lines;

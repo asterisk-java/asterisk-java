@@ -4,9 +4,9 @@ import java.util.*;
 
 /**
  * Some static utility methods to imitate Asterisk specific logic.
- * <p/>
+ * <br>
  * See Asterisk's <code>util.c</code>.
- * <p/>
+ * <br>
  * Client code is not supposed to use this class.
  *
  * @author srt
@@ -51,15 +51,15 @@ public class AstUtil
     /**
      * Checks if a String represents <code>true</code> or <code>false</code>
      * according to Asterisk's logic.
-     * <p/>
+     * <br>
      * The original implementation is <code>util.c</code> is as follows:
-     * <p/>
+     * <br>
      * <pre>
      *     int ast_true(const char *s)
      *     {
      *         if (!s || ast_strlen_zero(s))
      *             return 0;
-     * <p/>
+     * <br>
      *         if (!strcasecmp(s, &quot;yes&quot;) ||
      *             !strcasecmp(s, &quot;true&quot;) ||
      *             !strcasecmp(s, &quot;y&quot;) ||
@@ -67,11 +67,11 @@ public class AstUtil
      *             !strcasecmp(s, &quot;1&quot;) ||
      *             !strcasecmp(s, &quot;on&quot;))
      *             return -1;
-     * <p/>
+     * <br>
      *         return 0;
      *     }
      * </pre>
-     * <p/>
+     * <br>
      * To support the dnd property of
      * {@link org.asteriskjava.manager.event.ZapShowChannelsEvent} this method
      * also consideres the string "Enabled" as true.
@@ -106,9 +106,9 @@ public class AstUtil
 
     /**
      * Parses a string for caller id information.
-     * <p/>
+     * <br>
      * The caller id string should be in the form <code>"Some Name" &lt;1234&gt;</code>.
-     * <p/>
+     * <br>
      * This resembles <code>ast_callerid_parse</code> in
      * <code>callerid.c</code> but strips any whitespace.
      *
@@ -168,11 +168,11 @@ public class AstUtil
 
     /**
      * Checks if the value of s was <code>null</code> in Asterisk.
-     * <p/>
+     * <br>
      * This method is useful as Asterisk likes to replace <code>null</code>
      * values with different string values like "unknown", "&lt;unknown&gt;"
      * or "&lt;null&gt;".
-     * <p/>
+     * <br>
      * To find such replacements search for <code>S_OR</code> in Asterisk's
      * source code. You will find things like
      * <pre>

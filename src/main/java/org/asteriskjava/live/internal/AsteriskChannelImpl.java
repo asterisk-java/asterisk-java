@@ -36,6 +36,7 @@ import org.asteriskjava.manager.action.ChangeMonitorAction;
 import org.asteriskjava.manager.action.GetVarAction;
 import org.asteriskjava.manager.action.HangupAction;
 import org.asteriskjava.manager.action.MonitorAction;
+import org.asteriskjava.manager.action.PauseMixMonitorAction;
 import org.asteriskjava.manager.action.PauseMonitorAction;
 import org.asteriskjava.manager.action.PlayDtmfAction;
 import org.asteriskjava.manager.action.RedirectAction;
@@ -44,6 +45,7 @@ import org.asteriskjava.manager.action.StopMonitorAction;
 import org.asteriskjava.manager.action.UnpauseMonitorAction;
 import org.asteriskjava.manager.response.ManagerError;
 import org.asteriskjava.manager.response.ManagerResponse;
+import org.asteriskjava.util.MixMonitorDirection;
 
 /**
  * Default implementation of the AsteriskChannel interface.
@@ -147,6 +149,11 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
      * Last dtmf digit sent on this channel if any, <code>null</code> otherwise.
      */
     private Character dtmfSent;
+
+    /**
+     * Actual monitor state
+     */
+    private boolean isMonitored;
 
     private final Map<String, String> variables;
 
@@ -799,6 +806,30 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         }
     }
 
+    
+    public void pauseMixMonitor(MixMonitorDirection direction) throws ManagerCommunicationException, NoSuchChannelException
+    {
+        ManagerResponse response;
+        response = server.sendAction(new PauseMixMonitorAction(this.name,1,direction.getStateName()));
+        if (response instanceof ManagerError) {
+            throw new NoSuchChannelException("Channel '" + name + "' is not available: " + response.getMessage());
+        }
+    }
+
+    
+    public void unPauseMixMonitor(MixMonitorDirection direction) throws ManagerCommunicationException, NoSuchChannelException
+    {
+        ManagerResponse response;
+        response = server.sendAction(new PauseMixMonitorAction(this.name,0,direction.getStateName()));        
+        if (response instanceof ManagerError) {
+            throw new NoSuchChannelException("Channel '" + name + "' is not available: " + response.getMessage());
+        }
+    }
+    
+    
+    
+    
+    
     public Extension getParkedAt()
     {
         // warning: the context of this extension will be null until we get the context property from
@@ -869,6 +900,15 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
 
         this.queueEntryImpl = queueEntry;
         firePropertyChange(PROPERTY_QUEUE_ENTRY, oldQueueEntry, queueEntry);
+    }
+
+    public boolean isMonitored() {return this.isMonitored; }
+
+    void setMonitored(boolean monitored) {
+        final boolean oldMonitored = this.isMonitored;
+
+        this.isMonitored = monitored;
+        firePropertyChange(PROPERTY_MONITORED, oldMonitored, monitored);
     }
 
     @Override

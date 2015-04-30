@@ -23,7 +23,7 @@ package org.asteriskjava.manager.event;
  * @author srt
  * @version $Id$
  */
-public class HangupEvent extends AbstractChannelEvent
+public class HangupEvent extends AbstractChannelStateEvent
 {
     /**
      * Serializable version identifier.
@@ -32,12 +32,25 @@ public class HangupEvent extends AbstractChannelEvent
 
     private Integer cause;
     private String causeTxt;
+    private String language;
 
+    private String accountCode;
+    
     public HangupEvent(Object source)
     {
         super(source);
     }
 
+    public String getLanguage()
+    {
+    	return language;
+    }
+    
+    public void setLanguage(String language)
+    {
+    	this.language = language;
+    }       
+    
     /**
      * Returns the cause of the hangup.
      *
@@ -80,4 +93,33 @@ public class HangupEvent extends AbstractChannelEvent
     {
         this.causeTxt = causeTxt;
     }
+
+	public String getAccountCode() 
+	{
+		return accountCode;
+	}
+
+	public void setAccountCode(String accountCode) 
+	{
+		this.accountCode = accountCode;
+	}
+
+
+	@Override
+	public String toString() 
+	{
+		StringBuilder builder = new StringBuilder();
+		builder.append("HangupEvent [cause=");
+		builder.append(cause);
+		builder.append(", causeTxt=");
+		builder.append(causeTxt);
+		builder.append(", accountCode=");
+		builder.append(accountCode);
+		builder.append(", connectedLineNum=");
+		builder.append(connectedLineNum);
+		builder.append(", connectedLineName=");
+		builder.append(connectedLineName);
+		builder.append("]");
+		return builder.toString();
+	}
 }

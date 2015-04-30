@@ -5,3 +5,6 @@ target
 .classpath
 .project
 .settings/*
+.idea
+.gradle
+classes

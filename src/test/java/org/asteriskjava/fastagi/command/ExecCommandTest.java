@@ -16,36 +16,43 @@
  */
 package org.asteriskjava.fastagi.command;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
 
-public class ExecCommandTest extends TestCase
+import org.junit.Test;
+
+public class ExecCommandTest
 {
     private ExecCommand execCommand;
 
+    @Test
     public void testDefault()
     {
         execCommand = new ExecCommand("DIAL");
         assertEquals("EXEC \"DIAL\" \"\"", execCommand.buildCommand());
     }
 
+    @Test
     public void testWithSingleOption()
     {
         execCommand = new ExecCommand("DIAL", "SIP/1234");
         assertEquals("EXEC \"DIAL\" \"SIP/1234\"", execCommand.buildCommand());
     }
 
+    @Test
     public void testWithMultipleOptionsSingleParameterPipeSeparated()
     {
         execCommand = new ExecCommand("DIAL", "SIP/1234|30");
         assertEquals("EXEC \"DIAL\" \"SIP/1234|30\"", execCommand.buildCommand());
     }
 
+    @Test
     public void testWithMultipleOptionsSingleParameterCommaSeparated()
     {
         execCommand = new ExecCommand("DIAL", "SIP/1234,30");
         assertEquals("EXEC \"DIAL\" \"SIP/1234,30\"", execCommand.buildCommand());
     }
 
+    @Test
     public void testWithMultipleOptionsMultipleParameters()
     {
         execCommand = new ExecCommand("DIAL", "SIP/1234", "30");

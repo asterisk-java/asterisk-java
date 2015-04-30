@@ -3,14 +3,14 @@ package org.asteriskjava.manager.event;
 /**
  * AgiExecEvents are triggered when an AGI command is executed. For each command two events are triggered:
  * one before excution ("Start") and one after execution ("End").
- * <p/>
+ * <br>
  * The following sub events are reported:
  * <ul>
  * <li>Start: Execution of an AGI command has started.</li>
  * <li>End:   Execution of an AGI command has finished.</li>
  * </ul>
  * It is implemented in <code>res/res_agi.c</code>.
- * <p/>
+ * <br>
  * Available since Asterisk 1.6
  *
  * @author srt
@@ -40,6 +40,16 @@ public class AgiExecEvent extends ManagerEvent
     private String command;
     private Integer resultCode;
     private String result;
+
+    public String getUniqueId() {
+        return uniqueId;
+    }
+
+    public void setUniqueId(String uniqueId) {
+        this.uniqueId = uniqueId;
+    }
+
+    private String uniqueId;
 
     /**
      * Creates a new AgiExecEvent.

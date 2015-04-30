@@ -17,20 +17,22 @@
 package org.asteriskjava.live;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.Map;
 import java.util.List;
 
 import org.asteriskjava.manager.ManagerConnection;
+import org.asteriskjava.manager.ManagerEventListener;
 import org.asteriskjava.manager.action.OriginateAction;
 import org.asteriskjava.config.ConfigFile;
 
 /**
  * The AsteriskServer is built on top of the
  * {@link org.asteriskjava.manager.ManagerConnection} and is an attempt to
- * simplify interaction with Asterisk by abstracting the interface. <p/> You
+ * simplify interaction with Asterisk by abstracting the interface. <br> You
  * will certainly have less freedom using AsteriskServer but it will make life
  * easier for easy things (like originating a call or getting a list of open
- * channels). <p/> AsteriskServer is still in an early state of development. So,
+ * channels). <br> AsteriskServer is still in an early state of development. So,
  * when using AsteriskServer be aware that it might change in the future.
  * 
  * @author srt
@@ -323,7 +325,7 @@ public interface AsteriskServer
     Collection<AsteriskAgent> getAgents() throws ManagerCommunicationException;
 
     /**
-     * Returns the exact version string of this Asterisk server. <p/> This
+     * Returns the exact version string of this Asterisk server. <br> This
      * typically looks like "Asterisk 1.2.9.1-BRIstuffed-0.3.0-PRE-1q built by
      * root @ pbx0 on a i686 running Linux on 2006-06-20 20:21:30 UTC".
      * 
@@ -336,9 +338,9 @@ public interface AsteriskServer
 
     /**
      * Returns the CVS revision of a given source file of this Asterisk server.
-     * <p/> For example getVersion("app_meetme.c") may return {1, 102} for CVS
-     * revision "1.102". <p/> Note that this feature is not available with
-     * Asterisk 1.0.x. <p/> You can use this feature if you need to write
+     * <br> For example getVersion("app_meetme.c") may return {1, 102} for CVS
+     * revision "1.102". <br> Note that this feature is not available with
+     * Asterisk 1.0.x. <br> You can use this feature if you need to write
      * applications that behave different depending on specific modules being
      * available in a specific version or not.
      * 
@@ -461,7 +463,7 @@ public interface AsteriskServer
     ConfigFile getConfig(String filename) throws ManagerCommunicationException;
 
     /**
-     * Adds a listener to this AsteriskServer.<p/>
+     * Adds a listener to this AsteriskServer.<br>
      * If this server is not yet connected it will be implicitly connected.
      * 
      * @param listener the listener to add.
@@ -478,6 +480,32 @@ public interface AsteriskServer
     void removeAsteriskServerListener(AsteriskServerListener listener);
 
     /**
+	 * The chainListener allows a listener to receive manager events after they
+	 * have been processed by the AsteriskServer. If the AsteriskServer is
+	 * handling messages using the asyncEventHandling then these messages will
+	 * also be async. You would use the chainListener if you are processing raw
+	 * events and using the AJ live ChannelManager. If you don't use the chain
+	 * listener then you can't be certain that a channel name passed in a raw
+	 * event will match the channel name held by the live Channel Manager. By
+	 * chaining events you can be certain that events such as channel Rename
+	 * events have been processed by the live ChannelManager before you receive
+	 * an event and as such the names will always match.
+	 * 
+	 * Whilst name matching is not always critical (as you should be matching by the
+	 * channels unique id) the channel name does also contain state information (Zombie, Masq)
+	 * in these cases it can be critical that you have the same name otherwise your 
+	 * state information will be out of date.
+	 * 
+	 */
+    public void addChainListener(ManagerEventListener chainListener);
+
+    /** 
+     * remove the chain listener.
+     * @param chainListener
+     */
+	public void removeChainListener(ManagerEventListener chainListener);
+
+    /**
      * Closes the connection to this server.
      */
     void shutdown();
@@ -488,4 +516,34 @@ public interface AsteriskServer
 	 * @throws ManagerCommunicationException if login fails
 	 */
 	void initialize() throws ManagerCommunicationException;
+
+    /**
+     * get Asterisk Queue by name
+     * @author itaqua
+     * @param queueName Name of the queue to retrieve
+     * @return
+     */
+	public AsteriskQueue getQueueByName(String queueName);
+
+    /**
+     * List of Queues Objects updated after certain date
+     * @author itaqua
+     * @param date
+     * @return
+     */
+	public List<AsteriskQueue> getQueuesUpdatedAfter(Date date);
+
+	/**
+     * every time we get an event of a queue we reload the information about it from
+	 * the Asterisk Server
+     * @author itaqua
+	 */
+	public void forceQueuesMonitor(boolean force);
+
+    /**
+     * Check if the Queue Information is forced
+     * @author itaqua
+     * @return
+     */
+	public boolean isQueuesMonitorForced();
 }

@@ -20,6 +20,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.asteriskjava.util.MixMonitorDirection;
+
 /**
  * Represents an Asterisk channel.
  * <p>
@@ -61,10 +63,13 @@ public interface AsteriskChannel extends LiveObject
     String PROPERTY_PARKED_AT = "parkedAt";
     String PROPERTY_DTMF_RECEIVED = "dtmfReceived";
     String PROPERTY_DTMF_SENT = "dtmfSent";
+    String PROPERTY_MONITORED = "monitored";
 
     String VARIABLE_MONITOR_EXEC = "MONITOR_EXEC";
     String VARIABLE_MONITOR_EXEC_ARGS = "MONITOR_EXEC_ARGS";
 
+		/** Pseudo-variable to store {@link org.asteriskjava.manager.event.DialEvent#getDialStatus()} */
+		String VAR_AJ_DIAL_STATUS = "AJ_DIAL_STATUS";
     /**
      * Returns the unique id of this channel, for example "1099015093.165".
      * 
@@ -298,6 +303,14 @@ public interface AsteriskChannel extends LiveObject
      * @since 1.0.0
      */
     Character getDtmfSent();
+
+    /**
+     * Return the actual MONITOR state.
+     *
+     * @return the actual Monitor state of this channel.
+     * @since 1.0.1
+     */
+    boolean isMonitored();
 
     /* Actions */
     
@@ -586,7 +599,7 @@ public interface AsteriskChannel extends LiveObject
      * <p>
      * This method is available since Asterisk 1.4.
      * 
-     * @throws ManagerCommunicationException if the unpasue monitor action
+     * @throws ManagerCommunicationException if the unpause monitor action
      *             cannot be sent to Asterisk.
      * @throws NoSuchChannelException if this channel had been hung up before
      *             re-enabling monitoring.
@@ -594,4 +607,41 @@ public interface AsteriskChannel extends LiveObject
      * @since 0.3
      */
     void unpauseMonitoring() throws ManagerCommunicationException, NoSuchChannelException;
+    
+    
+    /**
+     * Temporarily stops monitoring this channel if this is monitored with MixMonitor.
+     * <p>
+     * If the channel exists but is not currently monitored your request is
+     * ignored.
+     * <p>
+     * 
+     * @throws ManagerCommunicationException if the pause monitor action cannot
+     *             be sent to Asterisk.
+     * @throws NoSuchChannelException if this channel had been hung up before
+     *             temporarily stopping monitoring.
+     * @see #unPauseMixMonitor(org.asteriskjava.util.MixMonitorDirection)
+     * @since 1.0.0
+     */
+    void pauseMixMonitor(MixMonitorDirection direction) throws ManagerCommunicationException, NoSuchChannelException;
+    
+    
+    /**
+     * Re-enables monitoring this channel after calling
+     * {@link #pauseMixMonitor(org.asteriskjava.util.MixMonitorDirection)} ()}
+     * if this is monitored with MixMonitor
+     * <p>
+     * If the channel exists but monitoring has not been paused your request is
+     * ignored.
+     * <p>
+     * 
+     * @throws ManagerCommunicationException if the unpause monitor action
+     *             cannot be sent to Asterisk.
+     * @throws NoSuchChannelException if this channel had been hung up before
+     *             re-enabling monitoring.
+     * @see #pauseMixMonitor(org.asteriskjava.util.MixMonitorDirection)
+     * @since 1.0.0
+     */
+    void unPauseMixMonitor(MixMonitorDirection direction) throws ManagerCommunicationException, NoSuchChannelException;
+    
 }

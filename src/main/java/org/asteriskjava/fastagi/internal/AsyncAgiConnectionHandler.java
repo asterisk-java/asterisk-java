@@ -28,7 +28,7 @@ import org.asteriskjava.manager.ManagerConnection;
 
 /**
  * An AgiConnectionHandler for AsyncAGI.
- * <p/>
+ * <br>
  * It reads the request using a AsyncAgiReader and runs the AgiScript configured to
  * handle this type of request. Finally it sends an {@link org.asteriskjava.fastagi.command.AsyncAgiBreakCommand}.
  *

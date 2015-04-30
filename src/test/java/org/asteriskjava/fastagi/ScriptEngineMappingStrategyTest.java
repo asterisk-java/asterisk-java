@@ -1,22 +1,26 @@
 package org.asteriskjava.fastagi;
 
-import junit.framework.TestCase;
 import static org.asteriskjava.fastagi.ScriptEngineMappingStrategy.getExtension;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java.io.File;
 import java.io.IOException;
 
-public class ScriptEngineMappingStrategyTest extends TestCase
+import org.junit.Before;
+import org.junit.Test;
+
+public class ScriptEngineMappingStrategyTest
 {
     private ScriptEngineMappingStrategy scriptEngineMappingStrategy;
 
-    @Override
-    protected void setUp() throws Exception
+    @Before
+    public void setUp() throws Exception
     {
-        super.setUp();
         this.scriptEngineMappingStrategy = new ScriptEngineMappingStrategy();
     }
 
+    @Test
     public void testSearchFile() throws IOException
     {
         assertNull(scriptEngineMappingStrategy.searchFile(null, new String[]{"src", "test", "."}));
@@ -27,12 +31,14 @@ public class ScriptEngineMappingStrategyTest extends TestCase
                 scriptEngineMappingStrategy.searchFile("pom.xml", new String[]{"bla", "src", "."}).getPath());
     }
 
+    @Test
     public void testSearchFileOutsidePath() throws IOException
     {
         // file should not be found for security reasons if it is not below the path
         assertNull(scriptEngineMappingStrategy.searchFile("../pom.xml", new String[]{"src"}));
     }
 
+    @Test
     public void testGetExtension()
     {
         assertEquals("txt", getExtension("hello.txt"));

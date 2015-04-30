@@ -137,7 +137,7 @@ public class ManagerResponse implements Serializable
 
     /**
      * Returns the name of the Asterisk server from which this response has been received.
-     * <p/>
+     * <br>
      * This property is only available when using to AstManProxy.
      *
      * @return the name of the Asterisk server from which this response has been received

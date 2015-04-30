@@ -133,7 +133,7 @@ public class HtmlEventTracer implements ManagerEventListener
             StringBuilder line = new StringBuilder();
 
             line.append("<tr><td>");
-            line.append(getLocalName(event.getClass()));
+            line.append(event.getClass().getSimpleName());
             line.append("<br><font size='-2'>");
             line.append(event.getDateReceived());
             line.append("</font></td>");
@@ -187,7 +187,8 @@ public class HtmlEventTracer implements ManagerEventListener
                     continue;
                 }
 
-                return propertyDescriptor.getReadMethod().invoke(obj).toString();
+	            final Object o = propertyDescriptor.getReadMethod().invoke(obj);
+	            return o != null ? o.toString() : null;
             }
         }
         catch (Exception e)
@@ -197,14 +198,6 @@ public class HtmlEventTracer implements ManagerEventListener
         }
 
         return null;
-    }
-
-    protected String getLocalName(Class<?> c)
-    {
-        String s;
-
-        s = c.getName();
-        return s.substring(s.lastIndexOf(".") + 1, s.length());
     }
 
     protected String getText(String uniqueId, ManagerEvent event)
@@ -248,6 +241,21 @@ public class HtmlEventTracer implements ManagerEventListener
             {
                 format = "%s<br>%s (%s)";
                 properties = new String[]{"channel", "cause", "causeTxt"};
+            }
+            else if (event instanceof AntennaLevelEvent)
+            {
+            	format = "%s";
+                properties = new String[]{"signal"};
+            }
+            else if (event instanceof PausedEvent)
+            {
+            	format = "(%s) %s";
+                properties = new String[]{"header", "extension"};
+            }
+            else if (event instanceof UnpausedEvent)
+            {
+            	format = "(%s) %s";
+                properties = new String[]{"header", "extension"};
             }
         }
 

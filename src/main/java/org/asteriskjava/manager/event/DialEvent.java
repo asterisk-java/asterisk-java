@@ -21,7 +21,7 @@ package org.asteriskjava.manager.event;
  * This event is implemented in <code>apps/app_dial.c</code>.<p>
  * Available since Asterisk 1.2.
  *
- * @author Asteria Solutions Group, Inc. <http://www.asteriasgi.com/>
+ * @author Asteria Solutions Group, Inc. http://www.asteriasgi.com/
  * @version $Id$
  * @since 0.2
  */
@@ -58,6 +58,25 @@ public class DialEvent extends ManagerEvent
     private String destination;
 
     /**
+     * Destination channel state
+     */
+    private Integer destChannelState;
+    private String destChannelStateDesc;
+
+    private String destContext;
+
+    private Integer destPriority;
+
+    private String destExten;
+
+    private String destConnectedLineName;
+    private String destConnectedLineNum;
+
+    private String destCallerIdName;
+    private String destCallerIdNum;
+
+
+    /**
      * The new Caller*ID.
      */
     private String callerIdNum;
@@ -79,7 +98,11 @@ public class DialEvent extends ManagerEvent
 
     private String dialString;
     private String dialStatus;
-
+    
+    private String connectedLineNum;
+    
+    private String connectedLineName;
+    
     public DialEvent(Object source)
     {
         super(source);
@@ -159,6 +182,7 @@ public class DialEvent extends ManagerEvent
     {
         return destination;
     }
+    public String getDestChannel() { return getDestination(); }
 
     /**
      * Sets the name of the destination channel.
@@ -169,11 +193,11 @@ public class DialEvent extends ManagerEvent
     {
         this.destination = destination;
     }
-
+    public void setDestChannel(String destination) { setDestination(destination); }
     /**
      * Returns the the Caller*ID Number.
      *
-     * @return the the Caller*ID Number or "<unknown>" if none has been set.
+     * @return the the Caller*ID Number or "&lt;unknown&gt;" if none has been set.
      * @since 1.0.0
      */
     public String getCallerIdNum()
@@ -189,7 +213,7 @@ public class DialEvent extends ManagerEvent
     /**
      * Returns the Caller*ID.
      *
-     * @return the Caller*ID or "<unknown>" if none has been set.
+     * @return the Caller*ID or "&lt;unknown&gt;" if none has been set.
      * @deprecated as of 1.0.0, use {@link #getCallerIdNum()} instead.
      */
     @Deprecated public String getCallerId()
@@ -210,7 +234,7 @@ public class DialEvent extends ManagerEvent
     /**
      * Returns the Caller*ID Name.
      *
-     * @return the Caller*ID Name or "<unknown>" if none has been set.
+     * @return the Caller*ID Name or "&lt;unknown&gt;" if none has been set.
      */
     public String getCallerIdName()
     {
@@ -342,5 +366,157 @@ public class DialEvent extends ManagerEvent
     public void setDialStatus(String dialStatus)
     {
         this.dialStatus = dialStatus;
+    }
+
+    /**
+     * Returns the Caller*ID number of the channel connected if set.
+     * If the channel has no caller id set "unknown" is returned.
+     *
+     * @since 1.0.0
+     */
+	public String getConnectedLineNum() 
+	{
+		return connectedLineNum;
+	}
+
+	public void setConnectedLineNum(String connectedLineNum) 
+	{
+		this.connectedLineNum = connectedLineNum;
+	}
+
+    /**
+     * Returns the Caller*ID name of the channel connected if set.
+     * If the channel has no caller id set "unknown" is returned.
+     *
+     * @since 1.0.0
+     */
+	public String getConnectedLineName() 
+	{
+		return connectedLineName;
+	}
+
+	public void setConnectedLineName(String connectedLineName) 
+	{
+		this.connectedLineName = connectedLineName;
+	}
+
+	@Override
+	public String toString() 
+	{
+		StringBuilder builder = new StringBuilder();
+		builder.append("DialEvent [subEvent=");
+		builder.append(subEvent);
+		builder.append(", channel=");
+		builder.append(channel);
+		builder.append(", destination=");
+		builder.append(destination);
+		builder.append(", callerIdNum=");
+		builder.append(callerIdNum);
+		builder.append(", callerIdName=");
+		builder.append(callerIdName);
+		builder.append(", uniqueId=");
+		builder.append(uniqueId);
+		builder.append(", destUniqueId=");
+		builder.append(destUniqueId);
+		builder.append(", dialString=");
+		builder.append(dialString);
+		builder.append(", dialStatus=");
+		builder.append(dialStatus);
+		builder.append(", connectedLineNum=");
+		builder.append(connectedLineNum);
+		builder.append(", connectedLineName=");
+		builder.append(connectedLineName);
+		builder.append("]");
+		return builder.toString();
+	}
+
+    public Integer getDestChannelState() 
+	{
+        return destChannelState;
+    }
+
+    public void setDestChannelState(Integer destChannelState) 
+	{
+        this.destChannelState = destChannelState;
+    }
+
+    public String getDestContext() 
+	{
+        return destContext;
+    }
+
+    public void setDestContext(String destContext) 
+	{
+        this.destContext = destContext;
+    }
+
+    public Integer getDestPriority() 
+	{
+        return destPriority;
+    }
+
+    public void setDestPriority(Integer destPriority) 
+	{
+        this.destPriority = destPriority;
+    }
+
+    public String getDestChannelStateDesc() 
+	{
+        return destChannelStateDesc;
+    }
+
+    public void setDestChannelStateDesc(String destChannelStateDesc) 
+	{
+        this.destChannelStateDesc = destChannelStateDesc;
+    }
+
+    public String getDestExten() 
+	{
+        return destExten;
+    }
+
+    public void setDestExten(String destExten) 
+	{
+        this.destExten = destExten;
+    }
+
+    public String getDestConnectedLineName() 
+	{
+        return destConnectedLineName;
+    }
+
+    public void setDestConnectedLineName(String destConnectedLineName) 
+	{
+        this.destConnectedLineName = destConnectedLineName;
+    }
+
+    public String getDestConnectedLineNum() 
+	{
+        return destConnectedLineNum;
+    }
+
+    public void setDestConnectedLineNum(String destConnectedLineNum) 
+	{
+        this.destConnectedLineNum = destConnectedLineNum;
+    }
+
+    public String getDestCallerIdName() 
+	{
+        return destCallerIdName;
+    }
+
+    public void setDestCallerIdName(String destCallerIdName) 
+	{
+        this.destCallerIdName = destCallerIdName;
+    }
+
+    public String getDestCallerIdNum() 
+	{
+        return destCallerIdNum;
+    }
+
+    public void setDestCallerIdNum(String destCallerIdNum) 
+	{
+        this.destCallerIdNum = destCallerIdNum;
     }
 }

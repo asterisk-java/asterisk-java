@@ -65,9 +65,9 @@ public class ZapShowChannelsEvent extends ResponseEvent
      * Returns the signalling of this zap channel.<p>
      * Possible values are:
      * <ul>
-     * <li>E & M Immediate</li>
-     * <li>E & M Wink</li>
-     * <li>E & M E1</li>
+     * <li>E &amp; M Immediate</li>
+     * <li>E &amp; M Wink</li>
+     * <li>E &amp; M E1</li>
      * <li>Feature Group D (DTMF)</li>
      * <li>Feature Group D (MF)</li>
      * <li>Feature Group B (MF)</li>

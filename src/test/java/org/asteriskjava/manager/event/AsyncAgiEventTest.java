@@ -1,11 +1,14 @@
 package org.asteriskjava.manager.event;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
-public class AsyncAgiEventTest extends TestCase
+import org.junit.Test;
+
+public class AsyncAgiEventTest
 {
+    @Test
     public void testDecodeEnv()
     {
         AsyncAgiEvent event = new AsyncAgiEvent(this);
@@ -37,6 +40,7 @@ public class AsyncAgiEventTest extends TestCase
         assertEquals("agi_threadid: -1231783024", env.get(19));
     }
 
+    @Test
     public void testDecodeEnvWithMoreThanTwoDelimiters()
     {
         AsyncAgiEvent event = new AsyncAgiEvent(this);

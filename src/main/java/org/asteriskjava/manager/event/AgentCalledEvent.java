@@ -20,10 +20,10 @@ import java.util.Map;
 
 /**
  * An AgentCalledEvent is triggered when an agent is rung.
- * <p/>
+ * <br>
  * To enable AgentCalledEvents you have to set
  * <code>eventwhencalled = yes</code> in <code>queues.conf</code>.
- * <p/>
+ * <br>
  * This event is implemented in <code>apps/app_queue.c</code>
  *
  * @author srt
@@ -40,12 +40,8 @@ public class AgentCalledEvent extends ManagerEvent
     private String agentName;
     private String channelCalling;
     private String destinationChannel;
-    private String callerIdNum;
-    private String callerIdName;
-    private String context;
-    private String extension;
-    private String priority;
     private String uniqueId;
+
     private Map<String, String> variables;
 
     /**
@@ -187,16 +183,8 @@ public class AgentCalledEvent extends ManagerEvent
         this.callerIdNum = callerId;
     }
 
-    /**
-     * Returns the Caller ID name of the caller's channel.
-     *
-     * @return the Caller ID name of the caller's channel or "unknown" if none has been set.
-     * @since 0.2
-     */
-    public String getCallerIdName()
-    {
-        return callerIdName;
-    }
+
+    public String getCallerIdName() { return callerIdName; }
 
     /**
      * Sets the Caller ID name of the caller's channel.
@@ -221,22 +209,12 @@ public class AgentCalledEvent extends ManagerEvent
 
     public String getExtension()
     {
-        return extension;
+        return exten;
     }
 
     public void setExtension(String extension)
     {
-        this.extension = extension;
-    }
-
-    public String getPriority()
-    {
-        return priority;
-    }
-
-    public void setPriority(String priority)
-    {
-        this.priority = priority;
+        this.exten = extension;
     }
 
     /**
@@ -281,4 +259,19 @@ public class AgentCalledEvent extends ManagerEvent
     {
         this.variables = variables;
     }
+
+    /**
+     * Returns the Caller*ID name of the channel connected if set.
+     * If the channel has no caller id set "unknown" is returned.
+     *
+     * @since 1.0.0
+     */
+
+    /**
+     * Returns the Caller*ID number of the channel connected if set.
+     * If the channel has no caller id set "unknown" is returned.
+     *
+     * @since 1.0.0
+     */
+
 }

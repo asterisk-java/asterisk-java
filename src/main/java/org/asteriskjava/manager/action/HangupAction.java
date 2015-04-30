@@ -56,7 +56,7 @@ public class HangupAction extends AbstractManagerAction
      * Creates a new HangupAction that hangs up the given channel with the given cause code.
      *
      * @param channel the name of the channel to hangup.
-     * @param cause   the cause code. The cause code must be >= 0 and <= 127.
+     * @param cause   the cause code. The cause code must be &gt;= 0 and &lt;= 127.
      * @since 1.0.0
      */
     public HangupAction(String channel, int cause)
@@ -107,7 +107,7 @@ public class HangupAction extends AbstractManagerAction
     }
 
     /**
-     * Sets the hangup cause. The cause code must be >= 0 and <= 127.<p>
+     * Sets the hangup cause. The cause code must be &gt;= 0 and &lt;= 127.<p>
      * This property is optional.
      *
      * @param cause the hangup cause.
