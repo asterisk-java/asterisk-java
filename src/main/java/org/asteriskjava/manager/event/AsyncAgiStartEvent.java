@@ -5,5 +5,14 @@ package org.asteriskjava.manager.event;
  */
 public class AsyncAgiStartEvent extends AsyncAgiEvent
 {
-    public AsyncAgiStartEvent(Object source) {  super(source); setSubEvent(SUB_EVENT_START); }
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public AsyncAgiStartEvent(Object source)
+	{
+		super(source);
+		setSubEvent(SUB_EVENT_START);
+	}
 }
