@@ -17,6 +17,7 @@
 package org.asteriskjava.live;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.Map;
 import java.util.List;
 
@@ -488,4 +489,34 @@ public interface AsteriskServer
 	 * @throws ManagerCommunicationException if login fails
 	 */
 	void initialize() throws ManagerCommunicationException;
+
+    /**
+     * get Asterisk Queue by name
+     * @author itaqua
+     * @param queueName Name of the queue to retrieve
+     * @return
+     */
+	public AsteriskQueue getQueueByName(String queueName);
+
+    /**
+     * List of Queues Objects updated after certain date
+     * @author itaqua
+     * @param date
+     * @return
+     */
+	public List<AsteriskQueue> getQueuesUpdatedAfter(Date date);
+
+	/**
+     * every time we get an event of a queue we reload the information about it from
+	 * the Asterisk Server
+     * @author itaqua
+	 */
+	public void forceQueuesMonitor(boolean force);
+
+    /**
+     * Check if the Queue Information is forced
+     * @author itaqua
+     * @return
+     */
+	public boolean isQueuesMonitorForced();
 }

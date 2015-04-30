@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.asteriskjava.live.AsteriskQueue;
 import org.asteriskjava.live.AsteriskQueueEntry;
 import org.asteriskjava.live.AsteriskQueueListener;
@@ -65,6 +66,16 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
     private Integer max;
     private String strategy;
     private Integer serviceLevel;
+
+    /** 101118 Octavio Luna Agregado para Ver cambios en Vivo **/
+    private Integer calls;
+    private Integer holdTime;
+    private Integer talkTime;
+    private Integer completed;
+    private Integer abandoned;
+    private Double serviceLevelPerf;
+    /****/
+
     private Integer weight;
     private final ArrayList<AsteriskQueueEntryImpl> entries;
     private final Timer timer;
@@ -73,7 +84,9 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
     private final HashMap<AsteriskQueueEntry, ServiceLevelTimerTask> serviceLevelTimerTasks;
 
     AsteriskQueueImpl(AsteriskServerImpl server, String name, Integer max,
-                      String strategy, Integer serviceLevel, Integer weight)
+                      String strategy, Integer serviceLevel, Integer weight,
+                      Integer calls, Integer holdTime, Integer talkTime,
+                      Integer completed, Integer abandoned, Double serviceLevelPerf)
     {
         super(server);
         this.name = name;
@@ -86,6 +99,14 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
         members = new HashMap<String, AsteriskQueueMemberImpl>();
         timer = new Timer("ServiceLevelTimer-" + name, true);
         serviceLevelTimerTasks = new HashMap<AsteriskQueueEntry, ServiceLevelTimerTask>();
+        this.calls = calls;
+        this.holdTime = holdTime;
+        this.talkTime = talkTime;
+        this.completed = completed;
+        this.abandoned = abandoned;
+        this.serviceLevelPerf = serviceLevelPerf;
+
+        stampLastUpdate();
     }
 
     void cancelServiceLevelTimer()
@@ -108,9 +129,19 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
         return strategy;
     }
 
-    void setMax(Integer max)
+    /**
+     *
+     * @param max
+     * @return true if value updated, false otherwise
+     */
+    boolean setMax(Integer max)
     {
-        this.max = max;
+    	if(!ObjectUtils.equals(this.max, max)){
+    		this.max = max;
+			stampLastUpdate();
+			return true;
+		}
+    	return false;
     }
 
     public Integer getServiceLevel()
@@ -118,19 +149,160 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
         return serviceLevel;
     }
 
-    void setServiceLevel(Integer serviceLevel)
+    /**
+     *
+     * @param serviceLevel
+     * @return
+     */
+    boolean setServiceLevel(Integer serviceLevel)
     {
-        this.serviceLevel = serviceLevel;
+    	if(!ObjectUtils.equals(this.serviceLevel, serviceLevel)){
+    		this.serviceLevel = serviceLevel;
+			stampLastUpdate();
+			return true;
+		}
+    	return false;
+
     }
+
+    @Override
+	public Integer getCalls() {
+		return calls;
+	}
+
+    /**
+     *
+     * @param calls
+     * @return  true if value updated, false otherwise
+     */
+    boolean setCalls(Integer calls) {
+    	if(!ObjectUtils.equals(this.calls, calls)){
+    		this.calls = calls;
+			stampLastUpdate();
+			return true;
+		}
+    	return false;
+	}
+
+    @Override
+    public Integer getWaiting() {
+    	return calls;
+    }
+
+    @Override
+	public Integer getHoldTime() {
+		return holdTime;
+	}
+
+    /**
+     *
+     * @param holdTime
+     * @return true if value updated, false otherwise
+     */
+    boolean setHoldTime(Integer holdTime) {
+    	if(!ObjectUtils.equals(this.holdTime, holdTime)){
+    		this.holdTime = holdTime;
+			stampLastUpdate();
+			return true;
+		}
+    	return false;
+	}
+
+    @Override
+	public Integer getTalkTime() {
+		return talkTime;
+	}
+
+    /**
+     *
+     * @param talkTime
+     * @return true if value updated, false otherwise
+     */
+    boolean setTalkTime(Integer talkTime) {
+    	if(!ObjectUtils.equals(this.talkTime, talkTime)){
+    		this.talkTime = talkTime;
+			stampLastUpdate();
+			return true;
+		}
+    	return false;
+	}
+
+    @Override
+	public Integer getCompleted() {
+		return completed;
+	}
+
+    /**
+     *
+     * @param completed
+     * @return  true if value updated, false otherwise
+     */
+    boolean setCompleted(Integer completed) {
+    	if(!ObjectUtils.equals(this.completed, completed)){
+    		this.completed = completed;
+			stampLastUpdate();
+			return true;
+		}
+    	return false;
+	}
+
+    @Override
+	public Integer getAbandoned() {
+		return abandoned;
+	}
+
+    /**
+     *
+     * @param abandoned
+     * @return true if value updated, false otherwise
+     */
+	boolean setAbandoned(Integer abandoned) {
+		if(!ObjectUtils.equals(this.abandoned, abandoned)){
+			this.abandoned = abandoned;
+			stampLastUpdate();
+			return true;
+		}
+
+		return false;
+	}
+
+	@Override
+	public Double getServiceLevelPerf() {
+		return serviceLevelPerf;
+	}
+
+	/**
+	 *
+	 * @param serviceLevelPerf
+	 * @return true if value updated, false otherwise
+	 */
+	boolean setServiceLevelPerf(Double serviceLevelPerf) {
+		if(!ObjectUtils.equals(this.serviceLevelPerf, serviceLevelPerf)){
+			this.serviceLevelPerf = serviceLevelPerf;
+			stampLastUpdate();
+			return true;
+		}
+		return false;
+	}
 
     public Integer getWeight()
     {
         return weight;
     }
 
-    void setWeight(Integer weight)
+    /**
+     *
+     * @param weight
+     * @return true if value updated, false otherwise
+     */
+    boolean setWeight(Integer weight)
     {
-        this.weight = weight;
+    	if(!ObjectUtils.equals(this.weight, weight)){
+    		this.weight = weight;
+			stampLastUpdate();
+			return true;
+		}
+    	return false;
     }
 
     public List<AsteriskQueueEntry> getEntries()
@@ -267,6 +439,13 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
         sb.append("strategy='").append(getStrategy()).append("',");
         sb.append("serviceLevel='").append(getServiceLevel()).append("',");
         sb.append("weight='").append(getWeight()).append("',");
+        sb.append("calls='").append(getCalls()).append("',");
+        sb.append("holdTime='").append(getHoldTime()).append("',");
+        sb.append("talkTime='").append(getTalkTime()).append("',");
+        sb.append("completed='").append(getCompleted()).append("',");
+        sb.append("abandoned='").append(getAbandoned()).append("',");
+        sb.append("serviceLevelPerf='").append(getServiceLevelPerf()).append("',");
+
         synchronized (entries)
         {
             sb.append("entries='").append(entries.toString()).append("',");
@@ -443,7 +622,7 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
             logger.info("Adding new member to the queue " + getName() + ": " + member.toString());
             members.put(member.getLocation(), member);
         }
-        
+
         fireMemberAdded(member);
     }
 
@@ -531,7 +710,7 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
                     + member.toString());
             members.remove(member.getLocation());
         }
-        
+
         fireMemberRemoved(member);
     }
 
@@ -578,4 +757,5 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
         }
         return foundEntry;
     }
+
 }

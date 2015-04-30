@@ -17,6 +17,7 @@
 package org.asteriskjava.live;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.Map;
 import java.util.List;
 
@@ -313,4 +314,23 @@ public class DefaultAsteriskServer implements AsteriskServer
     {
         return impl.getAgents();
     }
+
+	public AsteriskQueue getQueueByName(String queueName) {
+		return impl.getQueueByName(queueName);
+	}
+
+	@Override
+	public List<AsteriskQueue> getQueuesUpdatedAfter(Date date) {
+		return impl.getQueuesUpdatedAfter(date);
+	}
+
+	@Override
+	public void forceQueuesMonitor(boolean force) {
+		impl.forceQueuesMonitor(force);
+	}
+
+	@Override
+	public boolean isQueuesMonitorForced() {
+		return impl.isQueuesMonitorForced();
+	}
 }

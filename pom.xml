@@ -35,10 +35,17 @@
         </developer>
         <developer>
             <name>S. Brett Sutton</name>
-            <id>martins</id>
+            <id>bsutton</id>
             <email>bsutton at noojee.com.au</email>
             <organization>Noojee Telephony Solutions Pty Ltd</organization>
-            <timezone>-5</timezone>
+            <timezone>+10</timezone>
+        </developer>
+        <developer>
+            <name>Octavio Luna</name>
+            <id>itaqua</id>
+            <email>octavio.luna at gmail.com</email>
+            <organization>N4Utilus Take your Business to the Cloud</organization>
+            <timezone>-6</timezone>
         </developer>
     </developers>
     <scm>
@@ -211,6 +218,12 @@
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
             <version>1.2.17</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.1</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
