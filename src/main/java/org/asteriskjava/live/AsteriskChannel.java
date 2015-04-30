@@ -621,7 +621,7 @@ public interface AsteriskChannel extends LiveObject
      * @see #unPauseMixMonitor(org.asteriskjava.util.MixMonitorDirection)
      * @since 1.0.0
      */
-    void pauseMixMonitor(MixMonitorDirection direction) throws ManagerCommunicationException, NoSuchChannelException;
+    void muteMixMonitor(MixMonitorDirection direction) throws ManagerCommunicationException, NoSuchChannelException;
     
     
     /**
@@ -640,6 +640,6 @@ public interface AsteriskChannel extends LiveObject
      * @see #pauseMixMonitor(org.asteriskjava.util.MixMonitorDirection)
      * @since 1.0.0
      */
-    void unPauseMixMonitor(MixMonitorDirection direction) throws ManagerCommunicationException, NoSuchChannelException;
+    void unMuteMixMonitor(MixMonitorDirection direction) throws ManagerCommunicationException, NoSuchChannelException;
     
 }

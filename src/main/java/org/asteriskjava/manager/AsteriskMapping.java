@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 
 /**
  * Customized the mapping to Asterisk. In general the mapping is done implicitly based
- * on reflection but there are certain action that are using headers with specical
+ * on reflection but there are certain action that are using headers with special
  * characters that can not be represented in Java. In those cases you can annotate
  * the property (getter, setter or field) and provide the header name that Asterisk expects.
  *
