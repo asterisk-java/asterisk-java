@@ -19,7 +19,7 @@ package org.asteriskjava.live;
 import org.asteriskjava.manager.event.QueueMemberEvent;
 
 /**
- * Represents the status of a Queue memeber.
+ * Represents the status of a Queue member.
  *
  * <br>
  * Valid status codes are:
@@ -36,9 +36,16 @@ import org.asteriskjava.manager.event.QueueMemberEvent;
  * <dd>?</dd>
  * <dt>AST_DEVICE_UNAVAILABLE (5)</dt>
  * <dd>?</dd>
+ * <dt>AST_DEVICE_RINGING (6)</dt>
+ * <dd>?</dd>
+ * <dt>AST_DEVICE_RINGINUSE (7)</dt>
+ * <dd>?</dd>
+ * <dt>AST_DEVICE_ONHOLD (8)</dt>
+ * <dd>?</dd>
  * </dl>
  *
- * @author Patrick Breucking
+ * @author <a href="mailto:patrick.breucking{@nospam}gonicus.de">Patrick Breucking</a>
+ * @author itaqua
  * @version $Id$
  * @since 0.3.1
  * @see org.asteriskjava.manager.event.QueueMemberEvent
@@ -62,9 +69,27 @@ public enum QueueMemberState
     DEVICE_INVALID(QueueMemberEvent.AST_DEVICE_INVALID),
 
     /**
-     * Device is not availible for call, eg. Agent is logged off.
+     * Device is not available for call, eg. Agent is logged off.
      */
-    DEVICE_UNAVAILABLE(QueueMemberEvent.AST_DEVICE_UNAVAILABLE);
+    DEVICE_UNAVAILABLE(QueueMemberEvent.AST_DEVICE_UNAVAILABLE),
+
+    /**
+     * Device is ringing.
+     */
+    DEVICE_RINGING(QueueMemberEvent.AST_DEVICE_RINGING),
+
+    /**
+     * Device is ringing *and* in use.
+     */
+    DEVICE_RINGINUSE(QueueMemberEvent.AST_DEVICE_RINGINUSE),
+
+    /**
+     * Device is on hold
+     */
+    DEVICE_ONHOLD(QueueMemberEvent.AST_DEVICE_ONHOLD);
+
+
+
 
     private final int status;
 

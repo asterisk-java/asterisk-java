@@ -45,9 +45,10 @@ public class AsteriskQueueMemberImplTest
         server = new AsteriskServerImpl();
         // ChannelManager channelManager = new ChannelManager(server);
         // qManager = new QueueManager(server, channelManager);
-        queue = new AsteriskQueueImpl(server, "test", 25, "RoundRobin", 15, 5);
+        queue = new AsteriskQueueImpl(server, "test", 25, "RoundRobin", 15, 5,
+                0, 0, 1, 1, 1, 1.0);
         queueMember = new AsteriskQueueMemberImpl(server, queue, "Agent/777", QueueMemberState.DEVICE_UNKNOWN, false, 10,
-                "dynamic");
+                "dynamic", 3, 6000l);
 
         numberOfChanges = 0;
     }

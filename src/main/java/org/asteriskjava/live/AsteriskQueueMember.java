@@ -26,7 +26,8 @@ package org.asteriskjava.live;
  * <li>penalty (since Asterisk 1.6)</li>
  * </ul>
  *
- * @author Patrick Breucking
+ * @author <a href="mailto:patrick.breucking{@nospam}gonicus.de">Patrick Breucking</a>
+ * @author itaqua
  * @version $Id$
  * @since 0.3.1
  */
@@ -35,6 +36,8 @@ public interface AsteriskQueueMember extends LiveObject
     String PROPERTY_STATE = "state";
     String PROPERTY_PENALTY = "penalty";
     String PROPERTY_PAUSED = "paused";
+    String PROPERTY_CALLSTAKEN = "callsTaken";
+    String PROPERTY_LASTCALL = "lastCall";
 
     /**
      * Returns the location of this member.
@@ -143,4 +146,18 @@ public interface AsteriskQueueMember extends LiveObject
      * @since 1.0.0
      */
     void setPenalty(int penalty) throws IllegalArgumentException, ManagerCommunicationException, InvalidPenaltyException;
+
+    /**
+     * get the timestamp when the last call was terminated
+     * @author itaqua
+     * @return
+     */
+	public abstract Long getLastCall();
+
+    /**
+     * total calls taken
+     * @author itaqua
+     * @return
+     */
+	public abstract Integer getCallsTaken();
 }

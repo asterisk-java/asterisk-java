@@ -72,4 +72,10 @@ public interface LiveObject
      * @param listener listener to remove
      */
     void removePropertyChangeListener(String propertyName, PropertyChangeListener listener);
+
+    /**
+     * Timestamp of last update of the Object
+     * @return
+     */
+    long getLastUpdateMillis();
 }
