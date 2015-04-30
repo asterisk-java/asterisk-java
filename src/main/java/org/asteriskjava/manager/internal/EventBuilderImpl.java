@@ -274,7 +274,8 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
         logger.debug("Registered event type '" + eventType + "' (" + clazz + ")");
     }
 
-    public ManagerEvent buildEvent(Object source, Map<String, Object> attributes)
+    @SuppressWarnings("unchecked")
+	public ManagerEvent buildEvent(Object source, Map<String, Object> attributes)
     {
         ManagerEvent event;
         String eventType = null;
@@ -289,7 +290,7 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
 
         if (attributes.get("event") instanceof List ) 
 		{
-            List eventNames = (List) attributes.get( "event" );
+            List<?> eventNames = (List<?>) attributes.get( "event" );
             if (eventNames.size() > 0 && "PeerEntry".equals(eventNames.get(0))) 
 			{
                 // List of PeerEntry events was received (AJ-329)
@@ -316,7 +317,7 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
                         }
                         if (value instanceof List) 
 						{
-                            peerAttrs.put(key, ((List) value).get(i));
+                            peerAttrs.put(key, ((List<?>) value).get(i));
                         } 
 						else if (value instanceof String && !"listitems".equals(key)) 
 						{
@@ -391,6 +392,7 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
         if (attributes.get("peersAttributes") != null && attributes.get( "peersAttributes" ) instanceof List) {
             // Fill Peers event with list of PeerEntry events (AJ-329)
             PeersEvent peersEvent = (PeersEvent) event;
+            // TODO: This cast is very ugly, we should review how attributes are being passed around. 
             for( Map<String, Object> peerAttrs : (List<Map<String, Object>>) attributes.get("peersAttributes")) {
                 PeerEntryEvent peerEntryEvent = new PeerEntryEvent( source );
                 setAttributes(peerEntryEvent, peerAttrs, ignoredAttributes);
