@@ -82,6 +82,8 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     private static final Pattern VERSION_PATTERN_1_8 = Pattern.compile("^\\s*Asterisk (SVN-branch-)?1\\.8[-. ].*");
     private static final Pattern VERSION_PATTERN_10  = Pattern.compile("^\\s*Asterisk (SVN-branch-)?10[-. ].*");
     private static final Pattern VERSION_PATTERN_11  = Pattern.compile("^\\s*Asterisk (SVN-branch-)?11[-. ].*");
+    private static final Pattern VERSION_PATTERN_12  = Pattern.compile("^\\s*Asterisk (SVN-branch-)?12[-. ].*");
+    private static final Pattern VERSION_PATTERN_13  = Pattern.compile("^\\s*Asterisk (SVN-branch-)?13[-. ].*");
 
     private static final AtomicLong idCounter = new AtomicLong(0);
 
@@ -672,6 +674,14 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                             else if (VERSION_PATTERN_11.matcher(coreLine).matches())
                             {
                                 return AsteriskVersion.ASTERISK_11;
+                            }
+                            else if (VERSION_PATTERN_12.matcher(coreLine).matches())
+                            {
+                                return AsteriskVersion.ASTERISK_12;
+                            }
+                            else if (VERSION_PATTERN_13.matcher(coreLine).matches())
+                            {
+                                return AsteriskVersion.ASTERISK_13;
                             }
                         }
                     }
@@ -1312,6 +1322,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                 && !"Asterisk Call Manager/1.1".equals(identifier) // Asterisk 1.6
                 && !"Asterisk Call Manager/1.2".equals(identifier) // bri stuffed
                 && !"Asterisk Call Manager/1.3".equals(identifier) // Asterisk 11
+                && !"Asterisk Call Manager/2.6.0".equals(identifier) // Asterisk 13
                 && !"OpenPBX Call Manager/1.0".equals(identifier)
                 && !"CallWeaver Call Manager/1.0".equals(identifier)
                 && !(identifier != null && identifier.startsWith("Asterisk Call Manager Proxy/")))
