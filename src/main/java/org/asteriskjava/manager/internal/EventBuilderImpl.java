@@ -264,29 +264,39 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
             return null;
         }
 
-        if (attributes.get("event") instanceof List ) {
+        if (attributes.get("event") instanceof List ) 
+		{
             List eventNames = (List) attributes.get( "event" );
-            if (eventNames.size() > 0 && "PeerEntry".equals(eventNames.get(0))) {
+            if (eventNames.size() > 0 && "PeerEntry".equals(eventNames.get(0))) 
+			{
                 // List of PeerEntry events was received (AJ-329)
                 // Convert map of lists to list of maps - one map for each PeerEntry event
                 int peersAmount = attributes.get("listitems") != null ?
                     Integer.valueOf((String) attributes.get("listitems")) :
                         eventNames.size() - 1; // Last event is PeerlistComplete
                 List<Map<String, Object>> peersAttributes = new ArrayList<Map<String, Object>>();
-                for (Map.Entry<String, Object> attribute : attributes.entrySet()) {
+                for (Map.Entry<String, Object> attribute : attributes.entrySet()) 
+				{
                     String key = attribute.getKey();
                     Object value = attribute.getValue();
-                    for (int i = 0; i < peersAmount; i++) {
+                    for (int i = 0; i < peersAmount; i++) 
+					{
                         Map<String, Object> peerAttrs;
-                        if (peersAttributes.size() > i) {
+                        if (peersAttributes.size() > i) 
+						{
                             peerAttrs = peersAttributes.get(i);
-                        } else {
+                        } 
+						else 
+						{
                             peerAttrs = new HashMap<String, Object>();
                             peersAttributes.add(i, peerAttrs);
                         }
-                        if (value instanceof List) {
+                        if (value instanceof List) 
+						{
                             peerAttrs.put(key, ((List) value).get(i));
-                        } else if (value instanceof String && !"listitems".equals(key)) {
+                        } 
+						else if (value instanceof String && !"listitems".equals(key)) 
+						{
                             peerAttrs.put(key, value);
                         }
                     }
@@ -294,8 +304,11 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
                 attributes.put("peersAttributes", peersAttributes);
                 eventType = "peers";
             }
-        } else {
-            if (!(attributes.get("event") instanceof String)) {
+        } 
+		else 
+		{
+            if (!(attributes.get("event") instanceof String)) 
+			{
                 logger.error("Event type is not a String or List");
                 return null;
             }
@@ -359,14 +372,17 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
                 PeerEntryEvent peerEntryEvent = new PeerEntryEvent( source );
                 setAttributes(peerEntryEvent, peerAttrs, ignoredAttributes);
                 List<PeerEntryEvent> peerEntryEvents = peersEvent.getChildEvents();
-                if (peerEntryEvents == null) {
+                if (peerEntryEvents == null) 
+				{
                     peerEntryEvents = new ArrayList<PeerEntryEvent>();
                     peersEvent.setChildEvents(peerEntryEvents);
                 }
                 peerEntryEvents.add(peerEntryEvent);
             }
             peersEvent.setActionId((peersEvent.getChildEvents().get(0).getActionId()));
-        } else {
+        } 
+		else 
+		{
             setAttributes(event, attributes, ignoredAttributes);
         }
 
