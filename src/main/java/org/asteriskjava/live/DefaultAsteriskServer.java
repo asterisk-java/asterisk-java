@@ -303,6 +303,11 @@ public class DefaultAsteriskServer implements AsteriskServer
     {
         impl.removeAsteriskServerListener(listener);
     }
+    
+    public boolean isAsteriskServerListening(AsteriskServerListener listener)
+    {
+    	return impl.isAsteriskServerListening(listener);
+    }
 
     public void shutdown()
     {
