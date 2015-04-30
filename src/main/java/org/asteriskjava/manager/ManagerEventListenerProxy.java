@@ -1,10 +1,13 @@
 package org.asteriskjava.manager;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 import org.asteriskjava.manager.event.ManagerEvent;
 import org.asteriskjava.util.DaemonThreadFactory;
+
+import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Proxies a ManagerEventListener and dispatches events asynchronously by using
@@ -26,62 +29,46 @@ import org.asteriskjava.util.DaemonThreadFactory;
  * </pre>
  * 
  * @author srt
+ * @author fink
  * @since 0.3
- * @version $Id$
  */
-public class ManagerEventListenerProxy implements ManagerEventListener
-{
-    private final ExecutorService executor;
-    private ManagerEventListener target;
+public class ManagerEventListenerProxy implements ManagerEventListener {
+		private final ThreadPoolExecutor executor;
+    private final ManagerEventListener target;
 
-    /**
-     * Creates a new ManagerEventListenerProxy.<p>
-     * You must set the target by calling {@link #setTarget(ManagerEventListener)}.
-     */
-    public ManagerEventListenerProxy()
-    {
-        this.executor = Executors.newSingleThreadExecutor(new DaemonThreadFactory());
-    }
 
     /**
      * Creates a new ManagerEventListenerProxy that notifies the given target
      * asynchronously when new events are received.
      * 
      * @param target the target listener to invoke.
+     * @see Executors#newSingleThreadExecutor(ThreadFactory)
      */
-    public ManagerEventListenerProxy(ManagerEventListener target)
-    {
-        this();
-        this.target = target;
-    }
+    public ManagerEventListenerProxy(ManagerEventListener target) {
+	    executor = new ThreadPoolExecutor(1, 1, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>(), new DaemonThreadFactory());
+	    this.target = target;
+	    if (target == null) {
+		    throw new NullPointerException("ManagerEventListener target is null!");
+	    }
+    }//new
 
-    /**
-     * Sets the target listener that is notified asynchronously when new events
-     * are received.
-     * c
-     * @param target the target listener to invoke.
-     */
-    public synchronized void setTarget(ManagerEventListener target)
-    {
-        this.target = target;
-    }
 
-    public synchronized void onManagerEvent(final ManagerEvent event)
-    {
-        if (target != null)
-        {
-            executor.execute(new Runnable()
-            {
-                public void run()
-                {
-                    target.onManagerEvent(event);
-                }
-            });
-        }
-    }
-    
+    @Override public void onManagerEvent(final ManagerEvent event) {
+			executor.execute(new Runnable() {
+					@Override public void run() {
+							target.onManagerEvent(event);
+					}
+			});
+    }//onManagerEvent
+
+
     public void shutdown() {
-        
         executor.shutdown();
     }
+
+		public static class Access {
+			public static int getThreadQueueSize (ManagerEventListenerProxy proxy) {
+				return proxy.executor.getQueue().size();
+			}
+		}//Access
 }

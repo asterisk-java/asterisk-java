@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.List;
 
 import org.asteriskjava.manager.ManagerConnection;
+import org.asteriskjava.manager.ManagerEventListener;
 import org.asteriskjava.manager.action.OriginateAction;
 import org.asteriskjava.config.ConfigFile;
 
@@ -477,6 +478,32 @@ public interface AsteriskServer
      * @param listener the listener to remove.
      */
     void removeAsteriskServerListener(AsteriskServerListener listener);
+
+    /**
+	 * The chainListener allows a listener to receive manager events after they
+	 * have been processed by the AsteriskServer. If the AsteriskServer is
+	 * handling messages using the asyncEventHandling then these messages will
+	 * also be async. You would use the chainListener if you are processing raw
+	 * events and using the AJ live ChannelManager. If you don't use the chain
+	 * listener then you can't be certain that a channel name passed in a raw
+	 * event will match the channel name held by the live Channel Manager. By
+	 * chaining events you can be certain that events such as channel Rename
+	 * events have been processed by the live ChannelManager before you receive
+	 * an event and as such the names will always match.
+	 * 
+	 * Whilst name matching is not always critical (as you should be matching by the
+	 * channels unique id) the channel name does also contain state information (Zombie, Masq)
+	 * in these cases it can be critical that you have the same name otherwise your 
+	 * state information will be out of date.
+	 * 
+	 */
+    public void addChainListener(ManagerEventListener chainListener);
+
+    /** 
+     * remove the chain listener.
+     * @param chainListener
+     */
+	public void removeChainListener(ManagerEventListener chainListener);
 
     /**
      * Closes the connection to this server.

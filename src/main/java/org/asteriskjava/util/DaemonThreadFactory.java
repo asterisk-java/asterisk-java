@@ -20,16 +20,13 @@ public class DaemonThreadFactory implements ThreadFactory
     /**
      * Creates a new instance.
      */
-    public DaemonThreadFactory()
-    {
-        namePrefix = "Asterisk-Java DaemonPool-" + poolNumber.getAndIncrement() + "-thread-";
-    }
+    public DaemonThreadFactory() {
+        namePrefix = "AJ DaemonPool-"+ poolNumber.getAndIncrement() +'.';
+    }//new
 
-    public Thread newThread(Runnable r)
-    {
-        final Thread thread;
 
-        thread = new Thread(r);
+    @Override public Thread newThread (Runnable r) {
+		    final Thread thread = new Thread(r);
         thread.setDaemon(true);
         thread.setName(namePrefix + threadNumber.getAndIncrement());
 
