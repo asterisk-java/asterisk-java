@@ -7,3 +7,4 @@ target
 .settings/*
 .idea
 classes
+/bin/
