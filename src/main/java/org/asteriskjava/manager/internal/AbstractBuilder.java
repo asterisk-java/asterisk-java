@@ -48,6 +48,10 @@ abstract class AbstractBuilder
             if ("source".equals(setterName))
             {
                 setterName = "src";
+            } 
+            else if ("class".equals(setterName))
+            {
+            	setterName = "clazz";
             }
 
             /*
