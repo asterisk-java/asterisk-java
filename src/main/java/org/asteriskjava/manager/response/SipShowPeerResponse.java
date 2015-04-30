@@ -68,7 +68,16 @@ public class SipShowPeerResponse extends ManagerResponse
     private String sipUserAgent;
     private String regContact;
     private Integer qualifyFreq; // "%d ms"
-	private String parkingLot;
+	private String parkingLot;	
+	private Integer maxForwards;
+	
+	private String toneZone;	
+	private String sipUseReasonHeader;
+	private String sipEncryption;
+	private String sipForcerport;
+	private String sipRtpEngine;
+	private String sipComedia;
+	
 
 	private Map<String, String> chanVariable;
 
@@ -643,4 +652,198 @@ public class SipShowPeerResponse extends ManagerResponse
 	public void setChanVariable(final Map<String, String> chanVariable) {
 		this.chanVariable = chanVariable;
 	}
+	
+
+	public Integer getMaxForwards() {
+		return maxForwards;
+	}
+
+	public void setMaxForwards(Integer maxForwards) {
+		this.maxForwards = maxForwards;
+	}
+
+	public String getToneZone() {
+		return toneZone;
+	}
+
+	public void setToneZone(String toneZone) {
+		this.toneZone = toneZone;
+	}
+
+	public String getSipUseReasonHeader() {
+		return sipUseReasonHeader;
+	}
+
+	public void setSipUseReasonHeader(String sipUseReasonHeader) {
+		this.sipUseReasonHeader = sipUseReasonHeader;
+	}
+
+	
+
+	public String getSipEncryption() {
+		return sipEncryption;
+	}
+
+	public void setSipEncryption(String sipEncryption) {
+		this.sipEncryption = sipEncryption;
+	}
+
+	public String getSipForcerport() {
+		return sipForcerport;
+	}
+
+	public void setSipForcerport(String sipForcerport) {
+		this.sipForcerport = sipForcerport;
+	}
+
+	public String getSipRtpEngine() {
+		return sipRtpEngine;
+	}
+
+	public void setSipRtpEngine(String sipRtpEngine) {
+		this.sipRtpEngine = sipRtpEngine;
+	}
+
+	public String getSipComedia() {
+		return sipComedia;
+	}
+
+	public void setSipComedia(String sipComedia) {
+		this.sipComedia = sipComedia;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("SipShowPeerResponse [channelType=");
+		builder.append(channelType);
+		builder.append(", objectName=");
+		builder.append(objectName);
+		builder.append(", chanObjectType=");
+		builder.append(chanObjectType);
+		builder.append(", secretExist=");
+		builder.append(secretExist);
+		builder.append(", md5SecretExist=");
+		builder.append(md5SecretExist);
+		builder.append(", remoteSecretExist=");
+		builder.append(remoteSecretExist);
+		builder.append(", context=");
+		builder.append(context);
+		builder.append(", language=");
+		builder.append(language);
+		builder.append(", accountCode=");
+		builder.append(accountCode);
+		builder.append(", amaFlags=");
+		builder.append(amaFlags);
+		builder.append(", cidCallingPres=");
+		builder.append(cidCallingPres);
+		builder.append(", sipFromUser=");
+		builder.append(sipFromUser);
+		builder.append(", sipFromDomain=");
+		builder.append(sipFromDomain);
+		builder.append(", callGroup=");
+		builder.append(callGroup);
+		builder.append(", pickupGroup=");
+		builder.append(pickupGroup);
+		builder.append(", voiceMailbox=");
+		builder.append(voiceMailbox);
+		builder.append(", transferMode=");
+		builder.append(transferMode);
+		builder.append(", lastMsgsSent=");
+		builder.append(lastMsgsSent);
+		builder.append(", callLimit=");
+		builder.append(callLimit);
+		builder.append(", busyLevel=");
+		builder.append(busyLevel);
+		builder.append(", maxCallBr=");
+		builder.append(maxCallBr);
+		builder.append(", dynamic=");
+		builder.append(dynamic);
+		builder.append(", callerId=");
+		builder.append(callerId);
+		builder.append(", regExpire=");
+		builder.append(regExpire);
+		builder.append(", sipAuthInsecure=");
+		builder.append(sipAuthInsecure);
+		builder.append(", sipNatSupport=");
+		builder.append(sipNatSupport);
+		builder.append(", acl=");
+		builder.append(acl);
+		builder.append(", sipT38support=");
+		builder.append(sipT38support);
+		builder.append(", sipT38ec=");
+		builder.append(sipT38ec);
+		builder.append(", sipT38MaxDtgrm=");
+		builder.append(sipT38MaxDtgrm);
+		builder.append(", sipDirectMedia=");
+		builder.append(sipDirectMedia);
+		builder.append(", sipCanReinvite=");
+		builder.append(sipCanReinvite);
+		builder.append(", sipPromiscRedir=");
+		builder.append(sipPromiscRedir);
+		builder.append(", sipUserPhone=");
+		builder.append(sipUserPhone);
+		builder.append(", sipVideoSupport=");
+		builder.append(sipVideoSupport);
+		builder.append(", sipTextSupport=");
+		builder.append(sipTextSupport);
+		builder.append(", sipSessTimers=");
+		builder.append(sipSessTimers);
+		builder.append(", sipSessRefresh=");
+		builder.append(sipSessRefresh);
+		builder.append(", sipSessExpires=");
+		builder.append(sipSessExpires);
+		builder.append(", sipSessMin=");
+		builder.append(sipSessMin);
+		builder.append(", sipDtmfMode=");
+		builder.append(sipDtmfMode);
+		builder.append(", toHost=");
+		builder.append(toHost);
+		builder.append(", addressIp=");
+		builder.append(addressIp);
+		builder.append(", addressPort=");
+		builder.append(addressPort);
+		builder.append(", defaultAddrIp=");
+		builder.append(defaultAddrIp);
+		builder.append(", defaultAddrPort=");
+		builder.append(defaultAddrPort);
+		builder.append(", defaultUsername=");
+		builder.append(defaultUsername);
+		builder.append(", regExtension=");
+		builder.append(regExtension);
+		builder.append(", codecs=");
+		builder.append(codecs);
+		builder.append(", codecOrder=");
+		builder.append(codecOrder);
+		builder.append(", status=");
+		builder.append(status);
+		builder.append(", sipUserAgent=");
+		builder.append(sipUserAgent);
+		builder.append(", regContact=");
+		builder.append(regContact);
+		builder.append(", qualifyFreq=");
+		builder.append(qualifyFreq);
+		builder.append(", parkingLot=");
+		builder.append(parkingLot);
+		builder.append(", maxForwards=");
+		builder.append(maxForwards);
+		builder.append(", toneZone=");
+		builder.append(toneZone);
+		builder.append(", sipUseReasonHeader=");
+		builder.append(sipUseReasonHeader);
+		builder.append(", sipEncryption=");
+		builder.append(sipEncryption);
+		builder.append(", sipForcerport=");
+		builder.append(sipForcerport);
+		builder.append(", sipRtpEngine=");
+		builder.append(sipRtpEngine);
+		builder.append(", sipComedia=");
+		builder.append(sipComedia);
+		builder.append(", chanVariable=");
+		builder.append(chanVariable);
+		builder.append("]");
+		return builder.toString();
+	}
+	
+	
 }

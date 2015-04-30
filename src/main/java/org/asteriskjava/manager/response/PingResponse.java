@@ -29,6 +29,8 @@ public class PingResponse extends ManagerResponse
     private String ping;
     private String timestamp;
 
+    private String timestamp;
+    
     /**
      * Returns always "Pong".
      *
