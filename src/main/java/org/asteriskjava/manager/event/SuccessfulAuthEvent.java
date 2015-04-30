@@ -1,6 +1,5 @@
 package org.asteriskjava.manager.event;
 
-import java.util.Date;
 
 /**
  * Created by plhk on 1/15/15.
