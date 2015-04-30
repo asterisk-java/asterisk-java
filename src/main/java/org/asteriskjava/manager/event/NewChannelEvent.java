@@ -33,12 +33,24 @@ public class NewChannelEvent extends AbstractChannelStateEvent
     private String accountCode;
     private String context;
     private String exten;
+    private Integer priority;
+    private String language;
 
     public NewChannelEvent(Object source)
     {
         super(source);
     }
 
+    public String getLanguage()
+    {
+    	return language;
+    }
+    
+    public void setLanguage(String language)
+    {
+    	this.language = language;
+    }
+    
     /**
      * Returns the account code of the new channel.<p>
      * This property is available since Asterisk 1.6.
@@ -106,5 +118,21 @@ public class NewChannelEvent extends AbstractChannelStateEvent
     public void setExten(String exten)
     {
         this.exten = exten;
+    }
+
+    /**
+     * Returns the priority.
+     */
+    public Integer getPriority()
+    {
+        return priority;
+    }
+
+    /**
+     * Sets the priority.
+     */
+    public void setPriority(Integer priority)
+    {
+        this.priority = priority;
     }
 }

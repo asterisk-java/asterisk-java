@@ -29,7 +29,17 @@ public class HangupRequestEvent extends AbstractChannelEvent
 
 
     private String uniqueid;
+    private String language;
 
+    public String getLanguage()
+    {
+    	return language;
+    }
+    
+    public void setLanguage(String language)
+    {
+    	this.language = language;
+    }   
 
     public HangupRequestEvent(Object source)
     {

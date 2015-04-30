@@ -41,6 +41,16 @@ public class AgiExecEvent extends ManagerEvent
     private Integer resultCode;
     private String result;
 
+    public String getUniqueId() {
+        return uniqueId;
+    }
+
+    public void setUniqueId(String uniqueId) {
+        this.uniqueId = uniqueId;
+    }
+
+    private String uniqueId;
+
     /**
      * Creates a new AgiExecEvent.
      *

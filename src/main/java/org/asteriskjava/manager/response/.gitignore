@@ -1,0 +1,16 @@
+/ChallengeResponse.class
+/CommandResponse.class
+/CoreSettingsResponse.class
+/CoreStatusResponse.class
+/ExtensionStateResponse.class
+/GetConfigResponse.class
+/GetVarResponse.class
+/MailboxCountResponse.class
+/MailboxStatusResponse.class
+/ManagerError.class
+/ManagerResponse.class
+/ModuleCheckResponse.class
+/PingResponse.class
+/SipShowPeerResponse.class
+/SkypeBuddyResponse.class
+/SkypeLicenseStatusResponse.class
