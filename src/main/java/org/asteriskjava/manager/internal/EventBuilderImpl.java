@@ -135,6 +135,7 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
         registerEventClass(ParkedCallsCompleteEvent.class);
         registerEventClass(PeerEntryEvent.class);
         registerEventClass(PeerlistCompleteEvent.class);
+        registerEventClass(PeersEvent.class);
         registerEventClass(PeerStatusEvent.class);
         registerEventClass(PickupEvent.class);
         registerEventClass(PriEventEvent.class);
@@ -253,7 +254,7 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
     public ManagerEvent buildEvent(Object source, Map<String, Object> attributes)
     {
         ManagerEvent event;
-        String eventType;
+        String eventType = null;
         Class<?> eventClass;
         Constructor<?> constructor;
 
@@ -262,33 +263,78 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
             logger.error("No event type in properties");
             return null;
         }
-        if (!(attributes.get("event") instanceof String))
-        {
-            logger.error("Event type is not a String");
-            return null;
-        }
 
-        eventType = ((String) attributes.get("event")).toLowerCase(Locale.US);
-
-        // Change in Asterisk 1.4 where the name of the UserEvent is sent as property instead
-        // of the event name (AJ-48)
-        if ("userevent".equals(eventType))
-        {
-            String userEventType;
-
-            if (attributes.get("userevent") == null)
-            {
-                logger.error("No user event type in properties");
+        if (attributes.get("event") instanceof List ) 
+		{
+            List eventNames = (List) attributes.get( "event" );
+            if (eventNames.size() > 0 && "PeerEntry".equals(eventNames.get(0))) 
+			{
+                // List of PeerEntry events was received (AJ-329)
+                // Convert map of lists to list of maps - one map for each PeerEntry event
+                int peersAmount = attributes.get("listitems") != null ?
+                    Integer.valueOf((String) attributes.get("listitems")) :
+                        eventNames.size() - 1; // Last event is PeerlistComplete
+                List<Map<String, Object>> peersAttributes = new ArrayList<Map<String, Object>>();
+                for (Map.Entry<String, Object> attribute : attributes.entrySet()) 
+				{
+                    String key = attribute.getKey();
+                    Object value = attribute.getValue();
+                    for (int i = 0; i < peersAmount; i++) 
+					{
+                        Map<String, Object> peerAttrs;
+                        if (peersAttributes.size() > i) 
+						{
+                            peerAttrs = peersAttributes.get(i);
+                        } 
+						else 
+						{
+                            peerAttrs = new HashMap<String, Object>();
+                            peersAttributes.add(i, peerAttrs);
+                        }
+                        if (value instanceof List) 
+						{
+                            peerAttrs.put(key, ((List) value).get(i));
+                        } 
+						else if (value instanceof String && !"listitems".equals(key)) 
+						{
+                            peerAttrs.put(key, value);
+                        }
+                    }
+                }
+                attributes.put("peersAttributes", peersAttributes);
+                eventType = "peers";
+            }
+        } 
+		else 
+		{
+            if (!(attributes.get("event") instanceof String)) 
+			{
+                logger.error("Event type is not a String or List");
                 return null;
             }
-            if (!(attributes.get("userevent") instanceof String))
-            {
-                logger.error("User event type is not a String");
-                return null;
-            }
 
-            userEventType = ((String) attributes.get("userevent")).toLowerCase(Locale.US);
-            eventType = eventType + userEventType;
+            eventType = ((String) attributes.get("event")).toLowerCase(Locale.US);
+
+            // Change in Asterisk 1.4 where the name of the UserEvent is sent as property instead
+            // of the event name (AJ-48)
+            if ("userevent".equals(eventType))
+            {
+                String userEventType;
+
+                if (attributes.get("userevent") == null)
+                {
+                    logger.error("No user event type in properties");
+                    return null;
+                }
+                if (!(attributes.get("userevent") instanceof String))
+                {
+                    logger.error("User event type is not a String");
+                    return null;
+                }
+
+                userEventType = ((String) attributes.get("userevent")).toLowerCase(Locale.US);
+                eventType = eventType + userEventType;
+            }
         }
 
         eventClass = registeredEventClasses.get(eventType);
@@ -319,7 +365,26 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
             return null;
         }
 
-        setAttributes(event, attributes, ignoredAttributes);
+        if (attributes.get("peersAttributes") != null && attributes.get( "peersAttributes" ) instanceof List) {
+            // Fill Peers event with list of PeerEntry events (AJ-329)
+            PeersEvent peersEvent = (PeersEvent) event;
+            for( Map<String, Object> peerAttrs : (List<Map<String, Object>>) attributes.get("peersAttributes")) {
+                PeerEntryEvent peerEntryEvent = new PeerEntryEvent( source );
+                setAttributes(peerEntryEvent, peerAttrs, ignoredAttributes);
+                List<PeerEntryEvent> peerEntryEvents = peersEvent.getChildEvents();
+                if (peerEntryEvents == null) 
+				{
+                    peerEntryEvents = new ArrayList<PeerEntryEvent>();
+                    peersEvent.setChildEvents(peerEntryEvents);
+                }
+                peerEntryEvents.add(peerEntryEvent);
+            }
+            peersEvent.setActionId((peersEvent.getChildEvents().get(0).getActionId()));
+        } 
+		else 
+		{
+            setAttributes(event, attributes, ignoredAttributes);
+        }
 
         // ResponseEvents are sent in response to a ManagerAction if the
         // response contains lots of data. They include the actionId of
