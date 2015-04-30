@@ -1,0 +1,14 @@
+/AgiChannelFactory.class
+/AgiChannelImpl.class
+/AgiConnectionHandler.class
+/AgiReader.class
+/AgiReplyImpl.class
+/AgiRequestImpl.class
+/AgiWriter.class
+/AsyncAgiConnectionHandler.class
+/AsyncAgiReader.class
+/AsyncAgiWriter.class
+/DefaultAgiChannelFactory.class
+/FastAgiConnectionHandler.class
+/FastAgiReader.class
+/FastAgiWriter.class

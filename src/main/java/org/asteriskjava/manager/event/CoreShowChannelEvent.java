@@ -35,8 +35,6 @@ public class CoreShowChannelEvent extends ResponseEvent
     private String channel;
     private String context;
     private String extension;
-    private String priority;
-    private String ChannelState;
     private String channelstatedesc;
     private String application;
     private String applicationdata;
@@ -59,15 +57,6 @@ public class CoreShowChannelEvent extends ResponseEvent
      * @return channel state
      */
 
-    public String getChannelState()
-    {
-        return ChannelState;
-    }
-
-    public void setChannelState(String ChannelState)
-    {
-        this.ChannelState = ChannelState;
-    }
 
     /**
      * Returns the Account code
@@ -240,15 +229,7 @@ public class CoreShowChannelEvent extends ResponseEvent
      *
      * @return priority
      */
-    public String getPriority()
-    {
-        return priority;
-    }
 
-    public void setPriority(String priority)
-    {
-        this.priority = priority;
-    }
 
     /**
      * Returns the Uniqueid

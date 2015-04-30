@@ -1,0 +1,17 @@
+/AbstractManagerEventListener.class
+/AsteriskMapping.class
+/AuthenticationFailedException.class
+/DefaultManagerConnection.class
+/EventTimeoutException.class
+/ExpectedResponse.class
+/ManagerConnection.class
+/ManagerConnectionFactory.class
+/ManagerConnectionState.class
+/ManagerEventListener.class
+/ManagerEventListenerProxy$1.class
+/ManagerEventListenerProxy.class
+/PingThread.class
+/ResponseEvents.class
+/SendActionCallback.class
+/TimeoutException.class
+/NetAddress.class
