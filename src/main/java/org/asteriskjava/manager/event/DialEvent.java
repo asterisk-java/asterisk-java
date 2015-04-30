@@ -82,7 +82,11 @@ public class DialEvent extends ManagerEvent
 
     private String dialString;
     private String dialStatus;
-
+    
+    private String connectedLineNum;
+    
+    private String connectedLineName;
+    
     public DialEvent(Object source)
     {
         super(source);
@@ -348,34 +352,63 @@ public class DialEvent extends ManagerEvent
     }
 
     /**
-     * Returns the Caller*ID name of the channel connected if set.
-     * If the channel has no caller id set "unknown" is returned.
-     *
-     * @since 1.0.0
-     */
-    public String getConnectedlinename()
-    {
-        return connectedlinename;
-    }
-
-    public void setConnectedlinename(String connectedlinename)
-    {
-        this.connectedlinename = connectedlinename;
-    }
-
-    /**
      * Returns the Caller*ID number of the channel connected if set.
      * If the channel has no caller id set "unknown" is returned.
      *
      * @since 1.0.0
      */
-    public String getConnectedlinenum()
-    {
-        return connectedlinenum;
-    }
+	public String getConnectedLineNum() 
+	{
+		return connectedLineNum;
+	}
 
-    public void setConnectedlinenum(String connectedlinenum)
-    {
-        this.connectedlinenum = connectedlinenum;
-    }
+	public void setConnectedLineNum(String connectedLineNum) 
+	{
+		this.connectedLineNum = connectedLineNum;
+	}
+
+    /**
+     * Returns the Caller*ID name of the channel connected if set.
+     * If the channel has no caller id set "unknown" is returned.
+     *
+     * @since 1.0.0
+     */
+	public String getConnectedLineName() 
+	{
+		return connectedLineName;
+	}
+
+	public void setConnectedLineName(String connectedLineName) 
+	{
+		this.connectedLineName = connectedLineName;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("DialEvent [subEvent=");
+		builder.append(subEvent);
+		builder.append(", channel=");
+		builder.append(channel);
+		builder.append(", destination=");
+		builder.append(destination);
+		builder.append(", callerIdNum=");
+		builder.append(callerIdNum);
+		builder.append(", callerIdName=");
+		builder.append(callerIdName);
+		builder.append(", uniqueId=");
+		builder.append(uniqueId);
+		builder.append(", destUniqueId=");
+		builder.append(destUniqueId);
+		builder.append(", dialString=");
+		builder.append(dialString);
+		builder.append(", dialStatus=");
+		builder.append(dialStatus);
+		builder.append(", connectedLineNum=");
+		builder.append(connectedLineNum);
+		builder.append(", connectedLineName=");
+		builder.append(connectedLineName);
+		builder.append("]");
+		return builder.toString();
+	}
 }

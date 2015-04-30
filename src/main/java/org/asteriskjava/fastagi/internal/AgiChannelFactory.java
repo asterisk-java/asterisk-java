@@ -6,7 +6,7 @@ import org.asteriskjava.fastagi.AgiRequest;
 /**
  * An AgiChannelFactory creates instances of AgiChannels,
  * that are passed to agi scripts.
- * <br>
+ * <p/>
  * An instance of the AgiChannelFactory can be passed to the
  * DefaultAgiServer's constructor.
  *

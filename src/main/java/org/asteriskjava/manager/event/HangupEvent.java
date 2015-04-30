@@ -35,6 +35,13 @@ public class HangupEvent extends AbstractChannelEvent
     private String connectedlinename;
     private String connectedlinenum;
 
+    private String accountCode;
+    
+    private String connectedLineNum;
+    
+    private String connectedLineName;
+    
+    
     public HangupEvent(Object source)
     {
         super(source);
@@ -83,21 +90,15 @@ public class HangupEvent extends AbstractChannelEvent
         this.causeTxt = causeTxt;
     }
 
-    /**
-     * Returns the Caller*ID name of the channel connected if set.
-     * If the channel has no caller id set "unknown" is returned.
-     *
-     * @since 1.0.0
-     */
-    public String getConnectedlinename()
-    {
-        return connectedlinename;
-    }
+	public String getAccountCode() 
+	{
+		return accountCode;
+	}
 
-    public void setConnectedlinename(String connectedlinename)
-    {
-        this.connectedlinename = connectedlinename;
-    }
+	public void setAccountCode(String accountCode) 
+	{
+		this.accountCode = accountCode;
+	}
 
     /**
      * Returns the Caller*ID number of the channel connected if set.
@@ -105,13 +106,47 @@ public class HangupEvent extends AbstractChannelEvent
      *
      * @since 1.0.0
      */
-    public String getConnectedlinenum()
-    {
-        return connectedlinenum;
-    }
+	public String getConnectedLineNum() 
+	{
+		return connectedLineNum;
+	}
 
-    public void setConnectedlinenum(String connectedlinenum)
-    {
-        this.connectedlinenum = connectedlinenum;
-    }
+	public void setConnectedLineNum(String connectedLineNum) 
+	{
+		this.connectedLineNum = connectedLineNum;
+	}
+
+    /**
+     * Returns the Caller*ID name of the channel connected if set.
+     * If the channel has no caller id set "unknown" is returned.
+     *
+     * @since 1.0.0
+     */
+	public String getConnectedLineName() 
+	{
+		return connectedLineName;
+	}
+
+	public void setConnectedLineName(String connectedLineName) 
+	{
+		this.connectedLineName = connectedLineName;
+	}
+
+	@Override
+	public String toString() 
+	{
+		StringBuilder builder = new StringBuilder();
+		builder.append("HangupEvent [cause=");
+		builder.append(cause);
+		builder.append(", causeTxt=");
+		builder.append(causeTxt);
+		builder.append(", accountCode=");
+		builder.append(accountCode);
+		builder.append(", connectedLineNum=");
+		builder.append(connectedLineNum);
+		builder.append(", connectedLineName=");
+		builder.append(connectedLineName);
+		builder.append("]");
+		return builder.toString();
+	}
 }
