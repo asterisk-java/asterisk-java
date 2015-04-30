@@ -47,9 +47,6 @@ public class DialEvent extends ManagerEvent
 
     private String subEvent = SUBEVENT_BEGIN;
 
-    private String connectedlinename;
-    private String connectedlinenum;
-
     /**
      * The name of the source channel.
      */

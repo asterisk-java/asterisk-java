@@ -32,16 +32,9 @@ public class HangupEvent extends AbstractChannelStateEvent
 
     private Integer cause;
     private String causeTxt;
-    private String connectedlinename;
-    private String connectedlinenum;
     private String language;
 
     private String accountCode;
-    
-    private String connectedLineNum;
-    
-    private String connectedLineName;
-    
     
     public HangupEvent(Object source)
     {
@@ -111,37 +104,6 @@ public class HangupEvent extends AbstractChannelStateEvent
 		this.accountCode = accountCode;
 	}
 
-    /**
-     * Returns the Caller*ID number of the channel connected if set.
-     * If the channel has no caller id set "unknown" is returned.
-     *
-     * @since 1.0.0
-     */
-	public String getConnectedLineNum() 
-	{
-		return connectedLineNum;
-	}
-
-	public void setConnectedLineNum(String connectedLineNum) 
-	{
-		this.connectedLineNum = connectedLineNum;
-	}
-
-    /**
-     * Returns the Caller*ID name of the channel connected if set.
-     * If the channel has no caller id set "unknown" is returned.
-     *
-     * @since 1.0.0
-     */
-	public String getConnectedLineName() 
-	{
-		return connectedLineName;
-	}
-
-	public void setConnectedLineName(String connectedLineName) 
-	{
-		this.connectedLineName = connectedLineName;
-	}
 
 	@Override
 	public String toString() 
