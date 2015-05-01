@@ -47,6 +47,12 @@
             <organization>N4Utilus Take your Business to the Cloud</organization>
             <timezone>-6</timezone>
         </developer>
+        <developer>
+            <name>Zoumana TRAORE</name>
+            <id>zoumhussein</id>
+            <email>github at zoumanatraore dot fr</email>
+            <timezone>+1</timezone>
+        </developer>
     </developers>
     <scm>
         <connection>scm:git:git://github.com/srt/asterisk-java.git</connection>
