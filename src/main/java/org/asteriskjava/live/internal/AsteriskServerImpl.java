@@ -277,7 +277,16 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         {
             return;
         }
-
+        if (asyncEventHandling && managerEventListenerProxy == null)
+        {
+            managerEventListenerProxy = new ManagerEventListenerProxy(this);
+            eventConnection.addEventListener(managerEventListenerProxy);
+        }
+        else if (!asyncEventHandling && eventListener == null)
+        {
+            eventListener = this;
+            eventConnection.addEventListener(eventListener);
+        }
         if (eventConnection.getState() == ManagerConnectionState.INITIAL
                 || eventConnection.getState() == ManagerConnectionState.DISCONNECTED)
         {
@@ -1210,16 +1219,6 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
                 queueManager.initialize();
             }
 
-            if (asyncEventHandling && managerEventListenerProxy == null)
-            {
-                managerEventListenerProxy = new ManagerEventListenerProxy(this);
-                eventConnection.addEventListener(managerEventListenerProxy);
-            }
-            else if (!asyncEventHandling && eventListener == null)
-            {
-                eventListener = this;
-                eventConnection.addEventListener(eventListener);
-            }
             logger.info("Initializing done");
             initialized = true;
         }
