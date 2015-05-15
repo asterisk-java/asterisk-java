@@ -472,8 +472,13 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         stateChanged(dateOfRemoval, ChannelState.HUNGUP);
     }
 
-    /* dialed channels */
-
+   
+    
+    /**
+     * Retrives the conplete List of all dialed channels associated to ths calls
+     * 
+     * @return List of all dialed channels
+     */
     public List <AsteriskChannel> getDialedChannels()
     {
         final List<AsteriskChannel> copy;
