@@ -34,32 +34,10 @@ public abstract class AbstractChannelStateEvent extends AbstractChannelEvent
 
 	private Integer channelState;
 	private String channelStateDesc;
-	private String connectedlinename;
-	private String connectedlinenum;
 
 	protected AbstractChannelStateEvent(Object source)
 	{
 		super(source);
-	}
-
-	public String getConnectedlinename()
-	{
-		return connectedlinename;
-	}
-
-	public void setConnectedlinename(String connectedlinename)
-	{
-		this.connectedlinename = connectedlinename;
-	}
-
-	public String getConnectedlinenum()
-	{
-		return connectedlinenum;
-	}
-
-	public void setConnectedlinenum(String connectedlinenum)
-	{
-		this.connectedlinenum = connectedlinenum;
 	}
 
 	/**
@@ -71,6 +49,7 @@ public abstract class AbstractChannelStateEvent extends AbstractChannelEvent
 	 * @return the new state of the channel.
 	 * @since 1.0.0
 	 */
+	@Override
 	public Integer getChannelState()
 	{
 		return channelState == null ? AstState.str2state(channelStateDesc) : channelState;
@@ -83,6 +62,7 @@ public abstract class AbstractChannelStateEvent extends AbstractChannelEvent
 	 *            the new state of the channel.
 	 * @since 1.0.0
 	 */
+	@Override
 	public void setChannelState(Integer channelState)
 	{
 		this.channelState = channelState;

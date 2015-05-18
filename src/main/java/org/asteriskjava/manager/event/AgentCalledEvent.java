@@ -149,22 +149,6 @@ public class AgentCalledEvent extends ManagerEvent
     /**
      * Returns the Caller ID number of the caller's channel.
      *
-     * @return the Caller ID number of the caller's channel or "unknown" of none has been set.
-     * @since 1.0.0
-     */
-    public String getCallerIdNum()
-    {
-        return callerIdNum;
-    }
-
-    public void setCallerIdNum(String callerIdNum)
-    {
-        this.callerIdNum = callerIdNum;
-    }
-
-    /**
-     * Returns the Caller ID number of the caller's channel.
-     *
      * @return the Caller ID number of the caller's channel.
      * @deprecated as of 1.0.0, use {@link #getCallerIdNum()} instead.
      */
@@ -183,29 +167,6 @@ public class AgentCalledEvent extends ManagerEvent
         this.callerIdNum = callerId;
     }
 
-
-    public String getCallerIdName() { return callerIdName; }
-
-    /**
-     * Sets the Caller ID name of the caller's channel.
-     *
-     * @param callerIdName the Caller ID name of the caller's channel.
-     * @since 0.2
-     */
-    public void setCallerIdName(String callerIdName)
-    {
-        this.callerIdName = callerIdName;
-    }
-
-    public String getContext()
-    {
-        return context;
-    }
-
-    public void setContext(String context)
-    {
-        this.context = context;
-    }
 
     public String getExtension()
     {
@@ -259,19 +220,5 @@ public class AgentCalledEvent extends ManagerEvent
     {
         this.variables = variables;
     }
-
-    /**
-     * Returns the Caller*ID name of the channel connected if set.
-     * If the channel has no caller id set "unknown" is returned.
-     *
-     * @since 1.0.0
-     */
-
-    /**
-     * Returns the Caller*ID number of the channel connected if set.
-     * If the channel has no caller id set "unknown" is returned.
-     *
-     * @since 1.0.0
-     */
 
 }

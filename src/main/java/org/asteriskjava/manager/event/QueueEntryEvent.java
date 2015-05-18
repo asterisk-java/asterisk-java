@@ -36,10 +36,6 @@ public class QueueEntryEvent extends ResponseEvent
     private String uniqueId;
     private String channel;
     private String callerId;
-    private String callerIdName;
-    private String callerIdNum;
-    private String connectedlinename;
-    private String connectedlinenum;       
     private Long wait;
 
     /**
@@ -138,50 +134,6 @@ public class QueueEntryEvent extends ResponseEvent
 	}
 
     /**
-     * Returns the Caller*ID name of this entry.
-     *
-     * @return the Caller*ID name of this entry.
-     * @since 0.2
-     */
-    public String getCallerIdName()
-    {
-        return callerIdName;
-    }
-
-    /**
-     * Sets the Caller*ID name of this entry.
-     *
-     * @param callerIdName the Caller*ID name of this entry.
-     * @since 0.2
-     */
-    public void setCallerIdName(String callerIdName)
-    {
-        this.callerIdName = callerIdName;
-    }
-
-    /**
-     * Gets the Caller*ID num of this entry.
-     *
-     * @return the Caller*ID num of this entry.
-     * @since 1.0.0
-     */
-    public String getCallerIdNum()
-    {
-        return callerIdNum;
-    }
-
-    /**
-     * Sets the Caller*ID num of this entry.
-     *
-     * @param callerIdNum the Caller*ID num of this entry.
-     * @since 1.0.0
-     */
-    public void setCallerIdNum(String callerIdNum)
-    {
-        this.callerIdNum = callerIdNum;
-    }
-
-    /**
      * Returns the number of seconds this entry has spent in the queue.
      */
     public Long getWait()
@@ -196,25 +148,5 @@ public class QueueEntryEvent extends ResponseEvent
     {
         this.wait = wait;
     }
-
-	public String getConnectedlinename()
-	{
-		return connectedlinename;
-	}
-
-	public void setConnectedlinename(String connectedlinename)
-	{
-		this.connectedlinename = connectedlinename;
-	}
-
-	public String getConnectedlinenum()
-	{
-		return connectedlinenum;
-	}
-
-	public void setConnectedlinenum(String connectedlinenum)
-	{
-		this.connectedlinenum = connectedlinenum;
-	}
    
 }

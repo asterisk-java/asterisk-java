@@ -34,20 +34,12 @@ public class StatusEvent extends ResponseEvent
      */
     private static final long serialVersionUID = -3619197512835308812L;
     private String channel;
-    private String callerIdNum;
-    private String callerIdName;
     private String accountCode;
     private Integer channelState;
-    private String channelStateDesc;
-    private String context;
-    private String extension;
-    private Integer priority;
     private Integer seconds;
     private String bridgedChannel;
     private String bridgedUniqueId;
     private String uniqueId;
-    private String connectedlinenum;
-    private String connectedlinename;
     private Map<String, String> variables;
 
     public StatusEvent(Object source)
@@ -232,42 +224,22 @@ public class StatusEvent extends ResponseEvent
      */
     @Deprecated public String getState()
     {
-        return channelStateDesc;
+        return getChannelStateDesc();
     }
 
     public void setState(String state)
     {
-        this.channelStateDesc = state;
-    }
-
-    public String getContext()
-    {
-        return context;
-    }
-
-    public void setContext(String context)
-    {
-        this.context = context;
+        setChannelStateDesc(state);
     }
 
     public String getExtension()
     {
-        return extension;
+        return getExten();
     }
 
     public void setExtension(String extension)
     {
-        this.extension = extension;
-    }
-
-    public Integer getPriority()
-    {
-        return priority;
-    }
-
-    public void setPriority(Integer priority)
-    {
-        this.priority = priority;
+        setExten(extension);
     }
 
     /**
@@ -402,25 +374,5 @@ public class StatusEvent extends ResponseEvent
     {
         this.variables = variables;
     }
-
-	public String getConnectedlinenum()
-	{
-		return connectedlinenum;
-	}
-
-	public void setConnectedlinenum(String connectedlinenum)
-	{
-		this.connectedlinenum = connectedlinenum;
-	}
-
-	public String getConnectedlinename()
-	{
-		return connectedlinename;
-	}
-
-	public void setConnectedlinename(String connectedlinename)
-	{
-		this.connectedlinename = connectedlinename;
-	}
     
 }
