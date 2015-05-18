@@ -230,6 +230,15 @@ public interface AsteriskChannel extends LiveObject
     AsteriskChannel getDialingChannel();
 
     /**
+     * Returns the channel set that are dialing this channel, this is the source
+     * channel that created this channel by dialing it.
+     * 
+     * @return the channel set that is dialing this channel or <code>null</code>
+     *         if none was dialing.
+     */
+    List <AsteriskChannel> getDialedChannels();
+
+    /**
      * Returns the channel this channel is currently bridged with, if any.
      * 
      * @return the channel this channel is bridged with, or <code>null</code>
