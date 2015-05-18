@@ -27,7 +27,7 @@ public class HangupRequestEvent extends AbstractChannelEvent
      */
     static final long serialVersionUID = 0L;
 
-
+    private Integer cause;
     private String uniqueid;
     private String language;
 
@@ -46,6 +46,26 @@ public class HangupRequestEvent extends AbstractChannelEvent
         super(source);
     }
 
+    /**
+     * Returns the cause of the hangup.
+     *
+     * @return the hangup cause.
+     * @see org.asteriskjava.live.HangupCause
+     */
+    public Integer getCause()
+    {
+        return cause;
+    }
+
+    /**
+     * Sets the cause of the hangup.
+     *
+     * @param cause the hangup cause.
+     */
+    public void setCause(Integer cause)
+    {
+        this.cause = cause;
+    }
 
     public String getUniqueid() {
         return uniqueid;
