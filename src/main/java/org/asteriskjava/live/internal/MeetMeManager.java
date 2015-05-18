@@ -226,6 +226,10 @@ class MeetMeManager
 
             userNumber = Integer.valueOf(matcher.group(1));
             channel = channelManager.getChannelImplByName(matcher.group(2));
+			if(channel == null)	// User has left the room already in the meanwhile
+			{
+				continue;
+			}
 
             userNumbers.add(userNumber);
 
