@@ -46,6 +46,8 @@ import org.asteriskjava.manager.action.LoginAction;
 import org.asteriskjava.manager.action.LogoffAction;
 import org.asteriskjava.manager.action.ManagerAction;
 import org.asteriskjava.manager.event.ConnectEvent;
+import org.asteriskjava.manager.event.DialBeginEvent;
+import org.asteriskjava.manager.event.DialEvent;
 import org.asteriskjava.manager.event.DisconnectEvent;
 import org.asteriskjava.manager.event.ManagerEvent;
 import org.asteriskjava.manager.event.ProtocolIdentifierReceivedEvent;
@@ -1199,7 +1201,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 			logger.error("Unable to dispatch null event. This should never happen. Please file a bug.");
 			return;
 		}
-
+        dispatchLegacyEventIfNeeded(event);
 		logger.debug("Dispatching event:\n" + event.toString());
 
 		// Some events need special treatment besides forwarding them to the
@@ -1295,6 +1297,17 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 		}
 
 		fireEvent(event);
+	}
+
+	/**
+     * Enro 2015-03
+     * Workaround to continue having Legacy Events from Asterisk 13.
+     */
+    private void dispatchLegacyEventIfNeeded(ManagerEvent event) {
+		if (event instanceof DialBeginEvent){
+        	DialEvent legacyEvent = (new DialEvent((DialBeginEvent) event));
+        	dispatchEvent(legacyEvent);
+		}
 	}
 
 	/**

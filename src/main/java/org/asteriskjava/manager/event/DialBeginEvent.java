@@ -9,6 +9,7 @@ public class DialBeginEvent extends DialEvent
 	private static final long serialVersionUID = 1L;
 	private String language;
 	private String destlanguage;
+    private String destAccountCode; 
 
 	public DialBeginEvent(Object source)
 	{
@@ -34,5 +35,13 @@ public class DialBeginEvent extends DialEvent
 	public void setDestLanguage(String destlanguage)
 	{
 		this.destlanguage = destlanguage;
+	}
+	
+	public String getDestAccountCode() {
+		return destAccountCode;
+	}
+
+	public void setDestAccountCode(String destAccountCode) {
+		this.destAccountCode = destAccountCode;
 	}
 }

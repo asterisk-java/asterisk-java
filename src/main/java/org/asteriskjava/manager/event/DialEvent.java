@@ -99,15 +99,29 @@ public class DialEvent extends ManagerEvent
     private String dialString;
     private String dialStatus;
     
-    private String connectedLineNum;
-    
-    private String connectedLineName;
-    
     public DialEvent(Object source)
     {
         super(source);
     }
 
+    /**
+     * Enro 2015-03
+     * Workaround to build legacy DialEvent (unsupported in Asterisk 13) from new DialBeginEvent Asterisk 13.
+     */
+    public DialEvent(DialBeginEvent dialBeginEvent){
+    	this(dialBeginEvent.getSource());
+    	setDateReceived(dialBeginEvent.getDateReceived());
+    	setTimestamp(dialBeginEvent.getTimestamp());
+    	setPrivilege(dialBeginEvent.getPrivilege());
+    	setCallerId(dialBeginEvent.getCallerIdNum());
+    	setCallerIdName(dialBeginEvent.getCallerIdName());
+    	setSrc(dialBeginEvent.getChannel());
+    	setUniqueId(dialBeginEvent.getSrcUniqueId());
+    	setDestUniqueId(dialBeginEvent.getDestUniqueId());
+    	setDestination(dialBeginEvent.getDestChannel());
+    	setDialStatus(dialBeginEvent.getDialStatus());
+    }
+    
     /**
      * Since Asterisk 1.6 the begin and the end of a dial command generate a Dial event. The
      * subEvent property returns whether the dial started execution ("Begin") or completed ("End").
@@ -182,7 +196,11 @@ public class DialEvent extends ManagerEvent
     {
         return destination;
     }
-    public String getDestChannel() { return getDestination(); }
+    
+    public String getDestChannel() 
+    { 
+    	return getDestination(); 
+    }
 
     /**
      * Sets the name of the destination channel.
@@ -193,21 +211,10 @@ public class DialEvent extends ManagerEvent
     {
         this.destination = destination;
     }
-    public void setDestChannel(String destination) { setDestination(destination); }
-    /**
-     * Returns the the Caller*ID Number.
-     *
-     * @return the the Caller*ID Number or "&lt;unknown&gt;" if none has been set.
-     * @since 1.0.0
-     */
-    public String getCallerIdNum()
-    {
-        return callerIdNum;
-    }
-
-    public void setCallerIdNum(String callerIdNum)
-    {
-        this.callerIdNum = callerIdNum;
+    
+    public void setDestChannel(String destination) 
+    { 
+    	setDestination(destination); 
     }
 
     /**
@@ -229,26 +236,6 @@ public class DialEvent extends ManagerEvent
     public void setCallerId(String callerId)
     {
         this.callerIdNum = callerId;
-    }
-
-    /**
-     * Returns the Caller*ID Name.
-     *
-     * @return the Caller*ID Name or "&lt;unknown&gt;" if none has been set.
-     */
-    public String getCallerIdName()
-    {
-        return callerIdName;
-    }
-
-    /**
-     * Sets the Caller*Id Name.
-     *
-     * @param callerIdName the Caller*Id Name to set.
-     */
-    public void setCallerIdName(String callerIdName)
-    {
-        this.callerIdName = callerIdName;
     }
 
     /**
@@ -367,38 +354,6 @@ public class DialEvent extends ManagerEvent
     {
         this.dialStatus = dialStatus;
     }
-
-    /**
-     * Returns the Caller*ID number of the channel connected if set.
-     * If the channel has no caller id set "unknown" is returned.
-     *
-     * @since 1.0.0
-     */
-	public String getConnectedLineNum() 
-	{
-		return connectedLineNum;
-	}
-
-	public void setConnectedLineNum(String connectedLineNum) 
-	{
-		this.connectedLineNum = connectedLineNum;
-	}
-
-    /**
-     * Returns the Caller*ID name of the channel connected if set.
-     * If the channel has no caller id set "unknown" is returned.
-     *
-     * @since 1.0.0
-     */
-	public String getConnectedLineName() 
-	{
-		return connectedLineName;
-	}
-
-	public void setConnectedLineName(String connectedLineName) 
-	{
-		this.connectedLineName = connectedLineName;
-	}
 
 	@Override
 	public String toString() 
