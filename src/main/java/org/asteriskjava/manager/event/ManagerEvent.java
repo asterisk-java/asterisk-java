@@ -147,6 +147,8 @@ public abstract class ManagerEvent extends EventObject
      */
     private String server;
 
+    private String systemName;
+    
     // AJ-213 only used when debugging is turned on
     private String file;
     private Integer line;
@@ -259,6 +261,14 @@ public abstract class ManagerEvent extends EventObject
     {
         this.server = server;
     }
+
+	public String getSystemName() {
+		return systemName;
+	}
+
+	public void setSystemName(String systemName) {
+		this.systemName = systemName;
+	}
 
     /**
      * Returns the name of the file in Asterisk's source code that triggered this event. For example
