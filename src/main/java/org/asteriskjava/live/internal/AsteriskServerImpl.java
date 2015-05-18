@@ -1332,14 +1332,8 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
                 }
             }
 
-            if (channel.wasInState(ChannelState.DOWN))
-            {
-                cb.onNoAnswer(channel);
-                return;
-            }
-
-            // if nothing else matched we asume success
-            cb.onSuccess(channel);
+            // if nothing else matched we asume no answer
+            cb.onNoAnswer(channel);
         }
         catch (Throwable t)
         {
