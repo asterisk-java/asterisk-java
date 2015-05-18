@@ -141,9 +141,10 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
      */
     private ManagerConnection eventConnection;
     private ManagerEventListener eventListener = null;
-    ManagerEventListenerProxy managerEventListenerProxy;
+    private ManagerEventListenerProxy managerEventListenerProxy;
 
-    boolean initialized = false;
+    private boolean initialized = false;
+    private boolean initializing = false;
 
     final Set<AsteriskServerListener> listeners;
 
@@ -273,7 +274,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
 
     private synchronized void initializeIfNeeded() throws ManagerCommunicationException
     {
-        if (initialized)
+        if (initialized || initializing)
         {
             return;
         }
@@ -287,6 +288,9 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
             eventListener = this;
             eventConnection.addEventListener(eventListener);
         }
+
+        initializing = true;
+        
         if (eventConnection.getState() == ManagerConnectionState.INITIAL
                 || eventConnection.getState() == ManagerConnectionState.DISCONNECTED)
         {
@@ -1209,6 +1213,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         meetMeManager.disconnected();
         queueManager.disconnected();
         initialized = false;
+        initializing = false;
     }
 
     /*
@@ -1232,6 +1237,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
 
             logger.info("Initializing done");
             initialized = true;
+            initializing = false;
         }
         catch (Exception e)
         {
@@ -1355,16 +1361,16 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
             managerEventListenerProxy.shutdown();
         }
 
-		    if (eventConnection != null && eventListener != null) {
-			    eventConnection.removeEventListener(eventListener);
-	      }
+		if (eventConnection != null && eventListener != null) {
+		    	eventConnection.removeEventListener(eventListener);
+	    }
 
-		    managerEventListenerProxy = null;
+		managerEventListenerProxy = null;
         eventListener = null;
 
-	      if (initialized) {//incredible, but it happened
-		      handleDisconnectEvent(null);
-	      }//i
+	    if (initialized) {//incredible, but it happened
+	    	handleDisconnectEvent(null);
+	    }//i
     }//shutdown
 
     public List<PeerEntryEvent> getPeerEntries() throws ManagerCommunicationException
