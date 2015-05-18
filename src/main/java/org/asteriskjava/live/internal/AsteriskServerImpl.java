@@ -871,16 +871,21 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         return new ConfigFileImpl(filename, categories);
     }
 
-    public void addAsteriskServerListener(AsteriskServerListener listener) throws ManagerCommunicationException
+    @Override
+	public void addAsteriskServerListener(AsteriskServerListener listener) throws ManagerCommunicationException
     {
         initializeIfNeeded();
         synchronized (listeners)
         {
-            listeners.add(listener);
+        	if(!listeners.contains(listener))
+        	{
+        		listeners.add(listener);
+        	}
         }
     }
 
-    public void removeAsteriskServerListener(AsteriskServerListener listener)
+    @Override
+	public void removeAsteriskServerListener(AsteriskServerListener listener)
     {
         synchronized (listeners)
         {
@@ -888,6 +893,12 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         }
     }
 
+    @Override
+	public boolean isAsteriskServerListening(AsteriskServerListener listener)
+    {
+    	return listeners.contains(listener);
+    }
+    
 	public void addChainListener(ManagerEventListener chainListener)
 	{
 		synchronized (this.chainListeners)

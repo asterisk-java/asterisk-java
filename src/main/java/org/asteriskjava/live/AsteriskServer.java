@@ -479,6 +479,14 @@ public interface AsteriskServer
      */
     void removeAsteriskServerListener(AsteriskServerListener listener);
 
+	/**
+	* Checks whether the listener is already registered with this Asterisk server
+	*
+	* @param listener the listener to check
+	* @return true, if the listener is already registered.
+	*/
+	boolean isAsteriskServerListening(AsteriskServerListener listener);
+    
     /**
 	 * The chainListener allows a listener to receive manager events after they
 	 * have been processed by the AsteriskServer. If the AsteriskServer is

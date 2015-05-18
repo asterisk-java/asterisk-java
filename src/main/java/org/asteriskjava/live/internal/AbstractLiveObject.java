@@ -58,7 +58,16 @@ abstract class AbstractLiveObject implements LiveObject
 
     public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener)
     {
-        changes.addPropertyChangeListener(propertyName, listener);
+    	boolean haveToAdd = true;
+    	for(PropertyChangeListener l : changes.getPropertyChangeListeners()){
+    		if(l == listener){
+    			haveToAdd = false;
+    			break;
+    		}
+    	}
+    	if(haveToAdd){
+	        changes.addPropertyChangeListener(propertyName, listener);
+	    }
     }
 
     public void removePropertyChangeListener(PropertyChangeListener listener)
