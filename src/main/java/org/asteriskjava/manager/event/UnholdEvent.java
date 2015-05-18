@@ -27,10 +27,9 @@ package org.asteriskjava.manager.event;
  * @version $Id$
  * @see org.asteriskjava.manager.event.HoldEvent
  * @since 0.2
- * @deprecated as of 1.0.0, use {@link org.asteriskjava.manager.event.HoldEvent} and its
- *             {@link #isUnhold()} method instead.
+ * Enro 2015-03: No longer deprecated since Asterisk 13 uses this again.
  */
-@Deprecated public class UnholdEvent extends HoldEvent
+public class UnholdEvent extends AbstractHoldEvent
 {
     /**
      * Serializable version identifier.
