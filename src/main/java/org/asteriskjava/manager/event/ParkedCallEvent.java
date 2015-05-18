@@ -32,7 +32,6 @@ public class ParkedCallEvent extends AbstractParkedCallEvent
      */
     private static final long serialVersionUID = 0L;
     
-    private String from;
     private Integer timeout;
     
 
@@ -42,22 +41,6 @@ public class ParkedCallEvent extends AbstractParkedCallEvent
     public ParkedCallEvent(Object source)
     {
         super(source);
-    }
-
-    /**
-     * Returns the name of the channel that parked the call.
-     */
-    public String getFrom()
-    {
-        return from;
-    }
-
-    /**
-     * Sets the name of the channel that parked the call.
-     */
-    public void setFrom(String from)
-    {
-        this.from = from;
     }
 
     /**

@@ -26,7 +26,7 @@ package org.asteriskjava.manager.event;
  * @version $Id$
  * @since 0.2
  */
-public class ParkedCallTimeOutEvent extends AbstractParkedCallEvent
+public class ParkedCallTimeOutEvent extends AbstractUnParkedEvent
 {
     /**
      * Serializable version identifier
