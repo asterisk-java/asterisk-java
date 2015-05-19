@@ -38,7 +38,7 @@ public abstract class AbstractParkedCallEvent extends ManagerEvent
     private Integer parkeeConnectedLineNum;
     private String parkeeConnectedLineName;
     private String parkeeLanguage;
-    private String parkeeAccountCode; 
+    private String parkeeAccountCode;
     private String parkeeContext;
     private String parkeeExten;
     private Integer parkeePriority;
@@ -55,7 +55,6 @@ public abstract class AbstractParkedCallEvent extends ManagerEvent
     {
         super(source);
     }
-
 
     /**
      * Returns the name of the channel that parked the call.
@@ -76,7 +75,8 @@ public abstract class AbstractParkedCallEvent extends ManagerEvent
     }
 
     /**
-     * Returns the parking lot.<p>
+     * Returns the parking lot.
+     * <p>
      * Available since Asterisk 1.6.
      *
      * @return the parking lot.
@@ -116,12 +116,15 @@ public abstract class AbstractParkedCallEvent extends ManagerEvent
     }
 
     /**
-     * Returns the unique id of the parked channel.<p>
+     * Returns the unique id of the parked channel.
+     * <p>
      * Note: This property is not set properly by all versions of Asterisk, see
-     * <a href="http://bugs.digium.com/view.php?id=13323">http://bugs.digium.com/view.php?id=13323</a>
-     * and
-     * <a href="http://bugs.digium.com/view.php?id=13358">http://bugs.digium.com/view.php?id=13358</a>
-     * for more information. Use {@link #getChannel()} instead.
+     * <a
+     * href="http://bugs.digium.com/view.php?id=13323">http://bugs.digium.com/
+     * view.php?id=13323</a> and <a
+     * href="http://bugs.digium.com/view.php?id=13358"
+     * >http://bugs.digium.com/view.php?id=13358</a> for more information. Use
+     * {@link #getChannel()} instead.
      *
      * @return the unique id of the parked channel.
      */
@@ -134,188 +137,232 @@ public abstract class AbstractParkedCallEvent extends ManagerEvent
     {
         this.uniqueId = uniqueId;
     }
-    
+
     @Deprecated
-    public void setChannel(String channel) {
-    	this.setParkeeChannel(channel);
-    }
-    
-    @Deprecated
-    public String getChannel() {
-    	return this.getParkeeChannel();
+    public void setChannel(String channel)
+    {
+        this.setParkeeChannel(channel);
     }
 
-	public String getParkeeChannel() {
-		return parkeeChannel;
-	}
+    @Deprecated
+    public String getChannel()
+    {
+        return this.getParkeeChannel();
+    }
 
-	public void setParkeeChannel(String parkeeChannel) {
-		this.parkeeChannel = parkeeChannel;
-	}
+    public String getParkeeChannel()
+    {
+        return parkeeChannel;
+    }
 
-	public Integer getParkeeChannelState() {
-		return parkeeChannelState;
-	}
+    public void setParkeeChannel(String parkeeChannel)
+    {
+        this.parkeeChannel = parkeeChannel;
+    }
 
-	public void setParkeeChannelState(Integer parkeeChannelState) {
-		this.parkeeChannelState = parkeeChannelState;
-	}
+    public Integer getParkeeChannelState()
+    {
+        return parkeeChannelState;
+    }
 
-	public String getParkeeChannelStateDesc() {
-		return parkeeChannelStateDesc;
-	}
+    public void setParkeeChannelState(Integer parkeeChannelState)
+    {
+        this.parkeeChannelState = parkeeChannelState;
+    }
 
-	public void setParkeeChannelStateDesc(String parkeeChannelStateDesc) {
-		this.parkeeChannelStateDesc = parkeeChannelStateDesc;
-	}
+    public String getParkeeChannelStateDesc()
+    {
+        return parkeeChannelStateDesc;
+    }
 
-	public String getParkeeCallerIDNum() {
-		return parkeeCallerIDNum;
-	}
+    public void setParkeeChannelStateDesc(String parkeeChannelStateDesc)
+    {
+        this.parkeeChannelStateDesc = parkeeChannelStateDesc;
+    }
 
-	public void setParkeeCallerIDNum(String parkeeCallerIDNum) {
-		this.parkeeCallerIDNum = parkeeCallerIDNum;
-	}
+    public String getParkeeCallerIDNum()
+    {
+        return parkeeCallerIDNum;
+    }
 
-	public String getParkeeCallerIDName() {
-		return parkeeCallerIDName;
-	}
+    public void setParkeeCallerIDNum(String parkeeCallerIDNum)
+    {
+        this.parkeeCallerIDNum = parkeeCallerIDNum;
+    }
 
-	public void setParkeeCallerIDName(String parkeeCallerIDName) {
-		this.parkeeCallerIDName = parkeeCallerIDName;
-	}
+    public String getParkeeCallerIDName()
+    {
+        return parkeeCallerIDName;
+    }
 
-	public Integer getParkeeConnectedLineNum() {
-		return parkeeConnectedLineNum;
-	}
+    public void setParkeeCallerIDName(String parkeeCallerIDName)
+    {
+        this.parkeeCallerIDName = parkeeCallerIDName;
+    }
 
-	public void setParkeeConnectedLineNum(Integer parkeeConnectedLineNum) {
-		this.parkeeConnectedLineNum = parkeeConnectedLineNum;
-	}
+    public Integer getParkeeConnectedLineNum()
+    {
+        return parkeeConnectedLineNum;
+    }
 
-	public String getParkeeConnectedLineName() {
-		return parkeeConnectedLineName;
-	}
+    public void setParkeeConnectedLineNum(Integer parkeeConnectedLineNum)
+    {
+        this.parkeeConnectedLineNum = parkeeConnectedLineNum;
+    }
 
-	public void setParkeeConnectedLineName(String parkeeConnectedLineName) {
-		this.parkeeConnectedLineName = parkeeConnectedLineName;
-	}
+    public String getParkeeConnectedLineName()
+    {
+        return parkeeConnectedLineName;
+    }
 
-	public String getParkeeLanguage() {
-		return parkeeLanguage;
-	}
+    public void setParkeeConnectedLineName(String parkeeConnectedLineName)
+    {
+        this.parkeeConnectedLineName = parkeeConnectedLineName;
+    }
 
-	public void setParkeeLanguage(String parkeeLanguage) {
-		this.parkeeLanguage = parkeeLanguage;
-	}
+    public String getParkeeLanguage()
+    {
+        return parkeeLanguage;
+    }
 
-	public String getParkeeAccountCode() {
-		return parkeeAccountCode;
-	}
+    public void setParkeeLanguage(String parkeeLanguage)
+    {
+        this.parkeeLanguage = parkeeLanguage;
+    }
 
-	public void setParkeeAccountCode(String parkeeAccountCode) {
-		this.parkeeAccountCode = parkeeAccountCode;
-	}
+    public String getParkeeAccountCode()
+    {
+        return parkeeAccountCode;
+    }
 
-	public String getParkeeContext() {
-		return parkeeContext;
-	}
+    public void setParkeeAccountCode(String parkeeAccountCode)
+    {
+        this.parkeeAccountCode = parkeeAccountCode;
+    }
 
-	public void setParkeeContext(String parkeeContext) {
-		this.parkeeContext = parkeeContext;
-	}
+    public String getParkeeContext()
+    {
+        return parkeeContext;
+    }
 
-	public String getParkeeExten() {
-		return parkeeExten;
-	}
+    public void setParkeeContext(String parkeeContext)
+    {
+        this.parkeeContext = parkeeContext;
+    }
 
-	public void setParkeeExten(String parkeeExten) {
-		this.parkeeExten = parkeeExten;
-	}
+    public String getParkeeExten()
+    {
+        return parkeeExten;
+    }
 
-	public Integer getParkeePriority() {
-		return parkeePriority;
-	}
+    public void setParkeeExten(String parkeeExten)
+    {
+        this.parkeeExten = parkeeExten;
+    }
 
-	public void setParkeePriority(Integer parkeePriority) {
-		this.parkeePriority = parkeePriority;
-	}
+    public Integer getParkeePriority()
+    {
+        return parkeePriority;
+    }
 
-	public String getParkeeUniqueid() {
-		return parkeeUniqueid;
-	}
+    public void setParkeePriority(Integer parkeePriority)
+    {
+        this.parkeePriority = parkeePriority;
+    }
 
-	public void setParkeeUniqueid(String parkeeUniqueid) {
-		this.parkeeUniqueid = parkeeUniqueid;
-	}
+    public String getParkeeUniqueid()
+    {
+        return parkeeUniqueid;
+    }
 
-	public String getParkerDialString() {
-		return parkerDialString;
-	}
+    public void setParkeeUniqueid(String parkeeUniqueid)
+    {
+        this.parkeeUniqueid = parkeeUniqueid;
+    }
 
-	public void setParkerDialString(String parkerDialString) {
-		this.parkerDialString = parkerDialString;
-	}
+    public String getParkerDialString()
+    {
+        return parkerDialString;
+    }
 
-	public String getParkinglot() {
-		return parkingLot;
-	}
+    public void setParkerDialString(String parkerDialString)
+    {
+        this.parkerDialString = parkerDialString;
+    }
 
-	public void setParkinglot(String parkinglot) {
-		this.parkingLot = parkinglot;
-	}
+    public String getParkinglot()
+    {
+        return parkingLot;
+    }
 
-	public String getParkingSpace() {
-		return parkingSpace;
-	}
+    public void setParkinglot(String parkinglot)
+    {
+        this.parkingLot = parkinglot;
+    }
 
-	public void setParkingSpace(String parkingSpace) {
-		this.parkingSpace = parkingSpace;
-	}
+    public String getParkingSpace()
+    {
+        return parkingSpace;
+    }
 
-	public Long getParkingTimeout() {
-		return parkingTimeout;
-	}
+    public void setParkingSpace(String parkingSpace)
+    {
+        this.parkingSpace = parkingSpace;
+    }
 
-	public void setParkingTimeout(Long parkingTimeout) {
-		this.parkingTimeout = parkingTimeout;
-	}
+    public Long getParkingTimeout()
+    {
+        return parkingTimeout;
+    }
 
-	public Long getParkingDuration() {
-		return parkingDuration;
-	}
+    public void setParkingTimeout(Long parkingTimeout)
+    {
+        this.parkingTimeout = parkingTimeout;
+    }
 
-	public void setParkingDuration(Long parkingDuration) {
-		this.parkingDuration = parkingDuration;
-	}
+    public Long getParkingDuration()
+    {
+        return parkingDuration;
+    }
 
-	@Deprecated
-	public String getCallerId() {
-		return getParkeeCallerIDNum();
-	}
-	
-	@Deprecated
-	public void setCallerId(String callerId) {
-		setParkeeCallerIDNum(callerId);
-	}
-	
-	@Deprecated
-	public String getCallerIdName() {
-		return getParkeeCallerIDName();
-	}
-	
-	@Deprecated
-	public void setCallerIdName(String callerIdName) {
-		setParkeeCallerIDName(callerIdName);
-	}
+    public void setParkingDuration(Long parkingDuration)
+    {
+        this.parkingDuration = parkingDuration;
+    }
 
-	@Deprecated
-	public String getExten() {
-		return getParkingSpace();
-	}
-	
-	@Deprecated
-	public void setExten(String exten) {
-		setParkingSpace(exten);
-	}
+    @Deprecated
+    public String getCallerId()
+    {
+        return getParkeeCallerIDNum();
+    }
+
+    @Deprecated
+    public void setCallerId(String callerId)
+    {
+        setParkeeCallerIDNum(callerId);
+    }
+
+    @Deprecated
+    public String getCallerIdName()
+    {
+        return getParkeeCallerIDName();
+    }
+
+    @Deprecated
+    public void setCallerIdName(String callerIdName)
+    {
+        setParkeeCallerIDName(callerIdName);
+    }
+
+    @Deprecated
+    public String getExten()
+    {
+        return getParkingSpace();
+    }
+
+    @Deprecated
+    public void setExten(String exten)
+    {
+        setParkingSpace(exten);
+    }
 }

@@ -17,7 +17,8 @@
 package org.asteriskjava.manager.event;
 
 /**
- * A CoreShowChannelEvent is triggered for each active channel in response to a CoreShowChannelsAction.
+ * A CoreShowChannelEvent is triggered for each active channel in response to a
+ * CoreShowChannelsAction.
  *
  * @author sebastian gutierrez
  * @version $Id$
@@ -55,7 +56,6 @@ public class CoreShowChannelEvent extends ResponseEvent
      * @return channel state
      */
 
-
     /**
      * Returns the Account code
      *
@@ -87,8 +87,8 @@ public class CoreShowChannelEvent extends ResponseEvent
     }
 
     /**
-     * Returns the Aplication Data is runnning that channel at that time
-     * this is the parameters passed to that dialplan application
+     * Returns the Aplication Data is runnning that channel at that time this is
+     * the parameters passed to that dialplan application
      *
      * @return aplication data
      */

@@ -17,8 +17,11 @@
 package org.asteriskjava.manager.event;
 
 /**
- * A MeetMeLeaveEvent is triggered if a channel leaves a MeetMe conference.<p>
- * Channel and unqiueId properties for this event are available since Asterisk 1.0.<p>
+ * A MeetMeLeaveEvent is triggered if a channel leaves a MeetMe conference.
+ * <p>
+ * Channel and unqiueId properties for this event are available since Asterisk
+ * 1.0.
+ * <p>
  * It is implemented in <code>apps/app_meetme.c</code>
  * 
  * @author srt
@@ -42,7 +45,8 @@ public class MeetMeLeaveEvent extends AbstractMeetMeEvent
     }
 
     /**
-     * Returns how long the user spent in the conference.<p>
+     * Returns how long the user spent in the conference.
+     * <p>
      * This property is available since Asterisk 1.4.
      * 
      * @return the duration in seconds the user spent in the conference.

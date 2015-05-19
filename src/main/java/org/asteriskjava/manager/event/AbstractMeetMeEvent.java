@@ -17,8 +17,9 @@
 package org.asteriskjava.manager.event;
 
 /**
- * Abstract base class providing common properties for MeetMe
- * (Asterisk's conference system) events.<p>
+ * Abstract base class providing common properties for MeetMe (Asterisk's
+ * conference system) events.
+ * <p>
  * MeetMe events are implemented in <code>apps/app_meetme.c</code>
  * 
  * @author srt
@@ -26,8 +27,8 @@ package org.asteriskjava.manager.event;
  */
 public abstract class AbstractMeetMeEvent extends ManagerEvent
 {
-	private static final long serialVersionUID = 1L;
-	private String channel;
+    private static final long serialVersionUID = 1L;
+    private String channel;
     private String uniqueId;
     private String meetMe;
     private Integer user;
@@ -41,7 +42,8 @@ public abstract class AbstractMeetMeEvent extends ManagerEvent
     }
 
     /**
-     * Returns the name of the channel.<p>
+     * Returns the name of the channel.
+     * <p>
      * This property is available since Asterisk 1.4.
      * 
      * @return the name of the channel.
@@ -52,7 +54,8 @@ public abstract class AbstractMeetMeEvent extends ManagerEvent
     }
 
     /**
-     * Sets the name of the channel.<p>
+     * Sets the name of the channel.
+     * <p>
      * This property is available since Asterisk 1.4.
      * 
      * @param channel the name of the channel.
@@ -63,7 +66,8 @@ public abstract class AbstractMeetMeEvent extends ManagerEvent
     }
 
     /**
-     * Returns the unique id of the channel.<p>
+     * Returns the unique id of the channel.
+     * <p>
      * This property is available since Asterisk 1.4.
      * 
      * @return the unique id of the channel.
@@ -74,7 +78,8 @@ public abstract class AbstractMeetMeEvent extends ManagerEvent
     }
 
     /**
-     * Sets the unique id of the channel.<p>
+     * Sets the unique id of the channel.
+     * <p>
      * This property is available since Asterisk 1.4.
      * 
      * @param uniqueId the unique id of the channel.
@@ -105,7 +110,8 @@ public abstract class AbstractMeetMeEvent extends ManagerEvent
     }
 
     /**
-     * Returns the index of the user in the conference.<p>
+     * Returns the index of the user in the conference.
+     * <p>
      * This can be used for the "meetme (mute|unmute|kick)" commands.
      * 
      * @return the index of the user in the conference.
@@ -126,18 +132,19 @@ public abstract class AbstractMeetMeEvent extends ManagerEvent
     {
         this.setUser(userNum);
     }
-    
+
     /**
-     * Returns the index of the user in the conference.<p>
+     * Returns the index of the user in the conference.
+     * <p>
      * This can be used for the "meetme (mute|unmute|kick)" commands.
      * 
      * @return the index of the user in the conference.
      */
     public Integer getUser()
     {
-    	return user;
+        return user;
     }
-    
+
     /**
      * Sets the index of the user in the conference.
      * 
@@ -145,6 +152,6 @@ public abstract class AbstractMeetMeEvent extends ManagerEvent
      */
     public void setUser(Integer userNum)
     {
-    	this.user = userNum;
+        this.user = userNum;
     }
 }

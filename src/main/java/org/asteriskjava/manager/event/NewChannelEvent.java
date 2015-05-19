@@ -17,7 +17,8 @@
 package org.asteriskjava.manager.event;
 
 /**
- * A NewChannelEvent is triggered when a new channel is created.<p>
+ * A NewChannelEvent is triggered when a new channel is created.
+ * <p>
  * It is implemented in <code>channel.c</code>
  *
  * @author srt
@@ -40,16 +41,17 @@ public class NewChannelEvent extends AbstractChannelStateEvent
 
     public String getLanguage()
     {
-    	return language;
+        return language;
     }
-    
+
     public void setLanguage(String language)
     {
-    	this.language = language;
+        this.language = language;
     }
-    
+
     /**
-     * Returns the account code of the new channel.<p>
+     * Returns the account code of the new channel.
+     * <p>
      * This property is available since Asterisk 1.6.
      *
      * @return the account code of the new channel.

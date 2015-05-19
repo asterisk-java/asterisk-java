@@ -17,12 +17,16 @@
 package org.asteriskjava.manager.event;
 
 /**
- * A HoldEvent is triggered when a channel is put on hold (or no longer on hold).<p>
- * It is implemented in <code>channels/chan_sip.c</code>.<p>
+ * A HoldEvent is triggered when a channel is put on hold (or no longer on
+ * hold).
+ * <p>
+ * It is implemented in <code>channels/chan_sip.c</code>.
+ * <p>
  * Available since Asterisk 1.2 for SIP channels, as of Asterisk 1.6 this event
- * is also supported for IAX2 channels.<p>
- * To receive HoldEvents for SIP channels you must set <code>callevents = yes</code>
- * in <code>sip.conf</code>.
+ * is also supported for IAX2 channels.
+ * <p>
+ * To receive HoldEvents for SIP channels you must set
+ * <code>callevents = yes</code> in <code>sip.conf</code>.
  *
  * @author srt
  * @version $Id$
@@ -36,6 +40,7 @@ public class HoldEvent extends AbstractHoldEvent
     private static final long serialVersionUID = 0L;
 
     private String musicClass;
+
     /**
      * Creates a new HoldEvent.
      *
@@ -44,19 +49,22 @@ public class HoldEvent extends AbstractHoldEvent
     public HoldEvent(Object source)
     {
         super(source);
-        /* Asterisk prior to 1.6 and after 11 uses Hold and Unhold events instead of the status
-         * So we set the status to true in the Hold event and to false in Unhold.
-         * For Asterisk 1.6-11 this is overridden by the status property received with
-         * the hold event.
+        /*
+         * Asterisk prior to 1.6 and after 11 uses Hold and Unhold events
+         * instead of the status So we set the status to true in the Hold event
+         * and to false in Unhold. For Asterisk 1.6-11 this is overridden by the
+         * status property received with the hold event.
          */
         setStatus(true);
     }
 
-    public String getMusicClass() {
-		return musicClass;
+    public String getMusicClass()
+    {
+        return musicClass;
     }
 
-    public void setMusicClass(String musicClass) {
-		this.musicClass = musicClass;
+    public void setMusicClass(String musicClass)
+    {
+        this.musicClass = musicClass;
     }
 }
