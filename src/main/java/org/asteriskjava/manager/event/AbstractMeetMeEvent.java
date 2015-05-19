@@ -30,7 +30,7 @@ public abstract class AbstractMeetMeEvent extends ManagerEvent
 	private String channel;
     private String uniqueId;
     private String meetMe;
-    private Integer userNum;
+    private Integer user;
 
     /**
      * @param source
@@ -110,9 +110,10 @@ public abstract class AbstractMeetMeEvent extends ManagerEvent
      * 
      * @return the index of the user in the conference.
      */
+    @Deprecated
     public Integer getUserNum()
     {
-        return userNum;
+        return getUser();
     }
 
     /**
@@ -120,8 +121,30 @@ public abstract class AbstractMeetMeEvent extends ManagerEvent
      * 
      * @param userNum the index of the user in the conference.
      */
+    @Deprecated
     public void setUserNum(Integer userNum)
     {
-        this.userNum = userNum;
+        this.setUser(userNum);
+    }
+    
+    /**
+     * Returns the index of the user in the conference.<p>
+     * This can be used for the "meetme (mute|unmute|kick)" commands.
+     * 
+     * @return the index of the user in the conference.
+     */
+    public Integer getUser()
+    {
+    	return user;
+    }
+    
+    /**
+     * Sets the index of the user in the conference.
+     * 
+     * @param userNum the index of the user in the conference.
+     */
+    public void setUser(Integer userNum)
+    {
+    	this.user = userNum;
     }
 }
