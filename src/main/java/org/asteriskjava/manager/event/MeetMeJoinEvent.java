@@ -31,46 +31,11 @@ public class MeetMeJoinEvent extends AbstractMeetMeEvent
      */
     private static final long serialVersionUID = 0L;
 
-    private String callerIdNum;
-    private String callerIdName;
-
     /**
      * @param source
      */
     public MeetMeJoinEvent(Object source)
     {
         super(source);
-    }
-
-    /**
-     * Returns the Caller Id number.
-     *
-     * @return the Caller Id number or "&lt;unknown&gt;" if not set.
-     * @since 1.0.0
-     */
-    public String getCallerIdNum()
-    {
-        return callerIdNum;
-    }
-
-    public void setCallerIdNum(String callerIdNum)
-    {
-        this.callerIdNum = callerIdNum;
-    }
-
-    /**
-     * Returns the Caller Id name.
-     *
-     * @return the Caller Id name or "&lt;unknown&gt;" if not set.
-     * @since 1.0.0
-     */
-    public String getCallerIdName()
-    {
-        return callerIdName;
-    }
-
-    public void setCallerIdName(String callerIdName)
-    {
-        this.callerIdName = callerIdName;
     }
 }
