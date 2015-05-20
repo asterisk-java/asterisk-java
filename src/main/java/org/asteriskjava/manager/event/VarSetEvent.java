@@ -17,8 +17,11 @@
 package org.asteriskjava.manager.event;
 
 /**
- * A VarSetEvent is triggered when a channel or global variable is set in Asterisk.<p>
- * Available since Asterisk 1.6<p>
+ * A VarSetEvent is triggered when a channel or global variable is set in
+ * Asterisk.
+ * <p>
+ * Available since Asterisk 1.6
+ * <p>
  * It is implemented in <code>main/pbx.c</code>
  *
  * @author srt
@@ -33,87 +36,16 @@ public class VarSetEvent extends ManagerEvent
     private String uniqueId;
     private String variable;
     private String value;
-    private String callerIdName;
     private String language;
-    
-    public String getLanguage(){
-    	return language;
-    }
-    
-    public void setLanguage(String language){
-    	this.language = language;
-    }
-    
-    public String getConnectedLineName() {
-        return connectedLineName;
+
+    public String getLanguage()
+    {
+        return language;
     }
 
-    public void setConnectedLineName(String connectedLineName) {
-        this.connectedLineName = connectedLineName;
-    }
-
-    public String getChannelStateDesc() {
-        return channelStateDesc;
-    }
-
-    public void setChannelStateDesc(String channelStateDesc) {
-        this.channelStateDesc = channelStateDesc;
-    }
-
-    public Integer getPriority() {
-        return priority;
-    }
-
-    public void setPriority(Integer priority) {
-        this.priority = priority;
-    }
-
-    public String getExten() {
-        return exten;
-    }
-
-    public void setExten(String exten) {
-        this.exten = exten;
-    }
-
-    public String getCallerIdName() {
-        return callerIdName;
-    }
-
-    public void setCallerIdName(String callerIdName) {
-        this.callerIdName = callerIdName;
-    }
-
-    public String getConnectedLineNum() {
-        return connectedLineNum;
-    }
-
-    public void setConnectedLineNum(String connectedLineName) {
-        this.connectedLineNum = connectedLineName;
-    }
-
-    public Integer getChannelState() {
-        return channelState;
-    }
-
-    public void setChannelState(Integer channelState) {
-        this.channelState = channelState;
-    }
-
-    public String getCallerIdNum() {
-        return callerIdNum;
-    }
-
-    public void setCallerIdNum(String callerIdNum) {
-        this.callerIdNum = callerIdNum;
-    }
-
-    public String getContext() {
-        return context;
-    }
-
-    public void setContext(String context) {
-        this.context = context;
+    public void setLanguage(String language)
+    {
+        this.language = language;
     }
 
     public VarSetEvent(Object source)
@@ -122,9 +54,11 @@ public class VarSetEvent extends ManagerEvent
     }
 
     /**
-     * Returns the name of the channel or <code>null</code> for global variables.
+     * Returns the name of the channel or <code>null</code> for global
+     * variables.
      *
-     * @return the name of the channel or <code>null</code> for global variables.
+     * @return the name of the channel or <code>null</code> for global
+     *         variables.
      */
     public String getChannel()
     {
@@ -137,9 +71,11 @@ public class VarSetEvent extends ManagerEvent
     }
 
     /**
-     * Returns the unique id of the channel or <code>null</code> for global variables.
+     * Returns the unique id of the channel or <code>null</code> for global
+     * variables.
      *
-     * @return the unique id of the channel or <code>null</code> for global variables.
+     * @return the unique id of the channel or <code>null</code> for global
+     *         variables.
      */
     public String getUniqueId()
     {

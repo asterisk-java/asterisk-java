@@ -18,7 +18,8 @@ package org.asteriskjava.manager.event;
 
 /**
  * A QueueEntryEvent is triggered in response to a QueueStatusAction and
- * contains information about an entry in a queue.<p>
+ * contains information about an entry in a queue.
+ * <p>
  * It is implemented in <code>apps/app_queue.c</code>
  *
  * @author srt
@@ -36,10 +37,6 @@ public class QueueEntryEvent extends ResponseEvent
     private String uniqueId;
     private String channel;
     private String callerId;
-    private String callerIdName;
-    private String callerIdNum;
-    private String connectedlinename;
-    private String connectedlinenum;       
     private Long wait;
 
     /**
@@ -91,7 +88,8 @@ public class QueueEntryEvent extends ResponseEvent
     }
 
     /**
-     * Returns the unique id of the channel of this entry.<p>
+     * Returns the unique id of the channel of this entry.
+     * <p>
      * Available since Asterisk 1.6.
      *
      * @return the unique id of the channel of this entry.
@@ -117,68 +115,24 @@ public class QueueEntryEvent extends ResponseEvent
         this.channel = channel;
     }
 
-	/**
+    /**
      * Returns the the Caller*ID number of this entry.
      *
      * @return the the Caller*ID number of this entry.
      */
-    public String getCallerId() 
+    public String getCallerId()
     {
-		return callerId;
-	}
+        return callerId;
+    }
 
     /**
      * Sets the the Caller*ID number of this entry.
      *
      * @param callerId the the Caller*ID number of this entry.
      */
-	public void setCallerId(String callerId) 
-	{
-		this.callerId = callerId;
-	}
-
-    /**
-     * Returns the Caller*ID name of this entry.
-     *
-     * @return the Caller*ID name of this entry.
-     * @since 0.2
-     */
-    public String getCallerIdName()
+    public void setCallerId(String callerId)
     {
-        return callerIdName;
-    }
-
-    /**
-     * Sets the Caller*ID name of this entry.
-     *
-     * @param callerIdName the Caller*ID name of this entry.
-     * @since 0.2
-     */
-    public void setCallerIdName(String callerIdName)
-    {
-        this.callerIdName = callerIdName;
-    }
-
-    /**
-     * Gets the Caller*ID num of this entry.
-     *
-     * @return the Caller*ID num of this entry.
-     * @since 1.0.0
-     */
-    public String getCallerIdNum()
-    {
-        return callerIdNum;
-    }
-
-    /**
-     * Sets the Caller*ID num of this entry.
-     *
-     * @param callerIdNum the Caller*ID num of this entry.
-     * @since 1.0.0
-     */
-    public void setCallerIdNum(String callerIdNum)
-    {
-        this.callerIdNum = callerIdNum;
+        this.callerId = callerId;
     }
 
     /**
@@ -197,24 +151,4 @@ public class QueueEntryEvent extends ResponseEvent
         this.wait = wait;
     }
 
-	public String getConnectedlinename()
-	{
-		return connectedlinename;
-	}
-
-	public void setConnectedlinename(String connectedlinename)
-	{
-		this.connectedlinename = connectedlinename;
-	}
-
-	public String getConnectedlinenum()
-	{
-		return connectedlinenum;
-	}
-
-	public void setConnectedlinenum(String connectedlinenum)
-	{
-		this.connectedlinenum = connectedlinenum;
-	}
-   
 }

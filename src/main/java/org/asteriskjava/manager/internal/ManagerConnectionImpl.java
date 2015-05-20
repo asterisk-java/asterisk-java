@@ -46,6 +46,8 @@ import org.asteriskjava.manager.action.LoginAction;
 import org.asteriskjava.manager.action.LogoffAction;
 import org.asteriskjava.manager.action.ManagerAction;
 import org.asteriskjava.manager.event.ConnectEvent;
+import org.asteriskjava.manager.event.DialBeginEvent;
+import org.asteriskjava.manager.event.DialEvent;
 import org.asteriskjava.manager.event.DisconnectEvent;
 import org.asteriskjava.manager.event.ManagerEvent;
 import org.asteriskjava.manager.event.ProtocolIdentifierReceivedEvent;
@@ -70,592 +72,588 @@ import org.asteriskjava.manager.action.UserEventAction;
  */
 public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 {
-	private static final int RECONNECTION_INTERVAL_1 = 50;
-	private static final int RECONNECTION_INTERVAL_2 = 5000;
-	private static final String DEFAULT_HOSTNAME = "localhost";
-	private static final int DEFAULT_PORT = 5038;
-	private static final int RECONNECTION_VERSION_INTERVAL = 500;
-	private static final int MAX_VERSION_ATTEMPTS = 4;
-	private static final Pattern SHOW_VERSION_PATTERN = Pattern.compile("^(core )?show version.*");
+    private static final int RECONNECTION_INTERVAL_1 = 50;
+    private static final int RECONNECTION_INTERVAL_2 = 5000;
+    private static final String DEFAULT_HOSTNAME = "localhost";
+    private static final int DEFAULT_PORT = 5038;
+    private static final int RECONNECTION_VERSION_INTERVAL = 500;
+    private static final int MAX_VERSION_ATTEMPTS = 4;
+    private static final Pattern SHOW_VERSION_PATTERN = Pattern.compile("^(core )?show version.*");
 
     private static final Pattern VERSION_PATTERN_1_6 = Pattern.compile("^\\s*Asterisk (SVN-branch-)?1\\.6[-. ].*");
     private static final Pattern VERSION_PATTERN_1_8 = Pattern.compile("^\\s*Asterisk (SVN-branch-)?1\\.8[-. ].*");
-    private static final Pattern VERSION_PATTERN_10  = Pattern.compile("^\\s*Asterisk (SVN-branch-)?10[-. ].*");
-    private static final Pattern VERSION_PATTERN_11  = Pattern.compile("^\\s*Asterisk (SVN-branch-)?11[-. ].*");
-    private static final Pattern VERSION_PATTERN_12  = Pattern.compile("^\\s*Asterisk (SVN-branch-)?12[-. ].*");
-    private static final Pattern VERSION_PATTERN_13  = Pattern.compile("^\\s*Asterisk (SVN-branch-)?13[-. ].*");
+    private static final Pattern VERSION_PATTERN_10 = Pattern.compile("^\\s*Asterisk (SVN-branch-)?10[-. ].*");
+    private static final Pattern VERSION_PATTERN_11 = Pattern.compile("^\\s*Asterisk (SVN-branch-)?11[-. ].*");
+    private static final Pattern VERSION_PATTERN_12 = Pattern.compile("^\\s*Asterisk (SVN-branch-)?12[-. ].*");
+    private static final Pattern VERSION_PATTERN_13 = Pattern.compile("^\\s*Asterisk (SVN-branch-)?13[-. ].*");
 
-	private static final AtomicLong idCounter = new AtomicLong(0);
+    private static final AtomicLong idCounter = new AtomicLong(0);
 
-	/**
-	 * Instance logger.
-	 */
-	private final Log logger = LogFactory.getLog(getClass());
+    /**
+     * Instance logger.
+     */
+    private final Log logger = LogFactory.getLog(getClass());
 
-	private final long id;
+    private final long id;
 
-	/**
-	 * Used to construct the internalActionId.
-	 */
-	private AtomicLong actionIdCounter = new AtomicLong(0);
+    /**
+     * Used to construct the internalActionId.
+     */
+    private AtomicLong actionIdCounter = new AtomicLong(0);
 
-	/* Config attributes */
-	/**
-	 * Hostname of the Asterisk server to connect to.
-	 */
-	private String hostname = DEFAULT_HOSTNAME;
+    /* Config attributes */
+    /**
+     * Hostname of the Asterisk server to connect to.
+     */
+    private String hostname = DEFAULT_HOSTNAME;
 
-	/**
-	 * TCP port to connect to.
-	 */
-	private int port = DEFAULT_PORT;
+    /**
+     * TCP port to connect to.
+     */
+    private int port = DEFAULT_PORT;
 
-	/**
-	 * <code>true</code> to use SSL for the connection, <code>false</code> for a
-	 * plain text connection.
-	 */
-	private boolean ssl = false;
+    /**
+     * <code>true</code> to use SSL for the connection, <code>false</code> for a
+     * plain text connection.
+     */
+    private boolean ssl = false;
 
-	/**
-	 * The username to use for login as defined in Asterisk's
-	 * <code>manager.conf</code>.
-	 */
-	protected String username;
+    /**
+     * The username to use for login as defined in Asterisk's
+     * <code>manager.conf</code>.
+     */
+    protected String username;
 
-	/**
-	 * The password to use for login as defined in Asterisk's
-	 * <code>manager.conf</code>.
-	 */
-	protected String password;
+    /**
+     * The password to use for login as defined in Asterisk's
+     * <code>manager.conf</code>.
+     */
+    protected String password;
 
-	/**
-	 * The default timeout to wait for a ManagerResponse after sending a
-	 * ManagerAction.
-	 */
-	private long defaultResponseTimeout = 2000;
+    /**
+     * The default timeout to wait for a ManagerResponse after sending a
+     * ManagerAction.
+     */
+    private long defaultResponseTimeout = 2000;
 
-	/**
-	 * The default timeout to wait for the last ResponseEvent after sending an
-	 * EventGeneratingAction.
-	 */
-	private long defaultEventTimeout = 5000;
+    /**
+     * The default timeout to wait for the last ResponseEvent after sending an
+     * EventGeneratingAction.
+     */
+    private long defaultEventTimeout = 5000;
 
-	/**
-	 * The timeout to use when connecting the the Asterisk server.
-	 */
-	private int socketTimeout = 0;
+    /**
+     * The timeout to use when connecting the the Asterisk server.
+     */
+    private int socketTimeout = 0;
 
-	/**
-     * Closes the connection (and reconnects) if no input has been read for the given amount
-     * of milliseconds. A timeout of zero is interpreted as an infinite timeout.
-	 * 
-	 * @see Socket#setSoTimeout(int)
-	 */
-	private int socketReadTimeout = 0;
+    /**
+     * Closes the connection (and reconnects) if no input has been read for the
+     * given amount of milliseconds. A timeout of zero is interpreted as an
+     * infinite timeout.
+     * 
+     * @see Socket#setSoTimeout(int)
+     */
+    private int socketReadTimeout = 0;
 
-	/**
-	 * <code>true</code> to continue to reconnect after an authentication
-	 * failure.
-	 */
-	private boolean keepAliveAfterAuthenticationFailure = true;
+    /**
+     * <code>true</code> to continue to reconnect after an authentication
+     * failure.
+     */
+    private boolean keepAliveAfterAuthenticationFailure = true;
 
-	/**
-	 * The socket to use for TCP/IP communication with Asterisk.
-	 */
-	private SocketConnectionFacade socket;
+    /**
+     * The socket to use for TCP/IP communication with Asterisk.
+     */
+    private SocketConnectionFacade socket;
 
-	/**
-	 * The thread that runs the reader.
-	 */
-	private Thread readerThread;
-	private final AtomicLong readerThreadCounter = new AtomicLong(0);
+    /**
+     * The thread that runs the reader.
+     */
+    private Thread readerThread;
+    private final AtomicLong readerThreadCounter = new AtomicLong(0);
 
-	private final AtomicLong reconnectThreadCounter = new AtomicLong(0);
+    private final AtomicLong reconnectThreadCounter = new AtomicLong(0);
 
-	/**
-	 * The reader to use to receive events and responses from asterisk.
-	 */
-	private ManagerReader reader;
+    /**
+     * The reader to use to receive events and responses from asterisk.
+     */
+    private ManagerReader reader;
 
-	/**
-	 * The writer to use to send actions to asterisk.
-	 */
-	private ManagerWriter writer;
+    /**
+     * The writer to use to send actions to asterisk.
+     */
+    private ManagerWriter writer;
 
-	/**
-	 * The protocol identifer Asterisk sends on connect wrapped into an object
-	 * to be used as mutex.
-	 */
-	private final ProtocolIdentifierWrapper protocolIdentifier;
+    /**
+     * The protocol identifer Asterisk sends on connect wrapped into an object
+     * to be used as mutex.
+     */
+    private final ProtocolIdentifierWrapper protocolIdentifier;
 
-	/**
-	 * The version of the Asterisk server we are connected to.
-	 */
-	private AsteriskVersion version;
+    /**
+     * The version of the Asterisk server we are connected to.
+     */
+    private AsteriskVersion version;
 
-	/**
-	 * Contains the registered handlers that process the ManagerResponses.
-	 * <p/>
-	 * Key is the internalActionId of the Action sent and value the
-	 * corresponding ResponseListener.
-	 */
-	private final Map<String, SendActionCallback> responseListeners;
+    /**
+     * Contains the registered handlers that process the ManagerResponses.
+     * <p/>
+     * Key is the internalActionId of the Action sent and value the
+     * corresponding ResponseListener.
+     */
+    private final Map<String, SendActionCallback> responseListeners;
 
-	/**
-	 * Contains the event handlers that handle ResponseEvents for the
-	 * sendEventGeneratingAction methods.
-	 * <p/>
-	 * Key is the internalActionId of the Action sent and value the
-	 * corresponding EventHandler.
-	 */
-	private final Map<String, ManagerEventListener> responseEventListeners;
+    /**
+     * Contains the event handlers that handle ResponseEvents for the
+     * sendEventGeneratingAction methods.
+     * <p/>
+     * Key is the internalActionId of the Action sent and value the
+     * corresponding EventHandler.
+     */
+    private final Map<String, ManagerEventListener> responseEventListeners;
 
-	/**
-	 * Contains the event handlers that users registered.
-	 */
-	private final List<ManagerEventListener> eventListeners;
+    /**
+     * Contains the event handlers that users registered.
+     */
+    private final List<ManagerEventListener> eventListeners;
 
-	protected ManagerConnectionState state = INITIAL;
+    protected ManagerConnectionState state = INITIAL;
 
-	private String eventMask;
+    private String eventMask;
 
-	/**
-	 * Creates a new instance.
-	 */
-	public ManagerConnectionImpl()
-	{
-		this.id = idCounter.getAndIncrement();
-		this.responseListeners = new HashMap<String, SendActionCallback>();
-		this.responseEventListeners = new HashMap<String, ManagerEventListener>();
-		this.eventListeners = new ArrayList<ManagerEventListener>();
-		this.protocolIdentifier = new ProtocolIdentifierWrapper();
-	}
+    /**
+     * Creates a new instance.
+     */
+    public ManagerConnectionImpl()
+    {
+        this.id = idCounter.getAndIncrement();
+        this.responseListeners = new HashMap<String, SendActionCallback>();
+        this.responseEventListeners = new HashMap<String, ManagerEventListener>();
+        this.eventListeners = new ArrayList<ManagerEventListener>();
+        this.protocolIdentifier = new ProtocolIdentifierWrapper();
+    }
 
-	// the following two methods can be overriden when running test cases to
-	// return a mock object
-	protected ManagerReader createReader(Dispatcher dispatcher, Object source)
-	{
-		return new ManagerReaderImpl(dispatcher, source);
-	}
+    // the following two methods can be overriden when running test cases to
+    // return a mock object
+    protected ManagerReader createReader(Dispatcher dispatcher, Object source)
+    {
+        return new ManagerReaderImpl(dispatcher, source);
+    }
 
-	protected ManagerWriter createWriter()
-	{
-		return new ManagerWriterImpl();
-	}
+    protected ManagerWriter createWriter()
+    {
+        return new ManagerWriterImpl();
+    }
 
-	/**
-	 * Sets the hostname of the asterisk server to connect to.
-	 * <p/>
-	 * Default is <code>localhost</code>.
-	 * 
-	 * @param hostname the hostname to connect to
-	 */
-	public void setHostname(String hostname)
-	{
-		this.hostname = hostname;
-	}
+    /**
+     * Sets the hostname of the asterisk server to connect to.
+     * <p/>
+     * Default is <code>localhost</code>.
+     * 
+     * @param hostname the hostname to connect to
+     */
+    public void setHostname(String hostname)
+    {
+        this.hostname = hostname;
+    }
 
-	/**
-	 * Sets the port to use to connect to the asterisk server. This is the port
-	 * specified in asterisk's <code>manager.conf</code> file.
-	 * <p/>
-	 * Default is 5038.
-	 * 
-	 * @param port the port to connect to
-	 */
-	public void setPort(int port)
-	{
-		if (port <= 0)
-		{
-			this.port = DEFAULT_PORT;
-		}
-		else
-		{
-			this.port = port;
-		}
-	}
+    /**
+     * Sets the port to use to connect to the asterisk server. This is the port
+     * specified in asterisk's <code>manager.conf</code> file.
+     * <p/>
+     * Default is 5038.
+     * 
+     * @param port the port to connect to
+     */
+    public void setPort(int port)
+    {
+        if (port <= 0)
+        {
+            this.port = DEFAULT_PORT;
+        }
+        else
+        {
+            this.port = port;
+        }
+    }
 
-	/**
-	 * Sets whether to use SSL.
-     * <br>
-	 * Default is false.
-	 * 
+    /**
+     * Sets whether to use SSL. <br>
+     * Default is false.
+     * 
      * @param ssl <code>true</code> to use SSL for the connection,
-	 *            <code>false</code> for a plain text connection.
-	 * @since 0.3
-	 */
-	public void setSsl(boolean ssl)
-	{
-		this.ssl = ssl;
-	}
+     *            <code>false</code> for a plain text connection.
+     * @since 0.3
+     */
+    public void setSsl(boolean ssl)
+    {
+        this.ssl = ssl;
+    }
 
-	/**
-	 * Sets the username to use to connect to the asterisk server. This is the
-	 * username specified in asterisk's <code>manager.conf</code> file.
-	 * 
+    /**
+     * Sets the username to use to connect to the asterisk server. This is the
+     * username specified in asterisk's <code>manager.conf</code> file.
+     * 
      * @param username the username to use for login
-	 */
-	public void setUsername(String username)
-	{
-		this.username = username;
-	}
+     */
+    public void setUsername(String username)
+    {
+        this.username = username;
+    }
 
-	/**
-	 * Sets the password to use to connect to the asterisk server. This is the
-	 * password specified in Asterisk's <code>manager.conf</code> file.
-	 * 
+    /**
+     * Sets the password to use to connect to the asterisk server. This is the
+     * password specified in Asterisk's <code>manager.conf</code> file.
+     * 
      * @param password the password to use for login
-	 */
-	public void setPassword(String password)
-	{
-		this.password = password;
-	}
+     */
+    public void setPassword(String password)
+    {
+        this.password = password;
+    }
 
-	/**
-	 * Sets the time in milliseconds the synchronous method
-	 * {@link #sendAction(ManagerAction)} will wait for a response before
-	 * throwing a TimeoutException.
-     * <br>
-	 * Default is 2000.
-	 * 
+    /**
+     * Sets the time in milliseconds the synchronous method
+     * {@link #sendAction(ManagerAction)} will wait for a response before
+     * throwing a TimeoutException. <br>
+     * Default is 2000.
+     * 
      * @param defaultResponseTimeout default response timeout in milliseconds
-	 * @since 0.2
-	 */
-	public void setDefaultResponseTimeout(long defaultResponseTimeout)
-	{
-		this.defaultResponseTimeout = defaultResponseTimeout;
-	}
+     * @since 0.2
+     */
+    public void setDefaultResponseTimeout(long defaultResponseTimeout)
+    {
+        this.defaultResponseTimeout = defaultResponseTimeout;
+    }
 
-	/**
-	 * Sets the time in milliseconds the synchronous method
-	 * {@link #sendEventGeneratingAction(EventGeneratingAction)} will wait for a
-	 * response and the last response event before throwing a TimeoutException.
-     * <br>
-	 * Default is 5000.
-	 * 
+    /**
+     * Sets the time in milliseconds the synchronous method
+     * {@link #sendEventGeneratingAction(EventGeneratingAction)} will wait for a
+     * response and the last response event before throwing a TimeoutException. <br>
+     * Default is 5000.
+     * 
      * @param defaultEventTimeout default event timeout in milliseconds
-	 * @since 0.2
-	 */
-	public void setDefaultEventTimeout(long defaultEventTimeout)
-	{
-		this.defaultEventTimeout = defaultEventTimeout;
-	}
+     * @since 0.2
+     */
+    public void setDefaultEventTimeout(long defaultEventTimeout)
+    {
+        this.defaultEventTimeout = defaultEventTimeout;
+    }
 
-	/**
-     * Set to <code>true</code> to try reconnecting to ther asterisk serve
-     * even if the reconnection attempt threw an AuthenticationFailedException.
-     * <br>
-	 * Default is <code>true</code>.
-	 * 
-	 * @param keepAliveAfterAuthenticationFailure
-	 *            <code>true</code> to try reconnecting to ther asterisk serve
-     *         even if the reconnection attempt threw an AuthenticationFailedException,
-     *         <code>false</code> otherwise.
-	 */
-	public void setKeepAliveAfterAuthenticationFailure(boolean keepAliveAfterAuthenticationFailure)
-	{
-		this.keepAliveAfterAuthenticationFailure = keepAliveAfterAuthenticationFailure;
-	}
+    /**
+     * Set to <code>true</code> to try reconnecting to ther asterisk serve even
+     * if the reconnection attempt threw an AuthenticationFailedException. <br>
+     * Default is <code>true</code>.
+     * 
+     * @param keepAliveAfterAuthenticationFailure <code>true</code> to try
+     *            reconnecting to ther asterisk serve even if the reconnection
+     *            attempt threw an AuthenticationFailedException,
+     *            <code>false</code> otherwise.
+     */
+    public void setKeepAliveAfterAuthenticationFailure(boolean keepAliveAfterAuthenticationFailure)
+    {
+        this.keepAliveAfterAuthenticationFailure = keepAliveAfterAuthenticationFailure;
+    }
 
-	/* Implementation of ManagerConnection interface */
+    /* Implementation of ManagerConnection interface */
 
-	public String getUsername()
-	{
-		return username;
-	}
+    public String getUsername()
+    {
+        return username;
+    }
 
-	public String getPassword()
-	{
-		return password;
-	}
+    public String getPassword()
+    {
+        return password;
+    }
 
-	public AsteriskVersion getVersion()
-	{
-		return version;
-	}
+    public AsteriskVersion getVersion()
+    {
+        return version;
+    }
 
-	public String getHostname()
-	{
-		return hostname;
-	}
+    public String getHostname()
+    {
+        return hostname;
+    }
 
-	public int getPort()
-	{
-		return port;
-	}
+    public int getPort()
+    {
+        return port;
+    }
 
-	public boolean isSsl()
-	{
-		return ssl;
-	}
+    public boolean isSsl()
+    {
+        return ssl;
+    }
 
-	public InetAddress getLocalAddress()
-	{
-		return socket.getLocalAddress();
-	}
+    public InetAddress getLocalAddress()
+    {
+        return socket.getLocalAddress();
+    }
 
-	public int getLocalPort()
-	{
-		return socket.getLocalPort();
-	}
+    public int getLocalPort()
+    {
+        return socket.getLocalPort();
+    }
 
-	public InetAddress getRemoteAddress()
-	{
-		return socket.getRemoteAddress();
-	}
+    public InetAddress getRemoteAddress()
+    {
+        return socket.getRemoteAddress();
+    }
 
-	public int getRemotePort()
-	{
-		return socket.getRemotePort();
-	}
+    public int getRemotePort()
+    {
+        return socket.getRemotePort();
+    }
 
-	public void registerUserEventClass(Class<? extends ManagerEvent> userEventClass)
-	{
-		if (reader == null)
-		{
-			reader = createReader(this, this);
-		}
+    public void registerUserEventClass(Class< ? extends ManagerEvent> userEventClass)
+    {
+        if (reader == null)
+        {
+            reader = createReader(this, this);
+        }
 
-		reader.registerEventClass(userEventClass);
-	}
+        reader.registerEventClass(userEventClass);
+    }
 
-	public void setSocketTimeout(int socketTimeout)
-	{
-		this.socketTimeout = socketTimeout;
-	}
+    public void setSocketTimeout(int socketTimeout)
+    {
+        this.socketTimeout = socketTimeout;
+    }
 
-	public void setSocketReadTimeout(int socketReadTimeout)
-	{
-		this.socketReadTimeout = socketReadTimeout;
-	}
+    public void setSocketReadTimeout(int socketReadTimeout)
+    {
+        this.socketReadTimeout = socketReadTimeout;
+    }
 
-	public synchronized void login() throws IOException, AuthenticationFailedException, TimeoutException
-	{
-		login(null);
-	}
+    public synchronized void login() throws IOException, AuthenticationFailedException, TimeoutException
+    {
+        login(null);
+    }
 
     public synchronized void login(String eventMask) throws IOException, AuthenticationFailedException, TimeoutException
-	{
-		if (state != INITIAL && state != DISCONNECTED)
-		{
-			throw new IllegalStateException("Login may only be perfomed when in state "
-					+ "INITIAL or DISCONNECTED, but connection is in state " + state);
-		}
+    {
+        if (state != INITIAL && state != DISCONNECTED)
+        {
+            throw new IllegalStateException("Login may only be perfomed when in state "
+                    + "INITIAL or DISCONNECTED, but connection is in state " + state);
+        }
 
-		state = CONNECTING;
-		this.eventMask = eventMask;
-		try
-		{
-			doLogin(defaultResponseTimeout, eventMask);
-		}
-		finally
-		{
-			if (state != CONNECTED)
-			{
-				state = DISCONNECTED;
-			}
-		}
-	}
+        state = CONNECTING;
+        this.eventMask = eventMask;
+        try
+        {
+            doLogin(defaultResponseTimeout, eventMask);
+        }
+        finally
+        {
+            if (state != CONNECTED)
+            {
+                state = DISCONNECTED;
+            }
+        }
+    }
 
-	/**
-	 * Does the real login, following the steps outlined below.
-     * <br>
-	 * <ol>
-	 * <li>Connects to the asterisk server by calling {@link #connect()} if not
-	 * already connected
-	 * <li>Waits until the protocol identifier is received but not longer than
-	 * timeout ms.
-	 * <li>Sends a {@link ChallengeAction} requesting a challenge for authType
-	 * MD5.
-	 * <li>When the {@link ChallengeResponse} is received a {@link LoginAction}
-	 * is sent using the calculated key (MD5 hash of the password appended to
-	 * the received challenge).
-	 * </ol>
-	 * 
-
-     * @param timeout   the maximum time to wait for the protocol identifier (in
-     *                  ms)
+    /**
+     * Does the real login, following the steps outlined below. <br>
+     * <ol>
+     * <li>Connects to the asterisk server by calling {@link #connect()} if not
+     * already connected
+     * <li>Waits until the protocol identifier is received but not longer than
+     * timeout ms.
+     * <li>Sends a {@link ChallengeAction} requesting a challenge for authType
+     * MD5.
+     * <li>When the {@link ChallengeResponse} is received a {@link LoginAction}
+     * is sent using the calculated key (MD5 hash of the password appended to
+     * the received challenge).
+     * </ol>
+     * @param timeout the maximum time to wait for the protocol identifier (in
+     *            ms)
      * @param eventMask the event mask. Set to "on" if all events should be
-     *                  send, "off" if not events should be sent or a combination of
-	 *            "system", "call" and "log" (separated by ',') to specify what
-	 *            kind of events should be sent.
-     * @throws IOException                   if there is an i/o problem.
+     *            send, "off" if not events should be sent or a combination of
+     *            "system", "call" and "log" (separated by ',') to specify what
+     *            kind of events should be sent.
+     * @throws IOException if there is an i/o problem.
      * @throws AuthenticationFailedException if username or password are
-     *                                       incorrect and the login action returns an error or if the MD5
-     *                                       hash cannot be computed. The connection is closed in this
-     *                                       case.
-     * @throws TimeoutException              if a timeout occurs while waiting for the
-     *                                       protocol identifier. The connection is closed in this case.
-	 */
+     *             incorrect and the login action returns an error or if the MD5
+     *             hash cannot be computed. The connection is closed in this
+     *             case.
+     * @throws TimeoutException if a timeout occurs while waiting for the
+     *             protocol identifier. The connection is closed in this case.
+     */
     protected synchronized void doLogin(long timeout, String eventMask) throws IOException, AuthenticationFailedException,
             TimeoutException
-	{
-		ChallengeAction challengeAction;
-		ManagerResponse challengeResponse;
-		String challenge;
-		String key;
-		LoginAction loginAction;
-		ManagerResponse loginResponse;
+    {
+        ChallengeAction challengeAction;
+        ManagerResponse challengeResponse;
+        String challenge;
+        String key;
+        LoginAction loginAction;
+        ManagerResponse loginResponse;
 
-		if (socket == null)
-		{
-			connect();
-		}
+        if (socket == null)
+        {
+            connect();
+        }
 
-		synchronized (protocolIdentifier)
-		{
-			if (protocolIdentifier.value == null)
-			{
-				try
-				{
-					protocolIdentifier.wait(timeout);
-				}
-				catch (InterruptedException e) // NOPMD
-				{
-					Thread.currentThread().interrupt();
-				}
-			}
+        synchronized (protocolIdentifier)
+        {
+            if (protocolIdentifier.value == null)
+            {
+                try
+                {
+                    protocolIdentifier.wait(timeout);
+                }
+                catch (InterruptedException e) // NOPMD
+                {
+                    Thread.currentThread().interrupt();
+                }
+            }
 
-			if (protocolIdentifier.value == null)
-			{
-				disconnect();
-				if (reader != null && reader.getTerminationException() != null)
-				{
-					throw reader.getTerminationException();
-				}
-				else
-				{
-					throw new TimeoutException("Timeout waiting for protocol identifier");
-				}
-			}
-		}
+            if (protocolIdentifier.value == null)
+            {
+                disconnect();
+                if (reader != null && reader.getTerminationException() != null)
+                {
+                    throw reader.getTerminationException();
+                }
+                else
+                {
+                    throw new TimeoutException("Timeout waiting for protocol identifier");
+                }
+            }
+        }
 
-		challengeAction = new ChallengeAction("MD5");
-		try
-		{
-			challengeResponse = sendAction(challengeAction);
-		}
-		catch (Exception e)
-		{
-			disconnect();
-			throw new AuthenticationFailedException("Unable to send challenge action", e);
-		}
+        challengeAction = new ChallengeAction("MD5");
+        try
+        {
+            challengeResponse = sendAction(challengeAction);
+        }
+        catch (Exception e)
+        {
+            disconnect();
+            throw new AuthenticationFailedException("Unable to send challenge action", e);
+        }
 
-		if (challengeResponse instanceof ChallengeResponse)
-		{
-			challenge = ((ChallengeResponse) challengeResponse).getChallenge();
-		}
-		else
-		{
-			disconnect();
-			throw new AuthenticationFailedException("Unable to get challenge from Asterisk. ChallengeAction returned: "
-					+ challengeResponse.getMessage());
-		}
+        if (challengeResponse instanceof ChallengeResponse)
+        {
+            challenge = ((ChallengeResponse) challengeResponse).getChallenge();
+        }
+        else
+        {
+            disconnect();
+            throw new AuthenticationFailedException("Unable to get challenge from Asterisk. ChallengeAction returned: "
+                    + challengeResponse.getMessage());
+        }
 
-		try
-		{
-			MessageDigest md;
+        try
+        {
+            MessageDigest md;
 
-			md = MessageDigest.getInstance("MD5");
-			if (challenge != null)
-			{
-				md.update(challenge.getBytes());
-			}
-			if (password != null)
-			{
-				md.update(password.getBytes());
-			}
-			key = ManagerUtil.toHexString(md.digest());
-		}
-		catch (NoSuchAlgorithmException ex)
-		{
-			disconnect();
-			throw new AuthenticationFailedException("Unable to create login key using MD5 Message Digest", ex);
-		}
+            md = MessageDigest.getInstance("MD5");
+            if (challenge != null)
+            {
+                md.update(challenge.getBytes());
+            }
+            if (password != null)
+            {
+                md.update(password.getBytes());
+            }
+            key = ManagerUtil.toHexString(md.digest());
+        }
+        catch (NoSuchAlgorithmException ex)
+        {
+            disconnect();
+            throw new AuthenticationFailedException("Unable to create login key using MD5 Message Digest", ex);
+        }
 
-		loginAction = new LoginAction(username, "MD5", key, eventMask);
-		try
-		{
-			loginResponse = sendAction(loginAction);
-		}
-		catch (Exception e)
-		{
-			disconnect();
-			throw new AuthenticationFailedException("Unable to send login action", e);
-		}
+        loginAction = new LoginAction(username, "MD5", key, eventMask);
+        try
+        {
+            loginResponse = sendAction(loginAction);
+        }
+        catch (Exception e)
+        {
+            disconnect();
+            throw new AuthenticationFailedException("Unable to send login action", e);
+        }
 
-		if (loginResponse instanceof ManagerError)
-		{
-			disconnect();
-			throw new AuthenticationFailedException(loginResponse.getMessage());
-		}
+        if (loginResponse instanceof ManagerError)
+        {
+            disconnect();
+            throw new AuthenticationFailedException(loginResponse.getMessage());
+        }
 
-		logger.info("Successfully logged in");
+        logger.info("Successfully logged in");
 
-		version = determineVersion();
+        version = determineVersion();
 
-		state = CONNECTED;
+        state = CONNECTED;
 
-		writer.setTargetVersion(version);
+        writer.setTargetVersion(version);
 
-		logger.info("Determined Asterisk version: " + version);
+        logger.info("Determined Asterisk version: " + version);
 
-		// generate pseudo event indicating a successful login
-		ConnectEvent connectEvent = new ConnectEvent(this);
-		connectEvent.setProtocolIdentifier(getProtocolIdentifier());
-		connectEvent.setDateReceived(DateUtil.getDate());
-		// TODO could this cause a deadlock?
-		fireEvent(connectEvent);
-	}
+        // generate pseudo event indicating a successful login
+        ConnectEvent connectEvent = new ConnectEvent(this);
+        connectEvent.setProtocolIdentifier(getProtocolIdentifier());
+        connectEvent.setDateReceived(DateUtil.getDate());
+        // TODO could this cause a deadlock?
+        fireEvent(connectEvent);
+    }
 
-	protected AsteriskVersion determineVersion() throws IOException, TimeoutException
-	{
-		int attempts = 0;
+    protected AsteriskVersion determineVersion() throws IOException, TimeoutException
+    {
+        int attempts = 0;
 
-		// if ("Asterisk Call Manager/1.1".equals(protocolIdentifier.value))
-		// {
-		// return AsteriskVersion.ASTERISK_1_6;
-		// }
+        // if ("Asterisk Call Manager/1.1".equals(protocolIdentifier.value))
+        // {
+        // return AsteriskVersion.ASTERISK_1_6;
+        // }
 
-		while (attempts++ < MAX_VERSION_ATTEMPTS)
-		{
-			final ManagerResponse showVersionFilesResponse;
-			final List<String> showVersionFilesResult;
+        while (attempts++ < MAX_VERSION_ATTEMPTS)
+        {
+            final ManagerResponse showVersionFilesResponse;
+            final List<String> showVersionFilesResult;
 
-			// increase timeout as output is quite large
+            // increase timeout as output is quite large
             showVersionFilesResponse = sendAction(new CommandAction("show version files pbx.c"), defaultResponseTimeout * 2);
-			if (!(showVersionFilesResponse instanceof CommandResponse))
-			{
-				// return early in case of permission problems
-				// org.asteriskjava.manager.response.ManagerError:
-                // actionId='null'; message='Permission denied'; response='Error';
-				// uniqueId='null'; systemHashcode=15231583
-				break;
-			}
+            if (!(showVersionFilesResponse instanceof CommandResponse))
+            {
+                // return early in case of permission problems
+                // org.asteriskjava.manager.response.ManagerError:
+                // actionId='null'; message='Permission denied';
+                // response='Error';
+                // uniqueId='null'; systemHashcode=15231583
+                break;
+            }
 
-			showVersionFilesResult = ((CommandResponse) showVersionFilesResponse).getResult();
-			if (showVersionFilesResult != null && showVersionFilesResult.size() > 0)
-			{
+            showVersionFilesResult = ((CommandResponse) showVersionFilesResponse).getResult();
+            if (showVersionFilesResult != null && showVersionFilesResult.size() > 0)
+            {
                 final String line1 = showVersionFilesResult.get(0);
 
                 if (line1 != null && line1.startsWith("File"))
-				{
-					final String rawVersion;
+                {
+                    final String rawVersion;
 
-					rawVersion = getRawVersion();
-					if (rawVersion != null && rawVersion.startsWith("Asterisk 1.4"))
-					{
-						return AsteriskVersion.ASTERISK_1_4;
-					}
-					return AsteriskVersion.ASTERISK_1_2;
-				}
-				else if (line1 != null && line1.contains("No such command"))
-				{
+                    rawVersion = getRawVersion();
+                    if (rawVersion != null && rawVersion.startsWith("Asterisk 1.4"))
+                    {
+                        return AsteriskVersion.ASTERISK_1_4;
+                    }
+                    return AsteriskVersion.ASTERISK_1_2;
+                }
+                else if (line1 != null && line1.contains("No such command"))
+                {
 
-                    final ManagerResponse coreShowVersionResponse = sendAction(new CommandAction("core show version"), defaultResponseTimeout * 2);
+                    final ManagerResponse coreShowVersionResponse = sendAction(new CommandAction("core show version"),
+                            defaultResponseTimeout * 2);
 
-					if (coreShowVersionResponse != null && coreShowVersionResponse instanceof CommandResponse)
-					{
+                    if (coreShowVersionResponse != null && coreShowVersionResponse instanceof CommandResponse)
+                    {
                         final List<String> coreShowVersionResult = ((CommandResponse) coreShowVersionResponse).getResult();
 
                         if (coreShowVersionResult != null && coreShowVersionResult.size() > 0)
@@ -700,891 +698,905 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                 }
                 else
                 {
-                    // if it isn't the "no such command", break and return the lowest version immediately
-					break;
-				}
-			}
-		}
+                    // if it isn't the "no such command", break and return the
+                    // lowest version immediately
+                    break;
+                }
+            }
+        }
 
-		// as a fallback assume 1.6
-		return AsteriskVersion.ASTERISK_1_6;
-	}
+        // as a fallback assume 1.6
+        return AsteriskVersion.ASTERISK_1_6;
+    }
 
-	protected String getRawVersion()
-	{
-		final ManagerResponse showVersionResponse;
+    protected String getRawVersion()
+    {
+        final ManagerResponse showVersionResponse;
 
-		try
-		{
-			showVersionResponse = sendAction(new CommandAction("show version"), defaultResponseTimeout * 2);
-		}
-		catch (Exception e)
-		{
-			return null;
-		}
+        try
+        {
+            showVersionResponse = sendAction(new CommandAction("show version"), defaultResponseTimeout * 2);
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
 
-		if (showVersionResponse instanceof CommandResponse)
-		{
-			final List<String> showVersionResult;
+        if (showVersionResponse instanceof CommandResponse)
+        {
+            final List<String> showVersionResult;
 
-			showVersionResult = ((CommandResponse) showVersionResponse).getResult();
-			if (showVersionResult != null && showVersionResult.size() > 0)
-			{
-				return showVersionResult.get(0);
-			}
-		}
+            showVersionResult = ((CommandResponse) showVersionResponse).getResult();
+            if (showVersionResult != null && showVersionResult.size() > 0)
+            {
+                return showVersionResult.get(0);
+            }
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	protected synchronized void connect() throws IOException
-	{
-		logger.info("Connecting to " + hostname + ":" + port);
+    protected synchronized void connect() throws IOException
+    {
+        logger.info("Connecting to " + hostname + ":" + port);
 
-		if (reader == null)
-		{
-			logger.debug("Creating reader for " + hostname + ":" + port);
-			reader = createReader(this, this);
-		}
+        if (reader == null)
+        {
+            logger.debug("Creating reader for " + hostname + ":" + port);
+            reader = createReader(this, this);
+        }
 
-		if (writer == null)
-		{
-			logger.debug("Creating writer");
-			writer = createWriter();
-		}
+        if (writer == null)
+        {
+            logger.debug("Creating writer");
+            writer = createWriter();
+        }
 
-		logger.debug("Creating socket");
-		socket = createSocket();
+        logger.debug("Creating socket");
+        socket = createSocket();
 
-		logger.debug("Passing socket to reader");
-		reader.setSocket(socket);
+        logger.debug("Passing socket to reader");
+        reader.setSocket(socket);
 
-		if (readerThread == null || !readerThread.isAlive() || reader.isDead())
-		{
-			logger.debug("Creating and starting reader thread");
-			readerThread = new Thread(reader);
-			readerThread.setName("Asterisk-Java ManagerConnection-" + id + "-Reader-"
-					+ readerThreadCounter.getAndIncrement());
-			readerThread.setDaemon(true);
-			readerThread.start();
-		}
+        if (readerThread == null || !readerThread.isAlive() || reader.isDead())
+        {
+            logger.debug("Creating and starting reader thread");
+            readerThread = new Thread(reader);
+            readerThread.setName("Asterisk-Java ManagerConnection-" + id + "-Reader-"
+                    + readerThreadCounter.getAndIncrement());
+            readerThread.setDaemon(true);
+            readerThread.start();
+        }
 
-		logger.debug("Passing socket to writer");
-		writer.setSocket(socket);
-	}
+        logger.debug("Passing socket to writer");
+        writer.setSocket(socket);
+    }
 
-	protected SocketConnectionFacade createSocket() throws IOException
-	{
-		return new SocketConnectionFacadeImpl(hostname, port, ssl, socketTimeout, socketReadTimeout);
-	}
+    protected SocketConnectionFacade createSocket() throws IOException
+    {
+        return new SocketConnectionFacadeImpl(hostname, port, ssl, socketTimeout, socketReadTimeout);
+    }
 
-	public synchronized void logoff() throws IllegalStateException
-	{
-		if (state != CONNECTED && state != RECONNECTING)
-		{
-			throw new IllegalStateException("Logoff may only be perfomed when in state "
-					+ "CONNECTED or RECONNECTING, but connection is in state " + state);
-		}
+    public synchronized void logoff() throws IllegalStateException
+    {
+        if (state != CONNECTED && state != RECONNECTING)
+        {
+            throw new IllegalStateException("Logoff may only be perfomed when in state "
+                    + "CONNECTED or RECONNECTING, but connection is in state " + state);
+        }
 
-		state = DISCONNECTING;
+        state = DISCONNECTING;
 
-		if (socket != null)
-		{
-			try
-			{
-				sendAction(new LogoffAction());
-			}
-			catch (Exception e)
-			{
-				logger.warn("Unable to send LogOff action", e);
-			}
-		}
-		cleanup();
-		state = DISCONNECTED;
-	}
+        if (socket != null)
+        {
+            try
+            {
+                sendAction(new LogoffAction());
+            }
+            catch (Exception e)
+            {
+                logger.warn("Unable to send LogOff action", e);
+            }
+        }
+        cleanup();
+        state = DISCONNECTED;
+    }
 
-	/**
-	 * Closes the socket connection.
-	 */
-	protected synchronized void disconnect()
-	{
-		if (socket != null)
-		{
-			logger.info("Closing socket.");
-			try
-			{
-				socket.close();
-			}
-			catch (IOException ex)
-			{
-				logger.warn("Unable to close socket: " + ex.getMessage());
-			}
-			socket = null;
-		}
-		protocolIdentifier.value = null;
-	}
+    /**
+     * Closes the socket connection.
+     */
+    protected synchronized void disconnect()
+    {
+        if (socket != null)
+        {
+            logger.info("Closing socket.");
+            try
+            {
+                socket.close();
+            }
+            catch (IOException ex)
+            {
+                logger.warn("Unable to close socket: " + ex.getMessage());
+            }
+            socket = null;
+        }
+        protocolIdentifier.value = null;
+    }
 
     public ManagerResponse sendAction(ManagerAction action) throws IOException, TimeoutException, IllegalArgumentException,
             IllegalStateException
-	{
-		return sendAction(action, defaultResponseTimeout);
-	}
+    {
+        return sendAction(action, defaultResponseTimeout);
+    }
 
-	/*
-	 * Implements synchronous sending of "simple" actions.
-	 */
-	public ManagerResponse sendAction(ManagerAction action, long timeout) throws IOException, TimeoutException,
-			IllegalArgumentException, IllegalStateException
-	{
-		ResponseHandlerResult result;
-		SendActionCallback callbackHandler;
+    /*
+     * Implements synchronous sending of "simple" actions.
+     */
+    public ManagerResponse sendAction(ManagerAction action, long timeout) throws IOException, TimeoutException,
+            IllegalArgumentException, IllegalStateException
+    {
+        ResponseHandlerResult result;
+        SendActionCallback callbackHandler;
 
-		result = new ResponseHandlerResult();
-		callbackHandler = new DefaultSendActionCallback(result);
+        result = new ResponseHandlerResult();
+        callbackHandler = new DefaultSendActionCallback(result);
 
-		synchronized (result)
-		{
-			sendAction(action, callbackHandler);
+        synchronized (result)
+        {
+            sendAction(action, callbackHandler);
 
-			// definitely return null for the response of user events
-			if (action instanceof UserEventAction)
-			{
-				return null;
-			}
+            // definitely return null for the response of user events
+            if (action instanceof UserEventAction)
+            {
+                return null;
+            }
 
-			// only wait if we did not yet receive the response.
-			// Responses may be returned really fast.
-			if (result.getResponse() == null)
-			{
-				try
-				{
-					result.wait(timeout);
-				}
-				catch (InterruptedException ex)
-				{
-					logger.warn("Interrupted while waiting for result");
-					Thread.currentThread().interrupt();
-				}
-			}
-		}
+            // only wait if we did not yet receive the response.
+            // Responses may be returned really fast.
+            if (result.getResponse() == null)
+            {
+                try
+                {
+                    result.wait(timeout);
+                }
+                catch (InterruptedException ex)
+                {
+                    logger.warn("Interrupted while waiting for result");
+                    Thread.currentThread().interrupt();
+                }
+            }
+        }
 
-		// still no response?
-		if (result.getResponse() == null)
-		{
-			throw new TimeoutException("Timeout waiting for response to " + action.getAction()
-					+ (action.getActionId() == null ? "" : " (actionId: " + action.getActionId() + ")"));
-		}
+        // still no response?
+        if (result.getResponse() == null)
+        {
+            throw new TimeoutException("Timeout waiting for response to " + action.getAction()
+                    + (action.getActionId() == null ? "" : " (actionId: " + action.getActionId() + ")"));
+        }
 
-		return result.getResponse();
-	}
+        return result.getResponse();
+    }
 
     public void sendAction(ManagerAction action, SendActionCallback callback) throws IOException, IllegalArgumentException,
             IllegalStateException
-	{
-		final String internalActionId;
+    {
+        final String internalActionId;
 
-		if (action == null)
-		{
-			throw new IllegalArgumentException("Unable to send action: action is null.");
-		}
+        if (action == null)
+        {
+            throw new IllegalArgumentException("Unable to send action: action is null.");
+        }
 
-		// In general sending actions is only allowed while connected, though
-		// there are a few exceptions, these are handled here:
-		if ((state == CONNECTING || state == RECONNECTING)
-				&& (action instanceof ChallengeAction || action instanceof LoginAction || isShowVersionCommandAction(action)))
-		{
-			// when (re-)connecting challenge and login actions are ok.
-		} // NOPMD
-		else if (state == DISCONNECTING && action instanceof LogoffAction)
-		{
-			// when disconnecting logoff action is ok.
-		} // NOPMD
-		else if (state != CONNECTED)
-		{
-			throw new IllegalStateException("Actions may only be sent when in state "
-					+ "CONNECTED, but connection is in state " + state);
-		}
+        // In general sending actions is only allowed while connected, though
+        // there are a few exceptions, these are handled here:
+        if ((state == CONNECTING || state == RECONNECTING)
+                && (action instanceof ChallengeAction || action instanceof LoginAction || isShowVersionCommandAction(action)))
+        {
+            // when (re-)connecting challenge and login actions are ok.
+        } // NOPMD
+        else if (state == DISCONNECTING && action instanceof LogoffAction)
+        {
+            // when disconnecting logoff action is ok.
+        } // NOPMD
+        else if (state != CONNECTED)
+        {
+            throw new IllegalStateException("Actions may only be sent when in state "
+                    + "CONNECTED, but connection is in state " + state);
+        }
 
-		if (socket == null)
-		{
-			throw new IllegalStateException("Unable to send " + action.getAction() + " action: socket not connected.");
-		}
+        if (socket == null)
+        {
+            throw new IllegalStateException("Unable to send " + action.getAction() + " action: socket not connected.");
+        }
 
-		internalActionId = createInternalActionId();
+        internalActionId = createInternalActionId();
 
-		// if the callbackHandler is null the user is obviously not interested
-		// in the response, thats fine.
-		if (callback != null)
-		{
-			synchronized (this.responseListeners)
-			{
-				this.responseListeners.put(internalActionId, callback);
-			}
-		}
+        // if the callbackHandler is null the user is obviously not interested
+        // in the response, thats fine.
+        if (callback != null)
+        {
+            synchronized (this.responseListeners)
+            {
+                this.responseListeners.put(internalActionId, callback);
+            }
+        }
 
-		Class<? extends ManagerResponse> responseClass = getExpectedResponseClass(action.getClass());
-		if (responseClass != null)
-		{
-			reader.expectResponseClass(internalActionId, responseClass);
-		}
+        Class< ? extends ManagerResponse> responseClass = getExpectedResponseClass(action.getClass());
+        if (responseClass != null)
+        {
+            reader.expectResponseClass(internalActionId, responseClass);
+        }
 
-		writer.sendAction(action, internalActionId);
-	}
+        writer.sendAction(action, internalActionId);
+    }
 
-	boolean isShowVersionCommandAction(ManagerAction action)
-	{
-        if (! (action instanceof CommandAction)) {
-			return false;
-		}
-		final Matcher showVersionMatcher = SHOW_VERSION_PATTERN.matcher(((CommandAction) action).getCommand());
-		return showVersionMatcher.matches();
-	}
+    boolean isShowVersionCommandAction(ManagerAction action)
+    {
+        if (!(action instanceof CommandAction))
+        {
+            return false;
+        }
+        final Matcher showVersionMatcher = SHOW_VERSION_PATTERN.matcher(((CommandAction) action).getCommand());
+        return showVersionMatcher.matches();
+    }
 
-	private Class<? extends ManagerResponse> getExpectedResponseClass(Class<? extends ManagerAction> actionClass)
-	{
-		final ExpectedResponse annotation = actionClass.getAnnotation(ExpectedResponse.class);
-		if (annotation == null)
-		{
-			return null;
-		}
+    private Class< ? extends ManagerResponse> getExpectedResponseClass(Class< ? extends ManagerAction> actionClass)
+    {
+        final ExpectedResponse annotation = actionClass.getAnnotation(ExpectedResponse.class);
+        if (annotation == null)
+        {
+            return null;
+        }
 
-		return annotation.value();
-	}
+        return annotation.value();
+    }
 
     public ResponseEvents sendEventGeneratingAction(EventGeneratingAction action) throws IOException, EventTimeoutException,
             IllegalArgumentException, IllegalStateException
-	{
-		return sendEventGeneratingAction(action, defaultEventTimeout);
-	}
+    {
+        return sendEventGeneratingAction(action, defaultEventTimeout);
+    }
 
-	/*
-	 * Implements synchronous sending of event generating actions.
-	 */
-	public ResponseEvents sendEventGeneratingAction(EventGeneratingAction action, long timeout) throws IOException,
-			EventTimeoutException, IllegalArgumentException, IllegalStateException
-	{
-		final ResponseEventsImpl responseEvents;
-		final ResponseEventHandler responseEventHandler;
-		final String internalActionId;
+    /*
+     * Implements synchronous sending of event generating actions.
+     */
+    public ResponseEvents sendEventGeneratingAction(EventGeneratingAction action, long timeout) throws IOException,
+            EventTimeoutException, IllegalArgumentException, IllegalStateException
+    {
+        final ResponseEventsImpl responseEvents;
+        final ResponseEventHandler responseEventHandler;
+        final String internalActionId;
 
-		if (action == null)
-		{
-			throw new IllegalArgumentException("Unable to send action: action is null.");
-		}
-		else if (action.getActionCompleteEventClass() == null)
-		{
-			throw new IllegalArgumentException("Unable to send action: actionCompleteEventClass for "
-					+ action.getClass().getName() + " is null.");
-		}
-		else if (!ResponseEvent.class.isAssignableFrom(action.getActionCompleteEventClass()))
-		{
-			throw new IllegalArgumentException("Unable to send action: actionCompleteEventClass ("
-					+ action.getActionCompleteEventClass().getName() + ") for " + action.getClass().getName()
-					+ " is not a ResponseEvent.");
-		}
+        if (action == null)
+        {
+            throw new IllegalArgumentException("Unable to send action: action is null.");
+        }
+        else if (action.getActionCompleteEventClass() == null)
+        {
+            throw new IllegalArgumentException("Unable to send action: actionCompleteEventClass for "
+                    + action.getClass().getName() + " is null.");
+        }
+        else if (!ResponseEvent.class.isAssignableFrom(action.getActionCompleteEventClass()))
+        {
+            throw new IllegalArgumentException("Unable to send action: actionCompleteEventClass ("
+                    + action.getActionCompleteEventClass().getName() + ") for " + action.getClass().getName()
+                    + " is not a ResponseEvent.");
+        }
 
-		if (state != CONNECTED)
-		{
-			throw new IllegalStateException("Actions may only be sent when in state "
-					+ "CONNECTED but connection is in state " + state);
-		}
+        if (state != CONNECTED)
+        {
+            throw new IllegalStateException("Actions may only be sent when in state "
+                    + "CONNECTED but connection is in state " + state);
+        }
 
-		responseEvents = new ResponseEventsImpl();
-		responseEventHandler = new ResponseEventHandler(responseEvents, action.getActionCompleteEventClass());
+        responseEvents = new ResponseEventsImpl();
+        responseEventHandler = new ResponseEventHandler(responseEvents, action.getActionCompleteEventClass());
 
-		internalActionId = createInternalActionId();
+        internalActionId = createInternalActionId();
 
-		try
-		{
-			// register response handler...
-			synchronized (this.responseListeners)
-			{
-				this.responseListeners.put(internalActionId, responseEventHandler);
-			}
+        try
+        {
+            // register response handler...
+            synchronized (this.responseListeners)
+            {
+                this.responseListeners.put(internalActionId, responseEventHandler);
+            }
 
-			// ...and event handler.
-			synchronized (this.responseEventListeners)
-			{
-				this.responseEventListeners.put(internalActionId, responseEventHandler);
-			}
+            // ...and event handler.
+            synchronized (this.responseEventListeners)
+            {
+                this.responseEventListeners.put(internalActionId, responseEventHandler);
+            }
 
-			synchronized (responseEvents)
-			{
-				writer.sendAction(action, internalActionId);
-				// only wait if response has not yet arrived.
-				if ((responseEvents.getResponse() == null || !responseEvents.isComplete()))
-				{
-					try
-					{
-						responseEvents.wait(timeout);
-					}
-					catch (InterruptedException e)
-					{
-						logger.warn("Interrupted while waiting for response events.");
-						Thread.currentThread().interrupt();
-					}
-				}
-			}
+            synchronized (responseEvents)
+            {
+                writer.sendAction(action, internalActionId);
+                // only wait if response has not yet arrived.
+                if ((responseEvents.getResponse() == null || !responseEvents.isComplete()))
+                {
+                    try
+                    {
+                        responseEvents.wait(timeout);
+                    }
+                    catch (InterruptedException e)
+                    {
+                        logger.warn("Interrupted while waiting for response events.");
+                        Thread.currentThread().interrupt();
+                    }
+                }
+            }
 
-			// still no response or not all events received and timed out?
-			if ((responseEvents.getResponse() == null || !responseEvents.isComplete()))
-			{
-				throw new EventTimeoutException("Timeout waiting for response or response events to "
-						+ action.getAction()
-						+ (action.getActionId() == null ? "" : " (actionId: " + action.getActionId() + ")"),
-						responseEvents);
-			}
+            // still no response or not all events received and timed out?
+            if ((responseEvents.getResponse() == null || !responseEvents.isComplete()))
+            {
+                throw new EventTimeoutException("Timeout waiting for response or response events to " + action.getAction()
+                        + (action.getActionId() == null ? "" : " (actionId: " + action.getActionId() + ")"), responseEvents);
+            }
 
-		}
-		finally
-		{
-			// remove the event handler
-			synchronized (this.responseEventListeners)
-			{
-				this.responseEventListeners.remove(internalActionId);
-			}
-			
-			
-			// Note: The response handler should have already been removed
-			// when the response was received, however we remove it here
-			// just in case it was never received.
-			synchronized (this.responseListeners)
-			{
-				this.responseListeners.remove(internalActionId);
-			}
+        }
+        finally
+        {
+            // remove the event handler
+            synchronized (this.responseEventListeners)
+            {
+                this.responseEventListeners.remove(internalActionId);
+            }
 
-		}
+            // Note: The response handler should have already been removed
+            // when the response was received, however we remove it here
+            // just in case it was never received.
+            synchronized (this.responseListeners)
+            {
+                this.responseListeners.remove(internalActionId);
+            }
 
-		return responseEvents;
-	}
+        }
 
-	/**
-	 * Creates a new unique internal action id based on the hash code of this
-	 * connection and a sequence.
-	 * 
-	 * @return a new internal action id
-	 * @see ManagerUtil#addInternalActionId(String,String)
-	 * @see ManagerUtil#getInternalActionId(String)
-	 * @see ManagerUtil#stripInternalActionId(String)
-	 */
-	private String createInternalActionId()
-	{
-		final StringBuffer sb;
+        return responseEvents;
+    }
 
-		sb = new StringBuffer();
-		sb.append(this.hashCode());
-		sb.append("_");
-		sb.append(actionIdCounter.getAndIncrement());
+    /**
+     * Creates a new unique internal action id based on the hash code of this
+     * connection and a sequence.
+     * 
+     * @return a new internal action id
+     * @see ManagerUtil#addInternalActionId(String,String)
+     * @see ManagerUtil#getInternalActionId(String)
+     * @see ManagerUtil#stripInternalActionId(String)
+     */
+    private String createInternalActionId()
+    {
+        final StringBuffer sb;
 
-		return sb.toString();
-	}
+        sb = new StringBuffer();
+        sb.append(this.hashCode());
+        sb.append("_");
+        sb.append(actionIdCounter.getAndIncrement());
 
-	public void addEventListener(final ManagerEventListener listener)
-	{
-		synchronized (this.eventListeners)
-		{
-			// only add it if its not already there
-			if (!this.eventListeners.contains(listener))
-			{
-				this.eventListeners.add(listener);
-			}
-		}
-	}
+        return sb.toString();
+    }
 
-	public void removeEventListener(final ManagerEventListener listener)
-	{
-		synchronized (this.eventListeners)
-		{
-			if (this.eventListeners.contains(listener))
-			{
-				this.eventListeners.remove(listener);
-			}
-		}
-	}
+    public void addEventListener(final ManagerEventListener listener)
+    {
+        synchronized (this.eventListeners)
+        {
+            // only add it if its not already there
+            if (!this.eventListeners.contains(listener))
+            {
+                this.eventListeners.add(listener);
+            }
+        }
+    }
 
-	public String getProtocolIdentifier()
-	{
-		return protocolIdentifier.value;
-	}
+    public void removeEventListener(final ManagerEventListener listener)
+    {
+        synchronized (this.eventListeners)
+        {
+            if (this.eventListeners.contains(listener))
+            {
+                this.eventListeners.remove(listener);
+            }
+        }
+    }
 
-	public ManagerConnectionState getState()
-	{
-		return state;
-	}
+    public String getProtocolIdentifier()
+    {
+        return protocolIdentifier.value;
+    }
 
-	/* Implementation of Dispatcher: callbacks for ManagerReader */
+    public ManagerConnectionState getState()
+    {
+        return state;
+    }
 
-	/**
-	 * This method is called by the reader whenever a {@link ManagerResponse} is
-	 * received. The response is dispatched to the associated
-	 * {@link SendActionCallback}.
-	 * 
+    /* Implementation of Dispatcher: callbacks for ManagerReader */
+
+    /**
+     * This method is called by the reader whenever a {@link ManagerResponse} is
+     * received. The response is dispatched to the associated
+     * {@link SendActionCallback}.
+     * 
      * @param response the response received by the reader
-	 * @see ManagerReader
-	 */
-	public void dispatchResponse(ManagerResponse response)
-	{
-		final String actionId;
-		String internalActionId;
-		SendActionCallback listener;
+     * @see ManagerReader
+     */
+    public void dispatchResponse(ManagerResponse response)
+    {
+        final String actionId;
+        String internalActionId;
+        SendActionCallback listener;
 
-		// shouldn't happen
-		if (response == null)
-		{
-			logger.error("Unable to dispatch null response. This should never happen. Please file a bug.");
-			return;
-		}
+        // shouldn't happen
+        if (response == null)
+        {
+            logger.error("Unable to dispatch null response. This should never happen. Please file a bug.");
+            return;
+        }
 
-		actionId = response.getActionId();
-		internalActionId = null;
-		listener = null;
+        actionId = response.getActionId();
+        internalActionId = null;
+        listener = null;
 
-		if (actionId != null)
-		{
-			internalActionId = ManagerUtil.getInternalActionId(actionId);
-			response.setActionId(ManagerUtil.stripInternalActionId(actionId));
-		}
+        if (actionId != null)
+        {
+            internalActionId = ManagerUtil.getInternalActionId(actionId);
+            response.setActionId(ManagerUtil.stripInternalActionId(actionId));
+        }
 
-		logger.debug("Dispatching response with internalActionId '" + internalActionId + "':\n" + response);
+        logger.debug("Dispatching response with internalActionId '" + internalActionId + "':\n" + response);
 
-		if (internalActionId != null)
-		{
-			synchronized (this.responseListeners)
-			{
-				listener = responseListeners.get(internalActionId);
-				if (listener != null)
-				{
-					this.responseListeners.remove(internalActionId);
-				}
-				else
-				{
-					// when using the async sendAction it's ok not to register a
-					// callback so if we don't find a response handler thats ok
-					logger.debug("No response listener registered for " + "internalActionId '" + internalActionId + "'");
-				}
-			}
-		}
-		else
-		{
+        if (internalActionId != null)
+        {
+            synchronized (this.responseListeners)
+            {
+                listener = responseListeners.get(internalActionId);
+                if (listener != null)
+                {
+                    this.responseListeners.remove(internalActionId);
+                }
+                else
+                {
+                    // when using the async sendAction it's ok not to register a
+                    // callback so if we don't find a response handler thats ok
+                    logger.debug("No response listener registered for " + "internalActionId '" + internalActionId + "'");
+                }
+            }
+        }
+        else
+        {
             logger.error("Unable to retrieve internalActionId from response: " + "actionId '" + actionId + "':\n" + response);
-		}
+        }
 
-		if (listener != null)
-		{
-			try
-			{
-				listener.onResponse(response);
-			}
-			catch (Exception e)
-			{
-				logger.warn("Unexpected exception in response listener " + listener.getClass().getName(), e);
-			}
-		}
-	}
+        if (listener != null)
+        {
+            try
+            {
+                listener.onResponse(response);
+            }
+            catch (Exception e)
+            {
+                logger.warn("Unexpected exception in response listener " + listener.getClass().getName(), e);
+            }
+        }
+    }
 
-	/**
-	 * This method is called by the reader whenever a ManagerEvent is received.
-	 * The event is dispatched to all registered ManagerEventHandlers.
-	 * 
+    /**
+     * This method is called by the reader whenever a ManagerEvent is received.
+     * The event is dispatched to all registered ManagerEventHandlers.
+     * 
      * @param event the event received by the reader
-	 * @see #addEventListener(ManagerEventListener)
-	 * @see #removeEventListener(ManagerEventListener)
-	 * @see ManagerReader
-	 */
-	public void dispatchEvent(ManagerEvent event)
-	{
-		// shouldn't happen
-		if (event == null)
-		{
-			logger.error("Unable to dispatch null event. This should never happen. Please file a bug.");
-			return;
-		}
+     * @see #addEventListener(ManagerEventListener)
+     * @see #removeEventListener(ManagerEventListener)
+     * @see ManagerReader
+     */
+    public void dispatchEvent(ManagerEvent event)
+    {
+        // shouldn't happen
+        if (event == null)
+        {
+            logger.error("Unable to dispatch null event. This should never happen. Please file a bug.");
+            return;
+        }
+        dispatchLegacyEventIfNeeded(event);
+        logger.debug("Dispatching event:\n" + event.toString());
 
-		logger.debug("Dispatching event:\n" + event.toString());
+        // Some events need special treatment besides forwarding them to the
+        // registered eventListeners (clients)
+        // These events are handled here at first:
 
-		// Some events need special treatment besides forwarding them to the
-		// registered eventListeners (clients)
-		// These events are handled here at first:
+        // Dispatch ResponseEvents to the appropriate responseEventListener
+        if (event instanceof ResponseEvent)
+        {
+            ResponseEvent responseEvent;
+            String internalActionId;
 
-		// Dispatch ResponseEvents to the appropriate responseEventListener
-		if (event instanceof ResponseEvent)
-		{
-			ResponseEvent responseEvent;
-			String internalActionId;
+            responseEvent = (ResponseEvent) event;
+            internalActionId = responseEvent.getInternalActionId();
+            if (internalActionId != null)
+            {
+                synchronized (responseEventListeners)
+                {
+                    ManagerEventListener listener;
 
-			responseEvent = (ResponseEvent) event;
-			internalActionId = responseEvent.getInternalActionId();
-			if (internalActionId != null)
-			{
-				synchronized (responseEventListeners)
-				{
-					ManagerEventListener listener;
-
-					listener = responseEventListeners.get(internalActionId);
-					if (listener != null)
-					{
-						try
-						{
-							listener.onManagerEvent(event);
-						}
-						catch (Exception e)
-						{
+                    listener = responseEventListeners.get(internalActionId);
+                    if (listener != null)
+                    {
+                        try
+                        {
+                            listener.onManagerEvent(event);
+                        }
+                        catch (Exception e)
+                        {
                             logger.warn("Unexpected exception in response event listener " + listener.getClass().getName(),
                                     e);
-						}
-					}
-				}
-			}
-			else
-			{
-				// ResponseEvent without internalActionId:
-				// this happens if the same event class is used as response
-				// event
-				// and as an event that is not triggered by a Manager command
-				// Example: QueueMemberStatusEvent.
-				// logger.debug("ResponseEvent without "
-				// + "internalActionId:\n" + responseEvent);
-			} // NOPMD
-		}
-		if (event instanceof DisconnectEvent)
-		{
-			// When we receive get disconnected while we are connected start
-			// a new reconnect thread and set the state to RECONNECTING.
-			if (state == CONNECTED)
-			{
-				state = RECONNECTING;
-				// close socket if still open and remove reference to
-				// readerThread
-				// After sending the DisconnectThread that thread will die
-				// anyway.
-				cleanup();
-				Thread reconnectThread = new Thread(new Runnable()
-				{
-					public void run()
-					{
-						reconnect();
-					}
-				});
-				reconnectThread.setName("Asterisk-Java ManagerConnection-" + id + "-Reconnect-"
-						+ reconnectThreadCounter.getAndIncrement());
-				reconnectThread.setDaemon(true);
-				reconnectThread.start();
-				// now the DisconnectEvent is dispatched to registered
-				// eventListeners
-				// (clients) and after that the ManagerReaderThread is gone.
-				// So effectively we replaced the reader thread by a
-				// ReconnectThread.
-			}
-			else
-			{
-				// when we receive a DisconnectEvent while not connected we
-				// ignore it and do not send it to clients
-				return;
-			}
-		}
-		if (event instanceof ProtocolIdentifierReceivedEvent)
-		{
-			ProtocolIdentifierReceivedEvent protocolIdentifierReceivedEvent;
-			String protocolIdentifier;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                // ResponseEvent without internalActionId:
+                // this happens if the same event class is used as response
+                // event
+                // and as an event that is not triggered by a Manager command
+                // Example: QueueMemberStatusEvent.
+                // logger.debug("ResponseEvent without "
+                // + "internalActionId:\n" + responseEvent);
+            } // NOPMD
+        }
+        if (event instanceof DisconnectEvent)
+        {
+            // When we receive get disconnected while we are connected start
+            // a new reconnect thread and set the state to RECONNECTING.
+            if (state == CONNECTED)
+            {
+                state = RECONNECTING;
+                // close socket if still open and remove reference to
+                // readerThread
+                // After sending the DisconnectThread that thread will die
+                // anyway.
+                cleanup();
+                Thread reconnectThread = new Thread(new Runnable()
+                {
+                    public void run()
+                    {
+                        reconnect();
+                    }
+                });
+                reconnectThread.setName("Asterisk-Java ManagerConnection-" + id + "-Reconnect-"
+                        + reconnectThreadCounter.getAndIncrement());
+                reconnectThread.setDaemon(true);
+                reconnectThread.start();
+                // now the DisconnectEvent is dispatched to registered
+                // eventListeners
+                // (clients) and after that the ManagerReaderThread is gone.
+                // So effectively we replaced the reader thread by a
+                // ReconnectThread.
+            }
+            else
+            {
+                // when we receive a DisconnectEvent while not connected we
+                // ignore it and do not send it to clients
+                return;
+            }
+        }
+        if (event instanceof ProtocolIdentifierReceivedEvent)
+        {
+            ProtocolIdentifierReceivedEvent protocolIdentifierReceivedEvent;
+            String protocolIdentifier;
 
-			protocolIdentifierReceivedEvent = (ProtocolIdentifierReceivedEvent) event;
-			protocolIdentifier = protocolIdentifierReceivedEvent.getProtocolIdentifier();
-			setProtocolIdentifier(protocolIdentifier);
-			// no need to send this event to clients
-			return;
-		}
+            protocolIdentifierReceivedEvent = (ProtocolIdentifierReceivedEvent) event;
+            protocolIdentifier = protocolIdentifierReceivedEvent.getProtocolIdentifier();
+            setProtocolIdentifier(protocolIdentifier);
+            // no need to send this event to clients
+            return;
+        }
 
-		fireEvent(event);
-	}
+        fireEvent(event);
+    }
 
-	/**
-	 * Notifies all {@link ManagerEventListener}s registered by users.
-	 * 
+    /**
+     * Enro 2015-03 Workaround to continue having Legacy Events from Asterisk
+     * 13.
+     */
+    private void dispatchLegacyEventIfNeeded(ManagerEvent event)
+    {
+        if (event instanceof DialBeginEvent)
+        {
+            DialEvent legacyEvent = (new DialEvent((DialBeginEvent) event));
+            dispatchEvent(legacyEvent);
+        }
+    }
+
+    /**
+     * Notifies all {@link ManagerEventListener}s registered by users.
+     * 
      * @param event the event to propagate
-	 */
-	private void fireEvent(ManagerEvent event)
-	{
-		synchronized (eventListeners)
-		{
-			for (ManagerEventListener listener : eventListeners)
-			{
-				try
-				{
-					listener.onManagerEvent(event);
-				}
-				catch (RuntimeException e)
-				{
-					logger.warn("Unexpected exception in eventHandler " + listener.getClass().getName(), e);
-				}
-			}
-		}
-	}
+     */
+    private void fireEvent(ManagerEvent event)
+    {
+        synchronized (eventListeners)
+        {
+            for (ManagerEventListener listener : eventListeners)
+            {
+                try
+                {
+                    listener.onManagerEvent(event);
+                }
+                catch (RuntimeException e)
+                {
+                    logger.warn("Unexpected exception in eventHandler " + listener.getClass().getName(), e);
+                }
+            }
+        }
+    }
 
-	/**
-	 * This method is called when a {@link ProtocolIdentifierReceivedEvent} is
-	 * received from the reader. Having received a correct protocol identifier
-	 * is the precodition for logging in.
-	 * 
+    /**
+     * This method is called when a {@link ProtocolIdentifierReceivedEvent} is
+     * received from the reader. Having received a correct protocol identifier
+     * is the precodition for logging in.
+     * 
      * @param identifier the protocol version used by the Asterisk server.
-	 */
-	private void setProtocolIdentifier(final String identifier)
-	{
-		logger.info("Connected via " + identifier);
+     */
+    private void setProtocolIdentifier(final String identifier)
+    {
+        logger.info("Connected via " + identifier);
 
-		if (!"Asterisk Call Manager/1.0".equals(identifier)
-                && !"Asterisk Call Manager/1.1".equals(identifier) // Asterisk 1.6
-                && !"Asterisk Call Manager/1.2".equals(identifier) // bri stuffed
-                && !"Asterisk Call Manager/1.3".equals(identifier) // Asterisk 11
-                && !"Asterisk Call Manager/2.6.0".equals(identifier) // Asterisk 13
-                && !"Asterisk Call Manager/2.7.0".equals(identifier) // Asterisk 13.2
-                && !"OpenPBX Call Manager/1.0".equals(identifier)
-                && !"CallWeaver Call Manager/1.0".equals(identifier)
-				&& !(identifier != null && identifier.startsWith("Asterisk Call Manager Proxy/")))
-		{
-			logger.warn("Unsupported protocol version '" + identifier + "'. Use at your own risk.");
-		}
+        if (!"Asterisk Call Manager/1.0".equals(identifier)
+                && !"Asterisk Call Manager/1.1".equals(identifier) // Asterisk
+                                                                   // 1.6
+                && !"Asterisk Call Manager/1.2".equals(identifier) // bri
+                                                                   // stuffed
+                && !"Asterisk Call Manager/1.3".equals(identifier) // Asterisk
+                                                                   // 11
+                && !"Asterisk Call Manager/2.6.0".equals(identifier) // Asterisk
+                                                                     // 13
+                && !"Asterisk Call Manager/2.7.0".equals(identifier) // Asterisk
+                                                                     // 13.2
+                && !"OpenPBX Call Manager/1.0".equals(identifier) && !"CallWeaver Call Manager/1.0".equals(identifier)
+                && !(identifier != null && identifier.startsWith("Asterisk Call Manager Proxy/")))
+        {
+            logger.warn("Unsupported protocol version '" + identifier + "'. Use at your own risk.");
+        }
 
-		synchronized (protocolIdentifier)
-		{
-			protocolIdentifier.value = identifier;
-			protocolIdentifier.notifyAll();
-		}
-	}
+        synchronized (protocolIdentifier)
+        {
+            protocolIdentifier.value = identifier;
+            protocolIdentifier.notifyAll();
+        }
+    }
 
-	/**
-	 * Reconnects to the asterisk server when the connection is lost.
-     * <br>
-	 * While keepAlive is <code>true</code> we will try to reconnect.
-	 * Reconnection attempts will be stopped when the {@link #logoff()} method
-	 * is called or when the login after a successful reconnect results in an
-	 * {@link AuthenticationFailedException} suggesting that the manager
-	 * credentials have changed and keepAliveAfterAuthenticationFailure is not
-	 * set.
-     * <br>
-	 * This method is called when a {@link DisconnectEvent} is received from the
-	 * reader.
-	 */
-	private void reconnect()
-	{
-		int numTries;
+    /**
+     * Reconnects to the asterisk server when the connection is lost. <br>
+     * While keepAlive is <code>true</code> we will try to reconnect.
+     * Reconnection attempts will be stopped when the {@link #logoff()} method
+     * is called or when the login after a successful reconnect results in an
+     * {@link AuthenticationFailedException} suggesting that the manager
+     * credentials have changed and keepAliveAfterAuthenticationFailure is not
+     * set. <br>
+     * This method is called when a {@link DisconnectEvent} is received from the
+     * reader.
+     */
+    private void reconnect()
+    {
+        int numTries;
 
-		// try to reconnect
-		numTries = 0;
-		while (state == RECONNECTING)
-		{
-			try
-			{
-				if (numTries < 10)
-				{
-					// try to reconnect quite fast for the firt 10 times
-					// this succeeds if the server has just been restarted
-					Thread.sleep(RECONNECTION_INTERVAL_1);
-				}
-				else
-				{
-					// slow down after 10 unsuccessful attempts asuming a
-					// shutdown of the server
-					Thread.sleep(RECONNECTION_INTERVAL_2);
-				}
-			}
-			catch (InterruptedException e)
-			{
-				Thread.currentThread().interrupt();
-			}
+        // try to reconnect
+        numTries = 0;
+        while (state == RECONNECTING)
+        {
+            try
+            {
+                if (numTries < 10)
+                {
+                    // try to reconnect quite fast for the firt 10 times
+                    // this succeeds if the server has just been restarted
+                    Thread.sleep(RECONNECTION_INTERVAL_1);
+                }
+                else
+                {
+                    // slow down after 10 unsuccessful attempts asuming a
+                    // shutdown of the server
+                    Thread.sleep(RECONNECTION_INTERVAL_2);
+                }
+            }
+            catch (InterruptedException e)
+            {
+                Thread.currentThread().interrupt();
+            }
 
-			try
-			{
-				connect();
+            try
+            {
+                connect();
 
-				try
-				{
-					doLogin(defaultResponseTimeout, eventMask);
-					logger.info("Successfully reconnected.");
-					// everything is ok again, so we leave
-					// when successful doLogin set the state to CONNECTED so no
-					// need to adjust it
-					break;
-				}
-				catch (AuthenticationFailedException e1)
-				{
-					if (keepAliveAfterAuthenticationFailure)
-					{
-						logger.error("Unable to log in after reconnect: " + e1.getMessage());
-					}
-					else
-					{
-						logger.error("Unable to log in after reconnect: " + e1.getMessage() + ". Giving up.");
-						state = DISCONNECTED;
-					}
-				}
-				catch (TimeoutException e1)
-				{
-					// shouldn't happen - but happens!
-					logger.error("TimeoutException while trying to log in " + "after reconnect.");
-				}
-			}
-			catch (IOException e)
-			{
-				// server seems to be still down, just continue to attempt
-				// reconnection
-				logger.warn("Exception while trying to reconnect: " + e.getMessage());
-			}
-			numTries++;
-		}
-	}
+                try
+                {
+                    doLogin(defaultResponseTimeout, eventMask);
+                    logger.info("Successfully reconnected.");
+                    // everything is ok again, so we leave
+                    // when successful doLogin set the state to CONNECTED so no
+                    // need to adjust it
+                    break;
+                }
+                catch (AuthenticationFailedException e1)
+                {
+                    if (keepAliveAfterAuthenticationFailure)
+                    {
+                        logger.error("Unable to log in after reconnect: " + e1.getMessage());
+                    }
+                    else
+                    {
+                        logger.error("Unable to log in after reconnect: " + e1.getMessage() + ". Giving up.");
+                        state = DISCONNECTED;
+                    }
+                }
+                catch (TimeoutException e1)
+                {
+                    // shouldn't happen - but happens!
+                    logger.error("TimeoutException while trying to log in " + "after reconnect.");
+                }
+            }
+            catch (IOException e)
+            {
+                // server seems to be still down, just continue to attempt
+                // reconnection
+                logger.warn("Exception while trying to reconnect: " + e.getMessage());
+            }
+            numTries++;
+        }
+    }
 
-	private void cleanup()
-	{
-		disconnect();
-		this.readerThread = null;
-	}
+    private void cleanup()
+    {
+        disconnect();
+        this.readerThread = null;
+    }
 
-	@Override
-	public String toString()
-	{
-		StringBuffer sb;
+    @Override
+    public String toString()
+    {
+        StringBuffer sb;
 
-		sb = new StringBuffer("ManagerConnection[");
-		sb.append("id='").append(id).append("',");
-		sb.append("hostname='").append(hostname).append("',");
-		sb.append("port=").append(port).append(",");
-		sb.append("systemHashcode=").append(System.identityHashCode(this)).append("]");
+        sb = new StringBuffer("ManagerConnection[");
+        sb.append("id='").append(id).append("',");
+        sb.append("hostname='").append(hostname).append("',");
+        sb.append("port=").append(port).append(",");
+        sb.append("systemHashcode=").append(System.identityHashCode(this)).append("]");
 
-		return sb.toString();
-	}
+        return sb.toString();
+    }
 
-	/* Helper classes */
+    /* Helper classes */
 
-	/**
-	 * A simple data object to store a ManagerResult.
-	 */
-	private static class ResponseHandlerResult implements Serializable
-	{
-		/**
-		 * Serializable version identifier.
-		 */
-		private static final long serialVersionUID = 7831097958568769220L;
-		private ManagerResponse response;
+    /**
+     * A simple data object to store a ManagerResult.
+     */
+    private static class ResponseHandlerResult implements Serializable
+    {
+        /**
+         * Serializable version identifier.
+         */
+        private static final long serialVersionUID = 7831097958568769220L;
+        private ManagerResponse response;
 
-		public ResponseHandlerResult()
-		{
-		}
+        public ResponseHandlerResult()
+        {
+        }
 
-		public ManagerResponse getResponse()
-		{
-			return this.response;
-		}
+        public ManagerResponse getResponse()
+        {
+            return this.response;
+        }
 
-		public void setResponse(ManagerResponse response)
-		{
-			this.response = response;
-		}
-	}
+        public void setResponse(ManagerResponse response)
+        {
+            this.response = response;
+        }
+    }
 
-	/**
-	 * A simple response handler that stores the received response in a
-	 * ResponseHandlerResult for further processing.
-	 */
-	private static class DefaultSendActionCallback implements SendActionCallback, Serializable
-	{
-		/**
-		 * Serializable version identifier.
-		 */
-		private static final long serialVersionUID = 2926598671855316803L;
-		private final ResponseHandlerResult result;
+    /**
+     * A simple response handler that stores the received response in a
+     * ResponseHandlerResult for further processing.
+     */
+    private static class DefaultSendActionCallback implements SendActionCallback, Serializable
+    {
+        /**
+         * Serializable version identifier.
+         */
+        private static final long serialVersionUID = 2926598671855316803L;
+        private final ResponseHandlerResult result;
 
-		/**
-		 * Creates a new instance.
-		 * 
+        /**
+         * Creates a new instance.
+         * 
          * @param result the result to store the response in
-		 */
-		public DefaultSendActionCallback(ResponseHandlerResult result)
-		{
-			this.result = result;
-		}
+         */
+        public DefaultSendActionCallback(ResponseHandlerResult result)
+        {
+            this.result = result;
+        }
 
-		public void onResponse(ManagerResponse response)
-		{
-			synchronized (result)
-			{
-				result.setResponse(response);
-				result.notifyAll();
-			}
-		}
-	}
+        public void onResponse(ManagerResponse response)
+        {
+            synchronized (result)
+            {
+                result.setResponse(response);
+                result.notifyAll();
+            }
+        }
+    }
 
-	/**
-	 * A combinded event and response handler that adds received events and the
-	 * response to a ResponseEvents object.
-	 */
-	private static class ResponseEventHandler implements ManagerEventListener, SendActionCallback
-	{
-		private final ResponseEventsImpl events;
-		private final Class<?> actionCompleteEventClass;
+    /**
+     * A combinded event and response handler that adds received events and the
+     * response to a ResponseEvents object.
+     */
+    private static class ResponseEventHandler implements ManagerEventListener, SendActionCallback
+    {
+        private final ResponseEventsImpl events;
+        private final Class< ? > actionCompleteEventClass;
 
-		/**
-		 * Creates a new instance.
-		 * 
-         * @param events                   the ResponseEventsImpl to store the events in
+        /**
+         * Creates a new instance.
+         * 
+         * @param events the ResponseEventsImpl to store the events in
          * @param actionCompleteEventClass the type of event that indicates that
-         *                                 all events have been received
-		 */
-		public ResponseEventHandler(ResponseEventsImpl events, Class<?> actionCompleteEventClass)
-		{
-			this.events = events;
-			this.actionCompleteEventClass = actionCompleteEventClass;
-		}
+         *            all events have been received
+         */
+        public ResponseEventHandler(ResponseEventsImpl events, Class< ? > actionCompleteEventClass)
+        {
+            this.events = events;
+            this.actionCompleteEventClass = actionCompleteEventClass;
+        }
 
-		public void onManagerEvent(ManagerEvent event)
-		{
-			synchronized (events)
-			{
-				// should always be a ResponseEvent, anyway...
-				if (event instanceof ResponseEvent)
-				{
-					ResponseEvent responseEvent;
+        public void onManagerEvent(ManagerEvent event)
+        {
+            synchronized (events)
+            {
+                // should always be a ResponseEvent, anyway...
+                if (event instanceof ResponseEvent)
+                {
+                    ResponseEvent responseEvent;
 
-					responseEvent = (ResponseEvent) event;
-					events.addEvent(responseEvent);
-				}
+                    responseEvent = (ResponseEvent) event;
+                    events.addEvent(responseEvent);
+                }
 
-				// finished?
-				if (actionCompleteEventClass.isAssignableFrom(event.getClass()))
-				{
-					events.setComplete(true);
-					// notify if action complete event and response have been
-					// received
-					if (events.getResponse() != null)
-					{
-						events.notifyAll();
-					}
-				}
-			}
-		}
+                // finished?
+                if (actionCompleteEventClass.isAssignableFrom(event.getClass()))
+                {
+                    events.setComplete(true);
+                    // notify if action complete event and response have been
+                    // received
+                    if (events.getResponse() != null)
+                    {
+                        events.notifyAll();
+                    }
+                }
+            }
+        }
 
-		public void onResponse(ManagerResponse response)
-		{
-			synchronized (events)
-			{
-				events.setRepsonse(response);
-				if (response instanceof ManagerError)
-				{
-					events.setComplete(true);
-				}
+        public void onResponse(ManagerResponse response)
+        {
+            synchronized (events)
+            {
+                events.setRepsonse(response);
+                if (response instanceof ManagerError)
+                {
+                    events.setComplete(true);
+                }
 
-				// finished?
-				// notify if action complete event and response have been
-				// received
-				if (events.isComplete())
-				{
-					events.notifyAll();
-				}
-			}
-		}
-	}
+                // finished?
+                // notify if action complete event and response have been
+                // received
+                if (events.isComplete())
+                {
+                    events.notifyAll();
+                }
+            }
+        }
+    }
 
-	private static class ProtocolIdentifierWrapper
-	{
-		String value;
-	}
+    private static class ProtocolIdentifierWrapper
+    {
+        String value;
+    }
 }

@@ -17,7 +17,8 @@
 package org.asteriskjava.manager.event;
 
 /**
- * A CoreShowChannelEvent is triggered for each active channel in response to a CoreShowChannelsAction.
+ * A CoreShowChannelEvent is triggered for each active channel in response to a
+ * CoreShowChannelsAction.
  *
  * @author sebastian gutierrez
  * @version $Id$
@@ -43,8 +44,6 @@ public class CoreShowChannelEvent extends ResponseEvent
     private String accountcode;
     private String bridgedChannel;
     private String bridgeduniqueid;
-    private String connectedlinenum;
-    private String connectedlinename;
 
     public CoreShowChannelEvent(Object source)
     {
@@ -56,7 +55,6 @@ public class CoreShowChannelEvent extends ResponseEvent
      *
      * @return channel state
      */
-
 
     /**
      * Returns the Account code
@@ -89,8 +87,8 @@ public class CoreShowChannelEvent extends ResponseEvent
     }
 
     /**
-     * Returns the Aplication Data is runnning that channel at that time
-     * this is the parameters passed to that dialplan application
+     * Returns the Aplication Data is runnning that channel at that time this is
+     * the parameters passed to that dialplan application
      *
      * @return aplication data
      */
@@ -225,13 +223,6 @@ public class CoreShowChannelEvent extends ResponseEvent
     }
 
     /**
-     * Returns the Priority the channel actualy is
-     *
-     * @return priority
-     */
-
-
-    /**
      * Returns the Uniqueid
      *
      * @return uniqueid
@@ -244,26 +235,6 @@ public class CoreShowChannelEvent extends ResponseEvent
     public void setUniqueid(String uniqueid)
     {
         this.uniqueid = uniqueid;
-    }
-
-    public String getConnectedlinenum()
-    {
-        return connectedlinenum;
-    }
-
-    public void setConnectedlinenum(String connectedlinenum)
-    {
-        this.connectedlinenum = connectedlinenum;
-    }
-
-    public String getConnectedlinename()
-    {
-        return connectedlinename;
-    }
-
-    public void setConnectedlinename(String connectedlinename)
-    {
-        this.connectedlinename = connectedlinename;
     }
 
 }

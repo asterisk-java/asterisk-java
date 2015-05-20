@@ -17,8 +17,11 @@
 package org.asteriskjava.manager.event;
 
 /**
- * A MeetMeLeaveEvent is triggered if a channel leaves a MeetMe conference.<p>
- * Channel and unqiueId properties for this event are available since Asterisk 1.0.<p>
+ * A MeetMeLeaveEvent is triggered if a channel leaves a MeetMe conference.
+ * <p>
+ * Channel and unqiueId properties for this event are available since Asterisk
+ * 1.0.
+ * <p>
  * It is implemented in <code>apps/app_meetme.c</code>
  * 
  * @author srt
@@ -31,10 +34,6 @@ public class MeetMeLeaveEvent extends AbstractMeetMeEvent
      */
     private static final long serialVersionUID = 7692361610793036224L;
 
-    private String callerIdNum;
-    private String callerIdName;
-    private String connectedlinename;
-    private String connectedlinenum;    
     private Long duration;
 
     /**
@@ -46,49 +45,8 @@ public class MeetMeLeaveEvent extends AbstractMeetMeEvent
     }
 
     /**
-     * Returns the Caller*ID Name of the channel that left the conference.<p>
-     * This property is available since Asterisk 1.4.
-     * 
-     * @return the Caller*ID Name of the channel that left the conference.
-     */
-    public String getCallerIdName()
-    {
-        return callerIdName;
-    }
-
-    /**
-     * Sets the Caller*ID Name of the channel that left the conference.
-     * 
-     * @param callerIdName the Caller*ID Name of the channel that left the conference.
-     */
-    public void setCallerIdName(String callerIdName)
-    {
-        this.callerIdName = callerIdName;
-    }
-
-    /**
-     * Returns the Caller*ID Number of the channel that left the conference.<p>
-     * This property is available since Asterisk 1.4.
-     * 
-     * @return the Caller*ID Number of the channel that left the conference.
-     */
-    public String getCallerIdNum()
-    {
-        return callerIdNum;
-    }
-
-    /**
-     * Sets the Caller*ID Number of the channel that left the conference.
-     * 
-     * @param callerIdNum the Caller*ID Number of the channel that left the conference.
-     */
-    public void setCallerIdNum(String callerIdNum)
-    {
-        this.callerIdNum = callerIdNum;
-    }
-
-    /**
-     * Returns how long the user spent in the conference.<p>
+     * Returns how long the user spent in the conference.
+     * <p>
      * This property is available since Asterisk 1.4.
      * 
      * @return the duration in seconds the user spent in the conference.
@@ -107,25 +65,4 @@ public class MeetMeLeaveEvent extends AbstractMeetMeEvent
     {
         this.duration = duration;
     }
-
-	public String getConnectedlinename()
-	{
-		return connectedlinename;
-	}
-
-	public void setConnectedlinename(String connectedlinename)
-	{
-		this.connectedlinename = connectedlinename;
-	}
-
-	public String getConnectedlinenum()
-	{
-		return connectedlinenum;
-	}
-
-	public void setConnectedlinenum(String connectedlinenum)
-	{
-		this.connectedlinenum = connectedlinenum;
-	}
-    
 }

@@ -36,7 +36,7 @@ abstract class AbstractLiveObject implements LiveObject
     private final PropertyChangeSupport changes;
     protected final AsteriskServerImpl server;
 
-  //last time this object was updated
+    // last time this object was updated
     private long lastUpdate;
 
     AbstractLiveObject(AsteriskServerImpl server)
@@ -58,7 +58,19 @@ abstract class AbstractLiveObject implements LiveObject
 
     public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener)
     {
-        changes.addPropertyChangeListener(propertyName, listener);
+        boolean haveToAdd = true;
+        for (PropertyChangeListener l : changes.getPropertyChangeListeners())
+        {
+            if (l == listener)
+            {
+                haveToAdd = false;
+                break;
+            }
+        }
+        if (haveToAdd)
+        {
+            changes.addPropertyChangeListener(propertyName, listener);
+        }
     }
 
     public void removePropertyChangeListener(PropertyChangeListener listener)
@@ -70,12 +82,12 @@ abstract class AbstractLiveObject implements LiveObject
     {
         changes.removePropertyChangeListener(propertyName, listener);
     }
-    
+
     protected void firePropertyChange(String propertyName, Object oldValue, Object newValue)
     {
         if (oldValue != null || newValue != null)
         {
-        	stampLastUpdate();
+            stampLastUpdate();
             try
             {
                 changes.firePropertyChange(propertyName, oldValue, newValue);
@@ -88,11 +100,13 @@ abstract class AbstractLiveObject implements LiveObject
     }
 
     @Override
-    public long getLastUpdateMillis() {
-    	return lastUpdate;
+    public long getLastUpdateMillis()
+    {
+        return lastUpdate;
     }
 
-    public void stampLastUpdate(){
-    	lastUpdate = System.currentTimeMillis();
+    public void stampLastUpdate()
+    {
+        lastUpdate = System.currentTimeMillis();
     }
 }

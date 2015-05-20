@@ -19,11 +19,9 @@ package org.asteriskjava.manager.event;
 import java.util.Map;
 
 /**
- * An AgentCalledEvent is triggered when an agent is rung.
- * <br>
+ * An AgentCalledEvent is triggered when an agent is rung. <br>
  * To enable AgentCalledEvents you have to set
- * <code>eventwhencalled = yes</code> in <code>queues.conf</code>.
- * <br>
+ * <code>eventwhencalled = yes</code> in <code>queues.conf</code>. <br>
  * This event is implemented in <code>apps/app_queue.c</code>
  *
  * @author srt
@@ -53,7 +51,8 @@ public class AgentCalledEvent extends ManagerEvent
     }
 
     /**
-     * Returns the name of the queue.<p>
+     * Returns the name of the queue.
+     * <p>
      * Available since Asterisk 1.6.
      *
      * @return the name of the queue.
@@ -84,7 +83,7 @@ public class AgentCalledEvent extends ManagerEvent
      * Sets the member interface of the agent that has been called.
      *
      * @param agentCalled the member interface of the agent that has been
-     *                    called.
+     *            called.
      */
     public void setAgentCalled(String agentCalled)
     {
@@ -92,7 +91,8 @@ public class AgentCalledEvent extends ManagerEvent
     }
 
     /**
-     * Returns the name of the agent that has been called.<p>
+     * Returns the name of the agent that has been called.
+     * <p>
      * Available since Asterisk 1.6.
      *
      * @return the name of the agent that has been called.
@@ -130,7 +130,8 @@ public class AgentCalledEvent extends ManagerEvent
     }
 
     /**
-     * Returns the name of the channel calling the agent.<p>
+     * Returns the name of the channel calling the agent.
+     * <p>
      * Available since Asterisk 1.6
      *
      * @return the name of the channel calling the agent.
@@ -149,26 +150,11 @@ public class AgentCalledEvent extends ManagerEvent
     /**
      * Returns the Caller ID number of the caller's channel.
      *
-     * @return the Caller ID number of the caller's channel or "unknown" of none has been set.
-     * @since 1.0.0
-     */
-    public String getCallerIdNum()
-    {
-        return callerIdNum;
-    }
-
-    public void setCallerIdNum(String callerIdNum)
-    {
-        this.callerIdNum = callerIdNum;
-    }
-
-    /**
-     * Returns the Caller ID number of the caller's channel.
-     *
      * @return the Caller ID number of the caller's channel.
      * @deprecated as of 1.0.0, use {@link #getCallerIdNum()} instead.
      */
-    @Deprecated public String getCallerId()
+    @Deprecated
+    public String getCallerId()
     {
         return callerIdNum;
     }
@@ -183,30 +169,6 @@ public class AgentCalledEvent extends ManagerEvent
         this.callerIdNum = callerId;
     }
 
-
-    public String getCallerIdName() { return callerIdName; }
-
-    /**
-     * Sets the Caller ID name of the caller's channel.
-     *
-     * @param callerIdName the Caller ID name of the caller's channel.
-     * @since 0.2
-     */
-    public void setCallerIdName(String callerIdName)
-    {
-        this.callerIdName = callerIdName;
-    }
-
-    public String getContext()
-    {
-        return context;
-    }
-
-    public void setContext(String context)
-    {
-        this.context = context;
-    }
-
     public String getExtension()
     {
         return exten;
@@ -218,8 +180,9 @@ public class AgentCalledEvent extends ManagerEvent
     }
 
     /**
-     * Returns the unique id of the caller's channel that is about to be handled by
-     * the agent. This corresponds to {@link #getChannelCalling()}.<p>
+     * Returns the unique id of the caller's channel that is about to be handled
+     * by the agent. This corresponds to {@link #getChannelCalling()}.
+     * <p>
      * Available since Asterisk 1.6
      *
      * @return the unique id of the caller's channel.
@@ -236,8 +199,9 @@ public class AgentCalledEvent extends ManagerEvent
     }
 
     /**
-     * Returns the channel variables if <code>eventwhencalled</code> is set to <code>vars</code>
-     * in <code>queues.conf</code>.<p>
+     * Returns the channel variables if <code>eventwhencalled</code> is set to
+     * <code>vars</code> in <code>queues.conf</code>.
+     * <p>
      * Available since Asterisk 1.6
      *
      * @return the channel variables.
@@ -249,7 +213,8 @@ public class AgentCalledEvent extends ManagerEvent
     }
 
     /**
-     * Sets the channel variables.<p>
+     * Sets the channel variables.
+     * <p>
      * Available since Asterisk 1.6
      *
      * @param variables the channel variables.
@@ -259,19 +224,5 @@ public class AgentCalledEvent extends ManagerEvent
     {
         this.variables = variables;
     }
-
-    /**
-     * Returns the Caller*ID name of the channel connected if set.
-     * If the channel has no caller id set "unknown" is returned.
-     *
-     * @since 1.0.0
-     */
-
-    /**
-     * Returns the Caller*ID number of the channel connected if set.
-     * If the channel has no caller id set "unknown" is returned.
-     *
-     * @since 1.0.0
-     */
 
 }

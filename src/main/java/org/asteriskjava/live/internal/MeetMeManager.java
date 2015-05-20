@@ -74,11 +74,8 @@ class MeetMeManager
     void disconnected()
     {
         /*
-        synchronized (rooms)
-        {
-            rooms.clear();
-        }
-        */
+         * synchronized (rooms) { rooms.clear(); }
+         */
     }
 
     Collection<MeetMeRoom> getMeetMeRooms()
@@ -147,7 +144,8 @@ class MeetMeManager
                             + " but is user of no room");
                 }
             }
-            // Mmmm should remove from the room before firing PropertyChangeEvents ?
+            // Mmmm should remove from the room before firing
+            // PropertyChangeEvents ?
             user.left(event.getDateReceived());
             room.removeUser(user);
             channel.setMeetMeUserImpl(null);
@@ -183,7 +181,13 @@ class MeetMeManager
         final CommandAction meetMeListAction;
         final ManagerResponse response;
         final List<String> lines;
-        final Collection<Integer> userNumbers = new ArrayList<Integer>(); // list of user numbers in the room
+        final Collection<Integer> userNumbers = new ArrayList<Integer>(); // list
+                                                                          // of
+                                                                          // user
+                                                                          // numbers
+                                                                          // in
+                                                                          // the
+                                                                          // room
 
         meetMeListAction = new CommandAction(MEETME_LIST_COMMAND + " " + room.getRoomNumber());
         try
@@ -226,6 +230,11 @@ class MeetMeManager
 
             userNumber = Integer.valueOf(matcher.group(1));
             channel = channelManager.getChannelImplByName(matcher.group(2));
+            if (channel == null) // User has left the room already in the
+                                 // meanwhile
+            {
+                continue;
+            }
 
             userNumbers.add(userNumber);
 
