@@ -1025,17 +1025,16 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
             sb.append("id='").append(dialingChannel.get(0).getId()).append("',");
             sb.append("name='").append(dialingChannel.get(0).getName()).append("'],");
         }
-        if (linkedChannel.isEmpty())
+        synchronized (linkedChannel)
         {
-            sb.append("linkedChannel=null");
-        }
-        else
-        {
-            sb.append("linkedChannel=AsteriskChannel[");
-            synchronized (linkedChannel)
-            {
-                sb.append("id='").append(linkedChannel.get(0).getId()).append("',");
-                sb.append("name='").append(linkedChannel.get(0).getName()).append("']");
+            if (linkedChannel.isEmpty()) {
+                sb.append("linkedChannel=null");
+            } else {
+                sb.append("linkedChannel=AsteriskChannel[");
+                {
+                    sb.append("id='").append(linkedChannel.get(0).getId()).append("',");
+                    sb.append("name='").append(linkedChannel.get(0).getName()).append("']");
+                }
             }
         }
         sb.append("]");
