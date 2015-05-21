@@ -721,15 +721,18 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
     {
         ManagerResponse response;
 
-        if (linkedChannels.isEmpty())
+        synchronized (linkedChannels)
         {
-            response = server.sendAction(new RedirectAction(name, context, exten, priority));
-        }
-        else
-        {
-            response = server
-                    .sendAction(new RedirectAction(name, linkedChannels.get(0).getName(), context, exten, priority,
-                            context, exten, priority));
+            if (linkedChannels.isEmpty())
+            {
+                response = server.sendAction(new RedirectAction(name, context, exten, priority));
+            }
+            else
+            {
+                response = server
+                        .sendAction(new RedirectAction(name, linkedChannels.get(0).getName(), context, exten, priority,
+                                context, exten, priority));
+            }
         }
 
         if (response instanceof ManagerError)
