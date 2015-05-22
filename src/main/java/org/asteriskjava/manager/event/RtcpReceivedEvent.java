@@ -51,7 +51,7 @@ public class RtcpReceivedEvent extends AbstractRtcpEvent
     private Long highestSequence;
     private Long sequenceNumberCycles;
     private Double lastSr;
-    private Long rtt;
+    private Double rtt;
 
     public RtcpReceivedEvent(Object source)
     {
@@ -192,13 +192,18 @@ public class RtcpReceivedEvent extends AbstractRtcpEvent
      *
      * @return the round trip time in seconds, may be <code>null</code>.
      */
-    public Long getRtt()
+    public Double getRtt()
     {
         return rtt;
     }
 
     public void setRtt(String rttString)
     {
-        this.rtt = secStringToLong(rttString);
+        this.rtt = secStringToDouble(rttString);
+    }
+    
+    public Long getRttAsMillseconds()
+    {
+    	return (long) (rtt * 1000);
     }
 }

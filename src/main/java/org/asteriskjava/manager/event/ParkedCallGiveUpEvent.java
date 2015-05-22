@@ -18,15 +18,17 @@ package org.asteriskjava.manager.event;
 
 /**
  * A ParkedCallGiveUpEvent is triggered when a channel that has been parked is
- * hung up.<p>
- * It is implemented in <code>res/res_features.c</code><p>
+ * hung up.
+ * <p>
+ * It is implemented in <code>res/res_features.c</code>
+ * <p>
  * Available since Asterisk 1.2
  * 
  * @author srt
  * @version $Id$
  * @since 0.2
  */
-public class ParkedCallGiveUpEvent extends AbstractParkedCallEvent
+public class ParkedCallGiveUpEvent extends AbstractUnParkedEvent
 {
     /**
      * Serializable version identifier

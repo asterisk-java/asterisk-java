@@ -105,8 +105,8 @@ public class Base64 {
      * Translates the specified Base64 string (as per Preferences.get(byte[]))
      * into a byte array.
      *
-     * @throw IllegalArgumentException if <tt>s</tt> is not a valid Base64
-     *        string.
+     * @throws IllegalArgumentException if <tt>s</tt> is not a valid Base64
+     *         string.
      */
     public static byte[] base64ToByteArray(String s) {
         return base64ToByteArray(s, false);
@@ -116,9 +116,9 @@ public class Base64 {
      * Translates the specified "alternate representation" Base64 string
      * into a byte array.
      *
-     * @throw IllegalArgumentException or ArrayOutOfBoundsException
-     *        if <tt>s</tt> is not a valid alternate representation
-     *        Base64 string.
+     * @throws IllegalArgumentException or ArrayOutOfBoundsException
+     *         if <tt>s</tt> is not a valid alternate representation
+     *         Base64 string.
      */
     public static byte[] altBase64ToByteArray(String s) {
         return base64ToByteArray(s, true);

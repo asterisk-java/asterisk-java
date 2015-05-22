@@ -18,15 +18,17 @@ package org.asteriskjava.manager.event;
 
 /**
  * A ParkedCallTimeOutEvent is triggered when call parking times out for a given
- * channel.<p>
- * It is implemented in <code>res/res_features.c</code><p>
+ * channel.
+ * <p>
+ * It is implemented in <code>res/res_features.c</code>
+ * <p>
  * Available since Asterisk 1.2
  * 
  * @author srt
  * @version $Id$
  * @since 0.2
  */
-public class ParkedCallTimeOutEvent extends AbstractParkedCallEvent
+public class ParkedCallTimeOutEvent extends AbstractUnParkedEvent
 {
     /**
      * Serializable version identifier

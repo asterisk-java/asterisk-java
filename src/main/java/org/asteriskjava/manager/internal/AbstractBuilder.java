@@ -39,6 +39,7 @@ abstract class AbstractBuilder
             }
 
             setterName = ReflectionUtil.stripIllegalCharacters(entry.getKey());
+
             /*
              * The source property needs special handling as it is already
              * defined in java.util.EventObject (the base class of
@@ -47,9 +48,22 @@ abstract class AbstractBuilder
             if ("source".equals(setterName))
             {
                 setterName = "src";
+            } 
+            else if ("class".equals(setterName))
+            {
+            	setterName = "clazz";
+            }
+
+            /*
+             * The class property needs to be renamed. It is used in MusicOnHoldEvent.
+             */
+            if ("class".equals(setterName))
+            {
+                setterName = "classname";
             }
 
             setter = setters.get(setterName);
+
             if (setter == null && !setterName.endsWith("s")) // no exact match => try plural
             {
                 setter = setters.get(setterName + "s");

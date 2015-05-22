@@ -91,14 +91,31 @@ public abstract class AbstractManagerEventListener implements ManagerEventListen
     {
     }
 
+    protected void handleEvent(ChanSpyStartEvent event)
+    {
+    }
+   
+    protected void handleEvent(ChanSpyStopEvent event)
+    {
+    }
+
     protected void handleEvent(ConnectEvent event)
+    {
+    }
+  protected void handleEvent(DAHDIChannelEvent event)
+    {
+    }
+  protected void handleEvent(SoftHangupRequestEvent event)
     {
     }
 
     protected void handleEvent(DialEvent event)
     {
     }
-
+    
+    protected void handleEvent(HangupRequestEvent event)
+       {
+       }
     protected void handleEvent(DisconnectEvent event)
     {
     }
@@ -250,7 +267,27 @@ public abstract class AbstractManagerEventListener implements ManagerEventListen
     protected void handleEvent(DbGetResponseEvent event)
     {
     }
-
+    protected void handleEvent(DongleNewSMSBase64Event event)
+    {
+    }
+    protected void handleEvent(DongleStatusEvent event)
+    {
+    }
+    protected void handleEvent(DongleCENDEvent event)
+    {
+    }
+    protected void handleEvent(DongleCallStateChangeEvent event)
+    {
+    }
+    protected void handleEvent(DongleNewSMSEvent event)
+    {
+    }
+    protected void handleEvent(DongleNewCMGREvent event)
+    {
+    }
+    protected void handleEvent(DongleDeviceEntryEvent event)
+    {
+    }
     protected void handleEvent(JoinEvent event)
     {
     }
@@ -286,7 +323,7 @@ public abstract class AbstractManagerEventListener implements ManagerEventListen
     protected void handleEvent(QueueEntryEvent event)
     {
     }
-
+    
     protected void handleEvent(QueueMemberEvent event)
     {
     }
@@ -329,6 +366,7 @@ public abstract class AbstractManagerEventListener implements ManagerEventListen
     protected void handleEvent(DahdiShowChannelsEvent event)
     {
     }
+
     protected void handleEvent(CoreShowChannelEvent event)
     {
     }
@@ -342,6 +380,7 @@ public abstract class AbstractManagerEventListener implements ManagerEventListen
      * 
      * @param event the event to handle
      */
+    @Override
     public void onManagerEvent(ManagerEvent event)
     {
         if (event instanceof AgentCallbackLoginEvent)
@@ -380,9 +419,21 @@ public abstract class AbstractManagerEventListener implements ManagerEventListen
         {
             handleEvent((ConnectEvent) event);
         }
+         else if (event instanceof DAHDIChannelEvent)
+        {
+            handleEvent((DAHDIChannelEvent) event);
+        }
+        else if (event instanceof SoftHangupRequestEvent)
+        {
+            handleEvent((SoftHangupRequestEvent) event);
+        }
         else if (event instanceof DialEvent)
         {
             handleEvent((DialEvent) event);
+        }
+        else if (event instanceof HangupRequestEvent)
+        {
+            handleEvent((HangupRequestEvent) event);
         }
         else if (event instanceof DisconnectEvent)
         {
@@ -423,6 +474,14 @@ public abstract class AbstractManagerEventListener implements ManagerEventListen
         else if (event instanceof ProtocolIdentifierReceivedEvent)
         {
             handleEvent((ProtocolIdentifierReceivedEvent) event);
+        }
+        else if (event instanceof JoinEvent)
+        {
+            handleEvent((JoinEvent) event);
+        }
+        else if (event instanceof LeaveEvent)
+        {
+            handleEvent((LeaveEvent) event);
         }
         else if (event instanceof QueueEvent)
         {
@@ -492,6 +551,34 @@ public abstract class AbstractManagerEventListener implements ManagerEventListen
         {
             handleEvent((MeetMeJoinEvent) event);
         }
+        else if (event instanceof DongleNewSMSBase64Event)
+        {
+            handleEvent((DongleNewSMSBase64Event) event);
+        }
+         else if (event instanceof DongleCENDEvent)
+        {
+            handleEvent((DongleCENDEvent) event);
+        }
+          else if (event instanceof DongleCallStateChangeEvent)
+        {
+            handleEvent((DongleCallStateChangeEvent) event);
+        }
+           else if (event instanceof DongleNewSMSEvent)
+        {
+            handleEvent((DongleNewSMSEvent) event);
+        }
+            else if (event instanceof DongleNewCMGREvent)
+        {
+            handleEvent((DongleNewCMGREvent) event);
+        }
+        else if (event instanceof DongleStatusEvent)
+        {
+            handleEvent((DongleStatusEvent) event);
+        }
+        else if (event instanceof DongleDeviceEntryEvent)
+        {
+            handleEvent((DongleDeviceEntryEvent) event);
+        }
         else if (event instanceof MeetMeLeaveEvent)
         {
             handleEvent((MeetMeLeaveEvent) event);
@@ -539,14 +626,6 @@ public abstract class AbstractManagerEventListener implements ManagerEventListen
         else if (event instanceof DbGetResponseEvent)
         {
             handleEvent((DbGetResponseEvent) event);
-        }
-        else if (event instanceof JoinEvent)
-        {
-            handleEvent((JoinEvent) event);
-        }
-        else if (event instanceof LeaveEvent)
-        {
-            handleEvent((LeaveEvent) event);
         }
         else if (event instanceof BridgeEvent)
         {

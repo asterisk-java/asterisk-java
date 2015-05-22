@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.TimeZone;
 
 import org.junit.Before;
+import org.junit.After;
 import org.junit.Test;
 
 public class CdrEventTest
@@ -21,7 +22,7 @@ public class CdrEventTest
         TimeZone.setDefault(TimeZone.getTimeZone("GMT"));
     }
 
-    @Before
+    @After
     public void tearDown()
     {
         TimeZone.setDefault(defaultTimeZone);

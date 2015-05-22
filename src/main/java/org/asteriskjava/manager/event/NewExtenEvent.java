@@ -37,6 +37,7 @@ public class NewExtenEvent extends ManagerEvent
     private String appData;
     private Integer priority;
     private String channel;
+    private String language;
 
     /**
      * @param source
@@ -46,6 +47,16 @@ public class NewExtenEvent extends ManagerEvent
         super(source);
     }
 
+    public String getLanguage()
+    {
+    	return language;
+    }
+    
+    public void setLanguage(String language)
+    {
+    	this.language = language;
+    }   
+    
     /**
      * Returns the unique id of the channel.
      */

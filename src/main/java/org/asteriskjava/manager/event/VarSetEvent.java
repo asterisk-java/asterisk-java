@@ -17,8 +17,11 @@
 package org.asteriskjava.manager.event;
 
 /**
- * A VarSetEvent is triggered when a channel or global variable is set in Asterisk.<p>
- * Available since Asterisk 1.6<p>
+ * A VarSetEvent is triggered when a channel or global variable is set in
+ * Asterisk.
+ * <p>
+ * Available since Asterisk 1.6
+ * <p>
  * It is implemented in <code>main/pbx.c</code>
  *
  * @author srt
@@ -33,6 +36,17 @@ public class VarSetEvent extends ManagerEvent
     private String uniqueId;
     private String variable;
     private String value;
+    private String language;
+
+    public String getLanguage()
+    {
+        return language;
+    }
+
+    public void setLanguage(String language)
+    {
+        this.language = language;
+    }
 
     public VarSetEvent(Object source)
     {
@@ -40,9 +54,11 @@ public class VarSetEvent extends ManagerEvent
     }
 
     /**
-     * Returns the name of the channel or <code>null</code> for global variables.
+     * Returns the name of the channel or <code>null</code> for global
+     * variables.
      *
-     * @return the name of the channel or <code>null</code> for global variables.
+     * @return the name of the channel or <code>null</code> for global
+     *         variables.
      */
     public String getChannel()
     {
@@ -55,9 +71,11 @@ public class VarSetEvent extends ManagerEvent
     }
 
     /**
-     * Returns the unique id of the channel or <code>null</code> for global variables.
+     * Returns the unique id of the channel or <code>null</code> for global
+     * variables.
      *
-     * @return the unique id of the channel or <code>null</code> for global variables.
+     * @return the unique id of the channel or <code>null</code> for global
+     *         variables.
      */
     public String getUniqueId()
     {

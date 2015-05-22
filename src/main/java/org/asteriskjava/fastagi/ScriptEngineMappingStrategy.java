@@ -33,7 +33,7 @@ import java.net.URL;
 import java.net.MalformedURLException;
 
 /**
- * A MappingStrategy that uses {@see javax.script.ScriptEngine} to run AgiScripts. This MappingStrategy
+ * A MappingStrategy that uses {@link javax.script.ScriptEngine} to run AgiScripts. This MappingStrategy
  * can be used to run JavaScript, Groovy, JRuby, etc. scripts.
  *
  * @since 1.0.0

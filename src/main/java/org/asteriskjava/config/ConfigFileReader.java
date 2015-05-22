@@ -8,9 +8,9 @@ import java.util.*;
 
 /**
  * Reads and parses Asterisk configuration files.
- * <p/>
+ * <br>
  * See Asterisk's <code>main/config.c</code>.
- * <p/>
+ * <br>
  * Client code is not supposed to use this class.
  *
  * @author srt

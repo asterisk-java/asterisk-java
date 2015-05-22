@@ -43,8 +43,7 @@ import org.asteriskjava.util.LogFactory;
  * ensure enabled AgentCalledEvents. You have to set
  * <code>eventwhencalled = yes</code> in <code>queues.conf</code>.
  *
- * @author <a href="mailto:patrick.breucking{@nospam}gonicus.de">Patrick
- *         Breucking</a>
+ * @author Patrick Breucking
  * @version $Id$
  * @since 0.3.1
  */
@@ -90,7 +89,7 @@ public class AgentManager
         {
             if (event instanceof AgentsEvent)
             {
-                System.out.println(event);
+                logger.info( event );
                 handleAgentsEvent((AgentsEvent) event);
             }
         }

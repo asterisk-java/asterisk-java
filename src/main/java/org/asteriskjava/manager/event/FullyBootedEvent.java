@@ -1,7 +1,7 @@
 package org.asteriskjava.manager.event;
 
 /**
- * Indicates that Asterisk has loaded all its modules and finished booting.<p/>
+ * Indicates that Asterisk has loaded all its modules and finished booting.<br>
  * It is handy to have a single event notification for when all Asterisk
  * modules have been loaded - especially for situations like running
  * automated tests. This event will fire 1) immediately upon all modules
@@ -10,8 +10,8 @@ package org.asteriskjava.manager.event;
  * that a user will never miss getting a FullyBooted event. In vary rare
  * circumstances, it might be possible to get two copies of the message
  * if the AMI connection is made right as the modules finish loading.
- * <p/>
- * It is implemented in <code>main/asterisk.c</code> and <code>manager.c</code>.<p/>
+ * <br>
+ * It is implemented in <code>main/asterisk.c</code> and <code>manager.c</code>.<br>
  * Available since Asterisk 1.8
  */
 public class FullyBootedEvent extends ManagerEvent

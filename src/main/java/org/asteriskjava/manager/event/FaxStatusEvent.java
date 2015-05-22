@@ -52,6 +52,12 @@ public class FaxStatusEvent extends AbstractFaxEvent
     private Integer rtnCount;
     private Integer dcnCount;
     private String remoteStationId;
+    private String context;
+    private String localStationId;
+    private String callerId;
+    private String status;
+    private String operation;
+    private String exten;
 
     public FaxStatusEvent(Object source)
     {
@@ -489,6 +495,102 @@ public class FaxStatusEvent extends AbstractFaxEvent
     public void setRemoteStationId(String remoteStationId)
     {
         this.remoteStationId = remoteStationId;
+    }
+
+    /**
+     * @return the localStationId
+     */
+    public String getLocalStationId()
+    {
+        return localStationId;
+    }
+
+    /**
+     * @param localStationId the localStationId to set
+     */
+    public void setLocalStationId(String localStationId)
+    {
+        this.localStationId = localStationId;
+    }
+
+    /**
+     * @return the context
+     */
+    public String getContext()
+    {
+        return context;
+    }
+
+    /**
+     * @param context the context to set
+     */
+    public void setContext(String context)
+    {
+        this.context = context;
+    }
+
+    /**
+     * @return the callerId
+     */
+    public String getCallerId()
+    {
+        return callerId;
+    }
+
+    /**
+     * @param callerId the callerId to set
+     */
+    public void setCallerId(String callerid)
+    {
+        this.callerId = callerid;
+    }
+
+    /**
+     * @return the status
+     */
+    public String getStatus()
+    {
+        return status;
+    }
+
+    /**
+     * @param status the status to set
+     */
+    public void setStatus(String status)
+    {
+        this.status = status;
+    }
+
+    /**
+     * @return the operation
+     */
+    public String getOperation()
+    {
+        return operation;
+    }
+
+    /**
+     * @param context the context to set
+     */
+    public void setOperation(String operation)
+    {
+        this.operation = operation;
+    }
+
+    /**
+     * @return the exten
+     */
+    public String getExten()
+    {
+        return exten;
+    }
+
+    /**
+     * @param exten the exten to set
+     */
+    public void setExten(String exten)
+    {
+        this.exten = exten;
     }
 
 }

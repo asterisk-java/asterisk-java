@@ -1,15 +1,15 @@
 package org.asteriskjava.fastagi;
 
+import org.asteriskjava.fastagi.internal.AgiChannelFactory;
+import org.asteriskjava.fastagi.internal.DefaultAgiChannelFactory;
 import org.asteriskjava.util.DaemonThreadFactory;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
-import org.asteriskjava.fastagi.internal.AgiChannelFactory;
-import org.asteriskjava.fastagi.internal.DefaultAgiChannelFactory;
 
 import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.SynchronousQueue;
 
 /**
  * Abstract base class for FastAGI and AsyncAGI servers.
@@ -103,14 +103,14 @@ public abstract class AbstractAgiServer
 
     /**
      * Sets the default number of worker threads in the thread pool.
-     * <p/>
+     * <br>
      * This is the number of threads that are available even if they are idle.
-     * <p/>
+     * <br>
      * The default pool size is 10.
      *
      * @param poolSize the size of the worker thread pool.
      * @throws IllegalArgumentException if the new pool size is negative
-     * @see {@link java.util.concurrent.ThreadPoolExecutor#setCorePoolSize(int)}
+     * @see java.util.concurrent.ThreadPoolExecutor#setCorePoolSize(int)
      */
     public synchronized void setPoolSize(int poolSize)
     {
@@ -139,14 +139,14 @@ public abstract class AbstractAgiServer
 
     /**
      * Sets the maximum number of worker threads in the thread pool.
-     * <p/>
+     * <br>
      * This equals the maximum number of concurrent requests this AgiServer can serve.
-     * <p/>
+     * <br>
      * The default maximum pool size is 100.
      *
      * @param maximumPoolSize the maximum size of the worker thread pool.
      * @throws IllegalArgumentException if maximumPoolSize is less than current pool size or less than or equal to 0.
-     * @see {@link java.util.concurrent.ThreadPoolExecutor#setMaximumPoolSize(int)}
+     * @see java.util.concurrent.ThreadPoolExecutor#setMaximumPoolSize(int)
      */
     public synchronized void setMaximumPoolSize(int maximumPoolSize)
     {
@@ -240,6 +240,27 @@ public abstract class AbstractAgiServer
 
         return pool;
     }
+
+
+	/**
+	 * Returns the approximate number of AgiConnectionHandler threads that are actively executing tasks.
+	 * @see ThreadPoolExecutor#getActiveCount()
+	 * @see #getPoolActiveThreadCount()
+	 * @see org.asteriskjava.fastagi.internal.AgiConnectionHandler#AGI_CONNECTION_HANDLERS
+	 */
+	public int getPoolActiveTaskCount () {
+		if (pool != null) {
+			return pool.getActiveCount();
+		}
+		return -1;
+	}//getPoolActiveCount
+
+	public int getPoolActiveThreadCount () {
+		if (pool != null) {
+			return pool.getPoolSize();
+		}
+		return -1;
+	}//getPoolActiveThreadCount
 
     /**
      * Creates a new ThreadPoolExecutor to serve the AGI requests. The nature of this pool

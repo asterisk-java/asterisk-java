@@ -18,19 +18,21 @@ package org.asteriskjava.manager.event;
 
 /**
  * An UnholdEvent is triggered by the SIP channel driver when a channel is no
- * longer put on hold.<p>
- * It is implemented in <code>channels/chan_sip.c</code>.<p>
- * Available since Asterisk 1.2, as of Asterisk 1.6 only {@link org.asteriskjava.manager.event.HoldEvent} is sent
- * with the status set to <code>false</code> to indicate unhold.
+ * longer put on hold.
+ * <p>
+ * It is implemented in <code>channels/chan_sip.c</code>.
+ * <p>
+ * Available since Asterisk 1.2, as of Asterisk 1.6 only
+ * {@link org.asteriskjava.manager.event.HoldEvent} is sent with the status set
+ * to <code>false</code> to indicate unhold.
  *
  * @author srt
  * @version $Id$
  * @see org.asteriskjava.manager.event.HoldEvent
- * @since 0.2
- * @deprecated as of 1.0.0, use {@link org.asteriskjava.manager.event.HoldEvent} and its
- *             {@link #isUnhold()} method instead.
+ * @since 0.2 Enro 2015-03: No longer deprecated since Asterisk 13 uses this
+ *        again.
  */
-@Deprecated public class UnholdEvent extends HoldEvent
+public class UnholdEvent extends AbstractHoldEvent
 {
     /**
      * Serializable version identifier.

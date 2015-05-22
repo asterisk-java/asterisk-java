@@ -10,7 +10,7 @@ import org.asteriskjava.manager.event.ResponseEvent;
  * Available in Asterisk post-1.4.
  * <p>
  * This action has been added by
- * {@linkplain http://bugs.digium.com/view.php?id=8035}.
+ * <a href="http://bugs.digium.com/view.php?id=8035">http://bugs.digium.com/view.php?id=8035</a>.
  * 
  * @see QueueSummaryEvent
  * @see QueueSummaryCompleteEvent

@@ -21,7 +21,6 @@ package org.asteriskjava.manager.event;
  * It is implemented in <code>apps/app_queue.c</code>
  * 
  * @author srt
- * @version $Id$
  */
 public class LeaveEvent extends QueueEvent
 {
@@ -30,11 +29,26 @@ public class LeaveEvent extends QueueEvent
      */
     static final long serialVersionUID = -7450401017732634240L;
 
+    private Integer position;
+
     /**
      * @param source
      */
     public LeaveEvent(Object source)
     {
         super(source);
+    }
+
+    /**
+     * @return the position of the caller at the time they leave the queue
+     */
+    public Integer getPosition()
+    {
+        return position;
+    }
+
+    public void setPosition(Integer position)
+    {
+        this.position = position;
     }
 }

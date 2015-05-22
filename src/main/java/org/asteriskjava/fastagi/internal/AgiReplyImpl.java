@@ -16,10 +16,11 @@
  */
 package org.asteriskjava.fastagi.internal;
 
-import java.util.*;
-import java.util.regex.*;
-
 import org.asteriskjava.fastagi.reply.AgiReply;
+
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**
@@ -161,6 +162,11 @@ public class AgiReplyImpl implements AgiReply
         if (status != null)
         {
             return status;
+        }
+
+        if (firstLine == null)
+        {
+            return -1;
         }
 
         final Matcher matcher = STATUS_PATTERN.matcher(firstLine);

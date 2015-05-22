@@ -136,7 +136,7 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
      * In essence, it says, 'Is the person who has been called allowed to see the callers number?'
      * (presentation) and 'What authority was used to verify that this is a genuine number?'
      * (screening).<p>
-     * <p/>
+     * <br>
      * Presentation indicator (Bits 6 and 7):
      * <pre>
      * Bits Meaning
@@ -288,7 +288,7 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
      * If not set, Asterisk assumes a default value of 30000 meaning 30 seconds.
      *
      * @param timeout the timeout in milliseconds
-     * @deprecated use {@see #setTimeout(Long)} instead.
+     * @deprecated use {@link #setTimeout(Long)} instead.
      */
     @Deprecated public void setTimeout(Integer timeout)
     {

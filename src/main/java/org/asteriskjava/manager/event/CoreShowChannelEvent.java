@@ -17,7 +17,8 @@
 package org.asteriskjava.manager.event;
 
 /**
- * A CoreShowChannelEvent is triggered for each active channel in response to a CoreShowChannelsAction.
+ * A CoreShowChannelEvent is triggered for each active channel in response to a
+ * CoreShowChannelsAction.
  *
  * @author sebastian gutierrez
  * @version $Id$
@@ -35,8 +36,6 @@ public class CoreShowChannelEvent extends ResponseEvent
     private String channel;
     private String context;
     private String extension;
-    private String priority;
-    private String ChannelState;
     private String channelstatedesc;
     private String application;
     private String applicationdata;
@@ -56,16 +55,6 @@ public class CoreShowChannelEvent extends ResponseEvent
      *
      * @return channel state
      */
-
-    public String getChannelState()
-    {
-        return ChannelState;
-    }
-
-    public void setChannelState(String ChannelState)
-    {
-        this.ChannelState = ChannelState;
-    }
 
     /**
      * Returns the Account code
@@ -98,8 +87,8 @@ public class CoreShowChannelEvent extends ResponseEvent
     }
 
     /**
-     * Returns the Aplication Data is runnning that channel at that time
-     * this is the parameters passed to that dialplan application
+     * Returns the Aplication Data is runnning that channel at that time this is
+     * the parameters passed to that dialplan application
      *
      * @return aplication data
      */
@@ -234,21 +223,6 @@ public class CoreShowChannelEvent extends ResponseEvent
     }
 
     /**
-     * Returns the Priority the channel actualy is
-     *
-     * @return priority
-     */
-    public String getPriority()
-    {
-        return priority;
-    }
-
-    public void setPriority(String priority)
-    {
-        this.priority = priority;
-    }
-
-    /**
      * Returns the Uniqueid
      *
      * @return uniqueid
@@ -263,5 +237,4 @@ public class CoreShowChannelEvent extends ResponseEvent
         this.uniqueid = uniqueid;
     }
 
-    
 }

@@ -23,7 +23,7 @@ package org.asteriskjava.fastagi.command;
  * digit. Streaming always begins at the beginning.<p>
  * Returns 0 if no digit being pressed, or the ASCII numerical value of the
  * digit if one was pressed, or -1 on error or if the channel was disconnected.
- * <p/>
+ * <br>
  * Remember, the file extension must not be included in the filename.
  *
  * @author srt

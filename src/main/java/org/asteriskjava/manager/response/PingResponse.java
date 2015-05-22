@@ -20,7 +20,6 @@ package org.asteriskjava.manager.response;
  * Corresponds to a PingAction and contains an additional (yet useless) ping property.
  *
  * @author srt
- * @version $Id$
  * @see org.asteriskjava.manager.action.PingAction
  */
 public class PingResponse extends ManagerResponse
@@ -28,7 +27,6 @@ public class PingResponse extends ManagerResponse
     private static final long serialVersionUID = 0L;
 
     private String ping;
-
     private String timestamp;
     
     /**
@@ -46,12 +44,18 @@ public class PingResponse extends ManagerResponse
         this.ping = ping;
     }
 
-	public String getTimestamp() {
-		return timestamp;
-	}
+    /**
+     * Timestamp for the response.
+     * @return Timestamp as a String, e.g 1353747825.795863
+     * @since 1.0.0
+     */
+    public String getTimestamp()
+    {
+        return timestamp;
+    }
 
-	public void setTimestamp(String timestamp) {
-		this.timestamp = timestamp;
-	}
-    
+    public void setTimestamp(String timestamp)
+    {
+        this.timestamp = timestamp;
+    }
 }

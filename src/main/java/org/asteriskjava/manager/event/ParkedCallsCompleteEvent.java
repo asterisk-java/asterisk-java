@@ -17,12 +17,11 @@
 package org.asteriskjava.manager.event;
 
 /**
- * A ParkedCallsCompleteEvent is triggered after all parked calls have been reported in response to
- * a ParkedCallsAction.
+ * A ParkedCallsCompleteEvent is triggered after all parked calls have been
+ * reported in response to a ParkedCallsAction.
  * 
  * @see org.asteriskjava.manager.action.ParkedCallsAction
  * @see org.asteriskjava.manager.event.ParkedCallEvent
- * 
  * @author srt
  * @version $Id$
  */

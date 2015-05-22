@@ -22,7 +22,6 @@ package org.asteriskjava.manager.event;
  * Available since Asterisk 1.6
  *
  * @author srt
- * @version $Id$
  * @since 1.0.0
  */
 public class MusicOnHoldEvent extends ManagerEvent
@@ -33,10 +32,11 @@ public class MusicOnHoldEvent extends ManagerEvent
     public static final String STATE_STOP = "Stop";
 
     private String channel;
+    private String className;
     private String uniqueId;
     private String state;
-
-    public MusicOnHoldEvent(Object source)
+    
+	public MusicOnHoldEvent(Object source)
     {
         super(source);
     }
@@ -59,6 +59,16 @@ public class MusicOnHoldEvent extends ManagerEvent
     public void setChannel(String channel)
     {
         this.channel = channel;
+    }
+
+    public String getClassName()
+    {
+    	return this.className;
+    }
+    
+    public void setClazz(String className)
+    {
+    	this.className = className;
     }
 
     /**

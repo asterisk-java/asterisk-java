@@ -82,7 +82,7 @@ public class DahdiShowChannelsCompleteEvent extends ResponseEvent
     /**
      * Sets the number of channels reported.<p>
      *
-     * @param items the number of channels reported.
+     * @param listitems the number of channels reported.
      */
     public void setListitems(Integer listitems)
     {

@@ -32,7 +32,7 @@ interface ActionBuilder
     /**
      * Sets the version of the Asterisk server to built the action for.
      * 
-     * @param asteriskVersion the version of the target Asterisk server.
+     * @param targetVersion the version of the target Asterisk server.
      * @since 0.2
      */
     void setTargetVersion(AsteriskVersion targetVersion);
