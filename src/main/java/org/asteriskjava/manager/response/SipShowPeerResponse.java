@@ -77,6 +77,7 @@ public class SipShowPeerResponse extends ManagerResponse
 	private String sipForcerport;
 	private String sipRtpEngine;
 	private String sipComedia;
+	private String mohsuggest;
 	
 
 	private Map<String, String> chanVariable;
@@ -711,6 +712,15 @@ public class SipShowPeerResponse extends ManagerResponse
 	public void setSipComedia(String sipComedia) {
 		this.sipComedia = sipComedia;
 	}
+	
+
+	public String getMohsuggest() {
+		return mohsuggest;
+	}
+
+	public void setMohsuggest(String mohsuggest) {
+		this.mohsuggest = mohsuggest;
+	}
 
 	@Override
 	public String toString() {
@@ -841,6 +851,8 @@ public class SipShowPeerResponse extends ManagerResponse
 		builder.append(sipComedia);
 		builder.append(", chanVariable=");
 		builder.append(chanVariable);
+		builder.append(", mohSuggest=");
+		builder.append(mohsuggest);
 		builder.append("]");
 		return builder.toString();
 	}
