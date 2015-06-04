@@ -35,4 +35,13 @@ public class SipShowPeerResponseTest
         response.setQualifyFreq(": 60000 ms\nChanVariable:\n PHBX_ID,191");
         assertEquals("Incorrect qualifyFreq", 60000, (int) response.getQualifyFreq());
     }
+    
+    @Test
+    public void testSetMohsuggest()
+    {
+        response.setMohsuggest("default");
+        assertEquals("Incorrect mohsuggest", "default",response.getMohsuggest());
+    }
+    
+    
 }
