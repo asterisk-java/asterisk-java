@@ -44,8 +44,7 @@
 			<item name="Building with Maven" href="building.html" />
 			<item name="Mailing Lists" href="mail-lists.html" />
 			<item name="Patch Howto" href="patch.html" />
-			<item name="Bug Tracker"
-				href="http://jira.reucon.org/browse/AJ" />
+			<item name="Bug Tracker" href="https://github.com/asterisk-java/asterisk-java/issues" />
 		</menu>
 		<menu name="Documentation">
 			<item name="Design" href="design.html" />
