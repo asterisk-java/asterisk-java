@@ -78,7 +78,7 @@ abstract class AbstractBuilder
             if (setter == null && !(target instanceof UserEvent))
             {
                 logger.warn("Unable to set property '" + entry.getKey() + "' to '" + entry.getValue() + "' on "
-                        + target.getClass().getName() + ": no setter. Please report at http://jira.reucon.org/browse/AJ");
+                        + target.getClass().getName() + ": no setter. Please report at https://github.com/asterisk-java/asterisk-java/issues");
             }
 
             if (setter == null)
