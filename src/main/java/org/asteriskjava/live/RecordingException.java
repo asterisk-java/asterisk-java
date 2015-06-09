@@ -17,7 +17,7 @@
 package org.asteriskjava.live;
 
 /**
- * Indicates that a record related issue has occured,
+ * Indicates that a record operation related issue has occured,
  * 
  * @author videanuadrian
  * @version $Id$
