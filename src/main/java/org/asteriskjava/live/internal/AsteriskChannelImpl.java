@@ -31,7 +31,7 @@ import org.asteriskjava.live.HangupCause;
 import org.asteriskjava.live.LinkedChannelHistoryEntry;
 import org.asteriskjava.live.LiveException;
 import org.asteriskjava.live.ManagerCommunicationException;
-import org.asteriskjava.live.MuteFlagException;
+import org.asteriskjava.live.RecordingException;
 import org.asteriskjava.live.NoSuchChannelException;
 import org.asteriskjava.manager.action.AbsoluteTimeoutAction;
 import org.asteriskjava.manager.action.ChangeMonitorAction;
@@ -875,24 +875,24 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
     }
 
     
-    public void pauseMixMonitor(MixMonitorDirection direction) throws ManagerCommunicationException, NoSuchChannelException, MuteFlagException
+    public void pauseMixMonitor(MixMonitorDirection direction) throws ManagerCommunicationException, NoSuchChannelException, RecordingException
     {
         ManagerResponse response;
         response = server.sendAction(new PauseMixMonitorAction(this.name,1,direction.getStateName()));
         if (response instanceof ManagerError) {
         	if (response.getMessage().equals("Cannot set mute flag"))        	
-        		throw new MuteFlagException(response.getMessage()+" on channel: '" + name);        	
+        		throw new RecordingException(response.getMessage()+" on channel: '" + name);        	
         }
     }
 
     
-    public void unPauseMixMonitor(MixMonitorDirection direction) throws ManagerCommunicationException, NoSuchChannelException, MuteFlagException
+    public void unPauseMixMonitor(MixMonitorDirection direction) throws ManagerCommunicationException, NoSuchChannelException, RecordingException
     {
         ManagerResponse response;
         response = server.sendAction(new PauseMixMonitorAction(this.name,0,direction.getStateName()));        
         if (response instanceof ManagerError) {
         	if (response.getMessage().equals("Cannot set mute flag"))        	
-        		throw new MuteFlagException(response.getMessage()+" on channel: '" + name);        	
+        		throw new RecordingException(response.getMessage()+" on channel: '" + name);        	
         }
     }
     

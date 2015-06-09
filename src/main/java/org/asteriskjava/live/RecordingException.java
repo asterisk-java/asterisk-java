@@ -17,12 +17,12 @@
 package org.asteriskjava.live;
 
 /**
- * Indicates that the mute flag cannot be applied for this channel. Most probably because channel is not monitored (recorded)
+ * Indicates that a record related issue has occured,
  * 
  * @author videanuadrian
  * @version $Id$
  */
-public class MuteFlagException extends LiveException
+public class RecordingException extends LiveException
 {
     /**
      * Serial version identifier.
@@ -35,7 +35,7 @@ public class MuteFlagException extends LiveException
      * 
      * @param message the message
      */
-    public MuteFlagException(String message)
+    public RecordingException(String message)
     {
         super(message);
     }
