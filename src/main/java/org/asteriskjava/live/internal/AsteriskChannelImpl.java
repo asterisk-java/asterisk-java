@@ -880,8 +880,12 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         ManagerResponse response;
         response = server.sendAction(new PauseMixMonitorAction(this.name,1,direction.getStateName()));
         if (response instanceof ManagerError) {
-        	if (response.getMessage().equals("Cannot set mute flag"))        	
-        		throw new RecordingException(response.getMessage()+" on channel: '" + name);        	
+        	if (response.getMessage().equals("Cannot set mute flag")){   	
+        		throw new RecordingException(response.getMessage()+" on channel: '" + name);
+        	}
+        	else{
+            	throw new NoSuchChannelException("Channel '" + name + "' is not available: " + response.getMessage());
+            }        	
         }
     }
 
@@ -891,8 +895,12 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         ManagerResponse response;
         response = server.sendAction(new PauseMixMonitorAction(this.name,0,direction.getStateName()));        
         if (response instanceof ManagerError) {
-        	if (response.getMessage().equals("Cannot set mute flag"))        	
-        		throw new RecordingException(response.getMessage()+" on channel: '" + name);        	
+        	if (response.getMessage().equals("Cannot set mute flag")){        	
+        		throw new RecordingException(response.getMessage()+" on channel: '" + name);
+        	}
+        	else{
+        		throw new NoSuchChannelException("Channel '" + name + "' is not available: " + response.getMessage());
+        	}
         }
     }
     
