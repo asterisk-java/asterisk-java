@@ -104,22 +104,6 @@ public class ZapShowChannelsEvent extends ResponseEvent
     }
 
     /**
-     * Returns the context of this zap channel as defined in <code>zapata.conf</code>.
-     */
-    public String getContext()
-    {
-        return context;
-    }
-
-    /**
-     * Sets the context of this zap channel.
-     */
-    public void setContext(String context)
-    {
-        this.context = context;
-    }
-
-    /**
      * Returns whether dnd (do not disturb) is enabled for this zap channel.
      * 
      * @return Boolean.TRUE if dnd is enabled, Boolean.FALSE if it is disabled,

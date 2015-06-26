@@ -36,7 +36,6 @@ public class FaxReceivedEvent extends AbstractFaxEvent
      */
     private static final long serialVersionUID = 1L;
 
-    private String exten;
     private String callerId;
     private String remoteStationId;
     private String localStationId;
@@ -48,27 +47,6 @@ public class FaxReceivedEvent extends AbstractFaxEvent
     public FaxReceivedEvent(Object source)
     {
         super(source);
-    }
-
-    /**
-     * Returns the extension in Asterisk's dialplan the fax was received
-     * through.
-     * 
-     * @return the extension the fax was received through.
-     */
-    public String getExten()
-    {
-        return exten;
-    }
-
-    /**
-     * Sets the extension the fax was received through.
-     * 
-     * @param exten the extension the fax was received through.
-     */
-    public void setExten(String exten)
-    {
-        this.exten = exten;
     }
 
     /**

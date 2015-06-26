@@ -98,24 +98,6 @@ public abstract class AbstractParkedCallEvent extends ManagerEvent
     }
 
     /**
-     * Returns the Caller*ID number of the parked channel.
-     *
-     * @return the Caller*ID number of the parked channel.
-     * @since 1.0.0
-     */
-    @Override
-    public String getCallerIdNum()
-    {
-        return getParkeeCallerIDNum();
-    }
-
-    @Override
-    public void setCallerIdNum(String callerIdNum)
-    {
-        this.setParkeeCallerIDNum(callerIdNum);
-    }
-
-    /**
      * Returns the unique id of the parked channel.
      * <p>
      * Note: This property is not set properly by all versions of Asterisk, see
@@ -340,29 +322,5 @@ public abstract class AbstractParkedCallEvent extends ManagerEvent
     public void setCallerId(String callerId)
     {
         setParkeeCallerIDNum(callerId);
-    }
-
-    @Deprecated
-    public String getCallerIdName()
-    {
-        return getParkeeCallerIDName();
-    }
-
-    @Deprecated
-    public void setCallerIdName(String callerIdName)
-    {
-        setParkeeCallerIDName(callerIdName);
-    }
-
-    @Deprecated
-    public String getExten()
-    {
-        return getParkingSpace();
-    }
-
-    @Deprecated
-    public void setExten(String exten)
-    {
-        setParkingSpace(exten);
     }
 }

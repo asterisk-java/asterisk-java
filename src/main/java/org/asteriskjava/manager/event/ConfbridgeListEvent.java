@@ -15,7 +15,6 @@ public class ConfbridgeListEvent extends ResponseEvent
 
     private String conference;
     private String callerIDnum;
-    private String callerIdName;
     private Boolean admin;
     private Boolean markedUser;
     private String channel;
@@ -63,26 +62,6 @@ public class ConfbridgeListEvent extends ResponseEvent
     public String getCallerIDnum()
     {
         return callerIDnum;
-    }
-
-    /**
-     * Sets the Caller*ID Name of the channel in the list of the conference.
-     *
-     * @param callerIdName the Caller*ID Name of the channel in the list of the conference.
-     */
-    public void setCallerIdName(String callerIdName)
-    {
-        this.callerIdName = callerIdName;
-    }
-
-    /**
-     * Returns the Caller*ID Name of the channel in the list of the conference.
-     *
-     * @return the Caller*ID Name of the channel in the list of the conference.
-     */
-    public String getCallerIdName()
-    {
-        return callerIdName;
     }
 
     /**

@@ -78,16 +78,6 @@ public class DialEvent extends ManagerEvent
     private String destCallerIdNum;
 
     /**
-     * The new Caller*ID.
-     */
-    private String callerIdNum;
-
-    /**
-     * The new Caller*ID Name.
-     */
-    private String callerIdName;
-
-    /**
      * The unique id of the source channel.
      */
     private String uniqueId;
@@ -234,17 +224,19 @@ public class DialEvent extends ManagerEvent
     @Deprecated
     public String getCallerId()
     {
-        return callerIdNum;
+        return getCallerIdNum();
     }
 
     /**
      * Sets the caller*ID.
      *
      * @param callerId the caller*ID.
+     * @deprecated as of 1.0.0, use {@link #setCallerIdNum()} instead.
      */
+    @Deprecated
     public void setCallerId(String callerId)
     {
-        this.callerIdNum = callerId;
+        setCallerIdNum(callerId);
     }
 
     /**

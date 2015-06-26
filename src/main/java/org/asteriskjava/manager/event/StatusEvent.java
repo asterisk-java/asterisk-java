@@ -16,8 +16,6 @@
  */
 package org.asteriskjava.manager.event;
 
-import org.asteriskjava.util.AstState;
-
 import java.util.Map;
 
 /**
@@ -36,7 +34,6 @@ public class StatusEvent extends ResponseEvent
     private static final long serialVersionUID = -3619197512835308812L;
     private String channel;
     private String accountCode;
-    private Integer channelState;
     private Integer seconds;
     private String bridgedChannel;
     private String bridgedUniqueId;
@@ -97,50 +94,6 @@ public class StatusEvent extends ResponseEvent
     }
 
     /**
-     * Returns the Caller*ID Number of this channel.
-     *
-     * @return the Caller*ID Number of this channel or <code>null</code> if none
-     *         is available.
-     * @since 0.3
-     */
-    public String getCallerIdNum()
-    {
-        return callerIdNum;
-    }
-
-    /**
-     * Sets the Caller*ID Number of this channel.
-     *
-     * @param callerIdNum the Caller*ID Number to set.
-     * @since 0.3
-     */
-    public void setCallerIdNum(String callerIdNum)
-    {
-        this.callerIdNum = callerIdNum;
-    }
-
-    /**
-     * Returns the Caller*ID Name of this channel.
-     *
-     * @return the Caller*ID Name of this channel or <code>null</code> if none
-     *         is available.
-     */
-    public String getCallerIdName()
-    {
-        return callerIdName;
-    }
-
-    /**
-     * Sets the Caller*ID Name of this channel.
-     *
-     * @param callerIdName the Caller*ID Name of this channel.
-     */
-    public void setCallerIdName(String callerIdName)
-    {
-        this.callerIdName = callerIdName;
-    }
-
-    /**
      * Returns the account code of this channel.
      *
      * @return the account code of this channel.
@@ -185,47 +138,6 @@ public class StatusEvent extends ResponseEvent
     public void setAccount(String account)
     {
         this.accountCode = account;
-    }
-
-    /**
-     * Returns the state of the channel.
-     * <p>
-     * For Asterisk versions prior to 1.6 (that do not send the numeric value)
-     * it is derived from the descriptive text.
-     *
-     * @return the state of the channel.
-     * @since 1.0.0
-     */
-    public Integer getChannelState()
-    {
-        return channelState == null ? AstState.str2state(channelStateDesc) : channelState;
-    }
-
-    /**
-     * Sets the state of the channel.
-     *
-     * @param channelState the state of the channel.
-     * @since 1.0.0
-     */
-    public void setChannelState(Integer channelState)
-    {
-        this.channelState = channelState;
-    }
-
-    /**
-     * Returns the state of the channel as a descriptive text.
-     *
-     * @return the state of the channel as a descriptive text.
-     * @since 1.0.0
-     */
-    public String getChannelStateDesc()
-    {
-        return channelStateDesc;
-    }
-
-    public void setChannelStateDesc(String channelStateDesc)
-    {
-        this.channelStateDesc = channelStateDesc;
     }
 
     /**

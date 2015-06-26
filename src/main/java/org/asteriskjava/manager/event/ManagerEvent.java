@@ -55,92 +55,92 @@ public abstract class ManagerEvent extends EventObject
      * @since 0.2
      */
 
-    public String getCallerIdName()
+    public final String getCallerIdName()
     {
         return callerIdName;
     }
 
-    public void setCallerIdName(String callerIdName)
+    public final void setCallerIdName(String callerIdName)
     {
         this.callerIdName = callerIdName;
     }
 
-    public String getConnectedLineNum()
+    public final String getConnectedLineNum()
     {
         return connectedLineNum;
     }
 
-    public void setConnectedLineNum(String connectedLineNum)
+    public final void setConnectedLineNum(String connectedLineNum)
     {
         this.connectedLineNum = connectedLineNum;
     }
 
-    public String getConnectedLineName()
+    public final String getConnectedLineName()
     {
         return connectedLineName;
     }
 
-    public void setConnectedLineName(String connectedLineName)
+    public final void setConnectedLineName(String connectedLineName)
     {
         this.connectedLineName = connectedLineName;
     }
 
-    public Integer getPriority()
+    public final Integer getPriority()
     {
         return priority;
     }
 
-    public void setPriority(Integer priority)
+    public final void setPriority(Integer priority)
     {
         this.priority = priority;
     }
 
-    public Integer getChannelState()
+    public final Integer getChannelState()
     {
         return channelState;
     }
 
-    public void setChannelState(Integer channelState)
+    public final void setChannelState(Integer channelState)
     {
         this.channelState = channelState;
     }
 
-    public String getChannelStateDesc()
+    public final String getChannelStateDesc()
     {
         return channelStateDesc;
     }
 
-    public void setChannelStateDesc(String channelStateDesc)
+    public final void setChannelStateDesc(String channelStateDesc)
     {
         this.channelStateDesc = channelStateDesc;
     }
 
-    public String getExten()
+    public final String getExten()
     {
         return exten;
     }
 
-    public void setExten(String exten)
+    public final void setExten(String exten)
     {
         this.exten = exten;
     }
 
-    public String getCallerIdNum()
+    public final String getCallerIdNum()
     {
         return callerIdNum;
     }
 
-    public void setCallerIdNum(String callerIdNum)
+    public final void setCallerIdNum(String callerIdNum)
     {
         this.callerIdNum = callerIdNum;
     }
 
-    public String getContext()
+    public final String getContext()
     {
         return context;
     }
 
-    public void setContext(String context)
+    public final void setContext(String context)
     {
         this.context = context;
     }
@@ -186,7 +186,7 @@ public abstract class ManagerEvent extends EventObject
      * (for example ConnectEvent and DisconnectEvent) may return
      * <code>null</code>.
      */
-    public Date getDateReceived()
+    public final Date getDateReceived()
     {
         return dateReceived;
     }
@@ -194,7 +194,7 @@ public abstract class ManagerEvent extends EventObject
     /**
      * Sets the point in time this event was received from the asterisk server.
      */
-    public void setDateReceived(Date dateReceived)
+    public final void setDateReceived(Date dateReceived)
     {
         this.dateReceived = dateReceived;
     }
@@ -207,7 +207,7 @@ public abstract class ManagerEvent extends EventObject
      *
      * @since 0.2
      */
-    public String getPrivilege()
+    public final String getPrivilege()
     {
         return privilege;
     }
@@ -217,7 +217,7 @@ public abstract class ManagerEvent extends EventObject
      *
      * @since 0.2
      */
-    public void setPrivilege(String privilege)
+    public final void setPrivilege(String privilege)
     {
         this.privilege = privilege;
     }
@@ -276,12 +276,12 @@ public abstract class ManagerEvent extends EventObject
         this.server = server;
     }
 
-    public String getSystemName()
+    public final String getSystemName()
     {
         return systemName;
     }
 
-    public void setSystemName(String systemName)
+    public final void setSystemName(String systemName)
     {
         this.systemName = systemName;
     }
@@ -302,12 +302,12 @@ public abstract class ManagerEvent extends EventObject
      * @see #getLine()
      * @since 1.0.0
      */
-    public String getFile()
+    public final String getFile()
     {
         return file;
     }
 
-    public void setFile(String file)
+    public final void setFile(String file)
     {
         this.file = file;
     }
@@ -328,12 +328,12 @@ public abstract class ManagerEvent extends EventObject
      * @see #getFunc()
      * @since 1.0.0
      */
-    public Integer getLine()
+    public final Integer getLine()
     {
         return line;
     }
 
-    public void setLine(Integer line)
+    public final void setLine(Integer line)
     {
         this.line = line;
     }
@@ -354,12 +354,12 @@ public abstract class ManagerEvent extends EventObject
      * @see #getLine()
      * @since 1.0.0
      */
-    public String getFunc()
+    public final String getFunc()
     {
         return func;
     }
 
-    public void setFunc(String func)
+    public final void setFunc(String func)
     {
         this.func = func;
     }
@@ -380,12 +380,12 @@ public abstract class ManagerEvent extends EventObject
      * @see #getLine()
      * @since 1.0.0
      */
-    public Integer getSequenceNumber()
+    public final Integer getSequenceNumber()
     {
         return sequenceNumber;
     }
 
-    public void setSequenceNumber(Integer sequenceNumber)
+    public final void setSequenceNumber(Integer sequenceNumber)
     {
         this.sequenceNumber = sequenceNumber;
     }
@@ -428,7 +428,7 @@ public abstract class ManagerEvent extends EventObject
         return sb.toString();
     }
 
-    protected void appendPropertyIfNotNull(StringBuilder sb, String property, Object value)
+    protected final void appendPropertyIfNotNull(StringBuilder sb, String property, Object value)
     {
         if (value != null)
         {

@@ -13,8 +13,6 @@ public class DongleDeviceEntryEvent extends ResponseEvent
 	private String IMEISetting;
 	private String IMSISetting;
 	private String ChannelLanguage;
-	private String Context;
-	private String Exten;
 	private String Group;
 	private String RXGain;
 	private String TXGain;
@@ -130,26 +128,6 @@ public class DongleDeviceEntryEvent extends ResponseEvent
 	public void setChannelLanguage(String ChannelLanguage)
 	{
 		this.ChannelLanguage = ChannelLanguage;
-	}
-
-	public String getContext()
-	{
-		return Context;
-	}
-
-	public void setContext(String Context)
-	{
-		this.Context = Context;
-	}
-
-	public String getExten()
-	{
-		return Exten;
-	}
-
-	public void setExten(String Exten)
-	{
-		this.Exten = Exten;
 	}
 
 	public String getGroup()
