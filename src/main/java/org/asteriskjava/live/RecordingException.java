@@ -27,10 +27,10 @@ public class RecordingException extends LiveException
     /**
      * Serial version identifier.
      */
-    
-	private static final long serialVersionUID = 7804327171239361017L;
 
-	/**
+    private static final long serialVersionUID = 7804327171239361017L;
+
+    /**
      * Creates a new instance with the given message.
      * 
      * @param message the message
