@@ -33,7 +33,6 @@ public class OriginateResponseEvent extends ResponseEvent
     private String channel;
     private String uniqueId;
     private Integer reason;
-    private String callerIdNum;
 
     /**
      * @param source
@@ -113,9 +112,9 @@ public class OriginateResponseEvent extends ResponseEvent
     // for backward compatibility only
     public void setCallerId(String callerId)
     {
-        if (this.callerIdNum == null)
+        if (getCallerIdNum() == null)
         {
-            this.callerIdNum = callerId;
+            setCallerIdNum(callerId);
         }
     }
 }
