@@ -72,6 +72,7 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
         registerEventClass(BridgeExecEvent.class);
         registerEventClass(BridgeLeaveEvent.class);
         registerEventClass(BlindTransferEvent.class);
+        registerEventClass(AttendedTransferEvent.class);
         registerEventClass(CdrEvent.class);
         registerEventClass(ChallengeSentEvent.class);
         registerEventClass(ChannelReloadEvent.class);
