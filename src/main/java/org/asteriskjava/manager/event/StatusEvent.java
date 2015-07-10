@@ -41,6 +41,18 @@ public class StatusEvent extends ResponseEvent
     private String bridgedChannel;
     private String bridgedUniqueId;
     private String uniqueId;
+    private String linkedId;
+    private String data;
+    private String readFormat;
+    private String writeFormat;
+    private String type;
+    private String effectiveConnectedLineName;
+    private String effectiveConnectedLineNum;
+    private String application;
+    private String callGroup;
+    private String nativeFormats;
+    private String pickupGroup;
+    private String timeToHangup;
     private Map<String, String> variables;
 
     public StatusEvent(Object source)
@@ -397,4 +409,123 @@ public class StatusEvent extends ResponseEvent
         this.variables = variables;
     }
 
+    public String getLinkedId()
+    {
+        return linkedId;
+    }
+
+    public void setLinkedId(String linkedId)
+    {
+        this.linkedId = linkedId;
+    }
+
+    public String getData()
+    {
+        return data;
+    }
+
+    public void setData(String data)
+    {
+        this.data = data;
+    }
+
+    public String getReadFormat()
+    {
+        return readFormat;
+    }
+
+    public void setReadFormat(String readFormat)
+    {
+        this.readFormat = readFormat;
+    }
+
+    public String getWriteFormat()
+    {
+        return writeFormat;
+    }
+
+    public void setWriteFormat(String writeFormat)
+    {
+        this.writeFormat = writeFormat;
+    }
+
+    public String getType()
+    {
+        return type;
+    }
+
+    public void setType(String type)
+    {
+        this.type = type;
+    }
+
+    public String getEffectiveConnectedLineName()
+    {
+        return effectiveConnectedLineName;
+    }
+
+    public void setEffectiveConnectedLineName(String effectiveConnectedLineName)
+    {
+        this.effectiveConnectedLineName = effectiveConnectedLineName;
+    }
+
+    public String getEffectiveConnectedLineNum()
+    {
+        return effectiveConnectedLineNum;
+    }
+
+    public void setEffectiveConnectedLineNum(String effectiveConnectedLineNum)
+    {
+        this.effectiveConnectedLineNum = effectiveConnectedLineNum;
+    }
+
+    public String getApplication()
+    {
+        return application;
+    }
+
+    public void setApplication(String application)
+    {
+        this.application = application;
+    }
+
+    public String getCallGroup()
+    {
+        return callGroup;
+    }
+
+    public void setCallGroup(String callGroup)
+    {
+        this.callGroup = callGroup;
+    }
+
+    public String getNativeFormats()
+    {
+        return nativeFormats;
+    }
+
+    public void setNativeFormats(String nativeFormats)
+    {
+        this.nativeFormats = nativeFormats;
+    }
+
+    public String getPickupGroup()
+    {
+        return pickupGroup;
+    }
+
+    public void setPickupGroup(String pickupGroup)
+    {
+        this.pickupGroup = pickupGroup;
+    }
+
+    public String getTimeToHangup()
+    {
+        return timeToHangup;
+    }
+
+    public void setTimeToHangup(String timeToHangup)
+    {
+        this.timeToHangup = timeToHangup;
+    }
 }
