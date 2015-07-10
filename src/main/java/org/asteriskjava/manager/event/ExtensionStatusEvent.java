@@ -65,8 +65,6 @@ public class ExtensionStatusEvent extends ManagerEvent
      */
     public static final int RINGING = 1 << 3;
 
-    private String exten;
-    private String context;
     private String hint;
     private Integer status;
     private String callerId;
@@ -74,38 +72,6 @@ public class ExtensionStatusEvent extends ManagerEvent
     public ExtensionStatusEvent(Object source)
     {
         super(source);
-    }
-
-    /**
-     * Returns the extension.
-     */
-    public String getExten()
-    {
-        return exten;
-    }
-
-    /**
-     * Sets the extension.
-     */
-    public void setExten(String exten)
-    {
-        this.exten = exten;
-    }
-
-    /**
-     * Returns the context of the extension.
-     */
-    public String getContext()
-    {
-        return context;
-    }
-
-    /**
-     * Sets the context of the extension.
-     */
-    public void setContext(String context)
-    {
-        this.context = context;
     }
 
     /**

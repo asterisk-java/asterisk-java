@@ -25,8 +25,6 @@ public class SendFaxStatusEvent extends AbstractFaxEvent
      * Serial version identifier.
      */
     private static final long serialVersionUID = -1L;
-    private String context;
-    private String exten;
     private String status;
     private String callerId;
     private String localStationId;
@@ -36,42 +34,6 @@ public class SendFaxStatusEvent extends AbstractFaxEvent
     public SendFaxStatusEvent(Object source)
     {
         super(source);
-    }
-
-
-    /**
-     * @return the context
-     */
-    public String getContext()
-    {
-        return context;
-    }
-
-
-    /**
-     * @param context the context to set
-     */
-    public void setContext(String context)
-    {
-        this.context = context;
-    }
-
-
-    /**
-     * @return the exten
-     */
-    public String getExten()
-    {
-        return exten;
-    }
-
-
-    /**
-     * @param exten the exten to set
-     */
-    public void setExten(String exten)
-    {
-        this.exten = exten;
     }
 
 

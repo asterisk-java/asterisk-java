@@ -34,7 +34,6 @@ public class DahdiShowChannelsEvent extends ResponseEvent
     private Integer Dahdichannel;
     private String signalling;
     private String signallingcode;
-    private String context;
     private Boolean dnd;
     private String alarm;
     private String uniqueid;
@@ -133,24 +132,6 @@ public class DahdiShowChannelsEvent extends ResponseEvent
     public void setSignalling(String signalling)
     {
         this.signalling = signalling;
-    }
-
-
-
-    /**
-     * Returns the context of this Dahdi channel as defined in <code>chan_Dahdi.conf</code>.
-     */
-    public String getContext()
-    {
-        return context;
-    }
-
-    /**
-     * Sets the context of this Dahdi channel.
-     */
-    public void setContext(String context)
-    {
-        this.context = context;
     }
 
     /**

@@ -7,8 +7,6 @@ public class ReceiveFaxEvent extends ManagerEvent
 {
     private static final long serialVersionUID = 0L;
     private String channel;
-    private String context;
-    private String exten;
     private String callerId;
     private String remoteStationId;
     private String localStationId;
@@ -30,26 +28,6 @@ public class ReceiveFaxEvent extends ManagerEvent
     public void setChannel(String channel)
     {
         this.channel = channel;
-    }
-
-    public String getContext()
-    {
-        return context;
-    }
-
-    public void setContext(String context)
-    {
-        this.context = context;
-    }
-
-    public String getExten()
-    {
-        return exten;
-    }
-
-    public void setExten(String exten)
-    {
-        this.exten = exten;
     }
 
     public String getCallerId()

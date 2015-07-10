@@ -31,11 +31,9 @@ public class NewExtenEvent extends ManagerEvent
     static final long serialVersionUID = -467486409866099387L;
 
     private String uniqueId;
-    private String context;
     private String extension;
     private String application;
     private String appData;
-    private Integer priority;
     private String channel;
     private String language;
 
@@ -123,22 +121,6 @@ public class NewExtenEvent extends ManagerEvent
     }
 
     /**
-     * Returns the name of the context of the connected extension.
-     */
-    public String getContext()
-    {
-        return context;
-    }
-
-    /**
-     * Sets the name of the context of the connected extension.
-     */
-    public void setContext(String context)
-    {
-        this.context = context;
-    }
-
-    /**
      * Returns the extension.
      */
     public String getExtension()
@@ -152,21 +134,5 @@ public class NewExtenEvent extends ManagerEvent
     public void setExtension(String extension)
     {
         this.extension = extension;
-    }
-
-    /**
-     * Returns the priority.
-     */
-    public Integer getPriority()
-    {
-        return priority;
-    }
-
-    /**
-     * Sets the priority.
-     */
-    public void setPriority(Integer priority)
-    {
-        this.priority = priority;
     }
 }

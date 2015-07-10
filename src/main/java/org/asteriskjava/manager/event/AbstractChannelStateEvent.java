@@ -32,77 +32,9 @@ public abstract class AbstractChannelStateEvent extends AbstractChannelEvent
      */
     static final long serialVersionUID = 0L;
 
-    private Integer channelState;
-    private String channelStateDesc;
-
     protected AbstractChannelStateEvent(Object source)
     {
         super(source);
-    }
-
-    /**
-     * Returns the new state of the channel.
-     * <p>
-     * For Asterisk versions prior to 1.6 (that do not send the numeric value)
-     * it is derived from the descriptive text.
-     *
-     * @return the new state of the channel.
-     * @since 1.0.0
-     */
-    @Override
-    public Integer getChannelState()
-    {
-        return channelState == null ? AstState.str2state(channelStateDesc) : channelState;
-    }
-
-    /**
-     * Sets the new state of the channel.
-     *
-     * @param channelState the new state of the channel.
-     * @since 1.0.0
-     */
-    @Override
-    public void setChannelState(Integer channelState)
-    {
-        this.channelState = channelState;
-    }
-
-    /**
-     * Returns the new state of the channel as a descriptive text.
-     * <p>
-     * The following states are used:
-     * <p>
-     * <ul>
-     * <li>Down</li>
-     * <li>Rsrvd</li>
-     * <li>OffHook</li>
-     * <li>Dialing</li>
-     * <li>Ring</li>
-     * <li>Ringing</li>
-     * <li>Up</li>
-     * <li>Busy</li>
-     * <li>Dialing Offhook (since Asterik 1.6)</li>
-     * <li>Pre-ring (since Asterik 1.6)</li>
-     * </ul>
-     *
-     * @return the new state of the channel as a descriptive text.
-     * @since 1.0.0
-     */
-    public String getChannelStateDesc()
-    {
-        return channelStateDesc;
-    }
-
-    /**
-     * Sets the new state of the channel as a descriptive text.
-     *
-     * @param channelStateDesc the new state of the channel as a descriptive
-     *            text.
-     * @since 1.0.0
-     */
-    public void setChannelStateDesc(String channelStateDesc)
-    {
-        this.channelStateDesc = channelStateDesc;
     }
 
     /**
@@ -117,7 +49,7 @@ public abstract class AbstractChannelStateEvent extends AbstractChannelEvent
     @Deprecated
     public String getState()
     {
-        return channelStateDesc;
+        return getChannelStateDesc();
     }
 
     /**
@@ -129,6 +61,6 @@ public abstract class AbstractChannelStateEvent extends AbstractChannelEvent
      */
     public void setState(String state)
     {
-        this.channelStateDesc = state;
+        setChannelStateDesc(state);
     }
 }

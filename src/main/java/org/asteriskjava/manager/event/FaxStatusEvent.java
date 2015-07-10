@@ -52,12 +52,10 @@ public class FaxStatusEvent extends AbstractFaxEvent
     private Integer rtnCount;
     private Integer dcnCount;
     private String remoteStationId;
-    private String context;
     private String localStationId;
     private String callerId;
     private String status;
     private String operation;
-    private String exten;
 
     public FaxStatusEvent(Object source)
     {
@@ -514,22 +512,6 @@ public class FaxStatusEvent extends AbstractFaxEvent
     }
 
     /**
-     * @return the context
-     */
-    public String getContext()
-    {
-        return context;
-    }
-
-    /**
-     * @param context the context to set
-     */
-    public void setContext(String context)
-    {
-        this.context = context;
-    }
-
-    /**
      * @return the callerId
      */
     public String getCallerId()
@@ -576,22 +558,5 @@ public class FaxStatusEvent extends AbstractFaxEvent
     {
         this.operation = operation;
     }
-
-    /**
-     * @return the exten
-     */
-    public String getExten()
-    {
-        return exten;
-    }
-
-    /**
-     * @param exten the exten to set
-     */
-    public void setExten(String exten)
-    {
-        this.exten = exten;
-    }
-
 }
 

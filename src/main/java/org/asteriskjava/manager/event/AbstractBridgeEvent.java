@@ -10,7 +10,6 @@ public abstract class AbstractBridgeEvent extends ManagerEvent
 	 */
 	private static final long serialVersionUID = 1L;
 	private String bridgeUniqueId;
-	private String privilege;
 	private String bridgeType;
 	private Integer bridgeNumChannels;
 	private String bridgeCreator;
@@ -30,18 +29,6 @@ public abstract class AbstractBridgeEvent extends ManagerEvent
 	public void setBridgeUniqueId(String bridgeUniqueId)
 	{
 		this.bridgeUniqueId = bridgeUniqueId;
-	}
-
-	@Override
-	public String getPrivilege()
-	{
-		return privilege;
-	}
-
-	@Override
-	public void setPrivilege(String privilege)
-	{
-		this.privilege = privilege;
 	}
 
 	public String getBridgeType()

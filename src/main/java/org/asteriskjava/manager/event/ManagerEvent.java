@@ -19,6 +19,7 @@ package org.asteriskjava.manager.event;
 import java.lang.reflect.Method;
 import java.util.*;
 
+import org.asteriskjava.util.AstState;
 import org.asteriskjava.util.ReflectionUtil;
 
 /**
@@ -97,7 +98,7 @@ public abstract class ManagerEvent extends EventObject
 
     public Integer getChannelState()
     {
-        return channelState;
+        return channelState == null ? AstState.str2state(channelStateDesc) : channelState;
     }
 
     public void setChannelState(Integer channelState)
