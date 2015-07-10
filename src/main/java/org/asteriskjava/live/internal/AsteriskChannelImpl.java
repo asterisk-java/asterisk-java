@@ -30,6 +30,7 @@ import org.asteriskjava.live.ExtensionHistoryEntry;
 import org.asteriskjava.live.HangupCause;
 import org.asteriskjava.live.LinkedChannelHistoryEntry;
 import org.asteriskjava.live.ManagerCommunicationException;
+import org.asteriskjava.live.RecordingException;
 import org.asteriskjava.live.NoSuchChannelException;
 import org.asteriskjava.manager.action.AbsoluteTimeoutAction;
 import org.asteriskjava.manager.action.ChangeMonitorAction;
@@ -123,7 +124,8 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
      */
     private Extension parkedAt;
     /**
-     * Last dtmf digit recieved on this channel if any, <code>null</code> otherwise.
+     * Last dtmf digit recieved on this channel if any, <code>null</code>
+     * otherwise.
      */
     private Character dtmfReceived;
     /**
@@ -138,9 +140,9 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
     /**
      * Creates a new Channel.
      *
-     * @param server         server this channel belongs to.
-     * @param name           name of this channel, for example "SIP/1310-20da".
-     * @param id             unique id of this channel, for example "1099015093.165".
+     * @param server server this channel belongs to.
+     * @param name name of this channel, for example "SIP/1310-20da".
+     * @param id unique id of this channel, for example "1099015093.165".
      * @param dateOfCreation date this channel has been created.
      * @throws IllegalArgumentException if any of the parameters are null.
      */
@@ -189,7 +191,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
      * Changes the id of this channel.
      *
      * @param date date of the name change.
-     * @param id   the new unique id of this channel.
+     * @param id the new unique id of this channel.
      */
     void idChanged(Date date, String id)
     {
@@ -279,15 +281,14 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
 
     public boolean wasBusy()
     {
-        return wasInState(ChannelState.BUSY)
-                || hangupCause == HangupCause.AST_CAUSE_BUSY
+        return wasInState(ChannelState.BUSY) || hangupCause == HangupCause.AST_CAUSE_BUSY
                 || hangupCause == HangupCause.AST_CAUSE_USER_BUSY;
     }
 
     /**
      * Changes the state of this channel.
      *
-     * @param date  when the state change occurred.
+     * @param date when the state change occurred.
      * @param state the new state of this channel.
      */
     synchronized void stateChanged(Date date, ChannelState state)
@@ -383,7 +384,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
     /**
      * Adds a visted dialplan entry to the history.
      *
-     * @param date      the date the extension has been visited.
+     * @param date the date the extension has been visited.
      * @param extension the visted dialplan entry to add.
      */
     void extensionVisited(Date date, Extension extension)
@@ -438,8 +439,8 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
      * Sets dateOfRemoval, hangupCause and hangupCauseText and changes state to
      * {@link ChannelState#HUNGUP}. Fires a PropertyChangeEvent for state.
      *
-     * @param dateOfRemoval   date the channel was hung up
-     * @param hangupCause     cause for hangup
+     * @param dateOfRemoval date the channel was hung up
+     * @param hangupCause cause for hangup
      * @param hangupCauseText textual representation of hangup cause
      */
     synchronized void hungup(Date dateOfRemoval, HangupCause hangupCause, String hangupCauseText)
@@ -467,7 +468,8 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
 
         return copy;
     }
-/* dialed channels */
+
+    /* dialed channels */
 
     public AsteriskChannel getDialedChannel()
     {
@@ -580,7 +582,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
     /**
      * Sets the channel this channel is bridged with.
      *
-     * @param date          the date this channel was linked.
+     * @param date the date this channel was linked.
      * @param linkedChannel the channel this channel is bridged with.
      */
     synchronized void channelLinked(Date date, AsteriskChannel linkedChannel)
@@ -786,7 +788,8 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         }
     }
 
-    public void playDtmf(String digit) throws ManagerCommunicationException, NoSuchChannelException, IllegalArgumentException
+    public void playDtmf(String digit) throws ManagerCommunicationException, NoSuchChannelException,
+            IllegalArgumentException
     {
         ManagerResponse response;
 
@@ -874,29 +877,46 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         }
     }
 
-    public void pauseMixMonitor(MixMonitorDirection direction) throws ManagerCommunicationException, NoSuchChannelException
+    public void pauseMixMonitor(MixMonitorDirection direction) throws ManagerCommunicationException, NoSuchChannelException,
+            RecordingException
     {
         ManagerResponse response;
         response = server.sendAction(new PauseMixMonitorAction(this.name, 1, direction.getStateName()));
         if (response instanceof ManagerError)
         {
-            throw new NoSuchChannelException("Channel '" + name + "' is not available: " + response.getMessage());
+            if (response.getMessage().equals("Cannot set mute flag"))
+            {
+                throw new RecordingException(response.getMessage() + " on channel: '" + name);
+            }
+            else
+            {
+                throw new NoSuchChannelException("Channel '" + name + "' is not available: " + response.getMessage());
+            }
         }
     }
 
-    public void unPauseMixMonitor(MixMonitorDirection direction) throws ManagerCommunicationException, NoSuchChannelException
+    public void unPauseMixMonitor(MixMonitorDirection direction) throws ManagerCommunicationException,
+            NoSuchChannelException, RecordingException
     {
         ManagerResponse response;
         response = server.sendAction(new PauseMixMonitorAction(this.name, 0, direction.getStateName()));
         if (response instanceof ManagerError)
         {
-            throw new NoSuchChannelException("Channel '" + name + "' is not available: " + response.getMessage());
+            if (response.getMessage().equals("Cannot set mute flag"))
+            {
+                throw new RecordingException(response.getMessage() + " on channel: '" + name);
+            }
+            else
+            {
+                throw new NoSuchChannelException("Channel '" + name + "' is not available: " + response.getMessage());
+            }
         }
     }
 
     public Extension getParkedAt()
     {
-        // warning: the context of this extension will be null until we get the context property from
+        // warning: the context of this extension will be null until we get the
+        // context property from
         // the parked call event!
         return parkedAt;
     }
