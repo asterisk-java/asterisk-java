@@ -202,9 +202,21 @@ class ActionBuilderImpl implements ActionBuilder
             sb.append(": ");
             sb.append(entry.getKey());
             sb.append("=");
-            if (entry.getValue() != null)
+        if (entry.getValue() != null)
             {
-                sb.append(entry.getValue());
+                if (entry.getKey().equalsIgnoreCase("Content")) {
+                  String sp[] = entry.getValue().split("\n");
+                  sb.append(sp[0]);
+                  for (int i = 1; i < sp.length ; i++) {
+                    sb.append(LINE_SEPARATOR);
+                    sb.append(entry.getKey());
+                    sb.append("=");
+                    sb.append(sp[i]);                      
+                  }
+                  
+                } else {
+                  sb.append(entry.getValue());                    
+                }
             }
 
             sb.append(LINE_SEPARATOR);
