@@ -17,16 +17,17 @@
 package org.asteriskjava.manager.event;
 
 /**
- * A QueueCallerAbandonEvent is triggered when a caller abandons a queue before
+ * A QueueCallerAbandonEvent is triggered when a caller join a queue before
  * getting connected with an agent.
  * <p>
  * It is implemented in <code>apps/app_queue.c</code>
  * <p>
  * Available since Asterisk 1.4.
  *
- * @author martins
+ * @author Leonardo de Souza
  */
-public class QueueCallerJoinEvent extends QueueEvent {
+public class QueueCallerJoinEvent extends QueueEvent
+{
 
     /**
      * Serializable version identifier
@@ -38,22 +39,25 @@ public class QueueCallerJoinEvent extends QueueEvent {
     /**
      * @param source
      */
-    public QueueCallerJoinEvent(Object source) {
+    public QueueCallerJoinEvent(Object source)
+    {
         super(source);
     }
 
     /**
      * @return the position of the caller at the time they abandoned the queue
      */
-    public Integer getPosition() {
+    public Integer getPosition()
+    {
         return position;
     }
 
     /**
      * @param position the position of the caller at the time they abandoned the
-     * queue
+     *            queue
      */
-    public void setPosition(Integer position) {
+    public void setPosition(Integer position)
+    {
         this.position = position;
     }
 }
