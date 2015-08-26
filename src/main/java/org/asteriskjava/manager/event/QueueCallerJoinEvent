@@ -17,7 +17,7 @@
 package org.asteriskjava.manager.event;
 
 /**
- * A QueueCallerAbandonEvent is triggered when a caller join a queue before
+ * A QueueCallerJoinEvent is triggered when a caller join a queue before
  * getting connected with an agent.
  * <p>
  * It is implemented in <code>apps/app_queue.c</code>
