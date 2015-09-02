@@ -316,16 +316,20 @@ class QueueManager
                     event.getLastCall());
 
             queue.addMember(member);
-        }else{
-        	if(member.stateChanged(QueueMemberState.valueOf(event.getStatus())) |
-        		member.pausedChanged(event.getPaused()) |
-        		member.penaltyChanged(event.getPenalty()) |
-        		member.callsTakenChanged(event.getCallsTaken()) |
-        		member.lastCallChanged(event.getLastCall())){
-        			queue.stampLastUpdate();
-        		}
+        } else {
+            manageQueueMemberChange(queue, member, event);
         }
 
+    }
+
+    private void manageQueueMemberChange(AsteriskQueueImpl queue, AsteriskQueueMemberImpl member, QueueMemberEvent event) {
+        if(member.stateChanged(QueueMemberState.valueOf(event.getStatus())) |
+                member.pausedChanged(event.getPaused()) |
+                member.penaltyChanged(event.getPenalty()) |
+                member.callsTakenChanged(event.getCallsTaken()) |
+                member.lastCallChanged(event.getLastCall())){
+            queue.stampLastUpdate();
+        }
     }
 
     /**
@@ -459,13 +463,7 @@ class QueueManager
             return;
         }
 
-        updateQueue(queue.getName());
-
-        member.stateChanged(QueueMemberState.valueOf(event.getStatus()));
-        member.penaltyChanged(event.getPenalty());
-        member.lastCallChanged(event.getLastCall());
-        member.callsTakenChanged(event.getCallsTaken());
-
+        manageQueueMemberChange(queue, member, event);
         queue.fireMemberStateChanged(member);
     }
 
