@@ -39,6 +39,7 @@ public class AgentCalledEvent extends ManagerEvent
     private String channelCalling;
     private String destinationChannel;
     private String uniqueId;
+    private String memberName;
 
     private Map<String, String> variables;
 
@@ -197,6 +198,17 @@ public class AgentCalledEvent extends ManagerEvent
     {
         this.uniqueId = uniqueId;
     }
+
+    /**
+     * Returns the Queue Member name.
+     * <p>
+     * Available since Asterisk 13 replace agentName
+     * </p>
+     *
+     */
+    public String getMemberName() {  return memberName;}
+
+    public void setMemberName(String memberName) { this.memberName = memberName; }
 
     /**
      * Returns the channel variables if <code>eventwhencalled</code> is set to
