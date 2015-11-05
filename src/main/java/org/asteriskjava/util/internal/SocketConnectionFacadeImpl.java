@@ -24,6 +24,8 @@ import java.io.*;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.regex.Pattern;
@@ -52,11 +54,12 @@ public class SocketConnectionFacadeImpl implements SocketConnectionFacade
      * @param ssl         <code>true</code> to use SSL, <code>false</code> otherwise.
      * @param timeout     0 incidcates default
      * @param readTimeout see {@link Socket#setSoTimeout(int)}
+     * @param encoding    the encoding used for transmission of strings
      * @throws IOException if the connection cannot be established.
      */
-    public SocketConnectionFacadeImpl(String host, int port, boolean ssl, int timeout, int readTimeout) throws IOException
+    public SocketConnectionFacadeImpl(String host, int port, boolean ssl, int timeout, int readTimeout, Charset encoding) throws IOException
     {
-        this(host, port, ssl, timeout, readTimeout, CRNL_PATTERN);
+        this(host, port, ssl, timeout, readTimeout, encoding, CRNL_PATTERN);
     }
 
     /**
@@ -67,10 +70,11 @@ public class SocketConnectionFacadeImpl implements SocketConnectionFacade
      * @param ssl         <code>true</code> to use SSL, <code>false</code> otherwise.
      * @param timeout     0 incidcates default
      * @param readTimeout see {@link Socket#setSoTimeout(int)}
+     * @param encoding    the encoding used for transmission of strings
      * @param lineDelimiter a {@link Pattern} for matching the line delimiter for the socket
      * @throws IOException if the connection cannot be established.
      */
-    public SocketConnectionFacadeImpl(String host, int port, boolean ssl, int timeout, int readTimeout, Pattern lineDelimiter) throws IOException
+    public SocketConnectionFacadeImpl(String host, int port, boolean ssl, int timeout, int readTimeout, Charset encoding, Pattern lineDelimiter) throws IOException
     {
         Socket socket;
 
@@ -85,7 +89,7 @@ public class SocketConnectionFacadeImpl implements SocketConnectionFacade
         socket.setSoTimeout(readTimeout);
         socket.connect(new InetSocketAddress(host, port), timeout);
 
-        initialize(socket, lineDelimiter);
+        initialize(socket, encoding, lineDelimiter);
         if (System.getProperty(Trace.TRACE_PROPERTY, "false").equalsIgnoreCase("true"))
         {
             trace = new FileTrace(socket);
@@ -100,26 +104,27 @@ public class SocketConnectionFacadeImpl implements SocketConnectionFacade
      */
     SocketConnectionFacadeImpl(Socket socket) throws IOException {
 	    socket.setSoTimeout(MAX_SOCKET_READ_TIMEOUT_MILLIS);
-	    initialize(socket, NL_PATTERN);
+	    initialize(socket, StandardCharsets.UTF_8, NL_PATTERN);
     }
 
 	/** 70 mi = 70 * 60 * 1000 */
 	private static final int MAX_SOCKET_READ_TIMEOUT_MILLIS = 4200000;
 
 
-    private void initialize(Socket socket, Pattern pattern) throws IOException
+    private void initialize(Socket socket, Charset encoding, Pattern pattern) throws IOException
     {
         this.socket = socket;
 
         InputStream inputStream = socket.getInputStream();
         OutputStream outputStream = socket.getOutputStream();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, encoding));
 
         this.scanner = new Scanner(reader);
         this.scanner.useDelimiter(pattern);
-        this.writer = new BufferedWriter(new OutputStreamWriter(outputStream));
+        this.writer = new BufferedWriter(new OutputStreamWriter(outputStream, encoding));
     }
 
+    @Override
     public String readLine() throws IOException
     {
         String line;
