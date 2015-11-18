@@ -47,7 +47,22 @@ public class SocketConnectionFacadeImpl implements SocketConnectionFacade
     private Trace trace;
 
     /**
-     * Creates a new instance for use with the Manager API that uses CRNL ("\r\n") as line delimiter.
+     * Creates a new instance for use with the Manager API that uses UTF-8 as encoding and CRNL ("\r\n") as line delimiter.
+     *
+     * @param host        the foreign host to connect to.
+     * @param port        the foreign port to connect to.
+     * @param ssl         <code>true</code> to use SSL, <code>false</code> otherwise.
+     * @param timeout     0 incidcates default
+     * @param readTimeout see {@link Socket#setSoTimeout(int)}
+     * @throws IOException if the connection cannot be established.
+     */
+    public SocketConnectionFacadeImpl(String host, int port, boolean ssl, int timeout, int readTimeout) throws IOException
+    {
+        this(host, port, ssl, timeout, readTimeout, StandardCharsets.UTF_8, CRNL_PATTERN);
+    }
+
+    /**
+     * Creates a new instance for use with the Manager API that uses the given encoding and CRNL ("\r\n") as line delimiter.
      *
      * @param host        the foreign host to connect to.
      * @param port        the foreign port to connect to.
@@ -63,7 +78,23 @@ public class SocketConnectionFacadeImpl implements SocketConnectionFacade
     }
 
     /**
-     * Creates a new instance for use with the Manager API that uses the given line delimiter.
+     * Creates a new instance for use with the Manager API that uses UTF-8 as encoding and the given line delimiter.
+     *
+     * @param host        the foreign host to connect to.
+     * @param port        the foreign port to connect to.
+     * @param ssl         <code>true</code> to use SSL, <code>false</code> otherwise.
+     * @param timeout     0 incidcates default
+     * @param readTimeout see {@link Socket#setSoTimeout(int)}
+     * @param lineDelimiter a {@link Pattern} for matching the line delimiter for the socket
+     * @throws IOException if the connection cannot be established.
+     */
+    public SocketConnectionFacadeImpl(String host, int port, boolean ssl, int timeout, int readTimeout, Pattern lineDelimiter) throws IOException
+    {
+        this(host, port, ssl, timeout, readTimeout, StandardCharsets.UTF_8, lineDelimiter);
+    }
+
+    /**
+     * Creates a new instance for use with the Manager API that uses the given encoding and line delimiter.
      *
      * @param host        the foreign host to connect to.
      * @param port        the foreign port to connect to.
