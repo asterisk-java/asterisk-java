@@ -91,8 +91,22 @@ public interface ManagerConnection
      */
     AsteriskVersion getVersion();
 
+    /**
+     * Sets the encoding to use to connect to the Asterisk server (eg. important for manager/user events).
+     * All connections should use the same encoding.
+     * The default is UTF-8.
+     *
+     * @param encoding the encoding to use for manager/user events etc.
+     */
     void setEncoding(Charset encoding);
 
+    /**
+     * Returns the encoding to use to connect to the Asterisk server (eg. important for manager/user events).
+     * All connections should use the same encoding.
+     * The default is UTF-8.
+     *
+     * @return the encoding to use for manager/user events etc.
+     */
     Charset getEncoding();
 
     /**
