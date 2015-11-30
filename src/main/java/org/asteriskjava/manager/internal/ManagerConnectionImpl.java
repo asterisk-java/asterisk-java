@@ -80,12 +80,12 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     private static final int MAX_VERSION_ATTEMPTS = 4;
     private static final Pattern SHOW_VERSION_PATTERN = Pattern.compile("^(core )?show version.*");
 
-    private static final Pattern VERSION_PATTERN_1_6 = Pattern.compile("^\\s*Asterisk (SVN-branch-)?1\\.6[-. ].*");
-    private static final Pattern VERSION_PATTERN_1_8 = Pattern.compile("^\\s*Asterisk (SVN-branch-)?1\\.8[-. ].*");
-    private static final Pattern VERSION_PATTERN_10 = Pattern.compile("^\\s*Asterisk (SVN-branch-)?10[-. ].*");
-    private static final Pattern VERSION_PATTERN_11 = Pattern.compile("^\\s*Asterisk (SVN-branch-)?11[-. ].*");
-    private static final Pattern VERSION_PATTERN_12 = Pattern.compile("^\\s*Asterisk (SVN-branch-)?12[-. ].*");
-    private static final Pattern VERSION_PATTERN_13 = Pattern.compile("^\\s*Asterisk (SVN-branch-)?13[-. ].*");
+    private static final Pattern VERSION_PATTERN_1_6 = Pattern.compile("^\\s*Asterisk ((SVN-branch|GIT)-)?1\\.6[-. ].*");
+    private static final Pattern VERSION_PATTERN_1_8 = Pattern.compile("^\\s*Asterisk ((SVN-branch|GIT)-)?1\\.8[-. ].*");
+    private static final Pattern VERSION_PATTERN_10 = Pattern.compile("^\\s*Asterisk ((SVN-branch|GIT)-)?10[-. ].*");
+    private static final Pattern VERSION_PATTERN_11 = Pattern.compile("^\\s*Asterisk ((SVN-branch|GIT)-)?11[-. ].*");
+    private static final Pattern VERSION_PATTERN_12 = Pattern.compile("^\\s*Asterisk ((SVN-branch|GIT)-)?12[-. ].*");
+    private static final Pattern VERSION_PATTERN_13 = Pattern.compile("^\\s*Asterisk ((SVN-branch|GIT)-)?13[-. ].*");
 
     private static final AtomicLong idCounter = new AtomicLong(0);
 
