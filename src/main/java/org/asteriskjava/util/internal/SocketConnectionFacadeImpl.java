@@ -69,7 +69,7 @@ public class SocketConnectionFacadeImpl implements SocketConnectionFacade
      * @param ssl         <code>true</code> to use SSL, <code>false</code> otherwise.
      * @param timeout     0 incidcates default
      * @param readTimeout see {@link Socket#setSoTimeout(int)}
-     * @param encoding    the encoding used for transmission of strings
+     * @param encoding    the encoding used for transmission of strings (all connections should use the same encoding)
      * @throws IOException if the connection cannot be established.
      */
     public SocketConnectionFacadeImpl(String host, int port, boolean ssl, int timeout, int readTimeout, Charset encoding) throws IOException
@@ -101,7 +101,7 @@ public class SocketConnectionFacadeImpl implements SocketConnectionFacade
      * @param ssl         <code>true</code> to use SSL, <code>false</code> otherwise.
      * @param timeout     0 incidcates default
      * @param readTimeout see {@link Socket#setSoTimeout(int)}
-     * @param encoding    the encoding used for transmission of strings
+     * @param encoding    the encoding used for transmission of strings (all connections should use the same encoding)
      * @param lineDelimiter a {@link Pattern} for matching the line delimiter for the socket
      * @throws IOException if the connection cannot be established.
      */
