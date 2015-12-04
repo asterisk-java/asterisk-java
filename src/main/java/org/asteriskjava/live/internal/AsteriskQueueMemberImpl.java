@@ -16,7 +16,6 @@
  */
 package org.asteriskjava.live.internal;
 
-import org.apache.commons.lang3.ObjectUtils;
 import org.asteriskjava.live.AsteriskQueue;
 import org.asteriskjava.live.AsteriskQueueMember;
 import org.asteriskjava.live.InvalidPenaltyException;
@@ -27,6 +26,7 @@ import org.asteriskjava.manager.action.QueuePauseAction;
 import org.asteriskjava.manager.action.QueuePenaltyAction;
 import org.asteriskjava.manager.response.ManagerError;
 import org.asteriskjava.manager.response.ManagerResponse;
+import org.asteriskjava.util.AstUtil;
 
 /**
  * Default implementation of a queue member.
@@ -214,7 +214,7 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
 
     synchronized boolean stateChanged(QueueMemberState state)
     {
-        if(!ObjectUtils.equals(this.state, state)){
+        if(!AstUtil.equals(this.state, state)){
     		QueueMemberState oldState = this.state;
         	this.state = state;
         	firePropertyChange(PROPERTY_STATE, oldState, state);
@@ -225,7 +225,7 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
 
     synchronized boolean penaltyChanged(Integer penalty)
     {
-        if(!ObjectUtils.equals(this.penalty, penalty)){
+        if(!AstUtil.equals(this.penalty, penalty)){
         	Integer oldPenalty = this.penalty;
         	this.penalty = penalty;
         	firePropertyChange(PROPERTY_PENALTY, oldPenalty, penalty);
@@ -237,7 +237,7 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
 
     synchronized boolean pausedChanged(boolean paused)
     {
-    	if(!ObjectUtils.equals(this.paused, paused)){
+    	if(!AstUtil.equals(this.paused, paused)){
     		boolean oldPaused = this.paused;
     		this.paused = paused;
     		firePropertyChange(PROPERTY_PAUSED, oldPaused, paused);
@@ -247,7 +247,7 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
     }
 
     synchronized boolean callsTakenChanged(Integer callsTaken){
-    	if(!ObjectUtils.equals(this.callsTaken, callsTaken)){
+    	if(!AstUtil.equals(this.callsTaken, callsTaken)){
         	Integer oldcallsTaken = this.callsTaken;
         	this.callsTaken = callsTaken;
         	firePropertyChange(PROPERTY_CALLSTAKEN, oldcallsTaken, callsTaken);
@@ -257,7 +257,7 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
     }
 
     synchronized boolean lastCallChanged(Long lastCall){
-    	if(!ObjectUtils.equals(this.lastCall, lastCall)){
+    	if(!AstUtil.equals(this.lastCall, lastCall)){
         	Long oldlastCall = this.lastCall;
         	this.lastCall = lastCall;
         	firePropertyChange(PROPERTY_LASTCALL, oldlastCall, lastCall);

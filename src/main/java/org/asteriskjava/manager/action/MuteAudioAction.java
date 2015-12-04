@@ -105,17 +105,17 @@ public class MuteAudioAction extends AbstractManagerAction
 		return "MuteAudio"; //$NON-NLS-1$
 	}
 	
-	String getChannel()
+	public String getChannel()
 	{
 		return this.channel;
 	}
 	
-	Direction getDirection()
+	public Direction getDirection()
 	{
 		return this.direction;
 	}
 	
-	State getState()
+	public State getState()
 	{
 		return this.state;
 	}

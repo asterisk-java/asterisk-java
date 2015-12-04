@@ -105,6 +105,17 @@ public class AstUtil
     }
 
     /**
+     * @param a an object
+     * @param b an object to be compared with {@code a} for equality
+     * @return {@code true} if the arguments are equal to each other
+     * and {@code false} otherwise
+     */
+    public static boolean equals(Object a, Object b)
+    {
+        return a == b || a != null && a.equals(b);
+    }
+
+    /**
      * Parses a string for caller id information.
      * <br>
      * The caller id string should be in the form <code>"Some Name" &lt;1234&gt;</code>.

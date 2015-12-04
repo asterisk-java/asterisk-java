@@ -35,10 +35,10 @@ public class AgentCalledEvent extends ManagerEvent
     private static final long serialVersionUID = 1L;
     private String queue;
     private String agentCalled;
-    private String agentName;
     private String channelCalling;
     private String destinationChannel;
     private String uniqueId;
+    private String memberName;
 
     private Map<String, String> variables;
 
@@ -97,15 +97,18 @@ public class AgentCalledEvent extends ManagerEvent
      *
      * @return the name of the agent that has been called.
      * @since 1.0.0
+     * @deprecated use {@lkink #getMemberName()} instead (asterisk 13)
      */
+    @Deprecated
     public String getAgentName()
     {
-        return agentName;
+        return memberName;
     }
 
+    @Deprecated
     public void setAgentName(String agentName)
     {
-        this.agentName = agentName;
+        this.memberName = agentName;
     }
 
     /**
@@ -197,6 +200,17 @@ public class AgentCalledEvent extends ManagerEvent
     {
         this.uniqueId = uniqueId;
     }
+
+    /**
+     * Returns the Queue Member name.
+     * <p>
+     * Available since Asterisk 13 replace agentName
+     * </p>
+     *
+     */
+    public String getMemberName() {  return memberName;}
+
+    public void setMemberName(String memberName) { this.memberName = memberName; }
 
     /**
      * Returns the channel variables if <code>eventwhencalled</code> is set to
