@@ -18,6 +18,7 @@ package org.asteriskjava.manager;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.nio.charset.Charset;
 
 import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.manager.action.EventGeneratingAction;
@@ -153,6 +154,12 @@ public class DefaultManagerConnection implements ManagerConnection
         impl.setPassword(password);
     }
 
+    @Override
+    public void setEncoding(Charset encoding)
+    {
+        impl.setEncoding(encoding);
+    }
+
     /**
      * Sets the time in milliseconds the synchronous sendAction methods
      * {@link #sendAction(ManagerAction)} will wait for a response before
@@ -242,6 +249,12 @@ public class DefaultManagerConnection implements ManagerConnection
     public String getPassword()
     {
         return impl.getPassword();
+    }
+
+    @Override
+    public Charset getEncoding()
+    {
+        return impl.getEncoding();
     }
 
     public AsteriskVersion getVersion()

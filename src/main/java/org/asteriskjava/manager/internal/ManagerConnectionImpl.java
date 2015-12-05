@@ -27,6 +27,8 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.net.Socket;
 import java.net.InetAddress;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -130,11 +132,16 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
      */
     protected String password;
 
-    /**
-     * The default timeout to wait for a ManagerResponse after sending a
-     * ManagerAction.
-     */
-    private long defaultResponseTimeout = 2000;
+	/**
+	 * Encoding used for transmission of strings.
+	 */
+	private Charset encoding = StandardCharsets.UTF_8;
+
+	/**
+	 * The default timeout to wait for a ManagerResponse after sending a
+	 * ManagerAction.
+	 */
+	private long defaultResponseTimeout = 2000;
 
     /**
      * The default timeout to wait for the last ResponseEvent after sending an
@@ -313,9 +320,15 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         this.password = password;
     }
 
-    /**
-     * Sets the time in milliseconds the synchronous method
-     * {@link #sendAction(ManagerAction)} will wait for a response before
+	@Override
+	public void setEncoding(Charset encoding)
+	{
+		this.encoding = encoding;
+	}
+
+	/**
+	 * Sets the time in milliseconds the synchronous method
+	 * {@link #sendAction(ManagerAction)} will wait for a response before
      * throwing a TimeoutException. <br>
      * Default is 2000.
      * 
@@ -368,10 +381,16 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         return password;
     }
 
-    public AsteriskVersion getVersion()
-    {
-        return version;
-    }
+	@Override
+	public Charset getEncoding()
+	{
+		return encoding;
+	}
+
+	public AsteriskVersion getVersion()
+	{
+		return version;
+	}
 
     public String getHostname()
     {
@@ -772,10 +791,10 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         writer.setSocket(socket);
     }
 
-    protected SocketConnectionFacade createSocket() throws IOException
-    {
-        return new SocketConnectionFacadeImpl(hostname, port, ssl, socketTimeout, socketReadTimeout);
-    }
+	protected SocketConnectionFacade createSocket() throws IOException
+	{
+		return new SocketConnectionFacadeImpl(hostname, port, ssl, socketTimeout, socketReadTimeout, encoding);
+	}
 
     public synchronized void logoff() throws IllegalStateException
     {
