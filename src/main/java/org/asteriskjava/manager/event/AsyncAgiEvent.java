@@ -203,13 +203,12 @@ public class AsyncAgiEvent extends ResponseEvent
 
         try
         {
-            final String decodedString = URLDecoder.decode(s, "ISO-8859-1");
+            final String decodedString = URLDecoder.decode(s, "UTF-8");
             result.addAll(Arrays.asList(decodedString.split("\n")));
         }
         catch (UnsupportedEncodingException e)
         {
-            // won't happen as JDK ships with ISO-8859-1
-            throw new RuntimeException("This JDK does not support ISO-8859-1 encoding", e);
+            throw new RuntimeException("This JDK does not support UTF-8 encoding", e);
         }
 
         return result;
