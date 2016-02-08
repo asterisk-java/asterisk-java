@@ -37,6 +37,7 @@ public class ManagerWriterImplTest
         managerWriter = new ManagerWriterImpl();
     }
 
+    @SuppressWarnings("cast")
     @Test
     public void testSendActionWithoutSocket() throws Exception
     {

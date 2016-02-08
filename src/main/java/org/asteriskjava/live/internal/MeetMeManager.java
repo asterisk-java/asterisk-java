@@ -16,6 +16,14 @@
  */
 package org.asteriskjava.live.internal;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.asteriskjava.live.ManagerCommunicationException;
 import org.asteriskjava.live.MeetMeRoom;
 import org.asteriskjava.manager.action.CommandAction;
@@ -29,10 +37,6 @@ import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.util.DateUtil;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
-
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Manages MeetMe events on behalf of an AsteriskServer.
@@ -74,11 +78,8 @@ class MeetMeManager
     void disconnected()
     {
         /*
-        synchronized (rooms)
-        {
-            rooms.clear();
-        }
-        */
+         * synchronized (rooms) { rooms.clear(); }
+         */
     }
 
     Collection<MeetMeRoom> getMeetMeRooms()
@@ -147,7 +148,8 @@ class MeetMeManager
                             + " but is user of no room");
                 }
             }
-            // Mmmm should remove from the room before firing PropertyChangeEvents ?
+            // Mmmm should remove from the room before firing
+            // PropertyChangeEvents ?
             user.left(event.getDateReceived());
             room.removeUser(user);
             channel.setMeetMeUserImpl(null);
@@ -183,7 +185,13 @@ class MeetMeManager
         final CommandAction meetMeListAction;
         final ManagerResponse response;
         final List<String> lines;
-        final Collection<Integer> userNumbers = new ArrayList<Integer>(); // list of user numbers in the room
+        final Collection<Integer> userNumbers = new ArrayList<Integer>(); // list
+                                                                          // of
+                                                                          // user
+                                                                          // numbers
+                                                                          // in
+                                                                          // the
+                                                                          // room
 
         meetMeListAction = new CommandAction(MEETME_LIST_COMMAND + " " + room.getRoomNumber());
         try
@@ -270,7 +278,7 @@ class MeetMeManager
                 channelUser.setMuted(muted);
                 room.addUser(channelUser);
             }
-            else if (channelUser == null)
+            else if (channelUser == null && roomUser != null)
             {
                 roomUser.setMuted(muted);
                 channel.setMeetMeUserImpl(roomUser);

@@ -66,10 +66,7 @@ public class DateUtil
         {
             return new Date();
         }
-        else
-        {
-            return currentDate;
-        }
+        return currentDate;
     }
 
     /**
@@ -77,7 +74,8 @@ public class DateUtil
      * the default time zone.
      * 
      * @param s date string in the form of "yy-MM-dd HH:mm:ss"
-     * @return the corresponding Java date object or <code>null</code> if it is not parsable.
+     * @return the corresponding Java date object or <code>null</code> if it is
+     *         not parsable.
      */
     public static Date parseDateTime(String s)
     {
@@ -89,8 +87,10 @@ public class DateUtil
      * the given time zone.
      * 
      * @param s date string in the form of "yy-MM-dd HH:mm:ss"
-     * @param tz the timezone to use or <code>null</code> for the default time zone.
-     * @return the corresponding Java date object or <code>null</code> if it is not parsable.
+     * @param tz the timezone to use or <code>null</code> for the default time
+     *            zone.
+     * @return the corresponding Java date object or <code>null</code> if it is
+     *         not parsable.
      */
     public static Date parseDateTime(String s, TimeZone tz)
     {

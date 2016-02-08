@@ -16,8 +16,55 @@
  */
 package org.asteriskjava.fastagi.internal;
 
-import org.asteriskjava.fastagi.*;
-import org.asteriskjava.fastagi.command.*;
+import org.asteriskjava.fastagi.AgiChannel;
+import org.asteriskjava.fastagi.AgiException;
+import org.asteriskjava.fastagi.AgiHangupException;
+import org.asteriskjava.fastagi.AgiRequest;
+import org.asteriskjava.fastagi.AgiSpeechException;
+import org.asteriskjava.fastagi.InvalidCommandSyntaxException;
+import org.asteriskjava.fastagi.InvalidOrUnknownCommandException;
+import org.asteriskjava.fastagi.SpeechRecognitionResult;
+import org.asteriskjava.fastagi.command.AgiCommand;
+import org.asteriskjava.fastagi.command.AnswerCommand;
+import org.asteriskjava.fastagi.command.ChannelStatusCommand;
+import org.asteriskjava.fastagi.command.ControlStreamFileCommand;
+import org.asteriskjava.fastagi.command.DatabaseDelCommand;
+import org.asteriskjava.fastagi.command.DatabaseDelTreeCommand;
+import org.asteriskjava.fastagi.command.DatabaseGetCommand;
+import org.asteriskjava.fastagi.command.DatabasePutCommand;
+import org.asteriskjava.fastagi.command.ExecCommand;
+import org.asteriskjava.fastagi.command.GetDataCommand;
+import org.asteriskjava.fastagi.command.GetFullVariableCommand;
+import org.asteriskjava.fastagi.command.GetOptionCommand;
+import org.asteriskjava.fastagi.command.GetVariableCommand;
+import org.asteriskjava.fastagi.command.GosubCommand;
+import org.asteriskjava.fastagi.command.HangupCommand;
+import org.asteriskjava.fastagi.command.RecordFileCommand;
+import org.asteriskjava.fastagi.command.SayAlphaCommand;
+import org.asteriskjava.fastagi.command.SayDateTimeCommand;
+import org.asteriskjava.fastagi.command.SayDigitsCommand;
+import org.asteriskjava.fastagi.command.SayNumberCommand;
+import org.asteriskjava.fastagi.command.SayPhoneticCommand;
+import org.asteriskjava.fastagi.command.SayTimeCommand;
+import org.asteriskjava.fastagi.command.SetAutoHangupCommand;
+import org.asteriskjava.fastagi.command.SetCallerIdCommand;
+import org.asteriskjava.fastagi.command.SetContextCommand;
+import org.asteriskjava.fastagi.command.SetExtensionCommand;
+import org.asteriskjava.fastagi.command.SetMusicOffCommand;
+import org.asteriskjava.fastagi.command.SetMusicOnCommand;
+import org.asteriskjava.fastagi.command.SetPriorityCommand;
+import org.asteriskjava.fastagi.command.SetVariableCommand;
+import org.asteriskjava.fastagi.command.SpeechActivateGrammarCommand;
+import org.asteriskjava.fastagi.command.SpeechCreateCommand;
+import org.asteriskjava.fastagi.command.SpeechDeactivateGrammarCommand;
+import org.asteriskjava.fastagi.command.SpeechDestroyCommand;
+import org.asteriskjava.fastagi.command.SpeechLoadGrammarCommand;
+import org.asteriskjava.fastagi.command.SpeechRecognizeCommand;
+import org.asteriskjava.fastagi.command.SpeechSetCommand;
+import org.asteriskjava.fastagi.command.SpeechUnloadGrammarCommand;
+import org.asteriskjava.fastagi.command.StreamFileCommand;
+import org.asteriskjava.fastagi.command.VerboseCommand;
+import org.asteriskjava.fastagi.command.WaitForDigitCommand;
 import org.asteriskjava.fastagi.reply.AgiReply;
 
 /**
@@ -353,7 +400,8 @@ public class AgiChannelImpl implements AgiChannel
         return lastReply.getResultCodeAsChar();
     }
 
-    public char recordFile(String file, String format, String escapeDigits, int timeout, int offset, boolean beep, int maxSilence) throws AgiException
+    public char recordFile(String file, String format, String escapeDigits, int timeout, int offset, boolean beep,
+            int maxSilence) throws AgiException
     {
         sendCommand(new RecordFileCommand(file, format, escapeDigits, timeout, offset, beep, maxSilence));
         return lastReply.getResultCodeAsChar();
@@ -376,7 +424,8 @@ public class AgiChannelImpl implements AgiChannel
         return lastReply.getResultCodeAsChar();
     }
 
-    public char controlStreamFile(String file, String escapeDigits, int offset, String forwardDigit, String rewindDigit, String pauseDigit) throws AgiException
+    public char controlStreamFile(String file, String escapeDigits, int offset, String forwardDigit, String rewindDigit,
+            String pauseDigit) throws AgiException
     {
         sendCommand(new ControlStreamFileCommand(file, escapeDigits, offset, forwardDigit, rewindDigit, pauseDigit));
         return lastReply.getResultCodeAsChar();
@@ -396,10 +445,7 @@ public class AgiChannelImpl implements AgiChannel
             {
                 throw new AgiSpeechException("Speech object for default engine cannot be created");
             }
-            else
-            {
-                throw new AgiSpeechException("Speech object for engine '" + engine + "' cannot be created");
-            }
+            throw new AgiSpeechException("Speech object for engine '" + engine + "' cannot be created");
         }
     }
 
@@ -499,7 +545,9 @@ public class AgiChannelImpl implements AgiChannel
     {
         sendCommand(new GosubCommand(context, extension, priority, arguments));
     }
-		
-		
-		public AgiRequest getInternalAgiRequest () { return request;}
+
+    public AgiRequest getInternalAgiRequest()
+    {
+        return request;
+    }
 }

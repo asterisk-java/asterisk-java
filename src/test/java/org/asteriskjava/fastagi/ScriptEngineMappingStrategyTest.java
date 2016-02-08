@@ -15,7 +15,7 @@ public class ScriptEngineMappingStrategyTest
     private ScriptEngineMappingStrategy scriptEngineMappingStrategy;
 
     @Before
-    public void setUp() throws Exception
+    public void setUp()
     {
         this.scriptEngineMappingStrategy = new ScriptEngineMappingStrategy();
     }
@@ -32,9 +32,10 @@ public class ScriptEngineMappingStrategyTest
     }
 
     @Test
-    public void testSearchFileOutsidePath() throws IOException
+    public void testSearchFileOutsidePath()
     {
-        // file should not be found for security reasons if it is not below the path
+        // file should not be found for security reasons if it is not below the
+        // path
         assertNull(scriptEngineMappingStrategy.searchFile("../pom.xml", new String[]{"src"}));
     }
 

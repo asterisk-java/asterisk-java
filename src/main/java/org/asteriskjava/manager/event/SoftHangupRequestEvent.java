@@ -17,7 +17,8 @@
 package org.asteriskjava.manager.event;
 
 /**
- * A HangupEvent is triggered when a channel is hung up.<p>
+ * A HangupEvent is triggered when a channel is hung up.
+ * <p>
  * It is implemented in <code>channel.c</code>
  */
 public class SoftHangupRequestEvent extends AbstractChannelEvent
@@ -28,7 +29,6 @@ public class SoftHangupRequestEvent extends AbstractChannelEvent
     static final long serialVersionUID = 0L;
 
     private Integer cause;
-    private String uniqueid;
 
     public SoftHangupRequestEvent(Object source)
     {
@@ -55,18 +55,5 @@ public class SoftHangupRequestEvent extends AbstractChannelEvent
     {
         this.cause = cause;
     }
-
-
-    public String getUniqueid() {
-        return uniqueid;
-    }
-
-    public void setUniqueid(String uniqueid) {
-        this.uniqueid = uniqueid;
-    }
-
-
-
-
 
 }

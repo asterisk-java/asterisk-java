@@ -1,10 +1,10 @@
 package org.asteriskjava;
 
-import org.asteriskjava.fastagi.DefaultAgiServer;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+
+import org.asteriskjava.fastagi.DefaultAgiServer;
 
 /**
  * Simple command line interface for Asterisk-Java. This class is run when Asterisk-Java is started

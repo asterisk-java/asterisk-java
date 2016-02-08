@@ -16,11 +16,16 @@
  */
 package org.asteriskjava.live.internal;
 
-import org.asteriskjava.live.*;
-import org.asteriskjava.manager.response.ManagerResponse;
-import org.asteriskjava.manager.response.ManagerError;
-import org.asteriskjava.manager.action.QueuePenaltyAction;
+import org.asteriskjava.live.AsteriskQueue;
+import org.asteriskjava.live.AsteriskQueueMember;
+import org.asteriskjava.live.InvalidPenaltyException;
+import org.asteriskjava.live.ManagerCommunicationException;
+import org.asteriskjava.live.NoSuchInterfaceException;
+import org.asteriskjava.live.QueueMemberState;
 import org.asteriskjava.manager.action.QueuePauseAction;
+import org.asteriskjava.manager.action.QueuePenaltyAction;
+import org.asteriskjava.manager.response.ManagerError;
+import org.asteriskjava.manager.response.ManagerResponse;
 
 /**
  * Default implementation of a queue member.
@@ -42,19 +47,18 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
     /**
      * Creates a new queue member.
      *
-     * @param server     server this channel belongs to.
-     * @param queue      queue this member is registered to.
-     * @param location   location of member.
-     * @param state      state of this member.
-     * @param paused     <code>true</code> if this member is currently paused, <code>false</code> otherwise.
-     * @param penalty    penalty of this member.
-     * @param membership "dynamic" if the added member is a dynamic queue member, "static"
-     *                   if the added member is a static queue member.
+     * @param server server this channel belongs to.
+     * @param queue queue this member is registered to.
+     * @param location location of member.
+     * @param state state of this member.
+     * @param paused <code>true</code> if this member is currently paused,
+     *            <code>false</code> otherwise.
+     * @param penalty penalty of this member.
+     * @param membership "dynamic" if the added member is a dynamic queue
+     *            member, "static" if the added member is a static queue member.
      */
-    AsteriskQueueMemberImpl(final AsteriskServerImpl server,
-                            final AsteriskQueueImpl queue, String location,
-                            QueueMemberState state, boolean paused,
-                            Integer penalty, String membership)
+    AsteriskQueueMemberImpl(final AsteriskServerImpl server, final AsteriskQueueImpl queue, String location,
+            QueueMemberState state, boolean paused, Integer penalty, String membership)
     {
         super(server);
         this.queue = queue;
@@ -80,7 +84,8 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
         return state;
     }
 
-    @Deprecated public boolean getPaused()
+    @Deprecated
+    public boolean getPaused()
     {
         return isPaused();
     }
@@ -106,18 +111,15 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
 
         if (response instanceof ManagerError)
         {
-            //Message: Interface not found
+            // Message: Interface not found
             if (action.getQueue() != null)
             {
-                //Message: Interface not found
-                throw new NoSuchInterfaceException("Unable to change paused state for '" + action.getInterface() + "' on '" +
-                        action.getQueue() + "': " + response.getMessage());
+                // Message: Interface not found
+                throw new NoSuchInterfaceException("Unable to change paused state for '" + action.getInterface() + "' on '"
+                        + action.getQueue() + "': " + response.getMessage());
             }
-            else
-            {
-                throw new NoSuchInterfaceException("Unable to change paused state for '" + action.getInterface() +
-                        "' on all queues: " + response.getMessage());
-            }
+            throw new NoSuchInterfaceException("Unable to change paused state for '" + action.getInterface()
+                    + "' on all queues: " + response.getMessage());
         }
     }
 
@@ -141,19 +143,19 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
         return penalty;
     }
 
-    public void setPenalty(int penalty) throws IllegalArgumentException, ManagerCommunicationException, InvalidPenaltyException
+    public void setPenalty(int penalty)
+            throws IllegalArgumentException, ManagerCommunicationException, InvalidPenaltyException
     {
         if (penalty < 0)
         {
             throw new IllegalArgumentException("Penalty must not be negative");
         }
 
-        final ManagerResponse response = server.sendAction(
-                new QueuePenaltyAction(location, penalty, queue.getName()));
+        final ManagerResponse response = server.sendAction(new QueuePenaltyAction(location, penalty, queue.getName()));
         if (response instanceof ManagerError)
         {
-            throw new InvalidPenaltyException("Unable to set penalty for '" + location + "' on '" +
-                    queue.getName() + "': " + response.getMessage());
+            throw new InvalidPenaltyException(
+                    "Unable to set penalty for '" + location + "' on '" + queue.getName() + "': " + response.getMessage());
         }
     }
 

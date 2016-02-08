@@ -17,7 +17,7 @@ public class CoreStatusResponseTest
     private TimeZone defaultTimeZone;
 
     @Before
-    public void setUp() throws Exception
+    public void setUp()
     {
         this.response = new CoreStatusResponse();
         defaultTimeZone = TimeZone.getDefault();
@@ -25,7 +25,7 @@ public class CoreStatusResponseTest
     }
 
     @After
-    public void tearDown() throws Exception
+    public void tearDown()
     {
         TimeZone.setDefault(defaultTimeZone);
     }
