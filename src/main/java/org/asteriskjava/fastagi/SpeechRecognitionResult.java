@@ -1,10 +1,10 @@
 package org.asteriskjava.fastagi;
 
-import org.asteriskjava.fastagi.reply.AgiReply;
-
-import java.util.List;
-import java.util.ArrayList;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.asteriskjava.fastagi.reply.AgiReply;
 
 /**
  * Contains the results of a speech recognition command.

@@ -16,10 +16,14 @@
  */
 package org.asteriskjava.manager.action;
 
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.StringTokenizer;
+
 import org.asteriskjava.manager.event.OriginateResponseEvent;
 import org.asteriskjava.manager.event.ResponseEvent;
-
-import java.util.*;
 
 
 /**

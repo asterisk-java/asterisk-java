@@ -1,9 +1,5 @@
 package org.asteriskjava.tools;
 
-import org.asteriskjava.live.DefaultAsteriskServer;
-import org.asteriskjava.manager.ManagerEventListener;
-import org.asteriskjava.manager.event.*;
-
 import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
@@ -14,9 +10,26 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.asteriskjava.live.DefaultAsteriskServer;
+import org.asteriskjava.manager.ManagerEventListener;
+import org.asteriskjava.manager.event.AbstractParkedCallEvent;
+import org.asteriskjava.manager.event.AntennaLevelEvent;
+import org.asteriskjava.manager.event.BridgeEvent;
+import org.asteriskjava.manager.event.DialEvent;
+import org.asteriskjava.manager.event.HangupEvent;
+import org.asteriskjava.manager.event.HoldEvent;
+import org.asteriskjava.manager.event.ManagerEvent;
+import org.asteriskjava.manager.event.NewChannelEvent;
+import org.asteriskjava.manager.event.NewExtenEvent;
+import org.asteriskjava.manager.event.NewStateEvent;
+import org.asteriskjava.manager.event.PausedEvent;
+import org.asteriskjava.manager.event.RenameEvent;
+import org.asteriskjava.manager.event.UnpausedEvent;
+
 /**
  * A diagnostic tool that creates an HTML file showing the state changing events
- * received from Asterisk on the Manager API.<p>
+ * received from Asterisk on the Manager API.
+ * <p>
  * The following events are shown:
  * <ul>
  * <li>NewChannel</li>
@@ -36,13 +49,13 @@ public class HtmlEventTracer implements ManagerEventListener
     private PrintWriter writer;
     private final List<String> uniqueIds;
     private final List<ManagerEvent> events;
-    private final Map<Class<? extends ManagerEvent>, String> colors;
+    private final Map<Class< ? extends ManagerEvent>, String> colors;
 
     public HtmlEventTracer()
     {
         uniqueIds = new ArrayList<String>();
         events = new ArrayList<ManagerEvent>();
-        colors = new HashMap<Class<? extends ManagerEvent>, String>();
+        colors = new HashMap<Class< ? extends ManagerEvent>, String>();
 
         colors.put(NewChannelEvent.class, "#7cd300"); // green
         colors.put(NewStateEvent.class, "#a4b6c8");
@@ -88,10 +101,9 @@ public class HtmlEventTracer implements ManagerEventListener
                 tracer.write();
                 server.shutdown();
             }
-        }
-        );
+        });
 
-        while(true)
+        while (true)
         {
             Thread.sleep(1000);
         }
@@ -163,9 +175,9 @@ public class HtmlEventTracer implements ManagerEventListener
         System.err.println("Trace file successfully written to " + filename + ".");
     }
 
-    private String getColor(Class<? extends ManagerEvent> clazz)
+    private String getColor(Class< ? extends ManagerEvent> clazz)
     {
-        for (Map.Entry<Class<? extends ManagerEvent>, String> entry : colors.entrySet())
+        for (Map.Entry<Class< ? extends ManagerEvent>, String> entry : colors.entrySet())
         {
             if (entry.getKey().isAssignableFrom(clazz))
             {
@@ -187,8 +199,8 @@ public class HtmlEventTracer implements ManagerEventListener
                     continue;
                 }
 
-	            final Object o = propertyDescriptor.getReadMethod().invoke(obj);
-	            return o != null ? o.toString() : null;
+                final Object o = propertyDescriptor.getReadMethod().invoke(obj);
+                return o != null ? o.toString() : null;
             }
         }
         catch (Exception e)
@@ -244,17 +256,17 @@ public class HtmlEventTracer implements ManagerEventListener
             }
             else if (event instanceof AntennaLevelEvent)
             {
-            	format = "%s";
+                format = "%s";
                 properties = new String[]{"signal"};
             }
             else if (event instanceof PausedEvent)
             {
-            	format = "(%s) %s";
+                format = "(%s) %s";
                 properties = new String[]{"header", "extension"};
             }
             else if (event instanceof UnpausedEvent)
             {
-            	format = "(%s) %s";
+                format = "(%s) %s";
                 properties = new String[]{"header", "extension"};
             }
         }
@@ -287,7 +299,7 @@ public class HtmlEventTracer implements ManagerEventListener
             }
         }
 
-        if (format != null)
+        if (format != null && properties != null)
         {
             String[] args = new String[properties.length];
 

@@ -16,8 +16,8 @@
  */
 package org.asteriskjava.manager.action;
 
-import org.asteriskjava.manager.event.VoicemailUserEntryCompleteEvent;
 import org.asteriskjava.manager.event.ResponseEvent;
+import org.asteriskjava.manager.event.VoicemailUserEntryCompleteEvent;
 
 /**
  * Retrieves a list of all defined voicemail users.<p>

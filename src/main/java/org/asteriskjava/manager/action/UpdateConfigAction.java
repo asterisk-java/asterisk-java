@@ -16,8 +16,8 @@
  */
 package org.asteriskjava.manager.action;
 
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The UpdateConfigAction sends an UpdateConfig command to the asterisk server.

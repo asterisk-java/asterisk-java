@@ -67,8 +67,9 @@ public class ManagerReaderImplTest
         DateUtil.overrideCurrentDate(null);
     }
 
+    @SuppressWarnings("cast")
     @Test
-    public void testRunWithoutSocket() throws Exception
+    public void testRunWithoutSocket()
     {
         try
         {
@@ -77,8 +78,7 @@ public class ManagerReaderImplTest
         }
         catch (IllegalStateException e)
         {
-            assertTrue("Exception must be of type IllegalStateException",
-                    e instanceof IllegalStateException);
+            assertTrue("Exception must be of type IllegalStateException", e instanceof IllegalStateException);
         }
     }
 
@@ -95,22 +95,19 @@ public class ManagerReaderImplTest
 
         verify(socketConnectionFacade);
 
-        assertEquals("not exactly two events dispatched", 2,
-                dispatcher.dispatchedEvents.size());
+        assertEquals("not exactly two events dispatched", 2, dispatcher.dispatchedEvents.size());
 
-        assertEquals("first event must be a ProtocolIdentifierReceivedEvent",
-                ProtocolIdentifierReceivedEvent.class,
+        assertEquals("first event must be a ProtocolIdentifierReceivedEvent", ProtocolIdentifierReceivedEvent.class,
                 dispatcher.dispatchedEvents.get(0).getClass());
 
-        assertEquals("ProtocolIdentifierReceivedEvent contains incorrect protocol identifier",
-                "Asterisk Call Manager/1.0",
+        assertEquals("ProtocolIdentifierReceivedEvent contains incorrect protocol identifier", "Asterisk Call Manager/1.0",
                 ((ProtocolIdentifierReceivedEvent) dispatcher.dispatchedEvents.get(0)).getProtocolIdentifier());
 
         assertEquals("ProtocolIdentifierReceivedEvent contains incorrect dateReceived", now,
                 dispatcher.dispatchedEvents.get(0).getDateReceived());
 
-        assertEquals("second event must be a DisconnectEvent",
-                DisconnectEvent.class, dispatcher.dispatchedEvents.get(1).getClass());
+        assertEquals("second event must be a DisconnectEvent", DisconnectEvent.class,
+                dispatcher.dispatchedEvents.get(1).getClass());
 
         assertEquals("DisconnectEvent contains incorrect dateReceived", now,
                 dispatcher.dispatchedEvents.get(1).getDateReceived());
@@ -130,14 +127,13 @@ public class ManagerReaderImplTest
 
         verify(socketConnectionFacade);
 
-        assertEquals("not exactly two events dispatched", 2,
-                dispatcher.dispatchedEvents.size());
+        assertEquals("not exactly two events dispatched", 2, dispatcher.dispatchedEvents.size());
 
-        assertEquals("first event must be a StatusCompleteEvent",
-                StatusCompleteEvent.class, dispatcher.dispatchedEvents.get(0).getClass());
+        assertEquals("first event must be a StatusCompleteEvent", StatusCompleteEvent.class,
+                dispatcher.dispatchedEvents.get(0).getClass());
 
-        assertEquals("second event must be a DisconnectEvent",
-                DisconnectEvent.class, dispatcher.dispatchedEvents.get(1).getClass());
+        assertEquals("second event must be a DisconnectEvent", DisconnectEvent.class,
+                dispatcher.dispatchedEvents.get(1).getClass());
     }
 
     @Test
@@ -156,11 +152,10 @@ public class ManagerReaderImplTest
 
         verify(socketConnectionFacade);
 
-        assertEquals("not exactly two events dispatched", 2,
-                dispatcher.dispatchedEvents.size());
+        assertEquals("not exactly two events dispatched", 2, dispatcher.dispatchedEvents.size());
 
-        assertEquals("first event must be a AgentCalledEvent",
-                AgentCalledEvent.class, dispatcher.dispatchedEvents.get(0).getClass());
+        assertEquals("first event must be a AgentCalledEvent", AgentCalledEvent.class,
+                dispatcher.dispatchedEvents.get(0).getClass());
 
         AgentCalledEvent event = (AgentCalledEvent) dispatcher.dispatchedEvents.get(0);
         assertEquals("Returned event is of wrong type", AgentCalledEvent.class, event.getClass());
@@ -168,8 +163,8 @@ public class ManagerReaderImplTest
         assertEquals("Property variables[var2] is not set correctly", "val2", event.getVariables().get("var2"));
         assertEquals("Invalid size of variables property", 2, event.getVariables().size());
 
-        assertEquals("second event must be an DisconnectEvent",
-                DisconnectEvent.class, dispatcher.dispatchedEvents.get(1).getClass());
+        assertEquals("second event must be an DisconnectEvent", DisconnectEvent.class,
+                dispatcher.dispatchedEvents.get(1).getClass());
     }
 
     @Test
@@ -187,19 +182,18 @@ public class ManagerReaderImplTest
 
         verify(socketConnectionFacade);
 
-        assertEquals("not exactly two events dispatched", 2,
-                dispatcher.dispatchedEvents.size());
+        assertEquals("not exactly two events dispatched", 2, dispatcher.dispatchedEvents.size());
 
-        assertEquals("first event must be a AgentCalledEvent",
-                AgentCalledEvent.class, dispatcher.dispatchedEvents.get(0).getClass());
+        assertEquals("first event must be a AgentCalledEvent", AgentCalledEvent.class,
+                dispatcher.dispatchedEvents.get(0).getClass());
 
         AgentCalledEvent event = (AgentCalledEvent) dispatcher.dispatchedEvents.get(0);
         assertEquals("Returned event is of wrong type", AgentCalledEvent.class, event.getClass());
         assertEquals("Property variables[var1] is not set correctly", "val1", event.getVariables().get("var1"));
         assertEquals("Invalid size of variables property", 1, event.getVariables().size());
 
-        assertEquals("second event must be an DisconnectEvent",
-                DisconnectEvent.class, dispatcher.dispatchedEvents.get(1).getClass());
+        assertEquals("second event must be an DisconnectEvent", DisconnectEvent.class,
+                dispatcher.dispatchedEvents.get(1).getClass());
     }
 
     @Test
@@ -218,19 +212,19 @@ public class ManagerReaderImplTest
 
         verify(socketConnectionFacade);
 
-        assertEquals("not exactly two events dispatched", 2,
-                dispatcher.dispatchedEvents.size());
+        assertEquals("not exactly two events dispatched", 2, dispatcher.dispatchedEvents.size());
 
-        assertEquals("first event must be a RtcpReceivedEvent",
-                RtcpReceivedEvent.class, dispatcher.dispatchedEvents.get(0).getClass());
+        assertEquals("first event must be a RtcpReceivedEvent", RtcpReceivedEvent.class,
+                dispatcher.dispatchedEvents.get(0).getClass());
 
         RtcpReceivedEvent rtcpReceivedEvent = (RtcpReceivedEvent) dispatcher.dispatchedEvents.get(0);
-        assertEquals("Invalid from address on RtcpReceivedEvent", "192.168.0.1", rtcpReceivedEvent.getFromAddress().getHostAddress());
+        assertEquals("Invalid from address on RtcpReceivedEvent", "192.168.0.1",
+                rtcpReceivedEvent.getFromAddress().getHostAddress());
         assertEquals("Invalid from port on RtcpReceivedEvent", new Integer(1234), rtcpReceivedEvent.getFromPort());
         assertEquals("Invalid highest sequence on RtcpReceivedEvent", new Long(999), rtcpReceivedEvent.getHighestSequence());
 
-        assertEquals("second event must be a DisconnectEvent",
-                DisconnectEvent.class, dispatcher.dispatchedEvents.get(1).getClass());
+        assertEquals("second event must be a DisconnectEvent", DisconnectEvent.class,
+                dispatcher.dispatchedEvents.get(1).getClass());
     }
 
     // todo fix testRunReceivingUserEvent
@@ -249,15 +243,12 @@ public class ManagerReaderImplTest
 
         verify(socketConnectionFacade);
 
-        assertEquals("not exactly two events dispatched", 2,
-                dispatcher.dispatchedEvents.size());
+        assertEquals("not exactly two events dispatched", 2, dispatcher.dispatchedEvents.size());
 
-        assertEquals("first event must be a MyUserEvent", MyUserEvent.class,
-                dispatcher.dispatchedEvents.get(0).getClass());
+        assertEquals("first event must be a MyUserEvent", MyUserEvent.class, dispatcher.dispatchedEvents.get(0).getClass());
 
-        assertEquals("second event must be a DisconnectEvent",
-                DisconnectEvent.class, dispatcher.dispatchedEvents.get(1)
-                        .getClass());
+        assertEquals("second event must be a DisconnectEvent", DisconnectEvent.class,
+                dispatcher.dispatchedEvents.get(1).getClass());
     }
 
     @Test
@@ -275,31 +266,27 @@ public class ManagerReaderImplTest
 
         verify(socketConnectionFacade);
 
-        assertEquals("not exactly one response dispatched", 1,
-                dispatcher.dispatchedResponses.size());
+        assertEquals("not exactly one response dispatched", 1, dispatcher.dispatchedResponses.size());
 
-        assertEquals("first response must be a ManagerResponse",
-                ManagerResponse.class, dispatcher.dispatchedResponses.get(0).getClass());
+        assertEquals("first response must be a ManagerResponse", ManagerResponse.class,
+                dispatcher.dispatchedResponses.get(0).getClass());
 
         assertEquals("ManagerResponse contains incorrect response", "Success",
                 dispatcher.dispatchedResponses.get(0).getResponse());
 
-        assertEquals("ManagerResponse contains incorrect message",
-                "Authentication accepted",
+        assertEquals("ManagerResponse contains incorrect message", "Authentication accepted",
                 dispatcher.dispatchedResponses.get(0).getMessage());
 
-        assertEquals("ManagerResponse contains incorrect message (via getAttribute)",
-                "Authentication accepted",
+        assertEquals("ManagerResponse contains incorrect message (via getAttribute)", "Authentication accepted",
                 dispatcher.dispatchedResponses.get(0).getAttribute("MESSAGE"));
 
         assertEquals("ManagerResponse contains incorrect dateReceived", now,
                 dispatcher.dispatchedResponses.get(0).getDateReceived());
 
-        assertEquals("not exactly one events dispatched", 1,
-                dispatcher.dispatchedEvents.size());
+        assertEquals("not exactly one events dispatched", 1, dispatcher.dispatchedEvents.size());
 
-        assertEquals("first event must be a DisconnectEvent",
-                DisconnectEvent.class, dispatcher.dispatchedEvents.get(0).getClass());
+        assertEquals("first event must be a DisconnectEvent", DisconnectEvent.class,
+                dispatcher.dispatchedEvents.get(0).getClass());
     }
 
     @Test
@@ -324,11 +311,10 @@ public class ManagerReaderImplTest
 
         verify(socketConnectionFacade);
 
-        assertEquals("not exactly one response dispatched", 1,
-                dispatcher.dispatchedResponses.size());
+        assertEquals("not exactly one response dispatched", 1, dispatcher.dispatchedResponses.size());
 
-        assertEquals("first response must be a CommandResponse",
-                CommandResponse.class, dispatcher.dispatchedResponses.get(0).getClass());
+        assertEquals("first response must be a CommandResponse", CommandResponse.class,
+                dispatcher.dispatchedResponses.get(0).getClass());
 
         assertEquals("CommandResponse contains incorrect response", "Follows",
                 dispatcher.dispatchedResponses.get(0).getResponse());
@@ -358,15 +344,12 @@ public class ManagerReaderImplTest
 
         verify(socketConnectionFacade);
 
-        assertEquals("must not dispatch a response", 0,
-                dispatcher.dispatchedResponses.size());
+        assertEquals("must not dispatch a response", 0, dispatcher.dispatchedResponses.size());
 
-        assertEquals("not exactly one events dispatched", 1,
-                dispatcher.dispatchedEvents.size());
+        assertEquals("not exactly one events dispatched", 1, dispatcher.dispatchedEvents.size());
 
-        assertEquals("first event must be a DisconnectEvent",
-                DisconnectEvent.class, dispatcher.dispatchedEvents.get(0)
-                        .getClass());
+        assertEquals("first event must be a DisconnectEvent", DisconnectEvent.class,
+                dispatcher.dispatchedEvents.get(0).getClass());
     }
 
     private class MockedDispatcher implements Dispatcher

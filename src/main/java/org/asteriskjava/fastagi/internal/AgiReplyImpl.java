@@ -16,12 +16,15 @@
  */
 package org.asteriskjava.fastagi.internal;
 
-import org.asteriskjava.fastagi.reply.AgiReply;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.asteriskjava.fastagi.reply.AgiReply;
 
 /**
  * Default implementation of the AgiReply interface.
@@ -317,8 +320,8 @@ public class AgiReplyImpl implements AgiReply
      * Returns the usage of the command sent if Asterisk expected a different
      * syntax (getStatus() == SC_INVALID_COMMAND_SYNTAX).
      *
-     * @return the usage of the command sent, <code>null</code> if there were
-     *         no syntax errors.
+     * @return the usage of the command sent, <code>null</code> if there were no
+     *         syntax errors.
      */
     public String getUsage()
     {

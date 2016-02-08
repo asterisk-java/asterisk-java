@@ -1,10 +1,10 @@
 package org.asteriskjava.util;
 
-import java.util.Map;
-import java.util.HashMap;
 import java.util.Collections;
-import java.util.regex.Pattern;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Utility methods related to channel state handling in Asterisk's <code>channel.c</code>.

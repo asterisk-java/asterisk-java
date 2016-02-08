@@ -17,8 +17,8 @@
 package org.asteriskjava.fastagi;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * A mapping strategy that tries a sequence of other mapping strategies to find

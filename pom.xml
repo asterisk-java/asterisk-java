@@ -41,6 +41,18 @@
             <timezone>+10</timezone>
         </developer>
         <developer>
+            <name>Zoumana TRAORE</name>
+            <id>zoumhussein</id>
+            <email>github at zoumanatraore dot fr</email>
+            <timezone>+1</timezone>
+        </developer>
+        <developer>
+            <name>Robert Sutton</name>
+            <id>rsutton</id>
+            <email>rsutton at noojee.com.au</email>
+            <timezone>+10</timezone>
+        </developer>
+        <developer>
             <name>Octavio Luna</name>
             <id>itaqua</id>
             <email>octavio.luna at gmail.com</email>
@@ -100,8 +112,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.2</version>
                 <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>1.7</source>
+                    <target>1.7</target>
                 </configuration>
             </plugin>
             <plugin>

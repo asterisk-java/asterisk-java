@@ -40,7 +40,7 @@ public class AgiChannelImplTest
     private AgiChannel agiChannel;
 
     @Before
-    public void setUp() throws Exception
+    public void setUp()
     {
         this.agiWriter = createMock(AgiWriter.class);
         this.agiReader = createMock(AgiReader.class);

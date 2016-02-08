@@ -17,7 +17,11 @@
 package org.asteriskjava.manager.event;
 
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.EventObject;
+import java.util.List;
+import java.util.Map;
 
 import org.asteriskjava.util.AstState;
 import org.asteriskjava.util.ReflectionUtil;

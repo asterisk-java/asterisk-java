@@ -16,10 +16,10 @@
  */
 package org.asteriskjava.manager.response;
 
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.Locale;
 
 /**
  * Response that is received when sending a GetConfigAction.

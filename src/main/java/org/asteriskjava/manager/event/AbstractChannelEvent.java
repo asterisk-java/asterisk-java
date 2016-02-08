@@ -37,7 +37,7 @@ public abstract class AbstractChannelEvent extends ManagerEvent
     /**
      * The unique id of the channel.
      */
-    private String uniqueId;
+    protected String uniqueId;
 
     protected AbstractChannelEvent(Object source)
     {
@@ -100,4 +100,36 @@ public abstract class AbstractChannelEvent extends ManagerEvent
         setCallerIdNum(callerId);
     }
 
+    /**
+     * Returns the Caller*ID number of the channel if set or <code>null</code>
+     * if none has been set.
+     *
+     * @return the Caller*ID number
+     * @since 0.3
+     */
+    public final String getCallerIdNum()
+    {
+        return callerIdNum;
+    }
+
+    public final void setCallerIdNum(String callerIdNum)
+    {
+        this.callerIdNum = callerIdNum;
+    }
+
+    /**
+     * Returns the Caller*ID Name of the channel if set or <code>null</code> if
+     * none has been set.
+     * 
+     * @return the Caller*ID Name of the channel.
+     */
+    public final String getCallerIdName()
+    {
+        return callerIdName;
+    }
+
+    public final void setCallerIdName(String callerIdName)
+    {
+        this.callerIdName = callerIdName;
+    }
 }

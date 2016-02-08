@@ -16,13 +16,13 @@
  */
 package org.asteriskjava.live.internal;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+
 import org.asteriskjava.live.AsteriskServer;
 import org.asteriskjava.live.LiveObject;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
-
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 
 /**
  * Abstract base class for all live objects.

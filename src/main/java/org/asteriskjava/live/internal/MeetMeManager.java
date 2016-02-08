@@ -16,6 +16,14 @@
  */
 package org.asteriskjava.live.internal;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.asteriskjava.live.ManagerCommunicationException;
 import org.asteriskjava.live.MeetMeRoom;
 import org.asteriskjava.manager.action.CommandAction;
@@ -29,10 +37,6 @@ import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.util.DateUtil;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
-
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Manages MeetMe events on behalf of an AsteriskServer.
@@ -279,7 +283,7 @@ class MeetMeManager
                 channelUser.setMuted(muted);
                 room.addUser(channelUser);
             }
-            else if (channelUser == null)
+            else if (channelUser == null && roomUser != null)
             {
                 roomUser.setMuted(muted);
                 channel.setMeetMeUserImpl(roomUser);

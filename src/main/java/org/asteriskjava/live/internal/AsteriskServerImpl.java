@@ -18,11 +18,11 @@ package org.asteriskjava.live.internal;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -301,6 +301,27 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
             }
         }
 
+        channelManager.initialize();
+        agentManager.initialize();
+        meetMeManager.initialize();
+        if (!skipQueues)
+        {
+            queueManager.initialize();
+        }
+
+        if (asyncEventHandling && managerEventListenerProxy == null)
+        {
+            managerEventListenerProxy = new ManagerEventListenerProxy(this);
+            eventConnection.addEventListener(managerEventListenerProxy);
+        }
+        else if (!asyncEventHandling && eventListener == null)
+        {
+            eventListener = this;
+            eventConnection.addEventListener(eventListener);
+        }
+        logger.info("Initializing done");
+        initializing = false;
+        initialized = true;
     }
 
     /* Implementation of the AsteriskServer interface */
@@ -356,8 +377,8 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         return originate(originateAction);
     }
 
-    public AsteriskChannel originate(OriginateAction originateAction) throws ManagerCommunicationException,
-            NoSuchChannelException
+    public AsteriskChannel originate(OriginateAction originateAction)
+            throws ManagerCommunicationException, NoSuchChannelException
     {
         final ResponseEvents responseEvents;
         final Iterator<ResponseEvent> responseEventIterator;
@@ -426,8 +447,8 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         originateToApplicationAsync(channel, application, data, timeout, null, null, cb);
     }
 
-    public void originateToApplicationAsync(String channel, String application, String data, long timeout,
-            CallerId callerId, Map<String, String> variables, OriginateCallback cb) throws ManagerCommunicationException
+    public void originateToApplicationAsync(String channel, String application, String data, long timeout, CallerId callerId,
+            Map<String, String> variables, OriginateCallback cb) throws ManagerCommunicationException
     {
         final OriginateAction originateAction;
 
@@ -712,8 +733,8 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         }
         if (!(response instanceof CommandResponse))
         {
-            logger.error("Response to CommandAction(\"" + SHOW_VOICEMAIL_USERS_COMMAND
-                    + "\") was not a CommandResponse but " + response);
+            logger.error("Response to CommandAction(\"" + SHOW_VOICEMAIL_USERS_COMMAND + "\") was not a CommandResponse but "
+                    + response);
             return voicemailboxes;
         }
 
@@ -780,8 +801,8 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         response = sendAction(new CommandAction(command));
         if (!(response instanceof CommandResponse))
         {
-            throw new ManagerCommunicationException("Response to CommandAction(\"" + command
-                    + "\") was not a CommandResponse but " + response, null);
+            throw new ManagerCommunicationException(
+                    "Response to CommandAction(\"" + command + "\") was not a CommandResponse but " + response, null);
         }
 
         return ((CommandResponse) response).getResult();
@@ -833,8 +854,8 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         response = sendAction(new GetConfigAction(filename));
         if (!(response instanceof GetConfigResponse))
         {
-            throw new ManagerCommunicationException("Response to GetConfigAction(\"" + filename
-                    + "\") was not a CommandResponse but " + response, null);
+            throw new ManagerCommunicationException(
+                    "Response to GetConfigAction(\"" + filename + "\") was not a CommandResponse but " + response, null);
         }
 
         getConfigResponse = (GetConfigResponse) response;
@@ -978,8 +999,9 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         }
     }
 
-    ResponseEvents sendEventGeneratingAction(EventGeneratingAction action, long timeout)
-            throws ManagerCommunicationException
+    ResponseEvents
+
+    sendEventGeneratingAction(EventGeneratingAction action, long timeout) throws ManagerCommunicationException
     {
         // return connectionPool.sendEventGeneratingAction(action, timeout);
         try
@@ -1273,8 +1295,8 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
             {
                 final LiveException cause;
 
-                cause = new NoSuchChannelException("Channel '" + callbackData.getOriginateAction().getChannel()
-                        + "' is not available");
+                cause = new NoSuchChannelException(
+                        "Channel '" + callbackData.getOriginateAction().getChannel() + "' is not available");
                 cb.onFailure(cause);
                 return;
             }
@@ -1335,8 +1357,8 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
     @Override
     public void shutdown()
     {
-        if (eventConnection != null
-                && (eventConnection.getState() == ManagerConnectionState.CONNECTED || eventConnection.getState() == ManagerConnectionState.RECONNECTING))
+        if (eventConnection != null && (eventConnection.getState() == ManagerConnectionState.CONNECTED
+                || eventConnection.getState() == ManagerConnectionState.RECONNECTING))
         {
             try
             {
@@ -1367,7 +1389,8 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         if (initialized)
         {// incredible, but it happened
             handleDisconnectEvent(null);
-        }// i
+        } // i
+
     }// shutdown
 
     public List<PeerEntryEvent> getPeerEntries() throws ManagerCommunicationException

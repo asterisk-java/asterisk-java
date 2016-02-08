@@ -19,6 +19,7 @@ public class ConfigFileParserTest
         configFileReader = new ConfigFileReader();
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void testProcessLine() throws Exception
     {
@@ -38,6 +39,7 @@ public class ConfigFileParserTest
         assertEquals("Incorrect comment", "a line comment", configElement.getComment());
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void testParseCategoryHeader() throws Exception
     {
@@ -88,6 +90,7 @@ public class ConfigFileParserTest
         }
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void testParseDirective() throws ConfigParseException
     {
@@ -128,6 +131,7 @@ public class ConfigFileParserTest
         }
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void testParseVariable() throws ConfigParseException
     {

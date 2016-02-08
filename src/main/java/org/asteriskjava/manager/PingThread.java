@@ -16,9 +16,9 @@
  */
 package org.asteriskjava.manager;
 
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.Set;
 import java.util.HashSet;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.asteriskjava.manager.action.PingAction;
 import org.asteriskjava.manager.response.ManagerResponse;

@@ -16,10 +16,10 @@
  */
 package org.asteriskjava.config;
 
-import java.util.Map;
-import java.util.List;
-import java.util.TreeMap;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * An Asterisk configuration file read from the filesystem.

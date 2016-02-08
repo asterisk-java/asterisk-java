@@ -133,8 +133,8 @@ public class DefaultAsteriskServer implements AsteriskServer
         return this.impl.getManagerConnection();
     }
 
-    public AsteriskChannel originate(OriginateAction originateAction) throws ManagerCommunicationException,
-            NoSuchChannelException
+    public AsteriskChannel originate(OriginateAction originateAction)
+            throws ManagerCommunicationException, NoSuchChannelException
     {
         return this.impl.originate(originateAction);
     }
@@ -168,8 +168,8 @@ public class DefaultAsteriskServer implements AsteriskServer
         this.impl.originateAsync(originateAction, cb);
     }
 
-    public void originateToApplicationAsync(String channel, String application, String data, long timeout,
-            CallerId callerId, Map<String, String> variables, OriginateCallback cb) throws ManagerCommunicationException
+    public void originateToApplicationAsync(String channel, String application, String data, long timeout, CallerId callerId,
+            Map<String, String> variables, OriginateCallback cb) throws ManagerCommunicationException
     {
         this.impl.originateToApplicationAsync(channel, application, data, timeout, callerId, variables, cb);
     }

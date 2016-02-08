@@ -38,7 +38,7 @@ public class AgiReaderImplTest
     private SocketConnectionFacade socket;
 
     @Before
-    public void setUp() throws Exception
+    public void setUp()
     {
         this.socket = createMock(SocketConnectionFacade.class);
         this.agiReader = new FastAgiReader(socket);
