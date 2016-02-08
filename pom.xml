@@ -38,7 +38,13 @@
             <id>martins</id>
             <email>bsutton at noojee.com.au</email>
             <organization>Noojee Telephony Solutions Pty Ltd</organization>
-            <timezone>-5</timezone>
+            <timezone>+10</timezone>
+        </developer>
+        <developer>
+            <name>Zoumana TRAORE</name>
+            <id>zoumhussein</id>
+            <email>github at zoumanatraore dot fr</email>
+            <timezone>+1</timezone>
         </developer>
     </developers>
     <scm>

@@ -17,14 +17,15 @@
 package org.asteriskjava.live;
 
 import java.util.Collection;
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 
+import org.asteriskjava.config.ConfigFile;
 import org.asteriskjava.live.internal.AsteriskServerImpl;
 import org.asteriskjava.manager.DefaultManagerConnection;
 import org.asteriskjava.manager.ManagerConnection;
+import org.asteriskjava.manager.ManagerEventListener;
 import org.asteriskjava.manager.action.OriginateAction;
-import org.asteriskjava.config.ConfigFile;
 
 /**
  * Default implementation of the AsteriskServer interface.
@@ -45,7 +46,7 @@ public class DefaultAsteriskServer implements AsteriskServer
      */
     public DefaultAsteriskServer()
     {
-        impl = new AsteriskServerImpl();
+        this.impl = new AsteriskServerImpl();
     }
 
     /**
@@ -60,7 +61,7 @@ public class DefaultAsteriskServer implements AsteriskServer
     {
         final ManagerConnection connection;
         connection = createManagerConnection(hostname, 0, username, password);
-        impl = new AsteriskServerImpl(connection);
+        this.impl = new AsteriskServerImpl(connection);
     }
 
     /**
@@ -77,7 +78,7 @@ public class DefaultAsteriskServer implements AsteriskServer
     {
         final ManagerConnection connection;
         connection = createManagerConnection(hostname, port, username, password);
-        impl = new AsteriskServerImpl(connection);
+        this.impl = new AsteriskServerImpl(connection);
     }
 
     protected DefaultManagerConnection createManagerConnection(String hostname, int port, String username, String password)
@@ -95,7 +96,7 @@ public class DefaultAsteriskServer implements AsteriskServer
      */
     public DefaultAsteriskServer(ManagerConnection eventConnection)
     {
-        impl = new AsteriskServerImpl(eventConnection);
+        this.impl = new AsteriskServerImpl(eventConnection);
     }
 
     /**
@@ -112,29 +113,29 @@ public class DefaultAsteriskServer implements AsteriskServer
      */
     public void setSkipQueues(boolean skipQueues)
     {
-        impl.setSkipQueues(skipQueues);
+        this.impl.setSkipQueues(skipQueues);
     }
 
     public void setManagerConnection(ManagerConnection eventConnection)
     {
-        impl.setManagerConnection(eventConnection);
+        this.impl.setManagerConnection(eventConnection);
     }
 
     public void initialize() throws ManagerCommunicationException
     {
-        impl.initialize();
+        this.impl.initialize();
     }
 
     /* Implementation of the AsteriskServer interface */
 
     public ManagerConnection getManagerConnection()
     {
-        return impl.getManagerConnection();
+        return this.impl.getManagerConnection();
     }
     
     public AsteriskChannel originate(OriginateAction originateAction) throws ManagerCommunicationException, NoSuchChannelException
 	{
-    	return impl.originate(originateAction);
+    	return this.impl.originate(originateAction);
 	}
 
 
@@ -142,7 +143,7 @@ public class DefaultAsteriskServer implements AsteriskServer
                                                 String exten, int priority, long timeout)
             throws ManagerCommunicationException, NoSuchChannelException
     {
-        return impl.originateToExtension(channel, context, exten, priority, timeout);
+        return this.impl.originateToExtension(channel, context, exten, priority, timeout);
     }
 
     public AsteriskChannel originateToExtension(String channel, String context,
@@ -150,14 +151,14 @@ public class DefaultAsteriskServer implements AsteriskServer
                                                 Map<String, String> variables)
             throws ManagerCommunicationException, NoSuchChannelException
     {
-        return impl.originateToExtension(channel, context, exten, priority, timeout, callerId, variables);
+        return this.impl.originateToExtension(channel, context, exten, priority, timeout, callerId, variables);
     }
 
     public AsteriskChannel originateToApplication(String channel,
                                                   String application, String data, long timeout)
             throws ManagerCommunicationException, NoSuchChannelException
     {
-        return impl.originateToApplication(channel, application, data, timeout);
+        return this.impl.originateToApplication(channel, application, data, timeout);
     }
 
     public AsteriskChannel originateToApplication(String channel,
@@ -165,13 +166,13 @@ public class DefaultAsteriskServer implements AsteriskServer
                                                   Map<String, String> variables)
             throws ManagerCommunicationException, NoSuchChannelException
     {
-        return impl.originateToApplication(channel, application, data, timeout, callerId, variables);
+        return this.impl.originateToApplication(channel, application, data, timeout, callerId, variables);
     }
     
     public void originateAsync(OriginateAction originateAction,
             OriginateCallback cb) throws ManagerCommunicationException
 	{
-    	impl.originateAsync(originateAction, cb);
+    	this.impl.originateAsync(originateAction, cb);
 	}
 
     public void originateToApplicationAsync(String channel, String application,
@@ -179,14 +180,14 @@ public class DefaultAsteriskServer implements AsteriskServer
                                             Map<String, String> variables, OriginateCallback cb)
             throws ManagerCommunicationException
     {
-        impl.originateToApplicationAsync(channel, application, data, timeout, callerId, variables, cb);
+        this.impl.originateToApplicationAsync(channel, application, data, timeout, callerId, variables, cb);
     }
 
     public void originateToApplicationAsync(String channel, String application,
                                             String data, long timeout, OriginateCallback cb)
             throws ManagerCommunicationException
     {
-        impl.originateToApplicationAsync(channel, application, data, timeout, cb);
+        this.impl.originateToApplicationAsync(channel, application, data, timeout, cb);
     }
 
     public void originateToExtensionAsync(String channel, String context,
@@ -194,114 +195,114 @@ public class DefaultAsteriskServer implements AsteriskServer
                                           Map<String, String> variables, OriginateCallback cb)
             throws ManagerCommunicationException
     {
-        impl.originateToExtensionAsync(channel, context, exten, priority, timeout, callerId, variables, cb);
+        this.impl.originateToExtensionAsync(channel, context, exten, priority, timeout, callerId, variables, cb);
     }
 
     public void originateToExtensionAsync(String channel, String context,
                                           String exten, int priority, long timeout, OriginateCallback cb)
             throws ManagerCommunicationException
     {
-        impl.originateToExtensionAsync(channel, context, exten, priority, timeout, cb);
+        this.impl.originateToExtensionAsync(channel, context, exten, priority, timeout, cb);
     }
 
     public Collection<AsteriskChannel> getChannels() throws ManagerCommunicationException
     {
-        return impl.getChannels();
+        return this.impl.getChannels();
     }
 
     public AsteriskChannel getChannelByName(String name) throws ManagerCommunicationException
     {
-        return impl.getChannelByName(name);
+        return this.impl.getChannelByName(name);
     }
 
     public AsteriskChannel getChannelById(String id) throws ManagerCommunicationException
     {
-        return impl.getChannelById(id);
+        return this.impl.getChannelById(id);
     }
 
     public Collection<MeetMeRoom> getMeetMeRooms() throws ManagerCommunicationException
     {
-        return impl.getMeetMeRooms();
+        return this.impl.getMeetMeRooms();
     }
 
     public MeetMeRoom getMeetMeRoom(String name) throws ManagerCommunicationException
     {
-        return impl.getMeetMeRoom(name);
+        return this.impl.getMeetMeRoom(name);
     }
 
     public Collection<AsteriskQueue> getQueues() throws ManagerCommunicationException
     {
-        return impl.getQueues();
+        return this.impl.getQueues();
     }
 
     public String getVersion() throws ManagerCommunicationException
     {
-        return impl.getVersion();
+        return this.impl.getVersion();
     }
 
     public int[] getVersion(String file) throws ManagerCommunicationException
     {
-        return impl.getVersion(file);
+        return this.impl.getVersion(file);
     }
 
     public String getGlobalVariable(String variable) throws ManagerCommunicationException
     {
-        return impl.getGlobalVariable(variable);
+        return this.impl.getGlobalVariable(variable);
     }
 
     public void setGlobalVariable(String variable, String value) throws ManagerCommunicationException
     {
-        impl.setGlobalVariable(variable, value);
+        this.impl.setGlobalVariable(variable, value);
     }
 
     public Collection<Voicemailbox> getVoicemailboxes() throws ManagerCommunicationException
     {
-        return impl.getVoicemailboxes();
+        return this.impl.getVoicemailboxes();
     }
 
     public List<String> executeCliCommand(String command) throws ManagerCommunicationException
     {
-        return impl.executeCliCommand(command);
+        return this.impl.executeCliCommand(command);
     }
 
     public boolean isModuleLoaded(String module) throws ManagerCommunicationException
     {
-        return impl.isModuleLoaded(module);
+        return this.impl.isModuleLoaded(module);
     }
 
     public ConfigFile getConfig(String filename) throws ManagerCommunicationException
     {
-        return impl.getConfig(filename);
+        return this.impl.getConfig(filename);
     }
 
     public void reloadAllModules() throws ManagerCommunicationException
     {
-        impl.reloadAllModules();
+        this.impl.reloadAllModules();
     }
 
     public void reloadModule(String module) throws ManagerCommunicationException
     {
-        impl.reloadModule(module);
+        this.impl.reloadModule(module);
     }
 
     public void unloadModule(String module) throws ManagerCommunicationException
     {
-        impl.unloadModule(module);
+        this.impl.unloadModule(module);
     }
 
     public void loadModule(String module) throws ManagerCommunicationException
     {
-        impl.loadModule(module);
+        this.impl.loadModule(module);
     }
 
     public void addAsteriskServerListener(AsteriskServerListener listener) throws ManagerCommunicationException
     {
-        impl.addAsteriskServerListener(listener);
+        this.impl.addAsteriskServerListener(listener);
     }
 
     public void removeAsteriskServerListener(AsteriskServerListener listener)
     {
-        impl.removeAsteriskServerListener(listener);
+        this.impl.removeAsteriskServerListener(listener);
     }
     
     public boolean isAsteriskServerListening(AsteriskServerListener listener)
@@ -311,11 +312,24 @@ public class DefaultAsteriskServer implements AsteriskServer
 
     public void shutdown()
     {
-        impl.shutdown();
+        this.impl.shutdown();
     }
 
     public Collection<AsteriskAgent> getAgents() throws ManagerCommunicationException
     {
-        return impl.getAgents();
+        return this.impl.getAgents();
     }
+
+	@Override
+	public void addChainListener(ManagerEventListener chainListener)
+	{
+		this.impl.addChainListener(chainListener);
+	}
+
+	@Override
+	public void removeChainListener(ManagerEventListener chainListener)
+	{
+		this.impl.removeChainListener(chainListener);
+		
+	}
 }
