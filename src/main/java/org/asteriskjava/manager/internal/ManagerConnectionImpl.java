@@ -1467,7 +1467,13 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
             {
                 // server seems to be still down, just continue to attempt
                 // reconnection
-                logger.warn("Exception while trying to reconnect: " + e.getMessage());
+                String message = e.getClass().getSimpleName();
+                if (e.getMessage() != null)
+                {
+                    message = e.getMessage();
+                }
+
+                logger.warn("Exception while trying to reconnect: " + message);
             }
             numTries++;
         }
