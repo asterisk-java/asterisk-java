@@ -46,6 +46,12 @@
             <email>github at zoumanatraore dot fr</email>
             <timezone>+1</timezone>
         </developer>
+        <developer>
+            <name>Robert Sutton</name>
+            <id>rsutton</id>
+            <email>rsutton at noojee.com.au</email>
+            <timezone>+10</timezone>
+        </developer>
     </developers>
     <scm>
         <connection>scm:git:git://github.com/srt/asterisk-java.git</connection>
