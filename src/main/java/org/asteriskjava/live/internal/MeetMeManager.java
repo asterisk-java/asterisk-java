@@ -115,7 +115,7 @@ class MeetMeManager
             return;
         }
 
-        userNumber = event.getUserNum();
+        userNumber = event.getUser();
         if (userNumber == null)
         {
             logger.warn("UserNumber (userNum property) is null. Ignoring " + event.getClass().getName());
@@ -326,7 +326,7 @@ class MeetMeManager
 
         roomNumber = event.getMeetMe();
         room = getOrCreateRoomImpl(roomNumber);
-        user = room.getUser(event.getUserNum());
+        user = room.getUser(event.getUser());
         if (user != null)
         {
             return user;
@@ -359,8 +359,8 @@ class MeetMeManager
             channel.setMeetMeUserImpl(null);
         }
 
-        logger.info("Adding channel " + channel.getName() + " as user " + event.getUserNum() + " to room " + roomNumber);
-        user = new MeetMeUserImpl(server, room, event.getUserNum(), channel, event.getDateReceived());
+        logger.info("Adding channel " + channel.getName() + " as user " + event.getUser() + " to room " + roomNumber);
+        user = new MeetMeUserImpl(server, room, event.getUser(), channel, event.getDateReceived());
         room.addUser(user);
         channel.setMeetMeUserImpl(user);
         server.fireNewMeetMeUser(user);

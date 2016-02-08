@@ -1,11 +1,11 @@
 package org.asteriskjava.manager.event;
 /**
  * Raised when a Channel Event Log is generated for a channel.
- *
  * https://wiki.asterisk.org/wiki/display/AST/Asterisk+13+ManagerEvent_CEL
  */
 public class CelEvent extends ManagerEvent
 {
+    private static final long serialVersionUID = 1L;
     public static final String CEL_EVENT_CHAN_START = "CHAN_START";
     public static final String CEL_EVENT_CHAN_END = "CHAN_END";
     public static final String CEL_EVENT_ANSWER = "ANSWER";

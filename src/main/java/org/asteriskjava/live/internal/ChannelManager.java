@@ -812,11 +812,11 @@ class ChannelManager
     {
         // Only bristuffed versions: AsteriskChannelImpl channel =
         // getChannelImplById(event.getUniqueId());
-        AsteriskChannelImpl channel = getChannelImplByNameAndActive(event.getChannel());
+        AsteriskChannelImpl channel = getChannelImplByNameAndActive(event.getParkeeChannel());
 
         if (channel == null)
         {
-            logger.info("Ignored ParkedCallEvent for unknown channel " + event.getChannel());
+            logger.info("Ignored ParkedCallEvent for unknown channel " + event.getParkeeChannel());
             return;
         }
 
@@ -836,11 +836,11 @@ class ChannelManager
     {
         // Only bristuffed versions: AsteriskChannelImpl channel =
         // getChannelImplById(event.getUniqueId());
-        AsteriskChannelImpl channel = getChannelImplByNameAndActive(event.getChannel());
+        AsteriskChannelImpl channel = getChannelImplByNameAndActive(event.getParkeeChannel());
 
         if (channel == null)
         {
-            logger.info("Ignored ParkedCallGiveUpEvent for unknown channel " + event.getChannel());
+            logger.info("Ignored ParkedCallGiveUpEvent for unknown channel " + event.getParkeeChannel());
             return;
         }
 
@@ -863,11 +863,11 @@ class ChannelManager
     {
         // Only bristuffed versions: AsteriskChannelImpl channel =
         // getChannelImplById(event.getUniqueId());
-        final AsteriskChannelImpl channel = getChannelImplByNameAndActive(event.getChannel());
+        final AsteriskChannelImpl channel = getChannelImplByNameAndActive(event.getParkeeChannel());
 
         if (channel == null)
         {
-            logger.info("Ignored ParkedCallTimeOutEvent for unknown channel " + event.getChannel());
+            logger.info("Ignored ParkedCallTimeOutEvent for unknown channel " + event.getParkeeChannel());
             return;
         }
 
@@ -890,11 +890,11 @@ class ChannelManager
     {
         // Only bristuffed versions: AsteriskChannelImpl channel =
         // getChannelImplById(event.getUniqueId());
-        final AsteriskChannelImpl channel = getChannelImplByNameAndActive(event.getChannel());
+        final AsteriskChannelImpl channel = getChannelImplByNameAndActive(event.getParkeeChannel());
 
         if (channel == null)
         {
-            logger.info("Ignored UnparkedCallEvent for unknown channel " + event.getChannel());
+            logger.info("Ignored UnparkedCallEvent for unknown channel " + event.getParkeeChannel());
             return;
         }
 

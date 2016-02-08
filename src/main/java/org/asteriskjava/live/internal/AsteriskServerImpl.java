@@ -581,7 +581,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
                 result = ((CommandResponse) response).getResult();
                 if (result.size() > 0)
                 {
-                    version = (String) result.get(0);
+                    version = result.get(0);
                 }
             }
             else

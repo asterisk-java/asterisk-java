@@ -34,8 +34,8 @@ import org.asteriskjava.live.ExtensionHistoryEntry;
 import org.asteriskjava.live.HangupCause;
 import org.asteriskjava.live.LinkedChannelHistoryEntry;
 import org.asteriskjava.live.ManagerCommunicationException;
-import org.asteriskjava.live.RecordingException;
 import org.asteriskjava.live.NoSuchChannelException;
+import org.asteriskjava.live.RecordingException;
 import org.asteriskjava.manager.action.AbsoluteTimeoutAction;
 import org.asteriskjava.manager.action.ChangeMonitorAction;
 import org.asteriskjava.manager.action.GetVarAction;
@@ -72,8 +72,8 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
     private final List<AsteriskChannel> dialedChannels;
     private final List<AsteriskChannel> dialingChannels;
     /**
-     * If this channel is bridged to another channel, the linkedChannels contains
-     * the channel this channel is bridged with.
+     * If this channel is bridged to another channel, the linkedChannels
+     * contains the channel this channel is bridged with.
      */
     private final List<AsteriskChannel> linkedChannels;
     private final Map<String, String> variables;
@@ -710,8 +710,8 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         }
     }
 
-    public void redirect(String context, String exten, int priority) throws ManagerCommunicationException,
-            NoSuchChannelException
+    public void redirect(String context, String exten, int priority)
+            throws ManagerCommunicationException, NoSuchChannelException
     {
         ManagerResponse response;
 
@@ -722,8 +722,8 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         }
     }
 
-    public void redirectBothLegs(String context, String exten, int priority) throws ManagerCommunicationException,
-            NoSuchChannelException
+    public void redirectBothLegs(String context, String exten, int priority)
+            throws ManagerCommunicationException, NoSuchChannelException
     {
         ManagerResponse response;
 
@@ -735,9 +735,8 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
             }
             else
             {
-                response = server
-                        .sendAction(new RedirectAction(name, linkedChannels.get(0).getName(), context, exten, priority,
-                                context, exten, priority));
+                response = server.sendAction(new RedirectAction(name, linkedChannels.get(0).getName(), context, exten,
+                        priority, context, exten, priority));
             }
         }
 
@@ -792,8 +791,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         }
     }
 
-    public void playDtmf(String digit) throws ManagerCommunicationException, NoSuchChannelException,
-            IllegalArgumentException
+    public void playDtmf(String digit) throws ManagerCommunicationException, NoSuchChannelException, IllegalArgumentException
     {
         ManagerResponse response;
 
@@ -819,8 +817,8 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         startMonitoring(filename, format, false);
     }
 
-    public void startMonitoring(String filename, String format, boolean mix) throws ManagerCommunicationException,
-            NoSuchChannelException
+    public void startMonitoring(String filename, String format, boolean mix)
+            throws ManagerCommunicationException, NoSuchChannelException
     {
         ManagerResponse response;
 
@@ -881,8 +879,8 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         }
     }
 
-    public void pauseMixMonitor(MixMonitorDirection direction) throws ManagerCommunicationException, NoSuchChannelException,
-            RecordingException
+    public void pauseMixMonitor(MixMonitorDirection direction)
+            throws ManagerCommunicationException, NoSuchChannelException, RecordingException
     {
         ManagerResponse response;
         response = server.sendAction(new PauseMixMonitorAction(this.name, 1, direction.getStateName()));
@@ -892,15 +890,12 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
             {
                 throw new RecordingException(response.getMessage() + " on channel: '" + name);
             }
-            else
-            {
-                throw new NoSuchChannelException("Channel '" + name + "' is not available: " + response.getMessage());
-            }
+            throw new NoSuchChannelException("Channel '" + name + "' is not available: " + response.getMessage());
         }
     }
 
-    public void unPauseMixMonitor(MixMonitorDirection direction) throws ManagerCommunicationException,
-            NoSuchChannelException, RecordingException
+    public void unPauseMixMonitor(MixMonitorDirection direction)
+            throws ManagerCommunicationException, NoSuchChannelException, RecordingException
     {
         ManagerResponse response;
         response = server.sendAction(new PauseMixMonitorAction(this.name, 0, direction.getStateName()));
@@ -910,10 +905,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
             {
                 throw new RecordingException(response.getMessage() + " on channel: '" + name);
             }
-            else
-            {
-                throw new NoSuchChannelException("Channel '" + name + "' is not available: " + response.getMessage());
-            }
+            throw new NoSuchChannelException("Channel '" + name + "' is not available: " + response.getMessage());
         }
     }
 

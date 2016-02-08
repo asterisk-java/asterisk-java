@@ -35,7 +35,6 @@ public class AgiReplyImplTest
         this.lines = new ArrayList<String>();
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testBuildReply()
     {
@@ -51,7 +50,6 @@ public class AgiReplyImplTest
         assertEquals("Incorrect result when get via getAttribute()", "49", reply.getAttribute("result"));
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testBuildReplyWithAdditionalAttribute()
     {
@@ -68,7 +66,6 @@ public class AgiReplyImplTest
         assertEquals("Incorrect endpos attribute", "2240", reply.getAttribute("endpos"));
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testBuildReplyWithMultipleAdditionalAttribute()
     {
@@ -86,7 +83,6 @@ public class AgiReplyImplTest
         assertEquals("Incorrect endpos attribute", "2240", reply.getAttribute("endpos"));
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testBuildReplyWithQuotedAttribute()
     {
@@ -104,7 +100,6 @@ public class AgiReplyImplTest
         assertEquals("Incorrect text0 attribute", "123456789", reply.getAttribute("text0"));
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testBuildReplyWithQuotedAttribute2()
     {
@@ -127,7 +122,6 @@ public class AgiReplyImplTest
         System.out.println(005);
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testBuildReplyWithParenthesis()
     {
@@ -142,7 +136,6 @@ public class AgiReplyImplTest
         assertEquals("Incorrect parenthesis", "(hello)(world)", reply.getExtra());
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testBuildReplyWithAdditionalAttributeAndParenthesis()
     {
@@ -158,7 +151,6 @@ public class AgiReplyImplTest
         assertEquals("Incorrect endpos attribute", "2240", reply.getAttribute("endpos"));
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testBuildReplyInvalidOrUnknownCommand()
     {
@@ -171,7 +163,6 @@ public class AgiReplyImplTest
         assertEquals("Incorrect status", AgiReplyImpl.SC_INVALID_OR_UNKNOWN_COMMAND, reply.getStatus());
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testBuildReplyInvalidCommandSyntax()
     {
@@ -193,7 +184,6 @@ public class AgiReplyImplTest
                 reply.getUsage());
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testBuildReplyInvalidCommandSyntaxWithOnlyUsage()
     {
@@ -217,7 +207,6 @@ public class AgiReplyImplTest
         assertEquals("Incorrect synopsis", "DATABASE DEL <family> <key>", reply.getSynopsis());
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testBuildReplyWithLeadingSpace()
     {
@@ -231,7 +220,6 @@ public class AgiReplyImplTest
         assertEquals("Incorrect extra", "timeout", reply.getExtra());
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testBuildReplyWithEmptyResultAndTimeout()
     {
