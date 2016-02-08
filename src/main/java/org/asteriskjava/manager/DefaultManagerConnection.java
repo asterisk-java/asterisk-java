@@ -22,9 +22,9 @@ import java.net.InetAddress;
 import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.manager.action.EventGeneratingAction;
 import org.asteriskjava.manager.action.ManagerAction;
+import org.asteriskjava.manager.event.ManagerEvent;
 import org.asteriskjava.manager.internal.ManagerConnectionImpl;
 import org.asteriskjava.manager.response.ManagerResponse;
-import org.asteriskjava.manager.event.ManagerEvent;
 
 /**
  * Default implemention of the

@@ -16,9 +16,9 @@
  */
 package org.asteriskjava.manager.event;
 
-import org.asteriskjava.util.AstState;
-
 import java.util.Map;
+
+import org.asteriskjava.util.AstState;
 
 /**
  * A StatusEvent is triggered for each active channel in response to a StatusAction.

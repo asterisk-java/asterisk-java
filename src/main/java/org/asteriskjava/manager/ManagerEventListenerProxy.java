@@ -1,13 +1,13 @@
 package org.asteriskjava.manager;
 
-import org.asteriskjava.manager.event.ManagerEvent;
-import org.asteriskjava.util.DaemonThreadFactory;
-
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+
+import org.asteriskjava.manager.event.ManagerEvent;
+import org.asteriskjava.util.DaemonThreadFactory;
 
 /**
  * Proxies a ManagerEventListener and dispatches events asynchronously by using

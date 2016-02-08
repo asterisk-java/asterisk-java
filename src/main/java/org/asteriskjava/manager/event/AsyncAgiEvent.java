@@ -1,8 +1,10 @@
 package org.asteriskjava.manager.event;
 
-import java.net.URLDecoder;
 import java.io.UnsupportedEncodingException;
-import java.util.*;
+import java.net.URLDecoder;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * 

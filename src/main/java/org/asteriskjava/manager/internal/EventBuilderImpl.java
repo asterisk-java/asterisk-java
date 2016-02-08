@@ -16,11 +16,16 @@
  */
 package org.asteriskjava.manager.internal;
 
-import org.asteriskjava.manager.event.*;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+
+import org.asteriskjava.manager.event.*;
 
 /**
  * Default implementation of the EventBuilder interface.

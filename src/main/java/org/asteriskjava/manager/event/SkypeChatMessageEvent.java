@@ -16,9 +16,9 @@
  */
 package org.asteriskjava.manager.event;
 
-import org.asteriskjava.util.Base64;
-
 import java.nio.charset.Charset;
+
+import org.asteriskjava.util.Base64;
 
 /**
  * A SkypeChatMessageEvent is triggered when a Skype Chat message is sent or received.<p>

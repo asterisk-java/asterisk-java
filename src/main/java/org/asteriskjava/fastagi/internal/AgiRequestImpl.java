@@ -283,10 +283,7 @@ public class AgiRequestImpl implements AgiRequest
         {
             return parsedCallerId[0];
         }
-        else
-        {
-            return parsedCallerId[1];
-        }
+        return parsedCallerId[1];
     }
 
     /**

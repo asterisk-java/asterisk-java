@@ -16,6 +16,7 @@
  */
 package org.asteriskjava.manager;
 
+import org.asteriskjava.manager.action.ManagerAction;
 import org.asteriskjava.manager.response.ManagerResponse;
 
 /**

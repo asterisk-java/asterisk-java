@@ -1,17 +1,17 @@
 package org.asteriskjava.manager.internal;
 
-import org.asteriskjava.manager.event.UserEvent;
-import org.asteriskjava.util.AstUtil;
-import org.asteriskjava.util.Log;
-import org.asteriskjava.util.LogFactory;
-import org.asteriskjava.util.ReflectionUtil;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.asteriskjava.manager.event.UserEvent;
+import org.asteriskjava.util.AstUtil;
+import org.asteriskjava.util.Log;
+import org.asteriskjava.util.LogFactory;
+import org.asteriskjava.util.ReflectionUtil;
 
 /**
  * Abstract base class for reflection based builders. 

@@ -16,8 +16,9 @@
  */
 package org.asteriskjava.manager.internal;
 
-import org.asteriskjava.manager.event.UserEvent;
 import java.util.Map;
+
+import org.asteriskjava.manager.event.UserEvent;
 
 public class MyUserEvent extends UserEvent
 {

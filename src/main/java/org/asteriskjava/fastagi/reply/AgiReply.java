@@ -16,8 +16,8 @@
  */
 package org.asteriskjava.fastagi.reply;
 
-import java.util.List;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Reply received in response to an AgiCommand.<p>

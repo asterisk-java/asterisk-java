@@ -16,8 +16,6 @@
  */
 package org.asteriskjava.manager.action;
 
-import org.asteriskjava.manager.action.AbstractManagerAction;
-
 /**
  * <a href="https://wiki.asterisk.org/wiki/display/AST/ManagerAction_LocalOptimizeAway">LocalOptimizeAway</a> action -- Optimize away a local channel when possible.
  * <p>

@@ -16,6 +16,14 @@
  */
 package org.asteriskjava.manager.internal;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+
 import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.manager.AsteriskMapping;
 import org.asteriskjava.manager.action.ManagerAction;
@@ -24,10 +32,6 @@ import org.asteriskjava.manager.event.UserEvent;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 import org.asteriskjava.util.ReflectionUtil;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.*;
 
 /**
  * Default implementation of the ActionBuilder interface.

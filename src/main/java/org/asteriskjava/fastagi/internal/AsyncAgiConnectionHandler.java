@@ -23,8 +23,8 @@ import java.util.concurrent.LinkedBlockingQueue;
 import org.asteriskjava.fastagi.AgiException;
 import org.asteriskjava.fastagi.MappingStrategy;
 import org.asteriskjava.fastagi.command.AsyncAgiBreakCommand;
-import org.asteriskjava.manager.event.AsyncAgiEvent;
 import org.asteriskjava.manager.ManagerConnection;
+import org.asteriskjava.manager.event.AsyncAgiEvent;
 
 /**
  * An AgiConnectionHandler for AsyncAGI.
