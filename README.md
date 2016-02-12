@@ -17,7 +17,16 @@ See docs/tutorial.html for examples.
 GETTING ASTERISK-JAVA
 ---------------------
 
-Asterisk-Java is available from http://asterisk-java.org
+Asterisk-Java is available from [here](https://github.com/asterisk-java/asterisk-java/releases)
+
+Maven Dependency
+----------------
+
+	<dependency>
+    	<groupId>org.asteriskjava</groupId>
+    	<artifactId>asterisk-java</artifactId>
+    	<version>1.0.0-final</version>
+	</dependency>
 
 INSTALLATION FROM SOURCE
 ------------------------
