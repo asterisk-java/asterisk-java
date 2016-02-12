@@ -552,13 +552,10 @@ class QueueManager
 
     private void refreshQueuesIfForced()
     {
-        if (queuesMonitorForced)
+        if (queuesMonitorForced && (System.currentTimeMillis() - queueMonitorLastTimeReloaded) > queuesMonitorLeaseTime)
         {
-            if ((System.currentTimeMillis() - queueMonitorLastTimeReloaded) > queuesMonitorLeaseTime)
-            {
-                initialize();
-                queueMonitorLastTimeReloaded = System.currentTimeMillis();
-            }
+            initialize();
+            queueMonitorLastTimeReloaded = System.currentTimeMillis();
         }
     }
 
