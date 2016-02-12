@@ -136,7 +136,7 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
      */
     boolean setMax(Integer max)
     {
-    	if(!AstUtil.equals(this.max, max)){
+    	if(!AstUtil.isEqual(this.max, max)){
     		this.max = max;
 			stampLastUpdate();
 			return true;
@@ -156,7 +156,7 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
      */
     boolean setServiceLevel(Integer serviceLevel)
     {
-    	if(!AstUtil.equals(this.serviceLevel, serviceLevel)){
+    	if(!AstUtil.isEqual(this.serviceLevel, serviceLevel)){
     		this.serviceLevel = serviceLevel;
 			stampLastUpdate();
 			return true;
@@ -176,7 +176,7 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
      * @return  true if value updated, false otherwise
      */
     boolean setCalls(Integer calls) {
-    	if(!AstUtil.equals(this.calls, calls)){
+    	if(!AstUtil.isEqual(this.calls, calls)){
     		this.calls = calls;
 			stampLastUpdate();
 			return true;
@@ -200,7 +200,7 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
      * @return true if value updated, false otherwise
      */
     boolean setHoldTime(Integer holdTime) {
-    	if(!AstUtil.equals(this.holdTime, holdTime)){
+    	if(!AstUtil.isEqual(this.holdTime, holdTime)){
     		this.holdTime = holdTime;
 			stampLastUpdate();
 			return true;
@@ -219,7 +219,7 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
      * @return true if value updated, false otherwise
      */
     boolean setTalkTime(Integer talkTime) {
-    	if(!AstUtil.equals(this.talkTime, talkTime)){
+    	if(!AstUtil.isEqual(this.talkTime, talkTime)){
     		this.talkTime = talkTime;
 			stampLastUpdate();
 			return true;
@@ -238,7 +238,7 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
      * @return  true if value updated, false otherwise
      */
     boolean setCompleted(Integer completed) {
-    	if(!AstUtil.equals(this.completed, completed)){
+    	if(!AstUtil.isEqual(this.completed, completed)){
     		this.completed = completed;
 			stampLastUpdate();
 			return true;
@@ -257,7 +257,7 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
      * @return true if value updated, false otherwise
      */
 	boolean setAbandoned(Integer abandoned) {
-		if(!AstUtil.equals(this.abandoned, abandoned)){
+		if(!AstUtil.isEqual(this.abandoned, abandoned)){
 			this.abandoned = abandoned;
 			stampLastUpdate();
 			return true;
@@ -277,7 +277,7 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
 	 * @return true if value updated, false otherwise
 	 */
 	boolean setServiceLevelPerf(Double serviceLevelPerf) {
-		if(!AstUtil.equals(this.serviceLevelPerf, serviceLevelPerf)){
+		if(!AstUtil.isEqual(this.serviceLevelPerf, serviceLevelPerf)){
 			this.serviceLevelPerf = serviceLevelPerf;
 			stampLastUpdate();
 			return true;
@@ -297,7 +297,7 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
      */
     boolean setWeight(Integer weight)
     {
-    	if(!AstUtil.equals(this.weight, weight)){
+    	if(!AstUtil.isEqual(this.weight, weight)){
     		this.weight = weight;
 			stampLastUpdate();
 			return true;

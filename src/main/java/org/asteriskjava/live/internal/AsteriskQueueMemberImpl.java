@@ -214,7 +214,7 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
 
     synchronized boolean stateChanged(QueueMemberState state)
     {
-        if (!AstUtil.equals(this.state, state))
+        if (!AstUtil.isEqual(this.state, state))
         {
             QueueMemberState oldState = this.state;
             this.state = state;
@@ -226,7 +226,7 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
 
     synchronized boolean penaltyChanged(Integer penalty)
     {
-        if (!AstUtil.equals(this.penalty, penalty))
+        if (!AstUtil.isEqual(this.penalty, penalty))
         {
             Integer oldPenalty = this.penalty;
             this.penalty = penalty;
@@ -239,7 +239,7 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
 
     synchronized boolean pausedChanged(boolean paused)
     {
-        if (!AstUtil.equals(this.paused, paused))
+        if (!AstUtil.isEqual(this.paused, paused))
         {
             boolean oldPaused = this.paused;
             this.paused = paused;
@@ -251,7 +251,7 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
 
     synchronized boolean callsTakenChanged(Integer callsTaken)
     {
-        if (!AstUtil.equals(this.callsTaken, callsTaken))
+        if (!AstUtil.isEqual(this.callsTaken, callsTaken))
         {
             Integer oldcallsTaken = this.callsTaken;
             this.callsTaken = callsTaken;
@@ -263,7 +263,7 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
 
     synchronized boolean lastCallChanged(Long lastCall)
     {
-        if (!AstUtil.equals(this.lastCall, lastCall))
+        if (!AstUtil.isEqual(this.lastCall, lastCall))
         {
             Long oldlastCall = this.lastCall;
             this.lastCall = lastCall;
