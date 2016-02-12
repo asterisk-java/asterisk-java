@@ -31,7 +31,7 @@ Maven Dependency
 INSTALLATION FROM SOURCE
 ------------------------
 
-	git clone https://github.com/srt/asterisk-java.git
+	git clone https://github.com/asterisk-java/asterisk-java.git
 	cd asterisk-java
 	mvn install
 
