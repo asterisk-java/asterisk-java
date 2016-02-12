@@ -59,7 +59,7 @@ To compile and run do:
 SYSTEM REQUIREMENTS
 -------------------
 
-Asterisk-Java needs a Java Virtual Machine of at least version 1.6 ([Java SE 6.0](http://www.oracle.com/technetwork/java/javase/downloads/index.html)). If you want to build the jar from source, you will
+Asterisk-Java needs a Java Virtual Machine of at least version 1.7 ([Java SE 7.0](http://www.oracle.com/technetwork/java/javase/downloads/index.html)). If you want to build the jar from source, you will
 also need [Maven](http://maven.apache.org/).
 
 LEGAL
