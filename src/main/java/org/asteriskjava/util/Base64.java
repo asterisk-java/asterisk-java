@@ -15,6 +15,11 @@ package org.asteriskjava.util;
  * @author  Josh Bloch
  */
 public class Base64 {
+    
+    private Base64() {
+        
+    }
+    
     /**
      * Translates the specified byte array into a Base64 string as per
      * Preferences.put(byte[]).

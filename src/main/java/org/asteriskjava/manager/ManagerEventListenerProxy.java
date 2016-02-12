@@ -67,6 +67,10 @@ public class ManagerEventListenerProxy implements ManagerEventListener {
     }
 
 		public static class Access {
+		    private Access() {
+		        
+		    }
+		    
 			public static int getThreadQueueSize (ManagerEventListenerProxy proxy) {
 				return proxy.executor.getQueue().size();
 			}
