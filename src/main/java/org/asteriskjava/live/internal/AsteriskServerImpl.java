@@ -579,7 +579,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
                 final List<String> result;
 
                 result = ((CommandResponse) response).getResult();
-                if (result.size() > 0)
+                if (!result.isEmpty())
                 {
                     version = result.get(0);
                 }
@@ -739,7 +739,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         }
 
         result = ((CommandResponse) response).getResult();
-        if (result == null || result.size() < 1)
+        if (result == null || result.isEmpty())
         {
             return voicemailboxes;
         }

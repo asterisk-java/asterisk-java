@@ -226,7 +226,7 @@ public class ScriptEngineMappingStrategy implements MappingStrategy
             }
         }
 
-        if (jarFileUrls.size() == 0)
+        if (jarFileUrls.isEmpty())
         {
             return parentClassLoader;
         }

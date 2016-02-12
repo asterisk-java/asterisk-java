@@ -657,7 +657,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
             }
 
             showVersionFilesResult = ((CommandResponse) showVersionFilesResponse).getResult();
-            if (showVersionFilesResult != null && showVersionFilesResult.size() > 0)
+            if (showVersionFilesResult != null && !showVersionFilesResult.isEmpty())
             {
                 final String line1 = showVersionFilesResult.get(0);
 
@@ -682,7 +682,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                     {
                         final List<String> coreShowVersionResult = ((CommandResponse) coreShowVersionResponse).getResult();
 
-                        if (coreShowVersionResult != null && coreShowVersionResult.size() > 0)
+                        if (coreShowVersionResult != null && !coreShowVersionResult.isEmpty())
                         {
                             final String coreLine = coreShowVersionResult.get(0);
 
@@ -753,7 +753,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
             final List<String> showVersionResult;
 
             showVersionResult = ((CommandResponse) showVersionResponse).getResult();
-            if (showVersionResult != null && showVersionResult.size() > 0)
+            if (showVersionResult != null && !showVersionResult.isEmpty())
             {
                 return showVersionResult.get(0);
             }

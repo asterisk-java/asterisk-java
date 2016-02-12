@@ -90,7 +90,7 @@ public abstract class AbstractMappingStrategy implements MappingStrategy
                 }
             }
 
-            if (dirUrls.size() == 0)
+            if (dirUrls.isEmpty())
             {
                 return parentClassLoader;
             }

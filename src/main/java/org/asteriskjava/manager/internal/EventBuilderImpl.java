@@ -304,7 +304,7 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
         if (attributes.get("event") instanceof List)
         {
             List< ? > eventNames = (List< ? >) attributes.get("event");
-            if (eventNames.size() > 0 && "PeerEntry".equals(eventNames.get(0)))
+            if (!eventNames.isEmpty() && "PeerEntry".equals(eventNames.get(0)))
             {
                 // List of PeerEntry events was received (AJ-329)
                 // Convert map of lists to list of maps - one map for each
