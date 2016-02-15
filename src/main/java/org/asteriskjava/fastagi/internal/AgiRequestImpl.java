@@ -567,7 +567,7 @@ public class AgiRequestImpl implements AgiRequest
                 continue;
             }
 
-            int index = Integer.valueOf(entry.getKey().substring(4));
+            int index = Integer.parseInt(entry.getKey().substring(4));
             if (index > maxIndex)
             {
                 maxIndex = index;
