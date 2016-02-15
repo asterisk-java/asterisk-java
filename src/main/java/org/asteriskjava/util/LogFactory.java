@@ -60,6 +60,10 @@ public final class LogFactory
     private static Boolean javaLoggingAvailable = null;
 
     private static ClassLoader classLoader = LogFactory.class.getClassLoader();
+    
+    private LogFactory() {
+        
+    }
 
     public static void setClassLoader(ClassLoader classLoader)
     {
