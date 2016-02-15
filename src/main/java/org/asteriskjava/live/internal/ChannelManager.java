@@ -215,7 +215,7 @@ class ChannelManager
                 {
                     try
                     {
-                        Thread.sleep(1l);
+                        Thread.sleep(1L);
                     }
                     catch (InterruptedException intEx)
                     {
@@ -988,7 +988,7 @@ class ChannelManager
 
         boolean isMonitored = channel.isMonitored();
 
-        if (isMonitored == true)
+        if (isMonitored)
         {
             logger.info("Ignored MonitorStartEvent as the channel was already monitored");
             return;
@@ -1013,7 +1013,7 @@ class ChannelManager
 
         boolean isMonitored = channel.isMonitored();
 
-        if (isMonitored == false)
+        if (!isMonitored)
         {
             logger.info("Ignored MonitorStopEvent as the channel was not monitored");
             return;
