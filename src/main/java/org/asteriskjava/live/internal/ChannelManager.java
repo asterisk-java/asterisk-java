@@ -83,7 +83,7 @@ class ChannelManager
     /**
      * A map of all active channel by their unique id.
      */
-    final LinkedHashMap<String, AsteriskChannelImpl> channels = new LinkedHashMap<String, AsteriskChannelImpl>();
+    final Map<String, AsteriskChannelImpl> channels = new LinkedHashMap<String, AsteriskChannelImpl>();
 
     ScheduledThreadPoolExecutor traceScheduledExecutorService;
 
