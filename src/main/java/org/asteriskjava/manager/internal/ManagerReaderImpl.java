@@ -273,7 +273,7 @@ public class ManagerReaderImpl implements ManagerReader
                     }
                     else
                     {
-                        if (buffer.size() > 0)
+                        if (!buffer.isEmpty())
                         {
                             logger.debug("Buffer contains neither response nor event");
                         }
