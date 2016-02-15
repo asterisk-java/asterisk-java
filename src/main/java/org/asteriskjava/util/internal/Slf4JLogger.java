@@ -161,7 +161,7 @@ public class Slf4JLogger implements Log, Serializable
         {
             logger = LoggerFactory.getLogger(clazz);
         }
-        return (this.logger);
+        return this.logger;
     }
 
     /**
