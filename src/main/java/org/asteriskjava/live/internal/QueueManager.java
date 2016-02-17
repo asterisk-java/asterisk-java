@@ -22,6 +22,7 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import org.asteriskjava.live.AsteriskQueue;
@@ -64,7 +65,7 @@ class QueueManager
      * A map of ACD queues by there name. 101119 OLB: Modified to act as a LRU
      * Cache to optimize updates
      */
-    private final LinkedHashMap<String, AsteriskQueueImpl> queuesLRU = new LinkedHashMap<String, AsteriskQueueImpl>();
+    private final Map<String, AsteriskQueueImpl> queuesLRU = new LinkedHashMap<String, AsteriskQueueImpl>();
 
     QueueManager(AsteriskServerImpl server, ChannelManager channelManager)
     {

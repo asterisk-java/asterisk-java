@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -77,11 +78,11 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
     /****/
 
     private Integer weight;
-    private final ArrayList<AsteriskQueueEntryImpl> entries;
+    private final List<AsteriskQueueEntryImpl> entries;
     private final Timer timer;
-    private final HashMap<String, AsteriskQueueMemberImpl> members;
+    private final Map<String, AsteriskQueueMemberImpl> members;
     private final List<AsteriskQueueListener> listeners;
-    private final HashMap<AsteriskQueueEntry, ServiceLevelTimerTask> serviceLevelTimerTasks;
+    private final Map<AsteriskQueueEntry, ServiceLevelTimerTask> serviceLevelTimerTasks;
 
     AsteriskQueueImpl(AsteriskServerImpl server, String name, Integer max,
                       String strategy, Integer serviceLevel, Integer weight,
@@ -575,7 +576,7 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
      */
     public Collection<AsteriskQueueMember> getMembers()
     {
-        ArrayList<AsteriskQueueMember> listOfMembers = new ArrayList<AsteriskQueueMember>(members.size());
+        List<AsteriskQueueMember> listOfMembers = new ArrayList<AsteriskQueueMember>(members.size());
         synchronized (members)
         {
             for (AsteriskQueueMemberImpl asteriskQueueMember : members.values())
