@@ -205,13 +205,13 @@ public abstract class AbstractAgiServer
     @Override
     protected void finalize() throws Throwable
     {
-        super.finalize();
-
         this.die = true;
         if (pool != null)
         {
             pool.shutdown();
         }
+
+        super.finalize();
     }
 
     /**

@@ -401,7 +401,6 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
     @Override
     protected void finalize() throws Throwable
     {
-        super.finalize();
 
         if (serverSocket != null)
         {
@@ -414,6 +413,8 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
                 // swallow
             }
         }
+
+        super.finalize();
     }
 
     /**
