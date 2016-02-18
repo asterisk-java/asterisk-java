@@ -310,7 +310,7 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
                 // Convert map of lists to list of maps - one map for each
                 // PeerEntry event
                 int peersAmount = attributes.get("listitems") != null
-                        ? Integer.valueOf((String) attributes.get("listitems"))
+                        ? Integer.parseInt((String) attributes.get("listitems"))
                         : eventNames.size() - 1; // Last event is
                                                  // PeerlistComplete
                 List<Map<String, Object>> peersAttributes = new ArrayList<Map<String, Object>>();
