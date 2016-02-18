@@ -33,7 +33,7 @@ public class GosubCommand extends AbstractAgiCommand
      * an optional list of arguments to be passed to the subroutine.
      * They will accessible in the form of ${ARG1}, ${ARG2}, etc in the subroutine body.
      */
-    private String arguments[];
+    private String[] arguments;
 
     /**
      * Creates a new GosubCommand.
