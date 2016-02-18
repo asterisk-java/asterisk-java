@@ -24,6 +24,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -288,9 +289,9 @@ class ChannelManager
             isNew = true;
             if (variables != null)
             {
-                for (String variable : variables.keySet())
+                for (Entry<String, String> variable : variables.entrySet())
                 {
-                    channel.updateVariable(variable, variables.get(variable));
+                    channel.updateVariable(variable.getKey(), variable.getValue());
                 }
             }
         }

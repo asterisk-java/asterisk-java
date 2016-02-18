@@ -20,6 +20,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.Map.Entry;
 
 /**
  * Response that is received when sending a GetConfigAction.
@@ -55,9 +56,9 @@ public class GetConfigResponse extends ManagerResponse
         }
 
         Map<String, Object> responseMap = super.getAttributes();
-        Set<String> responseKeys = responseMap.keySet();
-        for (String key : responseKeys)
+        for (Entry<String, Object> response : responseMap.entrySet())
         {
+            String key = response.getKey();
             if (key.toLowerCase(Locale.US).contains("category"))
             {
                 String[] keyParts = key.split("-");
@@ -77,7 +78,7 @@ public class GetConfigResponse extends ManagerResponse
                     continue;
                 }
 
-                categories.put(categoryNumber, (String) responseMap.get(key));
+                categories.put(categoryNumber, (String) response.getValue());
             }
         }
 
@@ -99,9 +100,9 @@ public class GetConfigResponse extends ManagerResponse
         }
 
         Map<String, Object> responseMap = super.getAttributes();
-        Set<String> responseKeys = responseMap.keySet();
-        for (String key : responseKeys)
+        for (Entry<String, Object> response : responseMap.entrySet())
         {
+            String key = response.getKey();
             if (key.toLowerCase(Locale.US).contains("line"))
             {
                 String[] keyParts = key.split("-");
@@ -142,7 +143,7 @@ public class GetConfigResponse extends ManagerResponse
                 }
 
                 // put the line we just parsed into the line map for this category
-                linesForCategory.put(potentialLineNumber, (String) responseMap.get(key));
+                linesForCategory.put(potentialLineNumber, (String) response.getValue());
                 if (!lines.containsKey(potentialCategoryNumber))
                 {
                     lines.put(potentialCategoryNumber, linesForCategory);
