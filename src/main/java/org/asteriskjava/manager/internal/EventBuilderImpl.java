@@ -423,7 +423,7 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
                 }
                 peerEntryEvents.add(peerEntryEvent);
             }
-            peersEvent.setActionId((peersEvent.getChildEvents().get(0).getActionId()));
+            peersEvent.setActionId(peersEvent.getChildEvents().get(0).getActionId());
         }
         else
         {

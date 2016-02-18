@@ -1038,7 +1038,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
             {
                 writer.sendAction(action, internalActionId);
                 // only wait if response has not yet arrived.
-                if ((responseEvents.getResponse() == null || !responseEvents.isComplete()))
+                if (responseEvents.getResponse() == null || !responseEvents.isComplete())
                 {
                     try
                     {
@@ -1053,7 +1053,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
             }
 
             // still no response or not all events received and timed out?
-            if ((responseEvents.getResponse() == null || !responseEvents.isComplete()))
+            if (responseEvents.getResponse() == null || !responseEvents.isComplete())
             {
                 throw new EventTimeoutException(
                         "Timeout waiting for response or response events to " + action.getAction()
@@ -1331,7 +1331,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     {
         if (event instanceof DialBeginEvent)
         {
-            DialEvent legacyEvent = (new DialEvent((DialBeginEvent) event));
+            DialEvent legacyEvent = new DialEvent((DialBeginEvent) event);
             dispatchEvent(legacyEvent);
         }
     }

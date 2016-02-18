@@ -230,7 +230,7 @@ public class AgiReplyImpl implements AgiReply
                 inKey = false;
                 inQuotes = false;
             }
-            else if ((c == ' ' && !inKey && !inQuotes))
+            else if (c == ' ' && !inKey && !inQuotes)
             {
                 map.put(keyBuilder.toString().toLowerCase(Locale.ENGLISH), valueBuilder.toString());
                 keyBuilder.delete(0, keyBuilder.length());
