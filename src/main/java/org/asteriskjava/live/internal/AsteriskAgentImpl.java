@@ -27,9 +27,9 @@ import org.asteriskjava.live.AsteriskAgent;
  */
 public class AsteriskAgentImpl extends AbstractLiveObject implements AsteriskAgent
 {
-    public String name;
-    public String agentId;
-    public AgentState state;
+    private String name;
+    private String agentId;
+    private AgentState state;
 
     AsteriskAgentImpl(AsteriskServerImpl server, String name, String agentId, AgentState state)
     {
