@@ -71,7 +71,7 @@ class ActionBuilderImpl implements ActionBuilder
     @SuppressWarnings("unchecked")
     public String buildAction(final ManagerAction action, final String internalActionId)
     {
-        StringBuffer sb = new StringBuffer();
+    	StringBuilder sb = new StringBuilder();
 
         sb.append("action: ");
         sb.append(action.getAction());
@@ -147,7 +147,7 @@ class ActionBuilderImpl implements ActionBuilder
         return sb.toString();
     }
 
-    private void appendMap(StringBuffer sb, String key, Map<String, String> values)
+    private void appendMap(StringBuilder sb, String key, Map<String, String> values)
     {
         String singularKey;
 
@@ -171,7 +171,7 @@ class ActionBuilderImpl implements ActionBuilder
         }
     }
 
-    private void appendMap10(StringBuffer sb, String singularKey, Map<String, String> values)
+    private void appendMap10(StringBuilder sb, String singularKey, Map<String, String> values)
     {
         Iterator<Map.Entry<String, String>> entryIterator;
 
@@ -198,7 +198,7 @@ class ActionBuilderImpl implements ActionBuilder
         sb.append(LINE_SEPARATOR);
     }
 
-    private void appendMap12(StringBuffer sb, String singularKey, Map<String, String> values)
+    private void appendMap12(StringBuilder sb, String singularKey, Map<String, String> values)
     {
         for (Map.Entry<String, String> entry : values.entrySet())
         {
@@ -215,7 +215,7 @@ class ActionBuilderImpl implements ActionBuilder
         }
     }
 
-    private void appendString(StringBuffer sb, String key, String value)
+    private void appendString(StringBuilder sb, String key, String value)
     {
         sb.append(key);
         sb.append(": ");
@@ -223,7 +223,7 @@ class ActionBuilderImpl implements ActionBuilder
         sb.append(LINE_SEPARATOR);
     }
 
-    private void appendUserEvent(StringBuffer sb, UserEvent event)
+    private void appendUserEvent(StringBuilder sb, UserEvent event)
     {
         Class<?> clazz = event.getClass();
 
@@ -239,7 +239,7 @@ class ActionBuilderImpl implements ActionBuilder
     }
 
     @SuppressWarnings("unchecked")
-    private void appendGetters(StringBuffer sb, Object action, Set<String> membersToIgnore)
+    private void appendGetters(StringBuilder sb, Object action, Set<String> membersToIgnore)
     {
         Map<String, Method> getters = ReflectionUtil.getGetters(action.getClass());
         for (Map.Entry<String, Method> entry : getters.entrySet())

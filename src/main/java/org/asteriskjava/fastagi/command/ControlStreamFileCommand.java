@@ -256,9 +256,9 @@ public class ControlStreamFileCommand extends AbstractAgiCommand
     @Override
    public String buildCommand()
     {
-        StringBuffer sb;
+    	StringBuilder sb;
 
-        sb = new StringBuffer("CONTROL STREAM FILE ");
+        sb = new StringBuilder("CONTROL STREAM FILE ");
         sb.append(escapeAndQuote(file));
         sb.append(" ");
         sb.append(escapeAndQuote(escapeDigits));

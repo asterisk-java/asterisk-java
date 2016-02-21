@@ -53,10 +53,10 @@ public abstract class AbstractManagerAction implements ManagerAction
     @Override
     public String toString()
     {
-        StringBuffer sb;
+    	StringBuilder sb;
         Map<String, Method> getters;
 
-        sb = new StringBuffer(getClass().getName() + "[");
+        sb = new StringBuilder(getClass().getName() + "[");
         sb.append("action='").append(getAction()).append("',");
         getters = ReflectionUtil.getGetters(getClass());
         for (Map.Entry<String, Method> entry : getters.entrySet())

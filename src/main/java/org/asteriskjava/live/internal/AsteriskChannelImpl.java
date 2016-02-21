@@ -998,12 +998,12 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
     @Override
     public String toString()
     {
-        final StringBuffer sb;
+        final StringBuilder sb;
         final List<AsteriskChannel> dialedChannels;
         final List<AsteriskChannel> dialingChannel;
         final List<AsteriskChannel> linkedChannel;
 
-        sb = new StringBuffer("AsteriskChannel[");
+        sb = new StringBuilder("AsteriskChannel[");
 
         synchronized (this)
         {

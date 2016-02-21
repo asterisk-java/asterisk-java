@@ -133,10 +133,10 @@ class AsteriskQueueEntryImpl extends AbstractLiveObject implements AsteriskQueue
     @Override
     public String toString()
     {
-        StringBuffer sb;
+    	StringBuilder sb;
         int systemHashcode;
 
-        sb = new StringBuffer("AsteriskQueueEntry[");
+        sb = new StringBuilder("AsteriskQueueEntry[");
 
         synchronized (this)
         {

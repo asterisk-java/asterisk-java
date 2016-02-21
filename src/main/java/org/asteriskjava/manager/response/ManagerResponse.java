@@ -280,9 +280,9 @@ public class ManagerResponse implements Serializable
     @Override
     public String toString()
     {
-        StringBuffer sb;
+    	StringBuilder sb;
 
-        sb = new StringBuffer(100);
+        sb = new StringBuilder(100);
         sb.append(getClass().getName()).append(": ");
         sb.append("actionId='").append(getActionId()).append("'; ");
         sb.append("message='").append(getMessage()).append("'; ");

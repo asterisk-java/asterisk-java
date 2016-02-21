@@ -205,9 +205,9 @@ public class SayDateTimeCommand extends AbstractAgiCommand
     @Override
    public String buildCommand()
     {
-        StringBuffer sb;
+    	StringBuilder sb;
 
-        sb = new StringBuffer("SAY DATETIME ");
+        sb = new StringBuilder("SAY DATETIME ");
         sb.append(time);
         sb.append(" ");
         sb.append(escapeAndQuote(escapeDigits));

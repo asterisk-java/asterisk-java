@@ -135,7 +135,7 @@ public class ReflectionUtil
     {
         char c;
         boolean needsStrip = false;
-        StringBuffer sb;
+        StringBuilder sb;
 
         if (s == null)
         {
@@ -165,7 +165,7 @@ public class ReflectionUtil
             return s;
         }
 
-        sb = new StringBuffer(s.length());
+        sb = new StringBuilder(s.length());
         for (int i = 0; i < s.length(); i++)
         {
             c = s.charAt(i);
