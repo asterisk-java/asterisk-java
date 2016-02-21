@@ -94,7 +94,7 @@ public class SipNotifyAction extends AbstractManagerAction
     {
         if (variables == null)
         {
-            variables = new LinkedHashMap<String, String>();
+            variables = new LinkedHashMap<>();
         }
 
         variables.put(name, value);

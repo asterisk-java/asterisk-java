@@ -31,7 +31,7 @@ public class ConfigFileReader
 
     static
     {
-        WARNING_CLASSES = new HashSet<Class< ? >>();
+        WARNING_CLASSES = new HashSet<>();
         WARNING_CLASSES.add(MissingEqualSignException.class);
         WARNING_CLASSES.add(UnknownDirectiveException.class);
         WARNING_CLASSES.add(MissingDirectiveParameterException.class);
@@ -47,8 +47,8 @@ public class ConfigFileReader
     public ConfigFileReader()
     {
         this.commentBlock = new StringBuilder();
-        this.categories = new LinkedHashMap<String, Category>();
-        this.warnings = new ArrayList<ConfigParseException>();
+        this.categories = new LinkedHashMap<>();
+        this.warnings = new ArrayList<>();
     }
 
     public ConfigFile readFile(String configfile) throws IOException, ConfigParseException
@@ -94,7 +94,7 @@ public class ConfigFileReader
 
     public Collection<ConfigParseException> getWarnings()
     {
-        return new ArrayList<ConfigParseException>(warnings);
+        return new ArrayList<>(warnings);
     }
 
     void readFile(String configfile, BufferedReader reader) throws IOException, ConfigParseException

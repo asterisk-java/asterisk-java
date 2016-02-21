@@ -196,7 +196,7 @@ public class AsyncAgiEvent extends ResponseEvent
 
     private List<String> decode(String s)
     {
-        final List<String> result = new ArrayList<String>();
+        final List<String> result = new ArrayList<>();
 
         if (s == null)
         {

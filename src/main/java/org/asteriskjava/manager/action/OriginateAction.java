@@ -332,7 +332,7 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
         }
 
         st = new StringTokenizer(variable, "|");
-        variables = new LinkedHashMap<String, String>();
+        variables = new LinkedHashMap<>();
         while (st.hasMoreTokens())
         {
             String[] keyValue;
@@ -360,7 +360,7 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
     {
         if (variables == null)
         {
-            variables = new LinkedHashMap<String, String>();
+            variables = new LinkedHashMap<>();
         }
 
         variables.put(name, value);

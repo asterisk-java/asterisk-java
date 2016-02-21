@@ -69,7 +69,7 @@ public class AstState
 
     static
     {
-        final Map<String, Integer> tmpInverseStateMap = new HashMap<String, Integer>();
+        final Map<String, Integer> tmpInverseStateMap = new HashMap<>();
 
         tmpInverseStateMap.put("Down", AST_STATE_DOWN);
         tmpInverseStateMap.put("Rsrvd", AST_STATE_RSRVD);

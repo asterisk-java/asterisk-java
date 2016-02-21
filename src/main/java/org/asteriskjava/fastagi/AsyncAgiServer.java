@@ -48,7 +48,7 @@ public class AsyncAgiServer extends AbstractAgiServer implements ManagerEventLis
     public AsyncAgiServer(AgiChannelFactory agiChannelFactory)
     {
         super(agiChannelFactory);
-        this.connectionHandlers = new HashMap<Integer, AsyncAgiConnectionHandler>();
+        this.connectionHandlers = new HashMap<>();
     }
 
     /**

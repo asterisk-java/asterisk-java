@@ -92,7 +92,7 @@ public class AgiReplyImpl implements AgiReply
         this();
         if (lines != null)
         {
-            this.lines = new ArrayList<String>(lines);
+            this.lines = new ArrayList<>(lines);
             if (!lines.isEmpty())
             {
                 firstLine = lines.get(0);
@@ -203,7 +203,7 @@ public class AgiReplyImpl implements AgiReply
             return attributes;
         }
 
-        attributes = new HashMap<String, String>();
+        attributes = new HashMap<>();
 
         final Matcher matcher = ADDITIONAL_ATTRIBUTES_PATTERN.matcher(firstLine);
         if (matcher.find())
@@ -217,7 +217,7 @@ public class AgiReplyImpl implements AgiReply
     {
         StringBuilder keyBuilder = new StringBuilder();
         StringBuilder valueBuilder = new StringBuilder();
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
 
         boolean inKey = true;
         boolean inQuotes = false;

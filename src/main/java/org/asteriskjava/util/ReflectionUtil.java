@@ -49,7 +49,7 @@ public class ReflectionUtil
      */
     public static Map<String, Method> getGetters(final Class<?> clazz)
     {
-        final Map<String, Method> accessors = new HashMap<String, Method>();
+        final Map<String, Method> accessors = new HashMap<>();
         final Method[] methods = clazz.getMethods();
 
         for (Method method : methods)
@@ -95,7 +95,7 @@ public class ReflectionUtil
      */
     public static Map<String, Method> getSetters(Class<?> clazz)
     {
-        final Map<String, Method> accessors = new HashMap<String, Method>();
+        final Map<String, Method> accessors = new HashMap<>();
         final Method[] methods = clazz.getMethods();
 
         for (Method method : methods)

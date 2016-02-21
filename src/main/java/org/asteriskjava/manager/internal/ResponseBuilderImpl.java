@@ -38,7 +38,7 @@ import org.asteriskjava.manager.response.ManagerResponse;
  */
 class ResponseBuilderImpl extends AbstractBuilder implements ResponseBuilder
 {
-    private static final Set<String> ignoredAttributes = new HashSet<String>(Arrays.asList(
+    private static final Set<String> ignoredAttributes = new HashSet<>(Arrays.asList(
             "attributes", "proxyresponse", ManagerReader.COMMAND_RESULT_RESPONSE_KEY));
 
     private static final String RESPONSE_KEY = "response";
@@ -76,7 +76,7 @@ class ResponseBuilderImpl extends AbstractBuilder implements ResponseBuilder
         if (response instanceof CommandResponse)
         {
             final CommandResponse commandResponse = (CommandResponse) response;
-            final List<String> result = new ArrayList<String>();
+            final List<String> result = new ArrayList<>();
             for (String resultLine : ((String) attributes.get(ManagerReader.COMMAND_RESULT_RESPONSE_KEY)).split("\n"))
             {
                 // on error there is a leading space

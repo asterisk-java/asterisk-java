@@ -53,9 +53,9 @@ public class HtmlEventTracer implements ManagerEventListener
 
     public HtmlEventTracer()
     {
-        uniqueIds = new ArrayList<String>();
-        events = new ArrayList<ManagerEvent>();
-        colors = new HashMap<Class< ? extends ManagerEvent>, String>();
+        uniqueIds = new ArrayList<>();
+        events = new ArrayList<>();
+        colors = new HashMap<>();
 
         colors.put(NewChannelEvent.class, "#7cd300"); // green
         colors.put(NewStateEvent.class, "#a4b6c8");

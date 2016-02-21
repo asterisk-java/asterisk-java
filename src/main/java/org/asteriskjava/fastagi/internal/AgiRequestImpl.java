@@ -120,7 +120,7 @@ public class AgiRequestImpl implements AgiRequest
             throw new IllegalArgumentException("Environment must not be null.");
         }
 
-        map = new HashMap<String, String>();
+        map = new HashMap<>();
 
         for (String line : lines)
         {
@@ -481,8 +481,8 @@ public class AgiRequestImpl implements AgiRequest
         Map<String, String[]> result;
         StringTokenizer st;
 
-        parameterMap = new HashMap<String, List<String>>();
-        result = new HashMap<String, String[]>();
+        parameterMap = new HashMap<>();
+        result = new HashMap<>();
 
         if (s == null)
         {
@@ -529,7 +529,7 @@ public class AgiRequestImpl implements AgiRequest
 
             if (parameterMap.get(name) == null)
             {
-                values = new ArrayList<String>();
+                values = new ArrayList<>();
                 values.add(value);
                 parameterMap.put(name, values);
             }
@@ -558,7 +558,7 @@ public class AgiRequestImpl implements AgiRequest
             return arguments.clone();
         }
 
-        final Map<Integer, String> map = new HashMap<Integer, String>();
+        final Map<Integer, String> map = new HashMap<>();
         int maxIndex = 0;
         for (Map.Entry<String, String> entry : request.entrySet())
         {

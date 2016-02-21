@@ -131,7 +131,7 @@ public class SpeechRecognitionResult implements Serializable
     public List<SpeechResult> getAllResults()
     {
         final int numberOfResults = getNumberOfResults();
-        final List<SpeechResult> results = new ArrayList<SpeechResult>(numberOfResults);
+        final List<SpeechResult> results = new ArrayList<>(numberOfResults);
 
         for (int i = 0; i < numberOfResults; i++)
         {

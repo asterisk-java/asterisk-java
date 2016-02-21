@@ -183,7 +183,7 @@ public class ScriptEngineMappingStrategy implements MappingStrategy
     protected ClassLoader getClassLoader()
     {
         final ClassLoader parentClassLoader = Thread.currentThread().getContextClassLoader();
-        final List<URL> jarFileUrls = new ArrayList<URL>();
+        final List<URL> jarFileUrls = new ArrayList<>();
 
         if (libPath == null || libPath.length == 0)
         {

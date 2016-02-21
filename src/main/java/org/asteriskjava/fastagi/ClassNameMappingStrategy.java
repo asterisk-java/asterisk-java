@@ -59,7 +59,7 @@ public class ClassNameMappingStrategy extends AbstractMappingStrategy
     public ClassNameMappingStrategy(boolean shareInstances)
     {
         super();
-        this.instances = new HashMap<String, AgiScript>();
+        this.instances = new HashMap<>();
         this.shareInstances = shareInstances;
     }
 

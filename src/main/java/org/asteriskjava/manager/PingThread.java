@@ -61,7 +61,7 @@ public class PingThread extends Thread
     public PingThread()
     {
         super();
-        this.connections = new HashSet<ManagerConnection>();
+        this.connections = new HashSet<>();
         this.die = false;
         long id = idCounter.getAndIncrement();
         setName("Asterisk-Java Ping-" + id);

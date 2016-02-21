@@ -32,7 +32,7 @@ public class SkypeAccountPropertyAction extends AbstractManagerAction
      */
     static final long serialVersionUID = 1L;
     private String user;
-    private Map<String, String> variables = new HashMap<String, String>();
+    private Map<String, String> variables = new HashMap<>();
 
     public static final String PROPERTY_SKYPENAME = "skypename";
     public static final String PROPERTY_TIMEZONE = "timezone";
@@ -89,7 +89,7 @@ public class SkypeAccountPropertyAction extends AbstractManagerAction
 
     public Map<String, String> getVariables()
     {
-        return new HashMap<String, String>(variables);
+        return new HashMap<>(variables);
     }
 
     public void setVariables(Map<String, String> variables)
@@ -98,7 +98,7 @@ public class SkypeAccountPropertyAction extends AbstractManagerAction
         {
             throw new IllegalArgumentException("Variables cannot be null");
         }
-        this.variables = new HashMap<String, String>(variables);
+        this.variables = new HashMap<>(variables);
     }
 
     public void setTimezone(String timezone)

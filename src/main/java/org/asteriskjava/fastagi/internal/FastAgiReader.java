@@ -48,7 +48,7 @@ class FastAgiReader implements AgiReader
         String line;
         List<String> lines;
 
-        lines = new ArrayList<String>();
+        lines = new ArrayList<>();
 
         try
         {
@@ -82,7 +82,7 @@ class FastAgiReader implements AgiReader
         List<String> lines;
         String line;
 
-        lines = new ArrayList<String>();
+        lines = new ArrayList<>();
 
         try
         {

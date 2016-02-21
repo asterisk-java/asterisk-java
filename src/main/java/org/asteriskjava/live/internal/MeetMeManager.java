@@ -61,7 +61,7 @@ class MeetMeManager
     {
         this.server = server;
         this.channelManager = channelManager;
-        this.rooms = new HashMap<String, MeetMeRoomImpl>();
+        this.rooms = new HashMap<>();
     }
 
     void initialize()
@@ -86,7 +86,7 @@ class MeetMeManager
     {
         final Collection<MeetMeRoom> result;
 
-        result = new ArrayList<MeetMeRoom>();
+        result = new ArrayList<>();
         synchronized (rooms)
         {
             for (MeetMeRoom room : rooms.values())
@@ -185,13 +185,13 @@ class MeetMeManager
         final CommandAction meetMeListAction;
         final ManagerResponse response;
         final List<String> lines;
-        final Collection<Integer> userNumbers = new ArrayList<Integer>(); // list
-                                                                          // of
-                                                                          // user
-                                                                          // numbers
-                                                                          // in
-                                                                          // the
-                                                                          // room
+        final Collection<Integer> userNumbers = new ArrayList<>(); // list
+                                                                   // of
+                                                                   // user
+                                                                   // numbers
+                                                                   // in
+                                                                   // the
+                                                                   // room
 
         meetMeListAction = new CommandAction(MEETME_LIST_COMMAND + " " + room.getRoomNumber());
         try
@@ -299,7 +299,7 @@ class MeetMeManager
         }
 
         Collection<MeetMeUserImpl> users = room.getUserImpls();
-        Collection<MeetMeUserImpl> usersToRemove = new ArrayList<MeetMeUserImpl>();
+        Collection<MeetMeUserImpl> usersToRemove = new ArrayList<>();
         for (MeetMeUserImpl user : users)
         {
             if (!userNumbers.contains(user.getUserNumber()))
