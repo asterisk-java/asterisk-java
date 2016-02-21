@@ -54,23 +54,11 @@ public class ConfigFileReader
     public ConfigFile readFile(String configfile) throws IOException, ConfigParseException
     {
         final ConfigFile result;
-        final BufferedReader reader;
-
-        reader = new BufferedReader(new FileReader(configfile));
-        try
+        //final BufferedReader reader;
+        
+        try (BufferedReader reader = new BufferedReader(new FileReader(configfile)))
         {
             readFile(configfile, reader);
-        }
-        finally
-        {
-            try
-            {
-                reader.close();
-            }
-            catch (Exception e) // NOPMD
-            {
-                // ignore
-            }
         }
 
         result = new ConfigFileImpl(configfile, new TreeMap<String, Category>(categories));
