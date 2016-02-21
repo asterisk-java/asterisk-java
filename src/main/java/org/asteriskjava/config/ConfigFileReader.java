@@ -1,9 +1,12 @@
 package org.asteriskjava.config;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.CharBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -56,7 +59,7 @@ public class ConfigFileReader
         final ConfigFile result;
         final BufferedReader reader;
 
-        reader = new BufferedReader(new FileReader(configfile));
+        reader = new BufferedReader(new InputStreamReader(new FileInputStream(configfile), StandardCharsets.UTF_8));
         try
         {
             readFile(configfile, reader);
