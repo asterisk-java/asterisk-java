@@ -581,11 +581,11 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
             md = MessageDigest.getInstance("MD5");
             if (challenge != null)
             {
-                md.update(challenge.getBytes());
+                md.update(challenge.getBytes(StandardCharsets.UTF_8));
             }
             if (password != null)
             {
-                md.update(password.getBytes());
+                md.update(password.getBytes(StandardCharsets.UTF_8));
             }
             key = ManagerUtil.toHexString(md.digest());
         }

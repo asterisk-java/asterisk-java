@@ -27,6 +27,7 @@ import java.io.Reader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -350,7 +351,7 @@ public class ScriptEngineMappingStrategy implements MappingStrategy
     protected static Reader getReader(File file) throws FileNotFoundException
     {
         final InputStream is = new FileInputStream(file);
-        return new InputStreamReader(is);
+        return new InputStreamReader(is, StandardCharsets.UTF_8);
     }
 
     protected class ScriptEngineAgiScript implements NamedAgiScript
