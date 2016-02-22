@@ -58,10 +58,14 @@ public class ConfigFileReader
     {
         final ConfigFile result;
         
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(configfile), StandardCharsets.UTF_8))
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(configfile), StandardCharsets.UTF_8)))
         {
             readFile(configfile, reader);
         }
+		catch (Exception e)
+		{
+			// ignored
+		}
 
         result = new ConfigFileImpl(configfile, new TreeMap<String, Category>(categories));
 
