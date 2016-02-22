@@ -46,7 +46,7 @@ class MeetMeRoomImpl extends AbstractLiveObject implements MeetMeRoom
     {
         super(server);
         this.roomNumber = roomNumber;
-        this.users = new HashMap<Integer, MeetMeUserImpl>(20);
+        this.users = new HashMap<>(20);
     }
 
     public String getRoomNumber()
@@ -74,7 +74,7 @@ class MeetMeRoomImpl extends AbstractLiveObject implements MeetMeRoom
     {
         synchronized (users)
         {
-            return new ArrayList<MeetMeUserImpl>(users.values());
+            return new ArrayList<>(users.values());
         }
     }
     

@@ -243,9 +243,9 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     public ManagerConnectionImpl()
     {
         this.id = idCounter.getAndIncrement();
-        this.responseListeners = new HashMap<String, SendActionCallback>();
-        this.responseEventListeners = new HashMap<String, ManagerEventListener>();
-        this.eventListeners = new ArrayList<ManagerEventListener>();
+        this.responseListeners = new HashMap<>();
+        this.responseEventListeners = new HashMap<>();
+        this.eventListeners = new ArrayList<>();
         this.protocolIdentifier = new ProtocolIdentifierWrapper();
     }
 

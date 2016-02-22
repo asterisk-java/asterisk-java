@@ -111,7 +111,7 @@ public class ManagerReaderImpl implements ManagerReader
 
         this.eventBuilder = new EventBuilderImpl();
         this.responseBuilder = new ResponseBuilderImpl();
-        this.expectedResponseClasses = new ConcurrentHashMap<String, Class< ? extends ManagerResponse>>();
+        this.expectedResponseClasses = new ConcurrentHashMap<>();
     }
 
     /**
@@ -146,7 +146,7 @@ public class ManagerReaderImpl implements ManagerReader
      */
     public void run()
     {
-        final Map<String, Object> buffer = new HashMap<String, Object>();
+        final Map<String, Object> buffer = new HashMap<>();
         String line;
 
         if (socket == null)
@@ -315,7 +315,7 @@ public class ManagerReaderImpl implements ManagerReader
                 ((List<String>) currentValue).add(value);
                 return;
             }
-            List<String> list = new ArrayList<String>();
+            List<String> list = new ArrayList<>();
             if (currentValue instanceof String)
             {
                 list.add((String) currentValue);

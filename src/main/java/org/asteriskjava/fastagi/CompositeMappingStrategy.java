@@ -62,7 +62,7 @@ public class CompositeMappingStrategy implements MappingStrategy
     public CompositeMappingStrategy(MappingStrategy... strategies)
     {
         super();
-        this.strategies = new ArrayList<MappingStrategy>(Arrays.asList(strategies));
+        this.strategies = new ArrayList<>(Arrays.asList(strategies));
     }
 
     /**
@@ -73,7 +73,7 @@ public class CompositeMappingStrategy implements MappingStrategy
     public CompositeMappingStrategy(List<MappingStrategy> strategies)
     {
         super();
-        this.strategies = new ArrayList<MappingStrategy>(strategies);
+        this.strategies = new ArrayList<>(strategies);
     }
 
     /**
@@ -85,7 +85,7 @@ public class CompositeMappingStrategy implements MappingStrategy
     {
         if (strategies == null)
         {
-            strategies = new ArrayList<MappingStrategy>();
+            strategies = new ArrayList<>();
         }
         strategies.add(strategy);
     }
@@ -97,7 +97,7 @@ public class CompositeMappingStrategy implements MappingStrategy
      */
     public void setStrategies(List<MappingStrategy> strategies)
     {
-        this.strategies = new ArrayList<MappingStrategy>(strategies);
+        this.strategies = new ArrayList<>(strategies);
     }
 
     @Override

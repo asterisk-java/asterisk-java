@@ -61,7 +61,7 @@ public class AsyncAgiConnectionHandler extends AgiConnectionHandler
         connection = (ManagerConnection) asyncAgiStartEvent.getSource();
         channelName = asyncAgiStartEvent.getChannel();
         environment = asyncAgiStartEvent.decodeEnv();
-        asyncAgiEvents = new LinkedBlockingQueue<AsyncAgiEvent>();
+        asyncAgiEvents = new LinkedBlockingQueue<>();
         setIgnoreMissingScripts(true);
     }
 

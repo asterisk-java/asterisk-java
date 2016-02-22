@@ -84,7 +84,7 @@ class ChannelManager
     /**
      * A map of all active channel by their unique id.
      */
-    final Map<String, AsteriskChannelImpl> channels = new LinkedHashMap<String, AsteriskChannelImpl>();
+    final Map<String, AsteriskChannelImpl> channels = new LinkedHashMap<>();
 
     ScheduledThreadPoolExecutor traceScheduledExecutorService;
 
@@ -146,7 +146,7 @@ class ChannelManager
 
         synchronized (channels)
         {
-            copy = new ArrayList<AsteriskChannel>(channels.size() + 2);
+            copy = new ArrayList<>(channels.size() + 2);
             for (AsteriskChannel channel : channels.values())
             {
                 if (channel.getState() != ChannelState.HUNGUP)

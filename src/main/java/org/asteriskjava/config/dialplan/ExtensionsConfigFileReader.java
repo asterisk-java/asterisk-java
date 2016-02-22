@@ -88,7 +88,7 @@ public class ExtensionsConfigFileReader extends ConfigFileReader
     /* Roughly corresponds to pbx_config.c:2276 */
     private static String[] harvestApplicationWithArguments(String arg)
     {
-        List<String> args = new ArrayList<String>();
+        List<String> args = new ArrayList<>();
 
         if (arg.trim().length() >= 0)
         {

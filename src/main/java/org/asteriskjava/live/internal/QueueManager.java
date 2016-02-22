@@ -65,7 +65,7 @@ class QueueManager
      * A map of ACD queues by there name. 101119 OLB: Modified to act as a LRU
      * Cache to optimize updates
      */
-    private final Map<String, AsteriskQueueImpl> queuesLRU = new LinkedHashMap<String, AsteriskQueueImpl>();
+    private final Map<String, AsteriskQueueImpl> queuesLRU = new LinkedHashMap<>();
 
     QueueManager(AsteriskServerImpl server, ChannelManager channelManager)
     {
@@ -202,11 +202,10 @@ class QueueManager
     {
         refreshQueuesIfForced();
 
-        List<AsteriskQueue> copy = new ArrayList<AsteriskQueue>();
+        List<AsteriskQueue> copy = new ArrayList<>();
         synchronized (queuesLRU)
         {
-            List<Entry<String, AsteriskQueueImpl>> list = new ArrayList<Entry<String, AsteriskQueueImpl>>(
-                    queuesLRU.entrySet());
+            List<Entry<String, AsteriskQueueImpl>> list = new ArrayList<>(queuesLRU.entrySet());
             ListIterator<Entry<String, AsteriskQueueImpl>> iter = list.listIterator(list.size());
 
             Entry<String, AsteriskQueueImpl> entry;

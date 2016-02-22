@@ -70,7 +70,7 @@ public abstract class AbstractMappingStrategy implements MappingStrategy
         if (defaultClassLoader == null)
         {
             final ClassLoader parentClassLoader = Thread.currentThread().getContextClassLoader();
-            final List<URL> dirUrls = new ArrayList<URL>();
+            final List<URL> dirUrls = new ArrayList<>();
 
             for (String scriptPathEntry : DEFAULT_SCRIPT_PATH)
             {

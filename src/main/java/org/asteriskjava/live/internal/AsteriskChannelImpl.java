@@ -176,14 +176,14 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         this.name = name;
         this.id = id;
         this.dateOfCreation = dateOfCreation;
-        this.extensionHistory = new ArrayList<ExtensionHistoryEntry>();
-        this.stateHistory = new ArrayList<ChannelStateHistoryEntry>();
-        this.linkedChannelHistory = new ArrayList<LinkedChannelHistoryEntry>();
-        this.dialedChannelHistory = new ArrayList<DialedChannelHistoryEntry>();
-        this.variables = new HashMap<String, String>();
-        this.dialedChannels = new ArrayList<AsteriskChannel>();
-        this.dialingChannels = new ArrayList<AsteriskChannel>();
-        this.linkedChannels = new ArrayList<AsteriskChannel>();
+        this.extensionHistory = new ArrayList<>();
+        this.stateHistory = new ArrayList<>();
+        this.linkedChannelHistory = new ArrayList<>();
+        this.dialedChannelHistory = new ArrayList<>();
+        this.variables = new HashMap<>();
+        this.dialedChannels = new ArrayList<>();
+        this.dialingChannels = new ArrayList<>();
+        this.linkedChannels = new ArrayList<>();
     }
 
     public String getId()
@@ -379,7 +379,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
 
         synchronized (extensionHistory)
         {
-            copy = new ArrayList<ExtensionHistoryEntry>(extensionHistory);
+            copy = new ArrayList<>(extensionHistory);
         }
 
         return copy;
@@ -467,7 +467,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
 
         synchronized (dialedChannels)
         {
-            copy = new ArrayList<AsteriskChannel>(dialedChannels);
+            copy = new ArrayList<>(dialedChannels);
         }
 
         return copy;
@@ -494,7 +494,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
 
         synchronized (linkedChannelHistory)
         {
-            copy = new ArrayList<DialedChannelHistoryEntry>(dialedChannelHistory);
+            copy = new ArrayList<>(dialedChannelHistory);
         }
 
         return copy;
@@ -572,7 +572,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
 
         synchronized (linkedChannelHistory)
         {
-            copy = new ArrayList<LinkedChannelHistoryEntry>(linkedChannelHistory);
+            copy = new ArrayList<>(linkedChannelHistory);
         }
 
         return copy;
@@ -939,7 +939,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
     {
         synchronized (variables)
         {
-            return new HashMap<String, String>(variables);
+            return new HashMap<>(variables);
         }
     }
 

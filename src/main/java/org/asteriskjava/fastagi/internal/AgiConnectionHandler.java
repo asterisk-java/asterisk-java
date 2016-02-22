@@ -45,7 +45,7 @@ public abstract class AgiConnectionHandler implements Runnable
     private static final String AJ_AGISTATUS_NOT_FOUND = "NOT_FOUND";
     private static final String AJ_AGISTATUS_SUCCESS = "SUCCESS";
     private static final String AJ_AGISTATUS_FAILED = "FAILED";
-    private static final ThreadLocal<AgiChannel> channel = new ThreadLocal<AgiChannel>();
+    private static final ThreadLocal<AgiChannel> channel = new ThreadLocal<>();
     private final Log logger = LogFactory.getLog(getClass());
     private boolean ignoreMissingScripts = false;
     private AgiScript script = null;
@@ -53,7 +53,7 @@ public abstract class AgiConnectionHandler implements Runnable
 
 
 	public static final ConcurrentMap<AgiConnectionHandler, AgiChannel> AGI_CONNECTION_HANDLERS =
-			new ConcurrentHashMap<AgiConnectionHandler,AgiChannel>(32);
+			new ConcurrentHashMap<>(32);
 
     /**
      * The strategy to use to determine which script to run.

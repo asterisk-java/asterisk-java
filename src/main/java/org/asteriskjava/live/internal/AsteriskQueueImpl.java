@@ -95,11 +95,11 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
         this.strategy = strategy;
         this.serviceLevel = serviceLevel;
         this.weight = weight;
-        entries = new ArrayList<AsteriskQueueEntryImpl>(25);
-        listeners = new ArrayList<AsteriskQueueListener>();
-        members = new HashMap<String, AsteriskQueueMemberImpl>();
+        entries = new ArrayList<>(25);
+        listeners = new ArrayList<>();
+        members = new HashMap<>();
         timer = new Timer("ServiceLevelTimer-" + name, true);
-        serviceLevelTimerTasks = new HashMap<AsteriskQueueEntry, ServiceLevelTimerTask>();
+        serviceLevelTimerTasks = new HashMap<>();
         this.calls = calls;
         this.holdTime = holdTime;
         this.talkTime = talkTime;
@@ -576,7 +576,7 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
      */
     public Collection<AsteriskQueueMember> getMembers()
     {
-        List<AsteriskQueueMember> listOfMembers = new ArrayList<AsteriskQueueMember>(members.size());
+        List<AsteriskQueueMember> listOfMembers = new ArrayList<>(members.size());
         synchronized (members)
         {
             for (AsteriskQueueMemberImpl asteriskQueueMember : members.values())

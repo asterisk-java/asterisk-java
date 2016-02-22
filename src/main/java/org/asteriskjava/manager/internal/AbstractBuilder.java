@@ -154,7 +154,7 @@ abstract class AbstractBuilder
             return null;
         }
 
-        final Map<String, String> map = new LinkedHashMap<String, String>();
+        final Map<String, String> map = new LinkedHashMap<>();
         for (String line : lines)
         {
             final int index = line.indexOf('=');

@@ -19,7 +19,7 @@ public class AstUtil
 
     static
     {
-        TRUE_LITERALS = new HashSet<String>(20);
+        TRUE_LITERALS = new HashSet<>(20);
         TRUE_LITERALS.add("yes");
         TRUE_LITERALS.add("true");
         TRUE_LITERALS.add("y");
@@ -28,7 +28,7 @@ public class AstUtil
         TRUE_LITERALS.add("on");
         TRUE_LITERALS.add("enabled");
 
-        NULL_LITERALS = new HashSet<String>(20);
+        NULL_LITERALS = new HashSet<>(20);
         NULL_LITERALS.add("<unknown>");
         NULL_LITERALS.add("unknown");
         NULL_LITERALS.add("none"); // VarSet event in pbx.c

@@ -38,12 +38,12 @@ import org.asteriskjava.manager.event.*;
  */
 class EventBuilderImpl extends AbstractBuilder implements EventBuilder
 {
-    private static final Set<String> ignoredAttributes = new HashSet<String>(Arrays.asList("event"));
+    private static final Set<String> ignoredAttributes = new HashSet<>(Arrays.asList("event"));
     private Map<String, Class< ? >> registeredEventClasses;
 
     EventBuilderImpl()
     {
-        this.registeredEventClasses = new HashMap<String, Class< ? >>();
+        this.registeredEventClasses = new HashMap<>();
         registerBuiltinEventClasses();
     }
 
@@ -313,7 +313,7 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
                         ? Integer.parseInt((String) attributes.get("listitems"))
                         : eventNames.size() - 1; // Last event is
                                                  // PeerlistComplete
-                List<Map<String, Object>> peersAttributes = new ArrayList<Map<String, Object>>();
+                List<Map<String, Object>> peersAttributes = new ArrayList<>();
                 for (Map.Entry<String, Object> attribute : attributes.entrySet())
                 {
                     String key = attribute.getKey();
@@ -327,7 +327,7 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
                         }
                         else
                         {
-                            peerAttrs = new HashMap<String, Object>();
+                            peerAttrs = new HashMap<>();
                             peersAttributes.add(i, peerAttrs);
                         }
                         if (value instanceof List)
@@ -418,7 +418,7 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
                 List<PeerEntryEvent> peerEntryEvents = peersEvent.getChildEvents();
                 if (peerEntryEvents == null)
                 {
-                    peerEntryEvents = new ArrayList<PeerEntryEvent>();
+                    peerEntryEvents = new ArrayList<>();
                     peersEvent.setChildEvents(peerEntryEvents);
                 }
                 peerEntryEvents.add(peerEntryEvent);

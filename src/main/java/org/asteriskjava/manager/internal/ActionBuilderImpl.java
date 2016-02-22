@@ -93,7 +93,7 @@ class ActionBuilderImpl implements ActionBuilder
          * When using the Reflection API to get all of the getters for building
          * actions to send, we ignore some of the getters
          */
-        Set<String> ignore = new HashSet<String>();
+        Set<String> ignore = new HashSet<>();
         ignore.add("class");
         ignore.add("action");
         ignore.add("actionid");

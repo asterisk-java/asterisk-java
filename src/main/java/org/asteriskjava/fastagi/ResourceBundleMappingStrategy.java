@@ -141,10 +141,10 @@ public class ResourceBundleMappingStrategy extends AbstractMappingStrategy
         ResourceBundle resourceBundle;
         Enumeration< ? > keys;
 
-        mappings = new HashMap<String, String>();
+        mappings = new HashMap<>();
         if (shareInstances)
         {
-            instances = new HashMap<String, AgiScript>();
+            instances = new HashMap<>();
         }
 
         try

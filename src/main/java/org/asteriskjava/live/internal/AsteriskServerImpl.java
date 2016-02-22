@@ -203,7 +203,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
      * events have been processed by the live ChannelManager before you receive
      * an event and as such the names will always match.
      */
-    private List<ManagerEventListener> chainListeners = new ArrayList<ManagerEventListener>();
+    private List<ManagerEventListener> chainListeners = new ArrayList<>();
 
     /**
      * Creates a new instance.
@@ -211,8 +211,8 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
     public AsteriskServerImpl()
     {
         idCounter = new AtomicLong();
-        listeners = new LinkedHashSet<AsteriskServerListener>();
-        originateCallbacks = new HashMap<String, OriginateCallbackData>();
+        listeners = new LinkedHashSet<>();
+        originateCallbacks = new HashMap<>();
         channelManager = new ChannelManager(this);
         agentManager = new AgentManager(this);
         meetMeManager = new MeetMeManager(this, channelManager);
@@ -474,11 +474,11 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         traceId = ACTION_ID_PREFIX_ORIGINATE + idCounter.getAndIncrement();
         if (originateAction.getVariables() == null)
         {
-            variables = new HashMap<String, String>();
+            variables = new HashMap<>();
         }
         else
         {
-            variables = new HashMap<String, String>(originateAction.getVariables());
+            variables = new HashMap<>(originateAction.getVariables());
         }
 
         // prefix variable name by "__" to enable variable inheritence across
@@ -605,7 +605,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
             Map<String, String> map;
             ManagerResponse response;
 
-            map = new HashMap<String, String>();
+            map = new HashMap<>();
             try
             {
                 final String command;
@@ -722,7 +722,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         final List<String> result;
 
         initializeIfNeeded();
-        voicemailboxes = new ArrayList<Voicemailbox>();
+        voicemailboxes = new ArrayList<>();
         if (eventConnection.getVersion().isAtLeast(AsteriskVersion.ASTERISK_1_6))
         {
             response = sendAction(new CommandAction(SHOW_VOICEMAIL_USERS_1_6_COMMAND));
@@ -861,7 +861,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         getConfigResponse = (GetConfigResponse) response;
 
         final Map<Integer, String> categoryMap = getConfigResponse.getCategories();
-        final Map<String, List<String>> categories = new LinkedHashMap<String, List<String>>();
+        final Map<String, List<String>> categories = new LinkedHashMap<>();
         for (Map.Entry<Integer, String> categoryEntry : categoryMap.entrySet())
         {
             final List<String> lines;
@@ -869,11 +869,11 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
 
             if (lineMap == null)
             {
-                lines = new ArrayList<String>();
+                lines = new ArrayList<>();
             }
             else
             {
-                lines = new ArrayList<String>(lineMap.values());
+                lines = new ArrayList<>(lineMap.values());
             }
 
             categories.put(categoryEntry.getValue(), lines);
@@ -1396,7 +1396,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
     public List<PeerEntryEvent> getPeerEntries() throws ManagerCommunicationException
     {
         ResponseEvents responseEvents = sendEventGeneratingAction(new SipPeersAction(), 2000);
-        List<PeerEntryEvent> peerEntries = new ArrayList<PeerEntryEvent>(30);
+        List<PeerEntryEvent> peerEntries = new ArrayList<>(30);
         for (ResponseEvent re : responseEvents.getEvents())
         {
             if (re instanceof PeerEntryEvent)

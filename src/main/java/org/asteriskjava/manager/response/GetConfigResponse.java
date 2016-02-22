@@ -52,7 +52,7 @@ public class GetConfigResponse extends ManagerResponse
     {
         if (categories == null)
         {
-            categories = new TreeMap<Integer, String>();
+            categories = new TreeMap<>();
         }
 
         Map<String, Object> responseMap = super.getAttributes();
@@ -96,7 +96,7 @@ public class GetConfigResponse extends ManagerResponse
     {
         if (lines == null)
         {
-            lines = new TreeMap<Integer, Map<Integer, String>>();
+            lines = new TreeMap<>();
         }
 
         Map<String, Object> responseMap = super.getAttributes();
@@ -139,7 +139,7 @@ public class GetConfigResponse extends ManagerResponse
                 Map<Integer, String> linesForCategory = lines.get(potentialCategoryNumber);
                 if (linesForCategory == null)
                 {
-                    linesForCategory = new TreeMap<Integer, String>();
+                    linesForCategory = new TreeMap<>();
                 }
 
                 // put the line we just parsed into the line map for this category
