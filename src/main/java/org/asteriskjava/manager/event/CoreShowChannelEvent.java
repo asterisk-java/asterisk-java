@@ -41,8 +41,6 @@ public class CoreShowChannelEvent extends ResponseEvent
     private String accountcode;
     private String bridgedChannel;
     private String bridgeid;
-    @Deprecated
-    private String bridgeduniqueid;
 
     public CoreShowChannelEvent(Object source)
     {
@@ -124,13 +122,13 @@ public class CoreShowChannelEvent extends ResponseEvent
     @Deprecated
     public String getBridgeduniqueid()
     {
-        return bridgeduniqueid;
+        return bridgeid;
     }
 
     @Deprecated
     public void setBridgeduniqueid(String bridgeduniqueid)
     {
-        this.bridgeduniqueid = bridgeduniqueid;
+        this.bridgeid = bridgeid;
     }
 
     /**
