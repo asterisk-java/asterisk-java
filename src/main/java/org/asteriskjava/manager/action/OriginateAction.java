@@ -446,7 +446,7 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
         }
 
         Iterator<String> iter = codecs.iterator();
-        StringBuffer buffer = new StringBuffer(iter.next());
+        StringBuilder buffer = new StringBuilder(iter.next());
         while (iter.hasNext())
         {
             buffer.append(",").append(iter.next());

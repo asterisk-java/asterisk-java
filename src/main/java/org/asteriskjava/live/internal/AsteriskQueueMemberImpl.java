@@ -196,9 +196,9 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
     @Override
     public String toString()
     {
-        final StringBuffer sb;
+        final StringBuilder sb;
 
-        sb = new StringBuffer("AsteriskQueueMember[");
+        sb = new StringBuilder("AsteriskQueueMember[");
         sb.append("location='").append(location).append("'");
         sb.append("state='").append(state).append("'");
         sb.append("paused='").append(paused).append("'");

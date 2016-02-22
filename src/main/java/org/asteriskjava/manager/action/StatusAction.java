@@ -136,7 +136,7 @@ public class StatusAction extends AbstractManagerAction implements EventGenerati
         }
 
         Iterator<String> iter = variables.iterator();
-        StringBuffer buffer = new StringBuffer(iter.next());
+        StringBuilder buffer = new StringBuilder(iter.next());
         while (iter.hasNext())
         {
             buffer.append(",").append(iter.next());

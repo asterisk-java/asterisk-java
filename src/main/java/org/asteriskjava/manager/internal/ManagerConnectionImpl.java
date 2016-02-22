@@ -1094,9 +1094,9 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
      */
     private String createInternalActionId()
     {
-        final StringBuffer sb;
+        final StringBuilder sb;
 
-        sb = new StringBuffer();
+        sb = new StringBuilder();
         sb.append(this.hashCode());
         sb.append("_");
         sb.append(actionIdCounter.getAndIncrement());
@@ -1488,9 +1488,9 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     @Override
     public String toString()
     {
-        StringBuffer sb;
+    	StringBuilder sb;
 
-        sb = new StringBuffer("ManagerConnection[");
+        sb = new StringBuilder("ManagerConnection[");
         sb.append("id='").append(id).append("',");
         sb.append("hostname='").append(hostname).append("',");
         sb.append("port=").append(port).append(",");

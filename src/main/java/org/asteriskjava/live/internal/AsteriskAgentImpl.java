@@ -68,9 +68,9 @@ public class AsteriskAgentImpl extends AbstractLiveObject implements AsteriskAge
     @Override
     public String toString()
     {
-        final StringBuffer sb;
+        final StringBuilder sb;
 
-        sb = new StringBuffer("AsteriskAgent[");
+        sb = new StringBuilder("AsteriskAgent[");
         sb.append("agentId='").append(getAgentId()).append("',");
         sb.append("name='").append(getName()).append("',");
         sb.append("state=").append(getState()).append(",");

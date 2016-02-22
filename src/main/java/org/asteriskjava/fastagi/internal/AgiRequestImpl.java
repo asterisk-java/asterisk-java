@@ -627,9 +627,9 @@ public class AgiRequestImpl implements AgiRequest
     @Override
     public String toString()
     {
-        StringBuffer sb;
+    	StringBuilder sb;
 
-        sb = new StringBuffer("AgiRequest[");
+        sb = new StringBuilder("AgiRequest[");
         sb.append("script='").append(getScript()).append("',");
         sb.append("requestURL='").append(getRequestURL()).append("',");
         sb.append("channel='").append(getChannel()).append("',");

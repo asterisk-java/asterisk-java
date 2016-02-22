@@ -85,9 +85,9 @@ public class Extension implements Serializable
     @Override
     public String toString()
     {
-        StringBuffer sb;
+    	StringBuilder sb;
 
-        sb = new StringBuffer("Extension[");
+        sb = new StringBuilder("Extension[");
         sb.append("context='").append(getContext()).append("',");
         sb.append("extension='").append(getExtension()).append("',");
         sb.append("priority='").append(getPriority()).append("',");
