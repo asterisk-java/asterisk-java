@@ -28,8 +28,6 @@ public class AbstractHoldEvent extends ManagerEvent
      */
     private String channel;
 
-    private String callerIDNum;
-    private String callerIDName;
     private String accountCode;
 
     /**
@@ -135,26 +133,6 @@ public class AbstractHoldEvent extends ManagerEvent
     public boolean isUnhold()
     {
         return status != null && !status;
-    }
-
-    public String getCallerIDNum()
-    {
-        return callerIDNum;
-    }
-
-    public void setCallerIDNum(String callerIDNum)
-    {
-        this.callerIDNum = callerIDNum;
-    }
-
-    public String getCallerIDName()
-    {
-        return callerIDName;
-    }
-
-    public void setCallerIDName(String callerIDName)
-    {
-        this.callerIDName = callerIDName;
     }
 
     public String getAccountCode()
