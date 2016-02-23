@@ -107,8 +107,8 @@ class ChannelManager
     {
         ResponseEvents re;
 
-        disconnected();
-
+        shutdown();
+        
         traceScheduledExecutorService = new ScheduledThreadPoolExecutor(1, new DaemonThreadFactory());// Executors.newSingleThreadScheduledExecutor
 
         StatusAction sa = new StatusAction();
@@ -121,9 +121,17 @@ class ChannelManager
                 handleStatusEvent((StatusEvent) event);
             }
         }
+        logger.debug("ChannelManager has been initialised");
+        
     }
 
     void disconnected()
+    {
+    	shutdown();
+    	logger.debug("ChannelManager has been disconnected from Asterisk.");
+      }
+    
+    private void shutdown()
     {
         if (traceScheduledExecutorService != null)
         {
@@ -133,7 +141,9 @@ class ChannelManager
         {
             channels.clear();
         }
+  	
     }
+
 
     /**
      * Returns a collection of all active AsteriskChannels.
