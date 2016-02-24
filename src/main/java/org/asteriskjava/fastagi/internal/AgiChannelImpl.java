@@ -26,12 +26,15 @@ import org.asteriskjava.fastagi.InvalidOrUnknownCommandException;
 import org.asteriskjava.fastagi.SpeechRecognitionResult;
 import org.asteriskjava.fastagi.command.AgiCommand;
 import org.asteriskjava.fastagi.command.AnswerCommand;
+import org.asteriskjava.fastagi.command.BridgeCommand;
 import org.asteriskjava.fastagi.command.ChannelStatusCommand;
+import org.asteriskjava.fastagi.command.ConfbridgeCommand;
 import org.asteriskjava.fastagi.command.ControlStreamFileCommand;
 import org.asteriskjava.fastagi.command.DatabaseDelCommand;
 import org.asteriskjava.fastagi.command.DatabaseDelTreeCommand;
 import org.asteriskjava.fastagi.command.DatabaseGetCommand;
 import org.asteriskjava.fastagi.command.DatabasePutCommand;
+import org.asteriskjava.fastagi.command.DialCommand;
 import org.asteriskjava.fastagi.command.ExecCommand;
 import org.asteriskjava.fastagi.command.GetDataCommand;
 import org.asteriskjava.fastagi.command.GetFullVariableCommand;
@@ -39,6 +42,7 @@ import org.asteriskjava.fastagi.command.GetOptionCommand;
 import org.asteriskjava.fastagi.command.GetVariableCommand;
 import org.asteriskjava.fastagi.command.GosubCommand;
 import org.asteriskjava.fastagi.command.HangupCommand;
+import org.asteriskjava.fastagi.command.MeetmeCommand;
 import org.asteriskjava.fastagi.command.RecordFileCommand;
 import org.asteriskjava.fastagi.command.SayAlphaCommand;
 import org.asteriskjava.fastagi.command.SayDateTimeCommand;
@@ -549,5 +553,33 @@ public class AgiChannelImpl implements AgiChannel
     public AgiRequest getInternalAgiRequest()
     {
         return request;
+    }
+
+    @Override
+    public void confbridge(String room, String profile) throws AgiException
+    {
+        sendCommand(new ConfbridgeCommand(room, profile));
+
+    }
+
+    @Override
+    public void meetme(String room, String options) throws AgiException
+    {
+        sendCommand(new MeetmeCommand(room, options));
+
+    }
+
+    @Override
+    public void dial(String target, int timeout, String options) throws AgiException
+    {
+        sendCommand(new DialCommand(target, timeout, options));
+
+    }
+
+    @Override
+    public void bridge(String channelName, String options) throws AgiException
+    {
+        sendCommand(new BridgeCommand(channelName, options));
+
     }
 }
