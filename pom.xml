@@ -107,12 +107,20 @@
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>2.5</version>
 				<configuration>
-					<archive>
-						<manifest>
-							<mainClass>org.asteriskjava.Cli</mainClass>
-						</manifest>
-					</archive>
+					<useDefaultManifestFile>true</useDefaultManifestFile>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>biz.aQute.bnd</groupId>
+				<artifactId>bnd-maven-plugin</artifactId>
+				<version>3.1.0</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>bnd-process</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -195,10 +203,7 @@
 		<profile>
 			<id>release</id>
 			<build>
-
 				<plugins>
-
-
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-source-plugin</artifactId>

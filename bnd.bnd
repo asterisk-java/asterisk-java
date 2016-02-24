@@ -1,0 +1,16 @@
+Main-Class: org.asteriskjava.Cli
+
+Bundle-SymbolicName: org.asteriskjava
+Bundle-Name: ${project.name}
+Bundle-Description: ${project.description}
+Bundle-DocURL: ${project.url}
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
+
+-exportcontents: !*.internal.*, *
+
+Import-Package: \
+	javax.net,\
+	javax.net.ssl,\
+	javax.script,\
+	org.apache.log4j;resolution:=optional,\
+	org.slf4j;resolution:=optional
