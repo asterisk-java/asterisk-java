@@ -128,7 +128,7 @@ public class CoreShowChannelEvent extends ResponseEvent
     @Deprecated
     public void setBridgeduniqueid(String bridgeduniqueid)
     {
-        this.bridgeid = bridgeid;
+        this.bridgeid = bridgeduniqueid;
     }
 
     /**

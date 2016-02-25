@@ -1,6 +1,5 @@
 package org.asteriskjava.config.dialplan;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -149,7 +148,7 @@ public class ExtensionsConfigFileReader extends ConfigFileReader
         return args.toArray(new String[args.size()]);
     }
 
-    public ExtensionsConfigFile readExtensionsFile(String configfile) throws IOException, ConfigParseException
+    public ExtensionsConfigFile readExtensionsFile(String configfile)
     {
         super.readFile(configfile);
         /* at some point, we may want to resolve back references */

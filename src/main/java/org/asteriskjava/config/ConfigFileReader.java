@@ -2,7 +2,6 @@ package org.asteriskjava.config;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.CharBuffer;
@@ -54,18 +53,19 @@ public class ConfigFileReader
         this.warnings = new ArrayList<>();
     }
 
-    public ConfigFile readFile(String configfile) throws IOException, ConfigParseException
+    public ConfigFile readFile(String configfile)
     {
         final ConfigFile result;
-        
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(configfile), StandardCharsets.UTF_8)))
+
+        try (BufferedReader reader = new BufferedReader(
+                new InputStreamReader(new FileInputStream(configfile), StandardCharsets.UTF_8)))
         {
             readFile(configfile, reader);
         }
-		catch (Exception e)
-		{
-			// ignored
-		}
+        catch (Exception e)
+        {
+            // ignored
+        }
 
         result = new ConfigFileImpl(configfile, new TreeMap<String, Category>(categories));
 
