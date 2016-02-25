@@ -12,6 +12,8 @@ import org.asteriskjava.manager.event.BridgeEnterEvent;
 import org.asteriskjava.manager.event.BridgeEvent;
 import org.asteriskjava.manager.event.BridgeLeaveEvent;
 import org.asteriskjava.manager.event.ManagerEvent;
+import org.asteriskjava.util.Log;
+import org.asteriskjava.util.LogFactory;
 
 /**
  * Track the current members of a bridge, emmitting BridgeEvents when 2 members
@@ -21,7 +23,7 @@ import org.asteriskjava.manager.event.ManagerEvent;
  */
 public class BridgeState
 {
-    // Logger logger = LogManager.getLogger();
+    final Log logger = LogFactory.getLog(getClass());
 
     BridgeCreateEvent created;
     BridgeDestroyEvent destroyed;
@@ -53,7 +55,7 @@ public class BridgeState
         {
             channels.add(channel);
             members.add(event);
-            System.out.println("Members size " + members.size() + " " + event);
+            logger.info("Members size " + members.size() + " " + event);
             if (members.size() == 2)
             {
                 BridgeEvent bridgeEvent = new BridgeEvent(this);
@@ -66,7 +68,7 @@ public class BridgeState
                 bridgeEvent.setBridgeState(BridgeEvent.BRIDGE_STATE_LINK);
                 bridgeEvent.setDateReceived(new Date());
 
-                System.out.println("Bridge " + bridgeEvent.getChannel1() + " " + bridgeEvent.getChannel2());
+                logger.info("Bridge " + bridgeEvent.getChannel1() + " " + bridgeEvent.getChannel2());
 
                 return bridgeEvent;
             }

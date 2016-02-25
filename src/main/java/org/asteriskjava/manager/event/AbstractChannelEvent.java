@@ -29,6 +29,8 @@ public abstract class AbstractChannelEvent extends ManagerEvent
      */
     static final long serialVersionUID = 5906599407896179295L;
 
+    private String accountCode;
+
     /**
      * The name of the channel.
      */
@@ -131,5 +133,15 @@ public abstract class AbstractChannelEvent extends ManagerEvent
     public final void setCallerIdName(String callerIdName)
     {
         this.callerIdName = callerIdName;
+    }
+
+    public String getAccountCode()
+    {
+        return accountCode;
+    }
+
+    public void setAccountCode(String accountCode)
+    {
+        this.accountCode = accountCode;
     }
 }

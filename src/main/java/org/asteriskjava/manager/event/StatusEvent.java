@@ -51,6 +51,10 @@ public class StatusEvent extends ResponseEvent
     private String pickupGroup;
     private String timeToHangup;
     private Map<String, String> variables;
+    private String dnid;
+    private String writetrans;
+    private String bridgeId;
+    private String readtrans;
 
     public StatusEvent(Object source)
     {
@@ -439,5 +443,69 @@ public class StatusEvent extends ResponseEvent
     public void setTimeToHangup(String timeToHangup)
     {
         this.timeToHangup = timeToHangup;
+    }
+
+    /**
+     * @return the dnid
+     */
+    public String getDnid()
+    {
+        return dnid;
+    }
+
+    /**
+     * @param dnid the dnid to set
+     */
+    public void setDnid(String dnid)
+    {
+        this.dnid = dnid;
+    }
+
+    /**
+     * @return the writetrans
+     */
+    public String getWritetrans()
+    {
+        return writetrans;
+    }
+
+    /**
+     * @param writetrans the writetrans to set
+     */
+    public void setWritetrans(String writetrans)
+    {
+        this.writetrans = writetrans;
+    }
+
+    /**
+     * @return the bridgeid
+     */
+    public String getBridgeId()
+    {
+        return bridgeId;
+    }
+
+    /**
+     * @param bridgeid the bridgeid to set
+     */
+    public void setBridgeId(String bridgeid)
+    {
+        this.bridgeId = bridgeid;
+    }
+
+    /**
+     * @return the readtrans
+     */
+    public String getReadtrans()
+    {
+        return readtrans;
+    }
+
+    /**
+     * @param readtrans the readtrans to set
+     */
+    public void setReadtrans(String readtrans)
+    {
+        this.readtrans = readtrans;
     }
 }

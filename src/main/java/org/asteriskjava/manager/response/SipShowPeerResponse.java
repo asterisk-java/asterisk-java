@@ -378,6 +378,7 @@ public class SipShowPeerResponse extends ManagerResponse
 
     public void setSipT38MaxDtgrm(Long sipT38MaxDtgrm)
     {
+
         /**
          * asterisk returns sipT38MaxDtgrm as 4394967295L when the value is -1
          * so I'm taking a long and then changing it to -1 if required

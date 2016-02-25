@@ -17,8 +17,10 @@
 package org.asteriskjava.manager.event;
 
 /**
- * An AgentConnectEvent is triggered when a caller is connected to an agent.<p>
- * It is implemented in <code>apps/app_queue.c</code>.<p>
+ * An AgentConnectEvent is triggered when a caller is connected to an agent.
+ * <p>
+ * It is implemented in <code>apps/app_queue.c</code>.
+ * <p>
  * Available since Asterisk 1.2
  * 
  * @author srt
@@ -35,6 +37,19 @@ public class AgentConnectEvent extends AbstractAgentEvent
     private Long holdTime;
     private String bridgedChannel;
     private Long ringtime;
+
+    String destExten;
+    String destChannelStateDesc;
+    String destUniqueId;
+    String destConnectedLineNum;
+    String destConnectedLineName;
+    String destCallerIdName;
+    String destCallerIdNum;
+    String destContext;
+    String destPriority;
+    String destChannel;
+    String destChannelState;
+    String iface;
 
     public AgentConnectEvent(Object source)
     {
@@ -64,7 +79,8 @@ public class AgentConnectEvent extends AbstractAgentEvent
     /**
      * Returns the unique ID of the queue member channel that is taking the
      * call. This is useful when trying to link recording filenames back to a
-     * particular call from the queue.<p>
+     * particular call from the queue.
+     * <p>
      * Available since Asterisk 1.4.
      * 
      * @return the unique ID of the queue member channel that is taking the
@@ -87,10 +103,13 @@ public class AgentConnectEvent extends AbstractAgentEvent
     }
 
     /**
-     * Returns the amount of time the agent's channel was ringing before answered.<p>
+     * Returns the amount of time the agent's channel was ringing before
+     * answered.
+     * <p>
      * Available since Asterisk 1.6.
      *
-     * @return the amount of time the agent's channel was ringing before answered in seconds.
+     * @return the amount of time the agent's channel was ringing before
+     *         answered in seconds.
      * @since 1.0.0
      */
     public Long getRingtime()
@@ -101,5 +120,197 @@ public class AgentConnectEvent extends AbstractAgentEvent
     public void setRingtime(Long ringtime)
     {
         this.ringtime = ringtime;
+    }
+
+    /**
+     * @return the destExten
+     */
+    public String getDestExten()
+    {
+        return destExten;
+    }
+
+    /**
+     * @param destExten the destExten to set
+     */
+    public void setDestExten(String destExten)
+    {
+        this.destExten = destExten;
+    }
+
+    /**
+     * @return the destChannelStateDesc
+     */
+    public String getDestChannelStateDesc()
+    {
+        return destChannelStateDesc;
+    }
+
+    /**
+     * @param destChannelStateDesc the destChannelStateDesc to set
+     */
+    public void setDestChannelStateDesc(String destChannelStateDesc)
+    {
+        this.destChannelStateDesc = destChannelStateDesc;
+    }
+
+    /**
+     * @return the destUniqueId
+     */
+    public String getDestUniqueId()
+    {
+        return destUniqueId;
+    }
+
+    /**
+     * @param destUniqueId the destUniqueId to set
+     */
+    public void setDestUniqueId(String destUniqueId)
+    {
+        this.destUniqueId = destUniqueId;
+    }
+
+    /**
+     * @return the destConnectedLineNum
+     */
+    public String getDestConnectedLineNum()
+    {
+        return destConnectedLineNum;
+    }
+
+    /**
+     * @param destConnectedLineNum the destConnectedLineNum to set
+     */
+    public void setDestConnectedLineNum(String destConnectedLineNum)
+    {
+        this.destConnectedLineNum = destConnectedLineNum;
+    }
+
+    /**
+     * @return the destConnectedLineName
+     */
+    public String getDestConnectedLineName()
+    {
+        return destConnectedLineName;
+    }
+
+    /**
+     * @param destConnectedLineName the destConnectedLineName to set
+     */
+    public void setDestConnectedLineName(String destConnectedLineName)
+    {
+        this.destConnectedLineName = destConnectedLineName;
+    }
+
+    /**
+     * @return the destCallerIdName
+     */
+    public String getDestCallerIdName()
+    {
+        return destCallerIdName;
+    }
+
+    /**
+     * @param destCallerIdName the destCallerIdName to set
+     */
+    public void setDestCallerIdName(String destCallerIdName)
+    {
+        this.destCallerIdName = destCallerIdName;
+    }
+
+    /**
+     * @return the destCallerIdNum
+     */
+    public String getDestCallerIdNum()
+    {
+        return destCallerIdNum;
+    }
+
+    /**
+     * @param destCallerIdNum the destCallerIdNum to set
+     */
+    public void setDestCallerIdNum(String destCallerIdNum)
+    {
+        this.destCallerIdNum = destCallerIdNum;
+    }
+
+    /**
+     * @return the destContext
+     */
+    public String getDestContext()
+    {
+        return destContext;
+    }
+
+    /**
+     * @param destContext the destContext to set
+     */
+    public void setDestContext(String destContext)
+    {
+        this.destContext = destContext;
+    }
+
+    /**
+     * @return the destPriority
+     */
+    public String getDestPriority()
+    {
+        return destPriority;
+    }
+
+    /**
+     * @param destPriority the destPriority to set
+     */
+    public void setDestPriority(String destPriority)
+    {
+        this.destPriority = destPriority;
+    }
+
+    /**
+     * @return the destChannel
+     */
+    public String getDestChannel()
+    {
+        return destChannel;
+    }
+
+    /**
+     * @param destChannel the destChannel to set
+     */
+    public void setDestChannel(String destChannel)
+    {
+        this.destChannel = destChannel;
+    }
+
+    /**
+     * @return the destChannelState
+     */
+    public String getDestChannelState()
+    {
+        return destChannelState;
+    }
+
+    /**
+     * @param destChannelState the destChannelState to set
+     */
+    public void setDestChannelState(String destChannelState)
+    {
+        this.destChannelState = destChannelState;
+    }
+
+    /**
+     * @return the iface
+     */
+    public String getInterface()
+    {
+        return iface;
+    }
+
+    /**
+     * @param iface the iface to set
+     */
+    public void setInterface(String iface)
+    {
+        this.iface = iface;
     }
 }

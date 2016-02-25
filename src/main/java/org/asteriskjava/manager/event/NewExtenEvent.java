@@ -17,7 +17,8 @@
 package org.asteriskjava.manager.event;
 
 /**
- * A NewExtenEvent is triggered when a channel is connected to a new extension.<p>
+ * A NewExtenEvent is triggered when a channel is connected to a new extension.
+ * <p>
  * It is implemented in <code>pbx.c</code>
  * 
  * @author srt
@@ -36,6 +37,7 @@ public class NewExtenEvent extends ManagerEvent
     private String appData;
     private String channel;
     private String language;
+    private String accountCode;
 
     /**
      * @param source
@@ -47,14 +49,14 @@ public class NewExtenEvent extends ManagerEvent
 
     public String getLanguage()
     {
-    	return language;
+        return language;
     }
-    
+
     public void setLanguage(String language)
     {
-    	this.language = language;
-    }   
-    
+        this.language = language;
+    }
+
     /**
      * Returns the unique id of the channel.
      */
@@ -88,8 +90,8 @@ public class NewExtenEvent extends ManagerEvent
     }
 
     /**
-     * Returns the parameters passed to the application that is executed. The parameters are
-     * separated by a '|' character.
+     * Returns the parameters passed to the application that is executed. The
+     * parameters are separated by a '|' character.
      */
     public String getAppData()
     {
@@ -134,5 +136,15 @@ public class NewExtenEvent extends ManagerEvent
     public void setExtension(String extension)
     {
         this.extension = extension;
+    }
+
+    public String getAccountCode()
+    {
+        return accountCode;
+    }
+
+    public void setAccountCode(String accountCode)
+    {
+        this.accountCode = accountCode;
     }
 }

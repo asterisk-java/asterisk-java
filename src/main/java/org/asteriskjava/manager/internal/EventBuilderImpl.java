@@ -178,6 +178,7 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
         registerEventClass(QueueMemberAddedEvent.class);
         registerEventClass(QueueMemberEvent.class);
         registerEventClass(QueueMemberPausedEvent.class);
+        registerEventClass(QueueMemberPauseEvent.class);
         registerEventClass(QueueMemberPenaltyEvent.class);
         registerEventClass(QueueMemberRemovedEvent.class);
         registerEventClass(QueueMemberStatusEvent.class);

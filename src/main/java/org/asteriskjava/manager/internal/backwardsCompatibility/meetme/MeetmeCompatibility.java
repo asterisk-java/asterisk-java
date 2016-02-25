@@ -46,7 +46,7 @@ public class MeetmeCompatibility
             joinEvent.setCallerIdName(event.getCallerIdName());
             joinEvent.setUniqueId(((ConfbridgeJoinEvent) event).getUniqueId());
             joinEvent.setChannel(((ConfbridgeJoinEvent) event).getChannel());
-            joinEvent.setMeetMe(((ConfbridgeJoinEvent) event).getConference());
+            joinEvent.setMeetMe(((ConfbridgeJoinEvent) event).getBridgeName());
             joinEvent.setDateReceived(new Date());
 
             return joinEvent;
