@@ -1,8 +1,5 @@
 package org.asteriskjava.util.internal;
 
-import org.asteriskjava.util.Log;
-import org.asteriskjava.util.LogFactory;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -14,6 +11,9 @@ import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import org.asteriskjava.util.Log;
+import org.asteriskjava.util.LogFactory;
 
 /**
  * Writes a trace file to the file system.

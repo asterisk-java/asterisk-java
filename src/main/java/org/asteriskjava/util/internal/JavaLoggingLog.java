@@ -134,7 +134,7 @@ public class JavaLoggingLog implements Log
 
     private StackTraceElement getInvokerSTE()
     {
-        StackTraceElement stack[] = (new Throwable()).getStackTrace();
+        StackTraceElement[] stack = (new Throwable()).getStackTrace();
 
         if (stack.length > 2)
         {

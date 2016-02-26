@@ -42,7 +42,7 @@ public class ResponseEventsImpl implements ResponseEvents
      */
     public ResponseEventsImpl()
     {
-        this.events = new ArrayList<ResponseEvent>();
+        this.events = new ArrayList<>();
         this.complete = false;
     }
 

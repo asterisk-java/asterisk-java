@@ -18,10 +18,8 @@ public class ListDialplanEvent extends ResponseEvent
 
     private static final String PRIORITY_HINT = "hint";
 
-    private String context;
     private String extension;
     private String extensionLabel;
-    private Integer priority;
     private boolean hint = false;
     private String application;
     private String appData;
@@ -30,21 +28,6 @@ public class ListDialplanEvent extends ResponseEvent
     public ListDialplanEvent(Object source)
     {
         super(source);
-    }
-
-    /**
-     * Returns the context.
-     *
-     * @return the context.
-     */
-    public String getContext()
-    {
-        return context;
-    }
-
-    public void setContext(String context)
-    {
-        this.context = context;
     }
 
     /**
@@ -74,16 +57,6 @@ public class ListDialplanEvent extends ResponseEvent
     public void setExtensionLabel(String extensionLabel)
     {
         this.extensionLabel = extensionLabel;
-    }
-
-    /**
-     * Returns the priority.
-     *
-     * @return the priority or <code>null</code> if this is a hint.
-     */
-    public Integer getPriority()
-    {
-        return priority;
     }
 
     /**

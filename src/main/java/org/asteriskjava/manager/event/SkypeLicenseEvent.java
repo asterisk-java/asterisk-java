@@ -31,7 +31,6 @@ public class SkypeLicenseEvent extends ResponseEvent
      * Serial version identifier.
      */
     private static final long serialVersionUID = 1L;
-    private String file;
     private String key;
     private String expires;
     private String hostId;
@@ -41,26 +40,6 @@ public class SkypeLicenseEvent extends ResponseEvent
     public SkypeLicenseEvent(Object source)
     {
         super(source);
-    }
-
-    /**
-     * Returns the name of the file this license is stored in.
-     *
-     * @return the name of the file this license is stored in.
-     */
-    public String getFile()
-    {
-        return file;
-    }
-
-    /**
-     * Sets the name of the file this license is stored in.
-     *
-     * @param file the name of the file this license is stored in.
-     */
-    public void setFile(String file)
-    {
-        this.file = file;
     }
 
     /**

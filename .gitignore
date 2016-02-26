@@ -9,3 +9,5 @@ target
 .gradle
 classes
 /bin
+build/
+/.settings/

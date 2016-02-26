@@ -16,18 +16,51 @@
  */
 package org.asteriskjava.live.internal;
 
-import org.asteriskjava.live.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
+import org.asteriskjava.live.AsteriskChannel;
+import org.asteriskjava.live.CallerId;
+import org.asteriskjava.live.ChannelState;
+import org.asteriskjava.live.Extension;
+import org.asteriskjava.live.HangupCause;
+import org.asteriskjava.live.ManagerCommunicationException;
+import org.asteriskjava.live.NoSuchChannelException;
 import org.asteriskjava.manager.ResponseEvents;
 import org.asteriskjava.manager.action.StatusAction;
-import org.asteriskjava.manager.event.*;
+import org.asteriskjava.manager.event.AbstractChannelEvent;
+import org.asteriskjava.manager.event.BridgeEvent;
+import org.asteriskjava.manager.event.CdrEvent;
+import org.asteriskjava.manager.event.DialEvent;
+import org.asteriskjava.manager.event.DtmfEvent;
+import org.asteriskjava.manager.event.HangupEvent;
+import org.asteriskjava.manager.event.ManagerEvent;
+import org.asteriskjava.manager.event.MonitorStartEvent;
+import org.asteriskjava.manager.event.MonitorStopEvent;
+import org.asteriskjava.manager.event.NewCallerIdEvent;
+import org.asteriskjava.manager.event.NewChannelEvent;
+import org.asteriskjava.manager.event.NewExtenEvent;
+import org.asteriskjava.manager.event.NewStateEvent;
+import org.asteriskjava.manager.event.ParkedCallEvent;
+import org.asteriskjava.manager.event.ParkedCallGiveUpEvent;
+import org.asteriskjava.manager.event.ParkedCallTimeOutEvent;
+import org.asteriskjava.manager.event.RenameEvent;
+import org.asteriskjava.manager.event.StatusEvent;
+import org.asteriskjava.manager.event.UnparkedCallEvent;
+import org.asteriskjava.manager.event.VarSetEvent;
 import org.asteriskjava.util.DaemonThreadFactory;
 import org.asteriskjava.util.DateUtil;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
-
-import java.util.*;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Manages channel events on behalf of an AsteriskServer.
@@ -40,7 +73,8 @@ class ChannelManager
     private final Log logger = LogFactory.getLog(getClass());
 
     /**
-     * How long we wait before we remove hung up channels from memory (in milliseconds).
+     * How long we wait before we remove hung up channels from memory (in
+     * milliseconds).
      */
     private static final long REMOVAL_THRESHOLD = 15 * 60 * 1000L; // 15 minutes
     private static final long SLEEP_TIME_BEFORE_GET_VAR = 50L;
@@ -50,10 +84,9 @@ class ChannelManager
     /**
      * A map of all active channel by their unique id.
      */
-    final LinkedHashMap<String,AsteriskChannelImpl> channels = new LinkedHashMap<String,AsteriskChannelImpl>();
+    final Map<String, AsteriskChannelImpl> channels = new LinkedHashMap<>();
 
-
-		ScheduledThreadPoolExecutor traceScheduledExecutorService;
+    ScheduledThreadPoolExecutor traceScheduledExecutorService;
 
     /**
      * Creates a new instance.
@@ -74,9 +107,9 @@ class ChannelManager
     {
         ResponseEvents re;
 
-        disconnected();
-
-	      traceScheduledExecutorService = new ScheduledThreadPoolExecutor(1, new DaemonThreadFactory());//Executors.newSingleThreadScheduledExecutor
+        shutdown();
+        
+        traceScheduledExecutorService = new ScheduledThreadPoolExecutor(1, new DaemonThreadFactory());// Executors.newSingleThreadScheduledExecutor
 
         StatusAction sa = new StatusAction();
         sa.setVariables(variables);
@@ -88,18 +121,29 @@ class ChannelManager
                 handleStatusEvent((StatusEvent) event);
             }
         }
+        logger.debug("ChannelManager has been initialised");
+        
     }
 
     void disconnected()
     {
-	      if (traceScheduledExecutorService != null) {
-	        traceScheduledExecutorService.shutdown();
-	      }
+    	shutdown();
+    	logger.debug("ChannelManager has been disconnected from Asterisk.");
+      }
+    
+    private void shutdown()
+    {
+        if (traceScheduledExecutorService != null)
+        {
+            traceScheduledExecutorService.shutdown();
+        }
         synchronized (channels)
         {
             channels.clear();
         }
+  	
     }
+
 
     /**
      * Returns a collection of all active AsteriskChannels.
@@ -112,7 +156,7 @@ class ChannelManager
 
         synchronized (channels)
         {
-            copy = new ArrayList<AsteriskChannel>(channels.size() + 2);
+            copy = new ArrayList<>(channels.size() + 2);
             for (AsteriskChannel channel : channels.values())
             {
                 if (channel.getState() != ChannelState.HUNGUP)
@@ -133,7 +177,8 @@ class ChannelManager
     }
 
     /**
-     * Removes channels that have been hung more than {@link #REMOVAL_THRESHOLD} milliseconds.
+     * Removes channels that have been hung more than {@link #REMOVAL_THRESHOLD}
+     * milliseconds.
      */
     private void removeOldChannels()
     {
@@ -158,42 +203,77 @@ class ChannelManager
         }
     }
 
-    private AsteriskChannelImpl addNewChannel(String uniqueId, final String name,
-                                              Date dateOfCreation, String callerIdNumber, String callerIdName,
-                                              ChannelState state, String account)
+    private AsteriskChannelImpl addNewChannel(String uniqueId, final String name, Date dateOfCreation, String callerIdNumber,
+            String callerIdName, ChannelState state, String account)
     {
         final AsteriskChannelImpl channel = new AsteriskChannelImpl(server, name, uniqueId, dateOfCreation);
         channel.setCallerId(new CallerId(callerIdName, callerIdNumber));
         channel.setAccount(account);
         channel.stateChanged(dateOfCreation, state);
         logger.info("Adding channel " + channel.getName() + "(" + channel.getId() + ")");
+
+        if (SLEEP_TIME_BEFORE_GET_VAR > 0)
+        {
+            long start = System.currentTimeMillis();
+            long end = start + SLEEP_TIME_BEFORE_GET_VAR;
+            while (System.currentTimeMillis() < end)
+            {
+                try
+                {
+                    channel.getVariable(Constants.VARIABLE_TRACE_ID);
+                }
+                catch (NoSuchChannelException e)
+                {
+                    try
+                    {
+                        Thread.sleep(1L);
+                    }
+                    catch (InterruptedException intEx)
+                    {
+                        Thread.currentThread().interrupt();
+                    }
+                }
+            }
+        }
+
+        String traceId = getTraceId(channel);
+        channel.setTraceId(traceId);
+
         addChannel(channel);
 
-	    //todo getChannelImplById -> LinkedHashMap, callbacks order
-	    traceScheduledExecutorService.schedule(new Runnable(){
-		    @Override public void run () {
-			    final String traceId = getTraceId(channel);
-	        channel.setTraceId(traceId);
+        // todo getChannelImplById -> LinkedHashMap, callbacks order
+        traceScheduledExecutorService.schedule(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                final String traceId = getTraceId(channel);
+                channel.setTraceId(traceId);
 
-	        if (traceId != null && (!name.toLowerCase(Locale.ENGLISH).startsWith("local/") || name.endsWith(",1") || name.endsWith(";1"))) {
-            final OriginateCallbackData callbackData = server.getOriginateCallbackDataByTraceId(traceId);
+                if (traceId != null && (!name.toLowerCase(Locale.ENGLISH).startsWith("local/") || name.endsWith(",1")
+                        || name.endsWith(";1")))
+                {
+                    final OriginateCallbackData callbackData = server.getOriginateCallbackDataByTraceId(traceId);
 
-            if (callbackData != null && callbackData.getChannel() == null) {
-              callbackData.setChannel(channel);
-              try {
-                callbackData.getCallback().onDialing(channel);
-              } catch (Throwable t) {
-                logger.warn("Exception dispatching originate progress. "+ channel, t);
-              }//t
-            }//i
-          }//i
-		    }}, SLEEP_TIME_BEFORE_GET_VAR, TimeUnit.MILLISECONDS);
-
+                    if (callbackData != null && callbackData.getChannel() == null)
+                    {
+                        callbackData.setChannel(channel);
+                        try
+                        {
+                            callbackData.getCallback().onDialing(channel);
+                        }
+                        catch (Throwable t)
+                        {
+                            logger.warn("Exception dispatching originate progress. " + channel, t);
+                        } // t
+                    } // i
+                } // i
+            }
+        }, SLEEP_TIME_BEFORE_GET_VAR, TimeUnit.MILLISECONDS);
 
         server.fireNewAsteriskChannel(channel);
         return channel;
-    }//addNewChannel
-
+    }// addNewChannel
 
     void handleStatusEvent(StatusEvent event)
     {
@@ -219,15 +299,14 @@ class ChannelManager
             isNew = true;
             if (variables != null)
             {
-                for (String variable : variables.keySet())
+                for (Entry<String, String> variable : variables.entrySet())
                 {
-                    channel.updateVariable(variable, variables.get(variable));
+                    channel.updateVariable(variable.getKey(), variable.getValue());
                 }
             }
         }
 
-        if (event.getContext() == null && event.getExtension() == null
-                && event.getPriority() == null)
+        if (event.getContext() == null && event.getExtension() == null && event.getPriority() == null)
         {
             extension = null;
         }
@@ -270,12 +349,13 @@ class ChannelManager
     }
 
     /**
-     * Returns a channel from the ChannelManager's cache with the given name
-     * If multiple channels are found, returns the most recently CREATED one.
-     * If two channels with the very same date exist, avoid HUNGUP ones.
+     * Returns a channel from the ChannelManager's cache with the given name If
+     * multiple channels are found, returns the most recently CREATED one. If
+     * two channels with the very same date exist, avoid HUNGUP ones.
      *
      * @param name the name of the requested channel.
-     * @return the (most recent) channel if found, in any state, or null if none found.
+     * @return the (most recent) channel if found, in any state, or null if none
+     *         found.
      */
     AsteriskChannelImpl getChannelImplByName(String name)
     {
@@ -293,10 +373,10 @@ class ChannelManager
             {
                 if (name.equals(tmp.getName()))
                 {
-                    // return the most recent channel or when dates are similar, the active one
-                    if (dateOfCreation == null ||
-                            tmp.getDateOfCreation().after(dateOfCreation) ||
-                            (tmp.getDateOfCreation().equals(dateOfCreation) && tmp.getState() != ChannelState.HUNGUP))
+                    // return the most recent channel or when dates are similar,
+                    // the active one
+                    if (dateOfCreation == null || tmp.getDateOfCreation().after(dateOfCreation)
+                            || (tmp.getDateOfCreation().equals(dateOfCreation) && tmp.getState() != ChannelState.HUNGUP))
                     {
                         channel = tmp;
                         dateOfCreation = channel.getDateOfCreation();
@@ -308,7 +388,8 @@ class ChannelManager
     }
 
     /**
-     * Returns a NON-HUNGUP channel from the ChannelManager's cache with the given name.
+     * Returns a NON-HUNGUP channel from the ChannelManager's cache with the
+     * given name.
      *
      * @param name the name of the requested channel.
      * @return the NON-HUNGUP channel if found, or null if none is found.
@@ -316,9 +397,10 @@ class ChannelManager
     AsteriskChannelImpl getChannelImplByNameAndActive(String name)
     {
 
-        // In non bristuffed AST 1.2, we don't have uniqueid header to match the channel
+        // In non bristuffed AST 1.2, we don't have uniqueid header to match the
+        // channel
         // So we must use the channel name
-        // Channel name is unique at any give moment in the  * server
+        // Channel name is unique at any give moment in the * server
         // But asterisk-java keeps Hungup channels for a while.
         // We don't want to retrieve hungup channels.
 
@@ -342,25 +424,29 @@ class ChannelManager
         return channel;
     }
 
-    AsteriskChannelImpl getChannelImplById(String uniqueId) {
-      if (uniqueId == null) { return null;}
+    AsteriskChannelImpl getChannelImplById(String uniqueId)
+    {
+        if (uniqueId == null)
+        {
+            return null;
+        }
 
-      synchronized (channels) {
-	      return channels.get(uniqueId);
-      }
-    }//getChannelImplById
+        synchronized (channels)
+        {
+            return channels.get(uniqueId);
+        }
+    }// getChannelImplById
 
     /**
-     * Returns the other side of a local channel.
-     * <br>
-     * Local channels consist of two sides, like
-     * "Local/1234@from-local-60b5,1" and "Local/1234@from-local-60b5,2" (for Asterisk 1.4) or
-     * "Local/1234@from-local-60b5;1" and "Local/1234@from-local-60b5;2" (for Asterisk 1.6)
-     * this method returns the other side.
+     * Returns the other side of a local channel. <br>
+     * Local channels consist of two sides, like "Local/1234@from-local-60b5,1"
+     * and "Local/1234@from-local-60b5,2" (for Asterisk 1.4) or
+     * "Local/1234@from-local-60b5;1" and "Local/1234@from-local-60b5;2" (for
+     * Asterisk 1.6) this method returns the other side.
      *
      * @param localChannel one side
-     * @return the other side, or <code>null</code> if not available or if the given channel
-     *         is not a local channel.
+     * @return the other side, or <code>null</code> if not available or if the
+     *         given channel is not a local channel.
      */
     AsteriskChannelImpl getOtherSideOfLocalChannel(AsteriskChannel localChannel)
     {
@@ -373,7 +459,8 @@ class ChannelManager
         }
 
         name = localChannel.getName();
-        if (name == null || !name.startsWith("Local/") || (name.charAt(name.length() - 2) != ',' && name.charAt(name.length() - 2) != ';'))
+        if (name == null || !name.startsWith("Local/")
+                || (name.charAt(name.length() - 2) != ',' && name.charAt(name.length() - 2) != ';'))
         {
             return null;
         }
@@ -406,10 +493,8 @@ class ChannelManager
             }
             else
             {
-                addNewChannel(
-                        event.getUniqueId(), event.getChannel(), event.getDateReceived(),
-                        event.getCallerIdNum(), event.getCallerIdName(),
-                        ChannelState.valueOf(event.getChannelState()), event.getAccountCode());
+                addNewChannel(event.getUniqueId(), event.getChannel(), event.getDateReceived(), event.getCallerIdNum(),
+                        event.getCallerIdName(), ChannelState.valueOf(event.getChannelState()), event.getAccountCode());
             }
         }
         else
@@ -436,9 +521,8 @@ class ChannelManager
             return;
         }
 
-        extension = new Extension(
-                event.getContext(), event.getExtension(), event.getPriority(),
-                event.getApplication(), event.getAppData());
+        extension = new Extension(event.getContext(), event.getExtension(), event.getPriority(), event.getApplication(),
+                event.getAppData());
 
         synchronized (channel)
         {
@@ -446,22 +530,27 @@ class ChannelManager
         }
     }
 
-		private void idChanged (AsteriskChannelImpl channel, AbstractChannelEvent event) {
-			if (channel != null) {
-				final String oldId = channel.getId();
-				final String newId = event.getUniqueId();
+    private void idChanged(AsteriskChannelImpl channel, AbstractChannelEvent event)
+    {
+        if (channel != null)
+        {
+            final String oldId = channel.getId();
+            final String newId = event.getUniqueId();
 
-				if (oldId != null && oldId.equals(newId)) { return;}
+            if (oldId != null && oldId.equals(newId))
+            {
+                return;
+            }
 
-				logger.info("Changing unique_id for '" + channel.getName() + "' from " + oldId + " to " + newId +" < "+ event);
-				synchronized(channels) {
-					channels.remove(oldId);
-					channels.put(newId, channel);
-					channel.idChanged(event.getDateReceived(), newId);
-				}
-			}
-		}//idChanged
-
+            logger.info("Changing unique_id for '" + channel.getName() + "' from " + oldId + " to " + newId + " < " + event);
+            synchronized (channels)
+            {
+                channels.remove(oldId);
+                channels.put(newId, channel);
+                channel.idChanged(event.getDateReceived(), newId);
+            }
+        }
+    }// idChanged
 
     void handleNewStateEvent(NewStateEvent event)
     {
@@ -469,23 +558,26 @@ class ChannelManager
 
         if (channel == null)
         {
-            // NewStateEvent can occur for an existing channel that now has a different unique id (originate with Local/)
+            // NewStateEvent can occur for an existing channel that now has a
+            // different unique id (originate with Local/)
             channel = getChannelImplByNameAndActive(event.getChannel());
-	          idChanged(channel, event);
+            idChanged(channel, event);
 
             if (channel == null)
             {
-                logger.info("Creating new channel due to NewStateEvent '" + event.getChannel() + "' unique id " + event.getUniqueId());
+                logger.info("Creating new channel due to NewStateEvent '" + event.getChannel() + "' unique id "
+                        + event.getUniqueId());
                 // NewStateEvent can occur instead of a NewChannelEvent
-                channel = addNewChannel(
-                        event.getUniqueId(), event.getChannel(), event.getDateReceived(),
-                        event.getCallerIdNum(), event.getCallerIdName(),
-                        ChannelState.valueOf(event.getChannelState()), null /* account code not available */);
+                channel = addNewChannel(event.getUniqueId(), event.getChannel(), event.getDateReceived(),
+                        event.getCallerIdNum(), event.getCallerIdName(), ChannelState.valueOf(event.getChannelState()),
+                        null /* account code not available */);
             }
         }
 
-        // NewStateEvent can provide a new CallerIdNum or CallerIdName not previously received through a
-        // NewCallerIdEvent. This happens at least on outgoing legs from the queue application to agents.
+        // NewStateEvent can provide a new CallerIdNum or CallerIdName not
+        // previously received through a
+        // NewCallerIdEvent. This happens at least on outgoing legs from the
+        // queue application to agents.
         if (event.getCallerIdNum() != null || event.getCallerIdName() != null)
         {
             String cidnum = "";
@@ -512,12 +604,14 @@ class ChannelManager
             logger.debug("Updating CallerId (following NewStateEvent) to: " + newCallerId.toString());
             channel.setCallerId(newCallerId);
 
-            // Also, NewStateEvent can return a new channel name for the same channel uniqueid, indicating the channel has been
+            // Also, NewStateEvent can return a new channel name for the same
+            // channel uniqueid, indicating the channel has been
             // renamed but no related RenameEvent has been received.
             // This happens with mISDN channels (see AJ-153)
             if (event.getChannel() != null && !event.getChannel().equals(channel.getName()))
             {
-                logger.info("Renaming channel (following NewStateEvent) '" + channel.getName() + "' to '" + event.getChannel() + "'");
+                logger.info("Renaming channel (following NewStateEvent) '" + channel.getName() + "' to '"
+                        + event.getChannel() + "'");
                 synchronized (channel)
                 {
                     channel.nameChanged(event.getDateReceived(), event.getChannel());
@@ -540,17 +634,17 @@ class ChannelManager
 
         if (channel == null)
         {
-            // NewCallerIdEvent can occur for an existing channel that now has a different unique id (originate with Local/)
+            // NewCallerIdEvent can occur for an existing channel that now has a
+            // different unique id (originate with Local/)
             channel = getChannelImplByNameAndActive(event.getChannel());
-	          idChanged(channel, event);
+            idChanged(channel, event);
 
             if (channel == null)
             {
                 // NewCallerIdEvent can occur before NewChannelEvent
-                channel = addNewChannel(
-                        event.getUniqueId(), event.getChannel(), event.getDateReceived(),
-                        event.getCallerIdNum(), event.getCallerIdName(),
-                        ChannelState.DOWN, null /* account code not available */);
+                channel = addNewChannel(event.getUniqueId(), event.getChannel(), event.getDateReceived(),
+                        event.getCallerIdNum(), event.getCallerIdName(), ChannelState.DOWN,
+                        null /* account code not available */);
             }
         }
 
@@ -592,18 +686,25 @@ class ChannelManager
 
         if (sourceChannel == null)
         {
-            logger.warn("handleDialEvent: Ignored DialEvent for unknown source channel " + event.getChannel() + " with unique id " + event.getUniqueId());
+            logger.warn("handleDialEvent: Ignored DialEvent for unknown source channel " + event.getChannel()
+                    + " with unique id " + event.getUniqueId());
             return;
         }
-        if (destinationChannel == null) {
-	        if (DialEvent.SUBEVENT_END.equalsIgnoreCase(event.getSubEvent())) {
-		        sourceChannel.updateVariable(AsteriskChannel.VAR_AJ_DIAL_STATUS, event.getDialStatus());
-	          logger.info("handleDialEvent: Ignored DialEvent for unknown dst channel "+ event.getDestination() +" with unique_id "+ event.getDestUniqueId());
-	        } else {
-						logger.warn("handleDialEvent: Ignored DialEvent for unknown dst channel "+ event.getDestination() +" with unique_id "+ event.getDestUniqueId());
-					}
-          return;
-        }//i
+        if (destinationChannel == null)
+        {
+            if (DialEvent.SUBEVENT_END.equalsIgnoreCase(event.getSubEvent()))
+            {
+                sourceChannel.updateVariable(AsteriskChannel.VAR_AJ_DIAL_STATUS, event.getDialStatus());
+                logger.info("handleDialEvent: Ignored DialEvent for unknown dst channel " + event.getDestination()
+                        + " with unique_id " + event.getDestUniqueId());
+            }
+            else
+            {
+                logger.warn("handleDialEvent: Ignored DialEvent for unknown dst channel " + event.getDestination()
+                        + " with unique_id " + event.getDestUniqueId());
+            }
+            return;
+        } // i
 
         logger.info(sourceChannel.getName() + " dialed " + destinationChannel.getName());
         getTraceId(sourceChannel);
@@ -673,7 +774,8 @@ class ChannelManager
             return;
         }
 
-        logger.info("Renaming channel '" + channel.getName() + "' to '" + event.getNewname() + "', uniqueId is " + event.getUniqueId());
+        logger.info("Renaming channel '" + channel.getName() + "' to '" + event.getNewname() + "', uniqueId is "
+                + event.getUniqueId());
         synchronized (channel)
         {
             channel.nameChanged(event.getDateReceived(), event.getNewname());
@@ -712,26 +814,29 @@ class ChannelManager
         {
             traceId = null;
         }
-        //logger.info("TraceId for channel " + channel.getName() + " is " + traceId);
+        // logger.info("TraceId for channel " + channel.getName() + " is " +
+        // traceId);
         return traceId;
     }
 
     void handleParkedCallEvent(ParkedCallEvent event)
     {
-        // Only bristuffed versions: AsteriskChannelImpl channel = getChannelImplById(event.getUniqueId());
-        AsteriskChannelImpl channel = getChannelImplByNameAndActive(event.getChannel());
+        // Only bristuffed versions: AsteriskChannelImpl channel =
+        // getChannelImplById(event.getUniqueId());
+        AsteriskChannelImpl channel = getChannelImplByNameAndActive(event.getParkeeChannel());
 
         if (channel == null)
         {
-            logger.info("Ignored ParkedCallEvent for unknown channel "
-                    + event.getChannel());
+            logger.info("Ignored ParkedCallEvent for unknown channel " + event.getParkeeChannel());
             return;
         }
 
         synchronized (channel)
         {
-            // todo The context should be "parkedcalls" or whatever has been configured in features.conf
-            // unfortunately we don't get the context in the ParkedCallEvent so for now we'll set it to null.
+            // todo The context should be "parkedcalls" or whatever has been
+            // configured in features.conf
+            // unfortunately we don't get the context in the ParkedCallEvent so
+            // for now we'll set it to null.
             Extension ext = new Extension(null, event.getExten(), 1);
             channel.setParkedAt(ext);
             logger.info("Channel " + channel.getName() + " is parked at " + channel.getParkedAt().getExtension());
@@ -740,13 +845,13 @@ class ChannelManager
 
     void handleParkedCallGiveUpEvent(ParkedCallGiveUpEvent event)
     {
-        // Only bristuffed versions: AsteriskChannelImpl channel = getChannelImplById(event.getUniqueId());
-        AsteriskChannelImpl channel = getChannelImplByNameAndActive(event.getChannel());
+        // Only bristuffed versions: AsteriskChannelImpl channel =
+        // getChannelImplById(event.getUniqueId());
+        AsteriskChannelImpl channel = getChannelImplByNameAndActive(event.getParkeeChannel());
 
         if (channel == null)
         {
-            logger.info("Ignored ParkedCallGiveUpEvent for unknown channel "
-                    + event.getChannel());
+            logger.info("Ignored ParkedCallGiveUpEvent for unknown channel " + event.getParkeeChannel());
             return;
         }
 
@@ -767,12 +872,13 @@ class ChannelManager
 
     void handleParkedCallTimeOutEvent(ParkedCallTimeOutEvent event)
     {
-        // Only bristuffed versions: AsteriskChannelImpl channel = getChannelImplById(event.getUniqueId());
-        final AsteriskChannelImpl channel = getChannelImplByNameAndActive(event.getChannel());
+        // Only bristuffed versions: AsteriskChannelImpl channel =
+        // getChannelImplById(event.getUniqueId());
+        final AsteriskChannelImpl channel = getChannelImplByNameAndActive(event.getParkeeChannel());
 
         if (channel == null)
         {
-            logger.info("Ignored ParkedCallTimeOutEvent for unknown channel " + event.getChannel());
+            logger.info("Ignored ParkedCallTimeOutEvent for unknown channel " + event.getParkeeChannel());
             return;
         }
 
@@ -793,12 +899,13 @@ class ChannelManager
 
     void handleUnparkedCallEvent(UnparkedCallEvent event)
     {
-        // Only bristuffed versions: AsteriskChannelImpl channel = getChannelImplById(event.getUniqueId());
-        final AsteriskChannelImpl channel = getChannelImplByNameAndActive(event.getChannel());
+        // Only bristuffed versions: AsteriskChannelImpl channel =
+        // getChannelImplById(event.getUniqueId());
+        final AsteriskChannelImpl channel = getChannelImplByNameAndActive(event.getParkeeChannel());
 
         if (channel == null)
         {
-            logger.info("Ignored UnparkedCallEvent for unknown channel " + event.getChannel());
+            logger.info("Ignored UnparkedCallEvent for unknown channel " + event.getParkeeChannel());
             return;
         }
 
@@ -892,7 +999,7 @@ class ChannelManager
 
         boolean isMonitored = channel.isMonitored();
 
-        if (isMonitored == true)
+        if (isMonitored)
         {
             logger.info("Ignored MonitorStartEvent as the channel was already monitored");
             return;
@@ -917,7 +1024,7 @@ class ChannelManager
 
         boolean isMonitored = channel.isMonitored();
 
-        if (isMonitored == false)
+        if (!isMonitored)
         {
             logger.info("Ignored MonitorStopEvent as the channel was not monitored");
             return;

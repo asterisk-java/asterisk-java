@@ -14,8 +14,6 @@ public class ConfbridgeListEvent extends ResponseEvent
     private static final long serialVersionUID = 1L;
 
     private String conference;
-    private String callerIDnum;
-    private String callerIdName;
     private Boolean admin;
     private Boolean markedUser;
     private String channel;
@@ -43,47 +41,7 @@ public class ConfbridgeListEvent extends ResponseEvent
     public String getConference()
     {
         return conference;
-    }
-
-    /**
-     * Sets the Caller*ID Number of the channel in the list of the conference.
-     *
-     * @param callerIDnum the Caller*ID Number of the channel in the list of the conference.
-     */
-    public void setCallerIDnum(String callerIDnum)
-    {
-        this.callerIDnum = callerIDnum;
-    }
-
-    /**
-     * Returns the Caller*ID Number of the channel in the list of the conference.
-     *
-     * @return the Caller*ID Number of the channel in the list of the conference.
-     */
-    public String getCallerIDnum()
-    {
-        return callerIDnum;
-    }
-
-    /**
-     * Sets the Caller*ID Name of the channel in the list of the conference.
-     *
-     * @param callerIdName the Caller*ID Name of the channel in the list of the conference.
-     */
-    public void setCallerIdName(String callerIdName)
-    {
-        this.callerIdName = callerIdName;
-    }
-
-    /**
-     * Returns the Caller*ID Name of the channel in the list of the conference.
-     *
-     * @return the Caller*ID Name of the channel in the list of the conference.
-     */
-    public String getCallerIdName()
-    {
-        return callerIdName;
-    }
+    }   
 
     /**
      * Sets the role of the caller in the list admin = yes or no of the conference.

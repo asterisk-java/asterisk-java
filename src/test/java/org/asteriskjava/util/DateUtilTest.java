@@ -15,14 +15,14 @@ public class DateUtilTest
     final String dateString = "2006-05-19 11:54:48";
 
     @Before
-    public void setUp() throws Exception
+    public void setUp()
     {
         defaultTimeZone = TimeZone.getDefault();
         TimeZone.setDefault(TimeZone.getTimeZone("GMT"));
     }
 
     @After
-    public void tearDown() throws Exception
+    public void tearDown()
     {
         TimeZone.setDefault(defaultTimeZone);
     }

@@ -1,8 +1,8 @@
 package org.asteriskjava.config;
 
-import java.util.List;
-import java.util.Iterator;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  *
@@ -11,8 +11,8 @@ public class Category extends ConfigElement
 {
     private String name;
     private boolean template;
-    private final List<Category> baseCategories = new ArrayList<Category>();
-    private final List<ConfigElement> elements = new ArrayList<ConfigElement>();
+    private final List<Category> baseCategories = new ArrayList<>();
+    private final List<ConfigElement> elements = new ArrayList<>();
 
     /**
      * The last object in the list will get assigned any trailing comments when EOF is hit.

@@ -32,8 +32,6 @@ public class JoinEvent extends QueueEvent
     protected String callerIdNum;
     protected String callerIdName;
     protected Integer position;
-    protected String connectedlinename;
-    protected String connectedlinenum;
 
     public JoinEvent(Object source)
     {
@@ -63,49 +61,6 @@ public class JoinEvent extends QueueEvent
     }
 
     /**
-     * Returns the Caller*ID number of the channel that joined the queue if set.
-     * If the channel has no caller id set "unknown" is returned.
-     *
-     * @return the Caller*ID number of the channel that joined the queue
-     * @since 1.0.0
-     */
-    public String getCallerIdNum()
-    {
-        return callerIdNum;
-    }
-
-    /**
-     * Sets the Caller*ID number of the channel that joined the queue.
-     *
-     * @param callerIdNum the Caller*ID number of the channel that joined the queue.
-     */
-    public void setCallerIdNum(String callerIdNum)
-    {
-        this.callerIdNum = callerIdNum;
-    }
-
-    /**
-     * Returns the Caller*ID name of the channel that joined the queue if set.
-     * If the channel has no caller id set "unknown" is returned.
-     *
-     * @since 0.2
-     */
-    public String getCallerIdName()
-    {
-        return callerIdName;
-    }
-
-    /**
-     * Sets the Caller*ID name of the channel that joined the queue.
-     *
-     * @since 0.2
-     */
-    public void setCallerIdName(String callerIdName)
-    {
-        this.callerIdName = callerIdName;
-    }
-
-    /**
      * Returns the position of the joined channel in the queue.
      */
     public Integer getPosition()
@@ -120,36 +75,5 @@ public class JoinEvent extends QueueEvent
     {
         this.position = position;
     }
-
-    /**
-     * Returns the Caller*ID name of the channel connected if set.
-     * If the channel has no caller id set "unknown" is returned.
-     *
-     * @since 1.0.0
-     */
-    public String getConnectedlinename()
-    {
-        return connectedlinename;
-    }
-
-    public void setConnectedlinename(String connectedlinename)
-    {
-        this.connectedlinename = connectedlinename;
-    }
-
-    /**
-     * Returns the Caller*ID number of the channel connected if set.
-     * If the channel has no caller id set "unknown" is returned.
-     *
-     * @since 1.0.0
-     */
-    public String getConnectedlinenum()
-    {
-        return connectedlinenum;
-    }
-
-    public void setConnectedlinenum(String connectedlinenum)
-    {
-        this.connectedlinenum = connectedlinenum;
-    }
+    
 }

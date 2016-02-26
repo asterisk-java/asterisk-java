@@ -154,7 +154,7 @@ public class ConfigFileParserTest
         }
     }
 
-    public void XtestReadConfig() throws Exception
+    public void XtestReadConfig()
     {
         configFileReader.readFile("/etc/asterisk/sip2.conf");
 
