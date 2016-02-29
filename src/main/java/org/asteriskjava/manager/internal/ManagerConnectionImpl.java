@@ -732,6 +732,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         }
 
         // as a fallback assume 1.6
+        logger.error("Unable to determine asterisk version, assuming 1.6... you should expect problems to follow.");
         return AsteriskVersion.ASTERISK_1_6;
     }
 
@@ -1488,7 +1489,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     @Override
     public String toString()
     {
-    	StringBuilder sb;
+        StringBuilder sb;
 
         sb = new StringBuilder("ManagerConnection[");
         sb.append("id='").append(id).append("',");
