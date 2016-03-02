@@ -1,10 +1,10 @@
 package org.asteriskjava.manager.internal.backwardsCompatibility.bridge;
 
 import java.util.Date;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.asteriskjava.manager.event.BridgeCreateEvent;
 import org.asteriskjava.manager.event.BridgeDestroyEvent;
@@ -27,8 +27,7 @@ public class BridgeState
 
     BridgeCreateEvent created;
     BridgeDestroyEvent destroyed;
-    List<BridgeEnterEvent> members = new LinkedList<>();
-    Set<String> channels = new HashSet<>();
+    private final Map<String, BridgeEnterEvent> members = new ConcurrentHashMap<>();
 
     public BridgeState(BridgeCreateEvent event)
     {
@@ -51,27 +50,26 @@ public class BridgeState
     public ManagerEvent addMember(BridgeEnterEvent event)
     {
         final String channel = event.getChannel();
-        if (!channels.contains(channel))
+        members.put(event.getChannel(), event);
+        logger.info("Members size " + members.size() + " " + event);
+        if (members.size() == 2)
         {
-            channels.add(channel);
-            members.add(event);
-            logger.info("Members size " + members.size() + " " + event);
-            if (members.size() == 2)
-            {
-                BridgeEvent bridgeEvent = new BridgeEvent(this);
-                bridgeEvent.setCallerId1(members.get(0).getCallerIdNum());
-                bridgeEvent.setCallerId2(members.get(1).getCallerIdNum());
-                bridgeEvent.setUniqueId1(members.get(0).getUniqueId());
-                bridgeEvent.setUniqueId2(members.get(1).getUniqueId());
-                bridgeEvent.setChannel1(members.get(0).getChannel());
-                bridgeEvent.setChannel2(members.get(1).getChannel());
-                bridgeEvent.setBridgeState(BridgeEvent.BRIDGE_STATE_LINK);
-                bridgeEvent.setDateReceived(new Date());
+            BridgeEvent bridgeEvent = new BridgeEvent(this);
 
-                logger.info("Bridge " + bridgeEvent.getChannel1() + " " + bridgeEvent.getChannel2());
+            List<BridgeEnterEvent> memberList = new LinkedList<>();
+            memberList.addAll(members.values());
+            bridgeEvent.setCallerId1(memberList.get(0).getCallerIdNum());
+            bridgeEvent.setCallerId2(memberList.get(1).getCallerIdNum());
+            bridgeEvent.setUniqueId1(memberList.get(0).getUniqueId());
+            bridgeEvent.setUniqueId2(memberList.get(1).getUniqueId());
+            bridgeEvent.setChannel1(memberList.get(0).getChannel());
+            bridgeEvent.setChannel2(memberList.get(1).getChannel());
+            bridgeEvent.setBridgeState(BridgeEvent.BRIDGE_STATE_LINK);
+            bridgeEvent.setDateReceived(new Date());
 
-                return bridgeEvent;
-            }
+            logger.info("Bridge " + bridgeEvent.getChannel1() + " " + bridgeEvent.getChannel2());
+
+            return bridgeEvent;
         }
         return null;
 
@@ -86,21 +84,25 @@ public class BridgeState
 
     public ManagerEvent removeMember(BridgeLeaveEvent event)
     {
-        for (BridgeEnterEvent member : members)
+        for (BridgeEnterEvent member : members.values())
         {
             if (member.getChannel().equalsIgnoreCase(event.getChannel()) && members.size() == 2)
             {
                 BridgeEvent bridgeEvent = new BridgeEvent(this);
-                bridgeEvent.setCallerId1(members.get(0).getCallerIdNum());
-                bridgeEvent.setCallerId2(members.get(1).getCallerIdNum());
-                bridgeEvent.setUniqueId1(members.get(0).getUniqueId());
-                bridgeEvent.setUniqueId2(members.get(1).getUniqueId());
-                bridgeEvent.setChannel1(members.get(0).getChannel());
-                bridgeEvent.setChannel2(members.get(1).getChannel());
+
+                List<BridgeEnterEvent> memberList = new LinkedList<>();
+                memberList.addAll(members.values());
+
+                bridgeEvent.setCallerId1(memberList.get(0).getCallerIdNum());
+                bridgeEvent.setCallerId2(memberList.get(1).getCallerIdNum());
+                bridgeEvent.setUniqueId1(memberList.get(0).getUniqueId());
+                bridgeEvent.setUniqueId2(memberList.get(1).getUniqueId());
+                bridgeEvent.setChannel1(memberList.get(0).getChannel());
+                bridgeEvent.setChannel2(memberList.get(1).getChannel());
                 bridgeEvent.setBridgeState(BridgeEvent.BRIDGE_STATE_UNLINK);
                 bridgeEvent.setDateReceived(new Date());
 
-                members.remove(member);
+                members.remove(member.getChannel());
 
                 return bridgeEvent;
 
