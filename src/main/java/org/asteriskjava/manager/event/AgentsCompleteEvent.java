@@ -33,6 +33,9 @@ public class AgentsCompleteEvent extends ResponseEvent
      */
     private static final long serialVersionUID = -1177773673509373296L;
 
+    private Integer listItems;
+    private String eventList;
+    
     /**
      * @param source
      */
@@ -40,4 +43,25 @@ public class AgentsCompleteEvent extends ResponseEvent
     {
         super(source);
     }
+
+    public Integer getListItems()
+    {
+        return listItems;
+    }
+
+    public void setListItems(Integer listItems)
+    {
+        this.listItems = listItems;
+    }
+
+    public String getEventList()
+    {
+        return eventList;
+    }
+
+    public void setEventList(String eventList)
+    {
+        this.eventList = eventList;
+    }
+  
 }

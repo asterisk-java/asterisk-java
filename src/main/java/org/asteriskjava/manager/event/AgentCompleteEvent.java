@@ -39,18 +39,25 @@ public class AgentCompleteEvent extends AbstractAgentEvent
     private Long talkTime;
     private String reason;
 
-    String destExten;
-    String destChannelStateDesc;
-    String destUniqueId;
-    String destConnectedLineNum;
-    String destConnectedLineName;
-    String destCallerIdName;
-    String destCallerIdNum;
-    String destContext;
-    String destPriority;
-    String destChannel;
-    String destChannelState;
-    String iface;
+    private String destExten;
+    private String destChannelStateDesc;
+    private String destUniqueId;
+    private String destConnectedLineNum;
+    private String destConnectedLineName;
+    private String destCallerIdName;
+    private String destCallerIdNum;
+    private String destContext;
+    private String destPriority;
+    private String destChannel;
+    private String destChannelState;
+    private String iface;
+    
+    private String destAccountCode;
+    private String language;
+    private String destLanguage;
+    private String linkedId;
+    private String destLinkedId;
+    private String accountCode;
 
     public AgentCompleteEvent(Object source)
     {
@@ -310,5 +317,65 @@ public class AgentCompleteEvent extends AbstractAgentEvent
     public void setInterface(String iface)
     {
         this.iface = iface;
+    }
+
+    public String getLanguage()
+    {
+        return language;
+    }
+
+    public void setLanguage(String language)
+    {
+        this.language = language;
+    }
+
+    public String getDestAccountCode()
+    {
+        return destAccountCode;
+    }
+
+    public void setDestAccountCode(String destAccountCode)
+    {
+        this.destAccountCode = destAccountCode;
+    }
+
+    public String getDestLanguage()
+    {
+        return destLanguage;
+    }
+
+    public void setDestLanguage(String destLanguage)
+    {
+        this.destLanguage = destLanguage;
+    }
+
+    public String getLinkedId()
+    {
+        return linkedId;
+    }
+
+    public void setLinkedId(String linkedId)
+    {
+        this.linkedId = linkedId;
+    }
+
+    public String getDestLinkedId()
+    {
+        return destLinkedId;
+    }
+
+    public void setDestLinkedId(String destLinkedId)
+    {
+        this.destLinkedId = destLinkedId;
+    }
+
+    public String getAccountCode()
+    {
+        return accountCode;
+    }
+
+    public void setAccountCode(String accountCode)
+    {
+        this.accountCode = accountCode;
     }
 }

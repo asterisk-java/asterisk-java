@@ -12,7 +12,8 @@ public class BridgeLeaveEvent extends AbstractBridgeEvent
 	private String uniqueId;
 	private String channel;
 	private String language;
-
+	private String linkedId;
+	
 	public BridgeLeaveEvent(Object source)
 	{
 		super(source);
@@ -47,4 +48,16 @@ public class BridgeLeaveEvent extends AbstractBridgeEvent
 	{
 		this.channel = channel;
 	}
+
+    public String getLinkedId()
+    {
+        return linkedId;
+    }
+
+    public void setLinkedId(String linkedId)
+    {
+        this.linkedId = linkedId;
+    }
+
+  
 }

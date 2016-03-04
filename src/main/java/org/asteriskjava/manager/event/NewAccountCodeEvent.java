@@ -33,6 +33,8 @@ public class NewAccountCodeEvent extends ManagerEvent
     private String uniqueId;
     private String accountCode;
     private String oldAccountCode;
+    private String language;
+    private String linkedId;
 
     /**
      * @param source
@@ -101,4 +103,26 @@ public class NewAccountCodeEvent extends ManagerEvent
     {
         this.oldAccountCode = oldAccountCode;
     }
+
+    public String getLanguage()
+    {
+        return language;
+    }
+
+    public void setLanguage(String language)
+    {
+        this.language = language;
+    }
+
+    public String getLinkedId()
+    {
+        return linkedId;
+    }
+
+    public void setLinkedId(String linkedId)
+    {
+        this.linkedId = linkedId;
+    }
+    
+    
 }

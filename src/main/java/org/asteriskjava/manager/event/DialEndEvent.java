@@ -7,9 +7,11 @@ public class DialEndEvent extends DialEvent
      */
     private static final long serialVersionUID = 1L;
     private String language;
-    private String destlanguage;
+    private String destLanguage;
     private String accountCode;
     private String destAccountCode;
+    private String destLinkedId;
+    private String linkedId;
 
     public DialEndEvent(Object source)
     {
@@ -29,12 +31,12 @@ public class DialEndEvent extends DialEvent
 
     public String getDestLanguage()
     {
-        return destlanguage;
+        return destLanguage;
     }
 
-    public void setDestLanguage(String destlanguage)
+    public void setDestLanguage(String destLanguage)
     {
-        this.destlanguage = destlanguage;
+        this.destLanguage = destLanguage;
     }
 
     public String getAccountCode()
@@ -56,4 +58,28 @@ public class DialEndEvent extends DialEvent
     {
         this.destAccountCode = destAccountCode;
     }
+
+    public String getDestLinkedId()
+    {
+        return destLinkedId;
+    }
+
+    public void setDestLinkedId(String destLinkedId)
+    {
+        this.destLinkedId = destLinkedId;
+    }
+
+    public String getLinkedId()
+    {
+        return linkedId;
+    }
+
+    public void setLinkedId(String linkedId)
+    {
+        this.linkedId = linkedId;
+    }
+
+
+    
+    
 }

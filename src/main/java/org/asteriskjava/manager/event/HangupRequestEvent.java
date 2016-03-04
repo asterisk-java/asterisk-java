@@ -30,6 +30,7 @@ public class HangupRequestEvent extends AbstractChannelEvent
 
     private Integer cause;
     private String language;
+    private String linkedId;
 
     public String getLanguage()
     {
@@ -65,6 +66,16 @@ public class HangupRequestEvent extends AbstractChannelEvent
     public void setCause(Integer cause)
     {
         this.cause = cause;
+    }
+
+    public String getLinkedId()
+    {
+        return linkedId;
+    }
+
+    public void setLinkedId(String linkedId)
+    {
+        this.linkedId = linkedId;
     }
 
 }
