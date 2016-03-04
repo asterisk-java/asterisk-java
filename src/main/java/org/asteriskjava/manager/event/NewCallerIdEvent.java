@@ -37,6 +37,7 @@ public class NewCallerIdEvent extends AbstractChannelEvent
     private Integer cidCallingPres;
     private String cidCallingPresTxt;
     private String language;
+    private String linkedId;
 
     public NewCallerIdEvent(Object source)
     {
@@ -109,5 +110,15 @@ public class NewCallerIdEvent extends AbstractChannelEvent
         {
             this.cidCallingPresTxt = s.substring(spaceIdx + 2, s.length() - 1);
         }
+    }
+
+    public String getLinkedId()
+    {
+        return linkedId;
+    }
+
+    public void setLinkedId(String linkedId)
+    {
+        this.linkedId = linkedId;
     }
 }

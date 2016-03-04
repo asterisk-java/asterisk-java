@@ -30,6 +30,7 @@ public class NewStateEvent extends AbstractChannelStateEvent
      */
     static final long serialVersionUID = -0L;
     private String language;
+    private String linkedId;
 
     public NewStateEvent(Object source)
     {
@@ -44,5 +45,15 @@ public class NewStateEvent extends AbstractChannelStateEvent
     public void setLanguage(String language)
     {
     	this.language = language;
+    }
+
+    public String getLinkedId()
+    {
+        return linkedId;
+    }
+
+    public void setLinkedId(String linkedId)
+    {
+        this.linkedId = linkedId;
     }
 }

@@ -30,6 +30,7 @@ public class SoftHangupRequestEvent extends AbstractChannelEvent
 
     private Integer cause;
     private String language;
+    private String linkedId;
 
     public SoftHangupRequestEvent(Object source)
     {
@@ -67,4 +68,14 @@ public class SoftHangupRequestEvent extends AbstractChannelEvent
         this.cause = cause;
     }
 
+    public String getLinkedId()
+    {
+        return linkedId;
+    }
+
+    public void setLinkedId(String linkedId)
+    {
+        this.linkedId = linkedId;
+    }
+    
 }

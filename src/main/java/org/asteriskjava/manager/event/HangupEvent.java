@@ -33,6 +33,7 @@ public class HangupEvent extends AbstractChannelStateEvent
     private Integer cause;
     private String causeTxt;
     private String language;
+    private String linkedId;
 
     private String accountCode;
     
@@ -104,22 +105,31 @@ public class HangupEvent extends AbstractChannelStateEvent
 		this.accountCode = accountCode;
 	}
 
+    public String getLinkedId()
+    {
+        return linkedId;
+    }
 
-	@Override
-	public String toString() 
-	{
-		StringBuilder builder = new StringBuilder();
-		builder.append("HangupEvent [cause=");
-		builder.append(cause);
-		builder.append(", causeTxt=");
-		builder.append(causeTxt);
-		builder.append(", accountCode=");
-		builder.append(accountCode);
-		builder.append(", connectedLineNum=");
-		builder.append(connectedLineNum);
-		builder.append(", connectedLineName=");
-		builder.append(connectedLineName);
-		builder.append("]");
-		return builder.toString();
-	}
+    public void setLinkedId(String linkedId)
+    {
+        this.linkedId = linkedId;
+    }
+
+    @Override
+    public String toString()
+    {
+        StringBuilder builder = new StringBuilder();
+        builder.append("HangupEvent [cause=");
+        builder.append(cause);
+        builder.append(", causeTxt=");
+        builder.append(causeTxt);
+        builder.append(", language=");
+        builder.append(language);
+        builder.append(", linkedId=");
+        builder.append(linkedId);
+        builder.append(", accountCode=");
+        builder.append(accountCode);
+        builder.append("]");
+        return builder.toString();
+    }
 }

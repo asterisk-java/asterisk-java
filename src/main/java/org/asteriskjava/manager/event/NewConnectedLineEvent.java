@@ -13,6 +13,7 @@ public class NewConnectedLineEvent extends ManagerEvent
     private String uniqueId;
     private String language;
     private String accountCode;
+    private String linkedId;
 
     public NewConnectedLineEvent(Object source)
     {
@@ -58,4 +59,16 @@ public class NewConnectedLineEvent extends ManagerEvent
     {
         this.accountCode = accountCode;
     }
+
+    public String getLinkedId()
+    {
+        return linkedId;
+    }
+
+    public void setLinkedId(String linkedId)
+    {
+        this.linkedId = linkedId;
+    }
+
+ 
 }
