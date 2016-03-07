@@ -29,7 +29,7 @@ package org.asteriskjava.manager.event;
  */
 public class MusicOnHoldEvent extends ManagerEvent
 {
-    private static final long serialVersionUID = 0L;
+    private static final long serialVersionUID = 1L;
 
     public static final String STATE_START = "Start";
     public static final String STATE_STOP = "Stop";
@@ -39,6 +39,8 @@ public class MusicOnHoldEvent extends ManagerEvent
     private String uniqueId;
     private String state;
     private String accountCode;
+    private String linkedId;
+    private String language;
 
     public MusicOnHoldEvent(Object source)
     {
@@ -147,4 +149,25 @@ public class MusicOnHoldEvent extends ManagerEvent
     {
         this.accountCode = accountCode;
     }
+    
+    public String getLinkedId()
+    {
+        return linkedId;
+    }
+
+    public void setLinkedId(String linkedId)
+    {
+        this.linkedId = linkedId;
+    }
+
+    public String getLanguage()
+    {
+        return language;
+    }
+
+    public void setLanguage(String language)
+    {
+        this.language = language;
+    }
+    
 }

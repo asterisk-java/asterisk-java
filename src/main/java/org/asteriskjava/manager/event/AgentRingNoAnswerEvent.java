@@ -30,23 +30,29 @@ package org.asteriskjava.manager.event;
  */
 public class AgentRingNoAnswerEvent extends AbstractAgentEvent
 {
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 2L;
 
     private Long ringtime;
 
-    String destExten;
-    String destChannelStateDesc;
-    String destUniqueId;
-    String destConnectedLineNum;
-    String destConnectedLineName;
-    String destCallerIdName;
-    String destCallerIdNum;
-    String destContext;
-    String destPriority;
-    String destChannel;
-    String destChannelState;
-    String iface;
-
+    private String destExten;
+    private String destChannelStateDesc;
+    private String destUniqueId;
+    private String destConnectedLineNum;
+    private String destConnectedLineName;
+    private String destCallerIdName;
+    private String destCallerIdNum;
+    private String destContext;
+    private String destPriority;
+    private String destChannel;
+    private String destChannelState;
+    private String iface;
+    
+    private String destAccountCode;
+    private String language;
+    private String destLanguage;
+    private String linkedId;
+    private String destLinkedId;
+    
     public AgentRingNoAnswerEvent(Object source)
     {
         super(source);
@@ -258,4 +264,56 @@ public class AgentRingNoAnswerEvent extends AbstractAgentEvent
     {
         this.iface = iface;
     }
+
+    public String getDestAccountCode()
+    {
+        return destAccountCode;
+    }
+
+    public void setDestAccountCode(String destAccountCode)
+    {
+        this.destAccountCode = destAccountCode;
+    }
+
+    public String getLanguage()
+    {
+        return language;
+    }
+
+    public void setLanguage(String language)
+    {
+        this.language = language;
+    }
+
+    public String getDestLanguage()
+    {
+        return destLanguage;
+    }
+
+    public void setDestLanguage(String destLanguage)
+    {
+        this.destLanguage = destLanguage;
+    }
+
+    public String getLinkedId()
+    {
+        return linkedId;
+    }
+
+    public void setLinkedId(String linkedId)
+    {
+        this.linkedId = linkedId;
+    }
+
+    public String getDestLinkedId()
+    {
+        return destLinkedId;
+    }
+
+    public void setDestLinkedId(String destLinkedId)
+    {
+        this.destLinkedId = destLinkedId;
+    }
+    
+    
 }

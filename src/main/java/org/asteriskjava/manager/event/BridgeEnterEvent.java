@@ -8,10 +8,11 @@ public class BridgeEnterEvent extends AbstractBridgeEvent
     /**
      * 
      */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 2L;
     private String uniqueId;
     private String channel;
     private String language;
+    private String linkedId;
 
     public BridgeEnterEvent(Object source)
     {
@@ -47,4 +48,15 @@ public class BridgeEnterEvent extends AbstractBridgeEvent
     {
         this.uniqueId = uniqueId;
     }
+
+    public String getLinkedId()
+    {
+        return linkedId;
+    }
+
+    public void setLinkedId(String linkedId)
+    {
+        this.linkedId = linkedId;
+    }
+    
 }

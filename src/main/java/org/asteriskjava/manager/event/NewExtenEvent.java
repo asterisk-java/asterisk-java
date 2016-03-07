@@ -38,6 +38,7 @@ public class NewExtenEvent extends ManagerEvent
     private String channel;
     private String language;
     private String accountCode;
+    private String linkedId;
 
     /**
      * @param source
@@ -147,4 +148,15 @@ public class NewExtenEvent extends ManagerEvent
     {
         this.accountCode = accountCode;
     }
+
+    public String getLinkedId()
+    {
+        return linkedId;
+    }
+
+    public void setLinkedId(String linkedId)
+    {
+        this.linkedId = linkedId;
+    }
+    
 }

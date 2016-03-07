@@ -22,14 +22,26 @@ public class ChanSpyStopEvent extends ManagerEvent
     /**
      * Serial version identifier
      */
-    private static final long serialVersionUID = 3256725065466000695L;
+    private static final long serialVersionUID = 3256725065466000696L;
 
     /**
      * The name of the channel.
      */
     private String spyeechannel;
 
-     
+    private String spyerUniqueId;
+    private String spyerLinkedId;
+    private Integer spyerChannelState;
+    private Integer spyerPriority;
+    private String spyerContext;    
+    private String spyerLanguage;
+    private String spyerChannelStateDesc;    
+    private String spyerExten;
+    private String spyerCallerIdNum;
+    private String spyerConnectedLineNum;
+    private String spyerConnectedLineName;    
+    private String spyerCallerIdName;
+    private String spyerChannel;
     
 
     public ChanSpyStopEvent(Object source)
@@ -48,5 +60,174 @@ public class ChanSpyStopEvent extends ManagerEvent
         this.spyeechannel = channel;
     }
 
+
+    public String getSpyeechannel()
+    {
+        return spyeechannel;
+    }
+
+
+    public void setSpyeechannel(String spyeechannel)
+    {
+        this.spyeechannel = spyeechannel;
+    }
+
+
+    public String getSpyerUniqueId()
+    {
+        return spyerUniqueId;
+    }
+
+
+    public void setSpyerUniqueId(String spyerUniqueId)
+    {
+        this.spyerUniqueId = spyerUniqueId;
+    }
+
+
+    public String getSpyerLinkedId()
+    {
+        return spyerLinkedId;
+    }
+
+
+    public void setSpyerLinkedId(String spyerLinkedId)
+    {
+        this.spyerLinkedId = spyerLinkedId;
+    }
+
+
+    public Integer getSpyerChannelState()
+    {
+        return spyerChannelState;
+    }
+
+
+    public void setSpyerChannelState(Integer spyerChannelState)
+    {
+        this.spyerChannelState = spyerChannelState;
+    }
+
+
+    public Integer getSpyerPriority()
+    {
+        return spyerPriority;
+    }
+
+
+    public void setSpyerPriority(Integer spyerPriority)
+    {
+        this.spyerPriority = spyerPriority;
+    }
+
+
+    public String getSpyerContext()
+    {
+        return spyerContext;
+    }
+
+
+    public void setSpyerContext(String spyerContext)
+    {
+        this.spyerContext = spyerContext;
+    }
+
+
+    public String getSpyerLanguage()
+    {
+        return spyerLanguage;
+    }
+
+
+    public void setSpyerLanguage(String spyerLanguage)
+    {
+        this.spyerLanguage = spyerLanguage;
+    }
+
+
+    public String getSpyerChannelStateDesc()
+    {
+        return spyerChannelStateDesc;
+    }
+
+
+    public void setSpyerChannelStateDesc(String spyerChannelStateDesc)
+    {
+        this.spyerChannelStateDesc = spyerChannelStateDesc;
+    }
+
+
+    public String getSpyerExten()
+    {
+        return spyerExten;
+    }
+
+
+    public void setSpyerExten(String spyerExten)
+    {
+        this.spyerExten = spyerExten;
+    }
+
+
+    public String getSpyerCallerIdNum()
+    {
+        return spyerCallerIdNum;
+    }
+
+
+    public void setSpyerCallerIdNum(String spyerCallerIdNum)
+    {
+        this.spyerCallerIdNum = spyerCallerIdNum;
+    }
+
+
+    public String getSpyerConnectedLineNum()
+    {
+        return spyerConnectedLineNum;
+    }
+
+
+    public void setSpyerConnectedLineNum(String spyerConnectedLineNum)
+    {
+        this.spyerConnectedLineNum = spyerConnectedLineNum;
+    }
+
+
+    public String getSpyerConnectedLineName()
+    {
+        return spyerConnectedLineName;
+    }
+
+
+    public void setSpyerConnectedLineName(String spyerConnectedLineName)
+    {
+        this.spyerConnectedLineName = spyerConnectedLineName;
+    }
+
+
+    public String getSpyerCallerIdName()
+    {
+        return spyerCallerIdName;
+    }
+
+
+    public void setSpyerCallerIdName(String spyerCallerIdName)
+    {
+        this.spyerCallerIdName = spyerCallerIdName;
+    }
+
+
+    public String getSpyerChannel()
+    {
+        return spyerChannel;
+    }
+
+
+    public void setSpyerChannel(String spyerChannel)
+    {
+        this.spyerChannel = spyerChannel;
+    }
+
+    
     
 }
