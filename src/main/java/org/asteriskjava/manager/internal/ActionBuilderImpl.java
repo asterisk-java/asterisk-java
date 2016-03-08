@@ -41,6 +41,7 @@ import org.asteriskjava.util.ReflectionUtil;
  */
 class ActionBuilderImpl implements ActionBuilder
 {
+
     private static final String LINE_SEPARATOR = "\r\n";
     private static final String ATTRIBUTES_PROPERTY_NAME = "attributes";
 
@@ -118,8 +119,8 @@ class ActionBuilderImpl implements ActionBuilder
         // actions that have the special getAttributes method will
         // have their Map appended without a singular key or separator
         Map<String, Method> getters = ReflectionUtil.getGetters(action.getClass());
-        
-        if(getters.containsKey(ATTRIBUTES_PROPERTY_NAME))
+
+        if (getters.containsKey(ATTRIBUTES_PROPERTY_NAME))
         {
             Method getter = getters.get(ATTRIBUTES_PROPERTY_NAME);
             Object value = null;
@@ -131,18 +132,18 @@ class ActionBuilderImpl implements ActionBuilder
             {
                 logger.error("Unable to retrieve property '" + ATTRIBUTES_PROPERTY_NAME + "' of " + action.getClass(), ex);
             }
-            
-            if(value instanceof Map)
+
+            if (value instanceof Map)
             {
-                Map<Object,Object> attributes = (Map<Object, Object>)value;
+                Map<Object, Object> attributes = (Map<Object, Object>) value;
                 for (Map.Entry<Object, Object> entry : attributes.entrySet())
                 {
                     appendString(sb, entry.getKey() == null ? "null" : entry.getKey().toString(),
-                            entry.getValue() == null ? "null" : entry.getValue().toString());
-                }   
+                      entry.getValue() == null ? "null" : entry.getValue().toString());
+                }
             }
         }
-        
+
         sb.append(LINE_SEPARATOR);
         return sb.toString();
     }
@@ -208,7 +209,25 @@ class ActionBuilderImpl implements ActionBuilder
             sb.append("=");
             if (entry.getValue() != null)
             {
-                sb.append(entry.getValue());
+                if (entry.getKey().equalsIgnoreCase("Content"))
+                {
+                    String sp[] = entry.getValue().split("\n");
+                    sb.append(sp[0]);
+                    for (int i = 1; i < sp.length; i++)
+                    {
+                        sb.append(LINE_SEPARATOR);
+                        sb.append(singularKey);
+                        sb.append(": ");
+                        sb.append(entry.getKey());
+                        sb.append("=");
+                        sb.append(sp[i]);
+                    }
+
+                }
+                else
+                {
+                    sb.append(entry.getValue());
+                }
             }
 
             sb.append(LINE_SEPARATOR);
