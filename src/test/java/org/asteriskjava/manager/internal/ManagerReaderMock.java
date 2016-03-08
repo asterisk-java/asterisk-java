@@ -18,9 +18,8 @@ package org.asteriskjava.manager.internal;
 
 import java.io.IOException;
 
-import org.asteriskjava.manager.internal.ManagerReader;
-import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.manager.event.ManagerEvent;
+import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.util.SocketConnectionFacade;
 
 public class ManagerReaderMock implements ManagerReader

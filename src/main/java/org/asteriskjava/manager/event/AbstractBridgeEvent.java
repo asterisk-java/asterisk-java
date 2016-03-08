@@ -5,92 +5,90 @@ package org.asteriskjava.manager.event;
  */
 public abstract class AbstractBridgeEvent extends ManagerEvent
 {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private String bridgeUniqueId;
-	private String privilege;
-	private String bridgeType;
-	private Integer bridgeNumChannels;
-	private String bridgeCreator;
-	private String bridgeName;
-	private String bridgeTechnology;
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+    private String bridgeUniqueId;
+    private String bridgeType;
+    private Integer bridgeNumChannels;
+    private String bridgeCreator;
+    private String bridgeName;
+    private String bridgeTechnology;
+    private String accountCode;
 
-	AbstractBridgeEvent(Object source)
-	{
-		super(source);
-	}
+    AbstractBridgeEvent(Object source)
+    {
+        super(source);
+    }
 
-	public String getBridgeUniqueId()
-	{
-		return bridgeUniqueId;
-	}
+    public String getBridgeUniqueId()
+    {
+        return bridgeUniqueId;
+    }
 
-	public void setBridgeUniqueId(String bridgeUniqueId)
-	{
-		this.bridgeUniqueId = bridgeUniqueId;
-	}
+    public void setBridgeUniqueId(String bridgeUniqueId)
+    {
+        this.bridgeUniqueId = bridgeUniqueId;
+    }
 
-	@Override
-	public String getPrivilege()
-	{
-		return privilege;
-	}
+    public String getBridgeType()
+    {
+        return bridgeType;
+    }
 
-	@Override
-	public void setPrivilege(String privilege)
-	{
-		this.privilege = privilege;
-	}
+    public void setBridgeType(String bridgeType)
+    {
+        this.bridgeType = bridgeType;
+    }
 
-	public String getBridgeType()
-	{
-		return bridgeType;
-	}
+    public Integer getBridgeNumChannels()
+    {
+        return bridgeNumChannels;
+    }
 
-	public void setBridgeType(String bridgeType)
-	{
-		this.bridgeType = bridgeType;
-	}
+    public void setBridgeNumChannels(Integer bridgeNumChannels)
+    {
+        this.bridgeNumChannels = bridgeNumChannels;
+    }
 
-	public Integer getBridgeNumChannels()
-	{
-		return bridgeNumChannels;
-	}
+    public String getBridgeCreator()
+    {
+        return bridgeCreator;
+    }
 
-	public void setBridgeNumChannels(Integer bridgeNumChannels)
-	{
-		this.bridgeNumChannels = bridgeNumChannels;
-	}
+    public void setBridgeCreator(String bridgeCreator)
+    {
+        this.bridgeCreator = bridgeCreator;
+    }
 
-	public String getBridgeCreator()
-	{
-		return bridgeCreator;
-	}
+    public String getBridgeName()
+    {
+        return bridgeName;
+    }
 
-	public void setBridgeCreator(String bridgeCreator)
-	{
-		this.bridgeCreator = bridgeCreator;
-	}
+    public void setBridgeName(String bridgeName)
+    {
+        this.bridgeName = bridgeName;
+    }
 
-	public String getBridgeName()
-	{
-		return bridgeName;
-	}
+    public String getBridgeTechnology()
+    {
+        return bridgeTechnology;
+    }
 
-	public void setBridgeName(String bridgeName)
-	{
-		this.bridgeName = bridgeName;
-	}
+    public void setBridgeTechnology(String bridgeTechnology)
+    {
+        this.bridgeTechnology = bridgeTechnology;
+    }
 
-	public String getBridgeTechnology()
-	{
-		return bridgeTechnology;
-	}
+    public String getAccountCode()
+    {
+        return accountCode;
+    }
 
-	public void setBridgeTechnology(String bridgeTechnology)
-	{
-		this.bridgeTechnology = bridgeTechnology;
-	}
+    public void setAccountCode(String accountCode)
+    {
+        this.accountCode = accountCode;
+    }
 }

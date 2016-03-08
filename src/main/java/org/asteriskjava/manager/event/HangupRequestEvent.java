@@ -17,7 +17,8 @@
 package org.asteriskjava.manager.event;
 
 /**
- * A HangupEvent is triggered when a channel is requested hung up.<p>
+ * A HangupEvent is triggered when a channel is requested hung up.
+ * <p>
  * It is implemented in <code>channel.c</code>
  */
 public class HangupRequestEvent extends AbstractChannelEvent
@@ -28,18 +29,18 @@ public class HangupRequestEvent extends AbstractChannelEvent
     static final long serialVersionUID = 0L;
 
     private Integer cause;
-    private String uniqueid;
     private String language;
+    private String linkedId;
 
     public String getLanguage()
     {
-    	return language;
+        return language;
     }
-    
+
     public void setLanguage(String language)
     {
-    	this.language = language;
-    }   
+        this.language = language;
+    }
 
     public HangupRequestEvent(Object source)
     {
@@ -67,12 +68,14 @@ public class HangupRequestEvent extends AbstractChannelEvent
         this.cause = cause;
     }
 
-    public String getUniqueid() {
-        return uniqueid;
+    public String getLinkedId()
+    {
+        return linkedId;
     }
 
-    public void setUniqueid(String uniqueid) {
-        this.uniqueid = uniqueid;
+    public void setLinkedId(String linkedId)
+    {
+        this.linkedId = linkedId;
     }
 
 }

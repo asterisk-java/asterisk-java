@@ -31,6 +31,9 @@ public class RtcpSentEvent extends AbstractRtcpEvent
 {
     private static final long serialVersionUID = 1L;
 
+    private InetAddress fromAddress;
+    private Integer fromPort;
+    private Long pt;
     private InetAddress toAddress;
     private Integer toPort;
     private Long ourSsrc;
@@ -41,11 +44,87 @@ public class RtcpSentEvent extends AbstractRtcpEvent
     private Long cumulativeLoss;
     private Long theirLastSr;
 
+    private String channel;
+    private String language;
+    private String report0SequenceNumberCycles;
+    private String ssrc;
+    private String linkedId;
+    private String report0lsr;
+    private String report0Sourcessrc;
+    private Double report0dlsr;
+    private String uniqueid;
+    private Integer reportCount;
+    private Integer report0CumulativeLost;
+    private Integer report0FractionLost;
+    private Integer report0iaJitter;
+    private Integer report0HighestSequence;
+    private String accountCode;
+    
     public RtcpSentEvent(Object source)
     {
         super(source);
     }
 
+    /**
+     * Returns the IP address the RTCP message has been received from.
+     *
+     * @return the IP address the RTCP message has been received from.
+     */
+    public InetAddress getFromAddress()
+    {
+        return fromAddress;
+    }
+
+    /**
+     * Returns the port of the RTCP message has been received from.
+     *
+     * @return the port of the RTCP message has been received from.
+     */
+    public Integer getFromPort()
+    {
+        return fromPort;
+    }
+
+    public void setFrom(String from)
+    {
+        // Format is "%s:%d"
+        this.fromAddress = stringToAddress(from);
+        this.fromPort = stringToPort(from);
+    }
+
+    /**
+     * Indicates the format of the payload, typical values are 200 for sender reports and
+     * 201 for receiver reports.
+     *
+     * @return the format of the payload.
+     * @see #RtcpReceivedEvent.PT_SENDER_REPORT
+     * @see #RtcpReceivedEvent.PT_RECEIVER_REPORT
+     */
+    public Long getPt()
+    {
+        return pt;
+    }
+
+    public void setPt(String ptString)
+    {
+        // Format is "PT: %d(%s)"
+        if (ptString == null || ptString.length() == 0)
+        {
+            this.pt = null;
+            return;
+        }
+
+        if (ptString.indexOf('(') > 0)
+        {
+            this.pt = Long.parseLong(ptString.substring(0, ptString.indexOf('(')));
+        }
+        else
+        {
+            this.pt = Long.parseLong(ptString);
+        }
+    }
+    
+    
     /**
      * Returns the IP address the RTCP message has been sent to.
      *
@@ -155,5 +234,155 @@ public class RtcpSentEvent extends AbstractRtcpEvent
     public void setTheirLastSr(Long theirLastSr)
     {
         this.theirLastSr = theirLastSr;
+    }
+
+    public String getChannel()
+    {
+        return channel;
+    }
+
+    public void setChannel(String channel)
+    {
+        this.channel = channel;
+    }
+
+    public String getLanguage()
+    {
+        return language;
+    }
+
+    public void setLanguage(String language)
+    {
+        this.language = language;
+    }
+
+    public String getReport0SequenceNumberCycles()
+    {
+        return report0SequenceNumberCycles;
+    }
+
+    public void setReport0SequenceNumberCycles(String report0SequenceNumberCycles)
+    {
+        this.report0SequenceNumberCycles = report0SequenceNumberCycles;
+    }
+
+    public String getSsrc()
+    {
+        return ssrc;
+    }
+
+    public void setSsrc(String ssrc)
+    {
+        this.ssrc = ssrc;
+    }
+
+    public String getLinkedId()
+    {
+        return linkedId;
+    }
+
+    public void setLinkedId(String linkedId)
+    {
+        this.linkedId = linkedId;
+    }
+
+    public String getReport0lsr()
+    {
+        return report0lsr;
+    }
+
+    public void setReport0lsr(String report0lsr)
+    {
+        this.report0lsr = report0lsr;
+    }
+
+    public String getReport0Sourcessrc()
+    {
+        return report0Sourcessrc;
+    }
+
+    public void setReport0Sourcessrc(String report0Sourcessrc)
+    {
+        this.report0Sourcessrc = report0Sourcessrc;
+    }
+
+    public Double getReport0dlsr()
+    {
+        return report0dlsr;
+    }
+
+    public void setReport0dlsr(Double report0dlsr)
+    {
+        this.report0dlsr = report0dlsr;
+    }
+
+    public String getUniqueid()
+    {
+        return uniqueid;
+    }
+
+    public void setUniqueid(String uniqueid)
+    {
+        this.uniqueid = uniqueid;
+    }
+
+    public Integer getReportCount()
+    {
+        return reportCount;
+    }
+
+    public void setReportCount(Integer reportCount)
+    {
+        this.reportCount = reportCount;
+    }
+
+    public Integer getReport0CumulativeLost()
+    {
+        return report0CumulativeLost;
+    }
+
+    public void setReport0CumulativeLost(Integer report0CumulativeLost)
+    {
+        this.report0CumulativeLost = report0CumulativeLost;
+    }
+
+    public Integer getReport0FractionLost()
+    {
+        return report0FractionLost;
+    }
+
+    public void setReport0FractionLost(Integer report0FractionLost)
+    {
+        this.report0FractionLost = report0FractionLost;
+    }
+
+    public Integer getReport0iaJitter()
+    {
+        return report0iaJitter;
+    }
+
+    public void setReport0iaJitter(Integer report0iaJitter)
+    {
+        this.report0iaJitter = report0iaJitter;
+    }
+
+    public Integer getReport0HighestSequence()
+    {
+        return report0HighestSequence;
+    }
+
+    public void setReport0HighestSequence(Integer report0HighestSequence)
+    {
+        this.report0HighestSequence = report0HighestSequence;
+    }
+
+    public String getAccountCode()
+    {
+        return accountCode;
+    }
+
+    public void setAccountCode(String accountCode)
+    {
+        this.accountCode = accountCode;
     }
 }

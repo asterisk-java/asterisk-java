@@ -26,12 +26,30 @@ package org.asteriskjava.manager.event;
 public abstract class AbstractParkedCallEvent extends ManagerEvent
 {
     private static final long serialVersionUID = 0L;
-    private String exten;
-    private String channel;
-    private String parkingLot;
-    private String callerIdNum;
-    private String callerIdName;
     private String uniqueId;
+    // Previously: Channel
+    private String parkeeChannel;
+    private Integer parkeeChannelState;
+    private String parkeeChannelStateDesc;
+    // previously CallerID
+    private String parkeeCallerIDNum;
+    // Previously CallerIDName
+    private String parkeeCallerIDName;
+    private Integer parkeeConnectedLineNum;
+    private String parkeeConnectedLineName;
+    private String parkeeLanguage;
+    private String parkeeAccountCode;
+    private String parkeeContext;
+    private String parkeeExten;
+    private Integer parkeePriority;
+    private String parkeeUniqueid;
+    // Previously: From
+    private String parkerDialString;
+    private String parkingLot;
+    // previously Exten
+    private String parkingSpace;
+    private Long parkingTimeout;
+    private Long parkingDuration;
 
     protected AbstractParkedCallEvent(Object source)
     {
@@ -39,37 +57,26 @@ public abstract class AbstractParkedCallEvent extends ManagerEvent
     }
 
     /**
-     * Returns the extension the channel is or was parked at.
-     *
-     * @return the extension the channel is or was parked at.
+     * Returns the name of the channel that parked the call.
      */
-    public String getExten()
+    @Deprecated
+    public String getFrom()
     {
-        return exten;
-    }
-
-    public void setExten(String exten)
-    {
-        this.exten = exten;
+        return getParkerDialString();
     }
 
     /**
-     * Returns the name of the channel that is or was parked.
-     *
-     * @return the name of the channel that is or was parked.
+     * Sets the name of the channel that parked the call.
      */
-    public String getChannel()
+    @Deprecated
+    public void setFrom(String from)
     {
-        return channel;
-    }
-
-    public void setChannel(String channel)
-    {
-        this.channel = channel;
+        this.setParkerDialString(from);
     }
 
     /**
-     * Returns the parking lot.<p>
+     * Returns the parking lot.
+     * <p>
      * Available since Asterisk 1.6.
      *
      * @return the parking lot.
@@ -91,64 +98,15 @@ public abstract class AbstractParkedCallEvent extends ManagerEvent
     }
 
     /**
-     * Returns the Caller*ID number of the parked channel.
-     *
-     * @return the Caller*ID number of the parked channel.
-     * @since 1.0.0
-     */
-    public String getCallerIdNum()
-    {
-        return callerIdNum;
-    }
-
-    public void setCallerIdNum(String callerIdNum)
-    {
-        this.callerIdNum = callerIdNum;
-    }
-
-    /**
-     * Returns the Caller*ID number of the parked channel.
-     *
-     * @return the Caller*ID number of the parked channel.
-     * @deprecated since 1.0.0. Use {@link #getCallerIdNum()} instead.
-     */
-    @Deprecated public String getCallerId()
-    {
-        return callerIdNum;
-    }
-
-    public void setCallerId(String callerId)
-    {
-        this.callerIdNum = callerId;
-    }
-
-    /**
-     * Returns the Caller*ID name of the parked channel.
-     *
-     * @return the Caller*ID name of the parked channel.
-     */
-    public String getCallerIdName()
-    {
-        return callerIdName;
-    }
-
-    /**
-     * Sets the Caller*ID name of the parked channel.
-     *
-     * @param callerIdName the Caller*ID name of the parked channel.
-     */
-    public void setCallerIdName(String callerIdName)
-    {
-        this.callerIdName = callerIdName;
-    }
-
-    /**
-     * Returns the unique id of the parked channel.<p>
+     * Returns the unique id of the parked channel.
+     * <p>
      * Note: This property is not set properly by all versions of Asterisk, see
-     * <a href="http://bugs.digium.com/view.php?id=13323">http://bugs.digium.com/view.php?id=13323</a>
-     * and
-     * <a href="http://bugs.digium.com/view.php?id=13358">http://bugs.digium.com/view.php?id=13358</a>
-     * for more information. Use {@link #getChannel()} instead.
+     * <a
+     * href="http://bugs.digium.com/view.php?id=13323">http://bugs.digium.com/
+     * view.php?id=13323</a> and <a
+     * href="http://bugs.digium.com/view.php?id=13358"
+     * >http://bugs.digium.com/view.php?id=13358</a> for more information. Use
+     * {@link #getChannel()} instead.
      *
      * @return the unique id of the parked channel.
      */
@@ -160,5 +118,209 @@ public abstract class AbstractParkedCallEvent extends ManagerEvent
     public void setUniqueId(String uniqueId)
     {
         this.uniqueId = uniqueId;
+    }
+
+    @Deprecated
+    public void setChannel(String channel)
+    {
+        this.setParkeeChannel(channel);
+    }
+
+    @Deprecated
+    public String getChannel()
+    {
+        return this.getParkeeChannel();
+    }
+
+    public String getParkeeChannel()
+    {
+        return parkeeChannel;
+    }
+
+    public void setParkeeChannel(String parkeeChannel)
+    {
+        this.parkeeChannel = parkeeChannel;
+    }
+
+    public Integer getParkeeChannelState()
+    {
+        return parkeeChannelState;
+    }
+
+    public void setParkeeChannelState(Integer parkeeChannelState)
+    {
+        this.parkeeChannelState = parkeeChannelState;
+    }
+
+    public String getParkeeChannelStateDesc()
+    {
+        return parkeeChannelStateDesc;
+    }
+
+    public void setParkeeChannelStateDesc(String parkeeChannelStateDesc)
+    {
+        this.parkeeChannelStateDesc = parkeeChannelStateDesc;
+    }
+
+    public String getParkeeCallerIDNum()
+    {
+        return parkeeCallerIDNum;
+    }
+
+    public void setParkeeCallerIDNum(String parkeeCallerIDNum)
+    {
+        this.parkeeCallerIDNum = parkeeCallerIDNum;
+    }
+
+    public String getParkeeCallerIDName()
+    {
+        return parkeeCallerIDName;
+    }
+
+    public void setParkeeCallerIDName(String parkeeCallerIDName)
+    {
+        this.parkeeCallerIDName = parkeeCallerIDName;
+    }
+
+    public Integer getParkeeConnectedLineNum()
+    {
+        return parkeeConnectedLineNum;
+    }
+
+    public void setParkeeConnectedLineNum(Integer parkeeConnectedLineNum)
+    {
+        this.parkeeConnectedLineNum = parkeeConnectedLineNum;
+    }
+
+    public String getParkeeConnectedLineName()
+    {
+        return parkeeConnectedLineName;
+    }
+
+    public void setParkeeConnectedLineName(String parkeeConnectedLineName)
+    {
+        this.parkeeConnectedLineName = parkeeConnectedLineName;
+    }
+
+    public String getParkeeLanguage()
+    {
+        return parkeeLanguage;
+    }
+
+    public void setParkeeLanguage(String parkeeLanguage)
+    {
+        this.parkeeLanguage = parkeeLanguage;
+    }
+
+    public String getParkeeAccountCode()
+    {
+        return parkeeAccountCode;
+    }
+
+    public void setParkeeAccountCode(String parkeeAccountCode)
+    {
+        this.parkeeAccountCode = parkeeAccountCode;
+    }
+
+    public String getParkeeContext()
+    {
+        return parkeeContext;
+    }
+
+    public void setParkeeContext(String parkeeContext)
+    {
+        this.parkeeContext = parkeeContext;
+    }
+
+    public String getParkeeExten()
+    {
+        return parkeeExten;
+    }
+
+    public void setParkeeExten(String parkeeExten)
+    {
+        this.parkeeExten = parkeeExten;
+    }
+
+    public Integer getParkeePriority()
+    {
+        return parkeePriority;
+    }
+
+    public void setParkeePriority(Integer parkeePriority)
+    {
+        this.parkeePriority = parkeePriority;
+    }
+
+    public String getParkeeUniqueid()
+    {
+        return parkeeUniqueid;
+    }
+
+    public void setParkeeUniqueid(String parkeeUniqueid)
+    {
+        this.parkeeUniqueid = parkeeUniqueid;
+    }
+
+    public String getParkerDialString()
+    {
+        return parkerDialString;
+    }
+
+    public void setParkerDialString(String parkerDialString)
+    {
+        this.parkerDialString = parkerDialString;
+    }
+
+    public String getParkinglot()
+    {
+        return parkingLot;
+    }
+
+    public void setParkinglot(String parkinglot)
+    {
+        this.parkingLot = parkinglot;
+    }
+
+    public String getParkingSpace()
+    {
+        return parkingSpace;
+    }
+
+    public void setParkingSpace(String parkingSpace)
+    {
+        this.parkingSpace = parkingSpace;
+    }
+
+    public Long getParkingTimeout()
+    {
+        return parkingTimeout;
+    }
+
+    public void setParkingTimeout(Long parkingTimeout)
+    {
+        this.parkingTimeout = parkingTimeout;
+    }
+
+    public Long getParkingDuration()
+    {
+        return parkingDuration;
+    }
+
+    public void setParkingDuration(Long parkingDuration)
+    {
+        this.parkingDuration = parkingDuration;
+    }
+
+    @Deprecated
+    public String getCallerId()
+    {
+        return getParkeeCallerIDNum();
+    }
+
+    @Deprecated
+    public void setCallerId(String callerId)
+    {
+        setParkeeCallerIDNum(callerId);
     }
 }

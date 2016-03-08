@@ -54,7 +54,7 @@ public class AsteriskQueueMemberImplTest
     }
 
     @Test
-    public void testQueueMemberEvents() throws Exception
+    public void testQueueMemberEvents()
     {
         /*
          * Test should generate a new member like queueMember = new

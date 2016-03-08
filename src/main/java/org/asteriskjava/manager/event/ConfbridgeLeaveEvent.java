@@ -5,7 +5,7 @@ package org.asteriskjava.manager.event;
  *
  * @since 1.0.0
  */
-public class ConfbridgeLeaveEvent extends AbstractChannelEvent
+public class ConfbridgeLeaveEvent extends AbstractConfbridgeEvent
 {
     /**
      * Serializable version identifier

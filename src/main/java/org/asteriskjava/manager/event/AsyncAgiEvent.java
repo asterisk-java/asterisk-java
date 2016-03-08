@@ -1,8 +1,10 @@
 package org.asteriskjava.manager.event;
 
-import java.net.URLDecoder;
 import java.io.UnsupportedEncodingException;
-import java.util.*;
+import java.net.URLDecoder;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * 
@@ -194,7 +196,7 @@ public class AsyncAgiEvent extends ResponseEvent
 
     private List<String> decode(String s)
     {
-        final List<String> result = new ArrayList<String>();
+        final List<String> result = new ArrayList<>();
 
         if (s == null)
         {
@@ -203,13 +205,12 @@ public class AsyncAgiEvent extends ResponseEvent
 
         try
         {
-            final String decodedString = URLDecoder.decode(s, "ISO-8859-1");
+            final String decodedString = URLDecoder.decode(s, "UTF-8");
             result.addAll(Arrays.asList(decodedString.split("\n")));
         }
         catch (UnsupportedEncodingException e)
         {
-            // won't happen as JDK ships with ISO-8859-1
-            throw new RuntimeException("This JDK does not support ISO-8859-1 encoding", e);
+            throw new RuntimeException("This JDK does not support UTF-8 encoding", e);
         }
 
         return result;

@@ -68,8 +68,8 @@ public class AgentManager
     AgentManager(AsteriskServerImpl asteriskServerImpl)
     {
         this.server = asteriskServerImpl;
-        agents = new HashMap<String, AsteriskAgentImpl>();
-        ringingAgents = new HashMap<String, AsteriskAgentImpl>();
+        agents = new HashMap<>();
+        ringingAgents = new HashMap<>();
     }
 
     /**

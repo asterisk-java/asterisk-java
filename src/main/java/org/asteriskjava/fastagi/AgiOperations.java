@@ -94,320 +94,269 @@ public class AgiOperations implements AgiChannel
         return getChannel().getLastReply();
     }
 
-    public AgiReply sendCommand(AgiCommand command)
-            throws AgiException
+    public AgiReply sendCommand(AgiCommand command) throws AgiException
     {
         return getChannel().sendCommand(command);
     }
 
-    public void answer()
-            throws AgiException
+    public void answer() throws AgiException
     {
         getChannel().answer();
     }
 
-    public void hangup()
-            throws AgiException
+    public void hangup() throws AgiException
     {
         getChannel().hangup();
     }
 
-    public void setAutoHangup(int time)
-            throws AgiException
+    public void setAutoHangup(int time) throws AgiException
     {
         getChannel().setAutoHangup(time);
     }
 
-    public void setCallerId(String callerId)
-            throws AgiException
+    public void setCallerId(String callerId) throws AgiException
     {
         getChannel().setCallerId(callerId);
     }
 
-    public void playMusicOnHold()
-            throws AgiException
+    public void playMusicOnHold() throws AgiException
     {
         getChannel().playMusicOnHold();
     }
 
-    public void playMusicOnHold(String musicOnHoldClass)
-            throws AgiException
+    public void playMusicOnHold(String musicOnHoldClass) throws AgiException
     {
         getChannel().playMusicOnHold(musicOnHoldClass);
     }
 
-    public void stopMusicOnHold()
-            throws AgiException
+    public void stopMusicOnHold() throws AgiException
     {
         getChannel().stopMusicOnHold();
     }
 
-    public int getChannelStatus()
-            throws AgiException
+    public int getChannelStatus() throws AgiException
     {
         return getChannel().getChannelStatus();
     }
 
-    public String getData(String file)
-            throws AgiException
+    public String getData(String file) throws AgiException
     {
         return getChannel().getData(file);
     }
 
-    public String getData(String file, long timeout)
-            throws AgiException
+    public String getData(String file, long timeout) throws AgiException
     {
         return getChannel().getData(file, timeout);
     }
 
-    public String getData(String file, long timeout, int maxDigits)
-            throws AgiException
+    public String getData(String file, long timeout, int maxDigits) throws AgiException
     {
         return getChannel().getData(file, timeout, maxDigits);
     }
 
-    public char getOption(String file, String escapeDigits)
-            throws AgiException
+    public char getOption(String file, String escapeDigits) throws AgiException
     {
         return getChannel().getOption(file, escapeDigits);
     }
 
-    public char getOption(String file, String escapeDigits, long timeout)
-            throws AgiException
+    public char getOption(String file, String escapeDigits, long timeout) throws AgiException
     {
         return getChannel().getOption(file, escapeDigits, timeout);
     }
 
-    public int exec(String application)
-            throws AgiException
+    public int exec(String application) throws AgiException
     {
         return getChannel().exec(application);
     }
 
-    public int exec(String application, String... options)
-            throws AgiException
+    public int exec(String application, String... options) throws AgiException
     {
         return getChannel().exec(application, options);
     }
 
-    public void setContext(String context)
-            throws AgiException
+    public void setContext(String context) throws AgiException
     {
         getChannel().setContext(context);
     }
 
-    public void setExtension(String extension)
-            throws AgiException
+    public void setExtension(String extension) throws AgiException
     {
         getChannel().setExtension(extension);
     }
 
-    public void setPriority(String priority)
-            throws AgiException
+    public void setPriority(String priority) throws AgiException
     {
         getChannel().setPriority(priority);
     }
 
-    public void streamFile(String file)
-            throws AgiException
+    public void streamFile(String file) throws AgiException
     {
         getChannel().streamFile(file);
     }
 
-    public char streamFile(String file, String escapeDigits)
-            throws AgiException
+    public char streamFile(String file, String escapeDigits) throws AgiException
     {
         return getChannel().streamFile(file, escapeDigits);
     }
 
-    public char streamFile(String file, String escapeDigits, int offset)
-            throws AgiException
+    public char streamFile(String file, String escapeDigits, int offset) throws AgiException
     {
         return getChannel().streamFile(file, escapeDigits, offset);
     }
 
-    public void sayDigits(String digits)
-            throws AgiException
+    public void sayDigits(String digits) throws AgiException
     {
         getChannel().sayDigits(digits);
     }
 
-    public char sayDigits(String digits, String escapeDigits)
-            throws AgiException
+    public char sayDigits(String digits, String escapeDigits) throws AgiException
     {
         return getChannel().sayDigits(digits, escapeDigits);
     }
 
-    public void sayNumber(String number)
-            throws AgiException
+    public void sayNumber(String number) throws AgiException
     {
         getChannel().sayNumber(number);
     }
 
-    public char sayNumber(String number, String escapeDigits)
-            throws AgiException
+    public char sayNumber(String number, String escapeDigits) throws AgiException
     {
         return getChannel().sayNumber(number, escapeDigits);
     }
 
-    public void sayPhonetic(String text)
-            throws AgiException
+    public void sayPhonetic(String text) throws AgiException
     {
         getChannel().sayPhonetic(text);
     }
 
-    public char sayPhonetic(String text, String escapeDigits)
-            throws AgiException
+    public char sayPhonetic(String text, String escapeDigits) throws AgiException
     {
         return getChannel().sayPhonetic(text, escapeDigits);
     }
 
-    public void sayAlpha(String text)
-            throws AgiException
+    public void sayAlpha(String text) throws AgiException
     {
         getChannel().sayAlpha(text);
     }
 
-    public char sayAlpha(String text, String escapeDigits)
-            throws AgiException
+    public char sayAlpha(String text, String escapeDigits) throws AgiException
     {
         return getChannel().sayAlpha(text, escapeDigits);
     }
 
-    public void sayTime(long time)
-            throws AgiException
+    public void sayTime(long time) throws AgiException
     {
         getChannel().sayTime(time);
     }
 
-    public char sayTime(long time, String escapeDigits)
-            throws AgiException
+    public char sayTime(long time, String escapeDigits) throws AgiException
     {
         return getChannel().sayTime(time, escapeDigits);
     }
 
-    public String getVariable(String name)
-            throws AgiException
+    public String getVariable(String name) throws AgiException
     {
         return getChannel().getVariable(name);
     }
 
-    public void setVariable(String name, String value)
-            throws AgiException
+    public void setVariable(String name, String value) throws AgiException
     {
         getChannel().setVariable(name, value);
     }
 
-    public char waitForDigit(int timeout)
-            throws AgiException
+    public char waitForDigit(int timeout) throws AgiException
     {
         return getChannel().waitForDigit(timeout);
     }
 
-    public String getFullVariable(String name)
-            throws AgiException
+    public String getFullVariable(String name) throws AgiException
     {
         return getChannel().getFullVariable(name);
     }
 
-    public String getFullVariable(String name, String channel)
-            throws AgiException
+    public String getFullVariable(String name, String channel) throws AgiException
     {
         return getChannel().getFullVariable(name, channel);
     }
 
-    public void sayDateTime(long time)
-            throws AgiException
+    public void sayDateTime(long time) throws AgiException
     {
         getChannel().sayDateTime(time);
     }
 
-    public char sayDateTime(long time, String escapeDigits)
-            throws AgiException
+    public char sayDateTime(long time, String escapeDigits) throws AgiException
     {
         return getChannel().sayDateTime(time, escapeDigits);
     }
 
-    public char sayDateTime(long time, String escapeDigits, String format)
-            throws AgiException
+    public char sayDateTime(long time, String escapeDigits, String format) throws AgiException
     {
         return getChannel().sayDateTime(time, escapeDigits, format);
     }
 
-    public char sayDateTime(long time, String escapeDigits, String format, String timezone)
-            throws AgiException
+    public char sayDateTime(long time, String escapeDigits, String format, String timezone) throws AgiException
     {
         return getChannel().sayDateTime(time, escapeDigits, format, timezone);
     }
 
-    public String databaseGet(String family, String key)
-            throws AgiException
+    public String databaseGet(String family, String key) throws AgiException
     {
         return getChannel().databaseGet(family, key);
     }
 
-    public void databasePut(String family, String key, String value)
-            throws AgiException
+    public void databasePut(String family, String key, String value) throws AgiException
     {
         getChannel().databasePut(family, key, value);
     }
 
-    public void databaseDel(String family, String key)
-            throws AgiException
+    public void databaseDel(String family, String key) throws AgiException
     {
         getChannel().databaseDel(family, key);
     }
 
-    public void databaseDelTree(String family)
-            throws AgiException
+    public void databaseDelTree(String family) throws AgiException
     {
         getChannel().databaseDelTree(family);
     }
 
-    public void databaseDelTree(String family, String keytree)
-            throws AgiException
+    public void databaseDelTree(String family, String keytree) throws AgiException
     {
         getChannel().databaseDelTree(family, keytree);
     }
 
-    public void verbose(String message, int level)
-            throws AgiException
+    public void verbose(String message, int level) throws AgiException
     {
         getChannel().verbose(message, level);
     }
 
-    public char recordFile(String file, String format, String escapeDigits, int timeout)
-            throws AgiException
+    public char recordFile(String file, String format, String escapeDigits, int timeout) throws AgiException
     {
         return getChannel().recordFile(file, format, escapeDigits, timeout);
     }
 
-    public char recordFile(String file, String format, String escapeDigits, int timeout, int offset, boolean beep, int maxSilence)
-            throws AgiException
+    public char recordFile(String file, String format, String escapeDigits, int timeout, int offset, boolean beep,
+            int maxSilence) throws AgiException
     {
         return getChannel().recordFile(file, format, escapeDigits, timeout, offset, beep, maxSilence);
     }
 
-    public void controlStreamFile(String file)
-            throws AgiException
+    public void controlStreamFile(String file) throws AgiException
     {
         getChannel().controlStreamFile(file);
     }
 
-    public char controlStreamFile(String file, String escapeDigits)
-            throws AgiException
+    public char controlStreamFile(String file, String escapeDigits) throws AgiException
     {
         return getChannel().controlStreamFile(file, escapeDigits);
     }
 
-    public char controlStreamFile(String file, String escapeDigits, int offset)
-            throws AgiException
+    public char controlStreamFile(String file, String escapeDigits, int offset) throws AgiException
     {
         return getChannel().controlStreamFile(file, escapeDigits, offset);
     }
 
-    public char controlStreamFile(String file, String escapeDigits, int offset, String forwardDigit, String rewindDigit, String pauseDigit)
-            throws AgiException
+    public char controlStreamFile(String file, String escapeDigits, int offset, String forwardDigit, String rewindDigit,
+            String pauseDigit) throws AgiException
     {
         return getChannel().controlStreamFile(file, escapeDigits, offset, forwardDigit, rewindDigit, pauseDigit);
     }
@@ -417,56 +366,47 @@ public class AgiOperations implements AgiChannel
         getChannel().speechCreate();
     }
 
-    public void speechCreate(String engine)
-            throws AgiException
+    public void speechCreate(String engine) throws AgiException
     {
         getChannel().speechCreate(engine);
     }
 
-    public void speechSet(String name, String value)
-            throws AgiException
+    public void speechSet(String name, String value) throws AgiException
     {
         getChannel().speechSet(name, value);
     }
 
-    public void speechDestroy()
-            throws AgiException
+    public void speechDestroy() throws AgiException
     {
         getChannel().speechDestroy();
     }
 
-    public void speechLoadGrammar(String name, String path)
-            throws AgiException
+    public void speechLoadGrammar(String name, String path) throws AgiException
     {
         getChannel().speechLoadGrammar(name, path);
     }
 
-    public void speechUnloadGrammar(String name)
-            throws AgiException
+    public void speechUnloadGrammar(String name) throws AgiException
     {
         getChannel().speechUnloadGrammar(name);
     }
 
-    public void speechActivateGrammar(String name)
-            throws AgiException
+    public void speechActivateGrammar(String name) throws AgiException
     {
         getChannel().speechActivateGrammar(name);
     }
 
-    public void speechDeactivateGrammar(String name)
-            throws AgiException
+    public void speechDeactivateGrammar(String name) throws AgiException
     {
         getChannel().speechDeactivateGrammar(name);
     }
 
-    public SpeechRecognitionResult speechRecognize(String prompt, int timeout)
-            throws AgiException
+    public SpeechRecognitionResult speechRecognize(String prompt, int timeout) throws AgiException
     {
         return getChannel().speechRecognize(prompt, timeout);
     }
 
-    public SpeechRecognitionResult speechRecognize(String prompt, int timeout, int offset)
-            throws AgiException
+    public SpeechRecognitionResult speechRecognize(String prompt, int timeout, int offset) throws AgiException
     {
         return getChannel().speechRecognize(prompt, timeout, offset);
     }
@@ -475,14 +415,42 @@ public class AgiOperations implements AgiChannel
     {
         getChannel().continueAt(context, extension, priority);
     }
-    
+
     public void gosub(String context, String extension, String priority) throws AgiException
     {
-    	getChannel().gosub(context, extension, priority);
+        getChannel().gosub(context, extension, priority);
     }
-    
+
     public void gosub(String context, String extension, String priority, String... arguments) throws AgiException
     {
-    	getChannel().gosub(context, extension, priority, arguments);
+        getChannel().gosub(context, extension, priority, arguments);
+    }
+
+    @Override
+    public void confbridge(String room, String profile) throws AgiException
+    {
+        getChannel().confbridge(room, profile);
+
+    }
+
+    @Override
+    public void meetme(String room, String options) throws AgiException
+    {
+        getChannel().meetme(room, options);
+
+    }
+
+    @Override
+    public void dial(String target, int timeout, String options) throws AgiException
+    {
+        getChannel().dial(target, timeout, options);
+
+    }
+
+    @Override
+    public void bridge(String channelName, String options) throws AgiException
+    {
+        getChannel().bridge(channelName, options);
+
     }
 }

@@ -17,12 +17,21 @@ See docs/tutorial.html for examples.
 GETTING ASTERISK-JAVA
 ---------------------
 
-Asterisk-Java is available from http://asterisk-java.org
+Asterisk-Java is available from [here](https://github.com/asterisk-java/asterisk-java/releases)
+
+Maven Dependency
+----------------
+
+	<dependency>
+    	<groupId>org.asteriskjava</groupId>
+    	<artifactId>asterisk-java</artifactId>
+    	<version>1.0.0-final</version>
+	</dependency>
 
 INSTALLATION FROM SOURCE
 ------------------------
 
-	git clone https://github.com/srt/asterisk-java.git
+	git clone https://github.com/asterisk-java/asterisk-java.git
 	cd asterisk-java
 	mvn install
 
@@ -59,7 +68,7 @@ To compile and run do:
 SYSTEM REQUIREMENTS
 -------------------
 
-Asterisk-Java needs a Java Virtual Machine of at least version 1.6 ([Java SE 6.0](http://www.oracle.com/technetwork/java/javase/downloads/index.html)). If you want to build the jar from source, you will
+Asterisk-Java needs a Java Virtual Machine of at least version 1.7 ([Java SE 7.0](http://www.oracle.com/technetwork/java/javase/downloads/index.html)). If you want to build the jar from source, you will
 also need [Maven](http://maven.apache.org/).
 
 LEGAL

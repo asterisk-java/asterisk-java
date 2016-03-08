@@ -36,6 +36,14 @@ public class BlindTransferEvent extends AbstractBridgeEvent
 	private String isexternal;
 	private String result;
 
+	private String transfereeLinkedId;
+	private String transfererAccountCode;
+	private String transfererExten;
+	private String transfererLanguage;
+	private String transfererLinkedId;
+    private String transfereeLanguage;
+
+	
 	public BlindTransferEvent(Object source)
 	{
 		super(source);
@@ -280,4 +288,66 @@ public class BlindTransferEvent extends AbstractBridgeEvent
 	{
 		this.transfereeExten = transfereeExten;
 	}
+
+    public String getTransfereeLinkedId()
+    {
+        return transfereeLinkedId;
+    }
+
+    public void setTransfereeLinkedId(String transfereeLinkedId)
+    {
+        this.transfereeLinkedId = transfereeLinkedId;
+    }
+
+    public String getTransfererAccountCode()
+    {
+        return transfererAccountCode;
+    }
+
+    public void setTransfererAccountCode(String transfererAccountCode)
+    {
+        this.transfererAccountCode = transfererAccountCode;
+    }
+
+    public String getTransfererExten()
+    {
+        return transfererExten;
+    }
+
+    public void setTransfererExten(String transfererExten)
+    {
+        this.transfererExten = transfererExten;
+    }
+
+    public String getTransfererLanguage()
+    {
+        return transfererLanguage;
+    }
+
+    public void setTransfererLanguage(String transfererLanguage)
+    {
+        this.transfererLanguage = transfererLanguage;
+    }
+
+    public String getTransfererLinkedId()
+    {
+        return transfererLinkedId;
+    }
+
+    public void setTransfererLinkedId(String transfererLinkedId)
+    {
+        this.transfererLinkedId = transfererLinkedId;
+    }
+
+    public String getTransfereeLanguage()
+    {
+        return transfereeLanguage;
+    }
+
+    public void setTransfereeLanguage(String transfereeLanguage)
+    {
+        this.transfereeLanguage = transfereeLanguage;
+    }
+	
+	
 }

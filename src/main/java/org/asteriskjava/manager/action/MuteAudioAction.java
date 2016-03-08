@@ -43,7 +43,19 @@ public class MuteAudioAction extends AbstractManagerAction
 	/** The audio direct (relative to the pbx) which is to be muted. */
 	public enum Direction
 	{
-		IN, OUT, ALL
+		IN("in"), OUT("out"), ALL("all");
+                
+		String value;
+		
+		Direction(String value)
+		{
+			this.value = value;
+		}
+		
+		public String toString()
+		{
+			return this.value;
+		}                
 	}
 
 	private Direction direction;
@@ -105,20 +117,52 @@ public class MuteAudioAction extends AbstractManagerAction
 		return "MuteAudio"; //$NON-NLS-1$
 	}
 	
-	String getChannel()
+    /**
+     * Returns the name of the channel to monitor.
+     */	
+	public String getChannel()
 	{
 		return this.channel;
 	}
 	
-	Direction getDirection()
+    /**
+     * Returns the audio direction which is to be muted/unmuted.
+     */	
+	public Direction getDirection()
 	{
 		return this.direction;
 	}
 	
-	State getState()
+    /**
+     * Returns the state controls whether we are muting or unmuting the channel.
+     */	
+	public State getState()
 	{
 		return this.state;
 	}
-	
+
+    /**
+     * Sets the name of the channel to monitor.<p>
+     * This property is mandatory.
+     */	
+    public void setChannel(String channel) {
+        this.channel = channel;
+    }
+
+    /**
+     * Sets the audio direction which is to be muted/unmuted.<p>
+     * This property is mandatory.
+     */	
+    public void setDirection(Direction direction) {
+        this.direction = direction;
+    }
+
+    /**
+     * Sets the state controls whether we are muting or unmuting the channel.<p>
+     * This property is mandatory.
+     */		
+    public void setState(State state) {
+        this.state = state;
+    }	
 
 }

@@ -16,9 +16,9 @@
  */
 package org.asteriskjava.manager;
 
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.Set;
 import java.util.HashSet;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.asteriskjava.manager.action.PingAction;
 import org.asteriskjava.manager.response.ManagerResponse;
@@ -61,7 +61,7 @@ public class PingThread extends Thread
     public PingThread()
     {
         super();
-        this.connections = new HashSet<ManagerConnection>();
+        this.connections = new HashSet<>();
         this.die = false;
         long id = idCounter.getAndIncrement();
         setName("Asterisk-Java Ping-" + id);

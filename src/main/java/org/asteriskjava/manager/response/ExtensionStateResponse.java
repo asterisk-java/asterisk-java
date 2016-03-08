@@ -74,9 +74,9 @@ public class ExtensionStateResponse extends ManagerResponse
     @Override
     public String toString()
     {
-        StringBuffer sb;
+    	StringBuilder sb;
 
-        sb = new StringBuffer(getClass().getName() + ": ");
+        sb = new StringBuilder(getClass().getName() + ": ");
         sb.append("actionId='").append(getActionId()).append("'; ");
         sb.append("message='").append(getMessage()).append("'; ");
         sb.append("response='").append(getResponse()).append("'; ");

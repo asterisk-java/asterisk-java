@@ -339,7 +339,8 @@ public class AgiRequestImplTest
         assertEquals("incorrect requestURL", "agi://host/myscript.agi", request.getRequestURL());
         assertEquals("incorrect value for unset parameter 'param1'", null, request.getParameter("param1"));
         assertNotNull("getParameterValues() must not return null", request.getParameterValues("param1"));
-        assertEquals("incorrect size of values for unset parameter 'param1'", 0, request.getParameterValues("param1").length);
+        assertEquals("incorrect size of values for unset parameter 'param1'", 0,
+                request.getParameterValues("param1").length);
         assertNotNull("getParameterMap() must not return null", request.getParameterMap());
         assertEquals("incorrect size of getParameterMap()", 0, request.getParameterMap().size());
     }
@@ -363,8 +364,8 @@ public class AgiRequestImplTest
         assertEquals("incorrect value for parameter 'param2'", "value2", request.getParameter("param2"));
         assertEquals("incorrect value for unset parameter 'param3'", null, request.getParameter("param3"));
         assertEquals("incorrect size of getParameterMap()", 2, request.getParameterMap().size());
-        assertEquals("incorrect value for parameter 'param1' when obtained from map", "value1", ((String[]) request
-                .getParameterMap().get("param1"))[0]);
+        assertEquals("incorrect value for parameter 'param1' when obtained from map", "value1",
+                request.getParameterMap().get("param1")[0]);
     }
 
     @Test

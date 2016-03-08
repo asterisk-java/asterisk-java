@@ -27,7 +27,7 @@ public class ClassNameMappingStrategyTest
     private ClassNameMappingStrategy mappingStrategy;
 
     @Before
-    public void setUp() throws Exception
+    public void setUp()
     {
         this.mappingStrategy = new ClassNameMappingStrategy();
     }

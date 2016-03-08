@@ -16,8 +16,8 @@
  */
 package org.asteriskjava.manager.action;
 
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The UpdateConfigAction sends an UpdateConfig command to the asterisk server.
@@ -72,7 +72,7 @@ public class UpdateConfigAction extends AbstractManagerAction
     public UpdateConfigAction()
     {
         this.actionCounter = 0;
-        actions = new HashMap<String, String>();
+        actions = new HashMap<>();
     }
 
     /**
@@ -86,7 +86,7 @@ public class UpdateConfigAction extends AbstractManagerAction
         this.srcFilename = srcFilename;
         this.dstFilename = dstFilename;
         setReload(reload);
-        actions = new HashMap<String, String>();
+        actions = new HashMap<>();
     }
 
     /**

@@ -33,6 +33,7 @@ public class RtpReceiverStatEvent extends AbstractRtpStatEvent
     private Long receivedPackets;
     private Double transit;
     private Long rrCount;
+    private String accountCode;
 
     public RtpReceiverStatEvent(Object source)
     {
@@ -78,4 +79,16 @@ public class RtpReceiverStatEvent extends AbstractRtpStatEvent
     {
         this.rrCount = rrCount;
     }
+
+    public String getAccountCode()
+    {
+        return accountCode;
+    }
+
+    public void setAccountCode(String accountCode)
+    {
+        this.accountCode = accountCode;
+    }
+    
+    
 }

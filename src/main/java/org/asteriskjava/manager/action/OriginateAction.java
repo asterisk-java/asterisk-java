@@ -16,10 +16,14 @@
  */
 package org.asteriskjava.manager.action;
 
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.StringTokenizer;
+
 import org.asteriskjava.manager.event.OriginateResponseEvent;
 import org.asteriskjava.manager.event.ResponseEvent;
-
-import java.util.*;
 
 
 /**
@@ -328,7 +332,7 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
         }
 
         st = new StringTokenizer(variable, "|");
-        variables = new LinkedHashMap<String, String>();
+        variables = new LinkedHashMap<>();
         while (st.hasMoreTokens())
         {
             String[] keyValue;
@@ -356,7 +360,7 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
     {
         if (variables == null)
         {
-            variables = new LinkedHashMap<String, String>();
+            variables = new LinkedHashMap<>();
         }
 
         variables.put(name, value);
@@ -442,7 +446,7 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
         }
 
         Iterator<String> iter = codecs.iterator();
-        StringBuffer buffer = new StringBuffer(iter.next());
+        StringBuilder buffer = new StringBuilder(iter.next());
         while (iter.hasNext())
         {
             buffer.append(",").append(iter.next());

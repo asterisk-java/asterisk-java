@@ -16,16 +16,16 @@
  */
 package org.asteriskjava.live.internal;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TimeZone;
+
 import org.asteriskjava.live.AmaFlags;
 import org.asteriskjava.live.AsteriskChannel;
 import org.asteriskjava.live.CallDetailRecord;
 import org.asteriskjava.live.Disposition;
 import org.asteriskjava.manager.event.CdrEvent;
-
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TimeZone;
 
 /**
  * Default implementation of the CallDetailRecord interface.
@@ -53,14 +53,14 @@ public class CallDetailRecordImpl implements CallDetailRecord
 
     static
     {
-        DISPOSITION_MAP = new HashMap<String, Disposition>();
+        DISPOSITION_MAP = new HashMap<>();
         DISPOSITION_MAP.put(CdrEvent.DISPOSITION_ANSWERED, Disposition.ANSWERED);
         DISPOSITION_MAP.put(CdrEvent.DISPOSITION_BUSY, Disposition.BUSY);
         DISPOSITION_MAP.put(CdrEvent.DISPOSITION_FAILED, Disposition.FAILED);
         DISPOSITION_MAP.put(CdrEvent.DISPOSITION_NO_ANSWER, Disposition.NO_ANSWER);
         DISPOSITION_MAP.put(CdrEvent.DISPOSITION_UNKNOWN, Disposition.UNKNOWN);
 
-        AMA_FLAGS_MAP = new HashMap<String, AmaFlags>();
+        AMA_FLAGS_MAP = new HashMap<>();
         AMA_FLAGS_MAP.put(CdrEvent.AMA_FLAG_BILLING, AmaFlags.BILLING);
         AMA_FLAGS_MAP.put(CdrEvent.AMA_FLAG_DOCUMENTATION, AmaFlags.DOCUMENTATION);
         AMA_FLAGS_MAP.put(CdrEvent.AMA_FLAG_OMIT, AmaFlags.OMIT);

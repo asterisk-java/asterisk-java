@@ -17,7 +17,8 @@
 package org.asteriskjava.manager.event;
 
 /**
- * A CoreShowChannelEvent is triggered for each active channel in response to a CoreShowChannelsAction.
+ * A CoreShowChannelEvent is triggered for each active channel in response to a
+ * CoreShowChannelsAction.
  *
  * @author sebastian gutierrez
  * @version $Id$
@@ -33,18 +34,13 @@ public class CoreShowChannelEvent extends ResponseEvent
 
     private String uniqueid;
     private String channel;
-    private String context;
     private String extension;
-    private String channelstatedesc;
     private String application;
     private String applicationdata;
-    private String calleridnum;
     private String duration;
     private String accountcode;
     private String bridgedChannel;
-    private String bridgeduniqueid;
-    private String connectedlinenum;
-    private String connectedlinename;
+    private String bridgeid;
 
     public CoreShowChannelEvent(Object source)
     {
@@ -56,7 +52,6 @@ public class CoreShowChannelEvent extends ResponseEvent
      *
      * @return channel state
      */
-
 
     /**
      * Returns the Account code
@@ -89,8 +84,8 @@ public class CoreShowChannelEvent extends ResponseEvent
     }
 
     /**
-     * Returns the Aplication Data is runnning that channel at that time
-     * this is the parameters passed to that dialplan application
+     * Returns the Aplication Data is runnning that channel at that time this is
+     * the parameters passed to that dialplan application
      *
      * @return aplication data
      */
@@ -124,29 +119,31 @@ public class CoreShowChannelEvent extends ResponseEvent
      *
      * @return uniqueid
      */
+    @Deprecated
     public String getBridgeduniqueid()
     {
-        return bridgeduniqueid;
+        return bridgeid;
     }
 
+    @Deprecated
     public void setBridgeduniqueid(String bridgeduniqueid)
     {
-        this.bridgeduniqueid = bridgeduniqueid;
+        this.bridgeid = bridgeduniqueid;
     }
 
     /**
-     * Returns the CallerID
+     * Returns the Bridged UniqueID Case params name return "bridgeid"
      *
-     * @return callerid
+     * @return uniqueid
      */
-    public String getCalleridnum()
+    public String getBridgeid()
     {
-        return calleridnum;
+        return bridgeid;
     }
 
-    public void setCalleridnum(String calleridnum)
+    public void setBridgeid(String bridgeid)
     {
-        this.calleridnum = calleridnum;
+        this.bridgeid = bridgeid;
     }
 
     /**
@@ -162,36 +159,6 @@ public class CoreShowChannelEvent extends ResponseEvent
     public void setChannel(String channel)
     {
         this.channel = channel;
-    }
-
-    /**
-     * Returns the Channel state description (RING,...)
-     *
-     * @return description
-     */
-    public String getChannelstatedesc()
-    {
-        return channelstatedesc;
-    }
-
-    public void setChannelstatedesc(String channelstatedesc)
-    {
-        this.channelstatedesc = channelstatedesc;
-    }
-
-    /**
-     * Returns the Context the channel is
-     *
-     * @return context
-     */
-    public String getContext()
-    {
-        return context;
-    }
-
-    public void setContext(String context)
-    {
-        this.context = context;
     }
 
     /**
@@ -225,13 +192,6 @@ public class CoreShowChannelEvent extends ResponseEvent
     }
 
     /**
-     * Returns the Priority the channel actualy is
-     *
-     * @return priority
-     */
-
-
-    /**
      * Returns the Uniqueid
      *
      * @return uniqueid
@@ -244,26 +204,6 @@ public class CoreShowChannelEvent extends ResponseEvent
     public void setUniqueid(String uniqueid)
     {
         this.uniqueid = uniqueid;
-    }
-
-    public String getConnectedlinenum()
-    {
-        return connectedlinenum;
-    }
-
-    public void setConnectedlinenum(String connectedlinenum)
-    {
-        this.connectedlinenum = connectedlinenum;
-    }
-
-    public String getConnectedlinename()
-    {
-        return connectedlinename;
-    }
-
-    public void setConnectedlinename(String connectedlinename)
-    {
-        this.connectedlinename = connectedlinename;
     }
 
 }

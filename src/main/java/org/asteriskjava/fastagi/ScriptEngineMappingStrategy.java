@@ -16,25 +16,35 @@
  */
 package org.asteriskjava.fastagi;
 
-import org.asteriskjava.util.LogFactory;
-import org.asteriskjava.util.Log;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.regex.Matcher;
 
+import javax.script.Bindings;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
-import javax.script.Bindings;
 import javax.script.ScriptException;
-import java.io.*;
-import java.util.Arrays;
-import java.util.regex.Matcher;
-import java.util.List;
-import java.util.ArrayList;
-import java.net.URLClassLoader;
-import java.net.URL;
-import java.net.MalformedURLException;
+
+import org.asteriskjava.util.Log;
+import org.asteriskjava.util.LogFactory;
 
 /**
- * A MappingStrategy that uses {@link javax.script.ScriptEngine} to run AgiScripts. This MappingStrategy
- * can be used to run JavaScript, Groovy, JRuby, etc. scripts.
+ * A MappingStrategy that uses {@link javax.script.ScriptEngine} to run
+ * AgiScripts. This MappingStrategy can be used to run JavaScript, Groovy,
+ * JRuby, etc. scripts.
  *
  * @since 1.0.0
  */
@@ -60,7 +70,8 @@ public class ScriptEngineMappingStrategy implements MappingStrategy
     protected ScriptEngineManager scriptEngineManager = null;
 
     /**
-     * Creates a new ScriptEngineMappingStrategy that searches for scripts in the current directory.
+     * Creates a new ScriptEngineMappingStrategy that searches for scripts in
+     * the current directory.
      */
     public ScriptEngineMappingStrategy()
     {
@@ -68,10 +79,12 @@ public class ScriptEngineMappingStrategy implements MappingStrategy
     }
 
     /**
-     * Creates a new ScriptEngineMappingStrategy that searches for scripts on the given path.
+     * Creates a new ScriptEngineMappingStrategy that searches for scripts on
+     * the given path.
      *
      * @param scriptPath array of directory names to search for script files.
-     * @param libPath    array of directory names to search for additional libraries (jar files).
+     * @param libPath array of directory names to search for additional
+     *            libraries (jar files).
      */
     public ScriptEngineMappingStrategy(String[] scriptPath, String[] libPath)
     {
@@ -80,21 +93,24 @@ public class ScriptEngineMappingStrategy implements MappingStrategy
     }
 
     /**
-     * Sets the path to search for script files.<p>
+     * Sets the path to search for script files.
+     * <p>
      * Default is "agi".
      *
      * @param scriptPath array of directory names to search for script files.
      */
     public void setScriptPath(String[] scriptPath)
     {
-        this.scriptPath = Arrays.copyOf(scriptPath, scriptPath.length);;
+        this.scriptPath = Arrays.copyOf(scriptPath, scriptPath.length);
     }
 
     /**
-     * Sets the path to search for additional libraries (jar files).<p>
+     * Sets the path to search for additional libraries (jar files).
+     * <p>
      * Default is "lib".
      *
-     * @param libPath array of directory names to search for additional libraries (jar files).
+     * @param libPath array of directory names to search for additional
+     *            libraries (jar files).
      */
     public void setLibPath(String[] libPath)
     {
@@ -104,7 +120,8 @@ public class ScriptEngineMappingStrategy implements MappingStrategy
     @Override
     public AgiScript determineScript(AgiRequest request, AgiChannel channel)
     {
-        // check is a file corresponding to the AGI request is found on the scriptPath
+        // check is a file corresponding to the AGI request is found on the
+        // scriptPath
         final File file = searchFile(request.getScript(), scriptPath);
         if (file == null)
         {
@@ -140,8 +157,9 @@ public class ScriptEngineMappingStrategy implements MappingStrategy
     }
 
     /**
-     * Returns the ScriptEngineManager to use for loading the ScriptEngine. The ScriptEngineManager is only
-     * created once and reused for subsequent requests. Override this method to provide your own implementation.
+     * Returns the ScriptEngineManager to use for loading the ScriptEngine. The
+     * ScriptEngineManager is only created once and reused for subsequent
+     * requests. Override this method to provide your own implementation.
      *
      * @return the ScriptEngineManager to use for loading the ScriptEngine.
      * @see javax.script.ScriptEngineManager#ScriptEngineManager()
@@ -156,8 +174,9 @@ public class ScriptEngineMappingStrategy implements MappingStrategy
     }
 
     /**
-     * Returns the ClassLoader to use for the ScriptEngineManager. Adds all jar files in the "lib" subdirectory of
-     * the current directory to the class path. Override this method to provide your own ClassLoader.
+     * Returns the ClassLoader to use for the ScriptEngineManager. Adds all jar
+     * files in the "lib" subdirectory of the current directory to the class
+     * path. Override this method to provide your own ClassLoader.
      *
      * @return the ClassLoader to use for the ScriptEngineManager.
      * @see #getScriptEngineManager()
@@ -165,7 +184,7 @@ public class ScriptEngineMappingStrategy implements MappingStrategy
     protected ClassLoader getClassLoader()
     {
         final ClassLoader parentClassLoader = Thread.currentThread().getContextClassLoader();
-        final List<URL> jarFileUrls = new ArrayList<URL>();
+        final List<URL> jarFileUrls = new ArrayList<>();
 
         if (libPath == null || libPath.length == 0)
         {
@@ -187,21 +206,28 @@ public class ScriptEngineMappingStrategy implements MappingStrategy
                     return name.endsWith(".jar");
                 }
             });
-
-            for (File jarFile : jarFiles)
+            if (jarFiles != null)
             {
-                try
+
+                for (File jarFile : jarFiles)
                 {
-                    jarFileUrls.add(jarFile.toURI().toURL());
+                    try
+                    {
+                        jarFileUrls.add(jarFile.toURI().toURL());
+                    }
+                    catch (MalformedURLException e)
+                    {
+                        // should not happen
+                    }
                 }
-                catch (MalformedURLException e)
-                {
-                    // should not happen
-                }
+            }
+            else
+            {
+                logger.error("Didn't find any jar files at " + libDir.getAbsolutePath());
             }
         }
 
-        if (jarFileUrls.size() == 0)
+        if (jarFileUrls.isEmpty())
         {
             return parentClassLoader;
         }
@@ -213,8 +239,10 @@ public class ScriptEngineMappingStrategy implements MappingStrategy
      * Searches for the file with the given name on the path.
      *
      * @param scriptName the name of the file to search for.
-     * @param path       an array of directories to search for the file in order of preference.
-     * @return the canonical file if found on the path or <code>null</code> if not found.
+     * @param path an array of directories to search for the file in order of
+     *            preference.
+     * @return the canonical file if found on the path or <code>null</code> if
+     *         not found.
      */
     protected File searchFile(String scriptName, String[] path)
     {
@@ -265,12 +293,15 @@ public class ScriptEngineMappingStrategy implements MappingStrategy
     }
 
     /**
-     * Checks whether a file is contained within a given directory (or a sub directory) or not.
+     * Checks whether a file is contained within a given directory (or a sub
+     * directory) or not.
      *
      * @param file the file to check.
-     * @param dir  the directory to check.
-     * @return <code>true</code> if file is below directory, <code>false</code> otherwise.
-     * @throws IOException if the canonical path of file or dir cannot be determined.
+     * @param dir the directory to check.
+     * @return <code>true</code> if file is below directory, <code>false</code>
+     *         otherwise.
+     * @throws IOException if the canonical path of file or dir cannot be
+     *             determined.
      */
     protected final boolean isInside(File file, File dir) throws IOException
     {
@@ -281,7 +312,8 @@ public class ScriptEngineMappingStrategy implements MappingStrategy
      * Returns the extension (the part after the last ".") of the given script.
      *
      * @param scriptName the name of the script to return the extension of.
-     * @return the extension of the script or <code>null</code> if there is no extension.
+     * @return the extension of the script or <code>null</code> if there is no
+     *         extension.
      */
     protected static String getExtension(String scriptName)
     {
@@ -319,7 +351,7 @@ public class ScriptEngineMappingStrategy implements MappingStrategy
     protected static Reader getReader(File file) throws FileNotFoundException
     {
         final InputStream is = new FileInputStream(file);
-        return new InputStreamReader(is);
+        return new InputStreamReader(is, StandardCharsets.UTF_8);
     }
 
     protected class ScriptEngineAgiScript implements NamedAgiScript
@@ -330,7 +362,7 @@ public class ScriptEngineMappingStrategy implements MappingStrategy
         /**
          * Creates a new ScriptEngineAgiScript.
          *
-         * @param file         the file that contains the script to execute.
+         * @param file the file that contains the script to execute.
          * @param scriptEngine the ScriptEngine to use for executing the script.
          */
         public ScriptEngineAgiScript(File file, ScriptEngine scriptEngine)
@@ -371,13 +403,14 @@ public class ScriptEngineMappingStrategy implements MappingStrategy
     }
 
     /**
-     * Override this method if you want to add additional bindings before the script is run. By default the
-     * AGI request, AGI channel and the filename are available to scripts under the bindings "request", "channel"
-     * and "javax.script.filename".
+     * Override this method if you want to add additional bindings before the
+     * script is run. By default the AGI request, AGI channel and the filename
+     * are available to scripts under the bindings "request", "channel" and
+     * "javax.script.filename".
      *
-     * @param file     the script file.
-     * @param request  the AGI request.
-     * @param channel  the AGI channel.
+     * @param file the script file.
+     * @param request the AGI request.
+     * @param channel the AGI channel.
      * @param bindings the bindings to populate.
      */
     protected void populateBindings(File file, AgiRequest request, AgiChannel channel, Bindings bindings)

@@ -16,9 +16,9 @@
  */
 package org.asteriskjava.live;
 
-import org.asteriskjava.util.AstUtil;
-
 import java.io.Serializable;
+
+import org.asteriskjava.util.AstUtil;
 
 /**
  * Represents a Caller*ID containing name and number.

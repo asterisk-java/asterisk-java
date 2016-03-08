@@ -16,10 +16,10 @@
  */
 package org.asteriskjava.config;
 
-import java.util.Map;
-import java.util.List;
-import java.util.TreeMap;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * An Asterisk configuration file read from the filesystem.
@@ -48,7 +48,7 @@ public class ConfigFileImpl implements ConfigFile
     {
         final Map<String, List<String>> c;
 
-        c = new TreeMap<String, List<String>>();
+        c = new TreeMap<>();
 
         synchronized (categories)
         {
@@ -56,7 +56,7 @@ public class ConfigFileImpl implements ConfigFile
             {
                 List<String> lines;
 
-                lines = new ArrayList<String>();
+                lines = new ArrayList<>();
                 for (ConfigElement element : category.getElements())
                 {
                     if (element instanceof ConfigVariable)
@@ -103,7 +103,7 @@ public class ConfigFileImpl implements ConfigFile
         final List<String> result;
 
         category = getCategory(categoryName);
-        result = new ArrayList<String>();
+        result = new ArrayList<>();
         if (category == null)
         {
             return result;

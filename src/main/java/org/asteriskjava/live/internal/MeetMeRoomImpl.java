@@ -46,7 +46,7 @@ class MeetMeRoomImpl extends AbstractLiveObject implements MeetMeRoom
     {
         super(server);
         this.roomNumber = roomNumber;
-        this.users = new HashMap<Integer, MeetMeUserImpl>(20);
+        this.users = new HashMap<>(20);
     }
 
     public String getRoomNumber()
@@ -74,7 +74,7 @@ class MeetMeRoomImpl extends AbstractLiveObject implements MeetMeRoom
     {
         synchronized (users)
         {
-            return new ArrayList<MeetMeUserImpl>(users.values());
+            return new ArrayList<>(users.values());
         }
     }
     
@@ -116,7 +116,7 @@ class MeetMeRoomImpl extends AbstractLiveObject implements MeetMeRoom
 
     private void sendMeetMeCommand(String command) throws ManagerCommunicationException
     {
-        final StringBuffer sb = new StringBuffer();
+        final StringBuilder sb = new StringBuilder();
         sb.append(COMMAND_PREFIX);
         sb.append(" ");
         sb.append(command);
@@ -129,10 +129,10 @@ class MeetMeRoomImpl extends AbstractLiveObject implements MeetMeRoom
     @Override
    public String toString()
     {
-        StringBuffer sb;
+    	StringBuilder sb;
         int systemHashcode;
 
-        sb = new StringBuffer("MeetMeRoom[");
+        sb = new StringBuilder("MeetMeRoom[");
 
         synchronized (this)
         {

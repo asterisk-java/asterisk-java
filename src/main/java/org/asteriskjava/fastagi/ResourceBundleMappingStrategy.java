@@ -16,12 +16,19 @@
  */
 package org.asteriskjava.fastagi;
 
-import java.util.*;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
 /**
- * A MappingStrategy that is configured via a resource bundle.<p>
+ * A MappingStrategy that is configured via a resource bundle.
+ * <p>
  * The resource bundle contains the script part of the url as key and the fully
- * qualified class name of the corresponding AgiScript as value.<p>
+ * qualified class name of the corresponding AgiScript as value.
+ * <p>
  * Example:
  * 
  * <pre>
@@ -30,9 +37,10 @@ import java.util.*;
  * </pre>
  * 
  * LeastCostDialAgiScript and HelloAgiScript must both implement the AgiScript
- * interface and have a default constructor with no parameters.<p>
+ * interface and have a default constructor with no parameters.
+ * <p>
  * The resource bundle (properties) file is called
- * <code>fastagi-mapping.properties</code> by default and must be available on 
+ * <code>fastagi-mapping.properties</code> by default and must be available on
  * the classpath.
  * 
  * @author srt
@@ -55,8 +63,8 @@ public class ResourceBundleMappingStrategy extends AbstractMappingStrategy
     }
 
     /**
-     * Creates a new ResourceBundleMappingStrategy with the given basename
-     * of the resource bundle to use.
+     * Creates a new ResourceBundleMappingStrategy with the given basename of
+     * the resource bundle to use.
      * 
      * @param resourceBundleName basename of the resource bundle to use
      */
@@ -66,12 +74,11 @@ public class ResourceBundleMappingStrategy extends AbstractMappingStrategy
     }
 
     /**
-     * Creates a new ResourceBundleMappingStrategy indicating whether to use shared
-     * instances or not.
+     * Creates a new ResourceBundleMappingStrategy indicating whether to use
+     * shared instances or not.
      * 
      * @param shareInstances <code>true</code> to use shared instances,
-     *                       <code>false</code> to create a new instance for
-     *                       each request.
+     *            <code>false</code> to create a new instance for each request.
      * @since 0.3
      */
     public ResourceBundleMappingStrategy(boolean shareInstances)
@@ -80,14 +87,13 @@ public class ResourceBundleMappingStrategy extends AbstractMappingStrategy
     }
 
     /**
-     * Creates a new ResourceBundleMappingStrategy with the given basename
-     * of the resource bundle to use and indicating whether to use shared
-     * instances or not.
+     * Creates a new ResourceBundleMappingStrategy with the given basename of
+     * the resource bundle to use and indicating whether to use shared instances
+     * or not.
      * 
      * @param resourceBundleName basename of the resource bundle to use
      * @param shareInstances <code>true</code> to use shared instances,
-     *                       <code>false</code> to create a new instance for
-     *                       each request.
+     *            <code>false</code> to create a new instance for each request.
      * @since 0.3
      */
     public ResourceBundleMappingStrategy(String resourceBundleName, boolean shareInstances)
@@ -98,7 +104,8 @@ public class ResourceBundleMappingStrategy extends AbstractMappingStrategy
     }
 
     /**
-     * Sets the basename of the resource bundle to use.<p>
+     * Sets the basename of the resource bundle to use.
+     * <p>
      * Default is "fastagi-mapping".
      * 
      * @param resourceBundleName basename of the resource bundle to use
@@ -115,14 +122,13 @@ public class ResourceBundleMappingStrategy extends AbstractMappingStrategy
 
     /**
      * Sets whether to use shared instances or not. If set to <code>true</code>
-     * all AgiRequests are served by the same instance of an
-     * AgiScript, if set to <code>false</code> a new instance is created for
-     * each request.<p>
+     * all AgiRequests are served by the same instance of an AgiScript, if set
+     * to <code>false</code> a new instance is created for each request.
+     * <p>
      * Default is <code>true</code>.
      * 
      * @param shareInstances <code>true</code> to use shared instances,
-     *                       <code>false</code> to create a new instance for
-     *                       each request.
+     *            <code>false</code> to create a new instance for each request.
      * @since 0.3
      */
     public synchronized void setShareInstances(boolean shareInstances)
@@ -133,12 +139,12 @@ public class ResourceBundleMappingStrategy extends AbstractMappingStrategy
     private synchronized void loadResourceBundle()
     {
         ResourceBundle resourceBundle;
-        Enumeration<?> keys;
+        Enumeration< ? > keys;
 
-        mappings = new HashMap<String, String>();
+        mappings = new HashMap<>();
         if (shareInstances)
         {
-            instances = new HashMap<String, AgiScript>();
+            instances = new HashMap<>();
         }
 
         try
@@ -189,9 +195,6 @@ public class ResourceBundleMappingStrategy extends AbstractMappingStrategy
         {
             return instances.get(request.getScript());
         }
-        else
-        {
-            return createAgiScriptInstance(mappings.get(request.getScript()));
-        }
+        return createAgiScriptInstance(mappings.get(request.getScript()));
     }
 }

@@ -16,8 +16,8 @@
  */
 package org.asteriskjava.manager.action;
 
-import org.asteriskjava.manager.event.ZapShowChannelsCompleteEvent;
 import org.asteriskjava.manager.event.ResponseEvent;
+import org.asteriskjava.manager.event.ZapShowChannelsCompleteEvent;
 
 /**
  * The ZapShowChannelsAction requests the state of all zap channels.<p>

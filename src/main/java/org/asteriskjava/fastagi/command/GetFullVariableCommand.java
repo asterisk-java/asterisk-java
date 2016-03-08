@@ -114,9 +114,9 @@ public class GetFullVariableCommand extends AbstractAgiCommand
     @Override
    public String buildCommand()
     {
-        StringBuffer sb;
+    	StringBuilder sb;
 
-        sb = new StringBuffer("GET FULL VARIABLE ");
+        sb = new StringBuilder("GET FULL VARIABLE ");
         sb.append(escapeAndQuote(variable));
 
         if (channel != null)

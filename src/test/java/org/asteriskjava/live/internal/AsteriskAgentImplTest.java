@@ -37,26 +37,30 @@ public class AsteriskAgentImplTest
     private int numberOfChanges;
 
     @Before
-	public void setUp() throws Exception {
-		AsteriskServerImpl server = new AsteriskServerImpl();
-		agent = new AsteriskAgentImpl(server, "Testagent", "Agent/999", AgentState.AGENT_IDLE);
-		numberOfChanges = 0;
-	}
+    public void setUp()
+    {
+        AsteriskServerImpl server = new AsteriskServerImpl();
+        agent = new AsteriskAgentImpl(server, "Testagent", "Agent/999", AgentState.AGENT_IDLE);
+        numberOfChanges = 0;
+    }
 
     @Test
-	public void testUpdateStatus() {
-		assertEquals(AgentState.AGENT_IDLE, agent.getState());
-		agent.addPropertyChangeListener(new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
-				assertEquals("wrong propertyName", "state", evt.getPropertyName());
-				assertEquals("wrong oldValue", AgentState.AGENT_IDLE, evt.getOldValue());
-				assertEquals("wrong newValue", AgentState.AGENT_RINGING, evt.getNewValue());
-				assertEquals("wrong queue", agent, evt.getSource());
-				numberOfChanges++;
-			}
+    public void testUpdateStatus()
+    {
+        assertEquals(AgentState.AGENT_IDLE, agent.getState());
+        agent.addPropertyChangeListener(new PropertyChangeListener()
+        {
+            public void propertyChange(PropertyChangeEvent evt)
+            {
+                assertEquals("wrong propertyName", "state", evt.getPropertyName());
+                assertEquals("wrong oldValue", AgentState.AGENT_IDLE, evt.getOldValue());
+                assertEquals("wrong newValue", AgentState.AGENT_RINGING, evt.getNewValue());
+                assertEquals("wrong queue", agent, evt.getSource());
+                numberOfChanges++;
+            }
 
-		});
-		agent.updateState(AgentState.AGENT_RINGING);
-		assertEquals("wrong number of propagated changes", 1, numberOfChanges);
-	}
+        });
+        agent.updateState(AgentState.AGENT_RINGING);
+        assertEquals("wrong number of propagated changes", 1, numberOfChanges);
+    }
 }

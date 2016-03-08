@@ -17,7 +17,8 @@
 package org.asteriskjava.manager.event;
 
 /**
- * A NewChannelEvent is triggered when a new channel is created.<p>
+ * A NewChannelEvent is triggered when a new channel is created.
+ * <p>
  * It is implemented in <code>channel.c</code>
  *
  * @author srt
@@ -31,10 +32,8 @@ public class NewChannelEvent extends AbstractChannelStateEvent
     static final long serialVersionUID = 1L;
 
     private String accountCode;
-    private String context;
-    private String exten;
-    private Integer priority;
     private String language;
+    private String linkedid;
 
     public NewChannelEvent(Object source)
     {
@@ -43,16 +42,17 @@ public class NewChannelEvent extends AbstractChannelStateEvent
 
     public String getLanguage()
     {
-    	return language;
+        return language;
     }
-    
+
     public void setLanguage(String language)
     {
-    	this.language = language;
+        this.language = language;
     }
-    
+
     /**
-     * Returns the account code of the new channel.<p>
+     * Returns the account code of the new channel.
+     * <p>
      * This property is available since Asterisk 1.6.
      *
      * @return the account code of the new channel.
@@ -74,65 +74,15 @@ public class NewChannelEvent extends AbstractChannelStateEvent
         this.accountCode = accountCode;
     }
 
-    /**
-     * Returns the context of the dialplan entry the channel started at.<p>
-     * This property is available since Asterisk 1.6.
-     *
-     * @return the context of the dialplan entry the channel started at.
-     * @since 1.0.0
-     */
-    public String getContext()
+    public String getLinkedid()
     {
-        return context;
+        return linkedid;
     }
 
-    /**
-     * Sets the context of the dialplan entry the channel started at.
-     *
-     * @param context the context of the dialplan entry the channel started at.
-     * @since 1.0.0
-     */
-    public void setContext(String context)
+    public void setLinkedid(String linkedid)
     {
-        this.context = context;
+        this.linkedid = linkedid;
     }
-
-    /**
-     * Returns the extension of the dialplan entry the channel started at.<p>
-     * This property is available since Asterisk 1.6.
-     *
-     * @return the extension of the dialplan entry the channel started at.
-     * @since 1.0.0
-     */
-    public String getExten()
-    {
-        return exten;
-    }
-
-    /**
-     * Sets the extension of the dialplan entry the channel started at.
-     *
-     * @param exten the extension of the dialplan entry the channel started at.
-     * @since 1.0.0
-     */
-    public void setExten(String exten)
-    {
-        this.exten = exten;
-    }
-
-    /**
-     * Returns the priority.
-     */
-    public Integer getPriority()
-    {
-        return priority;
-    }
-
-    /**
-     * Sets the priority.
-     */
-    public void setPriority(Integer priority)
-    {
-        this.priority = priority;
-    }
+    
+    
 }

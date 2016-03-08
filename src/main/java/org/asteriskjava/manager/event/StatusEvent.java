@@ -16,12 +16,11 @@
  */
 package org.asteriskjava.manager.event;
 
-import org.asteriskjava.util.AstState;
-
 import java.util.Map;
 
 /**
- * A StatusEvent is triggered for each active channel in response to a StatusAction.
+ * A StatusEvent is triggered for each active channel in response to a
+ * StatusAction.
  *
  * @author srt
  * @version $Id$
@@ -34,21 +33,28 @@ public class StatusEvent extends ResponseEvent
      */
     private static final long serialVersionUID = -3619197512835308812L;
     private String channel;
-    private String callerIdNum;
-    private String callerIdName;
     private String accountCode;
-    private Integer channelState;
-    private String channelStateDesc;
-    private String context;
-    private String extension;
-    private Integer priority;
     private Integer seconds;
     private String bridgedChannel;
     private String bridgedUniqueId;
     private String uniqueId;
-    private String connectedlinenum;
-    private String connectedlinename;
+    private String linkedId;
+    private String data;
+    private String readFormat;
+    private String writeFormat;
+    private String type;
+    private String effectiveConnectedLineName;
+    private String effectiveConnectedLineNum;
+    private String application;
+    private String callGroup;
+    private String nativeFormats;
+    private String pickupGroup;
+    private String timeToHangup;
     private Map<String, String> variables;
+    private String dnid;
+    private String writetrans;
+    private String bridgeId;
+    private String readtrans;
 
     public StatusEvent(Object source)
     {
@@ -76,19 +82,24 @@ public class StatusEvent extends ResponseEvent
     }
 
     /**
-     * Returns the Caller*ID Number of this channel.<p>
-     * This property is deprecated as of Asterisk 1.4, use {@link #getCallerIdNum()} instead.
+     * Returns the Caller*ID Number of this channel.
+     * <p>
+     * This property is deprecated as of Asterisk 1.4, use
+     * {@link #getCallerIdNum()} instead.
      *
-     * @return the Caller*ID Number of this channel or <code>null</code> if none is available.
+     * @return the Caller*ID Number of this channel or <code>null</code> if none
+     *         is available.
      * @deprecated
      */
-    @Deprecated public String getCallerId()
+    @Deprecated
+    public String getCallerId()
     {
         return callerIdNum;
     }
 
     /**
-     * Sets the Caller*ID Number of this channel.<p>
+     * Sets the Caller*ID Number of this channel.
+     * <p>
      * This property is deprecated as of Asterisk 1.4.
      *
      * @param callerIdNum the Caller*ID Number to set.
@@ -96,48 +107,6 @@ public class StatusEvent extends ResponseEvent
     public void setCallerId(String callerIdNum)
     {
         this.callerIdNum = callerIdNum;
-    }
-
-    /**
-     * Returns the Caller*ID Number of this channel.
-     *
-     * @return the Caller*ID Number of this channel or <code>null</code> if none is available.
-     * @since 0.3
-     */
-    public String getCallerIdNum()
-    {
-        return callerIdNum;
-    }
-
-    /**
-     * Sets the Caller*ID Number of this channel.
-     *
-     * @param callerIdNum the Caller*ID Number to set.
-     * @since 0.3
-     */
-    public void setCallerIdNum(String callerIdNum)
-    {
-        this.callerIdNum = callerIdNum;
-    }
-
-    /**
-     * Returns the Caller*ID Name of this channel.
-     *
-     * @return the Caller*ID Name of this channel or <code>null</code> if none is available.
-     */
-    public String getCallerIdName()
-    {
-        return callerIdName;
-    }
-
-    /**
-     * Sets the Caller*ID Name of this channel.
-     *
-     * @param callerIdName the Caller*ID Name of this channel.
-     */
-    public void setCallerIdName(String callerIdName)
-    {
-        this.callerIdName = callerIdName;
     }
 
     /**
@@ -168,14 +137,17 @@ public class StatusEvent extends ResponseEvent
      * @return the account code of this channel.
      * @deprecated since 1.0.0, use {@link #getAccountCode()} instead.
      */
-    @Deprecated public String getAccount()
+    @Deprecated
+    public String getAccount()
     {
         return accountCode;
     }
 
     /**
-     * Sets the account code of this channel.<p>
-     * Asterisk versions up to 1.4 use the "Account" property instead of "AccountCode".
+     * Sets the account code of this channel.
+     * <p>
+     * Asterisk versions up to 1.4 use the "Account" property instead of
+     * "AccountCode".
      *
      * @param account the account code of this channel.
      */
@@ -185,89 +157,30 @@ public class StatusEvent extends ResponseEvent
     }
 
     /**
-     * Returns the state of the channel.<p>
-     * For Asterisk versions prior to 1.6 (that do not send the numeric value) it is derived
-     * from the descriptive text.
-     *
-     * @return the state of the channel.
-     * @since 1.0.0
-     */
-    public Integer getChannelState()
-    {
-        return channelState == null ? AstState.str2state(channelStateDesc) : channelState;
-    }
-
-    /**
-     * Sets the state of the channel.
-     *
-     * @param channelState the state of the channel.
-     * @since 1.0.0
-     */
-    public void setChannelState(Integer channelState)
-    {
-        this.channelState = channelState;
-    }
-
-    /**
-     * Returns the state of the channel as a descriptive text.
-     *
-     * @return the state of the channel as a descriptive text.
-     * @since 1.0.0
-     */
-    public String getChannelStateDesc()
-    {
-        return channelStateDesc;
-    }
-
-    public void setChannelStateDesc(String channelStateDesc)
-    {
-        this.channelStateDesc = channelStateDesc;
-    }
-
-    /**
      * Returns the state of the channel as a descriptive text.
      *
      * @return the state of the channel as a descriptive text.
      * @deprecated use {@link #getChannelStateDesc()} instead.
      */
-    @Deprecated public String getState()
+    @Deprecated
+    public String getState()
     {
-        return channelStateDesc;
+        return getChannelStateDesc();
     }
 
     public void setState(String state)
     {
-        this.channelStateDesc = state;
-    }
-
-    public String getContext()
-    {
-        return context;
-    }
-
-    public void setContext(String context)
-    {
-        this.context = context;
+        setChannelStateDesc(state);
     }
 
     public String getExtension()
     {
-        return extension;
+        return getExten();
     }
 
     public void setExtension(String extension)
     {
-        this.extension = extension;
-    }
-
-    public Integer getPriority()
-    {
-        return priority;
-    }
-
-    public void setPriority(Integer priority)
-    {
-        this.priority = priority;
+        setExten(extension);
     }
 
     /**
@@ -304,7 +217,8 @@ public class StatusEvent extends ResponseEvent
     /**
      * Sets the name of the linked channel.
      *
-     * @param bridgedChannel the name of the linked channel if this channel is bridged.
+     * @param bridgedChannel the name of the linked channel if this channel is
+     *            bridged.
      * @since 1.0.0
      */
     public void setBridgedChannel(String bridgedChannel)
@@ -318,13 +232,15 @@ public class StatusEvent extends ResponseEvent
      * @return the name of the linked channel if this channel is bridged.
      * @deprecated as of 1.0.0, use {@link #getBridgedChannel()} instead.
      */
-    @Deprecated public String getLink()
+    @Deprecated
+    public String getLink()
     {
         return bridgedChannel;
     }
 
     /**
-     * Sets the name of the linked channel.<p>
+     * Sets the name of the linked channel.
+     * <p>
      * Asterisk versions up to 1.4 use "Link" instead of "BridgedChannel".
      *
      * @param link the name of the linked channel if this channel is bridged.
@@ -335,7 +251,8 @@ public class StatusEvent extends ResponseEvent
     }
 
     /**
-     * Returns the unique id of the linked channel if this channel is bridged.<p>
+     * Returns the unique id of the linked channel if this channel is bridged.
+     * <p>
      * Available since Asterisk 1.6.
      *
      * @return the unique id of the linked channel if this channel is bridged.
@@ -347,10 +264,12 @@ public class StatusEvent extends ResponseEvent
     }
 
     /**
-     * Sets the unique id of the linked channel if this channel is bridged.<p>
+     * Sets the unique id of the linked channel if this channel is bridged.
+     * <p>
      * Available since Asterisk 1.6.
      *
-     * @param bridgedUniqueId the unique id of the linked channel if this channel is bridged.
+     * @param bridgedUniqueId the unique id of the linked channel if this
+     *            channel is bridged.
      * @since 1.0.0
      */
     public void setBridgedUniqueId(String bridgedUniqueId)
@@ -379,8 +298,10 @@ public class StatusEvent extends ResponseEvent
     }
 
     /**
-     * Returns the channel variables if the {@link org.asteriskjava.manager.action.StatusAction#setVariables(String)}
-     * property has been set.<p>
+     * Returns the channel variables if the
+     * {@link org.asteriskjava.manager.action.StatusAction#setVariables(String)}
+     * property has been set.
+     * <p>
      * Available since Asterisk 1.6
      *
      * @return the channel variables.
@@ -392,7 +313,8 @@ public class StatusEvent extends ResponseEvent
     }
 
     /**
-     * Sets the channel variables.<p>
+     * Sets the channel variables.
+     * <p>
      * Available since Asterisk 1.6
      *
      * @param variables the channel variables.
@@ -403,24 +325,187 @@ public class StatusEvent extends ResponseEvent
         this.variables = variables;
     }
 
-	public String getConnectedlinenum()
-	{
-		return connectedlinenum;
-	}
+    public String getLinkedId()
+    {
+        return linkedId;
+    }
 
-	public void setConnectedlinenum(String connectedlinenum)
-	{
-		this.connectedlinenum = connectedlinenum;
-	}
+    public void setLinkedId(String linkedId)
+    {
+        this.linkedId = linkedId;
+    }
 
-	public String getConnectedlinename()
-	{
-		return connectedlinename;
-	}
+    public String getData()
+    {
+        return data;
+    }
 
-	public void setConnectedlinename(String connectedlinename)
-	{
-		this.connectedlinename = connectedlinename;
-	}
-    
+    public void setData(String data)
+    {
+        this.data = data;
+    }
+
+    public String getReadFormat()
+    {
+        return readFormat;
+    }
+
+    public void setReadFormat(String readFormat)
+    {
+        this.readFormat = readFormat;
+    }
+
+    public String getWriteFormat()
+    {
+        return writeFormat;
+    }
+
+    public void setWriteFormat(String writeFormat)
+    {
+        this.writeFormat = writeFormat;
+    }
+
+    public String getType()
+    {
+        return type;
+    }
+
+    public void setType(String type)
+    {
+        this.type = type;
+    }
+
+    public String getEffectiveConnectedLineName()
+    {
+        return effectiveConnectedLineName;
+    }
+
+    public void setEffectiveConnectedLineName(String effectiveConnectedLineName)
+    {
+        this.effectiveConnectedLineName = effectiveConnectedLineName;
+    }
+
+    public String getEffectiveConnectedLineNum()
+    {
+        return effectiveConnectedLineNum;
+    }
+
+    public void setEffectiveConnectedLineNum(String effectiveConnectedLineNum)
+    {
+        this.effectiveConnectedLineNum = effectiveConnectedLineNum;
+    }
+
+    public String getApplication()
+    {
+        return application;
+    }
+
+    public void setApplication(String application)
+    {
+        this.application = application;
+    }
+
+    public String getCallGroup()
+    {
+        return callGroup;
+    }
+
+    public void setCallGroup(String callGroup)
+    {
+        this.callGroup = callGroup;
+    }
+
+    public String getNativeFormats()
+    {
+        return nativeFormats;
+    }
+
+    public void setNativeFormats(String nativeFormats)
+    {
+        this.nativeFormats = nativeFormats;
+    }
+
+    public String getPickupGroup()
+    {
+        return pickupGroup;
+    }
+
+    public void setPickupGroup(String pickupGroup)
+    {
+        this.pickupGroup = pickupGroup;
+    }
+
+    public String getTimeToHangup()
+    {
+        return timeToHangup;
+    }
+
+    public void setTimeToHangup(String timeToHangup)
+    {
+        this.timeToHangup = timeToHangup;
+    }
+
+    /**
+     * @return the dnid
+     */
+    public String getDnid()
+    {
+        return dnid;
+    }
+
+    /**
+     * @param dnid the dnid to set
+     */
+    public void setDnid(String dnid)
+    {
+        this.dnid = dnid;
+    }
+
+    /**
+     * @return the writetrans
+     */
+    public String getWritetrans()
+    {
+        return writetrans;
+    }
+
+    /**
+     * @param writetrans the writetrans to set
+     */
+    public void setWritetrans(String writetrans)
+    {
+        this.writetrans = writetrans;
+    }
+
+    /**
+     * @return the bridgeid
+     */
+    public String getBridgeId()
+    {
+        return bridgeId;
+    }
+
+    /**
+     * @param bridgeid the bridgeid to set
+     */
+    public void setBridgeId(String bridgeid)
+    {
+        this.bridgeId = bridgeid;
+    }
+
+    /**
+     * @return the readtrans
+     */
+    public String getReadtrans()
+    {
+        return readtrans;
+    }
+
+    /**
+     * @param readtrans the readtrans to set
+     */
+    public void setReadtrans(String readtrans)
+    {
+        this.readtrans = readtrans;
+    }
 }
