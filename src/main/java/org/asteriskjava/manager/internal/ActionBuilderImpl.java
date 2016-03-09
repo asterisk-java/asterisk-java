@@ -72,7 +72,7 @@ class ActionBuilderImpl implements ActionBuilder
     @SuppressWarnings("unchecked")
     public String buildAction(final ManagerAction action, final String internalActionId)
     {
-    	StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder();
 
         sb.append("action: ");
         sb.append(action.getAction());
@@ -139,7 +139,7 @@ class ActionBuilderImpl implements ActionBuilder
                 for (Map.Entry<Object, Object> entry : attributes.entrySet())
                 {
                     appendString(sb, entry.getKey() == null ? "null" : entry.getKey().toString(),
-                      entry.getValue() == null ? "null" : entry.getValue().toString());
+                        entry.getValue() == null ? "null" : entry.getValue().toString());
                 }
             }
         }
@@ -212,15 +212,18 @@ class ActionBuilderImpl implements ActionBuilder
                 if (entry.getKey().equalsIgnoreCase("Content"))
                 {
                     String sp[] = entry.getValue().split("\n");
-                    sb.append(sp[0]);
-                    for (int i = 1; i < sp.length; i++)
+                    if (sp.length > 0)
                     {
-                        sb.append(LINE_SEPARATOR);
-                        sb.append(singularKey);
-                        sb.append(": ");
-                        sb.append(entry.getKey());
-                        sb.append("=");
-                        sb.append(sp[i]);
+                        sb.append(sp[0]);
+                        for (int i = 1; i < sp.length; i++)
+                        {
+                            sb.append(LINE_SEPARATOR);
+                            sb.append(singularKey);
+                            sb.append(": ");
+                            sb.append(entry.getKey());
+                            sb.append("=");
+                            sb.append(sp[i]);
+                        }
                     }
 
                 }
@@ -308,7 +311,9 @@ class ActionBuilderImpl implements ActionBuilder
         AsteriskMapping annotation;
 
         // check annotation of getter method
-        annotation = getter.getAnnotation(AsteriskMapping.class);
+        annotation
+            = getter.getAnnotation(AsteriskMapping.class
+            );
         if (annotation != null)
         {
             return annotation.value();
@@ -319,7 +324,9 @@ class ActionBuilderImpl implements ActionBuilder
         try
         {
             Method setter = getter.getDeclaringClass().getDeclaredMethod(setterName, getter.getReturnType());
-            annotation = setter.getAnnotation(AsteriskMapping.class);
+            annotation
+                = setter.getAnnotation(AsteriskMapping.class
+                );
             if (annotation != null)
             {
                 return annotation.value();
@@ -335,7 +342,9 @@ class ActionBuilderImpl implements ActionBuilder
         try
         {
             Field field = getter.getDeclaringClass().getDeclaredField(fieldName);
-            annotation = field.getAnnotation(AsteriskMapping.class);
+            annotation
+                = field.getAnnotation(AsteriskMapping.class
+                );
             if (annotation != null)
             {
                 return annotation.value();
