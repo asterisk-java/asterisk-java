@@ -9,6 +9,8 @@ public abstract class AbstractConfbridgeEvent extends AbstractChannelEvent
     private String bridgeTechnology;
     private String bridgeName;
     private String bridgeCreator;
+    private String conference;
+
     String admin;
 
     public AbstractConfbridgeEvent(Object source)
@@ -128,4 +130,24 @@ public abstract class AbstractConfbridgeEvent extends AbstractChannelEvent
         this.bridgeCreator = bridgeCreator;
     }
 
+    /**
+     * Sets the id of the conference the participant left.
+     *
+     * @param conference the id of the conference the participant left.
+     */
+    public final void setConference(String conference)
+    {
+        this.conference = conference;
+    }
+
+    /**
+     * Returns the id of the conference the participant left.
+     *
+     * @return the id of the conference the participant left.
+     */
+    public final String getConference()
+    {
+        return conference;
+    }
+    
 }
