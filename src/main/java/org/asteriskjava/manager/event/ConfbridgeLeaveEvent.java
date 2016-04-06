@@ -18,23 +18,4 @@ public class ConfbridgeLeaveEvent extends AbstractConfbridgeEvent
         super(source);
     }
 
-    /**
-     * Sets the id of the conference the participant left.
-     *
-     * @param conference the id of the conference the participant left.
-     */
-    public void setConference(String conference)
-    {
-        this.conference = conference;
-    }
-
-    /**
-     * Returns the id of the conference the participant left.
-     *
-     * @return the id of the conference the participant left.
-     */
-    public String getConference()
-    {
-        return conference;
-    }
 }

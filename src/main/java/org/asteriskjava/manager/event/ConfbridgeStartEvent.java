@@ -20,23 +20,4 @@ public class ConfbridgeStartEvent extends AbstractConfbridgeEvent
         super(source);
     }
 
-    /**
-     * Sets the id of the conference started.
-     *
-     * @param conference the id of the conference started.
-     */
-    public void setConference(String conference)
-    {
-        this.conference = conference;
-    }
-
-    /**
-     * Returns the id of the conference started.
-     *
-     * @return the id of the conference started.
-     */
-    public String getConference()
-    {
-        return conference;
-    }
 }

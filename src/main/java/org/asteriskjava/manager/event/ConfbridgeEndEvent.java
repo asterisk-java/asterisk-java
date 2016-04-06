@@ -20,24 +20,4 @@ public class ConfbridgeEndEvent extends AbstractConfbridgeEvent
         super(source);
     }
 
-    /**
-     * Sets the id of the conference ended.
-     *
-     * @param conference the id of the conference ended.
-     */
-    public void setConference(String conference)
-    {
-        this.conference = conference;
-    }
-
-    /**
-     * Returns the id of the conference ended.
-     *
-     * @return the id of the conference ended.
-     */
-    public String getConference()
-    {
-        return conference;
-    }
-
 }

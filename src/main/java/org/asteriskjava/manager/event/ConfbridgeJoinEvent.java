@@ -20,14 +20,4 @@ public class ConfbridgeJoinEvent extends AbstractConfbridgeEvent
         super(source);
     }
 
-    public String getConference()
-    {
-        return conference;
-    }
-
-    public void setConference(String conference)
-    {
-        this.conference = conference;
-    }
-
 }
