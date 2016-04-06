@@ -11,7 +11,6 @@ public class ConfbridgeLeaveEvent extends AbstractConfbridgeEvent
      * Serializable version identifier
      */
     private static final long serialVersionUID = 1L;
-    private String conference;
 
     public ConfbridgeLeaveEvent(Object source)
     {

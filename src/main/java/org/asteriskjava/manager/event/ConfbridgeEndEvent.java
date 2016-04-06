@@ -13,7 +13,6 @@ public class ConfbridgeEndEvent extends AbstractConfbridgeEvent
      * Serializable version identifier
      */
     private static final long serialVersionUID = -8973512592594074108L;
-    private String conference;
 
     public ConfbridgeEndEvent(Object source)
     {
