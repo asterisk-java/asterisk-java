@@ -12,12 +12,11 @@ public class ConfbridgeJoinEvent extends AbstractConfbridgeEvent
      * Serializable version identifier
      */
     private static final long serialVersionUID = 1L;
-
-    private String conference;
-
+    
     public ConfbridgeJoinEvent(Object source)
     {
         super(source);
     }
 
+    
 }
