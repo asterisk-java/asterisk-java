@@ -877,4 +877,6 @@ public interface AgiChannel
      */
     void bridge(String channelName, String options) throws AgiException;
 
+    void queue(String queue) throws AgiException;
+
 }
