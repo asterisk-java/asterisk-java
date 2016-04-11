@@ -63,7 +63,7 @@ The file 'examples/fastagi-mapping.properties' maps your Asterisk diaplan contex
 To compile and run do:
 
 	javac -cp asterisk-java.jar ExampleCallIn.java
-	java -cp asterisk-java.jar org.asteriskjavafastagi.DefaultAgiServer
+	java -cp asterisk-java.jar org.asteriskjava.fastagi.DefaultAgiServer
 
 SYSTEM REQUIREMENTS
 -------------------
