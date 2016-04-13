@@ -33,15 +33,15 @@ public class QueueMemberRemovedEvent extends AbstractQueueMemberEvent
      */
     private static final long serialVersionUID = 2108033737226142194L;
     
-    int paused;
-    int penalty;
+    Boolean paused;
+    Integer penalty;
     String stateinterface;
     String membership;
     String _interface;
-    int callstaken;
-    int ringinuse;
-    int lastcall;
-    int status;
+    Long callstaken;
+    Boolean ringinuse;
+    Long lastcall;
+    Integer status;
     
 
     public QueueMemberRemovedEvent(Object source)
@@ -50,13 +50,13 @@ public class QueueMemberRemovedEvent extends AbstractQueueMemberEvent
     }
 
 
-	public int getPaused()
+	public Boolean getPaused()
 	{
 		return paused;
 	}
 
 
-	public void setPaused(int paused)
+	public void setPaused(Boolean paused)
 	{
 		this.paused = paused;
 	}
@@ -110,37 +110,37 @@ public class QueueMemberRemovedEvent extends AbstractQueueMemberEvent
 	}
 
 
-	public int getCallstaken()
+	public Long getCallstaken()
 	{
 		return callstaken;
 	}
 
 
-	public void setCallstaken(int callstaken)
+	public void setCallstaken(Long callstaken)
 	{
 		this.callstaken = callstaken;
 	}
 
 
-	public int getRinginuse()
+	public Boolean getRinginuse()
 	{
 		return ringinuse;
 	}
 
 
-	public void setRinginuse(int ringinuse)
+	public void setRinginuse(Boolean ringinuse)
 	{
 		this.ringinuse = ringinuse;
 	}
 
 
-	public int getLastcall()
+	public Long getLastcall()
 	{
 		return lastcall;
 	}
 
 
-	public void setLastcall(int lastcall)
+	public void setLastcall(Long lastcall)
 	{
 		this.lastcall = lastcall;
 	}
