@@ -38,6 +38,10 @@ public class QueueMemberAddedEvent extends AbstractQueueMemberEvent
     private Long lastCall;
     private Integer status;
     private Boolean paused;
+    
+    private String stateinterface;
+    private String _interface;
+    private Boolean ringinuse;
 
     public QueueMemberAddedEvent(Object source)
     {
@@ -187,4 +191,34 @@ public class QueueMemberAddedEvent extends AbstractQueueMemberEvent
     {
         this.paused = paused;
     }
+
+	public String getStateinterface()
+	{
+		return stateinterface;
+	}
+
+	public void setStateinterface(String stateinterface)
+	{
+		this.stateinterface = stateinterface;
+	}
+
+	public String getInterface()
+	{
+		return _interface;
+	}
+
+	public void setInterface(String _interface)
+	{
+		this._interface = _interface;
+	}
+
+	public Boolean getRinginuse()
+	{
+		return ringinuse;
+	}
+
+	public void setRinginuse(Boolean ringinuse)
+	{
+		this.ringinuse = ringinuse;
+	}
 }
