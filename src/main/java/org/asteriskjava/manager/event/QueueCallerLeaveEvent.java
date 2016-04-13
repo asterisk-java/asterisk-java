@@ -37,6 +37,8 @@ public class QueueCallerLeaveEvent extends QueueEvent
     private Integer position;
     private String language;
     private String linkedId;
+    
+    private String accountcode;
 
     /**
      * @param source
@@ -81,5 +83,15 @@ public class QueueCallerLeaveEvent extends QueueEvent
     public void setLinkedId(String linkedId)
     {
         this.linkedId = linkedId;
-    }    
+    }
+
+	public String getAccountcode()
+	{
+		return accountcode;
+	}
+
+	public void setAccountcode(String accountcode)
+	{
+		this.accountcode = accountcode;
+	}    
 }

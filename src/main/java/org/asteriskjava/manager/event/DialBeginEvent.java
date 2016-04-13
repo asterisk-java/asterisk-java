@@ -12,6 +12,8 @@ public class DialBeginEvent extends DialEvent
     private String destAccountCode;
     private String linkedId;
     private String destLinkedId;
+    
+    private String accountcode;
 
     public DialBeginEvent(Object source)
     {
@@ -78,5 +80,15 @@ public class DialBeginEvent extends DialEvent
     {
         this.destLinkedId = destLinkedId;
     }
+
+	public String getAccountcode()
+	{
+		return accountcode;
+	}
+
+	public void setAccountcode(String accountcode)
+	{
+		this.accountcode = accountcode;
+	}
     
 }
