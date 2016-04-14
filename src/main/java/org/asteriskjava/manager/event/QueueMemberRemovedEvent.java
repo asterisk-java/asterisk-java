@@ -62,13 +62,13 @@ public class QueueMemberRemovedEvent extends AbstractQueueMemberEvent
 	}
 
 
-	public int getPenalty()
+	public Integer getPenalty()
 	{
 		return penalty;
 	}
 
 
-	public void setPenalty(int penalty)
+	public void setPenalty(Integer penalty)
 	{
 		this.penalty = penalty;
 	}
@@ -146,13 +146,13 @@ public class QueueMemberRemovedEvent extends AbstractQueueMemberEvent
 	}
 
 
-	public int getStatus()
+	public Integer getStatus()
 	{
 		return status;
 	}
 
 
-	public void setStatus(int status)
+	public void setStatus(Integer status)
 	{
 		this.status = status;
 	}
