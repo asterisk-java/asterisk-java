@@ -147,13 +147,20 @@ public class RtcpReceivedEvent extends AbstractRtcpEvent
             return;
         }
 
-        if (ptString.indexOf('(') > 0)
+        try
         {
-            this.pt = Long.parseLong(ptString.substring(0, ptString.indexOf('(')));
-        }
-        else
+            if (ptString.indexOf('(') > 0)
+            {
+                this.pt = Long.parseLong(ptString.substring(0, ptString.indexOf('(')));
+            }
+            else
+            {
+                this.pt = Long.parseLong(ptString);
+            }
+
+        } catch (NumberFormatException e)
         {
-            this.pt = Long.parseLong(ptString);
+            throw new NumberFormatException(String.format("Input string [%s] is not a parsable long", ptString));
         }
     }
 
