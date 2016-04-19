@@ -28,19 +28,19 @@ public class ModuleCheckResponse extends ManagerResponse
 {
     private static final long serialVersionUID = -7253724086340850957L;
 
-    private Integer version;
+    private String version;
 
     /**
      * Returns the version (svn revision) of the module.
      *
      * @return the version (svn revision) of the module.
      */
-    public Integer getVersion()
+    public String getVersion()
     {
         return version;
     }
 
-    public void setVersion(Integer version)
+    public void setVersion(String version)
     {
         this.version = version;
     }
