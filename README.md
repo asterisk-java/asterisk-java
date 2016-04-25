@@ -56,7 +56,7 @@ The file 'examples/ExampleCallIn.java' will answer the call and playback the aud
 	  }
 	}
 
-The file 'examples/fastagi-mapping.properties' maps your Asterisk diaplan context to the class you would like to invoke above.
+The file 'examples/fastagi.properties' maps your Asterisk diaplan context to the class you would like to invoke above.
 
 	callin.agi = ExampleCallIn
 

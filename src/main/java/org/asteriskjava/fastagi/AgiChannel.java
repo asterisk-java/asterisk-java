@@ -189,7 +189,7 @@ public interface AgiChannel
 
     /**
      * Plays the given file, and waits for the user to press one of the given
-     * digits. If none of the esacpe digits is pressed while streaming the file
+     * digits. If none of the escape digits is pressed while streaming the file
      * it waits for the default timeout of 5 seconds still waiting for the user
      * to press a digit.
      *
@@ -203,7 +203,7 @@ public interface AgiChannel
 
     /**
      * Plays the given file, and waits for the user to press one of the given
-     * digits. If none of the esacpe digits is pressed while streaming the file
+     * digits. If none of the escape digits is pressed while streaming the file
      * it waits for the specified timeout still waiting for the user to press a
      * digit.
      *
