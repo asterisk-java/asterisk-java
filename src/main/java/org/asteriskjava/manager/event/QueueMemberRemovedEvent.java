@@ -32,9 +32,128 @@ public class QueueMemberRemovedEvent extends AbstractQueueMemberEvent
      * Serial version identifier.
      */
     private static final long serialVersionUID = 2108033737226142194L;
+    
+    Boolean paused;
+    Integer penalty;
+    String stateinterface;
+    String membership;
+    String _interface;
+    Long callstaken;
+    Boolean ringinuse;
+    Long lastcall;
+    Integer status;
+    
 
     public QueueMemberRemovedEvent(Object source)
     {
         super(source);
     }
+
+
+	public Boolean getPaused()
+	{
+		return paused;
+	}
+
+
+	public void setPaused(Boolean paused)
+	{
+		this.paused = paused;
+	}
+
+
+	public Integer getPenalty()
+	{
+		return penalty;
+	}
+
+
+	public void setPenalty(Integer penalty)
+	{
+		this.penalty = penalty;
+	}
+
+
+	public String getStateinterface()
+	{
+		return stateinterface;
+	}
+
+
+	public void setStateinterface(String stateinterface)
+	{
+		this.stateinterface = stateinterface;
+	}
+
+
+	public String getMembership()
+	{
+		return membership;
+	}
+
+
+	public void setMembership(String membership)
+	{
+		this.membership = membership;
+	}
+
+
+	public String getInterface()
+	{
+		return _interface;
+	}
+
+
+	public void setInterface(String _interface)
+	{
+		this._interface = _interface;
+	}
+
+
+	public Long getCallstaken()
+	{
+		return callstaken;
+	}
+
+
+	public void setCallstaken(Long callstaken)
+	{
+		this.callstaken = callstaken;
+	}
+
+
+	public Boolean getRinginuse()
+	{
+		return ringinuse;
+	}
+
+
+	public void setRinginuse(Boolean ringinuse)
+	{
+		this.ringinuse = ringinuse;
+	}
+
+
+	public Long getLastcall()
+	{
+		return lastcall;
+	}
+
+
+	public void setLastcall(Long lastcall)
+	{
+		this.lastcall = lastcall;
+	}
+
+
+	public Integer getStatus()
+	{
+		return status;
+	}
+
+
+	public void setStatus(Integer status)
+	{
+		this.status = status;
+	}
 }

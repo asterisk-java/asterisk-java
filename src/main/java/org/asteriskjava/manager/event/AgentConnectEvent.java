@@ -55,6 +55,8 @@ public class AgentConnectEvent extends AbstractAgentEvent
     private String destLinkedId;
     private String destLanguage;
     private String language;
+    
+    private String accountcode;
 
     public AgentConnectEvent(Object source)
     {
@@ -368,4 +370,14 @@ public class AgentConnectEvent extends AbstractAgentEvent
     {
         this.language = language;
     }
+
+	public String getAccountcode()
+	{
+		return accountcode;
+	}
+
+	public void setAccountcode(String accountcode)
+	{
+		this.accountcode = accountcode;
+	}
 }

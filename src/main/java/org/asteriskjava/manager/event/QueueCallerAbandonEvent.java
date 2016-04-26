@@ -39,6 +39,8 @@ public class QueueCallerAbandonEvent extends QueueEvent
     private String linkedId;
     private String language;
     
+    private String accountcode;
+    
     /**
      * @param source
      */
@@ -115,4 +117,14 @@ public class QueueCallerAbandonEvent extends QueueEvent
     {
         this.linkedId = linkedId;
     }
+
+	public String getAccountcode()
+	{
+		return accountcode;
+	}
+
+	public void setAccountcode(String accountcode)
+	{
+		this.accountcode = accountcode;
+	}
 }

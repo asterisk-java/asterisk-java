@@ -24,13 +24,13 @@ public class DialCommand extends AbstractAgiCommand
     @Override
     public String buildCommand()
     {
-        String command = "EXEC " + escapeAndQuote("dial") + " " + escapeAndQuote(target) + " "
+        String command = "EXEC " + escapeAndQuote("dial") + " " + escapeAndQuote(target) + ","
                 + escapeAndQuote("" + timeout);
         if (options != null && options.length() > 0)
         {
-            command += " " + escapeAndQuote(options);
+            command += "," + escapeAndQuote(options);
         }
-
+        //This should be in a log
         System.out.println(command);
 
         return command;

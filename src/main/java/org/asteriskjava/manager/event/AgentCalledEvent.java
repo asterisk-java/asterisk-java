@@ -63,6 +63,8 @@ public class AgentCalledEvent extends ManagerEvent
     private String linkedId;
     private String destLinkedId;
     
+    private String accountcode;
+    
 
     /**
      * @param source
@@ -523,4 +525,14 @@ public class AgentCalledEvent extends ManagerEvent
     {
         this.destLinkedId = destLinkedId;
     }
+
+	public String getAccountcode()
+	{
+		return accountcode;
+	}
+
+	public void setAccountcode(String accountcode)
+	{
+		this.accountcode = accountcode;
+	}
 }
