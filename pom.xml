@@ -151,7 +151,7 @@
 				<version>2.5.3</version>
 				<configuration>
 					<descriptors>
-						<descriptor>src/main/assembly/bin.xml</descriptor>
+						<descriptor>${project.basedir}/src/main/assembly/bin.xml</descriptor>
 					</descriptors>
 				</configuration>
 				<executions>

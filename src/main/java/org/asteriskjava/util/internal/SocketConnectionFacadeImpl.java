@@ -123,6 +123,7 @@ public class SocketConnectionFacadeImpl implements SocketConnectionFacade
      *            for the socket
      * @throws IOException if the connection cannot be established.
      */
+    @SuppressWarnings("resource")
     public SocketConnectionFacadeImpl(String host, int port, boolean ssl, int timeout, int readTimeout, Charset encoding,
             Pattern lineDelimiter) throws IOException
     {
