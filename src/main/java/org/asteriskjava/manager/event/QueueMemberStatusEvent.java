@@ -29,8 +29,9 @@ public class QueueMemberStatusEvent extends QueueMemberEvent
      */
     private static final long serialVersionUID = -2293926744791895763L;
 
-    String ringinuse;
-    String iface;
+    private String ringinuse;
+    private String iface;
+    private Integer incall;
 
     /**
      * @param source
@@ -65,4 +66,16 @@ public class QueueMemberStatusEvent extends QueueMemberEvent
     {
         this.ringinuse = ringinuse;
     }
+
+    public Integer getIncall()
+    {
+        return incall;
+    }
+
+    public void setIncall(Integer incall)
+    {
+        this.incall = incall;
+    }
+    
+    
 }
