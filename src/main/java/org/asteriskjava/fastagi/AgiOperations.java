@@ -453,4 +453,11 @@ public class AgiOperations implements AgiChannel
         getChannel().bridge(channelName, options);
 
     }
+
+    @Override
+    public void queue(String queue) throws AgiException
+    {
+        getChannel().queue(queue);
+
+    }
 }

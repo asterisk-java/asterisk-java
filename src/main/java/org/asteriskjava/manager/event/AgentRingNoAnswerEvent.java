@@ -53,6 +53,8 @@ public class AgentRingNoAnswerEvent extends AbstractAgentEvent
     private String linkedId;
     private String destLinkedId;
     
+    private String accountcode;
+    
     public AgentRingNoAnswerEvent(Object source)
     {
         super(source);
@@ -314,6 +316,16 @@ public class AgentRingNoAnswerEvent extends AbstractAgentEvent
     {
         this.destLinkedId = destLinkedId;
     }
+
+	public String getAccountcode()
+	{
+		return accountcode;
+	}
+
+	public void setAccountcode(String accountcode)
+	{
+		this.accountcode = accountcode;
+	}
     
     
 }

@@ -28,8 +28,6 @@ public class BridgeCommand extends AbstractAgiCommand
             command += " " + escapeAndQuote(options);
         }
 
-        System.out.println(command);
-
         return command;
 
     }

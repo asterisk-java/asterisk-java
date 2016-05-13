@@ -7,16 +7,18 @@ import java.util.Properties;
 import org.asteriskjava.fastagi.DefaultAgiServer;
 
 /**
- * Simple command line interface for Asterisk-Java. This class is run when Asterisk-Java is started
- * with {@code java -jar asterisk-java.jar}. It is configured as Main-Class in the manifest.<p>
+ * Simple command line interface for Asterisk-Java. This class is run when
+ * Asterisk-Java is started with {@code java -jar asterisk-java.jar}. It is
+ * configured as Main-Class in the manifest.
+ * <p>
  * The command line interface supports the following options:
  * <dl>
- * <dt>{@code -a}, {@code -agi [port]}<dt>
+ * <dt>{@code -a}, {@code -agi [port]}
+ * <dt>
  * <dd>Starts a FastAGI server</dd>
- *
- * <dt>{@code -h}, {@code -help}<dt>
+ * <dt>{@code -h}, {@code -help}
+ * <dt>
  * <dd>Displays the available options</dd>
- *
  * <dt>{@code -v}, {@code -version}</dt>
  * <dd>Displays the version of Asterisk-Java</dd>
  * </dl>
@@ -80,6 +82,7 @@ public class Cli
         System.out.println("Asterisk-Java " + getVersion());
     }
 
+    @SuppressWarnings("resource")
     private String getVersion()
     {
         String version = "<unknown>";

@@ -34,6 +34,7 @@ public class HangupEvent extends AbstractChannelStateEvent
     private String causeTxt;
     private String language;
     private String linkedId;
+    private String connectedlinenum;
 
     private String accountCode;
     
@@ -132,4 +133,14 @@ public class HangupEvent extends AbstractChannelStateEvent
         builder.append("]");
         return builder.toString();
     }
+
+	public String getConnectedlinenum()
+	{
+		return connectedlinenum;
+	}
+
+	public void setConnectedlinenum(String connectedlinenum)
+	{
+		this.connectedlinenum = connectedlinenum;
+	}
 }

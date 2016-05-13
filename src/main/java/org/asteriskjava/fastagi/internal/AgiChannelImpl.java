@@ -43,6 +43,7 @@ import org.asteriskjava.fastagi.command.GetVariableCommand;
 import org.asteriskjava.fastagi.command.GosubCommand;
 import org.asteriskjava.fastagi.command.HangupCommand;
 import org.asteriskjava.fastagi.command.MeetmeCommand;
+import org.asteriskjava.fastagi.command.QueueCommand;
 import org.asteriskjava.fastagi.command.RecordFileCommand;
 import org.asteriskjava.fastagi.command.SayAlphaCommand;
 import org.asteriskjava.fastagi.command.SayDateTimeCommand;
@@ -580,6 +581,13 @@ public class AgiChannelImpl implements AgiChannel
     public void bridge(String channelName, String options) throws AgiException
     {
         sendCommand(new BridgeCommand(channelName, options));
+
+    }
+
+    @Override
+    public void queue(String queue) throws AgiException
+    {
+        sendCommand(new QueueCommand(queue));
 
     }
 }

@@ -72,7 +72,7 @@ public class BridgesActive
         {
             return state.destroy(event);
         }
-        logger.error("Cant find bridge for id " + event.getBridgeUniqueId());
+        logger.info("Cant find bridge for id " + event.getBridgeUniqueId());
         return null;
     }
 
@@ -94,7 +94,7 @@ public class BridgesActive
         {
             return state.removeMember(event);
         }
-        logger.error("Cant find bridge for id " + event.getBridgeUniqueId());
+        logger.info("Cant find bridge for id " + event.getBridgeUniqueId());
         return null;
     }
 }

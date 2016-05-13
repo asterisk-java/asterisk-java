@@ -57,7 +57,8 @@ public abstract class AbstractParkedCallEvent extends ManagerEvent
     }
 
     /**
-     * Returns the name of the channel that parked the call.
+     * Returns the name of the channel that parked the call. use
+     * getParkerDialString() instead
      */
     @Deprecated
     public String getFrom()
@@ -101,12 +102,11 @@ public abstract class AbstractParkedCallEvent extends ManagerEvent
      * Returns the unique id of the parked channel.
      * <p>
      * Note: This property is not set properly by all versions of Asterisk, see
-     * <a
-     * href="http://bugs.digium.com/view.php?id=13323">http://bugs.digium.com/
-     * view.php?id=13323</a> and <a
-     * href="http://bugs.digium.com/view.php?id=13358"
-     * >http://bugs.digium.com/view.php?id=13358</a> for more information. Use
-     * {@link #getChannel()} instead.
+     * <a href="http://bugs.digium.com/view.php?id=13323">http://bugs.digium.
+     * com/ view.php?id=13323</a> and
+     * <a href="http://bugs.digium.com/view.php?id=13358" >http://bugs.digium.
+     * com/view.php?id=13358</a> for more information. Use {@link #getChannel()}
+     * instead.
      *
      * @return the unique id of the parked channel.
      */
@@ -126,6 +126,11 @@ public abstract class AbstractParkedCallEvent extends ManagerEvent
         this.setParkeeChannel(channel);
     }
 
+    /**
+     * use getParkeeChannel() instead
+     * 
+     * @return
+     */
     @Deprecated
     public String getChannel()
     {
