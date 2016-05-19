@@ -59,6 +59,8 @@ public class QueueMemberEvent extends ResponseEvent
     private Integer status;
     private Boolean paused;
     private String stateinterface;
+    private Integer incall;
+
 
     /**
      * @param source
@@ -343,4 +345,16 @@ public class QueueMemberEvent extends ResponseEvent
     {
         this.stateinterface = stateinterface;
     }
+
+    /**
+     * @return 1 if is incall 0 if not
+     */
+    public Integer getIncall() {
+        return incall;
+    }
+
+    public void setIncall(Integer incall) {
+        this.incall = incall;
+    }
+
 }
