@@ -152,7 +152,7 @@ public class QueueMemberPauseEvent extends QueueMemberPausedEvent
     /**
      * @return get Incall
      */
-    public String getIncall()
+    public Integer getIncall()
     {
         return incall;
     }
@@ -160,7 +160,7 @@ public class QueueMemberPauseEvent extends QueueMemberPausedEvent
     /**
      * @param setIncall the incall to set
      */
-    public void setIncall(String incall)
+    public void setIncall(Integer incall)
     {
         this.incall = incall;
     }
