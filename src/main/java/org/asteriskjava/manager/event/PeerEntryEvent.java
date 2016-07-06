@@ -59,6 +59,7 @@ public class PeerEntryEvent extends ResponseEvent
     private String autoComedia;
     private String autoForcerport;
     private String comedia;
+    private String description;
 
     /**
      * Creates a new instance.
@@ -396,5 +397,21 @@ public class PeerEntryEvent extends ResponseEvent
     public void setComedia(String comedia)
     {
         this.comedia = comedia;
+    }
+
+    /**
+     * @return the description
+     */
+    public String getDescription()
+    {
+        return description;
+    }
+
+    /**
+     * @param the description to set
+     */
+    public void setDescription(String description)
+    {
+        this.description = description;
     }
 }
