@@ -60,6 +60,7 @@ public class QueueMemberEvent extends ResponseEvent
     private Boolean paused;
     private String stateinterface;
     private Integer incall;
+    private String pausedreason;
 
 
 
@@ -356,6 +357,15 @@ public class QueueMemberEvent extends ResponseEvent
 
     public void setIncall(Integer incall) {
         this.incall = incall;
+    }
+
+
+    public String getPausedreason() {
+        return pausedreason;
+    }
+
+    public void setPausedreason(String pausedreason) {
+        this.pausedreason = pausedreason;
     }
 
 
