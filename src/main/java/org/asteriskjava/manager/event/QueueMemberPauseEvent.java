@@ -166,7 +166,7 @@ public class QueueMemberPauseEvent extends QueueMemberPausedEvent
         this.incall = incall;
     }
 
-        public String getPausedreason() {
+    public String getPausedreason() {
         return pausedreason;
     }
 
