@@ -351,20 +351,24 @@ public class QueueMemberEvent extends ResponseEvent
     /**
      * @return 1 if is incall 0 if not
      */
-    public Integer getIncall() {
+    public Integer getIncall() 
+    {
         return incall;
     }
 
-    public void setIncall(Integer incall) {
+    public void setIncall(Integer incall) 
+    {
         this.incall = incall;
     }
 
 
-    public String getPausedreason() {
+    public String getPausedreason() 
+    {
         return pausedreason;
     }
 
-    public void setPausedreason(String pausedreason) {
+    public void setPausedreason(String pausedreason) 
+    {
         this.pausedreason = pausedreason;
     }
 
