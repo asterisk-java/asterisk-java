@@ -30,7 +30,8 @@ public class ExtensionStateResponse extends ManagerResponse
     private String context;
     private String hint;
     private Integer status;
-
+	private String statustext;
+	
     public String getExten()
     {
         return exten;
@@ -71,6 +72,18 @@ public class ExtensionStateResponse extends ManagerResponse
         this.status = status;
     }
 
+	public String getStatustext()
+	{
+		return statustext;
+	}
+
+	public void setStatustext(String statustext)
+	{
+		this.statustext = statustext;
+	}
+
+	
+	
     @Override
     public String toString()
     {
@@ -85,6 +98,7 @@ public class ExtensionStateResponse extends ManagerResponse
         sb.append("context='").append(getContext()).append("'; ");
         sb.append("hint='").append(getHint()).append("'; ");
         sb.append("status='").append(getStatus()).append("'; ");
+		sb.append("statustext='").append(getStatustext()).append("'; ");
         sb.append("systemHashcode=").append(System.identityHashCode(this));
 
         return sb.toString();
