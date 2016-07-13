@@ -14,6 +14,7 @@ public class QueueMemberPauseEvent extends QueueMemberPausedEvent
     String iface;
     String stateInterface;
     Integer incall;
+    String pausedreason;
 
     public QueueMemberPauseEvent(Object source)
     {
@@ -164,5 +165,16 @@ public class QueueMemberPauseEvent extends QueueMemberPausedEvent
     {
         this.incall = incall;
     }
+
+    public String getPausedreason() 
+    {
+        return pausedreason;
+    }
+
+    public void setPausedreason(String pausedreason) 
+    {
+        this.pausedreason = pausedreason;
+    }
+
 
 }
