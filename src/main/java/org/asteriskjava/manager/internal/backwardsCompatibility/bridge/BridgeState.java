@@ -22,7 +22,7 @@ import org.asteriskjava.util.LogFactory;
  * 
  * @author rsutton
  */
-public class BridgeState
+class BridgeState
 {
     final Log logger = LogFactory.getLog(getClass());
 
@@ -35,11 +35,10 @@ public class BridgeState
         created = event;
     }
 
-    public ManagerEvent destroy(BridgeDestroyEvent event)
+    ManagerEvent destroy(BridgeDestroyEvent event)
     {
         destroyed = event;
         return null;
-
     }
 
     /**
@@ -48,7 +47,7 @@ public class BridgeState
      * @param event
      * @return
      */
-    public ManagerEvent addMember(BridgeEnterEvent event)
+    ManagerEvent addMember(BridgeEnterEvent event)
     {
         members.put(event.getChannel(), event);
         logger.info("Members size " + members.size() + " " + event);
@@ -74,7 +73,7 @@ public class BridgeState
      * @return
      */
 
-    public ManagerEvent removeMember(BridgeLeaveEvent event)
+    ManagerEvent removeMember(BridgeLeaveEvent event)
     {
         BridgeEnterEvent removed = members.remove(event.getChannel());
 
