@@ -309,7 +309,7 @@ class ActionBuilderImpl implements ActionBuilder
         }
     }
 
-    private String mapToAsterisk(Method getter)
+    private static String mapToAsterisk(Method getter)
     {
         AsteriskMapping annotation;
 
@@ -361,7 +361,7 @@ class ActionBuilderImpl implements ActionBuilder
         return fieldName.toLowerCase(Locale.US);
     }
 
-    String determineSetterName(String getterName)
+    static String determineSetterName(String getterName)
     {
         if (getterName.startsWith("get"))
         {
@@ -377,7 +377,7 @@ class ActionBuilderImpl implements ActionBuilder
         }
     }
 
-    String determineFieldName(String accessorName)
+    static String determineFieldName(String accessorName)
     {
         if (accessorName.startsWith("get"))
         {
@@ -403,7 +403,7 @@ class ActionBuilderImpl implements ActionBuilder
      * @param s the string to convert.
      * @return the converted string.
      */
-    String lcFirst(String s)
+    private static String lcFirst(String s)
     {
         if (s == null || s.length() < 1)
         {
