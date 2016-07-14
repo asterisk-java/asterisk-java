@@ -1,10 +1,10 @@
 package org.asteriskjava.manager.internal.backwardsCompatibility.bridge;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.asteriskjava.manager.event.BridgeCreateEvent;
 import org.asteriskjava.manager.event.BridgeDestroyEvent;
@@ -27,7 +27,7 @@ public class BridgeState
 
     BridgeCreateEvent created;
     BridgeDestroyEvent destroyed;
-    private final Map<String, BridgeEnterEvent> members = new ConcurrentHashMap<>();
+    private final Map<String, BridgeEnterEvent> members = new HashMap<>();
 
     public BridgeState(BridgeCreateEvent event)
     {

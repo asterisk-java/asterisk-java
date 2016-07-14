@@ -1,7 +1,7 @@
 package org.asteriskjava.manager.internal.backwardsCompatibility.bridge;
 
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.asteriskjava.manager.event.BridgeCreateEvent;
 import org.asteriskjava.manager.event.BridgeDestroyEvent;
@@ -29,7 +29,7 @@ public class BridgesActive
     // this map is shared (static) so that connections to asterisk that attach
     // late can
     // benefit from the known bridge information of older connections
-    final static Map<String, BridgeState> activeBridges = new ConcurrentHashMap<>();
+    final static Map<String, BridgeState> activeBridges = new HashMap<>();
 
     public ManagerEvent handleEvent(ManagerEvent event)
     {
