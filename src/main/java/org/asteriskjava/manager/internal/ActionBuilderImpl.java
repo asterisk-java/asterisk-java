@@ -405,12 +405,12 @@ class ActionBuilderImpl implements ActionBuilder
      */
     private static String lcFirst(String s)
     {
-        if (s == null || s.length() < 1)
+        if (s == null || s.isEmpty())
         {
             return s;
         }
 
-        char first = s.charAt(0);
-        return Character.toLowerCase(first) + s.substring(1);
+        return Character.toLowerCase(s.charAt(0))
+                + (s.length() == 1 ? "" : s.substring(1));
     }
 }
