@@ -59,7 +59,7 @@ public class BridgesActive
     {
         if (activeBridges.get(event.getBridgeUniqueId()) == null)
         {
-            BridgeState state = new BridgeState(event);
+            BridgeState state = new BridgeState();
             activeBridges.put(event.getBridgeUniqueId(), state);
         }
         return null;
@@ -70,7 +70,7 @@ public class BridgesActive
         BridgeState state = activeBridges.remove(event.getBridgeUniqueId());
         if (state != null)
         {
-            return state.destroy(event);
+            return state.destroy();
         }
         logger.info("Cant find bridge for id " + event.getBridgeUniqueId());
         return null;

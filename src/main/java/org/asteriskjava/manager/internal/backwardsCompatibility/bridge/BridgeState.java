@@ -7,8 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.asteriskjava.manager.event.BridgeCreateEvent;
-import org.asteriskjava.manager.event.BridgeDestroyEvent;
 import org.asteriskjava.manager.event.BridgeEnterEvent;
 import org.asteriskjava.manager.event.BridgeEvent;
 import org.asteriskjava.manager.event.BridgeLeaveEvent;
@@ -26,18 +24,14 @@ class BridgeState
 {
     final Log logger = LogFactory.getLog(getClass());
 
-    BridgeCreateEvent created;
-    BridgeDestroyEvent destroyed;
     private final Map<String, BridgeEnterEvent> members = new HashMap<>();
 
-    public BridgeState(BridgeCreateEvent event)
+    public BridgeState()
     {
-        created = event;
     }
 
-    ManagerEvent destroy(BridgeDestroyEvent event)
+    ManagerEvent destroy()
     {
-        destroyed = event;
         return null;
     }
 
