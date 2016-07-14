@@ -99,6 +99,8 @@ class ActionBuilderImpl implements ActionBuilder
         ignore.add("action");
         ignore.add("actionid");
         ignore.add(ATTRIBUTES_PROPERTY_NAME);
+        
+        Map<String, Method> getters;
 
         // if this is a user event action, we need to grab the internal event,
         // otherwise do below as normal
@@ -106,20 +108,22 @@ class ActionBuilderImpl implements ActionBuilder
         {
             UserEvent userEvent = ((UserEventAction) action).getUserEvent();
             appendUserEvent(sb, userEvent);
+            
+            getters = ReflectionUtil.getGetters(userEvent.getClass());
 
             // eventually we may want to add more Map keys for events to ignore
             // when appending
-            appendGetters(sb, userEvent, ignore);
+            appendGetters(sb, userEvent, getters, ignore);
         }
         else
         {
-            appendGetters(sb, action, ignore);
+            getters = ReflectionUtil.getGetters(action.getClass());
+
+            appendGetters(sb, action, getters, ignore);
         }
 
         // actions that have the special getAttributes method will
         // have their Map appended without a singular key or separator
-        Map<String, Method> getters = ReflectionUtil.getGetters(action.getClass());
-
         if (getters.containsKey(ATTRIBUTES_PROPERTY_NAME))
         {
             Method getter = getters.get(ATTRIBUTES_PROPERTY_NAME);
@@ -261,9 +265,8 @@ class ActionBuilderImpl implements ActionBuilder
     }
 
     @SuppressWarnings("unchecked")
-    private void appendGetters(StringBuilder sb, Object action, Set<String> membersToIgnore)
+    private void appendGetters(StringBuilder sb, Object action, Map<String, Method> getters, Set<String> membersToIgnore)
     {
-        Map<String, Method> getters = ReflectionUtil.getGetters(action.getClass());
         for (Map.Entry<String, Method> entry : getters.entrySet())
         {
             final String name = entry.getKey();
