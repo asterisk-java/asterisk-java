@@ -50,6 +50,7 @@ class ActionBuilderImpl implements ActionBuilder
      */
     private final Log logger = LogFactory.getLog(getClass());
     private AsteriskVersion targetVersion;
+    private final Set<String> membersToIgnore = new HashSet<>();
 
     /**
      * Creates a new ActionBuilder for Asterisk 1.0.
@@ -57,6 +58,15 @@ class ActionBuilderImpl implements ActionBuilder
     ActionBuilderImpl()
     {
         this.targetVersion = AsteriskVersion.ASTERISK_1_0;
+        
+        /*
+         * When using the Reflection API to get all of the getters for building
+         * actions to send, we ignore some of the getters
+         */
+        this.membersToIgnore.add("class");
+        this.membersToIgnore.add("action");
+        this.membersToIgnore.add("actionid");
+        this.membersToIgnore.add(ATTRIBUTES_PROPERTY_NAME);
     }
 
     public void setTargetVersion(AsteriskVersion targetVersion)
@@ -90,16 +100,6 @@ class ActionBuilderImpl implements ActionBuilder
             sb.append(LINE_SEPARATOR);
         }
 
-        /*
-         * When using the Reflection API to get all of the getters for building
-         * actions to send, we ignore some of the getters
-         */
-        Set<String> ignore = new HashSet<>();
-        ignore.add("class");
-        ignore.add("action");
-        ignore.add("actionid");
-        ignore.add(ATTRIBUTES_PROPERTY_NAME);
-        
         Map<String, Method> getters;
 
         // if this is a user event action, we need to grab the internal event,
@@ -113,13 +113,13 @@ class ActionBuilderImpl implements ActionBuilder
 
             // eventually we may want to add more Map keys for events to ignore
             // when appending
-            appendGetters(sb, userEvent, getters, ignore);
+            appendGetters(sb, userEvent, getters);
         }
         else
         {
             getters = ReflectionUtil.getGetters(action.getClass());
 
-            appendGetters(sb, action, getters, ignore);
+            appendGetters(sb, action, getters);
         }
 
         // actions that have the special getAttributes method will
@@ -265,7 +265,7 @@ class ActionBuilderImpl implements ActionBuilder
     }
 
     @SuppressWarnings("unchecked")
-    private void appendGetters(StringBuilder sb, Object action, Map<String, Method> getters, Set<String> membersToIgnore)
+    private void appendGetters(StringBuilder sb, Object action, Map<String, Method> getters)
     {
         for (Map.Entry<String, Method> entry : getters.entrySet())
         {
