@@ -60,10 +60,10 @@ public class BridgesActive
 
     ManagerEvent destroyBridge(BridgeDestroyEvent event)
     {
-        BridgeState state = activeBridges.get(event.getBridgeUniqueId());
+        BridgeState state = activeBridges.remove(event.getBridgeUniqueId());
         if (state != null)
         {
-            state.destroy();
+            return state.destroy();
         }
         logger.info("Cant find bridge for id " + event.getBridgeUniqueId());
         return null;
