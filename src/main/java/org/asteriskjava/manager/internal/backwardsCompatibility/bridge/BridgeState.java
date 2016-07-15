@@ -1,7 +1,6 @@
 package org.asteriskjava.manager.internal.backwardsCompatibility.bridge;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -25,13 +24,12 @@ class BridgeState
     final Log logger = LogFactory.getLog(getClass());
 
     private final Map<String, BridgeEnterEvent> members = new HashMap<>();
-
-    public BridgeState()
-    {
-    }
-
+    
     ManagerEvent destroy()
     {
+        synchronized (members) {
+            members.clear();
+        }
         return null;
     }
 
@@ -43,17 +41,27 @@ class BridgeState
      */
     ManagerEvent addMember(BridgeEnterEvent event)
     {
-        members.put(event.getChannel(), event);
-        logger.info("Members size " + members.size() + " " + event);
-        
-        if (members.size() != 2)
+        List<BridgeEnterEvent> remaining = null;
+
+        synchronized (members)
+        {
+            if (members.put(event.getChannel(), event) == null
+                    && members.size() == 2)
+            {
+                remaining = new ArrayList<>(members.values());
+            }
+        }
+
+        if (remaining == null)
         {
             return null;
         }
 
+        logger.info("Members size " + remaining.size() + " " + event);
+
         BridgeEvent bridgeEvent = buildBridgeEvent(
                 BridgeEvent.BRIDGE_STATE_LINK,
-                members.values());
+                remaining);
 
         logger.info("Bridge " + bridgeEvent.getChannel1() + " " + bridgeEvent.getChannel2());
 
@@ -69,33 +77,40 @@ class BridgeState
 
     ManagerEvent removeMember(BridgeLeaveEvent event)
     {
-        BridgeEnterEvent removed = members.remove(event.getChannel());
+        List<BridgeEnterEvent> remaining = null;
+        
+        synchronized (members)
+        {
+            if (members.remove(event.getChannel()) != null
+                    && members.size() == 2)
+            {
+                remaining = new ArrayList<>(members.values());
+            }
+        }
 
         // If we didn't remove anything, or we aren't at exactly 2 members,
         // there's nothing else for us to do
-        if (removed == null || members.size() != 2)
+        if (remaining == null)
         {
             return null;
         }
 
         return buildBridgeEvent(
                 BridgeEvent.BRIDGE_STATE_UNLINK,
-                members.values());
+                remaining);
     }
     
-    private BridgeEvent buildBridgeEvent(String bridgeState, Collection<BridgeEnterEvent> events)
+    private BridgeEvent buildBridgeEvent(String bridgeState, List<BridgeEnterEvent> members)
     {
-        List<BridgeEnterEvent> remaining = new ArrayList<>(events);
-
         BridgeEvent bridgeEvent = new BridgeEvent(this);
 
-        bridgeEvent.setCallerId1(remaining.get(0).getCallerIdNum());
-        bridgeEvent.setUniqueId1(remaining.get(0).getUniqueId());
-        bridgeEvent.setChannel1(remaining.get(0).getChannel());
+        bridgeEvent.setCallerId1(members.get(0).getCallerIdNum());
+        bridgeEvent.setUniqueId1(members.get(0).getUniqueId());
+        bridgeEvent.setChannel1(members.get(0).getChannel());
 
-        bridgeEvent.setCallerId2(remaining.get(1).getCallerIdNum());
-        bridgeEvent.setUniqueId2(remaining.get(1).getUniqueId());
-        bridgeEvent.setChannel2(remaining.get(1).getChannel());
+        bridgeEvent.setCallerId2(members.get(1).getCallerIdNum());
+        bridgeEvent.setUniqueId2(members.get(1).getUniqueId());
+        bridgeEvent.setChannel2(members.get(1).getChannel());
 
         bridgeEvent.setBridgeState(bridgeState);
         bridgeEvent.setDateReceived(new Date());
