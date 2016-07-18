@@ -23,6 +23,7 @@ import java.util.List;
 import org.asteriskjava.fastagi.AgiException;
 import org.asteriskjava.fastagi.AgiHangupException;
 import org.asteriskjava.fastagi.AgiNetworkException;
+import org.asteriskjava.fastagi.AgiReader;
 import org.asteriskjava.fastagi.AgiRequest;
 import org.asteriskjava.fastagi.reply.AgiReply;
 import org.asteriskjava.util.SocketConnectionFacade;
