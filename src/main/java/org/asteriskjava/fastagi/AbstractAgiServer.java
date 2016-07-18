@@ -5,7 +5,6 @@ import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import org.asteriskjava.fastagi.internal.AgiChannelFactory;
 import org.asteriskjava.fastagi.internal.DefaultAgiChannelFactory;
 import org.asteriskjava.util.DaemonThreadFactory;
 import org.asteriskjava.util.Log;

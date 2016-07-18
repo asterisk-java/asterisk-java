@@ -20,7 +20,10 @@ import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import org.asteriskjava.fastagi.AgiChannelFactory;
 import org.asteriskjava.fastagi.AgiException;
+import org.asteriskjava.fastagi.AgiReader;
+import org.asteriskjava.fastagi.AgiWriter;
 import org.asteriskjava.fastagi.MappingStrategy;
 import org.asteriskjava.fastagi.command.AsyncAgiBreakCommand;
 import org.asteriskjava.manager.ManagerConnection;

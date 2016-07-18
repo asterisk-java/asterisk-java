@@ -16,6 +16,9 @@
  */
 package org.asteriskjava.fastagi.internal;
 
+import org.asteriskjava.fastagi.AgiWriter;
+import org.asteriskjava.fastagi.AgiReader;
+import org.asteriskjava.fastagi.AgiChannelFactory;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 

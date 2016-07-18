@@ -26,6 +26,7 @@ import static org.junit.Assert.fail;
 import java.net.InetAddress;
 
 import org.asteriskjava.fastagi.AgiHangupException;
+import org.asteriskjava.fastagi.AgiReader;
 import org.asteriskjava.fastagi.AgiRequest;
 import org.asteriskjava.fastagi.reply.AgiReply;
 import org.asteriskjava.util.SocketConnectionFacade;
