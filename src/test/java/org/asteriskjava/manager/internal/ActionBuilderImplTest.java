@@ -261,8 +261,8 @@ public class ActionBuilderImplTest
     @Test
     public void testDetermineSetterName()
     {
-        assertEquals("setProperty1", actionBuilder.determineSetterName("getProperty1"));
-        assertEquals("setProperty1", actionBuilder.determineSetterName("isProperty1"));
+        assertEquals("setProperty1", ActionBuilderImpl.determineSetterName("getProperty1"));
+        assertEquals("setProperty1", ActionBuilderImpl.determineSetterName("isProperty1"));
     }
 
     @Test
@@ -278,9 +278,9 @@ public class ActionBuilderImplTest
     @Test
     public void testDetermineFieldName()
     {
-        assertEquals("property1", actionBuilder.determineFieldName("getProperty1"));
-        assertEquals("property1", actionBuilder.determineFieldName("isProperty1"));
-        assertEquals("property1", actionBuilder.determineFieldName("setProperty1"));
+        assertEquals("property1", ActionBuilderImpl.determineFieldName("getProperty1"));
+        assertEquals("property1", ActionBuilderImpl.determineFieldName("isProperty1"));
+        assertEquals("property1", ActionBuilderImpl.determineFieldName("setProperty1"));
     }
 
     @Test

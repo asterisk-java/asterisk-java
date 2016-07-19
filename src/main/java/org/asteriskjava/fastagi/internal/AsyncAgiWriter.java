@@ -3,6 +3,7 @@ package org.asteriskjava.fastagi.internal;
 import java.io.IOException;
 
 import org.asteriskjava.fastagi.AgiException;
+import org.asteriskjava.fastagi.AgiWriter;
 import org.asteriskjava.fastagi.command.AgiCommand;
 import org.asteriskjava.manager.ManagerConnection;
 import org.asteriskjava.manager.TimeoutException;
