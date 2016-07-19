@@ -34,6 +34,7 @@ public class OriginateResponseEvent extends ResponseEvent
     private String uniqueId;
     private Integer reason;
     private String data;
+    private String application;
 
     /**
      * @param source
@@ -127,5 +128,15 @@ public class OriginateResponseEvent extends ResponseEvent
     public void setData(String data)
     {
         this.data = data;
+    }
+
+    public String getApplication()
+    {
+        return application;
+    }
+
+    public void setApplication(String application)
+    {
+        this.application = application;
     }
 }
