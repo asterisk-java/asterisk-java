@@ -33,6 +33,7 @@ public class OriginateResponseEvent extends ResponseEvent
     private String channel;
     private String uniqueId;
     private Integer reason;
+    private String data;
 
     /**
      * @param source
@@ -116,5 +117,15 @@ public class OriginateResponseEvent extends ResponseEvent
         {
             setCallerIdNum(callerId);
         }
+    }
+
+    public String getData()
+    {
+        return data;
+    }
+
+    public void setData(String data)
+    {
+        this.data = data;
     }
 }
