@@ -34,6 +34,8 @@ public class ParkedCallEvent extends AbstractParkedCallEvent
     private static final long serialVersionUID = 0L;
 
     private Integer timeout;
+    private String connectedlinenum;
+    private String connectedlinename;
 
     /**
      * @param source
@@ -70,4 +72,29 @@ public class ParkedCallEvent extends AbstractParkedCallEvent
     {
         setUniqueId(unqiueId);
     }
+
+    
+    public String getConnectedLinenum()
+    {
+        return connectedlinenum;
+    }
+
+
+    public void setConnectedLinenum(String connectedlinenum)
+    {
+        this.connectedlinenum = connectedlinenum;
+    }
+
+    public String getConnectedLinename()
+    {
+        return connectedlinename;
+    }
+
+
+    public void setConnectedLinename(String connectedlinename)
+    {
+        this.connectedlinename = connectedlinename;
+    }
+
+
 }

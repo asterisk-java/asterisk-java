@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.RejectedExecutionException;
 
-import org.asteriskjava.fastagi.internal.AgiChannelFactory;
 import org.asteriskjava.fastagi.internal.AsyncAgiConnectionHandler;
 import org.asteriskjava.fastagi.internal.DefaultAgiChannelFactory;
 import org.asteriskjava.manager.ManagerConnection;

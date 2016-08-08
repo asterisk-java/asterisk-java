@@ -20,6 +20,7 @@ import java.io.IOException;
 
 import org.asteriskjava.fastagi.AgiException;
 import org.asteriskjava.fastagi.AgiNetworkException;
+import org.asteriskjava.fastagi.AgiWriter;
 import org.asteriskjava.fastagi.command.AgiCommand;
 import org.asteriskjava.util.SocketConnectionFacade;
 

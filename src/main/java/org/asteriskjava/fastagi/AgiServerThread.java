@@ -76,7 +76,7 @@ public class AgiServerThread
      * 
      * @param agiServer the AgiServer to run.
      */
-    public void setAgiServer(AgiServer agiServer)
+    public synchronized void setAgiServer(AgiServer agiServer)
     {
         this.agiServer = agiServer;
     }

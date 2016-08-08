@@ -22,7 +22,6 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.concurrent.RejectedExecutionException;
 
-import org.asteriskjava.fastagi.internal.AgiChannelFactory;
 import org.asteriskjava.fastagi.internal.AgiConnectionHandler;
 import org.asteriskjava.fastagi.internal.DefaultAgiChannelFactory;
 import org.asteriskjava.fastagi.internal.FastAgiConnectionHandler;
