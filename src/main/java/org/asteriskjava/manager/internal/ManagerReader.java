@@ -19,13 +19,15 @@ package org.asteriskjava.manager.internal;
 import java.io.IOException;
 
 import org.asteriskjava.manager.event.ManagerEvent;
+import org.asteriskjava.manager.event.NewExtenEvent;
 import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.util.SocketConnectionFacade;
 
 /**
  * The ManagerReader reads events and responses from the asterisk server, parses
  * them using EventBuilderImpl and ResponseBuilder and dispatches them to the
- * associated ManagerConnection.<p>
+ * associated ManagerConnection.
+ * <p>
  * Do not use this interface in your code, it is intended to be used only by the
  * DefaultManagerConnection.
  *
@@ -47,16 +49,17 @@ public interface ManagerReader extends Runnable
     void setSocket(final SocketConnectionFacade socket);
 
     /**
-     * Registers a new event type with the underlying EventBuilderImpl.<p>
+     * Registers a new event type with the underlying EventBuilderImpl.
+     * <p>
      * The eventClass must extend ManagerEvent.
      *
      * @param event class of the event to register.
      * @see EventBuilder
      * @see ManagerEvent
      */
-    void registerEventClass(Class<? extends ManagerEvent> event);
+    void registerEventClass(Class< ? extends ManagerEvent> event);
 
-    void expectResponseClass(String internalActionId, Class<? extends ManagerResponse> responseClass);
+    void expectResponseClass(String internalActionId, Class< ? extends ManagerResponse> responseClass);
 
     /**
      * Terminates this reader.
@@ -74,7 +77,10 @@ public interface ManagerReader extends Runnable
     /**
      * Returns the Exception that caused this reader to terminate if any.
      *
-     * @return the Exception that caused this reader to terminate if any or <code>null</code> if not.
+     * @return the Exception that caused this reader to terminate if any or
+     *         <code>null</code> if not.
      */
     IOException getTerminationException();
+
+    void deregisterEventClass(Class<NewExtenEvent> eventClass);
 }
