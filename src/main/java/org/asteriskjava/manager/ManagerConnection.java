@@ -24,7 +24,6 @@ import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.manager.action.EventGeneratingAction;
 import org.asteriskjava.manager.action.ManagerAction;
 import org.asteriskjava.manager.event.ManagerEvent;
-import org.asteriskjava.manager.event.NewExtenEvent;
 import org.asteriskjava.manager.response.ManagerResponse;
 
 /**
@@ -428,5 +427,5 @@ public interface ManagerConnection
      */
     void removeEventListener(ManagerEventListener eventListener);
 
-    void deregisterEventClass(Class<NewExtenEvent> eventClass);
+    void deregisterEventClass(Class< ? extends ManagerEvent> eventClass);
 }

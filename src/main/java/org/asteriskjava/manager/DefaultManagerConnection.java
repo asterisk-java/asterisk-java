@@ -24,7 +24,6 @@ import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.manager.action.EventGeneratingAction;
 import org.asteriskjava.manager.action.ManagerAction;
 import org.asteriskjava.manager.event.ManagerEvent;
-import org.asteriskjava.manager.event.NewExtenEvent;
 import org.asteriskjava.manager.internal.ManagerConnectionImpl;
 import org.asteriskjava.manager.response.ManagerResponse;
 
@@ -381,7 +380,7 @@ public class DefaultManagerConnection implements ManagerConnection
     }
 
     @Override
-    public void deregisterEventClass(Class<NewExtenEvent> eventClass)
+    public void deregisterEventClass(Class< ? extends ManagerEvent> eventClass)
     {
         impl.deregisterEventClass(eventClass);
 

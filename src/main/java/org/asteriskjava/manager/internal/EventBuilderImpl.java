@@ -454,7 +454,7 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
     }
 
     @Override
-    public void deregisterEventClass(Class<NewExtenEvent> eventClass)
+    public void deregisterEventClass(Class< ? extends ManagerEvent> eventClass)
     {
 
         Set<String> toRemove = new HashSet<>();

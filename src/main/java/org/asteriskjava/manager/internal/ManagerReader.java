@@ -19,7 +19,6 @@ package org.asteriskjava.manager.internal;
 import java.io.IOException;
 
 import org.asteriskjava.manager.event.ManagerEvent;
-import org.asteriskjava.manager.event.NewExtenEvent;
 import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.util.SocketConnectionFacade;
 
@@ -82,5 +81,5 @@ public interface ManagerReader extends Runnable
      */
     IOException getTerminationException();
 
-    void deregisterEventClass(Class<NewExtenEvent> eventClass);
+    void deregisterEventClass(Class< ? extends ManagerEvent> eventClass);
 }

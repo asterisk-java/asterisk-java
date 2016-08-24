@@ -19,7 +19,6 @@ package org.asteriskjava.manager.internal;
 import java.util.Map;
 
 import org.asteriskjava.manager.event.ManagerEvent;
-import org.asteriskjava.manager.event.NewExtenEvent;
 
 /**
  * Transforms maps of attributes to instances of ManagerEvent.
@@ -57,5 +56,5 @@ interface EventBuilder
      */
     ManagerEvent buildEvent(Object source, Map<String, Object> attributes);
 
-    void deregisterEventClass(Class<NewExtenEvent> eventClass);
+    void deregisterEventClass(Class< ? extends ManagerEvent> eventClass);
 }

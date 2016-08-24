@@ -26,7 +26,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.asteriskjava.manager.event.DisconnectEvent;
 import org.asteriskjava.manager.event.ManagerEvent;
-import org.asteriskjava.manager.event.NewExtenEvent;
 import org.asteriskjava.manager.event.ProtocolIdentifierReceivedEvent;
 import org.asteriskjava.manager.internal.backwardsCompatibility.BackwardsCompatibilityForManagerEvents;
 import org.asteriskjava.manager.response.ManagerResponse;
@@ -388,7 +387,7 @@ public class ManagerReaderImpl implements ManagerReader
     }
 
     @Override
-    public void deregisterEventClass(Class<NewExtenEvent> eventClass)
+    public void deregisterEventClass(Class< ? extends ManagerEvent> eventClass)
     {
 
         eventBuilder.deregisterEventClass(eventClass);

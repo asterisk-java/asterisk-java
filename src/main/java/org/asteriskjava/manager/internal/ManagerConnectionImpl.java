@@ -61,7 +61,6 @@ import org.asteriskjava.manager.event.DialBeginEvent;
 import org.asteriskjava.manager.event.DialEvent;
 import org.asteriskjava.manager.event.DisconnectEvent;
 import org.asteriskjava.manager.event.ManagerEvent;
-import org.asteriskjava.manager.event.NewExtenEvent;
 import org.asteriskjava.manager.event.ProtocolIdentifierReceivedEvent;
 import org.asteriskjava.manager.event.ResponseEvent;
 import org.asteriskjava.manager.response.ChallengeResponse;
@@ -1646,7 +1645,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     }
 
     @Override
-    public void deregisterEventClass(Class<NewExtenEvent> eventClass)
+    public void deregisterEventClass(Class< ? extends ManagerEvent> eventClass)
     {
         if (reader == null)
         {
