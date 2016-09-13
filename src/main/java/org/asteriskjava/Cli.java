@@ -82,7 +82,6 @@ public class Cli
         System.out.println("Asterisk-Java " + getVersion());
     }
 
-    @SuppressWarnings("resource")
     private String getVersion()
     {
         String version = "<unknown>";

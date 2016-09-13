@@ -25,7 +25,7 @@ public class MeetmeCommand extends AbstractAgiCommand
         String command = "EXEC " + escapeAndQuote("meetme") + " " + escapeAndQuote(room);
         if (options != null && options.length() > 0)
         {
-            command += " " + escapeAndQuote(options);
+            command += "|" + escapeAndQuote(options);
         }
 
         return command;

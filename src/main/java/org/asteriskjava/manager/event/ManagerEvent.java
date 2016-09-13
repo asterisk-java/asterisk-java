@@ -230,8 +230,10 @@ public abstract class ManagerEvent extends EventObject
     /**
      * Returns the timestamp for this event. <br>
      * The timestamp property is available in Asterisk since 1.4 if enabled in
-     * <code>manager.conf</code> by setting <code>timestampevents = yes</code>. <br>
-     * In contains the time the event was generated in seconds since the epoch. <br>
+     * <code>manager.conf</code> by setting <code>timestampevents = yes</code>.
+     * <br>
+     * In contains the time the event was generated in seconds since the epoch.
+     * <br>
      * Example: 1159310429.569108
      *
      * @return the timestamp for this event.
