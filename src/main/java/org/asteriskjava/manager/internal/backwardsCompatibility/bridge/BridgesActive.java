@@ -1,7 +1,7 @@
 package org.asteriskjava.manager.internal.backwardsCompatibility.bridge;
 
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import org.asteriskjava.manager.event.BridgeCreateEvent;
 import org.asteriskjava.manager.event.BridgeDestroyEvent;
@@ -26,10 +26,10 @@ public class BridgesActive
 {
     private final Log logger = LogFactory.getLog(BridgesActive.class);
 
-    // this map is shared (static) so that connections to asterisk that attach
-    // late can
-    // benefit from the known bridge information of older connections
-    final static Map<String, BridgeState> activeBridges = new ConcurrentHashMap<>();
+    // This map is shared (static) so that connections to asterisk that attach
+    // late can benefit from the known bridge information of older connections
+    private final static ConcurrentMap<String, BridgeState> activeBridges =
+            new ConcurrentHashMap<>();
 
     public ManagerEvent handleEvent(ManagerEvent event)
     {
@@ -41,9 +41,7 @@ public class BridgesActive
         {
             return destroyBridge((BridgeDestroyEvent) event);
         }
-        else
-
-        if (event instanceof BridgeEnterEvent)
+        else if (event instanceof BridgeEnterEvent)
         {
             return enterBridge((BridgeEnterEvent) event);
         }
@@ -52,16 +50,11 @@ public class BridgesActive
             return leaveBridge((BridgeLeaveEvent) event);
         }
         return null;
-
     }
 
     ManagerEvent createBridge(BridgeCreateEvent event)
     {
-        if (activeBridges.get(event.getBridgeUniqueId()) == null)
-        {
-            BridgeState state = new BridgeState(event);
-            activeBridges.put(event.getBridgeUniqueId(), state);
-        }
+        activeBridges.putIfAbsent(event.getBridgeUniqueId(), new BridgeState());
         return null;
     }
 
@@ -70,7 +63,7 @@ public class BridgesActive
         BridgeState state = activeBridges.remove(event.getBridgeUniqueId());
         if (state != null)
         {
-            return state.destroy(event);
+            return state.destroy();
         }
         logger.info("Cant find bridge for id " + event.getBridgeUniqueId());
         return null;

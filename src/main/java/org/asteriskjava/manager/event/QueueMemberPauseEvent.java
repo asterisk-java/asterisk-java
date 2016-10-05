@@ -13,6 +13,8 @@ public class QueueMemberPauseEvent extends QueueMemberPausedEvent
     Boolean ringinuse;
     String iface;
     String stateInterface;
+    Integer incall;
+    String pausedreason;
 
     public QueueMemberPauseEvent(Object source)
     {
@@ -147,5 +149,32 @@ public class QueueMemberPauseEvent extends QueueMemberPausedEvent
     {
         this.stateInterface = stateInterface;
     }
+
+    /**
+     * @return get Incall
+     */
+    public Integer getIncall()
+    {
+        return incall;
+    }
+
+    /**
+     * @param setIncall the incall to set
+     */
+    public void setIncall(Integer incall)
+    {
+        this.incall = incall;
+    }
+
+    public String getPausedreason() 
+    {
+        return pausedreason;
+    }
+
+    public void setPausedreason(String pausedreason) 
+    {
+        this.pausedreason = pausedreason;
+    }
+
 
 }

@@ -50,6 +50,7 @@ class ActionBuilderImpl implements ActionBuilder
      */
     private final Log logger = LogFactory.getLog(getClass());
     private AsteriskVersion targetVersion;
+    private final Set<String> membersToIgnore = new HashSet<>();
 
     /**
      * Creates a new ActionBuilder for Asterisk 1.0.
@@ -57,6 +58,15 @@ class ActionBuilderImpl implements ActionBuilder
     ActionBuilderImpl()
     {
         this.targetVersion = AsteriskVersion.ASTERISK_1_0;
+        
+        /*
+         * When using the Reflection API to get all of the getters for building
+         * actions to send, we ignore some of the getters
+         */
+        this.membersToIgnore.add("class");
+        this.membersToIgnore.add("action");
+        this.membersToIgnore.add("actionid");
+        this.membersToIgnore.add(ATTRIBUTES_PROPERTY_NAME);
     }
 
     public void setTargetVersion(AsteriskVersion targetVersion)
@@ -90,15 +100,7 @@ class ActionBuilderImpl implements ActionBuilder
             sb.append(LINE_SEPARATOR);
         }
 
-        /*
-         * When using the Reflection API to get all of the getters for building
-         * actions to send, we ignore some of the getters
-         */
-        Set<String> ignore = new HashSet<>();
-        ignore.add("class");
-        ignore.add("action");
-        ignore.add("actionid");
-        ignore.add(ATTRIBUTES_PROPERTY_NAME);
+        Map<String, Method> getters;
 
         // if this is a user event action, we need to grab the internal event,
         // otherwise do below as normal
@@ -106,20 +108,22 @@ class ActionBuilderImpl implements ActionBuilder
         {
             UserEvent userEvent = ((UserEventAction) action).getUserEvent();
             appendUserEvent(sb, userEvent);
+            
+            getters = ReflectionUtil.getGetters(userEvent.getClass());
 
             // eventually we may want to add more Map keys for events to ignore
             // when appending
-            appendGetters(sb, userEvent, ignore);
+            appendGetters(sb, userEvent, getters);
         }
         else
         {
-            appendGetters(sb, action, ignore);
+            getters = ReflectionUtil.getGetters(action.getClass());
+
+            appendGetters(sb, action, getters);
         }
 
         // actions that have the special getAttributes method will
         // have their Map appended without a singular key or separator
-        Map<String, Method> getters = ReflectionUtil.getGetters(action.getClass());
-
         if (getters.containsKey(ATTRIBUTES_PROPERTY_NAME))
         {
             Method getter = getters.get(ATTRIBUTES_PROPERTY_NAME);
@@ -261,9 +265,8 @@ class ActionBuilderImpl implements ActionBuilder
     }
 
     @SuppressWarnings("unchecked")
-    private void appendGetters(StringBuilder sb, Object action, Set<String> membersToIgnore)
+    private void appendGetters(StringBuilder sb, Object action, Map<String, Method> getters)
     {
-        Map<String, Method> getters = ReflectionUtil.getGetters(action.getClass());
         for (Map.Entry<String, Method> entry : getters.entrySet())
         {
             final String name = entry.getKey();
@@ -306,7 +309,7 @@ class ActionBuilderImpl implements ActionBuilder
         }
     }
 
-    private String mapToAsterisk(Method getter)
+    private static String mapToAsterisk(Method getter)
     {
         AsteriskMapping annotation;
 
@@ -358,7 +361,7 @@ class ActionBuilderImpl implements ActionBuilder
         return fieldName.toLowerCase(Locale.US);
     }
 
-    String determineSetterName(String getterName)
+    static String determineSetterName(String getterName)
     {
         if (getterName.startsWith("get"))
         {
@@ -374,7 +377,7 @@ class ActionBuilderImpl implements ActionBuilder
         }
     }
 
-    String determineFieldName(String accessorName)
+    static String determineFieldName(String accessorName)
     {
         if (accessorName.startsWith("get"))
         {
@@ -400,14 +403,14 @@ class ActionBuilderImpl implements ActionBuilder
      * @param s the string to convert.
      * @return the converted string.
      */
-    String lcFirst(String s)
+    private static String lcFirst(String s)
     {
-        if (s == null || s.length() < 1)
+        if (s == null || s.isEmpty())
         {
             return s;
         }
 
-        char first = s.charAt(0);
-        return Character.toLowerCase(first) + s.substring(1);
+        return Character.toLowerCase(s.charAt(0))
+                + (s.length() == 1 ? "" : s.substring(1));
     }
 }

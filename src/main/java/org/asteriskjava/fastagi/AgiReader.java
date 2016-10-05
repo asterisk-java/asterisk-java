@@ -14,10 +14,8 @@
  *  limitations under the License.
  *
  */
-package org.asteriskjava.fastagi.internal;
+package org.asteriskjava.fastagi;
 
-import org.asteriskjava.fastagi.AgiException;
-import org.asteriskjava.fastagi.AgiRequest;
 import org.asteriskjava.fastagi.reply.AgiReply;
 
 /**

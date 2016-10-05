@@ -1,7 +1,4 @@
-package org.asteriskjava.fastagi.internal;
-
-import org.asteriskjava.fastagi.AgiChannel;
-import org.asteriskjava.fastagi.AgiRequest;
+package org.asteriskjava.fastagi;
 
 /**
  * An AgiChannelFactory creates instances of AgiChannels,

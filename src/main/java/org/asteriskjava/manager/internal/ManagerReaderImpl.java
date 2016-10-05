@@ -190,35 +190,23 @@ public class ManagerReaderImpl implements ManagerReader
 
                 if (line.length() > 0)
                 {
-                    int delimiterIndex;
-                    int delimiterLength;
-
                     // begin of workaround for Astersik bug 13319
                     // see AJ-77
                     // Use this workaround only when line starts from "From "
                     // and "To "
-                    int isFromAtStart, isToAtStart;
-                    isFromAtStart = line.indexOf("From ");
-                    isToAtStart = line.indexOf("To ");
-                    if (isFromAtStart == 0 || isToAtStart == 0)
-                    {
-                        delimiterIndex = line.indexOf(" ");
-                        delimiterLength = 1;
-                    }
-                    else
-                    {
-                        delimiterIndex = line.indexOf(": ");
-                        delimiterLength = 2;
-                    }
+                    int isFromAtStart = line.indexOf("From ");
+                    int isToAtStart = line.indexOf("To ");
+
+                    int delimiterIndex = isFromAtStart == 0 || isToAtStart == 0
+                        ? line.indexOf(" ") : line.indexOf(":");
                     // end of workaround for Astersik bug 13319
+
+                    int delimiterLength = 1;
 
                     if (delimiterIndex > 0 && line.length() > delimiterIndex + delimiterLength)
                     {
-                        String name;
-                        String value;
-
-                        name = line.substring(0, delimiterIndex).toLowerCase(Locale.ENGLISH);
-                        value = line.substring(delimiterIndex + delimiterLength);
+                        String name = line.substring(0, delimiterIndex).toLowerCase(Locale.ENGLISH).trim();
+                        String value = line.substring(delimiterIndex + delimiterLength).trim();
 
                         addToBuffer(buffer, name, value);
                         // TODO tracing
@@ -355,11 +343,7 @@ public class ManagerReaderImpl implements ManagerReader
         final String internalActionId = ManagerUtil.getInternalActionId(actionId);
         if (internalActionId != null)
         {
-            responseClass = expectedResponseClasses.get(internalActionId);
-            if (responseClass != null)
-            {
-                expectedResponseClasses.remove(internalActionId);
-            }
+            responseClass = expectedResponseClasses.remove(internalActionId);
         }
 
         final ManagerResponse response = responseBuilder.buildResponse(responseClass, buffer);
