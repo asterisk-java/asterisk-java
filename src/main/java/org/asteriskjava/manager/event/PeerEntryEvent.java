@@ -427,12 +427,9 @@ public class PeerEntryEvent extends ResponseEvent
     /**
      * @param the accountcode to set
      */
-    public void setAccountcode(String description)
+    public void setAccountcode(String accountcode)
     {
         this.accountcode = accountcode;
     }
-
-
-
 
 }
