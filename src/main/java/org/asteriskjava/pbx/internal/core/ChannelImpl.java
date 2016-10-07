@@ -130,6 +130,13 @@ public class ChannelImpl implements Channel
     /**
      * Creates a channel from a channelName <br>
      * <br>
+     * This constructor is package private for a reason, and is called from
+     * AsteriskPBX... If you need to add a channel to the PBX do it like
+     * this<br>
+     * <br>
+     * AsteriskPBX pbx = (AsteriskPBX) PBXFactory.getActivePBX();<br>
+     * final Channel channel = pbx.registerChannel(channelName, uniqueId); <br>
+     * <br>
      * Channel names are one of the following formats:
      * [Action/]Tech/EndPointName-<sequence-number>[<MASQ>][ <ZOMBIE>]
      * DAHDI/i<span>/<number>[:<subaddress>]-<sequence-number> <br>
