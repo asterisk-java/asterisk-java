@@ -170,7 +170,8 @@ public class DefaultManagerConnection implements ManagerConnection
      * @param defaultTimeout default timeout in milliseconds
      * @deprecated use {@link #setDefaultResponseTimeout(long)} instead
      */
-    @Deprecated public void setDefaultTimeout(long defaultTimeout)
+    @Deprecated
+    public void setDefaultTimeout(long defaultTimeout)
     {
         impl.setDefaultResponseTimeout(defaultTimeout);
     }
@@ -213,14 +214,15 @@ public class DefaultManagerConnection implements ManagerConnection
      * @deprecated no longer needed as we now use an interrupt based response
      *             checking approach.
      */
-    @Deprecated public void setSleepTime(long sleepTime)
+    @Deprecated
+    public void setSleepTime(long sleepTime)
     {
 
     }
 
     /**
-     * Set to <code>true</code> to try reconnecting to ther asterisk serve
-     * even if the reconnection attempt threw an AuthenticationFailedException.
+     * Set to <code>true</code> to try reconnecting to ther asterisk serve even
+     * if the reconnection attempt threw an AuthenticationFailedException.
      * <p>
      * Default is <code>true</code>.
      */
@@ -287,7 +289,7 @@ public class DefaultManagerConnection implements ManagerConnection
         return impl.getRemotePort();
     }
 
-    public void registerUserEventClass(Class<? extends ManagerEvent> userEventClass)
+    public void registerUserEventClass(Class< ? extends ManagerEvent> userEventClass)
     {
         impl.registerUserEventClass(userEventClass);
     }
@@ -307,8 +309,8 @@ public class DefaultManagerConnection implements ManagerConnection
         impl.login();
     }
 
-    public void login(String events) throws IllegalStateException, IOException, AuthenticationFailedException,
-            TimeoutException
+    public void login(String events)
+            throws IllegalStateException, IOException, AuthenticationFailedException, TimeoutException
     {
         impl.login(events);
     }
@@ -318,32 +320,32 @@ public class DefaultManagerConnection implements ManagerConnection
         impl.logoff();
     }
 
-    public ManagerResponse sendAction(ManagerAction action) throws IOException, TimeoutException, IllegalArgumentException,
-            IllegalStateException
+    public ManagerResponse sendAction(ManagerAction action)
+            throws IOException, TimeoutException, IllegalArgumentException, IllegalStateException
     {
         return impl.sendAction(action);
     }
 
-    public ManagerResponse sendAction(ManagerAction action, long timeout) throws IOException, TimeoutException,
-            IllegalArgumentException, IllegalStateException
+    public ManagerResponse sendAction(ManagerAction action, long timeout)
+            throws IOException, TimeoutException, IllegalArgumentException, IllegalStateException
     {
         return impl.sendAction(action, timeout);
     }
 
-    public void sendAction(ManagerAction action, SendActionCallback callbackHandler) throws IOException,
-            IllegalArgumentException, IllegalStateException
+    public void sendAction(ManagerAction action, SendActionCallback callbackHandler)
+            throws IOException, IllegalArgumentException, IllegalStateException
     {
         impl.sendAction(action, callbackHandler);
     }
 
-    public ResponseEvents sendEventGeneratingAction(EventGeneratingAction action) throws IOException, EventTimeoutException,
-            IllegalArgumentException, IllegalStateException
+    public ResponseEvents sendEventGeneratingAction(EventGeneratingAction action)
+            throws IOException, EventTimeoutException, IllegalArgumentException, IllegalStateException
     {
         return impl.sendEventGeneratingAction(action);
     }
 
-    public ResponseEvents sendEventGeneratingAction(EventGeneratingAction action, long timeout) throws IOException,
-            EventTimeoutException, IllegalArgumentException, IllegalStateException
+    public ResponseEvents sendEventGeneratingAction(EventGeneratingAction action, long timeout)
+            throws IOException, EventTimeoutException, IllegalArgumentException, IllegalStateException
     {
         return impl.sendEventGeneratingAction(action, timeout);
     }
@@ -375,5 +377,12 @@ public class DefaultManagerConnection implements ManagerConnection
         sb.append("hostname='").append(getHostname()).append("',");
         sb.append("port=").append(getPort()).append("]");
         return sb.toString();
+    }
+
+    @Override
+    public void deregisterEventClass(Class< ? extends ManagerEvent> eventClass)
+    {
+        impl.deregisterEventClass(eventClass);
+
     }
 }

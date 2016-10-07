@@ -17,7 +17,8 @@
 package org.asteriskjava.util;
 
 /**
- * Main interface used for logging throughout Asterisk-Java.<p>
+ * Main interface used for logging throughout Asterisk-Java.
+ * <p>
  * Concrete instances of this interface are obtained by calling
  * {@link org.asteriskjava.util.LogFactory#getLog(Class)}.
  * 
@@ -27,9 +28,16 @@ package org.asteriskjava.util;
 public interface Log
 {
     void debug(Object obj);
+
     void info(Object obj);
+
     void warn(Object obj);
+
     void warn(Object obj, Throwable exception);
+
     void error(Object obj);
+
     void error(Object obj, Throwable exception);
+
+    public boolean isDebugEnabled();
 }

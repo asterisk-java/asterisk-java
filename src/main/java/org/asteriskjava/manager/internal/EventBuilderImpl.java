@@ -25,6 +25,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.asteriskjava.manager.event.*;
@@ -450,5 +451,32 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
         }
 
         return event;
+    }
+
+    @Override
+    public void deregisterEventClass(Class< ? extends ManagerEvent> eventClass)
+    {
+
+        Set<String> toRemove = new HashSet<>();
+        for (Entry<String, Class< ? >> registered : registeredEventClasses.entrySet())
+        {
+            if (registered.getValue().equals(eventClass))
+            {
+                toRemove.add(registered.getKey());
+            }
+        }
+        if (toRemove.isEmpty())
+        {
+            logger.error("Couldn't remove event type " + eventClass);
+        }
+        else
+        {
+            for (String key : toRemove)
+            {
+                registeredEventClasses.remove(key);
+                logger.warn("Removed event type " + key);
+            }
+        }
+
     }
 }

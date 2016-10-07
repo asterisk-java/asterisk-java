@@ -369,4 +369,12 @@ public class ManagerReaderImpl implements ManagerReader
 
         return event;
     }
+
+    @Override
+    public void deregisterEventClass(Class< ? extends ManagerEvent> eventClass)
+    {
+
+        eventBuilder.deregisterEventClass(eventClass);
+
+    }
 }

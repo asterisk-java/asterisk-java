@@ -18,15 +18,17 @@ package org.asteriskjava.manager.action;
 
 /**
  * Redirects a given channel (and an optional additional channel) to a new
- * extension.<p>
+ * extension.
+ * <p>
  * The additional channel is usually used when redirecting two bridged channel
- * for example to a MeetMe room.<p>
- * Note that BRIstuffed versions of Asterisk behave slightly different:
- * While the standard version only allows redirecting the two channels to the same
- * context, extension, priority the BRIstuffed version uses context, extension, 
- * priority only for the first channel and extraContext, extraExtension, 
- * extraPriority for the second channel. The standard version ignores the 
- * extraContext, extraExtension, extraPriority properties.  
+ * for example to a MeetMe room.
+ * <p>
+ * Note that BRIstuffed versions of Asterisk behave slightly different: While
+ * the standard version only allows redirecting the two channels to the same
+ * context, extension, priority the BRIstuffed version uses context, extension,
+ * priority only for the first channel and extraContext, extraExtension,
+ * extraPriority for the second channel. The standard version ignores the
+ * extraContext, extraExtension, extraPriority properties.
  * 
  * @author srt
  * @version $Id$
@@ -65,8 +67,7 @@ public class RedirectAction extends AbstractManagerAction
      * @param priority the destination priority
      * @since 0.2
      */
-    public RedirectAction(String channel, String context, String exten,
-            Integer priority)
+    public RedirectAction(String channel, String context, String exten, Integer priority)
     {
         this.channel = channel;
         this.context = context;
@@ -76,11 +77,12 @@ public class RedirectAction extends AbstractManagerAction
 
     /**
      * Creates a new RedirectAction that redirects the given channels to the
-     * given context, extension, priority triple.<p>
-     * This constructor only works standard versions of Asterisk, i.e. non-BRIstuffed
-     * versions.
-     * When used with a BRIstuffed version (and not setting extraContext, extraExten and
-     * extraPriority) the second channel is just hung up.  
+     * given context, extension, priority triple.
+     * <p>
+     * This constructor only works standard versions of Asterisk, i.e.
+     * non-BRIstuffed versions. When used with a BRIstuffed version (and not
+     * setting extraContext, extraExten and extraPriority) the second channel is
+     * just hung up.
      * 
      * @param channel the name of the first channel to redirect
      * @param extraChannel the name of the second channel to redirect
@@ -89,8 +91,7 @@ public class RedirectAction extends AbstractManagerAction
      * @param priority the destination priority
      * @since 0.2
      */
-    public RedirectAction(String channel, String extraChannel, String context,
-            String exten, Integer priority)
+    public RedirectAction(String channel, String extraChannel, String context, String exten, Integer priority)
     {
         this.channel = channel;
         this.extraChannel = extraChannel;
@@ -101,10 +102,11 @@ public class RedirectAction extends AbstractManagerAction
 
     /**
      * Creates a new RedirectAction that redirects the given channels to the
-     * given context, extension, priority triples.<p>
-     * This constructor works for BRIstuffed versions of Asterisk, if used
-     * with a standard version the extraContext, extraExten and
-     * extraPriroity attributes are ignored.
+     * given context, extension, priority triples.
+     * <p>
+     * This constructor works for BRIstuffed versions of Asterisk, if used with
+     * a standard version the extraContext, extraExten and extraPriroity
+     * attributes are ignored.
      * 
      * @param channel the name of the first channel to redirect
      * @param extraChannel the name of the second channel to redirect
@@ -116,9 +118,8 @@ public class RedirectAction extends AbstractManagerAction
      * @param extraPriority the destination priority for the second channel
      * @since 0.3
      */
-    public RedirectAction(String channel, String extraChannel, String context,
-            String exten, Integer priority, String extraContext,
-            String extraExten, Integer extraPriority)
+    public RedirectAction(String channel, String extraChannel, String context, String exten, Integer priority,
+            String extraContext, String extraExten, Integer extraPriority)
     {
         this.channel = channel;
         this.extraChannel = extraChannel;
@@ -128,13 +129,17 @@ public class RedirectAction extends AbstractManagerAction
         this.extraContext = extraContext;
         this.extraExten = extraExten;
         this.extraPriority = extraPriority;
+        if (channel.equalsIgnoreCase(extraChannel))
+        {
+            throw new RuntimeException("ExtraChannel = channel ... bad things will happen to asterisk");
+        }
     }
 
     /**
      * Returns the name of this action, i.e. "Redirect".
      */
     @Override
-   public String getAction()
+    public String getAction()
     {
         return "Redirect";
     }
@@ -177,6 +182,10 @@ public class RedirectAction extends AbstractManagerAction
     public void setExtraChannel(String extraChannel)
     {
         this.extraChannel = extraChannel;
+        if (channel.equalsIgnoreCase(extraChannel))
+        {
+            throw new RuntimeException("ExtraChannel = channel ... bad things will happen to asterisk");
+        }
     }
 
     /**
@@ -240,7 +249,8 @@ public class RedirectAction extends AbstractManagerAction
     }
 
     /**
-     * Returns the destination context for the additional channel.<p>
+     * Returns the destination context for the additional channel.
+     * <p>
      * This property is only used by BRIstuffed Asterisk servers.
      * 
      * @return the destination context for the additional channel.
@@ -251,7 +261,8 @@ public class RedirectAction extends AbstractManagerAction
     }
 
     /**
-     * Sets the destination context for the additional channel.<p>
+     * Sets the destination context for the additional channel.
+     * <p>
      * This property is only used by BRIstuffed Asterisk servers.
      * 
      * @param extraContext the destination context for the additional channel.
@@ -262,7 +273,8 @@ public class RedirectAction extends AbstractManagerAction
     }
 
     /**
-     * Sets the destination extension for the additional channel.<p>
+     * Sets the destination extension for the additional channel.
+     * <p>
      * This property is only used by BRIstuffed Asterisk servers.
      * 
      * @return the destination extension for the additional channel.
@@ -273,7 +285,8 @@ public class RedirectAction extends AbstractManagerAction
     }
 
     /**
-     * Sets the destination extension for the additional channel.<p>
+     * Sets the destination extension for the additional channel.
+     * <p>
      * This property is only used by BRIstuffed Asterisk servers.
      * 
      * @param extraExten the destination extension for the additional channel.
@@ -284,7 +297,8 @@ public class RedirectAction extends AbstractManagerAction
     }
 
     /**
-     * Returns the destination priority for the additional channel.<p>
+     * Returns the destination priority for the additional channel.
+     * <p>
      * This property is only used by BRIstuffed Asterisk servers.
      * 
      * @return the destination priority for the additional channel.
@@ -295,7 +309,8 @@ public class RedirectAction extends AbstractManagerAction
     }
 
     /**
-     * Sets the destination priority for the additional channel.<p>
+     * Sets the destination priority for the additional channel.
+     * <p>
      * This property is only used by BRIstuffed Asterisk servers.
      * 
      * @param extraPriority the destination priority for the additional channel.

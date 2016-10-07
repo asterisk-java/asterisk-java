@@ -384,10 +384,12 @@ public class SipShowPeerResponse extends ManagerResponse
          * so I'm taking a long and then changing it to -1 if required
          */
         if (sipT38MaxDtgrm == 4294967295L)
+        {
             this.sipT38MaxDtgrm = -1L;
+        }
         else
         {
-            if (sipT38MaxDtgrm != null && sipT38MaxDtgrm < Integer.MAX_VALUE && sipT38MaxDtgrm > Integer.MIN_VALUE)
+            if (sipT38MaxDtgrm < Integer.MAX_VALUE && sipT38MaxDtgrm > Integer.MIN_VALUE)
             {
                 this.sipT38MaxDtgrm = sipT38MaxDtgrm;
             }
