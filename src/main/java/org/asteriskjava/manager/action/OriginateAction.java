@@ -332,10 +332,14 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
             if (timeout < 10000)
             {
                 logger.warn(
-                        "A timeout of less than 100000 will cause the originate to fail if not answered within 10 seconds!");
+                        "A timeout of less than 10000 will cause the originate to fail if not answered within 10 seconds!");
             }
+            this.timeout = timeout.longValue();
         }
-        this.timeout = timeout.longValue();
+        else
+        {
+            this.timeout = null;
+        }
     }
 
     /**
