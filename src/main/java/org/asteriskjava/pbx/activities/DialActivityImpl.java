@@ -156,8 +156,8 @@ public class DialActivityImpl extends ActivityHelper<DialActivity> implements Di
     }
 
     /**
-     * Called if the user cancels the call after starting it. The caller must
-     * also hangup the trc channel.
+     * Called to cancels the dial before it fully comes up. The caller must
+     * also hangup the associated channels.
      */
     @Override
     public void markCancelled()

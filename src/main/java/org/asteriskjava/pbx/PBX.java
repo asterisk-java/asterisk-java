@@ -46,7 +46,7 @@ public interface PBX
      *            the transfer.
      * @param autoAnswer - if true then the transferTarget is to be sent an auto
      *            answer header
-     * @param timeout - timeout for the blind transfer attempt. When the timeout
+     * @param timeout - timeout (in seconds) for the blind transfer attempt. When the timeout
      *            is reached the Blind Transfer will be cancelled.
      * @param ActivityCallback
      */
@@ -198,44 +198,13 @@ public interface PBX
      */
     void sendDTMF(Channel channel, DTMFTone tone, ActivityCallback<Activity> callback);
 
-    //
-    // /**
-    // * Splits a call (with two channels) sending the originating channel to
-    // the
-    // * originatingTarget and other channel to the secondaryTarget.
-    // *
-    // * This call returns once the split action has completed.
-    // *
-    // * @param callToSplit
-    // * @param originatingTarget
-    // * @param secondaryTarget
-    // * @return
-    // * @throws PBXException
-    // */
-    // iSplitActivity split(iCall callToSplit, iEndPoint originatingTarget,
-    // iEndPoint secondaryTarget) throws PBXException;
-    //
-    //
-    // /**
-    // * Splits a call (with two channels) sending the originating channel to
-    // the
-    // * originatingTarget and other channel to the secondaryTarget.
-    // *
-    // * This method returns immediately with progress information passed to the
-    // * given callback. Note: the callback method will be called from a
-    // different
-    // * thread.
-    // *
-    // * @param callToSplit
-    // * @param originatingTarget
-    // * @param secondaryTarget
-    // * @return
-    // */
-    // public iSplitActivity split(final iCall callToSplit, final iEndPoint
-    // originatingTarget,
-    // final iEndPoint secondaryTarget, final iCallback<iSplitActivity>
-    // listener);
-
+    
+     /**
+     * Splits a call (with two channels) 
+     *
+     * This call returns once the split action has completed.
+     */
+ 
     public SplitActivity split(final Call callToSplit, final ActivityCallback<SplitActivity> listener) throws PBXException;
 
     public SplitActivity split(final Call callToSplit) throws PBXException;

@@ -52,15 +52,15 @@ import org.asteriskjava.pbx.internal.managerAPI.Connector;
  * This means that we are always responsive to asterisk when receiving events,
  * if we are not responsive then asterisk will drop the connection. <br>
  * <br>
- * It should be noted that as all events are dispatch from a single thread that
+ * It should be noted that as all events are dispatch from a single thread and as such 
  * a single tardy listener can block all other listeners. <br>
  * <br>
  * If your listener is likely to be slow in handling events then you should wrap
  * the listener in its own ManagerEventQueue. <br>
  * <br>
- * It is critical that you use the ManagerEventQueue is it forms an intrinsic
+ * It is critical that you use the ManagerEventQueue as it forms an intrinsic
  * part of this classes ability to ensure that channel/event processing is
- * coherent. <br>
+ * coherent (i.e events are processed in the correct order). <br>
  * <br>
  * For connections that generate large number of events you should use
  * 

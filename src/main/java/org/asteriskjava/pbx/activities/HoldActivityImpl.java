@@ -56,6 +56,11 @@ public class HoldActivityImpl extends ActivityHelper<HoldActivity> implements Ho
 		return success;
 	}
 
+	public Channel getChannel()
+	{
+		return this._channel;
+	}
+	
 	@Override
 	public HashSet<Class<? extends ManagerEvent>> requiredEvents()
 	{

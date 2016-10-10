@@ -878,6 +878,9 @@ public class CallImpl implements ChannelHangupListener, Call
         return this._uniquecallID == ((CallImpl) rhs)._uniquecallID;
     }
 
+    /**
+     * Returns all of the Channels associated with this call.
+     */
     @Override
     public List<Channel> getChannels()
     {

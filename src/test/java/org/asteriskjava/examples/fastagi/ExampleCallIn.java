@@ -1,3 +1,5 @@
+package org.asteriskjava.examples.fastagi;
+
 /* Cloudvox - answer and control a phone call with Java
 Place and receive phone calls via open API: http://cloudvox.com/
 Learn about call scripting, Asterisk/AGI, voice apps: http://help.cloudvox.com/ 
