@@ -15,7 +15,6 @@ import org.asteriskjava.pbx.PBX;
 import org.asteriskjava.pbx.PBXException;
 import org.asteriskjava.pbx.PBXFactory;
 import org.asteriskjava.pbx.internal.asterisk.AsteriskSettings;
-import org.asteriskjava.pbx.internal.asterisk.PBXSettingsManager;
 import org.asteriskjava.pbx.internal.asterisk.wrap.actions.GetVarAction;
 import org.asteriskjava.pbx.internal.asterisk.wrap.actions.OriginateAction;
 import org.asteriskjava.pbx.internal.asterisk.wrap.events.BridgeEvent;
@@ -112,7 +111,7 @@ public abstract class OriginateBaseClass extends EventListenerBaseClass
                 + " vars " + myVars); //$NON-NLS-1$
         ManagerResponse response = null;
 
-        final AsteriskSettings settings = PBXSettingsManager.getActiveProfile();
+        final AsteriskSettings settings = PBXFactory.getActiveProfile();
 
         final OriginateAction originate = new OriginateAction();
         this.originateID = originate.getActionId();

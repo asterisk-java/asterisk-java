@@ -14,7 +14,6 @@ import org.asteriskjava.pbx.PBXException;
 import org.asteriskjava.pbx.PBXFactory;
 import org.asteriskjava.pbx.internal.agi.AgiChannelActivityHold;
 import org.asteriskjava.pbx.internal.asterisk.AsteriskSettings;
-import org.asteriskjava.pbx.internal.asterisk.PBXSettingsManager;
 import org.asteriskjava.pbx.internal.asterisk.wrap.actions.RedirectAction;
 import org.asteriskjava.pbx.internal.asterisk.wrap.events.ManagerEvent;
 import org.asteriskjava.pbx.internal.core.AsteriskPBX;
@@ -179,7 +178,7 @@ public class SplitActivityImpl extends ActivityHelper<SplitActivity> implements 
      */
     private boolean splitTwo() throws PBXException
     {
-        final AsteriskSettings profile = PBXSettingsManager.getActiveProfile();
+        final AsteriskSettings profile = PBXFactory.getActiveProfile();
         AsteriskPBX pbx = (AsteriskPBX) PBXFactory.getActivePBX();
 
         if (channel1 == channel2)

@@ -19,7 +19,6 @@ import org.asteriskjava.pbx.PBX;
 import org.asteriskjava.pbx.PBXException;
 import org.asteriskjava.pbx.PBXFactory;
 import org.asteriskjava.pbx.internal.asterisk.AsteriskSettings;
-import org.asteriskjava.pbx.internal.asterisk.PBXSettingsManager;
 import org.asteriskjava.pbx.internal.asterisk.wrap.actions.GetVarAction;
 import org.asteriskjava.pbx.internal.asterisk.wrap.actions.OriginateAction;
 import org.asteriskjava.pbx.internal.asterisk.wrap.events.HangupEvent;
@@ -68,7 +67,7 @@ public class DialLocalToAgiActivity extends EventListenerBaseClass implements Ru
         logger.info("***********                    begin dial local to AGI                  ****************");
         logger.info("***********                         " + "                              ****************");
         logger.info("*******************************************************************************");
-        final AsteriskSettings settings = PBXSettingsManager.getActiveProfile();
+        final AsteriskSettings settings = PBXFactory.getActiveProfile();
 
         AsteriskPBX pbx = (AsteriskPBX) PBXFactory.getActivePBX();
 

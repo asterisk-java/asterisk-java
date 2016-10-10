@@ -10,7 +10,6 @@ import org.asteriskjava.manager.TimeoutException;
 import org.asteriskjava.pbx.Channel;
 import org.asteriskjava.pbx.PBXFactory;
 import org.asteriskjava.pbx.internal.asterisk.AsteriskSettings;
-import org.asteriskjava.pbx.internal.asterisk.PBXSettingsManager;
 import org.asteriskjava.pbx.internal.asterisk.wrap.actions.RedirectAction;
 import org.asteriskjava.pbx.internal.core.AsteriskPBX;
 import org.asteriskjava.util.Log;
@@ -70,7 +69,7 @@ public class AgiChannelActivityQueue implements AgiChannelActivityAction
         }
 
         hangup = false;
-        final AsteriskSettings profile = PBXSettingsManager.getActiveProfile();
+        final AsteriskSettings profile = PBXFactory.getActiveProfile();
 
         AsteriskPBX pbx = (AsteriskPBX) PBXFactory.getActivePBX();
         final RedirectAction redirect = new RedirectAction(channel, profile.getManagementContext(), pbx.getExtensionAgi(),

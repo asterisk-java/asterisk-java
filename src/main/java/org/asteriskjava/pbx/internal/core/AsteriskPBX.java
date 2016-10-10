@@ -51,7 +51,6 @@ import org.asteriskjava.pbx.internal.asterisk.CallerIDImpl;
 import org.asteriskjava.pbx.internal.asterisk.InvalidChannelName;
 import org.asteriskjava.pbx.internal.asterisk.MeetmeRoom;
 import org.asteriskjava.pbx.internal.asterisk.MeetmeRoomControl;
-import org.asteriskjava.pbx.internal.asterisk.PBXSettingsManager;
 import org.asteriskjava.pbx.internal.asterisk.wrap.actions.EventGeneratingAction;
 import org.asteriskjava.pbx.internal.asterisk.wrap.actions.HangupAction;
 import org.asteriskjava.pbx.internal.asterisk.wrap.actions.ManagerAction;
@@ -413,7 +412,7 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
 
     public String getManagementContext()
     {
-        final AsteriskSettings settings = PBXSettingsManager.getActiveProfile();
+        final AsteriskSettings settings = PBXFactory.getActiveProfile();
         return settings.getManagementContext();
     }
 
@@ -431,14 +430,14 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
 
     public DialPlanExtension getExtensionPark()
     {
-        final AsteriskSettings settings = PBXSettingsManager.getActiveProfile();
+        final AsteriskSettings settings = PBXFactory.getActiveProfile();
         return this.buildDialPlanExtension(settings.getExtensionPark());
     }
 
     @Override
     public EndPoint getExtensionAgi()
     {
-        final AsteriskSettings settings = PBXSettingsManager.getActiveProfile();
+        final AsteriskSettings settings = PBXFactory.getActiveProfile();
         return this.buildDialPlanExtension(settings.getAgiExtension());
     }
 
@@ -781,7 +780,7 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
         boolean isInAgi = channel.isInAgi();
         if (!isInAgi)
         {
-            final AsteriskSettings profile = PBXSettingsManager.getActiveProfile();
+            final AsteriskSettings profile = PBXFactory.getActiveProfile();
 
             channel.setCurrentActivityAction(new AgiChannelActivityHold());
             final RedirectAction redirect = new RedirectAction(channel, profile.getManagementContext(), getExtensionAgi(),

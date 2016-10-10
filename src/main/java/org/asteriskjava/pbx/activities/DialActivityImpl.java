@@ -17,7 +17,6 @@ import org.asteriskjava.pbx.PBXException;
 import org.asteriskjava.pbx.PBXFactory;
 import org.asteriskjava.pbx.Trunk;
 import org.asteriskjava.pbx.internal.asterisk.AsteriskSettings;
-import org.asteriskjava.pbx.internal.asterisk.PBXSettingsManager;
 import org.asteriskjava.pbx.internal.asterisk.wrap.actions.SetVarAction;
 import org.asteriskjava.pbx.internal.asterisk.wrap.events.ManagerEvent;
 import org.asteriskjava.pbx.internal.asterisk.wrap.response.ManagerResponse;
@@ -86,7 +85,7 @@ public class DialActivityImpl extends ActivityHelper<DialActivity> implements Di
                     + "                              ****************"); //$NON-NLS-1$
             DialActivityImpl.logger.info("*******************************************************************************"); //$NON-NLS-1$
 
-            final AsteriskSettings profile = PBXSettingsManager.getActiveProfile();
+            final AsteriskSettings profile = PBXFactory.getActiveProfile();
 
             final OriginateResult[] resultChannels = nr.dial(this, this._originating, this._accepting,
                     profile.getManagementContext(), this.toCallerID, this.hideToCallerId, channelVarsToSet);

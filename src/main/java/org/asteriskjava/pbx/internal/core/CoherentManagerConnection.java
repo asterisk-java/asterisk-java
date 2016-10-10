@@ -22,7 +22,6 @@ import org.asteriskjava.pbx.PBX;
 import org.asteriskjava.pbx.PBXException;
 import org.asteriskjava.pbx.PBXFactory;
 import org.asteriskjava.pbx.internal.asterisk.AsteriskSettings;
-import org.asteriskjava.pbx.internal.asterisk.PBXSettingsManager;
 import org.asteriskjava.pbx.internal.asterisk.wrap.actions.EventGeneratingAction;
 import org.asteriskjava.pbx.internal.asterisk.wrap.actions.GetVarAction;
 import org.asteriskjava.pbx.internal.asterisk.wrap.actions.ListCommandsAction;
@@ -364,7 +363,7 @@ class CoherentManagerConnection implements FilteredManagerListener<ManagerEvent>
     private void configureConnection()
             throws IOException, AuthenticationFailedException, TimeoutException, IllegalStateException
     {
-        final AsteriskSettings profile = PBXSettingsManager.getActiveProfile();
+        final AsteriskSettings profile = PBXFactory.getActiveProfile();
         CoherentManagerConnection.managerConnection = CoherentManagerConnection.connector.connect(profile);
 
         // After a reconnect we will have duplicate eventQueues and
@@ -393,7 +392,7 @@ class CoherentManagerConnection implements FilteredManagerListener<ManagerEvent>
 
     private void checkFeatures() throws IOException, TimeoutException
     {
-        final AsteriskSettings profile = PBXSettingsManager.getActiveProfile();
+        final AsteriskSettings profile = PBXFactory.getActiveProfile();
 
         // Determine if the Bridge and Mute events are available.
         final ListCommandsAction lca = new ListCommandsAction();
