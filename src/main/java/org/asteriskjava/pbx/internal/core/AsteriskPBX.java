@@ -190,33 +190,6 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
         return new SplitActivityImpl(callToSplit, listener);
     }
 
-    // private SplitActivity _split(final iCall callToSplit, final iEndPoint
-    // remotePartyTarget,
-    // final iEndPoint locaPartyTarget, final iCallback<iSplitActivity>
-    // listener)
-    // {
-    // if (!callToSplit.canSplit())
-    // throw new IllegalStateException("The call must have exactly two channels
-    // to be split."); //$NON-NLS-1$
-    //
-    // iChannel remote = callToSplit.getRemoteParty();
-    // iChannel local = callToSplit.getLocalParty();
-    //
-    // final SplitActivity split = new SplitActivity(remote, remotePartyTarget,
-    // local, locaPartyTarget, listener);
-    // return split;
-    // }
-    //
-    // private SplitActivity _split(final iChannel lhs, final iEndPoint
-    // lhsTarget,
-    // final iChannel rhs, final iEndPoint rhsTarget, final
-    // iCallback<iSplitActivity> listener)
-    // {
-    // final SplitActivity split = new SplitActivity(lhs, lhsTarget, rhs,
-    // rhsTarget, listener);
-    // return split;
-    // }
-    //
     /**
      * Joins two calls not returning until the join completes. The join will
      * complete almost immediately as it is a simple bridging of two active
