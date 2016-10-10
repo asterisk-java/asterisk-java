@@ -51,6 +51,7 @@ import org.asteriskjava.pbx.internal.asterisk.CallerIDImpl;
 import org.asteriskjava.pbx.internal.asterisk.InvalidChannelName;
 import org.asteriskjava.pbx.internal.asterisk.MeetmeRoom;
 import org.asteriskjava.pbx.internal.asterisk.MeetmeRoomControl;
+import org.asteriskjava.pbx.internal.asterisk.wrap.actions.CommandAction;
 import org.asteriskjava.pbx.internal.asterisk.wrap.actions.EventGeneratingAction;
 import org.asteriskjava.pbx.internal.asterisk.wrap.actions.HangupAction;
 import org.asteriskjava.pbx.internal.asterisk.wrap.actions.ManagerAction;
@@ -58,6 +59,7 @@ import org.asteriskjava.pbx.internal.asterisk.wrap.actions.PlayDtmfAction;
 import org.asteriskjava.pbx.internal.asterisk.wrap.actions.RedirectAction;
 import org.asteriskjava.pbx.internal.asterisk.wrap.events.ManagerEvent;
 import org.asteriskjava.pbx.internal.asterisk.wrap.events.ResponseEvents;
+import org.asteriskjava.pbx.internal.asterisk.wrap.response.CommandResponse;
 import org.asteriskjava.pbx.internal.asterisk.wrap.response.ManagerResponse;
 import org.asteriskjava.pbx.internal.managerAPI.RedirectCall;
 
@@ -834,6 +836,61 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
         iCallback.completed(dialer, dialer.isSuccess());
 
         return dialer;
+    }
+
+    /**
+     * Creates the set of extensions required to test NJR during the
+     * installation. The context must already exist in the dialplan.
+     * 
+     * @param profile
+     * @param dialContext
+     * @return
+     * @throws IllegalStateException
+     * @throws IOException
+     * @throws AuthenticationFailedException
+     * @throws TimeoutException
+     */
+    public String createAgiEntryPoint() throws IOException, AuthenticationFailedException, TimeoutException
+    {
+
+        try
+        {
+
+            AsteriskPBX pbx = (AsteriskPBX) PBXFactory.getActivePBX();
+
+            AsteriskSettings profile = PBXFactory.getActiveProfile();
+
+            String agi = profile.getAgiExtension();
+            pbx.addAsteriskExtension(agi, 1, "AGI(agi://127.0.0.1/activityAgi), into " + profile.getManagementContext());
+            pbx.addAsteriskExtension(agi, 2, "wait(0.5), into " + profile.getManagementContext());
+            pbx.addAsteriskExtension(agi, 3, "goto(" + agi + ",1), into " + profile.getManagementContext());
+
+        }
+        catch (Exception e)
+        {
+            logger.error(e);
+
+            return e.getLocalizedMessage();
+        }
+        return null;
+
+    }
+
+    public String addAsteriskExtension(String extNumber, int priority, String command) throws Exception
+
+    {
+        String ext = "dialplan add extension " + extNumber + "," + priority + "," + command;
+
+        CommandAction action = new CommandAction(ext);
+        CommandResponse response = (CommandResponse) sendAction(action, 30000);
+
+        List<String> line = response.getResult();
+        String answer = line.get(0);
+        String tmp = "Extension '" + extNumber + "," + priority + ",";
+        if (answer.substring(0, tmp.length()).compareToIgnoreCase(tmp) == 0)
+            return "OK"; //$NON-NLS-1$
+
+        throw new Exception("InitiateAction.AddExtentionFailed" + ext);
     }
 
 }
