@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.asteriskjava.manager.AuthenticationFailedException;
 import org.asteriskjava.manager.TimeoutException;
 import org.asteriskjava.pbx.ActivityCallback;
+import org.asteriskjava.pbx.ActivityStatusEnum;
 import org.asteriskjava.pbx.Call;
 import org.asteriskjava.pbx.Call.OperandChannel;
 import org.asteriskjava.pbx.CallerID;
@@ -50,24 +51,11 @@ public class BlindTransfer
         // progress is provided via the ActivityCallback.
         pbx.dial(null, from, fromCallerID, to, toCallerID, new ActivityCallback<DialActivity>()
         {
-            @Override
-            public void start(DialActivity activity)
-            {
-                System.out.println("The dial has started");
-                // We can stop it progress further by cancelling the dial
-                // activity.markCancelled();
-            }
 
             @Override
-            public void progess(DialActivity activity, String message)
+            public void progress(DialActivity activity, ActivityStatusEnum status, String message)
             {
-                System.out.println("Dial status: " + message);
-            }
-
-            @Override
-            public void completed(DialActivity activity, boolean success)
-            {
-                if (success)
+                if (status == ActivityStatusEnum.SUCCESS)
                 {
                     System.out.println("Dial all good so lets do a blind transfer");
                     PBX pbx = PBXFactory.getActivePBX();
@@ -80,27 +68,13 @@ public class BlindTransfer
                             {
 
                                 @Override
-                                public void start(BlindTransferActivity activity)
-                                {
-                                    // TODO Auto-generated method stub
-
-                                }
-
-                                @Override
-                                public void progess(BlindTransferActivity activity, String message)
-                                {
-                                    // TODO Auto-generated method stub
-
-                                }
-
-                                @Override
-                                public void completed(BlindTransferActivity activity, boolean success)
+                                public void progress(BlindTransferActivity activity, ActivityStatusEnum status, String message)
                                 {
                                     // if success the blind transfer completed.
                                 }
                             });
                 }
-                else
+                if (status == ActivityStatusEnum.FAILURE)
                     System.out.println("Oops something bad happened when we dialed.");
             }
         });

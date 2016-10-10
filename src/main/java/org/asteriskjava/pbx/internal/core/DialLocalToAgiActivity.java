@@ -12,6 +12,7 @@ import java.util.concurrent.TimeUnit;
 import org.asteriskjava.manager.TimeoutException;
 import org.asteriskjava.pbx.Activity;
 import org.asteriskjava.pbx.ActivityCallback;
+import org.asteriskjava.pbx.ActivityStatusEnum;
 import org.asteriskjava.pbx.CallerID;
 import org.asteriskjava.pbx.Channel;
 import org.asteriskjava.pbx.EndPoint;
@@ -94,7 +95,7 @@ public class DialLocalToAgiActivity extends EventListenerBaseClass implements Ru
         {
             pbx.sendAction(originate, 30000);
             latch.await(30, TimeUnit.SECONDS);
-            callback.completed(this, true);
+            callback.progress(this, ActivityStatusEnum.SUCCESS, ActivityStatusEnum.SUCCESS.getDefaultMessage());
 
         }
         catch (IllegalArgumentException | IllegalStateException | IOException | TimeoutException e)

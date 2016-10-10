@@ -15,6 +15,7 @@ import org.asteriskjava.manager.TimeoutException;
 import org.asteriskjava.manager.event.AbstractChannelEvent;
 import org.asteriskjava.pbx.Activity;
 import org.asteriskjava.pbx.ActivityCallback;
+import org.asteriskjava.pbx.ActivityStatusEnum;
 import org.asteriskjava.pbx.Call;
 import org.asteriskjava.pbx.Call.OperandChannel;
 import org.asteriskjava.pbx.CallDirection;
@@ -833,7 +834,19 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
         final DialToAgiActivityImpl dialer = new DialToAgiActivityImpl(endPoint, callerID, false, completion, null, action);
 
         completion.waitForCompletion(3, TimeUnit.MINUTES);
-        iCallback.completed(dialer, dialer.isSuccess());
+
+        final ActivityStatusEnum status;
+
+        if (dialer.isSuccess())
+        {
+            status = ActivityStatusEnum.SUCCESS;
+        }
+        else
+        {
+            status = ActivityStatusEnum.FAILURE;
+        }
+
+        iCallback.progress(dialer, status, status.getDefaultMessage());
 
         return dialer;
     }
