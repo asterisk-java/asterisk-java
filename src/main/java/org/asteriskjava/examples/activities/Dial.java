@@ -32,7 +32,7 @@ public class Dial
             PBX pbx = PBXFactory.getActivePBX();
 
             // We are going to dial from extension 100
-            EndPoint from = pbx.buildEndPoint("100", TechType.SIP);
+            EndPoint from = pbx.buildEndPoint(TechType.SIP, "100");
             // The caller ID to show on extension 100.
             CallerID fromCallerID = pbx.buildCallerID("100", "My Phone");
 
@@ -61,18 +61,18 @@ public class Dial
         PBX pbx = PBXFactory.getActivePBX();
 
         // We are going to dial from extension 100
-        EndPoint from = pbx.buildEndPoint("100", TechType.SIP);
+        EndPoint from = pbx.buildEndPoint(TechType.SIP, "100");
         // The caller ID to show on extension 100.
         CallerID fromCallerID = pbx.buildCallerID("100", "My Phone");
 
         // The caller ID to display on the called parties phone
         CallerID toCallerID = pbx.buildCallerID("83208100", "Asterisk Java is calling");
         // The party we are going to call.
-        EndPoint to = pbx.buildEndPoint("SIP/default/5551234");
+        EndPoint to = pbx.buildEndPoint(TechType.SIP, pbx.buildTrunk("default"), "5551234");
 
         // Start the dial and return immediately.
         // progress is provided via the ActivityCallback.
-        pbx.dial(null, from, fromCallerID, to, toCallerID, new ActivityCallback<DialActivity>()
+        pbx.dial(from, fromCallerID, to, toCallerID, new ActivityCallback<DialActivity>()
         {
 
             @Override

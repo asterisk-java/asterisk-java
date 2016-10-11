@@ -15,7 +15,6 @@ import org.asteriskjava.pbx.NewChannelListener;
 import org.asteriskjava.pbx.PBX;
 import org.asteriskjava.pbx.PBXException;
 import org.asteriskjava.pbx.PBXFactory;
-import org.asteriskjava.pbx.Trunk;
 import org.asteriskjava.pbx.internal.asterisk.AsteriskSettings;
 import org.asteriskjava.pbx.internal.asterisk.wrap.actions.SetVarAction;
 import org.asteriskjava.pbx.internal.asterisk.wrap.events.ManagerEvent;
@@ -32,9 +31,6 @@ public class DialActivityImpl extends ActivityHelper<DialActivity> implements Di
     private final boolean hideToCallerId;
 
     private boolean cancelledByOperator;
-
-    @SuppressWarnings("unused")
-    private final Trunk trunk;
 
     private final EndPoint _originating;
 
@@ -56,12 +52,11 @@ public class DialActivityImpl extends ActivityHelper<DialActivity> implements Di
 
     private Map<String, String> channelVarsToSet;
 
-    public DialActivityImpl(final Trunk trunk, final EndPoint originating, final EndPoint accepting,
-            final CallerID toCallerID, final boolean hideToCallerID, final ActivityCallback<DialActivity> listener,
+    public DialActivityImpl(final EndPoint originating, final EndPoint accepting, final CallerID toCallerID,
+            final boolean hideToCallerID, final ActivityCallback<DialActivity> listener,
             Map<String, String> channelVarsToSet)
     {
         super("Dial", listener); //$NON-NLS-1$
-        this.trunk = trunk;
         this._originating = originating;
         this._accepting = accepting;
         this.toCallerID = toCallerID;
@@ -156,8 +151,8 @@ public class DialActivityImpl extends ActivityHelper<DialActivity> implements Di
     }
 
     /**
-     * Called to cancels the dial before it fully comes up. The caller must
-     * also hangup the associated channels.
+     * Called to cancels the dial before it fully comes up. The caller must also
+     * hangup the associated channels.
      */
     @Override
     public void markCancelled()

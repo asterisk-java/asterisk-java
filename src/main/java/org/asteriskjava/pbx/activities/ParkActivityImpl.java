@@ -172,7 +172,7 @@ public class ParkActivityImpl extends ActivityHelper<ParkActivity> implements Pa
         final ParkedCallEvent parkedEvent = (ParkedCallEvent) event;
         final AsteriskPBX pbx = (AsteriskPBX) PBXFactory.getActivePBX();
 
-        this._parkingLot = pbx.buildEndPoint(parkedEvent.getExten(), TechType.LOCAL);
+        this._parkingLot = pbx.buildEndPoint(TechType.LOCAL, parkedEvent.getExten());
         this._latch.countDown();
     }
 

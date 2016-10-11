@@ -138,11 +138,10 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
     }
 
     @Override
-    public BlindTransferActivity blindTransfer(Call call, Call.OperandChannel channelToTransfer, EndPoint transferTarget,
-            CallerID toCallerID, boolean autoAnswer, long timeout, ActivityCallback<BlindTransferActivity> listener)
+    public void blindTransfer(Call call, Call.OperandChannel channelToTransfer, EndPoint transferTarget, CallerID toCallerID,
+            boolean autoAnswer, long timeout, ActivityCallback<BlindTransferActivity> listener)
     {
-        return new BlindTransferActivityImpl(call, channelToTransfer, transferTarget, toCallerID, autoAnswer, timeout,
-                listener);
+        new BlindTransferActivityImpl(call, channelToTransfer, transferTarget, toCallerID, autoAnswer, timeout, listener);
 
     }
 
@@ -174,7 +173,7 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
     }
 
     @Override
-    public SplitActivity split(final Call callToSplit) throws PBXException
+    public void split(final Call callToSplit) throws PBXException
     {
         final CompletionAdaptor<SplitActivity> completion = new CompletionAdaptor<>();
 
@@ -182,7 +181,6 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
 
         completion.waitForCompletion(10, TimeUnit.SECONDS);
 
-        return split;
     }
 
     @Override
@@ -218,13 +216,11 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
      * channels. Each call must only have one active channel
      */
     @Override
-    public JoinActivity join(Call lhs, OperandChannel originatingOperand, Call rhs, OperandChannel acceptingOperand,
+    public void join(Call lhs, OperandChannel originatingOperand, Call rhs, OperandChannel acceptingOperand,
             CallDirection direction, ActivityCallback<JoinActivity> listener)
     {
-        final JoinActivityImpl join = new JoinActivityImpl(lhs, originatingOperand, rhs, acceptingOperand, direction,
-                listener);
+        new JoinActivityImpl(lhs, originatingOperand, rhs, acceptingOperand, direction, listener);
 
-        return join;
     }
 
     @Override
@@ -248,7 +244,7 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
     {
         final CompletionAdaptor<DialActivity> completion = new CompletionAdaptor<>();
 
-        final DialActivityImpl dialer = new DialActivityImpl(trunk, from, to, toCallerID, false, completion, null);
+        final DialActivityImpl dialer = new DialActivityImpl(from, to, toCallerID, false, completion, null);
 
         completion.waitForCompletion(3, TimeUnit.MINUTES);
 
@@ -264,16 +260,16 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
     public DialActivity dial(final Trunk trunk, final EndPoint from, final CallerID fromCallerID, final EndPoint to,
             final CallerID toCallerID, final ActivityCallback<DialActivity> callback, Map<String, String> channelVarsToSet)
     {
-        final DialActivityImpl dialer = new DialActivityImpl(trunk, from, to, toCallerID, false, callback, channelVarsToSet);
+        final DialActivityImpl dialer = new DialActivityImpl(from, to, toCallerID, false, callback, channelVarsToSet);
         return dialer;
     }
 
     @Override
-    public DialActivity dial(final Trunk trunk, final EndPoint from, final CallerID fromCallerID, final EndPoint to,
-            final CallerID toCallerID, final ActivityCallback<DialActivity> callback)
+    public void dial(final EndPoint from, final CallerID fromCallerID, final EndPoint to, final CallerID toCallerID,
+            final ActivityCallback<DialActivity> callback)
     {
-        final DialActivityImpl dialer = new DialActivityImpl(trunk, from, to, toCallerID, false, callback, null);
-        return dialer;
+        new DialActivityImpl(from, to, toCallerID, false, callback, null);
+
     }
 
     @Override
@@ -349,10 +345,10 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
     }
 
     @Override
-    public ParkActivity park(final Call call, final Channel parkChannel, final ActivityCallback<ParkActivity> callback)
+    public void park(final Call call, final Channel parkChannel, final ActivityCallback<ParkActivity> callback)
     {
-        final ParkActivity activity = new ParkActivityImpl(call, parkChannel, callback);
-        return activity;
+        new ParkActivityImpl(call, parkChannel, callback);
+
     }
 
     @Override
@@ -443,7 +439,7 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
      * have a tech specified then the defaultTech is used.
      */
     @Override
-    public EndPoint buildEndPoint(final String endPointName, final TechType defaultTech)
+    public EndPoint buildEndPoint(final TechType defaultTech, final String endPointName)
     {
         EndPoint endPoint = null;
         try
@@ -451,13 +447,20 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
             if (endPointName == null || endPointName.trim().length() == 0)
                 endPoint = new EndPointImpl();
             else
-                endPoint = new EndPointImpl(endPointName, defaultTech);
+                endPoint = new EndPointImpl(defaultTech, endPointName);
         }
         catch (final IllegalArgumentException e)
         {
             logger.error(e, e);
         }
         return endPoint;
+
+    }
+
+    @Override
+    public EndPoint buildEndPoint(final TechType defaultTech, final Trunk trunk, final String endPointName)
+    {
+        return new EndPointImpl(defaultTech, trunk, endPointName);
 
     }
 
@@ -901,9 +904,23 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
         String answer = line.get(0);
         String tmp = "Extension '" + extNumber + "," + priority + ",";
         if (answer.substring(0, tmp.length()).compareToIgnoreCase(tmp) == 0)
-            return "OK"; //$NON-NLS-1$
+            return "OK";
 
         throw new Exception("InitiateAction.AddExtentionFailed" + ext);
+    }
+
+    @Override
+    public Trunk buildTrunk(final String trunk)
+    {
+        return new Trunk()
+        {
+
+            @Override
+            public String getTrunkAsString()
+            {
+                return trunk;
+            }
+        };
     }
 
 }

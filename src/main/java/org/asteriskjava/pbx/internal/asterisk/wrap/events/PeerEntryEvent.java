@@ -20,7 +20,7 @@ public class PeerEntryEvent extends ResponseEvent
 		super(event);
 
 		PBX pbx = PBXFactory.getActivePBX();
-		this.peer = pbx.buildEndPoint(event.getObjectName(), TechType.valueOf(event.getChannelType()));
+		this.peer = pbx.buildEndPoint(TechType.valueOf(event.getChannelType()), event.getObjectName());
 	}
 
 	public EndPoint getPeer()

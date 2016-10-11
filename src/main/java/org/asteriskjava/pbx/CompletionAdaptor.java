@@ -23,7 +23,10 @@ public class CompletionAdaptor<T extends Activity> implements ActivityCallback<T
     @Override
     public void progress(final T activity, ActivityStatusEnum status, String message)
     {
-        _latch.countDown();
+        if (status == ActivityStatusEnum.FAILURE || status == ActivityStatusEnum.SUCCESS)
+        {
+            _latch.countDown();
+        }
     }
 
     public void waitForCompletion(long timeout, TimeUnit unit)

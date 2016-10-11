@@ -38,7 +38,7 @@ public class BlindTransfer
         PBX pbx = PBXFactory.getActivePBX();
 
         // We are going to dial from extension 100
-        EndPoint from = pbx.buildEndPoint("100", TechType.SIP);
+        EndPoint from = pbx.buildEndPoint(TechType.SIP, "100");
         // The caller ID to show on extension 100.
         CallerID fromCallerID = pbx.buildCallerID("100", "My Phone");
 
@@ -49,7 +49,7 @@ public class BlindTransfer
 
         // Start the dial and return immediately.
         // progress is provided via the ActivityCallback.
-        pbx.dial(null, from, fromCallerID, to, toCallerID, new ActivityCallback<DialActivity>()
+        pbx.dial(from, fromCallerID, to, toCallerID, new ActivityCallback<DialActivity>()
         {
 
             @Override
@@ -62,7 +62,7 @@ public class BlindTransfer
                     // Call is up
                     Call call = activity.getNewCall();
                     CallerID toCallerID = pbx.buildCallerID("101", "I'm calling you");
-                    EndPoint transferTarget = pbx.buildEndPoint("101", TechType.SIP);
+                    EndPoint transferTarget = pbx.buildEndPoint(TechType.SIP, "101");
                     pbx.blindTransfer(call, OperandChannel.REMOTE_PARTY, transferTarget, toCallerID, false, 30L,
                             new ActivityCallback<BlindTransferActivity>()
                             {

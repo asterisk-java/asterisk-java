@@ -1,5 +1,8 @@
 package org.asteriskjava.pbx.activities;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.apache.log4j.Logger;
 import org.asteriskjava.pbx.Activity;
 import org.asteriskjava.pbx.ActivityCallback;
@@ -8,11 +11,13 @@ import org.asteriskjava.pbx.Channel;
 import org.asteriskjava.pbx.PBXException;
 import org.asteriskjava.pbx.PBXFactory;
 import org.asteriskjava.pbx.internal.asterisk.wrap.actions.SetVarAction;
+import org.asteriskjava.pbx.internal.asterisk.wrap.events.ManagerEvent;
 import org.asteriskjava.pbx.internal.asterisk.wrap.response.ManagerResponse;
 import org.asteriskjava.pbx.internal.core.AsteriskPBX;
+import org.asteriskjava.pbx.internal.core.ListenerPriority;
 import org.asteriskjava.pbx.internal.managerAPI.EventListenerBaseClass;
 
-public abstract class ActivityHelper<T extends Activity> extends EventListenerBaseClass implements Runnable, Activity
+public abstract class ActivityHelper<T extends Activity> implements Runnable, Activity
 {
     static private Logger logger = Logger.getLogger(ActivityHelper.class);
 
@@ -37,9 +42,50 @@ public abstract class ActivityHelper<T extends Activity> extends EventListenerBa
 
     public ActivityHelper(final String activityName, final ActivityCallback<T> callback)
     {
-        super(activityName);
+
         this.callback = callback;
         this.activityName = activityName;
+    }
+
+    private AutoCloseable getManagerListener()
+    {
+        if (!_sendEvents)
+        {
+            return new AutoCloseable()
+            {
+
+                @Override
+                public void close() throws Exception
+                {
+                    // do nothing, we never started anything
+                }
+            };
+        }
+        EventListenerBaseClass listener = new EventListenerBaseClass(activityName)
+        {
+
+            @Override
+            public Set<Class< ? extends ManagerEvent>> requiredEvents()
+            {
+                return ActivityHelper.this.requiredEvents();
+            }
+
+            @Override
+            public void onManagerEvent(ManagerEvent event)
+            {
+                ActivityHelper.this.onManagerEvent(event);
+
+            }
+
+            @Override
+            public ListenerPriority getPriority()
+            {
+                return ActivityHelper.this.getPriority();
+            }
+        };
+        listener.startListener(PBXFactory.getActivePBX());
+        return listener;
+
     }
 
     @SuppressWarnings("unchecked")
@@ -61,7 +107,7 @@ public abstract class ActivityHelper<T extends Activity> extends EventListenerBa
     @SuppressWarnings("unchecked")
     public void run()
     {
-        try (EventListenerBaseClass.AutoClose closer = new EventListenerBaseClass.AutoClose(this, this._sendEvents))
+        try (AutoCloseable closer = getManagerListener())
         {
             this._success = this.doActivity();
         }
@@ -151,5 +197,11 @@ public abstract class ActivityHelper<T extends Activity> extends EventListenerBa
         this.callback.progress(activity, ActivityStatusEnum.PROGRESS, message);
 
     }
+
+    abstract HashSet<Class< ? extends ManagerEvent>> requiredEvents();
+
+    abstract void onManagerEvent(final ManagerEvent event);
+
+    abstract public ListenerPriority getPriority();
 
 }

@@ -30,7 +30,7 @@ public class Hold
         PBX pbx = PBXFactory.getActivePBX();
 
         // We are going to dial from extension 100
-        EndPoint from = pbx.buildEndPoint("100", TechType.SIP);
+        EndPoint from = pbx.buildEndPoint(TechType.SIP, "100");
         // The caller ID to show on extension 100.
         CallerID fromCallerID = pbx.buildCallerID("100", "My Phone");
 
@@ -41,7 +41,7 @@ public class Hold
 
         // Start the dial and return immediately.
         // progress is provided via the ActivityCallback.
-        pbx.dial(null, from, fromCallerID, to, toCallerID, new ActivityCallback<DialActivity>()
+        pbx.dial(from, fromCallerID, to, toCallerID, new ActivityCallback<DialActivity>()
         {
 
             @Override
