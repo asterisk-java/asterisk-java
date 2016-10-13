@@ -14,7 +14,6 @@ import org.asteriskjava.pbx.PBXFactory;
 import org.asteriskjava.pbx.internal.agi.AgiChannelActivityAction;
 import org.asteriskjava.pbx.internal.asterisk.AsteriskSettings;
 import org.asteriskjava.pbx.internal.asterisk.InvalidChannelName;
-import org.asteriskjava.pbx.internal.asterisk.PBXSettingsManager;
 
 /**
  * TODO set the channel unique id when registering against an existing channel
@@ -793,7 +792,7 @@ public class ChannelImpl implements Channel
     {
         boolean canDetectHangup = true;
 
-        AsteriskSettings profile = PBXSettingsManager.getActiveProfile();
+        AsteriskSettings profile = PBXFactory.getActiveProfile();
         final boolean detect = profile.getCanDetectHangup();
         if (!this.getEndPoint().isSIP() && !detect)
         {

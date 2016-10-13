@@ -1,8 +1,10 @@
 package org.asteriskjava.pbx.activities;
 
 import org.asteriskjava.pbx.Activity;
+import org.asteriskjava.pbx.Channel;
 
 public interface HoldActivity extends Activity
 {
-	// TODO
+	// Returns the Channel that is on hold
+	public Channel getChannel();
 }

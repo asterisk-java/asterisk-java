@@ -43,6 +43,10 @@ public interface DialActivity extends Activity
 	 */
 	void markCancelled();
 
+	/**
+	 * Returns true if markCancelled was called during the dial attempt.
+	 * @return
+	 */
 	boolean cancelledByOperator();
 
 	Call getNewCall();

@@ -6,8 +6,8 @@ import java.util.Map;
 import org.asteriskjava.pbx.CallerID;
 import org.asteriskjava.pbx.EndPoint;
 import org.asteriskjava.pbx.NewChannelListener;
+import org.asteriskjava.pbx.PBXFactory;
 import org.asteriskjava.pbx.internal.asterisk.AsteriskSettings;
-import org.asteriskjava.pbx.internal.asterisk.PBXSettingsManager;
 import org.asteriskjava.pbx.internal.core.ListenerPriority;
 
 public class OriginateToExtension extends OriginateBaseClass
@@ -33,7 +33,7 @@ public class OriginateToExtension extends OriginateBaseClass
          */
         OriginateBaseClass.logger.debug("originate connecting localHandset " + localHandset + " to Extension " //$NON-NLS-1$ //$NON-NLS-2$
                 + targetExtension + " autoAnswer " + autoAnswer); //$NON-NLS-1$
-        final AsteriskSettings profile = PBXSettingsManager.getActiveProfile();
+        final AsteriskSettings profile = PBXFactory.getActiveProfile();
 
         final HashMap<String, String> myVars = new HashMap<>(1);
         if (autoAnswer == true)
@@ -53,7 +53,7 @@ public class OriginateToExtension extends OriginateBaseClass
          */
         OriginateBaseClass.logger.debug("originate connection localHandset " + localHandset + " to Extension " //$NON-NLS-1$ //$NON-NLS-2$
                 + targetExtension + " autoAnswer " + autoAnswer); //$NON-NLS-1$
-        final AsteriskSettings profile = PBXSettingsManager.getActiveProfile();
+        final AsteriskSettings profile = PBXFactory.getActiveProfile();
 
         final HashMap<String, String> myVars = new HashMap<>(1);
         if (autoAnswer == true)

@@ -46,7 +46,7 @@ public class OriginateResponseEvent extends ResponseEvent implements ChannelEven
 		}
 		else
 		{
-			this.endPoint = pbx.buildEndPoint(event.getChannel(), TechType.SIP);
+			this.endPoint = pbx.buildEndPoint(TechType.SIP, event.getChannel());
 			this.channel = null;
 		}
 

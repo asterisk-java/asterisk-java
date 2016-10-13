@@ -46,8 +46,9 @@ public interface PBX
      *            the transfer.
      * @param autoAnswer - if true then the transferTarget is to be sent an auto
      *            answer header
-     * @param timeout - timeout for the blind transfer attempt. When the timeout
-     *            is reached the Blind Transfer will be cancelled.
+     * @param timeout - timeout (in seconds) for the blind transfer attempt.
+     *            When the timeout is reached the Blind Transfer will be
+     *            cancelled.
      * @param ActivityCallback
      */
     BlindTransferActivity blindTransfer(final Call call, OperandChannel channelToTransfer, final EndPoint transferTarget,
@@ -71,8 +72,8 @@ public interface PBX
      * @param timeout - timeout for the blind transfer attempt. When the timeout
      *            is reached the Blind Transfer will be cancelled.
      */
-    BlindTransferActivity blindTransfer(Call call, OperandChannel channelToTransfer, final EndPoint transferTarget,
-            final CallerID toCallerID, boolean autoAnswer, long timeout, ActivityCallback<BlindTransferActivity> callback);
+    void blindTransfer(Call call, OperandChannel channelToTransfer, final EndPoint transferTarget, final CallerID toCallerID,
+            boolean autoAnswer, long timeout, ActivityCallback<BlindTransferActivity> callback);
 
     /**
      * Sends a DTMF tone to given channel. Not returning until the tone has been
@@ -108,11 +109,9 @@ public interface PBX
      * until the call has been dialled. The dial will return as soon as the
      * trunk comes up, it does not wait for remote end to answer.
      * 
-     * @param trunk - the trunk to dial out on. If null the default trunk will
-     *            be used.
      * @return Call the call resulting from dialing the number.
      */
-    DialActivity dial(Trunk trunk, EndPoint from, CallerID fromCallerID, EndPoint to, CallerID toCallerID,
+    void dial(EndPoint from, CallerID fromCallerID, EndPoint to, CallerID toCallerID,
             ActivityCallback<DialActivity> callback);
 
     /**
@@ -177,7 +176,7 @@ public interface PBX
      * @param parkChannel - the channel which is going to be redirect to the
      *            njr-park extension.
      */
-    ParkActivity park(Call call, Channel parkChannel, ActivityCallback<ParkActivity> callback);
+    void park(Call call, Channel parkChannel, ActivityCallback<ParkActivity> callback);
 
     /**
      * Sends a DTMF tone to given channel. Not returning until the tone has been
@@ -198,47 +197,14 @@ public interface PBX
      */
     void sendDTMF(Channel channel, DTMFTone tone, ActivityCallback<Activity> callback);
 
-    //
-    // /**
-    // * Splits a call (with two channels) sending the originating channel to
-    // the
-    // * originatingTarget and other channel to the secondaryTarget.
-    // *
-    // * This call returns once the split action has completed.
-    // *
-    // * @param callToSplit
-    // * @param originatingTarget
-    // * @param secondaryTarget
-    // * @return
-    // * @throws PBXException
-    // */
-    // iSplitActivity split(iCall callToSplit, iEndPoint originatingTarget,
-    // iEndPoint secondaryTarget) throws PBXException;
-    //
-    //
-    // /**
-    // * Splits a call (with two channels) sending the originating channel to
-    // the
-    // * originatingTarget and other channel to the secondaryTarget.
-    // *
-    // * This method returns immediately with progress information passed to the
-    // * given callback. Note: the callback method will be called from a
-    // different
-    // * thread.
-    // *
-    // * @param callToSplit
-    // * @param originatingTarget
-    // * @param secondaryTarget
-    // * @return
-    // */
-    // public iSplitActivity split(final iCall callToSplit, final iEndPoint
-    // originatingTarget,
-    // final iEndPoint secondaryTarget, final iCallback<iSplitActivity>
-    // listener);
+    /**
+     * Splits a call (with two channels) This call returns once the split action
+     * has completed.
+     */
 
     public SplitActivity split(final Call callToSplit, final ActivityCallback<SplitActivity> listener) throws PBXException;
 
-    public SplitActivity split(final Call callToSplit) throws PBXException;
+    public void split(final Call callToSplit) throws PBXException;
 
     /**
      * Joins two calls not returning until the join completes. Each call must
@@ -247,7 +213,7 @@ public interface PBX
     public JoinActivity join(Call lhs, OperandChannel originatingOperand, Call rhs, OperandChannel acceptingOperand,
             CallDirection direction);
 
-    public JoinActivity join(Call lhs, OperandChannel originatingOperand, Call rhs, OperandChannel acceptingOperand,
+    public void join(Call lhs, OperandChannel originatingOperand, Call rhs, OperandChannel acceptingOperand,
             CallDirection direction, ActivityCallback<JoinActivity> listener);
 
     /**
@@ -289,7 +255,9 @@ public interface PBX
      * @param endPointName
      * @return
      */
-    EndPoint buildEndPoint(String endPointName, TechType defaultTech);
+    EndPoint buildEndPoint(TechType defaultTech, String endPointName);
+
+    EndPoint buildEndPoint(TechType tech, Trunk trunk, String endPointName);
 
     void transferToMusicOnHold(Channel channel) throws PBXException;
 
@@ -303,5 +271,6 @@ public interface PBX
 
     public boolean waitForChannelToQuiescent(Channel channel, int timeout);
 
- 
+    public Trunk buildTrunk(String string);
+
 }

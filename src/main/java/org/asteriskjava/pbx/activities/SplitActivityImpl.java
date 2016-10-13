@@ -14,7 +14,6 @@ import org.asteriskjava.pbx.PBXException;
 import org.asteriskjava.pbx.PBXFactory;
 import org.asteriskjava.pbx.internal.agi.AgiChannelActivityHold;
 import org.asteriskjava.pbx.internal.asterisk.AsteriskSettings;
-import org.asteriskjava.pbx.internal.asterisk.PBXSettingsManager;
 import org.asteriskjava.pbx.internal.asterisk.wrap.actions.RedirectAction;
 import org.asteriskjava.pbx.internal.asterisk.wrap.events.ManagerEvent;
 import org.asteriskjava.pbx.internal.core.AsteriskPBX;
@@ -23,9 +22,9 @@ import org.asteriskjava.pbx.internal.core.ListenerPriority;
 
 /**
  * The SplitActivity is used by the AsteriksPBX to split a call and place the
- * component channels into two separate destination extension. The SplitActivity
+ * component channels into the specialist Activity fastagi. The SplitActivity
  * can only split a call with two channels. The (obvious?) limitation is that we
- * can't split something a conference call as it has more than two channels.
+ * can't split something in a conference call as it has more than two channels.
  * 
  * @author bsutton
  */
@@ -44,26 +43,12 @@ public class SplitActivityImpl extends ActivityHelper<SplitActivity> implements 
     private Call _rhsCall;
 
     /**
-     * Splits a call by moving each of its two channels to different target
-     * endpoints. The split does not perform a dial so the endpoints need to
-     * dial plan extensions.
+     * Splits a call by moving each of its two channels into the Activity agi.
+     * The channels will sit in the agi (with no audio) until something is done with them.
+     * As such you should leave them split for too long.
+     * 
      * 
      * @param callToSplit The call to split
-     * @param originatingTarget The target to move the calls originating channel
-     *            to.
-     * @param secondaryTarget The target to move the calls secondary channel to
-     * @param listener
-     */
-    // public SplitActivity(final iChannel lhs, final iEndPoint
-    // originatingTarget, final iChannel rhs, final iEndPoint secondaryTarget,
-    // final iCallback<iSplitActivity> listener)
-
-    /**
-     * Splits two channels out of a call redirecting each call to a new
-     * iEndPoint. If the original call only had two channels then it will be
-     * discarded.
-     * 
-     * @param callToSplit
      * @param listener
      */
     public SplitActivityImpl(final Call callToSplit, final ActivityCallback<SplitActivity> listener)
@@ -106,17 +91,6 @@ public class SplitActivityImpl extends ActivityHelper<SplitActivity> implements 
                 this._rhsCall = ((CallImpl) this._callToSplit).split(channel2);
             }
         }
-        // else
-        // {
-        // success =
-        // splitOne(this._callToSplit.getOperandChannel(this._lhsChannel),
-        // this._lhsTarget,
-        // profile.getManagementContext());
-        // // Now update the call to reflect the split
-        // if (success)
-        // this._lhsCall = ((Call) this._callToSplit).split(this._lhsChannel);
-        //
-        // }
         return success;
     }
 
@@ -179,7 +153,7 @@ public class SplitActivityImpl extends ActivityHelper<SplitActivity> implements 
      */
     private boolean splitTwo() throws PBXException
     {
-        final AsteriskSettings profile = PBXSettingsManager.getActiveProfile();
+        final AsteriskSettings profile = PBXFactory.getActiveProfile();
         AsteriskPBX pbx = (AsteriskPBX) PBXFactory.getActivePBX();
 
         if (channel1 == channel2)

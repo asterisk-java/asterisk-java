@@ -15,7 +15,6 @@ import org.asteriskjava.pbx.EndPoint;
 import org.asteriskjava.pbx.PBXException;
 import org.asteriskjava.pbx.PBXFactory;
 import org.asteriskjava.pbx.internal.asterisk.AsteriskSettings;
-import org.asteriskjava.pbx.internal.asterisk.PBXSettingsManager;
 import org.asteriskjava.pbx.internal.asterisk.wrap.actions.RedirectAction;
 import org.asteriskjava.pbx.internal.asterisk.wrap.events.ManagerEvent;
 import org.asteriskjava.pbx.internal.asterisk.wrap.events.ParkedCallEvent;
@@ -92,7 +91,7 @@ public class ParkActivityImpl extends ActivityHelper<ParkActivity> implements Pa
 
         try
         {
-            final AsteriskSettings profile = PBXSettingsManager.getActiveProfile();
+            final AsteriskSettings profile = PBXFactory.getActiveProfile();
 
             if (!pbx.waitForChannelToQuiescent(this._parkChannel, 3000))
                 throw new PBXException("Channel: " + this._parkChannel + " cannot be parked as it is still in transition.");
@@ -173,7 +172,7 @@ public class ParkActivityImpl extends ActivityHelper<ParkActivity> implements Pa
         final ParkedCallEvent parkedEvent = (ParkedCallEvent) event;
         final AsteriskPBX pbx = (AsteriskPBX) PBXFactory.getActivePBX();
 
-        this._parkingLot = pbx.buildEndPoint(parkedEvent.getExten(), TechType.LOCAL);
+        this._parkingLot = pbx.buildEndPoint(TechType.LOCAL, parkedEvent.getExten());
         this._latch.countDown();
     }
 

@@ -78,7 +78,7 @@ public class MeetmeRoomControl extends EventListenerBaseClass implements Coheren
     {
         super("MeetmeRoomControl"); //$NON-NLS-1$
         this.roomCount = roomCount;
-        final AsteriskSettings settings = PBXSettingsManager.getActiveProfile();
+        final AsteriskSettings settings = PBXFactory.getActiveProfile();
         this.meetmeBaseAddress = settings.getMeetmeBaseAddress();
         this.rooms = new MeetmeRoom[roomCount];
         this.configure((AsteriskPBX) pbx);

@@ -12,6 +12,7 @@ import java.util.concurrent.TimeUnit;
 import org.asteriskjava.manager.TimeoutException;
 import org.asteriskjava.pbx.Activity;
 import org.asteriskjava.pbx.ActivityCallback;
+import org.asteriskjava.pbx.ActivityStatusEnum;
 import org.asteriskjava.pbx.CallerID;
 import org.asteriskjava.pbx.Channel;
 import org.asteriskjava.pbx.EndPoint;
@@ -19,7 +20,6 @@ import org.asteriskjava.pbx.PBX;
 import org.asteriskjava.pbx.PBXException;
 import org.asteriskjava.pbx.PBXFactory;
 import org.asteriskjava.pbx.internal.asterisk.AsteriskSettings;
-import org.asteriskjava.pbx.internal.asterisk.PBXSettingsManager;
 import org.asteriskjava.pbx.internal.asterisk.wrap.actions.GetVarAction;
 import org.asteriskjava.pbx.internal.asterisk.wrap.actions.OriginateAction;
 import org.asteriskjava.pbx.internal.asterisk.wrap.events.HangupEvent;
@@ -68,7 +68,7 @@ public class DialLocalToAgiActivity extends EventListenerBaseClass implements Ru
         logger.info("***********                    begin dial local to AGI                  ****************");
         logger.info("***********                         " + "                              ****************");
         logger.info("*******************************************************************************");
-        final AsteriskSettings settings = PBXSettingsManager.getActiveProfile();
+        final AsteriskSettings settings = PBXFactory.getActiveProfile();
 
         AsteriskPBX pbx = (AsteriskPBX) PBXFactory.getActivePBX();
 
@@ -95,7 +95,7 @@ public class DialLocalToAgiActivity extends EventListenerBaseClass implements Ru
         {
             pbx.sendAction(originate, 30000);
             latch.await(30, TimeUnit.SECONDS);
-            callback.completed(this, true);
+            callback.progress(this, ActivityStatusEnum.SUCCESS, ActivityStatusEnum.SUCCESS.getDefaultMessage());
 
         }
         catch (IllegalArgumentException | IllegalStateException | IOException | TimeoutException e)

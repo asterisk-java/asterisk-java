@@ -40,26 +40,25 @@ public interface Call
         LOCAL_PARTY
     }
 
-    boolean contains(Channel parkChannel);
+    // Returns true of the given channel is part of this call.
+    boolean contains(Channel channel);
 
-    // public void callIsAnswering(iEndPoint answeredBy) throws PBXException;
-
+    // The caller id of the party that accepted (answered) the call.
     CallerID getAcceptingPartyCallerID();
 
+    // The caller id of the party that dialed the call.
     CallerID getOriginatingPartyCallerID();
 
+    // The caller id of the remote party.
     CallerID getRemotePartyCallerID();
 
-    // void callDialedIn(iCallerID callerCallerID) throws PBXException;
-
-    // void transferDeclined() throws PBXException;
-
+    // The date/time the call started.
     Date getCallStartTime();
 
-    // Collection<iChannel> getChannels();
-
+    // The channel associated with the party that originated (dialed) the call.
     Channel getOriginatingParty();
 
+    // The channel associated with the part that accepted (answered) the call.
     Channel getAcceptingParty();
 
     Channel getTransferTargetParty();
@@ -90,9 +89,23 @@ public interface Call
      */
     public Channel getLocalParty();
 
+    /**
+     * Returns true of the Call can be split into two (or more) separate calls.
+     * @return
+     */
     boolean canSplit();
 
+    /**
+     * Returns the direction of the call.
+     * The call Direction can be a little esoteric as a call can
+     * come in and then be transferred out again. So is this an inbound or outbound call?
+     * @return
+     */
     CallDirection getDirection();
 
+    /**
+     * Returns a list of the Channels associated with this call.
+     * @return
+     */
     List<Channel> getChannels();
 }

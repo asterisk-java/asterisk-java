@@ -15,6 +15,7 @@ import org.asteriskjava.manager.TimeoutException;
 import org.asteriskjava.manager.event.AbstractChannelEvent;
 import org.asteriskjava.pbx.Activity;
 import org.asteriskjava.pbx.ActivityCallback;
+import org.asteriskjava.pbx.ActivityStatusEnum;
 import org.asteriskjava.pbx.Call;
 import org.asteriskjava.pbx.Call.OperandChannel;
 import org.asteriskjava.pbx.CallDirection;
@@ -51,7 +52,7 @@ import org.asteriskjava.pbx.internal.asterisk.CallerIDImpl;
 import org.asteriskjava.pbx.internal.asterisk.InvalidChannelName;
 import org.asteriskjava.pbx.internal.asterisk.MeetmeRoom;
 import org.asteriskjava.pbx.internal.asterisk.MeetmeRoomControl;
-import org.asteriskjava.pbx.internal.asterisk.PBXSettingsManager;
+import org.asteriskjava.pbx.internal.asterisk.wrap.actions.CommandAction;
 import org.asteriskjava.pbx.internal.asterisk.wrap.actions.EventGeneratingAction;
 import org.asteriskjava.pbx.internal.asterisk.wrap.actions.HangupAction;
 import org.asteriskjava.pbx.internal.asterisk.wrap.actions.ManagerAction;
@@ -59,6 +60,7 @@ import org.asteriskjava.pbx.internal.asterisk.wrap.actions.PlayDtmfAction;
 import org.asteriskjava.pbx.internal.asterisk.wrap.actions.RedirectAction;
 import org.asteriskjava.pbx.internal.asterisk.wrap.events.ManagerEvent;
 import org.asteriskjava.pbx.internal.asterisk.wrap.events.ResponseEvents;
+import org.asteriskjava.pbx.internal.asterisk.wrap.response.CommandResponse;
 import org.asteriskjava.pbx.internal.asterisk.wrap.response.ManagerResponse;
 import org.asteriskjava.pbx.internal.managerAPI.RedirectCall;
 
@@ -136,11 +138,10 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
     }
 
     @Override
-    public BlindTransferActivity blindTransfer(Call call, Call.OperandChannel channelToTransfer, EndPoint transferTarget,
-            CallerID toCallerID, boolean autoAnswer, long timeout, ActivityCallback<BlindTransferActivity> listener)
+    public void blindTransfer(Call call, Call.OperandChannel channelToTransfer, EndPoint transferTarget, CallerID toCallerID,
+            boolean autoAnswer, long timeout, ActivityCallback<BlindTransferActivity> listener)
     {
-        return new BlindTransferActivityImpl(call, channelToTransfer, transferTarget, toCallerID, autoAnswer, timeout,
-                listener);
+        new BlindTransferActivityImpl(call, channelToTransfer, transferTarget, toCallerID, autoAnswer, timeout, listener);
 
     }
 
@@ -172,7 +173,7 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
     }
 
     @Override
-    public SplitActivity split(final Call callToSplit) throws PBXException
+    public void split(final Call callToSplit) throws PBXException
     {
         final CompletionAdaptor<SplitActivity> completion = new CompletionAdaptor<>();
 
@@ -180,7 +181,6 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
 
         completion.waitForCompletion(10, TimeUnit.SECONDS);
 
-        return split;
     }
 
     @Override
@@ -190,33 +190,6 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
         return new SplitActivityImpl(callToSplit, listener);
     }
 
-    // private SplitActivity _split(final iCall callToSplit, final iEndPoint
-    // remotePartyTarget,
-    // final iEndPoint locaPartyTarget, final iCallback<iSplitActivity>
-    // listener)
-    // {
-    // if (!callToSplit.canSplit())
-    // throw new IllegalStateException("The call must have exactly two channels
-    // to be split."); //$NON-NLS-1$
-    //
-    // iChannel remote = callToSplit.getRemoteParty();
-    // iChannel local = callToSplit.getLocalParty();
-    //
-    // final SplitActivity split = new SplitActivity(remote, remotePartyTarget,
-    // local, locaPartyTarget, listener);
-    // return split;
-    // }
-    //
-    // private SplitActivity _split(final iChannel lhs, final iEndPoint
-    // lhsTarget,
-    // final iChannel rhs, final iEndPoint rhsTarget, final
-    // iCallback<iSplitActivity> listener)
-    // {
-    // final SplitActivity split = new SplitActivity(lhs, lhsTarget, rhs,
-    // rhsTarget, listener);
-    // return split;
-    // }
-    //
     /**
      * Joins two calls not returning until the join completes. The join will
      * complete almost immediately as it is a simple bridging of two active
@@ -243,13 +216,11 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
      * channels. Each call must only have one active channel
      */
     @Override
-    public JoinActivity join(Call lhs, OperandChannel originatingOperand, Call rhs, OperandChannel acceptingOperand,
+    public void join(Call lhs, OperandChannel originatingOperand, Call rhs, OperandChannel acceptingOperand,
             CallDirection direction, ActivityCallback<JoinActivity> listener)
     {
-        final JoinActivityImpl join = new JoinActivityImpl(lhs, originatingOperand, rhs, acceptingOperand, direction,
-                listener);
+        new JoinActivityImpl(lhs, originatingOperand, rhs, acceptingOperand, direction, listener);
 
-        return join;
     }
 
     @Override
@@ -273,7 +244,7 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
     {
         final CompletionAdaptor<DialActivity> completion = new CompletionAdaptor<>();
 
-        final DialActivityImpl dialer = new DialActivityImpl(trunk, from, to, toCallerID, false, completion, null);
+        final DialActivityImpl dialer = new DialActivityImpl(from, to, toCallerID, false, completion, null);
 
         completion.waitForCompletion(3, TimeUnit.MINUTES);
 
@@ -289,16 +260,16 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
     public DialActivity dial(final Trunk trunk, final EndPoint from, final CallerID fromCallerID, final EndPoint to,
             final CallerID toCallerID, final ActivityCallback<DialActivity> callback, Map<String, String> channelVarsToSet)
     {
-        final DialActivityImpl dialer = new DialActivityImpl(trunk, from, to, toCallerID, false, callback, channelVarsToSet);
+        final DialActivityImpl dialer = new DialActivityImpl(from, to, toCallerID, false, callback, channelVarsToSet);
         return dialer;
     }
 
     @Override
-    public DialActivity dial(final Trunk trunk, final EndPoint from, final CallerID fromCallerID, final EndPoint to,
-            final CallerID toCallerID, final ActivityCallback<DialActivity> callback)
+    public void dial(final EndPoint from, final CallerID fromCallerID, final EndPoint to, final CallerID toCallerID,
+            final ActivityCallback<DialActivity> callback)
     {
-        final DialActivityImpl dialer = new DialActivityImpl(trunk, from, to, toCallerID, false, callback, null);
-        return dialer;
+        new DialActivityImpl(from, to, toCallerID, false, callback, null);
+
     }
 
     @Override
@@ -374,10 +345,10 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
     }
 
     @Override
-    public ParkActivity park(final Call call, final Channel parkChannel, final ActivityCallback<ParkActivity> callback)
+    public void park(final Call call, final Channel parkChannel, final ActivityCallback<ParkActivity> callback)
     {
-        final ParkActivity activity = new ParkActivityImpl(call, parkChannel, callback);
-        return activity;
+        new ParkActivityImpl(call, parkChannel, callback);
+
     }
 
     @Override
@@ -413,7 +384,7 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
 
     public String getManagementContext()
     {
-        final AsteriskSettings settings = PBXSettingsManager.getActiveProfile();
+        final AsteriskSettings settings = PBXFactory.getActiveProfile();
         return settings.getManagementContext();
     }
 
@@ -431,14 +402,14 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
 
     public DialPlanExtension getExtensionPark()
     {
-        final AsteriskSettings settings = PBXSettingsManager.getActiveProfile();
+        final AsteriskSettings settings = PBXFactory.getActiveProfile();
         return this.buildDialPlanExtension(settings.getExtensionPark());
     }
 
     @Override
     public EndPoint getExtensionAgi()
     {
-        final AsteriskSettings settings = PBXSettingsManager.getActiveProfile();
+        final AsteriskSettings settings = PBXFactory.getActiveProfile();
         return this.buildDialPlanExtension(settings.getAgiExtension());
     }
 
@@ -468,7 +439,7 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
      * have a tech specified then the defaultTech is used.
      */
     @Override
-    public EndPoint buildEndPoint(final String endPointName, final TechType defaultTech)
+    public EndPoint buildEndPoint(final TechType defaultTech, final String endPointName)
     {
         EndPoint endPoint = null;
         try
@@ -476,13 +447,20 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
             if (endPointName == null || endPointName.trim().length() == 0)
                 endPoint = new EndPointImpl();
             else
-                endPoint = new EndPointImpl(endPointName, defaultTech);
+                endPoint = new EndPointImpl(defaultTech, endPointName);
         }
         catch (final IllegalArgumentException e)
         {
             logger.error(e, e);
         }
         return endPoint;
+
+    }
+
+    @Override
+    public EndPoint buildEndPoint(final TechType defaultTech, final Trunk trunk, final String endPointName)
+    {
+        return new EndPointImpl(defaultTech, trunk, endPointName);
 
     }
 
@@ -781,7 +759,7 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
         boolean isInAgi = channel.isInAgi();
         if (!isInAgi)
         {
-            final AsteriskSettings profile = PBXSettingsManager.getActiveProfile();
+            final AsteriskSettings profile = PBXFactory.getActiveProfile();
 
             channel.setCurrentActivityAction(new AgiChannelActivityHold());
             final RedirectAction redirect = new RedirectAction(channel, profile.getManagementContext(), getExtensionAgi(),
@@ -859,9 +837,90 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
         final DialToAgiActivityImpl dialer = new DialToAgiActivityImpl(endPoint, callerID, false, completion, null, action);
 
         completion.waitForCompletion(3, TimeUnit.MINUTES);
-        iCallback.completed(dialer, dialer.isSuccess());
+
+        final ActivityStatusEnum status;
+
+        if (dialer.isSuccess())
+        {
+            status = ActivityStatusEnum.SUCCESS;
+        }
+        else
+        {
+            status = ActivityStatusEnum.FAILURE;
+        }
+
+        iCallback.progress(dialer, status, status.getDefaultMessage());
 
         return dialer;
+    }
+
+    /**
+     * Creates the set of extensions required to test NJR during the
+     * installation. The context must already exist in the dialplan.
+     * 
+     * @param profile
+     * @param dialContext
+     * @return
+     * @throws IllegalStateException
+     * @throws IOException
+     * @throws AuthenticationFailedException
+     * @throws TimeoutException
+     */
+    public String createAgiEntryPoint() throws IOException, AuthenticationFailedException, TimeoutException
+    {
+
+        try
+        {
+
+            AsteriskPBX pbx = (AsteriskPBX) PBXFactory.getActivePBX();
+
+            AsteriskSettings profile = PBXFactory.getActiveProfile();
+
+            String agi = profile.getAgiExtension();
+            pbx.addAsteriskExtension(agi, 1, "AGI(agi://127.0.0.1/activityAgi), into " + profile.getManagementContext());
+            pbx.addAsteriskExtension(agi, 2, "wait(0.5), into " + profile.getManagementContext());
+            pbx.addAsteriskExtension(agi, 3, "goto(" + agi + ",1), into " + profile.getManagementContext());
+
+        }
+        catch (Exception e)
+        {
+            logger.error(e);
+
+            return e.getLocalizedMessage();
+        }
+        return null;
+
+    }
+
+    public String addAsteriskExtension(String extNumber, int priority, String command) throws Exception
+
+    {
+        String ext = "dialplan add extension " + extNumber + "," + priority + "," + command;
+
+        CommandAction action = new CommandAction(ext);
+        CommandResponse response = (CommandResponse) sendAction(action, 30000);
+
+        List<String> line = response.getResult();
+        String answer = line.get(0);
+        String tmp = "Extension '" + extNumber + "," + priority + ",";
+        if (answer.substring(0, tmp.length()).compareToIgnoreCase(tmp) == 0)
+            return "OK";
+
+        throw new Exception("InitiateAction.AddExtentionFailed" + ext);
+    }
+
+    @Override
+    public Trunk buildTrunk(final String trunk)
+    {
+        return new Trunk()
+        {
+
+            @Override
+            public String getTrunkAsString()
+            {
+                return trunk;
+            }
+        };
     }
 
 }

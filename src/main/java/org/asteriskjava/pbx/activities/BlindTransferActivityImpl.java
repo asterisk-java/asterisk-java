@@ -16,7 +16,6 @@ import org.asteriskjava.pbx.EndPoint;
 import org.asteriskjava.pbx.PBXException;
 import org.asteriskjava.pbx.PBXFactory;
 import org.asteriskjava.pbx.internal.agi.AgiChannelActivityBlindTransfer;
-import org.asteriskjava.pbx.internal.asterisk.PBXSettingsManager;
 import org.asteriskjava.pbx.internal.asterisk.wrap.events.BridgeEvent;
 import org.asteriskjava.pbx.internal.asterisk.wrap.events.DialEvent;
 import org.asteriskjava.pbx.internal.asterisk.wrap.events.HangupEvent;
@@ -148,7 +147,7 @@ public class BlindTransferActivityImpl extends ActivityHelper<BlindTransferActiv
             String sipHeader = null;
             if (this._autoAnswer)
             {
-                sipHeader = PBXSettingsManager.getActiveProfile().getAutoAnswer();
+                sipHeader = PBXFactory.getActiveProfile().getAutoAnswer();
             }
             actualChannelToTransfer.setCurrentActivityAction(
                     new AgiChannelActivityBlindTransfer(this._transferTarget.getFullyQualifiedName(), sipHeader));
