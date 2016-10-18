@@ -239,7 +239,7 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
     }
 
     @Override
-    public DialActivity dial(final Trunk trunk, final EndPoint from, final CallerID fromCallerID, final EndPoint to,
+    public DialActivity dial(final EndPoint from, final CallerID fromCallerID, final EndPoint to,
             final CallerID toCallerID)
     {
         final CompletionAdaptor<DialActivity> completion = new CompletionAdaptor<>();
@@ -257,7 +257,7 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
         return new DialLocalToAgiActivity(from, fromCallerID, callback, channelVarsToSet);
     }
 
-    public DialActivity dial(final Trunk trunk, final EndPoint from, final CallerID fromCallerID, final EndPoint to,
+    public DialActivity dial(final EndPoint from, final CallerID fromCallerID, final EndPoint to,
             final CallerID toCallerID, final ActivityCallback<DialActivity> callback, Map<String, String> channelVarsToSet)
     {
         final DialActivityImpl dialer = new DialActivityImpl(from, to, toCallerID, false, callback, channelVarsToSet);

@@ -98,11 +98,9 @@ public interface PBX
      * until the call has been dialled. The dial will return as soon as the
      * trunk comes up, it does not wait for remote end to answer.
      * 
-     * @param trunk - the trunk to dial out on. If null the default trunk will
-     *            be used.
      * @return Call - the call resulting from dialing the number.
      */
-    DialActivity dial(Trunk trunk, EndPoint from, CallerID fromCallerID, EndPoint to, CallerID toCallerID);
+    DialActivity dial(EndPoint from, CallerID fromCallerID, EndPoint to, CallerID toCallerID);
 
     /**
      * Dials the given phone number using the specified trunk. Not returning

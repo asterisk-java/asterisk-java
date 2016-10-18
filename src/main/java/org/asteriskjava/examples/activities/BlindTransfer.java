@@ -12,6 +12,7 @@ import org.asteriskjava.pbx.CallerID;
 import org.asteriskjava.pbx.EndPoint;
 import org.asteriskjava.pbx.PBX;
 import org.asteriskjava.pbx.PBXFactory;
+import org.asteriskjava.pbx.Trunk;
 import org.asteriskjava.pbx.activities.BlindTransferActivity;
 import org.asteriskjava.pbx.activities.DialActivity;
 import org.asteriskjava.pbx.internal.core.AsteriskPBX;
@@ -47,6 +48,11 @@ public class BlindTransfer
     static private void blindTransfer()
     {
         PBX pbx = PBXFactory.getActivePBX();
+        
+        // The trunk MUST match the section header (e.g. [default]) that appears
+        // in your /etc/asterisk/sip.d file (assuming you are using a SIP trunk).
+        // The trunk is used to select which SIP trunk to dial through.
+        Trunk trunk = pbx.buildTrunk("default");
 
         // We are going to dial from extension 100
         EndPoint from = pbx.buildEndPoint(TechType.SIP, "100");
@@ -56,7 +62,7 @@ public class BlindTransfer
         // The caller ID to display on the called parties phone
         CallerID toCallerID = pbx.buildCallerID("83208100", "Asterisk Java is calling");
         // The party we are going to call.
-        EndPoint to = pbx.buildEndPoint("SIP/default/5551234");
+        EndPoint to = pbx.buildEndPoint(TechType.SIP, trunk, "5551234");
 
         // Start the dial and return immediately.
         // progress is provided via the ActivityCallback.
