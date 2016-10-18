@@ -53,10 +53,12 @@ public class Dial
             DialActivity dial = pbx.dial(from, fromCallerID, to, toCallerID);
 
             Call call = dial.getNewCall();
+            
+            Thread.sleep(20000);
 
-            pbx.hangup(call.getOriginatingParty());
+            pbx.hangup(call);
         }
-        catch (PBXException e)
+        catch (PBXException | InterruptedException e)
         {
             System.out.println(e);
         }

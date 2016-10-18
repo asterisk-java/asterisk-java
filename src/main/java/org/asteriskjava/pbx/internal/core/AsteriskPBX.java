@@ -272,6 +272,15 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
 
     }
 
+    /**
+     * Convenience method to hangup the call without having to extract the
+     * channel yourself.
+     */
+	public void hangup(Call call) throws PBXException
+	{
+		this.hangup(call.getOriginatingParty());
+	}
+
     @Override
     public void hangup(final Channel channel) throws PBXException
     {

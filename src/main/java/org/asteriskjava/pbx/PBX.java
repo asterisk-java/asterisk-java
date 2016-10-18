@@ -131,6 +131,12 @@ public interface PBX
     void hangup(Channel channel, ActivityCallback<Activity> callback);
 
     /**
+     * Hangup the given call, not returning until the call is hungup.
+     * @param call
+     */
+	public void hangup(Call call) throws PBXException;
+
+    /**
      * Put the given channel on hold.
      * 
      * @param channel
@@ -270,5 +276,6 @@ public interface PBX
     public boolean waitForChannelToQuiescent(Channel channel, int timeout);
 
     public Trunk buildTrunk(String string);
+
 
 }
