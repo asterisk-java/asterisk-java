@@ -27,9 +27,20 @@ public class BlindTransfer
 
     static public void main(String[] args) throws IOException, AuthenticationFailedException, TimeoutException
     {
+    	/**
+    	 * Initialise the PBX Factory. You need to implement your own AsteriskSettings class.
+    	 */
         PBXFactory.init(new ExamplesAsteriskSettings());
+        
+        /**
+         * Activities utilise an agi entry point in your dial plan.
+         * You can create your own entry point in dialplan or have
+         * asterisk-java add it automatically
+         */
         AsteriskPBX asteriskPbx = (AsteriskPBX) PBXFactory.getActivePBX();
         asteriskPbx.createAgiEntryPoint();
+        
+        // We are all configured lets try and do a blind transfer.
         blindTransfer();
     }
 
