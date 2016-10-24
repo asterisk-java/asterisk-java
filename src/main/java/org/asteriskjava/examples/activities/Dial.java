@@ -8,6 +8,7 @@ import org.asteriskjava.pbx.EndPoint;
 import org.asteriskjava.pbx.PBX;
 import org.asteriskjava.pbx.PBXException;
 import org.asteriskjava.pbx.PBXFactory;
+import org.asteriskjava.pbx.Trunk;
 import org.asteriskjava.pbx.activities.DialActivity;
 import org.asteriskjava.pbx.internal.core.TechType;
 
@@ -31,6 +32,11 @@ public class Dial
         {
             PBX pbx = PBXFactory.getActivePBX();
 
+            // The trunk MUST match the section header (e.g. [default]) that appears
+            // in your /etc/asterisk/sip.d file (assuming you are using a SIP trunk).
+            // The trunk is used to select which SIP trunk to dial through.
+            Trunk trunk = pbx.buildTrunk("default");
+
             // We are going to dial from extension 100
             EndPoint from = pbx.buildEndPoint(TechType.SIP, "100");
             // The caller ID to show on extension 100.
@@ -39,18 +45,20 @@ public class Dial
             // The caller ID to display on the called parties phone
             CallerID toCallerID = pbx.buildCallerID("83208100", "Asterisk Java is calling");
             // The party we are going to call.
-            EndPoint to = pbx.buildEndPoint("SIP/default/5551234");
+            EndPoint to = pbx.buildEndPoint(TechType.SIP, trunk, "5551234");
 
             // Trunk is currently ignored so set to null
             // The call is dialed and only returns when the call comes up (it
             // doesn't wait for the remote end to answer).
-            DialActivity dial = pbx.dial(null, from, fromCallerID, to, toCallerID);
+            DialActivity dial = pbx.dial(from, fromCallerID, to, toCallerID);
 
             Call call = dial.getNewCall();
+            
+            Thread.sleep(20000);
 
-            pbx.hangup(call.getOriginatingParty());
+            pbx.hangup(call);
         }
-        catch (PBXException e)
+        catch (PBXException | InterruptedException e)
         {
             System.out.println(e);
         }

@@ -4,9 +4,10 @@ import org.apache.log4j.Logger;
 import org.asteriskjava.pbx.EndPoint;
 
 /**
- * Represents an asterisk dial plan extension such eg.
+ * Represents an asterisk dial plan extension such as:
  * 
- * [njr-operator] njr-inbound,1,xxxxx
+ * [njr-operator] 
+ * njr-inbound,1,xxxxx
  * 
  * In the above example njr-inbound is the dialplan extension.
  * 

@@ -239,7 +239,7 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
     }
 
     @Override
-    public DialActivity dial(final Trunk trunk, final EndPoint from, final CallerID fromCallerID, final EndPoint to,
+    public DialActivity dial(final EndPoint from, final CallerID fromCallerID, final EndPoint to,
             final CallerID toCallerID)
     {
         final CompletionAdaptor<DialActivity> completion = new CompletionAdaptor<>();
@@ -257,7 +257,7 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
         return new DialLocalToAgiActivity(from, fromCallerID, callback, channelVarsToSet);
     }
 
-    public DialActivity dial(final Trunk trunk, final EndPoint from, final CallerID fromCallerID, final EndPoint to,
+    public DialActivity dial(final EndPoint from, final CallerID fromCallerID, final EndPoint to,
             final CallerID toCallerID, final ActivityCallback<DialActivity> callback, Map<String, String> channelVarsToSet)
     {
         final DialActivityImpl dialer = new DialActivityImpl(from, to, toCallerID, false, callback, channelVarsToSet);
@@ -271,6 +271,15 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
         new DialActivityImpl(from, to, toCallerID, false, callback, null);
 
     }
+
+    /**
+     * Convenience method to hangup the call without having to extract the
+     * channel yourself.
+     */
+	public void hangup(Call call) throws PBXException
+	{
+		this.hangup(call.getOriginatingParty());
+	}
 
     @Override
     public void hangup(final Channel channel) throws PBXException
