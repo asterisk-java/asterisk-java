@@ -79,6 +79,10 @@ public class DialToAgi extends EventListenerBaseClass
                 }
 
             }
+            else
+            {
+                logger.error("Originate failed: " + trcResult.getAbortReason());
+            }
             logger.info("Hangup status is " + hangupDetected);
 
             return this.result;

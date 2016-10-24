@@ -40,7 +40,7 @@ public abstract class OriginateBaseClass extends EventListenerBaseClass
 
     private volatile String originateID;
 
-    private boolean originateSuccess;
+    volatile private boolean originateSuccess;
 
     private final Channel monitorChannel1;
 
