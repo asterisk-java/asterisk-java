@@ -9,24 +9,24 @@ import org.asteriskjava.pbx.internal.core.ChannelImpl;
 
 public class UnparkedCallEvent extends AbstractParkedCallEvent
 {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@SuppressWarnings("unused")
-	private static final Logger logger = Logger.getLogger(UnparkedCallEvent.class);
+    @SuppressWarnings("unused")
+    private static final Logger logger = Logger.getLogger(UnparkedCallEvent.class);
 
-	private final Channel fromChannel;
+    private final Channel fromChannel;
 
-	public UnparkedCallEvent(final org.asteriskjava.manager.event.UnparkedCallEvent event) throws InvalidChannelName
-	{
-		super(event);
-		final AsteriskPBX pbx = (AsteriskPBX) PBXFactory.getActivePBX();
+    public UnparkedCallEvent(final org.asteriskjava.manager.event.UnparkedCallEvent event) throws InvalidChannelName
+    {
+        super(event);
+        final AsteriskPBX pbx = (AsteriskPBX) PBXFactory.getActivePBX();
 
-		this.fromChannel = pbx.registerChannel(event.getParkerDialString(), ChannelImpl.UNKNOWN_UNIQUE_ID);
-	}
+        this.fromChannel = pbx.internalRegisterChannel(event.getParkerDialString(), ChannelImpl.UNKNOWN_UNIQUE_ID);
+    }
 
-	public Channel getFromChannel()
-	{
-		return this.fromChannel;
-	}
+    public Channel getFromChannel()
+    {
+        return this.fromChannel;
+    }
 
 }

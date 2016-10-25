@@ -17,17 +17,21 @@ import org.asteriskjava.pbx.internal.asterisk.InvalidChannelName;
 
 /**
  * TODO set the channel unique id when registering against an existing channel
- * which doesn't have its unique id set. Create a single asterisk event source.
- * All users of MyBaseEventCalls will become listeners to this class rather than
- * talking to asterisk directly. Each listener will have events queued to it. It
- * can process these events in a separate thread. Key feature is that one a
- * 'rename' event arrives we must pause all of the queues wait for them to empty
- * and for the queue clients to quiescent, then apply the rename before resuming
- * pushing data in to the queues. Additionally we need to redo the asterisk
- * events classes with our own classes that pass around an iChannel rather than
- * a raw channel name. By doing this the rename affectively becomes global
- * updating every instance of the channel (because they actually only have an
- * instance handle).
+ * which doesn't have its unique id set. <br>
+ * <br>
+ * Create a single asterisk event source. All users of MyBaseEventCalls will
+ * become listeners to this class rather than talking to asterisk directly. Each
+ * listener will have events queued to it. It can process these events in a
+ * separate thread. <br>
+ * <br>
+ * Key feature is that one a 'rename' event arrives we must pause all of the
+ * queues wait for them to empty and for the queue clients to quiescent, then
+ * apply the rename before resuming pushing data in to the queues. <br>
+ * <br>
+ * Additionally we need to redo the asterisk events classes with our own classes
+ * that pass around an iChannel rather than a raw channel name. By doing this
+ * the rename affectively becomes global updating every instance of the channel
+ * (because they actually only have an instance handle).
  * 
  * @author bsutton
  */
@@ -222,6 +226,7 @@ public class ChannelImpl implements Channel
 
     private void setChannelName(final String channelName) throws InvalidChannelName
     {
+        logger.info("Renamed channel from " + this._channelName + " to " + channelName);
         this._channelName = this.cleanChannelName(channelName);
         this.validateChannelName(this._channelName);
 

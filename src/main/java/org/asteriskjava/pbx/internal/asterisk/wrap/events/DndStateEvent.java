@@ -9,37 +9,37 @@ import org.asteriskjava.pbx.internal.core.ChannelImpl;
 
 public class DndStateEvent extends ManagerEvent implements ChannelEvent
 {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@SuppressWarnings("unused")
-	private static final Logger logger = Logger.getLogger(DndStateEvent.class);
+    @SuppressWarnings("unused")
+    private static final Logger logger = Logger.getLogger(DndStateEvent.class);
 
-	/**
-	 * The name of the channel.
-	 */
-	private final Channel channel;
+    /**
+     * The name of the channel.
+     */
+    private final Channel channel;
 
-	/**
-	 * The DND state of the channel.
-	 */
-	private final Boolean state;
+    /**
+     * The DND state of the channel.
+     */
+    private final Boolean state;
 
-	public DndStateEvent(final org.asteriskjava.manager.event.DndStateEvent event) throws InvalidChannelName
-	{
-		super(event);
-		final AsteriskPBX pbx = (AsteriskPBX) PBXFactory.getActivePBX();
-		this.channel = pbx.registerChannel(event.getChannel(), ChannelImpl.UNKNOWN_UNIQUE_ID);
-		this.state = event.getState();
-	}
+    public DndStateEvent(final org.asteriskjava.manager.event.DndStateEvent event) throws InvalidChannelName
+    {
+        super(event);
+        final AsteriskPBX pbx = (AsteriskPBX) PBXFactory.getActivePBX();
+        this.channel = pbx.internalRegisterChannel(event.getChannel(), ChannelImpl.UNKNOWN_UNIQUE_ID);
+        this.state = event.getState();
+    }
 
-	@Override
-	public Channel getChannel()
-	{
-		return this.channel;
-	}
+    @Override
+    public Channel getChannel()
+    {
+        return this.channel;
+    }
 
-	public Boolean getState()
-	{
-		return this.state;
-	}
+    public Boolean getState()
+    {
+        return this.state;
+    }
 }

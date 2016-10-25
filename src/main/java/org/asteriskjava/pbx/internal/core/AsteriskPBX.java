@@ -239,8 +239,7 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
     }
 
     @Override
-    public DialActivity dial(final EndPoint from, final CallerID fromCallerID, final EndPoint to,
-            final CallerID toCallerID)
+    public DialActivity dial(final EndPoint from, final CallerID fromCallerID, final EndPoint to, final CallerID toCallerID)
     {
         final CompletionAdaptor<DialActivity> completion = new CompletionAdaptor<>();
 
@@ -257,8 +256,8 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
         return new DialLocalToAgiActivity(from, fromCallerID, callback, channelVarsToSet);
     }
 
-    public DialActivity dial(final EndPoint from, final CallerID fromCallerID, final EndPoint to,
-            final CallerID toCallerID, final ActivityCallback<DialActivity> callback, Map<String, String> channelVarsToSet)
+    public DialActivity dial(final EndPoint from, final CallerID fromCallerID, final EndPoint to, final CallerID toCallerID,
+            final ActivityCallback<DialActivity> callback, Map<String, String> channelVarsToSet)
     {
         final DialActivityImpl dialer = new DialActivityImpl(from, to, toCallerID, false, callback, channelVarsToSet);
         return dialer;
@@ -276,10 +275,10 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
      * Convenience method to hangup the call without having to extract the
      * channel yourself.
      */
-	public void hangup(Call call) throws PBXException
-	{
-		this.hangup(call.getOriginatingParty());
-	}
+    public void hangup(Call call) throws PBXException
+    {
+        this.hangup(call.getOriginatingParty());
+    }
 
     @Override
     public void hangup(final Channel channel) throws PBXException
@@ -512,14 +511,49 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
 
     public ChannelProxy registerChannel(final String channelName, final String uniqueID) throws InvalidChannelName
     {
+        ChannelProxy proxy = findChannel(cleanChannelName(channelName), null);
+        if (proxy == null)
+        {
+            logger.info("Couldn't find the channel " + channelName + ", creating it");
+            proxy = internalRegisterChannel(channelName, uniqueID);
+        }
+        else
+        {
+            if (uniqueID != null && !uniqueID.equals(proxy.getUniqueId()))
+            {
+                logger.warn(
+                        "Found the channel(" + proxy.getUniqueId() + "), but with a different uniqueId (" + uniqueID + ")");
+
+            }
+        }
+        liveChannels.sanityCheck();
+
+        return proxy;
+    }
+
+    /**
+     * This method is not part of the public API. <br>
+     * <br>
+     * Use registerChannel instead calling this method with an incorrect or
+     * stale uniqueId will cause inconsistent behaviour.
+     * 
+     * @param channelName
+     * @param uniqueID
+     * @return
+     * @throws InvalidChannelName
+     */
+    public ChannelProxy internalRegisterChannel(final String channelName, final String uniqueID) throws InvalidChannelName
+    {
         ChannelProxy proxy = null;
         synchronized (this.liveChannels)
         {
+
             String localUniqueID = (uniqueID == null ? ChannelImpl.UNKNOWN_UNIQUE_ID : uniqueID);
             proxy = this.findChannel(cleanChannelName(channelName), localUniqueID);
             if (proxy == null)
             {
                 proxy = new ChannelProxy(new ChannelImpl(channelName, localUniqueID));
+                logger.info("Creating new Channel Proxy " + proxy);
                 this.liveChannels.add(proxy);
                 proxy.addHangupListener(this);
             }
@@ -528,9 +562,7 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
     }
 
     /**
-     * Cleans up the channel name by applying the following: 1) trim any
-     * whitespace 2) convert to upper case for easy string comparisions 3) strip
-     * of the masquerade prefix if it exists 4) strip the zombie suffix.
+     * remove white space
      * 
      * @param name
      * @return
@@ -539,16 +571,7 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
     {
         String cleanedName = name.trim().toUpperCase();
 
-        for (final String prefix : ChannelImpl._actions)
-        {
-            if (cleanedName.startsWith(prefix))
-            {
-                cleanedName = cleanedName.substring(prefix.length());
-                break;
-            }
-        }
-
-        return name;
+        return cleanedName;
     }
 
     public Channel registerHangupChannel(String channel, String uniqueId) throws InvalidChannelName
@@ -557,7 +580,7 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
         synchronized (this.liveChannels)
         {
             newChannel = this.findChannel(channel, uniqueId);
-            if (channel == null)
+            if (newChannel == null)
             {
                 // WE don't add this channel to the liveChannels as it is in the
                 // process
@@ -573,37 +596,6 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
         return newChannel;
     }
 
-    // @Override
-    // public iChannel registerChannel(AsteriskChannel asteriskChannel) throws
-    // InvalidChannelName
-    // {
-    // ChannelProxy proxy = null;
-    // synchronized (this.liveChannels)
-    // {
-    // proxy = this.findChannel(asteriskChannel.getName(),
-    // asteriskChannel.getId());
-    // if (proxy == null)
-    // {
-    // proxy = new ChannelProxy(new Channel(asteriskChannel));
-    // this.liveChannels.add(proxy);
-    // proxy.addListener(this);
-    // }
-    // else
-    // {
-    // // update the channel
-    // proxy.getRealChannel().updateAsteriskChannel(asteriskChannel);
-    // }
-    // }
-    // return proxy;
-    //
-    // }
-
-    // public void onNewChannel(AsteriskChannel asteriskChannel) throws
-    // InvalidChannelName
-    // {
-    // registerChannel(asteriskChannel);
-    // }
-    //
     public ChannelProxy findChannel(final String channelName, final String uniqueID)
     {
         return this.liveChannels.findChannel(channelName, uniqueID);
@@ -702,7 +694,7 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
         boolean isChannel = false;
         try
         {
-            registerChannel(channelName, ChannelImpl.UNKNOWN_UNIQUE_ID);
+            internalRegisterChannel(channelName, ChannelImpl.UNKNOWN_UNIQUE_ID);
             isChannel = true;
         }
         catch (InvalidChannelName e)

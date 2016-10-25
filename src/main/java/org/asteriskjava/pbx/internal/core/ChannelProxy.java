@@ -221,7 +221,7 @@ public class ChannelProxy implements Channel, ChannelHangupListener
         this._channel.addHangupListener(this);
         cloneProxy._channel.addHangupListener(cloneProxy);
 
-        logger.info("Channel proxy now points to " + this._channel);
+        logger.info(originalChannel + " Channel proxy now points to " + this._channel);
     }
 
     public ChannelImpl getRealChannel()
