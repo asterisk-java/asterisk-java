@@ -5,10 +5,10 @@ import java.util.LinkedList;
 import org.apache.log4j.Logger;
 import org.asteriskjava.pbx.Channel;
 import org.asteriskjava.pbx.EndPoint;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.MasqueradeEvent;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.NewChannelEvent;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.NewStateEvent;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.StatusEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.MasqueradeEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.NewChannelEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.NewStateEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.StatusEvent;
 
 /*
  * this class tracks the status of a Peer on asterisk. T

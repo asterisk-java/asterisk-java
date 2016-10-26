@@ -8,13 +8,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.apache.log4j.Logger;
+import org.asteriskjava.pbx.AgiChannelActivityAction;
 import org.asteriskjava.pbx.CallerID;
 import org.asteriskjava.pbx.Channel;
 import org.asteriskjava.pbx.ChannelHangupListener;
 import org.asteriskjava.pbx.EndPoint;
-import org.asteriskjava.pbx.internal.agi.AgiChannelActivityAction;
-import org.asteriskjava.pbx.internal.agi.AgiChannelActivityHold;
-import org.asteriskjava.pbx.internal.asterisk.InvalidChannelName;
+import org.asteriskjava.pbx.InvalidChannelName;
+import org.asteriskjava.pbx.agi.AgiChannelActivityHold;
 
 /**
  * The ChannelProxy exists to deal with the fact that Asterisk will often
@@ -382,6 +382,13 @@ public class ChannelProxy implements Channel, ChannelHangupListener
     public int getIdentity()
     {
         return _identity;
+    }
+
+    @Override
+    public void setCallerId(CallerID callerId)
+    {
+        _channel.setCallerId(callerId);
+
     }
 
 }

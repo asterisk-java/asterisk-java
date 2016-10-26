@@ -12,11 +12,11 @@ import org.asteriskjava.pbx.CallerID;
 import org.asteriskjava.pbx.EndPoint;
 import org.asteriskjava.pbx.PBX;
 import org.asteriskjava.pbx.PBXFactory;
+import org.asteriskjava.pbx.TechType;
 import org.asteriskjava.pbx.Trunk;
 import org.asteriskjava.pbx.activities.BlindTransferActivity;
 import org.asteriskjava.pbx.activities.DialActivity;
 import org.asteriskjava.pbx.internal.core.AsteriskPBX;
-import org.asteriskjava.pbx.internal.core.TechType;
 
 /**
  * dial somebody and then blind transfer the call to a third party.

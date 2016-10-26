@@ -16,6 +16,7 @@ import org.asteriskjava.manager.event.AbstractChannelEvent;
 import org.asteriskjava.pbx.Activity;
 import org.asteriskjava.pbx.ActivityCallback;
 import org.asteriskjava.pbx.ActivityStatusEnum;
+import org.asteriskjava.pbx.AsteriskSettings;
 import org.asteriskjava.pbx.Call;
 import org.asteriskjava.pbx.Call.OperandChannel;
 import org.asteriskjava.pbx.CallDirection;
@@ -24,44 +25,45 @@ import org.asteriskjava.pbx.Channel;
 import org.asteriskjava.pbx.ChannelHangupListener;
 import org.asteriskjava.pbx.CompletionAdaptor;
 import org.asteriskjava.pbx.DTMFTone;
+import org.asteriskjava.pbx.DialPlanExtension;
 import org.asteriskjava.pbx.EndPoint;
+import org.asteriskjava.pbx.InvalidChannelName;
 import org.asteriskjava.pbx.PBX;
 import org.asteriskjava.pbx.PBXException;
 import org.asteriskjava.pbx.PBXFactory;
+import org.asteriskjava.pbx.TechType;
 import org.asteriskjava.pbx.Trunk;
 import org.asteriskjava.pbx.activities.BlindTransferActivity;
-import org.asteriskjava.pbx.activities.BlindTransferActivityImpl;
 import org.asteriskjava.pbx.activities.BridgeActivity;
-import org.asteriskjava.pbx.activities.BridgeActivityImpl;
 import org.asteriskjava.pbx.activities.DialActivity;
-import org.asteriskjava.pbx.activities.DialActivityImpl;
 import org.asteriskjava.pbx.activities.DialToAgiActivity;
-import org.asteriskjava.pbx.activities.DialToAgiActivityImpl;
 import org.asteriskjava.pbx.activities.HoldActivity;
-import org.asteriskjava.pbx.activities.HoldActivityImpl;
 import org.asteriskjava.pbx.activities.JoinActivity;
-import org.asteriskjava.pbx.activities.JoinActivityImpl;
 import org.asteriskjava.pbx.activities.ParkActivity;
-import org.asteriskjava.pbx.activities.ParkActivityImpl;
 import org.asteriskjava.pbx.activities.SplitActivity;
-import org.asteriskjava.pbx.activities.SplitActivityImpl;
-import org.asteriskjava.pbx.internal.agi.AgiChannelActivityHangup;
-import org.asteriskjava.pbx.internal.agi.AgiChannelActivityHold;
-import org.asteriskjava.pbx.internal.asterisk.AsteriskSettings;
+import org.asteriskjava.pbx.agi.AgiChannelActivityHangup;
+import org.asteriskjava.pbx.agi.AgiChannelActivityHold;
+import org.asteriskjava.pbx.asterisk.wrap.actions.CommandAction;
+import org.asteriskjava.pbx.asterisk.wrap.actions.EventGeneratingAction;
+import org.asteriskjava.pbx.asterisk.wrap.actions.HangupAction;
+import org.asteriskjava.pbx.asterisk.wrap.actions.ManagerAction;
+import org.asteriskjava.pbx.asterisk.wrap.actions.PlayDtmfAction;
+import org.asteriskjava.pbx.asterisk.wrap.actions.RedirectAction;
+import org.asteriskjava.pbx.asterisk.wrap.events.ManagerEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.ResponseEvents;
+import org.asteriskjava.pbx.asterisk.wrap.response.CommandResponse;
+import org.asteriskjava.pbx.asterisk.wrap.response.ManagerResponse;
+import org.asteriskjava.pbx.internal.activity.BlindTransferActivityImpl;
+import org.asteriskjava.pbx.internal.activity.BridgeActivityImpl;
+import org.asteriskjava.pbx.internal.activity.DialActivityImpl;
+import org.asteriskjava.pbx.internal.activity.DialToAgiActivityImpl;
+import org.asteriskjava.pbx.internal.activity.HoldActivityImpl;
+import org.asteriskjava.pbx.internal.activity.JoinActivityImpl;
+import org.asteriskjava.pbx.internal.activity.ParkActivityImpl;
+import org.asteriskjava.pbx.internal.activity.SplitActivityImpl;
 import org.asteriskjava.pbx.internal.asterisk.CallerIDImpl;
-import org.asteriskjava.pbx.internal.asterisk.InvalidChannelName;
 import org.asteriskjava.pbx.internal.asterisk.MeetmeRoom;
 import org.asteriskjava.pbx.internal.asterisk.MeetmeRoomControl;
-import org.asteriskjava.pbx.internal.asterisk.wrap.actions.CommandAction;
-import org.asteriskjava.pbx.internal.asterisk.wrap.actions.EventGeneratingAction;
-import org.asteriskjava.pbx.internal.asterisk.wrap.actions.HangupAction;
-import org.asteriskjava.pbx.internal.asterisk.wrap.actions.ManagerAction;
-import org.asteriskjava.pbx.internal.asterisk.wrap.actions.PlayDtmfAction;
-import org.asteriskjava.pbx.internal.asterisk.wrap.actions.RedirectAction;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.ManagerEvent;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.ResponseEvents;
-import org.asteriskjava.pbx.internal.asterisk.wrap.response.CommandResponse;
-import org.asteriskjava.pbx.internal.asterisk.wrap.response.ManagerResponse;
 import org.asteriskjava.pbx.internal.managerAPI.RedirectCall;
 
 public enum AsteriskPBX implements PBX, ChannelHangupListener
@@ -397,7 +399,7 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
     }
 
     @Override
-    public ChannelProxy getChannelByEndPoint(final EndPoint endPoint)
+    public Channel getChannelByEndPoint(final EndPoint endPoint)
     {
         return this.liveChannels.getChannelByEndPoint(endPoint);
     }
@@ -509,9 +511,9 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
         return this.buildCallerID(number, name);
     }
 
-    public ChannelProxy registerChannel(final String channelName, final String uniqueID) throws InvalidChannelName
+    public Channel registerChannel(final String channelName, final String uniqueID) throws InvalidChannelName
     {
-        ChannelProxy proxy = findChannel(cleanChannelName(channelName), null);
+        Channel proxy = findChannel(cleanChannelName(channelName), null);
         if (proxy == null)
         {
             logger.info("Couldn't find the channel " + channelName + ", creating it");
@@ -542,7 +544,7 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
      * @return
      * @throws InvalidChannelName
      */
-    public ChannelProxy internalRegisterChannel(final String channelName, final String uniqueID) throws InvalidChannelName
+    public Channel internalRegisterChannel(final String channelName, final String uniqueID) throws InvalidChannelName
     {
         ChannelProxy proxy = null;
         synchronized (this.liveChannels)

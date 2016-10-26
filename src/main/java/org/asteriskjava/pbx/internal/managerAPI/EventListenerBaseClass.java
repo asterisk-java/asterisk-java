@@ -2,7 +2,7 @@ package org.asteriskjava.pbx.internal.managerAPI;
 
 import org.asteriskjava.pbx.PBX;
 import org.asteriskjava.pbx.PBXFactory;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.ManagerEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.ManagerEvent;
 import org.asteriskjava.pbx.internal.core.AsteriskPBX;
 import org.asteriskjava.pbx.internal.core.FilteredManagerListener;
 

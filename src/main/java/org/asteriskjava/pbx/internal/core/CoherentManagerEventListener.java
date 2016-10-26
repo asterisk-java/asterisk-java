@@ -2,7 +2,7 @@ package org.asteriskjava.pbx.internal.core;
 
 import java.util.EventListener;
 
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.ManagerEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.ManagerEvent;
 
 public interface CoherentManagerEventListener extends EventListener
 {

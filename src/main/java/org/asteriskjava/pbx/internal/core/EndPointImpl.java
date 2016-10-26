@@ -2,6 +2,7 @@ package org.asteriskjava.pbx.internal.core;
 
 import org.apache.log4j.Logger;
 import org.asteriskjava.pbx.EndPoint;
+import org.asteriskjava.pbx.TechType;
 import org.asteriskjava.pbx.Trunk;
 
 public class EndPointImpl implements EndPoint

@@ -10,7 +10,7 @@ import org.asteriskjava.manager.AuthenticationFailedException;
 import org.asteriskjava.manager.ManagerConnection;
 import org.asteriskjava.manager.ManagerConnectionFactory;
 import org.asteriskjava.manager.TimeoutException;
-import org.asteriskjava.pbx.internal.asterisk.AsteriskSettings;
+import org.asteriskjava.pbx.AsteriskSettings;
 
 /*
  * this class is a very thin wrapper around the manager connection class

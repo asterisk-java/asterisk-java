@@ -4,16 +4,17 @@ import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
+import org.asteriskjava.pbx.AgiChannelActivityAction;
+import org.asteriskjava.pbx.AsteriskSettings;
 import org.asteriskjava.pbx.CallerID;
 import org.asteriskjava.pbx.Channel;
 import org.asteriskjava.pbx.ChannelFactory;
 import org.asteriskjava.pbx.ChannelHangupListener;
 import org.asteriskjava.pbx.EndPoint;
+import org.asteriskjava.pbx.InvalidChannelName;
 import org.asteriskjava.pbx.PBX;
 import org.asteriskjava.pbx.PBXFactory;
-import org.asteriskjava.pbx.internal.agi.AgiChannelActivityAction;
-import org.asteriskjava.pbx.internal.asterisk.AsteriskSettings;
-import org.asteriskjava.pbx.internal.asterisk.InvalidChannelName;
+import org.asteriskjava.pbx.TechType;
 
 /**
  * TODO set the channel unique id when registering against an existing channel
@@ -191,7 +192,7 @@ public class ChannelImpl implements Channel
      * a complete clone just the key elements that we generally track on our
      * side rather than getting directly from asterisk.
      */
-    void masquerade(Channel channel)
+    public void masquerade(Channel channel)
     {
         // If the channel doesn't have a caller id
         // preserve the existing one (as given this is a clone they should be
@@ -427,7 +428,7 @@ public class ChannelImpl implements Channel
         return ret;
     }
 
-    void setCallerId(final CallerID callerId)
+    public void setCallerId(final CallerID callerId)
     {
         this._callerID = callerId;
     }
@@ -563,7 +564,7 @@ public class ChannelImpl implements Channel
      * @param uniqueID
      * @return
      */
-    boolean sameUniqueID(String uniqueID)
+    public boolean sameUniqueID(String uniqueID)
     {
         boolean equals = false;
         if ((this._uniqueID.compareTo(ChannelImpl.UNKNOWN_UNIQUE_ID) != 0)

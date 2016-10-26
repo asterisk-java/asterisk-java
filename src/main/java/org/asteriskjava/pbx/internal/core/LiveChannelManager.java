@@ -9,11 +9,12 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.Priority;
 import org.asteriskjava.pbx.Channel;
 import org.asteriskjava.pbx.EndPoint;
-import org.asteriskjava.pbx.internal.asterisk.InvalidChannelName;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.HangupEvent;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.ManagerEvent;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.MasqueradeEvent;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.RenameEvent;
+import org.asteriskjava.pbx.InvalidChannelName;
+import org.asteriskjava.pbx.ListenerPriority;
+import org.asteriskjava.pbx.asterisk.wrap.events.HangupEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.ManagerEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.MasqueradeEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.RenameEvent;
 
 /**
  * The LiveChannelManager keeps a list of all of the live channels present on an

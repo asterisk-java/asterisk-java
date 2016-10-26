@@ -3,12 +3,12 @@ package org.asteriskjava.pbx.internal.managerAPI;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.asteriskjava.pbx.AsteriskSettings;
 import org.asteriskjava.pbx.CallerID;
 import org.asteriskjava.pbx.EndPoint;
+import org.asteriskjava.pbx.ListenerPriority;
 import org.asteriskjava.pbx.NewChannelListener;
 import org.asteriskjava.pbx.PBXFactory;
-import org.asteriskjava.pbx.internal.asterisk.AsteriskSettings;
-import org.asteriskjava.pbx.internal.core.ListenerPriority;
 
 public class OriginateToExtension extends OriginateBaseClass
 {

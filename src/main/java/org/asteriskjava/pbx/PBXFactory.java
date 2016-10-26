@@ -2,7 +2,6 @@ package org.asteriskjava.pbx;
 
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.asteriskjava.pbx.internal.asterisk.AsteriskSettings;
 import org.asteriskjava.pbx.internal.core.AsteriskPBX;
 
 public class PBXFactory

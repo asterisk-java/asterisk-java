@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 import org.asteriskjava.manager.ManagerEventListener;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.ManagerEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.ManagerEvent;
 import org.asteriskjava.pbx.internal.eventQueue.EventLifeMonitor;
 import org.asteriskjava.pbx.util.LogTime;
 

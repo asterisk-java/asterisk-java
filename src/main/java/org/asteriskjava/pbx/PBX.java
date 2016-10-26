@@ -9,7 +9,6 @@ import org.asteriskjava.pbx.activities.HoldActivity;
 import org.asteriskjava.pbx.activities.JoinActivity;
 import org.asteriskjava.pbx.activities.ParkActivity;
 import org.asteriskjava.pbx.activities.SplitActivity;
-import org.asteriskjava.pbx.internal.core.TechType;
 
 /**
  * Provides an abstracted interface for communicating with a PBX.

@@ -7,7 +7,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.asteriskjava.pbx.Channel;
 import org.asteriskjava.pbx.ChannelHangupListener;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.ChannelState;
+import org.asteriskjava.pbx.asterisk.wrap.events.ChannelState;
 
 /**
  * This is a fairly simple class which is used by a Peer to track what calls are

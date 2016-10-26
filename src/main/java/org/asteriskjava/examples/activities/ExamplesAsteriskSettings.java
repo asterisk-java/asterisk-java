@@ -1,6 +1,6 @@
 package org.asteriskjava.examples.activities;
 
-import org.asteriskjava.pbx.internal.asterisk.AsteriskSettings;
+import org.asteriskjava.pbx.AsteriskSettings;
 
 public class ExamplesAsteriskSettings implements AsteriskSettings
 {

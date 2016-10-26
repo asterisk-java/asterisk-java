@@ -4,7 +4,7 @@ import org.apache.log4j.Logger;
 import org.asteriskjava.pbx.Channel;
 import org.asteriskjava.pbx.PBXException;
 import org.asteriskjava.pbx.PBXFactory;
-import org.asteriskjava.pbx.internal.agi.AgiChannelActivityMeetme;
+import org.asteriskjava.pbx.agi.AgiChannelActivityMeetme;
 import org.asteriskjava.pbx.internal.core.AsteriskPBX;
 
 public class RedirectToMeetMe
