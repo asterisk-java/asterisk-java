@@ -179,7 +179,7 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
     {
         final CompletionAdaptor<SplitActivity> completion = new CompletionAdaptor<>();
 
-        final SplitActivityImpl split = new SplitActivityImpl(callToSplit, completion);
+        new SplitActivityImpl(callToSplit, completion);
 
         completion.waitForCompletion(10, TimeUnit.SECONDS);
 
