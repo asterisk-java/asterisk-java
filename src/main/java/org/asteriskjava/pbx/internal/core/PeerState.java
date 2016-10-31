@@ -1,7 +1,7 @@
 package org.asteriskjava.pbx.internal.core;
 
 import org.apache.log4j.Logger;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.ChannelState;
+import org.asteriskjava.pbx.asterisk.wrap.events.ChannelState;
 
 public enum PeerState
 {

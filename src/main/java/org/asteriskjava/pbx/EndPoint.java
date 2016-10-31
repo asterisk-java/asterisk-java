@@ -1,7 +1,5 @@
 package org.asteriskjava.pbx;
 
-import org.asteriskjava.pbx.internal.core.TechType;
-
 /**
  * Provides an abstract interface for entities which can be dialed.
  * 

@@ -9,7 +9,6 @@ import org.asteriskjava.pbx.activities.HoldActivity;
 import org.asteriskjava.pbx.activities.JoinActivity;
 import org.asteriskjava.pbx.activities.ParkActivity;
 import org.asteriskjava.pbx.activities.SplitActivity;
-import org.asteriskjava.pbx.internal.core.TechType;
 
 /**
  * Provides an abstracted interface for communicating with a PBX.
@@ -98,11 +97,9 @@ public interface PBX
      * until the call has been dialled. The dial will return as soon as the
      * trunk comes up, it does not wait for remote end to answer.
      * 
-     * @param trunk - the trunk to dial out on. If null the default trunk will
-     *            be used.
      * @return Call - the call resulting from dialing the number.
      */
-    DialActivity dial(Trunk trunk, EndPoint from, CallerID fromCallerID, EndPoint to, CallerID toCallerID);
+    DialActivity dial(EndPoint from, CallerID fromCallerID, EndPoint to, CallerID toCallerID);
 
     /**
      * Dials the given phone number using the specified trunk. Not returning
@@ -131,6 +128,12 @@ public interface PBX
      * @param callback
      */
     void hangup(Channel channel, ActivityCallback<Activity> callback);
+
+    /**
+     * Hangup the given call, not returning until the call is hungup.
+     * @param call
+     */
+	public void hangup(Call call) throws PBXException;
 
     /**
      * Put the given channel on hold.
@@ -272,5 +275,6 @@ public interface PBX
     public boolean waitForChannelToQuiescent(Channel channel, int timeout);
 
     public Trunk buildTrunk(String string);
+
 
 }

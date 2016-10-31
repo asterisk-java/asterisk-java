@@ -104,7 +104,7 @@ public class MeetmeRoom
 
         if (!removed)
         {
-            MeetmeRoom.logger.error(
+            MeetmeRoom.logger.warn(
                     "An attempt to remove an non-existing channel " + channel + " from Meetme Room " + this.getRoomNumber()); //$NON-NLS-1$ //$NON-NLS-2$
         }
 

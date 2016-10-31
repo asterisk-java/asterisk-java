@@ -16,6 +16,7 @@ import org.asteriskjava.manager.event.AbstractChannelEvent;
 import org.asteriskjava.pbx.Activity;
 import org.asteriskjava.pbx.ActivityCallback;
 import org.asteriskjava.pbx.ActivityStatusEnum;
+import org.asteriskjava.pbx.AsteriskSettings;
 import org.asteriskjava.pbx.Call;
 import org.asteriskjava.pbx.Call.OperandChannel;
 import org.asteriskjava.pbx.CallDirection;
@@ -24,44 +25,45 @@ import org.asteriskjava.pbx.Channel;
 import org.asteriskjava.pbx.ChannelHangupListener;
 import org.asteriskjava.pbx.CompletionAdaptor;
 import org.asteriskjava.pbx.DTMFTone;
+import org.asteriskjava.pbx.DialPlanExtension;
 import org.asteriskjava.pbx.EndPoint;
+import org.asteriskjava.pbx.InvalidChannelName;
 import org.asteriskjava.pbx.PBX;
 import org.asteriskjava.pbx.PBXException;
 import org.asteriskjava.pbx.PBXFactory;
+import org.asteriskjava.pbx.TechType;
 import org.asteriskjava.pbx.Trunk;
 import org.asteriskjava.pbx.activities.BlindTransferActivity;
-import org.asteriskjava.pbx.activities.BlindTransferActivityImpl;
 import org.asteriskjava.pbx.activities.BridgeActivity;
-import org.asteriskjava.pbx.activities.BridgeActivityImpl;
 import org.asteriskjava.pbx.activities.DialActivity;
-import org.asteriskjava.pbx.activities.DialActivityImpl;
 import org.asteriskjava.pbx.activities.DialToAgiActivity;
-import org.asteriskjava.pbx.activities.DialToAgiActivityImpl;
 import org.asteriskjava.pbx.activities.HoldActivity;
-import org.asteriskjava.pbx.activities.HoldActivityImpl;
 import org.asteriskjava.pbx.activities.JoinActivity;
-import org.asteriskjava.pbx.activities.JoinActivityImpl;
 import org.asteriskjava.pbx.activities.ParkActivity;
-import org.asteriskjava.pbx.activities.ParkActivityImpl;
 import org.asteriskjava.pbx.activities.SplitActivity;
-import org.asteriskjava.pbx.activities.SplitActivityImpl;
-import org.asteriskjava.pbx.internal.agi.AgiChannelActivityHangup;
-import org.asteriskjava.pbx.internal.agi.AgiChannelActivityHold;
-import org.asteriskjava.pbx.internal.asterisk.AsteriskSettings;
+import org.asteriskjava.pbx.agi.AgiChannelActivityHangup;
+import org.asteriskjava.pbx.agi.AgiChannelActivityHold;
+import org.asteriskjava.pbx.asterisk.wrap.actions.CommandAction;
+import org.asteriskjava.pbx.asterisk.wrap.actions.EventGeneratingAction;
+import org.asteriskjava.pbx.asterisk.wrap.actions.HangupAction;
+import org.asteriskjava.pbx.asterisk.wrap.actions.ManagerAction;
+import org.asteriskjava.pbx.asterisk.wrap.actions.PlayDtmfAction;
+import org.asteriskjava.pbx.asterisk.wrap.actions.RedirectAction;
+import org.asteriskjava.pbx.asterisk.wrap.events.ManagerEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.ResponseEvents;
+import org.asteriskjava.pbx.asterisk.wrap.response.CommandResponse;
+import org.asteriskjava.pbx.asterisk.wrap.response.ManagerResponse;
+import org.asteriskjava.pbx.internal.activity.BlindTransferActivityImpl;
+import org.asteriskjava.pbx.internal.activity.BridgeActivityImpl;
+import org.asteriskjava.pbx.internal.activity.DialActivityImpl;
+import org.asteriskjava.pbx.internal.activity.DialToAgiActivityImpl;
+import org.asteriskjava.pbx.internal.activity.HoldActivityImpl;
+import org.asteriskjava.pbx.internal.activity.JoinActivityImpl;
+import org.asteriskjava.pbx.internal.activity.ParkActivityImpl;
+import org.asteriskjava.pbx.internal.activity.SplitActivityImpl;
 import org.asteriskjava.pbx.internal.asterisk.CallerIDImpl;
-import org.asteriskjava.pbx.internal.asterisk.InvalidChannelName;
 import org.asteriskjava.pbx.internal.asterisk.MeetmeRoom;
 import org.asteriskjava.pbx.internal.asterisk.MeetmeRoomControl;
-import org.asteriskjava.pbx.internal.asterisk.wrap.actions.CommandAction;
-import org.asteriskjava.pbx.internal.asterisk.wrap.actions.EventGeneratingAction;
-import org.asteriskjava.pbx.internal.asterisk.wrap.actions.HangupAction;
-import org.asteriskjava.pbx.internal.asterisk.wrap.actions.ManagerAction;
-import org.asteriskjava.pbx.internal.asterisk.wrap.actions.PlayDtmfAction;
-import org.asteriskjava.pbx.internal.asterisk.wrap.actions.RedirectAction;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.ManagerEvent;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.ResponseEvents;
-import org.asteriskjava.pbx.internal.asterisk.wrap.response.CommandResponse;
-import org.asteriskjava.pbx.internal.asterisk.wrap.response.ManagerResponse;
 import org.asteriskjava.pbx.internal.managerAPI.RedirectCall;
 
 public enum AsteriskPBX implements PBX, ChannelHangupListener
@@ -177,7 +179,7 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
     {
         final CompletionAdaptor<SplitActivity> completion = new CompletionAdaptor<>();
 
-        final SplitActivityImpl split = new SplitActivityImpl(callToSplit, completion);
+        new SplitActivityImpl(callToSplit, completion);
 
         completion.waitForCompletion(10, TimeUnit.SECONDS);
 
@@ -239,8 +241,7 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
     }
 
     @Override
-    public DialActivity dial(final Trunk trunk, final EndPoint from, final CallerID fromCallerID, final EndPoint to,
-            final CallerID toCallerID)
+    public DialActivity dial(final EndPoint from, final CallerID fromCallerID, final EndPoint to, final CallerID toCallerID)
     {
         final CompletionAdaptor<DialActivity> completion = new CompletionAdaptor<>();
 
@@ -257,8 +258,8 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
         return new DialLocalToAgiActivity(from, fromCallerID, callback, channelVarsToSet);
     }
 
-    public DialActivity dial(final Trunk trunk, final EndPoint from, final CallerID fromCallerID, final EndPoint to,
-            final CallerID toCallerID, final ActivityCallback<DialActivity> callback, Map<String, String> channelVarsToSet)
+    public DialActivity dial(final EndPoint from, final CallerID fromCallerID, final EndPoint to, final CallerID toCallerID,
+            final ActivityCallback<DialActivity> callback, Map<String, String> channelVarsToSet)
     {
         final DialActivityImpl dialer = new DialActivityImpl(from, to, toCallerID, false, callback, channelVarsToSet);
         return dialer;
@@ -270,6 +271,15 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
     {
         new DialActivityImpl(from, to, toCallerID, false, callback, null);
 
+    }
+
+    /**
+     * Convenience method to hangup the call without having to extract the
+     * channel yourself.
+     */
+    public void hangup(Call call) throws PBXException
+    {
+        this.hangup(call.getOriginatingParty());
     }
 
     @Override
@@ -389,7 +399,7 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
     }
 
     @Override
-    public ChannelProxy getChannelByEndPoint(final EndPoint endPoint)
+    public Channel getChannelByEndPoint(final EndPoint endPoint)
     {
         return this.liveChannels.getChannelByEndPoint(endPoint);
     }
@@ -501,16 +511,51 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
         return this.buildCallerID(number, name);
     }
 
-    public ChannelProxy registerChannel(final String channelName, final String uniqueID) throws InvalidChannelName
+    public Channel registerChannel(final String channelName, final String uniqueID) throws InvalidChannelName
+    {
+        Channel proxy = findChannel(cleanChannelName(channelName), null);
+        if (proxy == null)
+        {
+            logger.info("Couldn't find the channel " + channelName + ", creating it");
+            proxy = internalRegisterChannel(channelName, uniqueID);
+        }
+        else
+        {
+            if (uniqueID != null && !uniqueID.equals(proxy.getUniqueId()))
+            {
+                logger.warn(
+                        "Found the channel(" + proxy.getUniqueId() + "), but with a different uniqueId (" + uniqueID + ")");
+
+            }
+        }
+        liveChannels.sanityCheck();
+
+        return proxy;
+    }
+
+    /**
+     * This method is not part of the public API. <br>
+     * <br>
+     * Use registerChannel instead calling this method with an incorrect or
+     * stale uniqueId will cause inconsistent behaviour.
+     * 
+     * @param channelName
+     * @param uniqueID
+     * @return
+     * @throws InvalidChannelName
+     */
+    public Channel internalRegisterChannel(final String channelName, final String uniqueID) throws InvalidChannelName
     {
         ChannelProxy proxy = null;
         synchronized (this.liveChannels)
         {
+
             String localUniqueID = (uniqueID == null ? ChannelImpl.UNKNOWN_UNIQUE_ID : uniqueID);
             proxy = this.findChannel(cleanChannelName(channelName), localUniqueID);
             if (proxy == null)
             {
                 proxy = new ChannelProxy(new ChannelImpl(channelName, localUniqueID));
+                logger.info("Creating new Channel Proxy " + proxy);
                 this.liveChannels.add(proxy);
                 proxy.addHangupListener(this);
             }
@@ -519,9 +564,7 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
     }
 
     /**
-     * Cleans up the channel name by applying the following: 1) trim any
-     * whitespace 2) convert to upper case for easy string comparisions 3) strip
-     * of the masquerade prefix if it exists 4) strip the zombie suffix.
+     * remove white space
      * 
      * @param name
      * @return
@@ -530,16 +573,7 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
     {
         String cleanedName = name.trim().toUpperCase();
 
-        for (final String prefix : ChannelImpl._actions)
-        {
-            if (cleanedName.startsWith(prefix))
-            {
-                cleanedName = cleanedName.substring(prefix.length());
-                break;
-            }
-        }
-
-        return name;
+        return cleanedName;
     }
 
     public Channel registerHangupChannel(String channel, String uniqueId) throws InvalidChannelName
@@ -548,7 +582,7 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
         synchronized (this.liveChannels)
         {
             newChannel = this.findChannel(channel, uniqueId);
-            if (channel == null)
+            if (newChannel == null)
             {
                 // WE don't add this channel to the liveChannels as it is in the
                 // process
@@ -564,37 +598,6 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
         return newChannel;
     }
 
-    // @Override
-    // public iChannel registerChannel(AsteriskChannel asteriskChannel) throws
-    // InvalidChannelName
-    // {
-    // ChannelProxy proxy = null;
-    // synchronized (this.liveChannels)
-    // {
-    // proxy = this.findChannel(asteriskChannel.getName(),
-    // asteriskChannel.getId());
-    // if (proxy == null)
-    // {
-    // proxy = new ChannelProxy(new Channel(asteriskChannel));
-    // this.liveChannels.add(proxy);
-    // proxy.addListener(this);
-    // }
-    // else
-    // {
-    // // update the channel
-    // proxy.getRealChannel().updateAsteriskChannel(asteriskChannel);
-    // }
-    // }
-    // return proxy;
-    //
-    // }
-
-    // public void onNewChannel(AsteriskChannel asteriskChannel) throws
-    // InvalidChannelName
-    // {
-    // registerChannel(asteriskChannel);
-    // }
-    //
     public ChannelProxy findChannel(final String channelName, final String uniqueID)
     {
         return this.liveChannels.findChannel(channelName, uniqueID);
@@ -693,7 +696,7 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
         boolean isChannel = false;
         try
         {
-            registerChannel(channelName, ChannelImpl.UNKNOWN_UNIQUE_ID);
+            internalRegisterChannel(channelName, ChannelImpl.UNKNOWN_UNIQUE_ID);
             isChannel = true;
         }
         catch (InvalidChannelName e)

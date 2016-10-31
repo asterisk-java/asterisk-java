@@ -3,14 +3,14 @@ package org.asteriskjava.pbx.internal.managerAPI;
 import java.util.HashMap;
 
 import org.apache.log4j.Logger;
+import org.asteriskjava.pbx.AgiChannelActivityAction;
+import org.asteriskjava.pbx.AsteriskSettings;
 import org.asteriskjava.pbx.Channel;
 import org.asteriskjava.pbx.EndPoint;
 import org.asteriskjava.pbx.PBXException;
 import org.asteriskjava.pbx.PBXFactory;
-import org.asteriskjava.pbx.internal.agi.AgiChannelActivityAction;
-import org.asteriskjava.pbx.internal.agi.AgiChannelActivityDial;
-import org.asteriskjava.pbx.internal.agi.AgiChannelActivityVoicemail;
-import org.asteriskjava.pbx.internal.asterisk.AsteriskSettings;
+import org.asteriskjava.pbx.agi.AgiChannelActivityDial;
+import org.asteriskjava.pbx.agi.AgiChannelActivityVoicemail;
 import org.asteriskjava.pbx.internal.core.AsteriskPBX;
 
 public class RedirectCall

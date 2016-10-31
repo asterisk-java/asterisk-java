@@ -2,6 +2,7 @@ package org.asteriskjava.pbx.internal.core;
 
 import org.apache.log4j.Logger;
 import org.asteriskjava.pbx.EndPoint;
+import org.asteriskjava.pbx.TechType;
 import org.asteriskjava.pbx.Trunk;
 
 public class EndPointImpl implements EndPoint
@@ -154,8 +155,8 @@ public class EndPointImpl implements EndPoint
             throw new IllegalArgumentException("defaultTech may not be DIALPLAN, LOCAL or CONSOLE");
         }
 
-        this._fullyQualifiedName = this._tech.name() + EndPointImpl.DELIMITER + trunk + EndPointImpl.DELIMITER
-                + this._endPointName;
+        this._fullyQualifiedName = this._tech.name() + EndPointImpl.DELIMITER + trunk.getTrunkAsString()
+                + EndPointImpl.DELIMITER + this._endPointName;
 
         this._empty = false;
 

@@ -4,30 +4,35 @@ import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
+import org.asteriskjava.pbx.AgiChannelActivityAction;
+import org.asteriskjava.pbx.AsteriskSettings;
 import org.asteriskjava.pbx.CallerID;
 import org.asteriskjava.pbx.Channel;
 import org.asteriskjava.pbx.ChannelFactory;
 import org.asteriskjava.pbx.ChannelHangupListener;
 import org.asteriskjava.pbx.EndPoint;
+import org.asteriskjava.pbx.InvalidChannelName;
 import org.asteriskjava.pbx.PBX;
 import org.asteriskjava.pbx.PBXFactory;
-import org.asteriskjava.pbx.internal.agi.AgiChannelActivityAction;
-import org.asteriskjava.pbx.internal.asterisk.AsteriskSettings;
-import org.asteriskjava.pbx.internal.asterisk.InvalidChannelName;
+import org.asteriskjava.pbx.TechType;
 
 /**
  * TODO set the channel unique id when registering against an existing channel
- * which doesn't have its unique id set. Create a single asterisk event source.
- * All users of MyBaseEventCalls will become listeners to this class rather than
- * talking to asterisk directly. Each listener will have events queued to it. It
- * can process these events in a separate thread. Key feature is that one a
- * 'rename' event arrives we must pause all of the queues wait for them to empty
- * and for the queue clients to quiescent, then apply the rename before resuming
- * pushing data in to the queues. Additionally we need to redo the asterisk
- * events classes with our own classes that pass around an iChannel rather than
- * a raw channel name. By doing this the rename affectively becomes global
- * updating every instance of the channel (because they actually only have an
- * instance handle).
+ * which doesn't have its unique id set. <br>
+ * <br>
+ * Create a single asterisk event source. All users of MyBaseEventCalls will
+ * become listeners to this class rather than talking to asterisk directly. Each
+ * listener will have events queued to it. It can process these events in a
+ * separate thread. <br>
+ * <br>
+ * Key feature is that one a 'rename' event arrives we must pause all of the
+ * queues wait for them to empty and for the queue clients to quiescent, then
+ * apply the rename before resuming pushing data in to the queues. <br>
+ * <br>
+ * Additionally we need to redo the asterisk events classes with our own classes
+ * that pass around an iChannel rather than a raw channel name. By doing this
+ * the rename affectively becomes global updating every instance of the channel
+ * (because they actually only have an instance handle).
  * 
  * @author bsutton
  */
@@ -187,7 +192,7 @@ public class ChannelImpl implements Channel
      * a complete clone just the key elements that we generally track on our
      * side rather than getting directly from asterisk.
      */
-    void masquerade(Channel channel)
+    public void masquerade(Channel channel)
     {
         // If the channel doesn't have a caller id
         // preserve the existing one (as given this is a clone they should be
@@ -222,6 +227,7 @@ public class ChannelImpl implements Channel
 
     private void setChannelName(final String channelName) throws InvalidChannelName
     {
+        logger.info("Renamed channel from " + this._channelName + " to " + channelName);
         this._channelName = this.cleanChannelName(channelName);
         this.validateChannelName(this._channelName);
 
@@ -422,7 +428,7 @@ public class ChannelImpl implements Channel
         return ret;
     }
 
-    void setCallerId(final CallerID callerId)
+    public void setCallerId(final CallerID callerId)
     {
         this._callerID = callerId;
     }
@@ -558,7 +564,7 @@ public class ChannelImpl implements Channel
      * @param uniqueID
      * @return
      */
-    boolean sameUniqueID(String uniqueID)
+    public boolean sameUniqueID(String uniqueID)
     {
         boolean equals = false;
         if ((this._uniqueID.compareTo(ChannelImpl.UNKNOWN_UNIQUE_ID) != 0)

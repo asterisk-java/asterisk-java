@@ -8,9 +8,9 @@ import org.asteriskjava.pbx.Channel;
 import org.asteriskjava.pbx.EndPoint;
 import org.asteriskjava.pbx.PBX;
 import org.asteriskjava.pbx.PBXFactory;
+import org.asteriskjava.pbx.TechType;
 import org.asteriskjava.pbx.activities.DialActivity;
 import org.asteriskjava.pbx.activities.HoldActivity;
-import org.asteriskjava.pbx.internal.core.TechType;
 
 /**
  * dial somebody and then put them on hold.

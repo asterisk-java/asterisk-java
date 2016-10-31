@@ -1,7 +1,7 @@
 package org.asteriskjava.pbx.internal.managerAPI;
 
 import org.asteriskjava.pbx.EndPoint;
-import org.asteriskjava.pbx.internal.core.TechType;
+import org.asteriskjava.pbx.TechType;
 
 public class HoldAtAgi implements EndPoint
 {

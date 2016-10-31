@@ -5,7 +5,7 @@ import java.util.Date;
 import org.apache.log4j.Logger;
 import org.asteriskjava.pbx.Call;
 import org.asteriskjava.pbx.PBXFactory;
-import org.asteriskjava.pbx.internal.asterisk.wrap.actions.MonitorAction;
+import org.asteriskjava.pbx.asterisk.wrap.actions.MonitorAction;
 import org.asteriskjava.pbx.internal.core.AsteriskPBX;
 
 public class MonitorCall
