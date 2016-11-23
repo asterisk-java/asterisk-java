@@ -23,8 +23,8 @@ import java.util.logging.Logger;
 import org.asteriskjava.util.Log;
 
 /**
- * Implementation of {@link Log} that maps to the <strong>Logger</strong> of
- * the java.util.logging package.
+ * Implementation of {@link Log} that maps to the <strong>Logger</strong> of the
+ * java.util.logging package.
  * <p>
  * Kindly donated by Sun's Steve Drach.
  * 
@@ -43,7 +43,7 @@ public class JavaLoggingLog implements Log
      * 
      * @param clazz the class to log for.
      */
-    public JavaLoggingLog(Class<?> clazz)
+    public JavaLoggingLog(Class< ? > clazz)
     {
         log = Logger.getLogger(clazz.getName());
     }
@@ -142,6 +142,12 @@ public class JavaLoggingLog implements Log
         }
 
         return null;
+    }
+
+    @Override
+    public boolean isDebugEnabled()
+    {
+        return log.isLoggable(Level.FINE);
     }
 
 }

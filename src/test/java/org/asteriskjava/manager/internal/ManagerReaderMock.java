@@ -33,7 +33,7 @@ public class ManagerReaderMock implements ManagerReader
 
     }
 
-    public void registerEventClass(Class<? extends ManagerEvent> event)
+    public void registerEventClass(Class< ? extends ManagerEvent> event)
     {
         throw new UnsupportedOperationException();
     }
@@ -43,9 +43,9 @@ public class ManagerReaderMock implements ManagerReader
         setSocketCalls++;
     }
 
-    public void expectResponseClass(String actionId, Class<? extends ManagerResponse> responseClass)
+    public void expectResponseClass(String actionId, Class< ? extends ManagerResponse> responseClass)
     {
-        
+
     }
 
     public void die()
@@ -57,7 +57,7 @@ public class ManagerReaderMock implements ManagerReader
     {
         return false;
     }
-    
+
     public void run()
     {
         runCalls++;
@@ -66,5 +66,11 @@ public class ManagerReaderMock implements ManagerReader
     public IOException getTerminationException()
     {
         return null;
+    }
+
+    @Override
+    public void deregisterEventClass(Class< ? extends ManagerEvent> eventClass)
+    {
+
     }
 }

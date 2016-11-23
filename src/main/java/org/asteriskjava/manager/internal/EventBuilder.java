@@ -20,7 +20,6 @@ import java.util.Map;
 
 import org.asteriskjava.manager.event.ManagerEvent;
 
-
 /**
  * Transforms maps of attributes to instances of ManagerEvent.
  * 
@@ -37,13 +36,14 @@ interface EventBuilder
      * <code>org.asteriskjava.manager.event.JoinEvent</code> is registered for
      * the event "Join".
      * <p>
-     * The event class must be a concrete class with a default constructor
-     * (one that takes no arguments).
+     * The event class must be a concrete class with a default constructor (one
+     * that takes no arguments).
      * 
-     * @param clazz the event class to register, must extend {@link ManagerEvent}.
+     * @param clazz the event class to register, must extend
+     *            {@link ManagerEvent}.
      * @throws IllegalArgumentException if clazz is not a valid event class
      */
-    void registerEventClass(Class<? extends ManagerEvent> clazz) throws IllegalArgumentException;
+    void registerEventClass(Class< ? extends ManagerEvent> clazz) throws IllegalArgumentException;
 
     /**
      * Builds the event based on the given map of attributes and the registered
@@ -55,4 +55,6 @@ interface EventBuilder
      *         event class was registered for the event type.
      */
     ManagerEvent buildEvent(Object source, Map<String, Object> attributes);
+
+    void deregisterEventClass(Class< ? extends ManagerEvent> eventClass);
 }

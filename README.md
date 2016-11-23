@@ -6,11 +6,25 @@ INTRODUCTION
 
 The Asterisk-Java package consists of a set of Java classes that allow you to easily build Java applications that interact with an [Asterisk PBX Server](http://asterisk.org). Asterisk-Java supports both interfaces that Asterisk provides for this scenario: The [FastAGI](https://wiki.asterisk.org/wiki/display/AST/Application_AGI) protocol and the [Manager API](https://wiki.asterisk.org/wiki/display/AST/The+Asterisk+Manager+TCP+IP+API).
 
+FastAGI
+-------
+FastAGI lets you create a service that manages a call in a similar way to what a webserver handles a http request. FastAGI can be (and should be) used to replace dialplan. FastAGI is thousands of times faster than dialplan, easier to debug and lets you do call control in a language that you are fimilar with.
+
 The FastAGI implementation supports all commands currently available from Asterisk.
 
+Manager API
+-----------
 The Manager API implementation supports receiving events from the Asterisk server (e.g. call progess, registered peers, channel state) and sending actions to Asterisk (e.g. originate call, agent login/logoff, start/stop voice recording).
-
+If you like, the Manager API allows you start and manipulate calls.
 A complete list of the available events and actions is available in the javadocs.
+
+Activities
+----------
+Activities are new to asterisk-java 2.0. The aim of Activities is to provide a high level interface to interactions with Asterisk. Whist Activities use both FastAGI and the Manager API you would normally consider Activities as a replacement for the Manager API.
+
+Activities provide a simple and consistent method of interaction with Asterisk without having to worry about issues such as connection management and without having to understand the intricacies of Asterisk Manager Actions and Events.
+
+
 
 See docs/tutorial.html for examples.
 
@@ -21,11 +35,19 @@ Asterisk-Java is available from [here](https://github.com/asterisk-java/asterisk
 
 Maven Dependency
 ----------------
+Asterisk 1.0
 
 	<dependency>
-    	<groupId>org.asteriskjava</groupId>
-    	<artifactId>asterisk-java</artifactId>
-    	<version>1.0.0-final</version>
+    		<groupId>org.asteriskjava</groupId>
+    		<artifactId>asterisk-java</artifactId>
+    		<version>1.0.0-final</version>
+	</dependency>
+
+Asterisk 2.0
+	<dependency>
+    		<groupId>org.asteriskjava</groupId>
+    		<artifactId>asterisk-java</artifactId>
+    		<version>2.0.0-final</version>
 	</dependency>
 
 INSTALLATION FROM SOURCE
