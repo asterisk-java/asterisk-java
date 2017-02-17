@@ -75,7 +75,7 @@ import org.asteriskjava.util.internal.SocketConnectionFacadeImpl;
 
 /**
  * Internal implemention of the ManagerConnection interface.
- * 
+ *
  * @author srt
  * @version $Id$
  * @see org.asteriskjava.manager.ManagerConnectionFactory
@@ -167,7 +167,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
      * Closes the connection (and reconnects) if no input has been read for the
      * given amount of milliseconds. A timeout of zero is interpreted as an
      * infinite timeout.
-     * 
+     *
      * @see Socket#setSoTimeout(int)
      */
     private int socketReadTimeout = 0;
@@ -266,7 +266,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
      * Sets the hostname of the asterisk server to connect to.
      * <p/>
      * Default is <code>localhost</code>.
-     * 
+     *
      * @param hostname the hostname to connect to
      */
     public void setHostname(String hostname)
@@ -279,7 +279,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
      * specified in asterisk's <code>manager.conf</code> file.
      * <p/>
      * Default is 5038.
-     * 
+     *
      * @param port the port to connect to
      */
     public void setPort(int port)
@@ -297,7 +297,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     /**
      * Sets whether to use SSL. <br>
      * Default is false.
-     * 
+     *
      * @param ssl <code>true</code> to use SSL for the connection,
      *            <code>false</code> for a plain text connection.
      * @since 0.3
@@ -310,7 +310,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     /**
      * Sets the username to use to connect to the asterisk server. This is the
      * username specified in asterisk's <code>manager.conf</code> file.
-     * 
+     *
      * @param username the username to use for login
      */
     public void setUsername(String username)
@@ -321,7 +321,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     /**
      * Sets the password to use to connect to the asterisk server. This is the
      * password specified in Asterisk's <code>manager.conf</code> file.
-     * 
+     *
      * @param password the password to use for login
      */
     public void setPassword(String password)
@@ -340,7 +340,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
      * {@link #sendAction(ManagerAction)} will wait for a response before
      * throwing a TimeoutException. <br>
      * Default is 2000.
-     * 
+     *
      * @param defaultResponseTimeout default response timeout in milliseconds
      * @since 0.2
      */
@@ -355,7 +355,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
      * response and the last response event before throwing a TimeoutException.
      * <br>
      * Default is 5000.
-     * 
+     *
      * @param defaultEventTimeout default event timeout in milliseconds
      * @since 0.2
      */
@@ -368,7 +368,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
      * Set to <code>true</code> to try reconnecting to ther asterisk serve even
      * if the reconnection attempt threw an AuthenticationFailedException. <br>
      * Default is <code>true</code>.
-     * 
+     *
      * @param keepAliveAfterAuthenticationFailure <code>true</code> to try
      *            reconnecting to ther asterisk serve even if the reconnection
      *            attempt threw an AuthenticationFailedException,
@@ -498,7 +498,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
      * is sent using the calculated key (MD5 hash of the password appended to
      * the received challenge).
      * </ol>
-     * 
+     *
      * @param timeout the maximum time to wait for the protocol identifier (in
      *            ms)
      * @param eventMask the event mask. Set to "on" if all events should be
@@ -1095,7 +1095,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     /**
      * Creates a new unique internal action id based on the hash code of this
      * connection and a sequence.
-     * 
+     *
      * @return a new internal action id
      * @see ManagerUtil#addInternalActionId(String,String)
      * @see ManagerUtil#getInternalActionId(String)
@@ -1152,7 +1152,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
      * This method is called by the reader whenever a {@link ManagerResponse} is
      * received. The response is dispatched to the associated
      * {@link SendActionCallback}.
-     * 
+     *
      * @param response the response received by the reader
      * @see ManagerReader
      */
@@ -1223,7 +1223,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     /**
      * This method is called by the reader whenever a ManagerEvent is received.
      * The event is dispatched to all registered ManagerEventHandlers.
-     * 
+     *
      * @param event the event received by the reader
      * @see #addEventListener(ManagerEventListener)
      * @see #removeEventListener(ManagerEventListener)
@@ -1353,7 +1353,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
     /**
      * Notifies all {@link ManagerEventListener}s registered by users.
-     * 
+     *
      * @param event the event to propagate
      */
     private void fireEvent(ManagerEvent event)
@@ -1378,7 +1378,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
      * This method is called when a {@link ProtocolIdentifierReceivedEvent} is
      * received from the reader. Having received a correct protocol identifier
      * is the precodition for logging in.
-     * 
+     *
      * @param identifier the protocol version used by the Asterisk server.
      */
     private void setProtocolIdentifier(final String identifier)
@@ -1396,6 +1396,8 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                 && !"Asterisk Call Manager/2.7.0".equals(identifier) // Asterisk
                                                                      // 13.2
                 && !"Asterisk Call Manager/2.8.0".equals(identifier) // Asterisk > 13.5
+
+			    && !"Asterisk Call Manager/2.9.0".equals(identifier) // Asterisk > 13.13
 
                 && !"OpenPBX Call Manager/1.0".equals(identifier) && !"CallWeaver Call Manager/1.0".equals(identifier)
                 && !(identifier != null && identifier.startsWith("Asterisk Call Manager Proxy/")))
@@ -1558,7 +1560,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
         /**
          * Creates a new instance.
-         * 
+         *
          * @param result the result to store the response in
          */
         public DefaultSendActionCallback(ResponseHandlerResult result)
@@ -1587,7 +1589,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
         /**
          * Creates a new instance.
-         * 
+         *
          * @param events the ResponseEventsImpl to store the events in
          * @param actionCompleteEventClass the type of event that indicates that
          *            all events have been received
