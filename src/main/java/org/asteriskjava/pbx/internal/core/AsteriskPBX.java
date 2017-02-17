@@ -513,6 +513,11 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
 
     public Channel registerChannel(final String channelName, final String uniqueID) throws InvalidChannelName
     {
+        if (channelName == null || channelName.trim().length() == 0)
+        {
+            throw new IllegalArgumentException("Channel name must not be empty");
+        }
+
         Channel proxy = findChannel(cleanChannelName(channelName), null);
         if (proxy == null)
         {

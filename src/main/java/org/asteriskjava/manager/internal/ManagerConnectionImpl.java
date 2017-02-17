@@ -96,6 +96,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     private static final Pattern VERSION_PATTERN_11 = Pattern.compile("^\\s*Asterisk ((SVN-branch|GIT)-)?11[-. ].*");
     private static final Pattern VERSION_PATTERN_12 = Pattern.compile("^\\s*Asterisk ((SVN-branch|GIT)-)?12[-. ].*");
     private static final Pattern VERSION_PATTERN_13 = Pattern.compile("^\\s*Asterisk ((SVN-branch|GIT)-)?13[-. ].*");
+    private static final Pattern VERSION_PATTERN_14 = Pattern.compile("^\\s*Asterisk (GIT-)?14[-. ].*");
 
     private static final AtomicLong idCounter = new AtomicLong(0);
 
@@ -709,6 +710,10 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                             else if (VERSION_PATTERN_13.matcher(coreLine).matches())
                             {
                                 return AsteriskVersion.ASTERISK_13;
+                            }
+                            else if (VERSION_PATTERN_14.matcher(coreLine).matches())
+                            {
+                                return AsteriskVersion.ASTERISK_14;
                             }
                         }
                     }
