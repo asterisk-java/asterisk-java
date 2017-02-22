@@ -12,15 +12,8 @@ description = """Asterisk-Java"""
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
-if (JavaVersion.current().isJava8Compatible()) {
-    allprojects {
-      tasks.withType(Javadoc) {
-        options.addStringOption('Xdoclint:none', '-quiet')
-      }
-    }
-}
-
 repositories {
+        
      maven { url "http://repo.maven.apache.org/maven2" }
 }
 
@@ -53,10 +46,10 @@ artifacts {
     archives javadocJar, sourcesJar
 }
 
-//signing {
-//    required { gradle.taskGraph.hasTask("uploadArchives") }
-//    sign configurations.archives
-//}
+signing {
+    required { gradle.taskGraph.hasTask("uploadArchives") }
+    sign configurations.archives
+}
 
 def ossrhUsername = hasProperty('ossrhUsername') ? ossrhUsername : ''
 def ossrhPassword = hasProperty('ossrhPassword') ? ossrhPassword : ''
@@ -64,21 +57,14 @@ def ossrhPassword = hasProperty('ossrhPassword') ? ossrhPassword : ''
 uploadArchives {
     repositories {
         mavenDeployer {
-            //beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
 
-            //repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-            //    authentication(userName: ossrhUsername, password: ossrhPassword)
-            //}
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
 
-            //snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-            //    authentication(userName: ossrhUsername, password: ossrhPassword)
-            //}
-
-            ivy {
-                url "s3://truly-internal/releases"
-	        layout "pattern", {
-                    artifact "[artifact]-[revision].[ext]"
-                }	
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
             }
 
             pom.project {
