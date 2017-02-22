@@ -22,6 +22,7 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import org.asteriskjava.live.AsteriskQueue;
@@ -64,7 +65,7 @@ class QueueManager
      * A map of ACD queues by there name. 101119 OLB: Modified to act as a LRU
      * Cache to optimize updates
      */
-    private final LinkedHashMap<String, AsteriskQueueImpl> queuesLRU = new LinkedHashMap<String, AsteriskQueueImpl>();
+    private final Map<String, AsteriskQueueImpl> queuesLRU = new LinkedHashMap<>();
 
     QueueManager(AsteriskServerImpl server, ChannelManager channelManager)
     {
@@ -201,11 +202,10 @@ class QueueManager
     {
         refreshQueuesIfForced();
 
-        List<AsteriskQueue> copy = new ArrayList<AsteriskQueue>();
+        List<AsteriskQueue> copy = new ArrayList<>();
         synchronized (queuesLRU)
         {
-            List<Entry<String, AsteriskQueueImpl>> list = new ArrayList<Entry<String, AsteriskQueueImpl>>(
-                    queuesLRU.entrySet());
+            List<Entry<String, AsteriskQueueImpl>> list = new ArrayList<>(queuesLRU.entrySet());
             ListIterator<Entry<String, AsteriskQueueImpl>> iter = list.listIterator(list.size());
 
             Entry<String, AsteriskQueueImpl> entry;
@@ -552,13 +552,10 @@ class QueueManager
 
     private void refreshQueuesIfForced()
     {
-        if (queuesMonitorForced)
+        if (queuesMonitorForced && (System.currentTimeMillis() - queueMonitorLastTimeReloaded) > queuesMonitorLeaseTime)
         {
-            if ((System.currentTimeMillis() - queueMonitorLastTimeReloaded) > queuesMonitorLeaseTime)
-            {
-                initialize();
-                queueMonitorLastTimeReloaded = System.currentTimeMillis();
-            }
+            initialize();
+            queueMonitorLastTimeReloaded = System.currentTimeMillis();
         }
     }
 

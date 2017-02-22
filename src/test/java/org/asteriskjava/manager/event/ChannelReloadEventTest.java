@@ -11,7 +11,7 @@ public class ChannelReloadEventTest
     private ChannelReloadEvent event;
 
     @Before
-    public void setUp() throws Exception
+    public void setUp()
     {
         this.event = new ChannelReloadEvent(this);
     }

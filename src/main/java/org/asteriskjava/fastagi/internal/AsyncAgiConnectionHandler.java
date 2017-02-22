@@ -20,11 +20,14 @@ import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import org.asteriskjava.fastagi.AgiChannelFactory;
 import org.asteriskjava.fastagi.AgiException;
+import org.asteriskjava.fastagi.AgiReader;
+import org.asteriskjava.fastagi.AgiWriter;
 import org.asteriskjava.fastagi.MappingStrategy;
 import org.asteriskjava.fastagi.command.AsyncAgiBreakCommand;
-import org.asteriskjava.manager.event.AsyncAgiEvent;
 import org.asteriskjava.manager.ManagerConnection;
+import org.asteriskjava.manager.event.AsyncAgiEvent;
 
 /**
  * An AgiConnectionHandler for AsyncAGI.
@@ -61,7 +64,7 @@ public class AsyncAgiConnectionHandler extends AgiConnectionHandler
         connection = (ManagerConnection) asyncAgiStartEvent.getSource();
         channelName = asyncAgiStartEvent.getChannel();
         environment = asyncAgiStartEvent.decodeEnv();
-        asyncAgiEvents = new LinkedBlockingQueue<AsyncAgiEvent>();
+        asyncAgiEvents = new LinkedBlockingQueue<>();
         setIgnoreMissingScripts(true);
     }
 

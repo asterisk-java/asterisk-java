@@ -15,6 +15,11 @@ package org.asteriskjava.util;
  * @author  Josh Bloch
  */
 public class Base64 {
+    
+    private Base64() {
+        
+    }
+    
     /**
      * Translates the specified byte array into a Base64 string as per
      * Preferences.put(byte[]).
@@ -38,8 +43,8 @@ public class Base64 {
         int numFullGroups = aLen/3;
         int numBytesInPartialGroup = aLen - 3*numFullGroups;
         int resultLen = 4*((aLen + 2)/3);
-        StringBuffer result = new StringBuffer(resultLen);
-        char[] intToAlpha = (alternate ? intToAltBase64 : intToBase64);
+        StringBuilder result = new StringBuilder(resultLen);
+        char[] intToAlpha = alternate ? intToAltBase64 : intToBase64;
 
         // Translate all full groups from byte array elements to Base64
         int inCursor = 0;
@@ -78,7 +83,7 @@ public class Base64 {
      * index values into their "Base64 Alphabet" equivalents as specified
      * in Table 1 of RFC 2045.
      */
-    private static final char intToBase64[] = {
+    private static final char[] intToBase64 = {
         'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
         'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
         'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
@@ -93,7 +98,7 @@ public class Base64 {
      * This alternate alphabet does not use the capital letters.  It is
      * designed for use in environments where "case folding" occurs.
      */
-    private static final char intToAltBase64[] = {
+    private static final char[] intToAltBase64 = {
         '!', '"', '#', '$', '%', '&', '\'', '(', ')', ',', '-', '.', ':',
         ';', '<', '>', '@', '[', ']', '^',  '`', '_', '{', '|', '}', '~',
         'a', 'b', 'c', 'd', 'e', 'f', 'g',  'h', 'i', 'j', 'k', 'l', 'm',
@@ -125,7 +130,7 @@ public class Base64 {
     }
 
     private static byte[] base64ToByteArray(String s, boolean alternate) {
-        byte[] alphaToInt = (alternate ?  altBase64ToInt : base64ToInt);
+        byte[] alphaToInt = alternate ?  altBase64ToInt : base64ToInt;
         int sLen = s.length();
         int numGroups = sLen/4;
         if (4*numGroups != sLen)
@@ -192,7 +197,7 @@ public class Base64 {
      * are not in the Base64 alphabet but fall within the bounds of the
      * array are translated to -1.
      */
-    private static final byte base64ToInt[] = {
+    private static final byte[] base64ToInt = {
         -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
         -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
         -1, -1, -1, -1, -1, -1, -1, -1, -1, 62, -1, -1, -1, 63, 52, 53, 54,
@@ -206,7 +211,7 @@ public class Base64 {
      * This array is the analogue of base64ToInt, but for the nonstandard
      * variant that avoids the use of uppercase alphabetic characters.
      */
-    private static final byte altBase64ToInt[] = {
+    private static final byte[] altBase64ToInt = {
         -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
         -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 0, 1,
         2, 3, 4, 5, 6, 7, 8, -1, 62, 9, 10, 11, -1 , 52, 53, 54, 55, 56, 57,

@@ -1,7 +1,5 @@
 package org.asteriskjava.live;
 
-import org.asteriskjava.live.internal.AsteriskAgentImpl;
-
 /**
  * You can register an AsteriskServerListener with an
  * {@link org.asteriskjava.live.AsteriskServer} to be notified about new
@@ -36,7 +34,7 @@ public interface AsteriskServerListener
      * 
      * @param agent
      */
-    void onNewAgent(AsteriskAgentImpl agent);
+    void onNewAgent(AsteriskAgent agent);
     
     /**
      * Called whenever a queue entry ( ~ wapper over channel) joins a {@link org.asteriskjava.live.AsteriskQueue}.

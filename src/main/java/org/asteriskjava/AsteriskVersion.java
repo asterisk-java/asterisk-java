@@ -89,6 +89,13 @@ public class AsteriskVersion implements Comparable<AsteriskVersion>, Serializabl
      */
     public static final AsteriskVersion ASTERISK_13 = new AsteriskVersion(1300, "Asterisk 13");
 
+    /**
+     * Represents the Asterisk 14 series.
+     *
+     * @since 1.1.0
+     */
+    public static final AsteriskVersion ASTERISK_14 = new AsteriskVersion(1400, "Asterisk 14");
+
 
     /**
      * Serial version identifier.
@@ -116,21 +123,7 @@ public class AsteriskVersion implements Comparable<AsteriskVersion>, Serializabl
 
     public int compareTo(AsteriskVersion o)
     {
-        int otherVersion;
-
-        otherVersion = o.version;
-        if (version < otherVersion)
-        {
-            return -1;
-        }
-        else if (version > otherVersion)
-        {
-            return 1;
-        }
-        else
-        {
-            return 0;
-        }
+        return Integer.compare(version, o.version);
     }
 
     @Override

@@ -20,7 +20,8 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 /**
- * Abstract base class for RTCP related events.<p>
+ * Abstract base class for RTCP related events.
+ * <p>
  *
  * @author srt
  * @version $Id$
@@ -40,8 +41,8 @@ public abstract class AbstractRtcpEvent extends ManagerEvent
     }
 
     /**
-     * Returns the short term loss ratio. This is the fraction of packets lost since the last RR
-     * or SR packet was sent.
+     * Returns the short term loss ratio. This is the fraction of packets lost
+     * since the last RR or SR packet was sent.
      *
      * @return the short term loss ratio.
      */
@@ -96,10 +97,7 @@ public abstract class AbstractRtcpEvent extends ManagerEvent
         {
             return Long.parseLong(s.substring(0, s.length() - "(sec)".length()));
         }
-        else
-        {
-            return Long.parseLong(s);
-        }
+        return Long.parseLong(s);
     }
 
     protected Double secStringToDouble(String s)
@@ -113,10 +111,7 @@ public abstract class AbstractRtcpEvent extends ManagerEvent
         {
             return Double.parseDouble(s.substring(0, s.length() - "(sec)".length()));
         }
-        else
-        {
-            return Double.parseDouble(s);
-        }
+        return Double.parseDouble(s);
     }
 
     protected InetAddress stringToAddress(String addressWithPort)

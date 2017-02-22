@@ -1,7 +1,10 @@
 package org.asteriskjava.fastagi.internal;
 
 import org.asteriskjava.fastagi.AgiChannel;
+import org.asteriskjava.fastagi.AgiChannelFactory;
+import org.asteriskjava.fastagi.AgiReader;
 import org.asteriskjava.fastagi.AgiRequest;
+import org.asteriskjava.fastagi.AgiWriter;
 
 /**
  * If no other factory  is passed to DefaultAgiServer's constructor,

@@ -1,10 +1,10 @@
 package org.asteriskjava.manager;
 
+import static org.junit.Assert.assertTrue;
+
 import org.asteriskjava.manager.event.JoinEvent;
 import org.asteriskjava.manager.event.LeaveEvent;
 import org.junit.Test;
-
-import static org.junit.Assert.assertTrue;
 
 public class AbstractManagerEventListenerTest {
 

@@ -1,12 +1,12 @@
 package org.asteriskjava.util;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Set;
 
 /**
- * Some static utility methods to imitate Asterisk specific logic.
- * <br>
- * See Asterisk's <code>util.c</code>.
- * <br>
+ * Some static utility methods to imitate Asterisk specific logic. <br>
+ * See Asterisk's <code>util.c</code>. <br>
  * Client code is not supposed to use this class.
  *
  * @author srt
@@ -19,7 +19,7 @@ public class AstUtil
 
     static
     {
-        TRUE_LITERALS = new HashSet<String>(20);
+        TRUE_LITERALS = new HashSet<>(20);
         TRUE_LITERALS.add("yes");
         TRUE_LITERALS.add("true");
         TRUE_LITERALS.add("y");
@@ -28,12 +28,12 @@ public class AstUtil
         TRUE_LITERALS.add("on");
         TRUE_LITERALS.add("enabled");
 
-        NULL_LITERALS = new HashSet<String>(20);
+        NULL_LITERALS = new HashSet<>(20);
         NULL_LITERALS.add("<unknown>");
         NULL_LITERALS.add("unknown");
         NULL_LITERALS.add("none"); // VarSet event in pbx.c
         NULL_LITERALS.add("<none>");
-        NULL_LITERALS.add("-none-"); // IPaddress in PeerEntryEvent 
+        NULL_LITERALS.add("-none-"); // IPaddress in PeerEntryEvent
         NULL_LITERALS.add("(none)");
         NULL_LITERALS.add("<not set>");
         NULL_LITERALS.add("(not set)");
@@ -45,15 +45,14 @@ public class AstUtil
 
     private AstUtil()
     {
-        //hide constructor
+        // hide constructor
     }
 
     /**
      * Checks if a String represents <code>true</code> or <code>false</code>
-     * according to Asterisk's logic.
-     * <br>
-     * The original implementation is <code>util.c</code> is as follows:
-     * <br>
+     * according to Asterisk's logic. <br>
+     * The original implementation is <code>util.c</code> is as follows: <br>
+     * 
      * <pre>
      *     int ast_true(const char *s)
      *     {
@@ -71,6 +70,7 @@ public class AstUtil
      *         return 0;
      *     }
      * </pre>
+     * 
      * <br>
      * To support the dnd property of
      * {@link org.asteriskjava.manager.event.ZapShowChannelsEvent} this method
@@ -107,21 +107,20 @@ public class AstUtil
     /**
      * @param a an object
      * @param b an object to be compared with {@code a} for equality
-     * @return {@code true} if the arguments are equal to each other
-     * and {@code false} otherwise
+     * @return {@code true} if the arguments are equal to each other and
+     *         {@code false} otherwise
      */
-    public static boolean equals(Object a, Object b)
+    public static boolean isEqual(Object a, Object b)
     {
         return a == b || a != null && a.equals(b);
     }
 
     /**
-     * Parses a string for caller id information.
-     * <br>
-     * The caller id string should be in the form <code>"Some Name" &lt;1234&gt;</code>.
-     * <br>
-     * This resembles <code>ast_callerid_parse</code> in
-     * <code>callerid.c</code> but strips any whitespace.
+     * Parses a string for caller id information. <br>
+     * The caller id string should be in the form
+     * <code>"Some Name" &lt;1234&gt;</code>. <br>
+     * This resembles <code>ast_callerid_parse</code> in <code>callerid.c</code>
+     * but strips any whitespace.
      *
      * @param s the string to parse
      * @return a String[] with name (index 0) and number (index 1)
@@ -153,13 +152,10 @@ public class AstUtil
             result[0] = name;
             return result;
         }
-        else
+        number = s.substring(lbPosition + 1, rbPosition).trim();
+        if (number.length() == 0)
         {
-            number = s.substring(lbPosition + 1, rbPosition).trim();
-            if (number.length() == 0)
-            {
-                number = null;
-            }
+            number = null;
         }
 
         name = s.substring(0, lbPosition).trim();
@@ -178,22 +174,23 @@ public class AstUtil
     }
 
     /**
-     * Checks if the value of s was <code>null</code> in Asterisk.
-     * <br>
+     * Checks if the value of s was <code>null</code> in Asterisk. <br>
      * This method is useful as Asterisk likes to replace <code>null</code>
-     * values with different string values like "unknown", "&lt;unknown&gt;"
-     * or "&lt;null&gt;".
-     * <br>
+     * values with different string values like "unknown", "&lt;unknown&gt;" or
+     * "&lt;null&gt;". <br>
      * To find such replacements search for <code>S_OR</code> in Asterisk's
      * source code. You will find things like
+     * 
      * <pre>
      * S_OR(chan-&gt;cid.cid_num, "&lt;unknown&gt;")
      * fdprintf(fd, "agi_callerid: %s\n", S_OR(chan-&gt;cid.cid_num, "unknown"));
      * </pre>
+     * 
      * and more...
      *
-     * @param s the string to test, may be <code>null</code>. If s is not a string
-     *          the only test that is performed is a check for <code>null</code>.
+     * @param s the string to test, may be <code>null</code>. If s is not a
+     *            string the only test that is performed is a check for
+     *            <code>null</code>.
      * @return <code>true</code> if the s was <code>null</code> in Asterisk;
      *         <code>false</code> otherwise.
      */

@@ -50,20 +50,18 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
     /**
      * Creates a new queue member.
      *
-     * @param server     server this channel belongs to.
-     * @param queue      queue this member is registered to.
-     * @param location   location of member.
-     * @param state      state of this member.
-     * @param paused     <code>true</code> if this member is currently paused, <code>false</code> otherwise.
-     * @param penalty    penalty of this member.
-     * @param membership "dynamic" if the added member is a dynamic queue member, "static"
-     *                   if the added member is a static queue member.
+     * @param server server this channel belongs to.
+     * @param queue queue this member is registered to.
+     * @param location location of member.
+     * @param state state of this member.
+     * @param paused <code>true</code> if this member is currently paused,
+     *            <code>false</code> otherwise.
+     * @param penalty penalty of this member.
+     * @param membership "dynamic" if the added member is a dynamic queue
+     *            member, "static" if the added member is a static queue member.
      */
-    AsteriskQueueMemberImpl(final AsteriskServerImpl server,
-                            final AsteriskQueueImpl queue, String location,
-                            QueueMemberState state, boolean paused,
-                            Integer penalty, String membership,
-                            Integer callsTaken, Long lastCall)
+    AsteriskQueueMemberImpl(final AsteriskServerImpl server, final AsteriskQueueImpl queue, String location,
+            QueueMemberState state, boolean paused, Integer penalty, String membership, Integer callsTaken, Long lastCall)
     {
         super(server);
         this.queue = queue;
@@ -71,7 +69,7 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
         this.state = state;
         this.penalty = penalty;
         this.paused = paused;
-        this.callsTaken =callsTaken;
+        this.callsTaken = callsTaken;
         this.lastCall = lastCall;
         this.membership = membership;
     }
@@ -92,13 +90,15 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
     }
 
     @Override
-	public Integer getCallsTaken() {
-		return callsTaken;
-	}
+    public Integer getCallsTaken()
+    {
+        return callsTaken;
+    }
 
-    public void setCallsTaken(Integer callsTaken) {
-		this.callsTaken = callsTaken;
-	}
+    public void setCallsTaken(Integer callsTaken)
+    {
+        this.callsTaken = callsTaken;
+    }
 
     /**
      * Returns the time the last successful call answered by the added member
@@ -108,15 +108,18 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
      *         answered by the added member was hungup.
      */
     @Override
-	public Long getLastCall() {
-		return lastCall;
-	}
+    public Long getLastCall()
+    {
+        return lastCall;
+    }
 
-    public void setLastCall(Long lastCall) {
-		this.lastCall = lastCall;
-	}
+    public void setLastCall(Long lastCall)
+    {
+        this.lastCall = lastCall;
+    }
 
-    @Deprecated public boolean getPaused()
+    @Deprecated
+    public boolean getPaused()
     {
         return isPaused();
     }
@@ -142,18 +145,15 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
 
         if (response instanceof ManagerError)
         {
-            //Message: Interface not found
+            // Message: Interface not found
             if (action.getQueue() != null)
             {
-                //Message: Interface not found
-                throw new NoSuchInterfaceException("Unable to change paused state for '" + action.getInterface() + "' on '" +
-                        action.getQueue() + "': " + response.getMessage());
+                // Message: Interface not found
+                throw new NoSuchInterfaceException("Unable to change paused state for '" + action.getInterface() + "' on '"
+                        + action.getQueue() + "': " + response.getMessage());
             }
-            else
-            {
-                throw new NoSuchInterfaceException("Unable to change paused state for '" + action.getInterface() +
-                        "' on all queues: " + response.getMessage());
-            }
+            throw new NoSuchInterfaceException("Unable to change paused state for '" + action.getInterface()
+                    + "' on all queues: " + response.getMessage());
         }
     }
 
@@ -177,28 +177,28 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
         return penalty;
     }
 
-    public void setPenalty(int penalty) throws IllegalArgumentException, ManagerCommunicationException, InvalidPenaltyException
+    public void setPenalty(int penalty)
+            throws IllegalArgumentException, ManagerCommunicationException, InvalidPenaltyException
     {
         if (penalty < 0)
         {
             throw new IllegalArgumentException("Penalty must not be negative");
         }
 
-        final ManagerResponse response = server.sendAction(
-                new QueuePenaltyAction(location, penalty, queue.getName()));
+        final ManagerResponse response = server.sendAction(new QueuePenaltyAction(location, penalty, queue.getName()));
         if (response instanceof ManagerError)
         {
-            throw new InvalidPenaltyException("Unable to set penalty for '" + location + "' on '" +
-                    queue.getName() + "': " + response.getMessage());
+            throw new InvalidPenaltyException(
+                    "Unable to set penalty for '" + location + "' on '" + queue.getName() + "': " + response.getMessage());
         }
     }
 
     @Override
     public String toString()
     {
-        final StringBuffer sb;
+        final StringBuilder sb;
 
-        sb = new StringBuffer("AsteriskQueueMember[");
+        sb = new StringBuilder("AsteriskQueueMember[");
         sb.append("location='").append(location).append("'");
         sb.append("state='").append(state).append("'");
         sb.append("paused='").append(paused).append("'");
@@ -214,22 +214,24 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
 
     synchronized boolean stateChanged(QueueMemberState state)
     {
-        if(!AstUtil.equals(this.state, state)){
-    		QueueMemberState oldState = this.state;
-        	this.state = state;
-        	firePropertyChange(PROPERTY_STATE, oldState, state);
-        	return true;
-    	}
-    	return false;
+        if (!AstUtil.isEqual(this.state, state))
+        {
+            QueueMemberState oldState = this.state;
+            this.state = state;
+            firePropertyChange(PROPERTY_STATE, oldState, state);
+            return true;
+        }
+        return false;
     }
 
     synchronized boolean penaltyChanged(Integer penalty)
     {
-        if(!AstUtil.equals(this.penalty, penalty)){
-        	Integer oldPenalty = this.penalty;
-        	this.penalty = penalty;
-        	firePropertyChange(PROPERTY_PENALTY, oldPenalty, penalty);
-        	return true;
+        if (!AstUtil.isEqual(this.penalty, penalty))
+        {
+            Integer oldPenalty = this.penalty;
+            this.penalty = penalty;
+            firePropertyChange(PROPERTY_PENALTY, oldPenalty, penalty);
+            return true;
         }
 
         return false;
@@ -237,32 +239,37 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
 
     synchronized boolean pausedChanged(boolean paused)
     {
-    	if(!AstUtil.equals(this.paused, paused)){
-    		boolean oldPaused = this.paused;
-    		this.paused = paused;
-    		firePropertyChange(PROPERTY_PAUSED, oldPaused, paused);
-    		return true;
-    	}
-    	return false;
+        if (!AstUtil.isEqual(this.paused, paused))
+        {
+            boolean oldPaused = this.paused;
+            this.paused = paused;
+            firePropertyChange(PROPERTY_PAUSED, oldPaused, paused);
+            return true;
+        }
+        return false;
     }
 
-    synchronized boolean callsTakenChanged(Integer callsTaken){
-    	if(!AstUtil.equals(this.callsTaken, callsTaken)){
-        	Integer oldcallsTaken = this.callsTaken;
-        	this.callsTaken = callsTaken;
-        	firePropertyChange(PROPERTY_CALLSTAKEN, oldcallsTaken, callsTaken);
-        	return true;
+    synchronized boolean callsTakenChanged(Integer callsTaken)
+    {
+        if (!AstUtil.isEqual(this.callsTaken, callsTaken))
+        {
+            Integer oldcallsTaken = this.callsTaken;
+            this.callsTaken = callsTaken;
+            firePropertyChange(PROPERTY_CALLSTAKEN, oldcallsTaken, callsTaken);
+            return true;
         }
-    	return false;
+        return false;
     }
 
-    synchronized boolean lastCallChanged(Long lastCall){
-    	if(!AstUtil.equals(this.lastCall, lastCall)){
-        	Long oldlastCall = this.lastCall;
-        	this.lastCall = lastCall;
-        	firePropertyChange(PROPERTY_LASTCALL, oldlastCall, lastCall);
-        	return true;
+    synchronized boolean lastCallChanged(Long lastCall)
+    {
+        if (!AstUtil.isEqual(this.lastCall, lastCall))
+        {
+            Long oldlastCall = this.lastCall;
+            this.lastCall = lastCall;
+            firePropertyChange(PROPERTY_LASTCALL, oldlastCall, lastCall);
+            return true;
         }
-    	return false;
+        return false;
     }
 }

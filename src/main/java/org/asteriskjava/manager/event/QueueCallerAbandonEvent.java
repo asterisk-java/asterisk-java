@@ -36,7 +36,11 @@ public class QueueCallerAbandonEvent extends QueueEvent
     private Integer position;
     private Integer originalPosition;
     private Integer holdTime;
-
+    private String linkedId;
+    private String language;
+    
+    private String accountcode;
+    
     /**
      * @param source
      */
@@ -93,4 +97,34 @@ public class QueueCallerAbandonEvent extends QueueEvent
     {
         this.position = position;
     }
+
+    public String getLanguage()
+    {
+        return language;
+    }
+
+    public void setLanguage(String language)
+    {
+        this.language = language;
+    }
+
+    public String getLinkedId()
+    {
+        return linkedId;
+    }
+
+    public void setLinkedId(String linkedId)
+    {
+        this.linkedId = linkedId;
+    }
+
+	public String getAccountcode()
+	{
+		return accountcode;
+	}
+
+	public void setAccountcode(String accountcode)
+	{
+		this.accountcode = accountcode;
+	}
 }

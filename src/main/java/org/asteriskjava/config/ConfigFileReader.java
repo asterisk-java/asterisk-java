@@ -1,16 +1,24 @@
 package org.asteriskjava.config;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.CharBuffer;
-import java.util.*;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 /**
- * Reads and parses Asterisk configuration files.
- * <br>
- * See Asterisk's <code>main/config.c</code>.
- * <br>
+ * Reads and parses Asterisk configuration files. <br>
+ * See Asterisk's <code>main/config.c</code>. <br>
  * Client code is not supposed to use this class.
  *
  * @author srt
@@ -21,11 +29,11 @@ public class ConfigFileReader
     private static final int MAX_LINE_LENGTH = 8192;
     private static char COMMENT_META = ';';
     private static char COMMENT_TAG = '-';
-    private static final Set<Class<?>> WARNING_CLASSES;
+    private static final Set<Class< ? >> WARNING_CLASSES;
 
     static
     {
-        WARNING_CLASSES = new HashSet<Class<?>>();
+        WARNING_CLASSES = new HashSet<>();
         WARNING_CLASSES.add(MissingEqualSignException.class);
         WARNING_CLASSES.add(UnknownDirectiveException.class);
         WARNING_CLASSES.add(MissingDirectiveParameterException.class);
@@ -41,34 +49,25 @@ public class ConfigFileReader
     public ConfigFileReader()
     {
         this.commentBlock = new StringBuilder();
-        this.categories = new LinkedHashMap<String, Category>();
-        this.warnings = new ArrayList<ConfigParseException>();
+        this.categories = new LinkedHashMap<>();
+        this.warnings = new ArrayList<>();
     }
 
-    public ConfigFile readFile(String configfile) throws IOException, ConfigParseException
+    public ConfigFile readFile(String configfile)
     {
         final ConfigFile result;
-        final BufferedReader reader;
 
-        reader = new BufferedReader(new FileReader(configfile));
-        try
+        try (BufferedReader reader = new BufferedReader(
+                new InputStreamReader(new FileInputStream(configfile), StandardCharsets.UTF_8)))
         {
             readFile(configfile, reader);
         }
-        finally
+        catch (Exception e)
         {
-            try
-            {
-                reader.close();
-            }
-            catch (Exception e) // NOPMD
-            {
-                // ignore
-            }
+            // ignored
         }
 
         result = new ConfigFileImpl(configfile, new TreeMap<String, Category>(categories));
-
 
         return result;
     }
@@ -89,7 +88,7 @@ public class ConfigFileReader
 
     public Collection<ConfigParseException> getWarnings()
     {
-        return new ArrayList<ConfigParseException>(warnings);
+        return new ArrayList<>(warnings);
     }
 
     void readFile(String configfile, BufferedReader reader) throws IOException, ConfigParseException
@@ -127,7 +126,7 @@ public class ConfigFileReader
 
             position = buffer.position();
             c = buffer.get();
-            //System.out.println(position + ": " + c);
+            // System.out.println(position + ": " + c);
 
             if (c == COMMENT_META)
             {
@@ -135,15 +134,14 @@ public class ConfigFileReader
                 {
                     /* Escaped semicolons aren't comments. */
                 } // NOPMD
-                else if (buffer.remaining() >= 3
-                        && buffer.get(position + 1) == COMMENT_TAG
-                        && buffer.get(position + 2) == COMMENT_TAG
-                        && buffer.get(position + 3) != COMMENT_TAG)
+                else if (buffer.remaining() >= 3 && buffer.get(position + 1) == COMMENT_TAG
+                        && buffer.get(position + 2) == COMMENT_TAG && buffer.get(position + 3) != COMMENT_TAG)
                 {
                     /* Meta-Comment start detected ";--" */
 
                     currentCommentLevel++;
-                    //System.out.println("Comment start, new level: " + currentCommentLevel);
+                    // System.out.println("Comment start, new level: " +
+                    // currentCommentLevel);
 
                     if (!inComment())
                     {
@@ -153,9 +151,7 @@ public class ConfigFileReader
                         continue;
                     }
                 }
-                else if (inComment()
-                        && position >= 2
-                        && buffer.get(position - 1) == COMMENT_TAG
+                else if (inComment() && position >= 2 && buffer.get(position - 1) == COMMENT_TAG
                         && buffer.get(position - 2) == COMMENT_TAG)
                 {
                     /* Meta-Comment end detected */
@@ -166,22 +162,24 @@ public class ConfigFileReader
                     {
                         buffer.reset();
 
-                        //int commentLength = (position + 1) - buffer.position();
+                        // int commentLength = (position + 1) -
+                        // buffer.position();
 
-                        //buffer.reset();
-                        //for (int i = 0; i < commentLength; i++)
-                        //{
-                        //    commentBlock.append(buffer.get());
-                        //}
+                        // buffer.reset();
+                        // for (int i = 0; i < commentLength; i++)
+                        // {
+                        // commentBlock.append(buffer.get());
+                        // }
 
                         commentBlock.append(c);
-                        //System.out.println("Comment end at " + position + ": '" + commentBlock.toString() + "'");
+                        // System.out.println("Comment end at " + position + ":
+                        // '" + commentBlock.toString() + "'");
 
                         buffer.position(position + 1);
                         buffer.compact();
                         buffer.flip();
 
-                        //System.out.println("Buffer compacted");
+                        // System.out.println("Buffer compacted");
                         continue;
                     }
                 }
@@ -189,21 +187,22 @@ public class ConfigFileReader
                 {
                     if (!inComment())
                     {
-                        /* If ; is found, and we are not nested in a comment, we immediately stop all comment processing */
-                        //System.out.println("Found ; while not in comment");
+                        /*
+                         * If ; is found, and we are not nested in a comment, we
+                         * immediately stop all comment processing
+                         */
+                        // System.out.println("Found ; while not in comment");
                         while (buffer.hasRemaining())
                         {
                             lineCommentBuilder.append(buffer.get());
                         }
                         break;
                     }
-                    else
-                    {
-                        /* Found ';' while in comment */
-                    } // NOPMD
+
+                    /* Found ';' while in comment */
+                    // NOPMD
                 }
             }
-
 
             if (inComment())
             {
@@ -211,7 +210,7 @@ public class ConfigFileReader
             }
             else
             {
-                //System.out.println("Added '" + c + "' to processLine");
+                // System.out.println("Added '" + c + "' to processLine");
                 processLineBuilder.append(c);
             }
         }
@@ -223,7 +222,7 @@ public class ConfigFileReader
         processLineString = processLineBuilder.toString().trim();
         lineCommentString = lineCommentBuilder.toString().trim();
 
-        //System.out.println("process line: '" + processLineString + "'");
+        // System.out.println("process line: '" + processLineString + "'");
         if (processLineString.length() == 0)
         {
             if (lineCommentString.length() != 0)
@@ -244,16 +243,14 @@ public class ConfigFileReader
         }
         catch (ConfigParseException e)
         {
-            // some parsing exceptions are treated as warnings by Asterisk, we mirror this behavior.
+            // some parsing exceptions are treated as warnings by Asterisk, we
+            // mirror this behavior.
             if (WARNING_CLASSES.contains(e.getClass()))
             {
                 warnings.add(e);
                 return null;
             }
-            else
-            {
-                throw e;
-            }
+            throw e;
         }
 
         if (lineCommentString.length() != 0)
@@ -291,8 +288,8 @@ public class ConfigFileReader
         {
             if (currentCategory == null)
             {
-                throw new ConfigParseException(configfile, lineno,
-                        "parse error: No category context for line %d of %s", lineno, configfile);
+                throw new ConfigParseException(configfile, lineno, "parse error: No category context for line %d of %s",
+                        lineno, configfile);
             }
 
             configElement = parseVariable(configfile, lineno, line);
@@ -308,20 +305,20 @@ public class ConfigFileReader
         final String name;
         final int nameEndPos;
 
-        /* format is one of the following:
-        * [foo]        define a new category named 'foo'
-        * [foo](!)     define a new template category named 'foo'
-        * [foo](+)     append to category 'foo', error if foo does not exist.
-        * [foo](a)     define a new category and inherit from template a.
-        *              You can put a comma-separated list of templates and '!' and '+'
-        *              between parentheses, with obvious meaning.
-        */
+        /*
+         * format is one of the following: [foo] define a new category named
+         * 'foo' [foo](!) define a new template category named 'foo' [foo](+)
+         * append to category 'foo', error if foo does not exist. [foo](a)
+         * define a new category and inherit from template a. You can put a
+         * comma-separated list of templates and '!' and '+' between
+         * parentheses, with obvious meaning.
+         */
 
         nameEndPos = line.indexOf(']');
         if (nameEndPos == -1)
         {
-            throw new ConfigParseException(configfile, lineno,
-                    "parse error: no closing ']', line %d of %s", lineno, configfile);
+            throw new ConfigParseException(configfile, lineno, "parse error: no closing ']', line %d of %s", lineno,
+                    configfile);
         }
         name = line.substring(1, nameEndPos);
         category = new Category(configfile, lineno, name);
@@ -337,8 +334,8 @@ public class ConfigFileReader
             optionsEndPos = optionsString.indexOf(')');
             if (optionsEndPos == -1)
             {
-                throw new ConfigParseException(configfile, lineno,
-                        "parse error: no closing ')', line %d of %s", lineno, configfile);
+                throw new ConfigParseException(configfile, lineno, "parse error: no closing ')', line %d of %s", lineno,
+                        configfile);
             }
 
             options = optionsString.substring(1, optionsEndPos).split(",");
@@ -356,12 +353,12 @@ public class ConfigFileReader
                     if (categoryToAddTo == null)
                     {
                         throw new ConfigParseException(configfile, lineno,
-                                "Category addition requested, but category '%s' does not exist, line %d of %s",
-                                name, lineno, configfile);
+                                "Category addition requested, but category '%s' does not exist, line %d of %s", name, lineno,
+                                configfile);
                     }
 
-                    //todo implement category addition
-                    //category = categoryToAddTo;
+                    // todo implement category addition
+                    // category = categoryToAddTo;
                 }
                 else
                 {
@@ -371,8 +368,8 @@ public class ConfigFileReader
                     if (baseCategory == null)
                     {
                         throw new ConfigParseException(configfile, lineno,
-                                "Inheritance requested, but category '%s' does not exist, line %d of %s",
-                                cur, lineno, configfile);
+                                "Inheritance requested, but category '%s' does not exist, line %d of %s", cur, lineno,
+                                configfile);
                     }
                     inheritCategory(category, baseCategory);
                 }
@@ -414,15 +411,14 @@ public class ConfigFileReader
 
         param = paramBuilder.toString().trim();
 
-        if (param.length() != 0 &&
-                (param.charAt(0) == '"' || param.charAt(0) == '<' || param.charAt(0) == '>'))
+        if (param.length() != 0 && (param.charAt(0) == '"' || param.charAt(0) == '<' || param.charAt(0) == '>'))
         {
             param = param.substring(1);
         }
 
         int endPos = param.length() - 1;
-        if (param.length() != 0 &&
-                (param.charAt(endPos) == '"' || param.charAt(endPos) == '<' || param.charAt(endPos) == '>'))
+        if (param.length() != 0
+                && (param.charAt(endPos) == '"' || param.charAt(endPos) == '<' || param.charAt(endPos) == '>'))
         {
             param = param.substring(0, endPos);
         }
@@ -437,18 +433,19 @@ public class ConfigFileReader
         }
         else
         {
-            throw new UnknownDirectiveException(configfile, lineno,
-                    "Unknown directive '%s' at line %d of %s", name, lineno, configfile);
+            throw new UnknownDirectiveException(configfile, lineno, "Unknown directive '%s' at line %d of %s", name, lineno,
+                    configfile);
         }
 
         if (param.length() == 0)
         {
+            if (name == null)
+            {
+                name = "";
+            }
             throw new MissingDirectiveParameterException(configfile, lineno,
-                    "Directive '#%s' needs an argument (%s) at line %d of %s",
-                    name.toLowerCase(Locale.US),
-                    "include".equalsIgnoreCase(name) ? "filename" : "/path/to/executable",
-                    lineno,
-                    configfile);
+                    "Directive '#%s' needs an argument (%s) at line %d of %s", name.toLowerCase(Locale.US),
+                    "include".equalsIgnoreCase(name) ? "filename" : "/path/to/executable", lineno, configfile);
         }
 
         return directive;
@@ -463,8 +460,8 @@ public class ConfigFileReader
         pos = line.indexOf('=');
         if (pos == -1)
         {
-            throw new MissingEqualSignException(configfile, lineno,
-                    "No '=' (equal sign) in line %d of %s", lineno, configfile);
+            throw new MissingEqualSignException(configfile, lineno, "No '=' (equal sign) in line %d of %s", lineno,
+                    configfile);
         }
 
         name = line.substring(0, pos).trim();

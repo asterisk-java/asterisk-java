@@ -19,7 +19,7 @@ public class SipShowPeerResponse extends ManagerResponse
     private String chanObjectType;
     private Boolean secretExist;
     private Boolean md5SecretExist;
-	private Boolean remoteSecretExist;
+    private Boolean remoteSecretExist;
     private String context;
     private String language;
     private String accountCode;
@@ -41,10 +41,10 @@ public class SipShowPeerResponse extends ManagerResponse
     private Boolean sipAuthInsecure;
     private Boolean sipNatSupport;
     private Boolean acl;
-	private Boolean sipT38support;
-	private String sipT38ec;
-	private Integer sipT38MaxDtgrm;
-	private Boolean sipDirectMedia;
+    private Boolean sipT38support;
+    private String sipT38ec;
+    private Long sipT38MaxDtgrm;
+    private Boolean sipDirectMedia;
     private Boolean sipCanReinvite;
     private Boolean sipPromiscRedir;
     private Boolean sipUserPhone;
@@ -68,19 +68,18 @@ public class SipShowPeerResponse extends ManagerResponse
     private String sipUserAgent;
     private String regContact;
     private Integer qualifyFreq; // "%d ms"
-	private String parkingLot;	
-	private Integer maxForwards;
-	
-	private String toneZone;	
-	private String sipUseReasonHeader;
-	private String sipEncryption;
-	private String sipForcerport;
-	private String sipRtpEngine;
-	private String sipComedia;
-	private String mohsuggest;
-	
+    private String parkingLot;
+    private Integer maxForwards;
 
-	private Map<String, String> chanVariable;
+    private String toneZone;
+    private String sipUseReasonHeader;
+    private String sipEncryption;
+    private String sipForcerport;
+    private String sipRtpEngine;
+    private String sipComedia;
+    private String mohsuggest;
+
+    private Map<String, String> chanVariable;
 
     public String getChannelType()
     {
@@ -132,17 +131,17 @@ public class SipShowPeerResponse extends ManagerResponse
         this.md5SecretExist = md5SecretExist;
     }
 
-	public Boolean getRemoteSecretExist()
-	{
-		return remoteSecretExist;
-	}
+    public Boolean getRemoteSecretExist()
+    {
+        return remoteSecretExist;
+    }
 
-	public void setRemoteSecretExist(Boolean remoteSecretExist)
-	{
-		this.remoteSecretExist = remoteSecretExist;
-	}
+    public void setRemoteSecretExist(Boolean remoteSecretExist)
+    {
+        this.remoteSecretExist = remoteSecretExist;
+    }
 
-	public String getContext()
+    public String getContext()
     {
         return context;
     }
@@ -352,47 +351,62 @@ public class SipShowPeerResponse extends ManagerResponse
         this.acl = acl;
     }
 
-	public Boolean getSipT38support()
-	{
-		return sipT38support;
-	}
+    public Boolean getSipT38support()
+    {
+        return sipT38support;
+    }
 
-	public void setSipT38support(Boolean sipT38support)
-	{
-		this.sipT38support = sipT38support;
-	}
+    public void setSipT38support(Boolean sipT38support)
+    {
+        this.sipT38support = sipT38support;
+    }
 
-	public String getSipT38ec()
-	{
-		return sipT38ec;
-	}
+    public String getSipT38ec()
+    {
+        return sipT38ec;
+    }
 
-	public void setSipT38ec(String sipT38ec)
-	{
-		this.sipT38ec = sipT38ec;
-	}
+    public void setSipT38ec(String sipT38ec)
+    {
+        this.sipT38ec = sipT38ec;
+    }
 
-	public Integer getSipT38MaxDtgrm()
-	{
-		return sipT38MaxDtgrm;
-	}
+    public Long getSipT38MaxDtgrm()
+    {
+        return sipT38MaxDtgrm;
+    }
 
-	public void setSipT38MaxDtgrm(Integer sipT38MaxDtgrm)
-	{
-		this.sipT38MaxDtgrm = sipT38MaxDtgrm;
-	}
+    public void setSipT38MaxDtgrm(Long sipT38MaxDtgrm)
+    {
 
-	public Boolean getSipDirectMedia()
-	{
-		return sipDirectMedia;
-	}
+        /**
+         * asterisk returns sipT38MaxDtgrm as 4394967295L when the value is -1
+         * so I'm taking a long and then changing it to -1 if required
+         */
+        if (sipT38MaxDtgrm == 4294967295L)
+        {
+            this.sipT38MaxDtgrm = -1L;
+        }
+        else
+        {
+            if (sipT38MaxDtgrm < Integer.MAX_VALUE && sipT38MaxDtgrm > Integer.MIN_VALUE)
+            {
+                this.sipT38MaxDtgrm = sipT38MaxDtgrm;
+            }
+        }
+    }
 
-	public void setSipDirectMedia(Boolean sipDirectMedia)
-	{
-		this.sipDirectMedia = sipDirectMedia;
-	}
+    public Boolean getSipDirectMedia()
+    {
+        return sipDirectMedia;
+    }
 
-	public Boolean getSipCanReinvite()
+    public void setSipDirectMedia(Boolean sipDirectMedia)
+    {
+        this.sipDirectMedia = sipDirectMedia;
+    }
+
+    public Boolean getSipCanReinvite()
     {
         return sipCanReinvite;
     }
@@ -602,17 +616,17 @@ public class SipShowPeerResponse extends ManagerResponse
         this.sipUserAgent = sipUserAgent;
     }
 
-	public String getParkingLot()
-	{
-		return parkingLot;
-	}
+    public String getParkingLot()
+    {
+        return parkingLot;
+    }
 
-	public void setParkingLot(String parkingLot)
-	{
-		this.parkingLot = parkingLot;
-	}
+    public void setParkingLot(String parkingLot)
+    {
+        this.parkingLot = parkingLot;
+    }
 
-	public String getRegContact()
+    public String getRegContact()
     {
         return regContact;
     }
@@ -646,216 +660,230 @@ public class SipShowPeerResponse extends ManagerResponse
         this.qualifyFreq = stringToInteger(qualifyFreq, "ms");
     }
 
-	public Map<String, String> getChanVariable() {
-		return chanVariable;
-	}
+    public Map<String, String> getChanVariable()
+    {
+        return chanVariable;
+    }
 
-	public void setChanVariable(final Map<String, String> chanVariable) {
-		this.chanVariable = chanVariable;
-	}
-	
+    public void setChanVariable(final Map<String, String> chanVariable)
+    {
+        this.chanVariable = chanVariable;
+    }
 
-	public Integer getMaxForwards() {
-		return maxForwards;
-	}
+    public Integer getMaxForwards()
+    {
+        return maxForwards;
+    }
 
-	public void setMaxForwards(Integer maxForwards) {
-		this.maxForwards = maxForwards;
-	}
+    public void setMaxForwards(Integer maxForwards)
+    {
+        this.maxForwards = maxForwards;
+    }
 
-	public String getToneZone() {
-		return toneZone;
-	}
+    public String getToneZone()
+    {
+        return toneZone;
+    }
 
-	public void setToneZone(String toneZone) {
-		this.toneZone = toneZone;
-	}
+    public void setToneZone(String toneZone)
+    {
+        this.toneZone = toneZone;
+    }
 
-	public String getSipUseReasonHeader() {
-		return sipUseReasonHeader;
-	}
+    public String getSipUseReasonHeader()
+    {
+        return sipUseReasonHeader;
+    }
 
-	public void setSipUseReasonHeader(String sipUseReasonHeader) {
-		this.sipUseReasonHeader = sipUseReasonHeader;
-	}
+    public void setSipUseReasonHeader(String sipUseReasonHeader)
+    {
+        this.sipUseReasonHeader = sipUseReasonHeader;
+    }
 
-	
+    public String getSipEncryption()
+    {
+        return sipEncryption;
+    }
 
-	public String getSipEncryption() {
-		return sipEncryption;
-	}
+    public void setSipEncryption(String sipEncryption)
+    {
+        this.sipEncryption = sipEncryption;
+    }
 
-	public void setSipEncryption(String sipEncryption) {
-		this.sipEncryption = sipEncryption;
-	}
+    public String getSipForcerport()
+    {
+        return sipForcerport;
+    }
 
-	public String getSipForcerport() {
-		return sipForcerport;
-	}
+    public void setSipForcerport(String sipForcerport)
+    {
+        this.sipForcerport = sipForcerport;
+    }
 
-	public void setSipForcerport(String sipForcerport) {
-		this.sipForcerport = sipForcerport;
-	}
+    public String getSipRtpEngine()
+    {
+        return sipRtpEngine;
+    }
 
-	public String getSipRtpEngine() {
-		return sipRtpEngine;
-	}
+    public void setSipRtpEngine(String sipRtpEngine)
+    {
+        this.sipRtpEngine = sipRtpEngine;
+    }
 
-	public void setSipRtpEngine(String sipRtpEngine) {
-		this.sipRtpEngine = sipRtpEngine;
-	}
+    public String getSipComedia()
+    {
+        return sipComedia;
+    }
 
-	public String getSipComedia() {
-		return sipComedia;
-	}
+    public void setSipComedia(String sipComedia)
+    {
+        this.sipComedia = sipComedia;
+    }
 
-	public void setSipComedia(String sipComedia) {
-		this.sipComedia = sipComedia;
-	}
-	
+    public String getMohsuggest()
+    {
+        return mohsuggest;
+    }
 
-	public String getMohsuggest() {
-		return mohsuggest;
-	}
+    public void setMohsuggest(String mohsuggest)
+    {
+        this.mohsuggest = mohsuggest;
+    }
 
-	public void setMohsuggest(String mohsuggest) {
-		this.mohsuggest = mohsuggest;
-	}
+    @Override
+    public String toString()
+    {
+        StringBuilder builder = new StringBuilder();
+        builder.append("SipShowPeerResponse [channelType=");
+        builder.append(channelType);
+        builder.append(", objectName=");
+        builder.append(objectName);
+        builder.append(", chanObjectType=");
+        builder.append(chanObjectType);
+        builder.append(", secretExist=");
+        builder.append(secretExist);
+        builder.append(", md5SecretExist=");
+        builder.append(md5SecretExist);
+        builder.append(", remoteSecretExist=");
+        builder.append(remoteSecretExist);
+        builder.append(", context=");
+        builder.append(context);
+        builder.append(", language=");
+        builder.append(language);
+        builder.append(", accountCode=");
+        builder.append(accountCode);
+        builder.append(", amaFlags=");
+        builder.append(amaFlags);
+        builder.append(", cidCallingPres=");
+        builder.append(cidCallingPres);
+        builder.append(", sipFromUser=");
+        builder.append(sipFromUser);
+        builder.append(", sipFromDomain=");
+        builder.append(sipFromDomain);
+        builder.append(", callGroup=");
+        builder.append(callGroup);
+        builder.append(", pickupGroup=");
+        builder.append(pickupGroup);
+        builder.append(", voiceMailbox=");
+        builder.append(voiceMailbox);
+        builder.append(", transferMode=");
+        builder.append(transferMode);
+        builder.append(", lastMsgsSent=");
+        builder.append(lastMsgsSent);
+        builder.append(", callLimit=");
+        builder.append(callLimit);
+        builder.append(", busyLevel=");
+        builder.append(busyLevel);
+        builder.append(", maxCallBr=");
+        builder.append(maxCallBr);
+        builder.append(", dynamic=");
+        builder.append(dynamic);
+        builder.append(", callerId=");
+        builder.append(callerId);
+        builder.append(", regExpire=");
+        builder.append(regExpire);
+        builder.append(", sipAuthInsecure=");
+        builder.append(sipAuthInsecure);
+        builder.append(", sipNatSupport=");
+        builder.append(sipNatSupport);
+        builder.append(", acl=");
+        builder.append(acl);
+        builder.append(", sipT38support=");
+        builder.append(sipT38support);
+        builder.append(", sipT38ec=");
+        builder.append(sipT38ec);
+        builder.append(", sipT38MaxDtgrm=");
+        builder.append(sipT38MaxDtgrm);
+        builder.append(", sipDirectMedia=");
+        builder.append(sipDirectMedia);
+        builder.append(", sipCanReinvite=");
+        builder.append(sipCanReinvite);
+        builder.append(", sipPromiscRedir=");
+        builder.append(sipPromiscRedir);
+        builder.append(", sipUserPhone=");
+        builder.append(sipUserPhone);
+        builder.append(", sipVideoSupport=");
+        builder.append(sipVideoSupport);
+        builder.append(", sipTextSupport=");
+        builder.append(sipTextSupport);
+        builder.append(", sipSessTimers=");
+        builder.append(sipSessTimers);
+        builder.append(", sipSessRefresh=");
+        builder.append(sipSessRefresh);
+        builder.append(", sipSessExpires=");
+        builder.append(sipSessExpires);
+        builder.append(", sipSessMin=");
+        builder.append(sipSessMin);
+        builder.append(", sipDtmfMode=");
+        builder.append(sipDtmfMode);
+        builder.append(", toHost=");
+        builder.append(toHost);
+        builder.append(", addressIp=");
+        builder.append(addressIp);
+        builder.append(", addressPort=");
+        builder.append(addressPort);
+        builder.append(", defaultAddrIp=");
+        builder.append(defaultAddrIp);
+        builder.append(", defaultAddrPort=");
+        builder.append(defaultAddrPort);
+        builder.append(", defaultUsername=");
+        builder.append(defaultUsername);
+        builder.append(", regExtension=");
+        builder.append(regExtension);
+        builder.append(", codecs=");
+        builder.append(codecs);
+        builder.append(", codecOrder=");
+        builder.append(codecOrder);
+        builder.append(", status=");
+        builder.append(status);
+        builder.append(", sipUserAgent=");
+        builder.append(sipUserAgent);
+        builder.append(", regContact=");
+        builder.append(regContact);
+        builder.append(", qualifyFreq=");
+        builder.append(qualifyFreq);
+        builder.append(", parkingLot=");
+        builder.append(parkingLot);
+        builder.append(", maxForwards=");
+        builder.append(maxForwards);
+        builder.append(", toneZone=");
+        builder.append(toneZone);
+        builder.append(", sipUseReasonHeader=");
+        builder.append(sipUseReasonHeader);
+        builder.append(", sipEncryption=");
+        builder.append(sipEncryption);
+        builder.append(", sipForcerport=");
+        builder.append(sipForcerport);
+        builder.append(", sipRtpEngine=");
+        builder.append(sipRtpEngine);
+        builder.append(", sipComedia=");
+        builder.append(sipComedia);
+        builder.append(", chanVariable=");
+        builder.append(chanVariable);
+        builder.append(", mohSuggest=");
+        builder.append(mohsuggest);
+        builder.append("]");
+        return builder.toString();
+    }
 
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("SipShowPeerResponse [channelType=");
-		builder.append(channelType);
-		builder.append(", objectName=");
-		builder.append(objectName);
-		builder.append(", chanObjectType=");
-		builder.append(chanObjectType);
-		builder.append(", secretExist=");
-		builder.append(secretExist);
-		builder.append(", md5SecretExist=");
-		builder.append(md5SecretExist);
-		builder.append(", remoteSecretExist=");
-		builder.append(remoteSecretExist);
-		builder.append(", context=");
-		builder.append(context);
-		builder.append(", language=");
-		builder.append(language);
-		builder.append(", accountCode=");
-		builder.append(accountCode);
-		builder.append(", amaFlags=");
-		builder.append(amaFlags);
-		builder.append(", cidCallingPres=");
-		builder.append(cidCallingPres);
-		builder.append(", sipFromUser=");
-		builder.append(sipFromUser);
-		builder.append(", sipFromDomain=");
-		builder.append(sipFromDomain);
-		builder.append(", callGroup=");
-		builder.append(callGroup);
-		builder.append(", pickupGroup=");
-		builder.append(pickupGroup);
-		builder.append(", voiceMailbox=");
-		builder.append(voiceMailbox);
-		builder.append(", transferMode=");
-		builder.append(transferMode);
-		builder.append(", lastMsgsSent=");
-		builder.append(lastMsgsSent);
-		builder.append(", callLimit=");
-		builder.append(callLimit);
-		builder.append(", busyLevel=");
-		builder.append(busyLevel);
-		builder.append(", maxCallBr=");
-		builder.append(maxCallBr);
-		builder.append(", dynamic=");
-		builder.append(dynamic);
-		builder.append(", callerId=");
-		builder.append(callerId);
-		builder.append(", regExpire=");
-		builder.append(regExpire);
-		builder.append(", sipAuthInsecure=");
-		builder.append(sipAuthInsecure);
-		builder.append(", sipNatSupport=");
-		builder.append(sipNatSupport);
-		builder.append(", acl=");
-		builder.append(acl);
-		builder.append(", sipT38support=");
-		builder.append(sipT38support);
-		builder.append(", sipT38ec=");
-		builder.append(sipT38ec);
-		builder.append(", sipT38MaxDtgrm=");
-		builder.append(sipT38MaxDtgrm);
-		builder.append(", sipDirectMedia=");
-		builder.append(sipDirectMedia);
-		builder.append(", sipCanReinvite=");
-		builder.append(sipCanReinvite);
-		builder.append(", sipPromiscRedir=");
-		builder.append(sipPromiscRedir);
-		builder.append(", sipUserPhone=");
-		builder.append(sipUserPhone);
-		builder.append(", sipVideoSupport=");
-		builder.append(sipVideoSupport);
-		builder.append(", sipTextSupport=");
-		builder.append(sipTextSupport);
-		builder.append(", sipSessTimers=");
-		builder.append(sipSessTimers);
-		builder.append(", sipSessRefresh=");
-		builder.append(sipSessRefresh);
-		builder.append(", sipSessExpires=");
-		builder.append(sipSessExpires);
-		builder.append(", sipSessMin=");
-		builder.append(sipSessMin);
-		builder.append(", sipDtmfMode=");
-		builder.append(sipDtmfMode);
-		builder.append(", toHost=");
-		builder.append(toHost);
-		builder.append(", addressIp=");
-		builder.append(addressIp);
-		builder.append(", addressPort=");
-		builder.append(addressPort);
-		builder.append(", defaultAddrIp=");
-		builder.append(defaultAddrIp);
-		builder.append(", defaultAddrPort=");
-		builder.append(defaultAddrPort);
-		builder.append(", defaultUsername=");
-		builder.append(defaultUsername);
-		builder.append(", regExtension=");
-		builder.append(regExtension);
-		builder.append(", codecs=");
-		builder.append(codecs);
-		builder.append(", codecOrder=");
-		builder.append(codecOrder);
-		builder.append(", status=");
-		builder.append(status);
-		builder.append(", sipUserAgent=");
-		builder.append(sipUserAgent);
-		builder.append(", regContact=");
-		builder.append(regContact);
-		builder.append(", qualifyFreq=");
-		builder.append(qualifyFreq);
-		builder.append(", parkingLot=");
-		builder.append(parkingLot);
-		builder.append(", maxForwards=");
-		builder.append(maxForwards);
-		builder.append(", toneZone=");
-		builder.append(toneZone);
-		builder.append(", sipUseReasonHeader=");
-		builder.append(sipUseReasonHeader);
-		builder.append(", sipEncryption=");
-		builder.append(sipEncryption);
-		builder.append(", sipForcerport=");
-		builder.append(sipForcerport);
-		builder.append(", sipRtpEngine=");
-		builder.append(sipRtpEngine);
-		builder.append(", sipComedia=");
-		builder.append(sipComedia);
-		builder.append(", chanVariable=");
-		builder.append(chanVariable);
-		builder.append(", mohSuggest=");
-		builder.append(mohsuggest);
-		builder.append("]");
-		return builder.toString();
-	}
-	
-	
 }

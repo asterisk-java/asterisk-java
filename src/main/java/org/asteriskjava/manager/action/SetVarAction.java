@@ -34,17 +34,17 @@ public class SetVarAction extends AbstractManagerAction
     /**
      * The channel on which to set the variable.
      */
-    public String channel;
+    private String channel;
 
     /**
      * The name of the variable to set.
      */
-    public String variable;
+    private String variable;
 
     /**
      * The value to store.
      */
-    public String value;
+    private String value;
 
     /**
      * Creates a new empty SetVarAction.

@@ -33,6 +33,7 @@ public class NewChannelEvent extends AbstractChannelStateEvent
 
     private String accountCode;
     private String language;
+    private String linkedid;
 
     public NewChannelEvent(Object source)
     {
@@ -72,4 +73,16 @@ public class NewChannelEvent extends AbstractChannelStateEvent
     {
         this.accountCode = accountCode;
     }
+
+    public String getLinkedid()
+    {
+        return linkedid;
+    }
+
+    public void setLinkedid(String linkedid)
+    {
+        this.linkedid = linkedid;
+    }
+    
+    
 }

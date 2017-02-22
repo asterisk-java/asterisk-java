@@ -1,10 +1,10 @@
 package org.asteriskjava.fastagi;
 
-import org.asteriskjava.fastagi.reply.AgiReply;
-
-import java.util.List;
-import java.util.ArrayList;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.asteriskjava.fastagi.reply.AgiReply;
 
 /**
  * Contains the results of a speech recognition command.
@@ -81,7 +81,7 @@ public class SpeechRecognitionResult implements Serializable
      */
     public int getEndpos()
     {
-        return Integer.valueOf(agiReply.getAttribute("endpos"));
+        return Integer.parseInt(agiReply.getAttribute("endpos"));
     }
 
     /**
@@ -93,7 +93,7 @@ public class SpeechRecognitionResult implements Serializable
     public int getScore()
     {
         final String score0 = agiReply.getAttribute("score0");
-        return score0 == null ? 0 : Integer.valueOf(score0);
+        return score0 == null ? 0 : Integer.parseInt(score0);
     }
 
     /**
@@ -125,18 +125,18 @@ public class SpeechRecognitionResult implements Serializable
     public int getNumberOfResults()
     {
         final String numberOfResults = agiReply.getAttribute("results");
-        return numberOfResults == null ? 0 : Integer.valueOf(numberOfResults);
+        return numberOfResults == null ? 0 : Integer.parseInt(numberOfResults);
     }
 
     public List<SpeechResult> getAllResults()
     {
         final int numberOfResults = getNumberOfResults();
-        final List<SpeechResult> results = new ArrayList<SpeechResult>(numberOfResults);
+        final List<SpeechResult> results = new ArrayList<>(numberOfResults);
 
         for (int i = 0; i < numberOfResults; i++)
         {
             SpeechResult result = new SpeechResult(
-                    Integer.valueOf(agiReply.getAttribute("score" + i)),
+                    Integer.parseInt(agiReply.getAttribute("score" + i)),
                     agiReply.getAttribute("text" + i),
                     agiReply.getAttribute("grammar" + i)
             );

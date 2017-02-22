@@ -16,7 +16,11 @@
  */
 package org.asteriskjava.live.internal;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.asteriskjava.live.AsteriskChannel;
 import org.asteriskjava.live.AsteriskQueueEntry;
@@ -30,8 +34,8 @@ import org.asteriskjava.live.ExtensionHistoryEntry;
 import org.asteriskjava.live.HangupCause;
 import org.asteriskjava.live.LinkedChannelHistoryEntry;
 import org.asteriskjava.live.ManagerCommunicationException;
-import org.asteriskjava.live.RecordingException;
 import org.asteriskjava.live.NoSuchChannelException;
+import org.asteriskjava.live.RecordingException;
 import org.asteriskjava.manager.action.AbsoluteTimeoutAction;
 import org.asteriskjava.manager.action.ChangeMonitorAction;
 import org.asteriskjava.manager.action.GetVarAction;
@@ -68,8 +72,8 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
     private final List<AsteriskChannel> dialedChannels;
     private final List<AsteriskChannel> dialingChannels;
     /**
-     * If this channel is bridged to another channel, the linkedChannels contains
-     * the channel this channel is bridged with.
+     * If this channel is bridged to another channel, the linkedChannels
+     * contains the channel this channel is bridged with.
      */
     private final List<AsteriskChannel> linkedChannels;
     private final Map<String, String> variables;
@@ -172,14 +176,14 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         this.name = name;
         this.id = id;
         this.dateOfCreation = dateOfCreation;
-        this.extensionHistory = new ArrayList<ExtensionHistoryEntry>();
-        this.stateHistory = new ArrayList<ChannelStateHistoryEntry>();
-        this.linkedChannelHistory = new ArrayList<LinkedChannelHistoryEntry>();
-        this.dialedChannelHistory = new ArrayList<DialedChannelHistoryEntry>();
-        this.variables = new HashMap<String, String>();
-        this.dialedChannels = new ArrayList<AsteriskChannel>();
-        this.dialingChannels = new ArrayList<AsteriskChannel>();
-        this.linkedChannels = new ArrayList<AsteriskChannel>();
+        this.extensionHistory = new ArrayList<>();
+        this.stateHistory = new ArrayList<>();
+        this.linkedChannelHistory = new ArrayList<>();
+        this.dialedChannelHistory = new ArrayList<>();
+        this.variables = new HashMap<>();
+        this.dialedChannels = new ArrayList<>();
+        this.dialingChannels = new ArrayList<>();
+        this.linkedChannels = new ArrayList<>();
     }
 
     public String getId()
@@ -375,7 +379,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
 
         synchronized (extensionHistory)
         {
-            copy = new ArrayList<ExtensionHistoryEntry>(extensionHistory);
+            copy = new ArrayList<>(extensionHistory);
         }
 
         return copy;
@@ -463,7 +467,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
 
         synchronized (dialedChannels)
         {
-            copy = new ArrayList<AsteriskChannel>(dialedChannels);
+            copy = new ArrayList<>(dialedChannels);
         }
 
         return copy;
@@ -488,9 +492,9 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
     {
         final List<DialedChannelHistoryEntry> copy;
 
-        synchronized (linkedChannelHistory)
+        synchronized (dialedChannelHistory)
         {
-            copy = new ArrayList<DialedChannelHistoryEntry>(dialedChannelHistory);
+            copy = new ArrayList<>(dialedChannelHistory);
         }
 
         return copy;
@@ -568,7 +572,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
 
         synchronized (linkedChannelHistory)
         {
-            copy = new ArrayList<LinkedChannelHistoryEntry>(linkedChannelHistory);
+            copy = new ArrayList<>(linkedChannelHistory);
         }
 
         return copy;
@@ -706,8 +710,8 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         }
     }
 
-    public void redirect(String context, String exten, int priority) throws ManagerCommunicationException,
-            NoSuchChannelException
+    public void redirect(String context, String exten, int priority)
+            throws ManagerCommunicationException, NoSuchChannelException
     {
         ManagerResponse response;
 
@@ -718,8 +722,8 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         }
     }
 
-    public void redirectBothLegs(String context, String exten, int priority) throws ManagerCommunicationException,
-            NoSuchChannelException
+    public void redirectBothLegs(String context, String exten, int priority)
+            throws ManagerCommunicationException, NoSuchChannelException
     {
         ManagerResponse response;
 
@@ -731,9 +735,8 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
             }
             else
             {
-                response = server
-                        .sendAction(new RedirectAction(name, linkedChannels.get(0).getName(), context, exten, priority,
-                                context, exten, priority));
+                response = server.sendAction(new RedirectAction(name, linkedChannels.get(0).getName(), context, exten,
+                        priority, context, exten, priority));
             }
         }
 
@@ -788,8 +791,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         }
     }
 
-    public void playDtmf(String digit) throws ManagerCommunicationException, NoSuchChannelException,
-            IllegalArgumentException
+    public void playDtmf(String digit) throws ManagerCommunicationException, NoSuchChannelException, IllegalArgumentException
     {
         ManagerResponse response;
 
@@ -815,8 +817,8 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         startMonitoring(filename, format, false);
     }
 
-    public void startMonitoring(String filename, String format, boolean mix) throws ManagerCommunicationException,
-            NoSuchChannelException
+    public void startMonitoring(String filename, String format, boolean mix)
+            throws ManagerCommunicationException, NoSuchChannelException
     {
         ManagerResponse response;
 
@@ -877,8 +879,8 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         }
     }
 
-    public void pauseMixMonitor(MixMonitorDirection direction) throws ManagerCommunicationException, NoSuchChannelException,
-            RecordingException
+    public void pauseMixMonitor(MixMonitorDirection direction)
+            throws ManagerCommunicationException, NoSuchChannelException, RecordingException
     {
         ManagerResponse response;
         response = server.sendAction(new PauseMixMonitorAction(this.name, 1, direction.getStateName()));
@@ -888,15 +890,12 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
             {
                 throw new RecordingException(response.getMessage() + " on channel: '" + name);
             }
-            else
-            {
-                throw new NoSuchChannelException("Channel '" + name + "' is not available: " + response.getMessage());
-            }
+            throw new NoSuchChannelException("Channel '" + name + "' is not available: " + response.getMessage());
         }
     }
 
-    public void unPauseMixMonitor(MixMonitorDirection direction) throws ManagerCommunicationException,
-            NoSuchChannelException, RecordingException
+    public void unPauseMixMonitor(MixMonitorDirection direction)
+            throws ManagerCommunicationException, NoSuchChannelException, RecordingException
     {
         ManagerResponse response;
         response = server.sendAction(new PauseMixMonitorAction(this.name, 0, direction.getStateName()));
@@ -906,10 +905,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
             {
                 throw new RecordingException(response.getMessage() + " on channel: '" + name);
             }
-            else
-            {
-                throw new NoSuchChannelException("Channel '" + name + "' is not available: " + response.getMessage());
-            }
+            throw new NoSuchChannelException("Channel '" + name + "' is not available: " + response.getMessage());
         }
     }
 
@@ -943,7 +939,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
     {
         synchronized (variables)
         {
-            return new HashMap<String, String>(variables);
+            return new HashMap<>(variables);
         }
     }
 
@@ -1002,12 +998,12 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
     @Override
     public String toString()
     {
-        final StringBuffer sb;
+        final StringBuilder sb;
         final List<AsteriskChannel> dialedChannels;
         final List<AsteriskChannel> dialingChannel;
         final List<AsteriskChannel> linkedChannel;
 
-        sb = new StringBuffer("AsteriskChannel[");
+        sb = new StringBuilder("AsteriskChannel[");
 
         synchronized (this)
         {

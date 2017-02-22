@@ -23,6 +23,7 @@ import java.util.List;
 import org.asteriskjava.fastagi.AgiException;
 import org.asteriskjava.fastagi.AgiHangupException;
 import org.asteriskjava.fastagi.AgiNetworkException;
+import org.asteriskjava.fastagi.AgiReader;
 import org.asteriskjava.fastagi.AgiRequest;
 import org.asteriskjava.fastagi.reply.AgiReply;
 import org.asteriskjava.util.SocketConnectionFacade;
@@ -48,7 +49,7 @@ class FastAgiReader implements AgiReader
         String line;
         List<String> lines;
 
-        lines = new ArrayList<String>();
+        lines = new ArrayList<>();
 
         try
         {
@@ -82,7 +83,7 @@ class FastAgiReader implements AgiReader
         List<String> lines;
         String line;
 
-        lines = new ArrayList<String>();
+        lines = new ArrayList<>();
 
         try
         {
@@ -100,7 +101,7 @@ class FastAgiReader implements AgiReader
         }
 
         // TODO Asterisk 1.6 sends "HANGUP" when the channel is hung up.
-        //System.out.println(line);
+        // System.out.println(line);
         if (line.startsWith("HANGUP"))
         {
             if (line.length() > 6)
@@ -140,11 +141,8 @@ class FastAgiReader implements AgiReader
         // Special handling for gosub, see AJ-257
         if (reply.getStatus() == AgiReply.SC_TRYING)
         {
-        	return readReply();
+            return readReply();
         }
-        else
-        {
-        	return reply;
-        }
+        return reply;
     }
 }

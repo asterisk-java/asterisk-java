@@ -21,15 +21,13 @@ public class AbstractHoldEvent extends ManagerEvent
     /**
      * Serializable version identifier.
      */
-    private static final long serialVersionUID = 0L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * The name of the channel.
      */
     private String channel;
 
-    private String callerIDNum;
-    private String callerIDName;
     private String accountCode;
 
     /**
@@ -38,6 +36,10 @@ public class AbstractHoldEvent extends ManagerEvent
     private String uniqueId;
 
     private Boolean status;
+    
+    private String linkedId;
+    private String language;
+    
 
     /**
      * Creates a new HoldEvent.
@@ -137,26 +139,6 @@ public class AbstractHoldEvent extends ManagerEvent
         return status != null && !status;
     }
 
-    public String getCallerIDNum()
-    {
-        return callerIDNum;
-    }
-
-    public void setCallerIDNum(String callerIDNum)
-    {
-        this.callerIDNum = callerIDNum;
-    }
-
-    public String getCallerIDName()
-    {
-        return callerIDName;
-    }
-
-    public void setCallerIDName(String callerIDName)
-    {
-        this.callerIDName = callerIDName;
-    }
-
     public String getAccountCode()
     {
         return accountCode;
@@ -165,5 +147,25 @@ public class AbstractHoldEvent extends ManagerEvent
     public void setAccountCode(String accountCode)
     {
         this.accountCode = accountCode;
+    }
+
+    public String getLinkedId()
+    {
+        return linkedId;
+    }
+
+    public void setLinkedId(String linkedId)
+    {
+        this.linkedId = linkedId;
+    }
+
+    public String getLanguage()
+    {
+        return language;
+    }
+
+    public void setLanguage(String language)
+    {
+        this.language = language;
     }
 }

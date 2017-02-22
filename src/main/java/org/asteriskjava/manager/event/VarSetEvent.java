@@ -37,6 +37,8 @@ public class VarSetEvent extends ManagerEvent
     private String variable;
     private String value;
     private String language;
+    private String linkedId;
+    private String accountCode;
 
     public String getLanguage()
     {
@@ -116,4 +118,25 @@ public class VarSetEvent extends ManagerEvent
     {
         this.value = value;
     }
+
+    public String getLinkedId()
+    {
+        return linkedId;
+    }
+
+    public void setLinkedId(String linkedId)
+    {
+        this.linkedId = linkedId;
+    }
+
+    public String getAccountCode()
+    {
+        return accountCode;
+    }
+
+    public void setAccountCode(String accountCode)
+    {
+        this.accountCode = accountCode;
+    }
+    
 }

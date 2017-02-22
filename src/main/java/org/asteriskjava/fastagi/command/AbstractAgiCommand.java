@@ -80,9 +80,9 @@ public abstract class AbstractAgiCommand implements Serializable, AgiCommand
     @Override
     public String toString()
     {
-        StringBuffer sb;
+        StringBuilder sb;
 
-        sb = new StringBuffer(getClass().getName()).append("[");
+        sb = new StringBuilder(getClass().getName()).append("[");
         sb.append("command='").append(buildCommand()).append("', ");
         sb.append("systemHashcode=").append(System.identityHashCode(this)).append("]");
 

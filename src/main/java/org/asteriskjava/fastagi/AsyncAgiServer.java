@@ -1,19 +1,18 @@
 package org.asteriskjava.fastagi;
 
-import org.asteriskjava.manager.ManagerEventListener;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.RejectedExecutionException;
+
+import org.asteriskjava.fastagi.internal.AsyncAgiConnectionHandler;
+import org.asteriskjava.fastagi.internal.DefaultAgiChannelFactory;
 import org.asteriskjava.manager.ManagerConnection;
-import org.asteriskjava.manager.event.ManagerEvent;
+import org.asteriskjava.manager.ManagerEventListener;
 import org.asteriskjava.manager.event.AsyncAgiEvent;
+import org.asteriskjava.manager.event.ManagerEvent;
 import org.asteriskjava.manager.event.RenameEvent;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
-import org.asteriskjava.fastagi.internal.AgiChannelFactory;
-import org.asteriskjava.fastagi.internal.AsyncAgiConnectionHandler;
-import org.asteriskjava.fastagi.internal.DefaultAgiChannelFactory;
-
-import java.util.Map;
-import java.util.HashMap;
-import java.util.concurrent.RejectedExecutionException;
 
 /**
  * AGI server for AGI over the Manager API (AsyncAGI).<p>
@@ -48,7 +47,7 @@ public class AsyncAgiServer extends AbstractAgiServer implements ManagerEventLis
     public AsyncAgiServer(AgiChannelFactory agiChannelFactory)
     {
         super(agiChannelFactory);
-        this.connectionHandlers = new HashMap<Integer, AsyncAgiConnectionHandler>();
+        this.connectionHandlers = new HashMap<>();
     }
 
     /**

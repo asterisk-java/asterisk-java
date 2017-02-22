@@ -1,11 +1,12 @@
 package org.asteriskjava.manager;
 
-import org.asteriskjava.manager.response.ManagerResponse;
-
 import static java.lang.annotation.ElementType.TYPE;
-import java.lang.annotation.Retention;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
+import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
+
+import org.asteriskjava.manager.response.ManagerResponse;
 
 /**
  * Indicates that an annotated {@link org.asteriskjava.manager.action.ManagerAction} expects

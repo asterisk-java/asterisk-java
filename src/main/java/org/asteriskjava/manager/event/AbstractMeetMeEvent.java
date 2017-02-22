@@ -112,7 +112,8 @@ public abstract class AbstractMeetMeEvent extends ManagerEvent
     /**
      * Returns the index of the user in the conference.
      * <p>
-     * This can be used for the "meetme (mute|unmute|kick)" commands.
+     * This can be used for the "meetme (mute|unmute|kick)" commands. use
+     * getUser() instead
      * 
      * @return the index of the user in the conference.
      */

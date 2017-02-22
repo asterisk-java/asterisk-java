@@ -68,8 +68,10 @@ public class ExtensionStatusEvent extends ManagerEvent
     private String hint;
     private Integer status;
     private String callerId;
+    private String statustext;
 
-    public ExtensionStatusEvent(Object source)
+ 
+	public ExtensionStatusEvent(Object source)
     {
         super(source);
     }
@@ -140,4 +142,15 @@ public class ExtensionStatusEvent extends ManagerEvent
     {
         this.callerId = callerId;
     }
+    
+    public String getStatustext()
+ 	{
+ 		return statustext;
+ 	}
+
+ 	public void setStatustext(String statustext)
+ 	{
+ 		this.statustext = statustext;
+ 	}
+
 }

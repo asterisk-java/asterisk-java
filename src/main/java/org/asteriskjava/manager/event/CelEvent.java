@@ -1,11 +1,11 @@
 package org.asteriskjava.manager.event;
 /**
  * Raised when a Channel Event Log is generated for a channel.
- *
  * https://wiki.asterisk.org/wiki/display/AST/Asterisk+13+ManagerEvent_CEL
  */
 public class CelEvent extends ManagerEvent
 {
+    private static final long serialVersionUID = 1L;
     public static final String CEL_EVENT_CHAN_START = "CHAN_START";
     public static final String CEL_EVENT_CHAN_END = "CHAN_END";
     public static final String CEL_EVENT_ANSWER = "ANSWER";
@@ -26,8 +26,6 @@ public class CelEvent extends ManagerEvent
 
     private String eventName;
     private String accountCode;
-    private String callerIDnum;
-    private String callerIDname;
     private String callerIDani;
     private String callerIDrdnis;
     private String callerIDdnid;
@@ -68,27 +66,7 @@ public class CelEvent extends ManagerEvent
     public void setAccountCode(String accountCode)
     {
         this.accountCode = accountCode;
-    }
-
-    public String getCallerIDnum()
-    {
-        return callerIDnum;
-    }
-
-    public void setCallerIDnum(String callerIDnum)
-    {
-        this.callerIDnum = callerIDnum;
-    }
-
-    public String getCallerIDname()
-    {
-        return callerIDname;
-    }
-
-    public void setCallerIDname(String callerIDname)
-    {
-        this.callerIDname = callerIDname;
-    }
+    }    
 
     public String getCallerIDani()
     {

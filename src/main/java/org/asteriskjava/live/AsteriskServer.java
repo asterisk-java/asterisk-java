@@ -18,13 +18,13 @@ package org.asteriskjava.live;
 
 import java.util.Collection;
 import java.util.Date;
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 
+import org.asteriskjava.config.ConfigFile;
 import org.asteriskjava.manager.ManagerConnection;
 import org.asteriskjava.manager.ManagerEventListener;
 import org.asteriskjava.manager.action.OriginateAction;
-import org.asteriskjava.config.ConfigFile;
 
 /**
  * The AsteriskServer is built on top of the
@@ -69,8 +69,8 @@ public interface AsteriskServer
      * @throws ManagerCommunicationException if the originate action cannot be
      *             sent to Asterisk
      */
-    public AsteriskChannel originate(OriginateAction originateAction) throws ManagerCommunicationException,
-            NoSuchChannelException;
+    public AsteriskChannel originate(OriginateAction originateAction)
+            throws ManagerCommunicationException, NoSuchChannelException;
 
     /**
      * Asynchronously generates an outgoing channel.
@@ -213,7 +213,7 @@ public interface AsteriskServer
      */
     void originateToExtensionAsync(String channel, String context, String exten, int priority, long timeout,
             CallerId callerId, Map<String, String> variables, OriginateCallback callback)
-            throws ManagerCommunicationException;
+                    throws ManagerCommunicationException;
 
     /**
      * Asynchronously generates an outgoing channel to an application.
@@ -334,9 +334,12 @@ public interface AsteriskServer
     String getVersion() throws ManagerCommunicationException;
 
     /**
-     * Returns the CVS revision of a given source file of this Asterisk server. <br>
-     * For example getVersion("app_meetme.c") may return {1, 102} for CVS
-     * revision "1.102". <br>
+     * <<<<<<< HEAD Returns the CVS revision of a given source file of this
+     * Asterisk server. <br>
+     * ======= Returns the CVS revision of a given source file of this Asterisk
+     * server. <br>
+     * >>>>>>> refs/heads/release-1.1 For example getVersion("app_meetme.c") may
+     * return {1, 102} for CVS revision "1.102". <br>
      * Note that this feature is not available with Asterisk 1.0.x. <br>
      * You can use this feature if you need to write applications that behave
      * different depending on specific modules being available in a specific

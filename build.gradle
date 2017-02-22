@@ -9,8 +9,8 @@ version = '2.0.0.CI-SNAPSHOT'
 
 description = """Asterisk-Java"""
 
-sourceCompatibility = 1.6
-targetCompatibility = 1.6
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
 
 if (JavaVersion.current().isJava8Compatible()) {
     allprojects {
@@ -54,6 +54,7 @@ artifacts {
 }
 
 //signing {
+//    required { gradle.taskGraph.hasTask("uploadArchives") }
 //    sign configurations.archives
 //}
 

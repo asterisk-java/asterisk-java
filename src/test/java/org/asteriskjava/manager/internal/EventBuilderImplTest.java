@@ -273,18 +273,18 @@ public class EventBuilderImplTest
         assertEquals("Src property not set correctly", "source value", ((CdrEvent) event).getSrc());
     }
 
-	@Test
-	public void testBuildEventWithClassProperty()
-	{
-		ManagerEvent event;
+    @Test
+    public void testBuildEventWithClassProperty()
+    {
+        ManagerEvent event;
 
-		properties.put("event", "MusicOnHold");
-		properties.put("class", "default");
-		event = eventBuilder.buildEvent(this, properties);
+        properties.put("event", "MusicOnHold");
+        properties.put("class", "default");
+        event = eventBuilder.buildEvent(this, properties);
 
-		assertNotNull(event);
-		assertEquals("ClassName property not set correctly", "default", ((MusicOnHoldEvent) event).getClassName());
-	}
+        assertNotNull(event);
+        assertEquals("ClassName property not set correctly", "default", ((MusicOnHoldEvent) event).getClassName());
+    }
 
     @Test
     public void testBuildEventWithSpecialCharacterProperty()
@@ -523,21 +523,24 @@ public class EventBuilderImplTest
     {
         PeersEvent event;
 
-        properties.put("event", Arrays.asList( "PeerEntry", "PeerEntry", "PeerEntry", "PeerlistComplete" ));
-        properties.put("actionid", Arrays.asList( "1378144905_4#123", "1378144905_4#123", "1378144905_4#123" ));
-        properties.put("objectname", Arrays.asList( "a101", "a102", "a103" ));
-        properties.put("status", Arrays.asList( "OK", "UNKNOWN", "LAGGED" ));
+        properties.put("event", Arrays.asList("PeerEntry", "PeerEntry", "PeerEntry", "PeerlistComplete"));
+        properties.put("actionid", Arrays.asList("1378144905_4#123", "1378144905_4#123", "1378144905_4#123"));
+        properties.put("objectname", Arrays.asList("a101", "a102", "a103"));
+        properties.put("status", Arrays.asList("OK", "UNKNOWN", "LAGGED"));
         properties.put("listitems", "3");
         event = (PeersEvent) eventBuilder.buildEvent(this, properties);
 
         assertNotNull(event);
         assertEquals("Returned event is of wrong type", PeersEvent.class, event.getClass());
         assertEquals("ActionId is invalid", "123", event.getActionId());
-        assertEquals("Property events[objectname] is not set correctly", "a101", event.getChildEvents().get(0).getObjectName());
+        assertEquals("Property events[objectname] is not set correctly", "a101",
+                event.getChildEvents().get(0).getObjectName());
         assertEquals("Property events[status] is not set correctly", "OK", event.getChildEvents().get(0).getStatus());
-        assertEquals("Property events[objectname] is not set correctly", "a102", event.getChildEvents().get(1).getObjectName());
+        assertEquals("Property events[objectname] is not set correctly", "a102",
+                event.getChildEvents().get(1).getObjectName());
         assertNull("UNKNOWN literal returns NULL status", event.getChildEvents().get(1).getStatus());
-        assertEquals("Property events[objectname] is not set correctly", "a103", event.getChildEvents().get(2).getObjectName());
+        assertEquals("Property events[objectname] is not set correctly", "a103",
+                event.getChildEvents().get(2).getObjectName());
         assertEquals("Property events[status] is not set correctly", "LAGGED", event.getChildEvents().get(2).getStatus());
         assertEquals("Invalid size of peers property", 3, event.getChildEvents().size());
     }
@@ -547,18 +550,19 @@ public class EventBuilderImplTest
     {
         PeersEvent event;
 
-        properties.put("event", Arrays.asList( "PeerEntry", "PeerlistComplete" ));
-        properties.put("actionid", "1378144905_4#123" );
-        properties.put("objectname", "a101" );
-        properties.put("status", "OK" );
+        properties.put("event", Arrays.asList("PeerEntry", "PeerlistComplete"));
+        properties.put("actionid", "1378144905_4#123");
+        properties.put("objectname", "a101");
+        properties.put("status", "OK");
         properties.put("listitems", "1");
         event = (PeersEvent) eventBuilder.buildEvent(this, properties);
 
         assertNotNull(event);
-        assertEquals( "Returned event is of wrong type", PeersEvent.class, event.getClass() );
+        assertEquals("Returned event is of wrong type", PeersEvent.class, event.getClass());
         assertEquals("ActionId is invalid", "123", event.getActionId());
-        assertEquals( "Property events[objectname] is not set correctly", "a101", event.getChildEvents().get( 0 ).getObjectName() );
-        assertEquals( "Property events[status] is not set correctly", "OK", event.getChildEvents().get( 0 ).getStatus() );
+        assertEquals("Property events[objectname] is not set correctly", "a101",
+                event.getChildEvents().get(0).getObjectName());
+        assertEquals("Property events[status] is not set correctly", "OK", event.getChildEvents().get(0).getStatus());
         assertEquals("Invalid size of peers property", 1, event.getChildEvents().size());
     }
 }

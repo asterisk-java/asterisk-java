@@ -40,7 +40,7 @@ public class HoldEvent extends AbstractHoldEvent
     private static final long serialVersionUID = 0L;
 
     private String musicClass;
-
+    
     /**
      * Creates a new HoldEvent.
      *
@@ -67,4 +67,5 @@ public class HoldEvent extends AbstractHoldEvent
     {
         this.musicClass = musicClass;
     }
+    
 }

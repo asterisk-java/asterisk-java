@@ -63,6 +63,11 @@ public class LocalBridgeEvent extends ManagerEvent
     private String localOneCalleridNum;
     private String localTwoConnectedLineName;
     private String localTwoConnectedLineNum;
+    
+    private String localTwoLinkedid;
+    private String localOneLinkedid;
+    private String localOneAccountCode;
+    private String localTwoAccountCode;
 
     public LocalBridgeEvent(Object source)
     {
@@ -382,5 +387,45 @@ public class LocalBridgeEvent extends ManagerEvent
     public void setLocalTwoConnectedLineNum(String localTwoConnectedLineNum)
     {
         this.localTwoConnectedLineNum = localTwoConnectedLineNum;
+    }
+
+    public String getLocalTwoLinkedid()
+    {
+        return localTwoLinkedid;
+    }
+
+    public void setLocalTwoLinkedid(String localTwoLinkedid)
+    {
+        this.localTwoLinkedid = localTwoLinkedid;
+    }
+
+    public String getLocalOneLinkedid()
+    {
+        return localOneLinkedid;
+    }
+
+    public void setLocalOneLinkedid(String localOneLinkedid)
+    {
+        this.localOneLinkedid = localOneLinkedid;
+    }
+
+    public String getLocalOneAccountCode()
+    {
+        return localOneAccountCode;
+    }
+
+    public void setLocalOneAccountCode(String localOneAccountCode)
+    {
+        this.localOneAccountCode = localOneAccountCode;
+    }
+
+    public String getLocalTwoAccountCode()
+    {
+        return localTwoAccountCode;
+    }
+
+    public void setLocalTwoAccountCode(String localTwoAccountCode)
+    {
+        this.localTwoAccountCode = localTwoAccountCode;
     }
 }

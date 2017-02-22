@@ -23,7 +23,8 @@ import java.util.Map;
 
 /**
  * Represents a response received from the Asterisk server as the result of a
- * previously sent ManagerAction.<p>
+ * previously sent ManagerAction.
+ * <p>
  * The response can be linked with the action that caused it by looking the
  * action id attribute that will match the action id of the corresponding
  * action.
@@ -40,13 +41,15 @@ public class ManagerResponse implements Serializable
     private String actionId;
 
     /**
-     * The server from which this response has been received (only used with AstManProxy).
+     * The server from which this response has been received (only used with
+     * AstManProxy).
      */
     private String server;
     private String response;
     private String eventList;
     private String message;
     private String uniqueId;
+    private String events;
     private Map<String, Object> attributes;
 
     public ManagerResponse()
@@ -55,7 +58,8 @@ public class ManagerResponse implements Serializable
     }
 
     /**
-     * Returns a Map with all attributes of this response.<p>
+     * Returns a Map with all attributes of this response.
+     * <p>
      * The keys are all lower case!
      *
      * @see #getAttribute(String)
@@ -68,8 +72,8 @@ public class ManagerResponse implements Serializable
     /**
      * Sets the Map with all attributes.
      *
-     * @param attributes Map with containing the attributes with all lower
-     *                   case keys.
+     * @param attributes Map with containing the attributes with all lower case
+     *            keys.
      */
     public void setAttributes(Map<String, Object> attributes)
     {
@@ -77,13 +81,17 @@ public class ManagerResponse implements Serializable
     }
 
     /**
-     * Returns the value of the attribute with the given key.<p>
-     * This is particulary important when a response contains special
-     * attributes that are dependent on the action that has been sent.<p>
-     * An example of this is the response to the GetVarAction.
-     * It contains the value of the channel variable as an attribute
-     * stored under the key of the variable name.<p>
+     * Returns the value of the attribute with the given key.
+     * <p>
+     * This is particulary important when a response contains special attributes
+     * that are dependent on the action that has been sent.
+     * <p>
+     * An example of this is the response to the GetVarAction. It contains the
+     * value of the channel variable as an attribute stored under the key of the
+     * variable name.
+     * <p>
      * Example:
+     * 
      * <pre>
      * GetVarAction action = new GetVarAction();
      * action.setChannel("SIP/1310-22c3");
@@ -91,6 +99,7 @@ public class ManagerResponse implements Serializable
      * ManagerResponse response = connection.sendAction(action);
      * String alertInfo = response.getAttribute("ALERT_INFO");
      * </pre>
+     * 
      * As all attributes are internally stored in lower case the key is
      * automatically converted to lower case before lookup.
      *
@@ -122,9 +131,9 @@ public class ManagerResponse implements Serializable
     }
 
     /**
-     * Returns the user provided action id of the ManagerAction that caused
-     * this response. If the application did not set an action id this method
-     * returns <code>null</code>.
+     * Returns the user provided action id of the ManagerAction that caused this
+     * response. If the application did not set an action id this method returns
+     * <code>null</code>.
      *
      * @return the action id of the ManagerAction that caused this response or
      *         <code>null</code> if none was set.
@@ -136,13 +145,13 @@ public class ManagerResponse implements Serializable
     }
 
     /**
-     * Returns the name of the Asterisk server from which this response has been received.
-     * <br>
+     * Returns the name of the Asterisk server from which this response has been
+     * received. <br>
      * This property is only available when using to AstManProxy.
      *
-     * @return the name of the Asterisk server from which this response has been received
-     *         or <code>null</code> when directly connected to an Asterisk server
-     *         instead of AstManProxy.
+     * @return the name of the Asterisk server from which this response has been
+     *         received or <code>null</code> when directly connected to an
+     *         Asterisk server instead of AstManProxy.
      * @since 1.0.0
      */
     public final String getServer()
@@ -151,9 +160,11 @@ public class ManagerResponse implements Serializable
     }
 
     /**
-     * Sets the name of the Asterisk server from which this response has been received.
+     * Sets the name of the Asterisk server from which this response has been
+     * received.
      *
-     * @param server the name of the Asterisk server from which this response has been received.
+     * @param server the name of the Asterisk server from which this response
+     *            has been received.
      * @since 1.0.0
      */
     public final void setServer(String server)
@@ -187,7 +198,7 @@ public class ManagerResponse implements Serializable
      * Sets the action id of the ManagerAction that caused this response.
      *
      * @param actionId the action id of the ManagerAction that caused this
-     *                 response.
+     *            response.
      */
     public void setActionId(String actionId)
     {
@@ -273,16 +284,16 @@ public class ManagerResponse implements Serializable
         {
             return Long.parseLong(s.substring(0, s.length() - suffix.length()).trim());
         }
-        
+
         return Long.parseLong(s.trim());
     }
 
     @Override
     public String toString()
     {
-        StringBuffer sb;
+        StringBuilder sb;
 
-        sb = new StringBuffer(100);
+        sb = new StringBuilder(100);
         sb.append(getClass().getName()).append(": ");
         sb.append("actionId='").append(getActionId()).append("'; ");
         sb.append("message='").append(getMessage()).append("'; ");
@@ -291,5 +302,15 @@ public class ManagerResponse implements Serializable
         sb.append("systemHashcode=").append(System.identityHashCode(this));
 
         return sb.toString();
+    }
+
+    public String getEvents()
+    {
+        return events;
+    }
+
+    public void setEvents(String events)
+    {
+        this.events = events;
     }
 }

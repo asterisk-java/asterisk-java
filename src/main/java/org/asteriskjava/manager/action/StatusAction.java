@@ -16,11 +16,11 @@
  */
 package org.asteriskjava.manager.action;
 
-import org.asteriskjava.manager.event.StatusCompleteEvent;
-import org.asteriskjava.manager.event.ResponseEvent;
-
-import java.util.List;
 import java.util.Iterator;
+import java.util.List;
+
+import org.asteriskjava.manager.event.ResponseEvent;
+import org.asteriskjava.manager.event.StatusCompleteEvent;
 
 /**
  * The StatusAction requests the state of all active channels. Alternativly (as of Asterisk 1.6)
@@ -136,7 +136,7 @@ public class StatusAction extends AbstractManagerAction implements EventGenerati
         }
 
         Iterator<String> iter = variables.iterator();
-        StringBuffer buffer = new StringBuffer(iter.next());
+        StringBuilder buffer = new StringBuilder(iter.next());
         while (iter.hasNext())
         {
             buffer.append(",").append(iter.next());

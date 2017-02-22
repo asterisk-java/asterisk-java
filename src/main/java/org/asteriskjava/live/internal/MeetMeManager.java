@@ -16,6 +16,14 @@
  */
 package org.asteriskjava.live.internal;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.asteriskjava.live.ManagerCommunicationException;
 import org.asteriskjava.live.MeetMeRoom;
 import org.asteriskjava.manager.action.CommandAction;
@@ -29,10 +37,6 @@ import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.util.DateUtil;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
-
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Manages MeetMe events on behalf of an AsteriskServer.
@@ -57,7 +61,7 @@ class MeetMeManager
     {
         this.server = server;
         this.channelManager = channelManager;
-        this.rooms = new HashMap<String, MeetMeRoomImpl>();
+        this.rooms = new HashMap<>();
     }
 
     void initialize()
@@ -82,7 +86,7 @@ class MeetMeManager
     {
         final Collection<MeetMeRoom> result;
 
-        result = new ArrayList<MeetMeRoom>();
+        result = new ArrayList<>();
         synchronized (rooms)
         {
             for (MeetMeRoom room : rooms.values())
@@ -111,7 +115,7 @@ class MeetMeManager
             return;
         }
 
-        userNumber = event.getUserNum();
+        userNumber = event.getUser();
         if (userNumber == null)
         {
             logger.warn("UserNumber (userNum property) is null. Ignoring " + event.getClass().getName());
@@ -181,13 +185,13 @@ class MeetMeManager
         final CommandAction meetMeListAction;
         final ManagerResponse response;
         final List<String> lines;
-        final Collection<Integer> userNumbers = new ArrayList<Integer>(); // list
-                                                                          // of
-                                                                          // user
-                                                                          // numbers
-                                                                          // in
-                                                                          // the
-                                                                          // room
+        final Collection<Integer> userNumbers = new ArrayList<>(); // list
+                                                                   // of
+                                                                   // user
+                                                                   // numbers
+                                                                   // in
+                                                                   // the
+                                                                   // room
 
         meetMeListAction = new CommandAction(MEETME_LIST_COMMAND + " " + room.getRoomNumber());
         try
@@ -279,7 +283,7 @@ class MeetMeManager
                 channelUser.setMuted(muted);
                 room.addUser(channelUser);
             }
-            else if (channelUser == null)
+            else if (channelUser == null && roomUser != null)
             {
                 roomUser.setMuted(muted);
                 channel.setMeetMeUserImpl(roomUser);
@@ -295,7 +299,7 @@ class MeetMeManager
         }
 
         Collection<MeetMeUserImpl> users = room.getUserImpls();
-        Collection<MeetMeUserImpl> usersToRemove = new ArrayList<MeetMeUserImpl>();
+        Collection<MeetMeUserImpl> usersToRemove = new ArrayList<>();
         for (MeetMeUserImpl user : users)
         {
             if (!userNumbers.contains(user.getUserNumber()))
@@ -322,7 +326,7 @@ class MeetMeManager
 
         roomNumber = event.getMeetMe();
         room = getOrCreateRoomImpl(roomNumber);
-        user = room.getUser(event.getUserNum());
+        user = room.getUser(event.getUser());
         if (user != null)
         {
             return user;
@@ -355,8 +359,8 @@ class MeetMeManager
             channel.setMeetMeUserImpl(null);
         }
 
-        logger.info("Adding channel " + channel.getName() + " as user " + event.getUserNum() + " to room " + roomNumber);
-        user = new MeetMeUserImpl(server, room, event.getUserNum(), channel, event.getDateReceived());
+        logger.info("Adding channel " + channel.getName() + " as user " + event.getUser() + " to room " + roomNumber);
+        user = new MeetMeUserImpl(server, room, event.getUser(), channel, event.getDateReceived());
         room.addUser(user);
         channel.setMeetMeUserImpl(user);
         server.fireNewMeetMeUser(user);

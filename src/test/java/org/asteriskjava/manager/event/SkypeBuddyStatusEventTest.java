@@ -17,13 +17,13 @@ public class SkypeBuddyStatusEventTest
     }
 
     @Test
-    public void testGetUser() throws Exception
+    public void testGetUser()
     {
         assertEquals("user", event.getUser());
     }
 
     @Test
-    public void testGetBuddySkypename() throws Exception
+    public void testGetBuddySkypename()
     {
         assertEquals("the.buddy", event.getBuddySkypename());
     }

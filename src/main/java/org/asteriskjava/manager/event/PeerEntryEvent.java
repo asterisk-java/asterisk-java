@@ -17,10 +17,14 @@
 package org.asteriskjava.manager.event;
 
 /**
- * A PeerEntryEvent is triggered in response to a {@link org.asteriskjava.manager.action.SipPeersAction},
- * {@link org.asteriskjava.manager.action.SipShowPeerAction} or {@link org.asteriskjava.manager.action.IaxPeerListAction}
- * and contains information about a SIP or IAX peer.<p>
- * It is implemented in <code>channels/chan_sip.c</code> and <code>channels/chan_iax.c</code>
+ * A PeerEntryEvent is triggered in response to a
+ * {@link org.asteriskjava.manager.action.SipPeersAction},
+ * {@link org.asteriskjava.manager.action.SipShowPeerAction} or
+ * {@link org.asteriskjava.manager.action.IaxPeerListAction} and contains
+ * information about a SIP or IAX peer.
+ * <p>
+ * It is implemented in <code>channels/chan_sip.c</code> and
+ * <code>channels/chan_iax.c</code>
  *
  * @author srt
  * @version $Id$
@@ -44,7 +48,7 @@ public class PeerEntryEvent extends ResponseEvent
     private Integer port;
     private Boolean dynamic;
     private Boolean natSupport;
-		private Boolean forceRport;
+    private Boolean forceRport;
     private Boolean videoSupport;
     private Boolean textSupport;
     private Boolean acl;
@@ -52,6 +56,11 @@ public class PeerEntryEvent extends ResponseEvent
     private String realtimeDevice;
     private Boolean trunk;
     private String encryption;
+    private String autoComedia;
+    private String autoForcerport;
+    private String comedia;
+    private String description;
+    private String accountcode;
 
     /**
      * Creates a new instance.
@@ -145,7 +154,8 @@ public class PeerEntryEvent extends ResponseEvent
      * @return the port of the peer.
      * @deprecated since 1.0.0, use {@link #getPort()} instead.
      */
-    @Deprecated public Integer getIpPort()
+    @Deprecated
+    public Integer getIpPort()
     {
         return port;
     }
@@ -191,16 +201,23 @@ public class PeerEntryEvent extends ResponseEvent
         this.natSupport = natSupport;
     }
 
-     /**
+    /**
      * Returns whether the nat option is set to <code>force_rport</code>.<br/>
      * Available since Asterisk 1.8
      *
-     * @return <code>true</code> if the nat option is set to <code>force_rport</code>,
-     *         <code>false</code> otherwise or <code>null</code> if not supported by Asterisk.
+     * @return <code>true</code> if the nat option is set to
+     *         <code>force_rport</code>, <code>false</code> otherwise or
+     *         <code>null</code> if not supported by Asterisk.
      */
-    public Boolean getForceRport() { return forceRport;}
+    public Boolean getForceRport()
+    {
+        return forceRport;
+    }
 
-    public void setForceRport(Boolean forceRport) { this.forceRport = forceRport;}
+    public void setForceRport(Boolean forceRport)
+    {
+        this.forceRport = forceRport;
+    }
 
     /**
      * Available since Asterisk 1.4.
@@ -223,11 +240,13 @@ public class PeerEntryEvent extends ResponseEvent
     }
 
     /**
-     * Returns whether the peer supports text messages.<p>
+     * Returns whether the peer supports text messages.
+     * <p>
      * Available since Asterisk 1.6.
      *
-     * @return <code>true</code> if the peer supports text messages, <code>false</code> otherwise or
-     *         <code>null</code> if the property is not set (i.e. for Asterisk prior to 1.6).
+     * @return <code>true</code> if the peer supports text messages,
+     *         <code>false</code> otherwise or <code>null</code> if the property
+     *         is not set (i.e. for Asterisk prior to 1.6).
      * @since 1.0.0
      */
     public Boolean getTextSupport()
@@ -251,7 +270,8 @@ public class PeerEntryEvent extends ResponseEvent
     }
 
     /**
-     * Returns the status of this peer.<p>
+     * Returns the status of this peer.
+     * <p>
      * For SIP peers this is one of:
      * <dl>
      * <dt>"UNREACHABLE"</dt>
@@ -304,10 +324,12 @@ public class PeerEntryEvent extends ResponseEvent
     }
 
     /**
-     * Returns whether to use IAX2 trunking with this peer.<p>
+     * Returns whether to use IAX2 trunking with this peer.
+     * <p>
      * Available since Asterisk 1.6.
      *
-     * @return <code>true</code> if trunking is used, <code>false</code> if not or <code>null</code> if not set.
+     * @return <code>true</code> if trunking is used, <code>false</code> if not
+     *         or <code>null</code> if not set.
      * @since 1.0.0
      */
     public Boolean getTrunk()
@@ -329,4 +351,85 @@ public class PeerEntryEvent extends ResponseEvent
     {
         this.encryption = encryption;
     }
+
+    /**
+     * @return the autoComedia
+     */
+    public String getAutoComedia()
+    {
+        return autoComedia;
+    }
+
+    /**
+     * @param autoComedia the autoComedia to set
+     */
+    public void setAutoComedia(String autoComedia)
+    {
+        this.autoComedia = autoComedia;
+    }
+
+    /**
+     * @return the autoForcerport
+     */
+    public String getAutoForcerport()
+    {
+        return autoForcerport;
+    }
+
+    /**
+     * @param autoForcerport the autoForcerport to set
+     */
+    public void setAutoForcerport(String autoForcerport)
+    {
+        this.autoForcerport = autoForcerport;
+    }
+
+    /**
+     * @return the comedia
+     */
+    public String getComedia()
+    {
+        return comedia;
+    }
+
+    /**
+     * @param comedia the comedia to set
+     */
+    public void setComedia(String comedia)
+    {
+        this.comedia = comedia;
+    }
+
+    /**
+     * @return the description
+     */
+    public String getDescription()
+    {
+        return description;
+    }
+
+    /**
+     * @param the description to set
+     */
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
+
+    /**
+     * @return the accountcode
+     */
+    public String getAccountcode()
+    {
+        return accountcode;
+    }
+
+    /**
+     * @param the accountcode to set
+     */
+    public void setAccountcode(String accountcode)
+    {
+        this.accountcode = accountcode;
+    }
+
 }

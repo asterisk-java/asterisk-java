@@ -85,6 +85,15 @@ public class AttendedTransferEvent extends AbstractBridgeEvent {
     private String    transfereePriority;
     private String    transfereeUniqueid;
 
+    private String  transfereeLinkedId;
+    private String  transfereeLanguage;
+    private String  origTransfererLinkedId;
+    private String  secondTransfererLanguage;
+    private String  isexternal;
+    private String  result;
+    private String  secondTransfererLinkedId;
+    private String  origTransfererLanguage;
+    
     public AttendedTransferEvent(Object source)
     {
         super(source);
@@ -847,4 +856,85 @@ public class AttendedTransferEvent extends AbstractBridgeEvent {
     {
         this.transfereeUniqueid = transfereeUniqueid;
     }
+
+    public String getTransfereeLinkedId()
+    {
+        return transfereeLinkedId;
+    }
+
+    public void setTransfereeLinkedId(String transfereeLinkedId)
+    {
+        this.transfereeLinkedId = transfereeLinkedId;
+    }
+
+    public String getTransfereeLanguage()
+    {
+        return transfereeLanguage;
+    }
+
+    public void setTransfereeLanguage(String transfereeLanguage)
+    {
+        this.transfereeLanguage = transfereeLanguage;
+    }
+
+    public String getOrigTransfererLinkedId()
+    {
+        return origTransfererLinkedId;
+    }
+
+    public void setOrigTransfererLinkedId(String origTransfererLinkedId)
+    {
+        this.origTransfererLinkedId = origTransfererLinkedId;
+    }
+
+    public String getSecondTransfererLanguage()
+    {
+        return secondTransfererLanguage;
+    }
+
+    public void setSecondTransfererLanguage(String secondTransfererLanguage)
+    {
+        this.secondTransfererLanguage = secondTransfererLanguage;
+    }
+
+    public String getIsexternal()
+    {
+        return isexternal;
+    }
+
+    public void setIsexternal(String isexternal)
+    {
+        this.isexternal = isexternal;
+    }
+
+    public String getResult()
+    {
+        return result;
+    }
+
+    public void setResult(String result)
+    {
+        this.result = result;
+    }
+
+    public String getSecondTransfererLinkedId()
+    {
+        return secondTransfererLinkedId;
+    }
+
+    public void setSecondTransfererLinkedId(String secondTransfererLinkedId)
+    {
+        this.secondTransfererLinkedId = secondTransfererLinkedId;
+    }
+
+    public String getOrigTransfererLanguage()
+    {
+        return origTransfererLanguage;
+    }
+
+    public void setOrigTransfererLanguage(String origTransfererLanguage)
+    {
+        this.origTransfererLanguage = origTransfererLanguage;
+    }
+    
 }

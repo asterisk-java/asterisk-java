@@ -124,9 +124,9 @@ public class Voicemailbox implements Serializable
     @Override
    public String toString()
     {
-        StringBuffer sb;
+    	StringBuilder sb;
 
-        sb = new StringBuffer(100);
+        sb = new StringBuilder(100);
         sb.append("Voicemailbox[");
         sb.append("mailbox='").append(getMailbox()).append("',");
         sb.append("context='").append(getContext()).append("',");

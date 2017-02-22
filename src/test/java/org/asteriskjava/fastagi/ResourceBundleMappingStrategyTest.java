@@ -29,7 +29,7 @@ public class ResourceBundleMappingStrategyTest
     private ResourceBundleMappingStrategy mappingStrategy;
 
     @Before
-    public void setUp() throws Exception
+    public void setUp()
     {
         this.mappingStrategy = new ResourceBundleMappingStrategy();
         this.mappingStrategy.setResourceBundleName("test-mapping");

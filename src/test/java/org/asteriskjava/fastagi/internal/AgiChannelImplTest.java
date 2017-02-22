@@ -26,6 +26,8 @@ import static org.junit.Assert.fail;
 import java.util.List;
 
 import org.asteriskjava.fastagi.AgiChannel;
+import org.asteriskjava.fastagi.AgiReader;
+import org.asteriskjava.fastagi.AgiWriter;
 import org.asteriskjava.fastagi.InvalidCommandSyntaxException;
 import org.asteriskjava.fastagi.InvalidOrUnknownCommandException;
 import org.asteriskjava.fastagi.command.NoopCommand;
@@ -40,7 +42,7 @@ public class AgiChannelImplTest
     private AgiChannel agiChannel;
 
     @Before
-    public void setUp() throws Exception
+    public void setUp()
     {
         this.agiWriter = createMock(AgiWriter.class);
         this.agiReader = createMock(AgiReader.class);
