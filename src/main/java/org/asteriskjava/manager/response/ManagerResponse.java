@@ -51,6 +51,7 @@ public class ManagerResponse implements Serializable
     private String uniqueId;
     private String events;
     private Map<String, Object> attributes;
+    private String output;
 
     public ManagerResponse()
     {
@@ -91,7 +92,7 @@ public class ManagerResponse implements Serializable
      * variable name.
      * <p>
      * Example:
-     * 
+     *
      * <pre>
      * GetVarAction action = new GetVarAction();
      * action.setChannel("SIP/1310-22c3");
@@ -99,7 +100,7 @@ public class ManagerResponse implements Serializable
      * ManagerResponse response = connection.sendAction(action);
      * String alertInfo = response.getAttribute("ALERT_INFO");
      * </pre>
-     * 
+     *
      * As all attributes are internally stored in lower case the key is
      * automatically converted to lower case before lookup.
      *
@@ -313,4 +314,12 @@ public class ManagerResponse implements Serializable
     {
         this.events = events;
     }
+
+	public String getOutput() {
+		return output;
+	}
+
+	public void setOutput(String output) {
+		this.output = output;
+	}
 }
