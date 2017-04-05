@@ -32,6 +32,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -644,7 +645,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         {
             final ManagerResponse showVersionFilesResponse;
             final List<String> showVersionFilesResult;
-
+            boolean Asterisk14outputPresent = false;
             // increase timeout as output is quite large
             showVersionFilesResponse = sendAction(new CommandAction("show version files pbx.c"), defaultResponseTimeout * 2);
             if (!(showVersionFilesResponse instanceof CommandResponse))
@@ -654,10 +655,18 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                 // actionId='null'; message='Permission denied';
                 // response='Error';
                 // uniqueId='null'; systemHashcode=15231583
-                break;
+            	if(showVersionFilesResponse.getOutput() != null){
+            		Asterisk14outputPresent = true;
+            	}else{
+            		break;
+            	}
             }
-
-            showVersionFilesResult = ((CommandResponse) showVersionFilesResponse).getResult();
+            if(Asterisk14outputPresent){
+            	List<String> outputList = Arrays.asList(showVersionFilesResponse.getOutput().split(SocketConnectionFacadeImpl.NL_PATTERN.pattern()));
+            	showVersionFilesResult = outputList;
+            }else{
+            	showVersionFilesResult = ((CommandResponse) showVersionFilesResponse).getResult();
+            }
             if (showVersionFilesResult != null && !showVersionFilesResult.isEmpty())
             {
                 final String line1 = showVersionFilesResult.get(0);
