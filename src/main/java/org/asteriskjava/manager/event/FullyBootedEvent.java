@@ -18,6 +18,8 @@ public class FullyBootedEvent extends ManagerEvent
 {
     private static final long serialVersionUID = 0L;
     private String status;
+    private String lastreload;
+    private Integer uptime;
 
     public FullyBootedEvent(Object source)
     {
@@ -43,4 +45,20 @@ public class FullyBootedEvent extends ManagerEvent
     {
         this.status = status;
     }
+
+	public String getLastreload() {
+		return lastreload;
+	}
+
+	public void setLastreload(String lastreload) {
+		this.lastreload = lastreload;
+	}
+
+	public Integer getUptime() {
+		return uptime;
+	}
+
+	public void setUptime(Integer uptime) {
+		this.uptime = uptime;
+	}
 }
