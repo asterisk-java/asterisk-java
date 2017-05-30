@@ -33,7 +33,7 @@ public class DialCommand extends AbstractAgiCommand
                 + escapeAndQuote("" + timeout);
         if (options != null && options.length() > 0)
         {
-            command += "," + escapeAndQuote(options);
+            command += "|" + escapeAndQuote(options);
         }
 
         logger.info(command);
