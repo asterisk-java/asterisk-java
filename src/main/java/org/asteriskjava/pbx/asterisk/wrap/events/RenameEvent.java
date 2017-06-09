@@ -11,7 +11,6 @@ public class RenameEvent extends ManagerEvent implements ChannelEvent
 {
     private static final long serialVersionUID = 1L;
 
-    @SuppressWarnings("unused")
     private static final Logger logger = Logger.getLogger(RenameEvent.class);
 
     /**
@@ -32,8 +31,11 @@ public class RenameEvent extends ManagerEvent implements ChannelEvent
         this._channel = pbx.internalRegisterChannel(event.getChannel(), event.getUniqueId());
         this._newName = event.getNewname();
 
-        assert ((ChannelProxy) this._channel).getRealChannel().getUniqueId()
-                .compareToIgnoreCase(event.getUniqueId()) == 0 : "Rename registered against incorrect channel"; //$NON-NLS-1$
+        String uniqueId = ((ChannelProxy) this._channel).getRealChannel().getUniqueId();
+        logger.error("Renaming :" + uniqueId + " " + event.getUniqueId());
+
+        assert uniqueId.equalsIgnoreCase("-1")
+                || uniqueId.compareToIgnoreCase(event.getUniqueId()) == 0 : "Rename registered against incorrect channel"; //$NON-NLS-1$
 
     }
 
