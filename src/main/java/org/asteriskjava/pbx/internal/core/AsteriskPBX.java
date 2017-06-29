@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.log4j.Logger;
 import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.manager.AuthenticationFailedException;
 import org.asteriskjava.manager.EventTimeoutException;
@@ -65,13 +64,15 @@ import org.asteriskjava.pbx.internal.asterisk.CallerIDImpl;
 import org.asteriskjava.pbx.internal.asterisk.MeetmeRoom;
 import org.asteriskjava.pbx.internal.asterisk.MeetmeRoomControl;
 import org.asteriskjava.pbx.internal.managerAPI.RedirectCall;
+import org.asteriskjava.util.Log;
+import org.asteriskjava.util.LogFactory;
 
 public enum AsteriskPBX implements PBX, ChannelHangupListener
 {
 
     SELF;
 
-    private final Logger logger = Logger.getLogger(AsteriskPBX.class);
+    private final Log logger = LogFactory.getLog(getClass());
     private boolean muteSupported;
     private boolean bridgeSupport;
 

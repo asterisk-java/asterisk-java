@@ -1,14 +1,26 @@
-package org.asteriskjava.pbx.agi;
+package org.asteriskjava.pbx.agi.config;
 
-import org.apache.log4j.Logger;
 import org.asteriskjava.fastagi.AgiChannel;
 import org.asteriskjava.fastagi.AgiException;
 import org.asteriskjava.fastagi.AgiRequest;
 import org.asteriskjava.fastagi.BaseAgiScript;
+import org.asteriskjava.util.Log;
+import org.asteriskjava.util.LogFactory;
 
-abstract public class NJAgiScript extends BaseAgiScript
+/**
+ * Allows for auto configuration of the AGI script.<br>
+ * <br>
+ * Provides a getParameter(..) method which verifies the existence of the
+ * parameter. <br>
+ * <br>
+ * Requires an implementing agi to provide it's name and parameter list via
+ * getScriptName() and getParameters.
+ * 
+ * @author rsutton
+ */
+abstract public class ServiceAgiScript extends BaseAgiScript
 {
-    static transient Logger logger = Logger.getLogger(NJAgiScript.class);
+    static transient Log logger = LogFactory.getLog(ServiceAgiScript.class);
     protected AgiRequest request;
     protected AgiChannel channel;
 
@@ -40,10 +52,8 @@ abstract public class NJAgiScript extends BaseAgiScript
         return required(name, request.getParameter(name));
     }
 
-    public void setVariable(String name, String value) throws AgiException
-    {
-        logger.debug("AGIVar set: " + name + "=(" + value + ")");
-        super.setVariable(name, value);
-    }
+    public abstract String getScriptName();
+
+    public abstract String[] getParameters();
 
 }

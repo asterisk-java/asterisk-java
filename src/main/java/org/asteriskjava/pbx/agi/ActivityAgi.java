@@ -7,11 +7,12 @@ import org.asteriskjava.pbx.Channel;
 import org.asteriskjava.pbx.ChannelHangupListener;
 import org.asteriskjava.pbx.InvalidChannelName;
 import org.asteriskjava.pbx.PBXFactory;
+import org.asteriskjava.pbx.agi.config.ServiceAgiScript;
 import org.asteriskjava.pbx.internal.core.AsteriskPBX;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
-public class ActivityAgi extends NJAgiScript
+public abstract class ActivityAgi extends ServiceAgiScript
 {
 
     private final Log logger = LogFactory.getLog(this.getClass());
