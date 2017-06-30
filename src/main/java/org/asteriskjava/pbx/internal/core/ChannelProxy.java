@@ -7,7 +7,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.apache.log4j.Logger;
 import org.asteriskjava.pbx.AgiChannelActivityAction;
 import org.asteriskjava.pbx.CallerID;
 import org.asteriskjava.pbx.Channel;
@@ -15,6 +14,8 @@ import org.asteriskjava.pbx.ChannelHangupListener;
 import org.asteriskjava.pbx.EndPoint;
 import org.asteriskjava.pbx.InvalidChannelName;
 import org.asteriskjava.pbx.agi.AgiChannelActivityHold;
+import org.asteriskjava.util.Log;
+import org.asteriskjava.util.LogFactory;
 
 /**
  * The ChannelProxy exists to deal with the fact that Asterisk will often
@@ -29,7 +30,7 @@ import org.asteriskjava.pbx.agi.AgiChannelActivityHold;
 public class ChannelProxy implements Channel, ChannelHangupListener
 {
 
-    private static final Logger logger = Logger.getLogger(ChannelProxy.class);
+    private static final Log logger = LogFactory.getLog(ChannelProxy.class);
 
     /**
      * We give each proxy a unique identity to help track them when debugging.

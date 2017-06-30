@@ -1,15 +1,16 @@
 package org.asteriskjava.pbx.internal.managerAPI;
 
-import org.apache.log4j.Logger;
 import org.asteriskjava.pbx.Channel;
 import org.asteriskjava.pbx.PBXException;
 import org.asteriskjava.pbx.PBXFactory;
 import org.asteriskjava.pbx.agi.AgiChannelActivityMeetme;
 import org.asteriskjava.pbx.internal.core.AsteriskPBX;
+import org.asteriskjava.util.Log;
+import org.asteriskjava.util.LogFactory;
 
 public class RedirectToMeetMe
 {
-    static Logger logger = Logger.getLogger(RedirectToMeetMe.class);
+    private static final Log logger = LogFactory.getLog(RedirectToMeetMe.class);
 
     public RedirectToMeetMe()
     {

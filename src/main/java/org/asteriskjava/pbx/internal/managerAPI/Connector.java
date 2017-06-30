@@ -5,12 +5,13 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import org.apache.log4j.Logger;
 import org.asteriskjava.manager.AuthenticationFailedException;
 import org.asteriskjava.manager.ManagerConnection;
 import org.asteriskjava.manager.ManagerConnectionFactory;
 import org.asteriskjava.manager.TimeoutException;
 import org.asteriskjava.pbx.AsteriskSettings;
+import org.asteriskjava.util.Log;
+import org.asteriskjava.util.LogFactory;
 
 /*
  * this class is a very thin wrapper around the manager connection class
@@ -18,7 +19,7 @@ import org.asteriskjava.pbx.AsteriskSettings;
 public class Connector
 {
     private ManagerConnection managerConnection;
-    static Logger logger = Logger.getLogger(Connector.class);
+    private static final Log logger = LogFactory.getLog(Connector.class);
 
     /**
      * Establishes a Asterisk ManagerConnection as well as performing the

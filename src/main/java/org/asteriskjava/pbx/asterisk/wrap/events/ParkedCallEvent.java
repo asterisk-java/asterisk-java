@@ -1,6 +1,5 @@
 package org.asteriskjava.pbx.asterisk.wrap.events;
 
-import org.apache.log4j.Logger;
 import org.asteriskjava.pbx.Channel;
 import org.asteriskjava.pbx.InvalidChannelName;
 import org.asteriskjava.pbx.PBXFactory;
@@ -11,9 +10,6 @@ public class ParkedCallEvent extends ManagerEvent
 {
 
     private static final long serialVersionUID = 1L;
-
-    @SuppressWarnings("unused")
-    private static final Logger logger = Logger.getLogger(ParkedCallEvent.class);
 
     private final Channel fromChannel;
     private final Integer timeout;

@@ -1,6 +1,5 @@
 package org.asteriskjava.pbx.asterisk.wrap.userEvents;
 
-import org.apache.log4j.Logger;
 import org.asteriskjava.pbx.Channel;
 import org.asteriskjava.pbx.InvalidChannelName;
 import org.asteriskjava.pbx.PBXFactory;
@@ -10,9 +9,6 @@ import org.asteriskjava.pbx.internal.core.AsteriskPBX;
 public class UserEvent extends ManagerEvent
 {
     private static final long serialVersionUID = 1L;
-
-    @SuppressWarnings("unused")
-    private static final Logger logger = Logger.getLogger(UserEvent.class);
 
     private Channel channel;
 

@@ -1,17 +1,18 @@
 package org.asteriskjava.pbx.asterisk.wrap.events;
 
-import org.apache.log4j.Logger;
 import org.asteriskjava.pbx.Channel;
 import org.asteriskjava.pbx.InvalidChannelName;
 import org.asteriskjava.pbx.PBXFactory;
 import org.asteriskjava.pbx.internal.core.AsteriskPBX;
+import org.asteriskjava.util.Log;
+import org.asteriskjava.util.LogFactory;
 
 public class BridgeEvent extends ManagerEvent
 {
     private static final long serialVersionUID = 1L;
 
     @SuppressWarnings("unused")
-    private static final Logger logger = Logger.getLogger(BridgeEvent.class);
+    private static final Log logger = LogFactory.getLog(BridgeEvent.class);
 
     enum BridgeState
     {

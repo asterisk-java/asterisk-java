@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.log4j.Logger;
 import org.asteriskjava.manager.TimeoutException;
 import org.asteriskjava.pbx.ActivityCallback;
 import org.asteriskjava.pbx.AsteriskSettings;
@@ -23,6 +22,8 @@ import org.asteriskjava.pbx.asterisk.wrap.events.ManagerEvent;
 import org.asteriskjava.pbx.asterisk.wrap.events.ParkedCallEvent;
 import org.asteriskjava.pbx.asterisk.wrap.response.ManagerResponse;
 import org.asteriskjava.pbx.internal.core.AsteriskPBX;
+import org.asteriskjava.util.Log;
+import org.asteriskjava.util.LogFactory;
 
 /**
  * The ParkActivity is used by the AsteriksPBX implementation to park a channel.
@@ -36,7 +37,7 @@ import org.asteriskjava.pbx.internal.core.AsteriskPBX;
  */
 public class ParkActivityImpl extends ActivityHelper<ParkActivity> implements ParkActivity
 {
-    static Logger logger = Logger.getLogger(ParkActivityImpl.class);
+    private static final Log logger = LogFactory.getLog(ParkActivityImpl.class);
 
     /**
      * call - the call which is being packed.

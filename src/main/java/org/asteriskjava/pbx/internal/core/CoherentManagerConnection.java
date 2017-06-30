@@ -10,7 +10,6 @@ import java.util.concurrent.TimeUnit;
 
 import javax.naming.OperationNotSupportedException;
 
-import org.apache.log4j.Logger;
 import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.manager.AuthenticationFailedException;
 import org.asteriskjava.manager.EventTimeoutException;
@@ -34,6 +33,8 @@ import org.asteriskjava.pbx.asterisk.wrap.events.ManagerEvent;
 import org.asteriskjava.pbx.asterisk.wrap.events.ResponseEvents;
 import org.asteriskjava.pbx.asterisk.wrap.response.ManagerResponse;
 import org.asteriskjava.pbx.internal.managerAPI.Connector;
+import org.asteriskjava.util.Log;
+import org.asteriskjava.util.LogFactory;
 
 /**
  * This is a wrapper class for the asterisk manager. <br>
@@ -53,8 +54,8 @@ import org.asteriskjava.pbx.internal.managerAPI.Connector;
  * This means that we are always responsive to asterisk when receiving events,
  * if we are not responsive then asterisk will drop the connection. <br>
  * <br>
- * It should be noted that as all events are dispatch from a single thread and as such 
- * a single tardy listener can block all other listeners. <br>
+ * It should be noted that as all events are dispatch from a single thread and
+ * as such a single tardy listener can block all other listeners. <br>
  * <br>
  * If your listener is likely to be slow in handling events then you should wrap
  * the listener in its own ManagerEventQueue. <br>
@@ -71,7 +72,7 @@ import org.asteriskjava.pbx.internal.managerAPI.Connector;
 class CoherentManagerConnection implements FilteredManagerListener<ManagerEvent>
 {
 
-    static private Logger logger = Logger.getLogger(CoherentManagerConnection.class);
+    static private Log logger = LogFactory.getLog(CoherentManagerConnection.class);
 
     static Map<String, Integer> eventStatistics = new HashMap<>();
 

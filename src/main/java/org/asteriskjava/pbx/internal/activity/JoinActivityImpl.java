@@ -4,19 +4,20 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.asteriskjava.pbx.ActivityCallback;
 import org.asteriskjava.pbx.Call;
+import org.asteriskjava.pbx.Call.OperandChannel;
 import org.asteriskjava.pbx.CallDirection;
 import org.asteriskjava.pbx.CallImpl;
 import org.asteriskjava.pbx.Channel;
 import org.asteriskjava.pbx.ListenerPriority;
 import org.asteriskjava.pbx.PBXException;
 import org.asteriskjava.pbx.PBXFactory;
-import org.asteriskjava.pbx.Call.OperandChannel;
 import org.asteriskjava.pbx.activities.JoinActivity;
 import org.asteriskjava.pbx.asterisk.wrap.events.ManagerEvent;
 import org.asteriskjava.pbx.internal.core.AsteriskPBX;
+import org.asteriskjava.util.Log;
+import org.asteriskjava.util.LogFactory;
 
 /**
  * The JoinActivity is used by the AsteriksPBX implementation to Join two
@@ -30,7 +31,7 @@ import org.asteriskjava.pbx.internal.core.AsteriskPBX;
 public class JoinActivityImpl extends ActivityHelper<JoinActivity> implements JoinActivity
 {
 
-    static Logger logger = Logger.getLogger(JoinActivityImpl.class);
+    private static final Log logger = LogFactory.getLog(JoinActivityImpl.class);
 
     private final Call _lhsCall;
     private final OperandChannel _originatingOperand;
@@ -90,7 +91,6 @@ public class JoinActivityImpl extends ActivityHelper<JoinActivity> implements Jo
             throw new IllegalArgumentException("rhsOperand may not be null"); //$NON-NLS-1$
         }
 
- 
         this.startActivity(true);
     }
 
@@ -110,7 +110,7 @@ public class JoinActivityImpl extends ActivityHelper<JoinActivity> implements Jo
         {
             final Channel rhsChannel = this._rhsCall.getOperandChannel(this._acceptingOperand);
             final Channel lhsChannel = this._lhsCall.getOperandChannel(this._originatingOperand);
-          
+
             if (!pbx.moveChannelToAgi(rhsChannel))
             {
                 throw new PBXException("Channel: " + rhsChannel + " couldn't be moved to agi");
@@ -126,18 +126,16 @@ public class JoinActivityImpl extends ActivityHelper<JoinActivity> implements Jo
             if (!pbx.waitForChannelsToQuiescent(channels, 3000))
             {
                 logger.error(callSite, callSite);
-                throw new PBXException("Channel: " + rhsChannel
-                        + " cannot be joined as it is still in transition.");
+                throw new PBXException("Channel: " + rhsChannel + " cannot be joined as it is still in transition.");
             }
             // Now do the actual join on the pbx.
-            pbx.bridge(lhsChannel,
-                    rhsChannel);
+            pbx.bridge(lhsChannel, rhsChannel);
             this._joined = ((CallImpl) this._lhsCall).join(this._originatingOperand, this._rhsCall, this._acceptingOperand,
                     this._direction);
             success = true;
 
         }
-        catch (RuntimeException  e)
+        catch (RuntimeException e)
         {
             logger.error(e, e);
             logger.error(callSite, callSite);

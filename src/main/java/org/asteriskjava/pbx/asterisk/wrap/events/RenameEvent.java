@@ -1,17 +1,18 @@
 package org.asteriskjava.pbx.asterisk.wrap.events;
 
-import org.apache.log4j.Logger;
 import org.asteriskjava.pbx.Channel;
 import org.asteriskjava.pbx.InvalidChannelName;
 import org.asteriskjava.pbx.PBXFactory;
 import org.asteriskjava.pbx.internal.core.AsteriskPBX;
 import org.asteriskjava.pbx.internal.core.ChannelProxy;
+import org.asteriskjava.util.Log;
+import org.asteriskjava.util.LogFactory;
 
 public class RenameEvent extends ManagerEvent implements ChannelEvent
 {
     private static final long serialVersionUID = 1L;
 
-    private static final Logger logger = Logger.getLogger(RenameEvent.class);
+    private static final Log logger = LogFactory.getLog(RenameEvent.class);
 
     /**
      * The existing channel which is about to be renamed.

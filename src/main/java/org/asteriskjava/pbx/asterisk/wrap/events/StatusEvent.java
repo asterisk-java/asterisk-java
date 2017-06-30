@@ -2,7 +2,6 @@ package org.asteriskjava.pbx.asterisk.wrap.events;
 
 import java.util.Map;
 
-import org.apache.log4j.Logger;
 import org.asteriskjava.pbx.CallerID;
 import org.asteriskjava.pbx.Channel;
 import org.asteriskjava.pbx.DialPlanExtension;
@@ -13,9 +12,6 @@ import org.asteriskjava.pbx.internal.core.AsteriskPBX;
 public class StatusEvent extends ResponseEvent implements ChannelEvent
 {
     private static final long serialVersionUID = 1L;
-
-    @SuppressWarnings("unused")
-    private static final Logger logger = Logger.getLogger(StatusEvent.class);
 
     private final Channel channel;
     private final CallerID callerId;

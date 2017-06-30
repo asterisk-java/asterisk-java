@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.log4j.Logger;
 import org.asteriskjava.pbx.ActivityCallback;
 import org.asteriskjava.pbx.Call;
 import org.asteriskjava.pbx.Call.OperandChannel;
@@ -25,6 +24,8 @@ import org.asteriskjava.pbx.asterisk.wrap.events.LinkEvent;
 import org.asteriskjava.pbx.asterisk.wrap.events.ManagerEvent;
 import org.asteriskjava.pbx.asterisk.wrap.events.UnlinkEvent;
 import org.asteriskjava.pbx.internal.core.AsteriskPBX;
+import org.asteriskjava.util.Log;
+import org.asteriskjava.util.LogFactory;
 
 /**
  * The BlindTransferActivity is used by the AsteriksPBX to transfer a live
@@ -34,7 +35,7 @@ import org.asteriskjava.pbx.internal.core.AsteriskPBX;
  */
 public class BlindTransferActivityImpl extends ActivityHelper<BlindTransferActivity> implements BlindTransferActivity
 {
-    static Logger logger = Logger.getLogger(BlindTransferActivityImpl.class);
+    private static final Log logger = LogFactory.getLog(BlindTransferActivityImpl.class);
 
     private Call _call;
 

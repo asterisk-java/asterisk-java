@@ -3,7 +3,8 @@ package org.asteriskjava.pbx;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.log4j.Logger;
+import org.asteriskjava.util.Log;
+import org.asteriskjava.util.LogFactory;
 
 /**
  * This is a utility class designed to wait for an activity to complete. When
@@ -16,7 +17,7 @@ import org.apache.log4j.Logger;
  */
 public class CompletionAdaptor<T extends Activity> implements ActivityCallback<T>
 {
-    private static final Logger logger = Logger.getLogger(CompletionAdaptor.class);
+    private static final Log logger = LogFactory.getLog(CompletionAdaptor.class);
 
     CountDownLatch _latch = new CountDownLatch(1);
 

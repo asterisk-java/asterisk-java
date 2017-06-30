@@ -1,6 +1,5 @@
 package org.asteriskjava.pbx.internal.core;
 
-import org.apache.log4j.Logger;
 import org.asteriskjava.pbx.EndPoint;
 import org.asteriskjava.pbx.TechType;
 import org.asteriskjava.pbx.Trunk;
@@ -8,9 +7,6 @@ import org.asteriskjava.pbx.Trunk;
 public class EndPointImpl implements EndPoint
 {
     private static final String DELIMITER = "/"; //$NON-NLS-1$
-
-    @SuppressWarnings("unused")
-    private static final Logger logger = Logger.getLogger(EndPointImpl.class);
 
     final private TechType _tech;
 

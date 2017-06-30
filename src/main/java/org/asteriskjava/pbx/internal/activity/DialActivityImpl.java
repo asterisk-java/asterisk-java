@@ -3,7 +3,6 @@ package org.asteriskjava.pbx.internal.activity;
 import java.util.HashSet;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
 import org.asteriskjava.pbx.ActivityCallback;
 import org.asteriskjava.pbx.AsteriskSettings;
 import org.asteriskjava.pbx.Call;
@@ -24,10 +23,12 @@ import org.asteriskjava.pbx.asterisk.wrap.response.ManagerResponse;
 import org.asteriskjava.pbx.internal.core.AsteriskPBX;
 import org.asteriskjava.pbx.internal.managerAPI.Dial;
 import org.asteriskjava.pbx.internal.managerAPI.OriginateResult;
+import org.asteriskjava.util.Log;
+import org.asteriskjava.util.LogFactory;
 
 public class DialActivityImpl extends ActivityHelper<DialActivity> implements DialActivity, NewChannelListener
 {
-    static Logger logger = Logger.getLogger(DialActivityImpl.class);
+    private static final Log logger = LogFactory.getLog(DialActivityImpl.class);
 
     private final boolean hideToCallerId;
 

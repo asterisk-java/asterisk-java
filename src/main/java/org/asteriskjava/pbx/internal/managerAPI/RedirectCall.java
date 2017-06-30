@@ -2,7 +2,6 @@ package org.asteriskjava.pbx.internal.managerAPI;
 
 import java.util.HashMap;
 
-import org.apache.log4j.Logger;
 import org.asteriskjava.pbx.AgiChannelActivityAction;
 import org.asteriskjava.pbx.AsteriskSettings;
 import org.asteriskjava.pbx.Channel;
@@ -12,6 +11,8 @@ import org.asteriskjava.pbx.PBXFactory;
 import org.asteriskjava.pbx.agi.AgiChannelActivityDial;
 import org.asteriskjava.pbx.agi.AgiChannelActivityVoicemail;
 import org.asteriskjava.pbx.internal.core.AsteriskPBX;
+import org.asteriskjava.util.Log;
+import org.asteriskjava.util.LogFactory;
 
 public class RedirectCall
 {
@@ -19,7 +20,7 @@ public class RedirectCall
      * this class generates and issues ActionEvents to asterisk through the
      * manager. This is the asterisk coal face.
      */
-    static Logger logger = Logger.getLogger(RedirectCall.class);
+    private static final Log logger = LogFactory.getLog(RedirectCall.class);
 
     static public void setAutoAnswer(final HashMap<String, String> myVars, final AsteriskSettings settings)
     {

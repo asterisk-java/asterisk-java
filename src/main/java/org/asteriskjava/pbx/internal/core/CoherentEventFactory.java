@@ -4,7 +4,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Hashtable;
 
-import org.apache.log4j.Logger;
 import org.asteriskjava.pbx.asterisk.wrap.actions.ManagerAction;
 import org.asteriskjava.pbx.asterisk.wrap.events.AgentCalledEvent;
 import org.asteriskjava.pbx.asterisk.wrap.events.AgentConnectEvent;
@@ -40,6 +39,8 @@ import org.asteriskjava.pbx.asterisk.wrap.events.VarSetEvent;
 import org.asteriskjava.pbx.asterisk.wrap.response.CommandResponse;
 import org.asteriskjava.pbx.asterisk.wrap.response.ManagerError;
 import org.asteriskjava.pbx.asterisk.wrap.response.ManagerResponse;
+import org.asteriskjava.util.Log;
+import org.asteriskjava.util.LogFactory;
 
 /**
  * This class maps asterisk-java events to our internal events that use iChannel
@@ -50,7 +51,7 @@ import org.asteriskjava.pbx.asterisk.wrap.response.ManagerResponse;
 @SuppressWarnings("deprecation")
 public class CoherentEventFactory
 {
-    private static final Logger logger = Logger.getLogger(CoherentEventFactory.class);
+    private static final Log logger = LogFactory.getLog(CoherentEventFactory.class);
 
     // Events
     static Hashtable<Class< ? extends org.asteriskjava.manager.event.ManagerEvent>, Class< ? extends ManagerEvent>> mapEvents = new Hashtable<>();

@@ -1,6 +1,5 @@
 package org.asteriskjava.pbx.asterisk.wrap.events;
 
-import org.apache.log4j.Logger;
 import org.asteriskjava.pbx.Channel;
 import org.asteriskjava.pbx.InvalidChannelName;
 import org.asteriskjava.pbx.PBXFactory;
@@ -10,9 +9,6 @@ import org.asteriskjava.pbx.internal.core.ChannelImpl;
 public class UnparkedCallEvent extends AbstractParkedCallEvent
 {
     private static final long serialVersionUID = 1L;
-
-    @SuppressWarnings("unused")
-    private static final Logger logger = Logger.getLogger(UnparkedCallEvent.class);
 
     private final Channel fromChannel;
 

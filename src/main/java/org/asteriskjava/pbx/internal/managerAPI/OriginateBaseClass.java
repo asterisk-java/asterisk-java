@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.log4j.Logger;
 import org.asteriskjava.live.ManagerCommunicationException;
 import org.asteriskjava.pbx.AsteriskSettings;
 import org.asteriskjava.pbx.CallerID;
@@ -26,6 +25,8 @@ import org.asteriskjava.pbx.asterisk.wrap.events.OriginateResponseEvent;
 import org.asteriskjava.pbx.asterisk.wrap.events.UnlinkEvent;
 import org.asteriskjava.pbx.asterisk.wrap.response.ManagerResponse;
 import org.asteriskjava.pbx.internal.core.AsteriskPBX;
+import org.asteriskjava.util.Log;
+import org.asteriskjava.util.LogFactory;
 
 public abstract class OriginateBaseClass extends EventListenerBaseClass
 {
@@ -36,7 +37,7 @@ public abstract class OriginateBaseClass extends EventListenerBaseClass
      * this class generates and issues ActionEvents to asterisk through the
      * manager. This is the asterisk coal face.
      */
-    static Logger logger = Logger.getLogger(OriginateBaseClass.class);
+    protected static final Log logger = LogFactory.getLog(OriginateBaseClass.class);
 
     private volatile String originateID;
 

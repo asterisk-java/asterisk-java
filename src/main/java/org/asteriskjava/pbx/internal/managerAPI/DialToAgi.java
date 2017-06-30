@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.log4j.Logger;
 import org.asteriskjava.pbx.AgiChannelActivityAction;
 import org.asteriskjava.pbx.CallerID;
 import org.asteriskjava.pbx.Channel;
@@ -17,10 +16,12 @@ import org.asteriskjava.pbx.PBXFactory;
 import org.asteriskjava.pbx.asterisk.wrap.events.HangupEvent;
 import org.asteriskjava.pbx.asterisk.wrap.events.ManagerEvent;
 import org.asteriskjava.pbx.internal.core.AsteriskPBX;
+import org.asteriskjava.util.Log;
+import org.asteriskjava.util.LogFactory;
 
 public class DialToAgi extends EventListenerBaseClass
 {
-    private final static Logger logger = Logger.getLogger(DialToAgi.class);
+    private static final Log logger = LogFactory.getLog(DialToAgi.class);
 
     private final OriginateResult result[] = new OriginateResult[2];
 

@@ -1,6 +1,5 @@
 package org.asteriskjava.pbx.asterisk.wrap.events;
 
-import org.apache.log4j.Logger;
 import org.asteriskjava.pbx.Channel;
 import org.asteriskjava.pbx.InvalidChannelName;
 import org.asteriskjava.pbx.PBXFactory;
@@ -9,9 +8,6 @@ import org.asteriskjava.pbx.internal.core.AsteriskPBX;
 public class DialEvent extends ChannelEventHelper
 {
     private static final long serialVersionUID = 1L;
-
-    @SuppressWarnings("unused")
-    private static final Logger logger = Logger.getLogger(DialEvent.class);
 
     /**
      * The name of the destination channel.

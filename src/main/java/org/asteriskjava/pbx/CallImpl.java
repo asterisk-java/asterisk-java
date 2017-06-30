@@ -5,8 +5,9 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.asteriskjava.pbx.activities.BlindTransferActivity;
+import org.asteriskjava.util.Log;
+import org.asteriskjava.util.LogFactory;
 
 /**
  * Holds a call which may consist of 0, 1, 2 or 3 channels. When dialing out a
@@ -25,7 +26,7 @@ import org.asteriskjava.pbx.activities.BlindTransferActivity;
 
 public class CallImpl implements ChannelHangupListener, Call
 {
-    static Logger logger = Logger.getLogger(CallImpl.class);
+    private static final Log logger = LogFactory.getLog(CallImpl.class);
 
     /**
      * We give every call a unique call id to help track the calls when checking

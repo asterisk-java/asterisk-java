@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.apache.log4j.Logger;
 import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.live.ManagerCommunicationException;
 import org.asteriskjava.pbx.AsteriskSettings;
@@ -29,6 +28,8 @@ import org.asteriskjava.pbx.asterisk.wrap.response.ManagerResponse;
 import org.asteriskjava.pbx.internal.core.AsteriskPBX;
 import org.asteriskjava.pbx.internal.core.CoherentManagerEventListener;
 import org.asteriskjava.pbx.internal.managerAPI.EventListenerBaseClass;
+import org.asteriskjava.util.Log;
+import org.asteriskjava.util.LogFactory;
 
 public class MeetmeRoomControl extends EventListenerBaseClass implements CoherentManagerEventListener
 {
@@ -39,7 +40,7 @@ public class MeetmeRoomControl extends EventListenerBaseClass implements Coheren
      * default.Also manages the available room list.
      */
 
-    static Logger logger = Logger.getLogger(MeetmeRoomControl.class);
+    private static final Log logger = LogFactory.getLog(MeetmeRoomControl.class);
 
     private Integer meetmeBaseAddress;
 

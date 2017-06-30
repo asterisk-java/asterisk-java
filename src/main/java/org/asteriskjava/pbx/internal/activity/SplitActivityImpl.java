@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.asteriskjava.pbx.ActivityCallback;
 import org.asteriskjava.pbx.AsteriskSettings;
 import org.asteriskjava.pbx.Call;
@@ -20,6 +19,8 @@ import org.asteriskjava.pbx.asterisk.wrap.actions.RedirectAction;
 import org.asteriskjava.pbx.asterisk.wrap.events.ManagerEvent;
 import org.asteriskjava.pbx.internal.core.AsteriskPBX;
 import org.asteriskjava.pbx.internal.core.ChannelProxy;
+import org.asteriskjava.util.Log;
+import org.asteriskjava.util.LogFactory;
 
 /**
  * The SplitActivity is used by the AsteriksPBX to split a call and place the
@@ -31,7 +32,7 @@ import org.asteriskjava.pbx.internal.core.ChannelProxy;
  */
 public class SplitActivityImpl extends ActivityHelper<SplitActivity> implements SplitActivity
 {
-    static Logger logger = Logger.getLogger(SplitActivityImpl.class);
+    private static final Log logger = LogFactory.getLog(SplitActivityImpl.class);
 
     private Call _callToSplit;
 
@@ -45,9 +46,8 @@ public class SplitActivityImpl extends ActivityHelper<SplitActivity> implements 
 
     /**
      * Splits a call by moving each of its two channels into the Activity agi.
-     * The channels will sit in the agi (with no audio) until something is done with them.
-     * As such you should leave them split for too long.
-     * 
+     * The channels will sit in the agi (with no audio) until something is done
+     * with them. As such you should leave them split for too long.
      * 
      * @param callToSplit The call to split
      * @param listener

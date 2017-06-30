@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import org.apache.log4j.Logger;
-import org.apache.log4j.Priority;
 import org.asteriskjava.pbx.Channel;
 import org.asteriskjava.pbx.EndPoint;
 import org.asteriskjava.pbx.InvalidChannelName;
@@ -15,6 +13,8 @@ import org.asteriskjava.pbx.asterisk.wrap.events.HangupEvent;
 import org.asteriskjava.pbx.asterisk.wrap.events.ManagerEvent;
 import org.asteriskjava.pbx.asterisk.wrap.events.MasqueradeEvent;
 import org.asteriskjava.pbx.asterisk.wrap.events.RenameEvent;
+import org.asteriskjava.util.Log;
+import org.asteriskjava.util.LogFactory;
 
 /**
  * The LiveChannelManager keeps a list of all of the live channels present on an
@@ -51,7 +51,7 @@ import org.asteriskjava.pbx.asterisk.wrap.events.RenameEvent;
  */
 public class LiveChannelManager implements FilteredManagerListener<ManagerEvent>
 {
-    private static final Logger logger = Logger.getLogger(LiveChannelManager.class);
+    private static final Log logger = LogFactory.getLog(LiveChannelManager.class);
 
     /**
      * A collection of all of the live proxies in the system. We monitor the
@@ -333,11 +333,10 @@ public class LiveChannelManager implements FilteredManagerListener<ManagerEvent>
         return ListenerPriority.CRITICAL;
     }
 
-    @SuppressWarnings("deprecation")
     public void sanityCheck()
     {
 
-        if (logger.isEnabledFor(Priority.INFO))
+        if (logger.isDebugEnabled())
         {
             logger.error("Performing Sanity Check");
             Set<String> channels = new HashSet<>();

@@ -3,7 +3,6 @@ package org.asteriskjava.pbx.internal.core;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.log4j.Logger;
 import org.asteriskjava.pbx.AgiChannelActivityAction;
 import org.asteriskjava.pbx.AsteriskSettings;
 import org.asteriskjava.pbx.CallerID;
@@ -15,6 +14,8 @@ import org.asteriskjava.pbx.InvalidChannelName;
 import org.asteriskjava.pbx.PBX;
 import org.asteriskjava.pbx.PBXFactory;
 import org.asteriskjava.pbx.TechType;
+import org.asteriskjava.util.Log;
+import org.asteriskjava.util.LogFactory;
 
 /**
  * TODO set the channel unique id when registering against an existing channel
@@ -43,7 +44,7 @@ public class ChannelImpl implements Channel
 
     public static final String UNKNOWN_UNIQUE_ID = "-1"; //$NON-NLS-1$
 
-    private static Logger logger = Logger.getLogger(ChannelImpl.class);
+    private static final Log logger = LogFactory.getLog(ChannelImpl.class);
     private static int logCounter = 100;
 
     /**

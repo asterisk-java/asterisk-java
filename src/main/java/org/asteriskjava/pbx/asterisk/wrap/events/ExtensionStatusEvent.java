@@ -1,95 +1,91 @@
 package org.asteriskjava.pbx.asterisk.wrap.events;
 
-import org.apache.log4j.Logger;
-
 public class ExtensionStatusEvent extends ManagerEvent
 {
-	private static final long serialVersionUID = 1L;
-	@SuppressWarnings("unused")
-	private static final Logger logger = Logger.getLogger(ExtensionStatusEvent.class);
+    private static final long serialVersionUID = 1L;
 
-	enum Status
-	{
+    enum Status
+    {
 
-		/**
-		 * No device INUSE or BUSY.
-		 */
-		NOT_INUSE(org.asteriskjava.manager.event.ExtensionStatusEvent.NOT_INUSE),
+        /**
+         * No device INUSE or BUSY.
+         */
+        NOT_INUSE(org.asteriskjava.manager.event.ExtensionStatusEvent.NOT_INUSE),
 
-		/**
-		 * One or more devices INUSE.
-		 */
-		INUSE(org.asteriskjava.manager.event.ExtensionStatusEvent.INUSE),
+        /**
+         * One or more devices INUSE.
+         */
+        INUSE(org.asteriskjava.manager.event.ExtensionStatusEvent.INUSE),
 
-		/**
-		 * All devices BUSY.
-		 */
-		BUSY(org.asteriskjava.manager.event.ExtensionStatusEvent.BUSY),
+        /**
+         * All devices BUSY.
+         */
+        BUSY(org.asteriskjava.manager.event.ExtensionStatusEvent.BUSY),
 
-		/**
-		 * All devices UNAVAILABLE/UNREGISTERED.
-		 */
-		UNAVAILABLE(org.asteriskjava.manager.event.ExtensionStatusEvent.UNAVAILABLE),
+        /**
+         * All devices UNAVAILABLE/UNREGISTERED.
+         */
+        UNAVAILABLE(org.asteriskjava.manager.event.ExtensionStatusEvent.UNAVAILABLE),
 
-		/**
-		 * One or more devices RINGING.
-		 */
-		RINGING(org.asteriskjava.manager.event.ExtensionStatusEvent.RINGING);
+        /**
+         * One or more devices RINGING.
+         */
+        RINGING(org.asteriskjava.manager.event.ExtensionStatusEvent.RINGING);
 
-		int _status;
+        int _status;
 
-		Status(int status)
-		{
-			this._status = status;
-		}
+        Status(int status)
+        {
+            this._status = status;
+        }
 
-		static Status valueOf(Integer status)
-		{
-			Status theStatus = null;
-			for (Status aStatus : Status.values())
-			{
-				if (aStatus._status == status)
-				{
-					theStatus = aStatus;
-					break;
-				}
-			}
-			return theStatus;
-		}
-	}
+        static Status valueOf(Integer status)
+        {
+            Status theStatus = null;
+            for (Status aStatus : Status.values())
+            {
+                if (aStatus._status == status)
+                {
+                    theStatus = aStatus;
+                    break;
+                }
+            }
+            return theStatus;
+        }
+    }
 
-	private final String exten;
-	private final String context;
-	private final String hint;
-	private final Status status;
+    private final String exten;
+    private final String context;
+    private final String hint;
+    private final Status status;
 
-	public ExtensionStatusEvent(final org.asteriskjava.manager.event.ExtensionStatusEvent event)
-	{
-		super(event);
-		this.exten = event.getExten();
-		this.context = event.getContext();
-		this.hint = event.getHint();
-		this.status = Status.valueOf(event.getStatus());
-	}
+    public ExtensionStatusEvent(final org.asteriskjava.manager.event.ExtensionStatusEvent event)
+    {
+        super(event);
+        this.exten = event.getExten();
+        this.context = event.getContext();
+        this.hint = event.getHint();
+        this.status = Status.valueOf(event.getStatus());
+    }
 
-	public String getExten()
-	{
-		return this.exten;
-	}
+    public String getExten()
+    {
+        return this.exten;
+    }
 
-	public String getContext()
-	{
-		return this.context;
-	}
+    public String getContext()
+    {
+        return this.context;
+    }
 
-	public String getHint()
-	{
-		return this.hint;
-	}
+    public String getHint()
+    {
+        return this.hint;
+    }
 
-	public Status getStatus()
-	{
-		return this.status;
-	}
+    public Status getStatus()
+    {
+        return this.status;
+    }
 
 }
