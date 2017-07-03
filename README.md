@@ -8,7 +8,7 @@ The Asterisk-Java package consists of a set of Java classes that allow you to ea
 
 FastAGI
 -------
-FastAGI lets you create a service that manages a call in a similar way to what a webserver handles a http request. FastAGI can be (and should be) used to replace dialplan. FastAGI is thousands of times faster than dialplan, easier to debug and lets you do call control in a language that you are fimilar with.
+FastAGI lets you create a service that manages a call in a similar way to what a webserver handles a http request. FastAGI can be (and should be) used to replace dialplan. FastAGI is thousands of times faster than dialplan, easier to debug and lets you do call control in a language that you are familiar with.
 
 The FastAGI implementation supports all commands currently available from Asterisk.
 
