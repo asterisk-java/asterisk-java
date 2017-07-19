@@ -89,4 +89,11 @@ public class ExamplesAsteriskSettings implements AsteriskSettings
         return false;
     }
 
+    @Override
+    public String getAgiHost()
+    {
+        // TODO Auto-generated method stub
+        return "127.0.0.1";
+    }
+
 }

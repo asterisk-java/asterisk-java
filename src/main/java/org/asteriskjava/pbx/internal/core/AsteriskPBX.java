@@ -885,8 +885,9 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
 
             AsteriskSettings profile = PBXFactory.getActiveProfile();
 
+            String host = profile.getAgiHost();
             String agi = profile.getAgiExtension();
-            pbx.addAsteriskExtension(agi, 1, "AGI(agi://127.0.0.1/activityAgi), into " + profile.getManagementContext());
+            pbx.addAsteriskExtension(agi, 1, "AGI(agi://" + host + "/activityAgi), into " + profile.getManagementContext());
             pbx.addAsteriskExtension(agi, 2, "wait(0.5), into " + profile.getManagementContext());
             pbx.addAsteriskExtension(agi, 3, "goto(" + agi + ",1), into " + profile.getManagementContext());
 
