@@ -15,6 +15,7 @@ import org.asteriskjava.pbx.activities.BridgeActivity;
 import org.asteriskjava.pbx.agi.AgiChannelActivityBridge;
 import org.asteriskjava.pbx.agi.AgiChannelActivityHoldForBridge;
 import org.asteriskjava.pbx.asterisk.wrap.events.BridgeEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.LinkEvent;
 import org.asteriskjava.pbx.asterisk.wrap.events.ManagerEvent;
 import org.asteriskjava.pbx.asterisk.wrap.events.StatusCompleteEvent;
 import org.asteriskjava.pbx.asterisk.wrap.events.StatusEvent;
@@ -138,6 +139,7 @@ public class BridgeActivityImpl extends ActivityHelper<BridgeActivity> implement
         required.add(StatusCompleteEvent.class);
         required.add(StatusEvent.class);
         required.add(BridgeEvent.class);
+        required.add(LinkEvent.class);
         return required;
     }
 

@@ -733,8 +733,8 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
     @Override
     public boolean waitForChannelsToQuiescent(List<Channel> channels, long timeout)
     {
-
-        while (timeout > 0 && !channelsAreQuiesent(channels))
+        long elapsed = 0;
+        while (elapsed < timeout && !channelsAreQuiesent(channels))
         {
             try
             {
@@ -744,10 +744,19 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
             {
                 logger.error(e, e);
             }
-            timeout -= 200;
+            logger.info("Waiting for channesl to Quiescent");
+            elapsed += 200;
         }
 
-        return timeout > 0;
+        if (elapsed > timeout / 2)
+        {
+            logger.warn("Took " + elapsed + "ms for channels to Quiescent");
+        }
+        if (elapsed >= timeout)
+        {
+            logger.error("Channels didn't Quiescent");
+        }
+        return timeout > elapsed;
     }
 
     private boolean channelsAreQuiesent(List<Channel> channels)

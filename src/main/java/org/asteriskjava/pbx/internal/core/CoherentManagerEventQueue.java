@@ -9,7 +9,10 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 import org.asteriskjava.manager.ManagerEventListener;
+import org.asteriskjava.pbx.asterisk.wrap.events.BridgeEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.LinkEvent;
 import org.asteriskjava.pbx.asterisk.wrap.events.ManagerEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.UnlinkEvent;
 import org.asteriskjava.pbx.internal.eventQueue.EventLifeMonitor;
 import org.asteriskjava.pbx.util.LogTime;
 import org.asteriskjava.util.Log;
@@ -39,6 +42,24 @@ class CoherentManagerEventQueue implements ManagerEventListener, Runnable
         {
             this._listener = listener;
             this.requiredEvents = listener.requiredEvents();
+
+            for (Class< ? extends ManagerEvent> event : requiredEvents)
+            {
+                if (event == BridgeEvent.class)
+                {
+                    // add LinkEvent and UnlinkEvent, as BridgeEvent only will
+                    // miss some events
+                    requiredEvents.add(LinkEvent.class);
+                    requiredEvents.add(UnlinkEvent.class);
+                }
+
+                if (!CoherentEventFactory.mapEvents.values().contains(event)
+                        && !CoherentEventFactory.mapResponses.values().contains(event))
+                {
+                    throw new RuntimeException(
+                            "The requested event type of " + event + "+isn't known by " + CoherentEventFactory.class);
+                }
+            }
         }
 
         @Override
