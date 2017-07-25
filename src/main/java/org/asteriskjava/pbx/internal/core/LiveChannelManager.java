@@ -164,10 +164,10 @@ public class LiveChannelManager implements FilteredManagerListener<ManagerEvent>
 
         if (proxy == null)
         {
-            logger.info("Failed to match channel to any of...");
+            logger.debug("Failed to match channel to any of...");
             for (ChannelProxy aChannel : _liveChannels)
             {
-                logger.info(aChannel);
+                logger.debug(aChannel);
             }
 
         }

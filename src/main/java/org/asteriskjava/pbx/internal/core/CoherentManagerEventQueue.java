@@ -43,16 +43,16 @@ class CoherentManagerEventQueue implements ManagerEventListener, Runnable
             this._listener = listener;
             this.requiredEvents = listener.requiredEvents();
 
+            if (requiredEvents.contains(BridgeEvent.class))
+            {
+                // add LinkEvent and UnlinkEvent, as BridgeEvent only will
+                // miss some events
+                requiredEvents.add(LinkEvent.class);
+                requiredEvents.add(UnlinkEvent.class);
+            }
+
             for (Class< ? extends ManagerEvent> event : requiredEvents)
             {
-                if (event == BridgeEvent.class)
-                {
-                    // add LinkEvent and UnlinkEvent, as BridgeEvent only will
-                    // miss some events
-                    requiredEvents.add(LinkEvent.class);
-                    requiredEvents.add(UnlinkEvent.class);
-                }
-
                 if (!CoherentEventFactory.mapEvents.values().contains(event)
                         && !CoherentEventFactory.mapResponses.values().contains(event))
                 {

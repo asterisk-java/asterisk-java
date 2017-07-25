@@ -33,7 +33,7 @@ public class RenameEvent extends ManagerEvent implements ChannelEvent
         this._newName = event.getNewname();
 
         String uniqueId = ((ChannelProxy) this._channel).getRealChannel().getUniqueId();
-        logger.error("Renaming :" + uniqueId + " " + event.getUniqueId());
+        logger.debug("Renaming :" + uniqueId + " " + event.getUniqueId());
 
         assert uniqueId.equalsIgnoreCase("-1")
                 || uniqueId.compareToIgnoreCase(event.getUniqueId()) == 0 : "Rename registered against incorrect channel"; //$NON-NLS-1$
