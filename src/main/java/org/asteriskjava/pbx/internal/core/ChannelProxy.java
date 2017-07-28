@@ -125,13 +125,17 @@ public class ChannelProxy implements Channel, ChannelHangupListener
     @Override
     public void addHangupListener(ChannelHangupListener listener)
     {
-        this.listeners.add(listener);
+        if (!listeners.contains(listener))
+        {
+            this.listeners.add(listener);
+        }
 
     }
 
     @Override
     public void removeListener(ChannelHangupListener listener)
     {
+
         this.listeners.remove(listener);
 
     }
