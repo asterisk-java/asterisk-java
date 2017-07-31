@@ -72,6 +72,7 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
 
     SELF;
 
+    public static final String ACTIVITY_AGI = "activityAgi";
     private final Log logger = LogFactory.getLog(getClass());
     private boolean muteSupported;
     private boolean bridgeSupport;
@@ -878,36 +879,62 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
      * 
      * @param profile
      * @param dialContext
-     * @return
+     * @return success or failure
      * @throws IllegalStateException
      * @throws IOException
      * @throws AuthenticationFailedException
      * @throws TimeoutException
      */
-    public String createAgiEntryPoint() throws IOException, AuthenticationFailedException, TimeoutException
+    public boolean createAgiEntryPoint() throws IOException, AuthenticationFailedException, TimeoutException
     {
 
         try
         {
 
             AsteriskPBX pbx = (AsteriskPBX) PBXFactory.getActivePBX();
-
             AsteriskSettings profile = PBXFactory.getActiveProfile();
+            if (!checkDialplanExists(profile))
 
-            String host = profile.getAgiHost();
-            String agi = profile.getAgiExtension();
-            pbx.addAsteriskExtension(agi, 1, "AGI(agi://" + host + "/activityAgi), into " + profile.getManagementContext());
-            pbx.addAsteriskExtension(agi, 2, "wait(0.5), into " + profile.getManagementContext());
-            pbx.addAsteriskExtension(agi, 3, "goto(" + agi + ",1), into " + profile.getManagementContext());
+            {
 
+                String host = profile.getAgiHost();
+                String agi = profile.getAgiExtension();
+                pbx.addAsteriskExtension(agi, 1,
+                        "AGI(agi://" + host + "/" + ACTIVITY_AGI + "), into " + profile.getManagementContext());
+                pbx.addAsteriskExtension(agi, 2, "wait(0.5), into " + profile.getManagementContext());
+                pbx.addAsteriskExtension(agi, 3, "goto(" + agi + ",1), into " + profile.getManagementContext());
+
+                return checkDialplanExists(profile);
+            }
+            return true;
         }
         catch (Exception e)
         {
             logger.error(e);
 
-            return e.getLocalizedMessage();
+            return false;
         }
-        return null;
+
+    }
+
+    public boolean checkDialplanExists(AsteriskSettings profile)
+            throws IllegalArgumentException, IllegalStateException, IOException, TimeoutException
+    {
+        String ext = "show dialplan " + profile.getManagementContext();
+
+        CommandAction action = new CommandAction(ext);
+        CommandResponse response = (CommandResponse) sendAction(action, 30000);
+
+        boolean exists = false;
+        for (String line : response.getResult())
+        {
+            if (line.contains(ACTIVITY_AGI))
+            {
+                exists = true;
+                break;
+            }
+        }
+        return exists;
 
     }
 
