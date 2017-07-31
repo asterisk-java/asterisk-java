@@ -1,17 +1,16 @@
 package org.asteriskjava.fastagi;
 
 
+import org.apache.log4j.Logger;
+import org.asteriskjava.live.DefaultAsteriskServer;
+
 import java.io.IOException;
 import java.net.InetAddress;
 import java.util.Arrays;
 
-import org.asteriskjava.live.DefaultAsteriskServer;
-import org.asteriskjava.util.Log;
-import org.asteriskjava.util.LogFactory;
-
 public class HangupTest extends BaseAgiScript
 {
-    private Log logger = LogFactory.getLog(getClass());
+    private Logger logger = LogFactory.getLog(getClass());
 
     public void service(AgiRequest request, AgiChannel channel) throws AgiException
     {
@@ -28,7 +27,7 @@ public class HangupTest extends BaseAgiScript
         }
         catch (Exception e)
         {
-            logger.error("Exception caught: " + e.getMessage(), e);
+            logger.info("Exception caught: " + e.getMessage(), e);
         }
 
     }
