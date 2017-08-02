@@ -8,6 +8,7 @@ import org.asteriskjava.pbx.activities.DialActivity;
 import org.asteriskjava.pbx.activities.HoldActivity;
 import org.asteriskjava.pbx.activities.JoinActivity;
 import org.asteriskjava.pbx.activities.ParkActivity;
+import org.asteriskjava.pbx.activities.RedirectToActivity;
 import org.asteriskjava.pbx.activities.SplitActivity;
 
 /**
@@ -131,9 +132,10 @@ public interface PBX
 
     /**
      * Hangup the given call, not returning until the call is hungup.
+     * 
      * @param call
      */
-	public void hangup(Call call) throws PBXException;
+    public void hangup(Call call) throws PBXException;
 
     /**
      * Put the given channel on hold.
@@ -207,6 +209,8 @@ public interface PBX
 
     public SplitActivity split(final Call callToSplit, final ActivityCallback<SplitActivity> listener) throws PBXException;
 
+    public RedirectToActivity redirectToActivity(final Channel channel, final ActivityCallback<RedirectToActivity> listener);
+
     public void split(final Call callToSplit) throws PBXException;
 
     /**
@@ -275,6 +279,5 @@ public interface PBX
     public boolean waitForChannelToQuiescent(Channel channel, int timeout);
 
     public Trunk buildTrunk(String string);
-
 
 }

@@ -39,6 +39,7 @@ import org.asteriskjava.pbx.activities.DialToAgiActivity;
 import org.asteriskjava.pbx.activities.HoldActivity;
 import org.asteriskjava.pbx.activities.JoinActivity;
 import org.asteriskjava.pbx.activities.ParkActivity;
+import org.asteriskjava.pbx.activities.RedirectToActivity;
 import org.asteriskjava.pbx.activities.SplitActivity;
 import org.asteriskjava.pbx.agi.AgiChannelActivityHangup;
 import org.asteriskjava.pbx.agi.AgiChannelActivityHold;
@@ -59,6 +60,7 @@ import org.asteriskjava.pbx.internal.activity.DialToAgiActivityImpl;
 import org.asteriskjava.pbx.internal.activity.HoldActivityImpl;
 import org.asteriskjava.pbx.internal.activity.JoinActivityImpl;
 import org.asteriskjava.pbx.internal.activity.ParkActivityImpl;
+import org.asteriskjava.pbx.internal.activity.RedirectToActivityImpl;
 import org.asteriskjava.pbx.internal.activity.SplitActivityImpl;
 import org.asteriskjava.pbx.internal.asterisk.CallerIDImpl;
 import org.asteriskjava.pbx.internal.asterisk.MeetmeRoom;
@@ -192,6 +194,13 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
     {
 
         return new SplitActivityImpl(callToSplit, listener);
+    }
+
+    @Override
+    public RedirectToActivity redirectToActivity(final Channel channel, final ActivityCallback<RedirectToActivity> listener)
+    {
+
+        return new RedirectToActivityImpl(channel, listener);
     }
 
     /**
