@@ -539,7 +539,7 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
         {
             if (uniqueID != null && !uniqueID.equals(proxy.getUniqueId()))
             {
-                logger.warn(
+                logger.info(
                         "Found the channel(" + proxy.getUniqueId() + "), but with a different uniqueId (" + uniqueID + ")");
 
             }
