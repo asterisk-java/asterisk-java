@@ -81,7 +81,7 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
 
     private static final int MAX_MEETME_ROOMS = 50;
 
-    private final LiveChannelManager liveChannels = new LiveChannelManager();
+    private LiveChannelManager liveChannels;
 
     AsteriskPBX()
     {
@@ -91,7 +91,7 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
 
             this.muteSupported = CoherentManagerConnection.getInstance().isMuteAudioSupported();
             this.bridgeSupport = CoherentManagerConnection.getInstance().isBridgeSupported();
-
+            liveChannels = new LiveChannelManager();
             try
             {
                 MeetmeRoomControl.init(this, AsteriskPBX.MAX_MEETME_ROOMS);
