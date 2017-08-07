@@ -122,6 +122,7 @@ class CoherentManagerConnection implements FilteredManagerListener<ManagerEvent>
         else
         {
             self = new CoherentManagerConnection();
+            self.checkConnection();
             self.checkFeatures();
         }
 

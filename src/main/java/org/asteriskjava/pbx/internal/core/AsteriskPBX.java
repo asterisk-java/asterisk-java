@@ -81,7 +81,7 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
 
     private static final int MAX_MEETME_ROOMS = 50;
 
-    private LiveChannelManager liveChannels;
+    private final LiveChannelManager liveChannels = new LiveChannelManager();
 
     AsteriskPBX()
     {
@@ -100,8 +100,6 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
             {
                 logger.error(e, e);
             }
-
-            this.liveChannels = new LiveChannelManager();
 
         }
         catch (IllegalStateException | IOException | AuthenticationFailedException | TimeoutException e1)
