@@ -150,8 +150,8 @@ public class BlindTransferActivityImpl extends ActivityHelper<BlindTransferActiv
             {
                 sipHeader = PBXFactory.getActiveProfile().getAutoAnswer();
             }
-            actualChannelToTransfer.setCurrentActivityAction(
-                    new AgiChannelActivityBlindTransfer(this._transferTarget.getFullyQualifiedName(), sipHeader));
+            actualChannelToTransfer.setCurrentActivityAction(new AgiChannelActivityBlindTransfer(
+                    this._transferTarget.getFullyQualifiedName(), sipHeader, _toCallerID.getNumber()));
 
             // TODO: At one point we were adding the /n option to the end of the
             // channel to get around
