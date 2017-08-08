@@ -123,7 +123,7 @@ public class LiveChannelManager implements FilteredManagerListener<ManagerEvent>
     public ChannelProxy findChannel(String extendedChannelName, String uniqueID)
     {
         ChannelProxy proxy = null;
-        logger.info("Trying to find channel " + extendedChannelName + " " + uniqueID);
+        logger.debug("Trying to find channel " + extendedChannelName + " " + uniqueID);
 
         String localUniqueId = uniqueID;
         if (localUniqueId == null)
@@ -308,7 +308,7 @@ public class LiveChannelManager implements FilteredManagerListener<ManagerEvent>
                 if (proxy != null)
                 {
                     this._liveChannels.remove(proxy);
-                    logger.info("Removing liveChannel " + proxy);
+                    logger.debug("Removing liveChannel " + proxy);
                     proxy.getChannel().notifyHangupListeners(hangup.getCause(), hangup.getCauseTxt());
                     dumpProxies(proxy, "HangupEvent"); //$NON-NLS-1$
                 }
