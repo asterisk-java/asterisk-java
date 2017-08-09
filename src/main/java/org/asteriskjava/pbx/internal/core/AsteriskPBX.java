@@ -569,7 +569,7 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
             if (proxy == null)
             {
                 proxy = new ChannelProxy(new ChannelImpl(channelName, localUniqueID));
-                logger.info("Creating new Channel Proxy " + proxy);
+                logger.debug("Creating new Channel Proxy " + proxy);
                 this.liveChannels.add(proxy);
                 proxy.addHangupListener(this);
             }

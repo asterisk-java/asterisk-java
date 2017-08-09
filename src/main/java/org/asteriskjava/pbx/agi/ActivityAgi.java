@@ -7,12 +7,12 @@ import org.asteriskjava.pbx.Channel;
 import org.asteriskjava.pbx.ChannelHangupListener;
 import org.asteriskjava.pbx.InvalidChannelName;
 import org.asteriskjava.pbx.PBXFactory;
-import org.asteriskjava.pbx.agi.config.ServiceAgiScript;
+import org.asteriskjava.pbx.agi.config.ServiceAgiScriptImpl;
 import org.asteriskjava.pbx.internal.core.AsteriskPBX;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
-public abstract class ActivityAgi extends ServiceAgiScript
+public abstract class ActivityAgi extends ServiceAgiScriptImpl
 {
 
     private final Log logger = LogFactory.getLog(this.getClass());
@@ -71,7 +71,7 @@ public abstract class ActivityAgi extends ServiceAgiScript
                 action.execute(this.channel, channelProxy);
 
                 action = channelProxy.getCurrentActivityAction();
-                logger.info("Action for proxy " + channelProxy + " is " + action.getClass().getSimpleName());
+                logger.debug("Action for proxy " + channelProxy + " is " + action.getClass().getSimpleName());
                 isAlive = checkChannelIsStillUp();
                 rateLimiter.acquire();
             }
@@ -86,7 +86,7 @@ public abstract class ActivityAgi extends ServiceAgiScript
             logger.error(e, e);
         }
 
-        logger.info("Channel leaving agi " + channelName);
+        logger.debug("Channel leaving agi " + channelName);
 
     }
 

@@ -178,7 +178,7 @@ public class ChannelImpl implements Channel
 
         if (uniqueID.compareToIgnoreCase("-1") == 0)
         {
-            logger.info("uniqueID is -1");
+            logger.debug("uniqueID is -1");
         }
 
         this._uniqueID = uniqueID;
@@ -228,7 +228,7 @@ public class ChannelImpl implements Channel
 
     private void setChannelName(final String channelName) throws InvalidChannelName
     {
-        logger.info("Renamed channel from " + this._channelName + " to " + channelName);
+        logger.debug("Renamed channel from " + this._channelName + " to " + channelName);
         this._channelName = this.cleanChannelName(channelName);
         this.validateChannelName(this._channelName);
 
@@ -355,7 +355,7 @@ public class ChannelImpl implements Channel
         }
         if (wasInAction != this._isInAction)
         {
-            logger.info("Channel " + this + " : inaction status changed from " + wasInAction + " to " + this._isInAction);
+            logger.debug("Channel " + this + " : inaction status changed from " + wasInAction + " to " + this._isInAction);
         }
 
         // Channels can be marked as in a zombie state

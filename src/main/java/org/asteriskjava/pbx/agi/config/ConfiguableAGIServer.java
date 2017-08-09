@@ -49,7 +49,7 @@ public class ConfiguableAGIServer extends DefaultAgiServer implements Runnable
         List<Class< ? extends ServiceAgiScript>> handlers = configuration.getAgiHandlers();
         for (Class< ? extends ServiceAgiScript> clazz : handlers)
         {
-            mappingStrategy.addNoojeeAgiHandler(clazz);
+            mappingStrategy.addServiceAgiScript(clazz);
         }
     }
 

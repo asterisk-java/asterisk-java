@@ -61,17 +61,17 @@ public class AgiMappingStragegy implements MappingStrategy
             script = script.substring(1);
         }
         Iterator<String> itr = request.getParameterMap().keySet().iterator();
-        logger.info("*********************************");
-        logger.info("script " + script);
+        logger.debug("*********************************");
+        logger.debug("script " + script);
         while (itr.hasNext())
         {
             String key = itr.next();
             String val = request.getParameter(key);
             if (key.compareToIgnoreCase("cardNumber") == 0)
                 val = "suppressed";
-            logger.info(key + ": " + val);
+            logger.debug(key + ": " + val);
         }
-        logger.info("******");
+        logger.debug("******");
 
         if (handlers.containsKey(script))
         {
@@ -81,12 +81,10 @@ public class AgiMappingStragegy implements MappingStrategy
             }
             catch (InstantiationException e)
             {
-                // TODO Auto-generated catch block
                 logger.error(e, e);
             }
             catch (IllegalAccessException e)
             {
-                // TODO Auto-generated catch block
                 logger.error(e, e);
             }
         }
@@ -104,7 +102,7 @@ public class AgiMappingStragegy implements MappingStrategy
      * @throws InstantiationException
      */
     @SuppressWarnings("unchecked")
-    public void addNoojeeAgiHandler(Class< ? extends ServiceAgiScript> handler)
+    public void addServiceAgiScript(Class< ? extends ServiceAgiScript> handler)
             throws DuplicateScriptException, InstantiationException, IllegalAccessException
     {
 

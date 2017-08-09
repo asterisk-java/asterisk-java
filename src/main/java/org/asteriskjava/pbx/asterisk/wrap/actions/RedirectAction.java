@@ -51,12 +51,12 @@ public class RedirectAction extends AbstractManagerAction
     {
         final org.asteriskjava.manager.action.RedirectAction action = new org.asteriskjava.manager.action.RedirectAction();
         action.setActionId(this.getActionId());
-        action.setChannel(this._channel.getChannelName());
+        action.setChannel(this._channel.getChannelName().toLowerCase());
         action.setContext(this._context);
         action.setExten(this._exten.getFullyQualifiedName());
         action.setPriority(this._priority);
         if (this._extraChannel != null)
-            action.setExtraChannel(this._extraChannel.getChannelName());
+            action.setExtraChannel(this._extraChannel.getChannelName().toLowerCase());
         action.setExtraContext(this._extraContext);
         if (this._extraExten != null)
             action.setExtraExten(this._extraExten.getFullyQualifiedName());

@@ -88,7 +88,7 @@ public class LiveChannelManager implements FilteredManagerListener<ManagerEvent>
             if (index == null)
                 this._liveChannels.add(proxy);
         }
-        logger.info("Adding liveChannel " + proxy);
+        logger.debug("Adding liveChannel " + proxy);
 
         dumpProxies(proxy, "Add"); //$NON-NLS-1$
         sanityCheck();

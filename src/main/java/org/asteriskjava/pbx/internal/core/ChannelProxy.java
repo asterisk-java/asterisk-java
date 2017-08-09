@@ -226,7 +226,7 @@ public class ChannelProxy implements Channel, ChannelHangupListener
         this._channel.addHangupListener(this);
         cloneProxy._channel.addHangupListener(cloneProxy);
 
-        logger.info(originalChannel + " Channel proxy now points to " + this._channel);
+        logger.debug(originalChannel + " Channel proxy now points to " + this._channel);
     }
 
     public ChannelImpl getRealChannel()
@@ -338,7 +338,7 @@ public class ChannelProxy implements Channel, ChannelHangupListener
     {
         AgiChannelActivityAction previousAction = currentActivityAction.get();
 
-        logger.info("Setting action to " + action.getClass().getSimpleName() + " for " + this);
+        logger.debug("Setting action to " + action.getClass().getSimpleName() + " for " + this);
 
         // Exception e = new Exception("Setting action to " +
         // action.getClass().getSimpleName() + " for " + this);
@@ -360,7 +360,7 @@ public class ChannelProxy implements Channel, ChannelHangupListener
             hasReachedAgi.countDown();
         }
         isInAgi = b;
-        logger.info("Setting is in agi to " + b + " for channel " + this);
+        logger.debug("Setting is in agi to " + b + " for channel " + this);
 
     }
 
