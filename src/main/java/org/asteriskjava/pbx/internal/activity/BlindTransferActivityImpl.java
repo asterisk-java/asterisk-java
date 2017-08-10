@@ -79,7 +79,7 @@ public class BlindTransferActivityImpl extends ActivityHelper<BlindTransferActiv
             final CallerID toCallerID, boolean autoAnswer, long timeout,
             final ActivityCallback<BlindTransferActivity> listener)
     {
-        super("BlindTransferActivity", listener); //$NON-NLS-1$
+        super("BlindTransferActivity", listener);
 
         this._call = call;
         this._channelToTransfer = channelToTransfer;
@@ -96,7 +96,7 @@ public class BlindTransferActivityImpl extends ActivityHelper<BlindTransferActiv
     public BlindTransferActivityImpl(Channel agentChannel, EndPoint transferTarget, CallerID toCallerID, boolean autoAnswer,
             int timeout, ActivityCallback<BlindTransferActivity> iCallback) throws PBXException
     {
-        super("BlindTransferActivity", iCallback); //$NON-NLS-1$
+        super("BlindTransferActivity", iCallback);
 
         this._transferTarget = transferTarget;
         this._toCallerID = toCallerID;
@@ -123,14 +123,12 @@ public class BlindTransferActivityImpl extends ActivityHelper<BlindTransferActiv
         try
         {
 
-            logger.info("*******************************************************************************"); //$NON-NLS-1$
-            logger.info("***********                    begin blind transfer            ****************"); //$NON-NLS-1$
-            logger.info("***********            " + this._channelToTransfer //$NON-NLS-1$
-                    + "                              ****************"); //$NON-NLS-1$
-            logger.info("***********            " + this._transferTarget //$NON-NLS-1$
-                    + "                              ****************"); //$NON-NLS-1$
-            logger.info("***********            " + this._toCallerID + "                              ****************"); //$NON-NLS-1$ //$NON-NLS-2$
-            logger.info("*******************************************************************************"); //$NON-NLS-1$
+            logger.debug("*******************************************************************************");
+            logger.info("***********                    begin blind transfer            ****************");
+            logger.debug("***********          " + this._channelToTransfer + "                           ****************");
+            logger.debug("***********            " + this._transferTarget + "                            ****************");
+            logger.debug("***********            " + this._toCallerID + "                            ****************");
+            logger.debug("*******************************************************************************");
 
             if (!pbx.moveChannelToAgi(actualChannelToTransfer))
             {
@@ -187,7 +185,7 @@ public class BlindTransferActivityImpl extends ActivityHelper<BlindTransferActiv
         }
         catch (final Exception e)
         {
-            logger.error("error occurred in blindtransfer", e); //$NON-NLS-1$
+            logger.error("error occurred in blindtransfer", e);
             this.setLastException(new PBXException(e));
         }
 

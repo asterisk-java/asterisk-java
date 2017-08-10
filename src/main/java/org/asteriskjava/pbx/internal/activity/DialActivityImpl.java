@@ -58,7 +58,7 @@ public class DialActivityImpl extends ActivityHelper<DialActivity> implements Di
             final boolean hideToCallerID, final ActivityCallback<DialActivity> listener,
             Map<String, String> channelVarsToSet)
     {
-        super("Dial", listener); //$NON-NLS-1$
+        super("Dial", listener);
         this._originating = originating;
         this._accepting = accepting;
         this.toCallerID = toCallerID;
@@ -76,11 +76,10 @@ public class DialActivityImpl extends ActivityHelper<DialActivity> implements Di
 
         try (Dial nr = new Dial(this.toCallerID.toString()))
         {
-            DialActivityImpl.logger.info("*******************************************************************************"); //$NON-NLS-1$
-            DialActivityImpl.logger.info("***********                    begin dial out                  ****************"); //$NON-NLS-1$
-            DialActivityImpl.logger.info("***********                          " + this._accepting //$NON-NLS-1$
-                    + "                              ****************"); //$NON-NLS-1$
-            DialActivityImpl.logger.info("*******************************************************************************"); //$NON-NLS-1$
+            DialActivityImpl.logger.debug("*******************************************************************************");
+            DialActivityImpl.logger.info("***********                    begin dial out                  ****************");
+            DialActivityImpl.logger.debug("***********               " + this._accepting + "             ****************");
+            DialActivityImpl.logger.debug("*******************************************************************************");
 
             final AsteriskSettings profile = PBXFactory.getActiveProfile();
 
@@ -95,8 +94,8 @@ public class DialActivityImpl extends ActivityHelper<DialActivity> implements Di
                 // Unless the operated cancelled the call
                 if (!this.cancelledByOperator)
                 {
-                    this.setLastException(new PBXException(("OperatorEndedCall")));//$NON-NLS-1$
-                    DialActivityImpl.logger.error("dialout to " + this._accepting.getFullyQualifiedName() + " failed."); //$NON-NLS-1$ //$NON-NLS-2$
+                    this.setLastException(new PBXException(("OperatorEndedCall")));
+                    DialActivityImpl.logger.error("dialout to " + this._accepting.getFullyQualifiedName() + " failed.");
                 }
             }
             else
@@ -109,12 +108,12 @@ public class DialActivityImpl extends ActivityHelper<DialActivity> implements Di
 
                 newCall = new CallImpl(originatingChannel, acceptingChannel, CallDirection.OUTBOUND);
 
-                DialActivityImpl.logger.debug("dialout succeeded: dest channel is :" + this.acceptingChannel); //$NON-NLS-1$
+                DialActivityImpl.logger.debug("dialout succeeded: dest channel is :" + this.acceptingChannel);
 
                 if (this.validateChannel(this.acceptingChannel) == false)
                 {
-                    this.setLastException(new PBXException(("dialed extension hungup unexpectedly")));//$NON-NLS-1$
-                    DialActivityImpl.logger.error("dialed extension hungup unexpectedly"); //$NON-NLS-1$
+                    this.setLastException(new PBXException(("dialed extension hungup unexpectedly")));
+                    DialActivityImpl.logger.error("dialed extension hungup unexpectedly");
                 }
                 else
                 {
@@ -199,7 +198,7 @@ public class DialActivityImpl extends ActivityHelper<DialActivity> implements Di
             this.originatingChannel = channel;
         }
 
-        super.progess(this, "Channel for " + channel.getEndPoint().getSIPSimpleName() + " is now up."); //$NON-NLS-1$ //$NON-NLS-2$
+        super.progess(this, "Channel for " + channel.getEndPoint().getSIPSimpleName() + " is now up.");
 
     }
 
@@ -212,7 +211,7 @@ public class DialActivityImpl extends ActivityHelper<DialActivity> implements Di
     {
 
         boolean ret = false;
-        final SetVarAction var = new SetVarAction(channel, "testState", "1"); //$NON-NLS-1$ //$NON-NLS-2$
+        final SetVarAction var = new SetVarAction(channel, "testState", "1");
 
         ManagerResponse response = null;
         try
@@ -223,9 +222,9 @@ public class DialActivityImpl extends ActivityHelper<DialActivity> implements Di
         catch (final Exception e)
         {
             DialActivityImpl.logger.debug(e, e);
-            DialActivityImpl.logger.error("getVariable: " + e); //$NON-NLS-1$
+            DialActivityImpl.logger.error("getVariable: " + e);
         }
-        if ((response != null) && (response.getAttribute("Response").compareToIgnoreCase("success") == 0)) //$NON-NLS-1$ //$NON-NLS-2$
+        if ((response != null) && (response.getAttribute("Response").compareToIgnoreCase("success") == 0))
         {
             ret = true;
         }

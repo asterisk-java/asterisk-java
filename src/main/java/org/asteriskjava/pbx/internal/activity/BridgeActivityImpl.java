@@ -36,7 +36,7 @@ public class BridgeActivityImpl extends ActivityHelper<BridgeActivity> implement
     public BridgeActivityImpl(final Channel lhsChannel, final Channel rhsChannel,
             final ActivityCallback<BridgeActivity> callback)
     {
-        super("Bridge", callback); //$NON-NLS-1$
+        super("Bridge", callback);
 
         this._lhsChannel = lhsChannel;
         this._rhsChannel = rhsChannel;
@@ -48,11 +48,11 @@ public class BridgeActivityImpl extends ActivityHelper<BridgeActivity> implement
     {
         boolean success = false;
 
-        BridgeActivityImpl.logger.info("*******************************************************************************"); //$NON-NLS-1$
-        BridgeActivityImpl.logger.info("***********                    begin Bridge                ****************"); //$NON-NLS-1$
-        BridgeActivityImpl.logger.info("***********                  lhs:" + this._lhsChannel + " ****************"); //$NON-NLS-1$ //$NON-NLS-2$
-        BridgeActivityImpl.logger.info("***********                  rhs:" + this._rhsChannel + " ****************"); //$NON-NLS-1$ //$NON-NLS-2$
-        BridgeActivityImpl.logger.info("*******************************************************************************"); //$NON-NLS-1$
+        BridgeActivityImpl.logger.debug("*******************************************************************************");
+        BridgeActivityImpl.logger.info("***********                    begin Bridge                ****************");
+        BridgeActivityImpl.logger.debug("***********                  lhs:" + this._lhsChannel + " ****************");
+        BridgeActivityImpl.logger.debug("***********                  rhs:" + this._rhsChannel + " ****************");
+        BridgeActivityImpl.logger.debug("*******************************************************************************");
         try
         {
 
@@ -115,7 +115,7 @@ public class BridgeActivityImpl extends ActivityHelper<BridgeActivity> implement
 
                 }
                 else
-                    throw new PBXException("Cannot bridge two calls as neither the BridgeAction nor Meetme is available"); //$NON-NLS-1$
+                    throw new PBXException("Cannot bridge two calls as neither the BridgeAction nor Meetme is available");
             }
             catch (IllegalArgumentException | IllegalStateException | InterruptedException e)
             {

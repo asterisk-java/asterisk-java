@@ -49,7 +49,7 @@ public class RedirectToActivityImpl extends ActivityHelper<RedirectToActivity> i
      */
     public RedirectToActivityImpl(final Channel channel1, final ActivityCallback<RedirectToActivity> listener)
     {
-        super("SplitActivity", listener); //$NON-NLS-1$
+        super("SplitActivity", listener);
 
         this.channel1 = channel1;
 
@@ -60,13 +60,10 @@ public class RedirectToActivityImpl extends ActivityHelper<RedirectToActivity> i
     public boolean doActivity() throws PBXException
     {
 
-        RedirectToActivityImpl.logger
-                .info("*******************************************************************************"); //$NON-NLS-1$
-        RedirectToActivityImpl.logger
-                .info("***********                    begin redirect to activity               ****************"); //$NON-NLS-1$
-        RedirectToActivityImpl.logger.info("***********            " + this.channel1 + "                 ****************"); //$NON-NLS-1$ //$NON-NLS-2$
-        RedirectToActivityImpl.logger
-                .info("*******************************************************************************"); //$NON-NLS-1$
+        RedirectToActivityImpl.logger.debug("***************************************************************************");
+        RedirectToActivityImpl.logger.info("***********            begin redirect to activity           ****************");
+        RedirectToActivityImpl.logger.debug("***********            " + this.channel1 + "                 ****************");
+        RedirectToActivityImpl.logger.debug("***************************************************************************");
 
         // Splits the originating and secondary channels by moving each of them
         // into the associated

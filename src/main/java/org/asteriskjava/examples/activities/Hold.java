@@ -58,6 +58,8 @@ public class Hold
                     HoldActivity hold = pbx.hold(call.getRemoteParty());
 
                     Channel heldChannel = hold.getChannel();
+
+                    System.out.println("Held channel is " + heldChannel);
                 }
                 if (status == ActivityStatusEnum.FAILURE)
                     System.out.println("Oops something bad happened when we dialed.");

@@ -48,7 +48,7 @@ public class DialToAgiActivityImpl extends ActivityHelper<DialToAgiActivity> imp
             final ActivityCallback<DialToAgiActivity> listener, Map<String, String> channelVarsToSet,
             AgiChannelActivityAction action)
     {
-        super("Dial", listener); //$NON-NLS-1$
+        super("Dial", listener);
 
         this.action = action;
         this._originating = originating;
@@ -67,10 +67,9 @@ public class DialToAgiActivityImpl extends ActivityHelper<DialToAgiActivity> imp
 
         try (DialToAgi nr = new DialToAgi(this.toCallerID.toString()))
         {
-            DialToAgiActivityImpl.logger.info("**************************************************************************");
-            DialToAgiActivityImpl.logger.info("***********                    begin dial out                  ***********");
-            DialToAgiActivityImpl.logger.info("***********                to agi              ***********");
-            DialToAgiActivityImpl.logger.info("**************************************************************************");
+            DialToAgiActivityImpl.logger.debug("**************************************************************************");
+            DialToAgiActivityImpl.logger.info("***********                begin dial out to agi               ***********");
+            DialToAgiActivityImpl.logger.debug("**************************************************************************");
 
             final OriginateResult[] resultChannels = nr.dial(this, this._originating, this.action, this.toCallerID,
                     this.hideToCallerId, channelVarsToSet);
@@ -163,7 +162,7 @@ public class DialToAgiActivityImpl extends ActivityHelper<DialToAgiActivity> imp
             this.originatingChannel = channel;
         }
 
-        super.progess(this, "Channel for " + channel.getEndPoint().getSIPSimpleName() + " is now up."); //$NON-NLS-1$ //$NON-NLS-2$
+        super.progess(this, "Channel for " + channel.getEndPoint().getSIPSimpleName() + " is now up.");
 
     }
 
@@ -176,7 +175,7 @@ public class DialToAgiActivityImpl extends ActivityHelper<DialToAgiActivity> imp
     {
 
         boolean ret = false;
-        final SetVarAction var = new SetVarAction(channel, "testState", "1"); //$NON-NLS-1$ //$NON-NLS-2$
+        final SetVarAction var = new SetVarAction(channel, "testState", "1");
 
         ManagerResponse response = null;
         try
@@ -187,9 +186,9 @@ public class DialToAgiActivityImpl extends ActivityHelper<DialToAgiActivity> imp
         catch (final Exception e)
         {
             DialToAgiActivityImpl.logger.debug(e, e);
-            DialToAgiActivityImpl.logger.error("getVariable: " + e); //$NON-NLS-1$
+            DialToAgiActivityImpl.logger.error("getVariable: " + e);
         }
-        if ((response != null) && (response.getAttribute("Response").compareToIgnoreCase("success") == 0)) //$NON-NLS-1$ //$NON-NLS-2$
+        if ((response != null) && (response.getAttribute("Response").compareToIgnoreCase("success") == 0))
         {
             ret = true;
         }

@@ -54,7 +54,7 @@ public class SplitActivityImpl extends ActivityHelper<SplitActivity> implements 
      */
     public SplitActivityImpl(final Call callToSplit, final ActivityCallback<SplitActivity> listener)
     {
-        super("SplitActivity", listener); //$NON-NLS-1$
+        super("SplitActivity", listener);
 
         this._callToSplit = callToSplit;
 
@@ -70,11 +70,11 @@ public class SplitActivityImpl extends ActivityHelper<SplitActivity> implements 
     public boolean doActivity() throws PBXException
     {
 
-        SplitActivityImpl.logger.info("*******************************************************************************"); //$NON-NLS-1$
-        SplitActivityImpl.logger.info("***********                    begin split               ****************"); //$NON-NLS-1$
-        SplitActivityImpl.logger.info("***********            " + this.channel1 + "                 ****************"); //$NON-NLS-1$ //$NON-NLS-2$
-        SplitActivityImpl.logger.info("***********            " + this.channel2 + "                 ****************"); //$NON-NLS-1$ //$NON-NLS-2$
-        SplitActivityImpl.logger.info("*******************************************************************************"); //$NON-NLS-1$
+        SplitActivityImpl.logger.debug("*******************************************************************************");
+        SplitActivityImpl.logger.info("***********                    begin split               ****************");
+        SplitActivityImpl.logger.debug("***********            " + this.channel1 + "                 ****************");
+        SplitActivityImpl.logger.debug("***********            " + this.channel2 + "                 ****************");
+        SplitActivityImpl.logger.debug("*******************************************************************************");
 
         // Splits the originating and secondary channels by moving each of them
         // into the associated

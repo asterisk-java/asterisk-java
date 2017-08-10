@@ -61,7 +61,7 @@ public class JoinActivityImpl extends ActivityHelper<JoinActivity> implements Jo
     public JoinActivityImpl(final Call lhsCall, OperandChannel originatingOperand, final Call rhsCall,
             OperandChannel acceptingOperand, CallDirection direction, final ActivityCallback<JoinActivity> listener)
     {
-        super("JoinActivity", listener); //$NON-NLS-1$
+        super("JoinActivity", listener);
 
         callSite = new Exception("Call site");
 
@@ -73,22 +73,22 @@ public class JoinActivityImpl extends ActivityHelper<JoinActivity> implements Jo
 
         if (this._lhsCall == null)
         {
-            throw new IllegalArgumentException("lhsCall may not be null"); //$NON-NLS-1$
+            throw new IllegalArgumentException("lhsCall may not be null");
         }
 
         if (this._originatingOperand == null)
         {
-            throw new IllegalArgumentException("lhsOperand may not be null"); //$NON-NLS-1$
+            throw new IllegalArgumentException("lhsOperand may not be null");
         }
 
         if (this._rhsCall == null)
         {
-            throw new IllegalArgumentException("rhsCall may not be null"); //$NON-NLS-1$
+            throw new IllegalArgumentException("rhsCall may not be null");
         }
 
         if (this._acceptingOperand == null)
         {
-            throw new IllegalArgumentException("rhsOperand may not be null"); //$NON-NLS-1$
+            throw new IllegalArgumentException("rhsOperand may not be null");
         }
 
         this.startActivity(true);
@@ -100,11 +100,11 @@ public class JoinActivityImpl extends ActivityHelper<JoinActivity> implements Jo
         boolean success = false;
         final AsteriskPBX pbx = (AsteriskPBX) PBXFactory.getActivePBX();
 
-        JoinActivityImpl.logger.info("*******************************************************************************"); //$NON-NLS-1$
-        JoinActivityImpl.logger.info("***********                    begin join               ****************"); //$NON-NLS-1$
-        JoinActivityImpl.logger.info("***********            " + this._lhsCall + "                 ****************"); //$NON-NLS-1$ //$NON-NLS-2$
-        JoinActivityImpl.logger.info("***********            " + this._rhsCall + "                 ****************"); //$NON-NLS-1$ //$NON-NLS-2$
-        JoinActivityImpl.logger.info("*******************************************************************************"); //$NON-NLS-1$
+        JoinActivityImpl.logger.debug("*******************************************************************************");
+        JoinActivityImpl.logger.info("***********                    begin join               ****************");
+        JoinActivityImpl.logger.debug("***********            " + this._lhsCall + "                 ****************");
+        JoinActivityImpl.logger.debug("***********            " + this._rhsCall + "                 ****************");
+        JoinActivityImpl.logger.debug("*******************************************************************************");
 
         try
         {

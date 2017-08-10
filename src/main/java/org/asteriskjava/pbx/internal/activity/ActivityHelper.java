@@ -154,7 +154,7 @@ public abstract class ActivityHelper<T extends Activity> implements Runnable, Ac
     {
 
         boolean ret = false;
-        final SetVarAction var = new SetVarAction(channel, "testState", "1"); //$NON-NLS-1$ //$NON-NLS-2$
+        final SetVarAction var = new SetVarAction(channel, "testState", "1");
 
         ManagerResponse response = null;
         try
@@ -165,9 +165,9 @@ public abstract class ActivityHelper<T extends Activity> implements Runnable, Ac
         catch (final Exception e)
         {
             ActivityHelper.logger.debug(e, e);
-            ActivityHelper.logger.error("getVariable: " + e); //$NON-NLS-1$
+            ActivityHelper.logger.error("getVariable: " + e);
         }
-        if ((response != null) && (response.getAttribute("Response").compareToIgnoreCase("success") == 0)) //$NON-NLS-1$ //$NON-NLS-2$
+        if ((response != null) && (response.getAttribute("Response").compareToIgnoreCase("success") == 0))
         {
             ret = true;
         }

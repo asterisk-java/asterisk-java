@@ -21,7 +21,7 @@ public class HoldActivityImpl extends ActivityHelper<HoldActivity> implements Ho
 
     public HoldActivityImpl(final Channel channel, final ActivityCallback<HoldActivity> callback)
     {
-        super("HoldCall", callback); //$NON-NLS-1$
+        super("HoldCall", callback);
 
         this._channel = channel;
         this.startActivity(false);
@@ -32,10 +32,10 @@ public class HoldActivityImpl extends ActivityHelper<HoldActivity> implements Ho
     {
         boolean success = false;
 
-        HoldActivityImpl.logger.info("*******************************************************************************"); //$NON-NLS-1$
-        HoldActivityImpl.logger.info("***********                    begin Hold Audio               ****************"); //$NON-NLS-1$
-        HoldActivityImpl.logger.info("***********                  " + this._channel + " ****************"); //$NON-NLS-1$ //$NON-NLS-2$
-        HoldActivityImpl.logger.info("*******************************************************************************"); //$NON-NLS-1$
+        HoldActivityImpl.logger.debug("*******************************************************************************");
+        HoldActivityImpl.logger.info("***********                    begin Hold Audio               ****************");
+        HoldActivityImpl.logger.debug("***********                  " + this._channel + " ****************");
+        HoldActivityImpl.logger.debug("*******************************************************************************");
         try
         {
             AsteriskPBX pbx = (AsteriskPBX) PBXFactory.getActivePBX();
