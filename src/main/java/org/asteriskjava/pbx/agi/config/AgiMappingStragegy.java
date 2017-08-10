@@ -51,10 +51,7 @@ public class AgiMappingStragegy implements MappingStrategy
         {
             script = script.substring(0, script.indexOf("."));
         }
-        else
-        {
-            logger.warn("scripts should be called as scriptname.agi");
-        }
+
         if (script.startsWith("/"))
         {
             // this is specifically for the "FastAgiSimulator"

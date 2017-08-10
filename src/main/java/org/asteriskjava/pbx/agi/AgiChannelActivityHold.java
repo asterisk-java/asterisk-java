@@ -27,7 +27,11 @@ public class AgiChannelActivityHold implements AgiChannelActivityAction
             callReachedAgi = true;
             channel.answer();
             channel.playMusicOnHold();
-            logger.info(ichannel + " is still on hold");
+            long secondsOnHold = Math.abs(System.currentTimeMillis() - timer) / 1000;
+            if (secondsOnHold > 600)
+            {
+                logger.info(ichannel + " is still on hold after " + secondsOnHold + " seconds");
+            }
             if (latch.await(10, TimeUnit.SECONDS))
             {
                 try
@@ -41,7 +45,6 @@ public class AgiChannelActivityHold implements AgiChannelActivityAction
             }
             else
             {
-                long secondsOnHold = Math.abs(System.currentTimeMillis() - timer) / 1000;
                 if (channel.getName().startsWith("Local") && secondsOnHold > 3600)
                 {
                     // cleanup Local channels older than 1 hour
