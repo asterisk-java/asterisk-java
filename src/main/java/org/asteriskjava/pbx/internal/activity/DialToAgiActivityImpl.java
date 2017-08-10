@@ -101,8 +101,7 @@ public class DialToAgiActivityImpl extends ActivityHelper<DialToAgiActivity> imp
         }
         catch (InterruptedException e)
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            logger.error(e);
         }
         finally
         {

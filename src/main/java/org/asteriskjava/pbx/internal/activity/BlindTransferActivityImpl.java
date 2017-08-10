@@ -125,7 +125,7 @@ public class BlindTransferActivityImpl extends ActivityHelper<BlindTransferActiv
 
             logger.debug("*******************************************************************************");
             logger.info("***********                    begin blind transfer            ****************");
-            logger.debug("***********          " + this._channelToTransfer + "                           ****************");
+            logger.info("***********          " + this._channelToTransfer + "                           ****************");
             logger.debug("***********            " + this._transferTarget + "                            ****************");
             logger.debug("***********            " + this._toCallerID + "                            ****************");
             logger.debug("*******************************************************************************");

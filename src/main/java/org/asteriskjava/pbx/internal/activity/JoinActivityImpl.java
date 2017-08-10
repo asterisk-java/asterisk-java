@@ -102,7 +102,7 @@ public class JoinActivityImpl extends ActivityHelper<JoinActivity> implements Jo
 
         JoinActivityImpl.logger.debug("*******************************************************************************");
         JoinActivityImpl.logger.info("***********                    begin join               ****************");
-        JoinActivityImpl.logger.debug("***********            " + this._lhsCall + "                 ****************");
+        JoinActivityImpl.logger.info("***********            " + this._lhsCall + "                 ****************");
         JoinActivityImpl.logger.debug("***********            " + this._rhsCall + "                 ****************");
         JoinActivityImpl.logger.debug("*******************************************************************************");
 

@@ -88,7 +88,7 @@ public class ParkActivityImpl extends ActivityHelper<ParkActivity> implements Pa
 
         ParkActivityImpl.logger.debug("*******************************************************************************");
         ParkActivityImpl.logger.info("***********                    begin park               ****************");
-        ParkActivityImpl.logger.debug("***********            " + this._parkChannel + "                 ****************");
+        ParkActivityImpl.logger.info("***********            " + this._parkChannel + "                 ****************");
         ParkActivityImpl.logger.debug("*******************************************************************************");
 
         try

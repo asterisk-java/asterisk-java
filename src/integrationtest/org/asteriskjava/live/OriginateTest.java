@@ -73,7 +73,6 @@ public class OriginateTest extends AsteriskServerTestCase
                         }
                         catch (Exception e)
                         {
-                            // TODO Auto-generated catch block
                             e.printStackTrace();
                         }
                     }

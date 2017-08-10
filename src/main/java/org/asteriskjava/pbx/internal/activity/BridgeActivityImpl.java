@@ -50,7 +50,7 @@ public class BridgeActivityImpl extends ActivityHelper<BridgeActivity> implement
 
         BridgeActivityImpl.logger.debug("*******************************************************************************");
         BridgeActivityImpl.logger.info("***********                    begin Bridge                ****************");
-        BridgeActivityImpl.logger.debug("***********                  lhs:" + this._lhsChannel + " ****************");
+        BridgeActivityImpl.logger.info("***********                  lhs:" + this._lhsChannel + " ****************");
         BridgeActivityImpl.logger.debug("***********                  rhs:" + this._rhsChannel + " ****************");
         BridgeActivityImpl.logger.debug("*******************************************************************************");
         try

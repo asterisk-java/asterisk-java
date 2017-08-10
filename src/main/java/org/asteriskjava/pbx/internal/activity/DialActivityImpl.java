@@ -78,7 +78,7 @@ public class DialActivityImpl extends ActivityHelper<DialActivity> implements Di
         {
             DialActivityImpl.logger.debug("*******************************************************************************");
             DialActivityImpl.logger.info("***********                    begin dial out                  ****************");
-            DialActivityImpl.logger.debug("***********               " + this._accepting + "             ****************");
+            DialActivityImpl.logger.info("***********               " + this._accepting + "             ****************");
             DialActivityImpl.logger.debug("*******************************************************************************");
 
             final AsteriskSettings profile = PBXFactory.getActiveProfile();

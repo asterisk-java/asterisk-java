@@ -34,7 +34,7 @@ public class HoldActivityImpl extends ActivityHelper<HoldActivity> implements Ho
 
         HoldActivityImpl.logger.debug("*******************************************************************************");
         HoldActivityImpl.logger.info("***********                    begin Hold Audio               ****************");
-        HoldActivityImpl.logger.debug("***********                  " + this._channel + " ****************");
+        HoldActivityImpl.logger.info("***********                  " + this._channel + " ****************");
         HoldActivityImpl.logger.debug("*******************************************************************************");
         try
         {

@@ -62,7 +62,7 @@ public class RedirectToActivityImpl extends ActivityHelper<RedirectToActivity> i
 
         RedirectToActivityImpl.logger.debug("***************************************************************************");
         RedirectToActivityImpl.logger.info("***********            begin redirect to activity           ****************");
-        RedirectToActivityImpl.logger.debug("***********            " + this.channel1 + "                 ****************");
+        RedirectToActivityImpl.logger.info("***********            " + this.channel1 + "                 ****************");
         RedirectToActivityImpl.logger.debug("***************************************************************************");
 
         // Splits the originating and secondary channels by moving each of them

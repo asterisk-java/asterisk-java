@@ -65,10 +65,10 @@ public class DialLocalToAgiActivity extends EventListenerBaseClass implements Ru
     @Override
     public void run()
     {
-        logger.info("*******************************************************************************");
+        logger.debug("*******************************************************************************");
         logger.info("***********                    begin dial local to AGI                  ****************");
-        logger.info("***********                         " + "                              ****************");
-        logger.info("*******************************************************************************");
+        logger.debug("***********                                                      ****************");
+        logger.debug("*******************************************************************************");
         final AsteriskSettings settings = PBXFactory.getActiveProfile();
 
         AsteriskPBX pbx = (AsteriskPBX) PBXFactory.getActivePBX();
@@ -101,12 +101,10 @@ public class DialLocalToAgiActivity extends EventListenerBaseClass implements Ru
         }
         catch (IllegalArgumentException | IllegalStateException | IOException | TimeoutException e)
         {
-            // TODO Auto-generated catch block
             logger.error(e, e);
         }
         catch (InterruptedException e)
         {
-            // TODO Auto-generated catch block
             logger.error(e, e);
         }
 
@@ -114,7 +112,7 @@ public class DialLocalToAgiActivity extends EventListenerBaseClass implements Ru
 
     public void abort(final String reason)
     {
-        logger.debug("Aborting originate ");//$NON-NLS-1$
+        logger.debug("Aborting originate ");
         this.close();
 
         for (Channel channel : channels)
@@ -186,12 +184,10 @@ public class DialLocalToAgiActivity extends EventListenerBaseClass implements Ru
             }
             catch (IllegalArgumentException | IllegalStateException | IOException | TimeoutException e)
             {
-                // TODO Auto-generated catch block
                 logger.error(e, e);
             }
             catch (InterruptedException e)
             {
-                // TODO Auto-generated catch block
                 logger.error(e, e);
             }
 

@@ -72,7 +72,7 @@ public class SplitActivityImpl extends ActivityHelper<SplitActivity> implements 
 
         SplitActivityImpl.logger.debug("*******************************************************************************");
         SplitActivityImpl.logger.info("***********                    begin split               ****************");
-        SplitActivityImpl.logger.debug("***********            " + this.channel1 + "                 ****************");
+        SplitActivityImpl.logger.info("***********            " + this.channel1 + "                 ****************");
         SplitActivityImpl.logger.debug("***********            " + this.channel2 + "                 ****************");
         SplitActivityImpl.logger.debug("*******************************************************************************");
 
