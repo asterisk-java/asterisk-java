@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.asteriskjava.manager.event.BridgeEnterEvent;
 import org.asteriskjava.manager.event.BridgeEvent;
@@ -105,7 +107,8 @@ class BridgeState
         BridgeEvent bridgeEvent = new BridgeEvent(this);
 
 
-        if (new Integer(2).equals(members.get(0).getBridgeNumChannels()))
+        if (this.compareUniqueId(members.get(0).getUniqueId(),
+                                 members.get(1).getUniqueId()) < 0)
         {
             bridgeEvent.setCallerId1(members.get(0).getCallerIdNum());
             bridgeEvent.setUniqueId1(members.get(0).getUniqueId());
@@ -130,5 +133,45 @@ class BridgeState
         bridgeEvent.setDateReceived(new Date());
 
         return bridgeEvent;
+    }
+
+    /**
+     * Compares two Asteirsk Unique ID.
+     *
+     * @param id1 1st Asterisk Unique ID, for example "1099015093.165".
+     * @param id2 2nd Asterisk Unique ID, for example "1099015093.166".
+     * @return Return 0 if s1 == s2.
+     * Return less then 0 if s1 < s2.
+     * Return greater then 0 if s1 > s2.
+     */
+    private int compareUniqueId(String id1, String id2) {
+        Pattern uniqueIdPattern = Pattern.compile("^([0-9]+)\\.([0-9]+)$");
+        Matcher uniqueId1Matcher = uniqueIdPattern.matcher(id1);
+        Matcher uniqueId2Matcher = uniqueIdPattern.matcher(id2);
+
+        boolean find1 = uniqueId1Matcher.find();
+        boolean find2 = uniqueId2Matcher.find();
+
+        if (find1 && find2) {
+            // 1501234567.890 -> epochtime: 1501234567 | serial: 890
+            int epochtime1 = Integer.valueOf(uniqueId1Matcher.group(1));
+            int epochtime2 = Integer.valueOf(uniqueId2Matcher.group(1));
+            int serial1 = Integer.valueOf(uniqueId1Matcher.group(2));
+            int serial2 = Integer.valueOf(uniqueId2Matcher.group(2));
+
+            if (epochtime1 == epochtime2) {
+                return Integer.compare(serial1, serial2);
+            }
+
+            return Integer.compare(epochtime1, epochtime2);
+
+        } else if (!find1 && find2) {
+            // id1 < id2
+            return -1;
+        } else if (find1 && !find2) {
+            // id1 > id2
+            return 1;
+        }
+        return 0;
     }
 }
