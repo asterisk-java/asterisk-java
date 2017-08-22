@@ -111,9 +111,9 @@ class BridgeState
             bridgeEvent.setUniqueId1(members.get(0).getUniqueId());
             bridgeEvent.setChannel1(members.get(0).getChannel());
 
-	    bridgeEvent.setCallerId2(members.get(1).getCallerIdNum());
-	    bridgeEvent.setUniqueId2(members.get(1).getUniqueId());
-	    bridgeEvent.setChannel2(members.get(1).getChannel());
+            bridgeEvent.setCallerId2(members.get(1).getCallerIdNum());
+            bridgeEvent.setUniqueId2(members.get(1).getUniqueId());
+            bridgeEvent.setChannel2(members.get(1).getChannel());
         }
         else
         {
@@ -121,9 +121,9 @@ class BridgeState
             bridgeEvent.setUniqueId1(members.get(1).getUniqueId());
             bridgeEvent.setChannel1(members.get(1).getChannel());
 
-	    bridgeEvent.setCallerId2(members.get(0).getCallerIdNum());
-	    bridgeEvent.setUniqueId2(members.get(0).getUniqueId());
-	    bridgeEvent.setChannel2(members.get(0).getChannel());
+            bridgeEvent.setCallerId2(members.get(0).getCallerIdNum());
+            bridgeEvent.setUniqueId2(members.get(0).getUniqueId());
+            bridgeEvent.setChannel2(members.get(0).getChannel());
         }
 
         bridgeEvent.setBridgeState(bridgeState);
