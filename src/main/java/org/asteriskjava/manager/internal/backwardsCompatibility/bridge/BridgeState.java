@@ -140,9 +140,9 @@ class BridgeState
      *
      * @param id1 1st Asterisk Unique ID, for example "1099015093.165".
      * @param id2 2nd Asterisk Unique ID, for example "1099015093.166".
-     * @return Return 0 if s1 == s2.
-     * Return less then 0 if s1 < s2.
-     * Return greater then 0 if s1 > s2.
+     * @return Return 0 if id1 == id2.
+     * Return less then 0 if id1 < id2.
+     * Return greater then 0 if id1 > id2.
      */
     private int compareUniqueId(String id1, String id2) {
         Pattern uniqueIdPattern = Pattern.compile("^([0-9]+)\\.([0-9]+)$");
