@@ -105,29 +105,26 @@ class BridgeState
     private BridgeEvent buildBridgeEvent(String bridgeState, List<BridgeEnterEvent> members)
     {
         BridgeEvent bridgeEvent = new BridgeEvent(this);
-
+        int index1, index2;
 
         if (this.compareUniqueId(members.get(0).getUniqueId(),
                                  members.get(1).getUniqueId()) < 0)
         {
-            bridgeEvent.setCallerId1(members.get(0).getCallerIdNum());
-            bridgeEvent.setUniqueId1(members.get(0).getUniqueId());
-            bridgeEvent.setChannel1(members.get(0).getChannel());
-
-            bridgeEvent.setCallerId2(members.get(1).getCallerIdNum());
-            bridgeEvent.setUniqueId2(members.get(1).getUniqueId());
-            bridgeEvent.setChannel2(members.get(1).getChannel());
+            index1 = 0;
+            index2 = 1;
         }
         else
         {
-            bridgeEvent.setCallerId1(members.get(1).getCallerIdNum());
-            bridgeEvent.setUniqueId1(members.get(1).getUniqueId());
-            bridgeEvent.setChannel1(members.get(1).getChannel());
-
-            bridgeEvent.setCallerId2(members.get(0).getCallerIdNum());
-            bridgeEvent.setUniqueId2(members.get(0).getUniqueId());
-            bridgeEvent.setChannel2(members.get(0).getChannel());
+            index1 = 1;
+            index2 = 0;
         }
+        bridgeEvent.setCallerId1(members.get(index1).getCallerIdNum());
+        bridgeEvent.setUniqueId1(members.get(index1).getUniqueId());
+        bridgeEvent.setChannel1(members.get(index1).getChannel());
+
+        bridgeEvent.setCallerId2(members.get(index2).getCallerIdNum());
+        bridgeEvent.setUniqueId2(members.get(index2).getUniqueId());
+        bridgeEvent.setChannel2(members.get(index2).getChannel());
 
         bridgeEvent.setBridgeState(bridgeState);
         bridgeEvent.setDateReceived(new Date());
