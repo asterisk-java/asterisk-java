@@ -176,7 +176,7 @@ class BridgeState
             // id1 > id2
             return 1;
         }
-	// Both of inputs are invalid value: id1 == id2
+        // Both of inputs are invalid value: id1 == id2
         return 0;
     }
 }
