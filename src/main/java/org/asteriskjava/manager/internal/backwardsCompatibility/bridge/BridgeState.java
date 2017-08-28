@@ -144,7 +144,8 @@ class BridgeState
      * Return less then 0 if id1 < id2.
      * Return greater then 0 if id1 > id2.
      */
-    private int compareUniqueId(String id1, String id2) {
+    private int compareUniqueId(String id1, String id2)
+    {
         Pattern uniqueIdPattern = Pattern.compile("^([0-9]+)\\.([0-9]+)$");
         Matcher uniqueId1Matcher = uniqueIdPattern.matcher(id1);
         Matcher uniqueId2Matcher = uniqueIdPattern.matcher(id2);
@@ -152,26 +153,33 @@ class BridgeState
         boolean find1 = uniqueId1Matcher.find();
         boolean find2 = uniqueId2Matcher.find();
 
-        if (find1 && find2) {
+        if (find1 && find2)
+        {
             // 1501234567.890 -> epochtime: 1501234567 | serial: 890
             int epochtime1 = Integer.valueOf(uniqueId1Matcher.group(1));
             int epochtime2 = Integer.valueOf(uniqueId2Matcher.group(1));
             int serial1 = Integer.valueOf(uniqueId1Matcher.group(2));
             int serial2 = Integer.valueOf(uniqueId2Matcher.group(2));
 
-            if (epochtime1 == epochtime2) {
+            if (epochtime1 == epochtime2)
+            {
                 return Integer.compare(serial1, serial2);
             }
 
             return Integer.compare(epochtime1, epochtime2);
 
-        } else if (!find1 && find2) {
+        }
+        else if (!find1 && find2)
+        {
             // id1 < id2
             return -1;
-        } else if (find1 && !find2) {
+        }
+        else if (find1 && !find2)
+        {
             // id1 > id2
             return 1;
         }
+	// Both of inputs are invalid value: id1 == id2
         return 0;
     }
 }
