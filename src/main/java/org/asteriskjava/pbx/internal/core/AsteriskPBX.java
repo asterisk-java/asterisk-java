@@ -102,7 +102,8 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
             }
 
         }
-        catch (IllegalStateException | IOException | AuthenticationFailedException | TimeoutException e1)
+        catch (IllegalStateException | IOException | AuthenticationFailedException | TimeoutException
+                | InterruptedException e1)
         {
             logger.error(e1, e1);
         }
@@ -296,7 +297,7 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
     {
         if (channel.isLive())
         {
-            logger.debug("Sending hangup action for channel: " + channel); //$NON-NLS-1$
+            logger.warn("Sending hangup action for channel: " + channel); //$NON-NLS-1$
 
             PBX pbx = PBXFactory.getActivePBX();
             if (!pbx.waitForChannelToQuiescent(channel, 3000))

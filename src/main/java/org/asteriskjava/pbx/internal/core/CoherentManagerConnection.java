@@ -115,15 +115,36 @@ class CoherentManagerConnection implements FilteredManagerListener<ManagerEvent>
     private CountDownLatch _reconnectLatch = new CountDownLatch(0);
 
     public static synchronized void init()
-            throws IllegalStateException, IOException, AuthenticationFailedException, TimeoutException
+            throws IllegalStateException, IOException, AuthenticationFailedException, TimeoutException, InterruptedException
     {
         if (self != null)
             logger.warn("The CoherentManagerConnection has already been initialised"); //$NON-NLS-1$
         else
         {
             self = new CoherentManagerConnection();
-            self.checkConnection();
-            self.checkFeatures();
+            boolean done = false;
+            while (!done)
+            {
+                try
+                {
+
+                    self.checkConnection();
+                    self.checkFeatures();
+                    done = true;
+                }
+                catch (Exception e)
+                {
+                    logger.error(e, e);
+                    try
+                    {
+                        TimeUnit.MILLISECONDS.sleep(500);
+                    }
+                    catch (InterruptedException e1)
+                    {
+                        throw e1;
+                    }
+                }
+            }
         }
 
         self.checkConnection();
