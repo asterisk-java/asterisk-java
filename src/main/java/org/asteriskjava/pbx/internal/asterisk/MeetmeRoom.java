@@ -3,8 +3,9 @@ package org.asteriskjava.pbx.internal.asterisk;
 import java.util.Date;
 import java.util.LinkedList;
 
-import org.apache.log4j.Logger;
 import org.asteriskjava.pbx.Channel;
+import org.asteriskjava.util.Log;
+import org.asteriskjava.util.LogFactory;
 
 /*
  * This class tracks the status, channel names and number of participants in
@@ -20,7 +21,7 @@ public class MeetmeRoom
      */
     private final int roomNumber;
 
-    static Logger logger = Logger.getLogger(MeetmeRoom.class);
+    private static final Log logger = LogFactory.getLog(MeetmeRoom.class);
 
     LinkedList<Channel> channels = new LinkedList<>();
 
@@ -104,7 +105,7 @@ public class MeetmeRoom
 
         if (!removed)
         {
-            MeetmeRoom.logger.error(
+            MeetmeRoom.logger.warn(
                     "An attempt to remove an non-existing channel " + channel + " from Meetme Room " + this.getRoomNumber()); //$NON-NLS-1$ //$NON-NLS-2$
         }
 

@@ -4,42 +4,43 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Hashtable;
 
-import org.apache.log4j.Logger;
-import org.asteriskjava.pbx.internal.asterisk.wrap.actions.ManagerAction;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.AgentCalledEvent;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.AgentConnectEvent;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.BridgeEvent;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.ConfbridgeListCompleteEvent;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.ConfbridgeListEvent;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.ConnectEvent;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.DialEvent;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.DisconnectEvent;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.DndStateEvent;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.ExtensionStatusEvent;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.HangupEvent;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.LinkEvent;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.ManagerEvent;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.MasqueradeEvent;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.MeetMeJoinEvent;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.MeetMeLeaveEvent;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.NewChannelEvent;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.NewStateEvent;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.OriginateResponseEvent;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.ParkedCallEvent;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.PeerEntryEvent;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.PeerStatusEvent;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.PeerlistCompleteEvent;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.QueueCallerLeaveEvent;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.RenameEvent;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.ResponseEvent;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.StatusCompleteEvent;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.StatusEvent;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.UnlinkEvent;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.UnparkedCallEvent;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.VarSetEvent;
-import org.asteriskjava.pbx.internal.asterisk.wrap.response.CommandResponse;
-import org.asteriskjava.pbx.internal.asterisk.wrap.response.ManagerError;
-import org.asteriskjava.pbx.internal.asterisk.wrap.response.ManagerResponse;
+import org.asteriskjava.pbx.asterisk.wrap.actions.ManagerAction;
+import org.asteriskjava.pbx.asterisk.wrap.events.AgentCalledEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.AgentConnectEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.BridgeEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.ConfbridgeListCompleteEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.ConfbridgeListEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.ConnectEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.DialEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.DisconnectEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.DndStateEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.ExtensionStatusEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.HangupEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.LinkEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.ManagerEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.MasqueradeEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.MeetMeJoinEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.MeetMeLeaveEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.NewChannelEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.NewStateEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.OriginateResponseEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.ParkedCallEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.PeerEntryEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.PeerStatusEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.PeerlistCompleteEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.QueueCallerLeaveEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.RenameEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.ResponseEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.StatusCompleteEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.StatusEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.UnlinkEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.UnparkedCallEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.VarSetEvent;
+import org.asteriskjava.pbx.asterisk.wrap.response.CommandResponse;
+import org.asteriskjava.pbx.asterisk.wrap.response.ManagerError;
+import org.asteriskjava.pbx.asterisk.wrap.response.ManagerResponse;
+import org.asteriskjava.util.Log;
+import org.asteriskjava.util.LogFactory;
 
 /**
  * This class maps asterisk-java events to our internal events that use iChannel
@@ -50,7 +51,7 @@ import org.asteriskjava.pbx.internal.asterisk.wrap.response.ManagerResponse;
 @SuppressWarnings("deprecation")
 public class CoherentEventFactory
 {
-    private static final Logger logger = Logger.getLogger(CoherentEventFactory.class);
+    private static final Log logger = LogFactory.getLog(CoherentEventFactory.class);
 
     // Events
     static Hashtable<Class< ? extends org.asteriskjava.manager.event.ManagerEvent>, Class< ? extends ManagerEvent>> mapEvents = new Hashtable<>();

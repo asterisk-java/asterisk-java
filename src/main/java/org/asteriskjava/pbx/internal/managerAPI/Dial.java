@@ -5,26 +5,27 @@ import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.log4j.Logger;
 import org.asteriskjava.pbx.CallerID;
 import org.asteriskjava.pbx.Channel;
 import org.asteriskjava.pbx.EndPoint;
+import org.asteriskjava.pbx.ListenerPriority;
 import org.asteriskjava.pbx.NewChannelListener;
 import org.asteriskjava.pbx.PBX;
 import org.asteriskjava.pbx.PBXException;
 import org.asteriskjava.pbx.PBXFactory;
-import org.asteriskjava.pbx.internal.agi.AgiChannelActivityDial;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.BridgeEvent;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.HangupEvent;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.LinkEvent;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.ManagerEvent;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.UnlinkEvent;
+import org.asteriskjava.pbx.agi.AgiChannelActivityDial;
+import org.asteriskjava.pbx.asterisk.wrap.events.BridgeEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.HangupEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.LinkEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.ManagerEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.UnlinkEvent;
 import org.asteriskjava.pbx.internal.core.AsteriskPBX;
-import org.asteriskjava.pbx.internal.core.ListenerPriority;
+import org.asteriskjava.util.Log;
+import org.asteriskjava.util.LogFactory;
 
 public class Dial extends EventListenerBaseClass
 {
-    private final static Logger logger = Logger.getLogger(Dial.class);
+    private static final Log logger = LogFactory.getLog(Dial.class);
 
     private final OriginateResult result[] = new OriginateResult[2];
 

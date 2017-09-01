@@ -10,30 +10,31 @@ import java.util.concurrent.TimeUnit;
 
 import javax.naming.OperationNotSupportedException;
 
-import org.apache.log4j.Logger;
 import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.manager.AuthenticationFailedException;
 import org.asteriskjava.manager.EventTimeoutException;
 import org.asteriskjava.manager.ManagerConnection;
 import org.asteriskjava.manager.ManagerConnectionState;
 import org.asteriskjava.manager.TimeoutException;
+import org.asteriskjava.pbx.AsteriskSettings;
 import org.asteriskjava.pbx.Channel;
+import org.asteriskjava.pbx.ListenerPriority;
 import org.asteriskjava.pbx.PBX;
 import org.asteriskjava.pbx.PBXException;
 import org.asteriskjava.pbx.PBXFactory;
-import org.asteriskjava.pbx.internal.asterisk.AsteriskSettings;
-import org.asteriskjava.pbx.internal.asterisk.PBXSettingsManager;
-import org.asteriskjava.pbx.internal.asterisk.wrap.actions.EventGeneratingAction;
-import org.asteriskjava.pbx.internal.asterisk.wrap.actions.GetVarAction;
-import org.asteriskjava.pbx.internal.asterisk.wrap.actions.ListCommandsAction;
-import org.asteriskjava.pbx.internal.asterisk.wrap.actions.ManagerAction;
-import org.asteriskjava.pbx.internal.asterisk.wrap.actions.SetVarAction;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.ConnectEvent;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.DisconnectEvent;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.ManagerEvent;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.ResponseEvents;
-import org.asteriskjava.pbx.internal.asterisk.wrap.response.ManagerResponse;
+import org.asteriskjava.pbx.asterisk.wrap.actions.EventGeneratingAction;
+import org.asteriskjava.pbx.asterisk.wrap.actions.GetVarAction;
+import org.asteriskjava.pbx.asterisk.wrap.actions.ListCommandsAction;
+import org.asteriskjava.pbx.asterisk.wrap.actions.ManagerAction;
+import org.asteriskjava.pbx.asterisk.wrap.actions.SetVarAction;
+import org.asteriskjava.pbx.asterisk.wrap.events.ConnectEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.DisconnectEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.ManagerEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.ResponseEvents;
+import org.asteriskjava.pbx.asterisk.wrap.response.ManagerResponse;
 import org.asteriskjava.pbx.internal.managerAPI.Connector;
+import org.asteriskjava.util.Log;
+import org.asteriskjava.util.LogFactory;
 
 /**
  * This is a wrapper class for the asterisk manager. <br>
@@ -53,15 +54,15 @@ import org.asteriskjava.pbx.internal.managerAPI.Connector;
  * This means that we are always responsive to asterisk when receiving events,
  * if we are not responsive then asterisk will drop the connection. <br>
  * <br>
- * It should be noted that as all events are dispatch from a single thread that
- * a single tardy listener can block all other listeners. <br>
+ * It should be noted that as all events are dispatch from a single thread and
+ * as such a single tardy listener can block all other listeners. <br>
  * <br>
  * If your listener is likely to be slow in handling events then you should wrap
  * the listener in its own ManagerEventQueue. <br>
  * <br>
- * It is critical that you use the ManagerEventQueue is it forms an intrinsic
+ * It is critical that you use the ManagerEventQueue as it forms an intrinsic
  * part of this classes ability to ensure that channel/event processing is
- * coherent. <br>
+ * coherent (i.e events are processed in the correct order). <br>
  * <br>
  * For connections that generate large number of events you should use
  * 
@@ -71,7 +72,7 @@ import org.asteriskjava.pbx.internal.managerAPI.Connector;
 class CoherentManagerConnection implements FilteredManagerListener<ManagerEvent>
 {
 
-    static private Logger logger = Logger.getLogger(CoherentManagerConnection.class);
+    static private Log logger = LogFactory.getLog(CoherentManagerConnection.class);
 
     static Map<String, Integer> eventStatistics = new HashMap<>();
 
@@ -121,6 +122,7 @@ class CoherentManagerConnection implements FilteredManagerListener<ManagerEvent>
         else
         {
             self = new CoherentManagerConnection();
+            self.checkConnection();
             self.checkFeatures();
         }
 
@@ -364,7 +366,7 @@ class CoherentManagerConnection implements FilteredManagerListener<ManagerEvent>
     private void configureConnection()
             throws IOException, AuthenticationFailedException, TimeoutException, IllegalStateException
     {
-        final AsteriskSettings profile = PBXSettingsManager.getActiveProfile();
+        final AsteriskSettings profile = PBXFactory.getActiveProfile();
         CoherentManagerConnection.managerConnection = CoherentManagerConnection.connector.connect(profile);
 
         // After a reconnect we will have duplicate eventQueues and
@@ -393,7 +395,7 @@ class CoherentManagerConnection implements FilteredManagerListener<ManagerEvent>
 
     private void checkFeatures() throws IOException, TimeoutException
     {
-        final AsteriskSettings profile = PBXSettingsManager.getActiveProfile();
+        final AsteriskSettings profile = PBXFactory.getActiveProfile();
 
         // Determine if the Bridge and Mute events are available.
         final ListCommandsAction lca = new ListCommandsAction();

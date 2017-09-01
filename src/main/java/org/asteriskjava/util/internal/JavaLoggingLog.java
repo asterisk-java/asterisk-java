@@ -150,4 +150,19 @@ public class JavaLoggingLog implements Log
         return log.isLoggable(Level.FINE);
     }
 
+    @Override
+    public void debug(Object e, Throwable e2)
+    {
+        StackTraceElement ste = getInvokerSTE();
+
+        if (ste != null)
+        {
+            log.logp(Level.FINE, ste.getClassName(), ste.getMethodName(), e.toString(), e2);
+        }
+        else
+        {
+            log.log(Level.FINE, e.toString(), e2);
+        }
+    }
+
 }

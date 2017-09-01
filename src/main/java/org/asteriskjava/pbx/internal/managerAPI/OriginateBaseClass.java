@@ -5,8 +5,8 @@ import java.util.HashSet;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.log4j.Logger;
 import org.asteriskjava.live.ManagerCommunicationException;
+import org.asteriskjava.pbx.AsteriskSettings;
 import org.asteriskjava.pbx.CallerID;
 import org.asteriskjava.pbx.Channel;
 import org.asteriskjava.pbx.EndPoint;
@@ -14,19 +14,19 @@ import org.asteriskjava.pbx.NewChannelListener;
 import org.asteriskjava.pbx.PBX;
 import org.asteriskjava.pbx.PBXException;
 import org.asteriskjava.pbx.PBXFactory;
-import org.asteriskjava.pbx.internal.asterisk.AsteriskSettings;
-import org.asteriskjava.pbx.internal.asterisk.PBXSettingsManager;
-import org.asteriskjava.pbx.internal.asterisk.wrap.actions.GetVarAction;
-import org.asteriskjava.pbx.internal.asterisk.wrap.actions.OriginateAction;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.BridgeEvent;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.HangupEvent;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.LinkEvent;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.ManagerEvent;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.NewChannelEvent;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.OriginateResponseEvent;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.UnlinkEvent;
-import org.asteriskjava.pbx.internal.asterisk.wrap.response.ManagerResponse;
+import org.asteriskjava.pbx.asterisk.wrap.actions.GetVarAction;
+import org.asteriskjava.pbx.asterisk.wrap.actions.OriginateAction;
+import org.asteriskjava.pbx.asterisk.wrap.events.BridgeEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.HangupEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.LinkEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.ManagerEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.NewChannelEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.OriginateResponseEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.UnlinkEvent;
+import org.asteriskjava.pbx.asterisk.wrap.response.ManagerResponse;
 import org.asteriskjava.pbx.internal.core.AsteriskPBX;
+import org.asteriskjava.util.Log;
+import org.asteriskjava.util.LogFactory;
 
 public abstract class OriginateBaseClass extends EventListenerBaseClass
 {
@@ -37,11 +37,11 @@ public abstract class OriginateBaseClass extends EventListenerBaseClass
      * this class generates and issues ActionEvents to asterisk through the
      * manager. This is the asterisk coal face.
      */
-    static Logger logger = Logger.getLogger(OriginateBaseClass.class);
+    protected static final Log logger = LogFactory.getLog(OriginateBaseClass.class);
 
     private volatile String originateID;
 
-    private boolean originateSuccess;
+    volatile private boolean originateSuccess;
 
     private final Channel monitorChannel1;
 
@@ -112,7 +112,7 @@ public abstract class OriginateBaseClass extends EventListenerBaseClass
                 + " vars " + myVars); //$NON-NLS-1$
         ManagerResponse response = null;
 
-        final AsteriskSettings settings = PBXSettingsManager.getActiveProfile();
+        final AsteriskSettings settings = PBXFactory.getActiveProfile();
 
         final OriginateAction originate = new OriginateAction();
         this.originateID = originate.getActionId();

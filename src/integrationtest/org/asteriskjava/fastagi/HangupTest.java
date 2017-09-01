@@ -10,7 +10,7 @@ import java.util.Arrays;
 
 public class HangupTest extends BaseAgiScript
 {
-    private Logger logger = Logger.getLogger(HangupTest.class);
+    private Logger logger = LogFactory.getLog(getClass());
 
     public void service(AgiRequest request, AgiChannel channel) throws AgiException
     {

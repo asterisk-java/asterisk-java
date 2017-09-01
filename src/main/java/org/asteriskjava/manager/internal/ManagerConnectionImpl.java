@@ -23,6 +23,23 @@ import static org.asteriskjava.manager.ManagerConnectionState.DISCONNECTING;
 import static org.asteriskjava.manager.ManagerConnectionState.INITIAL;
 import static org.asteriskjava.manager.ManagerConnectionState.RECONNECTING;
 
+import java.io.IOException;
+import java.io.Serializable;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.manager.AuthenticationFailedException;
 import org.asteriskjava.manager.EventTimeoutException;
@@ -57,22 +74,6 @@ import org.asteriskjava.util.LogFactory;
 import org.asteriskjava.util.SocketConnectionFacade;
 import org.asteriskjava.util.internal.SocketConnectionFacadeImpl;
 
-import java.io.IOException;
-import java.io.Serializable;
-import java.net.InetAddress;
-import java.net.Socket;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 /**
  * Internal implemention of the ManagerConnection interface.
  *
@@ -94,8 +95,11 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     private static final Pattern VERSION_PATTERN_1_8 = Pattern.compile("^\\s*Asterisk ((SVN-branch|GIT)-)?1\\.8[-. ].*");
     private static final Pattern VERSION_PATTERN_10 = Pattern.compile("^\\s*Asterisk ((SVN-branch|GIT)-)?10[-. ].*");
     private static final Pattern VERSION_PATTERN_11 = Pattern.compile("^\\s*Asterisk ((SVN-branch|GIT)-)?11[-. ].*");
+    private static final Pattern VERSION_PATTERN_CERTIFIED_11 = Pattern.compile("^\\s*Asterisk certified/((SVN-branch|GIT)-)?11[-. ].*");
     private static final Pattern VERSION_PATTERN_12 = Pattern.compile("^\\s*Asterisk ((SVN-branch|GIT)-)?12[-. ].*");
     private static final Pattern VERSION_PATTERN_13 = Pattern.compile("^\\s*Asterisk ((SVN-branch|GIT)-)?13[-. ].*");
+    private static final Pattern VERSION_PATTERN_CERTIFIED_13 = Pattern.compile("^\\s*Asterisk certified/((SVN-branch|GIT)-)?13[-. ].*");
+    private static final Pattern VERSION_PATTERN_14 = Pattern.compile("^\\s*Asterisk (GIT-)?14[-. ].*");
 
     private static final AtomicLong idCounter = new AtomicLong(0);
 
@@ -643,7 +647,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         {
             final ManagerResponse showVersionFilesResponse;
             final List<String> showVersionFilesResult;
-
+            boolean Asterisk14outputPresent = false;
             // increase timeout as output is quite large
             showVersionFilesResponse = sendAction(new CommandAction("show version files pbx.c"), defaultResponseTimeout * 2);
             if (!(showVersionFilesResponse instanceof CommandResponse))
@@ -653,10 +657,18 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                 // actionId='null'; message='Permission denied';
                 // response='Error';
                 // uniqueId='null'; systemHashcode=15231583
-                break;
+            	if(showVersionFilesResponse.getOutput() != null){
+            		Asterisk14outputPresent = true;
+            	}else{
+            		break;
+            	}
             }
-
-            showVersionFilesResult = ((CommandResponse) showVersionFilesResponse).getResult();
+            if(Asterisk14outputPresent){
+            	List<String> outputList = Arrays.asList(showVersionFilesResponse.getOutput().split(SocketConnectionFacadeImpl.NL_PATTERN.pattern()));
+            	showVersionFilesResult = outputList;
+            }else{
+            	showVersionFilesResult = ((CommandResponse) showVersionFilesResponse).getResult();
+            }
             if (showVersionFilesResult != null && !showVersionFilesResult.isEmpty())
             {
                 final String line1 = showVersionFilesResult.get(0);
@@ -702,6 +714,10 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                             {
                                 return AsteriskVersion.ASTERISK_11;
                             }
+			    else if (VERSION_PATTERN_CERTIFIED_11.matcher(coreLine).matches())
+                            {
+                                return AsteriskVersion.ASTERISK_11;
+                            }
                             else if (VERSION_PATTERN_12.matcher(coreLine).matches())
                             {
                                 return AsteriskVersion.ASTERISK_12;
@@ -709,6 +725,14 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                             else if (VERSION_PATTERN_13.matcher(coreLine).matches())
                             {
                                 return AsteriskVersion.ASTERISK_13;
+                            }
+			    else if (VERSION_PATTERN_CERTIFIED_13.matcher(coreLine).matches())
+                            {
+                                return AsteriskVersion.ASTERISK_13;
+                            }
+                            else if (VERSION_PATTERN_14.matcher(coreLine).matches())
+                            {
+                                return AsteriskVersion.ASTERISK_14;
                             }
                         }
                     }
@@ -1393,6 +1417,10 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                 && !"Asterisk Call Manager/2.7.0".equals(identifier) // Asterisk
                                                                      // 13.2
                 && !"Asterisk Call Manager/2.8.0".equals(identifier) // Asterisk > 13.5
+
+			    && !"Asterisk Call Manager/2.9.0".equals(identifier) // Asterisk > 13.13
+			    
+			    && !"Asterisk Call Manager/3.1.0".equals(identifier) //Asterisk =14.3.0
 
                 && !"OpenPBX Call Manager/1.0".equals(identifier) && !"CallWeaver Call Manager/1.0".equals(identifier)
                 && !(identifier != null && identifier.startsWith("Asterisk Call Manager Proxy/")))

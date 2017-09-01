@@ -41,12 +41,14 @@ public class QueueParamsEvent extends ResponseEvent
     private Integer abandoned;
     private Integer serviceLevel;
     private Double serviceLevelPerf;
+    private Double serviceLevelPerf2;
     private Integer weight;
 
     public QueueParamsEvent(Object source)
     {
         super(source);
     }
+
 
     /**
      * Returns the name of the queue.
@@ -295,4 +297,15 @@ public class QueueParamsEvent extends ResponseEvent
     {
         this.weight = weight;
     }
+
+    public Double getServiceLevelPerf2() {
+        return serviceLevelPerf2;
+    }
+
+    public void setServiceLevelPerf2(Double serviceLevelPerf2) {
+        this.serviceLevelPerf2 = serviceLevelPerf2;
+    }
+
+
+
 }

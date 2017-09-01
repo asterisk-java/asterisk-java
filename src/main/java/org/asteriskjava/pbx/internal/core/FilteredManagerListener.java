@@ -2,7 +2,8 @@ package org.asteriskjava.pbx.internal.core;
 
 import java.util.Set;
 
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.ManagerEvent;
+import org.asteriskjava.pbx.ListenerPriority;
+import org.asteriskjava.pbx.asterisk.wrap.events.ManagerEvent;
 
 /**
  * Allows a object to receive Manager event notification which are pre-filtered.

@@ -492,7 +492,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
     {
         final List<DialedChannelHistoryEntry> copy;
 
-        synchronized (linkedChannelHistory)
+        synchronized (dialedChannelHistory)
         {
             copy = new ArrayList<>(dialedChannelHistory);
         }

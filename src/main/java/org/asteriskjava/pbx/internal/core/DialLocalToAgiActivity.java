@@ -12,21 +12,22 @@ import java.util.concurrent.TimeUnit;
 import org.asteriskjava.manager.TimeoutException;
 import org.asteriskjava.pbx.Activity;
 import org.asteriskjava.pbx.ActivityCallback;
+import org.asteriskjava.pbx.ActivityStatusEnum;
+import org.asteriskjava.pbx.AsteriskSettings;
 import org.asteriskjava.pbx.CallerID;
 import org.asteriskjava.pbx.Channel;
 import org.asteriskjava.pbx.EndPoint;
+import org.asteriskjava.pbx.ListenerPriority;
 import org.asteriskjava.pbx.PBX;
 import org.asteriskjava.pbx.PBXException;
 import org.asteriskjava.pbx.PBXFactory;
-import org.asteriskjava.pbx.internal.asterisk.AsteriskSettings;
-import org.asteriskjava.pbx.internal.asterisk.PBXSettingsManager;
-import org.asteriskjava.pbx.internal.asterisk.wrap.actions.GetVarAction;
-import org.asteriskjava.pbx.internal.asterisk.wrap.actions.OriginateAction;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.HangupEvent;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.ManagerEvent;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.NewChannelEvent;
-import org.asteriskjava.pbx.internal.asterisk.wrap.events.OriginateResponseEvent;
-import org.asteriskjava.pbx.internal.asterisk.wrap.response.ManagerResponse;
+import org.asteriskjava.pbx.asterisk.wrap.actions.GetVarAction;
+import org.asteriskjava.pbx.asterisk.wrap.actions.OriginateAction;
+import org.asteriskjava.pbx.asterisk.wrap.events.HangupEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.ManagerEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.NewChannelEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.OriginateResponseEvent;
+import org.asteriskjava.pbx.asterisk.wrap.response.ManagerResponse;
 import org.asteriskjava.pbx.internal.managerAPI.EventListenerBaseClass;
 import org.asteriskjava.pbx.internal.managerAPI.OriginateBaseClass;
 import org.asteriskjava.util.Log;
@@ -64,11 +65,11 @@ public class DialLocalToAgiActivity extends EventListenerBaseClass implements Ru
     @Override
     public void run()
     {
-        logger.info("*******************************************************************************");
+        logger.debug("*******************************************************************************");
         logger.info("***********                    begin dial local to AGI                  ****************");
-        logger.info("***********                         " + "                              ****************");
-        logger.info("*******************************************************************************");
-        final AsteriskSettings settings = PBXSettingsManager.getActiveProfile();
+        logger.debug("***********                                                      ****************");
+        logger.debug("*******************************************************************************");
+        final AsteriskSettings settings = PBXFactory.getActiveProfile();
 
         AsteriskPBX pbx = (AsteriskPBX) PBXFactory.getActivePBX();
 
@@ -95,17 +96,15 @@ public class DialLocalToAgiActivity extends EventListenerBaseClass implements Ru
         {
             pbx.sendAction(originate, 30000);
             latch.await(30, TimeUnit.SECONDS);
-            callback.completed(this, true);
+            callback.progress(this, ActivityStatusEnum.SUCCESS, ActivityStatusEnum.SUCCESS.getDefaultMessage());
 
         }
         catch (IllegalArgumentException | IllegalStateException | IOException | TimeoutException e)
         {
-            // TODO Auto-generated catch block
             logger.error(e, e);
         }
         catch (InterruptedException e)
         {
-            // TODO Auto-generated catch block
             logger.error(e, e);
         }
 
@@ -113,7 +112,7 @@ public class DialLocalToAgiActivity extends EventListenerBaseClass implements Ru
 
     public void abort(final String reason)
     {
-        logger.debug("Aborting originate ");//$NON-NLS-1$
+        logger.debug("Aborting originate ");
         this.close();
 
         for (Channel channel : channels)
@@ -185,12 +184,10 @@ public class DialLocalToAgiActivity extends EventListenerBaseClass implements Ru
             }
             catch (IllegalArgumentException | IllegalStateException | IOException | TimeoutException e)
             {
-                // TODO Auto-generated catch block
                 logger.error(e, e);
             }
             catch (InterruptedException e)
             {
-                // TODO Auto-generated catch block
                 logger.error(e, e);
             }
 

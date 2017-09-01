@@ -19,7 +19,7 @@ package org.asteriskjava.pbx.internal.eventQueue;
  */
 public class ManagerEventQueue // implements ManagerEventListener, Runnable
 {
-	// static Logger logger = Logger.getLogger(ManagerEventQueue.class);
+	// static Logger logger = LogFactory.getLog(getClass());
 	//
 	// private final ManagerEventListener listener;
 	// private boolean stop = false;

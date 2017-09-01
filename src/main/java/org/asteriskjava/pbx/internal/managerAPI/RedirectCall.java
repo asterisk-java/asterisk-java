@@ -2,17 +2,17 @@ package org.asteriskjava.pbx.internal.managerAPI;
 
 import java.util.HashMap;
 
-import org.apache.log4j.Logger;
+import org.asteriskjava.pbx.AgiChannelActivityAction;
+import org.asteriskjava.pbx.AsteriskSettings;
 import org.asteriskjava.pbx.Channel;
 import org.asteriskjava.pbx.EndPoint;
 import org.asteriskjava.pbx.PBXException;
 import org.asteriskjava.pbx.PBXFactory;
-import org.asteriskjava.pbx.internal.agi.AgiChannelActivityAction;
-import org.asteriskjava.pbx.internal.agi.AgiChannelActivityDial;
-import org.asteriskjava.pbx.internal.agi.AgiChannelActivityVoicemail;
-import org.asteriskjava.pbx.internal.asterisk.AsteriskSettings;
-import org.asteriskjava.pbx.internal.asterisk.PBXSettingsManager;
+import org.asteriskjava.pbx.agi.AgiChannelActivityDial;
+import org.asteriskjava.pbx.agi.AgiChannelActivityVoicemail;
 import org.asteriskjava.pbx.internal.core.AsteriskPBX;
+import org.asteriskjava.util.Log;
+import org.asteriskjava.util.LogFactory;
 
 public class RedirectCall
 {
@@ -20,12 +20,13 @@ public class RedirectCall
      * this class generates and issues ActionEvents to asterisk through the
      * manager. This is the asterisk coal face.
      */
-    static Logger logger = Logger.getLogger(RedirectCall.class);
-	static public void setAutoAnswer(final HashMap<String, String> myVars, final AsteriskSettings settings)
-	{
-		myVars.put(AsteriskPBX.getSIPADDHeader(false, true), settings.getAutoAnswer());
-		RedirectCall.logger.debug("auto answer"); //$NON-NLS-1$
-	}
+    private static final Log logger = LogFactory.getLog(RedirectCall.class);
+
+    static public void setAutoAnswer(final HashMap<String, String> myVars, final AsteriskSettings settings)
+    {
+        myVars.put(AsteriskPBX.getSIPADDHeader(false, true), settings.getAutoAnswer());
+        RedirectCall.logger.debug("auto answer"); //$NON-NLS-1$
+    }
 
     public boolean redirect(final Channel channel, final EndPoint targetEndPoint, final String context,
             final boolean autoAnswer) throws PBXException
@@ -37,7 +38,7 @@ public class RedirectCall
         String sipHeader = "";
         if (autoAnswer)
         {
-            sipHeader = PBXSettingsManager.getActiveProfile().getAutoAnswer();
+            sipHeader = PBXFactory.getActiveProfile().getAutoAnswer();
         }
 
         /*

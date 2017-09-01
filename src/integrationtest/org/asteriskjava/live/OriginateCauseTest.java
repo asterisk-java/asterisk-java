@@ -84,8 +84,7 @@ public class OriginateCauseTest extends AsteriskServerTestCase
                         }
                         catch (Exception e)
                         {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
+                             e.printStackTrace();
                         }
                     }
                 }, 10, TimeUnit.SECONDS);
