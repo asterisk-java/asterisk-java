@@ -19,6 +19,7 @@ import org.asteriskjava.pbx.asterisk.wrap.events.LinkEvent;
 import org.asteriskjava.pbx.asterisk.wrap.events.ManagerEvent;
 import org.asteriskjava.pbx.asterisk.wrap.events.StatusCompleteEvent;
 import org.asteriskjava.pbx.asterisk.wrap.events.StatusEvent;
+import org.asteriskjava.pbx.internal.asterisk.DurationRoomOwner;
 import org.asteriskjava.pbx.internal.asterisk.MeetmeRoom;
 import org.asteriskjava.pbx.internal.core.AsteriskPBX;
 import org.asteriskjava.pbx.internal.managerAPI.RedirectToMeetMe;
@@ -96,7 +97,7 @@ public class BridgeActivityImpl extends ActivityHelper<BridgeActivity> implement
                     final RedirectToMeetMe meetmeTransfer = new RedirectToMeetMe();
                     // meetme room is empty
                     // find a new available room.
-                    MeetmeRoom room = pbx.acquireMeetmeRoom();
+                    MeetmeRoom room = pbx.acquireMeetmeRoom(new DurationRoomOwner(30, TimeUnit.SECONDS));
 
                     // redirect the lhs to meetme
                     meetmeTransfer.redirectToMeetme(_lhsChannel, room.getRoomNumber(), true);

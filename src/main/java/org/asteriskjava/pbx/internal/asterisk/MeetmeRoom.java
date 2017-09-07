@@ -33,6 +33,8 @@ public class MeetmeRoom
 
     private Date lastUpdated = null;
 
+    private RoomOwner owner = null;
+
     public MeetmeRoom(final int number)
     {
         this.roomNumber = number;
@@ -93,7 +95,7 @@ public class MeetmeRoom
      * 
      * @return
      */
-    public boolean getStatus()
+    public boolean isActive()
     {
         return this.active;
     }
@@ -177,9 +179,28 @@ public class MeetmeRoom
 
     }
 
-    public boolean isActive()
+    public RoomOwner getOwner()
     {
-        return this.active;
+        return owner;
+    }
+
+    public void setOwner(RoomOwner newOwner)
+    {
+        owner = newOwner;
+        owner.setRoom(this);
+        setActive();
+    }
+
+    public void removeOwner(RoomOwner toRemove)
+    {
+        if (owner == toRemove)
+        {
+            owner = null;
+        }
+        else
+        {
+            logger.error("Tring to remove the owner, but it's not the current owner");
+        }
     }
 
 }

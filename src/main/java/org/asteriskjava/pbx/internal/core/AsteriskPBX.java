@@ -65,6 +65,7 @@ import org.asteriskjava.pbx.internal.activity.SplitActivityImpl;
 import org.asteriskjava.pbx.internal.asterisk.CallerIDImpl;
 import org.asteriskjava.pbx.internal.asterisk.MeetmeRoom;
 import org.asteriskjava.pbx.internal.asterisk.MeetmeRoomControl;
+import org.asteriskjava.pbx.internal.asterisk.RoomOwner;
 import org.asteriskjava.pbx.internal.managerAPI.RedirectCall;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
@@ -618,9 +619,9 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
         return this.liveChannels.findChannel(channelName, uniqueID);
     }
 
-    public MeetmeRoom acquireMeetmeRoom()
+    public MeetmeRoom acquireMeetmeRoom(RoomOwner owner)
     {
-        return MeetmeRoomControl.getInstance().findAvailableRoom();
+        return MeetmeRoomControl.getInstance().findAvailableRoom(owner);
     }
 
     public void addListener(FilteredManagerListener<ManagerEvent> listener)
