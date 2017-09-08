@@ -153,8 +153,8 @@ class BridgeState
         if (find1 && find2)
         {
             // 1501234567.890 -> epochtime: 1501234567 | serial: 890
-            int epochtime1 = Integer.valueOf(uniqueId1Matcher.group(1));
-            int epochtime2 = Integer.valueOf(uniqueId2Matcher.group(1));
+            long epochtime1 = Long.valueOf(uniqueId1Matcher.group(1));
+            long epochtime2 = Long.valueOf(uniqueId2Matcher.group(1));
             int serial1 = Integer.valueOf(uniqueId1Matcher.group(2));
             int serial2 = Integer.valueOf(uniqueId2Matcher.group(2));
 
@@ -163,7 +163,7 @@ class BridgeState
                 return Integer.compare(serial1, serial2);
             }
 
-            return Integer.compare(epochtime1, epochtime2);
+            return Long.compare(epochtime1, epochtime2);
 
         }
         else if (!find1 && find2)
@@ -176,7 +176,7 @@ class BridgeState
             // id1 > id2
             return 1;
         }
-	// Both of inputs are invalid value: id1 == id2
+        // Both of inputs are invalid value: id1 == id2
         return 0;
     }
 }
