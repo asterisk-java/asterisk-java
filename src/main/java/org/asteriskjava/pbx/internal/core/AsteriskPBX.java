@@ -80,7 +80,7 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
     private boolean muteSupported;
     private boolean bridgeSupport;
 
-    private static final int MAX_MEETME_ROOMS = 50;
+    private static final int MAX_MEETME_ROOMS = 500;
 
     private LiveChannelManager liveChannels;
 
