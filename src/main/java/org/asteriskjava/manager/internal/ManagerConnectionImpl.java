@@ -1311,37 +1311,39 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         {
             // When we receive get disconnected while we are connected start
             // a new reconnect thread and set the state to RECONNECTING.
-            if (state == CONNECTED)
-            {
-                state = RECONNECTING;
-                // close socket if still open and remove reference to
-                // readerThread
-                // After sending the DisconnectThread that thread will die
-                // anyway.
-                cleanup();
-                Thread reconnectThread = new Thread(new Runnable()
-                {
-                    public void run()
-                    {
-                        reconnect();
-                    }
-                });
-                reconnectThread.setName(
-                        "Asterisk-Java ManagerConnection-" + id + "-Reconnect-" + reconnectThreadCounter.getAndIncrement());
-                reconnectThread.setDaemon(true);
-                reconnectThread.start();
-                // now the DisconnectEvent is dispatched to registered
-                // eventListeners
-                // (clients) and after that the ManagerReaderThread is gone.
-                // So effectively we replaced the reader thread by a
-                // ReconnectThread.
-            }
-            else
-            {
-                // when we receive a DisconnectEvent while not connected we
-                // ignore it and do not send it to clients
-                return;
-            }
+	        synchronized (this)
+	        {
+		        if (state == CONNECTED)
+		        {
+			        state = RECONNECTING;
+			        // close socket if still open and remove reference to
+			        // readerThread
+			        // After sending the DisconnectThread that thread will die
+			        // anyway.
+			        cleanup();
+			        Thread reconnectThread = new Thread(new Runnable() {
+
+				        public void run() {
+					        reconnect();
+				        }
+			        });
+			        reconnectThread.setName(
+				        "Asterisk-Java ManagerConnection-" + id + "-Reconnect-" + reconnectThreadCounter.getAndIncrement());
+			        reconnectThread.setDaemon(true);
+			        reconnectThread.start();
+			        // now the DisconnectEvent is dispatched to registered
+			        // eventListeners
+			        // (clients) and after that the ManagerReaderThread is gone.
+			        // So effectively we replaced the reader thread by a
+			        // ReconnectThread.
+		        }
+		        else
+		        {
+			        // when we receive a DisconnectEvent while not connected we
+			        // ignore it and do not send it to clients
+			        return;
+		        }
+	        }
         }
         if (event instanceof ProtocolIdentifierReceivedEvent)
         {
@@ -1452,7 +1454,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
         // try to reconnect
         numTries = 0;
-        while (state == RECONNECTING)
+        while (true)
         {
             try
             {
@@ -1476,34 +1478,40 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
             try
             {
-                connect();
+	            synchronized (this)
+	            {
+		            if (state != RECONNECTING) {
+			            break;
+		            }
+		            connect();
 
-                try
-                {
-                    doLogin(defaultResponseTimeout, eventMask);
-                    logger.info("Successfully reconnected.");
-                    // everything is ok again, so we leave
-                    // when successful doLogin set the state to CONNECTED so no
-                    // need to adjust it
-                    break;
-                }
-                catch (AuthenticationFailedException e1)
-                {
-                    if (keepAliveAfterAuthenticationFailure)
-                    {
-                        logger.error("Unable to log in after reconnect: " + e1.getMessage());
-                    }
-                    else
-                    {
-                        logger.error("Unable to log in after reconnect: " + e1.getMessage() + ". Giving up.");
-                        state = DISCONNECTED;
-                    }
-                }
-                catch (TimeoutException e1)
-                {
-                    // shouldn't happen - but happens!
-                    logger.error("TimeoutException while trying to log in " + "after reconnect.");
-                }
+		            try
+		            {
+			            doLogin(defaultResponseTimeout, eventMask);
+			            logger.info("Successfully reconnected.");
+			            // everything is ok again, so we leave
+			            // when successful doLogin set the state to CONNECTED so no
+			            // need to adjust it
+			            break;
+		            }
+		            catch (AuthenticationFailedException e1)
+		            {
+			            if (keepAliveAfterAuthenticationFailure)
+			            {
+				            logger.error("Unable to log in after reconnect: " + e1.getMessage());
+			            }
+			            else
+			            {
+				            logger.error("Unable to log in after reconnect: " + e1.getMessage() + ". Giving up.");
+				            state = DISCONNECTED;
+			            }
+		            }
+		            catch (TimeoutException e1)
+		            {
+			            // shouldn't happen - but happens!
+			            logger.error("TimeoutException while trying to log in " + "after reconnect.");
+		            }
+	            }
             }
             catch (IOException e)
             {
