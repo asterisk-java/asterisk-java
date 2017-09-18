@@ -58,12 +58,14 @@ public class SplitActivityImpl extends ActivityHelper<SplitActivity> implements 
 
         this._callToSplit = callToSplit;
 
-        channel1 = callToSplit.getChannels().get(0);
-        channel2 = callToSplit.getChannels().get(1);
-
-        callToSplit.getChannels();
-
+        List<Channel> tmp = callToSplit.getChannels();
+        if (tmp.size() > 1)
+        {
+            channel1 = tmp.get(0);
+            channel2 = tmp.get(1);
+        }
         this.startActivity(true);
+
     }
 
     @Override
