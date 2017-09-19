@@ -221,6 +221,7 @@ public abstract class OriginateBaseClass extends EventListenerBaseClass
             {
                 try
                 {
+                    logger.warn("Hanging up");
                     pbx.hangup(this.newChannel);
                 }
                 catch (IllegalArgumentException | IllegalStateException | PBXException e)
@@ -242,7 +243,7 @@ public abstract class OriginateBaseClass extends EventListenerBaseClass
         this.hungup = true;
         if (this.newChannel != null)
         {
-            OriginateBaseClass.logger.debug("Aborted, Hangup up on the way out");//$NON-NLS-1$
+            OriginateBaseClass.logger.warn("Aborted, Hangup up on the way out");//$NON-NLS-1$
             this.result.setChannelHungup(true);
 
             PBX pbx = PBXFactory.getActivePBX();
@@ -308,6 +309,7 @@ public abstract class OriginateBaseClass extends EventListenerBaseClass
                     PBX pbx = PBXFactory.getActivePBX();
                     try
                     {
+                        logger.warn("Hanging up");
                         pbx.hangup(this.newChannel);
                     }
                     catch (IllegalArgumentException | IllegalStateException | PBXException e)

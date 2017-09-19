@@ -165,6 +165,7 @@ public class BlindTransferActivityImpl extends ActivityHelper<BlindTransferActiv
             }
             else if (_completionCause == CompletionCause.CANCELLED)
             {
+                logger.warn("Cancelled, hanging up dialed channel");
                 pbx.hangup(dialedChannel);
             }
 

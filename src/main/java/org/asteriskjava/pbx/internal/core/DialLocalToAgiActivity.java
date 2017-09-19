@@ -112,7 +112,7 @@ public class DialLocalToAgiActivity extends EventListenerBaseClass implements Ru
 
     public void abort(final String reason)
     {
-        logger.debug("Aborting originate ");
+        logger.warn("Aborting originate ");
         this.close();
 
         for (Channel channel : channels)

@@ -138,10 +138,12 @@ public class DialActivityImpl extends ActivityHelper<DialActivity> implements Di
             final PBX pbx = PBXFactory.getActivePBX();
             if (this.acceptingChannel != null)
             {
+                logger.warn("Hanging up");
                 pbx.hangup(this.acceptingChannel);
             }
             if (this.originatingChannel != null)
             {
+                logger.warn("Hanging up");
                 pbx.hangup(this.originatingChannel);
             }
         }

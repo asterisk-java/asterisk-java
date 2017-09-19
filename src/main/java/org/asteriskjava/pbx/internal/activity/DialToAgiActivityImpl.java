@@ -121,6 +121,7 @@ public class DialToAgiActivityImpl extends ActivityHelper<DialToAgiActivity> imp
 
             if (this.originatingChannel != null)
             {
+                logger.warn("Hanging up");
                 pbx.hangup(this.originatingChannel);
             }
         }

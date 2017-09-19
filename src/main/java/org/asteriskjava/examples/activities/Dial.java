@@ -11,9 +11,13 @@ import org.asteriskjava.pbx.PBXFactory;
 import org.asteriskjava.pbx.TechType;
 import org.asteriskjava.pbx.Trunk;
 import org.asteriskjava.pbx.activities.DialActivity;
+import org.asteriskjava.util.Log;
+import org.asteriskjava.util.LogFactory;
 
 public class Dial
 {
+    static private Log logger = LogFactory.getLog(Dial.class);
+
     static public void main(String[] args)
     {
         syncDial();
@@ -32,8 +36,10 @@ public class Dial
         {
             PBX pbx = PBXFactory.getActivePBX();
 
-            // The trunk MUST match the section header (e.g. [default]) that appears
-            // in your /etc/asterisk/sip.d file (assuming you are using a SIP trunk).
+            // The trunk MUST match the section header (e.g. [default]) that
+            // appears
+            // in your /etc/asterisk/sip.d file (assuming you are using a SIP
+            // trunk).
             // The trunk is used to select which SIP trunk to dial through.
             Trunk trunk = pbx.buildTrunk("default");
 
@@ -53,9 +59,10 @@ public class Dial
             DialActivity dial = pbx.dial(from, fromCallerID, to, toCallerID);
 
             Call call = dial.getNewCall();
-            
+
             Thread.sleep(20000);
 
+            logger.warn("Hanging up");
             pbx.hangup(call);
         }
         catch (PBXException | InterruptedException e)
@@ -94,6 +101,7 @@ public class Dial
                         // Call is up
                         Call call = activity.getNewCall();
                         // So lets just hangup the call
+                        logger.warn("Hanging up");
                         PBXFactory.getActivePBX().hangup(call.getOriginatingParty());
                     }
                     catch (PBXException e)

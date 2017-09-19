@@ -109,9 +109,15 @@ public class ParkActivityImpl extends ActivityHelper<ParkActivity> implements Pa
                 // Hangup the call as we have parked the other side of
                 // the call.
                 if (this._call.getDirection() == CallDirection.INBOUND)
+                {
+                    logger.warn("Hanging up");
                     pbx.hangup(this._call.getAcceptingParty());
+                }
                 else
+                {
+                    logger.warn("Hanging up");
                     pbx.hangup(this._call.getOriginatingParty());
+                }
                 success = true;
             }
 
