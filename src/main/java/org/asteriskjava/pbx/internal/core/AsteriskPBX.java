@@ -15,6 +15,7 @@ import org.asteriskjava.manager.event.AbstractChannelEvent;
 import org.asteriskjava.pbx.Activity;
 import org.asteriskjava.pbx.ActivityCallback;
 import org.asteriskjava.pbx.ActivityStatusEnum;
+import org.asteriskjava.pbx.AgiChannelActivityAction;
 import org.asteriskjava.pbx.AsteriskSettings;
 import org.asteriskjava.pbx.Call;
 import org.asteriskjava.pbx.Call.OperandChannel;
@@ -856,7 +857,7 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
         return liveChannels.findProxyById(id);
     }
 
-    public DialToAgiActivityImpl dialToAgi(EndPoint endPoint, CallerID callerID, AgiChannelActivityHold action,
+    public DialToAgiActivityImpl dialToAgi(EndPoint endPoint, CallerID callerID, AgiChannelActivityAction action,
             ActivityCallback<DialToAgiActivity> iCallback)
     {
 

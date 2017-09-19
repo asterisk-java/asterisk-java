@@ -241,7 +241,7 @@ class CoherentManagerEventQueue implements ManagerEventListener, Runnable
                 if (time.timeTaken() > 500)
                 {
                     logger.warn("ManagerListener :" + filter._listener.getName() //$NON-NLS-1$
-                            + " is taken too long to process events " + " time taken: " + time.timeTaken()); //$NON-NLS-1$ //$NON-NLS-2$
+                            + " is taken too long to process event " + event + " time taken: " + time.timeTaken()); //$NON-NLS-1$ //$NON-NLS-2$
                 }
             }
         }
