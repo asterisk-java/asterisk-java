@@ -868,8 +868,7 @@ public class CallImpl implements ChannelHangupListener, Call
         }
         if (channel == null)
         {
-            Exception e = new Exception("failed to get channel for " + operand);
-            logger.warn(e, e);
+            logger.warn("failed to get channel for " + operand);
         }
         return channel;
     }
