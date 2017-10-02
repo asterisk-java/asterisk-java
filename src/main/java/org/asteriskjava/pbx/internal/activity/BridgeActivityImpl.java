@@ -100,7 +100,7 @@ public class BridgeActivityImpl extends ActivityHelper<BridgeActivity> implement
                     MeetmeRoom room = pbx.acquireMeetmeRoom(new DurationRoomOwner(30, TimeUnit.SECONDS));
 
                     // redirect the lhs to meetme
-                    meetmeTransfer.redirectToMeetme(_lhsChannel, room.getRoomNumber(), true);
+                    meetmeTransfer.redirectToMeetme(_lhsChannel, room.getRoomNumber(), true, false);
 
                     // redirect destination this is not the marked call
                     // as we want this to be hung up if no other calls are left
@@ -108,7 +108,7 @@ public class BridgeActivityImpl extends ActivityHelper<BridgeActivity> implement
                     // this
                     // room
                     final boolean markedCall = !_rhsChannel.canDetectHangup();
-                    meetmeTransfer.redirectToMeetme(_rhsChannel, room.getRoomNumber(), markedCall);
+                    meetmeTransfer.redirectToMeetme(_rhsChannel, room.getRoomNumber(), markedCall, false);
 
                     // TODO put some logic to check that the meetme actually
                     // completes.

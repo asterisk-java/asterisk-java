@@ -17,7 +17,8 @@ public class RedirectToMeetMe
         super();
     }
 
-    public boolean redirectToMeetme(final Channel channel, final String room, final boolean markedUser) throws PBXException
+    public boolean redirectToMeetme(final Channel channel, final String room, final boolean markedUser,
+            final boolean passDTMF) throws PBXException
     {
         final AsteriskPBX pbx = (AsteriskPBX) PBXFactory.getActivePBX();
         /*
@@ -33,11 +34,15 @@ public class RedirectToMeetMe
         String options = new String();
         if (markedUser == true)
         {
-            options = "qdxAF"; //$NON-NLS-1$
+            options = "qdxA"; //$NON-NLS-1$
         }
         else
         {
-            options = "qdxF"; //$NON-NLS-1$
+            options = "qdx"; //$NON-NLS-1$
+        }
+        if (passDTMF)
+        {
+            options += "F";
         }
 
         if (!pbx.moveChannelToAgi(channel))

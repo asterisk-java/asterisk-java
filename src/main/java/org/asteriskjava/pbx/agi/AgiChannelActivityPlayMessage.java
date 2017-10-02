@@ -32,7 +32,11 @@ public class AgiChannelActivityPlayMessage implements AgiChannelActivityAction
         }
         channel.exec("Playtones", "beep");
         TimeUnit.MILLISECONDS.sleep(100);
-        channel.streamFile(tmp);
+        // file, escape, offset, forward, rewind, pause
+
+        // # to exit, 6 forward, 4 back, 5 pause
+        channel.controlStreamFile(tmp, "#", 5000, "6", "4", "5");
+
         channel.exec("Playtones", "beep");
         TimeUnit.MILLISECONDS.sleep(100);
         channel.hangup();
