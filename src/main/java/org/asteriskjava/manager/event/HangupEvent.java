@@ -35,8 +35,6 @@ public class HangupEvent extends AbstractChannelStateEvent
     private String language;
     private String linkedId;
     private String connectedlinenum;
-
-    private String accountCode;
     
     public HangupEvent(Object source)
     {
@@ -95,16 +93,6 @@ public class HangupEvent extends AbstractChannelStateEvent
     {
         this.causeTxt = causeTxt;
     }
-
-	public String getAccountCode() 
-	{
-		return accountCode;
-	}
-
-	public void setAccountCode(String accountCode) 
-	{
-		this.accountCode = accountCode;
-	}
 
     public String getLinkedId()
     {
