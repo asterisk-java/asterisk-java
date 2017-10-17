@@ -29,7 +29,7 @@ public abstract class AbstractChannelEvent extends ManagerEvent
      */
     static final long serialVersionUID = 5906599407896179295L;
 
-    private String accountCode;
+    protected String accountCode;
 
     /**
      * The name of the channel.
