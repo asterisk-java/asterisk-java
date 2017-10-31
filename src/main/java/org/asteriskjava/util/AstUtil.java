@@ -92,16 +92,7 @@ public class AstUtil
             return (Boolean) o;
         }
 
-        final String s;
-        if (o instanceof String)
-        {
-            s = (String) o;
-        }
-        else
-        {
-            s = o.toString();
-        }
-        return TRUE_LITERALS.contains(s.toLowerCase(Locale.US));
+        return TRUE_LITERALS.contains(o.toString().toLowerCase(Locale.US));
     }
 
     /**
