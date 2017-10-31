@@ -189,9 +189,9 @@ public class ChannelProxy implements Channel, ChannelHangupListener
     }
 
     @Override
-    public void rename(String newName) throws InvalidChannelName
+    public void rename(String newName, String uniqueId) throws InvalidChannelName
     {
-        this._channel.rename(newName);
+        this._channel.rename(newName, uniqueId);
     }
 
     @Override

@@ -24,6 +24,8 @@ public class RenameEvent extends ManagerEvent implements ChannelEvent
      */
     private final String _newName;
 
+    private String uniqueId;
+
     public RenameEvent(final org.asteriskjava.manager.event.RenameEvent event) throws InvalidChannelName
     {
         super(event);
@@ -34,6 +36,8 @@ public class RenameEvent extends ManagerEvent implements ChannelEvent
 
         String uniqueId = ((ChannelProxy) this._channel).getRealChannel().getUniqueId();
         logger.debug("Renaming :" + uniqueId + " " + event.getUniqueId());
+
+        this.uniqueId = event.getUniqueId();
 
         assert uniqueId.equalsIgnoreCase("-1")
                 || uniqueId.compareToIgnoreCase(event.getUniqueId()) == 0 : "Rename registered against incorrect channel"; //$NON-NLS-1$
@@ -49,6 +53,11 @@ public class RenameEvent extends ManagerEvent implements ChannelEvent
     public final String getNewName()
     {
         return this._newName;
+    }
+
+    public final String getUniqueId()
+    {
+        return uniqueId;
     }
 
     @Override

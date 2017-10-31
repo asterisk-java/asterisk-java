@@ -90,7 +90,7 @@ public class LiveChannelManager implements FilteredManagerListener<ManagerEvent>
         }
         logger.debug("Adding liveChannel " + proxy);
 
-        dumpProxies(proxy, "Add"); //$NON-NLS-1$
+        dumpProxies(proxy, "Add");
         sanityCheck();
 
     }
@@ -99,10 +99,10 @@ public class LiveChannelManager implements FilteredManagerListener<ManagerEvent>
     {
         if (logger.isDebugEnabled())
         {
-            logger.debug("Dump of LiveChannels, cause:" + cause + ": " + proxy); //$NON-NLS-1$ //$NON-NLS-2$
+            logger.debug("Dump of LiveChannels, cause:" + cause + ": " + proxy); //$NON-NLS-2$
             for (ChannelProxy aProxy : _liveChannels)
             {
-                logger.debug("ChannelProxy: " + aProxy); //$NON-NLS-1$
+                logger.debug("ChannelProxy: " + aProxy);
             }
         }
     }
@@ -116,7 +116,7 @@ public class LiveChannelManager implements FilteredManagerListener<ManagerEvent>
             logger.info("Removing liveChannel " + proxy);
             this._liveChannels.remove(index);
         }
-        dumpProxies(proxy, "Removing"); //$NON-NLS-1$
+        dumpProxies(proxy, "Removing");
 
     }
 
@@ -250,7 +250,7 @@ public class LiveChannelManager implements FilteredManagerListener<ManagerEvent>
                     // now the active channel
                     // and everyone will be happy.
                     originalProxy.masquerade(cloneProxy);
-                    dumpProxies(cloneProxy, "Masquerade"); //$NON-NLS-1$
+                    dumpProxies(cloneProxy, "Masquerade");
                     sanityCheck();
                 }
                 catch (InvalidChannelName e)
@@ -261,8 +261,8 @@ public class LiveChannelManager implements FilteredManagerListener<ManagerEvent>
 
             }
             else
-                logger.error("Either the clone or original channelProxy was missing during a masquerade: cloneIndex=" //$NON-NLS-1$
-                        + cloneIndex + " originalIndex=" + originalIndex); //$NON-NLS-1$
+                logger.error("Either the clone or original channelProxy was missing during a masquerade: cloneIndex="
+                        + cloneIndex + " originalIndex=" + originalIndex);
 
         }
         if (event instanceof RenameEvent)
@@ -274,8 +274,9 @@ public class LiveChannelManager implements FilteredManagerListener<ManagerEvent>
             {
                 try
                 {
-                    oldChannel.rename(rename.getNewName());
-                    dumpProxies(oldChannel, "RenameEvent"); //$NON-NLS-1$
+                    oldChannel.rename(rename.getNewName(), rename.getUniqueId());
+
+                    dumpProxies(oldChannel, "RenameEvent");
                     sanityCheck();
                 }
                 catch (InvalidChannelName e)
@@ -307,10 +308,12 @@ public class LiveChannelManager implements FilteredManagerListener<ManagerEvent>
                 ChannelProxy proxy = findProxy(hangup.getChannel());
                 if (proxy != null)
                 {
+                    logger.debug("Removing proxy " + proxy);
+
                     this._liveChannels.remove(proxy);
                     logger.debug("Removing liveChannel " + proxy);
                     proxy.getChannel().notifyHangupListeners(hangup.getCause(), hangup.getCauseTxt());
-                    dumpProxies(proxy, "HangupEvent"); //$NON-NLS-1$
+                    dumpProxies(proxy, "HangupEvent");
                 }
 
             }
@@ -324,7 +327,7 @@ public class LiveChannelManager implements FilteredManagerListener<ManagerEvent>
     @Override
     public String getName()
     {
-        return "LiveChannelManager"; //$NON-NLS-1$
+        return "LiveChannelManager";
     }
 
     @Override

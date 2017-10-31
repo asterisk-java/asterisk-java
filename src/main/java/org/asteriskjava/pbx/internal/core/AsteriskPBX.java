@@ -523,8 +523,15 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
         return this.buildCallerID(number, name);
     }
 
-    public Channel registerChannel(final String channelName, final String uniqueID) throws InvalidChannelName
+    public Channel registerChannel(final String channelName, final String uniqueIdParam) throws InvalidChannelName
     {
+        String uniqueID = uniqueIdParam;
+        if (uniqueIdParam == null || uniqueIdParam.length() == 0)
+        {
+            uniqueID = ChannelImpl.UNKNOWN_UNIQUE_ID;
+        }
+
+        logger.error("Registering channel " + channelName + " " + uniqueID);
         if (channelName == null || channelName.trim().length() == 0)
         {
             throw new IllegalArgumentException("Channel name must not be empty");
@@ -766,6 +773,11 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
         if (elapsed >= timeout)
         {
             logger.error("Channels didn't Quiescent");
+            for (Channel channel : channels)
+            {
+                logger.error(channel);
+            }
+
         }
         return timeout > elapsed;
     }

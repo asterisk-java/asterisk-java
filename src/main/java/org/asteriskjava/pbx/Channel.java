@@ -149,14 +149,6 @@ public interface Channel
     CallerID getCallerID();
 
     /**
-     * Called to rename a channel
-     * 
-     * @param newname the new name of the channel
-     * @throws InvalidChannelName
-     */
-    void rename(String newName) throws InvalidChannelName;
-
-    /**
      * Returns a PBX specific version of the Channel name.
      * 
      * @return
@@ -184,5 +176,14 @@ public interface Channel
     boolean waitForChannelToReachAgi(long timeout, TimeUnit timeunit) throws InterruptedException;
 
     void setCallerId(CallerID buildCallerID);
+
+    /**
+     * Called to rename a channel
+     * 
+     * @param newname the new name of the channel
+     * @throws InvalidChannelName
+     */
+
+    void rename(String newName, String uniqueId) throws InvalidChannelName;
 
 }
