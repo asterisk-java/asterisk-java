@@ -286,7 +286,9 @@ public class LiveChannelManager implements FilteredManagerListener<ManagerEvent>
             }
             else
             {
-                logger.warn("Unable to rename channel -> Failed to find channel " + rename.getChannel());
+                String message = "Unable to rename channel -> Failed to find channel " + rename.getChannel();
+                logger.warn(message);
+                dumpProxies(null, message);
             }
         }
         else if (event instanceof HangupEvent)

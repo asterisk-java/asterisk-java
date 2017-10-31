@@ -531,7 +531,6 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
             uniqueID = ChannelImpl.UNKNOWN_UNIQUE_ID;
         }
 
-        logger.error("Registering channel " + channelName + " " + uniqueID);
         if (channelName == null || channelName.trim().length() == 0)
         {
             throw new IllegalArgumentException("Channel name must not be empty");

@@ -383,12 +383,12 @@ public class ChannelImpl implements Channel
     {
 
         String oldChannelName = getChannelName();
-        logger.warn("Changing " + oldChannelName + " to " + newName + " on " + oldChannelName + " " + _uniqueID);
+        logger.info("Changing " + oldChannelName + " to " + newName + " on " + oldChannelName + " " + _uniqueID);
         this.setChannelName(newName);
 
         if (_uniqueID.equalsIgnoreCase("-1"))
         {
-            logger.warn("Changing " + _uniqueID + " to " + uniqueId + " on " + oldChannelName + " " + _uniqueID);
+            logger.info("Changing " + _uniqueID + " to " + uniqueId + " on " + oldChannelName + " " + _uniqueID);
             _uniqueID = uniqueId;
         }
 
