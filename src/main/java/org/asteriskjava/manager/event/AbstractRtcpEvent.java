@@ -94,7 +94,8 @@ public abstract class AbstractRtcpEvent extends ManagerEvent
         }
         
         //things like RTT can be float/double in the event message in newer asterisk versions
-        if(s.contains(".")) {
+        if(s.contains("."))
+        {
             return secStringToDouble(s).longValue();
         }
 
