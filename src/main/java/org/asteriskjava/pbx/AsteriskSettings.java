@@ -103,6 +103,12 @@ public interface AsteriskSettings
      */
     boolean getCanDetectHangup();
 
+    /**
+     * The IP address of FQDN of the asterisk-java application.
+     * Currenly only used if you are doing 'activities' but its
+     * safer to just set this.
+     * @return
+     */
     String getAgiHost();
 
 }

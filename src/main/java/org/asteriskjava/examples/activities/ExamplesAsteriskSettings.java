@@ -1,99 +1,36 @@
 package org.asteriskjava.examples.activities;
 
-import org.asteriskjava.pbx.AsteriskSettings;
+import org.asteriskjava.pbx.DefaultAsteriskSettings;
 
-public class ExamplesAsteriskSettings implements AsteriskSettings
+public class ExamplesAsteriskSettings extends DefaultAsteriskSettings
 {
 
-    @Override
-    public int getManagerPortNo()
-    {
-        // TODO Auto-generated method stub
-        return 0;
-    }
+	@Override
+	public String getManagerPassword()
+	{
+		// this password MUST match the password (secret=) in manager.conf
+		return "a good password";
+	}
 
-    @Override
-    public String getManagerPassword()
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
+	@Override
+	public String getManagerUsername()
+	{
+		// this MUST match the section header '[myconnection]' in manager.conf
+        return "myconnection";
+	}
 
-    @Override
-    public String getManagerUsername()
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
+	@Override
+	public String getAsteriskIP()
+	{
+		// The IP address or FQDN of your Asterisk server.
+        return "2.2.2.2";
+	}
 
-    @Override
-    public String getAsteriskIP()
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Integer getMeetmeBaseAddress()
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public boolean getDisableBridge()
-    {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public String getManagementContext()
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public String getExtensionPark()
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public int getDialTimeout()
-    {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    @Override
-    public String getAutoAnswer()
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public String getAgiExtension()
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public boolean getCanDetectHangup()
-    {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public String getAgiHost()
-    {
-        // TODO Auto-generated method stub
-        return "127.0.0.1";
-    }
+	@Override
+	public String getAgiHost()
+	{
+		// The IP Address of FQDN of you asterisk-java application.
+		return "1.1.1.1";
+	}
 
 }
