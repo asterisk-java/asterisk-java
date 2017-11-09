@@ -24,9 +24,14 @@ Activities are new to asterisk-java 2.0. The aim of Activities is to provide a h
 
 Activities provide a simple and consistent method of interaction with Asterisk without having to worry about issues such as connection management and without having to understand the intricacies of Asterisk Manager Actions and Events.
 
+[Getting Started](https://github.com/asterisk-java/asterisk-java/wiki/Getting-Started)
 
+[Tutorial](https://github.com/asterisk-java/asterisk-java/wiki/Tutorial)
 
-See docs/tutorial.html for examples.
+[Activities](https://github.com/asterisk-java/asterisk-java/wiki/Activities)
+
+[Examples](https://github.com/asterisk-java/asterisk-java/wiki/Examples)
+
 
 GETTING ASTERISK-JAVA
 ---------------------
