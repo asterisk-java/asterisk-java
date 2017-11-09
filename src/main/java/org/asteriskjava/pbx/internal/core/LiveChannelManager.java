@@ -1,18 +1,26 @@
 package org.asteriskjava.pbx.internal.core;
 
+import java.io.IOException;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import org.asteriskjava.manager.TimeoutException;
 import org.asteriskjava.pbx.Channel;
 import org.asteriskjava.pbx.EndPoint;
 import org.asteriskjava.pbx.InvalidChannelName;
 import org.asteriskjava.pbx.ListenerPriority;
+import org.asteriskjava.pbx.asterisk.wrap.actions.StatusAction;
 import org.asteriskjava.pbx.asterisk.wrap.events.HangupEvent;
 import org.asteriskjava.pbx.asterisk.wrap.events.ManagerEvent;
 import org.asteriskjava.pbx.asterisk.wrap.events.MasqueradeEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.NewChannelEvent;
 import org.asteriskjava.pbx.asterisk.wrap.events.RenameEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.ResponseEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.ResponseEvents;
+import org.asteriskjava.pbx.asterisk.wrap.events.StatusEvent;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
@@ -63,6 +71,36 @@ public class LiveChannelManager implements FilteredManagerListener<ManagerEvent>
     public LiveChannelManager()
     {
         CoherentManagerConnection.getInstance().addListener(this);
+
+    }
+
+    /**
+     * Find all the channels that came into existence before startup. This can't
+     * be done during the Constructor call, because it requires calls back to
+     * AsteriskPBX which isn't finished constructing until after the Constructor
+     * returns.
+     */
+    void performPostCreationTasks()
+    {
+        StatusAction statusAction = new StatusAction();
+        try
+        {
+            ResponseEvents events = CoherentManagerConnection.sendEventGeneratingAction(statusAction, 1000);
+            for (ResponseEvent event : events.getEvents())
+            {
+                if (event instanceof StatusEvent)
+                {
+                    // do nothing. Creating the events will register the
+                    // channels, which is after all what we are trying to do.
+                }
+            }
+
+        }
+        catch (IllegalArgumentException | IllegalStateException | IOException | TimeoutException e)
+        {
+            logger.error(e, e);
+        }
+
     }
 
     public ChannelProxy getChannelByEndPoint(EndPoint endPoint)
@@ -195,6 +233,10 @@ public class LiveChannelManager implements FilteredManagerListener<ManagerEvent>
         required.add(MasqueradeEvent.class);
         required.add(RenameEvent.class);
         required.add(HangupEvent.class);
+
+        // add NewChannelEvent so all channels are added to the
+        // LiveChannelManager
+        required.add(NewChannelEvent.class);
 
         return required;
     }
@@ -365,6 +407,13 @@ public class LiveChannelManager implements FilteredManagerListener<ManagerEvent>
 
             }
         }
+    }
+
+    public List<ChannelProxy> getChannelList()
+    {
+        List<ChannelProxy> channels = new LinkedList<>();
+        channels.addAll(_liveChannels);
+        return channels;
     }
 
 }

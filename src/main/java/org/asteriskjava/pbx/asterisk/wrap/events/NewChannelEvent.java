@@ -1,6 +1,8 @@
 package org.asteriskjava.pbx.asterisk.wrap.events;
 
 import org.asteriskjava.pbx.InvalidChannelName;
+import org.asteriskjava.pbx.PBXFactory;
+import org.asteriskjava.pbx.internal.core.AsteriskPBX;
 
 public class NewChannelEvent extends AbstractChannelStateEvent
 {
@@ -16,6 +18,11 @@ public class NewChannelEvent extends AbstractChannelStateEvent
         this.accountCode = event.getAccountCode();
         this.context = event.getContext();
         this.exten = event.getExten();
+
+        final AsteriskPBX pbx = (AsteriskPBX) PBXFactory.getActivePBX();
+
+        pbx.internalRegisterChannel(event.getChannel(), event.getUniqueId());
+
     }
 
     public String getAccountCode()

@@ -112,6 +112,12 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
 
     }
 
+    @Override
+    public void performPostCreationTasks()
+    {
+        liveChannels.performPostCreationTasks();
+    }
+
     /**
      * Call this method when shutting down the PBX interface to allow it to
      * cleanup.
@@ -988,6 +994,11 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
                 return trunk;
             }
         };
+    }
+
+    public List<ChannelProxy> getChannelList()
+    {
+        return liveChannels.getChannelList();
     }
 
 }

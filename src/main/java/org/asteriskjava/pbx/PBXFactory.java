@@ -18,6 +18,7 @@ public class PBXFactory
     public static void init(AsteriskSettings newProfile)
     {
         profile.set(newProfile);
+        getActivePBX().performPostCreationTasks();
 
     }
 

@@ -280,4 +280,6 @@ public interface PBX
 
     public Trunk buildTrunk(String string);
 
+    public void performPostCreationTasks();
+
 }

@@ -216,11 +216,11 @@ public class SplitActivityImpl extends ActivityHelper<SplitActivity> implements 
                     ctr += 100.0 / 1000.0;
                     if (!agi1.hasCallReachedAgi())
                     {
-                        logger.error("Waiting on (agi1) " + channel1);
+                        logger.info("Waiting on (agi1) " + channel1);
                     }
                     if (!agi2.hasCallReachedAgi())
                     {
-                        logger.error("Waiting on (agi2) " + channel2);
+                        logger.info("Waiting on (agi2) " + channel2);
                     }
                 }
                 ret = agi1.hasCallReachedAgi() && agi2.hasCallReachedAgi();
