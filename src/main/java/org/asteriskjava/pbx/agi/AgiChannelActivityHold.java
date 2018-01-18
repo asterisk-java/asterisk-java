@@ -38,6 +38,10 @@ public class AgiChannelActivityHold implements AgiChannelActivityAction
                 {
                     channel.stopMusicOnHold();
                 }
+                catch (AgiHangupException e)
+                {
+                    logger.info("Channel hungup " + channel.getName());
+                }
                 catch (Exception e)
                 {
                     logger.warn(e);
