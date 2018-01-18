@@ -99,11 +99,7 @@ public class DialLocalToAgiActivity extends EventListenerBaseClass implements Ru
             callback.progress(this, ActivityStatusEnum.SUCCESS, ActivityStatusEnum.SUCCESS.getDefaultMessage());
 
         }
-        catch (IllegalArgumentException | IllegalStateException | IOException | TimeoutException e)
-        {
-            logger.error(e, e);
-        }
-        catch (InterruptedException e)
+        catch (Exception e)
         {
             logger.error(e, e);
         }
