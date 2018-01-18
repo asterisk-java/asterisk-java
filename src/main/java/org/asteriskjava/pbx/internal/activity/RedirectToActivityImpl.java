@@ -181,7 +181,7 @@ public class RedirectToActivityImpl extends ActivityHelper<RedirectToActivity> i
                     ctr += 100.0 / 1000.0;
                     if (!agi1.hasCallReachedAgi())
                     {
-                        logger.error("Waiting on (agi1) " + channel1);
+                        logger.warn("Waiting on (agi1) " + channel1);
                     }
 
                 }
