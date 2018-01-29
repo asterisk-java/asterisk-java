@@ -947,9 +947,16 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
     public boolean checkDialplanExists(AsteriskSettings profile)
             throws IllegalArgumentException, IllegalStateException, IOException, TimeoutException
     {
-        String ext = "show dialplan " + profile.getManagementContext();
+        String command;
 
-        CommandAction action = new CommandAction(ext);
+        if (getVersion().isAtLeast(AsteriskVersion.ASTERISK_1_6)) {
+            // TODO: Use ShowDialplanAction instead of CommandAction?
+            command = "dialplan show " + profile.getManagementContext();
+        } else {
+            command = "show dialplan " + profile.getManagementContext();
+        }
+
+        CommandAction action = new CommandAction(command);
         CommandResponse response = (CommandResponse) sendAction(action, 30000);
 
         boolean exists = false;
