@@ -99,7 +99,7 @@ public class AsteriskVersion implements Comparable<AsteriskVersion>, Serializabl
     /**
      * Represents the Asterisk 15 series.
      *
-     * @since 2.0.3
+     * @since 2.1.0
      */
     public static final AsteriskVersion ASTERISK_15 = new AsteriskVersion(1500, "Asterisk 15");
 
