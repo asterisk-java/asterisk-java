@@ -22,9 +22,9 @@ import org.asteriskjava.util.LogFactory;
  */
 class BridgeState
 {
-	private final Log logger = LogFactory.getLog(getClass());
+    private final Log logger = LogFactory.getLog(getClass());
 
-	private static final BridgeEnterEventComparator BRIDGE_ENTER_EVENT_COMPARATOR = new BridgeEnterEventComparator();
+    private static final BridgeEnterEventComparator BRIDGE_ENTER_EVENT_COMPARATOR = new BridgeEnterEventComparator();
 
     private final Map<String, BridgeEnterEvent> members = new HashMap<>();
 
@@ -103,22 +103,22 @@ class BridgeState
                 remaining);
     }
 
-	private BridgeEvent buildBridgeEvent(String bridgeState, List<BridgeEnterEvent> members) {
-		Collections.sort(members, BRIDGE_ENTER_EVENT_COMPARATOR);
+    private BridgeEvent buildBridgeEvent(String bridgeState, List<BridgeEnterEvent> members) {
+        Collections.sort(members, BRIDGE_ENTER_EVENT_COMPARATOR);
 
-		BridgeEvent bridgeEvent = new BridgeEvent(this);
+        BridgeEvent bridgeEvent = new BridgeEvent(this);
 
-		bridgeEvent.setCallerId1(members.get(0).getCallerIdNum());
-		bridgeEvent.setUniqueId1(members.get(0).getUniqueId());
-		bridgeEvent.setChannel1(members.get(0).getChannel());
+        bridgeEvent.setCallerId1(members.get(0).getCallerIdNum());
+        bridgeEvent.setUniqueId1(members.get(0).getUniqueId());
+        bridgeEvent.setChannel1(members.get(0).getChannel());
 
-		bridgeEvent.setCallerId2(members.get(1).getCallerIdNum());
-		bridgeEvent.setUniqueId2(members.get(1).getUniqueId());
-		bridgeEvent.setChannel2(members.get(1).getChannel());
+        bridgeEvent.setCallerId2(members.get(1).getCallerIdNum());
+        bridgeEvent.setUniqueId2(members.get(1).getUniqueId());
+        bridgeEvent.setChannel2(members.get(1).getChannel());
 
-		bridgeEvent.setBridgeState(bridgeState);
-		bridgeEvent.setDateReceived(new Date());
+        bridgeEvent.setBridgeState(bridgeState);
+        bridgeEvent.setDateReceived(new Date());
 
-		return bridgeEvent;
-	}
+        return bridgeEvent;
+    }
 }
