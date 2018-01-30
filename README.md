@@ -40,19 +40,20 @@ Asterisk-Java is available from [here](https://github.com/asterisk-java/asterisk
 
 Maven Dependency
 ----------------
-Asterisk 1.0
+Asterisk-Java 2.0
 
 	<dependency>
-    		<groupId>org.asteriskjava</groupId>
-    		<artifactId>asterisk-java</artifactId>
-    		<version>1.0.0-final</version>
+	  <groupId>org.asteriskjava</groupId>
+	  <artifactId>asterisk-java</artifactId>
+	  <version>2.0.2</version>
 	</dependency>
 
-Asterisk 2.0
+Asterisk-Java 1.0
+
 	<dependency>
-    		<groupId>org.asteriskjava</groupId>
-    		<artifactId>asterisk-java</artifactId>
-    		<version>2.0.0-final</version>
+	  <groupId>org.asteriskjava</groupId>
+	  <artifactId>asterisk-java</artifactId>
+	  <version>1.0.0-final</version>
 	</dependency>
 
 INSTALLATION FROM SOURCE
