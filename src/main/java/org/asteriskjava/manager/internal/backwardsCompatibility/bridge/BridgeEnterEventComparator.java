@@ -24,14 +24,13 @@ import java.util.regex.Pattern;
 
 public class BridgeEnterEventComparator implements Comparator<BridgeEnterEvent>
 {
-    private static final String UNIQUE_ID_PATTERN = "([0-9]+)\\.([0-9]+)$";
+    private static final Pattern UNIQUE_ID_PATTERN = Pattern.compile("([0-9]+)\\.([0-9]+)$");
 
     @Override
     public int compare(BridgeEnterEvent o1, BridgeEnterEvent o2)
     {
-        Pattern uniqueIdPattern = Pattern.compile(UNIQUE_ID_PATTERN);
-        Matcher uniqueId1Matcher = uniqueIdPattern.matcher(o1.getUniqueId());
-        Matcher uniqueId2Matcher = uniqueIdPattern.matcher(o2.getUniqueId());
+        Matcher uniqueId1Matcher = UNIQUE_ID_PATTERN.matcher(o1.getUniqueId());
+        Matcher uniqueId2Matcher = UNIQUE_ID_PATTERN.matcher(o2.getUniqueId());
 
         boolean find1 = uniqueId1Matcher.find();
         boolean find2 = uniqueId2Matcher.find();
