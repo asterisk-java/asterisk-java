@@ -39,7 +39,7 @@ public interface Log
 
     void error(Object obj, Throwable exception);
 
-    public boolean isDebugEnabled();
+    boolean isDebugEnabled();
 
     void debug(Object e, Throwable e2);
 }

@@ -88,12 +88,12 @@ public enum HangupCause
     AST_CAUSE_NOTDEFINED(0),
     AST_CAUSE_NOSUCHDRIVER(AST_CAUSE_CHAN_NOT_IMPLEMENTED);
 
-    private HangupCause(int code)
+    HangupCause(int code)
     {
         this.code = code;
     }
 
-    private HangupCause(HangupCause cause)
+    HangupCause(HangupCause cause)
     {
         this.code = cause.code;
     }

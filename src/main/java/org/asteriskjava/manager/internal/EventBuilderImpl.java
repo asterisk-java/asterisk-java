@@ -273,7 +273,7 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
 
         try
         {
-            defaultConstructor = clazz.getConstructor(new Class[]{Object.class});
+            defaultConstructor = clazz.getConstructor(Object.class);
         }
         catch (NoSuchMethodException ex)
         {
@@ -390,7 +390,7 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
 
         try
         {
-            constructor = eventClass.getConstructor(new Class[]{Object.class});
+            constructor = eventClass.getConstructor(Object.class);
         }
         catch (NoSuchMethodException ex)
         {

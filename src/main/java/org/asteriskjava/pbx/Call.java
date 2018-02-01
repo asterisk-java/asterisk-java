@@ -16,7 +16,7 @@ public interface Call
      * @author bsutton
      */
 
-    public enum OperandChannel
+    enum OperandChannel
     {
         /**
          * this party received (did not originate) the call
@@ -87,7 +87,7 @@ public interface Call
      * 
      * @return
      */
-    public Channel getLocalParty();
+    Channel getLocalParty();
 
     /**
      * Returns true of the Call can be split into two (or more) separate calls.

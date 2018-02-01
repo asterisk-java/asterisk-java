@@ -18,7 +18,7 @@ public interface FilteredManagerListener<T>
 	 * 
 	 * @return a unique name for the listener.
 	 */
-	abstract String getName();
+	String getName();
 
 	/**
 	 * Called whenever the listener is first added and any time any listener is
@@ -26,7 +26,7 @@ public interface FilteredManagerListener<T>
 	 * 
 	 * @return list of required events.
 	 */
-	abstract public Set<Class<? extends ManagerEvent>> requiredEvents();
+	Set<Class<? extends ManagerEvent>> requiredEvents();
 
 	/**
 	 * Called for each manager event that the connection receives for which the
@@ -34,7 +34,7 @@ public interface FilteredManagerListener<T>
 	 * 
 	 * @param event
 	 */
-	abstract void onManagerEvent(T event);
+	void onManagerEvent(T event);
 
 	/**
 	 * Set the listeners priority. Higher priority listeners have events
@@ -42,6 +42,5 @@ public interface FilteredManagerListener<T>
 	 * 
 	 * @return
 	 */
-	abstract ListenerPriority getPriority();
-
+	ListenerPriority getPriority();
 }

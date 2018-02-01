@@ -35,18 +35,17 @@ public interface AsteriskAgent extends LiveObject
     /**
      * @return the name
      */
-    public String getName();
+    String getName();
 
     /**
      * @return the agentId
      */
-    public String getAgentId();
+    String getAgentId();
 
     /**
      * Returns the state of this agent.
      *
      * @return the state the state of this agent.
      */
-    public AgentState getState();
-
+    AgentState getState();
 }

@@ -69,7 +69,7 @@ public interface AsteriskServer
      * @throws ManagerCommunicationException if the originate action cannot be
      *             sent to Asterisk
      */
-    public AsteriskChannel originate(OriginateAction originateAction)
+    AsteriskChannel originate(OriginateAction originateAction)
             throws ManagerCommunicationException, NoSuchChannelException;
 
     /**
@@ -81,7 +81,7 @@ public interface AsteriskServer
      * @throws ManagerCommunicationException if the originate action cannot be
      *             sent to Asterisk
      */
-    public void originateAsync(OriginateAction originateAction, OriginateCallback cb) throws ManagerCommunicationException;
+    void originateAsync(OriginateAction originateAction, OriginateCallback cb) throws ManagerCommunicationException;
 
     /**
      * Generates an outgoing channel to a dialplan entry (extension, context,
@@ -513,14 +513,14 @@ public interface AsteriskServer
      * these cases it can be critical that you have the same name otherwise your
      * state information will be out of date.
      */
-    public void addChainListener(ManagerEventListener chainListener);
+    void addChainListener(ManagerEventListener chainListener);
 
     /**
      * remove the chain listener.
      * 
      * @param chainListener
      */
-    public void removeChainListener(ManagerEventListener chainListener);
+    void removeChainListener(ManagerEventListener chainListener);
 
     /**
      * Closes the connection to this server.
@@ -541,7 +541,7 @@ public interface AsteriskServer
      * @param queueName Name of the queue to retrieve
      * @return
      */
-    public AsteriskQueue getQueueByName(String queueName);
+    AsteriskQueue getQueueByName(String queueName);
 
     /**
      * List of Queues Objects updated after certain date
@@ -550,7 +550,7 @@ public interface AsteriskServer
      * @param date
      * @return
      */
-    public List<AsteriskQueue> getQueuesUpdatedAfter(Date date);
+    List<AsteriskQueue> getQueuesUpdatedAfter(Date date);
 
     /**
      * every time we get an event of a queue we reload the information about it
@@ -558,7 +558,7 @@ public interface AsteriskServer
      * 
      * @author itaqua
      */
-    public void forceQueuesMonitor(boolean force);
+    void forceQueuesMonitor(boolean force);
 
     /**
      * Check if the Queue Information is forced
@@ -566,5 +566,5 @@ public interface AsteriskServer
      * @author itaqua
      * @return
      */
-    public boolean isQueuesMonitorForced();
+    boolean isQueuesMonitorForced();
 }

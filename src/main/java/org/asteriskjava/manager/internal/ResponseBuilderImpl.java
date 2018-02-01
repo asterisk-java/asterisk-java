@@ -111,7 +111,7 @@ class ResponseBuilderImpl extends AbstractBuilder implements ResponseBuilder
 
         // make the map of all attributes available to the response
         // but clone it as it is reused by the ManagerReader
-        response.setAttributes(new HashMap<String, Object>(attributes));
+        response.setAttributes(new HashMap<>(attributes));
 
         return response;
     }

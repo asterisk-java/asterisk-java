@@ -579,10 +579,7 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
         List<AsteriskQueueMember> listOfMembers = new ArrayList<>(members.size());
         synchronized (members)
         {
-            for (AsteriskQueueMemberImpl asteriskQueueMember : members.values())
-            {
-                listOfMembers.add(asteriskQueueMember);
-            }
+            listOfMembers.addAll(members.values());
         }
         return listOfMembers;
     }

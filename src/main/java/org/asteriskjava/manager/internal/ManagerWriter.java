@@ -41,7 +41,7 @@ public interface ManagerWriter
      * @param targetVersion the version of the target Asterisk server.
      * @since 0.2
      */
-    public void setTargetVersion(AsteriskVersion targetVersion);
+    void setTargetVersion(AsteriskVersion targetVersion);
 
     /**
      * Sets the socket to use for writing to Asterisk.

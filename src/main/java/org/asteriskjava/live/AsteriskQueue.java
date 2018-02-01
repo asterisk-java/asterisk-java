@@ -150,28 +150,28 @@ public interface AsteriskQueue
      * @return the ratio of calls answered within the specified service level per total completed
      *         calls (in percent).
      */
-	public Double getServiceLevelPerf();
+	Double getServiceLevelPerf();
 
 	/**
      * Returns the number of completed calls.
      * @author itaqua
      * @return the number of completed calls.
      */
-	public Integer getCompleted();
+	Integer getCompleted();
 
 	/**
      * Returns the current average talk time for this queue based on an exponential average.
      *
      * @return the current average talk time for this queue.
      */
-	public Integer getTalkTime();
+	Integer getTalkTime();
 
 	/**
      * Returns the current average holdtime for this queue (in seconds).
      * @author itaqua
      * @return the current average holdtime for this queue (in seconds).
      */
-	public Integer getHoldTime();
+	Integer getHoldTime();
 
 	/**
      * Returns the number of calls currently waiting in the queue.
@@ -180,7 +180,7 @@ public interface AsteriskQueue
      * @see getWaiting()
      * @return the number of calls currently waiting in the queue.
      */
-	public Integer getCalls();
+	Integer getCalls();
 
 	/**
      * Returns the number of calls currently waiting in the queue.
@@ -188,7 +188,7 @@ public interface AsteriskQueue
      * @author itaqua
      * @return the number of calls currently waiting in the queue.
      */
-	public Integer getWaiting();
+	Integer getWaiting();
 
 	/**
      * timestamp (miliseconds) of last update of this object

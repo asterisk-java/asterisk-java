@@ -840,7 +840,7 @@ public interface AgiChannel
      * @param priority the priority of the called extension.
      * @since 1.0.0
      */
-    public void gosub(String context, String extension, String priority) throws AgiException;
+    void gosub(String context, String extension, String priority) throws AgiException;
 
     /**
      * Calls a subroutine in the dialplan
@@ -856,7 +856,7 @@ public interface AgiChannel
      *            of ${ARG1}, ${ARG2}, etc in the subroutine body.
      * @since 1.0.0
      */
-    public void gosub(String context, String extension, String priority, String... arguments) throws AgiException;
+    void gosub(String context, String extension, String priority, String... arguments) throws AgiException;
 
     /**
      * invoke the dial command
@@ -866,7 +866,7 @@ public interface AgiChannel
      * @param options
      * @throws AgiException
      */
-    public void dial(String target, int timeout, String options) throws AgiException;
+    void dial(String target, int timeout, String options) throws AgiException;
 
     /**
      * invoke the bridge command

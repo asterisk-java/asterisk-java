@@ -187,7 +187,7 @@ public interface ManagerConnection
      * @see java.net.Socket#connect(java.net.SocketAddress, int)
      * @since 0.2
      */
-    public void setSocketTimeout(int socketTimeout);
+    void setSocketTimeout(int socketTimeout);
 
     /**
      * Connection is dropped (and restarted) if it stales on read longer than

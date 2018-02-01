@@ -44,7 +44,7 @@ public class CallImpl implements ChannelHangupListener, Call
      */
     public enum TransferType
     {
-        NONE, ASSISTED, BLIND;
+        NONE, ASSISTED, BLIND
     }
 
     /**

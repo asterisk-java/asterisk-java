@@ -13,7 +13,7 @@ public enum MixMonitorDirection
 
     String stateName;
 
-    private MixMonitorDirection(String name)
+    MixMonitorDirection(String name)
     {
         this.stateName = name;
     }

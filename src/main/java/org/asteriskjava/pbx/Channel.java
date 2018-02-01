@@ -165,7 +165,7 @@ public interface Channel
 
     AgiChannelActivityAction getCurrentActivityAction();
 
-    public void setCurrentActivityAction(AgiChannelActivityAction action);
+    void setCurrentActivityAction(AgiChannelActivityAction action);
 
     void setIsInAgi(boolean b);
 

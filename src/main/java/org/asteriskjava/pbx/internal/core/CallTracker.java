@@ -58,8 +58,7 @@ public class CallTracker implements ChannelHangupListener
     {
         synchronized (this._associatedChannels)
         {
-            for (Channel channel : rhs._associatedChannels)
-                this._associatedChannels.add(channel);
+            this._associatedChannels.addAll(rhs._associatedChannels);
             // not certain this is necessary but lets just tidy up a bit.
             rhs._associatedChannels.clear();
         }
