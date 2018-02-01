@@ -33,7 +33,7 @@ public enum CallDirection
 
     private final int dbValue;
 
-    private CallDirection(final int dbValue)
+    CallDirection(final int dbValue)
     {
         this.dbValue = dbValue;
     }
