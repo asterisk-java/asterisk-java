@@ -54,15 +54,6 @@ abstract class AbstractBuilder
                 setterName = "clazz";
             }
 
-            /*
-             * The class property needs to be renamed. It is used in
-             * MusicOnHoldEvent.
-             */
-            if ("class".equals(setterName))
-            {
-                setterName = "classname";
-            }
-
             setter = setters.get(setterName);
 
             if (setter == null && !setterName.endsWith("s")) // no exact match
