@@ -55,7 +55,7 @@ public class Connector
      */
     private void checkIfAsteriskRunning(AsteriskSettings asteriskSettings) throws UnknownHostException, IOException
     {
-        try (Socket socket = new Socket();)
+        try (Socket socket = new Socket())
         {
             socket.setSoTimeout(2000);
 
