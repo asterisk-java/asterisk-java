@@ -104,14 +104,14 @@ abstract class AbstractBuilder
 
                     value = null;
                 }
-                if(value instanceof List){
-                	StringBuffer strBuff = new StringBuffer();
-                	for(String tmp : (List<String>)value){
-                		if(tmp != null && tmp.length() != 0){
-                			strBuff.append(tmp + "\n");
-                		}
-                	}
-                	value = strBuff.toString();
+                if (value instanceof List) {
+                    StringBuilder strBuff = new StringBuilder();
+                    for (String tmp : (List<String>) value) {
+                        if (tmp != null && tmp.length() != 0) {
+                            strBuff.append(tmp).append('\n');
+                        }
+                    }
+                    value = strBuff.toString();
                 }
             }
             else if (dataType.isAssignableFrom(Map.class))
