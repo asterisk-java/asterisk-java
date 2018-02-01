@@ -105,7 +105,7 @@ public interface AsteriskQueueMember extends LiveObject
      *         if the added member is a static queue member.
      * @since 1.0.0
      */
-    public String getMembership();
+    String getMembership();
 
     /**
      * Convenience method that checks whether this member has been statically
@@ -115,7 +115,7 @@ public interface AsteriskQueueMember extends LiveObject
      *         <code>queues.conf</code>, <code>false</code> otherwise.
      * @since 1.0.0
      */
-    public boolean isStatic();
+    boolean isStatic();
 
     /**
      * Convenience method that checks whether this member has been dynamically
@@ -125,7 +125,7 @@ public interface AsteriskQueueMember extends LiveObject
      *         the QueueAdd command, <code>false</code> otherwise.
      * @since 1.0.0
      */
-    public boolean isDynamic();
+    boolean isDynamic();
 
     /**
      * Returns the penalty of this member.
@@ -152,12 +152,12 @@ public interface AsteriskQueueMember extends LiveObject
      * @author itaqua
      * @return
      */
-	public abstract Long getLastCall();
+	Long getLastCall();
 
     /**
      * total calls taken
      * @author itaqua
      * @return
      */
-	public abstract Integer getCallsTaken();
+	Integer getCallsTaken();
 }

@@ -19,5 +19,5 @@ import java.lang.annotation.Target;
 @Retention(RUNTIME)
 public @interface AsteriskMapping
 {
-    public abstract String value();
+    String value();
 }

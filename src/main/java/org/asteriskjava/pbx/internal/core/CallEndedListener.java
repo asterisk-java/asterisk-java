@@ -10,6 +10,5 @@ package org.asteriskjava.pbx.internal.core;
  */
 public interface CallEndedListener
 {
-	public void callEnded(CallTracker listener);
-
+	void callEnded(CallTracker listener);
 }

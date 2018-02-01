@@ -11,11 +11,11 @@ package org.asteriskjava.pbx;
  */
 public interface EndPoint extends Comparable<EndPoint>
 {
-	public boolean isSame(EndPoint rhs);
+	boolean isSame(EndPoint rhs);
 
-	public boolean isLocal();
+	boolean isLocal();
 
-	public boolean isSIP();
+	boolean isSIP();
 
 	/**
 	 * Returns the fully qualified name of the EndPoint including the tech. e.g.
@@ -23,7 +23,7 @@ public interface EndPoint extends Comparable<EndPoint>
 	 * 
 	 * @return
 	 */
-	public String getFullyQualifiedName();
+	String getFullyQualifiedName();
 
 	/**
 	 * Returns the simple name of the EndPoint sans the tech. e.g. SIP/100 would
@@ -31,7 +31,7 @@ public interface EndPoint extends Comparable<EndPoint>
 	 * 
 	 * @return
 	 */
-	public String getSimpleName();
+	String getSimpleName();
 
 	/**
 	 * Returns the simple name of a SIP EndPoint sans the tech. e.g. SIP/100
@@ -41,23 +41,23 @@ public interface EndPoint extends Comparable<EndPoint>
 	 * 
 	 * @return
 	 */
-	public String getSIPSimpleName();
+	String getSIPSimpleName();
 
 	/**
 	 * Returns true if the tech is not know for this end point.
 	 * 
 	 * @return
 	 */
-	public boolean isUnknown();
+	boolean isUnknown();
 
 	/**
 	 * Returns the Tech that is used to reach this endpoint.
 	 * 
 	 * @return
 	 */
-	public TechType getTech();
+	TechType getTech();
 
-	public boolean isEmpty();
+	boolean isEmpty();
 
 	/**
 	 * Sets the tech on the end point to the specified tech.
