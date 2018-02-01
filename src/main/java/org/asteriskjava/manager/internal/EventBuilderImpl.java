@@ -137,6 +137,8 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
         registerEventClass(LinkEvent.class);
         registerEventClass(ListDialplanEvent.class);
         registerEventClass(LocalBridgeEvent.class);
+        registerEventClass(LocalOptimizationBeginEvent.class);
+        registerEventClass(LocalOptimizationEndEvent.class);
         registerEventClass(LogChannelEvent.class);
         registerEventClass(NewConnectedLineEvent.class);
         registerEventClass(MasqueradeEvent.class);
