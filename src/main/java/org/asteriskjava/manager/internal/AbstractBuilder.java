@@ -134,7 +134,7 @@ abstract class AbstractBuilder
             {
                 try
                 {
-                    Constructor< ? > constructor = dataType.getConstructor(new Class[]{String.class});
+                    Constructor< ? > constructor = dataType.getConstructor(String.class);
                     value = constructor.newInstance(entry.getValue());
                 }
                 catch (Exception e)
