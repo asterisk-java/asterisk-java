@@ -67,7 +67,7 @@ public class ConfigFileReader
             // ignored
         }
 
-        result = new ConfigFileImpl(configfile, new TreeMap<String, Category>(categories));
+        result = new ConfigFileImpl(configfile, new TreeMap<>(categories));
 
         return result;
     }
