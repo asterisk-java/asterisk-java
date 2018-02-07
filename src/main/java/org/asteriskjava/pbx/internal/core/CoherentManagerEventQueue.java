@@ -1,5 +1,6 @@
 package org.asteriskjava.pbx.internal.core;
 
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
@@ -263,10 +264,35 @@ class CoherentManagerEventQueue implements ManagerEventListener, Runnable
             this.listeners.add(new Listener(listener));
             synchronized (this.globalEvents)
             {
-                this.globalEvents.addAll(listener.requiredEvents());
+                Collection<Class< ? extends ManagerEvent>> expandEvents = expandEvents(listener.requiredEvents());
+                this.globalEvents.addAll(expandEvents);
             }
         }
-        logger.debug("listener  added"); //$NON-NLS-1$
+        logger.debug("listener  added " + listener);
+    }
+
+    /**
+     * in order to get Bridge Events, we must subscribe to Link and Unlink
+     * events for asterisk 1.4, so we automatically add them if the Bridge Event
+     * is required
+     * 
+     * @param events
+     * @return
+     */
+    Collection<Class< ? extends ManagerEvent>> expandEvents(Collection<Class< ? extends ManagerEvent>> events)
+    {
+        Collection<Class< ? extends ManagerEvent>> requiredEvents = new HashSet<>();
+        for (Class< ? extends ManagerEvent> event : events)
+        {
+            requiredEvents.add(event);
+            if (event.equals(BridgeEvent.class))
+            {
+                requiredEvents.add(UnlinkEvent.class);
+                requiredEvents.add(LinkEvent.class);
+            }
+        }
+
+        return requiredEvents;
     }
 
     public void removeListener(final FilteredManagerListener<ManagerEvent> melf)
@@ -289,7 +315,7 @@ class CoherentManagerEventQueue implements ManagerEventListener, Runnable
                             this.globalEvents.clear();
                             for (Listener readdContainer : this.listeners)
                             {
-                                this.globalEvents.addAll(readdContainer._listener.requiredEvents());
+                                this.globalEvents.addAll(expandEvents(readdContainer._listener.requiredEvents()));
                             }
                         }
                         break;
