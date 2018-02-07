@@ -3,6 +3,8 @@ package org.asteriskjava.pbx.internal.activity;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import org.asteriskjava.pbx.ActivityCallback;
 import org.asteriskjava.pbx.AsteriskSettings;
@@ -16,6 +18,7 @@ import org.asteriskjava.pbx.PBXFactory;
 import org.asteriskjava.pbx.activities.SplitActivity;
 import org.asteriskjava.pbx.agi.AgiChannelActivityHold;
 import org.asteriskjava.pbx.asterisk.wrap.actions.RedirectAction;
+import org.asteriskjava.pbx.asterisk.wrap.events.BridgeEvent;
 import org.asteriskjava.pbx.asterisk.wrap.events.ManagerEvent;
 import org.asteriskjava.pbx.internal.core.AsteriskPBX;
 import org.asteriskjava.pbx.internal.core.ChannelProxy;
@@ -102,14 +105,27 @@ public class SplitActivityImpl extends ActivityHelper<SplitActivity> implements 
     {
         HashSet<Class< ? extends ManagerEvent>> required = new HashSet<>();
 
-        // No events required.
+        required.add(BridgeEvent.class);
         return required;
     }
+
+    final CountDownLatch unlinkRecieved = new CountDownLatch(1);
 
     @Override
     synchronized public void onManagerEvent(final ManagerEvent event)
     {
-        // NOOP
+
+        if (event instanceof BridgeEvent)
+        {
+            BridgeEvent link = (BridgeEvent) event;
+            if (link.isUnlink())
+            {
+                if (link.getChannel1().isSame(channel1) || link.getChannel1().isSame(channel2))
+                {
+                    unlinkRecieved.countDown();
+                }
+            }
+        }
     }
 
     @Override
@@ -209,6 +225,28 @@ public class SplitActivityImpl extends ActivityHelper<SplitActivity> implements 
 
                 // final ManagerResponse response =
                 pbx.sendAction(redirect, 1000);
+
+                // wait for channels to unbridge
+                if (!unlinkRecieved.await(5000, TimeUnit.MILLISECONDS))
+                {
+                    logger.error("There was no unlink event");
+                }
+                else
+                {
+                    logger.warn("Channels are unlinked, now waiting for Quiescent");
+                }
+
+                channels.clear();
+
+                channels.add(channel1);
+                channels.add(channel2);
+                if (!pbx.waitForChannelsToQuiescent(channels, 3000))
+                {
+                    logger.error(callSite, callSite);
+                    throw new PBXException("Channel: " + channel1 + " or " + channel2
+                            + " cannot be split as they are still in transition.");
+                }
+
                 double ctr = 0;
                 while ((!agi1.hasCallReachedAgi() || !agi2.hasCallReachedAgi()) && ctr < 10)
                 {
