@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.asteriskjava.pbx.ActivityCallback;
 import org.asteriskjava.pbx.AsteriskSettings;
@@ -18,8 +19,8 @@ import org.asteriskjava.pbx.PBXFactory;
 import org.asteriskjava.pbx.activities.SplitActivity;
 import org.asteriskjava.pbx.agi.AgiChannelActivityHold;
 import org.asteriskjava.pbx.asterisk.wrap.actions.RedirectAction;
-import org.asteriskjava.pbx.asterisk.wrap.events.BridgeEvent;
 import org.asteriskjava.pbx.asterisk.wrap.events.ManagerEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.RenameEvent;
 import org.asteriskjava.pbx.internal.core.AsteriskPBX;
 import org.asteriskjava.pbx.internal.core.ChannelProxy;
 import org.asteriskjava.util.Log;
@@ -59,6 +60,7 @@ public class SplitActivityImpl extends ActivityHelper<SplitActivity> implements 
     {
         super("SplitActivity", listener);
 
+        renameEventReceived.set(new CountDownLatch(1));
         this._callToSplit = callToSplit;
 
         List<Channel> tmp = callToSplit.getChannels();
@@ -105,25 +107,21 @@ public class SplitActivityImpl extends ActivityHelper<SplitActivity> implements 
     {
         HashSet<Class< ? extends ManagerEvent>> required = new HashSet<>();
 
-        required.add(BridgeEvent.class);
+        required.add(RenameEvent.class);
         return required;
     }
 
-    final CountDownLatch unlinkRecieved = new CountDownLatch(1);
+    final AtomicReference<CountDownLatch> renameEventReceived = new AtomicReference<>();
 
     @Override
     synchronized public void onManagerEvent(final ManagerEvent event)
     {
-
-        if (event instanceof BridgeEvent)
+        if (event instanceof RenameEvent)
         {
-            BridgeEvent link = (BridgeEvent) event;
-            if (link.isUnlink())
+            RenameEvent rename = (RenameEvent) event;
+            if (rename.getChannel().isSame(channel1) || rename.getChannel().isSame(channel2))
             {
-                if (link.getChannel1().isSame(channel1) || link.getChannel1().isSame(channel2))
-                {
-                    unlinkRecieved.countDown();
-                }
+                renameEventReceived.get().countDown();
             }
         }
     }
@@ -177,8 +175,7 @@ public class SplitActivityImpl extends ActivityHelper<SplitActivity> implements 
 
         if (channel1 == channel2)
         {
-            throw new NullPointerException(
-                    "channel1 is the same as channel2. if I let this happen, asterisk will core dump :)");
+            throw new PBXException("channel1 is the same as channel2. if I let this happen, asterisk will core dump :)");
         }
 
         List<Channel> channels = new LinkedList<>();
@@ -223,17 +220,19 @@ public class SplitActivityImpl extends ActivityHelper<SplitActivity> implements 
             try
             {
 
+                renameEventReceived.set(new CountDownLatch(1));
+
                 // final ManagerResponse response =
                 pbx.sendAction(redirect, 1000);
 
                 // wait for channels to unbridge
-                if (!unlinkRecieved.await(5000, TimeUnit.MILLISECONDS))
+                if (!renameEventReceived.get().await(2000, TimeUnit.MILLISECONDS))
                 {
-                    logger.error("There was no unlink event");
+                    logger.error("There was no rename event");
                 }
                 else
                 {
-                    logger.warn("Channels are unlinked, now waiting for Quiescent");
+                    logger.warn("Channels are renaming, now waiting for Quiescent");
                 }
 
                 channels.clear();
