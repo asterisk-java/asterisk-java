@@ -56,7 +56,6 @@ public class DialLocalToAgiActivity extends EventListenerBaseClass implements Ru
         this.callback = callback;
         this.channelVarsToSet = channelVarsToSet;
 
-        this.startListener(PBXFactory.getActivePBX());
         thread = new Thread(this, "Dial " + from + " to AGI");
         thread.start();
     }
@@ -94,6 +93,8 @@ public class DialLocalToAgiActivity extends EventListenerBaseClass implements Ru
 
         try
         {
+            this.startListener(PBXFactory.getActivePBX());
+
             pbx.sendAction(originate, 30000);
             latch.await(30, TimeUnit.SECONDS);
             callback.progress(this, ActivityStatusEnum.SUCCESS, ActivityStatusEnum.SUCCESS.getDefaultMessage());
@@ -102,6 +103,10 @@ public class DialLocalToAgiActivity extends EventListenerBaseClass implements Ru
         catch (Exception e)
         {
             logger.error(e, e);
+        }
+        finally
+        {
+            this.close();
         }
 
     }
@@ -131,10 +136,6 @@ public class DialLocalToAgiActivity extends EventListenerBaseClass implements Ru
     @Override
     synchronized public void onManagerEvent(final ManagerEvent event)
     {
-        if (event instanceof HangupEvent)
-        {
-            this.close();
-        }
         if (event instanceof NewChannelEvent)
         {
             final NewChannelEvent newState = (NewChannelEvent) event;
