@@ -6,6 +6,9 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
@@ -210,6 +213,9 @@ class CoherentManagerEventQueue implements ManagerEventListener, Runnable
         }
     }
 
+    // TODO: make this multi threaded
+    private final ExecutorService executors = Executors.newFixedThreadPool(1);
+
     /**
      * Events are sent here from the CoherentManagerEventQueue after being
      * converted from a ManagerEvent to an ManagerEvent. This method is called
@@ -232,20 +238,70 @@ class CoherentManagerEventQueue implements ManagerEventListener, Runnable
             listenerCopy.addAll(this.listeners);
         }
 
-        for (final Listener filter : listenerCopy)
+        try
         {
-            if (filter.requiredEvents.contains(event.getClass()))
-            {
-                final LogTime time = new LogTime();
+            final LogTime totalTime = new LogTime();
 
-                filter._listener.onManagerEvent(event);
-                if (time.timeTaken() > 500)
+            CountDownLatch latch = new CountDownLatch(listenerCopy.size());
+
+            for (final Listener filter : listenerCopy)
+            {
+                if (filter.requiredEvents.contains(event.getClass()))
                 {
-                    logger.warn("ManagerListener :" + filter._listener.getName() //$NON-NLS-1$
-                            + " is taken too long to process event " + event + " time taken: " + time.timeTaken()); //$NON-NLS-1$ //$NON-NLS-2$
+                    dispatchEventOnThread(event, filter, latch);
+                }
+                else
+                {
+                    // this listener didn't want the event, so just decrease the
+                    // countdown
+                    latch.countDown();
                 }
             }
+
+            latch.await();
+
+            if (totalTime.timeTaken() > 500)
+            {
+                logger.warn("Too long to process event " + event + " time taken: " + totalTime.timeTaken()); //$NON-NLS-1$ //$NON-NLS-2$
+            }
         }
+        catch (InterruptedException e)
+        {
+            Thread.interrupted();
+        }
+    }
+
+    private void dispatchEventOnThread(final ManagerEvent event, final Listener filter, final CountDownLatch latch)
+    {
+        Runnable runner = new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                try
+                {
+                    final LogTime time = new LogTime();
+
+                    filter._listener.onManagerEvent(event);
+                    if (time.timeTaken() > 500)
+                    {
+                        logger.warn("ManagerListener :" + filter._listener.getName() //$NON-NLS-1$
+                                + " is taken too long to process event " + event + " time taken: " + time.timeTaken()); //$NON-NLS-1$ //$NON-NLS-2$
+                    }
+                }
+                catch (Exception e)
+                {
+                    logger.error(e, e);
+                }
+                finally
+                {
+                    latch.countDown();
+                }
+            }
+        };
+
+        executors.execute(runner);
+
     }
 
     /**
