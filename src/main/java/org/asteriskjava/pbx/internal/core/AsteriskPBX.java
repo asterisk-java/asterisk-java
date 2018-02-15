@@ -882,6 +882,8 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
 
         final DialToAgiActivityImpl dialer = new DialToAgiActivityImpl(endPoint, callerID, false, completion, null, action);
 
+        dialer.startActivity(false);
+
         completion.waitForCompletion(3, TimeUnit.MINUTES);
 
         final ActivityStatusEnum status;
@@ -898,6 +900,17 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
         iCallback.progress(dialer, status, status.getDefaultMessage());
 
         return dialer;
+    }
+
+    public DialToAgiWithAbortCallback dialToAgiWithAbort(EndPoint endPoint, CallerID callerID,
+            AgiChannelActivityAction action, ActivityCallback<DialToAgiActivity> iCallback)
+    {
+
+        final CompletionAdaptor<DialToAgiActivity> completion = new CompletionAdaptor<>();
+
+        final DialToAgiActivityImpl dialer = new DialToAgiActivityImpl(endPoint, callerID, false, completion, null, action);
+
+        return new DialToAgiWithAbortCallback(dialer, completion, iCallback);
     }
 
     /**
@@ -949,10 +962,13 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
     {
         String command;
 
-        if (getVersion().isAtLeast(AsteriskVersion.ASTERISK_1_6)) {
+        if (getVersion().isAtLeast(AsteriskVersion.ASTERISK_1_6))
+        {
             // TODO: Use ShowDialplanAction instead of CommandAction?
             command = "dialplan show " + profile.getManagementContext();
-        } else {
+        }
+        else
+        {
             command = "show dialplan " + profile.getManagementContext();
         }
 

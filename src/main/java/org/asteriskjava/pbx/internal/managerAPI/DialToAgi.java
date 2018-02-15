@@ -27,6 +27,8 @@ public class DialToAgi extends EventListenerBaseClass
 
     private volatile boolean hangupDetected = false;
 
+    private OriginateToExtension originator;
+
     public DialToAgi(final String descriptiveName)
     {
         super(descriptiveName);
@@ -58,6 +60,7 @@ public class DialToAgi extends EventListenerBaseClass
         try (final OriginateToExtension originate = new OriginateToExtension(listener))
         {
             this.startListener(PBXFactory.getActivePBX());
+            originator = originate;
 
             // First bring the operator's handset up and connect it to the
             // 'njr-dial' extension where they can
@@ -128,6 +131,11 @@ public class DialToAgi extends EventListenerBaseClass
     public ListenerPriority getPriority()
     {
         return ListenerPriority.NORMAL;
+    }
+
+    public void abort()
+    {
+        originator.abort("user abort");
     }
 
 }

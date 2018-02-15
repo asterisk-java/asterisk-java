@@ -44,6 +44,8 @@ public class DialToAgiActivityImpl extends ActivityHelper<DialToAgiActivity> imp
 
     private AgiChannelActivityAction action;
 
+    private DialToAgi originator;
+
     public DialToAgiActivityImpl(final EndPoint originating, final CallerID toCallerID, final boolean hideToCallerID,
             final ActivityCallback<DialToAgiActivity> listener, Map<String, String> channelVarsToSet,
             AgiChannelActivityAction action)
@@ -57,6 +59,10 @@ public class DialToAgiActivityImpl extends ActivityHelper<DialToAgiActivity> imp
         this.cancelledByOperator = false;
         this.channelVarsToSet = channelVarsToSet;
 
+    }
+
+    public void dial()
+    {
         this.startActivity(false);
     }
 
@@ -70,6 +76,8 @@ public class DialToAgiActivityImpl extends ActivityHelper<DialToAgiActivity> imp
             DialToAgiActivityImpl.logger.debug("**************************************************************************");
             DialToAgiActivityImpl.logger.info("***********                begin dial out to agi               ***********");
             DialToAgiActivityImpl.logger.debug("**************************************************************************");
+
+            originator = nr;
 
             final OriginateResult[] resultChannels = nr.dial(this, this._originating, this.action, this.toCallerID,
                     this.hideToCallerId, channelVarsToSet);
@@ -221,6 +229,11 @@ public class DialToAgiActivityImpl extends ActivityHelper<DialToAgiActivity> imp
     public void onManagerEvent(ManagerEvent event)
     {
         // NOOP
+    }
+
+    public void abort()
+    {
+        originator.abort();
     }
 
 }
