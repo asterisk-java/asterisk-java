@@ -62,7 +62,7 @@ public abstract class ActivityHelper<T extends Activity> implements Runnable, Ac
                 }
             };
         }
-        EventListenerBaseClass listener = new EventListenerBaseClass(activityName)
+        EventListenerBaseClass listener = new EventListenerBaseClass(activityName, PBXFactory.getActivePBX())
         {
 
             @Override
@@ -84,7 +84,7 @@ public abstract class ActivityHelper<T extends Activity> implements Runnable, Ac
                 return ActivityHelper.this.getPriority();
             }
         };
-        listener.startListener(PBXFactory.getActivePBX());
+        listener.startListener();
         return listener;
 
     }

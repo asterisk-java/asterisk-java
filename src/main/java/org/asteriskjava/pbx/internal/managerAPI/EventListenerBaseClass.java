@@ -1,7 +1,6 @@
 package org.asteriskjava.pbx.internal.managerAPI;
 
 import org.asteriskjava.pbx.PBX;
-import org.asteriskjava.pbx.PBXFactory;
 import org.asteriskjava.pbx.asterisk.wrap.events.ManagerEvent;
 import org.asteriskjava.pbx.internal.core.AsteriskPBX;
 import org.asteriskjava.pbx.internal.core.FilteredManagerListener;
@@ -14,10 +13,12 @@ public abstract class EventListenerBaseClass implements FilteredManagerListener<
 {
 
     private final String name;
+    private final PBX pbx;
 
-    protected EventListenerBaseClass(final String descriptiveName)
+    protected EventListenerBaseClass(final String descriptiveName, PBX iPBX)
     {
         this.name = descriptiveName;
+        this.pbx = iPBX;
     }
 
     @Override
@@ -32,10 +33,10 @@ public abstract class EventListenerBaseClass implements FilteredManagerListener<
      * the pbx at that point event though it is initialised.
      */
 
-    public void startListener(PBX iPBX)
+    public void startListener()
     {
 
-        ((AsteriskPBX) iPBX).addListener(this);
+        ((AsteriskPBX) pbx).addListener(this);
     }
 
     /**
@@ -44,8 +45,7 @@ public abstract class EventListenerBaseClass implements FilteredManagerListener<
     @Override
     public void close()
     {
-        AsteriskPBX pbx = (AsteriskPBX) PBXFactory.getActivePBX();
-        pbx.removeListener(this);
+        ((AsteriskPBX) pbx).removeListener(this);
     }
 
     /**
@@ -75,7 +75,7 @@ public abstract class EventListenerBaseClass implements FilteredManagerListener<
             this.listener = listener;
             if (sendEvents)
             {
-                listener.startListener(PBXFactory.getActivePBX());
+                listener.startListener();
             }
         }
 

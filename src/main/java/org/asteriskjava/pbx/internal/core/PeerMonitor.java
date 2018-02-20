@@ -74,9 +74,9 @@ public class PeerMonitor extends EventListenerBaseClass implements Runnable
 
     private PeerMonitor()
     {
-        super("PeerMonitor"); //$NON-NLS-1$
+        super("PeerMonitor", PBXFactory.getActivePBX()); //$NON-NLS-1$
         this.peerList = new LinkedList<>();
-        this.startListener(PBXFactory.getActivePBX());
+        this.startListener();
         this.addSipsToMonitor();
         try
         {

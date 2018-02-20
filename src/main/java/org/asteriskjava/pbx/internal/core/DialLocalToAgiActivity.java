@@ -50,7 +50,7 @@ public class DialLocalToAgiActivity extends EventListenerBaseClass implements Ru
     public DialLocalToAgiActivity(EndPoint from, CallerID fromCallerID, ActivityCallback<DialLocalToAgiActivity> callback,
             Map<String, String> channelVarsToSet)
     {
-        super("Dial " + from + " to AGI");
+        super("Dial " + from + " to AGI", PBXFactory.getActivePBX());
         this.from = from;
         this.fromCallerID = fromCallerID;
         this.callback = callback;
@@ -93,7 +93,7 @@ public class DialLocalToAgiActivity extends EventListenerBaseClass implements Ru
 
         try
         {
-            this.startListener(PBXFactory.getActivePBX());
+            this.startListener();
 
             pbx.sendAction(originate, 30000);
             latch.await(30, TimeUnit.SECONDS);
@@ -114,7 +114,6 @@ public class DialLocalToAgiActivity extends EventListenerBaseClass implements Ru
     public void abort(final String reason)
     {
         logger.warn("Aborting originate ");
-        this.close();
 
         for (Channel channel : channels)
         {

@@ -1,10 +1,9 @@
 package org.asteriskjava.pbx.internal.core;
 
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.HashSet;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.Iterator;
+import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -12,6 +11,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
+import org.asteriskjava.manager.ManagerConnection;
 import org.asteriskjava.manager.ManagerEventListener;
 import org.asteriskjava.pbx.asterisk.wrap.events.BridgeEvent;
 import org.asteriskjava.pbx.asterisk.wrap.events.LinkEvent;
@@ -37,44 +37,7 @@ class CoherentManagerEventQueue implements ManagerEventListener, Runnable
 {
     private static final Log logger = LogFactory.getLog(CoherentManagerEventQueue.class);
 
-    private class Listener
-    {
-        FilteredManagerListener<ManagerEvent> _listener;
-        Set<Class< ? extends ManagerEvent>> requiredEvents;
-
-        public Listener(FilteredManagerListener<ManagerEvent> listener)
-        {
-            this._listener = listener;
-            this.requiredEvents = listener.requiredEvents();
-
-            if (requiredEvents.contains(BridgeEvent.class))
-            {
-                // add LinkEvent and UnlinkEvent, as BridgeEvent only will
-                // miss some events
-                requiredEvents.add(LinkEvent.class);
-                requiredEvents.add(UnlinkEvent.class);
-            }
-
-            for (Class< ? extends ManagerEvent> event : requiredEvents)
-            {
-                if (!CoherentEventFactory.mapEvents.values().contains(event)
-                        && !CoherentEventFactory.mapResponses.values().contains(event))
-                {
-                    throw new RuntimeException(
-                            "The requested event type of " + event + "+isn't known by " + CoherentEventFactory.class);
-                }
-            }
-        }
-
-        @Override
-        public String toString()
-        {
-            return this._listener.getName();
-        }
-
-    }
-
-    private final TreeSet<Listener> listeners = new TreeSet<>(new ListenerPriorityComparator());
+    private final ListenerManager listeners = new ListenerManager();
 
     private boolean _stop = false;
     private final Thread _th;
@@ -88,9 +51,10 @@ class CoherentManagerEventQueue implements ManagerEventListener, Runnable
 
     private HashSet<Class< ? extends ManagerEvent>> globalEvents = new HashSet<>();
 
-    public CoherentManagerEventQueue(String name)
+    public CoherentManagerEventQueue(String name, ManagerConnection connection)
     {
-        CoherentManagerConnection.managerConnection.addEventListener(this);
+
+        connection.addEventListener(this);
 
         this._th = new Thread(this);
         this._th.setName("EventQueue: " + name);//$NON-NLS-1$
@@ -232,10 +196,10 @@ class CoherentManagerEventQueue implements ManagerEventListener, Runnable
         // take a copy of the listeners so they can be modified whilst we
         // iterate over them
         // The iteration may call some long running processes.
-        final TreeSet<Listener> listenerCopy = new TreeSet<>(new ListenerPriorityComparator());
+        final List<FilteredManagerListenerWrapper> listenerCopy;
         synchronized (this.listeners)
         {
-            listenerCopy.addAll(this.listeners);
+            listenerCopy = this.listeners.getCopyAsList();
         }
 
         try
@@ -244,7 +208,7 @@ class CoherentManagerEventQueue implements ManagerEventListener, Runnable
 
             CountDownLatch latch = new CountDownLatch(listenerCopy.size());
 
-            for (final Listener filter : listenerCopy)
+            for (final FilteredManagerListenerWrapper filter : listenerCopy)
             {
                 if (filter.requiredEvents.contains(event.getClass()))
                 {
@@ -271,7 +235,8 @@ class CoherentManagerEventQueue implements ManagerEventListener, Runnable
         }
     }
 
-    private void dispatchEventOnThread(final ManagerEvent event, final Listener filter, final CountDownLatch latch)
+    private void dispatchEventOnThread(final ManagerEvent event, final FilteredManagerListenerWrapper filter,
+            final CountDownLatch latch)
     {
         Runnable runner = new Runnable()
         {
@@ -317,7 +282,7 @@ class CoherentManagerEventQueue implements ManagerEventListener, Runnable
     {
         synchronized (this.listeners)
         {
-            this.listeners.add(new Listener(listener));
+            this.listeners.addListener(listener);
             synchronized (this.globalEvents)
             {
                 Collection<Class< ? extends ManagerEvent>> expandEvents = expandEvents(listener.requiredEvents());
@@ -353,47 +318,30 @@ class CoherentManagerEventQueue implements ManagerEventListener, Runnable
 
     public void removeListener(final FilteredManagerListener<ManagerEvent> melf)
     {
-        synchronized (this.listeners)
+        if (melf != null)
         {
-            if (melf != null)
+            synchronized (this.listeners)
             {
-                for (Listener container : this.listeners)
-                {
-                    if (container._listener == melf)
-                    {
-                        this.listeners.remove(container);
+                this.listeners.removeListener(melf);
 
-                        // When we remove a listener we must unfortunately
-                        // completely
-                        // recalculate the set of required events.
-                        synchronized (this.globalEvents)
-                        {
-                            this.globalEvents.clear();
-                            for (Listener readdContainer : this.listeners)
-                            {
-                                this.globalEvents.addAll(expandEvents(readdContainer._listener.requiredEvents()));
-                            }
-                        }
-                        break;
+                // When we remove a listener we must unfortunately
+                // completely
+                // recalculate the set of required events.
+                synchronized (this.globalEvents)
+                {
+                    this.globalEvents.clear();
+                    Iterator<FilteredManagerListenerWrapper> itr = this.listeners.iterator();
+                    while (itr.hasNext())
+                    {
+                        FilteredManagerListenerWrapper readdContainer = itr.next();
+                        this.globalEvents.addAll(expandEvents(readdContainer._listener.requiredEvents()));
                     }
                 }
+
             }
+
         }
-    }
 
-    final class ListenerPriorityComparator implements Comparator<Listener>
-    {
-        @Override
-        public int compare(Listener lhs, Listener rhs)
-        {
-
-            int result = lhs._listener.getPriority().compare(rhs._listener.getPriority());
-
-            if (result == 0)
-                result = (lhs._listener.equals(rhs._listener) ? 0 : 1);
-
-            return result;
-        }
     }
 
     /**
@@ -407,8 +355,11 @@ class CoherentManagerEventQueue implements ManagerEventListener, Runnable
         {
             synchronized (eventQueue.listeners)
             {
-                for (Listener listener : eventQueue.listeners)
+                Iterator<FilteredManagerListenerWrapper> itr = eventQueue.listeners.iterator();
+                while (itr.hasNext())
                 {
+                    FilteredManagerListenerWrapper listener = itr.next();
+
                     this.addListener(listener._listener);
                 }
                 eventQueue.listeners.clear();

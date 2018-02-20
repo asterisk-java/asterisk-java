@@ -31,7 +31,7 @@ public class DialToAgi extends EventListenerBaseClass
 
     public DialToAgi(final String descriptiveName)
     {
-        super(descriptiveName);
+        super(descriptiveName, PBXFactory.getActivePBX());
     }
 
     /**
@@ -59,7 +59,7 @@ public class DialToAgi extends EventListenerBaseClass
 
         try (final OriginateToExtension originate = new OriginateToExtension(listener))
         {
-            this.startListener(PBXFactory.getActivePBX());
+            this.startListener();
             originator = originate;
 
             // First bring the operator's handset up and connect it to the

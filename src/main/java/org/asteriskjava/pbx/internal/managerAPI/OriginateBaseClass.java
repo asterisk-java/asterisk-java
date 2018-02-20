@@ -53,6 +53,8 @@ public abstract class OriginateBaseClass extends EventListenerBaseClass
 
     private final OriginateResult result;
 
+    Exception ex = new Exception("Created here");
+
     /**
      * The following two variables together are used to determine if the
      * originated channel has come up. This is to overcome the problem that the
@@ -71,9 +73,12 @@ public abstract class OriginateBaseClass extends EventListenerBaseClass
 
     private final CountDownLatch originateLatch = new CountDownLatch(1);
 
+    private final AsteriskPBX pbx;
+
     protected OriginateBaseClass(final NewChannelListener listener, final Channel monitor, final Channel monitor2)
     {
-        super("NewOrginateClass"); //$NON-NLS-1$
+        super("NewOrginateClass", PBXFactory.getActivePBX());
+        pbx = (AsteriskPBX) PBXFactory.getActivePBX();
         this.listener = listener;
         this.monitorChannel1 = monitor;
         this.monitorChannel2 = monitor2;
@@ -168,12 +173,10 @@ public abstract class OriginateBaseClass extends EventListenerBaseClass
         originate.setAsync(true);
         originate.setTimeout(localTimeout);
 
-        AsteriskPBX pbx = (AsteriskPBX) PBXFactory.getActivePBX();
-
         try
         {
             // Just add us as an asterisk event listener.
-            this.startListener(pbx);
+            this.startListener();
 
             response = pbx.sendAction(originate, localTimeout);
             OriginateBaseClass.logger.debug("Originate.sendAction completed"); //$NON-NLS-1$
@@ -236,7 +239,6 @@ public abstract class OriginateBaseClass extends EventListenerBaseClass
     void abort(final String reason)
     {
         OriginateBaseClass.logger.debug("Aborting originate ");//$NON-NLS-1$
-        this.close();
         this.originateSuccess = false;
         this.result.setAbortReason(reason);
         this.hungup = true;
@@ -285,6 +287,7 @@ public abstract class OriginateBaseClass extends EventListenerBaseClass
     @Override
     synchronized public void onManagerEvent(final ManagerEvent event)
     {
+
         if (event instanceof HangupEvent)
         {
             final HangupEvent hangupEvt = (HangupEvent) event;
@@ -450,7 +453,7 @@ public abstract class OriginateBaseClass extends EventListenerBaseClass
     {
         while (ctr > 0)
         {
-            logger.error("Check " + ctr);
+            logger.debug("Check " + ctr);
             try
             {
                 ctr--;
@@ -495,9 +498,10 @@ public abstract class OriginateBaseClass extends EventListenerBaseClass
                                 OriginateBaseClass.logger.debug("notifying success 362");//$NON-NLS-1$
                                 originateLatch.countDown();
                             }
-                            break;
                         }
                     }
+                    logger.info("Id is " + __originateID);
+                    break;
                 }
                 Thread.sleep(100);
             }

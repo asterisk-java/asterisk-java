@@ -33,7 +33,7 @@ public class Dial extends EventListenerBaseClass
 
     public Dial(final String descriptiveName)
     {
-        super(descriptiveName);
+        super(descriptiveName, PBXFactory.getActivePBX());
     }
 
     /**
@@ -62,7 +62,7 @@ public class Dial extends EventListenerBaseClass
         try (final OriginateToExtension originate = new OriginateToExtension(listener))
         {
 
-            this.startListener(PBXFactory.getActivePBX());
+            this.startListener();
 
             // First bring the operator's handset up and connect it to the
             // 'njr-dial' extension where they can

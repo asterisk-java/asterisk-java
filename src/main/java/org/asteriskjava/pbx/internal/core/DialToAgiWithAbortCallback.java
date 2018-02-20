@@ -22,26 +22,37 @@ public class DialToAgiWithAbortCallback
         this.iCallback = iCallback;
     }
 
-    public DialToAgiActivityImpl start()
+    public void asyncStartDial()
     {
-        dialer.startActivity(false);
 
-        completion.waitForCompletion(3, TimeUnit.MINUTES);
-
-        final ActivityStatusEnum status;
-
-        if (dialer.isSuccess())
+        Runnable runner = new Runnable()
         {
-            status = ActivityStatusEnum.SUCCESS;
-        }
-        else
-        {
-            status = ActivityStatusEnum.FAILURE;
-        }
 
-        iCallback.progress(dialer, status, status.getDefaultMessage());
+            @Override
+            public void run()
+            {
+                dialer.startActivity(false);
 
-        return dialer;
+                completion.waitForCompletion(3, TimeUnit.MINUTES);
+
+                final ActivityStatusEnum status;
+
+                if (dialer.isSuccess())
+                {
+                    status = ActivityStatusEnum.SUCCESS;
+                }
+                else
+                {
+                    status = ActivityStatusEnum.FAILURE;
+                }
+
+                iCallback.progress(dialer, status, status.getDefaultMessage());
+
+            }
+        };
+
+        new Thread(runner).start();
+
     }
 
     public void abort()

@@ -396,7 +396,8 @@ class CoherentManagerConnection implements FilteredManagerListener<ManagerEvent>
         // that it hasn't already)
         // and should have no duplicate events. Once drained the queue will be
         // garbage collected.
-        CoherentManagerEventQueue newRealtime = new CoherentManagerEventQueue("Realtime"); //$NON-NLS-1$
+        CoherentManagerEventQueue newRealtime = new CoherentManagerEventQueue("Realtime", //$NON-NLS-1$
+                CoherentManagerConnection.managerConnection);
         if (this.realtimeEventQueue != null)
         {
             this.realtimeEventQueue.stop();
@@ -404,7 +405,8 @@ class CoherentManagerConnection implements FilteredManagerListener<ManagerEvent>
         }
         this.realtimeEventQueue = newRealtime;
 
-        CoherentManagerEventQueue newStandard = new CoherentManagerEventQueue("Standard"); //$NON-NLS-1$
+        CoherentManagerEventQueue newStandard = new CoherentManagerEventQueue("Standard", //$NON-NLS-1$
+                CoherentManagerConnection.managerConnection);
         if (this.eventQueue != null)
         {
             this.eventQueue.stop();

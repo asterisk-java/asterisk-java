@@ -69,7 +69,7 @@ public class MeetmeRoomControl extends EventListenerBaseClass implements Coheren
         if (MeetmeRoomControl.self.get() == null)
         {
             throw new IllegalStateException(
-                    "Thee MeetmeRoomControl has not been initialised. Please call MeetmeRoomControl.init()."); //$NON-NLS-1$
+                    "The MeetmeRoomControl has not been initialised. Please call MeetmeRoomControl.init()."); //$NON-NLS-1$
         }
 
         return MeetmeRoomControl.self.get();
@@ -78,14 +78,14 @@ public class MeetmeRoomControl extends EventListenerBaseClass implements Coheren
 
     private MeetmeRoomControl(PBX pbx, final int roomCount) throws NoMeetmeException
     {
-        super("MeetmeRoomControl"); //$NON-NLS-1$
+        super("MeetmeRoomControl", pbx); //$NON-NLS-1$
         this.roomCount = roomCount;
         final AsteriskSettings settings = PBXFactory.getActiveProfile();
         this.meetmeBaseAddress = settings.getMeetmeBaseAddress();
         this.rooms = new MeetmeRoom[roomCount];
         this.configure((AsteriskPBX) pbx);
 
-        this.startListener(pbx);
+        this.startListener();
     }
 
     @Override
