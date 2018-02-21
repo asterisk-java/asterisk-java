@@ -46,12 +46,14 @@ public class DialToAgiActivityImpl extends ActivityHelper<DialToAgiActivity> imp
 
     private DialToAgi originator;
 
-    public DialToAgiActivityImpl(final EndPoint originating, final CallerID toCallerID, final boolean hideToCallerID,
-            final ActivityCallback<DialToAgiActivity> listener, Map<String, String> channelVarsToSet,
-            AgiChannelActivityAction action)
+    private Integer timeout;
+
+    public DialToAgiActivityImpl(final EndPoint originating, final CallerID toCallerID, Integer timeout,
+            final boolean hideToCallerID, final ActivityCallback<DialToAgiActivity> listener,
+            Map<String, String> channelVarsToSet, AgiChannelActivityAction action)
     {
         super("Dial", listener);
-
+        this.timeout = timeout;
         this.action = action;
         this._originating = originating;
         this.toCallerID = toCallerID;
@@ -80,7 +82,7 @@ public class DialToAgiActivityImpl extends ActivityHelper<DialToAgiActivity> imp
             originator = nr;
 
             final OriginateResult[] resultChannels = nr.dial(this, this._originating, this.action, this.toCallerID,
-                    this.hideToCallerId, channelVarsToSet);
+                    this.timeout, this.hideToCallerId, channelVarsToSet);
 
             if (resultChannels[0] == null || !resultChannels[0].isSuccess())
             {
@@ -91,7 +93,7 @@ public class DialToAgiActivityImpl extends ActivityHelper<DialToAgiActivity> imp
                 if (!this.cancelledByOperator)
                 {
                     this.setLastException(new PBXException(("OperatorEndedCall")));
-                    logger.error("dialout to  failed.");
+                    logger.warn("dialout to  failed.");
                 }
             }
             else

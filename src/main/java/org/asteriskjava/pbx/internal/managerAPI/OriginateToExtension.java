@@ -45,7 +45,8 @@ public class OriginateToExtension extends OriginateBaseClass
     }
 
     public OriginateResult originate(final EndPoint localHandset, final EndPoint targetExtension, final boolean autoAnswer,
-            final String context, final CallerID callerID, final boolean hideCallerId, Map<String, String> channelVarsToSet)
+            final String context, final CallerID callerID, Integer timeout, final boolean hideCallerId,
+            Map<String, String> channelVarsToSet)
     {
         /*
          * A new call is originated on the nominated channel to the specified
@@ -65,7 +66,7 @@ public class OriginateToExtension extends OriginateBaseClass
             myVars.putAll(channelVarsToSet);
         }
 
-        return this.originate(localHandset, targetExtension, myVars, callerID, null, hideCallerId, context);
+        return this.originate(localHandset, targetExtension, myVars, callerID, timeout, hideCallerId, context);
     }
 
     @Override

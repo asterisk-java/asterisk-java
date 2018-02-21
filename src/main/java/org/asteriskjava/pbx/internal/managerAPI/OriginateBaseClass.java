@@ -217,7 +217,7 @@ public abstract class OriginateBaseClass extends EventListenerBaseClass
         }
         else
         {
-            OriginateBaseClass.logger.error("originate failed connecting endPoint: " + local + " to ext " + target); //$NON-NLS-1$//$NON-NLS-2$
+            OriginateBaseClass.logger.warn("originate failed connecting endPoint: " + local + " to ext " + target); //$NON-NLS-1$//$NON-NLS-2$
 
             if (this.newChannel != null)
             {

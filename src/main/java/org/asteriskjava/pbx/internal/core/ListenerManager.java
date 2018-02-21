@@ -72,7 +72,7 @@ public class ListenerManager
             // logger.error("Checking " + container._listener + " " + toRemove);
             if (container._listener == toRemove)
             {
-                logger.error("Removing listener " + toRemove);
+                logger.debug("Removing listener " + toRemove);
                 itr.remove();
                 removed = true;
                 break;

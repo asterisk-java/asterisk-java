@@ -68,7 +68,7 @@ public class Dial extends EventListenerBaseClass
             // 'njr-dial' extension where they can
             // wait whilst we complete the second leg
             final OriginateResult trcResult = originate.originate(localHandset, pbx.getExtensionAgi(), true,
-                    ((AsteriskPBX) pbx).getManagementContext(), callerID, hideCallerId, channelVarsToSet);
+                    ((AsteriskPBX) pbx).getManagementContext(), callerID, null, hideCallerId, channelVarsToSet);
 
             this.result[0] = trcResult;
             if (trcResult.isSuccess() == true)

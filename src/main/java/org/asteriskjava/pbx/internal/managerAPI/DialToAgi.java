@@ -52,7 +52,7 @@ public class DialToAgi extends EventListenerBaseClass
      * @throws PBXException
      */
     public OriginateResult[] dial(final NewChannelListener listener, final EndPoint localHandset,
-            final AgiChannelActivityAction action, final CallerID callerID, final boolean hideCallerId,
+            final AgiChannelActivityAction action, final CallerID callerID, int timeout, final boolean hideCallerId,
             Map<String, String> channelVarsToSet) throws PBXException, InterruptedException
     {
         final PBX pbx = PBXFactory.getActivePBX();
@@ -66,7 +66,7 @@ public class DialToAgi extends EventListenerBaseClass
             // 'njr-dial' extension where they can
             // wait whilst we complete the second leg
             final OriginateResult trcResult = originate.originate(localHandset, pbx.getExtensionAgi(), true,
-                    ((AsteriskPBX) pbx).getManagementContext(), callerID, hideCallerId, channelVarsToSet);
+                    ((AsteriskPBX) pbx).getManagementContext(), callerID, timeout, hideCallerId, channelVarsToSet);
 
             this.result[0] = trcResult;
             if (trcResult.isSuccess() == true)
@@ -85,7 +85,7 @@ public class DialToAgi extends EventListenerBaseClass
             }
             else
             {
-                logger.error("Originate failed: " + trcResult.getAbortReason());
+                logger.warn("Originate failed: " + trcResult.getAbortReason());
             }
             logger.info("Hangup status is " + hangupDetected);
 

@@ -880,7 +880,8 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
 
         final CompletionAdaptor<DialToAgiActivity> completion = new CompletionAdaptor<>();
 
-        final DialToAgiActivityImpl dialer = new DialToAgiActivityImpl(endPoint, callerID, false, completion, null, action);
+        final DialToAgiActivityImpl dialer = new DialToAgiActivityImpl(endPoint, callerID, null, false, completion, null,
+                action);
 
         dialer.startActivity(false);
 
@@ -902,13 +903,14 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
         return dialer;
     }
 
-    public DialToAgiWithAbortCallback dialToAgiWithAbort(EndPoint endPoint, CallerID callerID,
+    public DialToAgiWithAbortCallback dialToAgiWithAbort(EndPoint endPoint, CallerID callerID, int timeout,
             AgiChannelActivityAction action, ActivityCallback<DialToAgiActivity> iCallback)
     {
 
         final CompletionAdaptor<DialToAgiActivity> completion = new CompletionAdaptor<>();
 
-        final DialToAgiActivityImpl dialer = new DialToAgiActivityImpl(endPoint, callerID, false, completion, null, action);
+        final DialToAgiActivityImpl dialer = new DialToAgiActivityImpl(endPoint, callerID, timeout, false, completion, null,
+                action);
 
         return new DialToAgiWithAbortCallback(dialer, completion, iCallback);
     }
