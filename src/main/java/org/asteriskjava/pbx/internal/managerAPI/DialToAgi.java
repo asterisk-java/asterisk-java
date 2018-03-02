@@ -52,7 +52,7 @@ public class DialToAgi extends EventListenerBaseClass
      * @throws PBXException
      */
     public OriginateResult[] dial(final NewChannelListener listener, final EndPoint localHandset,
-            final AgiChannelActivityAction action, final CallerID callerID, int timeout, final boolean hideCallerId,
+            final AgiChannelActivityAction action, final CallerID callerID, Integer timeout, final boolean hideCallerId,
             Map<String, String> channelVarsToSet) throws PBXException, InterruptedException
     {
         final PBX pbx = PBXFactory.getActivePBX();
