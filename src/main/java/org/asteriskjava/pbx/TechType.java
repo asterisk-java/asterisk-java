@@ -15,7 +15,10 @@ public enum TechType implements Tech
     , DIALPLAN
     // CONSOLE is sent when a call is made from the asterisk console.
     // These type of channels are ignored.
-    , CONSOLE;
+    , CONSOLE
+
+    // PARKING & SIPPEER are used during call parking
+    , PARKING, SIPPEER;
 
     private static final Log logger = LogFactory.getLog(TechType.class);
 
