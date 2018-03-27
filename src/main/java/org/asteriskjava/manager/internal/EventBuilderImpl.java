@@ -467,7 +467,7 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
         }
         if (toRemove.isEmpty())
         {
-            logger.error("Couldn't remove event type " + eventClass);
+            logger.warn("Couldn't remove event type " + eventClass);
         }
         else
         {
