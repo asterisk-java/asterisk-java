@@ -305,7 +305,7 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
     {
         if (channel.isLive())
         {
-            logger.warn("Sending hangup action for channel: " + channel); //$NON-NLS-1$
+            logger.info("Sending hangup action for channel: " + channel); //$NON-NLS-1$
 
             PBX pbx = PBXFactory.getActivePBX();
             if (!pbx.waitForChannelToQuiescent(channel, 3000))
