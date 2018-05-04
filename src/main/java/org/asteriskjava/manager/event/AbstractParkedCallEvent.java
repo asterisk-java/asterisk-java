@@ -35,7 +35,7 @@ public abstract class AbstractParkedCallEvent extends ManagerEvent
     private String parkeeCallerIDNum;
     // Previously CallerIDName
     private String parkeeCallerIDName;
-    private Integer parkeeConnectedLineNum;
+    private String parkeeConnectedLineNum;
     private String parkeeConnectedLineName;
     private String parkeeLanguage;
     private String parkeeAccountCode;
@@ -187,12 +187,12 @@ public abstract class AbstractParkedCallEvent extends ManagerEvent
         this.parkeeCallerIDName = parkeeCallerIDName;
     }
 
-    public Integer getParkeeConnectedLineNum()
+    public String getParkeeConnectedLineNum()
     {
         return parkeeConnectedLineNum;
     }
 
-    public void setParkeeConnectedLineNum(Integer parkeeConnectedLineNum)
+    public void setParkeeConnectedLineNum(String parkeeConnectedLineNum)
     {
         this.parkeeConnectedLineNum = parkeeConnectedLineNum;
     }
