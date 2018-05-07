@@ -36,6 +36,7 @@ public class ParkedCallEvent extends AbstractParkedCallEvent
     private Integer timeout;
     private String connectedlinenum;
     private String connectedlinename;
+    private String parkeelinkedid;
 
     /**
      * @param source
@@ -94,6 +95,20 @@ public class ParkedCallEvent extends AbstractParkedCallEvent
     public void setConnectedLinename(String connectedlinename)
     {
         this.connectedlinename = connectedlinename;
+    }
+
+    /**
+     * @param parkeelinkedid the parkeelinkedid to set
+     */
+    public void setParkeelinkedid(String parkeelinkedid) {
+        this.parkeelinkedid = parkeelinkedid;
+    }
+
+    /**
+     * @return the parkeelinkedid
+     */
+    public String getParkeelinkedid() {
+        return parkeelinkedid;
     }
 
 
