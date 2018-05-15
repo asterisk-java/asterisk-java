@@ -12,7 +12,7 @@ public class AgiChannelActivityHoldForBridge implements AgiChannelActivityAction
 {
     private final Log logger = LogFactory.getLog(this.getClass());
     private AgiChannelActivityBridge bridgeActivity;
-    private boolean hangup = true;
+    private volatile boolean hangup = true;
 
     public AgiChannelActivityHoldForBridge(AgiChannelActivityBridge bridgeActivity)
     {
@@ -48,7 +48,7 @@ public class AgiChannelActivityHoldForBridge implements AgiChannelActivityAction
     @Override
     public void cancel(Channel channel)
     {
-    	hangup = false;
+        hangup = false;
 
     }
     // Logger logger = LogManager.getLogger();
