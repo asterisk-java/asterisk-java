@@ -1191,7 +1191,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
 
     /**
      * dispatch the event to the chainListener if they exist.
-     * 
+     *
      * @param event
      */
     private void fireChainListeners(ManagerEvent event)
@@ -1261,7 +1261,6 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         final OriginateCallback cb;
         final AsteriskChannelImpl channel;
         final AsteriskChannelImpl otherChannel; // the other side if local
-                                                // channel
 
         traceId = originateEvent.getActionId();
         if (traceId == null)
@@ -1325,6 +1324,12 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
 
                 // on busy the other channel is in state busy when we receive
                 // the originate event
+				if (otherChannel.wasInState(ChannelState.UP))
+				{
+					cb.onSuccess(channel);
+					return;
+				}
+
                 if (otherChannel.wasBusy())
                 {
                     cb.onBusy(channel);
@@ -1338,6 +1343,11 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
                 // this alternative has the drawback that there might by
                 // multiple channels that have been dialed by the local channel
                 // but we only look at the last one.
+				if (otherChannel.wasInState(ChannelState.UP))
+				{
+					cb.onSuccess(channel);
+					return;
+				}
                 if (dialedChannel != null && dialedChannel.wasBusy())
                 {
                     cb.onBusy(channel);
