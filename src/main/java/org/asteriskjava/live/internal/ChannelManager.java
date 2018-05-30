@@ -77,7 +77,7 @@ class ChannelManager
      * milliseconds).
      */
     private static final long REMOVAL_THRESHOLD = 15 * 60 * 1000L; // 15 minutes
-    private static final long SLEEP_TIME_BEFORE_GET_VAR = 50L;
+    private static final long SLEEP_TIME_BEFORE_GET_VAR = 100L;
 
     private final AsteriskServerImpl server;
 
@@ -108,7 +108,7 @@ class ChannelManager
         ResponseEvents re;
 
         shutdown();
-        
+
         traceScheduledExecutorService = new ScheduledThreadPoolExecutor(1, new DaemonThreadFactory());// Executors.newSingleThreadScheduledExecutor
 
         StatusAction sa = new StatusAction();
@@ -122,7 +122,7 @@ class ChannelManager
             }
         }
         logger.debug("ChannelManager has been initialised");
-        
+
     }
 
     void disconnected()
@@ -130,7 +130,7 @@ class ChannelManager
     	shutdown();
     	logger.debug("ChannelManager has been disconnected from Asterisk.");
       }
-    
+
     private void shutdown()
     {
         if (traceScheduledExecutorService != null)
@@ -141,7 +141,7 @@ class ChannelManager
         {
             channels.clear();
         }
-  	
+
     }
 
 

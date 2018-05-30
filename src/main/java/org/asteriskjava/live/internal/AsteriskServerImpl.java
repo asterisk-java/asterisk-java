@@ -116,6 +116,8 @@ import org.asteriskjava.util.DateUtil;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
+import static java.lang.Thread.sleep;
+
 /**
  * Default implementation of the {@link AsteriskServer} interface.
  *
@@ -133,6 +135,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
     private static final String SHOW_VOICEMAIL_USERS_COMMAND = "show voicemail users";
     private static final String SHOW_VOICEMAIL_USERS_1_6_COMMAND = "voicemail show users";
     private static final Pattern SHOW_VOICEMAIL_USERS_PATTERN = Pattern.compile("^(\\S+)\\s+(\\S+)\\s+(.{25})");
+	private static final long DELAY_WAITING_STATE_CHANGE = 100L;
 
     private final Log logger = LogFactory.getLog(this.getClass());
 
@@ -1267,8 +1270,9 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         {
             return;
         }
+		waitStateChange();
 
-        synchronized (originateCallbacks)
+		synchronized (originateCallbacks)
         {
             callbackData = originateCallbacks.get(traceId);
             if (callbackData == null)
@@ -1343,17 +1347,17 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
                 // this alternative has the drawback that there might by
                 // multiple channels that have been dialed by the local channel
                 // but we only look at the last one.
-				if (otherChannel.wasInState(ChannelState.UP))
+                if (dialedChannel != null && dialedChannel.wasBusy())
+                {
+					cb.onBusy(channel);
+					return;
+				}
+				if (dialedChannel != null && dialedChannel.wasInState(ChannelState.UP))
 				{
 					cb.onSuccess(channel);
 					return;
 				}
-                if (dialedChannel != null && dialedChannel.wasBusy())
-                {
-                    cb.onBusy(channel);
-                    return;
-                }
-            }
+			}
 
             // if nothing else matched we asume no answer
             cb.onNoAnswer(channel);
@@ -1364,7 +1368,15 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         }
     }
 
-    @Override
+	private void waitStateChange() {
+		try {
+			sleep(DELAY_WAITING_STATE_CHANGE);
+		} catch (InterruptedException e) {
+			logger.error("InterruptedException in delay waitStateChange: " + e.getMessage() );
+		}
+	}
+
+	@Override
     public void shutdown()
     {
         if (eventConnection != null && (eventConnection.getState() == ManagerConnectionState.CONNECTED
