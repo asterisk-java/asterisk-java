@@ -1304,8 +1304,8 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
                 return;
             }
 
-            if (channel.wasInState(ChannelState.UP) ||
-				channel.getVariable(AsteriskChannel.PROPERTY_STATE).equalsIgnoreCase(ChannelState.UP.name()))
+
+            if (channel.wasInState(ChannelState.UP) || isStateUp(channel))
             {
                 cb.onSuccess(channel);
                 return;
@@ -1329,8 +1329,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
 
                 // on busy the other channel is in state busy when we receive
                 // the originate event
-				if (otherChannel.wasInState(ChannelState.UP) ||
-					otherChannel.getVariable(AsteriskChannel.PROPERTY_STATE).equalsIgnoreCase(ChannelState.UP.name()))
+				if (otherChannel.wasInState(ChannelState.UP) || isStateUp(otherChannel))
 				{
 					cb.onSuccess(channel);
 					return;
@@ -1355,7 +1354,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
 					return;
 				}
 				if (dialedChannel != null && (dialedChannel.wasInState(ChannelState.UP) ||
-					dialedChannel.getVariable(AsteriskChannel.PROPERTY_STATE).equalsIgnoreCase(ChannelState.UP.name())))
+					isStateUp(dialedChannel)))
 				{
 					cb.onSuccess(channel);
 					return;
@@ -1370,6 +1369,16 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
             logger.warn("Exception dispatching originate progress", t);
         }
     }
+
+	private boolean isStateUp(AsteriskChannel channel) {
+		boolean stateUp;
+		try{
+            stateUp = channel.getVariable(AsteriskChannel.PROPERTY_STATE).equalsIgnoreCase(ChannelState.UP.name());
+        }catch (NoSuchChannelException e){
+            stateUp = false;
+        }
+		return stateUp;
+	}
 
 	private void waitStateChange() {
 		try {
