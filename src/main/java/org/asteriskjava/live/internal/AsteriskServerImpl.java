@@ -135,7 +135,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
     private static final String SHOW_VOICEMAIL_USERS_COMMAND = "show voicemail users";
     private static final String SHOW_VOICEMAIL_USERS_1_6_COMMAND = "voicemail show users";
     private static final Pattern SHOW_VOICEMAIL_USERS_PATTERN = Pattern.compile("^(\\S+)\\s+(\\S+)\\s+(.{25})");
-	private static final long DELAY_WAITING_STATE_CHANGE = 100L;
+	private static final long DELAY_WAITING_STATE_CHANGE = 300L;
 
     private final Log logger = LogFactory.getLog(this.getClass());
 
@@ -1304,7 +1304,8 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
                 return;
             }
 
-            if (channel.wasInState(ChannelState.UP))
+            if (channel.wasInState(ChannelState.UP) ||
+				channel.getVariable(AsteriskChannel.PROPERTY_STATE).equalsIgnoreCase(ChannelState.UP.name()))
             {
                 cb.onSuccess(channel);
                 return;
@@ -1328,7 +1329,8 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
 
                 // on busy the other channel is in state busy when we receive
                 // the originate event
-				if (otherChannel.wasInState(ChannelState.UP))
+				if (otherChannel.wasInState(ChannelState.UP) ||
+					otherChannel.getVariable(AsteriskChannel.PROPERTY_STATE).equalsIgnoreCase(ChannelState.UP.name()))
 				{
 					cb.onSuccess(channel);
 					return;
@@ -1352,7 +1354,8 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
 					cb.onBusy(channel);
 					return;
 				}
-				if (dialedChannel != null && dialedChannel.wasInState(ChannelState.UP))
+				if (dialedChannel != null && (dialedChannel.wasInState(ChannelState.UP) ||
+					dialedChannel.getVariable(AsteriskChannel.PROPERTY_STATE).equalsIgnoreCase(ChannelState.UP.name())))
 				{
 					cb.onSuccess(channel);
 					return;
