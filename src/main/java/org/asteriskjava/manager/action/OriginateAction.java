@@ -73,6 +73,7 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
     private String data;
     private Boolean async;
     private String codecs;
+    private Boolean earlyMedia;
 
     /**
      * Returns the name of this action, i.e. "Originate".
@@ -465,6 +466,20 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
     public void setAsync(Boolean async)
     {
         this.async = async;
+    }
+
+    /**
+     * @param earlyMedia the earlyMedia to set
+     */
+    public void setEarlyMedia(Boolean earlyMedia) {
+        this.earlyMedia = earlyMedia;
+    }
+
+    /**
+     * @return the earlyMedia
+     */
+    public Boolean getEarlyMedia() {
+        return earlyMedia;
     }
 
     /**
