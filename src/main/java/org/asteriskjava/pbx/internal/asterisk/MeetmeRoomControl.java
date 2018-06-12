@@ -354,7 +354,7 @@ public class MeetmeRoomControl extends EventListenerBaseClass implements Coheren
                     && (line.toLowerCase().startsWith("conf num") == false) //$NON-NLS-1$
                     && (line.toLowerCase().startsWith("* total number") == false) //$NON-NLS-1$
                     && (line.toLowerCase().startsWith("no such conference") == false) //$NON-NLS-1$
-                    && (line.toLowerCase().startsWith("no such command 'meetme'") == false) //$NON-NLS-1$
+                    && (line.toLowerCase().startsWith("no such command 'meetme") == false) //$NON-NLS-1$
             )
             {
                 // Update the stats on each meetme
