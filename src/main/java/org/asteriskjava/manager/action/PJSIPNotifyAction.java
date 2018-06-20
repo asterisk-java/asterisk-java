@@ -27,20 +27,22 @@ import java.util.Map;
  * <p>
  * See: https://wiki.asterisk.org/wiki/display/AST/Asterisk+15+ManagerAction_PJSIPNotify
  */
-public class PJSIPNotifyAction extends AbstractManagerAction implements ManagerAction {
-	static final long serialVersionUID = 8198467461743334704L;
-
+public class PJSIPNotifyAction extends AbstractManagerAction implements ManagerAction
+{
+	private static final long serialVersionUID = 8198467461743334704L;
 	private String channel;
 	private String endpoint;
 	private String uri;
 	private Map<String, String> variables;
 
-	public PJSIPNotifyAction() {
+	public PJSIPNotifyAction()
+	{
 		super();
 	}
 
 	@Override
-	public String getAction() {
+	public String getAction()
+	{
 		return "PJSIPNotify";
 	}
 
@@ -49,7 +51,8 @@ public class PJSIPNotifyAction extends AbstractManagerAction implements ManagerA
 	 *
 	 * @return
 	 */
-	public String getChannel() {
+	public String getChannel()
+	{
 		return this.channel;
 	}
 
@@ -58,7 +61,8 @@ public class PJSIPNotifyAction extends AbstractManagerAction implements ManagerA
 	 *
 	 * @return
 	 */
-	public String getEndpoint() {
+	public String getEndpoint()
+	{
 		return this.endpoint;
 	}
 
@@ -67,7 +71,8 @@ public class PJSIPNotifyAction extends AbstractManagerAction implements ManagerA
 	 *
 	 * @return
 	 */
-	public String getUri() {
+	public String getUri()
+	{
 		return this.uri;
 	}
 
@@ -77,7 +82,8 @@ public class PJSIPNotifyAction extends AbstractManagerAction implements ManagerA
 	 *
 	 * @param channel
 	 */
-	public void setChannel(String channel) {
+	public void setChannel(String channel)
+	{
 		this.channel = channel;
 	}
 
@@ -86,7 +92,8 @@ public class PJSIPNotifyAction extends AbstractManagerAction implements ManagerA
 	 *
 	 * @param endpoint
 	 */
-	public void setEndpoint(String endpoint) {
+	public void setEndpoint(String endpoint)
+	{
 		this.endpoint = endpoint;
 	}
 
@@ -95,7 +102,8 @@ public class PJSIPNotifyAction extends AbstractManagerAction implements ManagerA
 	 *
 	 * @param uri
 	 */
-	public void setUri(String uri) {
+	public void setUri(String uri)
+	{
 		this.uri = uri;
 	}
 
@@ -107,8 +115,10 @@ public class PJSIPNotifyAction extends AbstractManagerAction implements ManagerA
 	 * @param name
 	 * @param value
 	 */
-	public void setVariable(String name, String value) {
-		if (this.variables == null) {
+	public void setVariable(String name, String value)
+	{
+		if (this.variables == null)
+		{
 			this.variables = new LinkedHashMap<>();
 		}
 
@@ -120,7 +130,8 @@ public class PJSIPNotifyAction extends AbstractManagerAction implements ManagerA
 	 *
 	 * @param variables
 	 */
-	public void setVariables(Map<String, String> variables) {
+	public void setVariables(Map<String, String> variables)
+	{
 		this.variables = variables;
 	}
 
@@ -129,7 +140,8 @@ public class PJSIPNotifyAction extends AbstractManagerAction implements ManagerA
 	 *
 	 * @return
 	 */
-	public Map<String, String> getVariables() {
+	public Map<String, String> getVariables()
+	{
 		return this.variables;
 	}
 
