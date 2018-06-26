@@ -12,6 +12,7 @@ public class AgiChannelActivityHoldForBridge implements AgiChannelActivityAction
 {
     private final Log logger = LogFactory.getLog(this.getClass());
     private AgiChannelActivityBridge bridgeActivity;
+    private volatile boolean hangup = true;
 
     public AgiChannelActivityHoldForBridge(AgiChannelActivityBridge bridgeActivity)
     {
@@ -26,7 +27,10 @@ public class AgiChannelActivityHoldForBridge implements AgiChannelActivityAction
             channel.playMusicOnHold();
             bridgeActivity.sleepWhileBridged();
 
-            channel.hangup();
+            if (hangup)
+            {
+                channel.hangup();
+            }
         }
         catch (AgiHangupException e)
         {
@@ -44,7 +48,7 @@ public class AgiChannelActivityHoldForBridge implements AgiChannelActivityAction
     @Override
     public void cancel(Channel channel)
     {
-        // TODO Auto-generated method stub
+        hangup = false;
 
     }
     // Logger logger = LogManager.getLogger();

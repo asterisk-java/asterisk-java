@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.asteriskjava.pbx.activities.BlindTransferActivity;
 import org.asteriskjava.util.Log;
@@ -32,12 +33,12 @@ public class CallImpl implements ChannelHangupListener, Call
      * We give every call a unique call id to help track the calls when checking
      * logs
      */
-    private static int global_call_identifier_index = 0;
+    private static final AtomicInteger global_call_identifier_index = new AtomicInteger();
 
     /**
      * A id that uniquely identifies this call.
      */
-    private int _uniquecallID;
+    private final int _uniquecallID;
 
     /*
      * transfer types
@@ -129,9 +130,9 @@ public class CallImpl implements ChannelHangupListener, Call
     {
         logger.debug("Created call=" + originatingChannel + " direction=" + direction); //$NON-NLS-1$ //$NON-NLS-2$
         this._owner = OWNER.SELF;
+        this._uniquecallID = CallImpl.global_call_identifier_index.incrementAndGet();
         this._direction = direction;
         this._callStarted = new Date();
-        this.setUID();
         this.setOriginatingParty(originatingChannel);
 
     }
@@ -140,9 +141,9 @@ public class CallImpl implements ChannelHangupListener, Call
     {
         logger.debug("Created call=" + originatingChannel + " direction=" + direction); //$NON-NLS-1$ //$NON-NLS-2$
         this._owner = OWNER.SELF;
+        this._uniquecallID = CallImpl.global_call_identifier_index.incrementAndGet();
         this._direction = direction;
         this._callStarted = new Date();
-        this.setUID();
         this.setOriginatingParty(originatingChannel);
         this.setAcceptingParty(acceptingChannel);
 
@@ -151,9 +152,9 @@ public class CallImpl implements ChannelHangupListener, Call
     public CallImpl(Channel agent, Channel callee) throws PBXException
     {
         this._owner = OWNER.SELF;
+        this._uniquecallID = CallImpl.global_call_identifier_index.incrementAndGet();
         this._direction = CallDirection.OUTBOUND;
         this._callStarted = new Date();
-        this.setUID();
         this.setOriginatingParty(agent);
         this.setAcceptingParty(callee);
 
@@ -670,18 +671,6 @@ public class CallImpl implements ChannelHangupListener, Call
     // {
     // this.transferType = tType;
     // }
-
-    /**
-     * 
-     */
-    private synchronized void setUID()
-    {
-        this._uniquecallID = CallImpl.global_call_identifier_index++;
-        if (CallImpl.global_call_identifier_index > 99)
-        {
-            CallImpl.global_call_identifier_index = 0;
-        }
-    }
 
     @Override
     public CallDirection getDirection()
