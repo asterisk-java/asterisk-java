@@ -671,7 +671,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
             if (Asterisk14outputPresent)
             {
                 List<String> outputList = Arrays
-                        .asList(showVersionFilesResponse.getOutput().split(SocketConnectionFacadeImpl.NL_PATTERN.pattern()));
+                        .asList(showVersionFilesResponse.getOutput().split(Pattern.quote(SocketConnectionFacadeImpl.NL_PATTERN)));
                 showVersionFilesResult = outputList;
             }
             else

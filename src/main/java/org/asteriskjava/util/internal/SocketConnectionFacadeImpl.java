@@ -16,7 +16,6 @@
  */
 package org.asteriskjava.util.internal;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,8 +27,6 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
 import java.util.regex.Pattern;
 
 import javax.net.SocketFactory;
@@ -45,10 +42,10 @@ import org.asteriskjava.util.SocketConnectionFacade;
  */
 public class SocketConnectionFacadeImpl implements SocketConnectionFacade
 {
-    public static final Pattern CRNL_PATTERN = Pattern.compile("\r\n");
-    public static final Pattern NL_PATTERN = Pattern.compile("\n");
+    public static final String CRNL_PATTERN = "\r\n";
+    public static final String NL_PATTERN = "\n";
     private Socket socket;
-    private Scanner scanner;
+    private LineReader reader;
     private BufferedWriter writer;
     private Trace trace;
 
@@ -103,7 +100,7 @@ public class SocketConnectionFacadeImpl implements SocketConnectionFacade
      * @throws IOException if the connection cannot be established.
      */
     public SocketConnectionFacadeImpl(String host, int port, boolean ssl, int timeout, int readTimeout,
-            Pattern lineDelimiter) throws IOException
+            String lineDelimiter) throws IOException
     {
         this(host, port, ssl, timeout, readTimeout, StandardCharsets.UTF_8, lineDelimiter);
     }
@@ -124,7 +121,7 @@ public class SocketConnectionFacadeImpl implements SocketConnectionFacade
      * @throws IOException if the connection cannot be established.
      */
     public SocketConnectionFacadeImpl(String host, int port, boolean ssl, int timeout, int readTimeout, Charset encoding,
-            Pattern lineDelimiter) throws IOException
+            String lineDelimiter) throws IOException
     {
         Socket socket;
 
@@ -162,16 +159,13 @@ public class SocketConnectionFacadeImpl implements SocketConnectionFacade
     /** 70 mi = 70 * 60 * 1000 */
     private static final int MAX_SOCKET_READ_TIMEOUT_MILLIS = 4200000;
 
-    private void initialize(Socket socket, Charset encoding, Pattern pattern) throws IOException
+    private void initialize(Socket socket, Charset encoding, String pattern) throws IOException
     {
         this.socket = socket;
 
         InputStream inputStream = socket.getInputStream();
         OutputStream outputStream = socket.getOutputStream();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, encoding));
-
-        this.scanner = new Scanner(reader);
-        this.scanner.useDelimiter(pattern);
+        this.reader = new LineReader(new InputStreamReader(inputStream, encoding), pattern);
         this.writer = new BufferedWriter(new OutputStreamWriter(outputStream, encoding));
     }
 
@@ -179,28 +173,7 @@ public class SocketConnectionFacadeImpl implements SocketConnectionFacade
     public String readLine() throws IOException
     {
         String line;
-        try
-        {
-            line = scanner.next();
-        }
-        catch (IllegalStateException e)
-        {
-            if (scanner.ioException() != null)
-            {
-                throw scanner.ioException();
-            }
-            // throw new IOException("No more lines available", e); // JDK6
-            throw new IOException("No more lines available: " + e.getMessage());
-        }
-        catch (NoSuchElementException e)
-        {
-            if (scanner.ioException() != null)
-            {
-                throw scanner.ioException();
-            }
-            // throw new IOException("No more lines available", e); // JDK6
-            throw new IOException("No more lines available: " + e.getMessage());
-        }
+        line = reader.readLine();
 
         if (trace != null)
         {
@@ -226,7 +199,7 @@ public class SocketConnectionFacadeImpl implements SocketConnectionFacade
     public void close() throws IOException
     {
         socket.close();
-        scanner.close();
+        reader.close();
         // close the trace only if it was activated (the object is not null)
         if (trace != null)
         {
