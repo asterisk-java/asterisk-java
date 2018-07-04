@@ -51,7 +51,7 @@ public abstract class ActivityAgi extends ServiceAgiScriptImpl
                     final AgiChannelActivityAction currentActivityAction = channel.getCurrentActivityAction();
                     if (currentActivityAction != null)
                     {
-                        currentActivityAction.cancel(channel);
+                        currentActivityAction.cancel();
                     }
 
                 }

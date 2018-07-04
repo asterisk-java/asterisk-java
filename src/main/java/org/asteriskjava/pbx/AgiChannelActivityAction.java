@@ -10,6 +10,6 @@ public interface AgiChannelActivityAction
 
 	boolean isDisconnect();
 
-	void cancel(Channel channel);
+	void cancel();
 
 }

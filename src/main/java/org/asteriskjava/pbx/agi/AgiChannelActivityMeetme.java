@@ -27,6 +27,8 @@ public class AgiChannelActivityMeetme implements AgiChannelActivityAction
 
     private String options;
 
+    private Channel ichannel;
+
     public AgiChannelActivityMeetme(String room, String options)
     {
         this.room = room;
@@ -40,6 +42,7 @@ public class AgiChannelActivityMeetme implements AgiChannelActivityAction
         {
             throw new NullPointerException("ichannel cannot be null");
         }
+        this.ichannel = ichannel;
         AsteriskPBX pbx = (AsteriskPBX) PBXFactory.getActivePBX();
         if (pbx.getVersion().isAtLeast(AsteriskVersion.ASTERISK_13))
         {
@@ -71,19 +74,13 @@ public class AgiChannelActivityMeetme implements AgiChannelActivityAction
     }
 
     @Override
-    public void cancel(Channel channel)
+    public void cancel()
     {
-
-        if (channel == null)
-        {
-            throw new NullPointerException("channel cannot be null");
-        }
-
         hangup = false;
         final AsteriskSettings profile = PBXFactory.getActiveProfile();
 
         AsteriskPBX pbx = (AsteriskPBX) PBXFactory.getActivePBX();
-        final RedirectAction redirect = new RedirectAction(channel, profile.getManagementContext(), pbx.getExtensionAgi(),
+        final RedirectAction redirect = new RedirectAction(ichannel, profile.getManagementContext(), pbx.getExtensionAgi(),
                 1);
         try
         {

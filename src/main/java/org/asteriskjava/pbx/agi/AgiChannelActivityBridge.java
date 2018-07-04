@@ -49,7 +49,7 @@ public class AgiChannelActivityBridge implements AgiChannelActivityAction
     }
 
     @Override
-    public void cancel(Channel channel)
+    public void cancel()
     {
         latch.countDown();
 
