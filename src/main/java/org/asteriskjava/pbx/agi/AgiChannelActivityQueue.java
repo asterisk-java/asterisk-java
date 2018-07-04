@@ -27,6 +27,8 @@ public class AgiChannelActivityQueue implements AgiChannelActivityAction
     private volatile boolean hangup = true;
     // volatile private iChannel ichannel;
 
+    private Channel ichannel;
+
     public AgiChannelActivityQueue(String queue)
     {
         this.queue = queue;
@@ -35,6 +37,8 @@ public class AgiChannelActivityQueue implements AgiChannelActivityAction
     @Override
     public void execute(AgiChannel channel, Channel ichannel) throws AgiException, InterruptedException
     {
+        this.ichannel = ichannel;
+
         channel.queue(queue);
         if (hangup)
         {
@@ -62,18 +66,14 @@ public class AgiChannelActivityQueue implements AgiChannelActivityAction
     }
 
     @Override
-    public void cancel(Channel channel)
+    public void cancel()
     {
-        if (channel == null)
-        {
-            throw new NullPointerException("channel cannot be null");
-        }
 
         hangup = false;
         final AsteriskSettings profile = PBXFactory.getActiveProfile();
 
         AsteriskPBX pbx = (AsteriskPBX) PBXFactory.getActivePBX();
-        final RedirectAction redirect = new RedirectAction(channel, profile.getManagementContext(), pbx.getExtensionAgi(),
+        final RedirectAction redirect = new RedirectAction(ichannel, profile.getManagementContext(), pbx.getExtensionAgi(),
                 1);
         try
         {

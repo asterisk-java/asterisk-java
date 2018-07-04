@@ -28,7 +28,7 @@ public class AgiChannelActivityVoicemail implements AgiChannelActivityAction
 	}
 
 	@Override
-	public void cancel(Channel channel)
+	public void cancel()
 	{
 		// TODO Auto-generated method stub
 
