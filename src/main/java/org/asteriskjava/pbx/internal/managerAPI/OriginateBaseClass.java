@@ -223,7 +223,7 @@ public abstract class OriginateBaseClass extends EventListenerBaseClass
             {
                 try
                 {
-                    logger.warn("Hanging up");
+                    logger.info("Hanging up");
                     pbx.hangup(this.newChannel);
                 }
                 catch (IllegalArgumentException | IllegalStateException | PBXException e)
@@ -296,7 +296,7 @@ public abstract class OriginateBaseClass extends EventListenerBaseClass
             if ((this.newChannel != null) && (hangupChannel.isSame(this.newChannel)))
             {
                 this.originateSuccess = false;
-                OriginateBaseClass.logger.error("Dest channel " + this.newChannel + " hungup after answer"); //$NON-NLS-1$//$NON-NLS-2$
+                OriginateBaseClass.logger.warn("Dest channel " + this.newChannel + " hungup after answer"); //$NON-NLS-1$//$NON-NLS-2$
                 originateLatch.countDown();
             }
             if ((this.monitorChannel1 != null) && (hangupChannel.isSame(this.monitorChannel1)))
@@ -499,8 +499,8 @@ public abstract class OriginateBaseClass extends EventListenerBaseClass
                                 originateLatch.countDown();
                             }
                         }
+                        logger.debug("Id is " + __originateID);
                     }
-                    logger.info("Id is " + __originateID);
                     break;
                 }
                 Thread.sleep(100);

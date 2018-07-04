@@ -33,7 +33,7 @@ public abstract class ActivityAgi extends ServiceAgiScriptImpl
             }
             if (channelProxy == null)
             {
-                logger.warn("'proxyId' var not set or proxy doesn't exist anymore, trying to match the channel name... "
+                logger.info("'proxyId' var not set or proxy doesn't exist anymore, trying to match the channel name... "
                         + channelName);
                 channelProxy = pbx.internalRegisterChannel(channel.getName(), channel.getUniqueId());
 

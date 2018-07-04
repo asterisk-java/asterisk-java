@@ -131,7 +131,7 @@ public class DialToAgiActivityImpl extends ActivityHelper<DialToAgiActivity> imp
 
             if (this.originatingChannel != null)
             {
-                logger.warn("Hanging up");
+                logger.info("Hanging up");
                 pbx.hangup(this.originatingChannel);
             }
         }
@@ -235,7 +235,14 @@ public class DialToAgiActivityImpl extends ActivityHelper<DialToAgiActivity> imp
 
     public void abort()
     {
-        originator.abort();
+        if (originator != null)
+        {
+            originator.abort();
+        }
+        else
+        {
+            logger.error("Call to abort, but it doesn't look like the Dial had started yet");
+        }
     }
 
 }
