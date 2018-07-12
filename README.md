@@ -21,6 +21,6 @@ To add a new version to this repository:
 	
 	mvn deploy 
 	
-	copy the files created under target/mvn-repo to the mvn-repo branch or asterisk-java
+	copy the files created under target/mvn-repo to the mvn-repo branch of asterisk-java
 	
 	commit and push the changes.
