@@ -14,3 +14,13 @@ To use this repository add these entries to your pom.xml
 			</snapshots>
 		</repository>
 	</repositories>
+
+To add a new version to this repository:
+
+	change to the branch you intend to build
+	
+	mvn deploy 
+	
+	copy the files created under target/mvn-repo to the mvn-repo branch or asterisk-java
+	
+	commit and push the changes.
