@@ -18,6 +18,8 @@ package org.asteriskjava.fastagi.command;
 
 import java.io.Serializable;
 
+import org.asteriskjava.AsteriskVersion;
+
 /**
  * Abstract base class that provides some convenience methods for 
  * implementing AgiCommand classes.
@@ -31,6 +33,7 @@ public abstract class AbstractAgiCommand implements Serializable, AgiCommand
      * Serial version identifier.
      */
     private static final long serialVersionUID = 3257849874518456633L;
+    protected AsteriskVersion asteriskVersion;
 
     public abstract String buildCommand();
 
@@ -87,5 +90,10 @@ public abstract class AbstractAgiCommand implements Serializable, AgiCommand
         sb.append("systemHashcode=").append(System.identityHashCode(this)).append("]");
 
         return sb.toString();
+    }
+
+    public void setAsteriskVersion(AsteriskVersion asteriskVersion)
+    {
+        this.asteriskVersion = asteriskVersion;
     }
 }

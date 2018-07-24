@@ -16,6 +16,7 @@
  */
 package org.asteriskjava.fastagi;
 
+import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.fastagi.command.AgiCommand;
 import org.asteriskjava.fastagi.reply.AgiReply;
 
@@ -878,5 +879,7 @@ public interface AgiChannel
     void bridge(String channelName, String options) throws AgiException;
 
     void queue(String queue) throws AgiException;
+
+    AsteriskVersion getAsteriskVersion();
 
 }

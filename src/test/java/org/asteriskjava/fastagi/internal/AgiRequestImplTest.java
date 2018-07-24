@@ -24,6 +24,7 @@ import static org.junit.Assert.fail;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.fastagi.AgiRequest;
 import org.junit.Test;
 
@@ -53,6 +54,7 @@ public class AgiRequestImplTest
         lines.add("agi_priority: 1");
         lines.add("agi_enhanced: 0.0");
         lines.add("agi_accountcode: ");
+        lines.add("agi_version: 13.1.0~dfsg-1.1ubuntu4.1");
 
         request = new AgiRequestImpl(lines);
 
@@ -72,6 +74,7 @@ public class AgiRequestImplTest
         assertEquals("incorrect priority", new Integer(1), request.getPriority());
         assertEquals("incorrect enhanced", Boolean.FALSE, request.getEnhanced());
         assertNull("incorrect accountCode must not be set", request.getAccountCode());
+        assertEquals("incorret Asterisk Version Number", AsteriskVersion.ASTERISK_13, request.getAsteriskVersion());
     }
 
     @Test

@@ -16,6 +16,7 @@
  */
 package org.asteriskjava.fastagi.internal;
 
+import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.fastagi.AgiChannel;
 import org.asteriskjava.fastagi.AgiException;
 import org.asteriskjava.fastagi.AgiHangupException;
@@ -113,6 +114,9 @@ public class AgiChannelImpl implements AgiChannel
 
     public synchronized AgiReply sendCommand(AgiCommand command) throws AgiException
     {
+        // make the Asterisk Version available to the AgiCommand, with out
+        // causing a major refactor
+        command.setAsteriskVersion(getAsteriskVersion());
         agiWriter.sendCommand(command);
         lastReply = agiReader.readReply();
 
@@ -130,6 +134,11 @@ public class AgiChannelImpl implements AgiChannel
         }
 
         return lastReply;
+    }
+
+    public AsteriskVersion getAsteriskVersion()
+    {
+        return request.getAsteriskVersion();
     }
 
     public void answer() throws AgiException
