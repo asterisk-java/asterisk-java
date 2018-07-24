@@ -27,7 +27,7 @@ public class BridgeCommand extends AbstractAgiCommand
         String command = "EXEC " + escapeAndQuote("bridge") + " " + escapeAndQuote(channel);
         if (options != null && options.length() > 0)
         {
-            if (asteriskVersion.isAtLeast(AsteriskVersion.ASTERISK_13))
+            if (getAsteriskVersion().isAtLeast(AsteriskVersion.ASTERISK_13))
             {
                 command += "," + escapeAndQuote(options);
             }
