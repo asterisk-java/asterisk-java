@@ -93,19 +93,6 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     private static final int MAX_VERSION_ATTEMPTS = 4;
     private static final Pattern SHOW_VERSION_PATTERN = Pattern.compile("^(core )?show version.*");
 
-    private static final Pattern VERSION_PATTERN_1_6 = Pattern.compile("^\\s*Asterisk ((SVN-branch|GIT)-)?1\\.6[-. ].*");
-    private static final Pattern VERSION_PATTERN_1_8 = Pattern.compile("^\\s*Asterisk ((SVN-branch|GIT)-)?1\\.8[-. ].*");
-    private static final Pattern VERSION_PATTERN_10 = Pattern.compile("^\\s*Asterisk ((SVN-branch|GIT)-)?10[-. ].*");
-    private static final Pattern VERSION_PATTERN_11 = Pattern.compile("^\\s*Asterisk ((SVN-branch|GIT)-)?11[-. ].*");
-    private static final Pattern VERSION_PATTERN_CERTIFIED_11 = Pattern
-            .compile("^\\s*Asterisk certified/((SVN-branch|GIT)-)?11[-. ].*");
-    private static final Pattern VERSION_PATTERN_12 = Pattern.compile("^\\s*Asterisk ((SVN-branch|GIT)-)?12[-. ].*");
-    private static final Pattern VERSION_PATTERN_13 = Pattern.compile("^\\s*Asterisk ((SVN-branch|GIT)-)?13[-. ].*");
-    private static final Pattern VERSION_PATTERN_CERTIFIED_13 = Pattern
-            .compile("^\\s*Asterisk certified/((SVN-branch|GIT)-)?13[-. ].*");
-    private static final Pattern VERSION_PATTERN_14 = Pattern.compile("^\\s*Asterisk (GIT-)?14[-. ].*");
-    private static final Pattern VERSION_PATTERN_15 = Pattern.compile("^\\s*Asterisk (GIT-)?15[-. ].*");
-
     private static final AtomicLong idCounter = new AtomicLong(0);
 
     /**
@@ -707,46 +694,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                         {
                             final String coreLine = coreShowVersionResult.get(0);
 
-                            if (VERSION_PATTERN_1_6.matcher(coreLine).matches())
-                            {
-                                return AsteriskVersion.ASTERISK_1_6;
-                            }
-                            else if (VERSION_PATTERN_1_8.matcher(coreLine).matches())
-                            {
-                                return AsteriskVersion.ASTERISK_1_8;
-                            }
-                            else if (VERSION_PATTERN_10.matcher(coreLine).matches())
-                            {
-                                return AsteriskVersion.ASTERISK_10;
-                            }
-                            else if (VERSION_PATTERN_11.matcher(coreLine).matches())
-                            {
-                                return AsteriskVersion.ASTERISK_11;
-                            }
-                            else if (VERSION_PATTERN_CERTIFIED_11.matcher(coreLine).matches())
-                            {
-                                return AsteriskVersion.ASTERISK_11;
-                            }
-                            else if (VERSION_PATTERN_12.matcher(coreLine).matches())
-                            {
-                                return AsteriskVersion.ASTERISK_12;
-                            }
-                            else if (VERSION_PATTERN_13.matcher(coreLine).matches())
-                            {
-                                return AsteriskVersion.ASTERISK_13;
-                            }
-                            else if (VERSION_PATTERN_CERTIFIED_13.matcher(coreLine).matches())
-                            {
-                                return AsteriskVersion.ASTERISK_13;
-                            }
-                            else if (VERSION_PATTERN_14.matcher(coreLine).matches())
-                            {
-                                return AsteriskVersion.ASTERISK_14;
-                            }
-                            else if (VERSION_PATTERN_15.matcher(coreLine).matches())
-                            {
-                                return AsteriskVersion.ASTERISK_15;
-                            }
+                            return AsteriskVersion.getDetermineVersionFromString(coreLine);
                         }
                     }
 
@@ -1316,39 +1264,41 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         {
             // When we receive get disconnected while we are connected start
             // a new reconnect thread and set the state to RECONNECTING.
-	        synchronized (this)
-	        {
-		        if (state == CONNECTED)
-		        {
-			        state = RECONNECTING;
-			        // close socket if still open and remove reference to
-			        // readerThread
-			        // After sending the DisconnectThread that thread will die
-			        // anyway.
-			        cleanup();
-			        Thread reconnectThread = new Thread(new Runnable() {
+            synchronized (this)
+            {
+                if (state == CONNECTED)
+                {
+                    state = RECONNECTING;
+                    // close socket if still open and remove reference to
+                    // readerThread
+                    // After sending the DisconnectThread that thread will die
+                    // anyway.
+                    cleanup();
+                    Thread reconnectThread = new Thread(new Runnable()
+                    {
 
-				        public void run() {
-					        reconnect();
-				        }
-			        });
-			        reconnectThread.setName(
-				        "Asterisk-Java ManagerConnection-" + id + "-Reconnect-" + reconnectThreadCounter.getAndIncrement());
-			        reconnectThread.setDaemon(true);
-			        reconnectThread.start();
-			        // now the DisconnectEvent is dispatched to registered
-			        // eventListeners
-			        // (clients) and after that the ManagerReaderThread is gone.
-			        // So effectively we replaced the reader thread by a
-			        // ReconnectThread.
-		        }
-		        else
-		        {
-			        // when we receive a DisconnectEvent while not connected we
-			        // ignore it and do not send it to clients
-			        return;
-		        }
-	        }
+                        public void run()
+                        {
+                            reconnect();
+                        }
+                    });
+                    reconnectThread.setName("Asterisk-Java ManagerConnection-" + id + "-Reconnect-"
+                            + reconnectThreadCounter.getAndIncrement());
+                    reconnectThread.setDaemon(true);
+                    reconnectThread.start();
+                    // now the DisconnectEvent is dispatched to registered
+                    // eventListeners
+                    // (clients) and after that the ManagerReaderThread is gone.
+                    // So effectively we replaced the reader thread by a
+                    // ReconnectThread.
+                }
+                else
+                {
+                    // when we receive a DisconnectEvent while not connected we
+                    // ignore it and do not send it to clients
+                    return;
+                }
+            }
         }
         if (event instanceof ProtocolIdentifierReceivedEvent)
         {
@@ -1483,40 +1433,42 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
             try
             {
-	            synchronized (this)
-	            {
-		            if (state != RECONNECTING) {
-			            break;
-		            }
-		            connect();
+                synchronized (this)
+                {
+                    if (state != RECONNECTING)
+                    {
+                        break;
+                    }
+                    connect();
 
-		            try
-		            {
-			            doLogin(defaultResponseTimeout, eventMask);
-			            logger.info("Successfully reconnected.");
-			            // everything is ok again, so we leave
-			            // when successful doLogin set the state to CONNECTED so no
-			            // need to adjust it
-			            break;
-		            }
-		            catch (AuthenticationFailedException e1)
-		            {
-			            if (keepAliveAfterAuthenticationFailure)
-			            {
-				            logger.error("Unable to log in after reconnect: " + e1.getMessage());
-			            }
-			            else
-			            {
-				            logger.error("Unable to log in after reconnect: " + e1.getMessage() + ". Giving up.");
-				            state = DISCONNECTED;
-			            }
-		            }
-		            catch (TimeoutException e1)
-		            {
-			            // shouldn't happen - but happens!
-			            logger.error("TimeoutException while trying to log in " + "after reconnect.");
-		            }
-	            }
+                    try
+                    {
+                        doLogin(defaultResponseTimeout, eventMask);
+                        logger.info("Successfully reconnected.");
+                        // everything is ok again, so we leave
+                        // when successful doLogin set the state to CONNECTED so
+                        // no
+                        // need to adjust it
+                        break;
+                    }
+                    catch (AuthenticationFailedException e1)
+                    {
+                        if (keepAliveAfterAuthenticationFailure)
+                        {
+                            logger.error("Unable to log in after reconnect: " + e1.getMessage());
+                        }
+                        else
+                        {
+                            logger.error("Unable to log in after reconnect: " + e1.getMessage() + ". Giving up.");
+                            state = DISCONNECTED;
+                        }
+                    }
+                    catch (TimeoutException e1)
+                    {
+                        // shouldn't happen - but happens!
+                        logger.error("TimeoutException while trying to log in " + "after reconnect.");
+                    }
+                }
             }
             catch (IOException e)
             {
