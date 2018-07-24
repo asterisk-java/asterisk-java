@@ -33,7 +33,7 @@ public class BridgeCommand extends AbstractAgiCommand
             }
             else
             {
-                command += " " + escapeAndQuote(options);
+                command += "|" + escapeAndQuote(options);
             }
         }
 
