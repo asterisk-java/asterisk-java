@@ -74,6 +74,8 @@ import org.asteriskjava.fastagi.command.StreamFileCommand;
 import org.asteriskjava.fastagi.command.VerboseCommand;
 import org.asteriskjava.fastagi.command.WaitForDigitCommand;
 import org.asteriskjava.fastagi.reply.AgiReply;
+import org.asteriskjava.util.Log;
+import org.asteriskjava.util.LogFactory;
 
 /**
  * Default implementation of the AgiChannel interface.
@@ -86,6 +88,8 @@ public class AgiChannelImpl implements AgiChannel
     private final AgiRequest request;
     private final AgiWriter agiWriter;
     private final AgiReader agiReader;
+
+    private static Log logger = LogFactory.getLog(AgiChannelImpl.class);
 
     private AgiReply lastReply;
 
@@ -138,6 +142,11 @@ public class AgiChannelImpl implements AgiChannel
 
     public AsteriskVersion getAsteriskVersion()
     {
+        if (request == null)
+        {
+            logger.warn("Request is null, I assume you're testing... returning AsteriskVersion 1.4");
+            return AsteriskVersion.ASTERISK_1_4;
+        }
         return request.getAsteriskVersion();
     }
 
