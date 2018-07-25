@@ -88,6 +88,7 @@ public class AgiChannelImpl implements AgiChannel
     private final AgiRequest request;
     private final AgiWriter agiWriter;
     private final AgiReader agiReader;
+    private AsteriskVersion asteriskVersion;
 
     private static Log logger = LogFactory.getLog(AgiChannelImpl.class);
 
@@ -147,7 +148,11 @@ public class AgiChannelImpl implements AgiChannel
             logger.warn("Request is null, I assume you're testing... returning AsteriskVersion 1.4");
             return AsteriskVersion.ASTERISK_1_4;
         }
-        return request.getAsteriskVersion();
+        if (asteriskVersion == null)
+        {
+            asteriskVersion = request.getAsteriskVersion();
+        }
+        return asteriskVersion;
     }
 
     public void answer() throws AgiException
