@@ -465,6 +465,6 @@ public class AgiOperations implements AgiChannel
     @Override
     public AsteriskVersion getAsteriskVersion()
     {
-        return channel.getAsteriskVersion();
+        return getChannel().getAsteriskVersion();
     }
 }
