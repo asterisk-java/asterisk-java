@@ -71,17 +71,22 @@ public class DialToAgi extends EventListenerBaseClass
             this.result[0] = trcResult;
             if (trcResult.isSuccess() == true)
             {
-
-                trcResult.getChannel().setCurrentActivityAction(action);
-                if (trcResult.getChannel().waitForChannelToReachAgi(30, TimeUnit.SECONDS))
+                if (trcResult.getChannel() != null)
                 {
-                    logger.info("Call reached AGI");
+                    trcResult.getChannel().setCurrentActivityAction(action);
+                    if (trcResult.getChannel().waitForChannelToReachAgi(30, TimeUnit.SECONDS))
+                    {
+                        logger.info("Call reached AGI");
+                    }
+                    else
+                    {
+                        logger.error("Call never reached agi");
+                    }
                 }
                 else
                 {
                     logger.error("Call never reached agi");
                 }
-
             }
             else
             {

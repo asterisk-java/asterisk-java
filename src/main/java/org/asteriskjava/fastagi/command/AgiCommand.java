@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.fastagi.command;
 
+import org.asteriskjava.AsteriskVersion;
+
 /**
  * AgiCommand that can be sent to Asterisk via the Asterisk Gateway Interface.<p>
  * This interface contains only one method that transforms the command to a
@@ -33,4 +35,6 @@ public interface AgiCommand
      * @return a string suitable to be sent to asterisk.
      */
     String buildCommand();
+
+    void setAsteriskVersion(AsteriskVersion asteriskVersion);
 }

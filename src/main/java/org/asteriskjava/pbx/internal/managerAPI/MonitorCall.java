@@ -1,6 +1,6 @@
 package org.asteriskjava.pbx.internal.managerAPI;
 
-import java.util.Date;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.asteriskjava.pbx.Call;
 import org.asteriskjava.pbx.PBXFactory;
@@ -13,7 +13,7 @@ public class MonitorCall
 {
     private static final Log logger = LogFactory.getLog(MonitorCall.class);
 
-    static long id = 1;
+    private static final AtomicLong id = new AtomicLong();
 
     private String file = null;
 
@@ -24,7 +24,7 @@ public class MonitorCall
         try
         {
             this.setFile();
-            final MonitorAction monitorAction = new MonitorAction(call.getRemoteParty(), this.file, "gsm", true); //$NON-NLS-1$
+            final MonitorAction monitorAction = new MonitorAction(call.getRemoteParty(), this.file, "gsm", true);
 
             AsteriskPBX pbx = (AsteriskPBX) PBXFactory.getActivePBX();
 
@@ -39,17 +39,16 @@ public class MonitorCall
 
     public String getFilename()
     {
-        return this.file + ".gsm"; //$NON-NLS-1$
+        return this.file + ".gsm";
     }
 
-    private synchronized void setFile()
+    private void setFile()
     {
-        long no = (new Date()).getTime();
+        long no = System.currentTimeMillis();
         no = no / 1000;
         final String unq = Long.toHexString(no);
 
-        this.file = "njr" + unq + "-" + MonitorCall.id; //$NON-NLS-1$ //$NON-NLS-2$
-        MonitorCall.id++;
+        this.file = "njr" + unq + "-" + MonitorCall.id.incrementAndGet();
 
     }
 

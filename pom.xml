@@ -4,7 +4,7 @@
 	<groupId>org.asteriskjava</groupId>
 	<artifactId>asterisk-java</artifactId>
 	<name>Asterisk-Java</name>
-	<version>2.0.3-SNAPSHOT</version>
+	<version>3.0.0-SNAP-SHOT</version>
 	<description>The free Java library for Asterisk PBX integration.</description>
 	<inceptionYear>2004</inceptionYear>
 
@@ -70,33 +70,15 @@
 		<url>https://github.com/asterisk-java/asterisk-java</url>
 	</scm>
 	<distributionManagement>
-		<snapshotRepository>
-			<id>ossrh</id>
-			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
-		</snapshotRepository>
 		<repository>
-			<id>ossrh</id>
-			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+			<id>internal</id>
+			<url>file://${project.build.directory}/mvn-repo</url>
 		</repository>
 	</distributionManagement>
 	<issueManagement>
 		<system>GitHub</system>
 		<url>https://github.com/asterisk-java/asterisk-java/issues</url>
 	</issueManagement>
-	<mailingLists>
-		<mailingList>
-			<name>Asterisk-Java User List</name>
-			<subscribe>http://lists.sourceforge.net/mailman/listinfo/asterisk-java-users</subscribe>
-			<unsubscribe>http://lists.sourceforge.net/mailman/listinfo/asterisk-java-users</unsubscribe>
-			<archive>http://sourceforge.net/mailarchive/forum.php?forum=asterisk-java-users</archive>
-		</mailingList>
-		<mailingList>
-			<name>Asterisk-Java Developer List</name>
-			<subscribe>http://lists.sourceforge.net/mailman/listinfo/asterisk-java-devel</subscribe>
-			<unsubscribe>http://lists.sourceforge.net/mailman/listinfo/asterisk-java-devel</unsubscribe>
-			<archive>http://sourceforge.net/mailarchive/forum.php?forum=asterisk-java-devel</archive>
-		</mailingList>
-	</mailingLists>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
@@ -138,8 +120,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.2</version>
 				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
+					<source>1.8</source>
+					<target>1.8</target>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -181,16 +163,16 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.17</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>1.7.9</version>
 			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.17</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
@@ -265,17 +247,6 @@
 								</goals>
 							</execution>
 						</executions>
-					</plugin>
-					<plugin>
-						<groupId>org.sonatype.plugins</groupId>
-						<artifactId>nexus-staging-maven-plugin</artifactId>
-						<version>1.6.5</version>
-						<extensions>true</extensions>
-						<configuration>
-							<serverId>ossrh</serverId>
-							<nexusUrl>https://oss.sonatype.org/</nexusUrl>
-							<autoReleaseAfterClose>false</autoReleaseAfterClose>
-						</configuration>
 					</plugin>
 				</plugins>
 			</build>

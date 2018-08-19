@@ -348,7 +348,7 @@ public class ChannelProxy implements Channel, ChannelHangupListener
         if (previousAction != null)
         {
             // when we cancel the previous action, the new one will be invoked
-            previousAction.cancel(this);
+            previousAction.cancel();
         }
     }
 

@@ -59,7 +59,7 @@ public class AgiChannelActivityPlayMessage implements AgiChannelActivityAction
     }
 
     @Override
-    public void cancel(Channel channel)
+    public void cancel()
     {
         hangup = true;
     }

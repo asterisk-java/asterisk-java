@@ -1,0 +1,31 @@
+agi_network: yes
+agi_network_script: route?targ=7601&ctx=Pre-Handset
+agi_request: agi://10.10.0.41/route?targ=7601&ctx=Pre-Handset
+agi_channel: Local/7610@default-2df1,1
+agi_language: en
+agi_type: Local
+agi_uniqueid: 1530169476.16133
+agi_callerid: unknown
+agi_calleridname: unknown
+agi_callingpres: 0
+agi_callingani2: 0
+agi_callington: 0
+agi_callingtns: 0
+agi_dnid: unknown
+agi_rdnis: unknown
+agi_context: routesv2-handset
+agi_extension: 7601
+agi_priority: 1
+agi_enhanced: 0.0
+agi_accountcode: 
+
+200 result=0
+200 result=1 ()
+200 result=0
+200 result=1
+200 result=0
+200 result=0
+200 result=0
+200 result=0
+200 result=1 ()
+200 result=1

@@ -6,6 +6,9 @@ INTRODUCTION
 
 The Asterisk-Java package consists of a set of Java classes that allow you to easily build Java applications that interact with an [Asterisk PBX Server](http://asterisk.org). Asterisk-Java supports both interfaces that Asterisk provides for this scenario: The [FastAGI](https://wiki.asterisk.org/wiki/display/AST/Application_AGI) protocol and the [Manager API](https://wiki.asterisk.org/wiki/display/AST/The+Asterisk+Manager+TCP+IP+API).
 
+You can find the Java docs for the lastest version here:
+[JavaDoc](https://javadoc.io/doc/org.asteriskjava/asterisk-java/2.0.2)
+
 FastAGI
 -------
 FastAGI lets you create a service that manages a call in a similar way to what a webserver handles a http request. FastAGI can be (and should be) used to replace dialplan. FastAGI is thousands of times faster than dialplan, easier to debug and lets you do call control in a language that you are familiar with.
@@ -40,6 +43,28 @@ Asterisk-Java is available from [here](https://github.com/asterisk-java/asterisk
 
 Maven Dependency
 ----------------
+Asterisk-Java 2.0.3
+
+	<repositories>
+		<repository>
+			<id>asterisk-java-mvn-repo</id>
+            <url>https://raw.githubusercontent.com/asterisk-java/asterisk-java/mvn-repo</url>
+ 			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+
+	<dependency>
+	  <groupId>org.asteriskjava</groupId>
+	  <artifactId>asterisk-java</artifactId>
+	  <version>2.0.3</version>
+	</dependency>
+
+
 Asterisk-Java 2.0
 
 	<dependency>

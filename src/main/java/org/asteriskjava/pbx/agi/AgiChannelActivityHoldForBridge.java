@@ -12,6 +12,7 @@ public class AgiChannelActivityHoldForBridge implements AgiChannelActivityAction
 {
     private final Log logger = LogFactory.getLog(this.getClass());
     private AgiChannelActivityBridge bridgeActivity;
+    private volatile boolean hangup = true;
 
     public AgiChannelActivityHoldForBridge(AgiChannelActivityBridge bridgeActivity)
     {
@@ -26,7 +27,10 @@ public class AgiChannelActivityHoldForBridge implements AgiChannelActivityAction
             channel.playMusicOnHold();
             bridgeActivity.sleepWhileBridged();
 
-            channel.hangup();
+            if (hangup)
+            {
+                channel.hangup();
+            }
         }
         catch (AgiHangupException e)
         {
@@ -42,10 +46,19 @@ public class AgiChannelActivityHoldForBridge implements AgiChannelActivityAction
     }
 
     @Override
-    public void cancel(Channel channel)
+    public void cancel()
     {
-        // TODO Auto-generated method stub
+        // this seems a bit strange, but the logic here is that if you cancel
+        // this action you want to invoke a new action. We can't end the bridge
+        // from here, but not hanging up when it does collapse is
+        // important.
+        hangup = false;
 
     }
-    // Logger logger = LogManager.getLogger();
+
+    public void hangupAfterBridge(boolean b)
+    {
+        hangup = b;
+    }
+
 }

@@ -1,5 +1,10 @@
 package org.asteriskjava.pbx.agi;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+
 import org.asteriskjava.fastagi.AgiException;
 import org.asteriskjava.fastagi.AgiHangupException;
 import org.asteriskjava.pbx.AgiChannelActivityAction;
@@ -8,6 +13,7 @@ import org.asteriskjava.pbx.ChannelHangupListener;
 import org.asteriskjava.pbx.InvalidChannelName;
 import org.asteriskjava.pbx.PBXFactory;
 import org.asteriskjava.pbx.agi.config.ServiceAgiScriptImpl;
+import org.asteriskjava.pbx.asterisk.wrap.actions.OriginateAction;
 import org.asteriskjava.pbx.internal.core.AsteriskPBX;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
@@ -15,7 +21,38 @@ import org.asteriskjava.util.LogFactory;
 public abstract class ActivityAgi extends ServiceAgiScriptImpl
 {
 
-    private final Log logger = LogFactory.getLog(this.getClass());
+    public static final String ARRIVAL_KEY = "ActivityAgiArrivalKey";
+
+    private final static Log logger = LogFactory.getLog(ActivityAgi.class);
+
+    private static final Map<String, ActivityArrivalListener> arrivalListeners = new ConcurrentHashMap<>();
+
+    public static AutoCloseable addArrivalListener(OriginateAction originate, ActivityArrivalListener listener)
+    {
+
+        final String key = UUID.randomUUID().toString();
+        arrivalListeners.put(key, listener);
+        if (arrivalListeners.size() > 100)
+        {
+            // pick one at random to remove
+            ActivityArrivalListener leaked = arrivalListeners.remove(arrivalListeners.keySet().iterator().next());
+            logger.error("Arrival Listeners are leaking" + leaked.getClass().getCanonicalName());
+        }
+
+        Map<String, String> vars = new HashMap<>();
+        vars.put("_" + ARRIVAL_KEY, key);
+        originate.setVariables(vars);
+        return new AutoCloseable()
+        {
+
+            @Override
+            public void close() throws Exception
+            {
+                arrivalListeners.remove(key);
+
+            }
+        };
+    }
 
     @Override
     public void service() throws AgiException
@@ -33,7 +70,7 @@ public abstract class ActivityAgi extends ServiceAgiScriptImpl
             }
             if (channelProxy == null)
             {
-                logger.warn("'proxyId' var not set or proxy doesn't exist anymore, trying to match the channel name... "
+                logger.info("'proxyId' var not set or proxy doesn't exist anymore, trying to match the channel name... "
                         + channelName);
                 channelProxy = pbx.internalRegisterChannel(channel.getName(), channel.getUniqueId());
 
@@ -51,7 +88,7 @@ public abstract class ActivityAgi extends ServiceAgiScriptImpl
                     final AgiChannelActivityAction currentActivityAction = channel.getCurrentActivityAction();
                     if (currentActivityAction != null)
                     {
-                        currentActivityAction.cancel(channel);
+                        currentActivityAction.cancel();
                     }
 
                 }
@@ -61,6 +98,16 @@ public abstract class ActivityAgi extends ServiceAgiScriptImpl
             if (action == null)
             {
                 action = new AgiChannelActivityHold();
+            }
+
+            String arrivalKey = channel.getVariable(ARRIVAL_KEY);
+            if (arrivalKey != null && arrivalKey.length() > 0)
+            {
+                ActivityArrivalListener listener = arrivalListeners.get(arrivalKey);
+                if (listener != null)
+                {
+                    listener.channelArrived(channelProxy);
+                }
             }
 
             boolean isAlive = true;

@@ -98,6 +98,7 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
         registerEventClass(ConfbridgeListRoomsCompleteEvent.class);
         registerEventClass(ConfbridgeStartEvent.class);
         registerEventClass(ConfbridgeTalkingEvent.class);
+        registerEventClass(ContactStatusEvent.class);
         registerEventClass(CoreShowChannelEvent.class);
         registerEventClass(CoreShowChannelsCompleteEvent.class);
         registerEventClass(DAHDIChannelEvent.class);
@@ -137,6 +138,8 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
         registerEventClass(LinkEvent.class);
         registerEventClass(ListDialplanEvent.class);
         registerEventClass(LocalBridgeEvent.class);
+        registerEventClass(LocalOptimizationBeginEvent.class);
+        registerEventClass(LocalOptimizationEndEvent.class);
         registerEventClass(LogChannelEvent.class);
         registerEventClass(NewConnectedLineEvent.class);
         registerEventClass(MasqueradeEvent.class);
@@ -467,7 +470,7 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
         }
         if (toRemove.isEmpty())
         {
-            logger.error("Couldn't remove event type " + eventClass);
+            logger.warn("Couldn't remove event type " + eventClass);
         }
         else
         {

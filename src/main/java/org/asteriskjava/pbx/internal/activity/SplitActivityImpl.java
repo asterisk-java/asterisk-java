@@ -17,6 +17,7 @@ import org.asteriskjava.pbx.ListenerPriority;
 import org.asteriskjava.pbx.PBXException;
 import org.asteriskjava.pbx.PBXFactory;
 import org.asteriskjava.pbx.activities.SplitActivity;
+import org.asteriskjava.pbx.agi.AgiChannelActivityBridge;
 import org.asteriskjava.pbx.agi.AgiChannelActivityHold;
 import org.asteriskjava.pbx.asterisk.wrap.actions.RedirectAction;
 import org.asteriskjava.pbx.asterisk.wrap.events.ManagerEvent;
@@ -199,8 +200,22 @@ public class SplitActivityImpl extends ActivityHelper<SplitActivity> implements 
         pbx.setVariable(channel1, "proxyId", "" + ((ChannelProxy) channel1).getIdentity());
         pbx.setVariable(channel2, "proxyId", "" + ((ChannelProxy) channel2).getIdentity());
 
-        channel1.setCurrentActivityAction(agi1);
-        channel2.setCurrentActivityAction(agi2);
+        // AgiChannelAcitivyBridge has a latch which other activities may be
+        // sleeping on, so it's important
+        // to change the other channels activity first to avoid it waking and
+        // taking an undesired action
+        // when the AgiChannelActivityBridge channel has it's acitvity
+        // cancelled.
+        if (channel2.getCurrentActivityAction() instanceof AgiChannelActivityBridge)
+        {
+            channel1.setCurrentActivityAction(agi1);
+            channel2.setCurrentActivityAction(agi2);
+        }
+        else
+        {
+            channel2.setCurrentActivityAction(agi2);
+            channel1.setCurrentActivityAction(agi1);
+        }
 
         final String agiExten = profile.getAgiExtension();
         final String agiContext = profile.getManagementContext();

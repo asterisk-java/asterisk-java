@@ -1,38 +1,23 @@
 package org.asteriskjava.pbx.asterisk.wrap.actions;
 
+import java.util.concurrent.atomic.AtomicLong;
+
 /**
  * Automatically generates a globally unique action id (based on the systems mac
  * address
  * 
  * @author bsutton
- * 
  */
 abstract public class AbstractManagerAction implements ManagerAction
 {
 
-	private static long _nextActionId = 1;
+    private final static AtomicLong _nextActionId = new AtomicLong();
 
-	private String _actionId;
+    private final String _actionId = "" + _nextActionId.incrementAndGet();
 
-	AbstractManagerAction()
-	{
-		this._actionId = generateActionId();
-	}
-
-	public String getActionId()
-	{
-		return this._actionId;
-	}
-
-	synchronized public String generateActionId()
-	{
-
-		return "" + _nextActionId++;
-	}
-
-	protected void setActionId(String actionId)
-	{
-		this._actionId = actionId;
-	}
+    public String getActionId()
+    {
+        return this._actionId;
+    }
 
 }
