@@ -83,9 +83,6 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
     private static final AtomicLong idCounter = new AtomicLong(0);
 
-    // current debian stable version, as of 03/07/2018
-    public static final AsteriskVersion DEFAULT_ASTERISK_VERSION = AsteriskVersion.ASTERISK_13;
-
     /**
      * Instance logger.
      */
@@ -644,8 +641,8 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
             } // NOPMD
         }
 
-        logger.error("Unable to determine asterisk version, assuming " + DEFAULT_ASTERISK_VERSION + "... you should expect problems to follow.");
-        return DEFAULT_ASTERISK_VERSION;
+        logger.error("Unable to determine asterisk version, assuming " + AsteriskVersion.DEFAULT_VERSION + "... you should expect problems to follow.");
+        return AsteriskVersion.DEFAULT_VERSION;
     }
 
     /**
@@ -789,7 +786,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
     /**
      * Implements synchronous sending of "simple" actions.
-     *
+     * 
      * @param timeout - in milliseconds
      */
     public ManagerResponse sendAction(ManagerAction action, long timeout)
@@ -1308,13 +1305,9 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     {
         logger.info("Connected via " + identifier);
 
-        if (!"Asterisk Call Manager/1.0".equals(identifier) && !"Asterisk Call Manager/1.1".equals(identifier) // Asterisk
-                                                                                                               // 1.6
-                && !"Asterisk Call Manager/1.2".equals(identifier) // bri
-                                                                   // stuffed
-                && !"Asterisk Call Manager/1.3".equals(identifier) // Asterisk
-                                                                   // 11
-                && !"Asterisk Call Manager/2.6.0".equals(identifier) // Asterisk
+        // NOTE: value is AMI_VERSION, defined in include/asterisk/manager.h
+
+        if (!"Asterisk Call Manager/2.6.0".equals(identifier) // Asterisk
                                                                      // 13
                 && !"Asterisk Call Manager/2.7.0".equals(identifier) // Asterisk
                                                                      // 13.2
@@ -1332,6 +1325,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                 && !"Asterisk Call Manager/4.0.0".equals(identifier) // since Asterisk 15
                 && !"Asterisk Call Manager/4.0.1".equals(identifier) // since Asterisk 15.1
                 && !"Asterisk Call Manager/4.0.2".equals(identifier) // since Asterisk 15.2
+                && !"Asterisk Call Manager/4.0.3".equals(identifier) // since Asterisk 15.3
 
                 && !"OpenPBX Call Manager/1.0".equals(identifier) && !"CallWeaver Call Manager/1.0".equals(identifier)
                 && !(identifier != null && identifier.startsWith("Asterisk Call Manager Proxy/")))

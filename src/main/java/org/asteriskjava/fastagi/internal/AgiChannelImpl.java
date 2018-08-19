@@ -145,8 +145,8 @@ public class AgiChannelImpl implements AgiChannel
     {
         if (request == null)
         {
-            logger.warn("Request is null, I assume you're testing... returning AsteriskVersion 1.4");
-            return AsteriskVersion.ASTERISK_1_4;
+            logger.warn("Request is null, I assume you're testing...");
+            return AsteriskVersion.DEFAULT_VERSION;
         }
         if (asteriskVersion == null)
         {

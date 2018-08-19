@@ -38,7 +38,7 @@ import org.asteriskjava.util.LogFactory;
 
 /**
  * Default implementation of the AGIRequest interface.
- *
+ * 
  * @author srt
  * @version $Id$
  */
@@ -107,7 +107,7 @@ public class AgiRequestImpl implements AgiRequest
      * prefix stripped) and the corresponding values.
      * <p>
      * Syntactically invalid and empty variables are skipped.
-     *
+     * 
      * @param lines the environment to transform.
      * @return a map with the variables set corresponding to the given
      *         environment.
@@ -169,7 +169,7 @@ public class AgiRequestImpl implements AgiRequest
 
     /**
      * Returns the name of the script to execute.
-     *
+     * 
      * @return the name of the script to execute.
      */
     public synchronized String getScript()
@@ -180,7 +180,7 @@ public class AgiRequestImpl implements AgiRequest
     /**
      * Returns the full URL of the request in the form
      * agi://host[:port][/script].
-     *
+     * 
      * @return the full URL of the request in the form
      *         agi://host[:port][/script].
      */
@@ -192,13 +192,13 @@ public class AgiRequestImpl implements AgiRequest
     @Override
     public AsteriskVersion getAsteriskVersion()
     {
-    	AsteriskVersion detected = AsteriskVersion.getDetermineVersionFromString("Asterisk " + request.get("version"));
-    	return detected != null ? detected : ManagerConnectionImpl.DEFAULT_ASTERISK_VERSION;
+        AsteriskVersion detected = AsteriskVersion.getDetermineVersionFromString("Asterisk " + request.get("version"));
+        return detected != null ? detected : AsteriskVersion.DEFAULT_VERSION;
     }
 
     /**
      * Returns the name of the channel.
-     *
+     * 
      * @return the name of the channel.
      */
     public String getChannel()
@@ -208,7 +208,7 @@ public class AgiRequestImpl implements AgiRequest
 
     /**
      * Returns the unqiue id of the channel.
-     *
+     * 
      * @return the unqiue id of the channel.
      */
     public String getUniqueId()
@@ -274,7 +274,7 @@ public class AgiRequestImpl implements AgiRequest
 
     /**
      * Returns the Caller*ID number using Asterisk 1.0 logic.
-     *
+     * 
      * @return the Caller*ID number
      */
     private synchronized String getCallerId10()
@@ -297,7 +297,7 @@ public class AgiRequestImpl implements AgiRequest
 
     /**
      * Returns the Caller*ID name using Asterisk 1.0 logic.
-     *
+     * 
      * @return the Caller*ID name
      */
     private synchronized String getCallerIdName10()
@@ -480,7 +480,7 @@ public class AgiRequestImpl implements AgiRequest
 
     /**
      * Parses the given parameter string and caches the result.
-     *
+     * 
      * @param s the parameter string to parse
      * @return a Map made up of parameter names their values
      */

@@ -616,7 +616,7 @@ public class ManagerConnectionImplTest
     public void testIsShowVersionCommandAction()
     {
         assertTrue(mc.isShowVersionCommandAction(new CoreSettingsAction()));
-		assertTrue(mc.isShowVersionCommandAction(new CommandAction("core show version")));
+        assertTrue(mc.isShowVersionCommandAction(new CommandAction("core show version")));
         assertFalse(mc.isShowVersionCommandAction(new PingAction()));
     }
 
