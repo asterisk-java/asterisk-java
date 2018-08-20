@@ -80,6 +80,7 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
     private final Log logger = LogFactory.getLog(getClass());
     private boolean muteSupported;
     private boolean bridgeSupport;
+    private boolean expectRenameEvents;
 
     private static final int MAX_MEETME_ROOMS = 500;
 
@@ -93,6 +94,7 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
 
             this.muteSupported = CoherentManagerConnection.getInstance().isMuteAudioSupported();
             this.bridgeSupport = CoherentManagerConnection.getInstance().isBridgeSupported();
+            expectRenameEvents = CoherentManagerConnection.getInstance().expectRenameEvents();
             liveChannels = new LiveChannelManager();
             try
             {
@@ -1024,6 +1026,11 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
     public List<ChannelProxy> getChannelList()
     {
         return liveChannels.getChannelList();
+    }
+
+    public boolean expectRenameEvents()
+    {
+        return expectRenameEvents;
     }
 
 }
