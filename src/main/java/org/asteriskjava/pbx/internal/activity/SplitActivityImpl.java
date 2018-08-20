@@ -236,18 +236,20 @@ public class SplitActivityImpl extends ActivityHelper<SplitActivity> implements 
             {
 
                 renameEventReceived.set(new CountDownLatch(1));
-
                 // final ManagerResponse response =
                 pbx.sendAction(redirect, 1000);
+                if (pbx.expectRenameEvents())
+                {
 
-                // wait for channels to unbridge
-                if (!renameEventReceived.get().await(2000, TimeUnit.MILLISECONDS))
-                {
-                    logger.error("There was no rename event");
-                }
-                else
-                {
-                    logger.warn("Channels are renaming, now waiting for Quiescent");
+                    // wait for channels to unbridge
+                    if (!renameEventReceived.get().await(2000, TimeUnit.MILLISECONDS))
+                    {
+                        logger.error("There was no rename event");
+                    }
+                    else
+                    {
+                        logger.warn("Channels are renaming, now waiting for Quiescent");
+                    }
                 }
 
                 channels.clear();
