@@ -31,17 +31,11 @@ public class AsteriskVersion implements Comparable<AsteriskVersion>, Serializabl
     private static final String VERSION_PATTERN_15 = "^\\s*Asterisk (GIT-)?15[-. ].*";
     private static final String VERSION_PATTERN_14 = "^\\s*Asterisk (GIT-)?14[-. ].*";
     private static final String VERSION_PATTERN_13 = "^\\s*Asterisk ((SVN-branch|GIT)-)?13[-. ].*";
-    private static final String VERSION_PATTERN_12 = "^\\s*Asterisk ((SVN-branch|GIT)-)?12[-. ].*";
-    private static final String VERSION_PATTERN_11 = "^\\s*Asterisk ((SVN-branch|GIT)-)?11[-. ].*";
-    private static final String VERSION_PATTERN_10 = "^\\s*Asterisk ((SVN-branch|GIT)-)?10[-. ].*";
-    private static final String VERSION_PATTERN_1_8 = "^\\s*Asterisk ((SVN-branch|GIT)-)?1\\.8[-. ].*";
-    private static final String VERSION_PATTERN_1_6 = "^\\s*Asterisk ((SVN-branch|GIT)-)?1\\.6[-. ].*";
     private final int version;
     private final String versionString;
     private final Pattern patterns[];
 
     private static final String VERSION_PATTERN_CERTIFIED_13 = "^\\s*Asterisk certified/((SVN-branch|GIT)-)?13[-. ].*";
-    private static final String VERSION_PATTERN_CERTIFIED_11 = "^\\s*Asterisk certified/((SVN-branch|GIT)-)?11[-. ].*";
 
     /**
      * Represents the Asterisk 1.0 series.
@@ -65,36 +59,35 @@ public class AsteriskVersion implements Comparable<AsteriskVersion>, Serializabl
      *
      * @since 1.0.0
      */
-    public static final AsteriskVersion ASTERISK_1_6 = new AsteriskVersion(160, "Asterisk 1.6", VERSION_PATTERN_1_6);
+    public static final AsteriskVersion ASTERISK_1_6 = new AsteriskVersion(160, "Asterisk 1.6", new String[]{});
 
     /**
      * Represents the Asterisk 1.8 series.
      *
      * @since 1.0.0
      */
-    public static final AsteriskVersion ASTERISK_1_8 = new AsteriskVersion(180, "Asterisk 1.8", VERSION_PATTERN_1_8);
+    public static final AsteriskVersion ASTERISK_1_8 = new AsteriskVersion(180, "Asterisk 1.8", new String[]{});
 
     /**
      * Represents the Asterisk 10 series.
      *
      * @since 1.0.0
      */
-    public static final AsteriskVersion ASTERISK_10 = new AsteriskVersion(1000, "Asterisk 10", VERSION_PATTERN_10);
+    public static final AsteriskVersion ASTERISK_10 = new AsteriskVersion(1000, "Asterisk 10", new String[]{});
 
     /**
      * Represents the Asterisk 11 series.
      *
      * @since 1.0.0
      */
-    public static final AsteriskVersion ASTERISK_11 = new AsteriskVersion(1100, "Asterisk 11",
-            new String[]{VERSION_PATTERN_11, VERSION_PATTERN_CERTIFIED_11});
+    public static final AsteriskVersion ASTERISK_11 = new AsteriskVersion(1100, "Asterisk 11", new String[]{});
 
     /**
      * Represents the Asterisk 12 series.
      *
      * @since 1.0.0
      */
-    public static final AsteriskVersion ASTERISK_12 = new AsteriskVersion(1200, "Asterisk 12", VERSION_PATTERN_12);
+    public static final AsteriskVersion ASTERISK_12 = new AsteriskVersion(1200, "Asterisk 12", new String[]{});
 
     /**
      * Represents the Asterisk 13 series.
@@ -118,8 +111,10 @@ public class AsteriskVersion implements Comparable<AsteriskVersion>, Serializabl
      */
     public static final AsteriskVersion ASTERISK_15 = new AsteriskVersion(1500, "Asterisk 15", VERSION_PATTERN_15);
 
-    private static final AsteriskVersion knownVersions[] = new AsteriskVersion[]{ASTERISK_15, ASTERISK_14, ASTERISK_13,
-            ASTERISK_12, ASTERISK_11, ASTERISK_10, ASTERISK_1_8, ASTERISK_1_6};
+    private static final AsteriskVersion knownVersions[] = new AsteriskVersion[]{ASTERISK_15, ASTERISK_14, ASTERISK_13};
+
+    // current debian stable version, as of 03/07/2018
+    public static final AsteriskVersion DEFAULT_VERSION = ASTERISK_13;
 
     /**
      * Serial version identifier.
@@ -191,6 +186,13 @@ public class AsteriskVersion implements Comparable<AsteriskVersion>, Serializabl
         return versionString;
     }
 
+    /**
+     * Determine the Asterisk version from the string returned by Asterisk.
+     * The string should contain "Asterisk " followed by a version number.
+     *
+     * @param coreLine
+     * @return the detected version, or null if unknown
+     */
     public static AsteriskVersion getDetermineVersionFromString(String coreLine)
     {
         for (AsteriskVersion version : knownVersions)
@@ -204,8 +206,6 @@ public class AsteriskVersion implements Comparable<AsteriskVersion>, Serializabl
             }
         }
 
-        // we just default to 1.4 - to further understand why, see
-        // ManagerConnectionImpl.determineVersion
-        return AsteriskVersion.ASTERISK_1_4;
+        return null;
     }
 }

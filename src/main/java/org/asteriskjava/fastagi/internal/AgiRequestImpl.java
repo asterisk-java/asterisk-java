@@ -31,6 +31,7 @@ import java.util.regex.Pattern;
 
 import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.fastagi.AgiRequest;
+import org.asteriskjava.manager.internal.ManagerConnectionImpl;
 import org.asteriskjava.util.AstUtil;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
@@ -69,7 +70,7 @@ public class AgiRequestImpl implements AgiRequest
 
     /**
      * Creates a new AGIRequestImpl.
-     * 
+     *
      * @param environment the first lines as received from Asterisk containing
      *            the environment.
      */
@@ -191,7 +192,8 @@ public class AgiRequestImpl implements AgiRequest
     @Override
     public AsteriskVersion getAsteriskVersion()
     {
-        return AsteriskVersion.getDetermineVersionFromString("Asterisk " + request.get("version"));
+        AsteriskVersion detected = AsteriskVersion.getDetermineVersionFromString("Asterisk " + request.get("version"));
+        return detected != null ? detected : AsteriskVersion.DEFAULT_VERSION;
     }
 
     /**
