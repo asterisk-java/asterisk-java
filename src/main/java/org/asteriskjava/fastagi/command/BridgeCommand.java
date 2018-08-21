@@ -1,5 +1,7 @@
 package org.asteriskjava.fastagi.command;
 
+import org.asteriskjava.AsteriskVersion;
+
 public class BridgeCommand extends AbstractAgiCommand
 {
     /**
@@ -25,7 +27,14 @@ public class BridgeCommand extends AbstractAgiCommand
         String command = "EXEC " + escapeAndQuote("bridge") + " " + escapeAndQuote(channel);
         if (options != null && options.length() > 0)
         {
-            command += " " + escapeAndQuote(options);
+            if (getAsteriskVersion().isAtLeast(AsteriskVersion.ASTERISK_13))
+            {
+                command += "," + escapeAndQuote(options);
+            }
+            else
+            {
+                command += "|" + escapeAndQuote(options);
+            }
         }
 
         return command;

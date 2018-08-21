@@ -19,6 +19,8 @@ package org.asteriskjava.fastagi;
 import java.net.InetAddress;
 import java.util.Map;
 
+import org.asteriskjava.AsteriskVersion;
+
 public class SimpleAgiRequest implements AgiRequest
 {
     InetAddress localAddress;
@@ -26,17 +28,18 @@ public class SimpleAgiRequest implements AgiRequest
     InetAddress remoteAddress;
     int remotePort;
     private String script;
+    private AsteriskVersion asteriskVersion;
 
     public SimpleAgiRequest()
     {
         this.script = "hello.agi";
     }
-    
+
     public SimpleAgiRequest(String script)
     {
         this.script = script;
     }
-    
+
     public Map<String, String> getRequest()
     {
         throw new UnsupportedOperationException();
@@ -73,12 +76,13 @@ public class SimpleAgiRequest implements AgiRequest
     }
 
     /**
-     * Returns the Caller*ID number, for example "1234".<p>
-     * Note: even with Asterisk 1.0 is contains only the numerical part
-     * of the Caller ID.
+     * Returns the Caller*ID number, for example "1234".
+     * <p>
+     * Note: even with Asterisk 1.0 is contains only the numerical part of the
+     * Caller ID.
      *
-     * @return the Caller*ID number, for example "1234", if no Caller*ID is set or it
-     *         is "unknown" <code>null</code> is returned.
+     * @return the Caller*ID number, for example "1234", if no Caller*ID is set
+     *         or it is "unknown" <code>null</code> is returned.
      * @deprecated as of 0.3, use {@link #getCallerIdNumber()} instead.
      */
     public String getCallerId()
@@ -209,5 +213,11 @@ public class SimpleAgiRequest implements AgiRequest
     public void setRemotePort(int remotePort)
     {
         this.remotePort = remotePort;
+    }
+
+    @Override
+    public AsteriskVersion getAsteriskVersion()
+    {
+        return asteriskVersion;
     }
 }

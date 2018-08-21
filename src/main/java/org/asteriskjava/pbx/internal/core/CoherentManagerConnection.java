@@ -113,6 +113,8 @@ class CoherentManagerConnection implements FilteredManagerListener<ManagerEvent>
     // ready to wait for one.
     private CountDownLatch _reconnectLatch = new CountDownLatch(0);
 
+    private boolean expectRenameEvents = true;
+
     public static synchronized void init()
             throws IllegalStateException, IOException, AuthenticationFailedException, TimeoutException, InterruptedException
     {
@@ -434,7 +436,11 @@ class CoherentManagerConnection implements FilteredManagerListener<ManagerEvent>
             {
                 muteAudioFound = true;
             }
-
+        }
+        if (CoherentManagerConnection.managerConnection.getVersion().isAtLeast(AsteriskVersion.ASTERISK_13))
+        {
+            // we are really checking for the use of PJ SIP
+            expectRenameEvents = false;
         }
         this.canMuteAudio = muteAudioFound;
         if (profile.getDisableBridge())
@@ -536,6 +542,11 @@ class CoherentManagerConnection implements FilteredManagerListener<ManagerEvent>
             // });
         }
 
+    }
+
+    public boolean expectRenameEvents()
+    {
+        return expectRenameEvents;
     }
 
 }

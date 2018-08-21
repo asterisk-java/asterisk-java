@@ -19,6 +19,8 @@ package org.asteriskjava.fastagi;
 import java.net.InetAddress;
 import java.util.Map;
 
+import org.asteriskjava.AsteriskVersion;
+
 /**
  * Provides client request information to an {@link org.asteriskjava.fastagi.AgiScript}.<p>
  * This includes information about the channel the script is invoked on and
@@ -294,4 +296,6 @@ public interface AgiRequest
      * @since 0.2
      */
     int getRemotePort();
+
+    AsteriskVersion getAsteriskVersion();
 }

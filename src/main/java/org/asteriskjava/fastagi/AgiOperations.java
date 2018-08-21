@@ -16,6 +16,7 @@
  */
 package org.asteriskjava.fastagi;
 
+import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.fastagi.command.AgiCommand;
 import org.asteriskjava.fastagi.internal.AgiConnectionHandler;
 import org.asteriskjava.fastagi.reply.AgiReply;
@@ -459,5 +460,11 @@ public class AgiOperations implements AgiChannel
     {
         getChannel().queue(queue);
 
+    }
+
+    @Override
+    public AsteriskVersion getAsteriskVersion()
+    {
+        return getChannel().getAsteriskVersion();
     }
 }

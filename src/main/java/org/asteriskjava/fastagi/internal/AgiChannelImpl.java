@@ -16,6 +16,7 @@
  */
 package org.asteriskjava.fastagi.internal;
 
+import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.fastagi.AgiChannel;
 import org.asteriskjava.fastagi.AgiException;
 import org.asteriskjava.fastagi.AgiHangupException;
@@ -73,6 +74,8 @@ import org.asteriskjava.fastagi.command.StreamFileCommand;
 import org.asteriskjava.fastagi.command.VerboseCommand;
 import org.asteriskjava.fastagi.command.WaitForDigitCommand;
 import org.asteriskjava.fastagi.reply.AgiReply;
+import org.asteriskjava.util.Log;
+import org.asteriskjava.util.LogFactory;
 
 /**
  * Default implementation of the AgiChannel interface.
@@ -85,6 +88,9 @@ public class AgiChannelImpl implements AgiChannel
     private final AgiRequest request;
     private final AgiWriter agiWriter;
     private final AgiReader agiReader;
+    private AsteriskVersion asteriskVersion;
+
+    private static Log logger = LogFactory.getLog(AgiChannelImpl.class);
 
     private AgiReply lastReply;
 
@@ -113,6 +119,9 @@ public class AgiChannelImpl implements AgiChannel
 
     public synchronized AgiReply sendCommand(AgiCommand command) throws AgiException
     {
+        // make the Asterisk Version available to the AgiCommand, with out
+        // causing a major refactor
+        command.setAsteriskVersion(getAsteriskVersion());
         agiWriter.sendCommand(command);
         lastReply = agiReader.readReply();
 
@@ -130,6 +139,20 @@ public class AgiChannelImpl implements AgiChannel
         }
 
         return lastReply;
+    }
+
+    public AsteriskVersion getAsteriskVersion()
+    {
+        if (request == null)
+        {
+            logger.warn("Request is null, I assume you're testing...");
+            return AsteriskVersion.DEFAULT_VERSION;
+        }
+        if (asteriskVersion == null)
+        {
+            asteriskVersion = request.getAsteriskVersion();
+        }
+        return asteriskVersion;
     }
 
     public void answer() throws AgiException
