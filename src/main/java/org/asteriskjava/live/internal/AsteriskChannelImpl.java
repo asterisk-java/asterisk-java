@@ -128,6 +128,11 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
      */
     private Extension parkedAt;
     /**
+     * Parkinglot where the call is parked if it is parked, <code>null</code>
+     * otherwise.
+     */
+    private String parkingLot;
+    /**
      * Last dtmf digit recieved on this channel if any, <code>null</code>
      * otherwise.
      */
@@ -917,12 +922,20 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         return parkedAt;
     }
 
-    void setParkedAt(Extension parkedAt)
+    public String getParkingLot()
+    {
+        return this.parkingLot;
+    }
+
+    void setParkedAt(Extension parkedAt, String parkingLot)
     {
         final Extension oldParkedAt = this.parkedAt;
+        final String oldParkingLot = this.parkingLot;
 
         this.parkedAt = parkedAt;
+        this.parkingLot = parkingLot;
         firePropertyChange(PROPERTY_PARKED_AT, oldParkedAt, parkedAt);
+        firePropertyChange(PROPERTY_PARKING_LOT, oldParkingLot, parkingLot);
     }
 
     void updateVariable(String name, String value)
