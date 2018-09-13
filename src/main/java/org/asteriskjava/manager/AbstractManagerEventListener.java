@@ -489,7 +489,8 @@ public abstract class AbstractManagerEventListener implements ManagerEventListen
 
         try
         {
-            Method method = this.getClass().getMethod("handleEvent", event.getClass());
+
+            Method method = this.getClass().getDeclaredMethod("handleEvent", new Class[]{event.getClass()});
             if (method != null)
             {
                 method.invoke(this, event);
