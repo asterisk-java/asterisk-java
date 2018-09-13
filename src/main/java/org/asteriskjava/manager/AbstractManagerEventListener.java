@@ -1,5 +1,7 @@
 package org.asteriskjava.manager;
 
+import java.lang.reflect.Method;
+
 import org.asteriskjava.manager.event.AgentCallbackLoginEvent;
 import org.asteriskjava.manager.event.AgentCallbackLogoffEvent;
 import org.asteriskjava.manager.event.AgentCalledEvent;
@@ -83,11 +85,14 @@ import org.asteriskjava.manager.event.UnparkedCallEvent;
 import org.asteriskjava.manager.event.UserEvent;
 import org.asteriskjava.manager.event.ZapShowChannelsCompleteEvent;
 import org.asteriskjava.manager.event.ZapShowChannelsEvent;
+import org.asteriskjava.util.Log;
+import org.asteriskjava.util.LogFactory;
 
 /**
- * Utility class that provides a protected handler method for each concrete manager event.
- * Makes life easier by removing the need to code endless if-then-else constructs with instanceof
- * checking for the events you are interested in.  
+ * Utility class that provides a protected handler method for each concrete
+ * manager event. Makes life easier by removing the need to code endless
+ * if-then-else constructs with instanceof checking for the events you are
+ * interested in.
  * <p>
  * Kindly donated by Steve Prior.
  * <p>
@@ -141,6 +146,8 @@ import org.asteriskjava.manager.event.ZapShowChannelsEvent;
  */
 public abstract class AbstractManagerEventListener implements ManagerEventListener
 {
+    Log logger = LogFactory.getLog(AbstractManagerEventListener.class);
+
     protected void handleEvent(AgentCallbackLoginEvent event)
     {
     }
@@ -176,7 +183,7 @@ public abstract class AbstractManagerEventListener implements ManagerEventListen
     protected void handleEvent(ChanSpyStartEvent event)
     {
     }
-   
+
     protected void handleEvent(ChanSpyStopEvent event)
     {
     }
@@ -184,20 +191,23 @@ public abstract class AbstractManagerEventListener implements ManagerEventListen
     protected void handleEvent(ConnectEvent event)
     {
     }
-  protected void handleEvent(DAHDIChannelEvent event)
+
+    protected void handleEvent(DAHDIChannelEvent event)
     {
     }
-  protected void handleEvent(SoftHangupRequestEvent event)
+
+    protected void handleEvent(SoftHangupRequestEvent event)
     {
     }
 
     protected void handleEvent(DialEvent event)
     {
     }
-    
+
     protected void handleEvent(HangupRequestEvent event)
-       {
-       }
+    {
+    }
+
     protected void handleEvent(DisconnectEvent event)
     {
     }
@@ -349,27 +359,35 @@ public abstract class AbstractManagerEventListener implements ManagerEventListen
     protected void handleEvent(DbGetResponseEvent event)
     {
     }
+
     protected void handleEvent(DongleNewSMSBase64Event event)
     {
     }
+
     protected void handleEvent(DongleStatusEvent event)
     {
     }
+
     protected void handleEvent(DongleCENDEvent event)
     {
     }
+
     protected void handleEvent(DongleCallStateChangeEvent event)
     {
     }
+
     protected void handleEvent(DongleNewSMSEvent event)
     {
     }
+
     protected void handleEvent(DongleNewCMGREvent event)
     {
     }
+
     protected void handleEvent(DongleDeviceEntryEvent event)
     {
     }
+
     protected void handleEvent(JoinEvent event)
     {
     }
@@ -405,7 +423,7 @@ public abstract class AbstractManagerEventListener implements ManagerEventListen
     protected void handleEvent(QueueEntryEvent event)
     {
     }
-    
+
     protected void handleEvent(QueueMemberEvent event)
     {
     }
@@ -441,6 +459,7 @@ public abstract class AbstractManagerEventListener implements ManagerEventListen
     protected void handleEvent(DahdiShowChannelsCompleteEvent event)
     {
     }
+
     protected void handleEvent(ZapShowChannelsEvent event)
     {
     }
@@ -465,325 +484,25 @@ public abstract class AbstractManagerEventListener implements ManagerEventListen
     @Override
     public void onManagerEvent(ManagerEvent event)
     {
-        if (event instanceof AgentCallbackLoginEvent)
-        {
-            handleEvent((AgentCallbackLoginEvent) event);
-        }
-        else if (event instanceof AgentCallbackLogoffEvent)
-        {
-            handleEvent((AgentCallbackLogoffEvent) event);
-        }
-        else if (event instanceof AgentCalledEvent)
-        {
-            handleEvent((AgentCalledEvent) event);
-        }
-        else if (event instanceof AgentLoginEvent)
-        {
-            handleEvent((AgentLoginEvent) event);
-        }
-        else if (event instanceof AgentLogoffEvent)
-        {
-            handleEvent((AgentLogoffEvent) event);
-        }
-        else if (event instanceof AlarmClearEvent)
-        {
-            handleEvent((AlarmClearEvent) event);
-        }
-        else if (event instanceof AlarmEvent)
-        {
-            handleEvent((AlarmEvent) event);
-        }
-        else if (event instanceof CdrEvent)
-        {
-            handleEvent((CdrEvent) event);
-        }
-        else if (event instanceof ConnectEvent)
-        {
-            handleEvent((ConnectEvent) event);
-        }
-         else if (event instanceof DAHDIChannelEvent)
-        {
-            handleEvent((DAHDIChannelEvent) event);
-        }
-        else if (event instanceof SoftHangupRequestEvent)
-        {
-            handleEvent((SoftHangupRequestEvent) event);
-        }
-        else if (event instanceof DialEvent)
-        {
-            handleEvent((DialEvent) event);
-        }
-        else if (event instanceof HangupRequestEvent)
-        {
-            handleEvent((HangupRequestEvent) event);
-        }
-        else if (event instanceof DisconnectEvent)
-        {
-            handleEvent((DisconnectEvent) event);
-        }
-        else if (event instanceof DndStateEvent)
-        {
-            handleEvent((DndStateEvent) event);
-        }
-        else if (event instanceof ExtensionStatusEvent)
-        {
-            handleEvent((ExtensionStatusEvent) event);
-        }
-        else if (event instanceof HoldedCallEvent)
-        {
-            handleEvent((HoldedCallEvent) event);
-        }
-        else if (event instanceof HoldEvent)
-        {
-            handleEvent((HoldEvent) event);
-        }
-        else if (event instanceof LogChannelEvent)
-        {
-            handleEvent((LogChannelEvent) event);
-        }
-        else if (event instanceof MessageWaitingEvent)
-        {
-            handleEvent((MessageWaitingEvent) event);
-        }
-        else if (event instanceof NewExtenEvent)
-        {
-            handleEvent((NewExtenEvent) event);
-        }
-        else if (event instanceof PeerStatusEvent)
-        {
-            handleEvent((PeerStatusEvent) event);
-        }
-        else if (event instanceof ProtocolIdentifierReceivedEvent)
-        {
-            handleEvent((ProtocolIdentifierReceivedEvent) event);
-        }
-        else if (event instanceof JoinEvent)
-        {
-            handleEvent((JoinEvent) event);
-        }
-        else if (event instanceof LeaveEvent)
-        {
-            handleEvent((LeaveEvent) event);
-        }
-        else if (event instanceof QueueEvent)
-        {
-            handleEvent((QueueEvent) event);
-        }
-        else if (event instanceof RegistrationsCompleteEvent)
-        {
-            handleEvent((RegistrationsCompleteEvent) event);
-        }
-        else if (event instanceof RegistryEntryEvent)
-        {
-            handleEvent((RegistryEntryEvent) event);
-        }
-        else if (event instanceof RegistryEvent)
-        {
-            handleEvent((RegistryEvent) event);
-        }
-        else if (event instanceof ReloadEvent)
-        {
-            handleEvent((ReloadEvent) event);
-        }
-        else if (event instanceof RenameEvent)
-        {
-            handleEvent((RenameEvent) event);
-        }
-        else if (event instanceof ShutdownEvent)
-        {
-            handleEvent((ShutdownEvent) event);
-        }
-        else if (event instanceof UserEvent)
-        {
-            handleEvent((UserEvent) event);
-        }
-        else if (event instanceof AgentCompleteEvent)
-        {
-            handleEvent((AgentCompleteEvent) event);
-        }
-        else if (event instanceof AgentConnectEvent)
-        {
-            handleEvent((AgentConnectEvent) event);
-        }
-        else if (event instanceof AgentDumpEvent)
-        {
-            handleEvent((AgentDumpEvent) event);
-        }
-        else if (event instanceof FaxReceivedEvent)
-        {
-            handleEvent((FaxReceivedEvent) event);
-        }
-        else if (event instanceof NewCallerIdEvent)
-        {
-            handleEvent((NewCallerIdEvent) event);
-        }
-        else if (event instanceof HangupEvent)
-        {
-            handleEvent((HangupEvent) event);
-        }
-        else if (event instanceof NewChannelEvent)
-        {
-            handleEvent((NewChannelEvent) event);
-        }
-        else if (event instanceof NewStateEvent)
-        {
-            handleEvent((NewStateEvent) event);
-        }
-        else if (event instanceof MeetMeJoinEvent)
-        {
-            handleEvent((MeetMeJoinEvent) event);
-        }
-        else if (event instanceof DongleNewSMSBase64Event)
-        {
-            handleEvent((DongleNewSMSBase64Event) event);
-        }
-         else if (event instanceof DongleCENDEvent)
-        {
-            handleEvent((DongleCENDEvent) event);
-        }
-          else if (event instanceof DongleCallStateChangeEvent)
-        {
-            handleEvent((DongleCallStateChangeEvent) event);
-        }
-           else if (event instanceof DongleNewSMSEvent)
-        {
-            handleEvent((DongleNewSMSEvent) event);
-        }
-            else if (event instanceof DongleNewCMGREvent)
-        {
-            handleEvent((DongleNewCMGREvent) event);
-        }
-        else if (event instanceof DongleStatusEvent)
-        {
-            handleEvent((DongleStatusEvent) event);
-        }
-        else if (event instanceof DongleDeviceEntryEvent)
-        {
-            handleEvent((DongleDeviceEntryEvent) event);
-        }
-        else if (event instanceof MeetMeLeaveEvent)
-        {
-            handleEvent((MeetMeLeaveEvent) event);
-        }
-        else if (event instanceof MeetMeMuteEvent)
-        {
-            handleEvent((MeetMeMuteEvent) event);
-        }
-        else if (event instanceof MeetMeTalkingEvent)
-        {
-            handleEvent((MeetMeTalkingEvent) event);
-        }
-        else if (event instanceof ParkedCallGiveUpEvent)
-        {
-            handleEvent((ParkedCallGiveUpEvent) event);
-        }
-        else if (event instanceof ParkedCallTimeOutEvent)
-        {
-            handleEvent((ParkedCallTimeOutEvent) event);
-        }
-        else if (event instanceof UnparkedCallEvent)
-        {
-            handleEvent((UnparkedCallEvent) event);
-        }
-        else if (event instanceof QueueMemberAddedEvent)
-        {
-            handleEvent((QueueMemberAddedEvent) event);
-        }
-        else if (event instanceof QueueMemberPausedEvent)
-        {
-            handleEvent((QueueMemberPausedEvent) event);
-        }
-        else if (event instanceof QueueMemberRemovedEvent)
-        {
-            handleEvent((QueueMemberRemovedEvent) event);
-        }
-        else if (event instanceof AgentsCompleteEvent)
-        {
-            handleEvent((AgentsCompleteEvent) event);
-        }
-        else if (event instanceof AgentsEvent)
-        {
-            handleEvent((AgentsEvent) event);
-        }
-        else if (event instanceof DbGetResponseEvent)
-        {
-            handleEvent((DbGetResponseEvent) event);
-        }
-        else if (event instanceof BridgeEvent)
-        {
-            handleEvent((BridgeEvent) event);
-        }
-        else if (event instanceof OriginateResponseEvent)
-        {
-            handleEvent((OriginateResponseEvent) event);
-        }
-        else if (event instanceof ParkedCallEvent)
-        {
-            handleEvent((ParkedCallEvent) event);
-        }
-        else if (event instanceof ParkedCallsCompleteEvent)
-        {
-            handleEvent((ParkedCallsCompleteEvent) event);
-        }
-        else if (event instanceof PeerEntryEvent)
-        {
-            handleEvent((PeerEntryEvent) event);
-        }
-        else if (event instanceof PeerlistCompleteEvent)
-        {
-            handleEvent((PeerlistCompleteEvent) event);
-        }
-        else if (event instanceof QueueEntryEvent)
-        {
-            handleEvent((QueueEntryEvent) event);
-        }
-        else if (event instanceof QueueMemberEvent)
-        {
-            handleEvent((QueueMemberEvent) event);
-        }
-        else if (event instanceof QueueMemberStatusEvent)
-        {
-            handleEvent((QueueMemberStatusEvent) event);
-        }
-        else if (event instanceof QueueParamsEvent)
-        {
-            handleEvent((QueueParamsEvent) event);
-        }
-        else if (event instanceof QueueStatusCompleteEvent)
-        {
-            handleEvent((QueueStatusCompleteEvent) event);
-        }
-        else if (event instanceof StatusCompleteEvent)
-        {
-            handleEvent((StatusCompleteEvent) event);
-        }
-        else if (event instanceof StatusEvent)
-        {
-            handleEvent((StatusEvent) event);
-        }
-        else if (event instanceof ZapShowChannelsCompleteEvent)
-        {
-            handleEvent((ZapShowChannelsCompleteEvent) event);
-        }
-        else if (event instanceof DahdiShowChannelsCompleteEvent)
-        {
-            handleEvent((DahdiShowChannelsCompleteEvent) event);
-        }
-        else if (event instanceof ZapShowChannelsEvent)
-        {
-            handleEvent((ZapShowChannelsEvent) event);
-        }
-        else if (event instanceof DahdiShowChannelsEvent)
-        {
-            handleEvent((DahdiShowChannelsEvent) event);
-        }
-        else if (event instanceof CoreShowChannelEvent)
-        {
-            handleEvent((CoreShowChannelEvent) event);
-        }
-        else if (event instanceof CoreShowChannelsCompleteEvent)
-        {
-            handleEvent((CoreShowChannelsCompleteEvent) event);
-        }
+
+        // if this turns out to be slow, we could consider caching the reflection lookup
+
+        try
+        {
+            Method method = this.getClass().getMethod("handleEvent", event.getClass());
+            if (method != null)
+            {
+                method.invoke(this, event);
+                return;
+            }
+        }
+        catch (Exception e)
+        {
+            logger.error(e, e);
+        }
+
+        logger.error("The event " + event.getClass()
+                + " couldn't be mapped to a method in AbstractManagerEventListener.java, someone should add it!");
+
     }
 }
