@@ -22,13 +22,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.asteriskjava.manager.event.*;
+import org.asteriskjava.manager.event.ManagerEvent;
+import org.asteriskjava.manager.event.PeerEntryEvent;
+import org.asteriskjava.manager.event.PeersEvent;
+import org.asteriskjava.manager.event.ResponseEvent;
+import org.asteriskjava.manager.event.UserEvent;
+import org.reflections.Reflections;
 
 /**
  * Default implementation of the EventBuilder interface.
@@ -42,191 +48,49 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
     private static final Set<String> ignoredAttributes = new HashSet<>(Arrays.asList("event"));
     private Map<String, Class< ? >> registeredEventClasses;
 
+    private final static Set<Class< ? extends ManagerEvent>> knownManagerEventClasses = loadEventClasses();
+
     EventBuilderImpl()
     {
         this.registeredEventClasses = new HashMap<>();
         registerBuiltinEventClasses();
     }
 
-    @SuppressWarnings({"deprecation"})
+    /**
+     * find and all manager event classes in the package
+     * org.asteriskjava.manager.event
+     */
+    private static Set<Class< ? extends ManagerEvent>> loadEventClasses()
+    {
+        Reflections reflections = new Reflections("org.asteriskjava.manager.event");
+
+        Set<Class< ? extends ManagerEvent>> managerEventClasses = reflections.getSubTypesOf(ManagerEvent.class);
+
+        Iterator<Class< ? extends ManagerEvent>> itr = managerEventClasses.iterator();
+        while (itr.hasNext())
+        {
+            Class< ? extends ManagerEvent> clazz = itr.next();
+            if (Modifier.isAbstract(clazz.getModifiers()))
+            {
+                itr.remove();
+            }
+        }
+        return managerEventClasses;
+    }
+
+    /**
+     * register the known ManagerEventClasses for this builder
+     */
     private void registerBuiltinEventClasses()
     {
-        // please add new event classes alphabetically
-        registerEventClass(AgentCallbackLoginEvent.class);
-        registerEventClass(AgentCallbackLogoffEvent.class);
-        registerEventClass(AgentCalledEvent.class);
-        registerEventClass(AgentConnectEvent.class);
-        registerEventClass(AgentCompleteEvent.class);
-        registerEventClass(AgentDumpEvent.class);
-        registerEventClass(AgentLoginEvent.class);
-        registerEventClass(AgentLogoffEvent.class);
-        registerEventClass(AgentRingNoAnswerEvent.class);
-        registerEventClass(AgentsEvent.class);
-        registerEventClass(AgentsCompleteEvent.class);
-        registerEventClass(AgiExecEndEvent.class);
-        registerEventClass(AgiExecEvent.class);
-        registerEventClass(AgiExecStartEvent.class);
-        registerEventClass(AntennaLevelEvent.class);
-        registerEventClass(AsyncAgiEvent.class);
-        registerEventClass(AsyncAgiEndEvent.class);
-        registerEventClass(AsyncAgiExecEvent.class);
-        registerEventClass(AsyncAgiStartEvent.class);
-        registerEventClass(AlarmEvent.class);
-        registerEventClass(AlarmClearEvent.class);
-        registerEventClass(BridgeCreateEvent.class);
-        registerEventClass(BridgeDestroyEvent.class);
-        registerEventClass(BridgeEnterEvent.class);
-        registerEventClass(BridgeEvent.class);
-        registerEventClass(BridgeExecEvent.class);
-        registerEventClass(BridgeLeaveEvent.class);
-        registerEventClass(BridgeMergeEvent.class);
-        registerEventClass(BlindTransferEvent.class);
-        registerEventClass(AttendedTransferEvent.class);
-        registerEventClass(CdrEvent.class);
-        registerEventClass(CelEvent.class);
-        registerEventClass(ChallengeSentEvent.class);
-        registerEventClass(ChannelReloadEvent.class);
-        registerEventClass(ChannelUpdateEvent.class);
-        registerEventClass(ChanSpyStartEvent.class);
-        registerEventClass(ChanSpyStopEvent.class);
-        registerEventClass(ConfbridgeEndEvent.class);
-        registerEventClass(ConfbridgeJoinEvent.class);
-        registerEventClass(ConfbridgeLeaveEvent.class);
-        registerEventClass(ConfbridgeListEvent.class);
-        registerEventClass(ConfbridgeListCompleteEvent.class);
-        registerEventClass(ConfbridgeListRoomsEvent.class);
-        registerEventClass(ConfbridgeListRoomsCompleteEvent.class);
-        registerEventClass(ConfbridgeStartEvent.class);
-        registerEventClass(ConfbridgeTalkingEvent.class);
-        registerEventClass(ContactStatusEvent.class);
-        registerEventClass(CoreShowChannelEvent.class);
-        registerEventClass(CoreShowChannelsCompleteEvent.class);
-        registerEventClass(DAHDIChannelEvent.class);
-        registerEventClass(DahdiShowChannelsEvent.class);
-        registerEventClass(DahdiShowChannelsCompleteEvent.class);
-        registerEventClass(DbGetResponseEvent.class);
-        registerEventClass(DeviceStateChangeEvent.class);
-        registerEventClass(DialBeginEvent.class);
-        registerEventClass(DialEndEvent.class);
-        registerEventClass(DialEvent.class);
-        registerEventClass(DndStateEvent.class);
-        registerEventClass(DongleNewSMSBase64Event.class);
-        registerEventClass(DongleCENDEvent.class);
-        registerEventClass(DongleCallStateChangeEvent.class);
-        registerEventClass(DongleNewSMSEvent.class);
-        registerEventClass(DongleNewCMGREvent.class);
-        registerEventClass(DongleStatusEvent.class);
-        registerEventClass(DongleDeviceEntryEvent.class);
-        registerEventClass(DongleShowDevicesCompleteEvent.class);
-        registerEventClass(DtmfBeginEvent.class);
-        registerEventClass(DtmfEndEvent.class);
-        registerEventClass(DtmfEvent.class);
-        registerEventClass(ExtensionStatusEvent.class);
-        registerEventClass(FaxDocumentStatusEvent.class);
-        registerEventClass(FaxReceivedEvent.class);
-        registerEventClass(FaxStatusEvent.class);
-        registerEventClass(FullyBootedEvent.class);
-        registerEventClass(HangupEvent.class);
-        registerEventClass(HangupRequestEvent.class);
-        registerEventClass(HoldedCallEvent.class);
-        registerEventClass(HoldEvent.class);
-        registerEventClass(InvalidPasswordEvent.class);
-        registerEventClass(JabberEventEvent.class);
-        registerEventClass(JitterBufStatsEvent.class);
-        registerEventClass(JoinEvent.class);
-        registerEventClass(LeaveEvent.class);
-        registerEventClass(LinkEvent.class);
-        registerEventClass(ListDialplanEvent.class);
-        registerEventClass(LocalBridgeEvent.class);
-        registerEventClass(LocalOptimizationBeginEvent.class);
-        registerEventClass(LocalOptimizationEndEvent.class);
-        registerEventClass(LogChannelEvent.class);
-        registerEventClass(NewConnectedLineEvent.class);
-        registerEventClass(MasqueradeEvent.class);
-        registerEventClass(MeetMeEndEvent.class);
-        registerEventClass(MeetMeJoinEvent.class);
-        registerEventClass(MeetMeLeaveEvent.class);
-        registerEventClass(MeetMeMuteEvent.class);
-        registerEventClass(MeetMeTalkingEvent.class);
-        registerEventClass(MeetMeTalkingRequestEvent.class);
-        registerEventClass(MeetMeStopTalkingEvent.class);
-        registerEventClass(MessageWaitingEvent.class);
-        registerEventClass(ModuleLoadReportEvent.class);
-        registerEventClass(MonitorStartEvent.class);
-        registerEventClass(MonitorStopEvent.class);
-        registerEventClass(MusicOnHoldEvent.class);
-        registerEventClass(MusicOnHoldStartEvent.class);
-        registerEventClass(MusicOnHoldStopEvent.class);
-        registerEventClass(NewAccountCodeEvent.class);
-        registerEventClass(NewCallerIdEvent.class);
-        registerEventClass(NewChannelEvent.class);
-        registerEventClass(NewExtenEvent.class);
-        registerEventClass(NewStateEvent.class);
-        registerEventClass(OriginateFailureEvent.class);
-        registerEventClass(OriginateSuccessEvent.class);
-        registerEventClass(OriginateResponseEvent.class);
-        registerEventClass(ParkedCallGiveUpEvent.class);
-        registerEventClass(ParkedCallEvent.class);
-        registerEventClass(ParkedCallTimeOutEvent.class);
-        registerEventClass(ParkedCallsCompleteEvent.class);
-        registerEventClass(PausedEvent.class);
-        registerEventClass(PeerEntryEvent.class);
-        registerEventClass(PeerlistCompleteEvent.class);
-        registerEventClass(PeersEvent.class);
-        registerEventClass(PeerStatusEvent.class);
-        registerEventClass(PickupEvent.class);
-        registerEventClass(PriEventEvent.class);
-        registerEventClass(QueueCallerAbandonEvent.class);
-        registerEventClass(QueueCallerJoinEvent.class);
-        registerEventClass(QueueCallerLeaveEvent.class);
-        registerEventClass(QueueEntryEvent.class);
-        registerEventClass(QueueMemberAddedEvent.class);
-        registerEventClass(QueueMemberEvent.class);
-        registerEventClass(QueueMemberPausedEvent.class);
-        registerEventClass(QueueMemberPauseEvent.class);
-        registerEventClass(QueueMemberPenaltyEvent.class);
-        registerEventClass(QueueMemberRemovedEvent.class);
-        registerEventClass(QueueMemberStatusEvent.class);
-        registerEventClass(QueueParamsEvent.class);
-        registerEventClass(QueueStatusCompleteEvent.class);
-        registerEventClass(QueueSummaryCompleteEvent.class);
-        registerEventClass(QueueSummaryEvent.class);
-        registerEventClass(ReceiveFaxEvent.class);
-        registerEventClass(RegistrationsCompleteEvent.class);
-        registerEventClass(RegistryEntryEvent.class);
-        registerEventClass(RegistryEvent.class);
-        registerEventClass(ReloadEvent.class);
-        registerEventClass(RenameEvent.class);
-        registerEventClass(RtcpReceivedEvent.class);
-        registerEventClass(RtcpSentEvent.class);
-        registerEventClass(RtpReceiverStatEvent.class);
-        registerEventClass(RtpSenderStatEvent.class);
-        registerEventClass(SendFaxStatusEvent.class);
-        registerEventClass(SendFaxEvent.class);
-        registerEventClass(SkypeAccountStatusEvent.class);
-        registerEventClass(SkypeBuddyEntryEvent.class);
-        registerEventClass(SkypeBuddyListCompleteEvent.class);
-        registerEventClass(SkypeBuddyStatusEvent.class);
-        registerEventClass(SkypeChatMessageEvent.class);
-        registerEventClass(SkypeLicenseEvent.class);
-        registerEventClass(SkypeLicenseListCompleteEvent.class);
-        registerEventClass(ShowDialplanCompleteEvent.class);
-        registerEventClass(ShutdownEvent.class);
-        registerEventClass(SoftHangupRequestEvent.class);
-        registerEventClass(StatusEvent.class);
-        registerEventClass(StatusCompleteEvent.class);
-        registerEventClass(SuccessfulAuthEvent.class);
-        registerEventClass(T38FaxStatusEvent.class);
-        registerEventClass(TransferEvent.class);
-        registerEventClass(UnholdEvent.class);
-        registerEventClass(UnpausedEvent.class);
-        registerEventClass(UnlinkEvent.class);
-        registerEventClass(UnparkedCallEvent.class);
-        registerEventClass(VarSetEvent.class);
-        registerEventClass(VoicemailUserEntryCompleteEvent.class);
-        registerEventClass(VoicemailUserEntryEvent.class);
-        registerEventClass(ZapShowChannelsEvent.class);
-        registerEventClass(ZapShowChannelsCompleteEvent.class);
+
+        for (Class< ? extends ManagerEvent> managerEventClass : knownManagerEventClasses)
+        {
+
+            registerEventClass(managerEventClass);
+
+        }
+
     }
 
     public final void registerEventClass(Class< ? extends ManagerEvent> clazz) throws IllegalArgumentException
@@ -253,10 +117,9 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
     /**
      * Registers a new event class for the event given by eventType.
      *
-     * @param eventType the name of the event to register the class for. For
-     *            example "Join".
-     * @param clazz the event class to register, must extend
-     *            {@link ManagerEvent}.
+     * @param eventType the name of the event to register the class for. For example
+     *            "Join".
+     * @param clazz the event class to register, must extend {@link ManagerEvent}.
      * @throws IllegalArgumentException if clazz is not a valid event class.
      */
     public final void registerEventClass(String eventType, Class< ? extends ManagerEvent> clazz)
