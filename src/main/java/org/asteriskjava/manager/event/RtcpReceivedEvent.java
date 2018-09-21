@@ -71,7 +71,7 @@ public class RtcpReceivedEvent extends AbstractRtcpEvent
     private InetAddress toAddress;
     private Integer toPort;
     private String sentntp;
-    private Integer sentPackets;
+    private Long sentPackets;
     private Long sentrtp;
     private String accountCode;
     
@@ -429,12 +429,12 @@ public class RtcpReceivedEvent extends AbstractRtcpEvent
         this.linkedId = linkedId;
     }
 
-    public Integer getSentPackets()
+    public Long getSentPackets()
     {
         return sentPackets;
     }
 
-    public void setSentPackets(Integer sentPackets)
+    public void setSentPackets(Long sentPackets)
     {
         this.sentPackets = sentPackets;
     }
