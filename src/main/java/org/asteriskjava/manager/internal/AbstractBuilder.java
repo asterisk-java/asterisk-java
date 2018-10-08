@@ -5,9 +5,11 @@ import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.asteriskjava.manager.event.UserEvent;
+import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.util.AstUtil;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
@@ -41,9 +43,9 @@ abstract class AbstractBuilder
             setterName = ReflectionUtil.stripIllegalCharacters(entry.getKey());
 
             /*
-             * The source property needs special handling as it is already
-             * defined in java.util.EventObject (the base class of
-             * ManagerEvent), so we have to translate it.
+             * The source property needs special handling as it is already defined in
+             * java.util.EventObject (the base class of ManagerEvent), so we have to
+             * translate it.
              */
             if ("source".equals(setterName))
             {
@@ -69,11 +71,16 @@ abstract class AbstractBuilder
 
             // it seems silly to warn if it's a user event -- maybe it was
             // intentional
-            if (setter == null && !(target instanceof UserEvent))
+            if (setter == null && !(target instanceof UserEvent) && !target.getClass().equals(ManagerResponse.class))
             {
                 logger.warn("Unable to set property '" + entry.getKey() + "' to '" + entry.getValue() + "' on "
                         + target.getClass().getName()
                         + ": no setter. Please report at https://github.com/asterisk-java/asterisk-java/issues");
+
+                for (Entry<String, Object> entry2 : attributes.entrySet())
+                {
+                    logger.warn("Key: " + entry2.getKey() + " Value: " + entry2.getValue());
+                }
             }
 
             if (setter == null)
@@ -95,10 +102,13 @@ abstract class AbstractBuilder
 
                     value = null;
                 }
-                if (value instanceof List) {
+                if (value instanceof List)
+                {
                     StringBuilder strBuff = new StringBuilder();
-                    for (String tmp : (List<String>) value) {
-                        if (tmp != null && tmp.length() != 0) {
+                    for (String tmp : (List<String>) value)
+                    {
+                        if (tmp != null && tmp.length() != 0)
+                        {
                             strBuff.append(tmp).append('\n');
                         }
                     }

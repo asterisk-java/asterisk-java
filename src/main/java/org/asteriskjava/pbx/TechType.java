@@ -15,7 +15,9 @@ public enum TechType implements Tech
     , DIALPLAN
     // CONSOLE is sent when a call is made from the asterisk console.
     // These type of channels are ignored.
-    , CONSOLE
+    , CONSOLE,
+
+    PJSIP
 
     // PARKING & SIPPEER are used during call parking
     , PARKING, SIPPEER;
@@ -23,8 +25,8 @@ public enum TechType implements Tech
     private static final Log logger = LogFactory.getLog(TechType.class);
 
     /**
-     * Extracts the technology from a fully qualified endpoint string of the
-     * form: TECH/NNNN
+     * Extracts the technology from a fully qualified endpoint string of the form:
+     * TECH/NNNN
      * 
      * @param fullyQualifiedEndPoint
      * @return
@@ -70,8 +72,8 @@ public enum TechType implements Tech
     }
 
     /**
-     * returns true if the endPoint name contains a tech descriptor even if it
-     * isn't a known descriptor.
+     * returns true if the endPoint name contains a tech descriptor even if it isn't
+     * a known descriptor.
      * 
      * @param endPointName
      * @return

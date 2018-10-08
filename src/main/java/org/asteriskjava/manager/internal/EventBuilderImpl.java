@@ -16,10 +16,17 @@
  */
 package org.asteriskjava.manager.internal;
 
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -28,13 +35,16 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 import org.asteriskjava.manager.event.ManagerEvent;
 import org.asteriskjava.manager.event.PeerEntryEvent;
 import org.asteriskjava.manager.event.PeersEvent;
 import org.asteriskjava.manager.event.ResponseEvent;
 import org.asteriskjava.manager.event.UserEvent;
-import org.reflections.Reflections;
+import org.asteriskjava.util.Log;
+import org.asteriskjava.util.LogFactory;
 
 /**
  * Default implementation of the EventBuilder interface.
@@ -48,6 +58,8 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
     private static final Set<String> ignoredAttributes = new HashSet<>(Arrays.asList("event"));
     private Map<String, Class< ? >> registeredEventClasses;
 
+    private static final Log logger = LogFactory.getLog(EventBuilderImpl.class);
+
     private final static Set<Class< ? extends ManagerEvent>> knownManagerEventClasses = loadEventClasses();
 
     EventBuilderImpl()
@@ -60,22 +72,109 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
      * find and all manager event classes in the package
      * org.asteriskjava.manager.event
      */
+    @SuppressWarnings("unchecked")
     private static Set<Class< ? extends ManagerEvent>> loadEventClasses()
     {
-        Reflections reflections = new Reflections("org.asteriskjava.manager.event");
+        Set<Class< ? extends ManagerEvent>> result = new HashSet<>();
 
-        Set<Class< ? extends ManagerEvent>> managerEventClasses = reflections.getSubTypesOf(ManagerEvent.class);
+        try
+        {
+            Set<String> classNames = getClassNamesFromPackage("org.asteriskjava.manager.event");
+            ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+            for (String className : classNames)
+            {
+                try
+                {
+                    Class< ? > clazz = classLoader.loadClass("org.asteriskjava.manager.event." + className);
+                    if (!Modifier.isAbstract(clazz.getModifiers()) && ManagerEvent.class.isAssignableFrom(clazz))
+                    {
+                        result.add((Class< ? extends ManagerEvent>) clazz);
+                    }
+                }
+                catch (Throwable e)
+                {
+                    logger.error(e, e);
+                }
 
-        Iterator<Class< ? extends ManagerEvent>> itr = managerEventClasses.iterator();
+            }
+            logger.error("Loaded " + result.size());
+        }
+        catch (Exception e)
+        {
+            logger.error(e, e);
+        }
+
+        return result;
+    }
+
+    public static Set<String> getClassNamesFromPackage(String packageName) throws IOException, URISyntaxException
+    {
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        Enumeration<URL> packageURLs;
+        Set<String> names = new HashSet<String>();
+
+        packageName = packageName.replace(".", "/");
+        packageURLs = classLoader.getResources(packageName);
+
+        while (packageURLs.hasMoreElements())
+        {
+            URL packageURL = packageURLs.nextElement();
+            if (packageURL.getProtocol().equals("jar"))
+            {
+                String jarFileName;
+
+                Enumeration<JarEntry> jarEntries;
+                String entryName;
+
+                // build jar file name, then loop through zipped entries
+                jarFileName = URLDecoder.decode(packageURL.getFile(), "UTF-8");
+                jarFileName = jarFileName.substring(5, jarFileName.indexOf("!"));
+                System.out.println(">" + jarFileName);
+                try (JarFile jf = new JarFile(jarFileName);)
+                {
+                    jarEntries = jf.entries();
+                    while (jarEntries.hasMoreElements())
+                    {
+                        entryName = jarEntries.nextElement().getName();
+                        if (entryName.startsWith(packageName) && entryName.endsWith(".class"))
+                        {
+                            entryName = entryName.substring(packageName.length() + 1, entryName.lastIndexOf('.'));
+                            names.add(entryName);
+                        }
+                    }
+                }
+
+                // loop through files in classpath
+            }
+            else
+            {
+                URI uri = new URI(packageURL.toString());
+                File folder = new File(uri.getPath());
+                // won't work with path which contains blank (%20)
+                // File folder = new File(packageURL.getFile());
+                File[] contenuti = folder.listFiles();
+                String entryName;
+                for (File actual : contenuti)
+                {
+                    entryName = actual.getName();
+                    entryName = entryName.substring(0, entryName.lastIndexOf('.'));
+                    names.add(entryName);
+                }
+            }
+        }
+
+        // clean up
+        Iterator<String> itr = names.iterator();
         while (itr.hasNext())
         {
-            Class< ? extends ManagerEvent> clazz = itr.next();
-            if (Modifier.isAbstract(clazz.getModifiers()))
+            String name = itr.next();
+            if (name.equals("package") || name.endsWith(".") || name.length() == 0)
             {
                 itr.remove();
             }
         }
-        return managerEventClasses;
+
+        return names;
     }
 
     /**

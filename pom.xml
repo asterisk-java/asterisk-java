@@ -71,17 +71,12 @@
 	</scm>
 	<distributionManagement>
 		<repository>
-			<id>internal</id>
-			<url>file://${project.build.directory}/mvn-repo</url>
+			<!-- these properties are stored in settings.xml, this is handy if you want to deploy to your own repository -->
+			<id>${distribution.id}</id>
+			<name>${distribution.name}</name>
+			<url>${distribution.url}</url>
 		</repository>
 	</distributionManagement>
-	<issueManagement>
-		<system>GitHub</system>
-		<url>https://github.com/asterisk-java/asterisk-java/issues</url>
-	</issueManagement>
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
 	<build>
 		<plugins>
 			<plugin>
