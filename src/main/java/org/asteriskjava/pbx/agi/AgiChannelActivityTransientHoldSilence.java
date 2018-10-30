@@ -23,7 +23,7 @@ public class AgiChannelActivityTransientHoldSilence implements AgiChannelActivit
 
     CountDownLatch latch = new CountDownLatch(1);
     volatile boolean callReachedAgi = false;
-    long timer = System.currentTimeMillis();
+    boolean firstPass = true;
 
     @Override
     public void execute(AgiChannel channel, Channel ichannel) throws AgiException, InterruptedException
@@ -32,10 +32,9 @@ public class AgiChannelActivityTransientHoldSilence implements AgiChannelActivit
         {
             callReachedAgi = true;
             channel.answer();
-            long secondsOnHold = Math.abs(System.currentTimeMillis() - timer) / 1000;
-            if (secondsOnHold > 8)
+            if (!firstPass)
             {
-                logger.info(ichannel + " is still on hold after " + secondsOnHold + " seconds, Hanging up");
+                logger.error(ichannel + " is still on hold after first pass, Hanging up");
                 channel.hangup();
             }
             else
@@ -46,6 +45,10 @@ public class AgiChannelActivityTransientHoldSilence implements AgiChannelActivit
         catch (AgiHangupException e)
         {
             logger.warn(e);
+        }
+        finally
+        {
+            firstPass = false;
         }
 
     }
