@@ -1,11 +1,15 @@
 package org.asteriskjava.pbx.internal.managerAPI;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import org.asteriskjava.live.ManagerCommunicationException;
+import org.asteriskjava.manager.TimeoutException;
 import org.asteriskjava.pbx.AsteriskSettings;
 import org.asteriskjava.pbx.CallerID;
 import org.asteriskjava.pbx.Channel;
@@ -30,6 +34,12 @@ import org.asteriskjava.util.LogFactory;
 
 public abstract class OriginateBaseClass extends EventListenerBaseClass
 {
+
+    private static final int MAX_CACHED_ORIGINATE_IDS = 100;
+    private final static ScheduledThreadPoolExecutor scheduler = new ScheduledThreadPoolExecutor(2);
+    private final static LinkedHashMap<String, String> channelToOriginateIdMap = new LinkedHashMap<String, String>();
+    private final static Object channelToOriginateIdMapSync = new Object();
+
     // Used to set a
     public static final String NJR_ORIGINATE_ID = "njrOriginateID";
 
@@ -416,7 +426,7 @@ public abstract class OriginateBaseClass extends EventListenerBaseClass
             // appear
             // within asterisk.
 
-            checkBridge(5, channel);
+            checkBridge(channel);
         }
 
         // Look for the channel events that tell us that both sides of the
@@ -428,111 +438,141 @@ public abstract class OriginateBaseClass extends EventListenerBaseClass
         // to ignore these.
         if (event instanceof BridgeEvent)
         {
-            final BridgeEvent bridgeEvent = (BridgeEvent) event;
-            Channel channel = bridgeEvent.getChannel1();
-            if (bridgeEvent.getChannel1().isLocal())
+            if (((BridgeEvent) event).isLink())
             {
-                channel = bridgeEvent.getChannel2();
+                final BridgeEvent bridgeEvent = (BridgeEvent) event;
+                Channel channel = bridgeEvent.getChannel1();
+                if (bridgeEvent.getChannel1().isLocal())
+                {
+                    channel = bridgeEvent.getChannel2();
+                }
+
+                OriginateBaseClass.logger.debug("new bridge event :" + channel + " channel1 = " + bridgeEvent.getChannel1() //$NON-NLS-2$
+                        + " channel2 =" + bridgeEvent.getChannel2());
+
+                // Now try to get the NJR_ORIGINATE_ID's value to see if this is
+                // an
+                // event for our channel
+                // If it is for our channel then the NJR_ORIGINATE_ID will match
+                // our
+                // originateID.
+                // We need to try several times as it can take some time to
+                // appear
+                // within asterisk.
+
+                checkBridge(channel);
             }
-
-            OriginateBaseClass.logger.debug("new bridge event :" + channel + " channel1 = " + bridgeEvent.getChannel1() //$NON-NLS-2$
-                    + " channel2 =" + bridgeEvent.getChannel2());
-
-            // Now try to get the NJR_ORIGINATE_ID's value to see if this is
-            // an
-            // event for our channel
-            // If it is for our channel then the NJR_ORIGINATE_ID will match
-            // our
-            // originateID.
-            // We need to try several times as it can take some time to
-            // appear
-            // within asterisk.
-
-            checkBridge(5, channel);
 
         }
 
     }
 
-    private void checkBridge(int ctr, Channel channel)
+    private void checkBridge(final Channel channel)
     {
-        while (ctr > 0)
+        Runnable runner = new Runnable()
         {
-            logger.debug("Check " + ctr);
-            try
+            int ctr = 0;
+
+            @Override
+            public void run()
             {
-                ctr--;
-                /*
-                 * wait 100ms to allow asterisk time to make the channel
-                 * variables available. If you request the channel variables too
-                 * soon asterisk responds with channel not found.
-                 */
-
-                AsteriskPBX pbx = (AsteriskPBX) PBXFactory.getActivePBX();
-                final GetVarAction var = new GetVarAction(channel, OriginateBaseClass.NJR_ORIGINATE_ID);
-
-                final ManagerResponse response = pbx.sendAction(var, 500);
-                String __originateID = response.getAttribute("value"); 
-
-                if ((__originateID != null))
+                try
                 {
-                    // Check if the event is for our channel by checking
-                    // the
-                    // originateIDs match.
-                    if ((this.originateID != null) && (__originateID.compareToIgnoreCase(this.originateID) == 0))
+                    boolean retry = internalCheckBridge(channel);
+
+                    if (retry && ctr++ < 5 && !originateLatch.await(0, TimeUnit.MILLISECONDS))
                     {
-                        if ((this.newChannel == null) && !channel.isLocal())
-                        {
-                            this.newChannel = channel;
-                            this.channelSeen = true;
-
-                            OriginateBaseClass.logger.debug("new channel name " + channel);  
-                            if (this.listener != null)
-                            {
-                                /*
-                                 * sometimes it's not actually the NJR phone
-                                 * we're originating. Otherwise update the NJR
-                                 * phone channel to allow the call to be
-                                 * cancelled before it's answered.
-                                 */
-                                this.listener.channelUpdate(channel);
-                            }
-
-                            if (this.originateSeen == true)
-                            {
-                                OriginateBaseClass.logger.debug("notifying success 362");
-                                originateLatch.countDown();
-                            }
-                        }
-                        logger.debug("Id is " + __originateID);
+                        logger.error("Rescheduling checkBridge for " + channel + ", looking for originateID:" + originateID);
+                        scheduler.schedule(this, 100, TimeUnit.MILLISECONDS);
                     }
-                    break;
                 }
-                Thread.sleep(100);
+                catch (Exception e)
+                {
+                    logger.error(e, e);
+                }
             }
-            catch (final Exception e)
+        };
+        scheduler.execute(runner);
+    }
+
+    private boolean internalCheckBridge(Channel channel)
+            throws IllegalArgumentException, IllegalStateException, IOException, TimeoutException
+    {
+        boolean retry = true;
+        String __originateID = null;
+        synchronized (channelToOriginateIdMapSync)
+        {
+            // remove and re-add the value to move it to the tail, this is so
+            // when we clean up we'll remove the least recently used item
+            __originateID = channelToOriginateIdMap.remove(channel.getChannelName());
+            if (__originateID != null)
             {
-                if (ctr == 0 && this.originateSuccess == false)
-                {
-                    // We only care about error if we are on the last
-                    // attempt.
-                    OriginateBaseClass.logger.error(e, e);
-                }
-                else
-                {
-                    try
-                    {
-                        Thread.sleep(100);
-                    }
-                    catch (InterruptedException e1)
-                    {
-                        logger.error(e1);
-                    }
-                }
-
+                channelToOriginateIdMap.put(channel.getChannelName(), __originateID);
             }
+            if (channelToOriginateIdMap.size() > MAX_CACHED_ORIGINATE_IDS)
+            {
+                String keyToRemove = channelToOriginateIdMap.keySet().iterator().next();
+                logger.info("Removing " + keyToRemove + " when checking " + channel.getChannelName());
+                channelToOriginateIdMap.remove(keyToRemove);
+            }
+        }
+
+        if (__originateID == null)
+        {
+            logger.info("trying to get id from asterisk");
+            AsteriskPBX pbx = (AsteriskPBX) PBXFactory.getActivePBX();
+            final GetVarAction var = new GetVarAction(channel, OriginateBaseClass.NJR_ORIGINATE_ID);
+
+            final ManagerResponse response = pbx.sendAction(var, 500);
+            __originateID = response.getAttribute("value");
 
         }
-}
+
+        if (__originateID != null)
+        {
+            if (__originateID.length() > 0)
+            {
+                retry = false;
+                logger.info("orid " + __originateID);
+                synchronized (channelToOriginateIdMapSync)
+                {
+                    channelToOriginateIdMap.put(channel.getChannelName(), __originateID);
+                }
+
+            }
+            // Check if the event is for our channel by checking
+            // the
+            // originateIDs match.
+            if ((this.originateID != null) && (__originateID.compareToIgnoreCase(this.originateID) == 0))
+            {
+                if ((this.newChannel == null) && !channel.isLocal())
+                {
+                    this.newChannel = channel;
+                    this.channelSeen = true;
+
+                    OriginateBaseClass.logger.debug("new channel name " + channel);
+                    if (this.listener != null)
+                    {
+                        /*
+                         * sometimes it's not actually the NJR phone we're
+                         * originating. Otherwise update the NJR phone channel
+                         * to allow the call to be cancelled before it's
+                         * answered.
+                         */
+                        this.listener.channelUpdate(channel);
+                    }
+
+                    if (this.originateSeen == true)
+                    {
+                        OriginateBaseClass.logger.debug("notifying success 362");
+                        originateLatch.countDown();
+                    }
+                }
+                logger.debug("Id is " + __originateID);
+            }
+        }
+        return retry;
+
+    }
 
 }
