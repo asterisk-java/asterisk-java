@@ -508,7 +508,6 @@ public abstract class OriginateBaseClass extends EventListenerBaseClass
                     {
                         handleId(channel, workResult);
                         done = true;
-                        logger.info("handled result " + channel + " '" + workResult + "'");
                     }
                     else
                     {
@@ -633,14 +632,19 @@ public abstract class OriginateBaseClass extends EventListenerBaseClass
         final GetVarAction var = new GetVarAction(channel, OriginateBaseClass.NJR_ORIGINATE_ID);
 
         final ManagerResponse response = pbx.sendAction(var, 500);
-        String __originateID = response.getAttribute("value");
-
-        if (__originateID != null && __originateID.length() > 0)
+        if (response.isSuccess())
         {
-            logger.info("Got id of " + __originateID);
-            return __originateID;
+            String __originateID = response.getAttribute("value");
+
+            if (__originateID != null && __originateID.length() > 0)
+            {
+                logger.info("Got id of " + __originateID);
+                return __originateID;
+            }
+            return null;
         }
-        return null;
+        logger.warn("Giving up because: " + response.getResponse());
+        return "";
     }
 
     private void handleId(Channel channel, String __originateID)
