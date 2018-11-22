@@ -40,54 +40,54 @@ public class AsteriskVersion implements Comparable<AsteriskVersion>, Serializabl
     /**
      * Represents the Asterisk 1.0 series.
      */
-    public static final AsteriskVersion ASTERISK_1_0 = new AsteriskVersion(100, "Asterisk 1.0", new String[]{});
+    public static final AsteriskVersion ASTERISK_1_0 = new AsteriskVersion(100, "Asterisk 1.0");
 
     /**
      * Represents the Asterisk 1.2 series.
      */
-    public static final AsteriskVersion ASTERISK_1_2 = new AsteriskVersion(120, "Asterisk 1.2", new String[]{});
+    public static final AsteriskVersion ASTERISK_1_2 = new AsteriskVersion(120, "Asterisk 1.2");
 
     /**
      * Represents the Asterisk 1.4 series.
      *
      * @since 0.3
      */
-    public static final AsteriskVersion ASTERISK_1_4 = new AsteriskVersion(140, "Asterisk 1.4", new String[]{});
+    public static final AsteriskVersion ASTERISK_1_4 = new AsteriskVersion(140, "Asterisk 1.4");
 
     /**
      * Represents the Asterisk 1.6 series.
      *
      * @since 1.0.0
      */
-    public static final AsteriskVersion ASTERISK_1_6 = new AsteriskVersion(160, "Asterisk 1.6", new String[]{});
+    public static final AsteriskVersion ASTERISK_1_6 = new AsteriskVersion(160, "Asterisk 1.6");
 
     /**
      * Represents the Asterisk 1.8 series.
      *
      * @since 1.0.0
      */
-    public static final AsteriskVersion ASTERISK_1_8 = new AsteriskVersion(180, "Asterisk 1.8", new String[]{});
+    public static final AsteriskVersion ASTERISK_1_8 = new AsteriskVersion(180, "Asterisk 1.8");
 
     /**
      * Represents the Asterisk 10 series.
      *
      * @since 1.0.0
      */
-    public static final AsteriskVersion ASTERISK_10 = new AsteriskVersion(1000, "Asterisk 10", new String[]{});
+    public static final AsteriskVersion ASTERISK_10 = new AsteriskVersion(1000, "Asterisk 10");
 
     /**
      * Represents the Asterisk 11 series.
      *
      * @since 1.0.0
      */
-    public static final AsteriskVersion ASTERISK_11 = new AsteriskVersion(1100, "Asterisk 11", new String[]{});
+    public static final AsteriskVersion ASTERISK_11 = new AsteriskVersion(1100, "Asterisk 11");
 
     /**
      * Represents the Asterisk 12 series.
      *
      * @since 1.0.0
      */
-    public static final AsteriskVersion ASTERISK_12 = new AsteriskVersion(1200, "Asterisk 12", new String[]{});
+    public static final AsteriskVersion ASTERISK_12 = new AsteriskVersion(1200, "Asterisk 12");
 
     /**
      * Represents the Asterisk 13 series.
@@ -95,7 +95,7 @@ public class AsteriskVersion implements Comparable<AsteriskVersion>, Serializabl
      * @since 1.0.0
      */
     public static final AsteriskVersion ASTERISK_13 = new AsteriskVersion(1300, "Asterisk 13",
-            new String[]{VERSION_PATTERN_13, VERSION_PATTERN_CERTIFIED_13});
+            VERSION_PATTERN_13, VERSION_PATTERN_CERTIFIED_13);
 
     /**
      * Represents the Asterisk 14 series.
@@ -121,12 +121,7 @@ public class AsteriskVersion implements Comparable<AsteriskVersion>, Serializabl
      */
     private static final long serialVersionUID = 1L;
 
-    private AsteriskVersion(int version, String versionString, String pattern)
-    {
-        this(version, versionString, new String[]{pattern});
-    }
-
-    private AsteriskVersion(int version, String versionString, String patterns[])
+    private AsteriskVersion(int version, String versionString, String... patterns)
     {
         this.version = version;
         this.versionString = versionString;
