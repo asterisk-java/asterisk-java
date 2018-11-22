@@ -31,7 +31,6 @@ import java.util.regex.Pattern;
 
 import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.fastagi.AgiRequest;
-import org.asteriskjava.manager.internal.ManagerConnectionImpl;
 import org.asteriskjava.util.AstUtil;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;

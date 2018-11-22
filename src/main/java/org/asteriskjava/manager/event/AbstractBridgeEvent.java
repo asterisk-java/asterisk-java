@@ -16,6 +16,7 @@ public abstract class AbstractBridgeEvent extends ManagerEvent
     private String bridgeName;
     private String bridgeTechnology;
     private String accountCode;
+    private String bridgevideosourcemode;
 
     AbstractBridgeEvent(Object source)
     {
@@ -90,5 +91,15 @@ public abstract class AbstractBridgeEvent extends ManagerEvent
     public void setAccountCode(String accountCode)
     {
         this.accountCode = accountCode;
+    }
+
+    public String getBridgevideosourcemode()
+    {
+        return bridgevideosourcemode;
+    }
+
+    public void setBridgevideosourcemode(String bridgevideosourcemode)
+    {
+        this.bridgevideosourcemode = bridgevideosourcemode;
     }
 }
