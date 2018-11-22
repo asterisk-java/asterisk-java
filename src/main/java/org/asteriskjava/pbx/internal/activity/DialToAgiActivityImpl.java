@@ -76,7 +76,8 @@ public class DialToAgiActivityImpl extends ActivityHelper<DialToAgiActivity> imp
         try (DialToAgi nr = new DialToAgi(this.toCallerID.toString()))
         {
             DialToAgiActivityImpl.logger.debug("**************************************************************************");
-            DialToAgiActivityImpl.logger.info("***********                begin dial out to agi               ***********");
+            DialToAgiActivityImpl.logger
+                    .info("***********                begin dial out to agi " + _originating + "              ***********");
             DialToAgiActivityImpl.logger.debug("**************************************************************************");
 
             originator = nr;
