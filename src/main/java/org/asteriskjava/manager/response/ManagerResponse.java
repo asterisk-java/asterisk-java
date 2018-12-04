@@ -49,7 +49,7 @@ public class ManagerResponse implements Serializable
     private String eventList;
     private String message;
     private String uniqueId;
-    private String events;
+    private Object events;
     private Map<String, Object> attributes;
     private String output;
 
@@ -305,12 +305,12 @@ public class ManagerResponse implements Serializable
         return sb.toString();
     }
 
-    public String getEvents()
+    public Object getEvents()
     {
         return events;
     }
 
-    public void setEvents(String events)
+    public void setEvents(Object events)
     {
         this.events = events;
     }
