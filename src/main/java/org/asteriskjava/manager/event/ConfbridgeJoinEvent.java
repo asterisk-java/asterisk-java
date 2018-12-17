@@ -12,11 +12,22 @@ public class ConfbridgeJoinEvent extends AbstractConfbridgeEvent
      * Serializable version identifier
      */
     private static final long serialVersionUID = 1L;
-    
+
+    String muted;
+
     public ConfbridgeJoinEvent(Object source)
     {
         super(source);
     }
 
-    
+    public String getMuted()
+    {
+        return muted;
+    }
+
+    public void setMuted(String muted)
+    {
+        this.muted = muted;
+    }
+
 }

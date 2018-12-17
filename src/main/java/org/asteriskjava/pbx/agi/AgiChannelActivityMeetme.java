@@ -29,10 +29,16 @@ public class AgiChannelActivityMeetme implements AgiChannelActivityAction
 
     private Channel ichannel;
 
-    public AgiChannelActivityMeetme(String room, String options)
+    private String bridgeProfile;
+
+    private String userProfile;
+
+    public AgiChannelActivityMeetme(String room, String options, String bridgeProfile, String userProfile)
     {
         this.room = room;
         this.options = options;
+        this.bridgeProfile = bridgeProfile;
+        this.userProfile = userProfile;
     }
 
     @Override
@@ -46,7 +52,7 @@ public class AgiChannelActivityMeetme implements AgiChannelActivityAction
         AsteriskPBX pbx = (AsteriskPBX) PBXFactory.getActivePBX();
         if (pbx.getVersion().isAtLeast(AsteriskVersion.ASTERISK_13))
         {
-            channel.confbridge(room, "transfer");
+            channel.confbridge(room, bridgeProfile + "," + userProfile);
         }
         else
         {
