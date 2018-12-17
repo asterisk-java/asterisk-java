@@ -19,10 +19,7 @@ import org.asteriskjava.pbx.asterisk.wrap.events.LinkEvent;
 import org.asteriskjava.pbx.asterisk.wrap.events.ManagerEvent;
 import org.asteriskjava.pbx.asterisk.wrap.events.StatusCompleteEvent;
 import org.asteriskjava.pbx.asterisk.wrap.events.StatusEvent;
-import org.asteriskjava.pbx.internal.asterisk.DurationRoomOwner;
-import org.asteriskjava.pbx.internal.asterisk.MeetmeRoom;
 import org.asteriskjava.pbx.internal.core.AsteriskPBX;
-import org.asteriskjava.pbx.internal.managerAPI.RedirectToMeetMe;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
@@ -87,36 +84,6 @@ public class BridgeActivityImpl extends ActivityHelper<BridgeActivity> implement
                     success = this._bridgeLatch.await(3, TimeUnit.SECONDS);
 
                 }
-                else if (pbx.isMeetmeInstalled())
-                {
-                    // As bridge isn't supported we need to do the bridge using
-                    // a
-                    // meetme
-                    // room
-
-                    final RedirectToMeetMe meetmeTransfer = new RedirectToMeetMe();
-                    // meetme room is empty
-                    // find a new available room.
-                    MeetmeRoom room = pbx.acquireMeetmeRoom(new DurationRoomOwner(30, TimeUnit.SECONDS));
-
-                    // redirect the lhs to meetme
-                    meetmeTransfer.redirectToMeetme(_lhsChannel, room.getRoomNumber(), true, false);
-
-                    // redirect destination this is not the marked call
-                    // as we want this to be hung up if no other calls are left
-                    // in
-                    // this
-                    // room
-                    final boolean markedCall = !_rhsChannel.canDetectHangup();
-                    meetmeTransfer.redirectToMeetme(_rhsChannel, room.getRoomNumber(), markedCall, false);
-
-                    // TODO put some logic to check that the meetme actually
-                    // completes.
-                    success = true;
-
-                }
-                else
-                    throw new PBXException("Cannot bridge two calls as neither the BridgeAction nor Meetme is available");
             }
             catch (IllegalArgumentException | IllegalStateException | InterruptedException e)
             {

@@ -3,7 +3,6 @@ package org.asteriskjava.pbx.agi;
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 
-import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.fastagi.AgiChannel;
 import org.asteriskjava.fastagi.AgiException;
 import org.asteriskjava.manager.TimeoutException;
@@ -23,9 +22,6 @@ public class AgiChannelActivityMeetme implements AgiChannelActivityAction
     CountDownLatch latch = new CountDownLatch(1);
     private String room;
     private volatile boolean hangup = true;
-    // volatile private iChannel ichannel;
-
-    private String options;
 
     private Channel ichannel;
 
@@ -33,10 +29,9 @@ public class AgiChannelActivityMeetme implements AgiChannelActivityAction
 
     private String userProfile;
 
-    public AgiChannelActivityMeetme(String room, String options, String bridgeProfile, String userProfile)
+    public AgiChannelActivityMeetme(String room, String bridgeProfile, String userProfile)
     {
         this.room = room;
-        this.options = options;
         this.bridgeProfile = bridgeProfile;
         this.userProfile = userProfile;
     }
@@ -49,15 +44,8 @@ public class AgiChannelActivityMeetme implements AgiChannelActivityAction
             throw new NullPointerException("ichannel cannot be null");
         }
         this.ichannel = ichannel;
-        AsteriskPBX pbx = (AsteriskPBX) PBXFactory.getActivePBX();
-        if (pbx.getVersion().isAtLeast(AsteriskVersion.ASTERISK_13))
-        {
-            channel.confbridge(room, bridgeProfile + "," + userProfile);
-        }
-        else
-        {
-            channel.meetme(room, options);
-        }
+        channel.confbridge(room, bridgeProfile + "," + userProfile);
+
         if (hangup)
         {
             try
