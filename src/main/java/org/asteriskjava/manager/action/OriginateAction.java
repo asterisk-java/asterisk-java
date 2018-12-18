@@ -484,14 +484,16 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
     /**
      * @param earlyMedia the earlyMedia to set
      */
-    public void setEarlyMedia(Boolean earlyMedia) {
+    public void setEarlyMedia(Boolean earlyMedia)
+    {
         this.earlyMedia = earlyMedia;
     }
 
     /**
      * @return the earlyMedia
      */
-    public Boolean getEarlyMedia() {
+    public Boolean getEarlyMedia()
+    {
         return earlyMedia;
     }
 
@@ -563,6 +565,27 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
         else
         {
             logger.error("Already added the sip header " + header);
+        }
+    }
+
+    public void addPjSipHeader(VariableInheritance inheritance, String header)
+    {
+
+        String[] parts = header.split(":");
+        if (parts.length == 2)
+        {
+            String varName = "PJSIP_HEADER" + "(add," + parts[0] + ")";
+            String varValue = parts[1];
+
+            if (!preventDuplicateSipHeaders.contains(header))
+            {
+                setVariable(varName, varValue);
+                preventDuplicateSipHeaders.add(header);
+            }
+            else
+            {
+                logger.error("Already added the sip header " + header);
+            }
         }
     }
 
