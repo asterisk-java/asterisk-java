@@ -16,7 +16,7 @@
  */
 package org.asteriskjava.manager.event;
 
-public class DialState extends ManagerEvent
+public class DialStateEvent extends ManagerEvent
 {
     private static final long serialVersionUID = 1L;
 
@@ -36,8 +36,13 @@ public class DialState extends ManagerEvent
     String destUniqueId;
     String dialStatus;
     String privilege;
+    String uniqueId;
+    String linkedId;
+    String accountCode;
+    String language;
+    String channel;
 
-    public DialState(Object source)
+    public DialStateEvent(Object source)
     {
         super(source);
     }
@@ -202,4 +207,53 @@ public class DialState extends ManagerEvent
         this.privilege = privilege;
     }
 
+    public String getUniqueId()
+    {
+        return uniqueId;
+    }
+
+    public void setUniqueId(String uniqueId)
+    {
+        this.uniqueId = uniqueId;
+    }
+
+    public String getLinkedId()
+    {
+        return linkedId;
+    }
+
+    public void setLinkedId(String linkedId)
+    {
+        this.linkedId = linkedId;
+    }
+
+    public String getAccountCode()
+    {
+        return accountCode;
+    }
+
+    public void setAccountCode(String accountCode)
+    {
+        this.accountCode = accountCode;
+    }
+
+    public String getLanguage()
+    {
+        return language;
+    }
+
+    public void setLanguage(String language)
+    {
+        this.language = language;
+    }
+
+    public String getChannel()
+    {
+        return channel;
+    }
+
+    public void setChannel(String channel)
+    {
+        this.channel = channel;
+    }
 }
