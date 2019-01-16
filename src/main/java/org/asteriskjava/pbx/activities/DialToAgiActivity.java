@@ -7,12 +7,16 @@ import org.asteriskjava.pbx.EndPoint;
 public interface DialToAgiActivity extends Activity
 {
 
-	void markCancelled();
+    void markCancelled();
 
-	boolean cancelledByOperator();
+    boolean cancelledByOperator();
 
-	EndPoint getOriginatingEndPoint();
+    EndPoint getOriginatingEndPoint();
 
-	Channel getOriginatingChannel();
+    Channel getOriginatingChannel();
+
+    void abort();
+
+    void dial();
 
 }
