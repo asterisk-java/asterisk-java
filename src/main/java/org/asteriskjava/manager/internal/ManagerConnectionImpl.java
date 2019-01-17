@@ -16,56 +16,10 @@
  */
 package org.asteriskjava.manager.internal;
 
-import static org.asteriskjava.manager.ManagerConnectionState.CONNECTED;
-import static org.asteriskjava.manager.ManagerConnectionState.CONNECTING;
-import static org.asteriskjava.manager.ManagerConnectionState.DISCONNECTED;
-import static org.asteriskjava.manager.ManagerConnectionState.DISCONNECTING;
-import static org.asteriskjava.manager.ManagerConnectionState.INITIAL;
-import static org.asteriskjava.manager.ManagerConnectionState.RECONNECTING;
-
-import java.io.IOException;
-import java.io.Serializable;
-import java.net.InetAddress;
-import java.net.Socket;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.asteriskjava.AsteriskVersion;
-import org.asteriskjava.manager.AuthenticationFailedException;
-import org.asteriskjava.manager.EventTimeoutException;
-import org.asteriskjava.manager.ExpectedResponse;
-import org.asteriskjava.manager.ManagerConnection;
-import org.asteriskjava.manager.ManagerConnectionState;
-import org.asteriskjava.manager.ManagerEventListener;
-import org.asteriskjava.manager.ResponseEvents;
-import org.asteriskjava.manager.SendActionCallback;
-import org.asteriskjava.manager.TimeoutException;
-import org.asteriskjava.manager.action.ChallengeAction;
-import org.asteriskjava.manager.action.CommandAction;
-import org.asteriskjava.manager.action.EventGeneratingAction;
-import org.asteriskjava.manager.action.LoginAction;
-import org.asteriskjava.manager.action.LogoffAction;
-import org.asteriskjava.manager.action.ManagerAction;
-import org.asteriskjava.manager.action.UserEventAction;
-import org.asteriskjava.manager.event.ConnectEvent;
-import org.asteriskjava.manager.event.DialBeginEvent;
-import org.asteriskjava.manager.event.DialEvent;
-import org.asteriskjava.manager.event.DisconnectEvent;
-import org.asteriskjava.manager.event.ManagerEvent;
-import org.asteriskjava.manager.event.ProtocolIdentifierReceivedEvent;
-import org.asteriskjava.manager.event.ResponseEvent;
+import org.asteriskjava.manager.*;
+import org.asteriskjava.manager.action.*;
+import org.asteriskjava.manager.event.*;
 import org.asteriskjava.manager.response.ChallengeResponse;
 import org.asteriskjava.manager.response.CommandResponse;
 import org.asteriskjava.manager.response.ManagerError;
@@ -75,6 +29,23 @@ import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 import org.asteriskjava.util.SocketConnectionFacade;
 import org.asteriskjava.util.internal.SocketConnectionFacadeImpl;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.*;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static org.asteriskjava.manager.ManagerConnectionState.*;
 
 /**
  * Internal implemention of the ManagerConnection interface.
@@ -620,7 +591,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
         logger.info("Successfully logged in");
 
-        version = determineVersion();
+        version = AsteriskVersion.ASTERISK_13;
 
         state = CONNECTED;
 
@@ -898,7 +869,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
     /**
      * Implements synchronous sending of "simple" actions.
-     * 
+     *
      * @param timeout - in milliseconds
      */
     public ManagerResponse sendAction(ManagerAction action, long timeout)
