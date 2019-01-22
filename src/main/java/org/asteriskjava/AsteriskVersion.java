@@ -28,6 +28,7 @@ import java.util.regex.Pattern;
  */
 public class AsteriskVersion implements Comparable<AsteriskVersion>, Serializable
 {
+    private static final String VERSION_PATTERN_16 = "^\\s*Asterisk (GIT-)?16[-. ].*";
     private static final String VERSION_PATTERN_15 = "^\\s*Asterisk (GIT-)?15[-. ].*";
     private static final String VERSION_PATTERN_14 = "^\\s*Asterisk (GIT-)?14[-. ].*";
     private static final String VERSION_PATTERN_13 = "^\\s*Asterisk ((SVN-branch|GIT)-)?13[-. ].*";
@@ -94,8 +95,8 @@ public class AsteriskVersion implements Comparable<AsteriskVersion>, Serializabl
      *
      * @since 1.0.0
      */
-    public static final AsteriskVersion ASTERISK_13 = new AsteriskVersion(1300, "Asterisk 13",
-            VERSION_PATTERN_13, VERSION_PATTERN_CERTIFIED_13);
+    public static final AsteriskVersion ASTERISK_13 = new AsteriskVersion(1300, "Asterisk 13", VERSION_PATTERN_13,
+            VERSION_PATTERN_CERTIFIED_13);
 
     /**
      * Represents the Asterisk 14 series.
@@ -111,7 +112,15 @@ public class AsteriskVersion implements Comparable<AsteriskVersion>, Serializabl
      */
     public static final AsteriskVersion ASTERISK_15 = new AsteriskVersion(1500, "Asterisk 15", VERSION_PATTERN_15);
 
-    private static final AsteriskVersion knownVersions[] = new AsteriskVersion[]{ASTERISK_15, ASTERISK_14, ASTERISK_13};
+    /**
+     * Represents the Asterisk 16 series.
+     *
+     * @since 2.1.0
+     */
+    public static final AsteriskVersion ASTERISK_16 = new AsteriskVersion(1600, "Asterisk 16", VERSION_PATTERN_16);
+
+    private static final AsteriskVersion knownVersions[] = new AsteriskVersion[]{ASTERISK_16, ASTERISK_15, ASTERISK_14,
+            ASTERISK_13, ASTERISK_12, ASTERISK_11, ASTERISK_10, ASTERISK_1_8, ASTERISK_1_6};
 
     // current debian stable version, as of 03/07/2018
     public static final AsteriskVersion DEFAULT_VERSION = ASTERISK_13;
@@ -182,8 +191,8 @@ public class AsteriskVersion implements Comparable<AsteriskVersion>, Serializabl
     }
 
     /**
-     * Determine the Asterisk version from the string returned by Asterisk.
-     * The string should contain "Asterisk " followed by a version number.
+     * Determine the Asterisk version from the string returned by Asterisk. The
+     * string should contain "Asterisk " followed by a version number.
      *
      * @param coreLine
      * @return the detected version, or null if unknown
