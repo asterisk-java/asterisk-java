@@ -77,6 +77,9 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
     private String codecs;
     private Boolean earlyMedia;
 
+    private String channelId;
+    private String otherChannelId;
+
     // starting at ten saves on a formatter.
     private int headerCounter = 10;
     private Set<String> preventDuplicateSipHeaders = new HashSet<>();
@@ -589,6 +592,31 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
                 }
             }
         }
+    }
+
+    /**
+     * this will be the channels uniqueID
+     * 
+     * @param channelId
+     */
+    public void setChannelId(String channelId)
+    {
+        this.channelId = channelId;
+    }
+
+    public String getChannelId()
+    {
+        return channelId;
+    }
+
+    public void setOtherChannelId(String otherChannelId)
+    {
+        this.otherChannelId = otherChannelId;
+    }
+
+    public String getOtherChannelId()
+    {
+        return otherChannelId;
     }
 
 }

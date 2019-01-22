@@ -36,6 +36,9 @@ public class OriginateAction extends AbstractManagerAction
 
     private long _timeout;
 
+    private String channelId;
+    private String otherChannelId;
+
     public OriginateAction()
     {
     }
@@ -67,6 +70,9 @@ public class OriginateAction extends AbstractManagerAction
         action.setVariables(this._variables);
         action.setAsync(this._async);
         action.setTimeout(this._timeout);
+
+        action.setChannelId(channelId);
+        action.setOtherChannelId(otherChannelId);
 
         return action;
     }
@@ -144,4 +150,15 @@ public class OriginateAction extends AbstractManagerAction
         this._timeout = timeout;
 
     }
+
+    public void setChannelId(String channelId)
+    {
+        this.channelId = channelId;
+    }
+
+    public void setOtherChannelId(String otherChannelId)
+    {
+        this.otherChannelId = otherChannelId;
+    }
+
 }
