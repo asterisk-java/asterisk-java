@@ -2,45 +2,19 @@ package org.asteriskjava.pbx.internal.core;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
 import java.util.Hashtable;
+import java.util.Set;
 
 import org.asteriskjava.pbx.asterisk.wrap.actions.ManagerAction;
-import org.asteriskjava.pbx.asterisk.wrap.events.AgentCalledEvent;
-import org.asteriskjava.pbx.asterisk.wrap.events.AgentConnectEvent;
-import org.asteriskjava.pbx.asterisk.wrap.events.BridgeEvent;
-import org.asteriskjava.pbx.asterisk.wrap.events.ConfbridgeListCompleteEvent;
-import org.asteriskjava.pbx.asterisk.wrap.events.ConfbridgeListEvent;
-import org.asteriskjava.pbx.asterisk.wrap.events.ConnectEvent;
-import org.asteriskjava.pbx.asterisk.wrap.events.DialEvent;
-import org.asteriskjava.pbx.asterisk.wrap.events.DisconnectEvent;
-import org.asteriskjava.pbx.asterisk.wrap.events.DndStateEvent;
-import org.asteriskjava.pbx.asterisk.wrap.events.ExtensionStatusEvent;
-import org.asteriskjava.pbx.asterisk.wrap.events.HangupEvent;
-import org.asteriskjava.pbx.asterisk.wrap.events.LinkEvent;
 import org.asteriskjava.pbx.asterisk.wrap.events.ManagerEvent;
-import org.asteriskjava.pbx.asterisk.wrap.events.MasqueradeEvent;
-import org.asteriskjava.pbx.asterisk.wrap.events.MeetMeJoinEvent;
-import org.asteriskjava.pbx.asterisk.wrap.events.MeetMeLeaveEvent;
-import org.asteriskjava.pbx.asterisk.wrap.events.NewChannelEvent;
-import org.asteriskjava.pbx.asterisk.wrap.events.NewStateEvent;
-import org.asteriskjava.pbx.asterisk.wrap.events.OriginateResponseEvent;
-import org.asteriskjava.pbx.asterisk.wrap.events.ParkedCallEvent;
-import org.asteriskjava.pbx.asterisk.wrap.events.PeerEntryEvent;
-import org.asteriskjava.pbx.asterisk.wrap.events.PeerStatusEvent;
-import org.asteriskjava.pbx.asterisk.wrap.events.PeerlistCompleteEvent;
-import org.asteriskjava.pbx.asterisk.wrap.events.QueueCallerLeaveEvent;
-import org.asteriskjava.pbx.asterisk.wrap.events.RenameEvent;
 import org.asteriskjava.pbx.asterisk.wrap.events.ResponseEvent;
-import org.asteriskjava.pbx.asterisk.wrap.events.StatusCompleteEvent;
-import org.asteriskjava.pbx.asterisk.wrap.events.StatusEvent;
-import org.asteriskjava.pbx.asterisk.wrap.events.UnlinkEvent;
-import org.asteriskjava.pbx.asterisk.wrap.events.UnparkedCallEvent;
-import org.asteriskjava.pbx.asterisk.wrap.events.VarSetEvent;
 import org.asteriskjava.pbx.asterisk.wrap.response.CommandResponse;
 import org.asteriskjava.pbx.asterisk.wrap.response.ManagerError;
 import org.asteriskjava.pbx.asterisk.wrap.response.ManagerResponse;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
+import org.asteriskjava.util.ReflectionUtil;
 
 /**
  * This class maps asterisk-java events to our internal events that use iChannel
@@ -48,104 +22,78 @@ import org.asteriskjava.util.LogFactory;
  * 
  * @author bsutton
  */
-@SuppressWarnings("deprecation")
+@SuppressWarnings({"unchecked"})
 public class CoherentEventFactory
 {
     private static final Log logger = LogFactory.getLog(CoherentEventFactory.class);
 
     // Events
-    static Hashtable<Class< ? extends org.asteriskjava.manager.event.ManagerEvent>, Class< ? extends ManagerEvent>> mapEvents = new Hashtable<>();
+    static Hashtable<Class<org.asteriskjava.manager.event.ManagerEvent>, Class<ManagerEvent>> mapEvents = new Hashtable<>();
 
     // Response
     static Hashtable<Class< ? extends org.asteriskjava.manager.event.ResponseEvent>, Class< ? extends ResponseEvent>> mapResponses = new Hashtable<>();
 
-    // Actions
-    // static Hashtable<Class<? extends ManagerAction>, Class<? extends
-    // org.asteriskjava.manager.action.ManagerAction>> mapActions = new
-    // Hashtable<>();
-
     // static initialiser
     static
     {
-        CoherentEventFactory.mapEvents.put(org.asteriskjava.manager.event.AgentCalledEvent.class, AgentCalledEvent.class);
 
-        CoherentEventFactory.mapEvents.put(org.asteriskjava.manager.event.AgentConnectEvent.class, AgentConnectEvent.class);
-        CoherentEventFactory.mapEvents.put(org.asteriskjava.manager.event.QueueCallerLeaveEvent.class,
-                QueueCallerLeaveEvent.class);
+        Set<Class<ManagerEvent>> knownClasses = ReflectionUtil.loadClasses("org.asteriskjava.pbx.asterisk.wrap.events",
+                ManagerEvent.class);
 
-        CoherentEventFactory.mapEvents.put(org.asteriskjava.manager.event.BridgeEvent.class, BridgeEvent.class);
-        CoherentEventFactory.mapEvents.put(org.asteriskjava.manager.event.ConnectEvent.class, ConnectEvent.class);
-        CoherentEventFactory.mapEvents.put(org.asteriskjava.manager.event.DialEvent.class, DialEvent.class);
-        CoherentEventFactory.mapEvents.put(org.asteriskjava.manager.event.DisconnectEvent.class, DisconnectEvent.class);
-        CoherentEventFactory.mapEvents.put(org.asteriskjava.manager.event.DndStateEvent.class, DndStateEvent.class);
-        CoherentEventFactory.mapEvents.put(org.asteriskjava.manager.event.ExtensionStatusEvent.class,
-                ExtensionStatusEvent.class);
-        CoherentEventFactory.mapEvents.put(org.asteriskjava.manager.event.HangupEvent.class, HangupEvent.class);
-        CoherentEventFactory.mapEvents.put(org.asteriskjava.manager.event.LinkEvent.class, LinkEvent.class);
-        CoherentEventFactory.mapEvents.put(org.asteriskjava.manager.event.MasqueradeEvent.class, MasqueradeEvent.class);
-        CoherentEventFactory.mapEvents.put(org.asteriskjava.manager.event.MeetMeJoinEvent.class, MeetMeJoinEvent.class);
-        CoherentEventFactory.mapEvents.put(org.asteriskjava.manager.event.MeetMeLeaveEvent.class, MeetMeLeaveEvent.class);
-        CoherentEventFactory.mapEvents.put(org.asteriskjava.manager.event.NewChannelEvent.class, NewChannelEvent.class);
-        CoherentEventFactory.mapEvents.put(org.asteriskjava.manager.event.NewStateEvent.class, NewStateEvent.class);
-        CoherentEventFactory.mapEvents.put(org.asteriskjava.manager.event.ParkedCallEvent.class, ParkedCallEvent.class);
-        CoherentEventFactory.mapEvents.put(org.asteriskjava.manager.event.PeerStatusEvent.class, PeerStatusEvent.class);
-        CoherentEventFactory.mapEvents.put(org.asteriskjava.manager.event.RenameEvent.class, RenameEvent.class);
-        CoherentEventFactory.mapEvents.put(org.asteriskjava.manager.event.ResponseEvent.class, ResponseEvent.class);
-        CoherentEventFactory.mapEvents.put(org.asteriskjava.manager.event.UnlinkEvent.class, UnlinkEvent.class);
-        CoherentEventFactory.mapEvents.put(org.asteriskjava.manager.event.UnparkedCallEvent.class, UnparkedCallEvent.class);
-        CoherentEventFactory.mapEvents.put(org.asteriskjava.manager.event.VarSetEvent.class, VarSetEvent.class);
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        for (Class< ? > known : knownClasses)
+        {
+            Class< ? > clazz = null;
+            try
+            {
+                clazz = classLoader.loadClass("org.asteriskjava.manager.event" + "." + known.getSimpleName());
 
-        // response events
-        CoherentEventFactory.mapResponses.put(org.asteriskjava.manager.event.OriginateResponseEvent.class,
-                OriginateResponseEvent.class);
-        CoherentEventFactory.mapResponses.put(org.asteriskjava.manager.event.PeerEntryEvent.class, PeerEntryEvent.class);
-        CoherentEventFactory.mapResponses.put(org.asteriskjava.manager.event.PeerlistCompleteEvent.class,
-                PeerlistCompleteEvent.class);
+                if (!Modifier.isAbstract(clazz.getModifiers()))
+                {
+                    if (known.getConstructor(clazz) != null)
+                    {
+                        if (ResponseEvent.class.isAssignableFrom(known))
+                        {
+                            CoherentEventFactory.mapResponses.put(
+                                    (Class<org.asteriskjava.manager.event.ResponseEvent>) clazz,
+                                    (Class<ResponseEvent>) known);
+                            logger.info("Response Event Added " + clazz + " --> " + known);
+
+                        }
+                        else
+                        {
+                            CoherentEventFactory.mapEvents.put((Class<org.asteriskjava.manager.event.ManagerEvent>) clazz,
+                                    (Class<ManagerEvent>) known);
+                            logger.info("Manager Event Added " + clazz + " --> " + known);
+                        }
+                    }
+                    else
+                    {
+                        logger.warn("Skipping class " + clazz + " it doesn't have a public constructor with one arg of type "
+                                + known);
+                    }
+                }
+                else
+                {
+                    logger.info("Skipping abstract class " + clazz);
+                }
+            }
+            catch (ClassNotFoundException e)
+            {
+                logger.error(e, e);
+                throw new RuntimeException(e);
+            }
+            catch (NoSuchMethodException e)
+            {
+                logger.error(clazz.getCanonicalName() + " doesn't have an appropriate event constructor");
+            }
+            catch (SecurityException e)
+            {
+                logger.error(e, e);
+            }
+        }
+
         CoherentEventFactory.mapResponses.put(org.asteriskjava.manager.event.ResponseEvent.class, ResponseEvent.class);
-        CoherentEventFactory.mapResponses.put(org.asteriskjava.manager.event.StatusCompleteEvent.class,
-                StatusCompleteEvent.class);
-        CoherentEventFactory.mapResponses.put(org.asteriskjava.manager.event.StatusEvent.class, StatusEvent.class);
-
-        CoherentEventFactory.mapEvents.put(org.asteriskjava.manager.event.ConfbridgeListEvent.class,
-                ConfbridgeListEvent.class);
-        CoherentEventFactory.mapEvents.put(org.asteriskjava.manager.event.ConfbridgeListCompleteEvent.class,
-                ConfbridgeListCompleteEvent.class);
-
-        // Actions
-        // CoherentEventFactory.mapActions.put( BridgeAction.class,
-        // org.asteriskjava.manager.action.BridgeAction.class);
-        // CoherentEventFactory.mapActions.put( CommandAction.class,
-        // org.asteriskjava.manager.action.CommandAction.class);
-        // CoherentEventFactory.mapActions.put( DbGetAction.class,
-        // org.asteriskjava.manager.action.DbGetAction.class);
-        // CoherentEventFactory.mapActions.put( GetVarAction.class,
-        // org.asteriskjava.manager.action.GetVarAction.class);
-        // CoherentEventFactory.mapActions.put( HangupAction.class,
-        // org.asteriskjava.manager.action.HangupAction.class);
-        // CoherentEventFactory.mapActions.put( ListCommandsAction.class,
-        // org.asteriskjava.manager.action.ListCommandsAction.class);
-        // CoherentEventFactory.mapActions.put( MonitorAction.class,
-        // org.asteriskjava.manager.action.MonitorAction.class);
-        // CoherentEventFactory.mapActions.put( MuteAudioAction.class,
-        // org.asteriskjava.manager.action.MuteAudioAction.class);
-        // CoherentEventFactory.mapActions.put( OriginateAction.class,
-        // org.asteriskjava.manager.action.OriginateAction.class);
-        // CoherentEventFactory.mapActions.put( PingAction.class,
-        // org.asteriskjava.manager.action.PingAction.class);
-        // CoherentEventFactory.mapActions.put( PlayDtmfAction.class,
-        // org.asteriskjava.manager.action.PlayDtmfAction.class);
-        // CoherentEventFactory.mapActions.put( RedirectAction.class,
-        // org.asteriskjava.manager.action.RedirectAction.class);
-        // CoherentEventFactory.mapActions.put( SetVarAction.class,
-        // org.asteriskjava.manager.action.SetVarAction.class);
-        // CoherentEventFactory.mapActions.put( SipPeersAction.class,
-        // org.asteriskjava.manager.action.SipPeersAction.class);
-        // CoherentEventFactory.mapActions.put( SipShowPeerAction.class,
-        // org.asteriskjava.manager.action.SipShowPeerAction.class);
-        // CoherentEventFactory.mapActions.put( StatusAction.class,
-        // org.asteriskjava.manager.action.StatusAction.class);
-        // CoherentEventFactory.mapActions.put( UpdateConfigAction.class,
-        // org.asteriskjava.manager.action.UpdateConfigAction.class);
 
     }
 

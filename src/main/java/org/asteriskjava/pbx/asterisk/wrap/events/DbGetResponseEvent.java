@@ -8,7 +8,7 @@ public class DbGetResponseEvent extends ManagerEvent
     private final String key;
     private final String val;
 
-    DbGetResponseEvent(final org.asteriskjava.manager.event.DbGetResponseEvent event)
+    public DbGetResponseEvent(final org.asteriskjava.manager.event.DbGetResponseEvent event)
     {
         super(event);
         this.family = event.getFamily();

@@ -43,9 +43,9 @@ abstract class AbstractBuilder
             setterName = ReflectionUtil.stripIllegalCharacters(entry.getKey());
 
             /*
-             * The source property needs special handling as it is already defined in
-             * java.util.EventObject (the base class of ManagerEvent), so we have to
-             * translate it.
+             * The source property needs special handling as it is already
+             * defined in java.util.EventObject (the base class of
+             * ManagerEvent), so we have to translate it.
              */
             if ("source".equals(setterName))
             {
@@ -79,7 +79,7 @@ abstract class AbstractBuilder
 
                 for (Entry<String, Object> entry2 : attributes.entrySet())
                 {
-                    logger.warn("Key: " + entry2.getKey() + " Value: " + entry2.getValue());
+                    logger.debug("Key: " + entry2.getKey() + " Value: " + entry2.getValue());
                 }
             }
 
