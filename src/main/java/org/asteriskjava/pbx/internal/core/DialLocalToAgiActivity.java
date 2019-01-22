@@ -21,7 +21,6 @@ import org.asteriskjava.pbx.agi.ActivityAgi;
 import org.asteriskjava.pbx.agi.ActivityArrivalListener;
 import org.asteriskjava.pbx.asterisk.wrap.actions.OriginateAction;
 import org.asteriskjava.pbx.asterisk.wrap.response.ManagerResponse;
-import org.asteriskjava.pbx.internal.managerAPI.OriginateBaseClass;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
@@ -32,7 +31,6 @@ public class DialLocalToAgiActivity implements Runnable, Activity
     private CallerID fromCallerID;
     private Thread thread;
     private final Log logger = LogFactory.getLog(this.getClass());
-    private String originateId;
 
     CountDownLatch latch = new CountDownLatch(1);
     private List<Channel> channels = new LinkedList<>();
@@ -70,11 +68,9 @@ public class DialLocalToAgiActivity implements Runnable, Activity
         originate.setPriority(1);
         originate.setCallerId(fromCallerID);
         originate.setTimeout(30000);
-        originateId = originate.getActionId();
 
         Map<String, String> myVars = new HashMap<>();
 
-        myVars.put("__" + OriginateBaseClass.NJR_ORIGINATE_ID, this.originateId);
         if (channelVarsToSet != null)
         {
             myVars.putAll(channelVarsToSet);
