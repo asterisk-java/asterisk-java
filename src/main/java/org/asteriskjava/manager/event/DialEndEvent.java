@@ -12,6 +12,7 @@ public class DialEndEvent extends DialEvent
     private String destAccountCode;
     private String destLinkedId;
     private String linkedId;
+    private String forward;
 
     public DialEndEvent(Object source)
     {
@@ -79,7 +80,14 @@ public class DialEndEvent extends DialEvent
         this.linkedId = linkedId;
     }
 
+    public String getForward()
+    {
+        return forward;
+    }
 
-    
-    
+    public void setForward(String forward)
+    {
+        this.forward = forward;
+    }
+
 }

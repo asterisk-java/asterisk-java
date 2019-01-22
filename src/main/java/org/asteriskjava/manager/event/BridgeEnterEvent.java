@@ -14,6 +14,8 @@ public class BridgeEnterEvent extends AbstractBridgeEvent
     private String language;
     private String linkedId;
 
+    private String swapuniqueid;
+
     public BridgeEnterEvent(Object source)
     {
         super(source);
@@ -58,5 +60,15 @@ public class BridgeEnterEvent extends AbstractBridgeEvent
     {
         this.linkedId = linkedId;
     }
-    
+
+    public String getSwapuniqueid()
+    {
+        return swapuniqueid;
+    }
+
+    public void setSwapuniqueid(String swapuniqueid)
+    {
+        this.swapuniqueid = swapuniqueid;
+    }
+
 }
