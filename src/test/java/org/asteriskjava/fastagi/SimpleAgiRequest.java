@@ -28,7 +28,7 @@ public class SimpleAgiRequest implements AgiRequest
     InetAddress remoteAddress;
     int remotePort;
     private String script;
-    private AsteriskVersion asteriskVersion;
+    private AsteriskVersion asteriskVersion = AsteriskVersion.ASTERISK_13;
 
     public SimpleAgiRequest()
     {

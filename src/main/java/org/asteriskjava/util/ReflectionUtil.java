@@ -362,13 +362,15 @@ public class ReflectionUtil
                 File folder = new File(uri.getPath());
                 // won't work with path which contains blank (%20)
                 // File folder = new File(packageURL.getFile());
-                File[] contenuti = folder.listFiles();
-                String entryName;
-                for (File actual : contenuti)
+                File[] files = folder.listFiles();
+                if (files != null)
                 {
-                    entryName = actual.getName();
-                    entryName = entryName.substring(0, entryName.lastIndexOf('.'));
-                    names.add(entryName);
+                    for (File actual : files)
+                    {
+                        String entryName = actual.getName();
+                        entryName = entryName.substring(0, entryName.lastIndexOf('.'));
+                        names.add(entryName);
+                    }
                 }
             }
         }
