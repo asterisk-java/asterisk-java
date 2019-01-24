@@ -94,7 +94,7 @@ public class DialToAgiActivityImpl extends ActivityHelper<DialToAgiActivity> imp
                 if (!this.cancelledByOperator)
                 {
                     this.setLastException(new PBXException(("OperatorEndedCall")));
-                    logger.warn("dialout to  failed.");
+                    logger.warn("dialout to " + _originating + " failed.");
                 }
             }
             else

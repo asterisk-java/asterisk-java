@@ -215,7 +215,7 @@ public abstract class OriginateBaseClass extends EventListenerBaseClass
         }
         else
         {
-            OriginateBaseClass.logger.warn("originate failed connecting endPoint: " + local + " to ext " + target); //$NON-NLS-2$
+            OriginateBaseClass.logger.warn("originate failed to connect endPoint: " + local + " to ext " + target); //$NON-NLS-2$
 
             if (this.newChannel != null)
             {
@@ -296,7 +296,7 @@ public abstract class OriginateBaseClass extends EventListenerBaseClass
             if (channelId.equals(hangupEvt.getUniqueId()))
             {
                 this.originateSuccess = false;
-                OriginateBaseClass.logger.warn("Dest channel " + this.newChannel + " hungup after answer"); //$NON-NLS-2$
+                OriginateBaseClass.logger.warn("Dest channel " + this.newChannel + " hungup");
                 originateLatch.countDown();
             }
             if ((this.monitorChannel1 != null) && (hangupChannel.isSame(this.monitorChannel1)))
