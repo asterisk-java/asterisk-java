@@ -96,22 +96,13 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
             this.bridgeSupport = CoherentManagerConnection.getInstance().isBridgeSupported();
             expectRenameEvents = CoherentManagerConnection.getInstance().expectRenameEvents();
             liveChannels = new LiveChannelManager();
-            try
-            {
-                MeetmeRoomControl.init(this, AsteriskPBX.MAX_MEETME_ROOMS);
-            }
-            catch (Throwable e)
-            {
-                logger.error(e, e);
-            }
 
+            MeetmeRoomControl.init(this, AsteriskPBX.MAX_MEETME_ROOMS);
         }
-        catch (IllegalStateException | IOException | AuthenticationFailedException | TimeoutException
-                | InterruptedException e1)
+        catch (Exception e)
         {
-            logger.error(e1, e1);
+            throw new RuntimeException(e);
         }
-
     }
 
     @Override
