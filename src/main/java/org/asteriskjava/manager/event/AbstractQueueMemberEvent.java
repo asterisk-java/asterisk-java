@@ -18,80 +18,99 @@ package org.asteriskjava.manager.event;
 
 /**
  * Abstract base class for several queue member related events.
- * 
+ *
  * @author srt
  * @version $Id$
  * @since 0.2
  */
-public abstract class AbstractQueueMemberEvent extends ManagerEvent
-{
+public abstract class AbstractQueueMemberEvent extends ManagerEvent {
+
     /**
      * Serializable version identifier
      */
     private static final long serialVersionUID = -7437833328723536814L;
     private String queue;
-    private String location;
+    private String _interface;
     private String memberName;
+    private String pausedReason;
+    private String inCall;
 
     /**
      * @param source
      */
-    protected AbstractQueueMemberEvent(Object source)
-    {
+    protected AbstractQueueMemberEvent(Object source) {
         super(source);
     }
 
     /**
      * Returns the name of the queue.
-     * 
+     *
      * @return the name of the queue.
      */
-    public String getQueue()
-    {
+    public String getQueue() {
         return queue;
     }
 
     /**
      * Sets the name of the queue.
-     * 
+     *
      * @param queue the name of the queue.
      */
-    public void setQueue(String queue)
-    {
+    public void setQueue(String queue) {
         this.queue = queue;
     }
 
     /**
      * Returns the name of the member's interface.<p>
      * E.g. the channel name or agent group.
-     * 
+     *
      * @return the name of the member's interface.
      */
-    public String getLocation()
-    {
-        return location;
+    final public String getInterface() {
+        return _interface;
     }
 
     /**
      * Sets the name of the member's interface.
-     * 
+     *
      * @param member the name of the member's interface.
      */
-    public void setLocation(String member)
-    {
-        this.location = member;
+    final public void setInterface(String _interface) {
+        this._interface = _interface;
+    }
+
+    /**
+     * Returns the name of the member's interface.<p>
+     * E.g. the channel name or agent group.
+     *
+     * @return the name of the member's interface.
+     */
+    @Deprecated
+    final public String getLocation() {
+        return _interface;
+    }
+
+    /**
+     * Sets the name of the member's interface.
+     *
+     * @param member the name of the member's interface.
+     */
+    @Deprecated
+    final public void setLocation(String _interface) {
+        if ((_interface != null) && (!"null".equals(_interface))) {  // Location is not in use since asterisk 12
+            this._interface = _interface;
+        }
     }
 
     /**
      * Retruns the name of the queue member.
      * <p>
      * Available since Asterisk 1.4
-     * 
+     *
      * @return the name of the queue member.
      * @since 0.3
      */
-    public String getMemberName()
-    {
+    public String getMemberName() {
         return memberName;
     }
 
@@ -99,12 +118,27 @@ public abstract class AbstractQueueMemberEvent extends ManagerEvent
      * Sets the name of the queue member.
      * <p>
      * Available since Asterisk 1.4
-     * 
+     *
      * @param memberName the name of the queue member.
      * @since 0.3
      */
-    public void setMemberName(String memberName)
-    {
+    public void setMemberName(String memberName) {
         this.memberName = memberName;
+    }
+
+    public String getPausedReason() {
+        return pausedReason;
+    }
+
+    public void setPausedReason(String pausedReason) {
+        this.pausedReason = pausedReason;
+    }
+
+    public String getInCall() {
+        return inCall;
+    }
+
+    public void setInCall(String inCall) {
+        this.inCall = inCall;
     }
 }

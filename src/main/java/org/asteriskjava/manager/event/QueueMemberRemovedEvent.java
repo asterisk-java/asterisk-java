@@ -98,16 +98,16 @@ public class QueueMemberRemovedEvent extends AbstractQueueMemberEvent
 	}
 
 
-	public String getInterface()
-	{
-		return _interface;
-	}
-
-
-	public void setInterface(String _interface)
-	{
-		this._interface = _interface;
-	}
+//	public String getInterface()
+//	{
+//		return _interface;
+//	}
+//
+//
+//	public void setInterface(String _interface)
+//	{
+//		this._interface = _interface;
+//	}
 
 
 	public Long getCallstaken()

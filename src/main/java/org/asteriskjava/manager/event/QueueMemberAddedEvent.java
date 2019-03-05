@@ -202,15 +202,6 @@ public class QueueMemberAddedEvent extends AbstractQueueMemberEvent
 		this.stateinterface = stateinterface;
 	}
 
-	public String getInterface()
-	{
-		return _interface;
-	}
-
-	public void setInterface(String _interface)
-	{
-		this._interface = _interface;
-	}
 
 	public Boolean getRinginuse()
 	{
