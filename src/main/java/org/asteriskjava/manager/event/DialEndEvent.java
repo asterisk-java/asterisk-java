@@ -1,9 +1,9 @@
 package org.asteriskjava.manager.event;
 
-public class DialEndEvent extends DialEvent
-{
+public class DialEndEvent extends DialEvent {
+
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
     private String language;
@@ -12,74 +12,67 @@ public class DialEndEvent extends DialEvent
     private String destAccountCode;
     private String destLinkedId;
     private String linkedId;
+    private String forward;
 
-    public DialEndEvent(Object source)
-    {
+    public DialEndEvent(Object source) {
         super(source);
         setSubEvent(SUBEVENT_END);
     }
 
-    public String getLanguage()
-    {
+    public String getLanguage() {
         return language;
     }
 
-    public void setLanguage(String language)
-    {
+    public void setLanguage(String language) {
         this.language = language;
     }
 
-    public String getDestLanguage()
-    {
+    public String getDestLanguage() {
         return destLanguage;
     }
 
-    public void setDestLanguage(String destLanguage)
-    {
+    public void setDestLanguage(String destLanguage) {
         this.destLanguage = destLanguage;
     }
 
-    public String getAccountCode()
-    {
+    public String getAccountCode() {
         return accountCode;
     }
 
-    public void setAccountCode(String accountCode)
-    {
+    public void setAccountCode(String accountCode) {
         this.accountCode = accountCode;
     }
 
-    public String getDestAccountCode()
-    {
+    public String getDestAccountCode() {
         return destAccountCode;
     }
 
-    public void setDestAccountCode(String destAccountCode)
-    {
+    public void setDestAccountCode(String destAccountCode) {
         this.destAccountCode = destAccountCode;
     }
 
-    public String getDestLinkedId()
-    {
+    public String getDestLinkedId() {
         return destLinkedId;
     }
 
-    public void setDestLinkedId(String destLinkedId)
-    {
+    public void setDestLinkedId(String destLinkedId) {
         this.destLinkedId = destLinkedId;
     }
 
-    public String getLinkedId()
-    {
+    public String getLinkedId() {
         return linkedId;
     }
 
-    public void setLinkedId(String linkedId)
-    {
+    public void setLinkedId(String linkedId) {
         this.linkedId = linkedId;
     }
 
+    public String getForward() {
+        return forward;
+    }
 
-    
-    
+    public void setForward(String forward) {
+        this.forward = forward;
+    }
+
 }

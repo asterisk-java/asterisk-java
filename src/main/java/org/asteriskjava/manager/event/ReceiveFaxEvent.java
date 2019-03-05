@@ -14,9 +14,12 @@ public class ReceiveFaxEvent extends ManagerEvent
     private String resolution;
     private Integer transferRate;
     private String fileName;
+    private String linkedID;
+    private String uniqueID;
+    private String accountCode;
+    private String language;
 
-    public ReceiveFaxEvent(Object source)
-    {
+    public ReceiveFaxEvent(Object source) {
         super(source);
     }
 
@@ -98,5 +101,37 @@ public class ReceiveFaxEvent extends ManagerEvent
     public void setFileName(String fileName)
     {
         this.fileName = fileName;
+    }
+
+    public String getLinkedID() {
+        return linkedID;
+    }
+
+    public void setLinkedID(String linkedID) {
+        this.linkedID = linkedID;
+    }
+
+    public String getAccountCode() {
+        return accountCode;
+    }
+
+    public void setAccountCode(String accountCode) {
+        this.accountCode = accountCode;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    public String getUniqueID() {
+        return uniqueID;
+    }
+
+    public void setUniqueID(String uniqueID) {
+        this.uniqueID = uniqueID;
     }
 }

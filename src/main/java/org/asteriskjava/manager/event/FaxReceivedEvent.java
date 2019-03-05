@@ -43,6 +43,7 @@ public class FaxReceivedEvent extends AbstractFaxEvent
     private Integer resolution;
     private Integer transferRate;
     private String filename;
+    private String linkedID;
 
     public FaxReceivedEvent(Object source)
     {
@@ -189,5 +190,13 @@ public class FaxReceivedEvent extends AbstractFaxEvent
     public void setFilename(String filename)
     {
         this.filename = filename;
+    }
+
+    public String getLinkedID() {
+        return linkedID;
+    }
+
+    public void setLinkedID(String linkedID) {
+        this.linkedID = linkedID;
     }
 }

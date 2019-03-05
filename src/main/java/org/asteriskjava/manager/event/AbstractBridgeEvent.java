@@ -16,10 +16,25 @@ public abstract class AbstractBridgeEvent extends ManagerEvent
     private String bridgeName;
     private String bridgeTechnology;
     private String accountCode;
+    private String bridgeVideoSourceMode;
 
     AbstractBridgeEvent(Object source)
     {
         super(source);
+    }
+
+    /**
+     * @param bridgeVideoSourceMode the bridgevideosourcemode to set
+     */
+    public void setBridgeVideoSourceMode(String bridgeVideoSourceMode) {
+        this.bridgeVideoSourceMode = bridgeVideoSourceMode;
+    }
+
+    /**
+     * @return the bridgevideosourcemode
+     */
+    public String getBridgeVideoSourceMode() {
+        return bridgeVideoSourceMode;
     }
 
     public String getBridgeUniqueId()

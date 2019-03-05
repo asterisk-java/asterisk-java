@@ -6,17 +6,42 @@ package org.asteriskjava.manager.event;
  *
  * @since 1.0.0
  */
-public class ConfbridgeJoinEvent extends AbstractConfbridgeEvent
-{
+public class ConfbridgeJoinEvent extends AbstractConfbridgeEvent {
+
     /**
      * Serializable version identifier
      */
     private static final long serialVersionUID = 1L;
-    
-    public ConfbridgeJoinEvent(Object source)
-    {
+    private String muted;
+    private String linkedID;
+    private String language;
+
+    public ConfbridgeJoinEvent(Object source) {
         super(source);
     }
 
-    
+    public String getMuted() {
+        return muted;
+    }
+
+    public void setMuted(String muted) {
+        this.muted = muted;
+    }
+
+    public String getLinkedID() {
+        return linkedID;
+    }
+
+    public void setLinkedID(String linkedID) {
+        this.linkedID = linkedID;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
 }

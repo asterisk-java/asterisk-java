@@ -56,9 +56,11 @@ public class FaxStatusEvent extends AbstractFaxEvent
     private String callerId;
     private String status;
     private String operation;
+    private String accountCode;
+    private String linkedID;
+    private String language;
 
-    public FaxStatusEvent(Object source)
-    {
+    public FaxStatusEvent(Object source)    {
         super(source);
     }
 
@@ -557,6 +559,30 @@ public class FaxStatusEvent extends AbstractFaxEvent
     public void setOperation(String operation)
     {
         this.operation = operation;
+    }
+
+    public String getAccountCode() {
+        return accountCode;
+    }
+
+    public void setAccountCode(String accountCode) {
+        this.accountCode = accountCode;
+    }
+
+    public String getLinkedID() {
+        return linkedID;
+    }
+
+    public void setLinkedID(String linkedID) {
+        this.linkedID = linkedID;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
     }
 }
 

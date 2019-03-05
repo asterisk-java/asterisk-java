@@ -10,6 +10,8 @@ public abstract class AbstractConfbridgeEvent extends AbstractChannelEvent
     private String bridgeName;
     private String bridgeCreator;
     private String conference;
+    private String bridgeVideoSourceMode;
+    private String linkedID;
 
     String admin;
 
@@ -149,5 +151,12 @@ public abstract class AbstractConfbridgeEvent extends AbstractChannelEvent
     {
         return conference;
     }
-    
+    public String getBridgeVideoSourceMode() {
+        return bridgeVideoSourceMode;
+    }
+
+    public void setBridgeVideoSourceMode(String bridgeVideoSourceMode) {
+        this.bridgeVideoSourceMode = bridgeVideoSourceMode;
+    }
+
 }

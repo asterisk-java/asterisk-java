@@ -29,6 +29,8 @@ public class CelEvent extends ManagerEvent
     private String callerIDani;
     private String callerIDrdnis;
     private String callerIDdnid;
+    private String exten;
+    private String context;
     private String application;
     private String appData;
     private String eventTime;
@@ -96,8 +98,23 @@ public class CelEvent extends ManagerEvent
         this.callerIDdnid = callerIDdnid;
     }
 
-    public String getApplication()
-    {
+    public String getExten() {
+        return exten;
+    }
+
+    public void setExten(String exten) {
+        this.exten = exten;
+    }
+
+    public String getContext() {
+        return context;
+    }
+
+    public void setContext(String context) {
+        this.context = context;
+    }
+
+    public String getApplication()    {
         return application;
     }
 
