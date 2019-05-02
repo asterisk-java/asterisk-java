@@ -31,6 +31,7 @@ import org.asteriskjava.util.ReflectionUtil;
 import org.asteriskjava.util.ServerSocketFacade;
 import org.asteriskjava.util.SocketConnectionFacade;
 import org.asteriskjava.util.internal.ServerSocketFacadeImpl;
+import org.asteriskjava.util.internal.SocketConnectionFacadeImpl;
 
 /**
  * Default implementation of the {@link org.asteriskjava.fastagi.AgiServer}
@@ -61,6 +62,14 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
     private String configResourceBundleName = DEFAULT_CONFIG_RESOURCE_BUNDLE_NAME;
     private int port = DEFAULT_BIND_PORT;
     private InetAddress address = null;
+
+    /**
+     * Closes the connection if no input has been read for the
+     * given amount of milliseconds.
+     *
+     * @see Socket#setSoTimeout(int)
+     */
+    private int socketReadTimeout = SocketConnectionFacadeImpl.MAX_SOCKET_READ_TIMEOUT_MILLIS;
 
     /**
      * Creates a new DefaultAgiServer.
@@ -295,9 +304,16 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
         }
     }
 
+    public void setSocketReadTimeout(int socketReadTimeout)
+    {
+        this.socketReadTimeout = socketReadTimeout;
+    }
+
     protected ServerSocketFacade createServerSocket() throws IOException
     {
-        return new ServerSocketFacadeImpl(port, BACKLOG, address);
+        ServerSocketFacade serverSocketFacade = new ServerSocketFacadeImpl(port, BACKLOG, address);
+        serverSocketFacade.setSocketReadTimeout(socketReadTimeout);
+        return serverSocketFacade;
     }
 
     public void startup() throws IOException, IllegalStateException

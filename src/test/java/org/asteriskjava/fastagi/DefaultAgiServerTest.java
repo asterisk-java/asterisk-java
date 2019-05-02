@@ -123,6 +123,10 @@ public class DefaultAgiServerTest
         {
             closeCalls++;
         }
+
+        public void setSocketReadTimeout(int socketReadTimeout)
+        {
+        }
     }
 
     @Test

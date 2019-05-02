@@ -43,4 +43,14 @@ public interface ServerSocketFacade
      * @throws IOException if the server socket cannot be closed.
      */
     void close() throws IOException;
+
+    /**
+     * Connection is dropped if it stales on read longer than the timeout.
+     *
+     * @param socketReadTimeout the read timeout value to be used in
+     *            milliseconds.
+     * @see java.net.Socket#setSoTimeout(int)
+     * @since 3.0.0
+     */
+    public void setSocketReadTimeout(int socketReadTimeout);
 }
