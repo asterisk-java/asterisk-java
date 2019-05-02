@@ -48,6 +48,7 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
 {
     private static final Set<String> ignoredAttributes = new HashSet<>(Arrays.asList("event"));
     private Map<String, Class< ? >> registeredEventClasses;
+    private final Set<String> eventClassNegativeCache = new HashSet<>();
 
     private static final Log logger = LogFactory.getLog(EventBuilderImpl.class);
 
@@ -228,8 +229,11 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
         eventClass = registeredEventClasses.get(eventType);
         if (eventClass == null)
         {
-            logger.info("No event class registered for event type '" + eventType + "', attributes: " + attributes
-                    + ". Please report at https://github.com/asterisk-java/asterisk-java/issues");
+            if (eventClassNegativeCache.add(eventType))
+            {
+                logger.info("No event class registered for event type '" + eventType + "', attributes: " + attributes
+                        + ". Please report at https://github.com/asterisk-java/asterisk-java/issues");
+            }
             return null;
         }
 
