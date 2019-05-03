@@ -1333,12 +1333,15 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         }
     }
 
-    private boolean isSupportedProtocolIdentifier(final String identifier) {
+    private boolean isSupportedProtocolIdentifier(final String identifier)
+    {
 
         // Normal version checks
-        for (String supportedVersion : SUPPORTED_AMI_VERSIONS) {
+        for (String supportedVersion : SUPPORTED_AMI_VERSIONS)
+        {
             String prefix = "Asterisk Call Manager/" + supportedVersion + ".";
-            if (identifier.startsWith(prefix)) {
+            if (identifier.startsWith(prefix))
+            {
                 return true;
             }
         }
@@ -1365,7 +1368,8 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     {
         logger.info("Connected via " + identifier);
 
-        if (identifier == null || !isSupportedProtocolIdentifier(identifier)) {
+        if (identifier == null || !isSupportedProtocolIdentifier(identifier))
+        {
             logger.warn("Unsupported protocol version '" + identifier + "'. Use at your own risk.");
         }
 
