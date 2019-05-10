@@ -61,6 +61,7 @@ public class QueueMemberEvent extends ResponseEvent
     private String stateinterface;
     private Integer incall;
     private String pausedreason;
+    private String _interface;
 
 
 
@@ -93,25 +94,54 @@ public class QueueMemberEvent extends ResponseEvent
     }
 
     /**
-     * Returns the name of the member's interface.
-     * <p>
-     * E.g. the channel name or agent group (for example "Agent/@1").
-     * 
+     * Returns the name of the member's interface.<p>
+     * E.g. the channel name or agent group.
+     *
      * @return the name of the member's interface.
      */
-    public String getLocation()
+    final public String getInterface()
     {
-        return location;
+        return _interface;
     }
 
     /**
      * Sets the name of the member's interface.
      * 
-     * @param location the name of the member's interface.
+     * @param member the name of the member's interface.
      */
-    public void setLocation(String location)
+    final public void setInterface(String _interface)
     {
-        this.location = location;
+        this._interface = _interface;
+    }
+
+    /**
+     * Returns the name of the member's interface.<p>
+     * E.g. the channel name or agent group.
+     *
+     * @deprecated since Asterisk 12
+     *
+     * @return the name of the member's interface.
+     */
+    @Deprecated
+    final public String getLocation()
+    {
+        return _interface;
+    }
+
+    /**
+     * Sets the name of the member's interface.
+     *
+     * @deprecated since Asterisk 12
+     *
+     * @param member the name of the member's interface.
+     */
+    @Deprecated
+    final public void setLocation(String _interface)
+    {
+        if ((_interface != null) && (!"null".equals(_interface)))
+        {  // Location is not in use since asterisk 12
+            this._interface = _interface;
+        }
     }
 
     /**

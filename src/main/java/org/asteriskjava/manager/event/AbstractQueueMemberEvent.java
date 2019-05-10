@@ -30,8 +30,10 @@ public abstract class AbstractQueueMemberEvent extends ManagerEvent
      */
     private static final long serialVersionUID = -7437833328723536814L;
     private String queue;
-    private String location;
+    private String _interface;
     private String memberName;
+    private String pausedReason;
+    private String inCall;
 
     /**
      * @param source
@@ -67,9 +69,9 @@ public abstract class AbstractQueueMemberEvent extends ManagerEvent
      * 
      * @return the name of the member's interface.
      */
-    public String getLocation()
+    final public String getInterface()
     {
-        return location;
+        return _interface;
     }
 
     /**
@@ -77,9 +79,39 @@ public abstract class AbstractQueueMemberEvent extends ManagerEvent
      * 
      * @param member the name of the member's interface.
      */
-    public void setLocation(String member)
+    final public void setInterface(String _interface)
     {
-        this.location = member;
+        this._interface = _interface;
+    }
+
+    /**
+     * Returns the name of the member's interface.<p>
+     * E.g. the channel name or agent group.
+     *
+     * @deprecated since Asterisk 12
+     *
+     * @return the name of the member's interface.
+     */
+    @Deprecated
+    final public String getLocation()
+    {
+        return _interface;
+    }
+
+    /**
+     * Sets the name of the member's interface.
+     *
+     * @deprecated since Asterisk 12
+     *
+     * @param member the name of the member's interface.
+     */
+    @Deprecated
+    final public void setLocation(String _interface)
+    {
+        if ((_interface != null) && (!"null".equals(_interface)))
+        {  // Location is not in use since asterisk 12
+            this._interface = _interface;
+        }
     }
 
     /**
@@ -106,5 +138,25 @@ public abstract class AbstractQueueMemberEvent extends ManagerEvent
     public void setMemberName(String memberName)
     {
         this.memberName = memberName;
+    }
+
+    public String getPausedReason()
+    {
+        return pausedReason;
+    }
+
+    public void setPausedReason(String pausedReason)
+    {
+        this.pausedReason = pausedReason;
+    }
+
+    public String getInCall()
+    {
+        return inCall;
+    }
+
+    public void setInCall(String inCall)
+    {
+        this.inCall = inCall;
     }
 }
