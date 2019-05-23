@@ -33,6 +33,7 @@
 /EventGeneratingAction.class
 /EventsAction.class
 /ExtensionStateAction.class
+/FilterAction.class
 /GetConfigAction.class
 /GetVarAction.class
 /HangupAction.class
