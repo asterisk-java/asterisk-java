@@ -222,7 +222,7 @@ class ChannelManager
                 {
                     channel.getVariable(Constants.VARIABLE_TRACE_ID);
                 }
-                catch (NoSuchChannelException e)
+                catch (NoSuchChannelException | ManagerCommunicationException e)
                 {
                     try
                     {
