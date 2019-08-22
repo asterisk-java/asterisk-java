@@ -4,7 +4,7 @@
 	<groupId>org.asteriskjava</groupId>
 	<artifactId>asterisk-java</artifactId>
 	<name>Asterisk-Java</name>
-	<version>3.0.0-SNAP-SHOT</version>
+	<version>3.0.2-SNAPSHOT</version>
 	<description>The free Java library for Asterisk PBX integration.</description>
 	<inceptionYear>2004</inceptionYear>
 
@@ -76,6 +76,12 @@
 			<name>${distribution.name}</name>
 			<url>${distribution.url}</url>
 		</repository>
+		<snapshotRepository>
+			<!-- these properties are stored in settings.xml, this is handy if you want to deploy to your own repository -->
+			<id>${snapshot.distribution.id}</id>
+			<name>${snapshot.distribution.name}</name>
+			<url>${snapshot.distribution.url}</url>
+		</snapshotRepository>
 	</distributionManagement>
 	<build>
 		<plugins>
@@ -138,6 +144,27 @@
 						<goals>
 							<goal>attached</goal>
 						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<phase>deploy</phase>
+						<goals><goal>jar-no-fork</goal></goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<!-- explicitly define maven-deploy-plugin after other to force exec order -->
+				<artifactId>maven-deploy-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>deploy</id>
+						<phase>deploy</phase>
+						<goals><goal>deploy</goal></goals>
 					</execution>
 				</executions>
 			</plugin>
