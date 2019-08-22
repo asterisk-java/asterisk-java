@@ -19,7 +19,7 @@ import org.asteriskjava.util.ReflectionUtil;
 /**
  * This class maps asterisk-java events to our internal events that use iChannel
  * rather than raw channel names.
- * 
+ *
  * @author bsutton
  */
 @SuppressWarnings({"unchecked"})
@@ -174,12 +174,13 @@ public class CoherentEventFactory
     public static ManagerResponse build(org.asteriskjava.manager.response.ManagerResponse response)
     {
         ManagerResponse result;
-        if (response instanceof org.asteriskjava.manager.response.CommandResponse)
-            result = new CommandResponse((org.asteriskjava.manager.response.CommandResponse) response);
-        else if (response instanceof org.asteriskjava.manager.response.ManagerError)
-            result = new ManagerError((org.asteriskjava.manager.response.ManagerError) response);
-        else
-            result = new ManagerResponse(response);
+        if (response instanceof org.asteriskjava.manager.response.CommandResponse) {
+	        result = new CommandResponse((org.asteriskjava.manager.response.CommandResponse) response);
+        } else if (response instanceof org.asteriskjava.manager.response.ManagerError) {
+        	result = new ManagerError(response);
+        } else {
+	        result = new ManagerResponse(response);
+        }
         return result;
 
     }
