@@ -19,7 +19,6 @@ package org.asteriskjava.manager;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.nio.charset.Charset;
-
 import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.manager.action.EventGeneratingAction;
 import org.asteriskjava.manager.action.ManagerAction;
@@ -207,6 +206,16 @@ public interface ManagerConnection
      * @since 0.3
      */
     void setSocketReadTimeout(int socketReadTimeout);
+    /**
+     * Set to <code>true</code> to try reconnecting to ther asterisk serve even
+     * if the reconnection attempt threw an AuthenticationFailedException. <br>
+     * Default is <code>true</code>.
+     *
+     * @param keepAliveAfterAuthenticationFailure <code>true</code> to try
+     * reconnecting to ther asterisk serve even if the reconnection attempt
+     * threw an AuthenticationFailedException, <code>false</code> otherwise.
+     */
+    public void setKeepAliveAfterAuthenticationFailure(boolean keepAliveAfterAuthenticationFailure);
 
     /**
      * Logs in to the Asterisk server with the username and password specified
