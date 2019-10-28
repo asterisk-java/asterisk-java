@@ -17,6 +17,7 @@
 package org.asteriskjava.manager.event;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 import org.asteriskjava.util.Base64;
 
@@ -114,6 +115,6 @@ public class SkypeChatMessageEvent extends ManagerEvent
         {
             return null;
         }
-        return new String(Base64.base64ToByteArray(message), Charset.forName("UTF-8"));
+        return new String(Base64.base64ToByteArray(message), StandardCharsets.UTF_8);
     }
 }
