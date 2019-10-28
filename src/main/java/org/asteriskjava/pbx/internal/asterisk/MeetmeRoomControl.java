@@ -223,7 +223,7 @@ public class MeetmeRoomControl extends EventListenerBaseClass implements Coheren
                 }
                 room.removeChannel(channel);
                 room.setLastUpdated();
-                if ((room.getChannelCount() < 2) && (room.getForceClose() == true))
+                if (room.getChannelCount() < 2 && room.getForceClose())
                 {
                     this.hangupChannels(room);
                     room.setInactive();
@@ -241,7 +241,7 @@ public class MeetmeRoomControl extends EventListenerBaseClass implements Coheren
     {
 
         final Channel Channels[] = room.getChannels();
-        if (room.isActive() == true)
+        if (room.isActive())
         {
             PBX pbx = PBXFactory.getActivePBX();
 
@@ -345,16 +345,16 @@ public class MeetmeRoomControl extends EventListenerBaseClass implements Coheren
 
         if (line != null)
         {
-            if (line.toLowerCase().startsWith("no such command 'meetme'") == true) //$NON-NLS-1$
+            if (line.toLowerCase().startsWith("no such command 'meetme'")) //$NON-NLS-1$
             {
                 throw new NoMeetmeException("Asterisk is not configured correctly! Please enable the MeetMe app"); //$NON-NLS-1$
             }
 
-            if ((line.toLowerCase().startsWith("no active meetme conferences.") == false) //$NON-NLS-1$
-                    && (line.toLowerCase().startsWith("conf num") == false) //$NON-NLS-1$
-                    && (line.toLowerCase().startsWith("* total number") == false) //$NON-NLS-1$
-                    && (line.toLowerCase().startsWith("no such conference") == false) //$NON-NLS-1$
-                    && (line.toLowerCase().startsWith("no such command 'meetme") == false) //$NON-NLS-1$
+            if ((!line.toLowerCase().startsWith("no active meetme conferences.")) //$NON-NLS-1$
+                    && (!line.toLowerCase().startsWith("conf num")) //$NON-NLS-1$
+                    && (!line.toLowerCase().startsWith("* total number")) //$NON-NLS-1$
+                    && (!line.toLowerCase().startsWith("no such conference")) //$NON-NLS-1$
+                    && (!line.toLowerCase().startsWith("no such command 'meetme")) //$NON-NLS-1$
             )
             {
                 // Update the stats on each meetme

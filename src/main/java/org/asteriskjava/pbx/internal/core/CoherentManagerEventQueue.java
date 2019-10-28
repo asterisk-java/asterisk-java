@@ -115,7 +115,7 @@ class CoherentManagerEventQueue implements ManagerEventListener, Runnable
     public void run()
     {
 
-        while (this._stop == false)
+        while (!this._stop)
         {
             try
             {
@@ -142,7 +142,7 @@ class CoherentManagerEventQueue implements ManagerEventListener, Runnable
                  * don't care. If it is thrown when we aren't shutting down then
                  * we have a problem and we need to log it.
                  */
-                if (this._stop == false)
+                if (!this._stop)
                 {
                     CoherentManagerEventQueue.logger.error(e, e);
                 }

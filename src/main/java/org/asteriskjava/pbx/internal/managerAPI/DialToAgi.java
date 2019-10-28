@@ -69,7 +69,7 @@ public class DialToAgi extends EventListenerBaseClass
                     ((AsteriskPBX) pbx).getManagementContext(), callerID, timeout, hideCallerId, channelVarsToSet);
 
             this.result[0] = trcResult;
-            if (trcResult.isSuccess() == true)
+            if (trcResult.isSuccess())
             {
                 if (trcResult.getChannel() != null)
                 {

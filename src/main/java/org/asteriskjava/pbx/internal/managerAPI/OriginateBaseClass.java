@@ -106,7 +106,7 @@ public abstract class OriginateBaseClass extends EventListenerBaseClass
         this.originateSeen = false;
         this.channelSeen = false;
 
-        if (this.hungup == true)
+        if (this.hungup)
         {
             // the monitored channel already hungup so just return false and
             // shutdown
@@ -207,7 +207,7 @@ public abstract class OriginateBaseClass extends EventListenerBaseClass
             this.close();
         }
 
-        if (this.originateSuccess == true)
+        if (this.originateSuccess)
         {
             this.result.setSuccess(true);
             this.result.setChannelData(this.newChannel);
@@ -381,7 +381,7 @@ public abstract class OriginateBaseClass extends EventListenerBaseClass
                         // that the call is up. Otherwise we will rely on the
                         // NewChannelEvent doing the
                         // notify.
-                        if (this.channelSeen == true)
+                        if (this.channelSeen)
                         {
                             OriginateBaseClass.logger.info("notify originate response event " + this.originateSuccess);
                             originateLatch.countDown();
@@ -468,7 +468,7 @@ public abstract class OriginateBaseClass extends EventListenerBaseClass
                 this.listener.channelUpdate(channel);
             }
 
-            if (this.originateSeen == true)
+            if (this.originateSeen)
             {
                 OriginateBaseClass.logger.debug("notifying success 362");
                 originateLatch.countDown();
