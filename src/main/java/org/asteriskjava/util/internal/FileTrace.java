@@ -8,6 +8,7 @@ import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -28,7 +29,7 @@ public class FileTrace implements Trace
 
     // ok to share instance as access to this object is synchronized anyway
     private final DateFormat df = new SimpleDateFormat("yyyyMMddHHmmsszzz");
-    private Charset charset = Charset.forName("UTF-8");
+    private Charset charset = StandardCharsets.UTF_8;
     private FileChannel channel;
     private boolean exceptionLogged = false;
     private RandomAccessFile randomAccessFile;

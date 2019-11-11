@@ -110,7 +110,7 @@ public class DialActivityImpl extends ActivityHelper<DialActivity> implements Di
 
                 DialActivityImpl.logger.debug("dialout succeeded: dest channel is :" + this.acceptingChannel);
 
-                if (this.validateChannel(this.acceptingChannel) == false)
+                if (!this.validateChannel(this.acceptingChannel))
                 {
                     this.setLastException(new PBXException(("dialed extension hungup unexpectedly")));
                     DialActivityImpl.logger.error("dialed extension hungup unexpectedly");
@@ -123,7 +123,7 @@ public class DialActivityImpl extends ActivityHelper<DialActivity> implements Di
         }
         finally
         {
-            if (success != true)
+            if (!success)
             {
                 this.hangup();
             }

@@ -116,7 +116,7 @@ public class DialToAgiActivityImpl extends ActivityHelper<DialToAgiActivity> imp
         }
         finally
         {
-            if (success != true)
+            if (!success)
             {
                 this.hangup();
             }

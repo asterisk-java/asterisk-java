@@ -52,5 +52,5 @@ public interface ServerSocketFacade
      * @see java.net.Socket#setSoTimeout(int)
      * @since 3.0.0
      */
-    public void setSocketReadTimeout(int socketReadTimeout);
+    void setSocketReadTimeout(int socketReadTimeout);
 }
