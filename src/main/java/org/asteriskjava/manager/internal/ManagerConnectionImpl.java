@@ -16,56 +16,10 @@
  */
 package org.asteriskjava.manager.internal;
 
-import static org.asteriskjava.manager.ManagerConnectionState.CONNECTED;
-import static org.asteriskjava.manager.ManagerConnectionState.CONNECTING;
-import static org.asteriskjava.manager.ManagerConnectionState.DISCONNECTED;
-import static org.asteriskjava.manager.ManagerConnectionState.DISCONNECTING;
-import static org.asteriskjava.manager.ManagerConnectionState.INITIAL;
-import static org.asteriskjava.manager.ManagerConnectionState.RECONNECTING;
-
-import java.io.IOException;
-import java.io.Serializable;
-import java.net.InetAddress;
-import java.net.Socket;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.asteriskjava.AsteriskVersion;
-import org.asteriskjava.manager.AuthenticationFailedException;
-import org.asteriskjava.manager.EventTimeoutException;
-import org.asteriskjava.manager.ExpectedResponse;
-import org.asteriskjava.manager.ManagerConnection;
-import org.asteriskjava.manager.ManagerConnectionState;
-import org.asteriskjava.manager.ManagerEventListener;
-import org.asteriskjava.manager.ResponseEvents;
-import org.asteriskjava.manager.SendActionCallback;
-import org.asteriskjava.manager.TimeoutException;
-import org.asteriskjava.manager.action.ChallengeAction;
-import org.asteriskjava.manager.action.CommandAction;
-import org.asteriskjava.manager.action.EventGeneratingAction;
-import org.asteriskjava.manager.action.LoginAction;
-import org.asteriskjava.manager.action.LogoffAction;
-import org.asteriskjava.manager.action.ManagerAction;
-import org.asteriskjava.manager.action.UserEventAction;
-import org.asteriskjava.manager.event.ConnectEvent;
-import org.asteriskjava.manager.event.DialBeginEvent;
-import org.asteriskjava.manager.event.DialEvent;
-import org.asteriskjava.manager.event.DisconnectEvent;
-import org.asteriskjava.manager.event.ManagerEvent;
-import org.asteriskjava.manager.event.ProtocolIdentifierReceivedEvent;
-import org.asteriskjava.manager.event.ResponseEvent;
+import org.asteriskjava.manager.*;
+import org.asteriskjava.manager.action.*;
+import org.asteriskjava.manager.event.*;
 import org.asteriskjava.manager.response.ChallengeResponse;
 import org.asteriskjava.manager.response.CommandResponse;
 import org.asteriskjava.manager.response.ManagerError;
@@ -75,6 +29,23 @@ import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 import org.asteriskjava.util.SocketConnectionFacade;
 import org.asteriskjava.util.internal.SocketConnectionFacadeImpl;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.*;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static org.asteriskjava.manager.ManagerConnectionState.*;
 
 /**
  * Internal implemention of the ManagerConnection interface.
@@ -618,15 +589,15 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
             throw new AuthenticationFailedException(loginResponse.getMessage());
         }
 
-        logger.info("Successfully logged in");
+        logger.info("AJINFO-001: ["  + username + "@" + hostname + ":" + port + "] Successfully logged in");
 
-        version = determineVersion();
+        version = AsteriskVersion.ASTERISK_13;
 
         state = CONNECTED;
 
         writer.setTargetVersion(version);
 
-        logger.info("Determined Asterisk version: " + version);
+        logger.info("AJINFO-002: ["  + username + "@" + hostname + ":" + port + "] Determined Asterisk version: " + version);
 
         // generate pseudo event indicating a successful login
         ConnectEvent connectEvent = new ConnectEvent(this);
@@ -772,7 +743,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         // be identified leading to errors
 
         // as a fallback assume 1.6
-        logger.error("Unable to determine asterisk version, assuming 1.6... you should expect problems to follow.");
+        logger.error("AJERROR-001: ["  + username + "@" + hostname + ":" + port + "] Unable to determine asterisk version, assuming 1.6... you should expect problems to follow.");
         return AsteriskVersion.ASTERISK_1_6;
     }
 
@@ -805,11 +776,11 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
     protected synchronized void connect() throws IOException
     {
-        logger.info("Connecting to " + hostname + ":" + port);
+        logger.info("AJINFO-003: ["  + username + "@" + hostname + ":" + port + "] Connecting");
 
         if (reader == null)
         {
-            logger.debug("Creating reader for " + hostname + ":" + port);
+            logger.debug("Creating reader for " + username + "@" + hostname + ":" + port);
             reader = createReader(this, this);
         }
 
@@ -862,7 +833,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
             }
             catch (Exception e)
             {
-                logger.warn("Unable to send LogOff action", e);
+                logger.warn("AJWARN-001: ["  + username + "@" + hostname + ":" + port + "] Unable to send LogOff action", e);
             }
         }
         cleanup();
@@ -876,14 +847,14 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     {
         if (socket != null)
         {
-            logger.info("Closing socket.");
+            logger.info("AJINFO-004: ["  + username + "@" + hostname + ":" + port + "] Closing socket");
             try
             {
                 socket.close();
             }
             catch (IOException ex)
             {
-                logger.warn("Unable to close socket: " + ex.getMessage());
+                logger.warn("AJWARN-002: ["  + username + "@" + hostname + ":" + port + "] Unable to close socket: " + ex.getMessage());
             }
             socket = null;
         }
@@ -898,7 +869,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
     /**
      * Implements synchronous sending of "simple" actions.
-     * 
+     *
      * @param timeout - in milliseconds
      */
     public ManagerResponse sendAction(ManagerAction action, long timeout)
@@ -925,7 +896,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
             }
             catch (InterruptedException ex)
             {
-                logger.warn("Interrupted while waiting for result");
+                logger.warn("AJWARN-003: ["  + username + "@" + hostname + ":" + port + "] Interrupted while waiting for result");
                 Thread.currentThread().interrupt();
             }
         }
@@ -1081,7 +1052,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                 }
                 catch (InterruptedException e)
                 {
-                    logger.warn("Interrupted while waiting for response events.");
+                    logger.warn("AJWARN-004: ["  + username + "@" + hostname + ":" + port + "] Interrupted while waiting for response events. ");
                     Thread.currentThread().interrupt();
                 }
             }
@@ -1190,7 +1161,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         // shouldn't happen
         if (response == null)
         {
-            logger.error("Unable to dispatch null response. This should never happen. Please file a bug.");
+            logger.error("AJERROR-002: [" + username + "@" + hostname + ":" + port +  "] Unable to dispatch null response. This should never happen. Please file a bug. ");
             return;
         }
 
@@ -1229,7 +1200,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         else
         {
             logger.error(
-                    "Unable to retrieve internalActionId from response: " + "actionId '" + actionId + "':\n" + response);
+                    "AJERROR-003: [" + username + "@" + hostname + ":" + port + "]Unable to retrieve internalActionId from response: " + "actionId '" + actionId + "':\n" + response);
         }
 
         if (listener != null)
@@ -1240,7 +1211,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
             }
             catch (Exception e)
             {
-                logger.warn("Unexpected exception in response listener " + listener.getClass().getName(), e);
+                logger.warn("AJWARN-005: ["  + username + "@" + hostname + ":" + port + "] Unexpected exception in response listener " + listener.getClass().getName(), e);
             }
         }
     }
@@ -1259,7 +1230,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         // shouldn't happen
         if (event == null)
         {
-            logger.error("Unable to dispatch null event. This should never happen. Please file a bug.");
+            logger.error("AJERROR-004: [" + username + "@" + hostname + ":" + port + "] Unable to dispatch null event. This should never happen. Please file a bug.");
             return;
         }
         dispatchLegacyEventIfNeeded(event);
@@ -1295,7 +1266,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                         }
                         catch (Exception e)
                         {
-                            logger.warn("Unexpected exception in response event listener " + listener.getClass().getName(),
+                            logger.warn("AJWARN-006: ["  + username + "@" + hostname + ":" + port + "] Unexpected exception in response event listener " + listener.getClass().getName(),
                                     e);
                         }
                     }
@@ -1395,7 +1366,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                 }
                 catch (RuntimeException e)
                 {
-                    logger.warn("Unexpected exception in eventHandler " + listener.getClass().getName(), e);
+                    logger.warn("AJWARN-007: ["  + username + "@" + hostname + ":" + port + "] Unexpected exception in eventHandler " + listener.getClass().getName(), e);
                 }
             }
         }
@@ -1410,7 +1381,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
      */
     private void setProtocolIdentifier(final String identifier)
     {
-        logger.info("Connected via " + identifier);
+        logger.info("AJINFO-005: ["  + username + "@" + hostname + ":" + port + "] Connected via " + identifier);
 
         if (!"Asterisk Call Manager/1.0".equals(identifier) && !"Asterisk Call Manager/1.1".equals(identifier) // Asterisk
                                                                                                                // 1.6
@@ -1434,7 +1405,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                 && !"OpenPBX Call Manager/1.0".equals(identifier) && !"CallWeaver Call Manager/1.0".equals(identifier)
                 && !(identifier != null && identifier.startsWith("Asterisk Call Manager Proxy/")))
         {
-            logger.warn("Unsupported protocol version '" + identifier + "'. Use at your own risk.");
+            logger.warn("AJWARN-008: ["  + username + "@" + hostname + ":" + port + "] Unsupported protocol version '" + identifier + "'. Use at your own risk.");
         }
 
         protocolIdentifier.setValue(identifier);
@@ -1493,7 +1464,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 		            try
 		            {
 			            doLogin(defaultResponseTimeout, eventMask);
-			            logger.info("Successfully reconnected.");
+			            logger.info("AJINFO-006: ["  + username + "@" + hostname + ":" + port + "] Successfully reconnected");
 			            // everything is ok again, so we leave
 			            // when successful doLogin set the state to CONNECTED so no
 			            // need to adjust it
@@ -1503,18 +1474,18 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 		            {
 			            if (keepAliveAfterAuthenticationFailure)
 			            {
-				            logger.error("Unable to log in after reconnect: " + e1.getMessage());
+				            logger.error("AJERROR-005: [" + username + "@" + hostname + ":" + port + "] Unable to log in after reconnect: " + e1.getMessage());
 			            }
 			            else
 			            {
-				            logger.error("Unable to log in after reconnect: " + e1.getMessage() + ". Giving up.");
+				            logger.error("AJERROR-006: [" + username + "@" + hostname + ":" + port + "] Unable to log in after reconnect: " + e1.getMessage() + ". Giving up.");
 				            state = DISCONNECTED;
 			            }
 		            }
 		            catch (TimeoutException e1)
 		            {
 			            // shouldn't happen - but happens!
-			            logger.error("TimeoutException while trying to log in " + "after reconnect.");
+			            logger.error("AJERROR-007: ["  + username + "@" + hostname + ":" + port +  "] TimeoutException while trying to log in " + "after reconnect.");
 		            }
 	            }
             }
@@ -1528,7 +1499,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                     message = e.getMessage();
                 }
 
-                logger.warn("Exception while trying to reconnect: " + message);
+                logger.warn("AJWARN-009: ["  + username + "@" + hostname + ":" + port + "] Exception while trying to reconnect: " + message);
             }
             numTries++;
         }
