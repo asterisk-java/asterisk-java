@@ -40,6 +40,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.regex.Matcher;
@@ -78,6 +80,8 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     private static final Pattern VERSION_PATTERN_15 = Pattern.compile("^\\s*Asterisk (GIT-)?15[-. ].*");
 
     private static final AtomicLong idCounter = new AtomicLong(0);
+
+    private final ExecutorService reconnectPoll;
 
     /**
      * Instance logger.
@@ -220,14 +224,26 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     /**
      * Creates a new instance.
      */
-    public ManagerConnectionImpl()
+    public ManagerConnectionImpl(ExecutorService reconnectPoll)
     {
         this.id = idCounter.getAndIncrement();
         this.responseListeners = new HashMap<>();
         this.responseEventListeners = new HashMap<>();
         this.eventListeners = new ArrayList<>();
         this.protocolIdentifier = new ProtocolIdentifierWrapper();
+        this.reconnectPoll = reconnectPoll;
     }
+
+	public ManagerConnectionImpl()
+	{
+		this.id = idCounter.getAndIncrement();
+		this.responseListeners = new HashMap<>();
+		this.responseEventListeners = new HashMap<>();
+		this.eventListeners = new ArrayList<>();
+		this.protocolIdentifier = new ProtocolIdentifierWrapper();
+		this.reconnectPoll = Executors.newSingleThreadExecutor();
+
+	}
 
     // the following two methods can be overriden when running test cases to
     // return a mock object
@@ -1297,21 +1313,11 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 			        // After sending the DisconnectThread that thread will die
 			        // anyway.
 			        cleanup();
-			        Thread reconnectThread = new Thread(new Runnable() {
-
-				        public void run() {
-					        reconnect();
-				        }
-			        });
-			        reconnectThread.setName(
-				        "Asterisk-Java ManagerConnection-" + id + "-Reconnect-" + reconnectThreadCounter.getAndIncrement());
-			        reconnectThread.setDaemon(true);
-			        reconnectThread.start();
-			        // now the DisconnectEvent is dispatched to registered
-			        // eventListeners
-			        // (clients) and after that the ManagerReaderThread is gone.
-			        // So effectively we replaced the reader thread by a
-			        // ReconnectThread.
+			        reconnectPoll.execute(new Runnable() {
+						public void run() {
+							reconnect();
+						}
+					});
 		        }
 		        else
 		        {
