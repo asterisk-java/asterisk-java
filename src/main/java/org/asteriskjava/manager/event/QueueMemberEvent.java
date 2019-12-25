@@ -56,6 +56,7 @@ public class QueueMemberEvent extends ResponseEvent
     private Integer penalty;
     private Integer callsTaken;
     private Long lastCall;
+    private Long lastPause;
     private Integer status;
     private Boolean paused;
     private String stateinterface;
@@ -257,6 +258,25 @@ public class QueueMemberEvent extends ResponseEvent
     public void setLastCall(Long lastCall)
     {
         this.lastCall = lastCall;
+    }
+    
+    /**
+     * The time when started last pause for queue member.
+     * 
+     * @return the time (in seconds since 01/01/1970)
+     */
+    public Long getLastPause()
+    {
+        return lastPause;
+    }
+    
+    /**
+     * Sets the time when started last pause for queue member.
+     * @param lastPause the time (in seconds since 01/01/1970)
+     */
+    public void setLastPause(Long lastPause)
+    {
+        this.lastPause = lastPause;
     }
 
     /**
