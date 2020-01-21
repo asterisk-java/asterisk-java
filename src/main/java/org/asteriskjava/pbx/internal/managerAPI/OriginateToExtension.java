@@ -36,7 +36,7 @@ public class OriginateToExtension extends OriginateBaseClass
         final AsteriskSettings profile = PBXFactory.getActiveProfile();
 
         final HashMap<String, String> myVars = new HashMap<>(1);
-        if (autoAnswer == true)
+        if (autoAnswer)
         {
             RedirectCall.setAutoAnswer(myVars, profile);
         }
@@ -57,7 +57,7 @@ public class OriginateToExtension extends OriginateBaseClass
         final AsteriskSettings profile = PBXFactory.getActiveProfile();
 
         final HashMap<String, String> myVars = new HashMap<>(1);
-        if (autoAnswer == true)
+        if (autoAnswer)
         {
             RedirectCall.setAutoAnswer(myVars, profile);
         }

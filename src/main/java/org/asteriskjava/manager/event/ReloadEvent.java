@@ -120,7 +120,7 @@ public class ReloadEvent extends ManagerEvent
      */
     public boolean isEnabled()
     {
-        return status != null && STATUS_ENABLED.equalsIgnoreCase(status);
+        return STATUS_ENABLED.equalsIgnoreCase(status);
     }
 
     /**
@@ -134,6 +134,6 @@ public class ReloadEvent extends ManagerEvent
      */
     public boolean isDisabled()
     {
-        return status != null && STATUS_DISABLED.equalsIgnoreCase(status);
+        return STATUS_DISABLED.equalsIgnoreCase(status);
     }
 }

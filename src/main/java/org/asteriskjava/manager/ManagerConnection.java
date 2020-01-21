@@ -215,7 +215,7 @@ public interface ManagerConnection
      * reconnecting to ther asterisk serve even if the reconnection attempt
      * threw an AuthenticationFailedException, <code>false</code> otherwise.
      */
-    public void setKeepAliveAfterAuthenticationFailure(boolean keepAliveAfterAuthenticationFailure);
+    void setKeepAliveAfterAuthenticationFailure(boolean keepAliveAfterAuthenticationFailure);
 
     /**
      * Logs in to the Asterisk server with the username and password specified

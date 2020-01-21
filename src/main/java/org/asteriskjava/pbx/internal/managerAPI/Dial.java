@@ -71,7 +71,7 @@ public class Dial extends EventListenerBaseClass
                     ((AsteriskPBX) pbx).getManagementContext(), callerID, null, hideCallerId, channelVarsToSet);
 
             this.result[0] = trcResult;
-            if (trcResult.isSuccess() == true)
+            if (trcResult.isSuccess())
             {
 
                 try
