@@ -1,6 +1,7 @@
 package org.asteriskjava.pbx.internal.activity;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -37,7 +38,7 @@ public class BlindTransferActivityImpl extends ActivityHelper<BlindTransferActiv
 {
     private static final Log logger = LogFactory.getLog(BlindTransferActivityImpl.class);
 
-    private Call _call;
+    private final Call _call;
 
     private Call.OperandChannel _channelToTransfer;
 
@@ -81,7 +82,7 @@ public class BlindTransferActivityImpl extends ActivityHelper<BlindTransferActiv
     {
         super("BlindTransferActivity", listener);
 
-        this._call = call;
+        this._call = Objects.requireNonNull(call);
         this._channelToTransfer = channelToTransfer;
         this._transferTarget = transferTarget;
         this._toCallerID = toCallerID;
@@ -244,10 +245,15 @@ public class BlindTransferActivityImpl extends ActivityHelper<BlindTransferActiv
         }
         else if (event instanceof DialEvent)
         {
-            if (((DialEvent) event).getChannel().isSame(_call.getOperandChannel(_channelToTransfer)))
+            DialEvent dialEvent = (DialEvent) event;
+            if (dialEvent.getChannel() != null)
             {
-                DialEvent de = (DialEvent) event;
-                dialedChannel = de.getDestination();
+                Channel operandChannel = _call.getOperandChannel(_channelToTransfer);
+                if (dialEvent.getChannel().isSame(operandChannel))
+                {
+                    DialEvent de = (DialEvent) event;
+                    dialedChannel = de.getDestination();
+                }
             }
         }
 
