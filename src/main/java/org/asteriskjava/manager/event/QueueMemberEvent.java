@@ -50,6 +50,7 @@ public class QueueMemberEvent extends ResponseEvent
      */
     private static final long serialVersionUID = 0L;
     private String queue;
+    @SuppressWarnings("unused")
     private String location;
     private String membership;
     private String name;
@@ -62,8 +63,6 @@ public class QueueMemberEvent extends ResponseEvent
     private Integer incall;
     private String pausedreason;
     private String _interface;
-
-
 
     /**
      * @param source
@@ -94,7 +93,8 @@ public class QueueMemberEvent extends ResponseEvent
     }
 
     /**
-     * Returns the name of the member's interface.<p>
+     * Returns the name of the member's interface.
+     * <p>
      * E.g. the channel name or agent group.
      *
      * @return the name of the member's interface.
@@ -115,11 +115,11 @@ public class QueueMemberEvent extends ResponseEvent
     }
 
     /**
-     * Returns the name of the member's interface.<p>
+     * Returns the name of the member's interface.
+     * <p>
      * E.g. the channel name or agent group.
      *
      * @deprecated since Asterisk 12
-     *
      * @return the name of the member's interface.
      */
     @Deprecated
@@ -132,14 +132,13 @@ public class QueueMemberEvent extends ResponseEvent
      * Sets the name of the member's interface.
      *
      * @deprecated since Asterisk 12
-     *
      * @param member the name of the member's interface.
      */
     @Deprecated
     final public void setLocation(String _interface)
     {
         if ((_interface != null) && (!"null".equals(_interface)))
-        {  // Location is not in use since asterisk 12
+        { // Location is not in use since asterisk 12
             this._interface = _interface;
         }
     }
@@ -284,7 +283,6 @@ public class QueueMemberEvent extends ResponseEvent
      * <dd>Device is ringing and in use</dd>
      * <dt>AST_DEVICE_ONHOLD (8)</dt>
      * <dd>Device is on hold</dd>
-
      * </dl>
      * 
      * @return the status of this queue member or <code>null</code> if this
@@ -313,8 +311,8 @@ public class QueueMemberEvent extends ResponseEvent
      * Available since Asterisk 1.2.
      * 
      * @return <code>Boolean.TRUE</code> if this member has been paused,
-     *         <code>Boolean.FALSE</code> if not or <code>null</code> if
-     *         pausing is not supported by your version of Asterisk.
+     *         <code>Boolean.FALSE</code> if not or <code>null</code> if pausing
+     *         is not supported by your version of Asterisk.
      * @since 0.2
      */
     public Boolean getPaused()
@@ -335,7 +333,8 @@ public class QueueMemberEvent extends ResponseEvent
     /**
      * Returns the name of the member.
      *
-     * @return the name of the member supplied for logging when the member is added
+     * @return the name of the member supplied for logging when the member is
+     *         added
      * @since 1.0.0
      */
     public String getName()
@@ -351,10 +350,12 @@ public class QueueMemberEvent extends ResponseEvent
     /**
      * Returns the name of the member.
      *
-     * @return the name of the member supplied for logging when the member is added
+     * @return the name of the member supplied for logging when the member is
+     *         added
      * @deprecated since 1.0.0. Use {@link #getName()} instead.
      */
-    @Deprecated public String getMemberName()
+    @Deprecated
+    public String getMemberName()
     {
         return name;
     }
@@ -381,26 +382,24 @@ public class QueueMemberEvent extends ResponseEvent
     /**
      * @return 1 if is incall 0 if not
      */
-    public Integer getIncall() 
+    public Integer getIncall()
     {
         return incall;
     }
 
-    public void setIncall(Integer incall) 
+    public void setIncall(Integer incall)
     {
         this.incall = incall;
     }
 
-
-    public String getPausedreason() 
+    public String getPausedreason()
     {
         return pausedreason;
     }
 
-    public void setPausedreason(String pausedreason) 
+    public void setPausedreason(String pausedreason)
     {
         this.pausedreason = pausedreason;
     }
-
 
 }

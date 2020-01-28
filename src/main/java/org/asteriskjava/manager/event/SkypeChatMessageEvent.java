@@ -16,14 +16,16 @@
  */
 package org.asteriskjava.manager.event;
 
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 import org.asteriskjava.util.Base64;
 
 /**
- * A SkypeChatMessageEvent is triggered when a Skype Chat message is sent or received.<p>
- * It is implemented in <code>chan_skye.c</code>.<p>
+ * A SkypeChatMessageEvent is triggered when a Skype Chat message is sent or
+ * received.
+ * <p>
+ * It is implemented in <code>chan_skye.c</code>.
+ * <p>
  * Available with Skype for Asterisk.
  *
  * @since 1.0.0
