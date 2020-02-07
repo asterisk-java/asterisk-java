@@ -41,7 +41,7 @@ public class ChannelProxy implements Channel, ChannelHangupListener
 
     private ChannelImpl _channel;
 
-    private List<ChannelHangupListener> listeners = new CopyOnWriteArrayList<>();
+    private final List<ChannelHangupListener> listeners = new CopyOnWriteArrayList<>();
 
     public ChannelProxy(ChannelImpl channel)
     {
@@ -240,6 +240,8 @@ public class ChannelProxy implements Channel, ChannelHangupListener
         return this._channel.getExtendedChannelName();
     }
 
+    private volatile boolean hangupCalled = false;
+
     @Override
     public void notifyHangupListeners(Integer cause, String causeText)
     {
@@ -247,6 +249,14 @@ public class ChannelProxy implements Channel, ChannelHangupListener
         {
             listener.channelHangup(this, cause, causeText);
         }
+
+        if (hangupCalled)
+        {
+            logger.error("Hangup was already called and the listeners removed - OH NO");
+        }
+        // we will blow up if notify listeners is called again
+        hangupCalled = true;
+        listeners.clear();
 
     }
 
