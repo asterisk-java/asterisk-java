@@ -125,10 +125,10 @@ public class MeetmeRoomControl extends EventListenerBaseClass implements Coheren
                     {
                         final long elapsedTime = now - lastUpdated.getTime();
                         MeetmeRoomControl.logger
-                                .debug("room: " + room.getRoomNumber() + " count: " + count + " elapsed: " + elapsedTime);
-                        if ((elapsedTime > 7200000) && (room.getChannelCount() == 1))
+                                .error("room: " + room.getRoomNumber() + " count: " + count + " elapsed: " + elapsedTime);
+                        if ((elapsedTime > 1800000) && (room.getChannelCount() < 2))
                         {
-                            MeetmeRoomControl.logger.debug("clearing room"); //$NON-NLS-1$
+                            MeetmeRoomControl.logger.error("clearing room"); //$NON-NLS-1$
                             room.setInactive();
                         }
                     }
