@@ -69,7 +69,14 @@
 		<developerConnection>scm:git:git@github.com:asterisk-java/asterisk-java.git</developerConnection>
 		<url>https://github.com/asterisk-java/asterisk-java</url>
 	</scm>
-
+	<distributionManagement>
+		<repository>
+			<id>github</id>
+		</repository>
+		<snapshotRepository>
+			<id>github</id>
+		</snapshotRepository>
+	</distributionManagement>
 	<build>
 		<plugins>
 			<plugin>
