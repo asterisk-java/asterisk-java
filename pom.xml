@@ -69,20 +69,7 @@
 		<developerConnection>scm:git:git@github.com:asterisk-java/asterisk-java.git</developerConnection>
 		<url>https://github.com/asterisk-java/asterisk-java</url>
 	</scm>
-	<distributionManagement>
-		<repository>
-			<!-- these properties are stored in settings.xml, this is handy if you want to deploy to your own repository -->
-			<id>${distribution.id}</id>
-			<name>${distribution.name}</name>
-			<url>${distribution.url}</url>
-		</repository>
-		<snapshotRepository>
-			<!-- these properties are stored in settings.xml, this is handy if you want to deploy to your own repository -->
-			<id>${snapshot.distribution.id}</id>
-			<name>${snapshot.distribution.name}</name>
-			<url>${snapshot.distribution.url}</url>
-		</snapshotRepository>
-	</distributionManagement>
+
 	<build>
 		<plugins>
 			<plugin>
