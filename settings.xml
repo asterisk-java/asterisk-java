@@ -20,11 +20,6 @@
                         <enabled>true</enabled>
                     </snapshots>
                 </repository>
-                <repository>
-                    <id>github</id>
-                    <name>Asterisk-Java</name>
-                    <url>https://maven.pkg.github.com/asterisk-java</url>
-                </repository>
             </repositories>
         </profile>
     </profiles>
