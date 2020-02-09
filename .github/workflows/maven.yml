@@ -18,4 +18,4 @@ jobs:
       env:
         GITHUB_USERNAME: x-access-token
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: mvn deploy --stacktrace -DskipTests=true -Dregistry=https://maven.pkg.github.com/asterisk-java -Dtoken=${GITHUB_TOKEN}
+      run: mvn deploy -e -DskipTests=true -Dregistry=https://maven.pkg.github.com/asterisk-java -Dtoken=${GITHUB_TOKEN}
