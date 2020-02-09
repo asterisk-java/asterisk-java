@@ -20,6 +20,11 @@
                         <enabled>true</enabled>
                     </snapshots>
                 </repository>
+                 <repository>
+          <id>github</id>
+          <name>GitHub OWNER Apache Maven Packages</name>
+          <url>https://maven.pkg.github.com/asterisk-java/asterisk-java</url>
+        </repository>
             </repositories>
         </profile>
     </profiles>
