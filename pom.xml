@@ -8,6 +8,7 @@
 	<version>${releaseVersion}</version>
 	<description>The free Java library for Asterisk PBX integration.</description>
 	<inceptionYear>2004</inceptionYear>
+
 	<properties>
 		<releaseVersion>3.0.19</releaseVersion>
 	</properties>
