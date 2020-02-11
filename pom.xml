@@ -240,11 +240,10 @@
 						</executions>
 						<configuration>
 
-							<additionalparam>-Xdoclint:all -Xdoclint:-missing</additionalparam>
-							<additionalOptions>-Xdoclint:all -Xdoclint:-missing</additionalOptions>
+							<additionalparam>-Xdoclint:none</additionalparam>
+							<additionalOptions>-Xdoclint:none</additionalOptions>
 							<additionalJOptions>
-								<additionalJOption>-Xdoclint:all</additionalJOption>
-								<additionalJOption>-Xdoclint:-missing</additionalJOption>
+								<additionalparam>-Xdoclint:none</additionalparam>
 							</additionalJOptions>
 
 							<groups>
