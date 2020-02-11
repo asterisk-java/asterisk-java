@@ -162,8 +162,6 @@
 				</executions>
 			</plugin>
 <!-- 			<plugin> -->
-<!-- 				explicitly define maven-deploy-plugin after other to force exec 
-<!-- 					order --> -->
 <!-- 				<artifactId>maven-deploy-plugin</artifactId> -->
 <!-- 				<executions> -->
 <!-- 					<execution> -->
