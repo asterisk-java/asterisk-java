@@ -229,12 +229,12 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-javadoc-plugin</artifactId>
-						<version>2.10.1</version>
+						<version>2.10.3</version>
 						<executions>
 							<execution>
 								<id>attach-javadocs</id>
 								<goals>
-									<goal>deploy</goal>
+									<goal>jar</goal>
 								</goals>
 							</execution>
 						</executions>
@@ -279,7 +279,7 @@
 					<plugin>
 						<groupId>org.sonatype.plugins</groupId>
 						<artifactId>nexus-staging-maven-plugin</artifactId>
-						<version>1.6.5</version>
+						<version>1.6.7</version>
 						<extensions>true</extensions>
 						<configuration>
 							<serverId>ossrh</serverId>
