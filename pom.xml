@@ -11,7 +11,7 @@
 
 
 	<properties>
-        <releaseVersion>3.0.19</releaseVersion>
+		<releaseVersion>3.0.19</releaseVersion>
 	</properties>
 
 	<licenses>
@@ -161,18 +161,18 @@
 					</execution>
 				</executions>
 			</plugin>
-<!-- 			<plugin> -->
-<!-- 				<artifactId>maven-deploy-plugin</artifactId> -->
-<!-- 				<executions> -->
-<!-- 					<execution> -->
-<!-- 						<id>deploy</id> -->
-<!-- 						<phase>deploy</phase> -->
-<!-- 						<goals> -->
-<!-- 							<goal>deploy</goal> -->
-<!-- 						</goals> -->
-<!-- 					</execution> -->
-<!-- 				</executions> -->
-<!-- 			</plugin> -->
+			<!-- <plugin> -->
+			<!-- <artifactId>maven-deploy-plugin</artifactId> -->
+			<!-- <executions> -->
+			<!-- <execution> -->
+			<!-- <id>deploy</id> -->
+			<!-- <phase>deploy</phase> -->
+			<!-- <goals> -->
+			<!-- <goal>deploy</goal> -->
+			<!-- </goals> -->
+			<!-- </execution> -->
+			<!-- </executions> -->
+			<!-- </plugin> -->
 		</plugins>
 		<finalName>${project.artifactId}</finalName>
 	</build>
@@ -239,6 +239,14 @@
 							</execution>
 						</executions>
 						<configuration>
+
+							<additionalparam>-Xdoclint:all -Xdoclint:-missing</additionalparam>
+							<additionalOptions>-Xdoclint:all -Xdoclint:-missing</additionalOptions>
+							<additionalJOptions>
+								<additionalJOption>-Xdoclint:all</additionalJOption>
+								<additionalJOption>-Xdoclint:-missing</additionalJOption>
+							</additionalJOptions>
+
 							<groups>
 								<group>
 									<title>Core Packages</title>
@@ -256,7 +264,7 @@
 							<header>${project.name}</header>
 						</configuration>
 					</plugin>
-					
+
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-gpg-plugin</artifactId>
