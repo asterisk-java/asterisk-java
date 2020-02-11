@@ -12,3 +12,4 @@ classes
 build/
 /.settings/
 /.metadata/
+/.packages
