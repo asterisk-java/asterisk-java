@@ -4,7 +4,7 @@
 	<groupId>org.asteriskjava</groupId>
 	<artifactId>asterisk-java</artifactId>
 	<name>Asterisk-Java</name>
-	<version>3.0.5</version>
+	<version>3.0.6</version>
 	<description>The free Java library for Asterisk PBX integration.</description>
 	<inceptionYear>2004</inceptionYear>
 
@@ -72,11 +72,11 @@
 	<distributionManagement>
 		<repository>
 			<id>github</id>
-			<url>https://maven.pkg.github.com/asterisk-java/asterisk-java</url>
+			<url>https://maven.pkg.github.com/asterisk-java</url>
 		</repository>
 		<snapshotRepository>
 			<id>github</id>
-			<url>https://maven.pkg.github.com/asterisk-java/asterisk-java</url>
+			<url>https://maven.pkg.github.com/asterisk-java</url>
 		</snapshotRepository>
 	</distributionManagement>
 	<build>
