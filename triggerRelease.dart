@@ -9,7 +9,9 @@ void main() {
   int major;
   int minor;
   int rev = 0;
-  read("pom.xml").forEach((line) {
+  var dir = dirname(Settings().scriptPath);
+  print(dir);
+  read(join(dir, "pom.xml")).forEach((line) {
     if (line.contains("<releaseVersion>")) {
       var parts = line.split(".");
       if (parts.length != 3) {
@@ -24,7 +26,9 @@ void main() {
 
   String version = "$major.$minor.$rev";
 
-  replace("pom.xml", version);
+  replace(join(dir, "pom.xml"), version);
+
+  'git pull'.run;
   'git add .'.run;
   'git commit -m "for version $version"'.run;
   'git tag -a $version -m "$version"'.run;
