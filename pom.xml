@@ -72,11 +72,11 @@
 	<distributionManagement>
 		<repository>
 			<id>github</id>
-			<url>https://maven.pkg.github.com/asterisk-java</url>
+			<url>https://maven.pkg.github.com/asterisk-java/asterisk-java</url>
 		</repository>
 		<snapshotRepository>
 			<id>github</id>
-			<url>https://maven.pkg.github.com/asterisk-java</url>
+			<url>https://maven.pkg.github.com/asterisk-java/asterisk-java</url>
 		</snapshotRepository>
 	</distributionManagement>
 	<build>
