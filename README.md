@@ -44,64 +44,22 @@ Asterisk-Java is available from [here](https://github.com/asterisk-java/asterisk
 Maven Dependency
 ----------------
 
-Asterisk-Java 2.0.4
-
-	<repositories>
-		<repository>
-			<id>asterisk-java-mvn-repo</id>
-            <url>https://raw.githubusercontent.com/asterisk-java/asterisk-java/mvn-repo</url>
- 			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
+Asterisk-Java 3.0.19
 
 	<dependency>
 	  <groupId>org.asteriskjava</groupId>
 	  <artifactId>asterisk-java</artifactId>
-	  <version>2.0.4</version>
+	  <version>3.0.19</version>
 	</dependency>
 
-Asterisk-Java 2.0.3
-
-	<repositories>
-		<repository>
-			<id>asterisk-java-mvn-repo</id>
-            <url>https://raw.githubusercontent.com/asterisk-java/asterisk-java/mvn-repo</url>
- 			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
+Asterisk-Java 2.2.0
 
 	<dependency>
 	  <groupId>org.asteriskjava</groupId>
 	  <artifactId>asterisk-java</artifactId>
-	  <version>2.0.3</version>
+	  <version>2.2.0</version>
 	</dependency>
 
-
-Asterisk-Java 2.0
-
-	<dependency>
-	  <groupId>org.asteriskjava</groupId>
-	  <artifactId>asterisk-java</artifactId>
-	  <version>2.0.2</version>
-	</dependency>
-
-Asterisk-Java 1.0
-
-	<dependency>
-	  <groupId>org.asteriskjava</groupId>
-	  <artifactId>asterisk-java</artifactId>
-	  <version>1.0.0-final</version>
-	</dependency>
 
 INSTALLATION FROM SOURCE
 ------------------------
