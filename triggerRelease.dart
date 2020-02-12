@@ -25,7 +25,7 @@ void main() {
   });
 
   var postFix = "";
-  if (confirm(prompt: "Is this a SNAPSHOT release")) {
+  if (confirm(prompt: "Is this a SNAPSHOT release (y/n)?")) {
     postFix = "-SNAPSHOT";
     rev++;
   } else {
