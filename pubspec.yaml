@@ -1,0 +1,12 @@
+name: asterisk_java_installer
+version: 1.0.0
+environment: 
+  sdk: '>=2.7.0 <3.0.0'
+dependencies: 
+  dshell: ^1.4.3
+  args: ^1.5.2
+  path: ^1.6.4
+
+
+
+
