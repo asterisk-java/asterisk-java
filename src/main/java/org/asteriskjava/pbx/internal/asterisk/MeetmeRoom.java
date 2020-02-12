@@ -158,6 +158,7 @@ public class MeetmeRoom
         this.channels.clear();
         this.forceClose = false;
         this.lastUpdated = null;
+        this.owner = null;
 
     }
 
