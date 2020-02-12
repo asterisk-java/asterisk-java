@@ -1,10 +1,10 @@
 name: Release
 
-# Run workflow on commits to the `master` branch
+# Run workflow on tags
 on:
   push:
-    branches:
-      - master
+    tags:
+      - '*'
 
 jobs:
   release:
