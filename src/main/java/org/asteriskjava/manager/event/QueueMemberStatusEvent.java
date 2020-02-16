@@ -31,7 +31,6 @@ public class QueueMemberStatusEvent extends QueueMemberEvent
 
     private String ringinuse;
     private String iface;
-    private Integer incall;
 
     /**
      * @param source
@@ -66,16 +65,4 @@ public class QueueMemberStatusEvent extends QueueMemberEvent
     {
         this.ringinuse = ringinuse;
     }
-
-    public Integer getIncall()
-    {
-        return incall;
-    }
-
-    public void setIncall(Integer incall)
-    {
-        this.incall = incall;
-    }
-    
-    
 }
