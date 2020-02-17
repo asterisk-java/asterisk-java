@@ -13,3 +13,4 @@ build/
 /.settings/
 /.metadata/
 /.packages
+/.dart_tool/
