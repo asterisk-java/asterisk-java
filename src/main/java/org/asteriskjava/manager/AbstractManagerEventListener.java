@@ -14,7 +14,11 @@ import org.asteriskjava.manager.event.AgentsCompleteEvent;
 import org.asteriskjava.manager.event.AgentsEvent;
 import org.asteriskjava.manager.event.AlarmClearEvent;
 import org.asteriskjava.manager.event.AlarmEvent;
+import org.asteriskjava.manager.event.BridgeCreateEvent;
+import org.asteriskjava.manager.event.BridgeDestroyEvent;
+import org.asteriskjava.manager.event.BridgeEnterEvent;
 import org.asteriskjava.manager.event.BridgeEvent;
+import org.asteriskjava.manager.event.BridgeLeaveEvent;
 import org.asteriskjava.manager.event.CdrEvent;
 import org.asteriskjava.manager.event.ChanSpyStartEvent;
 import org.asteriskjava.manager.event.ChanSpyStopEvent;
@@ -25,7 +29,9 @@ import org.asteriskjava.manager.event.DAHDIChannelEvent;
 import org.asteriskjava.manager.event.DahdiShowChannelsCompleteEvent;
 import org.asteriskjava.manager.event.DahdiShowChannelsEvent;
 import org.asteriskjava.manager.event.DbGetResponseEvent;
+import org.asteriskjava.manager.event.DeviceStateChangeEvent;
 import org.asteriskjava.manager.event.DialEvent;
+import org.asteriskjava.manager.event.DialStateEvent;
 import org.asteriskjava.manager.event.DisconnectEvent;
 import org.asteriskjava.manager.event.DndStateEvent;
 import org.asteriskjava.manager.event.DongleCENDEvent;
@@ -52,6 +58,7 @@ import org.asteriskjava.manager.event.MeetMeTalkingEvent;
 import org.asteriskjava.manager.event.MessageWaitingEvent;
 import org.asteriskjava.manager.event.NewCallerIdEvent;
 import org.asteriskjava.manager.event.NewChannelEvent;
+import org.asteriskjava.manager.event.NewConnectedLineEvent;
 import org.asteriskjava.manager.event.NewExtenEvent;
 import org.asteriskjava.manager.event.NewStateEvent;
 import org.asteriskjava.manager.event.OriginateResponseEvent;
@@ -77,12 +84,15 @@ import org.asteriskjava.manager.event.RegistryEntryEvent;
 import org.asteriskjava.manager.event.RegistryEvent;
 import org.asteriskjava.manager.event.ReloadEvent;
 import org.asteriskjava.manager.event.RenameEvent;
+import org.asteriskjava.manager.event.RtcpReceivedEvent;
+import org.asteriskjava.manager.event.RtcpSentEvent;
 import org.asteriskjava.manager.event.ShutdownEvent;
 import org.asteriskjava.manager.event.SoftHangupRequestEvent;
 import org.asteriskjava.manager.event.StatusCompleteEvent;
 import org.asteriskjava.manager.event.StatusEvent;
 import org.asteriskjava.manager.event.UnparkedCallEvent;
 import org.asteriskjava.manager.event.UserEvent;
+import org.asteriskjava.manager.event.VarSetEvent;
 import org.asteriskjava.manager.event.ZapShowChannelsCompleteEvent;
 import org.asteriskjava.manager.event.ZapShowChannelsEvent;
 import org.asteriskjava.util.Log;
@@ -475,6 +485,46 @@ public abstract class AbstractManagerEventListener implements ManagerEventListen
     protected void handleEvent(CoreShowChannelsCompleteEvent event)
     {
     }
+
+	protected void handleEvent(DialStateEvent event)
+	{
+	}
+
+	protected void handleEvent(VarSetEvent event)
+	{
+	}
+
+	protected void handleEvent(DeviceStateChangeEvent event)
+	{
+	}
+
+	protected void handleEvent(NewConnectedLineEvent event)
+	{
+	}
+
+	protected void handleEvent(BridgeCreateEvent event)
+	{
+	}
+
+	protected void handleEvent(BridgeEnterEvent event)
+	{
+	}
+
+	protected void handleEvent(BridgeDestroyEvent event)
+	{
+	}
+
+	protected void handleEvent(BridgeLeaveEvent event)
+	{
+	}
+
+	protected void handleEvent(RtcpSentEvent event)
+	{
+	}
+
+	protected void handleEvent(RtcpReceivedEvent event)
+	{
+	}
 
     /**
      * Dispatches to the appropriate handleEvent(...) method.
