@@ -14,6 +14,7 @@ import org.asteriskjava.manager.event.AgentsCompleteEvent;
 import org.asteriskjava.manager.event.AgentsEvent;
 import org.asteriskjava.manager.event.AlarmClearEvent;
 import org.asteriskjava.manager.event.AlarmEvent;
+import org.asteriskjava.manager.event.BlindTransferEvent;
 import org.asteriskjava.manager.event.BridgeCreateEvent;
 import org.asteriskjava.manager.event.BridgeDestroyEvent;
 import org.asteriskjava.manager.event.BridgeEnterEvent;
@@ -30,6 +31,8 @@ import org.asteriskjava.manager.event.DahdiShowChannelsCompleteEvent;
 import org.asteriskjava.manager.event.DahdiShowChannelsEvent;
 import org.asteriskjava.manager.event.DbGetResponseEvent;
 import org.asteriskjava.manager.event.DeviceStateChangeEvent;
+import org.asteriskjava.manager.event.DialBeginEvent;
+import org.asteriskjava.manager.event.DialEndEvent;
 import org.asteriskjava.manager.event.DialEvent;
 import org.asteriskjava.manager.event.DialStateEvent;
 import org.asteriskjava.manager.event.DisconnectEvent;
@@ -56,6 +59,8 @@ import org.asteriskjava.manager.event.MeetMeLeaveEvent;
 import org.asteriskjava.manager.event.MeetMeMuteEvent;
 import org.asteriskjava.manager.event.MeetMeTalkingEvent;
 import org.asteriskjava.manager.event.MessageWaitingEvent;
+import org.asteriskjava.manager.event.MusicOnHoldStartEvent;
+import org.asteriskjava.manager.event.MusicOnHoldStopEvent;
 import org.asteriskjava.manager.event.NewCallerIdEvent;
 import org.asteriskjava.manager.event.NewChannelEvent;
 import org.asteriskjava.manager.event.NewConnectedLineEvent;
@@ -90,6 +95,7 @@ import org.asteriskjava.manager.event.ShutdownEvent;
 import org.asteriskjava.manager.event.SoftHangupRequestEvent;
 import org.asteriskjava.manager.event.StatusCompleteEvent;
 import org.asteriskjava.manager.event.StatusEvent;
+import org.asteriskjava.manager.event.UnholdEvent;
 import org.asteriskjava.manager.event.UnparkedCallEvent;
 import org.asteriskjava.manager.event.UserEvent;
 import org.asteriskjava.manager.event.VarSetEvent;
@@ -210,9 +216,33 @@ public abstract class AbstractManagerEventListener implements ManagerEventListen
     {
     }
 
-    protected void handleEvent(DialEvent event)
+    protected void handleEvent(MusicOnHoldStartEvent event)
+	{
+	}
+
+    protected void handleEvent(MusicOnHoldStopEvent event)
+	{
+	}
+
+	protected void handleEvent(UnholdEvent event)
+	{
+	}
+
+    protected void handleEvent(BlindTransferEvent event)
+	{
+	}
+
+	protected void handleEvent(DialEvent event)
+	{
+	}
+
+	protected void handleEvent(DialBeginEvent event)
     {
     }
+
+	protected void handleEvent(DialEndEvent event)
+	{
+	}
 
     protected void handleEvent(HangupRequestEvent event)
     {
