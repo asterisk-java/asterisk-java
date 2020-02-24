@@ -37,12 +37,12 @@ public class AbstractManagerEventListenerTest {
         public boolean leaveEventHandled;
 
         @Override
-        protected void handleEvent(JoinEvent event) {
+        public void handleEvent(JoinEvent event) {
             this.joinEventHandled = true;
         }
 
         @Override
-        protected void handleEvent(LeaveEvent event) {
+		public void handleEvent(LeaveEvent event) {
             this.leaveEventHandled = true;
         }
     }
