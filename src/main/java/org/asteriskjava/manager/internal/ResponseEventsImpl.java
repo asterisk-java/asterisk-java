@@ -114,4 +114,10 @@ public class ResponseEventsImpl implements ResponseEvents
     {
         latch.countDown();
     }
+
+    @Override
+    public String toString()
+    {
+        return "ResponseEventsImpl [response=" + response + ",\nevents=" + events + ",\ncomplete=" + complete + "]";
+    }
 }

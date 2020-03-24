@@ -22,7 +22,6 @@ abstract class AbstractBuilder
 {
     protected final Log logger = LogFactory.getLog(getClass());
 
-    @SuppressWarnings("unchecked")
     protected void setAttributes(Object target, Map<String, Object> attributes, Set<String> ignoredAttributes)
     {
         Map<String, Method> setters;
@@ -96,40 +95,19 @@ abstract class AbstractBuilder
             }
             else if (dataType.isAssignableFrom(String.class))
             {
-                value = entry.getValue();
-                if (AstUtil.isNull(value))
-                {
-
-                    value = null;
-                }
-                if (value instanceof List)
-                {
-                    StringBuilder strBuff = new StringBuilder();
-                    for (String tmp : (List<String>) value)
-                    {
-                        if (tmp != null && tmp.length() != 0)
-                        {
-                            strBuff.append(tmp).append('\n');
-                        }
-                    }
-                    value = strBuff.toString();
-                }
+                value = parseString(entry);
             }
             else if (dataType.isAssignableFrom(Map.class))
             {
-                if (entry.getValue() instanceof List)
-                {
-                    List<String> list = (List<String>) entry.getValue();
-                    value = buildMap(list.toArray(new String[list.size()]));
-                }
-                else if (entry.getValue() instanceof String)
-                {
-                    value = buildMap((String) entry.getValue());
-                }
-                else
-                {
-                    value = null;
-                }
+                value = parseMap(entry);
+            }
+            else if (dataType.isAssignableFrom(double.class) || dataType.isAssignableFrom(Double.class))
+            {
+                value = parseDouble(entry);
+            }
+            else if (dataType.isAssignableFrom(long.class) || dataType.isAssignableFrom(Long.class))
+            {
+                value = parseLong(entry);
             }
             else
             {
@@ -157,6 +135,81 @@ abstract class AbstractBuilder
                         + target.getClass().getName(), e);
             }
         }
+    }
+
+    @SuppressWarnings("unchecked")
+    private Map<String, String> parseMap(Map.Entry<String, Object> entry)
+    {
+        Map<String, String> value;
+        if (entry.getValue() instanceof List)
+        {
+            List<String> list = (List<String>) entry.getValue();
+            value = buildMap(list.toArray(new String[list.size()]));
+        }
+        else if (entry.getValue() instanceof String)
+        {
+            value = buildMap((String) entry.getValue());
+        }
+        else
+        {
+            value = null;
+        }
+        return value;
+    }
+
+    @SuppressWarnings("unchecked")
+    private Object parseString(Map.Entry<String, Object> entry)
+    {
+        Object value;
+        value = entry.getValue();
+        if (AstUtil.isNull(value))
+        {
+
+            value = null;
+        }
+        if (value instanceof List)
+        {
+            StringBuilder strBuff = new StringBuilder();
+            for (String tmp : (List<String>) value)
+            {
+                if (tmp != null && tmp.length() != 0)
+                {
+                    strBuff.append(tmp).append('\n');
+                }
+            }
+            value = strBuff.toString();
+        }
+        return value;
+    }
+
+    private Double parseDouble(Map.Entry<String, Object> entry)
+    {
+        Double value;
+        String stringValue = (String) entry.getValue();
+        if (stringValue != null && stringValue.length() > 0)
+        {
+            value = Double.parseDouble(stringValue);
+        }
+        else
+        {
+            value = null;
+        }
+        return value;
+    }
+
+    private Long parseLong(Map.Entry<String, Object> entry)
+    {
+        Long value;
+        String stringValue = (String) entry.getValue();
+        if (stringValue != null && stringValue.length() > 0)
+        {
+            value = Long.parseLong(stringValue);
+        }
+        else
+        {
+            value = null;
+        }
+        return value;
     }
 
     private Map<String, String> buildMap(String... lines)
