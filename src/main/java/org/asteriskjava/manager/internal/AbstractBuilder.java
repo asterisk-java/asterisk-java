@@ -87,52 +87,52 @@ abstract class AbstractBuilder
                 continue;
             }
 
-            dataType = setter.getParameterTypes()[0];
-
-            if (dataType == Boolean.class)
-            {
-                value = AstUtil.isTrue(entry.getValue());
-            }
-            else if (dataType.isAssignableFrom(String.class))
-            {
-                value = parseString(entry);
-            }
-            else if (dataType.isAssignableFrom(Map.class))
-            {
-                value = parseMap(entry);
-            }
-            else if (dataType.isAssignableFrom(double.class) || dataType.isAssignableFrom(Double.class))
-            {
-                value = parseDouble(entry);
-            }
-            else if (dataType.isAssignableFrom(long.class) || dataType.isAssignableFrom(Long.class))
-            {
-                value = parseLong(entry);
-            }
-            else
-            {
-                try
-                {
-                    Constructor< ? > constructor = dataType.getConstructor(String.class);
-                    value = constructor.newInstance(entry.getValue());
-                }
-                catch (Exception e)
-                {
-                    logger.error("Unable to convert value: Called the constructor of " + dataType + " with value '"
-                            + entry.getValue() + "' for the attribute '" + entry.getKey() + "'\n of event type "
-                            + target.getClass().getName() + " with resulting error: " + e.getMessage(), e);
-                    continue;
-                }
-            }
-
             try
             {
+                dataType = setter.getParameterTypes()[0];
+
+                if (dataType == Boolean.class)
+                {
+                    value = AstUtil.isTrue(entry.getValue());
+                }
+                else if (dataType.isAssignableFrom(String.class))
+                {
+                    value = parseString(entry);
+                }
+                else if (dataType.isAssignableFrom(Map.class))
+                {
+                    value = parseMap(entry);
+                }
+                else if (dataType.isAssignableFrom(double.class) || dataType.isAssignableFrom(Double.class))
+                {
+                    value = parseDouble(entry);
+                }
+                else if (dataType.isAssignableFrom(long.class) || dataType.isAssignableFrom(Long.class))
+                {
+                    value = parseLong(entry);
+                }
+                else
+                {
+                    try
+                    {
+                        Constructor< ? > constructor = dataType.getConstructor(String.class);
+                        value = constructor.newInstance(entry.getValue());
+                    }
+                    catch (Exception e)
+                    {
+                        logger.error("Unable to convert value: Called the constructor of " + dataType + " with value '"
+                                + entry.getValue() + "' for the attribute '" + entry.getKey() + "'\n of event type "
+                                + target.getClass().getName() + " with resulting error: " + e.getMessage(), e);
+                        continue;
+                    }
+                }
+
                 setter.invoke(target, value);
             }
             catch (Exception e)
             {
                 logger.error("Unable to set property '" + entry.getKey() + "' to '" + entry.getValue() + "' on "
-                        + target.getClass().getName(), e);
+                        + target.getClass().getName() + " " + e.getMessage(), e);
             }
         }
     }

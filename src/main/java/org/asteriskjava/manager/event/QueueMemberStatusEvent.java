@@ -30,6 +30,7 @@ public class QueueMemberStatusEvent extends QueueMemberEvent
     private static final long serialVersionUID = -2293926744791895763L;
 
     private String ringinuse;
+    private Integer wrapuptime;
 
     /**
      * @param source
@@ -53,5 +54,15 @@ public class QueueMemberStatusEvent extends QueueMemberEvent
     public void setRinginuse(String ringinuse)
     {
         this.ringinuse = ringinuse;
+    }
+
+    public Integer getWrapuptime()
+    {
+        return wrapuptime;
+    }
+
+    public void setWrapuptime(Integer wrapuptime)
+    {
+        this.wrapuptime = wrapuptime;
     }
 }
