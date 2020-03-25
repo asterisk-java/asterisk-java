@@ -36,7 +36,10 @@ public class ContactList extends ResponseEvent
     Double qualifyTimeout;
     String callid;
     String regserver;
-    Long roundtripusec;
+
+    // roundtripusec when it contains a value is a long, but when it doesn't
+    // asterisk reports "N/A"
+    String roundtripusec;
     Long expirationtime;
     String authenticatequalify;
     String objectname;
@@ -93,12 +96,12 @@ public class ContactList extends ResponseEvent
         this.regserver = regserver;
     }
 
-    public long getRoundtripusec()
+    public String getRoundtripusec()
     {
         return roundtripusec;
     }
 
-    public void setRoundtripusec(long roundtripusec)
+    public void setRoundtripusec(String roundtripusec)
     {
         this.roundtripusec = roundtripusec;
     }
