@@ -868,13 +868,13 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
     }
 
     public DialToAgiActivityImpl dialToAgi(EndPoint endPoint, CallerID callerID, AgiChannelActivityAction action,
-            ActivityCallback<DialToAgiActivity> iCallback)
+            ActivityCallback<DialToAgiActivity> iCallback, Map<String, String> channelVarsToSet)
     {
 
         final CompletionAdaptor<DialToAgiActivity> completion = new CompletionAdaptor<>();
 
-        final DialToAgiActivityImpl dialer = new DialToAgiActivityImpl(endPoint, callerID, null, false, completion, null,
-                action);
+        final DialToAgiActivityImpl dialer = new DialToAgiActivityImpl(endPoint, callerID, null, false, completion,
+                channelVarsToSet, action);
 
         dialer.startActivity(false);
 
@@ -948,26 +948,29 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
 
     }
 
-	public boolean checkDialplanExists(String dialPlan, String context) throws IOException, TimeoutException {
-		String command;
+    public boolean checkDialplanExists(String dialPlan, String context) throws IOException, TimeoutException
+    {
+        String command;
 
-		if (getVersion().isAtLeast(AsteriskVersion.ASTERISK_1_6)) {
-			// TODO: Use ShowDialplanAction instead of CommandAction?
-			command = "dialplan show " + context;
-		}
-		else
-		{
-			command = "show dialplan " + context;
-		}
+        if (getVersion().isAtLeast(AsteriskVersion.ASTERISK_1_6))
+        {
+            // TODO: Use ShowDialplanAction instead of CommandAction?
+            command = "dialplan show " + context;
+        }
+        else
+        {
+            command = "show dialplan " + context;
+        }
 
-		CommandAction action = new CommandAction(command);
-		CommandResponse response = (CommandResponse) sendAction(action, 30000);
+        CommandAction action = new CommandAction(command);
+        CommandResponse response = (CommandResponse) sendAction(action, 30000);
 
-		return response.getResult().stream().anyMatch(line -> line.contains(dialPlan));
-	}
+        return response.getResult().stream().anyMatch(line -> line.contains(dialPlan));
+    }
 
     public boolean checkDialplanExists(AsteriskSettings profile)
-            throws IllegalArgumentException, IllegalStateException, IOException, TimeoutException {
+            throws IllegalArgumentException, IllegalStateException, IOException, TimeoutException
+    {
         return checkDialplanExists(ACTIVITY_AGI, profile.getManagementContext());
 
     }
@@ -983,8 +986,9 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
         List<String> line = response.getResult();
         String tmp = "Extension '" + extNumber + "," + priority + ",";
 
-        if (line.stream().anyMatch(answer -> answer.substring(0, tmp.length()).compareToIgnoreCase(tmp) == 0)) {
-	        return "OK";
+        if (line.stream().anyMatch(answer -> answer.substring(0, tmp.length()).compareToIgnoreCase(tmp) == 0))
+        {
+            return "OK";
         }
 
         throw new Exception("InitiateAction.AddExtentionFailed" + ext);
