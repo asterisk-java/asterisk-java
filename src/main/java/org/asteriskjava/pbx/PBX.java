@@ -52,7 +52,7 @@ public interface PBX
      * @param ActivityCallback
      */
     BlindTransferActivity blindTransfer(final Call call, OperandChannel channelToTransfer, final EndPoint transferTarget,
-            final CallerID toCallerID, boolean autoAnswer, long timeout);
+            final CallerID toCallerID, boolean autoAnswer, long timeout, String dialOptions);
 
     /**
      * The BlindTransferActivity is used by the AsteriksPBX to transfer a live
@@ -73,7 +73,7 @@ public interface PBX
      *            is reached the Blind Transfer will be cancelled.
      */
     void blindTransfer(Call call, OperandChannel channelToTransfer, final EndPoint transferTarget, final CallerID toCallerID,
-            boolean autoAnswer, long timeout, ActivityCallback<BlindTransferActivity> callback);
+            boolean autoAnswer, long timeout, ActivityCallback<BlindTransferActivity> callback, String dialOptions);
 
     /**
      * Sends a DTMF tone to given channel. Not returning until the tone has been

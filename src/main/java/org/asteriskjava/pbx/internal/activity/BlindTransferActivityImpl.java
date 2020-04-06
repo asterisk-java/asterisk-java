@@ -65,6 +65,8 @@ public class BlindTransferActivityImpl extends ActivityHelper<BlindTransferActiv
 
     final Channel actualChannelToTransfer;
 
+    private String dialOptions;
+
     /**
      * Blind transfers a live channel to a given endpoint which may need to be
      * dialed. When we dial the endpoint we display the 'toCallerID'.
@@ -78,7 +80,7 @@ public class BlindTransferActivityImpl extends ActivityHelper<BlindTransferActiv
      */
     public BlindTransferActivityImpl(Call call, final Call.OperandChannel channelToTransfer, final EndPoint transferTarget,
             final CallerID toCallerID, boolean autoAnswer, long timeout,
-            final ActivityCallback<BlindTransferActivity> listener)
+            final ActivityCallback<BlindTransferActivity> listener, String dialOptions)
     {
         super("BlindTransferActivity", listener);
 
@@ -88,6 +90,7 @@ public class BlindTransferActivityImpl extends ActivityHelper<BlindTransferActiv
         this._toCallerID = toCallerID;
         this._autoAnswer = autoAnswer;
         this._timeout = timeout;
+        this.dialOptions = dialOptions;
 
         actualChannelToTransfer = _call.getOperandChannel(this._channelToTransfer);
 
@@ -95,7 +98,7 @@ public class BlindTransferActivityImpl extends ActivityHelper<BlindTransferActiv
     }
 
     public BlindTransferActivityImpl(Channel agentChannel, EndPoint transferTarget, CallerID toCallerID, boolean autoAnswer,
-            int timeout, ActivityCallback<BlindTransferActivity> iCallback) throws PBXException
+            int timeout, ActivityCallback<BlindTransferActivity> iCallback, String dialOptions) throws PBXException
     {
         super("BlindTransferActivity", iCallback);
 
@@ -104,6 +107,7 @@ public class BlindTransferActivityImpl extends ActivityHelper<BlindTransferActiv
         this._autoAnswer = autoAnswer;
         this._timeout = timeout;
         actualChannelToTransfer = agentChannel;
+        this.dialOptions = dialOptions;
         _channelToTransfer = OperandChannel.ORIGINATING_PARTY;
         this._call = new CallImpl(agentChannel, CallDirection.OUTBOUND);
         this.startActivity(true);
@@ -150,7 +154,7 @@ public class BlindTransferActivityImpl extends ActivityHelper<BlindTransferActiv
                 sipHeader = PBXFactory.getActiveProfile().getAutoAnswer();
             }
             actualChannelToTransfer.setCurrentActivityAction(new AgiChannelActivityBlindTransfer(
-                    this._transferTarget.getFullyQualifiedName(), sipHeader, _toCallerID.getNumber()));
+                    this._transferTarget.getFullyQualifiedName(), sipHeader, _toCallerID.getNumber(), dialOptions));
 
             // TODO: At one point we were adding the /n option to the end of the
             // channel to get around

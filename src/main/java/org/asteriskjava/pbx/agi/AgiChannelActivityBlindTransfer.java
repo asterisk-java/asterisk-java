@@ -15,12 +15,14 @@ public class AgiChannelActivityBlindTransfer implements AgiChannelActivityAction
     private String sipHeader;
     int timeout = 30;
     private String callerId;
+    private String dialOptions;
 
-    public AgiChannelActivityBlindTransfer(String fullyQualifiedName, String sipHeader, String callerId)
+    public AgiChannelActivityBlindTransfer(String fullyQualifiedName, String sipHeader, String callerId, String dialOptions)
     {
         this.target = fullyQualifiedName;
         this.sipHeader = sipHeader;
         this.callerId = callerId;
+        this.dialOptions = dialOptions;
         if (sipHeader == null)
         {
             this.sipHeader = "";
@@ -34,7 +36,7 @@ public class AgiChannelActivityBlindTransfer implements AgiChannelActivityAction
         channel.setVariable("__SIPADDHEADER", sipHeader);
         channel.setCallerId(callerId);
         ichannel.setCurrentActivityAction(new AgiChannelActivityHold());
-        channel.dial(target, timeout, "");
+        channel.dial(target, timeout, dialOptions);
 
     }
 

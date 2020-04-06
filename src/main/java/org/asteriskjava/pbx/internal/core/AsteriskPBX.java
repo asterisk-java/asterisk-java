@@ -130,12 +130,12 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
 
     @Override
     public BlindTransferActivity blindTransfer(Call call, Call.OperandChannel channelToTransfer, EndPoint transferTarget,
-            CallerID toCallerID, boolean autoAnswer, long timeout)
+            CallerID toCallerID, boolean autoAnswer, long timeout, String dialOptions)
     {
         final CompletionAdaptor<BlindTransferActivity> completion = new CompletionAdaptor<>();
 
         final BlindTransferActivityImpl transfer = new BlindTransferActivityImpl(call, channelToTransfer, transferTarget,
-                toCallerID, autoAnswer, timeout, completion);
+                toCallerID, autoAnswer, timeout, completion, dialOptions);
 
         completion.waitForCompletion(timeout + 2, TimeUnit.SECONDS);
 
@@ -145,16 +145,19 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
 
     @Override
     public void blindTransfer(Call call, Call.OperandChannel channelToTransfer, EndPoint transferTarget, CallerID toCallerID,
-            boolean autoAnswer, long timeout, ActivityCallback<BlindTransferActivity> listener)
+            boolean autoAnswer, long timeout, ActivityCallback<BlindTransferActivity> listener, String dialOptions)
     {
-        new BlindTransferActivityImpl(call, channelToTransfer, transferTarget, toCallerID, autoAnswer, timeout, listener);
+        new BlindTransferActivityImpl(call, channelToTransfer, transferTarget, toCallerID, autoAnswer, timeout, listener,
+                dialOptions);
 
     }
 
     public BlindTransferActivity blindTransfer(Channel agentChannel, EndPoint transferTarget, CallerID toCallerID,
-            boolean autoAnswer, int timeout, ActivityCallback<BlindTransferActivity> iCallback) throws PBXException
+            boolean autoAnswer, int timeout, ActivityCallback<BlindTransferActivity> iCallback, String dialOptions)
+            throws PBXException
     {
-        return new BlindTransferActivityImpl(agentChannel, transferTarget, toCallerID, autoAnswer, timeout, iCallback);
+        return new BlindTransferActivityImpl(agentChannel, transferTarget, toCallerID, autoAnswer, timeout, iCallback,
+                dialOptions);
 
     }
 

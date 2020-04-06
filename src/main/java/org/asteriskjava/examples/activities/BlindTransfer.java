@@ -28,19 +28,20 @@ public class BlindTransfer
 
     static public void main(String[] args) throws IOException, AuthenticationFailedException, TimeoutException
     {
-    	/**
-    	 * Initialise the PBX Factory. You need to implement your own AsteriskSettings class.
-    	 */
-        PBXFactory.init(new ExamplesAsteriskSettings());
-        
         /**
-         * Activities utilise an agi entry point in your dial plan.
-         * You can create your own entry point in dialplan or have
-         * asterisk-java add it automatically
+         * Initialise the PBX Factory. You need to implement your own
+         * AsteriskSettings class.
+         */
+        PBXFactory.init(new ExamplesAsteriskSettings());
+
+        /**
+         * Activities utilise an agi entry point in your dial plan. You can
+         * create your own entry point in dialplan or have asterisk-java add it
+         * automatically
          */
         AsteriskPBX asteriskPbx = (AsteriskPBX) PBXFactory.getActivePBX();
         asteriskPbx.createAgiEntryPoint();
-        
+
         // We are all configured lets try and do a blind transfer.
         blindTransfer();
     }
@@ -48,9 +49,10 @@ public class BlindTransfer
     static private void blindTransfer()
     {
         PBX pbx = PBXFactory.getActivePBX();
-        
+
         // The trunk MUST match the section header (e.g. [default]) that appears
-        // in your /etc/asterisk/sip.d file (assuming you are using a SIP trunk).
+        // in your /etc/asterisk/sip.d file (assuming you are using a SIP
+        // trunk).
         // The trunk is used to select which SIP trunk to dial through.
         Trunk trunk = pbx.buildTrunk("default");
 
@@ -85,11 +87,12 @@ public class BlindTransfer
                             {
 
                                 @Override
-                                public void progress(BlindTransferActivity activity, ActivityStatusEnum status, String message)
+                                public void progress(BlindTransferActivity activity, ActivityStatusEnum status,
+                                        String message)
                                 {
                                     // if success the blind transfer completed.
                                 }
-                            });
+                            }, "");
                 }
                 if (status == ActivityStatusEnum.FAILURE)
                     System.out.println("Oops something bad happened when we dialed.");
