@@ -1314,6 +1314,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         }
         if (event instanceof DisconnectEvent)
         {
+            cleanupActionListeners((DisconnectEvent)event);
             // When we receive get disconnected while we are connected start
             // a new reconnect thread and set the state to RECONNECTING.
 	        synchronized (this)
@@ -1534,6 +1535,70 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         }
     }
 
+    /**
+     * Notify pending {@link #responseListeners} and
+     * {@link #responseEventListeners} so the synchronous ones can unblock,
+     * clears those listener collections.
+     *
+     * @param event
+     */
+    private void cleanupActionListeners(DisconnectEvent event)
+    {
+        HashMap<String, SendActionCallback> oldResponseListeners = null;
+
+        synchronized (responseListeners)
+        {
+            // Store remaining response listeners to be notified outside of synchronized
+            oldResponseListeners = new HashMap<String, SendActionCallback>(responseListeners);
+            responseListeners.clear();
+        }
+
+        // Clear pending responseListeners that will not receive their responses
+        for (SendActionCallback responseListener: oldResponseListeners.values())
+        {
+            // Allows to unblock waiting sendAction() calls
+            try
+            {
+                responseListener.onResponse(null);
+            }
+            catch (Exception ex)
+            {
+                logger.warn("Exception notifying responseListener.onResponse(null)", ex);
+            }
+        }
+
+        HashMap<String, ManagerEventListener> oldResponseEventListeners = null;
+        synchronized (responseEventListeners)
+        {
+            // Store remaining responseEventListeners to be notified outside of synchronized
+            oldResponseEventListeners = new HashMap<String, ManagerEventListener>(responseEventListeners);
+            responseEventListeners.clear();
+        }
+
+        // Remove those already cleaned up via oldResponseListeners
+        // TODO or should all be notified?
+        for (String discardedInternalActionId: oldResponseListeners.keySet())
+        {
+            oldResponseEventListeners.remove(discardedInternalActionId);
+        }
+
+        // Notify remaining responseEventListeners.
+        // These could be EventGeneratingAction handlers that have received a
+        // response but have not yet received the end event.
+        for (ManagerEventListener responseEventListener: oldResponseEventListeners.values())
+        {
+            try
+            {
+                // Allows to unblock waiting sendAction() calls
+                responseEventListener.onManagerEvent(event);
+            }
+            catch (Exception ex)
+            {
+                logger.warn("Exception notifying responseListener.onManagerEvent(DisconnectEvent)", ex);
+            }
+        }
+    }
+
     private void cleanup()
     {
         disconnect();
@@ -1622,7 +1687,10 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
         public void onResponse(ManagerResponse response)
         {
+            // null response happens when connection is lost
+            if (response != null) {
             result.setResponse(response);
+            }
             result.countDown();
         }
     }
@@ -1651,6 +1719,16 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
         public void onManagerEvent(ManagerEvent event)
         {
+            if (event instanceof DisconnectEvent)
+            {
+                // Set flag that must not wait for the response
+                events.setComplete(true);
+                // unblock potentially waiting synchronous call to
+                // sendEventGeneratingAction(EventGeneratingAction action, long timeout)
+                events.countDown();
+                return;
+            }
+
             // should always be a ResponseEvent, anyway...
             if (event instanceof ResponseEvent)
             {
@@ -1675,6 +1753,17 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
         public void onResponse(ManagerResponse response)
         {
+            // If disconnected
+            if (response == null)
+            {
+                // Set flag that must not wait for the response
+                events.setComplete(true);
+                // unblock potentially waiting synchronous call to
+                // sendEventGeneratingAction(EventGeneratingAction action, long timeout)
+                events.countDown();
+                return;
+            }
+
             events.setRepsonse(response);
             if (response instanceof ManagerError)
             {
