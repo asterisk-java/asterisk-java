@@ -28,7 +28,12 @@ public class AgiChannelActivityBridge implements AgiChannelActivityAction
     {
         try
         {
-
+            // TODO: this should probably pass the 'F' option to allow the
+            // bridgee
+            // to go back to dialplan.
+            // I'm not currently prepared to do it as it is called from a number
+            // of places, and
+            // I can't currently see it causing problems.
             channel.bridge(target.getChannelName(), "");
             channel.hangup();
         }
