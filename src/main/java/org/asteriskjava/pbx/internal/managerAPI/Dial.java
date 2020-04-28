@@ -55,7 +55,7 @@ public class Dial extends EventListenerBaseClass
      */
     public OriginateResult[] dial(final NewChannelListener listener, final EndPoint localHandset,
             final EndPoint targetEndPoint, final String dialContext, final CallerID callerID, final boolean hideCallerId,
-            Map<String, String> channelVarsToSet) throws PBXException
+            Map<String, String> channelVarsToSet, String dialOptions) throws PBXException
     {
         final PBX pbx = PBXFactory.getActivePBX();
 
@@ -98,7 +98,7 @@ public class Dial extends EventListenerBaseClass
                         this._latch = new CountDownLatch(1);
 
                         trcResult.getChannel().setCurrentActivityAction(
-                                new AgiChannelActivityDial(targetEndPoint.getFullyQualifiedName()));
+                                new AgiChannelActivityDial(targetEndPoint.getFullyQualifiedName(), dialOptions));
 
                         this._latch.await(30, TimeUnit.SECONDS);
 

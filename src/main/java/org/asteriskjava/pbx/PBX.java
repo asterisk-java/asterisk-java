@@ -100,7 +100,7 @@ public interface PBX
      * 
      * @return Call - the call resulting from dialing the number.
      */
-    DialActivity dial(EndPoint from, CallerID fromCallerID, EndPoint to, CallerID toCallerID);
+    DialActivity dial(EndPoint from, CallerID fromCallerID, EndPoint to, CallerID toCallerID, String dialOptions);
 
     /**
      * Dials the given phone number using the specified trunk. Not returning
@@ -110,7 +110,7 @@ public interface PBX
      * @return Call the call resulting from dialing the number.
      */
     void dial(EndPoint from, CallerID fromCallerID, EndPoint to, CallerID toCallerID,
-            ActivityCallback<DialActivity> callback);
+            ActivityCallback<DialActivity> callback, String dialOptions);
 
     /**
      * Hangs up the given channel. Not returning until the call is hungup.

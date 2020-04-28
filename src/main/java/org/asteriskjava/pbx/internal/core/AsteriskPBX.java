@@ -255,11 +255,12 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
     }
 
     @Override
-    public DialActivity dial(final EndPoint from, final CallerID fromCallerID, final EndPoint to, final CallerID toCallerID)
+    public DialActivity dial(final EndPoint from, final CallerID fromCallerID, final EndPoint to, final CallerID toCallerID,
+            String dialOptions)
     {
         final CompletionAdaptor<DialActivity> completion = new CompletionAdaptor<>();
 
-        final DialActivityImpl dialer = new DialActivityImpl(from, to, toCallerID, false, completion, null);
+        final DialActivityImpl dialer = new DialActivityImpl(from, to, toCallerID, false, completion, null, dialOptions);
 
         completion.waitForCompletion(3, TimeUnit.MINUTES);
 
@@ -273,17 +274,18 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
     }
 
     public DialActivity dial(final EndPoint from, final CallerID fromCallerID, final EndPoint to, final CallerID toCallerID,
-            final ActivityCallback<DialActivity> callback, Map<String, String> channelVarsToSet)
+            final ActivityCallback<DialActivity> callback, Map<String, String> channelVarsToSet, String dialOptions)
     {
-        final DialActivityImpl dialer = new DialActivityImpl(from, to, toCallerID, false, callback, channelVarsToSet);
+        final DialActivityImpl dialer = new DialActivityImpl(from, to, toCallerID, false, callback, channelVarsToSet,
+                dialOptions);
         return dialer;
     }
 
     @Override
     public void dial(final EndPoint from, final CallerID fromCallerID, final EndPoint to, final CallerID toCallerID,
-            final ActivityCallback<DialActivity> callback)
+            final ActivityCallback<DialActivity> callback, String dialOptions)
     {
-        new DialActivityImpl(from, to, toCallerID, false, callback, null);
+        new DialActivityImpl(from, to, toCallerID, false, callback, null, dialOptions);
 
     }
 

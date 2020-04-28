@@ -48,6 +48,8 @@ public class BlindTransfer
 
     static private void blindTransfer()
     {
+        String dialOptions = "";
+
         PBX pbx = PBXFactory.getActivePBX();
 
         // The trunk MUST match the section header (e.g. [default]) that appears
@@ -97,7 +99,7 @@ public class BlindTransfer
                 if (status == ActivityStatusEnum.FAILURE)
                     System.out.println("Oops something bad happened when we dialed.");
             }
-        });
+        }, dialOptions);
 
     }
 
