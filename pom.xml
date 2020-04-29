@@ -11,7 +11,7 @@
 
 
 	<properties>
-        <releaseVersion>3.2.1-SNAPSHOT</releaseVersion>
+        <releaseVersion>3.2.2-SNAPSHOT</releaseVersion>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
