@@ -49,7 +49,7 @@ class BridgeState
         List<BridgeEnterEvent> remaining = null;
 
         if (event.getBridgeTechnology().equals("holding_bridge")) {
-	    /* channels in a holding bridge aren't bridged to one another */
+            /* channels in a holding bridge aren't bridged to one another */
             return null;
         }
 
