@@ -86,6 +86,11 @@ class BridgeState
     {
         List<BridgeEnterEvent> remaining = new LinkedList<>();
 
+        if (event.getBridgeTechnology().equals("holding_bridge")) {
+            /* channels in a holding bridge aren't bridged to one another */
+            return null;
+        }
+
         synchronized (members)
         {
             remaining.addAll(members.values());
