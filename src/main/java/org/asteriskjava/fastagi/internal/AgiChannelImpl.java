@@ -255,17 +255,29 @@ public class AgiChannelImpl implements AgiChannel
 
     public void streamFile(String file) throws AgiException
     {
+        checkFile(file);
         sendCommand(new StreamFileCommand(file));
+    }
+
+    private void checkFile(String file)
+    {
+        if (file == null || file.length() == 0)
+        {
+            logger.error(
+                    "Call to streamFile with empty file, this will result in AGI setting AGISTATUS = FAILURE and returning -1");
+        }
     }
 
     public char streamFile(String file, String escapeDigits) throws AgiException
     {
+        checkFile(file);
         sendCommand(new StreamFileCommand(file, escapeDigits));
         return lastReply.getResultCodeAsChar();
     }
 
     public char streamFile(String file, String escapeDigits, int offset) throws AgiException
     {
+        checkFile(file);
         sendCommand(new StreamFileCommand(file, escapeDigits, offset));
         return lastReply.getResultCodeAsChar();
     }
