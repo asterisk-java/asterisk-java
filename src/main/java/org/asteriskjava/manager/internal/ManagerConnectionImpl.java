@@ -48,6 +48,7 @@ import org.asteriskjava.manager.ManagerConnectionState;
 import org.asteriskjava.manager.ManagerEventListener;
 import org.asteriskjava.manager.ResponseEvents;
 import org.asteriskjava.manager.SendActionCallback;
+import org.asteriskjava.manager.SendEventGeneratingActionCallback;
 import org.asteriskjava.manager.TimeoutException;
 import org.asteriskjava.manager.action.ChallengeAction;
 import org.asteriskjava.manager.action.CommandAction;
@@ -1047,6 +1048,56 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         return responseEvents;
     }
 
+    public void sendEventGeneratingAction(
+            EventGeneratingAction action,
+            SendEventGeneratingActionCallback callback)
+                    throws IOException, IllegalArgumentException, IllegalStateException
+    {
+        if (action == null)
+        {
+            throw new IllegalArgumentException("Unable to send action: action is null.");
+        }
+        else if (action.getActionCompleteEventClass() == null)
+        {
+            throw new IllegalArgumentException(
+                    "Unable to send action: actionCompleteEventClass for " + action.getClass().getName() + " is null.");
+        }
+        else if (!ResponseEvent.class.isAssignableFrom(action.getActionCompleteEventClass()))
+        {
+            throw new IllegalArgumentException(
+                    "Unable to send action: actionCompleteEventClass (" + action.getActionCompleteEventClass().getName()
+                            + ") for " + action.getClass().getName() + " is not a ResponseEvent.");
+        }
+
+        if (state != CONNECTED)
+        {
+            throw new IllegalStateException(
+                    "Actions may only be sent when in state " + "CONNECTED but connection is in state " + state);
+        }
+
+        final String internalActionId = createInternalActionId();
+
+        if (callback != null)
+        {
+            AsyncEventGeneratingResponseHandler responseEventHandler = new AsyncEventGeneratingResponseHandler(
+                    action.getActionCompleteEventClass(), callback);
+
+            // register response handler...
+            synchronized (this.responseListeners)
+            {
+                this.responseListeners.put(internalActionId, responseEventHandler);
+            }
+
+            // ...and event handler.
+            synchronized (this.responseEventListeners)
+            {
+                this.responseEventListeners.put(internalActionId, responseEventHandler);
+            }
+        }
+
+        writer.sendAction(action, internalActionId);
+    }
+
     /**
      * Creates a new unique internal action id based on the hash code of this
      * connection and a sequence.
@@ -1714,6 +1765,79 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
             if (events.isComplete())
             {
                 events.countDown();
+            }
+        }
+    }
+
+    private class AsyncEventGeneratingResponseHandler
+            implements SendActionCallback, ManagerEventListener
+    {
+        private final Class<? extends ResponseEvent> actionCompleteEventClass;
+        private final SendEventGeneratingActionCallback callback;
+
+        private final ResponseEventsImpl events;
+
+        public AsyncEventGeneratingResponseHandler(
+                Class<? extends ResponseEvent> actionCompleteEventClass,
+                SendEventGeneratingActionCallback callback)
+        {
+            this.actionCompleteEventClass = actionCompleteEventClass;
+            this.callback = callback;
+
+            this.events = new ResponseEventsImpl();
+        }
+
+        @Override
+        public void onManagerEvent(ManagerEvent event)
+        {
+            if (event instanceof DisconnectEvent)
+            {
+                callback.onResponse(events);
+                return;
+            }
+
+            // should always be a ResponseEvent, anyway...
+            if (false == (event instanceof ResponseEvent))
+            {
+                return;
+            }
+
+            ResponseEvent responseEvent = (ResponseEvent)event;
+            events.addEvent(responseEvent);
+
+            if (actionCompleteEventClass.isAssignableFrom(event.getClass()))
+            {
+                events.setComplete(true);
+                String internalActionId = responseEvent.getInternalActionId();
+                synchronized (responseEventListeners)
+                {
+                    responseEventListeners.remove(internalActionId);
+                }
+                callback.onResponse(events);
+            }
+        }
+
+        @Override
+        public void onResponse(ManagerResponse response)
+        {
+            // If disconnected
+            if (response == null)
+            {
+                callback.onResponse(events);
+                return;
+            }
+
+            events.setRepsonse(response);
+            if (response instanceof ManagerError)
+            {
+                events.setComplete(true);
+            }
+
+            // finished?
+            if (events.isComplete())
+            {
+                // invoke callback
+                callback.onResponse(events);
             }
         }
     }

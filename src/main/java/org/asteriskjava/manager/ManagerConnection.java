@@ -413,6 +413,20 @@ public interface ManagerConnection
             throws IOException, EventTimeoutException, IllegalArgumentException, IllegalStateException;
 
     /**
+     * Asynchronously sends an {@link EventGeneratingAction} to the Asterisk
+     * server. This is similar to
+     * {@link #sendEventGeneratingAction(EventGeneratingAction, long)} except it
+     * does NOT block to wait for the completion. Instead after the action
+     * completes or fails the result is provided to the optional callback via
+     * {@link SendEventGeneratingActionCallback#onResponse(ResponseEvents)}.
+     *
+     * @see #sendEventGeneratingAction(EventGeneratingAction, long)
+     */
+    void sendEventGeneratingAction(
+            EventGeneratingAction action,
+            SendEventGeneratingActionCallback callback)
+                    throws IOException, IllegalArgumentException, IllegalStateException;
+    /**
      * Registers an event listener that is called whenever an
      * {@link org.asteriskjava.manager.event.ManagerEvent} is receiced from the
      * Asterisk server.
