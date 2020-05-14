@@ -26,6 +26,7 @@ class BridgeState
     private final Log logger = LogFactory.getLog(getClass());
 
     private static final BridgeEnterEventComparator BRIDGE_ENTER_EVENT_COMPARATOR = new BridgeEnterEventComparator();
+    private static final String HOLDING_BRIDGE_TECH = "holding_bridge";
 
     private final Map<String, BridgeEnterEvent> members = new HashMap<>();
 
@@ -47,6 +48,11 @@ class BridgeState
     ManagerEvent addMember(BridgeEnterEvent event)
     {
         List<BridgeEnterEvent> remaining = null;
+
+        if (HOLDING_BRIDGE_TECH.equals(event.getBridgeTechnology())) {
+            /* channels in a holding bridge aren't bridged to one another */
+            return null;
+        }
 
         synchronized (members)
         {
@@ -80,6 +86,11 @@ class BridgeState
     ManagerEvent removeMember(BridgeLeaveEvent event)
     {
         List<BridgeEnterEvent> remaining = new LinkedList<>();
+
+        if (HOLDING_BRIDGE_TECH.equals(event.getBridgeTechnology())) {
+            /* channels in a holding bridge aren't bridged to one another */
+            return null;
+        }
 
         synchronized (members)
         {
