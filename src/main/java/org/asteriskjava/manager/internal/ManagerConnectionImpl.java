@@ -1048,10 +1048,8 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         return responseEvents;
     }
 
-    public void sendEventGeneratingAction(
-            EventGeneratingAction action,
-            SendEventGeneratingActionCallback callback)
-                    throws IOException, IllegalArgumentException, IllegalStateException
+    public void sendEventGeneratingAction(EventGeneratingAction action, SendEventGeneratingActionCallback callback)
+            throws IOException, IllegalArgumentException, IllegalStateException
     {
         if (action == null)
         {
@@ -1295,7 +1293,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         }
         if (event instanceof DisconnectEvent)
         {
-            cleanupActionListeners((DisconnectEvent)event);
+            cleanupActionListeners((DisconnectEvent) event);
             // When we receive get disconnected while we are connected start
             // a new reconnect thread and set the state to RECONNECTING.
             synchronized (this)
@@ -1397,7 +1395,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                 return true;
             }
         }
-    
+
         // Other cases
         if ("OpenPBX Call Manager/1.0".equals(identifier))
             return true;
@@ -1405,7 +1403,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
             return true;
         if (identifier.startsWith("Asterisk Call Manager Proxy/"))
             return true;
-    
+
         return false;
     }
 
@@ -1519,6 +1517,17 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                 }
 
                 logger.warn("Exception while trying to reconnect: " + message);
+                try
+                {
+                    // Where multiple connections are present, spread out
+                    // their reconnect attempts and prevent hard loop.
+                    long randomSleep = (long) (Math.random() * 100);
+                    TimeUnit.MILLISECONDS.sleep(50 + randomSleep);
+                }
+                catch (InterruptedException e1)
+                {
+                    logger.error(e1);
+                }
             }
             numTries++;
         }
@@ -1537,13 +1546,14 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
         synchronized (responseListeners)
         {
-            // Store remaining response listeners to be notified outside of synchronized
+            // Store remaining response listeners to be notified outside of
+            // synchronized
             oldResponseListeners = new HashMap<String, SendActionCallback>(responseListeners);
             responseListeners.clear();
         }
 
         // Clear pending responseListeners that will not receive their responses
-        for (SendActionCallback responseListener: oldResponseListeners.values())
+        for (SendActionCallback responseListener : oldResponseListeners.values())
         {
             // Allows to unblock waiting sendAction() calls
             try
@@ -1559,14 +1569,15 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         HashMap<String, ManagerEventListener> oldResponseEventListeners = null;
         synchronized (responseEventListeners)
         {
-            // Store remaining responseEventListeners to be notified outside of synchronized
+            // Store remaining responseEventListeners to be notified outside of
+            // synchronized
             oldResponseEventListeners = new HashMap<String, ManagerEventListener>(responseEventListeners);
             responseEventListeners.clear();
         }
 
         // Remove those already cleaned up via oldResponseListeners
         // TODO or should all be notified?
-        for (String discardedInternalActionId: oldResponseListeners.keySet())
+        for (String discardedInternalActionId : oldResponseListeners.keySet())
         {
             oldResponseEventListeners.remove(discardedInternalActionId);
         }
@@ -1574,7 +1585,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         // Notify remaining responseEventListeners.
         // These could be EventGeneratingAction handlers that have received a
         // response but have not yet received the end event.
-        for (ManagerEventListener responseEventListener: oldResponseEventListeners.values())
+        for (ManagerEventListener responseEventListener : oldResponseEventListeners.values())
         {
             try
             {
@@ -1677,8 +1688,9 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         public void onResponse(ManagerResponse response)
         {
             // null response happens when connection is lost
-            if (response != null) {
-            result.setResponse(response);
+            if (response != null)
+            {
+                result.setResponse(response);
             }
             result.countDown();
         }
@@ -1713,7 +1725,8 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                 // Set flag that must not wait for the response
                 events.setComplete(true);
                 // unblock potentially waiting synchronous call to
-                // sendEventGeneratingAction(EventGeneratingAction action, long timeout)
+                // sendEventGeneratingAction(EventGeneratingAction action, long
+                // timeout)
                 events.countDown();
                 return;
             }
@@ -1748,7 +1761,8 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                 // Set flag that must not wait for the response
                 events.setComplete(true);
                 // unblock potentially waiting synchronous call to
-                // sendEventGeneratingAction(EventGeneratingAction action, long timeout)
+                // sendEventGeneratingAction(EventGeneratingAction action, long
+                // timeout)
                 events.countDown();
                 return;
             }
@@ -1769,16 +1783,14 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         }
     }
 
-    private class AsyncEventGeneratingResponseHandler
-            implements SendActionCallback, ManagerEventListener
+    private class AsyncEventGeneratingResponseHandler implements SendActionCallback, ManagerEventListener
     {
-        private final Class<? extends ResponseEvent> actionCompleteEventClass;
+        private final Class< ? extends ResponseEvent> actionCompleteEventClass;
         private final SendEventGeneratingActionCallback callback;
 
         private final ResponseEventsImpl events;
 
-        public AsyncEventGeneratingResponseHandler(
-                Class<? extends ResponseEvent> actionCompleteEventClass,
+        public AsyncEventGeneratingResponseHandler(Class< ? extends ResponseEvent> actionCompleteEventClass,
                 SendEventGeneratingActionCallback callback)
         {
             this.actionCompleteEventClass = actionCompleteEventClass;
@@ -1802,7 +1814,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                 return;
             }
 
-            ResponseEvent responseEvent = (ResponseEvent)event;
+            ResponseEvent responseEvent = (ResponseEvent) event;
             events.addEvent(responseEvent);
 
             if (actionCompleteEventClass.isAssignableFrom(event.getClass()))
