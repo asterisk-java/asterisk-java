@@ -111,6 +111,10 @@ abstract class AbstractBuilder
                 {
                     value = parseLong(entry);
                 }
+                else if (dataType.isAssignableFrom(int.class) || dataType.isAssignableFrom(Integer.class))
+                {
+                    value = parseInteger(entry);
+                }
                 else
                 {
                     try
@@ -135,6 +139,21 @@ abstract class AbstractBuilder
                         + target.getClass().getName() + " " + e.getMessage(), e);
             }
         }
+    }
+
+    private Integer parseInteger(Entry<String, Object> entry)
+    {
+        Integer value;
+        String stringValue = (String) entry.getValue();
+        if (stringValue != null && stringValue.length() > 0)
+        {
+            value = Integer.parseInt(stringValue);
+        }
+        else
+        {
+            value = null;
+        }
+        return value;
     }
 
     @SuppressWarnings("unchecked")
