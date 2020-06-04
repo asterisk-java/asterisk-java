@@ -18,6 +18,7 @@ import org.asteriskjava.pbx.PBXException;
 import org.asteriskjava.pbx.PBXFactory;
 import org.asteriskjava.pbx.activities.BlindTransferActivity;
 import org.asteriskjava.pbx.agi.AgiChannelActivityBlindTransfer;
+import org.asteriskjava.pbx.agi.BlindTransferResultListener;
 import org.asteriskjava.pbx.asterisk.wrap.events.BridgeEvent;
 import org.asteriskjava.pbx.asterisk.wrap.events.DialEvent;
 import org.asteriskjava.pbx.asterisk.wrap.events.HangupEvent;
@@ -153,8 +154,23 @@ public class BlindTransferActivityImpl extends ActivityHelper<BlindTransferActiv
             {
                 sipHeader = PBXFactory.getActiveProfile().getAutoAnswer();
             }
-            actualChannelToTransfer.setCurrentActivityAction(new AgiChannelActivityBlindTransfer(
-                    this._transferTarget.getFullyQualifiedName(), sipHeader, _toCallerID.getNumber(), dialOptions));
+            BlindTransferResultListener listener = new BlindTransferResultListener()
+            {
+
+                @Override
+                public void result(String status, boolean success)
+                {
+                    if (_completionCause == null)
+                    {
+                        _completionCause = CompletionCause.FAILED;
+                    }
+                    _latch.countDown();
+
+                }
+            };
+            actualChannelToTransfer.setCurrentActivityAction(
+                    new AgiChannelActivityBlindTransfer(this._transferTarget.getFullyQualifiedName(), sipHeader,
+                            _toCallerID.getNumber(), dialOptions, listener));
 
             // TODO: At one point we were adding the /n option to the end of the
             // channel to get around

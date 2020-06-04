@@ -16,8 +16,10 @@ public class AgiChannelActivityBlindTransfer implements AgiChannelActivityAction
     int timeout = 30;
     private String callerId;
     private String dialOptions;
+    private BlindTransferResultListener listener;
 
-    public AgiChannelActivityBlindTransfer(String fullyQualifiedName, String sipHeader, String callerId, String dialOptions)
+    public AgiChannelActivityBlindTransfer(String fullyQualifiedName, String sipHeader, String callerId, String dialOptions,
+            BlindTransferResultListener listener)
     {
         this.target = fullyQualifiedName;
         this.sipHeader = sipHeader;
@@ -27,6 +29,7 @@ public class AgiChannelActivityBlindTransfer implements AgiChannelActivityAction
         {
             this.sipHeader = "";
         }
+        this.listener = listener;
     }
 
     @Override
@@ -37,7 +40,12 @@ public class AgiChannelActivityBlindTransfer implements AgiChannelActivityAction
         channel.setCallerId(callerId);
         ichannel.setCurrentActivityAction(new AgiChannelActivityHold());
         channel.dial(target, timeout, dialOptions);
-
+        String status = channel.getVariable("DIALSTATUS");
+        boolean success = "ANSWER".equalsIgnoreCase(status);
+        if (listener != null)
+        {
+            listener.result(status, success);
+        }
     }
 
     @Override
