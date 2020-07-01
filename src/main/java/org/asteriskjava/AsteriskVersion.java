@@ -36,7 +36,9 @@ public class AsteriskVersion implements Comparable<AsteriskVersion>, Serializabl
     private final String versionString;
     private final Pattern patterns[];
 
+    private static final String VERSION_PATTERN_CERTIFIED_16 = "^\\s*Asterisk certified/(GIT-)?16[-. ].*";
     private static final String VERSION_PATTERN_CERTIFIED_13 = "^\\s*Asterisk certified/((SVN-branch|GIT)-)?13[-. ].*";
+
 
     /**
      * Represents the Asterisk 1.0 series.
@@ -118,12 +120,16 @@ public class AsteriskVersion implements Comparable<AsteriskVersion>, Serializabl
      * @since 2.1.0
      */
     public static final AsteriskVersion ASTERISK_16 = new AsteriskVersion(1600, "Asterisk 16", VERSION_PATTERN_16);
+	
+    public static final AsteriskVersion ASTERISK_CERTIFIED_13 = new AsteriskVersion(1300, "Asterisk 13", VERSION_PATTERN_CERTIFIED_13);
+	
+    public static final AsteriskVersion ASTERISK_CERTIFIED_16 = new AsteriskVersion(1600, "Asterisk 16", VERSION_PATTERN_CERTIFIED_16);
 
-    private static final AsteriskVersion knownVersions[] = new AsteriskVersion[]{ASTERISK_16, ASTERISK_15, ASTERISK_14,
-            ASTERISK_13, ASTERISK_12, ASTERISK_11, ASTERISK_10, ASTERISK_1_8, ASTERISK_1_6};
+    private static final AsteriskVersion knownVersions[] = new AsteriskVersion[]{ASTERISK_16, ASTERISK_CERTIFIED_16, ASTERISK_15,
+	        ASTERISK_14, ASTERISK_CERTIFIED_13, ASTERISK_13, ASTERISK_12, ASTERISK_11, ASTERISK_10, ASTERISK_1_8, ASTERISK_1_6};
 
-    // current debian stable version, as of 03/07/2018
-    public static final AsteriskVersion DEFAULT_VERSION = ASTERISK_13;
+    // current debian stable version, as of 09/10/2018
+    public static final AsteriskVersion DEFAULT_VERSION = ASTERISK_16;
 
     /**
      * Serial version identifier.
