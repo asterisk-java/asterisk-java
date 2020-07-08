@@ -39,15 +39,13 @@ class CoherentManagerEventQueue implements ManagerEventListener, Runnable
 
     private final ListenerManager listeners = new ListenerManager();
 
-    private boolean _stop = false;
-    private final Thread _th;
-    private final BlockingQueue<EventLifeMonitor<org.asteriskjava.manager.event.ManagerEvent>> _eventQueue = new LinkedBlockingQueue<>();
+    private volatile boolean _stop = false;
 
-    private int _queueMaxSize;
+    private static final int QUEUE_SIZE = 1000;
+    private final BlockingQueue<EventLifeMonitor<org.asteriskjava.manager.event.ManagerEvent>> _eventQueue = new LinkedBlockingQueue<>(
+            QUEUE_SIZE);
 
-    private long _queueSum;
-
-    private long _queueCount;
+    long suppressQueueSizeErrorUntil = 0;
 
     private HashSet<Class< ? extends ManagerEvent>> globalEvents = new HashSet<>();
 
@@ -56,10 +54,10 @@ class CoherentManagerEventQueue implements ManagerEventListener, Runnable
 
         connection.addEventListener(this);
 
-        this._th = new Thread(this);
-        this._th.setName("EventQueue: " + name);//$NON-NLS-1$
-        this._th.setDaemon(true);
-        this._th.start();
+        Thread _th = new Thread(this);
+        _th.setName("EventQueue: " + name);//$NON-NLS-1$
+        _th.setDaemon(true);
+        _th.start();
     }
 
     /**
@@ -89,65 +87,65 @@ class CoherentManagerEventQueue implements ManagerEventListener, Runnable
 
         if (wanted)
         {
-
             // We don't support all events.
             this._eventQueue.add(new EventLifeMonitor<>(event));
-            final int queueSize = this._eventQueue.size();
-            if (this._queueMaxSize < queueSize)
+            if (_eventQueue.remainingCapacity() < QUEUE_SIZE / 10
+                    && suppressQueueSizeErrorUntil < System.currentTimeMillis())
             {
-                this._queueMaxSize = queueSize;
+                suppressQueueSizeErrorUntil = System.currentTimeMillis() + 1000;
+                logger.error("EventQueue more than 90% full");
             }
-            this._queueSum += queueSize;
-            this._queueCount++;
 
-            if (CoherentManagerEventQueue.logger.isDebugEnabled())
-            {
-                if (this._eventQueue.size() > ((this._queueMaxSize + (this._queueSum / this._queueCount)) / 2))
-                {
-                    CoherentManagerEventQueue.logger.debug("queue gtr max avg: size=" + queueSize + " max:" //$NON-NLS-1$ //$NON-NLS-2$
-                            + this._queueMaxSize + " avg:" + (this._queueSum / this._queueCount)); //$NON-NLS-1$
-                }
-            }
         }
     }
 
     @Override
     public void run()
     {
-
-        while (!this._stop)
+        try
         {
-            try
+            while (!this._stop)
             {
-                final EventLifeMonitor<org.asteriskjava.manager.event.ManagerEvent> elm = this._eventQueue.poll(2,
-                        TimeUnit.SECONDS);
-                if (elm != null)
+                try
                 {
-                    // A poison queue event means its time to shutdown.
-                    if (elm.getEvent().getClass() == PoisonQueueEvent.class)
-                        break;
-
-                    final ManagerEvent iEvent = CoherentEventFactory.build(elm.getEvent());
-                    if (iEvent != null)
+                    final EventLifeMonitor<org.asteriskjava.manager.event.ManagerEvent> elm = this._eventQueue.poll(2,
+                            TimeUnit.SECONDS);
+                    if (elm != null)
                     {
-                        dispatchEvent(iEvent);
-                        elm.assessAge();
+                        // A poison queue event means its time to shutdown.
+                        if (elm.getEvent().getClass() == PoisonQueueEvent.class)
+                        {
+                            logger.warn("Got Poison event");
+                            break;
+                        }
+
+                        final ManagerEvent iEvent = CoherentEventFactory.build(elm.getEvent());
+                        if (iEvent != null)
+                        {
+                            dispatchEvent(iEvent);
+                            elm.assessAge();
+                        }
                     }
                 }
-            }
-            catch (final Exception e)
-            {
-                /**
-                 * If an exception is thrown whilst we are shutting down then we
-                 * don't care. If it is thrown when we aren't shutting down then
-                 * we have a problem and we need to log it.
-                 */
-                if (!this._stop)
+                catch (final Exception e)
                 {
-                    CoherentManagerEventQueue.logger.error(e, e);
+                    /**
+                     * If an exception is thrown whilst we are shutting down
+                     * then we don't care. If it is thrown when we aren't
+                     * shutting down then we have a problem and we need to log
+                     * it.
+                     */
+                    if (!this._stop)
+                    {
+                        CoherentManagerEventQueue.logger.error(e, e);
+                    }
                 }
-            }
 
+            }
+        }
+        finally
+        {
+            logger.warn("Shutting down!");
         }
 
     }
@@ -177,8 +175,8 @@ class CoherentManagerEventQueue implements ManagerEventListener, Runnable
         }
     }
 
-    // TODO: make this multi threaded
-    private final ExecutorService executors = Executors.newFixedThreadPool(1);
+    //
+    private final ExecutorService executors = Executors.newCachedThreadPool();
 
     /**
      * Events are sent here from the CoherentManagerEventQueue after being
@@ -222,9 +220,12 @@ class CoherentManagerEventQueue implements ManagerEventListener, Runnable
                 }
             }
 
-            latch.await();
+            if (!latch.await(2, TimeUnit.SECONDS))
+            {
+                logger.error("Timeout waiting for event to be processed " + event);
+            }
 
-            if (totalTime.timeTaken() > 500)
+            if (totalTime.timeTaken() > 100)
             {
                 logger.warn("Too long to process event " + event + " time taken: " + totalTime.timeTaken()); //$NON-NLS-1$ //$NON-NLS-2$
             }
