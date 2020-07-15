@@ -189,7 +189,10 @@ public abstract class AgiConnectionHandler implements Runnable
             logger.error("Exception running AgiScript " + describeAgiCall(threadName, channelName), e);
             setStatusVariable(channel, AJ_AGISTATUS_FAILED);
         }
-        logger.debug("End AgiScript " + describeAgiCall(threadName, channelName));
+        finally
+        {
+            logger.debug("End AgiScript " + describeAgiCall(threadName, channelName));
+        }
     }
 
     private String describeAgiCall(String threadName, String channelName)

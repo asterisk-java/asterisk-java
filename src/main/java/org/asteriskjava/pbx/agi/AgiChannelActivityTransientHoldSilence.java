@@ -54,7 +54,7 @@ public class AgiChannelActivityTransientHoldSilence implements AgiChannelActivit
     }
 
     @Override
-    public boolean isDisconnect()
+    public boolean isDisconnect(ActivityAgi activityAgi)
     {
         return false;
     }

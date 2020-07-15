@@ -112,7 +112,7 @@ public abstract class ActivityAgi extends ServiceAgiScriptImpl
 
             boolean isAlive = true;
             RateLimiter rateLimiter = new RateLimiter(2);
-            while (!action.isDisconnect() && isAlive)
+            while (!action.isDisconnect(this) && isAlive)
             {
 
                 action.execute(this.channel, channelProxy);
