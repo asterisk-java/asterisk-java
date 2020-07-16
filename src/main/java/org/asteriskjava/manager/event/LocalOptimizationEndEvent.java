@@ -17,10 +17,8 @@
 package org.asteriskjava.manager.event;
 
 /**
- * Raised when two halves of a Local Channel have finished optimizing
- * themselves out of the media path.
- *
- * Available since Asterisk 12
+ * Raised when two halves of a Local Channel have finished optimizing themselves
+ * out of the media path. Available since Asterisk 12
  */
 public class LocalOptimizationEndEvent extends ManagerEvent
 {
@@ -56,6 +54,9 @@ public class LocalOptimizationEndEvent extends ManagerEvent
     private Integer localTwoPriority;
     private String localTwoUniqueid;
     private String localTwoLinkedid;
+
+    private String localTwoLanguage;
+    private String localOneLanguage;
 
     public LocalOptimizationEndEvent(Object source)
     {
@@ -341,4 +342,25 @@ public class LocalOptimizationEndEvent extends ManagerEvent
     {
         this.localTwoLinkedid = value;
     }
+
+    public String getLocalTwoLanguage()
+    {
+        return localTwoLanguage;
+    }
+
+    public void setLocalTwoLanguage(String localTwoLanguage)
+    {
+        this.localTwoLanguage = localTwoLanguage;
+    }
+
+    public String getLocalOneLanguage()
+    {
+        return localOneLanguage;
+    }
+
+    public void setLocalOneLanguage(String localOneLanguage)
+    {
+        this.localOneLanguage = localOneLanguage;
+    }
+
 }

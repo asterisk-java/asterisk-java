@@ -1,5 +1,7 @@
 package org.asteriskjava.pbx;
 
+import java.util.concurrent.atomic.AtomicLong;
+
 /**
  * Currently this factories only purposes is to serve up globally unique channel
  * id's which every new channel must be assigned.
@@ -9,10 +11,10 @@ package org.asteriskjava.pbx;
 public class ChannelFactory
 {
 
-    private static long nextChannelId = 0;
+    private final static AtomicLong nextChannelId = new AtomicLong();
 
-    public static synchronized long getNextChannelId()
+    public static long getNextChannelId()
     {
-        return ++ChannelFactory.nextChannelId;
+        return nextChannelId.incrementAndGet();
     }
 }

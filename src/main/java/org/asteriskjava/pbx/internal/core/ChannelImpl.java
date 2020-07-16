@@ -438,7 +438,7 @@ public class ChannelImpl implements Channel
     boolean wasMarkedDuringSweep()
     {
         boolean ret = false;
-        if ((this._sweepStartTime == null) || (this._marked == true))
+        if (this._sweepStartTime == null || this._marked)
         {
             this._sweepStartTime = null;
             ret = true;

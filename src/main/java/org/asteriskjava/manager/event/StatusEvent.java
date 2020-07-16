@@ -55,8 +55,7 @@ public class StatusEvent extends ResponseEvent
     private String writetrans;
     private String bridgeId;
     private String readtrans;
-    private String connectedlinename;
-    private String connectedlinenum;
+    private String language;
 
     public StatusEvent(Object source)
     {
@@ -511,19 +510,13 @@ public class StatusEvent extends ResponseEvent
         this.readtrans = readtrans;
     }
 
-	public String getConnectedlinename() {
-		return connectedlinename;
-	}
+    public String getLanguage()
+    {
+        return language;
+    }
 
-	public void setConnectedlinename(String connectedlinename) {
-		this.connectedlinename = connectedlinename;
-	}
-
-	public String getConnectedlinenum() {
-		return connectedlinenum;
-	}
-
-	public void setConnectedlinenum(String connectedlinenum) {
-		this.connectedlinenum = connectedlinenum;
-	}
+    public void setLanguage(String language)
+    {
+        this.language = language;
+    }
 }

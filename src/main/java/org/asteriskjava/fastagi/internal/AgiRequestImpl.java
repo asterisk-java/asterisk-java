@@ -29,6 +29,7 @@ import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.fastagi.AgiRequest;
 import org.asteriskjava.util.AstUtil;
 import org.asteriskjava.util.Log;
@@ -68,7 +69,7 @@ public class AgiRequestImpl implements AgiRequest
 
     /**
      * Creates a new AGIRequestImpl.
-     * 
+     *
      * @param environment the first lines as received from Asterisk containing
      *            the environment.
      */
@@ -185,6 +186,13 @@ public class AgiRequestImpl implements AgiRequest
     public String getRequestURL()
     {
         return request.get("request");
+    }
+
+    @Override
+    public AsteriskVersion getAsteriskVersion()
+    {
+        AsteriskVersion detected = AsteriskVersion.getDetermineVersionFromString("Asterisk " + request.get("version"));
+        return detected != null ? detected : AsteriskVersion.DEFAULT_VERSION;
     }
 
     /**
@@ -627,7 +635,7 @@ public class AgiRequestImpl implements AgiRequest
     @Override
     public String toString()
     {
-    	StringBuilder sb;
+        StringBuilder sb;
 
         sb = new StringBuilder("AgiRequest[");
         sb.append("script='").append(getScript()).append("',");

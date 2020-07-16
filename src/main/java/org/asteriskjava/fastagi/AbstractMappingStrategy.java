@@ -28,8 +28,7 @@ import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
 /**
- * Abstract base class for common mapping strategies.
- * <br>
+ * Abstract base class for common mapping strategies. <br>
  * If you implement your own mapping strategy you can derive from this class.
  *
  * @author srt
@@ -42,7 +41,7 @@ public abstract class AbstractMappingStrategy implements MappingStrategy
      */
     protected Log logger = LogFactory.getLog(getClass());
     private static final String[] DEFAULT_SCRIPT_PATH = new String[]{"agi"};
-    
+
     private ClassLoader defaultClassLoader = null;
 
     @Override
@@ -55,11 +54,14 @@ public abstract class AbstractMappingStrategy implements MappingStrategy
 
     /**
      * Returns the ClassLoader to use for loading AgiScript classes and load
-     * other resources like the mapping properties file.<p>
-     * By default this method returns a class loader that searches for classes in the
-     * "agi" subdirectory (if it exists) and uses the context class loader of the
-     * current thread as the parent class loader.<p>
-     * You can override this method if you prefer using a different class loader.
+     * other resources like the mapping properties file.
+     * <p>
+     * By default this method returns a class loader that searches for classes
+     * in the "agi" subdirectory (if it exists) and uses the context class
+     * loader of the current thread as the parent class loader.
+     * <p>
+     * You can override this method if you prefer using a different class
+     * loader.
      *
      * @return the ClassLoader to use for loading AgiScript classes and load
      *         other resources like the mapping properties file.
@@ -75,7 +77,7 @@ public abstract class AbstractMappingStrategy implements MappingStrategy
             for (String scriptPathEntry : DEFAULT_SCRIPT_PATH)
             {
                 final File scriptDir = new File(scriptPathEntry);
-                if (! scriptDir.isDirectory())
+                if (!scriptDir.isDirectory())
                 {
                     continue;
                 }
@@ -105,7 +107,7 @@ public abstract class AbstractMappingStrategy implements MappingStrategy
      * Creates a new instance of an AGI script.
      *
      * @param className Class name of the AGI script. The class must implement
-     *                  {@link AgiScript}.
+     *            {@link AgiScript}.
      * @return the created instance of the AGI script class. If the instance
      *         can't be created an error is logged and <code>null</code> is
      *         returned.
@@ -113,7 +115,7 @@ public abstract class AbstractMappingStrategy implements MappingStrategy
     @SuppressWarnings("unchecked")
     protected AgiScript createAgiScriptInstance(String className)
     {
-        Class<?> tmpClass;
+        Class< ? > tmpClass;
         Class<AgiScript> agiScriptClass;
         Constructor<AgiScript> constructor;
         AgiScript agiScript;

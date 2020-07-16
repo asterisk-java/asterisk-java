@@ -222,7 +222,7 @@ class ChannelManager
                 {
                     channel.getVariable(Constants.VARIABLE_TRACE_ID);
                 }
-                catch (NoSuchChannelException e)
+                catch (NoSuchChannelException | ManagerCommunicationException e)
                 {
                     try
                     {
@@ -821,6 +821,7 @@ class ChannelManager
 
     void handleParkedCallEvent(ParkedCallEvent event)
     {
+        logger.info("Trace - ChannelManager.java - handleParkedCallEvent: " + event);
         // Only bristuffed versions: AsteriskChannelImpl channel =
         // getChannelImplById(event.getUniqueId());
         AsteriskChannelImpl channel = getChannelImplByNameAndActive(event.getParkeeChannel());
@@ -833,12 +834,9 @@ class ChannelManager
 
         synchronized (channel)
         {
-            // todo The context should be "parkedcalls" or whatever has been
-            // configured in features.conf
-            // unfortunately we don't get the context in the ParkedCallEvent so
-            // for now we'll set it to null.
-            Extension ext = new Extension(null, event.getExten(), 1);
-            channel.setParkedAt(ext);
+            Extension ext = new Extension(null, (event.getParkingSpace() != null) ? event.getParkingSpace() : event.getExten(), 1);
+            String parkinglot = event.getParkingLot();
+            channel.setParkedAt(ext, parkinglot);
             logger.info("Channel " + channel.getName() + " is parked at " + channel.getParkedAt().getExtension());
         }
     }
@@ -865,7 +863,7 @@ class ChannelManager
 
         synchronized (channel)
         {
-            channel.setParkedAt(null);
+            channel.setParkedAt(null, null);
         }
         logger.info("Channel " + channel.getName() + " is unparked (GiveUp) from " + wasParkedAt.getExtension());
     }
@@ -892,7 +890,7 @@ class ChannelManager
 
         synchronized (channel)
         {
-            channel.setParkedAt(null);
+            channel.setParkedAt(null, null);
         }
         logger.info("Channel " + channel.getName() + " is unparked (Timeout) from " + wasParkedAt.getExtension());
     }
@@ -919,7 +917,7 @@ class ChannelManager
 
         synchronized (channel)
         {
-            channel.setParkedAt(null);
+            channel.setParkedAt(null, null);
         }
         logger.info("Channel " + channel.getName() + " is unparked (moved away) from " + wasParkedAt.getExtension());
     }

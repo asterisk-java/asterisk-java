@@ -164,12 +164,12 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
 
     public boolean isStatic()
     {
-        return membership != null && "static".equals(membership);
+        return "static".equals(membership);
     }
 
     public boolean isDynamic()
     {
-        return membership != null && "dynamic".equals(membership);
+        return "dynamic".equals(membership);
     }
 
     public Integer getPenalty()

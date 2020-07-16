@@ -1,6 +1,7 @@
 package org.asteriskjava.pbx.internal.activity;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -17,6 +18,7 @@ import org.asteriskjava.pbx.PBXException;
 import org.asteriskjava.pbx.PBXFactory;
 import org.asteriskjava.pbx.activities.BlindTransferActivity;
 import org.asteriskjava.pbx.agi.AgiChannelActivityBlindTransfer;
+import org.asteriskjava.pbx.agi.BlindTransferResultListener;
 import org.asteriskjava.pbx.asterisk.wrap.events.BridgeEvent;
 import org.asteriskjava.pbx.asterisk.wrap.events.DialEvent;
 import org.asteriskjava.pbx.asterisk.wrap.events.HangupEvent;
@@ -37,7 +39,7 @@ public class BlindTransferActivityImpl extends ActivityHelper<BlindTransferActiv
 {
     private static final Log logger = LogFactory.getLog(BlindTransferActivityImpl.class);
 
-    private Call _call;
+    private final Call _call;
 
     private Call.OperandChannel _channelToTransfer;
 
@@ -64,6 +66,8 @@ public class BlindTransferActivityImpl extends ActivityHelper<BlindTransferActiv
 
     final Channel actualChannelToTransfer;
 
+    private String dialOptions;
+
     /**
      * Blind transfers a live channel to a given endpoint which may need to be
      * dialed. When we dial the endpoint we display the 'toCallerID'.
@@ -77,16 +81,17 @@ public class BlindTransferActivityImpl extends ActivityHelper<BlindTransferActiv
      */
     public BlindTransferActivityImpl(Call call, final Call.OperandChannel channelToTransfer, final EndPoint transferTarget,
             final CallerID toCallerID, boolean autoAnswer, long timeout,
-            final ActivityCallback<BlindTransferActivity> listener)
+            final ActivityCallback<BlindTransferActivity> listener, String dialOptions)
     {
         super("BlindTransferActivity", listener);
 
-        this._call = call;
+        this._call = Objects.requireNonNull(call);
         this._channelToTransfer = channelToTransfer;
         this._transferTarget = transferTarget;
         this._toCallerID = toCallerID;
         this._autoAnswer = autoAnswer;
         this._timeout = timeout;
+        this.dialOptions = dialOptions;
 
         actualChannelToTransfer = _call.getOperandChannel(this._channelToTransfer);
 
@@ -94,7 +99,7 @@ public class BlindTransferActivityImpl extends ActivityHelper<BlindTransferActiv
     }
 
     public BlindTransferActivityImpl(Channel agentChannel, EndPoint transferTarget, CallerID toCallerID, boolean autoAnswer,
-            int timeout, ActivityCallback<BlindTransferActivity> iCallback) throws PBXException
+            int timeout, ActivityCallback<BlindTransferActivity> iCallback, String dialOptions) throws PBXException
     {
         super("BlindTransferActivity", iCallback);
 
@@ -103,6 +108,7 @@ public class BlindTransferActivityImpl extends ActivityHelper<BlindTransferActiv
         this._autoAnswer = autoAnswer;
         this._timeout = timeout;
         actualChannelToTransfer = agentChannel;
+        this.dialOptions = dialOptions;
         _channelToTransfer = OperandChannel.ORIGINATING_PARTY;
         this._call = new CallImpl(agentChannel, CallDirection.OUTBOUND);
         this.startActivity(true);
@@ -148,8 +154,23 @@ public class BlindTransferActivityImpl extends ActivityHelper<BlindTransferActiv
             {
                 sipHeader = PBXFactory.getActiveProfile().getAutoAnswer();
             }
-            actualChannelToTransfer.setCurrentActivityAction(new AgiChannelActivityBlindTransfer(
-                    this._transferTarget.getFullyQualifiedName(), sipHeader, _toCallerID.getNumber()));
+            BlindTransferResultListener listener = new BlindTransferResultListener()
+            {
+
+                @Override
+                public void result(String status, boolean success)
+                {
+                    if (_completionCause == null)
+                    {
+                        _completionCause = CompletionCause.FAILED;
+                    }
+                    _latch.countDown();
+
+                }
+            };
+            actualChannelToTransfer.setCurrentActivityAction(
+                    new AgiChannelActivityBlindTransfer(this._transferTarget.getFullyQualifiedName(), sipHeader,
+                            _toCallerID.getNumber(), dialOptions, listener));
 
             // TODO: At one point we were adding the /n option to the end of the
             // channel to get around
@@ -244,10 +265,15 @@ public class BlindTransferActivityImpl extends ActivityHelper<BlindTransferActiv
         }
         else if (event instanceof DialEvent)
         {
-            if (((DialEvent) event).getChannel().isSame(_call.getOperandChannel(_channelToTransfer)))
+            DialEvent dialEvent = (DialEvent) event;
+            if (dialEvent.getChannel() != null)
             {
-                DialEvent de = (DialEvent) event;
-                dialedChannel = de.getDestination();
+                Channel operandChannel = _call.getOperandChannel(_channelToTransfer);
+                if (dialEvent.getChannel().isSame(operandChannel))
+                {
+                    DialEvent de = (DialEvent) event;
+                    dialedChannel = de.getDestination();
+                }
             }
         }
 

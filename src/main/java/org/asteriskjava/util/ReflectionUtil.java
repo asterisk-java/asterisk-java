@@ -16,16 +16,30 @@
  */
 package org.asteriskjava.util;
 
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLDecoder;
+import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 /**
  * Utility class that provides helper methods for reflection that is used by the
- * fastagi and manager packages to access getter and setter methods.<p>
+ * fastagi and manager packages to access getter and setter methods.
+ * <p>
  * Client code is not supposed to use this class.
  *
  * @author srt
@@ -38,7 +52,8 @@ public class ReflectionUtil
     }
 
     /**
-     * Returns a Map of getter methods of the given class.<p>
+     * Returns a Map of getter methods of the given class.
+     * <p>
      * The key of the map contains the name of the attribute that can be
      * accessed by the getter, the value the getter itself (an instance of
      * java.lang.reflect.Method). A method is considered a getter if its name
@@ -47,7 +62,7 @@ public class ReflectionUtil
      * @param clazz the class to return the getters for
      * @return a Map of attributes and their accessor methods (getters)
      */
-    public static Map<String, Method> getGetters(final Class<?> clazz)
+    public static Map<String, Method> getGetters(final Class< ? > clazz)
     {
         final Map<String, Method> accessors = new HashMap<>();
         final Method[] methods = clazz.getMethods();
@@ -56,7 +71,7 @@ public class ReflectionUtil
         {
             String name = null;
             String methodName = method.getName();
-            
+
             if (methodName.startsWith("get"))
             {
                 name = methodName.substring(3);
@@ -65,7 +80,7 @@ public class ReflectionUtil
             {
                 name = methodName.substring(2);
             }
-            
+
             if (name == null || name.length() == 0)
             {
                 continue;
@@ -84,7 +99,8 @@ public class ReflectionUtil
     }
 
     /**
-     * Returns a Map of setter methods of the given class.<p>
+     * Returns a Map of setter methods of the given class.
+     * <p>
      * The key of the map contains the name of the attribute that can be
      * accessed by the setter, the value the setter itself (an instance of
      * java.lang.reflect.Method). A method is considered a setter if its name
@@ -93,7 +109,7 @@ public class ReflectionUtil
      * @param clazz the class to return the setters for
      * @return a Map of attributes and their accessor methods (setters)
      */
-    public static Map<String, Method> getSetters(Class<?> clazz)
+    public static Map<String, Method> getSetters(Class< ? > clazz)
     {
         final Map<String, Method> accessors = new HashMap<>();
         final Method[] methods = clazz.getMethods();
@@ -123,10 +139,10 @@ public class ReflectionUtil
         return accessors;
     }
 
-
     /**
-     * Strips all illegal charaters from the given lower case string.
-     * Illegal characters are all characters that are neither characters ('a' to 'z') nor digits ('0' to '9').
+     * Strips all illegal charaters from the given lower case string. Illegal
+     * characters are all characters that are neither characters ('a' to 'z')
+     * nor digits ('0' to '9').
      *
      * @param s the original string
      * @return the string with all illegal characters stripped
@@ -183,10 +199,12 @@ public class ReflectionUtil
     }
 
     /**
-     * Checks if the class is available on the current thread's context class loader.
+     * Checks if the class is available on the current thread's context class
+     * loader.
      *
      * @param s fully qualified name of the class to check.
-     * @return <code>true</code> if the class is available, <code>false</code> otherwise.
+     * @return <code>true</code> if the class is available, <code>false</code>
+     *         otherwise.
      */
     public static boolean isClassAvailable(String s)
     {
@@ -204,8 +222,9 @@ public class ReflectionUtil
     }
 
     /**
-     * Creates a new instance of the given class. The class is loaded using the current thread's context
-     * class loader and instantiated using its default constructor.
+     * Creates a new instance of the given class. The class is loaded using the
+     * current thread's context class loader and instantiated using its default
+     * constructor.
      *
      * @param s fully qualified name of the class to instantiate.
      * @return the new instance or <code>null</code> on failure.
@@ -216,8 +235,8 @@ public class ReflectionUtil
 
         try
         {
-            Class<?> clazz = classLoader.loadClass(s);
-            Constructor<?> constructor = clazz.getConstructor();
+            Class< ? > clazz = classLoader.loadClass(s);
+            Constructor< ? > constructor = clazz.getConstructor();
             return constructor.newInstance();
         }
         catch (ClassNotFoundException e)
@@ -242,5 +261,131 @@ public class ReflectionUtil
             // constructor threw an exception
             return null;
         }
+    }
+
+    private static final Log logger = LogFactory.getLog(ReflectionUtil.class);
+
+    /**
+     * find and all non abstract classes that implement/extend
+     * baseClassOrInterface in the package packageName
+     *
+     * @param packageName
+     * @param baseClassOrInterface
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> Set<Class<T>> loadClasses(String packageName, Class<T> baseClassOrInterface)
+    {
+        Set<Class<T>> result = new HashSet<>();
+
+        try
+        {
+            Set<String> classNames = getClassNamesFromPackage(packageName);
+            ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+            for (String className : classNames)
+            {
+                try
+                {
+                    Class< ? > clazz = classLoader.loadClass(packageName + "." + className);
+                    if (!Modifier.isAbstract(clazz.getModifiers()) && baseClassOrInterface.isAssignableFrom(clazz))
+                    {
+                        result.add((Class<T>) clazz);
+                    }
+                }
+                catch (Throwable e)
+                {
+                    logger.error(e, e);
+                }
+
+            }
+            logger.info("Loaded " + result.size());
+        }
+        catch (Exception e)
+        {
+            logger.error(e, e);
+        }
+
+        return result;
+    }
+
+    /**
+     * retrieve all the classes that can be found on the classpath for the
+     * specified packageName
+     * 
+     * @param packageName
+     * @return
+     * @throws IOException
+     * @throws URISyntaxException
+     */
+    private static Set<String> getClassNamesFromPackage(String packageName) throws IOException, URISyntaxException
+    {
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        Enumeration<URL> packageURLs;
+        Set<String> names = new HashSet<String>();
+
+        packageName = packageName.replace(".", "/");
+        packageURLs = classLoader.getResources(packageName);
+
+        while (packageURLs.hasMoreElements())
+        {
+            URL packageURL = packageURLs.nextElement();
+            if (packageURL.getProtocol().equals("jar"))
+            {
+                String jarFileName;
+
+                Enumeration<JarEntry> jarEntries;
+                String entryName;
+
+                // build jar file name, then loop through entries
+                jarFileName = URLDecoder.decode(packageURL.getFile(), "UTF-8");
+                jarFileName = jarFileName.substring(5, jarFileName.indexOf("!"));
+                logger.info(">" + jarFileName);
+                try (JarFile jf = new JarFile(jarFileName);)
+                {
+                    jarEntries = jf.entries();
+                    while (jarEntries.hasMoreElements())
+                    {
+                        entryName = jarEntries.nextElement().getName();
+                        if (entryName.startsWith(packageName) && entryName.endsWith(".class"))
+                        {
+                            entryName = entryName.substring(packageName.length() + 1, entryName.lastIndexOf('.'));
+                            names.add(entryName);
+                        }
+                    }
+                }
+
+                // loop through files in classpath
+            }
+            else
+            {
+                URI uri = new URI(packageURL.toString());
+                File folder = new File(uri.getPath());
+                // won't work with path which contains blank (%20)
+                // File folder = new File(packageURL.getFile());
+                File[] files = folder.listFiles();
+                if (files != null)
+                {
+                    for (File actual : files)
+                    {
+                        String entryName = actual.getName();
+                        entryName = entryName.substring(0, entryName.lastIndexOf('.'));
+                        names.add(entryName);
+                    }
+                }
+            }
+        }
+
+        // clean up
+        Iterator<String> itr = names.iterator();
+        while (itr.hasNext())
+        {
+            String name = itr.next();
+            if (name.equals("package") || name.endsWith(".") || name.length() == 0)
+            {
+                itr.remove();
+            }
+        }
+
+        return names;
     }
 }

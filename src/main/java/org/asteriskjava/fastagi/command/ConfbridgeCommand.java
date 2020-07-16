@@ -1,5 +1,7 @@
 package org.asteriskjava.fastagi.command;
 
+import org.asteriskjava.AsteriskVersion;
+
 public class ConfbridgeCommand extends AbstractAgiCommand
 {
     /**
@@ -22,10 +24,16 @@ public class ConfbridgeCommand extends AbstractAgiCommand
     @Override
     public String buildCommand()
     {
+        String separator = "|";
+        if (getAsteriskVersion().isAtLeast(AsteriskVersion.ASTERISK_10))
+        {
+            separator = ",";
+        }
+
         String command = "EXEC " + escapeAndQuote("confbridge") + " " + escapeAndQuote(room);
         if (profile != null && profile.length() > 0)
         {
-            command += " " + escapeAndQuote(profile);
+            command += separator + escapeAndQuote(profile);
         }
 
         return command;

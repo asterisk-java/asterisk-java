@@ -219,7 +219,7 @@ public class DtmfEvent extends ManagerEvent
      */
     public boolean isReceived()
     {
-        return direction != null && DIRECTION_RECEIVED.equalsIgnoreCase(direction);
+        return DIRECTION_RECEIVED.equalsIgnoreCase(direction);
     }
 
     /**
@@ -231,7 +231,7 @@ public class DtmfEvent extends ManagerEvent
      */
     public boolean isSent()
     {
-        return direction != null && DIRECTION_SENT.equalsIgnoreCase(direction);
+        return DIRECTION_SENT.equalsIgnoreCase(direction);
     }
 
     public String getLanguage()

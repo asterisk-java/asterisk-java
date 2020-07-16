@@ -26,10 +26,7 @@ public class BridgesActive
 {
     private final Log logger = LogFactory.getLog(BridgesActive.class);
 
-    // This map is shared (static) so that connections to asterisk that attach
-    // late can benefit from the known bridge information of older connections
-    private final static ConcurrentMap<String, BridgeState> activeBridges =
-            new ConcurrentHashMap<>();
+    private final ConcurrentMap<String, BridgeState> activeBridges = new ConcurrentHashMap<>();
 
     public ManagerEvent handleEvent(ManagerEvent event)
     {

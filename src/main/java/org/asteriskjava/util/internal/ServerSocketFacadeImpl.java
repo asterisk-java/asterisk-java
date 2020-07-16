@@ -28,13 +28,15 @@ import org.asteriskjava.util.SocketConnectionFacade;
 /**
  * Default implementation of the ServerSocketFacade interface using standard
  * java.io classes (ServerSocket in this case).
- * 
+ *
  * @author srt
  * @version $Id$
  */
 public class ServerSocketFacadeImpl implements ServerSocketFacade
 {
     private ServerSocket serverSocket;
+
+    private int socketReadTimeout = SocketConnectionFacadeImpl.MAX_SOCKET_READ_TIMEOUT_MILLIS;
 
     public ServerSocketFacadeImpl(int port, int backlog, InetAddress bindAddress)
             throws IOException
@@ -48,11 +50,16 @@ public class ServerSocketFacadeImpl implements ServerSocketFacade
 
         socket = serverSocket.accept();
 
-        return new SocketConnectionFacadeImpl(socket);
+        return new SocketConnectionFacadeImpl(socket, socketReadTimeout);
     }
 
     public void close() throws IOException
     {
         serverSocket.close();
+    }
+
+    public void setSocketReadTimeout(int socketReadTimeout)
+    {
+        this.socketReadTimeout = socketReadTimeout;
     }
 }

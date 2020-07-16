@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -25,12 +26,14 @@ class BridgeState
     private final Log logger = LogFactory.getLog(getClass());
 
     private static final BridgeEnterEventComparator BRIDGE_ENTER_EVENT_COMPARATOR = new BridgeEnterEventComparator();
+    private static final String HOLDING_BRIDGE_TECH = "holding_bridge";
 
     private final Map<String, BridgeEnterEvent> members = new HashMap<>();
 
     ManagerEvent destroy()
     {
-        synchronized (members) {
+        synchronized (members)
+        {
             members.clear();
         }
         return null;
@@ -46,10 +49,14 @@ class BridgeState
     {
         List<BridgeEnterEvent> remaining = null;
 
+        if (HOLDING_BRIDGE_TECH.equals(event.getBridgeTechnology())) {
+            /* channels in a holding bridge aren't bridged to one another */
+            return null;
+        }
+
         synchronized (members)
         {
-            if (members.put(event.getChannel(), event) == null
-                    && members.size() == 2)
+            if (members.put(event.getChannel(), event) == null && members.size() == 2)
             {
                 remaining = new ArrayList<>(members.values());
             }
@@ -62,9 +69,7 @@ class BridgeState
 
         logger.info("Members size " + remaining.size() + " " + event);
 
-        BridgeEvent bridgeEvent = buildBridgeEvent(
-                BridgeEvent.BRIDGE_STATE_LINK,
-                remaining);
+        BridgeEvent bridgeEvent = buildBridgeEvent(BridgeEvent.BRIDGE_STATE_LINK, remaining);
 
         logger.info("Bridge " + bridgeEvent.getChannel1() + " " + bridgeEvent.getChannel2());
 
@@ -80,30 +85,35 @@ class BridgeState
 
     ManagerEvent removeMember(BridgeLeaveEvent event)
     {
-        List<BridgeEnterEvent> remaining = null;
+        List<BridgeEnterEvent> remaining = new LinkedList<>();
+
+        if (HOLDING_BRIDGE_TECH.equals(event.getBridgeTechnology())) {
+            /* channels in a holding bridge aren't bridged to one another */
+            return null;
+        }
 
         synchronized (members)
         {
-            if (members.remove(event.getChannel()) != null
-                    && members.size() == 2)
+            remaining.addAll(members.values());
+
+            if (members.remove(event.getChannel()) != null)
             {
-                remaining = new ArrayList<>(members.values());
+                if (remaining.size() == 2)
+                {
+                    return buildBridgeEvent(BridgeEvent.BRIDGE_STATE_UNLINK, remaining);
+                }
             }
         }
 
         // If we didn't remove anything, or we aren't at exactly 2 members,
         // there's nothing else for us to do
-        if (remaining == null)
-        {
-            return null;
-        }
 
-        return buildBridgeEvent(
-                BridgeEvent.BRIDGE_STATE_UNLINK,
-                remaining);
+        return null;
+
     }
 
-    private BridgeEvent buildBridgeEvent(String bridgeState, List<BridgeEnterEvent> members) {
+    private BridgeEvent buildBridgeEvent(String bridgeState, List<BridgeEnterEvent> members)
+    {
         Collections.sort(members, BRIDGE_ENTER_EVENT_COMPARATOR);
 
         BridgeEvent bridgeEvent = new BridgeEvent(this);

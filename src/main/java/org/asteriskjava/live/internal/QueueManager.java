@@ -306,12 +306,12 @@ class QueueManager
             return;
         }
 
-        AsteriskQueueMemberImpl member = queue.getMember(event.getLocation());
+        AsteriskQueueMemberImpl member = queue.getMember(event.getInterface());
         if (member == null)
         {
-            member = new AsteriskQueueMemberImpl(server, queue, event.getLocation(), QueueMemberState.valueOf(event
-                    .getStatus()), event.getPaused(), event.getPenalty(), event.getMembership(), event.getCallsTaken(),
-                    event.getLastCall());
+            member = new AsteriskQueueMemberImpl(server, queue, event.getInterface(),
+                    QueueMemberState.valueOf(event.getStatus()), event.getPaused(), event.getPenalty(),
+                    event.getMembership(), event.getCallsTaken(), event.getLastCall());
 
             queue.addMember(member);
         }
@@ -396,7 +396,8 @@ class QueueManager
 
         if (queue.getEntry(event.getChannel()) != null)
         {
-            logger.error("Ignored duplicate queue entry in queue " + event.getQueue() + " for channel " + event.getChannel());
+            logger.error(
+                    "Ignored duplicate queue entry in queue " + event.getQueue() + " for channel " + event.getChannel());
             return;
         }
 
@@ -460,10 +461,10 @@ class QueueManager
             return;
         }
 
-        AsteriskQueueMemberImpl member = queue.getMemberByLocation(event.getLocation());
+        AsteriskQueueMemberImpl member = queue.getMemberByLocation(event.getInterface());
         if (member == null)
         {
-            logger.error("Ignored QueueMemberStatusEvent for unknown member " + event.getLocation());
+            logger.error("Ignored QueueMemberStatusEvent for unknown member " + event.getInterface());
             return;
         }
 
@@ -481,10 +482,10 @@ class QueueManager
             return;
         }
 
-        AsteriskQueueMemberImpl member = queue.getMemberByLocation(event.getLocation());
+        AsteriskQueueMemberImpl member = queue.getMemberByLocation(event.getInterface());
         if (member == null)
         {
-            logger.error("Ignored QueueMemberPausedEvent for unknown member " + event.getLocation());
+            logger.error("Ignored QueueMemberPausedEvent for unknown member " + event.getInterface());
             return;
         }
 
@@ -573,12 +574,12 @@ class QueueManager
             return;
         }
 
-        AsteriskQueueMemberImpl member = queue.getMember(event.getLocation());
+        AsteriskQueueMemberImpl member = queue.getMember(event.getInterface());
         if (member == null)
         {
-            member = new AsteriskQueueMemberImpl(server, queue, event.getLocation(), QueueMemberState.valueOf(event
-                    .getStatus()), event.getPaused(), event.getPenalty(), event.getMembership(), event.getCallsTaken(),
-                    event.getLastCall());
+            member = new AsteriskQueueMemberImpl(server, queue, event.getInterface(),
+                    QueueMemberState.valueOf(event.getStatus()), event.getPaused(), event.getPenalty(),
+                    event.getMembership(), event.getCallsTaken(), event.getLastCall());
         }
 
         queue.addMember(member);
@@ -598,11 +599,11 @@ class QueueManager
             return;
         }
 
-        final AsteriskQueueMemberImpl member = queue.getMember(event.getLocation());
+        final AsteriskQueueMemberImpl member = queue.getMember(event.getInterface());
         if (member == null)
         {
             logger.error("Ignored QueueMemberRemovedEvent for unknown agent name: " + event.getMemberName() + " location: "
-                    + event.getLocation() + " queue: " + event.getQueue());
+                    + event.getInterface() + " queue: " + event.getQueue());
             return;
         }
 

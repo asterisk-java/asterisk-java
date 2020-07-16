@@ -76,7 +76,8 @@ public class DialToAgiActivityImpl extends ActivityHelper<DialToAgiActivity> imp
         try (DialToAgi nr = new DialToAgi(this.toCallerID.toString()))
         {
             DialToAgiActivityImpl.logger.debug("**************************************************************************");
-            DialToAgiActivityImpl.logger.info("***********                begin dial out to agi               ***********");
+            DialToAgiActivityImpl.logger
+                    .info("***********                begin dial out to agi " + _originating + "              ***********");
             DialToAgiActivityImpl.logger.debug("**************************************************************************");
 
             originator = nr;
@@ -93,7 +94,7 @@ public class DialToAgiActivityImpl extends ActivityHelper<DialToAgiActivity> imp
                 if (!this.cancelledByOperator)
                 {
                     this.setLastException(new PBXException(("OperatorEndedCall")));
-                    logger.warn("dialout to  failed.");
+                    logger.warn("dialout to " + _originating + " failed.");
                 }
             }
             else
@@ -115,7 +116,7 @@ public class DialToAgiActivityImpl extends ActivityHelper<DialToAgiActivity> imp
         }
         finally
         {
-            if (success != true)
+            if (!success)
             {
                 this.hangup();
             }
@@ -131,7 +132,7 @@ public class DialToAgiActivityImpl extends ActivityHelper<DialToAgiActivity> imp
 
             if (this.originatingChannel != null)
             {
-                logger.warn("Hanging up");
+                logger.info("Hanging up");
                 pbx.hangup(this.originatingChannel);
             }
         }
@@ -235,7 +236,14 @@ public class DialToAgiActivityImpl extends ActivityHelper<DialToAgiActivity> imp
 
     public void abort()
     {
-        originator.abort();
+        if (originator != null)
+        {
+            originator.abort();
+        }
+        else
+        {
+            logger.error("Call to abort, but it doesn't look like the Dial had started yet");
+        }
     }
 
 }

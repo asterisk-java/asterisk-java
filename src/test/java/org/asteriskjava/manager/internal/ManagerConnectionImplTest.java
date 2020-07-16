@@ -35,6 +35,7 @@ import org.asteriskjava.manager.ManagerConnectionState;
 import org.asteriskjava.manager.ManagerEventListener;
 import org.asteriskjava.manager.TimeoutException;
 import org.asteriskjava.manager.action.CommandAction;
+import org.asteriskjava.manager.action.CoreSettingsAction;
 import org.asteriskjava.manager.action.PingAction;
 import org.asteriskjava.manager.action.StatusAction;
 import org.asteriskjava.manager.event.ConnectEvent;
@@ -614,10 +615,8 @@ public class ManagerConnectionImplTest
     @Test
     public void testIsShowVersionCommandAction()
     {
-        assertTrue(mc.isShowVersionCommandAction(new CommandAction("show version")));
+        assertTrue(mc.isShowVersionCommandAction(new CoreSettingsAction()));
         assertTrue(mc.isShowVersionCommandAction(new CommandAction("core show version")));
-        assertTrue(mc.isShowVersionCommandAction(new CommandAction("core show version foo bar")));
-        assertFalse(mc.isShowVersionCommandAction(new CommandAction("foo show version")));
         assertFalse(mc.isShowVersionCommandAction(new PingAction()));
     }
 

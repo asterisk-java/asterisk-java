@@ -158,6 +158,7 @@ public class MeetmeRoom
         this.channels.clear();
         this.forceClose = false;
         this.lastUpdated = null;
+        this.owner = null;
 
     }
 
@@ -193,13 +194,14 @@ public class MeetmeRoom
 
     public void removeOwner(RoomOwner toRemove)
     {
-        if (owner == toRemove)
+        if (owner == toRemove || owner == null)
         {
             owner = null;
         }
         else
         {
-            logger.error("Tring to remove the owner, but it's not the current owner");
+            logger.error(
+                    "Tring to remove the owner, but it's not the current owner. Owner=" + owner + " caller=" + toRemove);
         }
     }
 

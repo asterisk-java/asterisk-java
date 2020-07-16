@@ -77,4 +77,15 @@ public class AstUtilTest
     {
         assertTrue("\"-none-\" must be considered null", AstUtil.isNull("-none-"));
     }
+
+    @Test
+    public void testIsEqual()
+    {
+        assertTrue(AstUtil.isEqual(null, null));
+        assertTrue(AstUtil.isEqual("", ""));
+        assertFalse(AstUtil.isEqual(null, ""));
+        assertFalse(AstUtil.isEqual("", null));
+        assertFalse(AstUtil.isEqual("", "1"));
+
+    }
 }

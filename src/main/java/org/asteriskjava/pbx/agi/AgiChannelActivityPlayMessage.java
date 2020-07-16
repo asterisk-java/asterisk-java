@@ -26,10 +26,7 @@ public class AgiChannelActivityPlayMessage implements AgiChannelActivityAction
             throw new NullPointerException("ichannel cannot be null");
         }
         String tmp = file;
-        if (file.indexOf(".") > 0)
-        {
-            tmp = file.substring(0, file.indexOf("."));
-        }
+
         channel.exec("Playtones", "beep");
         TimeUnit.MILLISECONDS.sleep(100);
         // file, escape, offset, forward, rewind, pause
@@ -53,13 +50,13 @@ public class AgiChannelActivityPlayMessage implements AgiChannelActivityAction
     }
 
     @Override
-    public boolean isDisconnect()
+    public boolean isDisconnect(ActivityAgi activityAgi)
     {
         return hangup;
     }
 
     @Override
-    public void cancel(Channel channel)
+    public void cancel()
     {
         hangup = true;
     }

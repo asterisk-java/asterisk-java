@@ -19,7 +19,6 @@ package org.asteriskjava.manager;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.nio.charset.Charset;
-
 import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.manager.action.EventGeneratingAction;
 import org.asteriskjava.manager.action.ManagerAction;
@@ -207,6 +206,16 @@ public interface ManagerConnection
      * @since 0.3
      */
     void setSocketReadTimeout(int socketReadTimeout);
+    /**
+     * Set to <code>true</code> to try reconnecting to ther asterisk serve even
+     * if the reconnection attempt threw an AuthenticationFailedException. <br>
+     * Default is <code>true</code>.
+     *
+     * @param keepAliveAfterAuthenticationFailure <code>true</code> to try
+     * reconnecting to ther asterisk serve even if the reconnection attempt
+     * threw an AuthenticationFailedException, <code>false</code> otherwise.
+     */
+    void setKeepAliveAfterAuthenticationFailure(boolean keepAliveAfterAuthenticationFailure);
 
     /**
      * Logs in to the Asterisk server with the username and password specified
@@ -403,6 +412,20 @@ public interface ManagerConnection
     ResponseEvents sendEventGeneratingAction(EventGeneratingAction action, long timeout)
             throws IOException, EventTimeoutException, IllegalArgumentException, IllegalStateException;
 
+    /**
+     * Asynchronously sends an {@link EventGeneratingAction} to the Asterisk
+     * server. This is similar to
+     * {@link #sendEventGeneratingAction(EventGeneratingAction, long)} except it
+     * does NOT block to wait for the completion. Instead after the action
+     * completes or fails the result is provided to the optional callback via
+     * {@link SendEventGeneratingActionCallback#onResponse(ResponseEvents)}.
+     *
+     * @see #sendEventGeneratingAction(EventGeneratingAction, long)
+     */
+    void sendEventGeneratingAction(
+            EventGeneratingAction action,
+            SendEventGeneratingActionCallback callback)
+                    throws IOException, IllegalArgumentException, IllegalStateException;
     /**
      * Registers an event listener that is called whenever an
      * {@link org.asteriskjava.manager.event.ManagerEvent} is receiced from the

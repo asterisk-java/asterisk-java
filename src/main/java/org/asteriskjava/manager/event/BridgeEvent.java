@@ -256,7 +256,7 @@ public class BridgeEvent extends ManagerEvent
      */
     public boolean isLink()
     {
-        return bridgeState != null && BRIDGE_STATE_LINK.equalsIgnoreCase(bridgeState);
+        return BRIDGE_STATE_LINK.equalsIgnoreCase(bridgeState);
     }
 
     /**
@@ -267,6 +267,6 @@ public class BridgeEvent extends ManagerEvent
      */
     public boolean isUnlink()
     {
-        return bridgeState != null && BRIDGE_STATE_UNLINK.equalsIgnoreCase(bridgeState);
+        return BRIDGE_STATE_UNLINK.equalsIgnoreCase(bridgeState);
     }
 }

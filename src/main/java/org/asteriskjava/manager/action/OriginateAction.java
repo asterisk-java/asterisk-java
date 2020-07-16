@@ -16,10 +16,12 @@
  */
 package org.asteriskjava.manager.action;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 import org.asteriskjava.manager.event.OriginateResponseEvent;
@@ -73,6 +75,14 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
     private String data;
     private Boolean async;
     private String codecs;
+    private Boolean earlyMedia;
+
+    private String channelId;
+    private String otherChannelId;
+
+    // starting at ten saves on a formatter.
+    private int headerCounter = 10;
+    private Set<String> preventDuplicateSipHeaders = new HashSet<>();
 
     /**
      * Returns the name of this action, i.e. "Originate".
@@ -447,7 +457,14 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
      */
     public void setVariables(Map<String, String> variables)
     {
-        this.variables = variables;
+        if (this.variables != null)
+        {
+            this.variables.putAll(variables);
+        }
+        else
+        {
+            this.variables = variables;
+        }
     }
 
     /**
@@ -465,6 +482,22 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
     public void setAsync(Boolean async)
     {
         this.async = async;
+    }
+
+    /**
+     * @param earlyMedia the earlyMedia to set
+     */
+    public void setEarlyMedia(Boolean earlyMedia)
+    {
+        this.earlyMedia = earlyMedia;
+    }
+
+    /**
+     * @return the earlyMedia
+     */
+    public Boolean getEarlyMedia()
+    {
+        return earlyMedia;
     }
 
     /**
@@ -520,4 +553,70 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
     {
         return OriginateResponseEvent.class;
     }
+
+    public void addSipHeader(VariableInheritance inheritance, String header)
+    {
+        if (!preventDuplicateSipHeaders.contains(header))
+        {
+            setVariable(inheritance.getPrefix() + "SIPADDHEADER" + (headerCounter++), header);
+            preventDuplicateSipHeaders.add(header);
+            if (headerCounter > 50)
+            {
+                logger.warn("I think only 50 headers are allowed by asterisk?");
+            }
+        }
+        else
+        {
+            logger.error("Already added the sip header " + header);
+        }
+    }
+
+    public void addPjSipHeader(VariableInheritance inheritance, String header)
+    {
+        if (header != null)
+        {
+            String[] parts = header.split(":");
+            if (parts.length == 2)
+            {
+                String varName = "PJSIP_HEADER" + "(add," + parts[0] + ")";
+                String varValue = parts[1];
+
+                if (!preventDuplicateSipHeaders.contains(header))
+                {
+                    setVariable(varName, varValue);
+                    preventDuplicateSipHeaders.add(header);
+                }
+                else
+                {
+                    logger.error("Already added the sip header " + header);
+                }
+            }
+        }
+    }
+
+    /**
+     * this will be the channels uniqueID
+     * 
+     * @param channelId
+     */
+    public void setChannelId(String channelId)
+    {
+        this.channelId = channelId;
+    }
+
+    public String getChannelId()
+    {
+        return channelId;
+    }
+
+    public void setOtherChannelId(String otherChannelId)
+    {
+        this.otherChannelId = otherChannelId;
+    }
+
+    public String getOtherChannelId()
+    {
+        return otherChannelId;
+    }
+
 }

@@ -1,5 +1,6 @@
 package org.asteriskjava.fastagi.command;
 
+import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
@@ -29,11 +30,17 @@ public class DialCommand extends AbstractAgiCommand
     public String buildCommand()
     {
 
-        String command = "EXEC " + escapeAndQuote("dial") + " " + escapeAndQuote(target) + "|"
+        String separator = "|";
+        if (getAsteriskVersion().isAtLeast(AsteriskVersion.ASTERISK_10))
+        {
+            separator = ",";
+        }
+
+        String command = "EXEC " + escapeAndQuote("dial") + " " + escapeAndQuote(target) + separator
                 + escapeAndQuote("" + timeout);
         if (options != null && options.length() > 0)
         {
-            command += "|" + escapeAndQuote(options);
+            command += separator + escapeAndQuote(options);
         }
 
         logger.info(command);

@@ -3,7 +3,6 @@ package org.asteriskjava.pbx.agi;
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 
-import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.fastagi.AgiChannel;
 import org.asteriskjava.fastagi.AgiException;
 import org.asteriskjava.manager.TimeoutException;
@@ -23,14 +22,18 @@ public class AgiChannelActivityMeetme implements AgiChannelActivityAction
     CountDownLatch latch = new CountDownLatch(1);
     private String room;
     private volatile boolean hangup = true;
-    // volatile private iChannel ichannel;
 
-    private String options;
+    private Channel ichannel;
 
-    public AgiChannelActivityMeetme(String room, String options)
+    private String bridgeProfile;
+
+    private String userProfile;
+
+    public AgiChannelActivityMeetme(String room, String bridgeProfile, String userProfile)
     {
         this.room = room;
-        this.options = options;
+        this.bridgeProfile = bridgeProfile;
+        this.userProfile = userProfile;
     }
 
     @Override
@@ -40,15 +43,9 @@ public class AgiChannelActivityMeetme implements AgiChannelActivityAction
         {
             throw new NullPointerException("ichannel cannot be null");
         }
-        AsteriskPBX pbx = (AsteriskPBX) PBXFactory.getActivePBX();
-        if (pbx.getVersion().isAtLeast(AsteriskVersion.ASTERISK_13))
-        {
-            channel.confbridge(room, "transfer");
-        }
-        else
-        {
-            channel.meetme(room, options);
-        }
+        this.ichannel = ichannel;
+        channel.confbridge(room, bridgeProfile + "," + userProfile);
+
         if (hangup)
         {
             try
@@ -65,25 +62,19 @@ public class AgiChannelActivityMeetme implements AgiChannelActivityAction
     }
 
     @Override
-    public boolean isDisconnect()
+    public boolean isDisconnect(ActivityAgi activityAgi)
     {
         return false;
     }
 
     @Override
-    public void cancel(Channel channel)
+    public void cancel()
     {
-
-        if (channel == null)
-        {
-            throw new NullPointerException("channel cannot be null");
-        }
-
         hangup = false;
         final AsteriskSettings profile = PBXFactory.getActiveProfile();
 
         AsteriskPBX pbx = (AsteriskPBX) PBXFactory.getActivePBX();
-        final RedirectAction redirect = new RedirectAction(channel, profile.getManagementContext(), pbx.getExtensionAgi(),
+        final RedirectAction redirect = new RedirectAction(ichannel, profile.getManagementContext(), pbx.getExtensionAgi(),
                 1);
         try
         {

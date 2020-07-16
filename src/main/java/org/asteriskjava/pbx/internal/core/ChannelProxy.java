@@ -41,7 +41,7 @@ public class ChannelProxy implements Channel, ChannelHangupListener
 
     private ChannelImpl _channel;
 
-    private List<ChannelHangupListener> listeners = new CopyOnWriteArrayList<>();
+    private final List<ChannelHangupListener> listeners = new CopyOnWriteArrayList<>();
 
     public ChannelProxy(ChannelImpl channel)
     {
@@ -240,6 +240,8 @@ public class ChannelProxy implements Channel, ChannelHangupListener
         return this._channel.getExtendedChannelName();
     }
 
+    private volatile boolean hangupCalled = false;
+
     @Override
     public void notifyHangupListeners(Integer cause, String causeText)
     {
@@ -247,6 +249,14 @@ public class ChannelProxy implements Channel, ChannelHangupListener
         {
             listener.channelHangup(this, cause, causeText);
         }
+
+        if (hangupCalled)
+        {
+            logger.error("Hangup was already called and the listeners removed - OH NO");
+        }
+        // we will blow up if notify listeners is called again
+        hangupCalled = true;
+        listeners.clear();
 
     }
 
@@ -348,7 +358,7 @@ public class ChannelProxy implements Channel, ChannelHangupListener
         if (previousAction != null)
         {
             // when we cancel the previous action, the new one will be invoked
-            previousAction.cancel(this);
+            previousAction.cancel();
         }
     }
 
@@ -360,7 +370,7 @@ public class ChannelProxy implements Channel, ChannelHangupListener
             hasReachedAgi.countDown();
         }
         isInAgi = b;
-        logger.debug("Setting is in agi to " + b + " for channel " + this);
+        logger.warn("Setting is in agi to " + b + " for channel " + this);
 
     }
 
@@ -375,7 +385,10 @@ public class ChannelProxy implements Channel, ChannelHangupListener
     @Override
     public boolean waitForChannelToReachAgi(long timeout, TimeUnit timeunit) throws InterruptedException
     {
-        return hasReachedAgi.await(timeout, timeunit);
+        logger.warn("Waiting for channel to reach agi " + this);
+        boolean tmp = hasReachedAgi.await(timeout, timeunit);
+        logger.warn("Result of waiting for channel to reach agi " + this + " " + tmp);
+        return tmp;
     }
 
     @Override

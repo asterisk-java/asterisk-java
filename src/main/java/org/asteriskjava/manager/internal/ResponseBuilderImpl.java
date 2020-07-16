@@ -64,7 +64,7 @@ class ResponseBuilderImpl extends AbstractBuilder implements ResponseBuilder
         {
             try
             {
-                response = responseClass.newInstance();
+                response = responseClass.getDeclaredConstructor().newInstance();
             }
             catch (Exception ex)
             {

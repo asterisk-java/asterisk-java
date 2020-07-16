@@ -40,6 +40,7 @@ import org.asteriskjava.util.MixMonitorDirection;
  * <li>meetMeUser
  * <li>queueEntry
  * <li>parkedAt
+ * <li>parkingLot
  * <li>dtmfReceived
  * <li>dtmfSent
  * </ul>
@@ -61,6 +62,7 @@ public interface AsteriskChannel extends LiveObject
     String PROPERTY_MEET_ME_USER = "meetMeUser";
     String PROPERTY_QUEUE_ENTRY = "queueEntry";
     String PROPERTY_PARKED_AT = "parkedAt";
+    String PROPERTY_PARKING_LOT = "parkingLot";
     String PROPERTY_DTMF_RECEIVED = "dtmfReceived";
     String PROPERTY_DTMF_SENT = "dtmfSent";
     String PROPERTY_MONITORED = "monitored";
@@ -286,6 +288,13 @@ public interface AsteriskChannel extends LiveObject
      * @return the Extension to dial, <code>null</code> if not currently parked.
      */
     Extension getParkedAt();
+
+    /**
+     * Return the name of the parkinglot where the channel is currently parked.
+     *
+     * @return the name of the parkinglot used to park, <code>null</code> if not currently parked.
+     */
+    String getParkingLot();
 
     /**
      * Returns the channel variables as received by
