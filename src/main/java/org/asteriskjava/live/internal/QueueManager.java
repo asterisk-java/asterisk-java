@@ -47,7 +47,7 @@ import org.asteriskjava.util.LogFactory;
 
 /**
  * Manages queue events on behalf of an AsteriskServer.
- * 
+ *
  * @author srt
  * @version $Id$
  */
@@ -117,7 +117,7 @@ class QueueManager
 
     /**
      * Method to ask for a Queue data update
-     * 
+     *
      * @author Octavio Luna
      * @param queue
      * @throws ManagerCommunicationException
@@ -182,7 +182,7 @@ class QueueManager
 
     /**
      * Gets (a copy of) the list of the queues.
-     * 
+     *
      * @return a copy of the list of the queues.
      */
     Collection<AsteriskQueue> getQueues()
@@ -227,7 +227,7 @@ class QueueManager
 
     /**
      * Adds a queue to the internal map, keyed by name.
-     * 
+     *
      * @param queue the AsteriskQueueImpl to be added
      */
     private void addQueue(AsteriskQueueImpl queue)
@@ -240,7 +240,7 @@ class QueueManager
 
     /**
      * Called during initialization to populate the list of queues.
-     * 
+     *
      * @param event the event received
      */
     private void handleQueueParamsEvent(QueueParamsEvent event)
@@ -294,7 +294,7 @@ class QueueManager
 
     /**
      * Called during initialization to populate the members of the queues.
-     * 
+     *
      * @param event the QueueMemberEvent received
      */
     private void handleQueueMemberEvent(QueueMemberEvent event)
@@ -335,7 +335,7 @@ class QueueManager
     /**
      * Called during initialization to populate entries of the queues. Currently
      * does the same as handleJoinEvent()
-     * 
+     *
      * @param event - the QueueEntryEvent received
      */
     private void handleQueueEntryEvent(QueueEntryEvent event)
@@ -354,13 +354,6 @@ class QueueManager
             return;
         }
 
-        if (queue.getEntry(event.getChannel()) != null)
-        {
-            logger.debug("Ignored duplicate queue entry during population in queue " + event.getQueue() + " for channel "
-                    + event.getChannel());
-            return;
-        }
-
         // Asterisk gives us an initial position but doesn't tell us when he
         // shifts the others
         // We won't use this data for ordering until there is a appropriate
@@ -375,7 +368,7 @@ class QueueManager
 
     /**
      * Called from AsteriskServerImpl whenever a new entry appears in a queue.
-     * 
+     *
      * @param event the JoinEvent received
      */
     void handleJoinEvent(JoinEvent event)
@@ -394,13 +387,6 @@ class QueueManager
             return;
         }
 
-        if (queue.getEntry(event.getChannel()) != null)
-        {
-            logger.error(
-                    "Ignored duplicate queue entry in queue " + event.getQueue() + " for channel " + event.getChannel());
-            return;
-        }
-
         // Asterisk gives us an initial position but doesn't tell us when he
         // shifts the others
         // We won't use this data for ordering until there is a appropriate
@@ -415,7 +401,7 @@ class QueueManager
 
     /**
      * Called from AsteriskServerImpl whenever an enty leaves a queue.
-     * 
+     *
      * @param event - the LeaveEvent received
      */
     void handleLeaveEvent(LeaveEvent event)
@@ -448,7 +434,7 @@ class QueueManager
     /**
      * Challange a QueueMemberStatusEvent. Called from AsteriskServerImpl
      * whenever a member state changes.
-     * 
+     *
      * @param event that was triggered by Asterisk server.
      */
     void handleQueueMemberStatusEvent(QueueMemberStatusEvent event)
@@ -514,7 +500,7 @@ class QueueManager
 
     /**
      * Retrieves a queue by its name.
-     * 
+     *
      * @param queueName name of the queue.
      * @return the requested queue or <code>null</code> if there is no queue
      *         with the given name.
@@ -562,7 +548,7 @@ class QueueManager
 
     /**
      * Challange a QueueMemberAddedEvent.
-     * 
+     *
      * @param event - the generated QueueMemberAddedEvent.
      */
     public void handleQueueMemberAddedEvent(QueueMemberAddedEvent event)
@@ -587,7 +573,7 @@ class QueueManager
 
     /**
      * Challange a QueueMemberRemovedEvent.
-     * 
+     *
      * @param event - the generated QueueMemberRemovedEvent.
      */
     public void handleQueueMemberRemovedEvent(QueueMemberRemovedEvent event)

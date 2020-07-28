@@ -354,26 +354,36 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
     {
         AsteriskQueueEntryImpl qe = new AsteriskQueueEntryImpl(server, this, channel, reportedPosition, dateReceived);
 
-        long delay = serviceLevel * 1000L;
-        if (delay > 0)
-        {
-            ServiceLevelTimerTask timerTask = new ServiceLevelTimerTask(qe);
-            timer.schedule(timerTask, delay);
-            synchronized (serviceLevelTimerTasks)
-            {
-                serviceLevelTimerTasks.put(qe, timerTask);
-            }
-        }
-
         synchronized (entries)
         {
-            entries.add(qe); // at the end of the list
+			if (getEntry(channel.getName()) != null)
+			{
+				if (logger.isDebugEnabled())
+				{
+					logger.debug("Ignored duplicate queue entry during population in queue " + name + " for channel "
+						+ channel.getName());
+				}
+				return;
+			}
+
+			entries.add(qe); // at the end of the list
 
             // Keep the lock !
             // This will fire PCE on the newly created queue entry
             // but hopefully this one has no listeners yet
             shift();
         }
+
+		long delay = serviceLevel * 1000L;
+		if (delay > 0)
+		{
+			ServiceLevelTimerTask timerTask = new ServiceLevelTimerTask(qe);
+			timer.schedule(timerTask, delay);
+			synchronized (serviceLevelTimerTasks)
+			{
+				serviceLevelTimerTasks.put(qe, timerTask);
+			}
+		}
 
         // Set the channel property ony here as queue entries and channels
         // maintain a reciprocal reference.
