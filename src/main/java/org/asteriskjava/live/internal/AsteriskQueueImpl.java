@@ -358,8 +358,11 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
         {
 			if (getEntry(channel.getName()) != null)
 			{
-				logger.debug("Ignored duplicate queue entry during population in queue " + name + " for channel "
-					+ channel.getName());
+				if (logger.isDebugEnabled())
+				{
+					logger.debug("Ignored duplicate queue entry during population in queue " + name + " for channel "
+						+ channel.getName());
+				}
 				return;
 			}
 
