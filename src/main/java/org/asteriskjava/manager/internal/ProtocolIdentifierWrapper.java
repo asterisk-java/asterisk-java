@@ -14,9 +14,9 @@ class ProtocolIdentifierWrapper
         latch = new CountDownLatch(1);
     }
 
-    void await(long timeout) throws InterruptedException
+    boolean await(long timeout) throws InterruptedException
     {
-        latch.await(timeout, TimeUnit.MILLISECONDS);
+        return latch.await(timeout, TimeUnit.MILLISECONDS);
     }
 
     String getValue()

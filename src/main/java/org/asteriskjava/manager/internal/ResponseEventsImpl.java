@@ -103,11 +103,12 @@ public class ResponseEventsImpl implements ResponseEvents
 
     /**
      * @param timeout - milliseconds
+     * @return
      * @throws InterruptedException
      */
-    public void await(long timeout) throws InterruptedException
+    public boolean await(long timeout) throws InterruptedException
     {
-        latch.await(timeout, TimeUnit.MILLISECONDS);
+        return latch.await(timeout, TimeUnit.MILLISECONDS);
     }
 
     public void countDown()

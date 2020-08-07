@@ -100,7 +100,10 @@ public class Dial extends EventListenerBaseClass
                         trcResult.getChannel().setCurrentActivityAction(
                                 new AgiChannelActivityDial(targetEndPoint.getFullyQualifiedName(), dialOptions));
 
-                        this._latch.await(30, TimeUnit.SECONDS);
+                        if (!this._latch.await(30, TimeUnit.SECONDS))
+                        {
+                            logger.warn("Timeout waiting for channel. " + trcResult.getChannel());
+                        }
 
                     }
                 }

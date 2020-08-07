@@ -136,7 +136,10 @@ public class ParkActivityImpl extends ActivityHelper<ParkActivity> implements Pa
             {
                 if (success)
                 {
-                    this._latch.await(2, TimeUnit.SECONDS);
+                    if (!this._latch.await(2, TimeUnit.SECONDS))
+                    {
+                        logger.warn("Timeout, continuing");
+                    }
                 }
 
                 if (this._parkingLot == null)

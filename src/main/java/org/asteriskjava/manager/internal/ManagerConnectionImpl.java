@@ -96,14 +96,15 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     // NOTE: identifier is AMI_VERSION, defined in include/asterisk/manager.h
     // AMI version consists of MAJOR.BREAKING.NON-BREAKING.
     private static final String[] SUPPORTED_AMI_VERSIONS = {
-        "2.6", // Asterisk 13
-        "2.7", // Asterisk 13.2
-        "2.8", // Asterisk >13.5
-        "2.9", // Asterisk >13.3
-        "3.1", // Asterisk =14.3
-        "3.2", // Asterisk 14.4.0
-        "4.0", // Asterisk 15
-        "5.0", // Asterisk 16
+    		
+    		"2.6", // Asterisk 13
+            "2.7", // Asterisk 13.2
+            "2.8", // Asterisk >13.5
+            "2.9", // Asterisk >13.3
+            "3.1", // Asterisk =14.3
+            "3.2", // Asterisk 14.4.0
+            "4.0", // Asterisk 15
+            "5.0", // Asterisk 16
     };
 
     private static final AtomicLong idCounter = new AtomicLong(0);
@@ -1654,11 +1655,12 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
         /**
          * @param millis - milliseconds to wait
+         * @return
          * @throws InterruptedException
          */
-        private void await(long millis) throws InterruptedException
+        private boolean await(long millis) throws InterruptedException
         {
-            latch.await(millis, TimeUnit.MILLISECONDS);
+            return latch.await(millis, TimeUnit.MILLISECONDS);
         }
 
     }
