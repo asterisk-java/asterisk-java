@@ -34,6 +34,8 @@ import org.asteriskjava.manager.action.QueueStatusAction;
 import org.asteriskjava.manager.event.JoinEvent;
 import org.asteriskjava.manager.event.LeaveEvent;
 import org.asteriskjava.manager.event.ManagerEvent;
+import org.asteriskjava.manager.event.QueueCallerJoinEvent;
+import org.asteriskjava.manager.event.QueueCallerLeaveEvent;
 import org.asteriskjava.manager.event.QueueEntryEvent;
 import org.asteriskjava.manager.event.QueueMemberAddedEvent;
 import org.asteriskjava.manager.event.QueueMemberEvent;
@@ -366,6 +368,37 @@ class QueueManager
         queue.createNewEntry(channel, reportedPosition, event.getDateReceived());
     }
 
+	/**
+	 * +     * Called from AsteriskServerImpl whenever a new entry appears in a queue.
+	 * +     *
+	 * +     * @param event the JoinEvent received
+	 * +
+	 */
+	void handleJoinEvent(QueueCallerJoinEvent event) {
+		final AsteriskQueueImpl queue = getInternalQueueByName(event.getQueue());
+		final AsteriskChannelImpl channel = channelManager.getChannelImplByName(event.getChannel());
+
+		if (queue == null) {
+			logger.error("Ignored JoinEvent for unknown queue " + event.getQueue());
+			return;
+		}
+		if (channel == null) {
+			logger.error("Ignored JoinEvent for unknown channel " + event.getChannel());
+			return;
+		}
+
+		// Asterisk gives us an initial position but doesn't tell us when he
+		// shifts the others
+		// We won't use this data for ordering until there is a appropriate
+		// event in AMI.
+		// (and refreshing the whole queue is too intensive and suffers
+		// incoherencies
+		// due to asynchronous shift that leaves holes if requested too fast)
+		int reportedPosition = event.getPosition();
+
+		queue.createNewEntry(channel, reportedPosition, event.getDateReceived());
+	}
+
     /**
      * Called from AsteriskServerImpl whenever a new entry appears in a queue.
      *
@@ -398,6 +431,34 @@ class QueueManager
 
         queue.createNewEntry(channel, reportedPosition, event.getDateReceived());
     }
+
+	/**
+	 * Called from AsteriskServerImpl whenever an enty leaves a queue.
+	 *
+	 * @param event - the LeaveEvent received
+	 */
+	void handleLeaveEvent(QueueCallerLeaveEvent event) {
+		final AsteriskQueueImpl queue = getInternalQueueByName(event.getQueue());
+		final AsteriskChannelImpl channel = channelManager.getChannelImplByName(event.getChannel());
+
+		if (queue == null) {
+			logger.error("Ignored LeaveEvent for unknown queue " + event.getQueue());
+			return;
+		}
+		if (channel == null) {
+			logger.error("Ignored LeaveEvent for unknown channel " + event.getChannel());
+			return;
+		}
+
+		final AsteriskQueueEntryImpl existingQueueEntry = queue.getEntry(event.getChannel());
+		if (existingQueueEntry == null) {
+			logger.error("Ignored leave event for non existing queue entry in queue " + event.getQueue() + " for channel "
+				+ event.getChannel());
+			return;
+		}
+
+		queue.removeEntry(existingQueueEntry, event.getDateReceived());
+	}
 
     /**
      * Called from AsteriskServerImpl whenever an enty leaves a queue.
