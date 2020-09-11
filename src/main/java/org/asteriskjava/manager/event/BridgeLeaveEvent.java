@@ -13,7 +13,6 @@ public class BridgeLeaveEvent extends AbstractBridgeEvent
     private String channel;
     private String language;
     private String linkedId;
-	private String bridgevideosourcemode;
 
     public BridgeLeaveEvent(Object source)
     {
@@ -60,12 +59,5 @@ public class BridgeLeaveEvent extends AbstractBridgeEvent
         this.linkedId = linkedId;
     }
 
-	public String getBridgevideosourcemode ()
-	{
-		return this.bridgevideosourcemode;
-	}
 
-	public void setBridgevideosourcemode (String bridgevideosourcemode) {
-		this.bridgevideosourcemode = bridgevideosourcemode;
-	}
 }
