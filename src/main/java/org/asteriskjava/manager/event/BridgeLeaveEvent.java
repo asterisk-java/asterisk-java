@@ -6,13 +6,14 @@ package org.asteriskjava.manager.event;
 public class BridgeLeaveEvent extends AbstractBridgeEvent
 {
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
     private String uniqueId;
     private String channel;
     private String language;
     private String linkedId;
+	private String bridgevideosourcemode;
 
     public BridgeLeaveEvent(Object source)
     {
@@ -59,4 +60,12 @@ public class BridgeLeaveEvent extends AbstractBridgeEvent
         this.linkedId = linkedId;
     }
 
+	public String getBridgevideosourcemode ()
+	{
+		return this.bridgevideosourcemode;
+	}
+
+	public void setBridgevideosourcemode (String bridgevideosourcemode) {
+		this.bridgevideosourcemode = bridgevideosourcemode;
+	}
 }
