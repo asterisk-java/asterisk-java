@@ -130,7 +130,7 @@ public class SocketConnectionFacadeImpl implements SocketConnectionFacade
 
         if (ssl)
         {
-            socket = SSLSocketFactory.getDefault().createSocket();
+            socket = createSSLSocket();
         }
         else
         {
@@ -144,6 +144,12 @@ public class SocketConnectionFacadeImpl implements SocketConnectionFacade
         {
             trace = new FileTrace(socket);
         }
+    }
+
+    protected Socket createSSLSocket()
+            throws IOException
+    {
+        return SSLSocketFactory.getDefault().createSocket();
     }
 
     /**

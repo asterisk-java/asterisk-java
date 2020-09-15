@@ -766,7 +766,17 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         writer.setSocket(socket);
     }
 
+    // This method signature is preserved for backwards compatibility
+    // e.g. in case there exist any classes overriding this signature
     protected SocketConnectionFacade createSocket() throws IOException
+    {
+        // Forward to method that is convenient to override
+        return createSocket(hostname, port, ssl, socketTimeout, socketReadTimeout, encoding);
+    }
+
+    protected SocketConnectionFacade createSocket(
+            String hostname, int port, boolean ssl, int socketTimeout, int socketReadTimeout, Charset encoding)
+                    throws IOException
     {
         return new SocketConnectionFacadeImpl(hostname, port, ssl, socketTimeout, socketReadTimeout, encoding);
     }
