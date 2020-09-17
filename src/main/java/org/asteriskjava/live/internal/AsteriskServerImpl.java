@@ -65,46 +65,7 @@ import org.asteriskjava.manager.action.ModuleLoadAction;
 import org.asteriskjava.manager.action.OriginateAction;
 import org.asteriskjava.manager.action.SetVarAction;
 import org.asteriskjava.manager.action.SipPeersAction;
-import org.asteriskjava.manager.event.AbstractMeetMeEvent;
-import org.asteriskjava.manager.event.AgentCallbackLoginEvent;
-import org.asteriskjava.manager.event.AgentCallbackLogoffEvent;
-import org.asteriskjava.manager.event.AgentCalledEvent;
-import org.asteriskjava.manager.event.AgentCompleteEvent;
-import org.asteriskjava.manager.event.AgentConnectEvent;
-import org.asteriskjava.manager.event.AgentLoginEvent;
-import org.asteriskjava.manager.event.AgentLogoffEvent;
-import org.asteriskjava.manager.event.AgentsEvent;
-import org.asteriskjava.manager.event.BridgeEvent;
-import org.asteriskjava.manager.event.CdrEvent;
-import org.asteriskjava.manager.event.ConnectEvent;
-import org.asteriskjava.manager.event.DbGetResponseEvent;
-import org.asteriskjava.manager.event.DialEvent;
-import org.asteriskjava.manager.event.DisconnectEvent;
-import org.asteriskjava.manager.event.DtmfEvent;
-import org.asteriskjava.manager.event.HangupEvent;
-import org.asteriskjava.manager.event.JoinEvent;
-import org.asteriskjava.manager.event.LeaveEvent;
-import org.asteriskjava.manager.event.ManagerEvent;
-import org.asteriskjava.manager.event.MonitorStartEvent;
-import org.asteriskjava.manager.event.MonitorStopEvent;
-import org.asteriskjava.manager.event.NewCallerIdEvent;
-import org.asteriskjava.manager.event.NewChannelEvent;
-import org.asteriskjava.manager.event.NewExtenEvent;
-import org.asteriskjava.manager.event.NewStateEvent;
-import org.asteriskjava.manager.event.OriginateResponseEvent;
-import org.asteriskjava.manager.event.ParkedCallEvent;
-import org.asteriskjava.manager.event.ParkedCallGiveUpEvent;
-import org.asteriskjava.manager.event.ParkedCallTimeOutEvent;
-import org.asteriskjava.manager.event.PeerEntryEvent;
-import org.asteriskjava.manager.event.QueueMemberAddedEvent;
-import org.asteriskjava.manager.event.QueueMemberPausedEvent;
-import org.asteriskjava.manager.event.QueueMemberPenaltyEvent;
-import org.asteriskjava.manager.event.QueueMemberRemovedEvent;
-import org.asteriskjava.manager.event.QueueMemberStatusEvent;
-import org.asteriskjava.manager.event.RenameEvent;
-import org.asteriskjava.manager.event.ResponseEvent;
-import org.asteriskjava.manager.event.UnparkedCallEvent;
-import org.asteriskjava.manager.event.VarSetEvent;
+import org.asteriskjava.manager.event.*;
 import org.asteriskjava.manager.response.CommandResponse;
 import org.asteriskjava.manager.response.GetConfigResponse;
 import org.asteriskjava.manager.response.MailboxCountResponse;
@@ -1140,6 +1101,14 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         {
             queueManager.handleQueueMemberPausedEvent((QueueMemberPausedEvent) event);
         }
+		else if (event instanceof QueueCallerJoinEvent)
+		{
+			queueManager.handleJoinEvent((QueueCallerJoinEvent) event);
+		}
+		else if (event instanceof QueueCallerLeaveEvent)
+		{
+			queueManager.handleLeaveEvent((QueueCallerLeaveEvent) event);
+		}
         // >>>>>> AJ 94
         // Handle meetMeEvents
         else if (event instanceof AbstractMeetMeEvent)
@@ -1191,7 +1160,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
 
     /**
      * dispatch the event to the chainListener if they exist.
-     * 
+     *
      * @param event
      */
     private void fireChainListeners(ManagerEvent event)
