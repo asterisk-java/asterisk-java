@@ -197,8 +197,7 @@ public class ManagerReaderImpl implements ManagerReader
                     int isFromAtStart = line.indexOf("From ");
                     int isToAtStart = line.indexOf("To ");
 
-                    int delimiterIndex = isFromAtStart == 0 || isToAtStart == 0
-                        ? line.indexOf(" ") : line.indexOf(":");
+                    int delimiterIndex = isFromAtStart == 0 || isToAtStart == 0 ? line.indexOf(" ") : line.indexOf(":");
                     // end of workaround for Astersik bug 13319
 
                     int delimiterLength = 1;
@@ -278,6 +277,17 @@ public class ManagerReaderImpl implements ManagerReader
             this.terminationException = e;
             this.dead = true;
             logger.info("Terminating reader thread: " + e.getMessage());
+        }
+        catch (Exception e)
+        {
+            if (this.terminationException == null)
+            {
+                // wrap in IOException to avoid changing the external API of
+                // asteriskjava
+                this.terminationException = new IOException(e);
+            }
+            logger.error("Manager reader exiting due to unexpected Exception...");
+            logger.error(e, e);
         }
         finally
         {

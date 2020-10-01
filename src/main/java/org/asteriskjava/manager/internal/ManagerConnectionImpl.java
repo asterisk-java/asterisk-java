@@ -97,7 +97,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     // AMI version consists of MAJOR.BREAKING.NON-BREAKING.
     private static final String[] SUPPORTED_AMI_VERSIONS = {
 
-    		"2.6", // Asterisk 13
+            "2.6", // Asterisk 13
             "2.7", // Asterisk 13.2
             "2.8", // Asterisk >13.5
             "2.9", // Asterisk >13.3
@@ -105,7 +105,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
             "3.2", // Asterisk 14.4.0
             "4.0", // Asterisk 15
             "5.0", // Asterisk 16
-			"6.0", // Asterisk 17
+            "6.0", // Asterisk 17
     };
 
     private static final AtomicLong idCounter = new AtomicLong(0);
@@ -113,7 +113,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     /**
      * Instance logger.
      */
-    private final Log logger = LogFactory.getLog(getClass());
+    private final static Log logger = LogFactory.getLog(ManagerConnectionImpl.class);
 
     private final long id;
 
@@ -834,39 +834,49 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
             throws IOException, TimeoutException, IllegalArgumentException, IllegalStateException
     {
         ResponseHandlerResult result = new ResponseHandlerResult();
-        SendActionCallback callbackHandler = new DefaultSendActionCallback(result);
-
-        sendAction(action, callbackHandler);
-
-        // definitely return null for the response of user events
-        if (action instanceof UserEventAction)
+        try
         {
-            return null;
-        }
+            SendActionCallback callbackHandler = new DefaultSendActionCallback(result);
 
-        // only wait if we did not yet receive the response.
-        // Responses may be returned really fast.
-        if (result.getResponse() == null)
-        {
-            try
+            sendAction(action, callbackHandler);
+
+            // definitely return null for the response of user events
+            if (action instanceof UserEventAction)
             {
-                result.await(timeout);
+                return null;
             }
-            catch (InterruptedException ex)
+
+            // only wait if we did not yet receive the response.
+            // Responses may be returned really fast.
+            if (result.getResponse() == null)
             {
-                logger.warn("Interrupted while waiting for result");
-                Thread.currentThread().interrupt();
+                try
+                {
+                    result.await(timeout);
+                }
+                catch (InterruptedException ex)
+                {
+                    logger.warn("Interrupted while waiting for result");
+                    Thread.currentThread().interrupt();
+                }
             }
-        }
 
-        // still no response?
-        if (result.getResponse() == null)
+            // still no response?
+            if (result.getResponse() == null)
+            {
+                throw new TimeoutException("Timeout waiting for response to " + action.getAction()
+                        + (action.getActionId() == null
+                                ? ""
+                                : " (actionId: " + action.getActionId() + "), Timeout=" + timeout + " Action="
+                                        + action.getAction()));
+
+            }
+            return result.getResponse();
+        }
+        finally
         {
-            throw new TimeoutException("Timeout waiting for response to " + action.getAction()
-                    + (action.getActionId() == null ? "" : " (actionId: " + action.getActionId() + ")"));
+            result.dispose();
         }
-
-        return result.getResponse();
     }
 
     public void sendAction(ManagerAction action, SendActionCallback callback)
@@ -1634,6 +1644,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         private static final long serialVersionUID = 7831097958568769220L;
         private ManagerResponse response;
         private final CountDownLatch latch = new CountDownLatch(1);
+        private volatile boolean disposed = false;
 
         public ResponseHandlerResult()
         {
@@ -1647,6 +1658,15 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         public void setResponse(ManagerResponse response)
         {
             this.response = response;
+            if (disposed)
+            {
+                logger.error("Response arrived after Disposal and assumably Timeout " + response);
+            }
+        }
+
+        public void dispose()
+        {
+            disposed = true;
         }
 
         private void countDown()
