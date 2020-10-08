@@ -120,7 +120,11 @@ abstract class AbstractBuilder
                     try
                     {
                         Constructor< ? > constructor = dataType.getConstructor(String.class);
-                        value = constructor.newInstance(entry.getValue());
+                        // Asterisk sometimes uses yes/no instead of True/False for boolean.  java.lang.Boolean(String) doesn't handle this.
+                        if (dataType.isAssignableFrom(Boolean.class)) {
+                        	value = constructor.newInstance(AstUtil.convertAsteriskBooleanStringToStandardBooleanString((String)entry.getValue()));
+                        }
+                        else value = constructor.newInstance(entry.getValue());
                     }
                     catch (Exception e)
                     {

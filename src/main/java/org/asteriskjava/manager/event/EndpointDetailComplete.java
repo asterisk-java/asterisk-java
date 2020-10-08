@@ -17,17 +17,17 @@
 package org.asteriskjava.manager.event;
 
 /**
- * A EndpointListComplete event is triggered after the details of all end points have been
- * reported in response to a PJSIPShowEndpoints event.
+ * A EndpointDetailComplete event is triggered after the details of an endpoint has been
+ * reported in response to a PJSIPShowEndpoint
  * <p>
  * Available since Asterisk 12
  * 
- * @see org.asteriskjava.manager.event.PJSipShowEndpoints
- * @author srt
+ * @see org.asteriskjava.manager.event.PJSIpShowEndpoint
+ * @author Steve Sether
  * @version $Id$
  * @since 12
  */
-public class EndpointListComplete extends ResponseEvent
+public class EndpointDetailComplete extends ResponseEvent
 {
     /**
      * Serial version identifier.
@@ -41,15 +41,15 @@ public class EndpointListComplete extends ResponseEvent
      * 
      * @param source
      */
-    public EndpointListComplete(Object source)
+    public EndpointDetailComplete(Object source)
     {
         super(source);
     }
 
     /**
-     * Returns the number of Endpoints that have been reported.
+     * Returns the number of EndpointDetail events that have been reported.
      * 
-     * @return the number of Endpoints that have been reported.
+     * @return the number of EndpointDetail events that have been reported.
      */
     public Integer getListItems()
     {
@@ -57,9 +57,9 @@ public class EndpointListComplete extends ResponseEvent
     }
 
     /**
-     * Sets the number of Endpoints that have been reported.
+     * Sets the number of EndpointDetail events that have been reported.
      * 
-     * @param listItems the number of PeerEvents that have been reported.
+     * @param listItems the number of EndpointDetail events that have been reported.
      */
     public void setListItems(Integer listItems)
     {
@@ -69,11 +69,11 @@ public class EndpointListComplete extends ResponseEvent
     /**
      * Returns always "Complete".
      * <p>
-     * Available since Asterisk 1.6.
+     * Available since Asterisk 12.
      *
-     * @return always returns "Complete" confirming that all PeerEntry events have
+     * @return always returns "Complete" confirming that all EndpointDetail events have
      *         been sent.
-     * @since 1.0.0
+     * @since 12
      */
     public String getEventList()
     {

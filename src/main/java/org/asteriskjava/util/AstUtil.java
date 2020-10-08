@@ -199,4 +199,32 @@ public class AstUtil
 
         return NULL_LITERALS.contains(((String) s).toLowerCase(Locale.US));
     }
+    /**
+     * Converts a non-standard Asterisk boolean String value into something the Boolean class
+     * String constructor recognizes.
+     * 
+     * Asterisk can return various strings that represent truth values.  
+     * This method converts them into standard True/False, or null if null.
+     * 
+     * @param value
+     * @return <code>true</code> if the String is "true" or "yes" (case insensitive).
+     * 		  <code>false</code> if the String is "false" or "no" (case insensitive).
+     * @throws <code>IllegalArgumentException</code> if the String is null, or any other value not listed above.
+     */
+    
+	public static String convertAsteriskBooleanStringToStandardBooleanString(String value) {
+		if (value == null)  return null;
+		switch (value.toLowerCase())
+		{
+			case "true":
+			case "yes":
+				return "True";
+			case "false":
+			case "no":
+				return "False";
+			default:
+				throw new IllegalArgumentException("value of:" + value + " was not recognized as a boolean");
+		}
+		
+	}
 }
