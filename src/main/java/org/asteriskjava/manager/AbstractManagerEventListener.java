@@ -764,7 +764,23 @@ public abstract class AbstractManagerEventListener implements ManagerEventListen
     public void handleEvent(VarSetEvent event)
     {
     }
+    
+    public void handleEvent(EndpointDetail event) 
+    {	
+    }
+    
+    public void handleEvent(AorDetail event) 
+    {	
+    }
 
+    public void handleEvent(ContactStatusDetail event) 
+    {	
+    }
+    
+    public void handleEvent(EndpointDetailComplete event) 
+    {	
+    }
+    
     /**
      * Dispatches to the appropriate handleEvent(...) method.
      *
