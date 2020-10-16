@@ -1032,8 +1032,6 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
             // still no response or not all events received and timed out?
             if (responseEvents.getResponse() == null || !responseEvents.isComplete())
             {
-            	System.out.println("response:" +responseEvents.getResponse());
-            	System.out.println("complete:"+responseEvents.isComplete());
                 throw new EventTimeoutException(
                         "Timeout waiting for response or response events to " + action.getAction()
                                 + (action.getActionId() == null ? "" : " (actionId: " + action.getActionId() + ")"),
