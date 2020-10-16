@@ -1,6 +1,5 @@
 package org.asteriskjava.manager.event;
 
-import org.asteriskjava.util.AstUtil;
 
 /**
  * A TransportDetail event is triggered in response to a
