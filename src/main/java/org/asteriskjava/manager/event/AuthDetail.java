@@ -2,7 +2,7 @@ package org.asteriskjava.manager.event;
 
 
 /**
- * A AuthDetail event is triggered in response to a
+ * An AuthDetail event is triggered in response to a
  * {@link org.asteriskjava.manager.action.PJSipShowEndpoint},
  * and contains information about a PJSIP Contact
  * <p>

@@ -26,8 +26,8 @@ public class ContactStatusDetail extends ResponseEvent {
 	private String viaAddress;
 	private String callID;
 	private String status;
-    // roundtripusec when it contains a value is a long, but when it doesn't
-    // asterisk reports "N/A"
+	// roundtripusec when it contains a value is a long, but when it doesn't
+	// asterisk reports "N/A"
 	private String roundtripUsec;
 	private String endpointName;
 	private String id;
@@ -40,6 +40,10 @@ public class ContactStatusDetail extends ResponseEvent {
 	public String getAor() {
 		return aor;
 	}
+	
+	public void setAor(String aor) {
+		this.aor = aor;
+	}
 
 	public String getStatus() {
 		return status;
@@ -47,10 +51,6 @@ public class ContactStatusDetail extends ResponseEvent {
 
 	public void setStatus(String status) {
 		this.status = status;
-	}
-
-	public void setAor(String aor) {
-		this.aor = aor;
 	}
 
 	public String getUri() {
