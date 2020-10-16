@@ -48,10 +48,10 @@ public class PJSipShowEndpointAction extends AbstractManagerAction implements Ev
      * Serial version identifier.
      */
 	private static final long serialVersionUID = -5508189961610900058L;
-    private String endpoint;
+	private String endpoint;
     
 
-    public String getEndpoint() {
+	public String getEndpoint() {
 		return endpoint;
 	}
 
