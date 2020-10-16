@@ -209,7 +209,8 @@ public class AstUtil
      * @param value
      * @return <code>true</code> if the String is "true" or "yes" (case insensitive).
      * 		  <code>false</code> if the String is "false" or "no" (case insensitive).
-     * @throws <code>IllegalArgumentException</code> if the String is null, or any other value not listed above.
+     * 		  <code>null</code> if the String is null.
+     * @throws <code>IllegalArgumentException</code> if any other value not listed above.
      */
     
 	public static String convertAsteriskBooleanStringToStandardBooleanString(String value) {
