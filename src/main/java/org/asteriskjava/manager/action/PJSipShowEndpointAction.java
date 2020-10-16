@@ -27,7 +27,7 @@ import org.asteriskjava.manager.event.ResponseEvent;
  * 
  * Some events may appear multiple times.
  * 
- * When all events have been reported a EndpointDetailComplete is
+ * When all events have been reported an EndpointDetailComplete is
  * sent.
  * <p>
  * Available since Asterisk 12 Permission required: write=system
