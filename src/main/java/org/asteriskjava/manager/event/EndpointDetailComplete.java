@@ -17,7 +17,7 @@
 package org.asteriskjava.manager.event;
 
 /**
- * A EndpointDetailComplete event is triggered after the details of an endpoint has been
+ * An EndpointDetailComplete event is triggered after the details of an endpoint has been
  * reported in response to a PJSIPShowEndpoint
  * <p>
  * Available since Asterisk 12
