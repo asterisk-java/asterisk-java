@@ -154,6 +154,9 @@ public class BlindTransferActivityImpl extends ActivityHelper<BlindTransferActiv
             {
                 sipHeader = PBXFactory.getActiveProfile().getAutoAnswer();
             }
+
+            this._latch = new CountDownLatch(1);
+
             BlindTransferResultListener listener = new BlindTransferResultListener()
             {
 
@@ -177,7 +180,6 @@ public class BlindTransferActivityImpl extends ActivityHelper<BlindTransferActiv
             // secondary transfer options. Need to review if this is still
             // required.
             // TODO control the caller id.
-            this._latch = new CountDownLatch(1);
 
             success = this._latch.await(this._timeout, TimeUnit.SECONDS);
             if (!success)
