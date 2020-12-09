@@ -20,18 +20,18 @@ import org.asteriskjava.manager.event.ContactListComplete;
 import org.asteriskjava.manager.event.ResponseEvent;
 
 /**
- * Retrieves a list of all defined SIP peers.
+ * Retrieves a list of all defined PJSIP contacts.
  * <p>
- * For each peer that is found a PeerEntryEvent is sent by Asterisk containing
- * the details. When all peers have been reported a PeerlistCompleteEvent is
+ * For each contact that is found a ContactList is sent by Asterisk containing
+ * the details. When all contact have been reported a ContactListComplete is
  * sent.
  * <p>
- * Available since Asterisk 1.2 Permission required: write=system
+ * Available since Asterisk 16 Permission required: write=system
  *
  * @author srt
  * @version $Id$
- * @see org.asteriskjava.manager.event.PeerEntryEvent
- * @see org.asteriskjava.manager.event.PeerlistCompleteEvent
+ * @see org.asteriskjava.manager.event.ContactList
+ * @see org.asteriskjava.manager.event.ContactListComplete
  * @since 0.2
  */
 public class PJSipShowContactsAction extends AbstractManagerAction implements EventGeneratingAction
