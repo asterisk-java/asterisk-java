@@ -140,7 +140,14 @@ public class DialToAgi extends EventListenerBaseClass
 
     public void abort()
     {
-        originator.abort("user abort");
+        if (originator != null)
+        {
+            originator.abort("user abort");
+        }
+        else
+        {
+            logger.error("Call to abort, but it doesn't look like the Dial had started yet");
+        }
     }
 
 }

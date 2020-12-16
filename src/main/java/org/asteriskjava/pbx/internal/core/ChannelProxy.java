@@ -370,7 +370,7 @@ public class ChannelProxy implements Channel, ChannelHangupListener
             hasReachedAgi.countDown();
         }
         isInAgi = b;
-        logger.warn("Setting is in agi to " + b + " for channel " + this);
+        logger.info("Setting is in agi to " + b + " for channel " + this);
 
     }
 
@@ -385,9 +385,9 @@ public class ChannelProxy implements Channel, ChannelHangupListener
     @Override
     public boolean waitForChannelToReachAgi(long timeout, TimeUnit timeunit) throws InterruptedException
     {
-        logger.warn("Waiting for channel to reach agi " + this);
+        logger.info("Waiting for channel to reach agi " + this);
         boolean tmp = hasReachedAgi.await(timeout, timeunit);
-        logger.warn("Result of waiting for channel to reach agi " + this + " " + tmp);
+        logger.info("Result of waiting for channel to reach agi " + this + " " + tmp);
         return tmp;
     }
 

@@ -105,7 +105,7 @@ public abstract class OriginateBaseClass extends EventListenerBaseClass
     OriginateResult originate(final EndPoint local, final EndPoint target, final HashMap<String, String> myVars,
             final CallerID callerID, final Integer timeout, final boolean hideCallerId, final String context)
     {
-        OriginateBaseClass.logger.warn("originate called");
+        OriginateBaseClass.logger.info("originate called");
         this.originateSeen = false;
         this.channelSeen = false;
 
@@ -116,7 +116,7 @@ public abstract class OriginateBaseClass extends EventListenerBaseClass
             return null;
         }
 
-        OriginateBaseClass.logger.warn("originate connection endPoint \n" + local + " to endPoint " + target //$NON-NLS-2$
+        OriginateBaseClass.logger.info("originate connection endPoint \n" + local + " to endPoint " + target //$NON-NLS-2$
                 + " vars " + myVars);
         ManagerResponse response = null;
 
@@ -185,7 +185,7 @@ public abstract class OriginateBaseClass extends EventListenerBaseClass
             this.startListener();
 
             response = pbx.sendAction(originate, localTimeout);
-            OriginateBaseClass.logger.warn("Originate.sendAction completed");
+            OriginateBaseClass.logger.info("Originate.sendAction completed");
             if (response.getResponse().compareToIgnoreCase("Success") != 0)
             {
                 OriginateBaseClass.logger
@@ -217,7 +217,7 @@ public abstract class OriginateBaseClass extends EventListenerBaseClass
         {
             this.result.setSuccess(true);
             this.result.setChannelData(this.newChannel);
-            OriginateBaseClass.logger.warn("new channel ok: " + this.newChannel);
+            OriginateBaseClass.logger.info("new channel ok: " + this.newChannel);
         }
         else
         {
@@ -237,8 +237,6 @@ public abstract class OriginateBaseClass extends EventListenerBaseClass
                 }
             }
         }
-
-        logger.warn("Manager Events seen " + managerEventsSeen.get());
 
         return this.result;
     }
@@ -372,7 +370,7 @@ public abstract class OriginateBaseClass extends EventListenerBaseClass
                 if (this.originateID.compareToIgnoreCase(response.getActionId()) == 0)
                 {
                     this.originateSuccess = response.isSuccess();
-                    OriginateBaseClass.logger.warn("OriginateResponse: matched actionId, success=" + this.originateSuccess
+                    OriginateBaseClass.logger.info("OriginateResponse: matched actionId, success=" + this.originateSuccess
                             + " channelSeen=" + this.channelSeen);
 
                     this.originateSeen = true;
@@ -393,7 +391,7 @@ public abstract class OriginateBaseClass extends EventListenerBaseClass
                         // notify.
                         if (this.channelSeen)
                         {
-                            OriginateBaseClass.logger.warn("notify originate response event " + this.originateSuccess);
+                            OriginateBaseClass.logger.info("notify originate response event " + this.originateSuccess);
                             originateLatch.countDown();
                         }
                         else
@@ -416,7 +414,7 @@ public abstract class OriginateBaseClass extends EventListenerBaseClass
             {
                 final Channel channel = newState.getChannel();
 
-                OriginateBaseClass.logger.warn("new channel event :" + channel + " context = " + newState.getContext() //$NON-NLS-2$
+                OriginateBaseClass.logger.info("new channel event :" + channel + " context = " + newState.getContext() //$NON-NLS-2$
                         + " state =" + newState.getChannelStateDesc() + " state =" + newState.getChannelState()); //$NON-NLS-2$
 
                 handleId(channel);
@@ -438,7 +436,7 @@ public abstract class OriginateBaseClass extends EventListenerBaseClass
                 {
 
                     OriginateBaseClass.logger
-                            .warn("new bridge event :" + channel + " channel1 = " + bridgeEvent.getChannel1() //$NON-NLS-2$
+                            .info("new bridge event :" + channel + " channel1 = " + bridgeEvent.getChannel1() //$NON-NLS-2$
                                     + " channel2 =" + bridgeEvent.getChannel2());
 
                     handleId(channel);
@@ -469,7 +467,7 @@ public abstract class OriginateBaseClass extends EventListenerBaseClass
             this.newChannel = channel;
             this.channelSeen = true;
 
-            OriginateBaseClass.logger.warn("new channel name " + channel);
+            OriginateBaseClass.logger.info("new channel name " + channel);
             if (this.listener != null)
             {
                 /*
@@ -481,7 +479,7 @@ public abstract class OriginateBaseClass extends EventListenerBaseClass
 
             if (this.originateSeen)
             {
-                OriginateBaseClass.logger.warn("notifying success 362");
+                OriginateBaseClass.logger.info("notifying success 362");
                 originateLatch.countDown();
             }
         }

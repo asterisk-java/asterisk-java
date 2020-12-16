@@ -76,7 +76,7 @@ public abstract class ActivityAgi extends ServiceAgiScriptImpl
 
             }
 
-            logger.warn("Channel " + channelName + " arrived in agi");
+            logger.info("Channel " + channelName + " arrived in agi");
 
             channelProxy.setIsInAgi(true);
             channelProxy.addHangupListener(new ChannelHangupListener()
