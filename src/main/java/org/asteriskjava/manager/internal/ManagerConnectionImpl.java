@@ -70,6 +70,7 @@ import org.asteriskjava.manager.response.CommandResponse;
 import org.asteriskjava.manager.response.CoreSettingsResponse;
 import org.asteriskjava.manager.response.ManagerError;
 import org.asteriskjava.manager.response.ManagerResponse;
+import org.asteriskjava.pbx.util.LogTime;
 import org.asteriskjava.util.DateUtil;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
@@ -833,11 +834,11 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     public ManagerResponse sendAction(ManagerAction action, long timeout)
             throws IOException, TimeoutException, IllegalArgumentException, IllegalStateException
     {
-        ResponseHandlerResult result = new ResponseHandlerResult();
+
+        DefaultSendActionCallback callbackHandler = new DefaultSendActionCallback();
+        ManagerResponse response = null;
         try
         {
-            SendActionCallback callbackHandler = new DefaultSendActionCallback(result);
-
             sendAction(action, callbackHandler);
 
             // definitely return null for the response of user events
@@ -845,38 +846,31 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
             {
                 return null;
             }
-
-            // only wait if we did not yet receive the response.
-            // Responses may be returned really fast.
-            if (result.getResponse() == null)
+            try
             {
-                try
+                response = callbackHandler.waitForResponse(timeout);
+
+                // no response?
+                if (response == null)
                 {
-                    result.await(timeout);
-                }
-                catch (InterruptedException ex)
-                {
-                    logger.warn("Interrupted while waiting for result");
-                    Thread.currentThread().interrupt();
+                    throw new TimeoutException("Timeout waiting for response to " + action.getAction()
+                            + (action.getActionId() == null
+                                    ? ""
+                                    : " (actionId: " + action.getActionId() + "), Timeout=" + timeout + " Action="
+                                            + action.getAction()));
                 }
             }
-
-            // still no response?
-            if (result.getResponse() == null)
+            catch (InterruptedException ex)
             {
-                throw new TimeoutException("Timeout waiting for response to " + action.getAction()
-                        + (action.getActionId() == null
-                                ? ""
-                                : " (actionId: " + action.getActionId() + "), Timeout=" + timeout + " Action="
-                                        + action.getAction()));
-
+                logger.warn("Interrupted while waiting for result");
+                Thread.currentThread().interrupt();
             }
-            return result.getResponse();
         }
         finally
         {
-            result.dispose();
+            callbackHandler.dispose();
         }
+        return response;
     }
 
     public void sendAction(ManagerAction action, SendActionCallback callback)
@@ -1636,87 +1630,37 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     /**
      * A simple data object to store a ManagerResult.
      */
-    private static class ResponseHandlerResult implements Serializable
+    private static class DefaultSendActionCallback implements SendActionCallback, Serializable
     {
-        /**
-         * Serializable version identifier.
-         */
         private static final long serialVersionUID = 7831097958568769220L;
         private ManagerResponse response;
         private final CountDownLatch latch = new CountDownLatch(1);
         private volatile boolean disposed = false;
+        private LogTime timer = new LogTime();
 
-        public ResponseHandlerResult()
+        private ManagerResponse waitForResponse(long timeout) throws InterruptedException
         {
-        }
-
-        public ManagerResponse getResponse()
-        {
+            latch.await(timeout, TimeUnit.MILLISECONDS);
             return this.response;
         }
 
-        public void setResponse(ManagerResponse response)
+        @Override
+        public void onResponse(ManagerResponse response)
         {
             this.response = response;
             if (disposed)
             {
-                logger.error("Response arrived after Disposal and assumably Timeout " + response);
+                logger.error("Response arrived after Disposal and assumably Timeout " + response + " elapsed: "
+                        + timer.timeTaken() + "(MS)");
             }
+            latch.countDown();
         }
 
-        public void dispose()
+        private void dispose()
         {
             disposed = true;
         }
 
-        private void countDown()
-        {
-            latch.countDown();
-        }
-
-        /**
-         * @param millis - milliseconds to wait
-         * @return
-         * @throws InterruptedException
-         */
-        private boolean await(long millis) throws InterruptedException
-        {
-            return latch.await(millis, TimeUnit.MILLISECONDS);
-        }
-
-    }
-
-    /**
-     * A simple response handler that stores the received response in a
-     * ResponseHandlerResult for further processing.
-     */
-    private static class DefaultSendActionCallback implements SendActionCallback, Serializable
-    {
-        /**
-         * Serializable version identifier.
-         */
-        private static final long serialVersionUID = 2926598671855316803L;
-        private final ResponseHandlerResult result;
-
-        /**
-         * Creates a new instance.
-         *
-         * @param result the result to store the response in
-         */
-        public DefaultSendActionCallback(ResponseHandlerResult result)
-        {
-            this.result = result;
-        }
-
-        public void onResponse(ManagerResponse response)
-        {
-            // null response happens when connection is lost
-            if (response != null)
-            {
-                result.setResponse(response);
-            }
-            result.countDown();
-        }
     }
 
     /**

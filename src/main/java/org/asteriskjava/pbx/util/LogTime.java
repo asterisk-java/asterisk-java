@@ -13,8 +13,7 @@ public class LogTime
 
     public long timeTaken()
     {
-        // returns the time taken from construction til now in milliseconds
-        // Date dStartTime = new Date();
+        // returns the time taken from construction until now in milliseconds
 
         return System.currentTimeMillis() - this.dStartTime;
 
