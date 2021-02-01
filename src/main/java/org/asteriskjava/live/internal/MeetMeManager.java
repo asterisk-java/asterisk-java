@@ -35,6 +35,8 @@ import org.asteriskjava.manager.response.CommandResponse;
 import org.asteriskjava.manager.response.ManagerError;
 import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.util.DateUtil;
+import org.asteriskjava.util.Locker;
+import org.asteriskjava.util.Locker.LockCloser;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
@@ -66,7 +68,7 @@ class MeetMeManager
 
     void initialize()
     {
-        synchronized (rooms)
+        try (LockCloser closer = Locker.lock(rooms))
         {
             for (MeetMeRoomImpl room : rooms.values())
             {
@@ -78,7 +80,7 @@ class MeetMeManager
     void disconnected()
     {
         /*
-         * synchronized (rooms) { rooms.clear(); }
+         * try (LockCloser closer = Locker2.lock(rooms) { rooms.clear(); }
          */
     }
 
@@ -87,7 +89,7 @@ class MeetMeManager
         final Collection<MeetMeRoom> result;
 
         result = new ArrayList<>();
-        synchronized (rooms)
+        try (LockCloser closer = Locker.lock(rooms))
         {
             for (MeetMeRoom room : rooms.values())
             {
@@ -380,7 +382,7 @@ class MeetMeManager
         MeetMeRoomImpl room;
         boolean created = false;
 
-        synchronized (rooms)
+        try (LockCloser closer = Locker.lock(rooms))
         {
             room = rooms.get(roomNumber);
             if (room == null)

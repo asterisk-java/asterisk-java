@@ -27,6 +27,8 @@ import org.asteriskjava.manager.action.QueuePenaltyAction;
 import org.asteriskjava.manager.response.ManagerError;
 import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.util.AstUtil;
+import org.asteriskjava.util.Locker;
+import org.asteriskjava.util.Locker.LockCloser;
 
 /**
  * Default implementation of a queue member.
@@ -212,64 +214,79 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
         return sb.toString();
     }
 
-    synchronized boolean stateChanged(QueueMemberState state)
+    boolean stateChanged(QueueMemberState state)
     {
-        if (!AstUtil.isEqual(this.state, state))
+        try (LockCloser closer = Locker.lock(this))
         {
-            QueueMemberState oldState = this.state;
-            this.state = state;
-            firePropertyChange(PROPERTY_STATE, oldState, state);
-            return true;
+            if (!AstUtil.isEqual(this.state, state))
+            {
+                QueueMemberState oldState = this.state;
+                this.state = state;
+                firePropertyChange(PROPERTY_STATE, oldState, state);
+                return true;
+            }
+            return false;
         }
-        return false;
     }
 
-    synchronized boolean penaltyChanged(Integer penalty)
+    boolean penaltyChanged(Integer penalty)
     {
-        if (!AstUtil.isEqual(this.penalty, penalty))
+        try (LockCloser closer = Locker.lock(this))
         {
-            Integer oldPenalty = this.penalty;
-            this.penalty = penalty;
-            firePropertyChange(PROPERTY_PENALTY, oldPenalty, penalty);
-            return true;
-        }
+            if (!AstUtil.isEqual(this.penalty, penalty))
+            {
+                Integer oldPenalty = this.penalty;
+                this.penalty = penalty;
+                firePropertyChange(PROPERTY_PENALTY, oldPenalty, penalty);
+                return true;
+            }
 
-        return false;
+            return false;
+        }
     }
 
-    synchronized boolean pausedChanged(boolean paused)
+    boolean pausedChanged(boolean paused)
     {
-        if (!AstUtil.isEqual(this.paused, paused))
+        try (LockCloser closer = Locker.lock(this))
         {
-            boolean oldPaused = this.paused;
-            this.paused = paused;
-            firePropertyChange(PROPERTY_PAUSED, oldPaused, paused);
-            return true;
+            if (!AstUtil.isEqual(this.paused, paused))
+            {
+                boolean oldPaused = this.paused;
+                this.paused = paused;
+                firePropertyChange(PROPERTY_PAUSED, oldPaused, paused);
+                return true;
+            }
+            return false;
         }
-        return false;
     }
 
-    synchronized boolean callsTakenChanged(Integer callsTaken)
+    boolean callsTakenChanged(Integer callsTaken)
     {
-        if (!AstUtil.isEqual(this.callsTaken, callsTaken))
+        try (LockCloser closer = Locker.lock(this))
         {
-            Integer oldcallsTaken = this.callsTaken;
-            this.callsTaken = callsTaken;
-            firePropertyChange(PROPERTY_CALLSTAKEN, oldcallsTaken, callsTaken);
-            return true;
+            if (!AstUtil.isEqual(this.callsTaken, callsTaken))
+            {
+                Integer oldcallsTaken = this.callsTaken;
+                this.callsTaken = callsTaken;
+                firePropertyChange(PROPERTY_CALLSTAKEN, oldcallsTaken, callsTaken);
+                return true;
+            }
+            return false;
         }
-        return false;
     }
 
-    synchronized boolean lastCallChanged(Long lastCall)
+    boolean lastCallChanged(Long lastCall)
     {
-        if (!AstUtil.isEqual(this.lastCall, lastCall))
+        try (LockCloser closer = Locker.lock(this))
         {
-            Long oldlastCall = this.lastCall;
-            this.lastCall = lastCall;
-            firePropertyChange(PROPERTY_LASTCALL, oldlastCall, lastCall);
-            return true;
+            if (!AstUtil.isEqual(this.lastCall, lastCall))
+            {
+                Long oldlastCall = this.lastCall;
+                this.lastCall = lastCall;
+                firePropertyChange(PROPERTY_LASTCALL, oldlastCall, lastCall);
+                return true;
+            }
+            return false;
         }
-        return false;
     }
 }

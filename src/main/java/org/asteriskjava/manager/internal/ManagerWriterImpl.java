@@ -20,8 +20,9 @@ import java.io.IOException;
 
 import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.manager.action.ManagerAction;
+import org.asteriskjava.util.Locker;
+import org.asteriskjava.util.Locker.LockCloser;
 import org.asteriskjava.util.SocketConnectionFacade;
-
 
 /**
  * Default implementation of ManagerWriter interface.
@@ -34,11 +35,11 @@ public class ManagerWriterImpl implements ManagerWriter
     /**
      * Instance logger.
      */
-    //private final Log logger = LogFactory.getLog(getClass());
+    // private final Log logger = LogFactory.getLog(getClass());
 
     /**
-     * The action builder utility to convert ManagerAction to a String suitable to be sent to the
-     * asterisk server.
+     * The action builder utility to convert ManagerAction to a String suitable
+     * to be sent to the asterisk server.
      */
     private final ActionBuilder actionBuilder;
 
@@ -57,26 +58,34 @@ public class ManagerWriterImpl implements ManagerWriter
         actionBuilder.setTargetVersion(version);
     }
 
-    public synchronized void setSocket(final SocketConnectionFacade socket)
+    public void setSocket(final SocketConnectionFacade socket)
     {
-        this.socket = socket;
+        try (LockCloser closer = Locker.lock(this))
+        {
+            this.socket = socket;
+        }
     }
 
-    public synchronized void sendAction(final ManagerAction action, final String internalActionId) throws IOException
+    public void sendAction(final ManagerAction action, final String internalActionId) throws IOException
     {
-        final String actionString;
-
-        if (socket == null)
+        try (LockCloser closer = Locker.lock(this))
         {
-            throw new IllegalStateException("Unable to send action: socket is null");
+            final String actionString;
+
+            if (socket == null)
+            {
+                throw new IllegalStateException("Unable to send action: socket is null");
+            }
+
+            actionString = actionBuilder.buildAction(action, internalActionId);
+
+            socket.write(actionString);
+            socket.flush();
+
+            // TODO tracing
+            // logger.debug("Sent " + action.getAction() + " action with
+            // actionId '"
+            // + action.getActionId() + "':\n" + actionString);
         }
-
-        actionString = actionBuilder.buildAction(action, internalActionId);
-
-        socket.write(actionString);
-        socket.flush();
-
-        // TODO tracing
-        //logger.debug("Sent " + action.getAction() + " action with actionId '" + action.getActionId() + "':\n" + actionString);
     }
 }

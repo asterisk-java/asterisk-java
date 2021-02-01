@@ -22,6 +22,8 @@ import org.asteriskjava.live.ManagerCommunicationException;
 import org.asteriskjava.live.MeetMeUser;
 import org.asteriskjava.live.MeetMeUserState;
 import org.asteriskjava.manager.action.CommandAction;
+import org.asteriskjava.util.Locker;
+import org.asteriskjava.util.Locker.LockCloser;
 
 class MeetMeUserImpl extends AbstractLiveObject implements MeetMeUser
 {
@@ -40,8 +42,8 @@ class MeetMeUserImpl extends AbstractLiveObject implements MeetMeUser
     private boolean talking;
     private boolean muted;
 
-    MeetMeUserImpl(AsteriskServerImpl server, MeetMeRoomImpl room, Integer userNumber,
-            AsteriskChannelImpl channel, Date dateJoined)
+    MeetMeUserImpl(AsteriskServerImpl server, MeetMeRoomImpl room, Integer userNumber, AsteriskChannelImpl channel,
+            Date dateJoined)
     {
         super(server);
         this.room = room;
@@ -77,14 +79,15 @@ class MeetMeUserImpl extends AbstractLiveObject implements MeetMeUser
     }
 
     /**
-     * Sets the status to {@link MeetMeUserState#LEFT} and dateLeft to the given date.
+     * Sets the status to {@link MeetMeUserState#LEFT} and dateLeft to the given
+     * date.
      * 
      * @param dateLeft the date this user left the room.
      */
     void left(Date dateLeft)
     {
         MeetMeUserState oldState;
-        synchronized (this)
+        try (LockCloser closer = Locker.lock(this))
         {
             oldState = this.state;
             this.dateLeft = dateLeft;
@@ -152,16 +155,16 @@ class MeetMeUserImpl extends AbstractLiveObject implements MeetMeUser
 
         server.sendAction(new CommandAction(sb.toString()));
     }
-    
+
     @Override
-   public String toString()
+    public String toString()
     {
-    	StringBuilder sb;
+        StringBuilder sb;
         int systemHashcode;
 
         sb = new StringBuilder("MeetMeUser[");
 
-        synchronized (this)
+        try (LockCloser closer = Locker.lock(this))
         {
             sb.append("dateJoined='").append(getDateJoined()).append("',");
             sb.append("dateLeft='").append(getDateLeft()).append("',");
@@ -171,7 +174,7 @@ class MeetMeUserImpl extends AbstractLiveObject implements MeetMeUser
             systemHashcode = System.identityHashCode(this);
         }
         sb.append("channel=AsteriskChannel[");
-        synchronized (channel)
+        try (LockCloser closer = Locker.lock(channel))
         {
             sb.append("id='").append(channel.getId()).append("',");
             sb.append("name='").append(channel.getName()).append("'],");

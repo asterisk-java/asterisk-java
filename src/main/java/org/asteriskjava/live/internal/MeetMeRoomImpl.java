@@ -25,6 +25,8 @@ import org.asteriskjava.live.ManagerCommunicationException;
 import org.asteriskjava.live.MeetMeRoom;
 import org.asteriskjava.live.MeetMeUser;
 import org.asteriskjava.manager.action.CommandAction;
+import org.asteriskjava.util.Locker;
+import org.asteriskjava.util.Locker.LockCloser;
 
 /**
  * Default implementation of the MeetMeRoom interface.
@@ -36,7 +38,7 @@ class MeetMeRoomImpl extends AbstractLiveObject implements MeetMeRoom
     private static final String UNLOCK_COMMAND = "unlock";
 
     private final String roomNumber;
-    
+
     /**
      * Maps userNumber to user.
      */
@@ -56,7 +58,7 @@ class MeetMeRoomImpl extends AbstractLiveObject implements MeetMeRoom
 
     public Collection<MeetMeUser> getUsers()
     {
-        synchronized (users)
+        try (LockCloser closer = Locker.lock(users))
         {
             return new ArrayList<MeetMeUser>(users.values());
         }
@@ -64,7 +66,7 @@ class MeetMeRoomImpl extends AbstractLiveObject implements MeetMeRoom
 
     public boolean isEmpty()
     {
-        synchronized (users)
+        try (LockCloser closer = Locker.lock(users))
         {
             return users.isEmpty();
         }
@@ -72,15 +74,15 @@ class MeetMeRoomImpl extends AbstractLiveObject implements MeetMeRoom
 
     Collection<MeetMeUserImpl> getUserImpls()
     {
-        synchronized (users)
+        try (LockCloser closer = Locker.lock(users))
         {
             return new ArrayList<>(users.values());
         }
     }
-    
+
     void addUser(MeetMeUserImpl user)
     {
-        synchronized (users)
+        try (LockCloser closer = Locker.lock(users))
         {
             users.put(user.getUserNumber(), user);
         }
@@ -88,7 +90,7 @@ class MeetMeRoomImpl extends AbstractLiveObject implements MeetMeRoom
 
     MeetMeUserImpl getUser(Integer userNumber)
     {
-        synchronized (users)
+        try (LockCloser closer = Locker.lock(users))
         {
             return users.get(userNumber);
         }
@@ -96,7 +98,7 @@ class MeetMeRoomImpl extends AbstractLiveObject implements MeetMeRoom
 
     void removeUser(MeetMeUserImpl user)
     {
-        synchronized (users)
+        try (LockCloser closer = Locker.lock(users))
         {
             users.remove(user.getUserNumber());
         }
@@ -127,14 +129,14 @@ class MeetMeRoomImpl extends AbstractLiveObject implements MeetMeRoom
     }
 
     @Override
-   public String toString()
+    public String toString()
     {
-    	StringBuilder sb;
+        StringBuilder sb;
         int systemHashcode;
 
         sb = new StringBuilder("MeetMeRoom[");
 
-        synchronized (this)
+        try (LockCloser closer = Locker.lock(this))
         {
             sb.append("roomNumber='").append(getRoomNumber()).append("',");
             systemHashcode = System.identityHashCode(this);

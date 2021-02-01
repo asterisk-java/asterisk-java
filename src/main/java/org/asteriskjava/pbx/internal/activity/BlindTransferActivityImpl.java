@@ -26,6 +26,8 @@ import org.asteriskjava.pbx.asterisk.wrap.events.LinkEvent;
 import org.asteriskjava.pbx.asterisk.wrap.events.ManagerEvent;
 import org.asteriskjava.pbx.asterisk.wrap.events.UnlinkEvent;
 import org.asteriskjava.pbx.internal.core.AsteriskPBX;
+import org.asteriskjava.util.Locker;
+import org.asteriskjava.util.Locker.LockCloser;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
@@ -230,51 +232,54 @@ public class BlindTransferActivityImpl extends ActivityHelper<BlindTransferActiv
     }
 
     @Override
-    synchronized public void onManagerEvent(final ManagerEvent event)
+    public void onManagerEvent(final ManagerEvent event)
     {
-        if (event instanceof BridgeEvent)
+        try (LockCloser closer = Locker.lock(this))
         {
-            BridgeEvent bridge = (BridgeEvent) event;
-            if (bridge.isLink())
+            if (event instanceof BridgeEvent)
             {
-                if (bridge.getChannel1().isSame(_call.getOperandChannel(this._channelToTransfer)))
+                BridgeEvent bridge = (BridgeEvent) event;
+                if (bridge.isLink())
                 {
-                    this._completionCause = CompletionCause.BRIDGED;
-                    this._transferTargetChannel = bridge.getChannel2();
+                    if (bridge.getChannel1().isSame(_call.getOperandChannel(this._channelToTransfer)))
+                    {
+                        this._completionCause = CompletionCause.BRIDGED;
+                        this._transferTargetChannel = bridge.getChannel2();
+                        this._latch.countDown();
+                    }
+                    else if (bridge.getChannel2().isSame(_call.getOperandChannel(this._channelToTransfer)))
+                    {
+                        this._completionCause = CompletionCause.BRIDGED;
+                        this._transferTargetChannel = bridge.getChannel1();
+                        this._latch.countDown();
+                    }
+                }
+            }
+            else if (event instanceof HangupEvent)
+            {
+                HangupEvent hangup = (HangupEvent) event;
+                if (hangup.getChannel().isSame(_call.getOperandChannel(this._channelToTransfer)))
+                {
+                    this._completionCause = CompletionCause.HANGUP;
                     this._latch.countDown();
                 }
-                else if (bridge.getChannel2().isSame(_call.getOperandChannel(this._channelToTransfer)))
+                if (hangup.getChannel().isSame(dialedChannel))
                 {
-                    this._completionCause = CompletionCause.BRIDGED;
-                    this._transferTargetChannel = bridge.getChannel1();
+                    this._completionCause = CompletionCause.HANGUP;
                     this._latch.countDown();
                 }
             }
-        }
-        else if (event instanceof HangupEvent)
-        {
-            HangupEvent hangup = (HangupEvent) event;
-            if (hangup.getChannel().isSame(_call.getOperandChannel(this._channelToTransfer)))
+            else if (event instanceof DialEvent)
             {
-                this._completionCause = CompletionCause.HANGUP;
-                this._latch.countDown();
-            }
-            if (hangup.getChannel().isSame(dialedChannel))
-            {
-                this._completionCause = CompletionCause.HANGUP;
-                this._latch.countDown();
-            }
-        }
-        else if (event instanceof DialEvent)
-        {
-            DialEvent dialEvent = (DialEvent) event;
-            if (dialEvent.getChannel() != null)
-            {
-                Channel operandChannel = _call.getOperandChannel(_channelToTransfer);
-                if (dialEvent.getChannel().isSame(operandChannel))
+                DialEvent dialEvent = (DialEvent) event;
+                if (dialEvent.getChannel() != null)
                 {
-                    DialEvent de = (DialEvent) event;
-                    dialedChannel = de.getDestination();
+                    Channel operandChannel = _call.getOperandChannel(_channelToTransfer);
+                    if (dialEvent.getChannel().isSame(operandChannel))
+                    {
+                        DialEvent de = (DialEvent) event;
+                        dialedChannel = de.getDestination();
+                    }
                 }
             }
         }

@@ -72,6 +72,8 @@ import org.asteriskjava.manager.response.ManagerError;
 import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.pbx.util.LogTime;
 import org.asteriskjava.util.DateUtil;
+import org.asteriskjava.util.Locker;
+import org.asteriskjava.util.Locker.LockCloser;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 import org.asteriskjava.util.SocketConnectionFacade;
@@ -911,7 +913,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         // in the response, thats fine.
         if (callback != null)
         {
-            synchronized (this.responseListeners)
+            try (LockCloser closer = Locker.lock(this.responseListeners))
             {
                 this.responseListeners.put(internalActionId, callback);
             }
@@ -997,13 +999,13 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         try
         {
             // register response handler...
-            synchronized (this.responseListeners)
+            try (LockCloser closer = Locker.lock(this.responseListeners))
             {
                 this.responseListeners.put(internalActionId, responseEventHandler);
             }
 
             // ...and event handler.
-            synchronized (this.responseEventListeners)
+            try (LockCloser closer = Locker.lock(this.responseEventListeners))
             {
                 this.responseEventListeners.put(internalActionId, responseEventHandler);
             }
@@ -1036,7 +1038,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         finally
         {
             // remove the event handler
-            synchronized (this.responseEventListeners)
+            try (LockCloser closer = Locker.lock(this.responseEventListeners))
             {
                 this.responseEventListeners.remove(internalActionId);
             }
@@ -1044,7 +1046,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
             // Note: The response handler should have already been removed
             // when the response was received, however we remove it here
             // just in case it was never received.
-            synchronized (this.responseListeners)
+            try (LockCloser closer = Locker.lock(this.responseListeners))
             {
                 this.responseListeners.remove(internalActionId);
             }
@@ -1087,13 +1089,13 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                     action.getActionCompleteEventClass(), callback);
 
             // register response handler...
-            synchronized (this.responseListeners)
+            try (LockCloser closer = Locker.lock(this.responseListeners))
             {
                 this.responseListeners.put(internalActionId, responseEventHandler);
             }
 
             // ...and event handler.
-            synchronized (this.responseEventListeners)
+            try (LockCloser closer = Locker.lock(this.responseEventListeners))
             {
                 this.responseEventListeners.put(internalActionId, responseEventHandler);
             }
@@ -1125,7 +1127,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
     public void addEventListener(final ManagerEventListener listener)
     {
-        synchronized (this.eventListeners)
+        try (LockCloser closer = Locker.lock(this.eventListeners))
         {
             // only add it if its not already there
             if (!this.eventListeners.contains(listener))
@@ -1137,7 +1139,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
     public void removeEventListener(final ManagerEventListener listener)
     {
-        synchronized (this.eventListeners)
+        try (LockCloser closer = Locker.lock(this.eventListeners))
         {
             if (this.eventListeners.contains(listener))
             {
@@ -1196,7 +1198,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
         if (internalActionId != null)
         {
-            synchronized (this.responseListeners)
+            try (LockCloser closer = Locker.lock(this.responseListeners))
             {
                 listener = responseListeners.get(internalActionId);
                 if (listener != null)
@@ -1267,7 +1269,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
             internalActionId = responseEvent.getInternalActionId();
             if (internalActionId != null)
             {
-                synchronized (responseEventListeners)
+                try (LockCloser closer = Locker.lock(responseEventListeners))
                 {
                     ManagerEventListener listener;
 
@@ -1302,7 +1304,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
             cleanupActionListeners((DisconnectEvent) event);
             // When we receive get disconnected while we are connected start
             // a new reconnect thread and set the state to RECONNECTING.
-            synchronized (this)
+            try (LockCloser closer = Locker.lock(this))
             {
                 if (state == CONNECTED)
                 {
@@ -1373,7 +1375,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
      */
     private void fireEvent(ManagerEvent event)
     {
-        synchronized (eventListeners)
+        try (LockCloser closer = Locker.lock(eventListeners))
         {
             for (ManagerEventListener listener : eventListeners)
             {
@@ -1475,7 +1477,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
             try
             {
-                synchronized (this)
+                try (LockCloser closer = Locker.lock(this))
                 {
                     if (state != RECONNECTING)
                     {
@@ -1550,7 +1552,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     {
         HashMap<String, SendActionCallback> oldResponseListeners = null;
 
-        synchronized (responseListeners)
+        try (LockCloser closer = Locker.lock(responseListeners))
         {
             // Store remaining response listeners to be notified outside of
             // synchronized
@@ -1573,7 +1575,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         }
 
         HashMap<String, ManagerEventListener> oldResponseEventListeners = null;
-        synchronized (responseEventListeners)
+        try (LockCloser closer = Locker.lock(responseEventListeners))
         {
             // Store remaining responseEventListeners to be notified outside of
             // synchronized
@@ -1788,7 +1790,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
             {
                 events.setComplete(true);
                 String internalActionId = responseEvent.getInternalActionId();
-                synchronized (responseEventListeners)
+                try (LockCloser closer = Locker.lock(responseEventListeners))
                 {
                     responseEventListeners.remove(internalActionId);
                 }

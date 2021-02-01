@@ -27,7 +27,7 @@ public class FastScannerNl implements FastScanner
     protected int end = 0;
     protected int start = 0;
     private boolean closed = false;
-    protected final Object sync = new Object();
+    // protected final Object sync = new Object();
 
     private boolean isFirst = true;
 
@@ -147,25 +147,25 @@ public class FastScannerNl implements FastScanner
 
     public void close()
     {
-        synchronized (sync)
+        // synchronized (sync)
+        // {
+        if (closed)
+            return;
+        if (readableReference.get() instanceof Closeable)
         {
-            if (closed)
-                return;
-            if (readableReference.get() instanceof Closeable)
+            try
             {
-                try
-                {
-                    ((Closeable) readableReference.get()).close();
-                    // closeFileWriter();
-                }
-                catch (IOException ioe)
-                {
-                    logger.error(ioe, ioe);
-                }
+                ((Closeable) readableReference.get()).close();
+                // closeFileWriter();
             }
-            readableReference.set(null);
-            closed = true;
+            catch (IOException ioe)
+            {
+                logger.error(ioe, ioe);
+            }
         }
+        readableReference.set(null);
+        closed = true;
+        // }
     }
 
     @SuppressWarnings("unused")

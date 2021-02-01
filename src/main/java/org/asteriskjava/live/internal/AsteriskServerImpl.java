@@ -65,7 +65,48 @@ import org.asteriskjava.manager.action.ModuleLoadAction;
 import org.asteriskjava.manager.action.OriginateAction;
 import org.asteriskjava.manager.action.SetVarAction;
 import org.asteriskjava.manager.action.SipPeersAction;
-import org.asteriskjava.manager.event.*;
+import org.asteriskjava.manager.event.AbstractMeetMeEvent;
+import org.asteriskjava.manager.event.AgentCallbackLoginEvent;
+import org.asteriskjava.manager.event.AgentCallbackLogoffEvent;
+import org.asteriskjava.manager.event.AgentCalledEvent;
+import org.asteriskjava.manager.event.AgentCompleteEvent;
+import org.asteriskjava.manager.event.AgentConnectEvent;
+import org.asteriskjava.manager.event.AgentLoginEvent;
+import org.asteriskjava.manager.event.AgentLogoffEvent;
+import org.asteriskjava.manager.event.AgentsEvent;
+import org.asteriskjava.manager.event.BridgeEvent;
+import org.asteriskjava.manager.event.CdrEvent;
+import org.asteriskjava.manager.event.ConnectEvent;
+import org.asteriskjava.manager.event.DbGetResponseEvent;
+import org.asteriskjava.manager.event.DialEvent;
+import org.asteriskjava.manager.event.DisconnectEvent;
+import org.asteriskjava.manager.event.DtmfEvent;
+import org.asteriskjava.manager.event.HangupEvent;
+import org.asteriskjava.manager.event.JoinEvent;
+import org.asteriskjava.manager.event.LeaveEvent;
+import org.asteriskjava.manager.event.ManagerEvent;
+import org.asteriskjava.manager.event.MonitorStartEvent;
+import org.asteriskjava.manager.event.MonitorStopEvent;
+import org.asteriskjava.manager.event.NewCallerIdEvent;
+import org.asteriskjava.manager.event.NewChannelEvent;
+import org.asteriskjava.manager.event.NewExtenEvent;
+import org.asteriskjava.manager.event.NewStateEvent;
+import org.asteriskjava.manager.event.OriginateResponseEvent;
+import org.asteriskjava.manager.event.ParkedCallEvent;
+import org.asteriskjava.manager.event.ParkedCallGiveUpEvent;
+import org.asteriskjava.manager.event.ParkedCallTimeOutEvent;
+import org.asteriskjava.manager.event.PeerEntryEvent;
+import org.asteriskjava.manager.event.QueueCallerJoinEvent;
+import org.asteriskjava.manager.event.QueueCallerLeaveEvent;
+import org.asteriskjava.manager.event.QueueMemberAddedEvent;
+import org.asteriskjava.manager.event.QueueMemberPausedEvent;
+import org.asteriskjava.manager.event.QueueMemberPenaltyEvent;
+import org.asteriskjava.manager.event.QueueMemberRemovedEvent;
+import org.asteriskjava.manager.event.QueueMemberStatusEvent;
+import org.asteriskjava.manager.event.RenameEvent;
+import org.asteriskjava.manager.event.ResponseEvent;
+import org.asteriskjava.manager.event.UnparkedCallEvent;
+import org.asteriskjava.manager.event.VarSetEvent;
 import org.asteriskjava.manager.response.CommandResponse;
 import org.asteriskjava.manager.response.GetConfigResponse;
 import org.asteriskjava.manager.response.MailboxCountResponse;
@@ -74,6 +115,8 @@ import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.manager.response.ModuleCheckResponse;
 import org.asteriskjava.util.AstUtil;
 import org.asteriskjava.util.DateUtil;
+import org.asteriskjava.util.Locker;
+import org.asteriskjava.util.Locker.LockCloser;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
@@ -230,59 +273,62 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         initializeIfNeeded();
     }
 
-    private synchronized void initializeIfNeeded() throws ManagerCommunicationException
+    private void initializeIfNeeded() throws ManagerCommunicationException
     {
-        if (initialized || initializing)
+        try (LockCloser closer = Locker.lock(this))
         {
-            return;
-        }
-        if (asyncEventHandling && managerEventListenerProxy == null)
-        {
-            managerEventListenerProxy = new ManagerEventListenerProxy(this);
-            eventConnection.addEventListener(managerEventListenerProxy);
-        }
-        else if (!asyncEventHandling && eventListener == null)
-        {
-            eventListener = this;
-            eventConnection.addEventListener(eventListener);
-        }
-
-        initializing = true;
-
-        if (eventConnection.getState() == ManagerConnectionState.INITIAL
-                || eventConnection.getState() == ManagerConnectionState.DISCONNECTED)
-        {
-            try
+            if (initialized || initializing)
             {
-                eventConnection.login();
+                return;
             }
-            catch (Exception e)
+            if (asyncEventHandling && managerEventListenerProxy == null)
             {
-                throw new ManagerCommunicationException("Unable to login: " + e.getMessage(), e);
+                managerEventListenerProxy = new ManagerEventListenerProxy(this);
+                eventConnection.addEventListener(managerEventListenerProxy);
             }
-        }
+            else if (!asyncEventHandling && eventListener == null)
+            {
+                eventListener = this;
+                eventConnection.addEventListener(eventListener);
+            }
 
-        channelManager.initialize();
-        agentManager.initialize();
-        meetMeManager.initialize();
-        if (!skipQueues)
-        {
-            queueManager.initialize();
-        }
+            initializing = true;
 
-        if (asyncEventHandling && managerEventListenerProxy == null)
-        {
-            managerEventListenerProxy = new ManagerEventListenerProxy(this);
-            eventConnection.addEventListener(managerEventListenerProxy);
+            if (eventConnection.getState() == ManagerConnectionState.INITIAL
+                    || eventConnection.getState() == ManagerConnectionState.DISCONNECTED)
+            {
+                try
+                {
+                    eventConnection.login();
+                }
+                catch (Exception e)
+                {
+                    throw new ManagerCommunicationException("Unable to login: " + e.getMessage(), e);
+                }
+            }
+
+            channelManager.initialize();
+            agentManager.initialize();
+            meetMeManager.initialize();
+            if (!skipQueues)
+            {
+                queueManager.initialize();
+            }
+
+            if (asyncEventHandling && managerEventListenerProxy == null)
+            {
+                managerEventListenerProxy = new ManagerEventListenerProxy(this);
+                eventConnection.addEventListener(managerEventListenerProxy);
+            }
+            else if (!asyncEventHandling && eventListener == null)
+            {
+                eventListener = this;
+                eventConnection.addEventListener(eventListener);
+            }
+            logger.info("Initializing done");
+            initializing = false;
+            initialized = true;
         }
-        else if (!asyncEventHandling && eventListener == null)
-        {
-            eventListener = this;
-            eventConnection.addEventListener(eventListener);
-        }
-        logger.info("Initializing done");
-        initializing = false;
-        initialized = true;
     }
 
     /* Implementation of the AsteriskServer interface */
@@ -457,7 +503,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
 
             callbackData = new OriginateCallbackData(originateAction, DateUtil.getDate(), cb);
             // register callback
-            synchronized (originateCallbacks)
+            try (LockCloser closer = Locker.lock(originateCallbacks))
             {
                 originateCallbacks.put(traceId, callbackData);
             }
@@ -517,41 +563,44 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         return queueManager.getQueuesUpdatedAfter(date);
     }
 
-    public synchronized String getVersion() throws ManagerCommunicationException
+    public String getVersion() throws ManagerCommunicationException
     {
-        final ManagerResponse response;
-        final String command;
-
-        initializeIfNeeded();
-        if (version == null)
+        try (LockCloser closer = Locker.lock(this))
         {
-            if (eventConnection.getVersion().isAtLeast(AsteriskVersion.ASTERISK_1_6))
-            {
-                command = SHOW_VERSION_1_6_COMMAND;
-            }
-            else
-            {
-                command = SHOW_VERSION_COMMAND;
-            }
+            final ManagerResponse response;
+            final String command;
 
-            response = sendAction(new CommandAction(command));
-            if (response instanceof CommandResponse)
+            initializeIfNeeded();
+            if (version == null)
             {
-                final List<String> result;
-
-                result = ((CommandResponse) response).getResult();
-                if (!result.isEmpty())
+                if (eventConnection.getVersion().isAtLeast(AsteriskVersion.ASTERISK_1_6))
                 {
-                    version = result.get(0);
+                    command = SHOW_VERSION_1_6_COMMAND;
+                }
+                else
+                {
+                    command = SHOW_VERSION_COMMAND;
+                }
+
+                response = sendAction(new CommandAction(command));
+                if (response instanceof CommandResponse)
+                {
+                    final List<String> result;
+
+                    result = ((CommandResponse) response).getResult();
+                    if (!result.isEmpty())
+                    {
+                        version = result.get(0);
+                    }
+                }
+                else
+                {
+                    logger.error("Response to CommandAction(\"" + command + "\") was not a CommandResponse but " + response);
                 }
             }
-            else
-            {
-                logger.error("Response to CommandAction(\"" + command + "\") was not a CommandResponse but " + response);
-            }
-        }
 
-        return version;
+            return version;
+        }
     }
 
     public int[] getVersion(String file) throws ManagerCommunicationException
@@ -616,7 +665,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         }
         else
         {
-            synchronized (versions)
+            try (LockCloser closer = Locker.lock(versions))
             {
                 fileVersion = versions.get(file);
             }
@@ -847,7 +896,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
     public void addAsteriskServerListener(AsteriskServerListener listener) throws ManagerCommunicationException
     {
         initializeIfNeeded();
-        synchronized (listeners)
+        try (LockCloser closer = Locker.lock(listeners))
         {
             if (!listeners.contains(listener))
             {
@@ -859,7 +908,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
     @Override
     public void removeAsteriskServerListener(AsteriskServerListener listener)
     {
-        synchronized (listeners)
+        try (LockCloser closer = Locker.lock(listeners))
         {
             listeners.remove(listener);
         }
@@ -873,7 +922,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
 
     public void addChainListener(ManagerEventListener chainListener)
     {
-        synchronized (this.chainListeners)
+        try (LockCloser closer = Locker.lock(this.chainListeners))
         {
             if (!this.chainListeners.contains(chainListener))
                 this.chainListeners.add(chainListener);
@@ -888,7 +937,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
 
     void fireNewAsteriskChannel(AsteriskChannel channel)
     {
-        synchronized (listeners)
+        try (LockCloser closer = Locker.lock(listeners))
         {
             for (AsteriskServerListener listener : listeners)
             {
@@ -906,7 +955,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
 
     void fireNewMeetMeUser(MeetMeUser user)
     {
-        synchronized (listeners)
+        try (LockCloser closer = Locker.lock(listeners))
         {
             for (AsteriskServerListener listener : listeners)
             {
@@ -962,7 +1011,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
 
     ResponseEvents
 
-    sendEventGeneratingAction(EventGeneratingAction action, long timeout) throws ManagerCommunicationException
+            sendEventGeneratingAction(EventGeneratingAction action, long timeout) throws ManagerCommunicationException
     {
         // return connectionPool.sendEventGeneratingAction(action, timeout);
         try
@@ -977,7 +1026,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
 
     OriginateCallbackData getOriginateCallbackDataByTraceId(String traceId)
     {
-        synchronized (originateCallbacks)
+        try (LockCloser closer = Locker.lock(originateCallbacks))
         {
             return originateCallbacks.get(traceId);
         }
@@ -1101,14 +1150,14 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         {
             queueManager.handleQueueMemberPausedEvent((QueueMemberPausedEvent) event);
         }
-		else if (event instanceof QueueCallerJoinEvent)
-		{
-			queueManager.handleJoinEvent((QueueCallerJoinEvent) event);
-		}
-		else if (event instanceof QueueCallerLeaveEvent)
-		{
-			queueManager.handleLeaveEvent((QueueCallerLeaveEvent) event);
-		}
+        else if (event instanceof QueueCallerJoinEvent)
+        {
+            queueManager.handleJoinEvent((QueueCallerJoinEvent) event);
+        }
+        else if (event instanceof QueueCallerLeaveEvent)
+        {
+            queueManager.handleLeaveEvent((QueueCallerLeaveEvent) event);
+        }
         // >>>>>> AJ 94
         // Handle meetMeEvents
         else if (event instanceof AbstractMeetMeEvent)
@@ -1165,7 +1214,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
      */
     private void fireChainListeners(ManagerEvent event)
     {
-        synchronized (this.chainListeners)
+        try (LockCloser closer = Locker.lock(this.chainListeners))
         {
             for (ManagerEventListener listener : this.chainListeners)
                 listener.onManagerEvent(event);
@@ -1238,7 +1287,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
             return;
         }
 
-        synchronized (originateCallbacks)
+        try (LockCloser closer = Locker.lock(originateCallbacks))
         {
             callbackData = originateCallbacks.get(traceId);
             if (callbackData == null)
@@ -1414,7 +1463,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
 
     void fireNewAgent(AsteriskAgentImpl agent)
     {
-        synchronized (listeners)
+        try (LockCloser closer = Locker.lock(listeners))
         {
             for (AsteriskServerListener listener : listeners)
             {
@@ -1432,7 +1481,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
 
     void fireNewQueueEntry(AsteriskQueueEntry entry)
     {
-        synchronized (listeners)
+        try (LockCloser closer = Locker.lock(listeners))
         {
             for (AsteriskServerListener listener : listeners)
             {

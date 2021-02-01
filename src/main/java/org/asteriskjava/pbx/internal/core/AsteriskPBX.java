@@ -68,6 +68,8 @@ import org.asteriskjava.pbx.internal.asterisk.MeetmeRoom;
 import org.asteriskjava.pbx.internal.asterisk.MeetmeRoomControl;
 import org.asteriskjava.pbx.internal.asterisk.RoomOwner;
 import org.asteriskjava.pbx.internal.managerAPI.RedirectCall;
+import org.asteriskjava.util.Locker;
+import org.asteriskjava.util.Locker.LockCloser;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
@@ -574,7 +576,7 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
     public Channel internalRegisterChannel(final String channelName, final String uniqueID) throws InvalidChannelName
     {
         ChannelProxy proxy = null;
-        synchronized (this.liveChannels)
+        try (LockCloser closer = Locker.lock(this.liveChannels))
         {
 
             String localUniqueID = (uniqueID == null ? ChannelImpl.UNKNOWN_UNIQUE_ID : uniqueID);
@@ -606,7 +608,7 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
     public Channel registerHangupChannel(String channel, String uniqueId) throws InvalidChannelName
     {
         Channel newChannel = null;
-        synchronized (this.liveChannels)
+        try (LockCloser closer = Locker.lock(this.liveChannels))
         {
             newChannel = this.findChannel(channel, uniqueId);
             if (newChannel == null)

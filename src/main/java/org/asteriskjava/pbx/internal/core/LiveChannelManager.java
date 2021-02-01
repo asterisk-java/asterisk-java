@@ -21,6 +21,8 @@ import org.asteriskjava.pbx.asterisk.wrap.events.RenameEvent;
 import org.asteriskjava.pbx.asterisk.wrap.events.ResponseEvent;
 import org.asteriskjava.pbx.asterisk.wrap.events.ResponseEvents;
 import org.asteriskjava.pbx.asterisk.wrap.events.StatusEvent;
+import org.asteriskjava.util.Locker;
+import org.asteriskjava.util.Locker.LockCloser;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
@@ -120,7 +122,7 @@ public class LiveChannelManager implements FilteredManagerListener<ManagerEvent>
 
     public void add(ChannelProxy proxy)
     {
-        synchronized (this._liveChannels)
+        try (LockCloser closer = Locker.lock(this._liveChannels))
         {
             ChannelProxy index = findProxy(proxy);
             if (index == null)

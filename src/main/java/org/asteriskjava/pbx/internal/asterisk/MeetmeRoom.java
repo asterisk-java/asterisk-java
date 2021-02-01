@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.LinkedList;
 
 import org.asteriskjava.pbx.Channel;
+import org.asteriskjava.util.Locker;
+import org.asteriskjava.util.Locker.LockCloser;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
@@ -44,35 +46,44 @@ public class MeetmeRoom
      * returns true if the channel was added to the list of channels in this
      * meetme. if the channel is already in the meetme, returns false
      */
-    synchronized public boolean addChannel(final Channel channel)
+    public boolean addChannel(final Channel channel)
     {
-        boolean newChannel = false;
-        if (!this.channels.contains(channel))
+        try (LockCloser closer = Locker.lock(this))
         {
-            this.channels.add(channel);
-            this.channelCount++;
-            newChannel = true;
+            boolean newChannel = false;
+            if (!this.channels.contains(channel))
+            {
+                this.channels.add(channel);
+                this.channelCount++;
+                newChannel = true;
+            }
+            else
+                MeetmeRoom.logger.error("rejecting " + channel + " already in meetme."); //$NON-NLS-1$ //$NON-NLS-2$
+            return newChannel;
         }
-        else
-            MeetmeRoom.logger.error("rejecting " + channel + " already in meetme."); //$NON-NLS-1$ //$NON-NLS-2$
-        return newChannel;
     }
 
-    synchronized public int getChannelCount()
+    public int getChannelCount()
     {
-        return this.channelCount;
+        try (LockCloser closer = Locker.lock(this))
+        {
+            return this.channelCount;
+        }
     }
 
-    synchronized public Channel[] getChannels()
+    public Channel[] getChannels()
     {
-        final Channel list[] = new Channel[this.channels.size()];
-
-        int cnt = 0;
-        for (final Channel channel : this.channels)
+        try (LockCloser closer = Locker.lock(this))
         {
-            list[cnt++] = channel;
+            final Channel list[] = new Channel[this.channels.size()];
+
+            int cnt = 0;
+            for (final Channel channel : this.channels)
+            {
+                list[cnt++] = channel;
+            }
+            return list;
         }
-        return list;
     }
 
     public boolean getForceClose()
@@ -100,43 +111,49 @@ public class MeetmeRoom
         return this.active;
     }
 
-    synchronized public void removeChannel(final Channel channel)
+    public void removeChannel(final Channel channel)
     {
-        final boolean channelCountInSync = this.channelCount == this.channels.size();
-        final boolean removed = this.channels.remove(channel);
-
-        if (!removed)
+        try (LockCloser closer = Locker.lock(this))
         {
-            MeetmeRoom.logger.warn(
-                    "An attempt to remove an non-existing channel " + channel + " from Meetme Room " + this.getRoomNumber()); //$NON-NLS-1$ //$NON-NLS-2$
-        }
+            final boolean channelCountInSync = this.channelCount == this.channels.size();
+            final boolean removed = this.channels.remove(channel);
 
-        if (channelCountInSync && removed)
-        {
-            this.channelCount--;
-        }
-
-        // If the channel count is not insync then we decrement the channel
-        // count even if the remove was for a non-existent channel.
-        // We do this as if the channel count is out of sync it means that we
-        // have polled asterisk (usually during startup)
-        // and our local count was out of sync with asterisk. Asterisk is the
-        // definitive source. If we then get a remove
-        // channel then its probably a channel that asterisk knows about but
-        // which we don't know about.
-        // In that case our channelCount will also have come from asterisk so
-        // decrementing it keeps us in sync with asterisk
-        // and eventually we will get back in sync (hopefully).
-        if (!channelCountInSync && removed)
-        {
-            this.channelCount--;
-        }
-
-        if ((this.channels.size() < 2) && (this.channels.size() > 0))
-        {
-            if (!this.channels.get(0).isLocal())
+            if (!removed)
             {
-                logger.warn("One channel left in the meet me room " + this.channels.get(0) + " room " + this.roomNumber); //$NON-NLS-1$
+                MeetmeRoom.logger.warn("An attempt to remove an non-existing channel " + channel + " from Meetme Room " //$NON-NLS-1$ //$NON-NLS-2$
+                        + this.getRoomNumber());
+            }
+
+            if (channelCountInSync && removed)
+            {
+                this.channelCount--;
+            }
+
+            // If the channel count is not insync then we decrement the channel
+            // count even if the remove was for a non-existent channel.
+            // We do this as if the channel count is out of sync it means that
+            // we
+            // have polled asterisk (usually during startup)
+            // and our local count was out of sync with asterisk. Asterisk is
+            // the
+            // definitive source. If we then get a remove
+            // channel then its probably a channel that asterisk knows about but
+            // which we don't know about.
+            // In that case our channelCount will also have come from asterisk
+            // so
+            // decrementing it keeps us in sync with asterisk
+            // and eventually we will get back in sync (hopefully).
+            if (!channelCountInSync && removed)
+            {
+                this.channelCount--;
+            }
+
+            if ((this.channels.size() < 2) && (this.channels.size() > 0))
+            {
+                if (!this.channels.get(0).isLocal())
+                {
+                    logger.warn("One channel left in the meet me room " + this.channels.get(0) + " room " + this.roomNumber); //$NON-NLS-1$
+                }
             }
         }
 

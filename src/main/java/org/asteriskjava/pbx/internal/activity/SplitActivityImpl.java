@@ -24,6 +24,8 @@ import org.asteriskjava.pbx.asterisk.wrap.events.ManagerEvent;
 import org.asteriskjava.pbx.asterisk.wrap.events.RenameEvent;
 import org.asteriskjava.pbx.internal.core.AsteriskPBX;
 import org.asteriskjava.pbx.internal.core.ChannelProxy;
+import org.asteriskjava.util.Locker;
+import org.asteriskjava.util.Locker.LockCloser;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
@@ -115,14 +117,17 @@ public class SplitActivityImpl extends ActivityHelper<SplitActivity> implements 
     final AtomicReference<CountDownLatch> renameEventReceived = new AtomicReference<>();
 
     @Override
-    synchronized public void onManagerEvent(final ManagerEvent event)
+    public void onManagerEvent(final ManagerEvent event)
     {
-        if (event instanceof RenameEvent)
+        try (LockCloser closer = Locker.lock(this))
         {
-            RenameEvent rename = (RenameEvent) event;
-            if (rename.getChannel().isSame(channel1) || rename.getChannel().isSame(channel2))
+            if (event instanceof RenameEvent)
             {
-                renameEventReceived.get().countDown();
+                RenameEvent rename = (RenameEvent) event;
+                if (rename.getChannel().isSame(channel1) || rename.getChannel().isSame(channel2))
+                {
+                    renameEventReceived.get().countDown();
+                }
             }
         }
     }

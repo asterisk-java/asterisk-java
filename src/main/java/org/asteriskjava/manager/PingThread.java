@@ -22,16 +22,17 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import org.asteriskjava.manager.action.PingAction;
 import org.asteriskjava.manager.response.ManagerResponse;
+import org.asteriskjava.util.Locker;
+import org.asteriskjava.util.Locker.LockCloser;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
 /**
- * A Thread that pings the Asterisk server at a given interval.
- * You can use this to prevent the connection being shut down when there is no
- * traffic.
+ * A Thread that pings the Asterisk server at a given interval. You can use this
+ * to prevent the connection being shut down when there is no traffic.
  * <p>
  * Since 1.0.0 PingThread supports mutliple connections so do don't have to
- * start multiple threads to keep several connections alive. 
+ * start multiple threads to keep several connections alive.
  *
  * @author srt
  * @version $Id$
@@ -53,8 +54,8 @@ public class PingThread extends Thread
     private final Set<ManagerConnection> connections;
 
     /**
-     * Creates a new PingThread. Use {@link #addConnection(ManagerConnection)} to add connections
-     * that will be pinged.
+     * Creates a new PingThread. Use {@link #addConnection(ManagerConnection)}
+     * to add connections that will be pinged.
      *
      * @since 1.0.0
      */
@@ -80,8 +81,7 @@ public class PingThread extends Thread
     }
 
     /**
-     * Adjusts how often a PingAction is sent.
-     * <br>
+     * Adjusts how often a PingAction is sent. <br>
      * Default is 20000ms, i.e. 20 seconds.
      *
      * @param interval the interval in milliseconds
@@ -93,11 +93,9 @@ public class PingThread extends Thread
 
     /**
      * Sets the timeout to wait for the ManagerResponse before throwing an
-     * excpetion.
-     * <br>
+     * excpetion. <br>
      * If set to 0 the response will be ignored an no exception will be thrown
-     * at all.
-     * <br>
+     * at all. <br>
      * Default is 0.
      *
      * @param timeout the timeout in milliseconds or 0 to indicate no timeout.
@@ -116,7 +114,7 @@ public class PingThread extends Thread
      */
     public void addConnection(ManagerConnection connection)
     {
-        synchronized (connections)
+        try (LockCloser closer = Locker.lock(connections))
         {
             connections.add(connection);
         }
@@ -130,7 +128,7 @@ public class PingThread extends Thread
      */
     public void removeConnection(ManagerConnection connection)
     {
-        synchronized (connections)
+        try (LockCloser closer = Locker.lock(connections))
         {
             connections.remove(connection);
         }
@@ -165,7 +163,7 @@ public class PingThread extends Thread
                 break;
             }
 
-            synchronized (connections)
+            try (LockCloser closer = Locker.lock(connections))
             {
                 for (ManagerConnection c : connections)
                 {

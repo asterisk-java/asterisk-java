@@ -447,25 +447,6 @@ public class CallImpl implements ChannelHangupListener, Call
         return lhs != null && rhs != null && lhs.isSame(rhs);
     }
 
-    // private int findChannel(iChannel channel)
-    // {
-    // int index = -1;
-    //
-    // synchronized (this.channelList)
-    // {
-    // for (int i = 0; i < this.channelList.size(); i++)
-    // {
-    // iChannel aChannel = this.channelList.get(i);
-    // if (aChannel.isSame(channel))
-    // {
-    // index = i;
-    // break;
-    // }
-    // }
-    // }
-    // return index;
-    // }
-
     private void notifyCallHangupListeners()
     {
         for (CallHangupListener listener : this._hangupListeners)
@@ -721,19 +702,6 @@ public class CallImpl implements ChannelHangupListener, Call
     {
         return this._owner;
     }
-
-    // /**
-    // * Returns a shallow clone of the list of channels.
-    // */
-    // @SuppressWarnings("unchecked")
-    // @Override
-    // public Collection<iChannel> getChannels()
-    // {
-    // synchronized (this.channelList)
-    // {
-    // return (Collection<iChannel>) this.channelList.clone();
-    // }
-    // }
 
     @Override
     public String toString()

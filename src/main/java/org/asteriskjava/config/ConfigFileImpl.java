@@ -21,6 +21,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.asteriskjava.util.Locker;
+import org.asteriskjava.util.Locker.LockCloser;
+
 /**
  * An Asterisk configuration file read from the filesystem.
  *
@@ -50,7 +53,7 @@ public class ConfigFileImpl implements ConfigFile
 
         c = new TreeMap<>();
 
-        synchronized (categories)
+        try (LockCloser closer = Locker.lock(categories))
         {
             for (Category category : categories.values())
             {
@@ -126,7 +129,7 @@ public class ConfigFileImpl implements ConfigFile
 
     protected Category getCategory(String name)
     {
-        synchronized (categories)
+        try (LockCloser closer = Locker.lock(categories))
         {
             return categories.get(name);
         }

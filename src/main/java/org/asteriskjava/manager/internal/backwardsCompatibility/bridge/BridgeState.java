@@ -12,6 +12,8 @@ import org.asteriskjava.manager.event.BridgeEnterEvent;
 import org.asteriskjava.manager.event.BridgeEvent;
 import org.asteriskjava.manager.event.BridgeLeaveEvent;
 import org.asteriskjava.manager.event.ManagerEvent;
+import org.asteriskjava.util.Locker;
+import org.asteriskjava.util.Locker.LockCloser;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
@@ -32,7 +34,7 @@ class BridgeState
 
     ManagerEvent destroy()
     {
-        synchronized (members)
+        try (LockCloser closer = Locker.lock(members))
         {
             members.clear();
         }
@@ -49,12 +51,13 @@ class BridgeState
     {
         List<BridgeEnterEvent> remaining = null;
 
-        if (HOLDING_BRIDGE_TECH.equals(event.getBridgeTechnology())) {
+        if (HOLDING_BRIDGE_TECH.equals(event.getBridgeTechnology()))
+        {
             /* channels in a holding bridge aren't bridged to one another */
             return null;
         }
 
-        synchronized (members)
+        try (LockCloser closer = Locker.lock(members))
         {
             if (members.put(event.getChannel(), event) == null && members.size() == 2)
             {
@@ -87,12 +90,13 @@ class BridgeState
     {
         List<BridgeEnterEvent> remaining = new LinkedList<>();
 
-        if (HOLDING_BRIDGE_TECH.equals(event.getBridgeTechnology())) {
+        if (HOLDING_BRIDGE_TECH.equals(event.getBridgeTechnology()))
+        {
             /* channels in a holding bridge aren't bridged to one another */
             return null;
         }
 
-        synchronized (members)
+        try (LockCloser closer = Locker.lock(members))
         {
             remaining.addAll(members.values());
 

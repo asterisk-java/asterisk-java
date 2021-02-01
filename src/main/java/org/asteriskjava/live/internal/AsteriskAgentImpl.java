@@ -18,6 +18,8 @@ package org.asteriskjava.live.internal;
 
 import org.asteriskjava.live.AgentState;
 import org.asteriskjava.live.AsteriskAgent;
+import org.asteriskjava.util.Locker;
+import org.asteriskjava.util.Locker.LockCloser;
 
 /**
  * Default implementation of the AsteriskAgent interface.
@@ -58,11 +60,15 @@ public class AsteriskAgentImpl extends AbstractLiveObject implements AsteriskAge
         return state;
     }
 
-    synchronized void updateState(AgentState state)
+    void updateState(AgentState state)
     {
-        final AgentState oldState = this.state;
-        this.state = state;
-        firePropertyChange(PROPERTY_STATE, oldState, this.state);
+
+        try (LockCloser closer = Locker.lock(this))
+        {
+            final AgentState oldState = this.state;
+            this.state = state;
+            firePropertyChange(PROPERTY_STATE, oldState, this.state);
+        }
     }
 
     @Override

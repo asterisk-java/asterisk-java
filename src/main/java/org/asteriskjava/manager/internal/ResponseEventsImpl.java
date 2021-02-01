@@ -24,6 +24,8 @@ import java.util.concurrent.TimeUnit;
 import org.asteriskjava.manager.ResponseEvents;
 import org.asteriskjava.manager.event.ResponseEvent;
 import org.asteriskjava.manager.response.ManagerResponse;
+import org.asteriskjava.util.Locker;
+import org.asteriskjava.util.Locker.LockCloser;
 
 /**
  * Implementation of the ResponseEvents interface.
@@ -84,7 +86,7 @@ public class ResponseEventsImpl implements ResponseEvents
      */
     public void addEvent(ResponseEvent event)
     {
-        synchronized (events)
+        try (LockCloser closer = Locker.lock(events))
         {
             events.add(event);
         }

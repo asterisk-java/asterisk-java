@@ -19,6 +19,8 @@ import org.asteriskjava.pbx.asterisk.wrap.events.ManagerEvent;
 import org.asteriskjava.pbx.asterisk.wrap.events.UnlinkEvent;
 import org.asteriskjava.pbx.internal.eventQueue.EventLifeMonitor;
 import org.asteriskjava.pbx.util.LogTime;
+import org.asteriskjava.util.Locker;
+import org.asteriskjava.util.Locker.LockCloser;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
@@ -76,7 +78,7 @@ class CoherentManagerEventQueue implements ManagerEventListener, Runnable
          * processing overhead of these events.
          */
         // Only enqueue the events that are of interest to one of our listeners.
-        synchronized (this.globalEvents)
+        try (LockCloser closer = Locker.lock(this.globalEvents))
         {
             Class< ? extends ManagerEvent> shadowEvent = CoherentEventFactory.getShadowEvent(event);
             if (this.globalEvents.contains(shadowEvent))
@@ -195,7 +197,7 @@ class CoherentManagerEventQueue implements ManagerEventListener, Runnable
         // iterate over them
         // The iteration may call some long running processes.
         final List<FilteredManagerListenerWrapper> listenerCopy;
-        synchronized (this.listeners)
+        try (LockCloser closer = Locker.lock(this.listeners))
         {
             listenerCopy = this.listeners.getCopyAsList();
         }
@@ -281,10 +283,10 @@ class CoherentManagerEventQueue implements ManagerEventListener, Runnable
      */
     public void addListener(final FilteredManagerListener<ManagerEvent> listener)
     {
-        synchronized (this.listeners)
+        try (LockCloser closer = Locker.lock(this.listeners))
         {
             this.listeners.addListener(listener);
-            synchronized (this.globalEvents)
+            try (LockCloser closer2 = Locker.lock(this.globalEvents))
             {
                 Collection<Class< ? extends ManagerEvent>> expandEvents = expandEvents(listener.requiredEvents());
                 this.globalEvents.addAll(expandEvents);
@@ -321,14 +323,14 @@ class CoherentManagerEventQueue implements ManagerEventListener, Runnable
     {
         if (melf != null)
         {
-            synchronized (this.listeners)
+            try (LockCloser closer = Locker.lock(this.listeners))
             {
                 this.listeners.removeListener(melf);
 
                 // When we remove a listener we must unfortunately
                 // completely
                 // recalculate the set of required events.
-                synchronized (this.globalEvents)
+                try (LockCloser closer2 = Locker.lock(this.globalEvents))
                 {
                     this.globalEvents.clear();
                     Iterator<FilteredManagerListenerWrapper> itr = this.listeners.iterator();
@@ -352,9 +354,9 @@ class CoherentManagerEventQueue implements ManagerEventListener, Runnable
      */
     public void transferListeners(CoherentManagerEventQueue eventQueue)
     {
-        synchronized (this.listeners)
+        try (LockCloser closer = Locker.lock(this.listeners))
         {
-            synchronized (eventQueue.listeners)
+            try (LockCloser closer2 = Locker.lock(eventQueue.listeners))
             {
                 Iterator<FilteredManagerListenerWrapper> itr = eventQueue.listeners.iterator();
                 while (itr.hasNext())

@@ -8,6 +8,8 @@ import org.asteriskjava.pbx.asterisk.wrap.events.MasqueradeEvent;
 import org.asteriskjava.pbx.asterisk.wrap.events.NewChannelEvent;
 import org.asteriskjava.pbx.asterisk.wrap.events.NewStateEvent;
 import org.asteriskjava.pbx.asterisk.wrap.events.StatusEvent;
+import org.asteriskjava.util.Locker;
+import org.asteriskjava.util.Locker.LockCloser;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
@@ -49,7 +51,7 @@ public class Peer implements CallEndedListener
     {
         CallTracker associatedCall = null;
         boolean found = false;
-        synchronized (this.callList)
+        try (LockCloser closer = Locker.lock(this.callList))
         {
             for (final CallTracker call : this.callList)
             {
@@ -74,7 +76,7 @@ public class Peer implements CallEndedListener
     private CallTracker createCallTracker(final Channel newChannel)
     {
         CallTracker newCall;
-        synchronized (this.callList)
+        try (LockCloser closer = Locker.lock(this.callList))
         {
             newCall = new CallTracker(this, newChannel);
             this.callList.add(newCall);
@@ -90,7 +92,7 @@ public class Peer implements CallEndedListener
     // public String getFullChannelName()
     // {
     // String channelName = null;
-    // synchronized (this.callList)
+    // try (LockCloser closer = Locker2.lock(this.callList)
     // {
     // if (this.callList.size() > 0)
     // {
@@ -208,7 +210,7 @@ public class Peer implements CallEndedListener
     private CallTracker findCall(Channel channel)
     {
         CallTracker result = null;
-        synchronized (this.callList)
+        try (LockCloser closer = Locker.lock(this.callList))
         {
             for (CallTracker call : this.callList)
             {
@@ -231,7 +233,7 @@ public class Peer implements CallEndedListener
     public void startSweep()
     {
         Peer.logger.debug("Starting sweep for " + this.peerEndPoint.getFullyQualifiedName());//$NON-NLS-1$
-        synchronized (this.callList)
+        try (LockCloser closer = Locker.lock(this.callList))
         {
             for (final CallTracker call : this.callList)
             {
@@ -243,7 +245,7 @@ public class Peer implements CallEndedListener
     public void endSweep()
     {
         Peer.logger.debug("Ending sweep for " + this.peerEndPoint.getFullyQualifiedName());//$NON-NLS-1$
-        synchronized (this.callList)
+        try (LockCloser closer = Locker.lock(this.callList))
         {
             for (final CallTracker call : this.callList)
             {
@@ -259,7 +261,7 @@ public class Peer implements CallEndedListener
      */
     private void evaluateState()
     {
-        synchronized (this.callList)
+        try (LockCloser closer = Locker.lock(this.callList))
         {
             // Get the highest prioirty state from the set of calls.
             PeerState newState = PeerState.NOTSET;
@@ -300,7 +302,7 @@ public class Peer implements CallEndedListener
     public void callEnded(CallTracker call)
     {
         boolean found = false;
-        synchronized (this.callList)
+        try (LockCloser closer = Locker.lock(this.callList))
         {
             for (final CallTracker aCall : this.callList)
             {
