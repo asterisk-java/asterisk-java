@@ -152,7 +152,7 @@ public class Locker
                     }
                 }
 
-                if (holdTime > stats.getAverageHoldTime() * 4.0)
+                if (holdTime > stats.getAverageHoldTime() * 5.0)
                 {
                     // long hold!
                     String message = "Lock hold of lock (" + holdTime + "MS), average is " + stats.getAverageHoldTime() + " "
