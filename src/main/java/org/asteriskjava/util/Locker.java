@@ -139,27 +139,28 @@ public class Locker
                 stats.totalWaitTime.addAndGet(waitTime);
                 stats.totalHoldTime.addAndGet(holdTime);
 
-                if (waiters > 0 && holdTime > 1)
+                long averageHoldTime = stats.getAverageHoldTime();
+                if (waiters > 0 && holdTime > averageHoldTime * 2)
                 {
                     // some threads waited
                     String message = "Lock held for (" + holdTime + "MS), " + waiters
                             + " threads waited for some of that time! " + getCaller(stats.object);
                     logger.warn(message);
-                    if (holdTime > stats.getAverageHoldTime() * 10.0)
+                    if (holdTime > averageHoldTime * 10.0)
                     {
                         Exception trace = new Exception(message);
                         logger.error(trace, trace);
                     }
                 }
 
-                if (holdTime > stats.getAverageHoldTime() * 5.0)
+                if (holdTime > averageHoldTime * 5.0)
                 {
                     // long hold!
                     String message = "Lock hold of lock (" + holdTime + "MS), average is " + stats.getAverageHoldTime() + " "
                             + getCaller(stats.object);
 
                     logger.warn(message);
-                    if (holdTime > stats.getAverageHoldTime() * 10.0)
+                    if (holdTime > averageHoldTime * 10.0)
                     {
                         Exception trace = new Exception(message);
                         logger.error(trace, trace);
@@ -241,13 +242,13 @@ public class Locker
             this.name = name;
         }
 
-        double getAverageHoldTime()
+        long getAverageHoldTime()
         {
             long hold = totalHoldTime.get();
             long count = acquired.get();
             if (count < 10)
             {
-                return 250.0;
+                return 250;
             }
             return Math.max(hold / count, 50);
         }
