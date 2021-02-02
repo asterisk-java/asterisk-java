@@ -9,7 +9,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
 
 public class Locker
 {
@@ -32,6 +31,7 @@ public class Locker
         LockStats finalStats;
         synchronized (mapSync)
         {
+            // find or create the semaphore for locking
             LockStats stats = lockObjectMap.get(System.identityHashCode(sync));
             if (stats == null)
             {
@@ -63,6 +63,12 @@ public class Locker
 
     }
 
+    /**
+     * determine the caller to Locker
+     * 
+     * @param object
+     * @return
+     */
     private static String getCaller(Object object)
     {
         Exception ex = new Exception();
@@ -98,7 +104,6 @@ public class Locker
             public void close()
             {
                 lock.release();
-                stats.lastUsed.set(System.currentTimeMillis());
             }
         };
     }
@@ -108,7 +113,6 @@ public class Locker
 
         int offset = stats.requested.incrementAndGet();
         long waitStart = System.currentTimeMillis();
-        stats.lastUsed.set(waitStart);
 
         Semaphore lock = stats.semaphore;
         lock.acquire();
@@ -121,36 +125,43 @@ public class Locker
             @Override
             public void close()
             {
+                // ignore any wait that may have been caused by Locker code, so
+                // count the waiters before we release the lock
+                long waiters = stats.requested.get() - offset;
+                stats.waited.addAndGet((int) waiters);
+
+                // release the lock
                 lock.release();
-                long holdTime = System.currentTimeMillis() - acquiredAt;
-                long waitTime = acquiredAt - waitStart;
+
+                // count the time waiting and holding the lock
+                int holdTime = (int) (System.currentTimeMillis() - acquiredAt);
+                int waitTime = (int) (acquiredAt - waitStart);
                 stats.totalWaitTime.addAndGet(waitTime);
                 stats.totalHoldTime.addAndGet(holdTime);
-                stats.lastUsed.set(System.currentTimeMillis());
 
-                long waiters = stats.requested.get() - offset;
-
-                stats.waited.addAndGet((int) waiters);
                 if (waiters > 0 && holdTime > 1)
                 {
                     // some threads waited
-                    Exception trace = new Exception("Lock held for (" + holdTime + "MS), " + waiters
-                            + " threads waited for some of that time! " + getCaller(stats.object));
-                    logger.warn(trace);
+                    String message = "Lock held for (" + holdTime + "MS), " + waiters
+                            + " threads waited for some of that time! " + getCaller(stats.object);
+                    logger.warn(message);
                     if (holdTime > stats.getAverageHoldTime() * 10.0)
                     {
+                        Exception trace = new Exception(message);
                         logger.error(trace, trace);
                     }
                 }
 
-                if (holdTime > stats.getAverageHoldTime() * 2.0)
+                if (holdTime > stats.getAverageHoldTime() * 4.0)
                 {
                     // long hold!
-                    Exception trace = new Exception("Lock hold of lock (" + holdTime + "MS), average is "
-                            + stats.getAverageHoldTime() + " " + getCaller(stats.object));
-                    logger.warn(trace);
+                    String message = "Lock hold of lock (" + holdTime + "MS), average is " + stats.getAverageHoldTime() + " "
+                            + getCaller(stats.object);
+
+                    logger.warn(message);
                     if (holdTime > stats.getAverageHoldTime() * 10.0)
                     {
+                        Exception trace = new Exception(message);
                         logger.error(trace, trace);
                     }
                 }
@@ -159,12 +170,22 @@ public class Locker
 
     }
 
+    /**
+     * start dumping lock stats once per minute, can't be stopped once started.
+     */
     public static void enable()
     {
-        diags = true;
-        executor.scheduleWithFixedDelay(() -> {
-            dumpStats();
-        }, 1, 1, TimeUnit.MINUTES);
+        if (!diags)
+        {
+            diags = true;
+            executor.scheduleWithFixedDelay(() -> {
+                dumpStats();
+            }, 1, 1, TimeUnit.MINUTES);
+        }
+        else
+        {
+            logger.warn("Already enabled");
+        }
 
     }
 
@@ -208,14 +229,11 @@ public class Locker
 
         final String name;
 
-        long created = System.currentTimeMillis();
-        AtomicLong lastUsed = new AtomicLong(created);
-
-        public AtomicLong totalWaitTime = new AtomicLong();
-        public AtomicLong totalHoldTime = new AtomicLong();
-        AtomicInteger requested = new AtomicInteger();
-        AtomicInteger waited = new AtomicInteger();
-        AtomicInteger acquired = new AtomicInteger();
+        final AtomicInteger totalWaitTime = new AtomicInteger();
+        final AtomicInteger totalHoldTime = new AtomicInteger();
+        final AtomicInteger requested = new AtomicInteger();
+        final AtomicInteger waited = new AtomicInteger();
+        final AtomicInteger acquired = new AtomicInteger();
 
         LockStats(Object object, String name)
         {
@@ -225,13 +243,13 @@ public class Locker
 
         double getAverageHoldTime()
         {
-            double hold = totalHoldTime.get();
-            double count = acquired.get();
+            long hold = totalHoldTime.get();
+            long count = acquired.get();
             if (count < 10)
             {
                 return 250.0;
             }
-            return Math.max(hold / count, 10);
+            return Math.max(hold / count, 50);
         }
     }
 
