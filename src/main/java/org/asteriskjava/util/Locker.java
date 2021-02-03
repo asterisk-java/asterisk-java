@@ -9,6 +9,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class Locker
 {
@@ -114,10 +115,18 @@ public class Locker
         int offset = stats.requested.incrementAndGet();
         long waitStart = System.currentTimeMillis();
 
+        int ctr = 0;
         Semaphore lock = stats.semaphore;
-        lock.acquire();
+        while (!lock.tryAcquire(500, TimeUnit.MILLISECONDS))
+        {
+            ctr++;
+            dumpBlocker(stats, ctr);
+        }
+        stats.dumped = false;
         stats.acquired.getAndIncrement();
+
         long acquiredAt = System.currentTimeMillis();
+        stats.threadHoldingLock.set(Thread.currentThread());
 
         return new LockCloser()
         {
@@ -130,6 +139,7 @@ public class Locker
                 long waiters = stats.requested.get() - offset;
                 stats.waited.addAndGet((int) waiters);
 
+                boolean dumped = stats.dumped;
                 // release the lock
                 lock.release();
 
@@ -140,13 +150,13 @@ public class Locker
                 stats.totalHoldTime.addAndGet(holdTime);
 
                 long averageHoldTime = stats.getAverageHoldTime();
-                if (waiters > 0 && holdTime > averageHoldTime * 2)
+                if (waiters > 0 && holdTime > averageHoldTime * 2 || dumped)
                 {
                     // some threads waited
                     String message = "Lock held for (" + holdTime + "MS), " + waiters
                             + " threads waited for some of that time! " + getCaller(stats.object);
                     logger.warn(message);
-                    if (holdTime > averageHoldTime * 10.0)
+                    if (holdTime > averageHoldTime * 10.0 || dumped)
                     {
                         Exception trace = new Exception(message);
                         logger.error(trace, trace);
@@ -171,6 +181,45 @@ public class Locker
 
     }
 
+    private static void dumpBlocker(LockStats stats, int ctr)
+    {
+        synchronized (stats)
+        {
+            if (!stats.dumped)
+            {
+
+                Thread thread = stats.threadHoldingLock.get();
+                stats.dumped = true;
+                if (thread != null)
+                {
+
+                    StackTraceElement[] trace = thread.getStackTrace();
+
+                    String dump = "";
+
+                    int i = 0;
+                    for (; i < trace.length; i++)
+                    {
+                        StackTraceElement ste = trace[i];
+                        dump += "\tat " + ste.toString();
+                        dump += '\n';
+                    }
+                    logger.error("Waiting on lock... blocked by...");
+                    logger.error(dump);
+                }
+                else
+                {
+                    logger.error("Thread hasn't been set");
+                }
+
+            }
+            else
+            {
+                logger.warn("Still waiting " + ctr);
+            }
+        }
+    }
+
     /**
      * start dumping lock stats once per minute, can't be stopped once started.
      */
@@ -190,6 +239,8 @@ public class Locker
 
     }
 
+    private static volatile boolean first = true;
+
     private static void dumpStats()
     {
         List<LockStats> stats = new LinkedList<>();
@@ -200,15 +251,21 @@ public class Locker
             keepList.clear();
         }
 
+        boolean activity = false;
         for (LockStats stat : stats)
         {
-            if (stat.waited.get() > 0)
+            if ((stat.waited.get() > 0 && stat.totalWaitTime.get() > stat.getAverageHoldTime()) || first)
             {
+                activity = true;
                 logger.warn(stat);
             }
         }
 
-        logger.warn("Dump Lock Stats finished.");
+        if (first || activity)
+        {
+            logger.warn("Dump Lock Stats finished. Will dump every minute when there is contention...");
+            first = false;
+        }
     }
 
     static class LockStats
@@ -229,12 +286,13 @@ public class Locker
         final Object object;
 
         final String name;
-
+        final AtomicReference<Thread> threadHoldingLock = new AtomicReference<>();
         final AtomicInteger totalWaitTime = new AtomicInteger();
         final AtomicInteger totalHoldTime = new AtomicInteger();
         final AtomicInteger requested = new AtomicInteger();
         final AtomicInteger waited = new AtomicInteger();
         final AtomicInteger acquired = new AtomicInteger();
+        volatile boolean dumped = false;
 
         LockStats(Object object, String name)
         {
