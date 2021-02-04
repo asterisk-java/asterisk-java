@@ -117,7 +117,7 @@ public class Locker
 
         int ctr = 0;
         Semaphore lock = stats.semaphore;
-        while (!lock.tryAcquire(500, TimeUnit.MILLISECONDS))
+        while (!lock.tryAcquire(250, TimeUnit.MILLISECONDS))
         {
             ctr++;
             dumpBlocker(stats, ctr);
