@@ -22,7 +22,6 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Map;
 import java.util.Map.Entry;
 
 import org.asteriskjava.live.AsteriskQueue;
@@ -44,7 +43,7 @@ import org.asteriskjava.manager.event.QueueMemberPenaltyEvent;
 import org.asteriskjava.manager.event.QueueMemberRemovedEvent;
 import org.asteriskjava.manager.event.QueueMemberStatusEvent;
 import org.asteriskjava.manager.event.QueueParamsEvent;
-import org.asteriskjava.util.Locker;
+import org.asteriskjava.util.LockableMap;
 import org.asteriskjava.util.Locker.LockCloser;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
@@ -69,7 +68,7 @@ class QueueManager
      * A map of ACD queues by there name. 101119 OLB: Modified to act as a LRU
      * Cache to optimize updates
      */
-    private final Map<String, AsteriskQueueImpl> queuesLRU = new LinkedHashMap<>();
+    private final LockableMap<String, AsteriskQueueImpl> queuesLRU = new LockableMap<>(new LinkedHashMap<>());
 
     QueueManager(AsteriskServerImpl server, ChannelManager channelManager)
     {
@@ -174,7 +173,7 @@ class QueueManager
 
     void disconnected()
     {
-        try (LockCloser closer = Locker.lock(queuesLRU))
+        try (LockCloser closer = queuesLRU.withLock())
         {
             for (AsteriskQueueImpl queue : queuesLRU.values())
             {
@@ -195,7 +194,7 @@ class QueueManager
 
         Collection<AsteriskQueue> copy;
 
-        try (LockCloser closer = Locker.lock(queuesLRU))
+        try (LockCloser closer = queuesLRU.withLock())
         {
             copy = new ArrayList<AsteriskQueue>(queuesLRU.values());
         }
@@ -207,7 +206,7 @@ class QueueManager
         refreshQueuesIfForced();
 
         List<AsteriskQueue> copy = new ArrayList<>();
-        try (LockCloser closer = Locker.lock(queuesLRU))
+        try (LockCloser closer = queuesLRU.withLock())
         {
             List<Entry<String, AsteriskQueueImpl>> list = new ArrayList<>(queuesLRU.entrySet());
             ListIterator<Entry<String, AsteriskQueueImpl>> iter = list.listIterator(list.size());
@@ -236,7 +235,7 @@ class QueueManager
      */
     private void addQueue(AsteriskQueueImpl queue)
     {
-        try (LockCloser closer = Locker.lock(queuesLRU))
+        try (LockCloser closer = queuesLRU.withLock())
         {
             queuesLRU.put(queue.getName(), queue);
         }
@@ -277,9 +276,9 @@ class QueueManager
             // We should never reach that code as this method is only called for
             // initialization
             // So the queue should never be in the queues list
-            try (LockCloser closer = Locker.lock(queue))
+            try (LockCloser closer = queue.withLock())
             {
-                try (LockCloser closer2 = Locker.lock(queuesLRU))
+                try (LockCloser closer2 = queuesLRU.withLock())
                 {
 
                     if (queue.setMax(max) | queue.setServiceLevel(serviceLevel) | queue.setWeight(weight)
@@ -590,7 +589,7 @@ class QueueManager
     {
         AsteriskQueueImpl queue;
 
-        try (LockCloser closer = Locker.lock(queuesLRU))
+        try (LockCloser closer = queuesLRU.withLock())
         {
             queue = queuesLRU.get(queueName);
         }

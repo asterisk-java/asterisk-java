@@ -25,7 +25,6 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -115,7 +114,10 @@ import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.manager.response.ModuleCheckResponse;
 import org.asteriskjava.util.AstUtil;
 import org.asteriskjava.util.DateUtil;
-import org.asteriskjava.util.Locker;
+import org.asteriskjava.util.Lockable;
+import org.asteriskjava.util.LockableList;
+import org.asteriskjava.util.LockableMap;
+import org.asteriskjava.util.LockableSet;
 import org.asteriskjava.util.Locker.LockCloser;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
@@ -126,7 +128,7 @@ import org.asteriskjava.util.LogFactory;
  * @author srt
  * @version $Id$
  */
-public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
+public class AsteriskServerImpl extends Lockable implements AsteriskServer, ManagerEventListener
 {
     private static final String ACTION_ID_PREFIX_ORIGINATE = "AJ_ORIGINATE_";
     private static final String SHOW_VERSION_COMMAND = "show version";
@@ -150,7 +152,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
     private boolean initialized = false;
     private boolean initializing = false;
 
-    final Set<AsteriskServerListener> listeners;
+    final LockableSet<AsteriskServerListener> listeners;
 
     final ChannelManager channelManager;
     final MeetMeManager meetMeManager;
@@ -172,12 +174,12 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
      * <p/>
      * Contains <code>null</code> until lazily initialized.
      */
-    private Map<String, String> versions;
+    private LockableMap<String, String> versions;
 
     /**
      * Maps the traceId to the corresponding callback data.
      */
-    private final Map<String, OriginateCallbackData> originateCallbacks;
+    private final LockableMap<String, OriginateCallbackData> originateCallbacks;
 
     private final AtomicLong idCounter;
 
@@ -207,7 +209,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
      * events have been processed by the live ChannelManager before you receive
      * an event and as such the names will always match.
      */
-    private List<ManagerEventListener> chainListeners = new ArrayList<>();
+    private LockableList<ManagerEventListener> chainListeners = new LockableList<>(new ArrayList<>());
 
     /**
      * Creates a new instance.
@@ -215,8 +217,8 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
     public AsteriskServerImpl()
     {
         idCounter = new AtomicLong();
-        listeners = new LinkedHashSet<>();
-        originateCallbacks = new HashMap<>();
+        listeners = new LockableSet<>(new LinkedHashSet<>());
+        originateCallbacks = new LockableMap<>(new HashMap<>());
         channelManager = new ChannelManager(this);
         agentManager = new AgentManager(this);
         meetMeManager = new MeetMeManager(this, channelManager);
@@ -275,7 +277,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
 
     private void initializeIfNeeded() throws ManagerCommunicationException
     {
-        try (LockCloser closer = Locker.lock(this))
+        try (LockCloser closer = this.withLock())
         {
             if (initialized || initializing)
             {
@@ -503,7 +505,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
 
             callbackData = new OriginateCallbackData(originateAction, DateUtil.getDate(), cb);
             // register callback
-            try (LockCloser closer = Locker.lock(originateCallbacks))
+            try (LockCloser closer = originateCallbacks.withLock())
             {
                 originateCallbacks.put(traceId, callbackData);
             }
@@ -565,7 +567,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
 
     public String getVersion() throws ManagerCommunicationException
     {
-        try (LockCloser closer = Locker.lock(this))
+        try (LockCloser closer = this.withLock())
         {
             final ManagerResponse response;
             final String command;
@@ -612,10 +614,10 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         initializeIfNeeded();
         if (versions == null)
         {
-            Map<String, String> map;
+            LockableMap<String, String> map;
             ManagerResponse response;
 
-            map = new HashMap<>();
+            map = new LockableMap<>(new HashMap<>());
             try
             {
                 final String command;
@@ -665,7 +667,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         }
         else
         {
-            try (LockCloser closer = Locker.lock(versions))
+            try (LockCloser closer = versions.withLock())
             {
                 fileVersion = versions.get(file);
             }
@@ -896,7 +898,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
     public void addAsteriskServerListener(AsteriskServerListener listener) throws ManagerCommunicationException
     {
         initializeIfNeeded();
-        try (LockCloser closer = Locker.lock(listeners))
+        try (LockCloser closer = listeners.withLock())
         {
             if (!listeners.contains(listener))
             {
@@ -908,7 +910,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
     @Override
     public void removeAsteriskServerListener(AsteriskServerListener listener)
     {
-        try (LockCloser closer = Locker.lock(listeners))
+        try (LockCloser closer = listeners.withLock())
         {
             listeners.remove(listener);
         }
@@ -922,7 +924,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
 
     public void addChainListener(ManagerEventListener chainListener)
     {
-        try (LockCloser closer = Locker.lock(this.chainListeners))
+        try (LockCloser closer = this.chainListeners.withLock())
         {
             if (!this.chainListeners.contains(chainListener))
                 this.chainListeners.add(chainListener);
@@ -937,7 +939,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
 
     void fireNewAsteriskChannel(AsteriskChannel channel)
     {
-        try (LockCloser closer = Locker.lock(listeners))
+        try (LockCloser closer = listeners.withLock())
         {
             for (AsteriskServerListener listener : listeners)
             {
@@ -955,7 +957,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
 
     void fireNewMeetMeUser(MeetMeUser user)
     {
-        try (LockCloser closer = Locker.lock(listeners))
+        try (LockCloser closer = listeners.withLock())
         {
             for (AsteriskServerListener listener : listeners)
             {
@@ -1026,7 +1028,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
 
     OriginateCallbackData getOriginateCallbackDataByTraceId(String traceId)
     {
-        try (LockCloser closer = Locker.lock(originateCallbacks))
+        try (LockCloser closer = originateCallbacks.withLock())
         {
             return originateCallbacks.get(traceId);
         }
@@ -1214,7 +1216,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
      */
     private void fireChainListeners(ManagerEvent event)
     {
-        try (LockCloser closer = Locker.lock(this.chainListeners))
+        try (LockCloser closer = this.chainListeners.withLock())
         {
             for (ManagerEventListener listener : this.chainListeners)
                 listener.onManagerEvent(event);
@@ -1287,7 +1289,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
             return;
         }
 
-        try (LockCloser closer = Locker.lock(originateCallbacks))
+        try (LockCloser closer = originateCallbacks.withLock())
         {
             callbackData = originateCallbacks.get(traceId);
             if (callbackData == null)
@@ -1463,7 +1465,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
 
     void fireNewAgent(AsteriskAgentImpl agent)
     {
-        try (LockCloser closer = Locker.lock(listeners))
+        try (LockCloser closer = listeners.withLock())
         {
             for (AsteriskServerListener listener : listeners)
             {
@@ -1481,7 +1483,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
 
     void fireNewQueueEntry(AsteriskQueueEntry entry)
     {
-        try (LockCloser closer = Locker.lock(listeners))
+        try (LockCloser closer = listeners.withLock())
         {
             for (AsteriskServerListener listener : listeners)
             {

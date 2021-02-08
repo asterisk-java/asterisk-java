@@ -22,7 +22,6 @@ import org.asteriskjava.pbx.asterisk.wrap.events.ManagerEvent;
 import org.asteriskjava.pbx.asterisk.wrap.events.ParkedCallEvent;
 import org.asteriskjava.pbx.asterisk.wrap.response.ManagerResponse;
 import org.asteriskjava.pbx.internal.core.AsteriskPBX;
-import org.asteriskjava.util.Locker;
 import org.asteriskjava.util.Locker.LockCloser;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
@@ -180,7 +179,7 @@ public class ParkActivityImpl extends ActivityHelper<ParkActivity> implements Pa
     @Override
     public void onManagerEvent(final ManagerEvent event)
     {
-        try (LockCloser closer = Locker.lock(this))
+        try (LockCloser closer = this.withLock())
         {
             assert event instanceof ParkedCallEvent : "Unexpected event";
 

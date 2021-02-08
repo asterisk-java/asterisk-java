@@ -15,10 +15,11 @@ import org.asteriskjava.pbx.asterisk.wrap.events.ManagerEvent;
 import org.asteriskjava.pbx.asterisk.wrap.response.ManagerResponse;
 import org.asteriskjava.pbx.internal.core.AsteriskPBX;
 import org.asteriskjava.pbx.internal.managerAPI.EventListenerBaseClass;
+import org.asteriskjava.util.Lockable;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
-public abstract class ActivityHelper<T extends Activity> implements Runnable, Activity
+public abstract class ActivityHelper<T extends Activity> extends Lockable implements Runnable, Activity
 {
     private static final Log logger = LogFactory.getLog(ActivityHelper.class);
 

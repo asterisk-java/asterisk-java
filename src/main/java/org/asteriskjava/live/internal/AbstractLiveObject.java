@@ -21,6 +21,7 @@ import java.beans.PropertyChangeSupport;
 
 import org.asteriskjava.live.AsteriskServer;
 import org.asteriskjava.live.LiveObject;
+import org.asteriskjava.util.Lockable;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
@@ -30,7 +31,7 @@ import org.asteriskjava.util.LogFactory;
  * @author srt
  * @since 0.3
  */
-abstract class AbstractLiveObject implements LiveObject
+abstract class AbstractLiveObject extends Lockable implements LiveObject
 {
     private final Log logger = LogFactory.getLog(this.getClass());
     private final PropertyChangeSupport changes;

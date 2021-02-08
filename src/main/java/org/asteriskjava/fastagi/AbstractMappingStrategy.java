@@ -24,6 +24,7 @@ import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.asteriskjava.util.Lockable;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
@@ -34,7 +35,7 @@ import org.asteriskjava.util.LogFactory;
  * @author srt
  * @since 0.3
  */
-public abstract class AbstractMappingStrategy implements MappingStrategy
+public abstract class AbstractMappingStrategy extends Lockable implements MappingStrategy
 {
     /**
      * Reference to Asterisk-Java's logging subsystem.

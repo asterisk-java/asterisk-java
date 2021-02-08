@@ -21,7 +21,8 @@ import org.asteriskjava.pbx.asterisk.wrap.events.RenameEvent;
 import org.asteriskjava.pbx.asterisk.wrap.events.ResponseEvent;
 import org.asteriskjava.pbx.asterisk.wrap.events.ResponseEvents;
 import org.asteriskjava.pbx.asterisk.wrap.events.StatusEvent;
-import org.asteriskjava.util.Locker;
+import org.asteriskjava.util.Lockable;
+import org.asteriskjava.util.LockableList;
 import org.asteriskjava.util.Locker.LockCloser;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
@@ -59,7 +60,7 @@ import org.asteriskjava.util.LogFactory;
  * 
  * @author bsutton
  */
-public class LiveChannelManager implements FilteredManagerListener<ManagerEvent>
+public class LiveChannelManager extends Lockable implements FilteredManagerListener<ManagerEvent>
 {
     private static final Log logger = LogFactory.getLog(LiveChannelManager.class);
 
@@ -68,7 +69,7 @@ public class LiveChannelManager implements FilteredManagerListener<ManagerEvent>
      * channels and remove them as they hangup. The hash is keyed by the
      * channel's name. e.g. SIP/100-000000100
      */
-    private final List<ChannelProxy> _liveChannels = new CopyOnWriteArrayList<>();
+    private final LockableList<ChannelProxy> _liveChannels = new LockableList<>(new CopyOnWriteArrayList<>());
 
     public LiveChannelManager()
     {
@@ -122,7 +123,7 @@ public class LiveChannelManager implements FilteredManagerListener<ManagerEvent>
 
     public void add(ChannelProxy proxy)
     {
-        try (LockCloser closer = Locker.lock(this._liveChannels))
+        try (LockCloser closer = _liveChannels.withLock())
         {
             ChannelProxy index = findProxy(proxy);
             if (index == null)

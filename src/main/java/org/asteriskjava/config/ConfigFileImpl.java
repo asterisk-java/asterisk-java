@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.asteriskjava.util.Locker;
+import org.asteriskjava.util.LockableMap;
 import org.asteriskjava.util.Locker.LockCloser;
 
 /**
@@ -34,12 +34,12 @@ import org.asteriskjava.util.Locker.LockCloser;
 public class ConfigFileImpl implements ConfigFile
 {
     private final String filename;
-    protected final Map<String, Category> categories;
+    protected final LockableMap<String, Category> categories;
 
     public ConfigFileImpl(String filename, Map<String, Category> categories)
     {
         this.filename = filename;
-        this.categories = categories;
+        this.categories = new LockableMap<>(categories);
     }
 
     public String getFilename()
@@ -53,7 +53,7 @@ public class ConfigFileImpl implements ConfigFile
 
         c = new TreeMap<>();
 
-        try (LockCloser closer = Locker.lock(categories))
+        try (LockCloser closer = categories.withLock())
         {
             for (Category category : categories.values())
             {
@@ -129,7 +129,7 @@ public class ConfigFileImpl implements ConfigFile
 
     protected Category getCategory(String name)
     {
-        try (LockCloser closer = Locker.lock(categories))
+        try (LockCloser closer = categories.withLock())
         {
             return categories.get(name);
         }

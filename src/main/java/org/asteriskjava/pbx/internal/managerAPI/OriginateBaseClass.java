@@ -28,7 +28,6 @@ import org.asteriskjava.pbx.asterisk.wrap.events.OriginateResponseEvent;
 import org.asteriskjava.pbx.asterisk.wrap.events.UnlinkEvent;
 import org.asteriskjava.pbx.asterisk.wrap.response.ManagerResponse;
 import org.asteriskjava.pbx.internal.core.AsteriskPBX;
-import org.asteriskjava.util.Locker;
 import org.asteriskjava.util.Locker.LockCloser;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
@@ -296,7 +295,7 @@ public abstract class OriginateBaseClass extends EventListenerBaseClass
     @Override
     public void onManagerEvent(final ManagerEvent event)
     {
-        try (LockCloser closer = Locker.lock(this))
+        try (LockCloser closer = this.withLock())
         {
             managerEventsSeen.getAndIncrement();
             if (event instanceof HangupEvent)

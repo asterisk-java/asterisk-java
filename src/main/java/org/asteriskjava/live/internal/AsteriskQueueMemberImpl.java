@@ -27,7 +27,6 @@ import org.asteriskjava.manager.action.QueuePenaltyAction;
 import org.asteriskjava.manager.response.ManagerError;
 import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.util.AstUtil;
-import org.asteriskjava.util.Locker;
 import org.asteriskjava.util.Locker.LockCloser;
 
 /**
@@ -216,7 +215,7 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
 
     boolean stateChanged(QueueMemberState state)
     {
-        try (LockCloser closer = Locker.lock(this))
+        try (LockCloser closer = this.withLock())
         {
             if (!AstUtil.isEqual(this.state, state))
             {
@@ -231,7 +230,7 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
 
     boolean penaltyChanged(Integer penalty)
     {
-        try (LockCloser closer = Locker.lock(this))
+        try (LockCloser closer = this.withLock())
         {
             if (!AstUtil.isEqual(this.penalty, penalty))
             {
@@ -247,7 +246,7 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
 
     boolean pausedChanged(boolean paused)
     {
-        try (LockCloser closer = Locker.lock(this))
+        try (LockCloser closer = this.withLock())
         {
             if (!AstUtil.isEqual(this.paused, paused))
             {
@@ -262,7 +261,7 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
 
     boolean callsTakenChanged(Integer callsTaken)
     {
-        try (LockCloser closer = Locker.lock(this))
+        try (LockCloser closer = this.withLock())
         {
             if (!AstUtil.isEqual(this.callsTaken, callsTaken))
             {
@@ -277,7 +276,7 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
 
     boolean lastCallChanged(Long lastCall)
     {
-        try (LockCloser closer = Locker.lock(this))
+        try (LockCloser closer = this.withLock())
         {
             if (!AstUtil.isEqual(this.lastCall, lastCall))
             {

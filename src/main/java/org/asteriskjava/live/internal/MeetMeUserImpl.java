@@ -22,7 +22,6 @@ import org.asteriskjava.live.ManagerCommunicationException;
 import org.asteriskjava.live.MeetMeUser;
 import org.asteriskjava.live.MeetMeUserState;
 import org.asteriskjava.manager.action.CommandAction;
-import org.asteriskjava.util.Locker;
 import org.asteriskjava.util.Locker.LockCloser;
 
 class MeetMeUserImpl extends AbstractLiveObject implements MeetMeUser
@@ -87,7 +86,7 @@ class MeetMeUserImpl extends AbstractLiveObject implements MeetMeUser
     void left(Date dateLeft)
     {
         MeetMeUserState oldState;
-        try (LockCloser closer = Locker.lock(this))
+        try (LockCloser closer = this.withLock())
         {
             oldState = this.state;
             this.dateLeft = dateLeft;
@@ -164,7 +163,7 @@ class MeetMeUserImpl extends AbstractLiveObject implements MeetMeUser
 
         sb = new StringBuilder("MeetMeUser[");
 
-        try (LockCloser closer = Locker.lock(this))
+        try (LockCloser closer = this.withLock())
         {
             sb.append("dateJoined='").append(getDateJoined()).append("',");
             sb.append("dateLeft='").append(getDateLeft()).append("',");
@@ -174,7 +173,7 @@ class MeetMeUserImpl extends AbstractLiveObject implements MeetMeUser
             systemHashcode = System.identityHashCode(this);
         }
         sb.append("channel=AsteriskChannel[");
-        try (LockCloser closer = Locker.lock(channel))
+        try (LockCloser closer = channel.withLock())
         {
             sb.append("id='").append(channel.getId()).append("',");
             sb.append("name='").append(channel.getName()).append("'],");

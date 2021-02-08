@@ -19,7 +19,6 @@ package org.asteriskjava.live.internal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Map;
 
 import org.asteriskjava.live.AgentState;
 import org.asteriskjava.live.AsteriskAgent;
@@ -35,7 +34,7 @@ import org.asteriskjava.manager.event.AgentLoginEvent;
 import org.asteriskjava.manager.event.AgentLogoffEvent;
 import org.asteriskjava.manager.event.AgentsEvent;
 import org.asteriskjava.manager.event.ManagerEvent;
-import org.asteriskjava.util.Locker;
+import org.asteriskjava.util.LockableMap;
 import org.asteriskjava.util.Locker.LockCloser;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
@@ -59,19 +58,19 @@ public class AgentManager
     /**
      * A Map of agents by thier agentId.
      */
-    private final Map<String, AsteriskAgentImpl> agents;
+    private final LockableMap<String, AsteriskAgentImpl> agents;
 
     /**
      * A Map of agent in state RINGING by the caller id. Needed to return agent
      * into idle state, if call was not conneted.
      */
-    private final Map<String, AsteriskAgentImpl> ringingAgents;
+    private final LockableMap<String, AsteriskAgentImpl> ringingAgents;
 
     AgentManager(AsteriskServerImpl asteriskServerImpl)
     {
         this.server = asteriskServerImpl;
-        agents = new HashMap<>();
-        ringingAgents = new HashMap<>();
+        agents = new LockableMap<>(new HashMap<>());
+        ringingAgents = new LockableMap<>(new HashMap<>());
     }
 
     /**
@@ -99,7 +98,7 @@ public class AgentManager
 
     void disconnected()
     {
-        try (LockCloser closer = Locker.lock(agents))
+        try (LockCloser closer = agents.withLock())
         {
             agents.clear();
         }
@@ -126,7 +125,7 @@ public class AgentManager
      */
     private void addAgent(AsteriskAgentImpl agent)
     {
-        try (LockCloser closer = Locker.lock(agents))
+        try (LockCloser closer = agents.withLock())
         {
             agents.put(agent.getAgentId(), agent);
         }
@@ -141,7 +140,7 @@ public class AgentManager
      */
     AsteriskAgentImpl getAgentByAgentId(String agentId)
     {
-        try (LockCloser closer = Locker.lock(agents))
+        try (LockCloser closer = agents.withLock())
         {
             return agents.get(agentId);
         }
@@ -172,7 +171,7 @@ public class AgentManager
     private void updateAgentState(AsteriskAgentImpl agent, AgentState newState)
     {
         logger.info("Set state of agent " + agent.getAgentId() + " to " + newState);
-        try (LockCloser closer = Locker.lock(agent))
+        try (LockCloser closer = agent.withLock())
         {
             agent.updateState(newState);
         }
@@ -188,7 +187,7 @@ public class AgentManager
      */
     private void updateRingingAgents(String channelCalling, AsteriskAgentImpl agent)
     {
-        try (LockCloser closer = Locker.lock(ringingAgents))
+        try (LockCloser closer = ringingAgents.withLock())
         {
             if (ringingAgents.containsKey(channelCalling))
             {
@@ -224,7 +223,7 @@ public class AgentManager
         AsteriskAgentImpl agent = getAgentByAgentId("Agent/" + event.getAgent());
         if (agent == null)
         {
-            try (LockCloser closer = Locker.lock(agents))
+            try (LockCloser closer = agents.withLock())
             {
                 logger.error("Ignored AgentLoginEvent for unknown agent " + event.getAgent() + ". Agents: "
                         + agents.values().toString());
@@ -262,7 +261,7 @@ public class AgentManager
         AsteriskAgentImpl agent = getAgentByAgentId("Agent/" + event.getAgent());
         if (agent == null)
         {
-            try (LockCloser closer = Locker.lock(agents))
+            try (LockCloser closer = agents.withLock())
             {
                 logger.error("Ignored AgentCallbackLoginEvent for unknown agent " + event.getAgent() + ". Agents: "
                         + agents.values().toString());
@@ -300,7 +299,7 @@ public class AgentManager
     {
         Collection<AsteriskAgent> copy;
 
-        try (LockCloser closer = Locker.lock(agents))
+        try (LockCloser closer = agents.withLock())
         {
             copy = new ArrayList<AsteriskAgent>(agents.values());
         }

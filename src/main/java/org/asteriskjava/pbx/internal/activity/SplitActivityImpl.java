@@ -24,7 +24,6 @@ import org.asteriskjava.pbx.asterisk.wrap.events.ManagerEvent;
 import org.asteriskjava.pbx.asterisk.wrap.events.RenameEvent;
 import org.asteriskjava.pbx.internal.core.AsteriskPBX;
 import org.asteriskjava.pbx.internal.core.ChannelProxy;
-import org.asteriskjava.util.Locker;
 import org.asteriskjava.util.Locker.LockCloser;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
@@ -119,7 +118,7 @@ public class SplitActivityImpl extends ActivityHelper<SplitActivity> implements 
     @Override
     public void onManagerEvent(final ManagerEvent event)
     {
-        try (LockCloser closer = Locker.lock(this))
+        try (LockCloser closer = this.withLock())
         {
             if (event instanceof RenameEvent)
             {

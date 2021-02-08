@@ -20,7 +20,7 @@ import java.io.IOException;
 
 import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.manager.action.ManagerAction;
-import org.asteriskjava.util.Locker;
+import org.asteriskjava.util.Lockable;
 import org.asteriskjava.util.Locker.LockCloser;
 import org.asteriskjava.util.SocketConnectionFacade;
 
@@ -30,7 +30,7 @@ import org.asteriskjava.util.SocketConnectionFacade;
  * @author srt
  * @version $Id$
  */
-public class ManagerWriterImpl implements ManagerWriter
+public class ManagerWriterImpl extends Lockable implements ManagerWriter
 {
     /**
      * Instance logger.
@@ -60,7 +60,7 @@ public class ManagerWriterImpl implements ManagerWriter
 
     public void setSocket(final SocketConnectionFacade socket)
     {
-        try (LockCloser closer = Locker.lock(this))
+        try (LockCloser closer = this.withLock())
         {
             this.socket = socket;
         }
@@ -68,7 +68,7 @@ public class ManagerWriterImpl implements ManagerWriter
 
     public void sendAction(final ManagerAction action, final String internalActionId) throws IOException
     {
-        try (LockCloser closer = Locker.lock(this))
+        try (LockCloser closer = this.withLock())
         {
             final String actionString;
 

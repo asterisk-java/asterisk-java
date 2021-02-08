@@ -6,7 +6,7 @@ import org.junit.Test;
 public class LockerTest
 {
 
-    private final Object sync = new Object();
+    private final Lockable sync = new Lockable();
 
     @Test
     public void test()
@@ -17,7 +17,7 @@ public class LockerTest
         long start = System.currentTimeMillis();
         while (System.currentTimeMillis() - start < seconds * 1000)
         {
-            try (LockCloser closer = Locker.lock(sync))
+            try (LockCloser closer = sync.withLock())
             {
                 a++;
             }
@@ -29,7 +29,7 @@ public class LockerTest
         start = System.currentTimeMillis();
         while (System.currentTimeMillis() - start < seconds * 1000)
         {
-            try (LockCloser closer = Locker.lock(sync))
+            try (LockCloser closer = sync.withLock())
             {
                 a++;
             }

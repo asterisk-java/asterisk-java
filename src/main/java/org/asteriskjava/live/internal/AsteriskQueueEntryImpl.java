@@ -4,7 +4,6 @@ import java.util.Date;
 
 import org.asteriskjava.live.AsteriskQueueEntry;
 import org.asteriskjava.live.QueueEntryState;
-import org.asteriskjava.util.Locker;
 import org.asteriskjava.util.Locker.LockCloser;
 
 /**
@@ -77,7 +76,7 @@ class AsteriskQueueEntryImpl extends AbstractLiveObject implements AsteriskQueue
     void left(Date dateLeft)
     {
         QueueEntryState oldState;
-        try (LockCloser closer = Locker.lock(this))
+        try (LockCloser closer = this.withLock())
         {
             oldState = this.state;
             this.dateLeft = dateLeft;
@@ -143,7 +142,7 @@ class AsteriskQueueEntryImpl extends AbstractLiveObject implements AsteriskQueue
 
         sb = new StringBuilder("AsteriskQueueEntry[");
 
-        try (LockCloser closer = Locker.lock(this))
+        try (LockCloser closer = this.withLock())
         {
             sb.append("dateJoined=").append(getDateJoined()).append(",");
             sb.append("postition=").append(getPosition()).append(",");
@@ -153,7 +152,7 @@ class AsteriskQueueEntryImpl extends AbstractLiveObject implements AsteriskQueue
         if (channel != null)
         {
             sb.append("channel=AsteriskChannel[");
-            try (LockCloser closer = Locker.lock(channel))
+            try (LockCloser closer = channel.withLock())
             {
                 sb.append("id='").append(channel.getId()).append("',");
                 sb.append("name='").append(channel.getName()).append("'],");

@@ -59,7 +59,7 @@ import org.asteriskjava.manager.event.UnparkedCallEvent;
 import org.asteriskjava.manager.event.VarSetEvent;
 import org.asteriskjava.util.DaemonThreadFactory;
 import org.asteriskjava.util.DateUtil;
-import org.asteriskjava.util.Locker;
+import org.asteriskjava.util.LockableMap;
 import org.asteriskjava.util.Locker.LockCloser;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
@@ -86,7 +86,7 @@ class ChannelManager
     /**
      * A map of all active channel by their unique id.
      */
-    final Map<String, AsteriskChannelImpl> channels = new LinkedHashMap<>();
+    final LockableMap<String, AsteriskChannelImpl> channels = new LockableMap<>(new LinkedHashMap<>());
 
     ScheduledThreadPoolExecutor traceScheduledExecutorService;
 
@@ -139,7 +139,7 @@ class ChannelManager
         {
             traceScheduledExecutorService.shutdown();
         }
-        try (LockCloser closer = Locker.lock(channels))
+        try (LockCloser closer = channels.withLock())
         {
             channels.clear();
         }
@@ -155,7 +155,7 @@ class ChannelManager
     {
         Collection<AsteriskChannel> copy;
 
-        try (LockCloser closer = Locker.lock(channels))
+        try (LockCloser closer = channels.withLock())
         {
             copy = new ArrayList<>(channels.size() + 2);
             for (AsteriskChannel channel : channels.values())
@@ -171,7 +171,7 @@ class ChannelManager
 
     private void addChannel(AsteriskChannelImpl channel)
     {
-        try (LockCloser closer = Locker.lock(channels))
+        try (LockCloser closer = channels.withLock())
         {
             channels.put(channel.getId(), channel);
         }
@@ -185,7 +185,7 @@ class ChannelManager
     {
         Iterator<AsteriskChannelImpl> i;
 
-        try (LockCloser closer = Locker.lock(channels))
+        try (LockCloser closer = channels.withLock())
         {
             i = channels.values().iterator();
             while (i.hasNext())
@@ -316,7 +316,7 @@ class ChannelManager
             extension = new Extension(event.getContext(), event.getExtension(), event.getPriority());
         }
 
-        try (LockCloser closer = Locker.lock(channel))
+        try (LockCloser closer = channel.withLock())
         {
             channel.setCallerId(new CallerId(event.getCallerIdName(), event.getCallerIdNum()));
             channel.setAccount(event.getAccountCode());
@@ -333,7 +333,7 @@ class ChannelManager
                 {
                     // the date used here is not correct!
                     channel.channelLinked(event.getDateReceived(), linkedChannel);
-                    try (LockCloser closer2 = Locker.lock(linkedChannel))
+                    try (LockCloser closer2 = linkedChannel.withLock())
                     {
                         linkedChannel.channelLinked(event.getDateReceived(), channel);
                     }
@@ -368,7 +368,7 @@ class ChannelManager
             return null;
         }
 
-        try (LockCloser closer = Locker.lock(channels))
+        try (LockCloser closer = channels.withLock())
         {
             for (AsteriskChannelImpl tmp : channels.values())
             {
@@ -412,7 +412,7 @@ class ChannelManager
             return null;
         }
 
-        try (LockCloser closer = Locker.lock(channels))
+        try (LockCloser closer = channels.withLock())
         {
             for (AsteriskChannelImpl tmp : channels.values())
             {
@@ -432,7 +432,7 @@ class ChannelManager
             return null;
         }
 
-        try (LockCloser closer = Locker.lock(channels))
+        try (LockCloser closer = channels.withLock())
         {
             return channels.get(uniqueId);
         }
@@ -501,7 +501,7 @@ class ChannelManager
         else
         {
             // channel had already been created probably by a NewCallerIdEvent
-            try (LockCloser closer = Locker.lock(channel))
+            try (LockCloser closer = channel.withLock())
             {
                 channel.nameChanged(event.getDateReceived(), event.getChannel());
                 channel.setCallerId(new CallerId(event.getCallerIdName(), event.getCallerIdNum()));
@@ -525,7 +525,7 @@ class ChannelManager
         extension = new Extension(event.getContext(), event.getExtension(), event.getPriority(), event.getApplication(),
                 event.getAppData());
 
-        try (LockCloser closer = Locker.lock(channel))
+        try (LockCloser closer = channel.withLock())
         {
             channel.extensionVisited(event.getDateReceived(), extension);
         }
@@ -544,7 +544,7 @@ class ChannelManager
             }
 
             logger.info("Changing unique_id for '" + channel.getName() + "' from " + oldId + " to " + newId + " < " + event);
-            try (LockCloser closer = Locker.lock(channels))
+            try (LockCloser closer = channels.withLock())
             {
                 channels.remove(oldId);
                 channels.put(newId, channel);
@@ -613,7 +613,7 @@ class ChannelManager
             {
                 logger.info("Renaming channel (following NewStateEvent) '" + channel.getName() + "' to '"
                         + event.getChannel() + "'");
-                try (LockCloser closer = Locker.lock(channel))
+                try (LockCloser closer = channel.withLock())
                 {
                     channel.nameChanged(event.getDateReceived(), event.getChannel());
                 }
@@ -622,7 +622,7 @@ class ChannelManager
 
         if (event.getChannelState() != null)
         {
-            try (LockCloser closer = Locker.lock(channel))
+            try (LockCloser closer = channel.withLock())
             {
                 channel.stateChanged(event.getDateReceived(), ChannelState.valueOf(event.getChannelState()));
             }
@@ -649,7 +649,7 @@ class ChannelManager
             }
         }
 
-        try (LockCloser closer = Locker.lock(channel))
+        try (LockCloser closer = channel.withLock())
         {
             channel.setCallerId(new CallerId(event.getCallerIdName(), event.getCallerIdNum()));
         }
@@ -671,7 +671,7 @@ class ChannelManager
             cause = HangupCause.getByCode(event.getCause());
         }
 
-        try (LockCloser closer = Locker.lock(channel))
+        try (LockCloser closer = channel.withLock())
         {
             channel.hungup(event.getDateReceived(), cause, event.getCauseTxt());
         }
@@ -710,11 +710,11 @@ class ChannelManager
         logger.info(sourceChannel.getName() + " dialed " + destinationChannel.getName());
         getTraceId(sourceChannel);
         getTraceId(destinationChannel);
-        try (LockCloser closer = Locker.lock(sourceChannel))
+        try (LockCloser closer = sourceChannel.withLock())
         {
             sourceChannel.channelDialed(event.getDateReceived(), destinationChannel);
         }
-        try (LockCloser closer = Locker.lock(destinationChannel))
+        try (LockCloser closer = destinationChannel.withLock())
         {
             destinationChannel.channelDialing(event.getDateReceived(), sourceChannel);
         }
@@ -739,12 +739,12 @@ class ChannelManager
         if (event.isLink())
         {
             logger.info("Linking channels " + channel1.getName() + " and " + channel2.getName());
-            try (LockCloser closer = Locker.lock(channel1))
+            try (LockCloser closer = channel1.withLock())
             {
                 channel1.channelLinked(event.getDateReceived(), channel2);
             }
 
-            try (LockCloser closer = Locker.lock(channel2))
+            try (LockCloser closer = channel2.withLock())
             {
                 channel2.channelLinked(event.getDateReceived(), channel1);
             }
@@ -753,12 +753,12 @@ class ChannelManager
         if (event.isUnlink())
         {
             logger.info("Unlinking channels " + channel1.getName() + " and " + channel2.getName());
-            try (LockCloser closer = Locker.lock(channel1))
+            try (LockCloser closer = channel1.withLock())
             {
                 channel1.channelUnlinked(event.getDateReceived());
             }
 
-            try (LockCloser closer = Locker.lock(channel2))
+            try (LockCloser closer = channel2.withLock())
             {
                 channel2.channelUnlinked(event.getDateReceived());
             }
@@ -777,7 +777,7 @@ class ChannelManager
 
         logger.info("Renaming channel '" + channel.getName() + "' to '" + event.getNewname() + "', uniqueId is "
                 + event.getUniqueId());
-        try (LockCloser closer = Locker.lock(channel))
+        try (LockCloser closer = channel.withLock())
         {
             channel.nameChanged(event.getDateReceived(), event.getNewname());
         }
@@ -797,7 +797,7 @@ class ChannelManager
 
         cdr = new CallDetailRecordImpl(channel, destinationChannel, event);
 
-        try (LockCloser closer = Locker.lock(channel))
+        try (LockCloser closer = channel.withLock())
         {
             channel.callDetailRecordReceived(event.getDateReceived(), cdr);
         }
@@ -833,7 +833,7 @@ class ChannelManager
             return;
         }
 
-        try (LockCloser closer = Locker.lock(channel))
+        try (LockCloser closer = channel.withLock())
         {
             Extension ext = new Extension(null,
                     (event.getParkingSpace() != null) ? event.getParkingSpace() : event.getExten(), 1);
@@ -863,7 +863,7 @@ class ChannelManager
             return;
         }
 
-        try (LockCloser closer = Locker.lock(channel))
+        try (LockCloser closer = channel.withLock())
         {
             channel.setParkedAt(null, null);
         }
@@ -890,7 +890,7 @@ class ChannelManager
             return;
         }
 
-        try (LockCloser closer = Locker.lock(channel))
+        try (LockCloser closer = channel.withLock())
         {
             channel.setParkedAt(null, null);
         }
@@ -917,7 +917,7 @@ class ChannelManager
             return;
         }
 
-        try (LockCloser closer = Locker.lock(channel))
+        try (LockCloser closer = channel.withLock())
         {
             channel.setParkedAt(null, null);
         }
@@ -938,7 +938,7 @@ class ChannelManager
             return;
         }
 
-        try (LockCloser closer = Locker.lock(channel))
+        try (LockCloser closer = channel.withLock())
         {
             channel.updateVariable(event.getVariable(), event.getValue());
         }
@@ -974,7 +974,7 @@ class ChannelManager
             dtmfDigit = event.getDigit().charAt(0);
         }
 
-        try (LockCloser closer = Locker.lock(channel))
+        try (LockCloser closer = channel.withLock())
         {
             if (event.isReceived())
             {
@@ -1005,7 +1005,7 @@ class ChannelManager
             return;
         }
 
-        try (LockCloser closer = Locker.lock(channel))
+        try (LockCloser closer = channel.withLock())
         {
             channel.setMonitored(true);
         }
@@ -1030,7 +1030,7 @@ class ChannelManager
             return;
         }
 
-        try (LockCloser closer = Locker.lock(channel))
+        try (LockCloser closer = channel.withLock())
         {
             channel.setMonitored(false);
         }

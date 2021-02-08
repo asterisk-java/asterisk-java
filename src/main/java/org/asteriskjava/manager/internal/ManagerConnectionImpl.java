@@ -34,7 +34,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
@@ -72,7 +71,9 @@ import org.asteriskjava.manager.response.ManagerError;
 import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.pbx.util.LogTime;
 import org.asteriskjava.util.DateUtil;
-import org.asteriskjava.util.Locker;
+import org.asteriskjava.util.Lockable;
+import org.asteriskjava.util.LockableList;
+import org.asteriskjava.util.LockableMap;
 import org.asteriskjava.util.Locker.LockCloser;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
@@ -86,7 +87,7 @@ import org.asteriskjava.util.internal.SocketConnectionFacadeImpl;
  * @version $Id$
  * @see org.asteriskjava.manager.ManagerConnectionFactory
  */
-public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
+public class ManagerConnectionImpl extends Lockable implements ManagerConnection, Dispatcher
 {
     private static final int RECONNECTION_INTERVAL_1 = 50;
     private static final int RECONNECTION_INTERVAL_2 = 5000;
@@ -231,7 +232,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
      * Key is the internalActionId of the Action sent and value the
      * corresponding ResponseListener.
      */
-    private final Map<String, SendActionCallback> responseListeners;
+    private final LockableMap<String, SendActionCallback> responseListeners;
 
     /**
      * Contains the event handlers that handle ResponseEvents for the
@@ -240,12 +241,12 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
      * Key is the internalActionId of the Action sent and value the
      * corresponding EventHandler.
      */
-    private final Map<String, ManagerEventListener> responseEventListeners;
+    private final LockableMap<String, ManagerEventListener> responseEventListeners;
 
     /**
      * Contains the event handlers that users registered.
      */
-    private final List<ManagerEventListener> eventListeners;
+    private final LockableList<ManagerEventListener> eventListeners;
 
     protected ManagerConnectionState state = INITIAL;
 
@@ -257,9 +258,9 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     public ManagerConnectionImpl()
     {
         this.id = idCounter.getAndIncrement();
-        this.responseListeners = new HashMap<>();
-        this.responseEventListeners = new HashMap<>();
-        this.eventListeners = new ArrayList<>();
+        this.responseListeners = new LockableMap<>(new HashMap<>());
+        this.responseEventListeners = new LockableMap<>(new HashMap<>());
+        this.eventListeners = new LockableList<>(new ArrayList<>());
         this.protocolIdentifier = new ProtocolIdentifierWrapper();
     }
 
@@ -913,7 +914,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         // in the response, thats fine.
         if (callback != null)
         {
-            try (LockCloser closer = Locker.lock(this.responseListeners))
+            try (LockCloser closer = this.responseListeners.withLock())
             {
                 this.responseListeners.put(internalActionId, callback);
             }
@@ -999,13 +1000,13 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         try
         {
             // register response handler...
-            try (LockCloser closer = Locker.lock(this.responseListeners))
+            try (LockCloser closer = this.responseListeners.withLock())
             {
                 this.responseListeners.put(internalActionId, responseEventHandler);
             }
 
             // ...and event handler.
-            try (LockCloser closer = Locker.lock(this.responseEventListeners))
+            try (LockCloser closer = this.responseEventListeners.withLock())
             {
                 this.responseEventListeners.put(internalActionId, responseEventHandler);
             }
@@ -1038,7 +1039,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         finally
         {
             // remove the event handler
-            try (LockCloser closer = Locker.lock(this.responseEventListeners))
+            try (LockCloser closer = this.responseEventListeners.withLock())
             {
                 this.responseEventListeners.remove(internalActionId);
             }
@@ -1046,7 +1047,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
             // Note: The response handler should have already been removed
             // when the response was received, however we remove it here
             // just in case it was never received.
-            try (LockCloser closer = Locker.lock(this.responseListeners))
+            try (LockCloser closer = this.responseListeners.withLock())
             {
                 this.responseListeners.remove(internalActionId);
             }
@@ -1089,13 +1090,13 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                     action.getActionCompleteEventClass(), callback);
 
             // register response handler...
-            try (LockCloser closer = Locker.lock(this.responseListeners))
+            try (LockCloser closer = this.responseListeners.withLock())
             {
                 this.responseListeners.put(internalActionId, responseEventHandler);
             }
 
             // ...and event handler.
-            try (LockCloser closer = Locker.lock(this.responseEventListeners))
+            try (LockCloser closer = this.responseEventListeners.withLock())
             {
                 this.responseEventListeners.put(internalActionId, responseEventHandler);
             }
@@ -1127,7 +1128,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
     public void addEventListener(final ManagerEventListener listener)
     {
-        try (LockCloser closer = Locker.lock(this.eventListeners))
+        try (LockCloser closer = this.eventListeners.withLock())
         {
             // only add it if its not already there
             if (!this.eventListeners.contains(listener))
@@ -1139,7 +1140,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
     public void removeEventListener(final ManagerEventListener listener)
     {
-        try (LockCloser closer = Locker.lock(this.eventListeners))
+        try (LockCloser closer = this.eventListeners.withLock())
         {
             if (this.eventListeners.contains(listener))
             {
@@ -1198,7 +1199,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
         if (internalActionId != null)
         {
-            try (LockCloser closer = Locker.lock(this.responseListeners))
+            try (LockCloser closer = this.responseListeners.withLock())
             {
                 listener = responseListeners.get(internalActionId);
                 if (listener != null)
@@ -1269,7 +1270,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
             internalActionId = responseEvent.getInternalActionId();
             if (internalActionId != null)
             {
-                try (LockCloser closer = Locker.lock(responseEventListeners))
+                try (LockCloser closer = responseEventListeners.withLock())
                 {
                     ManagerEventListener listener;
 
@@ -1304,7 +1305,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
             cleanupActionListeners((DisconnectEvent) event);
             // When we receive get disconnected while we are connected start
             // a new reconnect thread and set the state to RECONNECTING.
-            try (LockCloser closer = Locker.lock(this))
+            try (LockCloser closer = this.withLock())
             {
                 if (state == CONNECTED)
                 {
@@ -1375,7 +1376,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
      */
     private void fireEvent(ManagerEvent event)
     {
-        try (LockCloser closer = Locker.lock(eventListeners))
+        try (LockCloser closer = eventListeners.withLock())
         {
             for (ManagerEventListener listener : eventListeners)
             {
@@ -1477,7 +1478,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
             try
             {
-                try (LockCloser closer = Locker.lock(this))
+                try (LockCloser closer = this.withLock())
                 {
                     if (state != RECONNECTING)
                     {
@@ -1552,7 +1553,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     {
         HashMap<String, SendActionCallback> oldResponseListeners = null;
 
-        try (LockCloser closer = Locker.lock(responseListeners))
+        try (LockCloser closer = responseListeners.withLock())
         {
             // Store remaining response listeners to be notified outside of
             // synchronized
@@ -1575,7 +1576,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         }
 
         HashMap<String, ManagerEventListener> oldResponseEventListeners = null;
-        try (LockCloser closer = Locker.lock(responseEventListeners))
+        try (LockCloser closer = responseEventListeners.withLock())
         {
             // Store remaining responseEventListeners to be notified outside of
             // synchronized
@@ -1790,7 +1791,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
             {
                 events.setComplete(true);
                 String internalActionId = responseEvent.getInternalActionId();
-                try (LockCloser closer = Locker.lock(responseEventListeners))
+                try (LockCloser closer = responseEventListeners.withLock())
                 {
                     responseEventListeners.remove(internalActionId);
                 }

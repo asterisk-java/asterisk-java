@@ -26,7 +26,6 @@ import org.asteriskjava.pbx.asterisk.wrap.events.LinkEvent;
 import org.asteriskjava.pbx.asterisk.wrap.events.ManagerEvent;
 import org.asteriskjava.pbx.asterisk.wrap.events.UnlinkEvent;
 import org.asteriskjava.pbx.internal.core.AsteriskPBX;
-import org.asteriskjava.util.Locker;
 import org.asteriskjava.util.Locker.LockCloser;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
@@ -234,7 +233,7 @@ public class BlindTransferActivityImpl extends ActivityHelper<BlindTransferActiv
     @Override
     public void onManagerEvent(final ManagerEvent event)
     {
-        try (LockCloser closer = Locker.lock(this))
+        try (LockCloser closer = this.withLock())
         {
             if (event instanceof BridgeEvent)
             {

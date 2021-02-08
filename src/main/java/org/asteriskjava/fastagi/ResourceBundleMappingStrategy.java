@@ -23,7 +23,6 @@ import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-import org.asteriskjava.util.Locker;
 import org.asteriskjava.util.Locker.LockCloser;
 
 /**
@@ -116,7 +115,7 @@ public class ResourceBundleMappingStrategy extends AbstractMappingStrategy
     public void setResourceBundleName(String resourceBundleName)
     {
         this.resourceBundleName = resourceBundleName;
-        try (LockCloser closer = Locker.lock(this))
+        try (LockCloser closer = this.withLock())
         {
             this.mappings = null;
             this.instances = null;

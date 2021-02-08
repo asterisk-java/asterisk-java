@@ -28,7 +28,6 @@ import org.asteriskjava.pbx.asterisk.wrap.response.ManagerResponse;
 import org.asteriskjava.pbx.internal.core.AsteriskPBX;
 import org.asteriskjava.pbx.internal.core.CoherentManagerEventListener;
 import org.asteriskjava.pbx.internal.managerAPI.EventListenerBaseClass;
-import org.asteriskjava.util.Locker;
 import org.asteriskjava.util.Locker.LockCloser;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
@@ -107,7 +106,7 @@ public class MeetmeRoomControl extends EventListenerBaseClass implements Coheren
      */
     public MeetmeRoom findAvailableRoom(RoomOwner newOwner)
     {
-        try (LockCloser closer = Locker.lock(this))
+        try (LockCloser closer = this.withLock())
         {
             int count = 0;
             for (final MeetmeRoom room : this.rooms)
@@ -175,7 +174,7 @@ public class MeetmeRoomControl extends EventListenerBaseClass implements Coheren
      */
     private MeetmeRoom findMeetmeRoom(final String roomNumber)
     {
-        try (LockCloser closer = Locker.lock(this))
+        try (LockCloser closer = this.withLock())
         {
             MeetmeRoom foundRoom = null;
             for (final MeetmeRoom room : this.rooms)
@@ -193,7 +192,7 @@ public class MeetmeRoomControl extends EventListenerBaseClass implements Coheren
 
     MeetmeRoom getRoom(final int room)
     {
-        try (LockCloser closer = Locker.lock(this))
+        try (LockCloser closer = this.withLock())
         {
             return this.rooms[room];
         }
@@ -354,7 +353,7 @@ public class MeetmeRoomControl extends EventListenerBaseClass implements Coheren
 
     private void parseMeetme(final String line) throws NoMeetmeException
     {
-        try (LockCloser closer = Locker.lock(this))
+        try (LockCloser closer = this.withLock())
         {
             if (line != null)
             {

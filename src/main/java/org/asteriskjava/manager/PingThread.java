@@ -17,12 +17,11 @@
 package org.asteriskjava.manager;
 
 import java.util.HashSet;
-import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.asteriskjava.manager.action.PingAction;
 import org.asteriskjava.manager.response.ManagerResponse;
-import org.asteriskjava.util.Locker;
+import org.asteriskjava.util.LockableSet;
 import org.asteriskjava.util.Locker.LockCloser;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
@@ -51,7 +50,7 @@ public class PingThread extends Thread
     private long interval = DEFAULT_INTERVAL;
     private long timeout = DEFAULT_TIMEOUT;
     private volatile boolean die;
-    private final Set<ManagerConnection> connections;
+    private final LockableSet<ManagerConnection> connections;
 
     /**
      * Creates a new PingThread. Use {@link #addConnection(ManagerConnection)}
@@ -62,7 +61,7 @@ public class PingThread extends Thread
     public PingThread()
     {
         super();
-        this.connections = new HashSet<>();
+        this.connections = new LockableSet<>(new HashSet<>());
         this.die = false;
         long id = idCounter.getAndIncrement();
         setName("Asterisk-Java Ping-" + id);
@@ -114,7 +113,7 @@ public class PingThread extends Thread
      */
     public void addConnection(ManagerConnection connection)
     {
-        try (LockCloser closer = Locker.lock(connections))
+        try (LockCloser closer = connections.withLock())
         {
             connections.add(connection);
         }
@@ -128,7 +127,7 @@ public class PingThread extends Thread
      */
     public void removeConnection(ManagerConnection connection)
     {
-        try (LockCloser closer = Locker.lock(connections))
+        try (LockCloser closer = connections.withLock())
         {
             connections.remove(connection);
         }
@@ -163,7 +162,7 @@ public class PingThread extends Thread
                 break;
             }
 
-            try (LockCloser closer = Locker.lock(connections))
+            try (LockCloser closer = connections.withLock())
             {
                 for (ManagerConnection c : connections)
                 {

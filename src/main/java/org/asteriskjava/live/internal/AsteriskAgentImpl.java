@@ -18,7 +18,6 @@ package org.asteriskjava.live.internal;
 
 import org.asteriskjava.live.AgentState;
 import org.asteriskjava.live.AsteriskAgent;
-import org.asteriskjava.util.Locker;
 import org.asteriskjava.util.Locker.LockCloser;
 
 /**
@@ -63,7 +62,7 @@ public class AsteriskAgentImpl extends AbstractLiveObject implements AsteriskAge
     void updateState(AgentState state)
     {
 
-        try (LockCloser closer = Locker.lock(this))
+        try (LockCloser closer = this.withLock())
         {
             final AgentState oldState = this.state;
             this.state = state;

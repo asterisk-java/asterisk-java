@@ -6,13 +6,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import org.asteriskjava.manager.event.BridgeEnterEvent;
 import org.asteriskjava.manager.event.BridgeEvent;
 import org.asteriskjava.manager.event.BridgeLeaveEvent;
 import org.asteriskjava.manager.event.ManagerEvent;
-import org.asteriskjava.util.Locker;
+import org.asteriskjava.util.LockableMap;
 import org.asteriskjava.util.Locker.LockCloser;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
@@ -30,11 +29,11 @@ class BridgeState
     private static final BridgeEnterEventComparator BRIDGE_ENTER_EVENT_COMPARATOR = new BridgeEnterEventComparator();
     private static final String HOLDING_BRIDGE_TECH = "holding_bridge";
 
-    private final Map<String, BridgeEnterEvent> members = new HashMap<>();
+    private final LockableMap<String, BridgeEnterEvent> members = new LockableMap<>(new HashMap<>());
 
     ManagerEvent destroy()
     {
-        try (LockCloser closer = Locker.lock(members))
+        try (LockCloser closer = members.withLock())
         {
             members.clear();
         }
@@ -57,7 +56,7 @@ class BridgeState
             return null;
         }
 
-        try (LockCloser closer = Locker.lock(members))
+        try (LockCloser closer = members.withLock())
         {
             if (members.put(event.getChannel(), event) == null && members.size() == 2)
             {
@@ -96,7 +95,7 @@ class BridgeState
             return null;
         }
 
-        try (LockCloser closer = Locker.lock(members))
+        try (LockCloser closer = members.withLock())
         {
             remaining.addAll(members.values());
 

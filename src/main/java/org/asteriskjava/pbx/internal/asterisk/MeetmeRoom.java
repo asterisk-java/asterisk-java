@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.LinkedList;
 
 import org.asteriskjava.pbx.Channel;
-import org.asteriskjava.util.Locker;
+import org.asteriskjava.util.Lockable;
 import org.asteriskjava.util.Locker.LockCloser;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
@@ -14,7 +14,7 @@ import org.asteriskjava.util.LogFactory;
  * a meetme room. The hangup function will hangup all known participants in
  * this meetme room.
  */
-public class MeetmeRoom
+public class MeetmeRoom extends Lockable
 {
     /**
      * The asterisk room number. This will be value offset from the Meetme Base.
@@ -48,7 +48,7 @@ public class MeetmeRoom
      */
     public boolean addChannel(final Channel channel)
     {
-        try (LockCloser closer = Locker.lock(this))
+        try (LockCloser closer = this.withLock())
         {
             boolean newChannel = false;
             if (!this.channels.contains(channel))
@@ -65,7 +65,7 @@ public class MeetmeRoom
 
     public int getChannelCount()
     {
-        try (LockCloser closer = Locker.lock(this))
+        try (LockCloser closer = this.withLock())
         {
             return this.channelCount;
         }
@@ -73,7 +73,7 @@ public class MeetmeRoom
 
     public Channel[] getChannels()
     {
-        try (LockCloser closer = Locker.lock(this))
+        try (LockCloser closer = this.withLock())
         {
             final Channel list[] = new Channel[this.channels.size()];
 
@@ -113,7 +113,7 @@ public class MeetmeRoom
 
     public void removeChannel(final Channel channel)
     {
-        try (LockCloser closer = Locker.lock(this))
+        try (LockCloser closer = this.withLock())
         {
             final boolean channelCountInSync = this.channelCount == this.channels.size();
             final boolean removed = this.channels.remove(channel);

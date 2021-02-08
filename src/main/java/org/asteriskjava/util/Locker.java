@@ -1,15 +1,13 @@
 package org.asteriskjava.util;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.WeakHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class Locker
 {
@@ -19,43 +17,29 @@ public class Locker
     private static volatile boolean diags = false;
     private static final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 
-    private static final Map<Integer, LockStats> lockObjectMap = new WeakHashMap<>();
-
-    private static final Object mapSync = new Object();
+    private static final Object sync = new Object();
 
     // keep references to LockStats so the WeakHashMap won't remove them between
     // reporting intervals
-    private static final List<LockStats> keepList = new LinkedList<>();
+    private static final Map<Long, Lockable> keepList = new HashMap<>();
 
-    public static LockCloser lock(final Object sync)
+    public static LockCloser doWithLock(final Lockable lockable)
     {
-        LockStats finalStats;
-        synchronized (mapSync)
+        if (diags)
         {
-            // find or create the semaphore for locking
-            LockStats stats = lockObjectMap.get(System.identityHashCode(sync));
-            if (stats == null)
+            synchronized (sync)
             {
-                String name = getCaller(sync);
-
-                stats = new LockStats(sync, name);
-
-                lockObjectMap.put(System.identityHashCode(sync), stats);
-                if (diags)
-                {
-                    keepList.add(stats);
-                }
+                keepList.put(lockable.getLockableId(), lockable);
             }
-            finalStats = stats;
         }
 
         try
         {
             if (diags)
             {
-                return lockWithDiags(finalStats);
+                return lockWithDiags(lockable);
             }
-            return simpleLock(finalStats);
+            return simpleLock(lockable);
         }
         catch (Exception e)
         {
@@ -67,14 +51,14 @@ public class Locker
     /**
      * determine the caller to Locker
      * 
-     * @param object
+     * @param semaphore
      * @return
      */
-    private static String getCaller(Object object)
+    static String getCaller(Lockable lockable)
     {
         Exception ex = new Exception();
         StackTraceElement[] trace = ex.getStackTrace();
-        String name = object.getClass().getCanonicalName();
+        String name = lockable.getClass().getCanonicalName();
         for (StackTraceElement element : trace)
         {
             if (element.getFileName() != null && !element.getFileName().contains(Locker.class.getSimpleName()))
@@ -93,9 +77,9 @@ public class Locker
         public void close();
     }
 
-    private static LockCloser simpleLock(LockStats stats) throws InterruptedException
+    private static LockCloser simpleLock(Lockable stats) throws InterruptedException
     {
-        Semaphore lock = stats.semaphore;
+        Semaphore lock = stats.getSemaphore();
         lock.acquire();
 
         return new LockCloser()
@@ -109,24 +93,24 @@ public class Locker
         };
     }
 
-    private static LockCloser lockWithDiags(LockStats stats) throws InterruptedException
+    private static LockCloser lockWithDiags(Lockable lockable) throws InterruptedException
     {
 
-        int offset = stats.requested.incrementAndGet();
+        int offset = lockable.addRequested();
         long waitStart = System.currentTimeMillis();
 
         int ctr = 0;
-        Semaphore lock = stats.semaphore;
+        Semaphore lock = lockable.getSemaphore();
         while (!lock.tryAcquire(250, TimeUnit.MILLISECONDS))
         {
             ctr++;
-            dumpBlocker(stats, ctr);
+            dumpBlocker(lockable, ctr);
         }
-        stats.dumped = false;
-        stats.acquired.getAndIncrement();
+        lockable.setDumped(false);
+        lockable.addAcquired();
 
         long acquiredAt = System.currentTimeMillis();
-        stats.threadHoldingLock.set(Thread.currentThread());
+        lockable.threadHoldingLock.set(Thread.currentThread());
 
         return new LockCloser()
         {
@@ -136,25 +120,25 @@ public class Locker
             {
                 // ignore any wait that may have been caused by Locker code, so
                 // count the waiters before we release the lock
-                long waiters = stats.requested.get() - offset;
-                stats.waited.addAndGet((int) waiters);
+                long waiters = lockable.getRequested() - offset;
+                lockable.addWaited((int) waiters);
 
-                boolean dumped = stats.dumped;
+                boolean dumped = lockable.isDumped();
                 // release the lock
                 lock.release();
 
                 // count the time waiting and holding the lock
                 int holdTime = (int) (System.currentTimeMillis() - acquiredAt);
                 int waitTime = (int) (acquiredAt - waitStart);
-                stats.totalWaitTime.addAndGet(waitTime);
-                stats.totalHoldTime.addAndGet(holdTime);
+                lockable.addTotalWaitTime(waitTime);
+                lockable.addTotalHoldTime(holdTime);
 
-                long averageHoldTime = stats.getAverageHoldTime();
+                long averageHoldTime = lockable.getAverageHoldTime();
                 if (waiters > 0 && holdTime > averageHoldTime * 2 || dumped)
                 {
                     // some threads waited
                     String message = "Lock held for (" + holdTime + "MS), " + waiters
-                            + " threads waited for some of that time! " + getCaller(stats.object);
+                            + " threads waited for some of that time! " + getCaller(lockable);
                     logger.warn(message);
                     if (holdTime > averageHoldTime * 10.0 || dumped)
                     {
@@ -166,8 +150,8 @@ public class Locker
                 if (holdTime > averageHoldTime * 5.0)
                 {
                     // long hold!
-                    String message = "Lock hold of lock (" + holdTime + "MS), average is " + stats.getAverageHoldTime() + " "
-                            + getCaller(stats.object);
+                    String message = "Lock hold of lock (" + holdTime + "MS), average is " + lockable.getAverageHoldTime()
+                            + " " + getCaller(lockable);
 
                     logger.warn(message);
                     if (holdTime > averageHoldTime * 10.0)
@@ -181,15 +165,15 @@ public class Locker
 
     }
 
-    private static void dumpBlocker(LockStats stats, int ctr)
+    private static void dumpBlocker(Lockable lockable, int ctr)
     {
-        synchronized (stats)
+        synchronized (lockable)
         {
-            if (!stats.dumped)
+            if (!lockable.isDumped())
             {
 
-                Thread thread = stats.threadHoldingLock.get();
-                stats.dumped = true;
+                Thread thread = lockable.threadHoldingLock.get();
+                lockable.setDumped(true);
                 if (thread != null)
                 {
 
@@ -243,21 +227,21 @@ public class Locker
 
     private static void dumpStats()
     {
-        List<LockStats> stats = new LinkedList<>();
+        List<Lockable> lockables = new LinkedList<>();
 
-        synchronized (mapSync)
+        synchronized (sync)
         {
-            stats.addAll(lockObjectMap.values());
+            lockables.addAll(keepList.values());
             keepList.clear();
         }
 
         boolean activity = false;
-        for (LockStats stat : stats)
+        for (Lockable lockable : lockables)
         {
-            if ((stat.waited.get() > 0 && stat.totalWaitTime.get() > stat.getAverageHoldTime()) || first)
+            if ((lockable.getWaited() > 0 && lockable.getTotalWaitTime() > lockable.getAverageHoldTime()) || first)
             {
                 activity = true;
-                logger.warn(stat);
+                logger.warn(lockable.asString());
             }
         }
 
@@ -265,50 +249,6 @@ public class Locker
         {
             logger.warn("Dump Lock Stats finished. Will dump every minute when there is contention...");
             first = false;
-        }
-    }
-
-    static class LockStats
-    {
-
-        @Override
-        public String toString()
-        {
-            return "LockStats [totalWaitTime=" + totalWaitTime + ", totalHoldTime=" + totalHoldTime + ", waited=" + waited
-                    + ", acquired=" + acquired + ", object=" + name + "]";
-        }
-
-        final Semaphore semaphore = new Semaphore(1, true);
-
-        // this reference to object stops the WeakRefHashMap removing this
-        // LockStats from
-        // the map
-        final Object object;
-
-        final String name;
-        final AtomicReference<Thread> threadHoldingLock = new AtomicReference<>();
-        final AtomicInteger totalWaitTime = new AtomicInteger();
-        final AtomicInteger totalHoldTime = new AtomicInteger();
-        final AtomicInteger requested = new AtomicInteger();
-        final AtomicInteger waited = new AtomicInteger();
-        final AtomicInteger acquired = new AtomicInteger();
-        volatile boolean dumped = false;
-
-        LockStats(Object object, String name)
-        {
-            this.object = object;
-            this.name = name;
-        }
-
-        long getAverageHoldTime()
-        {
-            long hold = totalHoldTime.get();
-            long count = acquired.get();
-            if (count < 10)
-            {
-                return 250;
-            }
-            return Math.max(hold / count, 50);
         }
     }
 

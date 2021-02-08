@@ -1,7 +1,6 @@
 package org.asteriskjava.fastagi;
 
 import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.RejectedExecutionException;
 
 import org.asteriskjava.fastagi.internal.AsyncAgiConnectionHandler;
@@ -11,7 +10,7 @@ import org.asteriskjava.manager.ManagerEventListener;
 import org.asteriskjava.manager.event.AsyncAgiEvent;
 import org.asteriskjava.manager.event.ManagerEvent;
 import org.asteriskjava.manager.event.RenameEvent;
-import org.asteriskjava.util.Locker;
+import org.asteriskjava.util.LockableMap;
 import org.asteriskjava.util.Locker.LockCloser;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
@@ -26,7 +25,7 @@ import org.asteriskjava.util.LogFactory;
 public class AsyncAgiServer extends AbstractAgiServer implements ManagerEventListener
 {
     private final Log logger = LogFactory.getLog(getClass());
-    private final Map<Integer, AsyncAgiConnectionHandler> connectionHandlers;
+    private final LockableMap<Integer, AsyncAgiConnectionHandler> connectionHandlers;
 
     /**
      * Creates a new AsyncAgiServer with a {@link DefaultAgiChannelFactory}.
@@ -55,7 +54,7 @@ public class AsyncAgiServer extends AbstractAgiServer implements ManagerEventLis
     public AsyncAgiServer(AgiChannelFactory agiChannelFactory)
     {
         super(agiChannelFactory);
-        this.connectionHandlers = new HashMap<>();
+        this.connectionHandlers = new LockableMap<>(new HashMap<>());
     }
 
     /**
@@ -208,7 +207,7 @@ public class AsyncAgiServer extends AbstractAgiServer implements ManagerEventLis
 
     private AsyncAgiConnectionHandler getConnectionHandler(ManagerConnection connection, String channelName)
     {
-        try (LockCloser closer = Locker.lock(connectionHandlers))
+        try (LockCloser closer = connectionHandlers.withLock())
         {
             return connectionHandlers.get(calculateHashKey(connection, channelName));
         }
@@ -217,7 +216,7 @@ public class AsyncAgiServer extends AbstractAgiServer implements ManagerEventLis
     private void setConnectionHandler(ManagerConnection connection, String channelName,
             AsyncAgiConnectionHandler connectionHandler)
     {
-        try (LockCloser closer = Locker.lock(connectionHandlers))
+        try (LockCloser closer = connectionHandlers.withLock())
         {
             connectionHandlers.put(calculateHashKey(connection, channelName), connectionHandler);
         }
@@ -225,7 +224,7 @@ public class AsyncAgiServer extends AbstractAgiServer implements ManagerEventLis
 
     private void removeConnectionHandler(ManagerConnection connection, String channelName)
     {
-        try (LockCloser closer = Locker.lock(connectionHandlers))
+        try (LockCloser closer = connectionHandlers.withLock())
         {
             connectionHandlers.remove(calculateHashKey(connection, channelName));
         }

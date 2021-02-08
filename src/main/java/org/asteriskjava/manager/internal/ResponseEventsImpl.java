@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit;
 import org.asteriskjava.manager.ResponseEvents;
 import org.asteriskjava.manager.event.ResponseEvent;
 import org.asteriskjava.manager.response.ManagerResponse;
-import org.asteriskjava.util.Locker;
+import org.asteriskjava.util.LockableList;
 import org.asteriskjava.util.Locker.LockCloser;
 
 /**
@@ -37,7 +37,7 @@ import org.asteriskjava.util.Locker.LockCloser;
 public class ResponseEventsImpl implements ResponseEvents
 {
     private ManagerResponse response;
-    private final Collection<ResponseEvent> events;
+    private final LockableList<ResponseEvent> events;
     private boolean complete;
     private final CountDownLatch latch = new CountDownLatch(1);
 
@@ -46,7 +46,7 @@ public class ResponseEventsImpl implements ResponseEvents
      */
     public ResponseEventsImpl()
     {
-        this.events = new ArrayList<>();
+        this.events = new LockableList<>(new ArrayList<>());
         this.complete = false;
     }
 
@@ -86,7 +86,7 @@ public class ResponseEventsImpl implements ResponseEvents
      */
     public void addEvent(ResponseEvent event)
     {
-        try (LockCloser closer = Locker.lock(events))
+        try (LockCloser closer = events.withLock())
         {
             events.add(event);
         }
