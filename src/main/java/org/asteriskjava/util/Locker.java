@@ -216,6 +216,7 @@ public class Locker
                 future = executor.scheduleWithFixedDelay(() -> {
                     dumpStats();
                 }, 1, 1, TimeUnit.MINUTES);
+                logger.warn("Lock checking enabled");
             }
             else
             {
@@ -232,6 +233,12 @@ public class Locker
             {
                 diags = false;
                 future.cancel(false);
+                dumpStats();
+                logger.warn("Lock checking disabled");
+            }
+            else
+            {
+                logger.warn("Lock checking is already disabled");
             }
         }
     }
