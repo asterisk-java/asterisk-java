@@ -55,8 +55,7 @@ public class Locker
      */
     static String getCaller(Lockable lockable)
     {
-        Exception ex = new Exception();
-        StackTraceElement[] trace = ex.getStackTrace();
+        StackTraceElement[] trace = new Exception().getStackTrace();
         String name = lockable.getClass().getCanonicalName();
         for (StackTraceElement element : trace)
         {
@@ -176,7 +175,7 @@ public class Locker
                 if (thread != null)
                 {
 
-                    StackTraceElement[] trace = thread.getStackTrace();
+                    StackTraceElement[] trace = new Exception().getStackTrace();
 
                     String dump = "";
 

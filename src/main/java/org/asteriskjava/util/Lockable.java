@@ -29,8 +29,7 @@ public class Lockable
 
     String getCaller()
     {
-        Exception ex = new Exception();
-        StackTraceElement[] trace = ex.getStackTrace();
+        StackTraceElement[] trace = new Exception().getStackTrace();
         String name = this.getClass().getCanonicalName();
         for (StackTraceElement element : trace)
         {
