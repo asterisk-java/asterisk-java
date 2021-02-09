@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
@@ -15,6 +16,8 @@ public class Locker
     private static final Log logger = LogFactory.getLog(Locker.class);
 
     private static volatile boolean diags = false;
+
+    private static ScheduledFuture< ? > future;
     private static final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 
     private static final Object sync = new Object();
@@ -25,18 +28,14 @@ public class Locker
 
     public static LockCloser doWithLock(final Lockable lockable)
     {
-        if (diags)
-        {
-            synchronized (sync)
-            {
-                keepList.put(lockable.getLockableId(), lockable);
-            }
-        }
-
         try
         {
             if (diags)
             {
+                synchronized (sync)
+                {
+                    keepList.put(lockable.getLockableId(), lockable);
+                }
                 return lockWithDiags(lockable);
             }
             return simpleLock(lockable);
@@ -77,9 +76,9 @@ public class Locker
         public void close();
     }
 
-    private static LockCloser simpleLock(Lockable stats) throws InterruptedException
+    private static LockCloser simpleLock(Lockable lockable) throws InterruptedException
     {
-        Semaphore lock = stats.getSemaphore();
+        Semaphore lock = lockable.getSemaphore();
         lock.acquire();
 
         return new LockCloser()
@@ -209,23 +208,37 @@ public class Locker
      */
     public static void enable()
     {
-        if (!diags)
+        synchronized (sync)
         {
-            diags = true;
-            executor.scheduleWithFixedDelay(() -> {
-                dumpStats();
-            }, 1, 1, TimeUnit.MINUTES);
+            if (!diags)
+            {
+                diags = true;
+                future = executor.scheduleWithFixedDelay(() -> {
+                    dumpStats();
+                }, 1, 1, TimeUnit.MINUTES);
+            }
+            else
+            {
+                logger.warn("Already enabled");
+            }
         }
-        else
-        {
-            logger.warn("Already enabled");
-        }
+    }
 
+    public static void disable()
+    {
+        synchronized (sync)
+        {
+            if (diags)
+            {
+                diags = false;
+                future.cancel(false);
+            }
+        }
     }
 
     private static volatile boolean first = true;
 
-    private static void dumpStats()
+    static void dumpStats()
     {
         List<Lockable> lockables = new LinkedList<>();
 
