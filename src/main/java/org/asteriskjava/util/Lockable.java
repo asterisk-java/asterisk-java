@@ -1,15 +1,15 @@
 package org.asteriskjava.util;
 
-import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.locks.ReentrantLock;
 
 import org.asteriskjava.util.Locker.LockCloser;
 
 public class Lockable
 {
-    private final Semaphore semaphore = new Semaphore(1, true);
+    private final ReentrantLock internalLock = new ReentrantLock(true);
     final private String lockName;
     final AtomicReference<Thread> threadHoldingLock = new AtomicReference<>();
     private final AtomicInteger totalWaitTime = new AtomicInteger();
@@ -48,7 +48,7 @@ public class Lockable
     public String asString()
     {
         return "Lockable [totalWaitTime=" + totalWaitTime + ", totalHoldTime=" + totalHoldTime + ", waited=" + waited
-                + ", acquired=" + acquired + ", object=" + lockName + "]";
+                + ", acquired=" + acquired + ", object=" + lockName + ", id=" + lockableId + "]";
     }
 
     long getAverageHoldTime()
@@ -67,9 +67,9 @@ public class Lockable
         return Locker.doWithLock(this);
     }
 
-    Semaphore getSemaphore()
+    ReentrantLock getInternalLock()
     {
-        return semaphore;
+        return internalLock;
     }
 
     void addTotalWaitTime(int time)

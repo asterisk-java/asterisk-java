@@ -7,8 +7,8 @@ import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class Locker
 {
@@ -50,7 +50,7 @@ public class Locker
     /**
      * determine the caller to Locker
      * 
-     * @param semaphore
+     * @param lockable
      * @return
      */
     static String getCaller(Lockable lockable)
@@ -78,8 +78,8 @@ public class Locker
 
     private static LockCloser simpleLock(Lockable lockable) throws InterruptedException
     {
-        Semaphore lock = lockable.getSemaphore();
-        lock.acquire();
+        ReentrantLock lock = lockable.getInternalLock();
+        lock.lock();
 
         return new LockCloser()
         {
@@ -87,7 +87,7 @@ public class Locker
             @Override
             public void close()
             {
-                lock.release();
+                lock.unlock();
             }
         };
     }
@@ -99,8 +99,8 @@ public class Locker
         long waitStart = System.currentTimeMillis();
 
         int ctr = 0;
-        Semaphore lock = lockable.getSemaphore();
-        while (!lock.tryAcquire(250, TimeUnit.MILLISECONDS))
+        ReentrantLock lock = lockable.getInternalLock();
+        while (!lock.tryLock(250, TimeUnit.MILLISECONDS))
         {
             ctr++;
             dumpBlocker(lockable, ctr);
@@ -124,7 +124,7 @@ public class Locker
 
                 boolean dumped = lockable.isDumped();
                 // release the lock
-                lock.release();
+                lock.unlock();
 
                 // count the time waiting and holding the lock
                 int holdTime = (int) (System.currentTimeMillis() - acquiredAt);
