@@ -471,30 +471,33 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
         this.socketReadTimeout = socketReadTimeout;
     }
 
-    public synchronized void login() throws IOException, AuthenticationFailedException, TimeoutException
+    public void login() throws IOException, AuthenticationFailedException, TimeoutException
     {
         login(null);
     }
 
-    public synchronized void login(String eventMask) throws IOException, AuthenticationFailedException, TimeoutException
+    public void login(String eventMask) throws IOException, AuthenticationFailedException, TimeoutException
     {
-        if (state != INITIAL && state != DISCONNECTED)
+        try (LockCloser closer = this.withLock())
         {
-            throw new IllegalStateException("Login may only be perfomed when in state "
-                    + "INITIAL or DISCONNECTED, but connection is in state " + state);
-        }
-
-        state = CONNECTING;
-        this.eventMask = eventMask;
-        try
-        {
-            doLogin(defaultResponseTimeout, eventMask);
-        }
-        finally
-        {
-            if (state != CONNECTED)
+            if (state != INITIAL && state != DISCONNECTED)
             {
-                state = DISCONNECTED;
+                throw new IllegalStateException("Login may only be perfomed when in state "
+                        + "INITIAL or DISCONNECTED, but connection is in state " + state);
+            }
+
+            state = CONNECTING;
+            this.eventMask = eventMask;
+            try
+            {
+                doLogin(defaultResponseTimeout, eventMask);
+            }
+            finally
+            {
+                if (state != CONNECTED)
+                {
+                    state = DISCONNECTED;
+                }
             }
         }
     }
@@ -527,119 +530,122 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
      * @throws TimeoutException if a timeout occurs while waiting for the
      *             protocol identifier. The connection is closed in this case.
      */
-    protected synchronized void doLogin(long timeout, String eventMask)
+    protected void doLogin(long timeout, String eventMask)
             throws IOException, AuthenticationFailedException, TimeoutException
     {
-        ChallengeAction challengeAction;
-        ManagerResponse challengeResponse;
-        String challenge;
-        String key;
-        LoginAction loginAction;
-        ManagerResponse loginResponse;
-
-        if (socket == null)
+        try (LockCloser closer = this.withLock())
         {
-            connect();
-        }
+            ChallengeAction challengeAction;
+            ManagerResponse challengeResponse;
+            String challenge;
+            String key;
+            LoginAction loginAction;
+            ManagerResponse loginResponse;
 
-        if (protocolIdentifier.getValue() == null)
-        {
+            if (socket == null)
+            {
+                connect();
+            }
+
+            if (protocolIdentifier.getValue() == null)
+            {
+                try
+                {
+                    protocolIdentifier.await(timeout);
+                }
+                catch (InterruptedException e) // NOPMD
+                {
+                    Thread.currentThread().interrupt();
+                }
+            }
+
+            if (protocolIdentifier.getValue() == null)
+            {
+                disconnect();
+                if (reader != null && reader.getTerminationException() != null)
+                {
+                    throw reader.getTerminationException();
+                }
+                throw new TimeoutException("Timeout waiting for protocol identifier");
+            }
+
+            challengeAction = new ChallengeAction("MD5");
             try
             {
-                protocolIdentifier.await(timeout);
+                challengeResponse = sendAction(challengeAction);
             }
-            catch (InterruptedException e) // NOPMD
+            catch (Exception e)
             {
-                Thread.currentThread().interrupt();
+                disconnect();
+                throw new AuthenticationFailedException("Unable to send challenge action", e);
             }
-        }
 
-        if (protocolIdentifier.getValue() == null)
-        {
-            disconnect();
-            if (reader != null && reader.getTerminationException() != null)
+            if (challengeResponse instanceof ChallengeResponse)
             {
-                throw reader.getTerminationException();
+                challenge = ((ChallengeResponse) challengeResponse).getChallenge();
             }
-            throw new TimeoutException("Timeout waiting for protocol identifier");
-        }
-
-        challengeAction = new ChallengeAction("MD5");
-        try
-        {
-            challengeResponse = sendAction(challengeAction);
-        }
-        catch (Exception e)
-        {
-            disconnect();
-            throw new AuthenticationFailedException("Unable to send challenge action", e);
-        }
-
-        if (challengeResponse instanceof ChallengeResponse)
-        {
-            challenge = ((ChallengeResponse) challengeResponse).getChallenge();
-        }
-        else
-        {
-            disconnect();
-            throw new AuthenticationFailedException(
-                    "Unable to get challenge from Asterisk. ChallengeAction returned: " + challengeResponse.getMessage());
-        }
-
-        try
-        {
-            MessageDigest md;
-
-            md = MessageDigest.getInstance("MD5");
-            if (challenge != null)
+            else
             {
-                md.update(challenge.getBytes(StandardCharsets.UTF_8));
+                disconnect();
+                throw new AuthenticationFailedException("Unable to get challenge from Asterisk. ChallengeAction returned: "
+                        + challengeResponse.getMessage());
             }
-            if (password != null)
+
+            try
             {
-                md.update(password.getBytes(StandardCharsets.UTF_8));
+                MessageDigest md;
+
+                md = MessageDigest.getInstance("MD5");
+                if (challenge != null)
+                {
+                    md.update(challenge.getBytes(StandardCharsets.UTF_8));
+                }
+                if (password != null)
+                {
+                    md.update(password.getBytes(StandardCharsets.UTF_8));
+                }
+                key = ManagerUtil.toHexString(md.digest());
             }
-            key = ManagerUtil.toHexString(md.digest());
+            catch (NoSuchAlgorithmException ex)
+            {
+                disconnect();
+                throw new AuthenticationFailedException("Unable to create login key using MD5 Message Digest", ex);
+            }
+
+            loginAction = new LoginAction(username, "MD5", key, eventMask);
+            try
+            {
+                loginResponse = sendAction(loginAction);
+            }
+            catch (Exception e)
+            {
+                disconnect();
+                throw new AuthenticationFailedException("Unable to send login action", e);
+            }
+
+            if (loginResponse instanceof ManagerError)
+            {
+                disconnect();
+                throw new AuthenticationFailedException(loginResponse.getMessage());
+            }
+
+            logger.info("Successfully logged in");
+
+            version = determineVersion();
+
+            state = CONNECTED;
+
+            writer.setTargetVersion(version);
+
+            logger.info("Determined Asterisk version: " + version);
+
+            // generate pseudo event indicating a successful login
+            ConnectEvent connectEvent = new ConnectEvent(this);
+            connectEvent.setProtocolIdentifier(getProtocolIdentifier());
+            connectEvent.setDateReceived(DateUtil.getDate());
+            // TODO could this cause a deadlock?
+            fireEvent(connectEvent);
         }
-        catch (NoSuchAlgorithmException ex)
-        {
-            disconnect();
-            throw new AuthenticationFailedException("Unable to create login key using MD5 Message Digest", ex);
-        }
-
-        loginAction = new LoginAction(username, "MD5", key, eventMask);
-        try
-        {
-            loginResponse = sendAction(loginAction);
-        }
-        catch (Exception e)
-        {
-            disconnect();
-            throw new AuthenticationFailedException("Unable to send login action", e);
-        }
-
-        if (loginResponse instanceof ManagerError)
-        {
-            disconnect();
-            throw new AuthenticationFailedException(loginResponse.getMessage());
-        }
-
-        logger.info("Successfully logged in");
-
-        version = determineVersion();
-
-        state = CONNECTED;
-
-        writer.setTargetVersion(version);
-
-        logger.info("Determined Asterisk version: " + version);
-
-        // generate pseudo event indicating a successful login
-        ConnectEvent connectEvent = new ConnectEvent(this);
-        connectEvent.setProtocolIdentifier(getProtocolIdentifier());
-        connectEvent.setDateReceived(DateUtil.getDate());
-        // TODO could this cause a deadlock?
-        fireEvent(connectEvent);
     }
 
     protected AsteriskVersion determineVersion() throws IOException, TimeoutException
@@ -736,40 +742,43 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
         return AsteriskVersion.getDetermineVersionFromString(coreLine);
     }
 
-    protected synchronized void connect() throws IOException
+    protected void connect() throws IOException
     {
-        logger.info("Connecting to " + hostname + ":" + port);
-
-        if (reader == null)
+        try (LockCloser closer = this.withLock())
         {
-            logger.debug("Creating reader for " + hostname + ":" + port);
-            reader = createReader(this, this);
+            logger.info("Connecting to " + hostname + ":" + port);
+
+            if (reader == null)
+            {
+                logger.debug("Creating reader for " + hostname + ":" + port);
+                reader = createReader(this, this);
+            }
+
+            if (writer == null)
+            {
+                logger.debug("Creating writer");
+                writer = createWriter();
+            }
+
+            logger.debug("Creating socket");
+            socket = createSocket();
+
+            logger.debug("Passing socket to reader");
+            reader.setSocket(socket);
+
+            if (readerThread == null || !readerThread.isAlive() || reader.isDead())
+            {
+                logger.debug("Creating and starting reader thread");
+                readerThread = new Thread(reader);
+                readerThread.setName(
+                        "Asterisk-Java ManagerConnection-" + id + "-Reader-" + readerThreadCounter.getAndIncrement());
+                readerThread.setDaemon(true);
+                readerThread.start();
+            }
+
+            logger.debug("Passing socket to writer");
+            writer.setSocket(socket);
         }
-
-        if (writer == null)
-        {
-            logger.debug("Creating writer");
-            writer = createWriter();
-        }
-
-        logger.debug("Creating socket");
-        socket = createSocket();
-
-        logger.debug("Passing socket to reader");
-        reader.setSocket(socket);
-
-        if (readerThread == null || !readerThread.isAlive() || reader.isDead())
-        {
-            logger.debug("Creating and starting reader thread");
-            readerThread = new Thread(reader);
-            readerThread
-                    .setName("Asterisk-Java ManagerConnection-" + id + "-Reader-" + readerThreadCounter.getAndIncrement());
-            readerThread.setDaemon(true);
-            readerThread.start();
-        }
-
-        logger.debug("Passing socket to writer");
-        writer.setSocket(socket);
     }
 
     protected SocketConnectionFacade createSocket() throws IOException
@@ -777,50 +786,56 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
         return new SocketConnectionFacadeImpl(hostname, port, ssl, socketTimeout, socketReadTimeout, encoding);
     }
 
-    public synchronized void logoff() throws IllegalStateException
+    public void logoff() throws IllegalStateException
     {
-        if (state != CONNECTED && state != RECONNECTING)
+        try (LockCloser closer = this.withLock())
         {
-            throw new IllegalStateException("Logoff may only be perfomed when in state "
-                    + "CONNECTED or RECONNECTING, but connection is in state " + state);
-        }
-
-        state = DISCONNECTING;
-
-        if (socket != null)
-        {
-            try
+            if (state != CONNECTED && state != RECONNECTING)
             {
-                sendAction(new LogoffAction());
+                throw new IllegalStateException("Logoff may only be perfomed when in state "
+                        + "CONNECTED or RECONNECTING, but connection is in state " + state);
             }
-            catch (Exception e)
+
+            state = DISCONNECTING;
+
+            if (socket != null)
             {
-                logger.warn("Unable to send LogOff action", e);
+                try
+                {
+                    sendAction(new LogoffAction());
+                }
+                catch (Exception e)
+                {
+                    logger.warn("Unable to send LogOff action", e);
+                }
             }
+            cleanup();
+            state = DISCONNECTED;
         }
-        cleanup();
-        state = DISCONNECTED;
     }
 
     /**
      * Closes the socket connection.
      */
-    protected synchronized void disconnect()
+    protected void disconnect()
     {
-        if (socket != null)
+        try (LockCloser closer = this.withLock())
         {
-            logger.info("Closing socket.");
-            try
+            if (socket != null)
             {
-                socket.close();
+                logger.info("Closing socket.");
+                try
+                {
+                    socket.close();
+                }
+                catch (IOException ex)
+                {
+                    logger.warn("Unable to close socket: " + ex.getMessage());
+                }
+                socket = null;
             }
-            catch (IOException ex)
-            {
-                logger.warn("Unable to close socket: " + ex.getMessage());
-            }
-            socket = null;
+            protocolIdentifier.reset();
         }
-        protocolIdentifier.reset();
     }
 
     public ManagerResponse sendAction(ManagerAction action)
