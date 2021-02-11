@@ -1,11 +1,9 @@
 package org.asteriskjava.manager.event;
 
-import org.asteriskjava.util.AstUtil;
-
 /**
  * A ContactStatusDetail event is triggered in response to a
- * {@link org.asteriskjava.manager.action.PJSipShowEndpoint},
- * and contains information about a PJSIP Contact 
+ * {@link org.asteriskjava.manager.action.PJSipShowEndpoint}, and contains
+ * information about a PJSIP Contact
  * <p>
  *
  * @author Steve Sether
@@ -13,159 +11,189 @@ import org.asteriskjava.util.AstUtil;
  * @since 12
  */
 
-public class ContactStatusDetail extends ResponseEvent {
+public class ContactStatusDetail extends ResponseEvent
+{
 
     /**
      * Serial version identifier.
      */
-	private static final long serialVersionUID = 987290433601178780L;
-	private String aor;
-	private String uri;
-	private String userAgent;
-	private long regExpire;
-	private String viaAddress;
-	private String callID;
-	private String status;
-	// roundtripusec when it contains a value is a long, but when it doesn't
-	// asterisk reports "N/A"
-	private String roundtripUsec;
-	private String endpointName;
-	private String id;
-	private Boolean authenticateQualify;
-	private String outboundProxy; 
-	private String path; 
-	private int qualifyFrequency;
-	private Float qualifyTimeout;
-	
-	public String getAor() {
-		return aor;
-	}
-	
-	public void setAor(String aor) {
-		this.aor = aor;
-	}
+    private static final long serialVersionUID = 987290433601178780L;
+    private String aor;
+    private String uri;
+    private String userAgent;
+    private long regExpire;
+    private String viaAddress;
+    private String callID;
+    private String status;
+    // roundtripusec when it contains a value is a long, but when it doesn't
+    // asterisk reports "N/A"
+    private String roundtripUsec;
+    private String endpointName;
+    private String id;
+    private Boolean authenticateQualify;
+    private String outboundProxy;
+    private String path;
+    private int qualifyFrequency;
+    private Float qualifyTimeout;
 
-	public String getStatus() {
-		return status;
-	}
+    public String getAor()
+    {
+        return aor;
+    }
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
+    public void setAor(String aor)
+    {
+        this.aor = aor;
+    }
 
-	public String getUri() {
-		return uri;
-	}
+    public String getStatus()
+    {
+        return status;
+    }
 
-	public void setUri(String uri) {
-		this.uri = uri;
-	}
+    public void setStatus(String status)
+    {
+        this.status = status;
+    }
 
-	public String getUserAgent() {
-		return userAgent;
-	}
+    public String getUri()
+    {
+        return uri;
+    }
 
-	public void setUserAgent(String userAgent) {
-		this.userAgent = userAgent;
-	}
+    public void setUri(String uri)
+    {
+        this.uri = uri;
+    }
 
-	public long getRegExpire() {
-		return regExpire;
-	}
+    public String getUserAgent()
+    {
+        return userAgent;
+    }
 
-	public void setRegExpire(long regExpire) {
-		this.regExpire = regExpire;
-	}
+    public void setUserAgent(String userAgent)
+    {
+        this.userAgent = userAgent;
+    }
 
-	public String getViaAddress() {
-		return viaAddress;
-	}
+    public long getRegExpire()
+    {
+        return regExpire;
+    }
 
-	public void setViaAddress(String viaAddress) {
-		this.viaAddress = viaAddress;
-	}
+    public void setRegExpire(long regExpire)
+    {
+        this.regExpire = regExpire;
+    }
 
-	public String getCallID() {
-		return callID;
-	}
+    public String getViaAddress()
+    {
+        return viaAddress;
+    }
 
-	public void setCallID(String callID) {
-		this.callID = callID;
-	}
+    public void setViaAddress(String viaAddress)
+    {
+        this.viaAddress = viaAddress;
+    }
 
-	public String getEndpointName() {
-		return endpointName;
-	}
+    public String getCallID()
+    {
+        return callID;
+    }
 
-	public void setEndpointName(String endpointName) {
-		this.endpointName = endpointName;
-	}
+    public void setCallID(String callID)
+    {
+        this.callID = callID;
+    }
 
-	public String getId() {
-		return id;
-	}
+    public String getEndpointName()
+    {
+        return endpointName;
+    }
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    public void setEndpointName(String endpointName)
+    {
+        this.endpointName = endpointName;
+    }
 
-	public Boolean isAuthenticateQualify() {
-		return authenticateQualify;
-	}
+    public String getId()
+    {
+        return id;
+    }
 
-	public void setAuthenticateQualify(Boolean authenticateQualify) {
-		this.authenticateQualify = authenticateQualify;
-	}
-	
-	public String getOutboundProxy() {
-		return outboundProxy;
-	}
+    public void setId(String id)
+    {
+        this.id = id;
+    }
 
-	public void setOutboundProxy(String outboundProxy) {
-		this.outboundProxy = outboundProxy;
-	}
+    public Boolean isAuthenticateQualify()
+    {
+        return authenticateQualify;
+    }
 
-	public String getPath() {
-		return path;
-	}
+    public void setAuthenticateQualify(Boolean authenticateQualify)
+    {
+        this.authenticateQualify = authenticateQualify;
+    }
 
-	public void setPath(String path) {
-		this.path = path;
-	}
+    public String getOutboundProxy()
+    {
+        return outboundProxy;
+    }
 
-	public int getQualifyFrequency() {
-		return qualifyFrequency;
-	}
+    public void setOutboundProxy(String outboundProxy)
+    {
+        this.outboundProxy = outboundProxy;
+    }
 
-	public void setQualifyFrequency(int qualifyFrequency) {
-		this.qualifyFrequency = qualifyFrequency;
-	}
+    public String getPath()
+    {
+        return path;
+    }
 
-	public Float getQualifyTimeout() {
-		return qualifyTimeout;
-	}
+    public void setPath(String path)
+    {
+        this.path = path;
+    }
 
-	public void setQualifyTimeout(Float qualifyTimeout) {
-		this.qualifyTimeout = qualifyTimeout;
-	}
-	
-	public void setQualifyTimeout(String qualifyTimeout) {
-		this.qualifyTimeout = Float.parseFloat(qualifyTimeout);
-	}
+    public int getQualifyFrequency()
+    {
+        return qualifyFrequency;
+    }
 
-	public ContactStatusDetail(Object source) {
-		super(source);
-	}
+    public void setQualifyFrequency(int qualifyFrequency)
+    {
+        this.qualifyFrequency = qualifyFrequency;
+    }
 
-	public String getRoundtripUsec() {
-		return roundtripUsec;
-	}
+    public Float getQualifyTimeout()
+    {
+        return qualifyTimeout;
+    }
 
-	public void setRoundtripUsec(String roundtripUsec) {
-		this.roundtripUsec = roundtripUsec;
-	}
+    public void setQualifyTimeout(Float qualifyTimeout)
+    {
+        this.qualifyTimeout = qualifyTimeout;
+    }
 
+    public void setQualifyTimeout(String qualifyTimeout)
+    {
+        this.qualifyTimeout = Float.parseFloat(qualifyTimeout);
+    }
 
-	
-	
+    public ContactStatusDetail(Object source)
+    {
+        super(source);
+    }
+
+    public String getRoundtripUsec()
+    {
+        return roundtripUsec;
+    }
+
+    public void setRoundtripUsec(String roundtripUsec)
+    {
+        this.roundtripUsec = roundtripUsec;
+    }
+
 }

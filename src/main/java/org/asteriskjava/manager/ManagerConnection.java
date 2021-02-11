@@ -19,6 +19,7 @@ package org.asteriskjava.manager;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.nio.charset.Charset;
+
 import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.manager.action.EventGeneratingAction;
 import org.asteriskjava.manager.action.ManagerAction;

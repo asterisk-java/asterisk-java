@@ -18,6 +18,7 @@ package org.asteriskjava.fastagi;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.Socket;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.concurrent.RejectedExecutionException;

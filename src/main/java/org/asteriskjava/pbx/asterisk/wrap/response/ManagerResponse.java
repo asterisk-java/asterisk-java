@@ -3,6 +3,7 @@ package org.asteriskjava.pbx.asterisk.wrap.response;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
+
 import org.asteriskjava.manager.response.ManagerError;
 
 public class ManagerResponse
