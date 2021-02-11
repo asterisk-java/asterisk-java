@@ -149,7 +149,7 @@ public class MeetmeRoomControl extends EventListenerBaseClass implements Coheren
                     {
                         room.setInactive();
                         room.setOwner(newOwner);
-                        MeetmeRoomControl.logger.warn("Returning available room " + room.getRoomNumber());
+                        MeetmeRoomControl.logger.info("Returning available room " + room.getRoomNumber());
                         return room;
                     }
 
