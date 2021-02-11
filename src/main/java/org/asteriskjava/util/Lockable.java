@@ -9,7 +9,7 @@ import org.asteriskjava.util.Locker.LockCloser;
 
 public class Lockable
 {
-    private final ReentrantLock internalLock = new ReentrantLock(true);
+    private final ReentrantLock internalLock = new ReentrantLock(false);
     final private String lockName;
     final AtomicReference<Thread> threadHoldingLock = new AtomicReference<>();
     private final AtomicInteger totalWaitTime = new AtomicInteger();
