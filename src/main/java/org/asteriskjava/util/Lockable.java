@@ -25,10 +25,10 @@ public class Lockable
 
     public Lockable()
     {
-        this.lockName = getCaller();
+        this.lockName = getLockCaller();
     }
 
-    String getCaller()
+    private String getLockCaller()
     {
         StackTraceElement[] trace = new Exception().getStackTrace();
         String name = this.getClass().getCanonicalName();
@@ -45,13 +45,13 @@ public class Lockable
         return name;
     }
 
-    public String asString()
+    String asLockString()
     {
         return "Lockable [waited=" + waited + ", waitTime=" + totalWaitTime + ", totalHoldTime=" + totalHoldTime
                 + ", acquired=" + acquired + ", object=" + lockName + ", id=" + lockableId + "]";
     }
 
-    long getAverageHoldTime()
+    long getLockAverageHoldTime()
     {
         long hold = totalHoldTime.get();
         long count = acquired.get();
@@ -72,77 +72,77 @@ public class Lockable
         return internalLock;
     }
 
-    void addTotalWaitTime(int time)
+    void addLockTotalWaitTime(int time)
     {
         totalWaitTime.addAndGet(time);
     }
 
-    void addTotalHoldTime(int time)
+    void addLockTotalHoldTime(int time)
     {
         totalHoldTime.addAndGet(time);
     }
 
-    int addRequested()
+    int addLockRequested()
     {
         return requested.incrementAndGet();
     }
 
-    void addWaited(int time)
+    void addLockWaited(int time)
     {
         waited.addAndGet(time);
     }
 
-    void addAcquired(int count)
+    void addLockAcquired(int count)
     {
         acquired.addAndGet(count);
     }
 
-    boolean isDumped()
+    boolean isLockDumped()
     {
         return dumped;
     }
 
-    void setDumped(boolean dumped)
+    void setLockDumped(boolean dumped)
     {
         this.dumped = dumped;
     }
 
-    public int getTotalWaitTime()
+    int getLockTotalWaitTime()
     {
         return totalWaitTime.intValue();
     }
 
-    public int getWaited()
+    int getLockWaited()
     {
         return waited.intValue();
     }
 
-    public int getRequested()
+    int getLockRequested()
     {
         return requested.intValue();
     }
 
-    public Long getLockableId()
+    Long getLockableId()
     {
         return lockableId;
     }
 
-    public int getHoldTime()
+    int getLockTotalHoldTime()
     {
         return totalHoldTime.intValue();
     }
 
-    public int getAcquired()
+    int getLockAcquired()
     {
         return acquired.intValue();
     }
 
-    public boolean wasBlocked()
+    boolean wasLockBlocked()
     {
         return blocked;
     }
 
-    public void setBlocked(boolean blocked)
+    void setLockBlocked(boolean blocked)
     {
         this.blocked = blocked;
     }

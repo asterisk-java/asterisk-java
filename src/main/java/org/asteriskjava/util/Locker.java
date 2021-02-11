@@ -94,7 +94,7 @@ public class Locker
     private static LockCloser lockWithDiags(Lockable lockable) throws InterruptedException
     {
 
-        int offset = lockable.addRequested();
+        int offset = lockable.addLockRequested();
         long waitStart = System.currentTimeMillis();
 
         int ctr = 0;
@@ -103,10 +103,10 @@ public class Locker
         {
             ctr++;
             dumpBlocker(lockable, ctr);
-            lockable.setBlocked(true);
+            lockable.setLockBlocked(true);
         }
-        lockable.setDumped(false);
-        lockable.addAcquired(1);
+        lockable.setLockDumped(false);
+        lockable.addLockAcquired(1);
 
         long acquiredAt = System.currentTimeMillis();
         lockable.threadHoldingLock.set(Thread.currentThread());
@@ -119,20 +119,20 @@ public class Locker
             {
                 // ignore any wait that may have been caused by Locker code, so
                 // count the waiters before we release the lock
-                long waiters = lockable.getRequested() - offset;
-                lockable.addWaited((int) waiters);
+                long waiters = lockable.getLockRequested() - offset;
+                lockable.addLockWaited((int) waiters);
 
-                boolean dumped = lockable.isDumped();
+                boolean dumped = lockable.isLockDumped();
                 // release the lock
                 lock.unlock();
 
                 // count the time waiting and holding the lock
                 int holdTime = (int) (System.currentTimeMillis() - acquiredAt);
                 int waitTime = (int) (acquiredAt - waitStart);
-                lockable.addTotalWaitTime(waitTime);
-                lockable.addTotalHoldTime(holdTime);
+                lockable.addLockTotalWaitTime(waitTime);
+                lockable.addLockTotalHoldTime(holdTime);
 
-                long averageHoldTime = lockable.getAverageHoldTime();
+                long averageHoldTime = lockable.getLockAverageHoldTime();
                 if (waiters > 0 && holdTime > averageHoldTime * 2 || dumped)
                 {
                     // some threads waited
@@ -149,7 +149,7 @@ public class Locker
                 if (holdTime > averageHoldTime * 5.0)
                 {
                     // long hold!
-                    String message = "Lock hold of lock (" + holdTime + "MS), average is " + lockable.getAverageHoldTime()
+                    String message = "Lock hold of lock (" + holdTime + "MS), average is " + lockable.getLockAverageHoldTime()
                             + " " + getCaller(lockable);
 
                     logger.warn(message);
@@ -166,10 +166,10 @@ public class Locker
 
     private static void dumpBlocker(Lockable lockable, int ctr)
     {
-        if (!lockable.isDumped())
+        if (!lockable.isLockDumped())
         {
             Thread thread = lockable.threadHoldingLock.get();
-            lockable.setDumped(true);
+            lockable.setLockDumped(true);
             if (thread != null)
             {
                 StackTraceElement[] trace = new Exception().getStackTrace();
@@ -253,20 +253,20 @@ public class Locker
         boolean activity = false;
         for (Lockable lockable : lockables)
         {
-            if (lockable.wasBlocked() || first)
+            if (lockable.wasLockBlocked() || first)
             {
-                int waited = lockable.getWaited();
-                int waitTime = lockable.getTotalWaitTime();
-                int acquired = lockable.getAcquired();
-                int holdTime = lockable.getHoldTime();
-                lockable.setBlocked(false);
+                int waited = lockable.getLockWaited();
+                int waitTime = lockable.getLockTotalWaitTime();
+                int acquired = lockable.getLockAcquired();
+                int holdTime = lockable.getLockTotalHoldTime();
+                lockable.setLockBlocked(false);
                 activity = true;
-                logger.warn(lockable.asString());
-                lockable.addWaited(-waited);
-                lockable.addTotalWaitTime(-waitTime);
+                logger.warn(lockable.asLockString());
+                lockable.addLockWaited(-waited);
+                lockable.addLockTotalWaitTime(-waitTime);
 
-                lockable.addAcquired(-acquired);
-                lockable.addTotalHoldTime(-holdTime);
+                lockable.addLockAcquired(-acquired);
+                lockable.addLockTotalHoldTime(-holdTime);
 
             }
         }
