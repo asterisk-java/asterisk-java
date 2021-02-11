@@ -99,13 +99,14 @@ public class Locker
 
         int ctr = 0;
         ReentrantLock lock = lockable.getInternalLock();
-        while (!lock.tryLock(250, TimeUnit.MILLISECONDS))
+        while (!lock.tryLock(100, TimeUnit.MILLISECONDS))
         {
             ctr++;
             dumpBlocker(lockable, ctr);
+            lockable.setBlocked(true);
         }
         lockable.setDumped(false);
-        lockable.addAcquired();
+        lockable.addAcquired(1);
 
         long acquiredAt = System.currentTimeMillis();
         lockable.threadHoldingLock.set(Thread.currentThread());
@@ -165,40 +166,35 @@ public class Locker
 
     private static void dumpBlocker(Lockable lockable, int ctr)
     {
-        synchronized (lockable)
+        if (!lockable.isDumped())
         {
-            if (!lockable.isDumped())
+            Thread thread = lockable.threadHoldingLock.get();
+            lockable.setDumped(true);
+            if (thread != null)
             {
+                StackTraceElement[] trace = new Exception().getStackTrace();
 
-                Thread thread = lockable.threadHoldingLock.get();
-                lockable.setDumped(true);
-                if (thread != null)
+                String dump = "";
+
+                int i = 0;
+                for (; i < trace.length; i++)
                 {
-
-                    StackTraceElement[] trace = new Exception().getStackTrace();
-
-                    String dump = "";
-
-                    int i = 0;
-                    for (; i < trace.length; i++)
-                    {
-                        StackTraceElement ste = trace[i];
-                        dump += "\tat " + ste.toString();
-                        dump += '\n';
-                    }
-                    logger.error("Waiting on lock... blocked by...");
-                    logger.error(dump);
+                    StackTraceElement ste = trace[i];
+                    dump += "\tat " + ste.toString();
+                    dump += '\n';
                 }
-                else
-                {
-                    logger.error("Thread hasn't been set");
-                }
-
+                logger.error("Waiting on lock... blocked by...");
+                logger.error(dump);
             }
             else
             {
-                logger.warn("Still waiting " + ctr);
+                logger.error("Thread hasn't been set");
             }
+
+        }
+        else
+        {
+            logger.warn("Still waiting " + ctr);
         }
     }
 
@@ -257,14 +253,26 @@ public class Locker
         boolean activity = false;
         for (Lockable lockable : lockables)
         {
-            if ((lockable.getWaited() > 0 && lockable.getTotalWaitTime() > lockable.getAverageHoldTime()) || first)
+            if (lockable.wasBlocked() || first)
             {
+                int waited = lockable.getWaited();
+                int waitTime = lockable.getTotalWaitTime();
+                int acquired = lockable.getAcquired();
+                int holdTime = lockable.getHoldTime();
+                lockable.setBlocked(false);
                 activity = true;
                 logger.warn(lockable.asString());
+                lockable.addWaited(-waited);
+                lockable.addTotalWaitTime(-waitTime);
+
+                lockable.addAcquired(-acquired);
+                lockable.addTotalHoldTime(-holdTime);
+
             }
         }
 
         if (first || activity)
+
         {
             logger.warn("Dump Lock Stats finished. Will dump every minute when there is contention...");
             first = false;

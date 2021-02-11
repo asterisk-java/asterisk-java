@@ -18,6 +18,7 @@ public class Lockable
     private final AtomicInteger waited = new AtomicInteger();
     private final AtomicInteger acquired = new AtomicInteger();
     private volatile boolean dumped = false;
+    private volatile boolean blocked = false;
 
     private final static AtomicLong seed = new AtomicLong();
     private final long lockableId = seed.incrementAndGet();
@@ -46,7 +47,7 @@ public class Lockable
 
     public String asString()
     {
-        return "Lockable [totalWaitTime=" + totalWaitTime + ", totalHoldTime=" + totalHoldTime + ", waited=" + waited
+        return "Lockable [waited=" + waited + ", waitTime=" + totalWaitTime + ", totalHoldTime=" + totalHoldTime
                 + ", acquired=" + acquired + ", object=" + lockName + ", id=" + lockableId + "]";
     }
 
@@ -91,9 +92,9 @@ public class Lockable
         waited.addAndGet(time);
     }
 
-    void addAcquired()
+    void addAcquired(int count)
     {
-        acquired.incrementAndGet();
+        acquired.addAndGet(count);
     }
 
     boolean isDumped()
@@ -106,9 +107,9 @@ public class Lockable
         this.dumped = dumped;
     }
 
-    public long getTotalWaitTime()
+    public int getTotalWaitTime()
     {
-        return totalWaitTime.longValue();
+        return totalWaitTime.intValue();
     }
 
     public int getWaited()
@@ -125,4 +126,25 @@ public class Lockable
     {
         return lockableId;
     }
+
+    public int getHoldTime()
+    {
+        return totalHoldTime.intValue();
+    }
+
+    public int getAcquired()
+    {
+        return acquired.intValue();
+    }
+
+    public boolean wasBlocked()
+    {
+        return blocked;
+    }
+
+    public void setBlocked(boolean blocked)
+    {
+        this.blocked = blocked;
+    }
+
 }
