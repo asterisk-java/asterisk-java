@@ -111,16 +111,26 @@ public abstract class ActivityAgi extends ServiceAgiScriptImpl
             }
 
             boolean isAlive = true;
-            RateLimiter rateLimiter = new RateLimiter(2);
+            RateLimiter slowRateLimiter = new RateLimiter(2);
+            RateLimiter fastRateLimiter = new RateLimiter(10);
             while (!action.isDisconnect(this) && isAlive)
             {
-
+                AgiChannelActivityAction oldAction = action;
                 action.execute(this.channel, channelProxy);
 
                 action = channelProxy.getCurrentActivityAction();
                 logger.debug("Action for proxy " + channelProxy + " is " + action.getClass().getSimpleName());
                 isAlive = checkChannelIsStillUp();
-                rateLimiter.acquire();
+                if (oldAction == action)
+                {
+                    // action didn't change, lets not loop to fast
+                    slowRateLimiter.acquire();
+                }
+                else
+                {
+                    // action changed, don't delay long
+                    fastRateLimiter.acquire();
+                }
             }
 
         }
