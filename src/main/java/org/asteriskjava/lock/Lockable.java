@@ -6,6 +6,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.ReentrantLock;
 
 import org.asteriskjava.lock.Locker.LockCloser;
+import org.asteriskjava.pbx.agi.RateLimiter;
 
 public class Lockable
 {
@@ -19,6 +20,8 @@ public class Lockable
     private final AtomicInteger acquired = new AtomicInteger();
     private volatile boolean dumped = false;
     private volatile boolean blocked = false;
+
+    private final RateLimiter rateLimiter = new RateLimiter(4);
 
     private final static AtomicLong seed = new AtomicLong();
     private final long lockableId = seed.incrementAndGet();
@@ -145,6 +148,11 @@ public class Lockable
     void setLockBlocked(boolean blocked)
     {
         this.blocked = blocked;
+    }
+
+    public RateLimiter getDumpRateLimit()
+    {
+        return rateLimiter;
     }
 
 }

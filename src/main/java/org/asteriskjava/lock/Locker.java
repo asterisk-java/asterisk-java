@@ -105,7 +105,15 @@ public class Locker
         while (!lock.tryLock(100, TimeUnit.MILLISECONDS))
         {
             ctr++;
-            dumpBlocker(lockable, ctr);
+            if (!lockable.isLockDumped() && lockable.getDumpRateLimit().tryAcquire())
+            {
+                lockable.setLockDumped(true);
+                dumpBlocker(lockable, ctr);
+            }
+            else
+            {
+                logger.warn("waiting " + ctr);
+            }
             lockable.setLockBlocked(true);
         }
         lockable.setLockDumped(false);
@@ -152,8 +160,8 @@ public class Locker
                 if (holdTime > averageHoldTime * 5.0)
                 {
                     // long hold!
-                    String message = "Lock hold of lock (" + holdTime + "MS), average is " + lockable.getLockAverageHoldTime()
-                            + " " + getCaller(lockable);
+                    String message = "Lock hold of lock (" + holdTime + "MS), average is "
+                            + lockable.getLockAverageHoldTime() + " " + getCaller(lockable);
 
                     logger.warn(message);
                     if (holdTime > averageHoldTime * 10.0)
@@ -169,36 +177,30 @@ public class Locker
 
     private static void dumpBlocker(Lockable lockable, int ctr)
     {
-        if (!lockable.isLockDumped())
+
+        Thread thread = lockable.threadHoldingLock.get();
+
+        if (thread != null)
         {
-            Thread thread = lockable.threadHoldingLock.get();
-            lockable.setLockDumped(true);
-            if (thread != null)
+            StackTraceElement[] trace = new Exception().getStackTrace();
+
+            String dump = "";
+
+            int i = 0;
+            for (; i < trace.length; i++)
             {
-                StackTraceElement[] trace = new Exception().getStackTrace();
-
-                String dump = "";
-
-                int i = 0;
-                for (; i < trace.length; i++)
-                {
-                    StackTraceElement ste = trace[i];
-                    dump += "\tat " + ste.toString();
-                    dump += '\n';
-                }
-                logger.error("Waiting on lock... blocked by...");
-                logger.error(dump);
+                StackTraceElement ste = trace[i];
+                dump += "\tat " + ste.toString();
+                dump += '\n';
             }
-            else
-            {
-                logger.error("Thread hasn't been set");
-            }
-
+            logger.error("Waiting on lock... blocked by...");
+            logger.error(dump);
         }
         else
         {
-            logger.warn("Still waiting " + ctr);
+            logger.error("Thread hasn't been set");
         }
+
     }
 
     /**
