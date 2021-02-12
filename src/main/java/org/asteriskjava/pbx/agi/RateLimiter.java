@@ -1,38 +1,60 @@
 package org.asteriskjava.pbx.agi;
 
-import java.util.LinkedList;
-import java.util.List;
-
 public class RateLimiter
 {
     private static final long ONE_THOUSAND_MILLIS = 1000L;
-    List<Long> available = new LinkedList<>();
+    long next = 0;
+    private final long step;
 
     /**
-     * this is NOT thread safe!
+     * thread safe!
      * 
      * @param perSecond - number of 'acquire()' calls allowed per second, a call
      *            to acquire() will block(sleep) if the per second limit is
      *            exceeded
      */
-    RateLimiter(int perSecond)
+    public RateLimiter(int perSecond)
     {
-        long now = System.currentTimeMillis();
-        for (int i = 0; i < perSecond; i++)
-        {
-            available.add(now - ONE_THOUSAND_MILLIS);
-        }
+        step = ONE_THOUSAND_MILLIS / perSecond;
     }
 
     void acquire() throws InterruptedException
     {
+        // can't use Locker here, as Locker uses this class
+        long delay;
+        synchronized (this)
+        {
+            delay = next;
+            if (next < System.currentTimeMillis())
+            {
+                next = System.currentTimeMillis() + step;
+            }
+            else
+            {
+                next += step;
+            }
+        }
+
         long now = System.currentTimeMillis();
-        Long next = available.remove(0);
-        long timeRemaining = next - now;
+        long timeRemaining = delay - now;
         if (timeRemaining > 0)
         {
             Thread.sleep(timeRemaining);
         }
-        available.add(System.currentTimeMillis() + ONE_THOUSAND_MILLIS);
+
+    }
+
+    public boolean tryAcquire() throws InterruptedException
+    {
+        // can't use Locker here, as Locker uses this class
+        synchronized (this)
+        {
+            if (next < System.currentTimeMillis())
+            {
+                next = System.currentTimeMillis() + step;
+                return true;
+            }
+            return false;
+        }
     }
 }
