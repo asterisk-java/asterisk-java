@@ -258,7 +258,7 @@ public class Locker
         boolean activity = false;
         for (Lockable lockable : lockables)
         {
-            if (lockable.wasLockBlocked() || first)
+            if (lockable.wasLockBlocked())
             {
                 int waited = lockable.getLockWaited();
                 int waitTime = lockable.getLockTotalWaitTime();
@@ -279,7 +279,7 @@ public class Locker
         if (first || activity)
 
         {
-            logger.warn("Dump Lock Stats finished. Will dump every minute when there is contention...");
+            logger.warn("Will dump Lock stats each minute when there is contention...");
             first = false;
         }
     }
