@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.asteriskjava.lock.LockableList;
+import org.asteriskjava.lock.Locker.LockCloser;
 import org.asteriskjava.pbx.Channel;
 import org.asteriskjava.pbx.ChannelHangupListener;
 import org.asteriskjava.pbx.asterisk.wrap.events.ChannelState;
-import org.asteriskjava.util.LockableList;
-import org.asteriskjava.util.Locker.LockCloser;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 

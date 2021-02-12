@@ -9,6 +9,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.live.ManagerCommunicationException;
+import org.asteriskjava.lock.Locker.LockCloser;
 import org.asteriskjava.pbx.AsteriskSettings;
 import org.asteriskjava.pbx.Channel;
 import org.asteriskjava.pbx.ListenerPriority;
@@ -28,7 +29,6 @@ import org.asteriskjava.pbx.asterisk.wrap.response.ManagerResponse;
 import org.asteriskjava.pbx.internal.core.AsteriskPBX;
 import org.asteriskjava.pbx.internal.core.CoherentManagerEventListener;
 import org.asteriskjava.pbx.internal.managerAPI.EventListenerBaseClass;
-import org.asteriskjava.util.Locker.LockCloser;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 

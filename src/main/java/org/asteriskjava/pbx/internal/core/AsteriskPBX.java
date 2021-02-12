@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import org.asteriskjava.AsteriskVersion;
+import org.asteriskjava.lock.Locker.LockCloser;
 import org.asteriskjava.manager.AuthenticationFailedException;
 import org.asteriskjava.manager.EventTimeoutException;
 import org.asteriskjava.manager.ManagerConnectionState;
@@ -68,7 +69,6 @@ import org.asteriskjava.pbx.internal.asterisk.MeetmeRoom;
 import org.asteriskjava.pbx.internal.asterisk.MeetmeRoomControl;
 import org.asteriskjava.pbx.internal.asterisk.RoomOwner;
 import org.asteriskjava.pbx.internal.managerAPI.RedirectCall;
-import org.asteriskjava.util.Locker.LockCloser;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 

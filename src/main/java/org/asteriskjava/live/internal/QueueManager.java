@@ -27,6 +27,8 @@ import java.util.Map.Entry;
 import org.asteriskjava.live.AsteriskQueue;
 import org.asteriskjava.live.ManagerCommunicationException;
 import org.asteriskjava.live.QueueMemberState;
+import org.asteriskjava.lock.LockableMap;
+import org.asteriskjava.lock.Locker.LockCloser;
 import org.asteriskjava.manager.EventTimeoutException;
 import org.asteriskjava.manager.ResponseEvents;
 import org.asteriskjava.manager.action.QueueStatusAction;
@@ -43,8 +45,6 @@ import org.asteriskjava.manager.event.QueueMemberPenaltyEvent;
 import org.asteriskjava.manager.event.QueueMemberRemovedEvent;
 import org.asteriskjava.manager.event.QueueMemberStatusEvent;
 import org.asteriskjava.manager.event.QueueParamsEvent;
-import org.asteriskjava.util.LockableMap;
-import org.asteriskjava.util.Locker.LockCloser;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 

@@ -1,10 +1,10 @@
 package org.asteriskjava.pbx.internal.managerAPI;
 
+import org.asteriskjava.lock.Lockable;
 import org.asteriskjava.pbx.PBX;
 import org.asteriskjava.pbx.asterisk.wrap.events.ManagerEvent;
 import org.asteriskjava.pbx.internal.core.AsteriskPBX;
 import org.asteriskjava.pbx.internal.core.FilteredManagerListener;
-import org.asteriskjava.util.Lockable;
 
 /*
  * This is the basic abstract event listener class. It implements a thread

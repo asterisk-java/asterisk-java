@@ -4,7 +4,7 @@ import java.util.Date;
 
 import org.asteriskjava.live.AsteriskQueueEntry;
 import org.asteriskjava.live.QueueEntryState;
-import org.asteriskjava.util.Locker.LockCloser;
+import org.asteriskjava.lock.Locker.LockCloser;
 
 /**
  * Default implementation of the AsteriskQueueEntry interface.

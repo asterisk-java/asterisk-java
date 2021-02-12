@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.asteriskjava.lock.LockableList;
+import org.asteriskjava.lock.Locker.LockCloser;
 import org.asteriskjava.pbx.Channel;
 import org.asteriskjava.pbx.EndPoint;
 import org.asteriskjava.pbx.ListenerPriority;
@@ -23,8 +25,6 @@ import org.asteriskjava.pbx.asterisk.wrap.events.PeerlistCompleteEvent;
 import org.asteriskjava.pbx.asterisk.wrap.events.StatusCompleteEvent;
 import org.asteriskjava.pbx.asterisk.wrap.events.StatusEvent;
 import org.asteriskjava.pbx.internal.managerAPI.EventListenerBaseClass;
-import org.asteriskjava.util.LockableList;
-import org.asteriskjava.util.Locker.LockCloser;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 

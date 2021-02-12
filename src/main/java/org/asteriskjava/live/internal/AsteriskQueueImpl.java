@@ -28,10 +28,10 @@ import org.asteriskjava.live.AsteriskQueue;
 import org.asteriskjava.live.AsteriskQueueEntry;
 import org.asteriskjava.live.AsteriskQueueListener;
 import org.asteriskjava.live.AsteriskQueueMember;
+import org.asteriskjava.lock.LockableList;
+import org.asteriskjava.lock.LockableMap;
+import org.asteriskjava.lock.Locker.LockCloser;
 import org.asteriskjava.util.AstUtil;
-import org.asteriskjava.util.LockableList;
-import org.asteriskjava.util.LockableMap;
-import org.asteriskjava.util.Locker.LockCloser;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 

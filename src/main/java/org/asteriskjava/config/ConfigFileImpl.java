@@ -21,8 +21,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.asteriskjava.util.LockableMap;
-import org.asteriskjava.util.Locker.LockCloser;
+import org.asteriskjava.lock.LockableMap;
+import org.asteriskjava.lock.Locker.LockCloser;
 
 /**
  * An Asterisk configuration file read from the filesystem.

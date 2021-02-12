@@ -3,6 +3,7 @@ package org.asteriskjava.pbx.internal.activity;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.asteriskjava.lock.Lockable;
 import org.asteriskjava.pbx.Activity;
 import org.asteriskjava.pbx.ActivityCallback;
 import org.asteriskjava.pbx.ActivityStatusEnum;
@@ -15,7 +16,6 @@ import org.asteriskjava.pbx.asterisk.wrap.events.ManagerEvent;
 import org.asteriskjava.pbx.asterisk.wrap.response.ManagerResponse;
 import org.asteriskjava.pbx.internal.core.AsteriskPBX;
 import org.asteriskjava.pbx.internal.managerAPI.EventListenerBaseClass;
-import org.asteriskjava.util.Lockable;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 

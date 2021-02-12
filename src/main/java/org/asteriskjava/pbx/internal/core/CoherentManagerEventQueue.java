@@ -11,6 +11,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
+import org.asteriskjava.lock.LockableSet;
+import org.asteriskjava.lock.Locker.LockCloser;
 import org.asteriskjava.manager.ManagerConnection;
 import org.asteriskjava.manager.ManagerEventListener;
 import org.asteriskjava.pbx.asterisk.wrap.events.BridgeEvent;
@@ -19,8 +21,6 @@ import org.asteriskjava.pbx.asterisk.wrap.events.ManagerEvent;
 import org.asteriskjava.pbx.asterisk.wrap.events.UnlinkEvent;
 import org.asteriskjava.pbx.internal.eventQueue.EventLifeMonitor;
 import org.asteriskjava.pbx.util.LogTime;
-import org.asteriskjava.util.LockableSet;
-import org.asteriskjava.util.Locker.LockCloser;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 

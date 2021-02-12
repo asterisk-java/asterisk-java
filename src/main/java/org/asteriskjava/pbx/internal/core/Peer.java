@@ -2,14 +2,14 @@ package org.asteriskjava.pbx.internal.core;
 
 import java.util.LinkedList;
 
+import org.asteriskjava.lock.LockableList;
+import org.asteriskjava.lock.Locker.LockCloser;
 import org.asteriskjava.pbx.Channel;
 import org.asteriskjava.pbx.EndPoint;
 import org.asteriskjava.pbx.asterisk.wrap.events.MasqueradeEvent;
 import org.asteriskjava.pbx.asterisk.wrap.events.NewChannelEvent;
 import org.asteriskjava.pbx.asterisk.wrap.events.NewStateEvent;
 import org.asteriskjava.pbx.asterisk.wrap.events.StatusEvent;
-import org.asteriskjava.util.LockableList;
-import org.asteriskjava.util.Locker.LockCloser;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 

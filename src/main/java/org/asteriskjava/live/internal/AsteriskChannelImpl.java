@@ -36,6 +36,9 @@ import org.asteriskjava.live.LinkedChannelHistoryEntry;
 import org.asteriskjava.live.ManagerCommunicationException;
 import org.asteriskjava.live.NoSuchChannelException;
 import org.asteriskjava.live.RecordingException;
+import org.asteriskjava.lock.LockableList;
+import org.asteriskjava.lock.LockableMap;
+import org.asteriskjava.lock.Locker.LockCloser;
 import org.asteriskjava.manager.action.AbsoluteTimeoutAction;
 import org.asteriskjava.manager.action.ChangeMonitorAction;
 import org.asteriskjava.manager.action.GetVarAction;
@@ -50,9 +53,6 @@ import org.asteriskjava.manager.action.StopMonitorAction;
 import org.asteriskjava.manager.action.UnpauseMonitorAction;
 import org.asteriskjava.manager.response.ManagerError;
 import org.asteriskjava.manager.response.ManagerResponse;
-import org.asteriskjava.util.LockableList;
-import org.asteriskjava.util.LockableMap;
-import org.asteriskjava.util.Locker.LockCloser;
 import org.asteriskjava.util.MixMonitorDirection;
 
 /**

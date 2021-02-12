@@ -1,4 +1,4 @@
-package org.asteriskjava.util;
+package org.asteriskjava.lock;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -9,6 +9,9 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
+
+import org.asteriskjava.util.Log;
+import org.asteriskjava.util.LogFactory;
 
 public class Locker
 {

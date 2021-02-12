@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-import org.asteriskjava.util.Locker.LockCloser;
+import org.asteriskjava.lock.Locker.LockCloser;
 
 /**
  * A MappingStrategy that is configured via a resource bundle.

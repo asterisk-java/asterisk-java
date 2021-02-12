@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import org.asteriskjava.lock.Lockable;
+import org.asteriskjava.lock.LockableList;
+import org.asteriskjava.lock.Locker.LockCloser;
 import org.asteriskjava.manager.TimeoutException;
 import org.asteriskjava.pbx.Channel;
 import org.asteriskjava.pbx.EndPoint;
@@ -21,9 +24,6 @@ import org.asteriskjava.pbx.asterisk.wrap.events.RenameEvent;
 import org.asteriskjava.pbx.asterisk.wrap.events.ResponseEvent;
 import org.asteriskjava.pbx.asterisk.wrap.events.ResponseEvents;
 import org.asteriskjava.pbx.asterisk.wrap.events.StatusEvent;
-import org.asteriskjava.util.Lockable;
-import org.asteriskjava.util.LockableList;
-import org.asteriskjava.util.Locker.LockCloser;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 

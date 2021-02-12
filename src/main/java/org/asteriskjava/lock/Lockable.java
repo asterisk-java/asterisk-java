@@ -1,11 +1,11 @@
-package org.asteriskjava.util;
+package org.asteriskjava.lock;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.ReentrantLock;
 
-import org.asteriskjava.util.Locker.LockCloser;
+import org.asteriskjava.lock.Locker.LockCloser;
 
 public class Lockable
 {

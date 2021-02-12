@@ -18,7 +18,7 @@ package org.asteriskjava.live.internal;
 
 import org.asteriskjava.live.AgentState;
 import org.asteriskjava.live.AsteriskAgent;
-import org.asteriskjava.util.Locker.LockCloser;
+import org.asteriskjava.lock.Locker.LockCloser;
 
 /**
  * Default implementation of the AsteriskAgent interface.

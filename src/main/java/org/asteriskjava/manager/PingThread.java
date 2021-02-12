@@ -19,10 +19,10 @@ package org.asteriskjava.manager;
 import java.util.HashSet;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.asteriskjava.lock.LockableSet;
+import org.asteriskjava.lock.Locker.LockCloser;
 import org.asteriskjava.manager.action.PingAction;
 import org.asteriskjava.manager.response.ManagerResponse;
-import org.asteriskjava.util.LockableSet;
-import org.asteriskjava.util.Locker.LockCloser;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 

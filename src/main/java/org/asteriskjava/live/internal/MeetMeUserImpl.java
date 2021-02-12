@@ -21,8 +21,8 @@ import java.util.Date;
 import org.asteriskjava.live.ManagerCommunicationException;
 import org.asteriskjava.live.MeetMeUser;
 import org.asteriskjava.live.MeetMeUserState;
+import org.asteriskjava.lock.Locker.LockCloser;
 import org.asteriskjava.manager.action.CommandAction;
-import org.asteriskjava.util.Locker.LockCloser;
 
 class MeetMeUserImpl extends AbstractLiveObject implements MeetMeUser
 {

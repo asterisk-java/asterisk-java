@@ -6,8 +6,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.TreeSet;
 
+import org.asteriskjava.lock.Lockable;
 import org.asteriskjava.pbx.asterisk.wrap.events.ManagerEvent;
-import org.asteriskjava.util.Lockable;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 

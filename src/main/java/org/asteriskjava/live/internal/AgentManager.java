@@ -23,6 +23,8 @@ import java.util.HashMap;
 import org.asteriskjava.live.AgentState;
 import org.asteriskjava.live.AsteriskAgent;
 import org.asteriskjava.live.ManagerCommunicationException;
+import org.asteriskjava.lock.LockableMap;
+import org.asteriskjava.lock.Locker.LockCloser;
 import org.asteriskjava.manager.ResponseEvents;
 import org.asteriskjava.manager.action.AgentsAction;
 import org.asteriskjava.manager.event.AgentCallbackLoginEvent;
@@ -34,8 +36,6 @@ import org.asteriskjava.manager.event.AgentLoginEvent;
 import org.asteriskjava.manager.event.AgentLogoffEvent;
 import org.asteriskjava.manager.event.AgentsEvent;
 import org.asteriskjava.manager.event.ManagerEvent;
-import org.asteriskjava.util.LockableMap;
-import org.asteriskjava.util.Locker.LockCloser;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 

@@ -1,4 +1,4 @@
-package org.asteriskjava.util;
+package org.asteriskjava.lock;
 
 import java.util.Collection;
 import java.util.Comparator;

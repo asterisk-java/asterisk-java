@@ -7,6 +7,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
+import org.asteriskjava.lock.Locker.LockCloser;
 import org.asteriskjava.pbx.ActivityCallback;
 import org.asteriskjava.pbx.AsteriskSettings;
 import org.asteriskjava.pbx.Call;
@@ -24,7 +25,6 @@ import org.asteriskjava.pbx.asterisk.wrap.events.ManagerEvent;
 import org.asteriskjava.pbx.asterisk.wrap.events.RenameEvent;
 import org.asteriskjava.pbx.internal.core.AsteriskPBX;
 import org.asteriskjava.pbx.internal.core.ChannelProxy;
-import org.asteriskjava.util.Locker.LockCloser;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 

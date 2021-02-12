@@ -21,7 +21,7 @@ import java.beans.PropertyChangeSupport;
 
 import org.asteriskjava.live.AsteriskServer;
 import org.asteriskjava.live.LiveObject;
-import org.asteriskjava.util.Lockable;
+import org.asteriskjava.lock.Lockable;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 

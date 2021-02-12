@@ -35,6 +35,8 @@ import org.asteriskjava.live.Extension;
 import org.asteriskjava.live.HangupCause;
 import org.asteriskjava.live.ManagerCommunicationException;
 import org.asteriskjava.live.NoSuchChannelException;
+import org.asteriskjava.lock.LockableMap;
+import org.asteriskjava.lock.Locker.LockCloser;
 import org.asteriskjava.manager.ResponseEvents;
 import org.asteriskjava.manager.action.StatusAction;
 import org.asteriskjava.manager.event.AbstractChannelEvent;
@@ -59,8 +61,6 @@ import org.asteriskjava.manager.event.UnparkedCallEvent;
 import org.asteriskjava.manager.event.VarSetEvent;
 import org.asteriskjava.util.DaemonThreadFactory;
 import org.asteriskjava.util.DateUtil;
-import org.asteriskjava.util.LockableMap;
-import org.asteriskjava.util.Locker.LockCloser;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 

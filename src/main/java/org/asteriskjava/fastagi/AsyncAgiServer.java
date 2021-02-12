@@ -5,13 +5,13 @@ import java.util.concurrent.RejectedExecutionException;
 
 import org.asteriskjava.fastagi.internal.AsyncAgiConnectionHandler;
 import org.asteriskjava.fastagi.internal.DefaultAgiChannelFactory;
+import org.asteriskjava.lock.LockableMap;
+import org.asteriskjava.lock.Locker.LockCloser;
 import org.asteriskjava.manager.ManagerConnection;
 import org.asteriskjava.manager.ManagerEventListener;
 import org.asteriskjava.manager.event.AsyncAgiEvent;
 import org.asteriskjava.manager.event.ManagerEvent;
 import org.asteriskjava.manager.event.RenameEvent;
-import org.asteriskjava.util.LockableMap;
-import org.asteriskjava.util.Locker.LockCloser;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 

@@ -3,9 +3,9 @@ package org.asteriskjava.pbx.internal.asterisk;
 import java.util.Date;
 import java.util.LinkedList;
 
+import org.asteriskjava.lock.Lockable;
+import org.asteriskjava.lock.Locker.LockCloser;
 import org.asteriskjava.pbx.Channel;
-import org.asteriskjava.util.Lockable;
-import org.asteriskjava.util.Locker.LockCloser;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 

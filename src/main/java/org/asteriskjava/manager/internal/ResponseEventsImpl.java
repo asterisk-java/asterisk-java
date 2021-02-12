@@ -21,11 +21,11 @@ import java.util.Collection;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+import org.asteriskjava.lock.LockableList;
+import org.asteriskjava.lock.Locker.LockCloser;
 import org.asteriskjava.manager.ResponseEvents;
 import org.asteriskjava.manager.event.ResponseEvent;
 import org.asteriskjava.manager.response.ManagerResponse;
-import org.asteriskjava.util.LockableList;
-import org.asteriskjava.util.Locker.LockCloser;
 
 /**
  * Implementation of the ResponseEvents interface.

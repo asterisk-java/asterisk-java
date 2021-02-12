@@ -24,7 +24,7 @@ import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.asteriskjava.util.Lockable;
+import org.asteriskjava.lock.Lockable;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 

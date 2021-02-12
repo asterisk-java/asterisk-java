@@ -8,6 +8,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.asteriskjava.live.ManagerCommunicationException;
+import org.asteriskjava.lock.Locker.LockCloser;
 import org.asteriskjava.pbx.AsteriskSettings;
 import org.asteriskjava.pbx.CallerID;
 import org.asteriskjava.pbx.Channel;
@@ -28,7 +29,6 @@ import org.asteriskjava.pbx.asterisk.wrap.events.OriginateResponseEvent;
 import org.asteriskjava.pbx.asterisk.wrap.events.UnlinkEvent;
 import org.asteriskjava.pbx.asterisk.wrap.response.ManagerResponse;
 import org.asteriskjava.pbx.internal.core.AsteriskPBX;
-import org.asteriskjava.util.Locker.LockCloser;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 

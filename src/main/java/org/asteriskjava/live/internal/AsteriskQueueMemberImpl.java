@@ -22,12 +22,12 @@ import org.asteriskjava.live.InvalidPenaltyException;
 import org.asteriskjava.live.ManagerCommunicationException;
 import org.asteriskjava.live.NoSuchInterfaceException;
 import org.asteriskjava.live.QueueMemberState;
+import org.asteriskjava.lock.Locker.LockCloser;
 import org.asteriskjava.manager.action.QueuePauseAction;
 import org.asteriskjava.manager.action.QueuePenaltyAction;
 import org.asteriskjava.manager.response.ManagerError;
 import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.util.AstUtil;
-import org.asteriskjava.util.Locker.LockCloser;
 
 /**
  * Default implementation of a queue member.
