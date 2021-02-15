@@ -644,7 +644,7 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
             connectEvent.setProtocolIdentifier(getProtocolIdentifier());
             connectEvent.setDateReceived(DateUtil.getDate());
             // TODO could this cause a deadlock?
-            fireEvent(connectEvent);
+            fireEvent(connectEvent, null);
         }
     }
 
@@ -1184,7 +1184,7 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
      * @param response the response received by the reader
      * @see ManagerReader
      */
-    public void dispatchResponse(ManagerResponse response)
+    public void dispatchResponse(ManagerResponse response, Integer requiredHandlingTime)
     {
         final String actionId;
         String internalActionId;
@@ -1248,7 +1248,7 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
             }
             finally
             {
-                if (timer.timeTaken() > 20)
+                if (requiredHandlingTime != null && timer.timeTaken() > requiredHandlingTime)
                 {
                     logger.warn("Slow processing of event " + listener.getClass().getCanonicalName() + " "
                             + timer.timeTaken() + "MS \n" + response);
@@ -1266,7 +1266,7 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
      * @see #removeEventListener(ManagerEventListener)
      * @see ManagerReader
      */
-    public void dispatchEvent(ManagerEvent event)
+    public void dispatchEvent(ManagerEvent event, Integer requiredHandlingTime)
     {
         // shouldn't happen
         if (event == null)
@@ -1274,7 +1274,7 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
             logger.error("Unable to dispatch null event. This should never happen. Please file a bug.");
             return;
         }
-        dispatchLegacyEventIfNeeded(event);
+        dispatchLegacyEventIfNeeded(event, requiredHandlingTime);
         if (logger.isDebugEnabled())
         {
             logger.debug("Dispatching event:\n" + event.toString());
@@ -1313,7 +1313,7 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
                         }
                         finally
                         {
-                            if (timer.timeTaken() > 20)
+                            if (requiredHandlingTime != null && timer.timeTaken() > requiredHandlingTime)
                             {
                                 logger.warn("Slow processing of event " + listener.getClass().getCanonicalName() + " "
                                         + timer.timeTaken() + "MS \n" + event);
@@ -1386,19 +1386,19 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
             return;
         }
 
-        fireEvent(event);
+        fireEvent(event, requiredHandlingTime);
     }
 
     /**
      * Enro 2015-03 Workaround to continue having Legacy Events from Asterisk
      * 13.
      */
-    private void dispatchLegacyEventIfNeeded(ManagerEvent event)
+    private void dispatchLegacyEventIfNeeded(ManagerEvent event, Integer requiredHandlingTime)
     {
         if (event instanceof DialBeginEvent)
         {
             DialEvent legacyEvent = new DialEvent((DialBeginEvent) event);
-            dispatchEvent(legacyEvent);
+            dispatchEvent(legacyEvent, requiredHandlingTime);
         }
     }
 
@@ -1407,7 +1407,7 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
      *
      * @param event the event to propagate
      */
-    private void fireEvent(ManagerEvent event)
+    private void fireEvent(ManagerEvent event, Integer requiredHandlingTime)
     {
         try (LockCloser closer = eventListeners.withLock())
         {
@@ -1424,7 +1424,7 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
                 }
                 finally
                 {
-                    if (timer.timeTaken() > 20)
+                    if (requiredHandlingTime != null && timer.timeTaken() > requiredHandlingTime)
                     {
                         logger.warn("Slow processing of event " + listener.getClass().getCanonicalName() + " "
                                 + timer.timeTaken() + "MS \n" + event);

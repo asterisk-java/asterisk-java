@@ -37,9 +37,10 @@ interface Dispatcher
      * {@link org.asteriskjava.manager.SendActionCallback}.
      * 
      * @param response the resonse received by the reader
+     * @param requiredHandlingTime
      * @see ManagerReader
      */
-    void dispatchResponse(ManagerResponse response);
+    void dispatchResponse(ManagerResponse response, Integer requiredHandlingTime);
 
     /**
      * This method is called by the reader whenever a ManagerEvent is received.
@@ -48,7 +49,7 @@ interface Dispatcher
      * @param event the event received by the reader
      * @see ManagerReader
      */
-    void dispatchEvent(ManagerEvent event);
+    void dispatchEvent(ManagerEvent event, Integer requiredHandlingTime);
 
     void stop();
 }

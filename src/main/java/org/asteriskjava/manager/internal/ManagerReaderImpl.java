@@ -172,7 +172,7 @@ public class ManagerReaderImpl implements ManagerReader
                     protocolIdentifierReceivedEvent = new ProtocolIdentifierReceivedEvent(source);
                     protocolIdentifierReceivedEvent.setProtocolIdentifier(line);
                     protocolIdentifierReceivedEvent.setDateReceived(DateUtil.getDate());
-                    dispatcher.dispatchEvent(protocolIdentifierReceivedEvent);
+                    dispatcher.dispatchEvent(protocolIdentifierReceivedEvent, null);
                     continue;
                 }
 
@@ -230,7 +230,7 @@ public class ManagerReaderImpl implements ManagerReader
                         if (event != null)
                         {
                             cause = event;
-                            dispatcher.dispatchEvent(event);
+                            dispatcher.dispatchEvent(event, null);
 
                             // Backwards compatibility for bridge events.
                             // Asterisk 13 uses BridgeCreate,
@@ -242,7 +242,7 @@ public class ManagerReaderImpl implements ManagerReader
                             ManagerEvent secondaryEvent = compatibility.handleEvent(event);
                             if (secondaryEvent != null)
                             {
-                                dispatcher.dispatchEvent(secondaryEvent);
+                                dispatcher.dispatchEvent(secondaryEvent, null);
                             }
                         }
                         else
@@ -258,7 +258,7 @@ public class ManagerReaderImpl implements ManagerReader
                         if (response != null)
                         {
                             cause = response;
-                            dispatcher.dispatchResponse(response);
+                            dispatcher.dispatchResponse(response, null);
                         }
                     }
                     else
@@ -303,7 +303,7 @@ public class ManagerReaderImpl implements ManagerReader
             // cleans resources and reconnects if needed
             DisconnectEvent disconnectEvent = new DisconnectEvent(source);
             disconnectEvent.setDateReceived(DateUtil.getDate());
-            dispatcher.dispatchEvent(disconnectEvent);
+            dispatcher.dispatchEvent(disconnectEvent, null);
             dispatcher.stop();
         }
     }

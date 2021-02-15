@@ -15,7 +15,7 @@ public class AsyncEventPump implements Dispatcher, Runnable
 {
     private final Log logger = LogFactory.getLog(AsyncEventPump.class);
 
-    private static final long MAX_SAFE_EVENT_AGE = 250;
+    private static final long MAX_SAFE_EVENT_AGE = 500;
 
     private final LinkedBlockingQueue<EventWrapper> queue = new LinkedBlockingQueue<>(20000);
     private final Dispatcher dispatcher;
@@ -45,20 +45,24 @@ public class AsyncEventPump implements Dispatcher, Runnable
                 {
                     if (wrapper.timer.timeTaken() > MAX_SAFE_EVENT_AGE && rateLimiter.tryAcquire())
                     {
-                        logger.warn("The following message will only appear once per second!");
-                        logger.warn("Event being dispatched " + wrapper.timer.timeTaken()
+                        logger.warn("The following message will only appear once per second!\n" + "Event being dispatched "
+                                + wrapper.timer.timeTaken()
                                 + " MS after arriving, your ManagerEvent handlers are too slow!\n"
-                                + "You should also check for Garbage Collection issues.");
-                        logger.warn("There are " + queue.size() + " events waiting to be processed in the queue.");
+                                + "You should also check for Garbage Collection issues.\n" + "There are " + queue.size()
+                                + " events waiting to be processed in the queue.\n");
 
                     }
+                    // assume we need to process all queued events in
+                    // MAX_SAFE_EVENT_AGE
+                    int requiredHandlingTime = (int) (MAX_SAFE_EVENT_AGE / Math.max(1, queue.size()));
+
                     if (wrapper.response != null)
                     {
-                        dispatcher.dispatchResponse(wrapper.response);
+                        dispatcher.dispatchResponse(wrapper.response, requiredHandlingTime);
                     }
                     else if (wrapper.event != null)
                     {
-                        dispatcher.dispatchEvent(wrapper.event);
+                        dispatcher.dispatchEvent(wrapper.event, requiredHandlingTime);
                     }
                 }
                 else if (owner.get() == null)
@@ -93,7 +97,7 @@ public class AsyncEventPump implements Dispatcher, Runnable
             {
                 TimeUnit.MILLISECONDS.sleep(delay);
                 logger.info("Stoping " + delay);
-                delay = Math.min(10, delay + 1);
+                delay = Math.min(10000, delay + 1);
             }
             catch (InterruptedException e)
             {
@@ -104,7 +108,7 @@ public class AsyncEventPump implements Dispatcher, Runnable
     }
 
     @Override
-    public void dispatchResponse(ManagerResponse response)
+    public void dispatchResponse(ManagerResponse response, Integer requiredHandlingTime)
     {
         if (!queue.offer(new EventWrapper(response)))
         {
@@ -113,7 +117,7 @@ public class AsyncEventPump implements Dispatcher, Runnable
     }
 
     @Override
-    public void dispatchEvent(ManagerEvent event)
+    public void dispatchEvent(ManagerEvent event, Integer requiredHandlingTime)
     {
         if (!queue.offer(new EventWrapper(event)))
         {
