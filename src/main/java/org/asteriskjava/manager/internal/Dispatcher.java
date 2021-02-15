@@ -36,8 +36,9 @@ interface Dispatcher
      * received. The response is dispatched to the associated
      * {@link org.asteriskjava.manager.SendActionCallback}.
      * 
-     * @param response the resonse received by the reader
-     * @param requiredHandlingTime
+     * @param response the response received by the reader
+     * @param requiredHandlingTime the time that this event must be handled
+     *            within to not cause a back log of events
      * @see ManagerReader
      */
     void dispatchResponse(ManagerResponse response, Integer requiredHandlingTime);
@@ -47,6 +48,8 @@ interface Dispatcher
      * The event is dispatched to all registered ManagerEventHandlers.
      * 
      * @param event the event received by the reader
+     * @param requiredHandlingTime the time that this event must be handled
+     *            within to not cause a back log of events
      * @see ManagerReader
      */
     void dispatchEvent(ManagerEvent event, Integer requiredHandlingTime);

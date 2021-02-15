@@ -1,6 +1,7 @@
 package org.asteriskjava.manager.internal;
 
 import java.lang.ref.WeakReference;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
@@ -11,6 +12,13 @@ import org.asteriskjava.pbx.util.LogTime;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
+/**
+ * AsyncEventPump delivers events and responses to a Dispatcher without blocking
+ * the thread which is producing the events and responses. AsyncEventPump also
+ * adds logging around timely handling of events
+ * 
+ * @author rsutton
+ */
 public class AsyncEventPump implements Dispatcher, Runnable
 {
     private final Log logger = LogFactory.getLog(AsyncEventPump.class);
@@ -24,89 +32,118 @@ public class AsyncEventPump implements Dispatcher, Runnable
 
     private final Thread thread;
 
-    AsyncEventPump(Object owner, Dispatcher dispatcher, String string)
+    /**
+     * @param owner a weak reference to the owner is created, should it be
+     *            garbage collected then AsyncEventPump will shutdown.
+     * @param dispatcher the dispatcher that AsyncEventPump should deliver
+     *            events to.
+     * @param threadName the AsyncEventPump's thread will be named with a
+     *            variant of threadName
+     */
+    AsyncEventPump(Object owner, Dispatcher dispatcher, String threadName)
     {
         this.dispatcher = dispatcher;
         this.owner = new WeakReference<>(owner);
-        thread = new Thread(this, string + ":AsyncEventPump");
+        thread = new Thread(this, threadName + ":AsyncEventPump");
         thread.start();
     }
 
     @Override
     public void run()
     {
-        RateLimiter rateLimiter = new RateLimiter(2);
-        while (!stop || !queue.isEmpty())
+        try
         {
-            try
+            RateLimiter rateLimiter = new RateLimiter(2);
+            while (!stop || !queue.isEmpty())
             {
-                EventWrapper wrapper = queue.poll(1, TimeUnit.MINUTES);
-                if (wrapper != null)
+                try
                 {
-                    if (wrapper.timer.timeTaken() > MAX_SAFE_EVENT_AGE && rateLimiter.tryAcquire())
+                    EventWrapper wrapper = queue.poll(1, TimeUnit.MINUTES);
+                    if (wrapper != null)
                     {
-                        logger.warn("The following message will only appear once per second!\n" + "Event being dispatched "
-                                + wrapper.timer.timeTaken()
-                                + " MS after arriving, your ManagerEvent handlers are too slow!\n"
-                                + "You should also check for Garbage Collection issues.\n" + "There are " + queue.size()
-                                + " events waiting to be processed in the queue.\n");
+                        if (wrapper.timer.timeTaken() > MAX_SAFE_EVENT_AGE && rateLimiter.tryAcquire())
+                        {
+                            logger.warn("The following message will only appear once per second!\n"
+                                    + "Event being dispatched " + wrapper.timer.timeTaken()
+                                    + " MS after arriving, your ManagerEvent handlers are too slow!\n"
+                                    + "You should also check for Garbage Collection issues.\n" + "There are " + queue.size()
+                                    + " events waiting to be processed in the queue.\n");
 
-                    }
-                    // assume we need to process all queued events in
-                    // MAX_SAFE_EVENT_AGE
-                    int requiredHandlingTime = (int) (MAX_SAFE_EVENT_AGE / Math.max(1, queue.size()));
+                        }
+                        // assume we need to process all queued events in
+                        // MAX_SAFE_EVENT_AGE
+                        int requiredHandlingTime = (int) (MAX_SAFE_EVENT_AGE / Math.max(1, queue.size()));
 
-                    if (wrapper.response != null)
-                    {
-                        dispatcher.dispatchResponse(wrapper.response, requiredHandlingTime);
+                        if (wrapper.response != null)
+                        {
+                            dispatcher.dispatchResponse(wrapper.response, requiredHandlingTime);
+                        }
+                        else if (wrapper.event != null)
+                        {
+                            dispatcher.dispatchEvent(wrapper.event, requiredHandlingTime);
+                        }
+                        else if (wrapper.poison != null)
+                        {
+                            wrapper.poison.countDown();
+                        }
                     }
-                    else if (wrapper.event != null)
+                    else if (owner.get() == null)
                     {
-                        dispatcher.dispatchEvent(wrapper.event, requiredHandlingTime);
+                        stop = true;
+                        logger.error("The owner has been garbage collected!");
                     }
+
                 }
-                else if (owner.get() == null)
+                catch (InterruptedException e)
                 {
-                    stop = true;
-                    logger.error("The owner has been garbage collected!");
+                    logger.error(e);
                 }
-
-            }
-            catch (InterruptedException e)
-            {
-                logger.error(e);
-            }
-            catch (Exception e)
-            {
-                logger.error(e, e);
+                catch (Exception e)
+                {
+                    logger.error(e, e);
+                }
             }
         }
-        logger.warn("AsyncEventPump is shutting down");
+        finally
+        {
+            logger.warn("AsyncEventPump has exited");
+        }
 
     }
 
+    /**
+     * call stop() to cause the AsyncEventPump to stop, it will first empty the
+     * queue.
+     */
     public void stop()
     {
         stop = true;
-        // poison
-        queue.add(new EventWrapper());
-        long delay = 1;
-        while (!queue.isEmpty())
+        EventWrapper poisonWrapper = new EventWrapper();
+        queue.add(poisonWrapper);
+        logger.warn("Requesting AsyncEventPump to stop");
+        int ctr = 0;
+        try
         {
-            try
+            while (!poisonWrapper.poison.await(1, TimeUnit.SECONDS))
             {
-                TimeUnit.MILLISECONDS.sleep(delay);
-                logger.info("Stoping " + delay);
-                delay = Math.min(10000, Math.max(1, delay / 10));
-            }
-            catch (InterruptedException e)
-            {
-                logger.error(e);
+                logger.info("Waiting for AsyncEventPump to Stop... ");
+                ctr++;
+                if (ctr > 60)
+                {
+                    throw new RuntimeException("Failed to shutdown AsyncEventPump cleanly!");
+                }
             }
         }
-        logger.info("Stopped");
+        catch (InterruptedException e1)
+        {
+            logger.error(e1);
+        }
+        logger.info("AsyncEventPump consumed the poision, and may have exited before this message was logged.");
     }
 
+    /**
+     * add a ManagerResponse to the queue, only if the queue is not full
+     */
     @Override
     public void dispatchResponse(ManagerResponse response, Integer requiredHandlingTime)
     {
@@ -116,6 +153,9 @@ public class AsyncEventPump implements Dispatcher, Runnable
         }
     }
 
+    /**
+     * add a ManagerEvent to the queue, only if the queue is not full
+     */
     @Override
     public void dispatchEvent(ManagerEvent event, Integer requiredHandlingTime)
     {
@@ -130,6 +170,7 @@ public class AsyncEventPump implements Dispatcher, Runnable
         EventWrapper()
         {
             // poison
+            poison = new CountDownLatch(1);
         }
 
         EventWrapper(ManagerResponse response)
@@ -145,6 +186,7 @@ public class AsyncEventPump implements Dispatcher, Runnable
         LogTime timer = new LogTime();
         ManagerResponse response;
         ManagerEvent event;
+        CountDownLatch poison;
     }
 
 }
