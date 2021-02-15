@@ -1237,6 +1237,7 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
 
         if (listener != null)
         {
+            LogTime timer = new LogTime();
             try
             {
                 listener.onResponse(response);
@@ -1244,6 +1245,14 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
             catch (Exception e)
             {
                 logger.warn("Unexpected exception in response listener " + listener.getClass().getName(), e);
+            }
+            finally
+            {
+                if (timer.timeTaken() > 20)
+                {
+                    logger.warn("Slow processing of event " + listener.getClass().getCanonicalName() + " "
+                            + timer.timeTaken() + "MS \n" + response);
+                }
             }
         }
     }
@@ -1292,6 +1301,7 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
                     listener = responseEventListeners.get(internalActionId);
                     if (listener != null)
                     {
+                        LogTime timer = new LogTime();
                         try
                         {
                             listener.onManagerEvent(event);
@@ -1300,6 +1310,14 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
                         {
                             logger.warn("Unexpected exception in response event listener " + listener.getClass().getName(),
                                     e);
+                        }
+                        finally
+                        {
+                            if (timer.timeTaken() > 20)
+                            {
+                                logger.warn("Slow processing of event " + listener.getClass().getCanonicalName() + " "
+                                        + timer.timeTaken() + "MS \n" + event);
+                            }
                         }
                     }
                 }
@@ -1395,6 +1413,7 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
         {
             for (ManagerEventListener listener : eventListeners)
             {
+                LogTime timer = new LogTime();
                 try
                 {
                     listener.onManagerEvent(event);
@@ -1402,6 +1421,14 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
                 catch (RuntimeException e)
                 {
                     logger.warn("Unexpected exception in eventHandler " + listener.getClass().getName(), e);
+                }
+                finally
+                {
+                    if (timer.timeTaken() > 20)
+                    {
+                        logger.warn("Slow processing of event " + listener.getClass().getCanonicalName() + " "
+                                + timer.timeTaken() + "MS \n" + event);
+                    }
                 }
             }
         }
@@ -1670,6 +1697,7 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
             {
                 logger.error("Response arrived after Disposal and assumably Timeout " + response + " elapsed: "
                         + timer.timeTaken() + "(MS)");
+                logger.error("" + response.getDateReceived());
             }
             latch.countDown();
         }
