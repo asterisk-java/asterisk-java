@@ -121,7 +121,6 @@ public class Locker
 
         long acquiredAt = System.currentTimeMillis();
         lockable.threadHoldingLock.set(Thread.currentThread());
-
         return new LockCloser()
         {
 
@@ -148,7 +147,8 @@ public class Locker
                 {
                     // some threads waited
                     String message = "Lock held for (" + holdTime + "MS), " + waiters
-                            + " threads waited for some of that time! " + getCaller(lockable);
+                            + " threads waited for some of that time! " + getCaller(lockable) + " id:"
+                            + lockable.getLockableId();
                     logger.warn(message);
                     if (holdTime > averageHoldTime * 10.0 || dumped)
                     {
@@ -161,7 +161,8 @@ public class Locker
                 {
                     // long hold!
                     String message = "Lock hold of lock (" + holdTime + "MS), average is "
-                            + lockable.getLockAverageHoldTime() + " " + getCaller(lockable);
+                            + lockable.getLockAverageHoldTime() + " " + getCaller(lockable) + " id:"
+                            + lockable.getLockableId();
 
                     logger.warn(message);
                     if (holdTime > averageHoldTime * 10.0)
