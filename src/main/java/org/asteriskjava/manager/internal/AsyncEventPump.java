@@ -97,7 +97,7 @@ public class AsyncEventPump implements Dispatcher, Runnable
             {
                 TimeUnit.MILLISECONDS.sleep(delay);
                 logger.info("Stoping " + delay);
-                delay = Math.min(10000, delay + 1);
+                delay = Math.min(10000, Math.max(1, delay / 10));
             }
             catch (InterruptedException e)
             {
