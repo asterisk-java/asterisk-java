@@ -1878,4 +1878,10 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
         reader.deregisterEventClass(eventClass);
 
     }
+
+    @Override
+    public void stop()
+    {
+        // NO_OP
+    }
 }

@@ -372,5 +372,11 @@ public class ManagerReaderImplTest
         {
             dispatchedEvents.add(event);
         }
+
+        @Override
+        public void stop()
+        {
+            // NO_OP
+        }
     }
 }

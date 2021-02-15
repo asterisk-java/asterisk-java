@@ -29,6 +29,7 @@ import org.asteriskjava.manager.event.ManagerEvent;
 import org.asteriskjava.manager.event.ProtocolIdentifierReceivedEvent;
 import org.asteriskjava.manager.internal.backwardsCompatibility.BackwardsCompatibilityForManagerEvents;
 import org.asteriskjava.manager.response.ManagerResponse;
+import org.asteriskjava.pbx.util.LogTime;
 import org.asteriskjava.util.DateUtil;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
@@ -58,11 +59,6 @@ public class ManagerReaderImpl implements ManagerReader
      * asterisk to instances of well known response classes.
      */
     private final ResponseBuilder responseBuilder;
-
-    /**
-     * The dispatcher to use for dispatching events and responses.
-     */
-    private final Dispatcher dispatcher;
 
     private final Map<String, Class< ? extends ManagerResponse>> expectedResponseClasses;
 
@@ -97,6 +93,8 @@ public class ManagerReaderImpl implements ManagerReader
      */
     BackwardsCompatibilityForManagerEvents compatibility = new BackwardsCompatibilityForManagerEvents();
 
+    private final Dispatcher rawDispatcher;
+
     /**
      * Creates a new ManagerReaderImpl.
      *
@@ -106,7 +104,7 @@ public class ManagerReaderImpl implements ManagerReader
      */
     public ManagerReaderImpl(final Dispatcher dispatcher, Object source)
     {
-        this.dispatcher = dispatcher;
+        this.rawDispatcher = dispatcher;
         this.source = source;
 
         this.eventBuilder = new EventBuilderImpl();
@@ -157,6 +155,7 @@ public class ManagerReaderImpl implements ManagerReader
         this.die = false;
         this.dead = false;
 
+        AsyncEventPump dispatcher = new AsyncEventPump(this, rawDispatcher, Thread.currentThread().getName());
         try
         {
             // main loop
@@ -220,6 +219,8 @@ public class ManagerReaderImpl implements ManagerReader
                 // ManagerConnection.
                 if (line.length() == 0)
                 {
+                    Object cause = null;
+                    LogTime timer = new LogTime();
                     if (buffer.containsKey("event"))
                     {
                         // TODO tracing
@@ -228,6 +229,7 @@ public class ManagerReaderImpl implements ManagerReader
                         ManagerEvent event = buildEvent(source, buffer);
                         if (event != null)
                         {
+                            cause = event;
                             dispatcher.dispatchEvent(event);
 
                             // Backwards compatibility for bridge events.
@@ -255,6 +257,7 @@ public class ManagerReaderImpl implements ManagerReader
                         // logger.debug("attempting to build response");
                         if (response != null)
                         {
+                            cause = response;
                             dispatcher.dispatchResponse(response);
                         }
                     }
@@ -267,6 +270,11 @@ public class ManagerReaderImpl implements ManagerReader
                     }
 
                     buffer.clear();
+                    if (timer.timeTaken() > 50)
+                    {
+                        logger.warn("(This is normal during JVM warmup) Slow processing of event " + timer.timeTaken() + "\n"
+                                + cause);
+                    }
                 }
             }
             this.dead = true;
@@ -296,6 +304,7 @@ public class ManagerReaderImpl implements ManagerReader
             DisconnectEvent disconnectEvent = new DisconnectEvent(source);
             disconnectEvent.setDateReceived(DateUtil.getDate());
             dispatcher.dispatchEvent(disconnectEvent);
+            dispatcher.stop();
         }
     }
 
