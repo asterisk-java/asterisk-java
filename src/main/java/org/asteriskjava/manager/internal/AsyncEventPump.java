@@ -133,12 +133,12 @@ public class AsyncEventPump implements Dispatcher, Runnable
                     throw new RuntimeException("Failed to shutdown AsyncEventPump cleanly!");
                 }
             }
+            logger.info("AsyncEventPump consumed the poision, and may have exited before this message was logged.");
         }
         catch (InterruptedException e1)
         {
             logger.error(e1);
         }
-        logger.info("AsyncEventPump consumed the poision, and may have exited before this message was logged.");
     }
 
     /**
@@ -165,7 +165,7 @@ public class AsyncEventPump implements Dispatcher, Runnable
         }
     }
 
-    class EventWrapper
+    private static class EventWrapper
     {
         EventWrapper()
         {
