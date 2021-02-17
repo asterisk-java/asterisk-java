@@ -15,7 +15,7 @@ public class RateLimiterTest
     {
         long now = System.currentTimeMillis();
         RateLimiter limiter = new RateLimiter(3);
-        for (int i = 0; i < 15; i++)
+        for (int i = 0; i < 7; i++)
         {
             limiter.acquire();
 
@@ -24,7 +24,7 @@ public class RateLimiterTest
         }
 
         // this should have taken around 5 seconds
-        assertTrue(System.currentTimeMillis() - now > 4000L);
+        assertTrue(System.currentTimeMillis() - now > 2000L);
     }
 
     @Test
@@ -56,7 +56,7 @@ public class RateLimiterTest
         new Thread(runner).start();
         new Thread(runner).start();
 
-        while (counter.intValue() < 15)
+        while (counter.intValue() < 9)
         {
             Thread.sleep(10);
         }
@@ -64,7 +64,7 @@ public class RateLimiterTest
         Thread.sleep(1000);
 
         // this should have taken around 5 seconds
-        assertTrue(System.currentTimeMillis() - now > 4000L);
+        assertTrue(System.currentTimeMillis() - now > 2500L);
     }
 
     @Test
@@ -101,12 +101,30 @@ public class RateLimiterTest
         new Thread(runner).start();
         new Thread(runner).start();
 
-        while (counter.intValue() < 15)
+        while (counter.intValue() < 9)
         {
             Thread.sleep(10);
         }
         stop.set(true);
         // this should have taken around 5 seconds
+        assertTrue(System.currentTimeMillis() - now > 2500L);
+    }
+
+    @Test
+    public void test4() throws InterruptedException
+    {
+        long now = System.currentTimeMillis();
+        RateLimiter limiter = new RateLimiter(0.5);
+        for (int i = 0; i < 4; i++)
+        {
+            limiter.acquire();
+
+            System.out.println(System.currentTimeMillis() + " test4 " + i);
+            Thread.sleep(10);
+        }
+
+        // this should have taken around 5 seconds
         assertTrue(System.currentTimeMillis() - now > 4000L);
     }
+
 }

@@ -11,23 +11,27 @@ public class RateLimiter
      * 
      * @param perSecond - number of 'acquire()' calls allowed per second, a call
      *            to acquire() will block(sleep) if the per second limit is
-     *            exceeded
+     *            exceeded. <br>
+     *            <br>
+     *            NOTE: Max rate is 1000 per second
      */
-    public RateLimiter(int perSecond)
+    public RateLimiter(double perSecond)
     {
-        step = ONE_THOUSAND_MILLIS / perSecond;
+        step = Math.max(1, (long) (ONE_THOUSAND_MILLIS / perSecond));
     }
 
     void acquire() throws InterruptedException
     {
         // can't use Locker here, as Locker uses this class
         long delay;
+        long now;
         synchronized (this)
         {
+            now = System.currentTimeMillis();
             delay = next;
-            if (next < System.currentTimeMillis())
+            if (next < now)
             {
-                next = System.currentTimeMillis() + step;
+                next = now + step;
             }
             else
             {
@@ -35,23 +39,25 @@ public class RateLimiter
             }
         }
 
-        long now = System.currentTimeMillis();
         long timeRemaining = delay - now;
         if (timeRemaining > 0)
         {
+            // Very important that this sleep does NOT happen in the
+            // synchronized block
             Thread.sleep(timeRemaining);
         }
 
     }
 
-    public boolean tryAcquire() throws InterruptedException
+    public boolean tryAcquire()
     {
         // can't use Locker here, as Locker uses this class
         synchronized (this)
         {
-            if (next < System.currentTimeMillis())
+            long now = System.currentTimeMillis();
+            if (next < now)
             {
-                next = System.currentTimeMillis() + step;
+                next = now + step;
                 return true;
             }
             return false;
