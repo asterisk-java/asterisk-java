@@ -120,7 +120,7 @@ public class AsyncEventPump implements Dispatcher, Runnable
         stop = true;
         EventWrapper poisonWrapper = new EventWrapper();
         queue.add(poisonWrapper);
-        logger.warn("Requesting AsyncEventPump to stop");
+        logger.info("Requesting AsyncEventPump to stop");
         int ctr = 0;
         try
         {
