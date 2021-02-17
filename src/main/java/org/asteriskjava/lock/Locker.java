@@ -10,6 +10,8 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
+import org.asteriskjava.pbx.agi.RateLimiter;
+import org.asteriskjava.pbx.util.LogTime;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
@@ -78,18 +80,26 @@ public class Locker
         public void close();
     }
 
+    // Once every ten seconds max
+    private static RateLimiter warnRateLimiter = new RateLimiter(0.1);
+
     private static LockCloser simpleLock(Lockable lockable) throws InterruptedException
     {
+        LogTime acquireTimer = new LogTime();
         ReentrantLock lock = lockable.getInternalLock();
         lock.lock();
-
-        return new LockCloser()
+        // lock acquired!
+        if (acquireTimer.timeTaken() > 1_000 && warnRateLimiter.tryAcquire())
         {
+            logger.warn("Locks are being held for to long, you can enable lock diagnostics by calling Locker.enable()");
+        }
 
-            @Override
-            public void close()
+        LogTime holdTimer = new LogTime();
+        return () -> {
+            lock.unlock();
+            if (holdTimer.timeTaken() > 500 && warnRateLimiter.tryAcquire())
             {
-                lock.unlock();
+                logger.warn("Locks are being held for to long, you can enable lock diagnostics by calling Locker.enable()");
             }
         };
     }
@@ -143,7 +153,7 @@ public class Locker
                 lockable.addLockTotalHoldTime(holdTime);
 
                 long averageHoldTime = lockable.getLockAverageHoldTime();
-                if (waiters > 0 && holdTime > averageHoldTime * 2 || dumped)
+                if ((waiters > 0 && holdTime > averageHoldTime * 2) || dumped)
                 {
                     // some threads waited
                     String message = "Lock held for (" + holdTime + "MS), " + waiters
