@@ -11,11 +11,11 @@ public class LogTime
 {
     public Long dStartTime = System.currentTimeMillis();
 
+    /**
+     * @return time taken from construction until now in milliseconds
+     */
     public long timeTaken()
     {
-        // returns the time taken from construction until now in milliseconds
-
         return System.currentTimeMillis() - this.dStartTime;
-
     }
 }

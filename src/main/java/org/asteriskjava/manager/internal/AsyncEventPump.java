@@ -35,11 +35,11 @@ public class AsyncEventPump implements Dispatcher, Runnable
     private volatile boolean terminated = false;
 
     /**
-     * @param owner a weak reference to the owner is created, should it be
+     * @param owner: A weak reference to the owner is created, should it be
      *            garbage collected then AsyncEventPump will shutdown.
-     * @param dispatcher the dispatcher that AsyncEventPump should deliver
+     * @param dispatcher: The dispatcher that AsyncEventPump should deliver
      *            events to.
-     * @param threadName the AsyncEventPump's thread will be named with a
+     * @param threadName: The AsyncEventPump's thread will be named with a
      *            variant of threadName
      */
     AsyncEventPump(Object owner, Dispatcher dispatcher, String threadName)
@@ -134,21 +134,23 @@ public class AsyncEventPump implements Dispatcher, Runnable
         }
         EventWrapper poisonWrapper = new EventWrapper();
         queue.add(poisonWrapper);
-        int ctr = 0;
+        LogTime timer = new LogTime();
         try
         {
             int queueSize = queue.size();
-            while (!poisonWrapper.poison.await(10, TimeUnit.SECONDS))
+            while (!poisonWrapper.poison.await(5, TimeUnit.SECONDS))
             {
+                // still waiting for the poison to be consumed.
                 if (queueSize == queue.size())
                 {
                     Locker.dumpThread(thread, "Queue thread is blocked here...");
                     throw new RuntimeException("Failed to shutdown AsyncEventPump cleanly!");
 
                 }
+                queueSize = queue.size();
                 logger.info("Waiting for AsyncEventPump to Stop... ");
-                ctr++;
-                if (ctr > 6)
+
+                if (timer.timeTaken() > 60_000)
                 {
                     throw new RuntimeException("Failed to shutdown AsyncEventPump cleanly!");
                 }
@@ -186,6 +188,11 @@ public class AsyncEventPump implements Dispatcher, Runnable
 
     private static class EventWrapper
     {
+        LogTime timer = new LogTime();
+        ManagerResponse response;
+        ManagerEvent event;
+        CountDownLatch poison;
+
         EventWrapper()
         {
             // poison
@@ -202,10 +209,6 @@ public class AsyncEventPump implements Dispatcher, Runnable
             this.event = event;
         }
 
-        LogTime timer = new LogTime();
-        ManagerResponse response;
-        ManagerEvent event;
-        CountDownLatch poison;
     }
 
 }
