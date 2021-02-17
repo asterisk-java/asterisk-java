@@ -5,6 +5,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
+import org.asteriskjava.lock.Locker;
 import org.asteriskjava.manager.event.ManagerEvent;
 import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.pbx.agi.RateLimiter;
@@ -31,6 +32,7 @@ public class AsyncEventPump implements Dispatcher, Runnable
     private final WeakReference<Object> owner;
 
     private final Thread thread;
+    private volatile boolean terminated = false;
 
     /**
      * @param owner a weak reference to the owner is created, should it be
@@ -106,6 +108,7 @@ public class AsyncEventPump implements Dispatcher, Runnable
         }
         finally
         {
+            terminated = true;
             logger.warn("AsyncEventPump has exited");
         }
 
@@ -118,22 +121,38 @@ public class AsyncEventPump implements Dispatcher, Runnable
     public void stop()
     {
         stop = true;
+        logger.info("Requesting AsyncEventPump to stop");
+        if (terminated)
+        {
+            logger.warn("AsyncEventPump is already stopped");
+            if (!queue.isEmpty())
+            {
+                logger.error("There are unprocessed events in the queue");
+            }
+
+            return;
+        }
         EventWrapper poisonWrapper = new EventWrapper();
         queue.add(poisonWrapper);
-        logger.info("Requesting AsyncEventPump to stop");
         int ctr = 0;
         try
         {
-            while (!poisonWrapper.poison.await(1, TimeUnit.SECONDS))
+            int queueSize = queue.size();
+            while (!poisonWrapper.poison.await(10, TimeUnit.SECONDS))
             {
+                if (queueSize == queue.size())
+                {
+                    Locker.dumpThread(thread, "Queue thread is blocked here...");
+                    throw new RuntimeException("Failed to shutdown AsyncEventPump cleanly!");
+
+                }
                 logger.info("Waiting for AsyncEventPump to Stop... ");
                 ctr++;
-                if (ctr > 60)
+                if (ctr > 6)
                 {
                     throw new RuntimeException("Failed to shutdown AsyncEventPump cleanly!");
                 }
             }
-            logger.info("AsyncEventPump consumed the poision, and may have exited before this message was logged.");
         }
         catch (InterruptedException e1)
         {

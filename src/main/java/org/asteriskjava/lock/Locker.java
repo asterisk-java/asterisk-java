@@ -108,7 +108,7 @@ public class Locker
             if (!lockable.isLockDumped() && lockable.getDumpRateLimit().tryAcquire())
             {
                 lockable.setLockDumped(true);
-                dumpBlocker(lockable, ctr);
+                dumpThread(lockable.threadHoldingLock.get(), "Waiting on lock... blocked by...");
             }
             else
             {
@@ -176,10 +176,8 @@ public class Locker
 
     }
 
-    private static void dumpBlocker(Lockable lockable, int ctr)
+    public static void dumpThread(Thread thread, String message)
     {
-
-        Thread thread = lockable.threadHoldingLock.get();
 
         if (thread != null)
         {
@@ -194,7 +192,7 @@ public class Locker
                 dump += "\tat " + ste.toString();
                 dump += '\n';
             }
-            logger.error("Waiting on lock... blocked by...");
+            logger.error(message);
             logger.error(dump);
         }
         else
