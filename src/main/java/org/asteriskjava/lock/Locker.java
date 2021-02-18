@@ -112,11 +112,9 @@ public class Locker
         int offset = lockable.addLockRequested();
         long waitStart = System.currentTimeMillis();
 
-        int ctr = 0;
         ReentrantLock lock = lockable.getInternalLock();
         while (!lock.tryLock(100, TimeUnit.MILLISECONDS))
         {
-            ctr++;
             if (!lockable.isLockDumped() && lockable.getDumpRateLimit().tryAcquire())
             {
                 lockable.setLockDumped(true);
@@ -127,7 +125,8 @@ public class Locker
             {
                 if (waitRateLimiter.tryAcquire())
                 {
-                    logger.warn("waiting " + ctr + " id:" + lockable.getLockableId());
+                    long elapsed = System.currentTimeMillis() - waitStart;
+                    logger.warn("waiting " + elapsed + "(MS) id:" + lockable.getLockableId());
                 }
             }
             lockable.setLockBlocked(true);
