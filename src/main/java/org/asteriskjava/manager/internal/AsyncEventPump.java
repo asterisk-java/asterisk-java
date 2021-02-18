@@ -34,6 +34,8 @@ public class AsyncEventPump implements Dispatcher, Runnable
     private final Thread thread;
     private volatile boolean terminated = false;
 
+    private final String name;
+
     /**
      * @param owner: A weak reference to the owner is created, should it be
      *            garbage collected then AsyncEventPump will shutdown.
@@ -46,7 +48,8 @@ public class AsyncEventPump implements Dispatcher, Runnable
     {
         this.dispatcher = dispatcher;
         this.owner = new WeakReference<>(owner);
-        thread = new Thread(this, threadName + ":AsyncEventPump");
+        name = threadName + ":AsyncEventPump";
+        thread = new Thread(this, name);
         thread.start();
     }
 
@@ -55,6 +58,7 @@ public class AsyncEventPump implements Dispatcher, Runnable
     {
         try
         {
+            logger.info("starting");
             RateLimiter rateLimiter = new RateLimiter(2);
             while (!stop || !queue.isEmpty())
             {
@@ -121,13 +125,13 @@ public class AsyncEventPump implements Dispatcher, Runnable
     public void stop()
     {
         stop = true;
-        logger.info("Requesting AsyncEventPump to stop");
+        logger.info(name + " Requesting AsyncEventPump to stop");
         if (terminated)
         {
-            logger.warn("AsyncEventPump is already stopped");
+            logger.warn(name + " AsyncEventPump is already stopped");
             if (!queue.isEmpty())
             {
-                logger.error("There are unprocessed events in the queue");
+                logger.error(name + " There are unprocessed events in the queue");
             }
 
             return;
@@ -143,22 +147,22 @@ public class AsyncEventPump implements Dispatcher, Runnable
                 // still waiting for the poison to be consumed.
                 if (queueSize == queue.size())
                 {
-                    Locker.dumpThread(thread, "AsyncEventPump thread is blocked here...");
-                    throw new RuntimeException("Failed to shutdown AsyncEventPump cleanly!");
+                    Locker.dumpThread(thread, name + " AsyncEventPump thread is blocked here...");
+                    throw new RuntimeException(name + " Failed to shutdown AsyncEventPump cleanly!");
 
                 }
                 queueSize = queue.size();
-                logger.info("Waiting for AsyncEventPump to Stop... ");
+                logger.info(name + " Waiting for AsyncEventPump to Stop... ");
 
                 if (timer.timeTaken() > 60_000)
                 {
-                    throw new RuntimeException("Failed to shutdown AsyncEventPump cleanly!");
+                    throw new RuntimeException(name + " Failed to shutdown AsyncEventPump cleanly!");
                 }
             }
         }
         catch (InterruptedException e1)
         {
-            logger.error(e1);
+            logger.error(name + e1.getMessage());
         }
     }
 
@@ -170,7 +174,7 @@ public class AsyncEventPump implements Dispatcher, Runnable
     {
         if (!queue.offer(new EventWrapper(response)))
         {
-            logger.error("Event queue is full, not processing ManagerResponse " + response);
+            logger.error(name + " Event queue is full, not processing ManagerResponse " + response);
         }
     }
 
@@ -182,7 +186,7 @@ public class AsyncEventPump implements Dispatcher, Runnable
     {
         if (!queue.offer(new EventWrapper(event)))
         {
-            logger.error("Event queue is full, not processing ManagerEvent " + event);
+            logger.error(name + " Event queue is full, not processing ManagerEvent " + event);
         }
     }
 

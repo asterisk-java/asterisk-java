@@ -31,6 +31,8 @@ public class Locker
     // reporting intervals
     private static final Map<Long, Lockable> keepList = new HashMap<>();
 
+    private static final RateLimiter waitRateLimiter = new RateLimiter(4);
+
     public static LockCloser doWithLock(final Lockable lockable)
     {
         try
@@ -118,11 +120,15 @@ public class Locker
             if (!lockable.isLockDumped() && lockable.getDumpRateLimit().tryAcquire())
             {
                 lockable.setLockDumped(true);
-                dumpThread(lockable.threadHoldingLock.get(), "Waiting on lock... blocked by...");
+                dumpThread(lockable.threadHoldingLock.get(),
+                        "Waiting on lock... blocked by... id:" + lockable.getLockableId());
             }
             else
             {
-                logger.warn("waiting " + ctr);
+                if (waitRateLimiter.tryAcquire())
+                {
+                    logger.warn("waiting " + ctr + " id:" + lockable.getLockableId());
+                }
             }
             lockable.setLockBlocked(true);
         }
@@ -207,7 +213,7 @@ public class Locker
         }
         else
         {
-            logger.error("Thread hasn't been set");
+            logger.error("Thread hasn't been set: " + message);
         }
 
     }
