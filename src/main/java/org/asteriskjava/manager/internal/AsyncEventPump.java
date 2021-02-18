@@ -143,7 +143,7 @@ public class AsyncEventPump implements Dispatcher, Runnable
                 // still waiting for the poison to be consumed.
                 if (queueSize == queue.size())
                 {
-                    Locker.dumpThread(thread, "Queue thread is blocked here...");
+                    Locker.dumpThread(thread, "AsyncEventPump thread is blocked here...");
                     throw new RuntimeException("Failed to shutdown AsyncEventPump cleanly!");
 
                 }

@@ -191,7 +191,7 @@ public class Locker
 
         if (thread != null)
         {
-            StackTraceElement[] trace = new Exception().getStackTrace();
+            StackTraceElement[] trace = thread.getStackTrace();
 
             String dump = "";
 
