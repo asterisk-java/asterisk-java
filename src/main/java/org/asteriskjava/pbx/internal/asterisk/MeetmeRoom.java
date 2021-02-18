@@ -1,6 +1,5 @@
 package org.asteriskjava.pbx.internal.asterisk;
 
-import java.util.Date;
 import java.util.LinkedList;
 
 import org.asteriskjava.lock.Lockable;
@@ -33,7 +32,7 @@ public class MeetmeRoom extends Lockable
 
     private boolean forceClose = false;
 
-    private Date lastUpdated = null;
+    private Long lastUpdated = null;
 
     private RoomOwner owner = null;
 
@@ -91,7 +90,7 @@ public class MeetmeRoom extends Lockable
         return this.forceClose;
     }
 
-    public Date getLastUpdated()
+    public Long getLastUpdated()
     {
         return this.lastUpdated;
     }
@@ -181,7 +180,7 @@ public class MeetmeRoom extends Lockable
 
     public void setLastUpdated()
     {
-        this.lastUpdated = new Date();
+        this.lastUpdated = System.currentTimeMillis();
     }
 
     /**

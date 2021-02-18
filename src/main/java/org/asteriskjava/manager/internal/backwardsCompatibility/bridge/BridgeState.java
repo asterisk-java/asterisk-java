@@ -2,7 +2,6 @@ package org.asteriskjava.manager.internal.backwardsCompatibility.bridge;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -13,6 +12,7 @@ import org.asteriskjava.manager.event.BridgeEnterEvent;
 import org.asteriskjava.manager.event.BridgeEvent;
 import org.asteriskjava.manager.event.BridgeLeaveEvent;
 import org.asteriskjava.manager.event.ManagerEvent;
+import org.asteriskjava.util.DateUtil;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
@@ -130,7 +130,7 @@ class BridgeState
         bridgeEvent.setChannel2(members.get(1).getChannel());
 
         bridgeEvent.setBridgeState(bridgeState);
-        bridgeEvent.setDateReceived(new Date());
+        bridgeEvent.setDateReceived(DateUtil.getDate());
 
         return bridgeEvent;
     }

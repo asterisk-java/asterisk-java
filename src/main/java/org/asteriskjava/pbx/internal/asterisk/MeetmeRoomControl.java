@@ -1,6 +1,5 @@
 package org.asteriskjava.pbx.internal.asterisk;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -123,11 +122,11 @@ public class MeetmeRoomControl extends EventListenerBaseClass implements Coheren
                      */
                     try
                     {
-                        final Date lastUpdated = room.getLastUpdated();
-                        final long now = new Date().getTime();
+                        final Long lastUpdated = room.getLastUpdated();
+                        final long now = System.currentTimeMillis();
                         if (lastUpdated != null)
                         {
-                            final long elapsedTime = now - lastUpdated.getTime();
+                            final long elapsedTime = now - lastUpdated;
                             MeetmeRoomControl.logger.error(
                                     "room: " + room.getRoomNumber() + " count: " + count + " elapsed: " + elapsedTime);
                             if ((elapsedTime > 1800000) && (room.getChannelCount() < 2))

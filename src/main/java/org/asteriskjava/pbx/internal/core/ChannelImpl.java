@@ -1,6 +1,5 @@
 package org.asteriskjava.pbx.internal.core;
 
-import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import org.asteriskjava.pbx.AgiChannelActivityAction;
@@ -458,7 +457,7 @@ public class ChannelImpl implements Channel
      */
     void startSweep()
     {
-        this._sweepStartTime = new Date().getTime();
+        this._sweepStartTime = System.currentTimeMillis();
         this._marked = false;
     }
 

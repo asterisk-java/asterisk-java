@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.asteriskjava.pbx.activities.BlindTransferActivity;
+import org.asteriskjava.util.DateUtil;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
@@ -132,7 +133,7 @@ public class CallImpl implements ChannelHangupListener, Call
         this._owner = OWNER.SELF;
         this._uniquecallID = CallImpl.global_call_identifier_index.incrementAndGet();
         this._direction = direction;
-        this._callStarted = new Date();
+        this._callStarted = DateUtil.getDate();
         this.setOriginatingParty(originatingChannel);
 
     }
@@ -143,7 +144,7 @@ public class CallImpl implements ChannelHangupListener, Call
         this._owner = OWNER.SELF;
         this._uniquecallID = CallImpl.global_call_identifier_index.incrementAndGet();
         this._direction = direction;
-        this._callStarted = new Date();
+        this._callStarted = DateUtil.getDate();
         this.setOriginatingParty(originatingChannel);
         this.setAcceptingParty(acceptingChannel);
 
@@ -154,7 +155,7 @@ public class CallImpl implements ChannelHangupListener, Call
         this._owner = OWNER.SELF;
         this._uniquecallID = CallImpl.global_call_identifier_index.incrementAndGet();
         this._direction = CallDirection.OUTBOUND;
-        this._callStarted = new Date();
+        this._callStarted = DateUtil.getDate();
         this.setOriginatingParty(agent);
         this.setAcceptingParty(callee);
 
@@ -490,7 +491,7 @@ public class CallImpl implements ChannelHangupListener, Call
     // {
     // if (this.holdStarted == null)
     // {
-    // this.holdStarted = new Date();
+    // this.holdStarted = DateUtil.getDate();
     // }
     // this._state = Call.CallState.TRANSFER;
     // }
