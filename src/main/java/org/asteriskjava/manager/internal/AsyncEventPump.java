@@ -69,11 +69,12 @@ public class AsyncEventPump implements Dispatcher, Runnable
                     {
                         if (wrapper.timer.timeTaken() > MAX_SAFE_EVENT_AGE && rateLimiter.tryAcquire())
                         {
-                            logger.warn("The following message will only appear once per second!\n"
-                                    + "Event being dispatched " + wrapper.timer.timeTaken()
+                            logger.warn("The following message will only appear once per second!\n" + "Event dispatched "
+                                    + wrapper.timer.timeTaken()
                                     + " MS after arriving, your ManagerEvent handlers are too slow!\n"
                                     + "You should also check for Garbage Collection issues.\n" + "There are " + queue.size()
-                                    + " events waiting to be processed in the queue.\n");
+                                    + " events waiting to be processed in the queue.\n" + "Event was "
+                                    + wrapper.getPayloadAsString());
 
                         }
                         // assume we need to process all queued events in
@@ -201,6 +202,20 @@ public class AsyncEventPump implements Dispatcher, Runnable
         {
             // poison
             poison = new CountDownLatch(1);
+        }
+
+        public String getPayloadAsString()
+        {
+            if (response != null)
+            {
+                return response.toString();
+            }
+            else if (event != null)
+            {
+                return event.toString();
+            }
+            return "Poison";
+
         }
 
         EventWrapper(ManagerResponse response)
