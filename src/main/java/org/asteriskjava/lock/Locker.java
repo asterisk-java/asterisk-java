@@ -27,7 +27,7 @@ public class Locker
 
     private static final Object sync = new Object();
 
-    // keep references to LockStats so the WeakHashMap won't remove them between
+    // keep references to Lockables so they can't be garbage collected between
     // reporting intervals
     private static final Map<Long, Lockable> keepList = new HashMap<>();
 
