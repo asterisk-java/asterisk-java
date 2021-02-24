@@ -208,7 +208,14 @@ public class Locker
                 dump += '\n';
             }
             logger.error(message);
-            logger.error(dump);
+            if (dump.length() > 0)
+            {
+                logger.error(dump);
+            }
+            else
+            {
+                logger.error("Unable to create dump, thread seems to have exited.");
+            }
         }
         else
         {

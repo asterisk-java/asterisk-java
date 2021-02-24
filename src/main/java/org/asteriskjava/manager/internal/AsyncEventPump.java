@@ -125,7 +125,6 @@ public class AsyncEventPump implements Dispatcher, Runnable
      */
     public void stop()
     {
-        stop = true;
         logger.info(name + " Requesting AsyncEventPump to stop");
         if (terminated)
         {
@@ -139,6 +138,7 @@ public class AsyncEventPump implements Dispatcher, Runnable
         }
         EventWrapper poisonWrapper = new EventWrapper();
         queue.add(poisonWrapper);
+        stop = true;
         LogTime timer = new LogTime();
         try
         {
@@ -148,7 +148,10 @@ public class AsyncEventPump implements Dispatcher, Runnable
                 // still waiting for the poison to be consumed.
                 if (queueSize == queue.size())
                 {
-                    Locker.dumpThread(thread, name + " AsyncEventPump thread is blocked here...");
+                    if (!terminated)
+                    {
+                        Locker.dumpThread(thread, name + " AsyncEventPump thread is blocked here...");
+                    }
                     throw new RuntimeException(name + " Failed to shutdown AsyncEventPump cleanly!");
 
                 }
