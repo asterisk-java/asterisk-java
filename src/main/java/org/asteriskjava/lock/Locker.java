@@ -102,7 +102,8 @@ public class Locker
             lock.unlock();
             if (holdTimer.timeTaken() > 500 && warnRateLimiter.tryAcquire())
             {
-                logger.warn("Locks are being held for to long, you can enable lock diagnostics by calling Locker.enable()");
+                logger.warn("Locks are being held for to long (" + holdTimer.timeTaken()
+                        + "ms), you can enable lock diagnostics by calling Locker.enable()");
             }
         };
     }

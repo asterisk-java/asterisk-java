@@ -1473,10 +1473,7 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
         {
             logger.warn("Unsupported protocol version '" + identifier + "'. Use at your own risk.");
         }
-
         protocolIdentifier.setValue(identifier);
-        protocolIdentifier.countDown();
-
     }
 
     /**
