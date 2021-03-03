@@ -86,6 +86,8 @@ public class Locker
     // Once every ten seconds max
     private static RateLimiter warnRateLimiter = RateLimiter.create(0.1);
 
+    private static final LogTime startTime = new LogTime();
+
     private static LockCloser simpleLock(Lockable lockable) throws InterruptedException
     {
         LogTime acquireTimer = new LogTime();
@@ -94,16 +96,22 @@ public class Locker
         // lock acquired!
         if (acquireTimer.timeTaken() > 1_000 && warnRateLimiter.tryAcquire())
         {
-            logger.warn("Locks are being held for to long, you can enable lock diagnostics by calling Locker.enable()");
+            logger.warn("Locks are being held for to long, waited " + acquireTimer.timeTaken()
+                    + "ms, you can enable lock diagnostics by calling Locker.enable()");
         }
 
         LogTime holdTimer = new LogTime();
         return () -> {
             lock.unlock();
+
             if (holdTimer.timeTaken() > 500 && warnRateLimiter.tryAcquire())
             {
-                logger.warn("Locks are being held for to long (" + holdTimer.timeTaken()
-                        + "ms), you can enable lock diagnostics by calling Locker.enable()");
+                // don't start warning for the first 10 seconds
+                if (startTime.timeTaken() > 10_000)
+                {
+                    logger.warn("Locks are being held for to long (" + holdTimer.timeTaken()
+                            + "ms), you can enable lock diagnostics by calling Locker.enable()");
+                }
             }
         };
     }
