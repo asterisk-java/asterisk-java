@@ -35,6 +35,8 @@ import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 import org.asteriskjava.util.SocketConnectionFacade;
 
+import com.google.common.util.concurrent.RateLimiter;
+
 /**
  * Default implementation of the ManagerReader interface.
  *
@@ -144,6 +146,8 @@ public class ManagerReaderImpl implements ManagerReader
      */
     public void run()
     {
+        long timeOfLastEvent = 0;
+        long reserve = 0;
         final Map<String, Object> buffer = new HashMap<>();
         String line;
 
@@ -156,6 +160,8 @@ public class ManagerReaderImpl implements ManagerReader
         this.dead = false;
 
         AsyncEventPump dispatcher = new AsyncEventPump(this, rawDispatcher, Thread.currentThread().getName());
+        long slowEventThresholdMs = 10;
+        RateLimiter slowEventLogLimiter = RateLimiter.create(4);
         try
         {
             // main loop
@@ -270,10 +276,41 @@ public class ManagerReaderImpl implements ManagerReader
                     }
 
                     buffer.clear();
-                    if (timer.timeTaken() > 50)
+
+                    // some math to determine if events are being processed
+                    // slowly
+                    long elapsed = timer.timeTaken();
+                    long now = System.currentTimeMillis();
+                    long add = now - timeOfLastEvent;
+
+                    // double the elapsed time, this allows 50% slack. Also note
+                    // that we
+                    // would never be able to exhaust the reserve if we don't
+                    // artificially increase the elapsed time. I'd have probably
+                    // gone for 1.3 but I am trying to avoid floating point math
+                    reserve = (reserve + add) - (elapsed * 2);
+
+                    // don't allow reserve to exceed 500 ms
+                    reserve = Math.min(500, reserve);
+
+                    // don't allow reserve to go negative, otherwise we might
+                    // accrue a large debt
+                    reserve = Math.max(0, reserve);
+                    timeOfLastEvent = now;
+
+                    // check if the event was slow to build and dispatch
+                    if (elapsed > slowEventThresholdMs)
                     {
-                        logger.warn("(This is normal during JVM warmup) Slow processing of event " + timer.timeTaken() + "\n"
-                                + cause);
+                        // check for to many slow events this second.
+                        if (reserve <= 0)
+                        {
+                            // check we haven't already logged this to often
+                            if (slowEventLogLimiter.tryAcquire())
+                            {
+                                logger.warn("(This is normal during JVM warmup) Slow processing of event " + elapsed + "\n"
+                                        + cause);
+                            }
+                        }
                     }
                 }
             }

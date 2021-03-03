@@ -10,10 +10,11 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
-import org.asteriskjava.pbx.agi.RateLimiter;
 import org.asteriskjava.pbx.util.LogTime;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
+
+import com.google.common.util.concurrent.RateLimiter;
 
 public class Locker
 {
@@ -31,7 +32,7 @@ public class Locker
     // reporting intervals
     private static final Map<Long, Lockable> keepList = new HashMap<>();
 
-    private static final RateLimiter waitRateLimiter = new RateLimiter(4);
+    private static final RateLimiter waitRateLimiter = RateLimiter.create(4);
 
     public static LockCloser doWithLock(final Lockable lockable)
     {
@@ -83,7 +84,7 @@ public class Locker
     }
 
     // Once every ten seconds max
-    private static RateLimiter warnRateLimiter = new RateLimiter(0.1);
+    private static RateLimiter warnRateLimiter = RateLimiter.create(0.1);
 
     private static LockCloser simpleLock(Lockable lockable) throws InterruptedException
     {

@@ -8,10 +8,11 @@ import java.util.concurrent.TimeUnit;
 import org.asteriskjava.lock.Locker;
 import org.asteriskjava.manager.event.ManagerEvent;
 import org.asteriskjava.manager.response.ManagerResponse;
-import org.asteriskjava.pbx.agi.RateLimiter;
 import org.asteriskjava.pbx.util.LogTime;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
+
+import com.google.common.util.concurrent.RateLimiter;
 
 /**
  * AsyncEventPump delivers events and responses to a Dispatcher without blocking
@@ -59,7 +60,7 @@ public class AsyncEventPump implements Dispatcher, Runnable
         try
         {
             logger.info("starting");
-            RateLimiter rateLimiter = new RateLimiter(2);
+            RateLimiter rateLimiter = RateLimiter.create(2);
             while (!stop || !queue.isEmpty())
             {
                 try
