@@ -4,15 +4,15 @@ public class DialBeginEvent extends DialEvent
 {
 
     /**
-	 * 
-	 */
+     * 
+     */
     private static final long serialVersionUID = 1L;
     private String language;
     private String destlanguage;
     private String destAccountCode;
     private String linkedId;
     private String destLinkedId;
-    
+
     private String accountcode;
 
     public DialBeginEvent(Object source)
@@ -56,11 +56,6 @@ public class DialBeginEvent extends DialEvent
         return destlanguage;
     }
 
-    public void setDestlanguage(String destlanguage)
-    {
-        this.destlanguage = destlanguage;
-    }
-
     public String getLinkedId()
     {
         return linkedId;
@@ -81,14 +76,14 @@ public class DialBeginEvent extends DialEvent
         this.destLinkedId = destLinkedId;
     }
 
-	public String getAccountcode()
-	{
-		return accountcode;
-	}
+    public String getAccountcode()
+    {
+        return accountcode;
+    }
 
-	public void setAccountcode(String accountcode)
-	{
-		this.accountcode = accountcode;
-	}
-    
+    public void setAccountcode(String accountcode)
+    {
+        this.accountcode = accountcode;
+    }
+
 }
