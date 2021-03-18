@@ -1,4 +1,5 @@
 #! /usr/bin/env dcli
+
 import 'dart:io';
 
 import 'package:dcli/dcli.dart';
@@ -6,10 +7,10 @@ import 'package:dcli/dcli.dart';
 /// comment
 
 void main() {
-  int major;
-  int minor;
+  int major = 0;
+  int minor = 0;
   int rev = 0;
-  var dir = dirname(Settings().scriptPath);
+  var dir = dirname(Script.current.pathToScript);
   print(dir);
   read(join(dir, "pom.xml")).forEach((line) {
     if (line.contains("<releaseVersion>")) {
@@ -25,7 +26,7 @@ void main() {
   });
 
   var postFix = "";
-  if (confirm(prompt: "Is this a SNAPSHOT release (y/n)?")) {
+  if (confirm("Is this a SNAPSHOT release (y/n)?")) {
     postFix = "-SNAPSHOT";
     rev++;
   } else {
