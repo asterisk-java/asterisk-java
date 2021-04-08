@@ -13,8 +13,6 @@ import org.asteriskjava.manager.event.BridgeEvent;
 import org.asteriskjava.manager.event.BridgeLeaveEvent;
 import org.asteriskjava.manager.event.ManagerEvent;
 import org.asteriskjava.util.DateUtil;
-import org.asteriskjava.util.Log;
-import org.asteriskjava.util.LogFactory;
 
 /**
  * Track the current members of a bridge, emmitting BridgeEvents when 2 members
@@ -24,7 +22,7 @@ import org.asteriskjava.util.LogFactory;
  */
 class BridgeState
 {
-    private final Log logger = LogFactory.getLog(getClass());
+    // private final Log logger = LogFactory.getLog(getClass());
 
     private static final BridgeEnterEventComparator BRIDGE_ENTER_EVENT_COMPARATOR = new BridgeEnterEventComparator();
     private static final String HOLDING_BRIDGE_TECH = "holding_bridge";
@@ -69,11 +67,12 @@ class BridgeState
             return null;
         }
 
-        logger.info("Members size " + remaining.size() + " " + event);
+        // logger.info("Members size " + remaining.size() + " " + event);
 
         BridgeEvent bridgeEvent = buildBridgeEvent(BridgeEvent.BRIDGE_STATE_LINK, remaining);
 
-        logger.info("Bridge " + bridgeEvent.getChannel1() + " " + bridgeEvent.getChannel2());
+        // logger.info("Bridge " + bridgeEvent.getChannel1() + " " +
+        // bridgeEvent.getChannel2());
 
         return bridgeEvent;
     }
