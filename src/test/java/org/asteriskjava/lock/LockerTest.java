@@ -2,8 +2,6 @@ package org.asteriskjava.lock;
 
 import java.util.concurrent.TimeUnit;
 
-import org.asteriskjava.lock.Lockable;
-import org.asteriskjava.lock.Locker;
 import org.asteriskjava.lock.Locker.LockCloser;
 import org.junit.Test;
 
