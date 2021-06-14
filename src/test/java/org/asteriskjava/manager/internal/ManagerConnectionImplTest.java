@@ -446,7 +446,7 @@ public class ManagerConnectionImplTest
         response.setResponse("Success");
 
         // expected result is ignoring the response and logging
-        mc.dispatchResponse(response);
+        mc.dispatchResponse(response, null);
     }
 
     @Test
@@ -459,7 +459,7 @@ public class ManagerConnectionImplTest
         response.setResponse("Success");
 
         // expected result is ignoring the response and logging
-        mc.dispatchResponse(response);
+        mc.dispatchResponse(response, null);
     }
 
     @Test
@@ -472,14 +472,14 @@ public class ManagerConnectionImplTest
         response.setResponse("Success");
 
         // expected result is ignoring the response and logging
-        mc.dispatchResponse(response);
+        mc.dispatchResponse(response, null);
     }
 
     @Test
     public void testDispatchResponseNullResponse()
     {
         // expected result is ignoring and logging
-        mc.dispatchResponse(null);
+        mc.dispatchResponse(null, null);
     }
 
     @Test
@@ -496,7 +496,7 @@ public class ManagerConnectionImplTest
         mc.setUsername("username");
         mc.setPassword("password");
 
-        mc.dispatchEvent(disconnectEvent);
+        mc.dispatchEvent(disconnectEvent, null);
 
         // wait for reconnect thread to do its work
         Thread.sleep(1000);
@@ -530,7 +530,7 @@ public class ManagerConnectionImplTest
         mc.setUsername("username");
         mc.setPassword("password");
 
-        mc.dispatchEvent(disconnectEvent);
+        mc.dispatchEvent(disconnectEvent, null);
 
         // wait for reconnect thread to do its work
         Thread.sleep(1000);
@@ -565,7 +565,7 @@ public class ManagerConnectionImplTest
         mc.setUsername("username");
         mc.setPassword("password");
 
-        mc.dispatchEvent(disconnectEvent);
+        mc.dispatchEvent(disconnectEvent, null);
 
         // wait for reconnect thread to do its work
         Thread.sleep(1000);
@@ -608,7 +608,7 @@ public class ManagerConnectionImplTest
         }
 
         replay(list);
-        mc.dispatchEvent(event);
+        mc.dispatchEvent(event, null);
         verify(list);
     }
 

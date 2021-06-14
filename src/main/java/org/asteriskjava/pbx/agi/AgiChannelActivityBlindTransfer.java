@@ -15,16 +15,21 @@ public class AgiChannelActivityBlindTransfer implements AgiChannelActivityAction
     private String sipHeader;
     int timeout = 30;
     private String callerId;
+    private String dialOptions;
+    private BlindTransferResultListener listener;
 
-    public AgiChannelActivityBlindTransfer(String fullyQualifiedName, String sipHeader, String callerId)
+    public AgiChannelActivityBlindTransfer(String fullyQualifiedName, String sipHeader, String callerId, String dialOptions,
+            BlindTransferResultListener listener)
     {
         this.target = fullyQualifiedName;
         this.sipHeader = sipHeader;
         this.callerId = callerId;
+        this.dialOptions = dialOptions;
         if (sipHeader == null)
         {
             this.sipHeader = "";
         }
+        this.listener = listener;
     }
 
     @Override
@@ -34,12 +39,17 @@ public class AgiChannelActivityBlindTransfer implements AgiChannelActivityAction
         channel.setVariable("__SIPADDHEADER", sipHeader);
         channel.setCallerId(callerId);
         ichannel.setCurrentActivityAction(new AgiChannelActivityHold());
-        channel.dial(target, timeout, "");
-
+        channel.dial(target, timeout, dialOptions);
+        String status = channel.getVariable("DIALSTATUS");
+        boolean success = "ANSWER".equalsIgnoreCase(status);
+        if (listener != null)
+        {
+            listener.result(status, success);
+        }
     }
 
     @Override
-    public boolean isDisconnect()
+    public boolean isDisconnect(ActivityAgi activityAgi)
     {
         return false;
     }

@@ -20,12 +20,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.asteriskjava.live.ManagerCommunicationException;
 import org.asteriskjava.live.MeetMeRoom;
+import org.asteriskjava.lock.LockableMap;
+import org.asteriskjava.lock.Locker.LockCloser;
 import org.asteriskjava.manager.action.CommandAction;
 import org.asteriskjava.manager.event.AbstractMeetMeEvent;
 import org.asteriskjava.manager.event.MeetMeLeaveEvent;
@@ -55,18 +56,18 @@ class MeetMeManager
     /**
      * Maps room number to MeetMe room.
      */
-    private final Map<String, MeetMeRoomImpl> rooms;
+    private final LockableMap<String, MeetMeRoomImpl> rooms;
 
     MeetMeManager(AsteriskServerImpl server, ChannelManager channelManager)
     {
         this.server = server;
         this.channelManager = channelManager;
-        this.rooms = new HashMap<>();
+        this.rooms = new LockableMap<>(new HashMap<>());
     }
 
     void initialize()
     {
-        synchronized (rooms)
+        try (LockCloser closer = rooms.withLock())
         {
             for (MeetMeRoomImpl room : rooms.values())
             {
@@ -78,7 +79,7 @@ class MeetMeManager
     void disconnected()
     {
         /*
-         * synchronized (rooms) { rooms.clear(); }
+         * try (LockCloser closer = Locker2.lock(rooms) { rooms.clear(); }
          */
     }
 
@@ -87,7 +88,7 @@ class MeetMeManager
         final Collection<MeetMeRoom> result;
 
         result = new ArrayList<>();
-        synchronized (rooms)
+        try (LockCloser closer = rooms.withLock())
         {
             for (MeetMeRoom room : rooms.values())
             {
@@ -380,7 +381,7 @@ class MeetMeManager
         MeetMeRoomImpl room;
         boolean created = false;
 
-        synchronized (rooms)
+        try (LockCloser closer = rooms.withLock())
         {
             room = rooms.get(roomNumber);
             if (room == null)

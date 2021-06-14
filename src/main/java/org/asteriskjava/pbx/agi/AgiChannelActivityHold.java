@@ -65,7 +65,7 @@ public class AgiChannelActivityHold implements AgiChannelActivityAction
     }
 
     @Override
-    public boolean isDisconnect()
+    public boolean isDisconnect(ActivityAgi activityAgi)
     {
         return false;
     }

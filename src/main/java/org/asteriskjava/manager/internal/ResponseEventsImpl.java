@@ -21,6 +21,8 @@ import java.util.Collection;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+import org.asteriskjava.lock.LockableList;
+import org.asteriskjava.lock.Locker.LockCloser;
 import org.asteriskjava.manager.ResponseEvents;
 import org.asteriskjava.manager.event.ResponseEvent;
 import org.asteriskjava.manager.response.ManagerResponse;
@@ -35,7 +37,7 @@ import org.asteriskjava.manager.response.ManagerResponse;
 public class ResponseEventsImpl implements ResponseEvents
 {
     private ManagerResponse response;
-    private final Collection<ResponseEvent> events;
+    private final LockableList<ResponseEvent> events;
     private boolean complete;
     private final CountDownLatch latch = new CountDownLatch(1);
 
@@ -44,7 +46,7 @@ public class ResponseEventsImpl implements ResponseEvents
      */
     public ResponseEventsImpl()
     {
-        this.events = new ArrayList<>();
+        this.events = new LockableList<>(new ArrayList<>());
         this.complete = false;
     }
 
@@ -84,14 +86,14 @@ public class ResponseEventsImpl implements ResponseEvents
      */
     public void addEvent(ResponseEvent event)
     {
-        synchronized (events)
+        try (LockCloser closer = events.withLock())
         {
             events.add(event);
         }
     }
 
     /**
-     * Indicats if all events have been received.
+     * Indicates if all events have been received.
      * 
      * @param complete <code>true</code> if all events have been received,
      *            <code>false</code> otherwise.
@@ -103,15 +105,22 @@ public class ResponseEventsImpl implements ResponseEvents
 
     /**
      * @param timeout - milliseconds
+     * @return
      * @throws InterruptedException
      */
-    public void await(long timeout) throws InterruptedException
+    public boolean await(long timeout) throws InterruptedException
     {
-        latch.await(timeout, TimeUnit.MILLISECONDS);
+        return latch.await(timeout, TimeUnit.MILLISECONDS);
     }
 
     public void countDown()
     {
         latch.countDown();
+    }
+
+    @Override
+    public String toString()
+    {
+        return "ResponseEventsImpl [response=" + response + ",\nevents=" + events + ",\ncomplete=" + complete + "]";
     }
 }

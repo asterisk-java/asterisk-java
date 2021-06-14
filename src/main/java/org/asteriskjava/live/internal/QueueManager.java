@@ -22,18 +22,21 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Map;
 import java.util.Map.Entry;
 
 import org.asteriskjava.live.AsteriskQueue;
 import org.asteriskjava.live.ManagerCommunicationException;
 import org.asteriskjava.live.QueueMemberState;
+import org.asteriskjava.lock.LockableMap;
+import org.asteriskjava.lock.Locker.LockCloser;
 import org.asteriskjava.manager.EventTimeoutException;
 import org.asteriskjava.manager.ResponseEvents;
 import org.asteriskjava.manager.action.QueueStatusAction;
 import org.asteriskjava.manager.event.JoinEvent;
 import org.asteriskjava.manager.event.LeaveEvent;
 import org.asteriskjava.manager.event.ManagerEvent;
+import org.asteriskjava.manager.event.QueueCallerJoinEvent;
+import org.asteriskjava.manager.event.QueueCallerLeaveEvent;
 import org.asteriskjava.manager.event.QueueEntryEvent;
 import org.asteriskjava.manager.event.QueueMemberAddedEvent;
 import org.asteriskjava.manager.event.QueueMemberEvent;
@@ -47,7 +50,7 @@ import org.asteriskjava.util.LogFactory;
 
 /**
  * Manages queue events on behalf of an AsteriskServer.
- * 
+ *
  * @author srt
  * @version $Id$
  */
@@ -65,7 +68,7 @@ class QueueManager
      * A map of ACD queues by there name. 101119 OLB: Modified to act as a LRU
      * Cache to optimize updates
      */
-    private final Map<String, AsteriskQueueImpl> queuesLRU = new LinkedHashMap<>();
+    private final LockableMap<String, AsteriskQueueImpl> queuesLRU = new LockableMap<>(new LinkedHashMap<>());
 
     QueueManager(AsteriskServerImpl server, ChannelManager channelManager)
     {
@@ -117,7 +120,7 @@ class QueueManager
 
     /**
      * Method to ask for a Queue data update
-     * 
+     *
      * @author Octavio Luna
      * @param queue
      * @throws ManagerCommunicationException
@@ -170,7 +173,7 @@ class QueueManager
 
     void disconnected()
     {
-        synchronized (queuesLRU)
+        try (LockCloser closer = queuesLRU.withLock())
         {
             for (AsteriskQueueImpl queue : queuesLRU.values())
             {
@@ -182,7 +185,7 @@ class QueueManager
 
     /**
      * Gets (a copy of) the list of the queues.
-     * 
+     *
      * @return a copy of the list of the queues.
      */
     Collection<AsteriskQueue> getQueues()
@@ -191,7 +194,7 @@ class QueueManager
 
         Collection<AsteriskQueue> copy;
 
-        synchronized (queuesLRU)
+        try (LockCloser closer = queuesLRU.withLock())
         {
             copy = new ArrayList<AsteriskQueue>(queuesLRU.values());
         }
@@ -203,7 +206,7 @@ class QueueManager
         refreshQueuesIfForced();
 
         List<AsteriskQueue> copy = new ArrayList<>();
-        synchronized (queuesLRU)
+        try (LockCloser closer = queuesLRU.withLock())
         {
             List<Entry<String, AsteriskQueueImpl>> list = new ArrayList<>(queuesLRU.entrySet());
             ListIterator<Entry<String, AsteriskQueueImpl>> iter = list.listIterator(list.size());
@@ -227,12 +230,12 @@ class QueueManager
 
     /**
      * Adds a queue to the internal map, keyed by name.
-     * 
+     *
      * @param queue the AsteriskQueueImpl to be added
      */
     private void addQueue(AsteriskQueueImpl queue)
     {
-        synchronized (queuesLRU)
+        try (LockCloser closer = queuesLRU.withLock())
         {
             queuesLRU.put(queue.getName(), queue);
         }
@@ -240,7 +243,7 @@ class QueueManager
 
     /**
      * Called during initialization to populate the list of queues.
-     * 
+     *
      * @param event the event received
      */
     private void handleQueueParamsEvent(QueueParamsEvent event)
@@ -273,9 +276,9 @@ class QueueManager
             // We should never reach that code as this method is only called for
             // initialization
             // So the queue should never be in the queues list
-            synchronized (queue)
+            try (LockCloser closer = queue.withLock())
             {
-                synchronized (queuesLRU)
+                try (LockCloser closer2 = queuesLRU.withLock())
                 {
 
                     if (queue.setMax(max) | queue.setServiceLevel(serviceLevel) | queue.setWeight(weight)
@@ -294,7 +297,7 @@ class QueueManager
 
     /**
      * Called during initialization to populate the members of the queues.
-     * 
+     *
      * @param event the QueueMemberEvent received
      */
     private void handleQueueMemberEvent(QueueMemberEvent event)
@@ -306,12 +309,12 @@ class QueueManager
             return;
         }
 
-        AsteriskQueueMemberImpl member = queue.getMember(event.getLocation());
+        AsteriskQueueMemberImpl member = queue.getMember(event.getInterface());
         if (member == null)
         {
-            member = new AsteriskQueueMemberImpl(server, queue, event.getLocation(), QueueMemberState.valueOf(event
-                    .getStatus()), event.getPaused(), event.getPenalty(), event.getMembership(), event.getCallsTaken(),
-                    event.getLastCall());
+            member = new AsteriskQueueMemberImpl(server, queue, event.getInterface(),
+                    QueueMemberState.valueOf(event.getStatus()), event.getPaused(), event.getPenalty(),
+                    event.getMembership(), event.getCallsTaken(), event.getLastCall());
 
             queue.addMember(member);
         }
@@ -335,7 +338,7 @@ class QueueManager
     /**
      * Called during initialization to populate entries of the queues. Currently
      * does the same as handleJoinEvent()
-     * 
+     *
      * @param event - the QueueEntryEvent received
      */
     private void handleQueueEntryEvent(QueueEntryEvent event)
@@ -354,10 +357,35 @@ class QueueManager
             return;
         }
 
-        if (queue.getEntry(event.getChannel()) != null)
+        // Asterisk gives us an initial position but doesn't tell us when he
+        // shifts the others
+        // We won't use this data for ordering until there is a appropriate
+        // event in AMI.
+        // (and refreshing the whole queue is too intensive and suffers
+        // incoherencies
+        // due to asynchronous shift that leaves holes if requested too fast)
+        int reportedPosition = event.getPosition();
+
+        queue.createNewEntry(channel, reportedPosition, event.getDateReceived());
+    }
+
+    /**
+     * + * Called from AsteriskServerImpl whenever a new entry appears in a
+     * queue. + * + * @param event the JoinEvent received +
+     */
+    void handleJoinEvent(QueueCallerJoinEvent event)
+    {
+        final AsteriskQueueImpl queue = getInternalQueueByName(event.getQueue());
+        final AsteriskChannelImpl channel = channelManager.getChannelImplByName(event.getChannel());
+
+        if (queue == null)
         {
-            logger.debug("Ignored duplicate queue entry during population in queue " + event.getQueue() + " for channel "
-                    + event.getChannel());
+            logger.error("Ignored JoinEvent for unknown queue " + event.getQueue());
+            return;
+        }
+        if (channel == null)
+        {
+            logger.error("Ignored JoinEvent for unknown channel " + event.getChannel());
             return;
         }
 
@@ -375,7 +403,7 @@ class QueueManager
 
     /**
      * Called from AsteriskServerImpl whenever a new entry appears in a queue.
-     * 
+     *
      * @param event the JoinEvent received
      */
     void handleJoinEvent(JoinEvent event)
@@ -394,12 +422,6 @@ class QueueManager
             return;
         }
 
-        if (queue.getEntry(event.getChannel()) != null)
-        {
-            logger.error("Ignored duplicate queue entry in queue " + event.getQueue() + " for channel " + event.getChannel());
-            return;
-        }
-
         // Asterisk gives us an initial position but doesn't tell us when he
         // shifts the others
         // We won't use this data for ordering until there is a appropriate
@@ -414,7 +436,39 @@ class QueueManager
 
     /**
      * Called from AsteriskServerImpl whenever an enty leaves a queue.
-     * 
+     *
+     * @param event - the LeaveEvent received
+     */
+    void handleLeaveEvent(QueueCallerLeaveEvent event)
+    {
+        final AsteriskQueueImpl queue = getInternalQueueByName(event.getQueue());
+        final AsteriskChannelImpl channel = channelManager.getChannelImplByName(event.getChannel());
+
+        if (queue == null)
+        {
+            logger.error("Ignored LeaveEvent for unknown queue " + event.getQueue());
+            return;
+        }
+        if (channel == null)
+        {
+            logger.error("Ignored LeaveEvent for unknown channel " + event.getChannel());
+            return;
+        }
+
+        final AsteriskQueueEntryImpl existingQueueEntry = queue.getEntry(event.getChannel());
+        if (existingQueueEntry == null)
+        {
+            logger.error("Ignored leave event for non existing queue entry in queue " + event.getQueue() + " for channel "
+                    + event.getChannel());
+            return;
+        }
+
+        queue.removeEntry(existingQueueEntry, event.getDateReceived());
+    }
+
+    /**
+     * Called from AsteriskServerImpl whenever an enty leaves a queue.
+     *
      * @param event - the LeaveEvent received
      */
     void handleLeaveEvent(LeaveEvent event)
@@ -447,7 +501,7 @@ class QueueManager
     /**
      * Challange a QueueMemberStatusEvent. Called from AsteriskServerImpl
      * whenever a member state changes.
-     * 
+     *
      * @param event that was triggered by Asterisk server.
      */
     void handleQueueMemberStatusEvent(QueueMemberStatusEvent event)
@@ -460,10 +514,10 @@ class QueueManager
             return;
         }
 
-        AsteriskQueueMemberImpl member = queue.getMemberByLocation(event.getLocation());
+        AsteriskQueueMemberImpl member = queue.getMemberByLocation(event.getInterface());
         if (member == null)
         {
-            logger.error("Ignored QueueMemberStatusEvent for unknown member " + event.getLocation());
+            logger.error("Ignored QueueMemberStatusEvent for unknown member " + event.getInterface());
             return;
         }
 
@@ -481,10 +535,10 @@ class QueueManager
             return;
         }
 
-        AsteriskQueueMemberImpl member = queue.getMemberByLocation(event.getLocation());
+        AsteriskQueueMemberImpl member = queue.getMemberByLocation(event.getInterface());
         if (member == null)
         {
-            logger.error("Ignored QueueMemberPausedEvent for unknown member " + event.getLocation());
+            logger.error("Ignored QueueMemberPausedEvent for unknown member " + event.getInterface());
             return;
         }
 
@@ -513,7 +567,7 @@ class QueueManager
 
     /**
      * Retrieves a queue by its name.
-     * 
+     *
      * @param queueName name of the queue.
      * @return the requested queue or <code>null</code> if there is no queue
      *         with the given name.
@@ -535,7 +589,7 @@ class QueueManager
     {
         AsteriskQueueImpl queue;
 
-        synchronized (queuesLRU)
+        try (LockCloser closer = queuesLRU.withLock())
         {
             queue = queuesLRU.get(queueName);
         }
@@ -561,7 +615,7 @@ class QueueManager
 
     /**
      * Challange a QueueMemberAddedEvent.
-     * 
+     *
      * @param event - the generated QueueMemberAddedEvent.
      */
     public void handleQueueMemberAddedEvent(QueueMemberAddedEvent event)
@@ -573,12 +627,12 @@ class QueueManager
             return;
         }
 
-        AsteriskQueueMemberImpl member = queue.getMember(event.getLocation());
+        AsteriskQueueMemberImpl member = queue.getMember(event.getInterface());
         if (member == null)
         {
-            member = new AsteriskQueueMemberImpl(server, queue, event.getLocation(), QueueMemberState.valueOf(event
-                    .getStatus()), event.getPaused(), event.getPenalty(), event.getMembership(), event.getCallsTaken(),
-                    event.getLastCall());
+            member = new AsteriskQueueMemberImpl(server, queue, event.getInterface(),
+                    QueueMemberState.valueOf(event.getStatus()), event.getPaused(), event.getPenalty(),
+                    event.getMembership(), event.getCallsTaken(), event.getLastCall());
         }
 
         queue.addMember(member);
@@ -586,7 +640,7 @@ class QueueManager
 
     /**
      * Challange a QueueMemberRemovedEvent.
-     * 
+     *
      * @param event - the generated QueueMemberRemovedEvent.
      */
     public void handleQueueMemberRemovedEvent(QueueMemberRemovedEvent event)
@@ -598,11 +652,11 @@ class QueueManager
             return;
         }
 
-        final AsteriskQueueMemberImpl member = queue.getMember(event.getLocation());
+        final AsteriskQueueMemberImpl member = queue.getMember(event.getInterface());
         if (member == null)
         {
             logger.error("Ignored QueueMemberRemovedEvent for unknown agent name: " + event.getMemberName() + " location: "
-                    + event.getLocation() + " queue: " + event.getQueue());
+                    + event.getInterface() + " queue: " + event.getQueue());
             return;
         }
 

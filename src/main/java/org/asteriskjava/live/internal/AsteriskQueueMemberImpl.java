@@ -22,6 +22,7 @@ import org.asteriskjava.live.InvalidPenaltyException;
 import org.asteriskjava.live.ManagerCommunicationException;
 import org.asteriskjava.live.NoSuchInterfaceException;
 import org.asteriskjava.live.QueueMemberState;
+import org.asteriskjava.lock.Locker.LockCloser;
 import org.asteriskjava.manager.action.QueuePauseAction;
 import org.asteriskjava.manager.action.QueuePenaltyAction;
 import org.asteriskjava.manager.response.ManagerError;
@@ -164,12 +165,12 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
 
     public boolean isStatic()
     {
-        return membership != null && "static".equals(membership);
+        return "static".equals(membership);
     }
 
     public boolean isDynamic()
     {
-        return membership != null && "dynamic".equals(membership);
+        return "dynamic".equals(membership);
     }
 
     public Integer getPenalty()
@@ -212,64 +213,79 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
         return sb.toString();
     }
 
-    synchronized boolean stateChanged(QueueMemberState state)
+    boolean stateChanged(QueueMemberState state)
     {
-        if (!AstUtil.isEqual(this.state, state))
+        try (LockCloser closer = this.withLock())
         {
-            QueueMemberState oldState = this.state;
-            this.state = state;
-            firePropertyChange(PROPERTY_STATE, oldState, state);
-            return true;
+            if (!AstUtil.isEqual(this.state, state))
+            {
+                QueueMemberState oldState = this.state;
+                this.state = state;
+                firePropertyChange(PROPERTY_STATE, oldState, state);
+                return true;
+            }
+            return false;
         }
-        return false;
     }
 
-    synchronized boolean penaltyChanged(Integer penalty)
+    boolean penaltyChanged(Integer penalty)
     {
-        if (!AstUtil.isEqual(this.penalty, penalty))
+        try (LockCloser closer = this.withLock())
         {
-            Integer oldPenalty = this.penalty;
-            this.penalty = penalty;
-            firePropertyChange(PROPERTY_PENALTY, oldPenalty, penalty);
-            return true;
-        }
+            if (!AstUtil.isEqual(this.penalty, penalty))
+            {
+                Integer oldPenalty = this.penalty;
+                this.penalty = penalty;
+                firePropertyChange(PROPERTY_PENALTY, oldPenalty, penalty);
+                return true;
+            }
 
-        return false;
+            return false;
+        }
     }
 
-    synchronized boolean pausedChanged(boolean paused)
+    boolean pausedChanged(boolean paused)
     {
-        if (!AstUtil.isEqual(this.paused, paused))
+        try (LockCloser closer = this.withLock())
         {
-            boolean oldPaused = this.paused;
-            this.paused = paused;
-            firePropertyChange(PROPERTY_PAUSED, oldPaused, paused);
-            return true;
+            if (!AstUtil.isEqual(this.paused, paused))
+            {
+                boolean oldPaused = this.paused;
+                this.paused = paused;
+                firePropertyChange(PROPERTY_PAUSED, oldPaused, paused);
+                return true;
+            }
+            return false;
         }
-        return false;
     }
 
-    synchronized boolean callsTakenChanged(Integer callsTaken)
+    boolean callsTakenChanged(Integer callsTaken)
     {
-        if (!AstUtil.isEqual(this.callsTaken, callsTaken))
+        try (LockCloser closer = this.withLock())
         {
-            Integer oldcallsTaken = this.callsTaken;
-            this.callsTaken = callsTaken;
-            firePropertyChange(PROPERTY_CALLSTAKEN, oldcallsTaken, callsTaken);
-            return true;
+            if (!AstUtil.isEqual(this.callsTaken, callsTaken))
+            {
+                Integer oldcallsTaken = this.callsTaken;
+                this.callsTaken = callsTaken;
+                firePropertyChange(PROPERTY_CALLSTAKEN, oldcallsTaken, callsTaken);
+                return true;
+            }
+            return false;
         }
-        return false;
     }
 
-    synchronized boolean lastCallChanged(Long lastCall)
+    boolean lastCallChanged(Long lastCall)
     {
-        if (!AstUtil.isEqual(this.lastCall, lastCall))
+        try (LockCloser closer = this.withLock())
         {
-            Long oldlastCall = this.lastCall;
-            this.lastCall = lastCall;
-            firePropertyChange(PROPERTY_LASTCALL, oldlastCall, lastCall);
-            return true;
+            if (!AstUtil.isEqual(this.lastCall, lastCall))
+            {
+                Long oldlastCall = this.lastCall;
+                this.lastCall = lastCall;
+                firePropertyChange(PROPERTY_LASTCALL, oldlastCall, lastCall);
+                return true;
+            }
+            return false;
         }
-        return false;
     }
 }

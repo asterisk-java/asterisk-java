@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.asteriskjava.lock.LockableList;
+import org.asteriskjava.lock.Locker.LockCloser;
 import org.asteriskjava.pbx.Channel;
 import org.asteriskjava.pbx.ChannelHangupListener;
 import org.asteriskjava.pbx.asterisk.wrap.events.ChannelState;
@@ -28,7 +30,7 @@ public class CallTracker implements ChannelHangupListener
     /**
      * The list of channels associated with this call.
      */
-    ArrayList<Channel> _associatedChannels = new ArrayList<>();
+    LockableList<Channel> _associatedChannels = new LockableList<>(new ArrayList<>());
 
     /**
      * The state of this call.
@@ -56,7 +58,7 @@ public class CallTracker implements ChannelHangupListener
      */
     void mergeCalls(CallTracker rhs)
     {
-        synchronized (this._associatedChannels)
+        try (LockCloser closer = this._associatedChannels.withLock())
         {
             this._associatedChannels.addAll(rhs._associatedChannels);
             // not certain this is necessary but lets just tidy up a bit.
@@ -80,7 +82,7 @@ public class CallTracker implements ChannelHangupListener
     public int findChannel(Channel newChannel)
     {
         int index = -1;
-        synchronized (this._associatedChannels)
+        try (LockCloser closer = this._associatedChannels.withLock())
         {
 
             for (int i = 0; i < this._associatedChannels.size(); i++)
@@ -104,7 +106,7 @@ public class CallTracker implements ChannelHangupListener
      */
     public void remove(Channel channel)
     {
-        synchronized (this._associatedChannels)
+        try (LockCloser closer = this._associatedChannels.withLock())
         {
             int index = findChannel(channel);
             if (index != -1)
@@ -121,7 +123,7 @@ public class CallTracker implements ChannelHangupListener
 
     public void startSweep()
     {
-        synchronized (this._associatedChannels)
+        try (LockCloser closer = this._associatedChannels.withLock())
         {
             for (final Channel channel : this._associatedChannels)
             {
@@ -133,7 +135,7 @@ public class CallTracker implements ChannelHangupListener
     public void endSweep()
     {
         final List<Channel> toremove = new LinkedList<>();
-        synchronized (this._associatedChannels)
+        try (LockCloser closer = this._associatedChannels.withLock())
         {
             for (final Channel channel : this._associatedChannels)
             {
@@ -161,7 +163,7 @@ public class CallTracker implements ChannelHangupListener
         if (logger.isDebugEnabled())
         {
             logger.debug("CallTracker: dump channellist:" + this); //$NON-NLS-1$
-            synchronized (this._associatedChannels)
+            try (LockCloser closer = this._associatedChannels.withLock())
             {
                 for (final Channel channel : this._associatedChannels)
                 {
@@ -173,7 +175,7 @@ public class CallTracker implements ChannelHangupListener
 
     public boolean hasEnded()
     {
-        synchronized (this._associatedChannels)
+        try (LockCloser closer = this._associatedChannels.withLock())
         {
             return this._associatedChannels.size() == 0;
         }
@@ -183,7 +185,7 @@ public class CallTracker implements ChannelHangupListener
     public void channelHangup(Channel channel, Integer cause, String causeText)
     {
         remove(channel);
-        synchronized (this._associatedChannels)
+        try (LockCloser closer = this._associatedChannels.withLock())
         {
             if (this._associatedChannels.size() == 0)
             {

@@ -17,17 +17,15 @@
 package org.asteriskjava.manager.event;
 
 /**
- * A PeerlistCompleteEvent is triggered after the details of all peers has been
- * reported in response to an SIPPeersAction or SIPShowPeerAction.
+ * An EndpointListComplete event is triggered after the details of all end points have been
+ * reported in response to a PJSIPShowEndpoints event.
  * <p>
- * Available since Asterisk 1.2
+ * Available since Asterisk 12
  * 
- * @see org.asteriskjava.manager.event.PeerEntryEvent
- * @see org.asteriskjava.manager.action.SipPeersAction
- * @see org.asteriskjava.manager.action.SipShowPeerAction
+ * @see org.asteriskjava.manager.event.PJSipShowEndpoints
  * @author srt
  * @version $Id$
- * @since 0.2
+ * @since 12
  */
 public class EndpointListComplete extends ResponseEvent
 {
@@ -49,9 +47,9 @@ public class EndpointListComplete extends ResponseEvent
     }
 
     /**
-     * Returns the number of PeerEvents that have been reported.
+     * Returns the number of Endpoints that have been reported.
      * 
-     * @return the number of PeerEvents that have been reported.
+     * @return the number of Endpoints that have been reported.
      */
     public Integer getListItems()
     {
@@ -59,7 +57,7 @@ public class EndpointListComplete extends ResponseEvent
     }
 
     /**
-     * Sets the number of PeerEvents that have been reported.
+     * Sets the number of Endpoints that have been reported.
      * 
      * @param listItems the number of PeerEvents that have been reported.
      */

@@ -101,7 +101,7 @@ public class ManagerWriterMock implements ManagerWriter
                     protocolIdentifierReceivedEvent = new ProtocolIdentifierReceivedEvent(this);
                     protocolIdentifierReceivedEvent.setProtocolIdentifier("Asterisk Call Manager/1.0");
                     protocolIdentifierReceivedEvent.setDateReceived(DateUtil.getDate());
-                    dispatcher.dispatchEvent(protocolIdentifierReceivedEvent);
+                    dispatcher.dispatchEvent(protocolIdentifierReceivedEvent, null);
                 }
             });
             future.start();
@@ -218,7 +218,7 @@ public class ManagerWriterMock implements ManagerWriter
                 {
                     Thread.currentThread().interrupt();
                 }
-                dispatcher.dispatchResponse(response);
+                dispatcher.dispatchResponse(response, null);
             }
         });
         future.start();

@@ -6,94 +6,112 @@ package org.asteriskjava.manager.event;
  * https://wiki.asterisk.org/wiki/display/AST/Asterisk+13+ManagerEvent_AttendedTransfer
  */
 public class AttendedTransferEvent extends AbstractBridgeEvent {
+
     private static final long serialVersionUID = 1L;
 
-    private String    origTransfererChannel;
-    private String    origTransfererChannelState;
-    private String    origTransfererChannelStateDesc;
-    private String    origTransfererCallerIDNum;
-    private String    origTransfererCallerIDName;
-    private String    origTransfererConnectedLineNum;
-    private String    origTransfererConnectedLineName;
-    private String    origTransfererAccountCode;
-    private String    origTransfererContext;
-    private String    origTransfererExten;
-    private String    origTransfererPriority;
-    private String    origTransfererUniqueid;
-    private String    origBridgeUniqueid;
-    private String    origBridgeType;
-    private String    origBridgeTechnology;
-    private String    origBridgeCreator;
-    private String    origBridgeName;
-    private String    origBridgeNumChannels;
-    private String    secondTransfererChannel;
-    private String    secondTransfererChannelState;
-    private String    secondTransfererChannelStateDesc;
-    private String    secondTransfererCallerIDNum;
-    private String    secondTransfererCallerIDName;
-    private String    secondTransfererConnectedLineNum;
-    private String    secondTransfererConnectedLineName;
-    private String    secondTransfererAccountCode;
-    private String    secondTransfererContext;
-    private String    secondTransfererExten;
-    private String    secondTransfererPriority;
-    private String    secondTransfererUniqueid;
-    private String    secondBridgeUniqueid;
-    private String    secondBridgeType;
-    private String    secondBridgeTechnology;
-    private String    secondBridgeCreator;
-    private String    secondBridgeName;
-    private String    secondBridgeNumChannels;
-    private String    destType;
-    private String    destBridgeUniqueid;
-    private String    destApp;
-    private String    localOneChannel;
-    private String    localOneChannelState;
-    private String    localOneChannelStateDesc;
-    private String    localOneCallerIDNum;
-    private String    localOneCallerIDName;
-    private String    localOneConnectedLineNum;
-    private String    localOneConnectedLineName;
-    private String    localOneAccountCode;
-    private String    localOneContext;
-    private String    localOneExten;
-    private String    localOnePriority;
-    private String    localOneUniqueid;
-    private String    localTwoChannel;
-    private String    localTwoChannelState;
-    private String    localTwoChannelStateDesc;
-    private String    localTwoCallerIDNum;
-    private String    localTwoCallerIDName;
-    private String    localTwoConnectedLineNum;
-    private String    localTwoConnectedLineName;
-    private String    localTwoAccountCode;
-    private String    localTwoContext;
-    private String    localTwoExten;
-    private String    localTwoPriority;
-    private String    localTwoUniqueid;
-    private String    destTransfererChannel;
-    private String    transfereeChannel;
-    private String    transfereeChannelState;
-    private String    transfereeChannelStateDesc;
-    private String    transfereeCallerIDNum;
-    private String    transfereeCallerIDName;
-    private String    transfereeConnectedLineNum;
-    private String    transfereeConnectedLineName;
-    private String    transfereeAccountCode;
-    private String    transfereeContext;
-    private String    transfereeExten;
-    private String    transfereePriority;
-    private String    transfereeUniqueid;
+    private String origTransfererChannel;
+    private String origTransfererChannelState;
+    private String origTransfererChannelStateDesc;
+    private String origTransfererCallerIDNum;
+    private String origTransfererCallerIDName;
+    private String origTransfererConnectedLineNum;
+    private String origTransfererConnectedLineName;
+    private String origTransfererAccountCode;
+    private String origTransfererContext;
+    private String origTransfererExten;
+    private String origTransfererPriority;
+    private String origTransfererUniqueid;
+    private String origBridgeUniqueid;
+    private String origBridgeType;
+    private String origBridgeTechnology;
+    private String origBridgeCreator;
+    private String origBridgeName;
+    private String origBridgeNumChannels;
+    private String secondTransfererChannel;
+    private String secondTransfererChannelState;
+    private String secondTransfererChannelStateDesc;
+    private String secondTransfererCallerIDNum;
+    private String secondTransfererCallerIDName;
+    private String secondTransfererConnectedLineNum;
+    private String secondTransfererConnectedLineName;
+    private String secondTransfererAccountCode;
+    private String secondTransfererContext;
+    private String secondTransfererExten;
+    private String secondTransfererPriority;
+    private String secondTransfererUniqueid;
+    private String secondBridgeUniqueid;
+    private String secondBridgeType;
+    private String secondBridgeTechnology;
+    private String secondBridgeCreator;
+    private String secondBridgeName;
+    private String secondBridgeNumChannels;
+    private String destType;
+    private String destBridgeUniqueid;
+    private String destApp;
+    private String localOneChannel;
+    private String localOneChannelState;
+    private String localOneChannelStateDesc;
+    private String localOneCallerIDNum;
+    private String localOneCallerIDName;
+    private String localOneConnectedLineNum;
+    private String localOneConnectedLineName;
+    private String localOneAccountCode;
+    private String localOneContext;
+    private String localOneExten;
+    private String localOnePriority;
+    private String localOneUniqueid;
+    private String localTwoChannel;
+    private String localTwoChannelState;
+    private String localTwoChannelStateDesc;
+    private String localTwoCallerIDNum;
+    private String localTwoCallerIDName;
+    private String localTwoConnectedLineNum;
+    private String localTwoConnectedLineName;
+    private String localTwoAccountCode;
+    private String localTwoContext;
+    private String localTwoExten;
+    private String localTwoPriority;
+    private String localTwoUniqueid;
+    private String destTransfererChannel;
+    private String transfereeChannel;
+    private String transfereeChannelState;
+    private String transfereeChannelStateDesc;
+    private String transfereeCallerIDNum;
+    private String transfereeCallerIDName;
+    private String transfereeConnectedLineNum;
+    private String transfereeConnectedLineName;
+    private String transfereeAccountCode;
+    private String transfereeContext;
+    private String transfereeExten;
+    private String transfereePriority;
+    private String transfereeUniqueid;
 
-    private String  transfereeLinkedId;
-    private String  transfereeLanguage;
-    private String  origTransfererLinkedId;
-    private String  secondTransfererLanguage;
-    private String  isexternal;
-    private String  result;
-    private String  secondTransfererLinkedId;
-    private String  origTransfererLanguage;
-    
+    private String transferTargetUniqueID;
+    private String transferTargetCallerIDName;
+    private String secondBridgeVideoSourceMode;
+    private String transferTargetLinkedID;
+    private String transferTargetPriority;
+    private String transferTargetCallerIDNum;
+    private String origBridgeVideoSourceMode;
+    private String transferTargetConnectedLineNum;
+    private String transferTargetChannel;
+    private String transferTargetContext;
+    private String transferTargetConnectedLineName;
+    private String transferTargetExten;
+    private String transferTargetChannelState;
+    private String transferTargetLanguage;
+    private String transferTargetAccountCode;
+    private String transferTargetChannelStateDesc;
+
+    private String transfereeLinkedId;
+    private String transfereeLanguage;
+    private String origTransfererLinkedId;
+    private String secondTransfererLanguage;
+    private String isexternal;
+    private String result;
+    private String secondTransfererLinkedId;
+    private String origTransfererLanguage;
+
     public AttendedTransferEvent(Object source)
     {
         super(source);
@@ -174,7 +192,8 @@ public class AttendedTransferEvent extends AbstractBridgeEvent {
         return origTransfererAccountCode;
     }
 
-    public void setOrigTransfererAccountCode(String origTransfererAccountCode) {
+    public void setOrigTransfererAccountCode(String origTransfererAccountCode)
+    {
         this.origTransfererAccountCode = origTransfererAccountCode;
     }
 
@@ -328,7 +347,8 @@ public class AttendedTransferEvent extends AbstractBridgeEvent {
         this.secondTransfererCallerIDName = secondTransfererCallerIDName;
     }
 
-    public String getSecondTransfererConnectedLineNum() {
+    public String getSecondTransfererConnectedLineNum()
+    {
         return secondTransfererConnectedLineNum;
     }
 
@@ -936,5 +956,165 @@ public class AttendedTransferEvent extends AbstractBridgeEvent {
     {
         this.origTransfererLanguage = origTransfererLanguage;
     }
-    
+
+    public String getTransferTargetUniqueID()
+    {
+        return transferTargetUniqueID;
+    }
+
+    public void setTransferTargetUniqueID(String transferTargetUniqueID)
+    {
+        this.transferTargetUniqueID = transferTargetUniqueID;
+    }
+
+    public String getTransferTargetCallerIDName()
+    {
+        return transferTargetCallerIDName;
+    }
+
+    public void setTransferTargetCallerIDName(String transferTargetCallerIDName)
+    {
+        this.transferTargetCallerIDName = transferTargetCallerIDName;
+    }
+
+    public String getSecondBridgeVideoSourceMode()
+    {
+        return secondBridgeVideoSourceMode;
+    }
+
+    public void setSecondBridgeVideoSourceMode(String secondBridgeVideoSourceMode)
+    {
+        this.secondBridgeVideoSourceMode = secondBridgeVideoSourceMode;
+    }
+
+    public String getTransferTargetLinkedID()
+    {
+        return transferTargetLinkedID;
+    }
+
+    public void setTransferTargetLinkedID(String transferTargetLinkedID)
+    {
+        this.transferTargetLinkedID = transferTargetLinkedID;
+    }
+
+    public String getTransferTargetPriority()
+    {
+        return transferTargetPriority;
+    }
+
+    public void setTransferTargetPriority(String transferTargetPriority)
+    {
+        this.transferTargetPriority = transferTargetPriority;
+    }
+
+    public String getTransferTargetCallerIDNum()
+    {
+        return transferTargetCallerIDNum;
+    }
+
+    public void setTransferTargetCallerIDNum(String transferTargetCallerIDNum)
+    {
+        this.transferTargetCallerIDNum = transferTargetCallerIDNum;
+    }
+
+    public String getOrigBridgeVideoSourceMode()
+    {
+        return origBridgeVideoSourceMode;
+    }
+
+    public void setOrigBridgeVideoSourceMode(String origBridgeVideoSourceMode)
+    {
+        this.origBridgeVideoSourceMode = origBridgeVideoSourceMode;
+    }
+
+    public String getTransferTargetConnectedLineNum()
+    {
+        return transferTargetConnectedLineNum;
+    }
+
+    public void setTransferTargetConnectedLineNum(String transferTargetConnectedLineNum)
+    {
+        this.transferTargetConnectedLineNum = transferTargetConnectedLineNum;
+    }
+
+    public String getTransferTargetChannel()
+    {
+        return transferTargetChannel;
+    }
+
+    public void setTransferTargetChannel(String transferTargetChannel)
+    {
+        this.transferTargetChannel = transferTargetChannel;
+    }
+
+    public String getTransferTargetContext()
+    {
+        return transferTargetContext;
+    }
+
+    public void setTransferTargetContext(String transferTargetContext)
+    {
+        this.transferTargetContext = transferTargetContext;
+    }
+
+    public String getTransferTargetConnectedLineName()
+    {
+        return transferTargetConnectedLineName;
+    }
+
+    public void setTransferTargetConnectedLineName(String transferTargetConnectedLineName)
+    {
+        this.transferTargetConnectedLineName = transferTargetConnectedLineName;
+    }
+
+    public String getTransferTargetExten()
+    {
+        return transferTargetExten;
+    }
+
+    public void setTransferTargetExten(String transferTargetExten)
+    {
+        this.transferTargetExten = transferTargetExten;
+    }
+
+    public String getTransferTargetChannelState()
+    {
+        return transferTargetChannelState;
+    }
+
+    public void setTransferTargetChannelState(String transferTargetChannelState)
+    {
+        this.transferTargetChannelState = transferTargetChannelState;
+    }
+
+    public String getTransferTargetLanguage()
+    {
+        return transferTargetLanguage;
+    }
+
+    public void setTransferTargetLanguage(String transferTargetLanguage)
+    {
+        this.transferTargetLanguage = transferTargetLanguage;
+    }
+
+    public String getTransferTargetAccountCode()
+    {
+        return transferTargetAccountCode;
+    }
+
+    public void setTransferTargetAccountCode(String transferTargetAccountCode)
+    {
+        this.transferTargetAccountCode = transferTargetAccountCode;
+    }
+
+    public String getTransferTargetChannelStateDesc()
+    {
+        return transferTargetChannelStateDesc;
+    }
+
+    public void setTransferTargetChannelStateDesc(String transferTargetChannelStateDesc)
+    {
+        this.transferTargetChannelStateDesc = transferTargetChannelStateDesc;
+    }
+
 }

@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
 
+import org.asteriskjava.manager.response.ManagerError;
+
 public class ManagerResponse
 {
 
@@ -30,7 +32,12 @@ public class ManagerResponse
 		this._eventList = response.getEventList();
 		this._uniqueId = response.getUniqueId();
 		this._attributes = response.getAttributes();
-		this.message = response.getMessage();
+
+		if (response instanceof ManagerError) {
+			this.message = response.getOutput();
+		} else {
+			this.message = response.getMessage();
+		}
 	}
 
 	public Date getDateReceived()

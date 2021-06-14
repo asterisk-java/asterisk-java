@@ -5,7 +5,7 @@ import java.util.concurrent.TimeUnit;
 
 class ProtocolIdentifierWrapper
 {
-    private CountDownLatch latch = new CountDownLatch(1);
+    private volatile CountDownLatch latch = new CountDownLatch(1);
     private String value;
 
     void reset()
@@ -14,9 +14,9 @@ class ProtocolIdentifierWrapper
         latch = new CountDownLatch(1);
     }
 
-    void await(long timeout) throws InterruptedException
+    boolean await(long timeout) throws InterruptedException
     {
-        latch.await(timeout, TimeUnit.MILLISECONDS);
+        return latch.await(timeout, TimeUnit.MILLISECONDS);
     }
 
     String getValue()
@@ -24,14 +24,10 @@ class ProtocolIdentifierWrapper
         return value;
     }
 
-    void countDown()
-    {
-        latch.countDown();
-    }
-
     public void setValue(String identifier)
     {
         value = identifier;
+        latch.countDown();
 
     }
 }

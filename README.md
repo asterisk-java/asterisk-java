@@ -44,64 +44,22 @@ Asterisk-Java is available from [here](https://github.com/asterisk-java/asterisk
 Maven Dependency
 ----------------
 
-Asterisk-Java 2.0.4
-
-	<repositories>
-		<repository>
-			<id>asterisk-java-mvn-repo</id>
-            <url>https://raw.githubusercontent.com/asterisk-java/asterisk-java/mvn-repo</url>
- 			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
+Asterisk-Java 3.x (Java 1.8  and Asterisk Version 10 thru 16) (master)
 
 	<dependency>
 	  <groupId>org.asteriskjava</groupId>
 	  <artifactId>asterisk-java</artifactId>
-	  <version>2.0.4</version>
+	  <version>3.11.0</version>
 	</dependency>
 
-Asterisk-Java 2.0.3
-
-	<repositories>
-		<repository>
-			<id>asterisk-java-mvn-repo</id>
-            <url>https://raw.githubusercontent.com/asterisk-java/asterisk-java/mvn-repo</url>
- 			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
+Asterisk-Java 2.x (Java 1.7 and Asterisk < Version 10) (branch 2.0.4)
 
 	<dependency>
 	  <groupId>org.asteriskjava</groupId>
 	  <artifactId>asterisk-java</artifactId>
-	  <version>2.0.3</version>
+	  <version>2.2.0</version>
 	</dependency>
 
-
-Asterisk-Java 2.0
-
-	<dependency>
-	  <groupId>org.asteriskjava</groupId>
-	  <artifactId>asterisk-java</artifactId>
-	  <version>2.0.2</version>
-	</dependency>
-
-Asterisk-Java 1.0
-
-	<dependency>
-	  <groupId>org.asteriskjava</groupId>
-	  <artifactId>asterisk-java</artifactId>
-	  <version>1.0.0-final</version>
-	</dependency>
 
 INSTALLATION FROM SOURCE
 ------------------------
@@ -143,7 +101,7 @@ To compile and run do:
 SYSTEM REQUIREMENTS
 -------------------
 
-Asterisk-Java needs a Java Virtual Machine of at least version 1.7 ([Java SE 7.0](http://www.oracle.com/technetwork/java/javase/downloads/index.html)). If you want to build the jar from source, you will
+Asterisk-Java needs a Java Virtual Machine of at least version 1.8 ([Java SE 8.0](http://www.oracle.com/technetwork/java/javase/downloads/index.html)). If you want to build the jar from source, you will
 also need [Maven](http://maven.apache.org/).
 
 LEGAL

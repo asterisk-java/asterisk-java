@@ -8,10 +8,11 @@ import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
+import org.asteriskjava.util.DateUtil;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
@@ -28,7 +29,7 @@ public class FileTrace implements Trace
 
     // ok to share instance as access to this object is synchronized anyway
     private final DateFormat df = new SimpleDateFormat("yyyyMMddHHmmsszzz");
-    private Charset charset = Charset.forName("UTF-8");
+    private Charset charset = StandardCharsets.UTF_8;
     private FileChannel channel;
     private boolean exceptionLogged = false;
     private RandomAccessFile randomAccessFile;
@@ -71,7 +72,7 @@ public class FileTrace implements Trace
     {
         final StringBuilder sb = new StringBuilder(FILE_PREFIX);
         sb.append("_");
-        sb.append(df.format(new Date()));
+        sb.append(df.format(DateUtil.getDate()));
         sb.append("_");
         sb.append(socket.getLocalAddress().getHostAddress());
         sb.append("_");
@@ -121,7 +122,7 @@ public class FileTrace implements Trace
 
     protected String format(String prefix, String s)
     {
-        final StringBuilder sb = new StringBuilder(df.format(new Date()));
+        final StringBuilder sb = new StringBuilder(df.format(DateUtil.getDate()));
         final String filler = String.format("%" + sb.length() + "s", "");
         String[] lines = s.split("\n");
         for (int i = 0; i < lines.length; i++)

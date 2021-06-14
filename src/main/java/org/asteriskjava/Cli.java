@@ -23,7 +23,7 @@ import org.asteriskjava.fastagi.DefaultAgiServer;
  * <dd>Displays the version of Asterisk-Java</dd>
  * </dl>
  * If no option is given a FastAGI server is started on the default port.
- * 
+ *
  * @since 1.0.0
  */
 public class Cli

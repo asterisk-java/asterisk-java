@@ -23,6 +23,7 @@
  */
 package org.asteriskjava.pbx.agi.config;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -74,16 +75,14 @@ public class AgiMappingStragegy implements MappingStrategy
         {
             try
             {
-                ret = handlers.get(script).newInstance();
+                ret = handlers.get(script).getDeclaredConstructor().newInstance();
             }
-            catch (InstantiationException e)
+            catch (IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException
+                    | InstantiationException | IllegalAccessException e)
             {
                 logger.error(e, e);
             }
-            catch (IllegalAccessException e)
-            {
-                logger.error(e, e);
-            }
+
         }
 
         return ret;
@@ -97,14 +96,19 @@ public class AgiMappingStragegy implements MappingStrategy
      * @throws DuplicateScriptException
      * @throws IllegalAccessException
      * @throws InstantiationException
+     * @throws SecurityException
+     * @throws NoSuchMethodException
+     * @throws InvocationTargetException
+     * @throws IllegalArgumentException
      */
     @SuppressWarnings("unchecked")
     public void addServiceAgiScript(Class< ? extends ServiceAgiScript> handler)
-            throws DuplicateScriptException, InstantiationException, IllegalAccessException
+            throws DuplicateScriptException, InstantiationException, IllegalAccessException, IllegalArgumentException,
+            InvocationTargetException, NoSuchMethodException, SecurityException
     {
 
         logger.info("loading agi handler {}" + handler.getCanonicalName());
-        ServiceAgiScript tmpHandler = handler.newInstance();
+        ServiceAgiScript tmpHandler = handler.getDeclaredConstructor().newInstance();
         if (handlers.containsKey(tmpHandler.getScriptName()))
         {
             throw new DuplicateScriptException("Script " + tmpHandler.getScriptName() + " already exists");

@@ -30,8 +30,7 @@ public class QueueMemberStatusEvent extends QueueMemberEvent
     private static final long serialVersionUID = -2293926744791895763L;
 
     private String ringinuse;
-    private String iface;
-    private Integer incall;
+    private Integer wrapuptime;
 
     /**
      * @param source
@@ -39,16 +38,6 @@ public class QueueMemberStatusEvent extends QueueMemberEvent
     public QueueMemberStatusEvent(Object source)
     {
         super(source);
-    }
-
-    public String getInterface()
-    {
-        return iface;
-    }
-
-    public void setInterface(String iface)
-    {
-        this.iface = iface;
     }
 
     /**
@@ -67,15 +56,13 @@ public class QueueMemberStatusEvent extends QueueMemberEvent
         this.ringinuse = ringinuse;
     }
 
-    public Integer getIncall()
+    public Integer getWrapuptime()
     {
-        return incall;
+        return wrapuptime;
     }
 
-    public void setIncall(Integer incall)
+    public void setWrapuptime(Integer wrapuptime)
     {
-        this.incall = incall;
+        this.wrapuptime = wrapuptime;
     }
-    
-    
 }

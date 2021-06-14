@@ -119,7 +119,7 @@ class CoherentManagerConnection implements FilteredManagerListener<ManagerEvent>
             throws IllegalStateException, IOException, AuthenticationFailedException, TimeoutException, InterruptedException
     {
         if (self != null)
-            logger.warn("The CoherentManagerConnection has already been initialised"); //$NON-NLS-1$
+            logger.warn("The CoherentManagerConnection has already been initialised");
         else
         {
             self = new CoherentManagerConnection();
@@ -159,7 +159,7 @@ class CoherentManagerConnection implements FilteredManagerListener<ManagerEvent>
     public static synchronized CoherentManagerConnection getInstance()
     {
         if (self == null)
-            throw new IllegalStateException("The CoherentManagerConnection has not been initialised"); //$NON-NLS-1$
+            throw new IllegalStateException("The CoherentManagerConnection has not been initialised");
 
         self.checkConnection();
 
@@ -195,17 +195,17 @@ class CoherentManagerConnection implements FilteredManagerListener<ManagerEvent>
                 throw new PBXException("Channel: " + channel + " cannot be retrieved as it is still in transition.");
 
             response = sendAction(setVariable, 500);
-            if ((response != null) && (response.getResponse().compareToIgnoreCase("success") == 0)) //$NON-NLS-1$
+            if ((response != null) && (response.getResponse().compareToIgnoreCase("success") == 0))
             {
                 // $NON-NLS-1$
 
-                CoherentManagerConnection.logger.debug("set variable " + variableName + " to " + value //$NON-NLS-1$ //$NON-NLS-2$
-                        + " on " + channel); //$NON-NLS-1$
+                CoherentManagerConnection.logger.debug("set variable " + variableName + " to " + value //$NON-NLS-2$
+                        + " on " + channel);
             }
             else
             {
-                throw new PBXException("failed to set variable '" + variableName + "' on channel " + channel + " to '" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                        + value + "'" + (response != null ? " Error:" + response.getMessage() : "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                throw new PBXException("failed to set variable '" + variableName + "' on channel " + channel + " to '" //$NON-NLS-2$ //$NON-NLS-3$
+                        + value + "'" + (response != null ? " Error:" + response.getMessage() : "")); //$NON-NLS-2$ //$NON-NLS-3$
             }
         }
         catch (IllegalArgumentException | IllegalStateException | IOException | TimeoutException e)
@@ -239,16 +239,16 @@ class CoherentManagerConnection implements FilteredManagerListener<ManagerEvent>
             ManagerResponse convertedResponse = sendAction(var, 500);
             if (convertedResponse != null)
             {
-                value = convertedResponse.getAttribute("value"); //$NON-NLS-1$
+                value = convertedResponse.getAttribute("value");
                 if (value == null)
                     value = "";
-                CoherentManagerConnection.logger.debug("getVarAction returned name:" + variableName + " value:" + value); //$NON-NLS-1$ //$NON-NLS-2$
+                CoherentManagerConnection.logger.debug("getVarAction returned name:" + variableName + " value:" + value); //$NON-NLS-2$
             }
         }
         catch (final Exception e)
         {
             CoherentManagerConnection.logger.debug(e, e);
-            CoherentManagerConnection.logger.error("getVariable: " + e); //$NON-NLS-1$
+            CoherentManagerConnection.logger.error("getVariable: " + e);
         }
         return value;
     }
@@ -277,7 +277,7 @@ class CoherentManagerConnection implements FilteredManagerListener<ManagerEvent>
                 }
             }
         };
-        background.setName("sendActionNoWait"); //$NON-NLS-1$
+        background.setName("sendActionNoWait");
         background.setDaemon(true);
         background.start();
     }
@@ -328,7 +328,7 @@ class CoherentManagerConnection implements FilteredManagerListener<ManagerEvent>
             throws IllegalArgumentException, IllegalStateException, IOException, TimeoutException
     {
         if (logger.isDebugEnabled())
-            CoherentManagerConnection.logger.debug("Sending Action: " + action.toString()); //$NON-NLS-1$
+            CoherentManagerConnection.logger.debug("Sending Action: " + action.toString());
 
         CoherentManagerConnection.getInstance();
         if ((CoherentManagerConnection.managerConnection != null)
@@ -344,15 +344,15 @@ class CoherentManagerConnection implements FilteredManagerListener<ManagerEvent>
             if (response != null)
                 convertedResponse = CoherentEventFactory.build(response);
 
-            if ((convertedResponse != null) && (convertedResponse.getResponse().compareToIgnoreCase("Error") == 0))//$NON-NLS-1$
+            if ((convertedResponse != null) && (convertedResponse.getResponse().compareToIgnoreCase("Error") == 0))
             {
-                CoherentManagerConnection.logger.warn("Action '" + ajAction + "' failed, Response: " //$NON-NLS-1$ //$NON-NLS-2$
-                        + convertedResponse.getResponse() + " Message: " + convertedResponse.getMessage()); //$NON-NLS-1$
+                CoherentManagerConnection.logger.warn("Action '" + ajAction + "' failed, Response: "
+                        + convertedResponse.getResponse() + " Message: " + convertedResponse.getMessage());
             }
             return convertedResponse;
         }
 
-        throw new IllegalStateException("not connected."); //$NON-NLS-1$
+        throw new IllegalStateException("not connected.");
     }
 
     private void checkConnection()
@@ -365,7 +365,7 @@ class CoherentManagerConnection implements FilteredManagerListener<ManagerEvent>
         {
             if (trys == 3)
             {
-                CoherentManagerConnection.logger.warn("Awaiting Manager connection"); //$NON-NLS-1$
+                CoherentManagerConnection.logger.warn("Awaiting Manager connection");
             }
             try
             {
@@ -398,7 +398,7 @@ class CoherentManagerConnection implements FilteredManagerListener<ManagerEvent>
         // that it hasn't already)
         // and should have no duplicate events. Once drained the queue will be
         // garbage collected.
-        CoherentManagerEventQueue newRealtime = new CoherentManagerEventQueue("Realtime", //$NON-NLS-1$
+        CoherentManagerEventQueue newRealtime = new CoherentManagerEventQueue("Realtime",
                 CoherentManagerConnection.managerConnection);
         if (this.realtimeEventQueue != null)
         {
@@ -407,7 +407,7 @@ class CoherentManagerConnection implements FilteredManagerListener<ManagerEvent>
         }
         this.realtimeEventQueue = newRealtime;
 
-        CoherentManagerEventQueue newStandard = new CoherentManagerEventQueue("Standard", //$NON-NLS-1$
+        CoherentManagerEventQueue newStandard = new CoherentManagerEventQueue("Standard",
                 CoherentManagerConnection.managerConnection);
         if (this.eventQueue != null)
         {
@@ -428,11 +428,11 @@ class CoherentManagerConnection implements FilteredManagerListener<ManagerEvent>
         boolean muteAudioFound = false;
         for (final String command : convertedResponse.getAttributes().keySet())
         {
-            if (command.toLowerCase().contains("bridge")) //$NON-NLS-1$
+            if (command.toLowerCase().contains("bridge"))
             {
                 bridgeFound = true;
             }
-            if (command.toLowerCase().contains("muteaudio")) //$NON-NLS-1$
+            if (command.toLowerCase().contains("muteaudio"))
             {
                 muteAudioFound = true;
             }
@@ -463,7 +463,7 @@ class CoherentManagerConnection implements FilteredManagerListener<ManagerEvent>
         }
         catch (final Exception e)
         {
-            CoherentManagerConnection.logger.debug("Manager logging off"); //$NON-NLS-1$
+            CoherentManagerConnection.logger.debug("Manager logging off");
             CoherentManagerConnection.logger.debug(e, e);
         }
     }
@@ -508,7 +508,7 @@ class CoherentManagerConnection implements FilteredManagerListener<ManagerEvent>
     @Override
     public String getName()
     {
-        return "CoherentManagerConnection"; //$NON-NLS-1$
+        return "CoherentManagerConnection";
     }
 
     @Override
@@ -527,12 +527,12 @@ class CoherentManagerConnection implements FilteredManagerListener<ManagerEvent>
         // by notifying it of the connection.
         if (event instanceof ConnectEvent)
         {
-            logger.warn("****************** Asterisk manager connection acquired **************************"); //$NON-NLS-1$
+            logger.warn("****************** Asterisk manager connection acquired **************************");
             this._reconnectLatch.countDown();
         }
         else if (event instanceof DisconnectEvent)
         {
-            logger.warn("****************** Asterisk manager connection lost **************************"); //$NON-NLS-1$
+            logger.warn("****************** Asterisk manager connection lost **************************");
             // new Thread(new Runnable()
             // {
             // public void run()

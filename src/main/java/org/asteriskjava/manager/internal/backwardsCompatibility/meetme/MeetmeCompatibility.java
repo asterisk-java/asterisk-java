@@ -1,7 +1,5 @@
 package org.asteriskjava.manager.internal.backwardsCompatibility.meetme;
 
-import java.util.Date;
-
 import org.asteriskjava.manager.event.ConfbridgeEndEvent;
 import org.asteriskjava.manager.event.ConfbridgeJoinEvent;
 import org.asteriskjava.manager.event.ConfbridgeLeaveEvent;
@@ -33,7 +31,7 @@ public class MeetmeCompatibility
         else if (event instanceof ConfbridgeEndEvent)
         {
             MeetMeEndEvent endEvent = new MeetMeEndEvent(this);
-            endEvent.setDateReceived(new Date());
+            endEvent.setDateReceived(event.getDateReceived());
             endEvent.setMeetMe(((ConfbridgeEndEvent) event).getConference());
             return endEvent;
         }
@@ -47,7 +45,7 @@ public class MeetmeCompatibility
             joinEvent.setUniqueId(((ConfbridgeJoinEvent) event).getUniqueId());
             joinEvent.setChannel(((ConfbridgeJoinEvent) event).getChannel());
             joinEvent.setMeetMe(((ConfbridgeJoinEvent) event).getBridgeName());
-            joinEvent.setDateReceived(new Date());
+            joinEvent.setDateReceived(event.getDateReceived());
 
             return joinEvent;
         }
@@ -59,7 +57,7 @@ public class MeetmeCompatibility
             leaveEvent.setUniqueId(((ConfbridgeLeaveEvent) event).getUniqueId());
             leaveEvent.setChannel(((ConfbridgeLeaveEvent) event).getChannel());
             leaveEvent.setMeetMe(((ConfbridgeLeaveEvent) event).getConference());
-            leaveEvent.setDateReceived(new Date());
+            leaveEvent.setDateReceived(event.getDateReceived());
 
             return leaveEvent;
         }

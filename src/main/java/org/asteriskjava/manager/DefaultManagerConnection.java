@@ -350,6 +350,14 @@ public class DefaultManagerConnection implements ManagerConnection
         return impl.sendEventGeneratingAction(action, timeout);
     }
 
+    @Override
+    public void sendEventGeneratingAction(EventGeneratingAction action,
+            SendEventGeneratingActionCallback callback)
+            throws IOException, IllegalArgumentException, IllegalStateException
+    {
+        impl.sendEventGeneratingAction(action, callback);
+    }
+
     public void addEventListener(final ManagerEventListener listener)
     {
         impl.addEventListener(listener);

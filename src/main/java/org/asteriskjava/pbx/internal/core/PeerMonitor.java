@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.asteriskjava.lock.LockableList;
+import org.asteriskjava.lock.Locker.LockCloser;
 import org.asteriskjava.pbx.Channel;
 import org.asteriskjava.pbx.EndPoint;
 import org.asteriskjava.pbx.ListenerPriority;
@@ -34,7 +36,7 @@ public class PeerMonitor extends EventListenerBaseClass implements Runnable
 
     private static final Log logger = LogFactory.getLog(PeerMonitor.class);
 
-    LinkedList<Peer> peerList = new LinkedList<>();
+    LockableList<Peer> peerList = new LockableList<>(new LinkedList<>());
 
     boolean initSip = false;
 
@@ -75,7 +77,7 @@ public class PeerMonitor extends EventListenerBaseClass implements Runnable
     private PeerMonitor()
     {
         super("PeerMonitor", PBXFactory.getActivePBX()); //$NON-NLS-1$
-        this.peerList = new LinkedList<>();
+        this.peerList = new LockableList<>(new LinkedList<>());
         this.startListener();
         this.addSipsToMonitor();
         try
@@ -124,50 +126,57 @@ public class PeerMonitor extends EventListenerBaseClass implements Runnable
 
     }
 
-    synchronized public Peer registerPeer(final Channel newChannel)
+    public Peer registerPeer(final Channel newChannel)
     {
         final Peer peer = this.registerPeer(newChannel.getEndPoint());
         return peer;
     }
 
-    synchronized public Peer registerPeer(final EndPoint endPoint)
+    public Peer registerPeer(final EndPoint endPoint)
     {
         if (endPoint.isLocal())
         {
             return null;
         }
 
-        Peer peer = this.findPeer(endPoint);
-        if (peer == null)
+        try (LockCloser closer = peerList.withLock())
         {
-            peer = new Peer(endPoint);
-            this.peerList.add(peer);
+            Peer peer = this.findPeer(endPoint);
+            if (peer == null)
+            {
+                peer = new Peer(endPoint);
+                this.peerList.add(peer);
+            }
+            return peer;
         }
 
-        return peer;
     }
 
-    synchronized public Peer findPeer(final EndPoint peerEndPoint)
+    public Peer findPeer(final EndPoint peerEndPoint)
     {
         Peer found = null;
 
-        for (final Peer peer : this.peerList)
+        try (LockCloser closer = peerList.withLock())
         {
-            if (peer.getEndPoint().isSame(peerEndPoint))
+            for (final Peer peer : this.peerList)
             {
-                found = peer;
-                break;
+                if (peer.getEndPoint().isSame(peerEndPoint))
+                {
+                    found = peer;
+                    break;
+                }
             }
         }
         return found;
     }
 
-    @SuppressWarnings("unchecked")
     public Iterator<Peer> getIterator()
     {
-        final List<Peer> clone = (LinkedList<Peer>) this.peerList.clone();
-        final List<Peer> tmpList = clone;
-        return tmpList.iterator();
+        try (LockCloser closer = peerList.withLock())
+        {
+            final List<Peer> clone = new LinkedList<Peer>(this.peerList);
+            return clone.iterator();
+        }
 
     }
 
@@ -189,7 +198,7 @@ public class PeerMonitor extends EventListenerBaseClass implements Runnable
     }
 
     @Override
-    synchronized public void onManagerEvent(final ManagerEvent event)
+    public void onManagerEvent(final ManagerEvent event)
     {
         /*
          * This function is called from the base class. Here we process events
@@ -232,33 +241,45 @@ public class PeerMonitor extends EventListenerBaseClass implements Runnable
 
     private void handleEvent(NewStateEvent event)
     {
-        for (Peer peer : this.peerList)
+        try (LockCloser closer = peerList.withLock())
         {
-            peer.handleEvent(event);
+            for (Peer peer : this.peerList)
+            {
+                peer.handleEvent(event);
+            }
         }
     }
 
     private void handleEvent(final NewChannelEvent event)
     {
-        for (Peer peer : this.peerList)
+        try (LockCloser closer = peerList.withLock())
         {
-            peer.handleEvent(event);
+            for (Peer peer : this.peerList)
+            {
+                peer.handleEvent(event);
+            }
         }
     }
 
     private void handleEvent(final MasqueradeEvent event)
     {
-        for (Peer peer : this.peerList)
+        try (LockCloser closer = peerList.withLock())
         {
-            peer.handleEvent(event);
+            for (Peer peer : this.peerList)
+            {
+                peer.handleEvent(event);
+            }
         }
     }
 
     private void handleEvent(final StatusEvent event)
     {
-        for (Peer peer : this.peerList)
+        try (LockCloser closer = peerList.withLock())
         {
-            peer.handleEvent(event);
+            for (Peer peer : this.peerList)
+            {
+                peer.handleEvent(event);
+            }
         }
     }
 
@@ -288,12 +309,14 @@ public class PeerMonitor extends EventListenerBaseClass implements Runnable
      * 
      * @param event
      */
-    private synchronized void handleEvent(final StatusCompleteEvent event)
+    private void handleEvent(final StatusCompleteEvent event)
     {
-
-        for (final Peer peer : this.peerList)
+        try (LockCloser closer = peerList.withLock())
         {
-            peer.endSweep();
+            for (final Peer peer : this.peerList)
+            {
+                peer.endSweep();
+            }
         }
         PeerMonitor.logger.debug("Channel Mark and Sweep complete"); //$NON-NLS-1$
     }
@@ -350,7 +373,7 @@ public class PeerMonitor extends EventListenerBaseClass implements Runnable
         PeerMonitor.logger.debug("Starting channel mark and sweep"); //$NON-NLS-1$
 
         // Mark every channel as 'clearing'
-        synchronized (PeerMonitor.class)
+        try (LockCloser closer = peerList.withLock())
         {
             for (final Peer peer : this.peerList)
             {

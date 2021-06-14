@@ -363,14 +363,20 @@ public class ManagerReaderImplTest
             this.dispatchedResponses = new ArrayList<ManagerResponse>();
         }
 
-        public void dispatchResponse(ManagerResponse response)
+        public void dispatchResponse(ManagerResponse response, Integer requiredHandlingTime)
         {
             dispatchedResponses.add(response);
         }
 
-        public void dispatchEvent(ManagerEvent event)
+        public void dispatchEvent(ManagerEvent event, Integer requiredHandlingTime)
         {
             dispatchedEvents.add(event);
+        }
+
+        @Override
+        public void stop()
+        {
+            // NO_OP
         }
     }
 }

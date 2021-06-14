@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+import org.asteriskjava.lock.Locker.LockCloser;
 import org.asteriskjava.manager.TimeoutException;
 import org.asteriskjava.pbx.ActivityCallback;
 import org.asteriskjava.pbx.AsteriskSettings;
@@ -136,7 +137,10 @@ public class ParkActivityImpl extends ActivityHelper<ParkActivity> implements Pa
             {
                 if (success)
                 {
-                    this._latch.await(2, TimeUnit.SECONDS);
+                    if (!this._latch.await(2, TimeUnit.SECONDS))
+                    {
+                        logger.warn("Timeout, continuing");
+                    }
                 }
 
                 if (this._parkingLot == null)
@@ -173,15 +177,18 @@ public class ParkActivityImpl extends ActivityHelper<ParkActivity> implements Pa
     }
 
     @Override
-    synchronized public void onManagerEvent(final ManagerEvent event)
+    public void onManagerEvent(final ManagerEvent event)
     {
-        assert event instanceof ParkedCallEvent : "Unexpected event";
+        try (LockCloser closer = this.withLock())
+        {
+            assert event instanceof ParkedCallEvent : "Unexpected event";
 
-        final ParkedCallEvent parkedEvent = (ParkedCallEvent) event;
-        final AsteriskPBX pbx = (AsteriskPBX) PBXFactory.getActivePBX();
+            final ParkedCallEvent parkedEvent = (ParkedCallEvent) event;
+            final AsteriskPBX pbx = (AsteriskPBX) PBXFactory.getActivePBX();
 
-        this._parkingLot = pbx.buildEndPoint(TechType.LOCAL, parkedEvent.getExten());
-        this._latch.countDown();
+            this._parkingLot = pbx.buildEndPoint(TechType.LOCAL, parkedEvent.getExten());
+            this._latch.countDown();
+        }
     }
 
     @Override
