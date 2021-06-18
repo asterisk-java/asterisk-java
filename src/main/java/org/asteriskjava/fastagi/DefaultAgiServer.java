@@ -18,6 +18,7 @@ package org.asteriskjava.fastagi;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.Socket;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.concurrent.RejectedExecutionException;
@@ -31,6 +32,7 @@ import org.asteriskjava.util.ReflectionUtil;
 import org.asteriskjava.util.ServerSocketFacade;
 import org.asteriskjava.util.SocketConnectionFacade;
 import org.asteriskjava.util.internal.ServerSocketFacadeImpl;
+import org.asteriskjava.util.internal.SocketConnectionFacadeImpl;
 
 /**
  * Default implementation of the {@link org.asteriskjava.fastagi.AgiServer}
@@ -61,6 +63,14 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
     private String configResourceBundleName = DEFAULT_CONFIG_RESOURCE_BUNDLE_NAME;
     private int port = DEFAULT_BIND_PORT;
     private InetAddress address = null;
+
+    /**
+     * Closes the connection if no input has been read for the given amount of
+     * milliseconds.
+     *
+     * @see Socket#setSoTimeout(int)
+     */
+    private int socketReadTimeout = SocketConnectionFacadeImpl.MAX_SOCKET_READ_TIMEOUT_MILLIS;
 
     /**
      * Creates a new DefaultAgiServer.
@@ -295,9 +305,18 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
         }
     }
 
+    public void setSocketReadTimeout(int socketReadTimeout)
+    {
+        this.socketReadTimeout = socketReadTimeout;
+    }
+
     protected ServerSocketFacade createServerSocket() throws IOException
     {
-        return new ServerSocketFacadeImpl(port, BACKLOG, address);
+        // referred to the address by getAddress(), so that overloading the
+        // getAddress() method works as expected
+        ServerSocketFacade serverSocketFacade = new ServerSocketFacadeImpl(port, BACKLOG, getAddress());
+        serverSocketFacade.setSocketReadTimeout(socketReadTimeout);
+        return serverSocketFacade;
     }
 
     public void startup() throws IOException, IllegalStateException
@@ -311,8 +330,18 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
             logger.error("Unable start AgiServer: cannot to bind to *:" + port + ".", e);
             throw e;
         }
-
-        logger.info("Listening on *:" + port + ".");
+        // referred to the address by getAddress(), so that overloading the
+        // getAddress() method works as expected
+        if (getAddress() != null)
+        {
+            // referred to the address by getAddress(), so that overloading the
+            // getAddress() method works as expected
+            logger.info("Listening on " + getAddress() + ":" + port + ".");
+        }
+        else
+        {
+            logger.info("Listening on *:" + port + ".");
+        }
 
         // loop will be terminated by accept() throwing an IOException when the
         // ServerSocket is closed.

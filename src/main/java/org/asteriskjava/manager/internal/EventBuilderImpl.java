@@ -35,7 +35,7 @@ import org.asteriskjava.manager.event.ResponseEvent;
 import org.asteriskjava.manager.event.UserEvent;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
-import org.asteriskjava.util.ReflectionUtil;
+import org.reflections.Reflections;
 
 /**
  * Default implementation of the EventBuilder interface.
@@ -48,11 +48,12 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
 {
     private static final Set<String> ignoredAttributes = new HashSet<>(Arrays.asList("event"));
     private Map<String, Class< ? >> registeredEventClasses;
+    private final Set<String> eventClassNegativeCache = new HashSet<>();
 
     private static final Log logger = LogFactory.getLog(EventBuilderImpl.class);
 
-    private final static Set<Class<ManagerEvent>> knownManagerEventClasses = ReflectionUtil
-            .loadClasses("org.asteriskjava.manager.event", ManagerEvent.class);
+    private final static Set<Class< ? extends ManagerEvent>> knownManagerEventClasses = new Reflections(
+            "org.asteriskjava.manager.event").getSubTypesOf(ManagerEvent.class);
 
     EventBuilderImpl()
     {
@@ -67,7 +68,10 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
     {
         for (Class< ? extends ManagerEvent> managerEventClass : knownManagerEventClasses)
         {
-            registerEventClass(managerEventClass);
+            if (!Modifier.isAbstract(managerEventClass.getModifiers()))
+            {
+                registerEventClass(managerEventClass);
+            }
         }
     }
 
@@ -106,12 +110,11 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
     {
         Constructor< ? > defaultConstructor;
 
-        if (!ManagerEvent.class.isAssignableFrom(clazz))
+        if (Modifier.isAbstract(clazz.getModifiers()))
         {
-            throw new IllegalArgumentException(clazz + " is not a ManagerEvent");
+            throw new IllegalArgumentException(clazz + " is abstract");
         }
-
-        if ((clazz.getModifiers() & Modifier.ABSTRACT) != 0)
+        if (clazz.isInterface())
         {
             throw new IllegalArgumentException(clazz + " is abstract");
         }
@@ -119,15 +122,15 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
         try
         {
             defaultConstructor = clazz.getConstructor(Object.class);
+
+            if (!Modifier.isPublic(defaultConstructor.getModifiers()))
+            {
+                throw new IllegalArgumentException(clazz + " has no public default constructor");
+            }
         }
         catch (NoSuchMethodException ex)
         {
             throw new IllegalArgumentException(clazz + " has no usable constructor");
-        }
-
-        if ((defaultConstructor.getModifiers() & Modifier.PUBLIC) == 0)
-        {
-            throw new IllegalArgumentException(clazz + " has no public default constructor");
         }
 
         registeredEventClasses.put(eventType.toLowerCase(Locale.US), clazz);
@@ -228,8 +231,11 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
         eventClass = registeredEventClasses.get(eventType);
         if (eventClass == null)
         {
-            logger.info("No event class registered for event type '" + eventType + "', attributes: " + attributes
-                    + ". Please report at https://github.com/asterisk-java/asterisk-java/issues");
+            if (eventClassNegativeCache.add(eventType))
+            {
+                logger.info("No event class registered for event type '" + eventType + "', attributes: " + attributes
+                        + ". Please report at https://github.com/asterisk-java/asterisk-java/issues");
+            }
             return null;
         }
 

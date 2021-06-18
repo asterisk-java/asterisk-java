@@ -52,7 +52,7 @@ public interface PBX
      * @param ActivityCallback
      */
     BlindTransferActivity blindTransfer(final Call call, OperandChannel channelToTransfer, final EndPoint transferTarget,
-            final CallerID toCallerID, boolean autoAnswer, long timeout);
+            final CallerID toCallerID, boolean autoAnswer, long timeout, String dialOptions);
 
     /**
      * The BlindTransferActivity is used by the AsteriksPBX to transfer a live
@@ -73,7 +73,7 @@ public interface PBX
      *            is reached the Blind Transfer will be cancelled.
      */
     void blindTransfer(Call call, OperandChannel channelToTransfer, final EndPoint transferTarget, final CallerID toCallerID,
-            boolean autoAnswer, long timeout, ActivityCallback<BlindTransferActivity> callback);
+            boolean autoAnswer, long timeout, ActivityCallback<BlindTransferActivity> callback, String dialOptions);
 
     /**
      * Sends a DTMF tone to given channel. Not returning until the tone has been
@@ -100,7 +100,7 @@ public interface PBX
      * 
      * @return Call - the call resulting from dialing the number.
      */
-    DialActivity dial(EndPoint from, CallerID fromCallerID, EndPoint to, CallerID toCallerID);
+    DialActivity dial(EndPoint from, CallerID fromCallerID, EndPoint to, CallerID toCallerID, String dialOptions);
 
     /**
      * Dials the given phone number using the specified trunk. Not returning
@@ -110,7 +110,7 @@ public interface PBX
      * @return Call the call resulting from dialing the number.
      */
     void dial(EndPoint from, CallerID fromCallerID, EndPoint to, CallerID toCallerID,
-            ActivityCallback<DialActivity> callback);
+            ActivityCallback<DialActivity> callback, String dialOptions);
 
     /**
      * Hangs up the given channel. Not returning until the call is hungup.

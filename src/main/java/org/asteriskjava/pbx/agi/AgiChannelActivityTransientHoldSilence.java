@@ -39,7 +39,10 @@ public class AgiChannelActivityTransientHoldSilence implements AgiChannelActivit
             }
             else
             {
-                latch.await(10, TimeUnit.SECONDS);
+                if (!latch.await(10, TimeUnit.SECONDS))
+                {
+                    logger.warn("Exiting with timeout");
+                }
             }
         }
         catch (AgiHangupException e)
@@ -54,7 +57,7 @@ public class AgiChannelActivityTransientHoldSilence implements AgiChannelActivit
     }
 
     @Override
-    public boolean isDisconnect()
+    public boolean isDisconnect(ActivityAgi activityAgi)
     {
         return false;
     }

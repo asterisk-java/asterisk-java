@@ -29,10 +29,13 @@ import org.asteriskjava.manager.event.ManagerEvent;
 import org.asteriskjava.manager.event.ProtocolIdentifierReceivedEvent;
 import org.asteriskjava.manager.internal.backwardsCompatibility.BackwardsCompatibilityForManagerEvents;
 import org.asteriskjava.manager.response.ManagerResponse;
+import org.asteriskjava.pbx.util.LogTime;
 import org.asteriskjava.util.DateUtil;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 import org.asteriskjava.util.SocketConnectionFacade;
+
+import com.google.common.util.concurrent.RateLimiter;
 
 /**
  * Default implementation of the ManagerReader interface.
@@ -58,11 +61,6 @@ public class ManagerReaderImpl implements ManagerReader
      * asterisk to instances of well known response classes.
      */
     private final ResponseBuilder responseBuilder;
-
-    /**
-     * The dispatcher to use for dispatching events and responses.
-     */
-    private final Dispatcher dispatcher;
 
     private final Map<String, Class< ? extends ManagerResponse>> expectedResponseClasses;
 
@@ -97,6 +95,8 @@ public class ManagerReaderImpl implements ManagerReader
      */
     BackwardsCompatibilityForManagerEvents compatibility = new BackwardsCompatibilityForManagerEvents();
 
+    private final Dispatcher rawDispatcher;
+
     /**
      * Creates a new ManagerReaderImpl.
      *
@@ -106,7 +106,7 @@ public class ManagerReaderImpl implements ManagerReader
      */
     public ManagerReaderImpl(final Dispatcher dispatcher, Object source)
     {
-        this.dispatcher = dispatcher;
+        this.rawDispatcher = dispatcher;
         this.source = source;
 
         this.eventBuilder = new EventBuilderImpl();
@@ -146,6 +146,8 @@ public class ManagerReaderImpl implements ManagerReader
      */
     public void run()
     {
+        long timeOfLastEvent = 0;
+        long reserve = 0;
         final Map<String, Object> buffer = new HashMap<>();
         String line;
 
@@ -157,6 +159,9 @@ public class ManagerReaderImpl implements ManagerReader
         this.die = false;
         this.dead = false;
 
+        AsyncEventPump dispatcher = new AsyncEventPump(this, rawDispatcher, Thread.currentThread().getName());
+        long slowEventThresholdMs = 10;
+        RateLimiter slowEventLogLimiter = RateLimiter.create(4);
         try
         {
             // main loop
@@ -173,7 +178,7 @@ public class ManagerReaderImpl implements ManagerReader
                     protocolIdentifierReceivedEvent = new ProtocolIdentifierReceivedEvent(source);
                     protocolIdentifierReceivedEvent.setProtocolIdentifier(line);
                     protocolIdentifierReceivedEvent.setDateReceived(DateUtil.getDate());
-                    dispatcher.dispatchEvent(protocolIdentifierReceivedEvent);
+                    dispatcher.dispatchEvent(protocolIdentifierReceivedEvent, null);
                     continue;
                 }
 
@@ -197,8 +202,7 @@ public class ManagerReaderImpl implements ManagerReader
                     int isFromAtStart = line.indexOf("From ");
                     int isToAtStart = line.indexOf("To ");
 
-                    int delimiterIndex = isFromAtStart == 0 || isToAtStart == 0
-                        ? line.indexOf(" ") : line.indexOf(":");
+                    int delimiterIndex = isFromAtStart == 0 || isToAtStart == 0 ? line.indexOf(" ") : line.indexOf(":");
                     // end of workaround for Astersik bug 13319
 
                     int delimiterLength = 1;
@@ -221,6 +225,8 @@ public class ManagerReaderImpl implements ManagerReader
                 // ManagerConnection.
                 if (line.length() == 0)
                 {
+                    Object cause = null;
+                    LogTime timer = new LogTime();
                     if (buffer.containsKey("event"))
                     {
                         // TODO tracing
@@ -229,7 +235,8 @@ public class ManagerReaderImpl implements ManagerReader
                         ManagerEvent event = buildEvent(source, buffer);
                         if (event != null)
                         {
-                            dispatcher.dispatchEvent(event);
+                            cause = event;
+                            dispatcher.dispatchEvent(event, null);
 
                             // Backwards compatibility for bridge events.
                             // Asterisk 13 uses BridgeCreate,
@@ -241,7 +248,7 @@ public class ManagerReaderImpl implements ManagerReader
                             ManagerEvent secondaryEvent = compatibility.handleEvent(event);
                             if (secondaryEvent != null)
                             {
-                                dispatcher.dispatchEvent(secondaryEvent);
+                                dispatcher.dispatchEvent(secondaryEvent, null);
                             }
                         }
                         else
@@ -256,7 +263,8 @@ public class ManagerReaderImpl implements ManagerReader
                         // logger.debug("attempting to build response");
                         if (response != null)
                         {
-                            dispatcher.dispatchResponse(response);
+                            cause = response;
+                            dispatcher.dispatchResponse(response, null);
                         }
                     }
                     else
@@ -268,6 +276,42 @@ public class ManagerReaderImpl implements ManagerReader
                     }
 
                     buffer.clear();
+
+                    // some math to determine if events are being processed
+                    // slowly
+                    long elapsed = timer.timeTaken();
+                    long now = System.currentTimeMillis();
+                    long add = now - timeOfLastEvent;
+
+                    // double the elapsed time, this allows 50% slack. Also note
+                    // that we
+                    // would never be able to exhaust the reserve if we don't
+                    // artificially increase the elapsed time. I'd have probably
+                    // gone for 1.3 but I am trying to avoid floating point math
+                    reserve = (reserve + add) - (elapsed * 2);
+
+                    // don't allow reserve to exceed 500 ms
+                    reserve = Math.min(500, reserve);
+
+                    // don't allow reserve to go negative, otherwise we might
+                    // accrue a large debt
+                    reserve = Math.max(0, reserve);
+                    timeOfLastEvent = now;
+
+                    // check if the event was slow to build and dispatch
+                    if (elapsed > slowEventThresholdMs)
+                    {
+                        // check for to many slow events this second.
+                        if (reserve <= 0)
+                        {
+                            // check we haven't already logged this to often
+                            if (slowEventLogLimiter.tryAcquire())
+                            {
+                                logger.warn("(This is normal during JVM warmup) Slow processing of event " + elapsed + "\n"
+                                        + cause);
+                            }
+                        }
+                    }
                 }
             }
             this.dead = true;
@@ -279,13 +323,25 @@ public class ManagerReaderImpl implements ManagerReader
             this.dead = true;
             logger.info("Terminating reader thread: " + e.getMessage());
         }
+        catch (Exception e)
+        {
+            if (this.terminationException == null)
+            {
+                // wrap in IOException to avoid changing the external API of
+                // asteriskjava
+                this.terminationException = new IOException(e);
+            }
+            logger.error("Manager reader exiting due to unexpected Exception...");
+            logger.error(e, e);
+        }
         finally
         {
             this.dead = true;
             // cleans resources and reconnects if needed
             DisconnectEvent disconnectEvent = new DisconnectEvent(source);
             disconnectEvent.setDateReceived(DateUtil.getDate());
-            dispatcher.dispatchEvent(disconnectEvent);
+            dispatcher.dispatchEvent(disconnectEvent, null);
+            dispatcher.stop();
         }
     }
 

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.asteriskjava.pbx.activities.BlindTransferActivity;
+import org.asteriskjava.util.DateUtil;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
@@ -132,7 +133,7 @@ public class CallImpl implements ChannelHangupListener, Call
         this._owner = OWNER.SELF;
         this._uniquecallID = CallImpl.global_call_identifier_index.incrementAndGet();
         this._direction = direction;
-        this._callStarted = new Date();
+        this._callStarted = DateUtil.getDate();
         this.setOriginatingParty(originatingChannel);
 
     }
@@ -143,7 +144,7 @@ public class CallImpl implements ChannelHangupListener, Call
         this._owner = OWNER.SELF;
         this._uniquecallID = CallImpl.global_call_identifier_index.incrementAndGet();
         this._direction = direction;
-        this._callStarted = new Date();
+        this._callStarted = DateUtil.getDate();
         this.setOriginatingParty(originatingChannel);
         this.setAcceptingParty(acceptingChannel);
 
@@ -154,7 +155,7 @@ public class CallImpl implements ChannelHangupListener, Call
         this._owner = OWNER.SELF;
         this._uniquecallID = CallImpl.global_call_identifier_index.incrementAndGet();
         this._direction = CallDirection.OUTBOUND;
-        this._callStarted = new Date();
+        this._callStarted = DateUtil.getDate();
         this.setOriginatingParty(agent);
         this.setAcceptingParty(callee);
 
@@ -447,25 +448,6 @@ public class CallImpl implements ChannelHangupListener, Call
         return lhs != null && rhs != null && lhs.isSame(rhs);
     }
 
-    // private int findChannel(iChannel channel)
-    // {
-    // int index = -1;
-    //
-    // synchronized (this.channelList)
-    // {
-    // for (int i = 0; i < this.channelList.size(); i++)
-    // {
-    // iChannel aChannel = this.channelList.get(i);
-    // if (aChannel.isSame(channel))
-    // {
-    // index = i;
-    // break;
-    // }
-    // }
-    // }
-    // return index;
-    // }
-
     private void notifyCallHangupListeners()
     {
         for (CallHangupListener listener : this._hangupListeners)
@@ -509,7 +491,7 @@ public class CallImpl implements ChannelHangupListener, Call
     // {
     // if (this.holdStarted == null)
     // {
-    // this.holdStarted = new Date();
+    // this.holdStarted = DateUtil.getDate();
     // }
     // this._state = Call.CallState.TRANSFER;
     // }
@@ -721,19 +703,6 @@ public class CallImpl implements ChannelHangupListener, Call
     {
         return this._owner;
     }
-
-    // /**
-    // * Returns a shallow clone of the list of channels.
-    // */
-    // @SuppressWarnings("unchecked")
-    // @Override
-    // public Collection<iChannel> getChannels()
-    // {
-    // synchronized (this.channelList)
-    // {
-    // return (Collection<iChannel>) this.channelList.clone();
-    // }
-    // }
 
     @Override
     public String toString()

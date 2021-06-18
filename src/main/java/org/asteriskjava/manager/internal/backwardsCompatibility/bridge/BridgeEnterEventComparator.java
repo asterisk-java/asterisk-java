@@ -16,11 +16,11 @@
  */
 package org.asteriskjava.manager.internal.backwardsCompatibility.bridge;
 
-import org.asteriskjava.manager.event.BridgeEnterEvent;
-
 import java.util.Comparator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.asteriskjava.manager.event.BridgeEnterEvent;
 
 public class BridgeEnterEventComparator implements Comparator<BridgeEnterEvent>
 {

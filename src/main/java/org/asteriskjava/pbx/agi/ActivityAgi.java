@@ -18,6 +18,8 @@ import org.asteriskjava.pbx.internal.core.AsteriskPBX;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
+import com.google.common.util.concurrent.RateLimiter;
+
 public abstract class ActivityAgi extends ServiceAgiScriptImpl
 {
 
@@ -111,16 +113,15 @@ public abstract class ActivityAgi extends ServiceAgiScriptImpl
             }
 
             boolean isAlive = true;
-            RateLimiter rateLimiter = new RateLimiter(2);
-            while (!action.isDisconnect() && isAlive)
+            RateLimiter slowRateLimiter = RateLimiter.create(2);
+            while (!action.isDisconnect(this) && isAlive)
             {
-
                 action.execute(this.channel, channelProxy);
 
                 action = channelProxy.getCurrentActivityAction();
                 logger.debug("Action for proxy " + channelProxy + " is " + action.getClass().getSimpleName());
                 isAlive = checkChannelIsStillUp();
-                rateLimiter.acquire();
+                slowRateLimiter.acquire();
             }
 
         }

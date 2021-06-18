@@ -24,7 +24,9 @@ public class FastScannerSpeedTestOnSocket
             for (int i = 10; i-- > 0;)
             {
 
-                InputStreamReader reader = getReader();
+                Socket echoSocket = new Socket("127.0.0.1", FastScannerTestSocketSource.portNumber);
+
+                InputStreamReader reader = getReader(echoSocket);
                 System.out.print("Scanner " + i + ":\t");
 
                 long start = System.currentTimeMillis();
@@ -57,10 +59,8 @@ public class FastScannerSpeedTestOnSocket
         }
     }
 
-    private InputStreamReader getReader() throws UnknownHostException, IOException, InterruptedException
+    private InputStreamReader getReader(Socket echoSocket) throws UnknownHostException, IOException, InterruptedException
     {
-
-        Socket echoSocket = new Socket("127.0.0.1", FastScannerTestSocketSource.portNumber);
 
         InputStream inputStream = echoSocket.getInputStream();
 
@@ -92,8 +92,9 @@ public class FastScannerSpeedTestOnSocket
         {
             for (int i = 10; i-- > 0;)
             {
+                Socket echoSocket = new Socket("127.0.0.1", FastScannerTestSocketSource.portNumber);
 
-                InputStreamReader reader = getReader();
+                InputStreamReader reader = getReader(echoSocket);
                 System.out.print("Fast " + i + ":\t");
                 FastScanner scanner = FastScannerFactory.getReader(reader, pattern);
 

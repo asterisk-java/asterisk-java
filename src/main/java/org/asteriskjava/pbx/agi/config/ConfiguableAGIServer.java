@@ -22,6 +22,7 @@
  */
 package org.asteriskjava.pbx.agi.config;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import javax.naming.ConfigurationException;
@@ -32,7 +33,8 @@ public class ConfiguableAGIServer extends DefaultAgiServer implements Runnable
 {
 
     public ConfiguableAGIServer(AgiConfiguration configuration)
-            throws DuplicateScriptException, InstantiationException, IllegalAccessException, ConfigurationException
+            throws DuplicateScriptException, InstantiationException, IllegalAccessException, ConfigurationException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException
     {
         AgiMappingStragegy mappingStrategy = new AgiMappingStragegy();
         setMaximumPoolSize(500);
@@ -44,7 +46,8 @@ public class ConfiguableAGIServer extends DefaultAgiServer implements Runnable
     }
 
     private void loadHandlers(AgiMappingStragegy mappingStrategy, AgiConfiguration configuration)
-            throws DuplicateScriptException, InstantiationException, IllegalAccessException
+            throws DuplicateScriptException, InstantiationException, IllegalAccessException, IllegalArgumentException,
+            InvocationTargetException, NoSuchMethodException, SecurityException
     {
         List<Class< ? extends ServiceAgiScript>> handlers = configuration.getAgiHandlers();
         for (Class< ? extends ServiceAgiScript> clazz : handlers)

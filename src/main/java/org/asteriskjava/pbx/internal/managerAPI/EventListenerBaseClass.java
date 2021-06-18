@@ -1,5 +1,6 @@
 package org.asteriskjava.pbx.internal.managerAPI;
 
+import org.asteriskjava.lock.Lockable;
 import org.asteriskjava.pbx.PBX;
 import org.asteriskjava.pbx.asterisk.wrap.events.ManagerEvent;
 import org.asteriskjava.pbx.internal.core.AsteriskPBX;
@@ -9,7 +10,7 @@ import org.asteriskjava.pbx.internal.core.FilteredManagerListener;
  * This is the basic abstract event listener class. It implements a thread
  * and queue.
  */
-public abstract class EventListenerBaseClass implements FilteredManagerListener<ManagerEvent>, AutoCloseable
+public abstract class EventListenerBaseClass extends Lockable implements FilteredManagerListener<ManagerEvent>, AutoCloseable
 {
 
     private final String name;

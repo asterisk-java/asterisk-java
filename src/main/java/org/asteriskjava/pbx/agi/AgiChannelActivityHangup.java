@@ -33,7 +33,7 @@ public class AgiChannelActivityHangup implements AgiChannelActivityAction
     }
 
     @Override
-    public boolean isDisconnect()
+    public boolean isDisconnect(ActivityAgi activityAgi)
     {
         return false;
     }

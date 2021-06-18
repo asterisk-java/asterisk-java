@@ -2,89 +2,7 @@ package org.asteriskjava.manager;
 
 import java.lang.reflect.Method;
 
-import org.asteriskjava.manager.event.AgentCallbackLoginEvent;
-import org.asteriskjava.manager.event.AgentCallbackLogoffEvent;
-import org.asteriskjava.manager.event.AgentCalledEvent;
-import org.asteriskjava.manager.event.AgentCompleteEvent;
-import org.asteriskjava.manager.event.AgentConnectEvent;
-import org.asteriskjava.manager.event.AgentDumpEvent;
-import org.asteriskjava.manager.event.AgentLoginEvent;
-import org.asteriskjava.manager.event.AgentLogoffEvent;
-import org.asteriskjava.manager.event.AgentsCompleteEvent;
-import org.asteriskjava.manager.event.AgentsEvent;
-import org.asteriskjava.manager.event.AlarmClearEvent;
-import org.asteriskjava.manager.event.AlarmEvent;
-import org.asteriskjava.manager.event.BridgeEvent;
-import org.asteriskjava.manager.event.CdrEvent;
-import org.asteriskjava.manager.event.ChanSpyStartEvent;
-import org.asteriskjava.manager.event.ChanSpyStopEvent;
-import org.asteriskjava.manager.event.ConnectEvent;
-import org.asteriskjava.manager.event.CoreShowChannelEvent;
-import org.asteriskjava.manager.event.CoreShowChannelsCompleteEvent;
-import org.asteriskjava.manager.event.DAHDIChannelEvent;
-import org.asteriskjava.manager.event.DahdiShowChannelsCompleteEvent;
-import org.asteriskjava.manager.event.DahdiShowChannelsEvent;
-import org.asteriskjava.manager.event.DbGetResponseEvent;
-import org.asteriskjava.manager.event.DialEvent;
-import org.asteriskjava.manager.event.DisconnectEvent;
-import org.asteriskjava.manager.event.DndStateEvent;
-import org.asteriskjava.manager.event.DongleCENDEvent;
-import org.asteriskjava.manager.event.DongleCallStateChangeEvent;
-import org.asteriskjava.manager.event.DongleDeviceEntryEvent;
-import org.asteriskjava.manager.event.DongleNewCMGREvent;
-import org.asteriskjava.manager.event.DongleNewSMSBase64Event;
-import org.asteriskjava.manager.event.DongleNewSMSEvent;
-import org.asteriskjava.manager.event.DongleStatusEvent;
-import org.asteriskjava.manager.event.ExtensionStatusEvent;
-import org.asteriskjava.manager.event.FaxReceivedEvent;
-import org.asteriskjava.manager.event.HangupEvent;
-import org.asteriskjava.manager.event.HangupRequestEvent;
-import org.asteriskjava.manager.event.HoldEvent;
-import org.asteriskjava.manager.event.HoldedCallEvent;
-import org.asteriskjava.manager.event.JoinEvent;
-import org.asteriskjava.manager.event.LeaveEvent;
-import org.asteriskjava.manager.event.LogChannelEvent;
-import org.asteriskjava.manager.event.ManagerEvent;
-import org.asteriskjava.manager.event.MeetMeJoinEvent;
-import org.asteriskjava.manager.event.MeetMeLeaveEvent;
-import org.asteriskjava.manager.event.MeetMeMuteEvent;
-import org.asteriskjava.manager.event.MeetMeTalkingEvent;
-import org.asteriskjava.manager.event.MessageWaitingEvent;
-import org.asteriskjava.manager.event.NewCallerIdEvent;
-import org.asteriskjava.manager.event.NewChannelEvent;
-import org.asteriskjava.manager.event.NewExtenEvent;
-import org.asteriskjava.manager.event.NewStateEvent;
-import org.asteriskjava.manager.event.OriginateResponseEvent;
-import org.asteriskjava.manager.event.ParkedCallEvent;
-import org.asteriskjava.manager.event.ParkedCallGiveUpEvent;
-import org.asteriskjava.manager.event.ParkedCallTimeOutEvent;
-import org.asteriskjava.manager.event.ParkedCallsCompleteEvent;
-import org.asteriskjava.manager.event.PeerEntryEvent;
-import org.asteriskjava.manager.event.PeerStatusEvent;
-import org.asteriskjava.manager.event.PeerlistCompleteEvent;
-import org.asteriskjava.manager.event.ProtocolIdentifierReceivedEvent;
-import org.asteriskjava.manager.event.QueueEntryEvent;
-import org.asteriskjava.manager.event.QueueEvent;
-import org.asteriskjava.manager.event.QueueMemberAddedEvent;
-import org.asteriskjava.manager.event.QueueMemberEvent;
-import org.asteriskjava.manager.event.QueueMemberPausedEvent;
-import org.asteriskjava.manager.event.QueueMemberRemovedEvent;
-import org.asteriskjava.manager.event.QueueMemberStatusEvent;
-import org.asteriskjava.manager.event.QueueParamsEvent;
-import org.asteriskjava.manager.event.QueueStatusCompleteEvent;
-import org.asteriskjava.manager.event.RegistrationsCompleteEvent;
-import org.asteriskjava.manager.event.RegistryEntryEvent;
-import org.asteriskjava.manager.event.RegistryEvent;
-import org.asteriskjava.manager.event.ReloadEvent;
-import org.asteriskjava.manager.event.RenameEvent;
-import org.asteriskjava.manager.event.ShutdownEvent;
-import org.asteriskjava.manager.event.SoftHangupRequestEvent;
-import org.asteriskjava.manager.event.StatusCompleteEvent;
-import org.asteriskjava.manager.event.StatusEvent;
-import org.asteriskjava.manager.event.UnparkedCallEvent;
-import org.asteriskjava.manager.event.UserEvent;
-import org.asteriskjava.manager.event.ZapShowChannelsCompleteEvent;
-import org.asteriskjava.manager.event.ZapShowChannelsEvent;
+import org.asteriskjava.manager.event.*;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
@@ -97,41 +15,41 @@ import org.asteriskjava.util.LogFactory;
  * Kindly donated by Steve Prior.
  * <p>
  * Example based on HelloEvents from the tutorial:
- * 
+ *
  * <pre>
  * public class HelloEvents extends AbstractManagerEventListener
  * {
  *     private ManagerConnection managerConnection;
- * 
+ *
  *     public HelloEvents(String machine, String userid, String password) throws IOException
  *     {
  *         ManagerConnectionFactory factory = new ManagerConnectionFactory(machine, userid, password);
  *         this.managerConnection = factory.createManagerConnection();
  *     }
- * 
+ *
  *     public void run() throws Exception
  *     {
  *         // register for events
  *         managerConnection.addEventListener(this);
- * 
+ *
  *         // connect to Asterisk and log in
  *         managerConnection.login();
- * 
+ *
  *         // request channel state
  *         managerConnection.sendAction(new StatusAction());
- * 
+ *
  *         // wait 10 seconds for events to come in
  *         Thread.sleep(10000);
- * 
+ *
  *         // and finally log off and disconnect
  *         managerConnection.logoff();
  *     }
- * 
- *     protected void handleEvent(StatusEvent event)
+ *
+ *     public void handleEvent(StatusEvent event)
  *     {
  *         System.out.println(event.getChannel() + &quot;:&quot; + event.getState());
  *     }
- * 
+ *
  *     public static void main(String[] args) throws Exception
  *     {
  *         HelloEvents helloEvents;
@@ -140,357 +58,743 @@ import org.asteriskjava.util.LogFactory;
  *     }
  * }
  * </pre>
- * 
+ *
  * @author srt
  * @since 0.3
  */
 public abstract class AbstractManagerEventListener implements ManagerEventListener
 {
-    Log logger = LogFactory.getLog(AbstractManagerEventListener.class);
 
-    protected void handleEvent(AgentCallbackLoginEvent event)
+    private static final Log LOGGER = LogFactory.getLog(AbstractManagerEventListener.class);
+
+    public void handleEvent(AgentCompleteEvent event)
+    {
+    }
+
+    public void handleEvent(AgentConnectEvent event)
+    {
+    }
+
+    public void handleEvent(AgentDumpEvent event)
+    {
+    }
+
+    public void handleEvent(AgentRingNoAnswerEvent event)
+    {
+    }
+
+    public void handleEvent(AttendedTransferEvent event)
+    {
+    }
+
+    public void handleEvent(BlindTransferEvent event)
+    {
+    }
+
+    public void handleEvent(BridgeCreateEvent event)
+    {
+    }
+
+    public void handleEvent(BridgeDestroyEvent event)
+    {
+    }
+
+    public void handleEvent(BridgeEnterEvent event)
+    {
+    }
+
+    public void handleEvent(BridgeLeaveEvent event)
+    {
+    }
+
+    public void handleEvent(HangupEvent event)
+    {
+    }
+
+    public void handleEvent(NewChannelEvent event)
+    {
+    }
+
+    public void handleEvent(NewStateEvent event)
+    {
+    }
+
+    public void handleEvent(ConfbridgeEndEvent event)
+    {
+    }
+
+    public void handleEvent(ConfbridgeJoinEvent event)
+    {
+    }
+
+    public void handleEvent(ConfbridgeLeaveEvent event)
+    {
+    }
+
+    public void handleEvent(ConfbridgeStartEvent event)
+    {
+    }
+
+    public void handleEvent(ConfbridgeTalkingEvent event)
+    {
+    }
+
+    public void handleEvent(AntennaLevelEvent event)
+    {
+    }
+
+    public void handleEvent(HangupRequestEvent event)
+    {
+    }
+
+    public void handleEvent(NewCallerIdEvent event)
+    {
+    }
+
+    public void handleEvent(SoftHangupRequestEvent event)
+    {
+    }
+
+    public void handleEvent(FaxDocumentStatusEvent event)
+    {
+    }
+
+    public void handleEvent(FaxReceivedEvent event)
+    {
+    }
+
+    public void handleEvent(FaxStatusEvent event)
+    {
+    }
+
+    public void handleEvent(SendFaxEvent event)
+    {
+    }
+
+    public void handleEvent(SendFaxStatusEvent event)
+    {
+    }
+
+    public void handleEvent(T38FaxStatusEvent event)
+    {
+    }
+
+    public void handleEvent(HoldEvent event)
+    {
+    }
+
+    public void handleEvent(UnholdEvent event)
+    {
+    }
+
+    public void handleEvent(MeetMeJoinEvent event)
+    {
+    }
+
+    public void handleEvent(MeetMeLeaveEvent event)
+    {
+    }
+
+    public void handleEvent(MeetMeMuteEvent event)
+    {
+    }
+
+    public void handleEvent(MeetMeTalkingEvent event)
+    {
+    }
+
+    public void handleEvent(MeetMeTalkingRequestEvent event)
+    {
+    }
+
+    public void handleEvent(MonitorStartEvent event)
+    {
+    }
+
+    public void handleEvent(MonitorStopEvent event)
+    {
+    }
+
+    public void handleEvent(ParkedCallEvent event)
+    {
+    }
+
+    public void handleEvent(QueueMemberAddedEvent event)
+    {
+    }
+
+    public void handleEvent(QueueMemberPausedEvent event)
+    {
+    }
+
+    public void handleEvent(QueueMemberRemovedEvent event)
+    {
+    }
+
+    public void handleEvent(RtcpReceivedEvent event)
+    {
+    }
+
+    public void handleEvent(RtcpSentEvent event)
+    {
+    }
+
+    public void handleEvent(RtpReceiverStatEvent event)
+    {
+    }
+
+    public void handleEvent(RtpSenderStatEvent event)
+    {
+    }
+
+    public void handleEvent(AgentCallbackLoginEvent event)
+    {
+    }
+
+    public void handleEvent(AgentCallbackLogoffEvent event)
+    {
+    }
+
+    public void handleEvent(AgentCalledEvent event)
+    {
+    }
+
+    public void handleEvent(AgentLoginEvent event)
+    {
+    }
+
+    public void handleEvent(AgentLogoffEvent event)
+    {
+    }
+
+    public void handleEvent(AgiExecEvent event)
+    {
+    }
+
+    public void handleEvent(AgiExecEndEvent event)
+    {
+    }
+
+    public void handleEvent(AgiExecStartEvent event)
+    {
+    }
+
+    public void handleEvent(AlarmClearEvent event)
+    {
+    }
+
+    public void handleEvent(AlarmEvent event)
+    {
+    }
+
+    public void handleEvent(BridgeEvent event)
+    {
+    }
+
+    @SuppressWarnings("deprecation")
+    public void handleEvent(LinkEvent event)
+    {
+    }
+
+    @SuppressWarnings("deprecation")
+    public void handleEvent(UnlinkEvent event)
+    {
+    }
+
+    public void handleEvent(BridgeExecEvent event)
+    {
+    }
+
+    public void handleEvent(BridgeMergeEvent event)
+    {
+    }
+
+    public void handleEvent(CdrEvent event)
+    {
+    }
+
+    public void handleEvent(CelEvent event)
+    {
+    }
+
+    public void handleEvent(ChallengeResponseFailedEvent event)
+    {
+    }
+
+    public void handleEvent(ChallengeSentEvent event)
+    {
+    }
+
+    public void handleEvent(ChannelReloadEvent event)
+    {
+    }
+
+    public void handleEvent(ChannelUpdateEvent event)
+    {
+    }
+
+    public void handleEvent(ChanSpyStartEvent event)
+    {
+    }
+
+    public void handleEvent(ChanSpyStopEvent event)
+    {
+    }
+
+    public void handleEvent(ConnectEvent event)
+    {
+    }
+
+    public void handleEvent(ContactStatusEvent event)
+    {
+    }
+
+    public void handleEvent(DAHDIChannelEvent event)
+    {
+    }
+
+    public void handleEvent(DeviceStateChangeEvent event)
+    {
+    }
+
+    public void handleEvent(DialEvent event)
+    {
+    }
+
+    public void handleEvent(DialBeginEvent event)
+    {
+    }
+
+    public void handleEvent(DialEndEvent event)
+    {
+    }
+
+    public void handleEvent(DialStateEvent event)
+    {
+    }
+
+    public void handleEvent(DisconnectEvent event)
+    {
+    }
+
+    public void handleEvent(DndStateEvent event)
+    {
+    }
+
+    public void handleEvent(DongleCallStateChangeEvent event)
+    {
+    }
+
+    public void handleEvent(DongleCENDEvent event)
+    {
+    }
+
+    public void handleEvent(DongleNewCMGREvent event)
+    {
+    }
+
+    public void handleEvent(DongleNewSMSBase64Event event)
+    {
+    }
+
+    public void handleEvent(DongleNewSMSEvent event)
+    {
+    }
+
+    public void handleEvent(DongleStatusEvent event)
+    {
+    }
+
+    public void handleEvent(DtmfEvent event)
+    {
+    }
+
+    public void handleEvent(DtmfBeginEvent event)
+    {
+    }
+
+    public void handleEvent(DtmfEndEvent event)
+    {
+    }
+
+    public void handleEvent(ExtensionStatusEvent event)
+    {
+    }
+
+    public void handleEvent(FullyBootedEvent event)
+    {
+    }
+
+    public void handleEvent(HoldedCallEvent event)
+    {
+    }
+
+    public void handleEvent(InvalidPasswordEvent event)
+    {
+    }
+
+    public void handleEvent(JabberEventEvent event)
+    {
+    }
+
+    public void handleEvent(JitterBufStatsEvent event)
     {
     }
 
-    protected void handleEvent(AgentCallbackLogoffEvent event)
+    public void handleEvent(LocalBridgeEvent event)
     {
     }
 
-    protected void handleEvent(AgentCalledEvent event)
+    public void handleEvent(LocalOptimizationBeginEvent event)
     {
     }
 
-    protected void handleEvent(AgentLoginEvent event)
+    public void handleEvent(LocalOptimizationEndEvent event)
     {
     }
 
-    protected void handleEvent(AgentLogoffEvent event)
+    public void handleEvent(LogChannelEvent event)
     {
     }
 
-    protected void handleEvent(AlarmClearEvent event)
+    public void handleEvent(MasqueradeEvent event)
     {
     }
 
-    protected void handleEvent(AlarmEvent event)
+    public void handleEvent(MeetMeEndEvent event)
     {
     }
 
-    protected void handleEvent(CdrEvent event)
+    public void handleEvent(MessageWaitingEvent event)
     {
     }
 
-    protected void handleEvent(ChanSpyStartEvent event)
+    public void handleEvent(ModuleLoadReportEvent event)
     {
     }
 
-    protected void handleEvent(ChanSpyStopEvent event)
+    public void handleEvent(MusicOnHoldEvent event)
     {
     }
 
-    protected void handleEvent(ConnectEvent event)
+    public void handleEvent(MusicOnHoldStartEvent event)
     {
     }
 
-    protected void handleEvent(DAHDIChannelEvent event)
+    public void handleEvent(MusicOnHoldStopEvent event)
     {
     }
 
-    protected void handleEvent(SoftHangupRequestEvent event)
+    public void handleEvent(NewAccountCodeEvent event)
     {
     }
 
-    protected void handleEvent(DialEvent event)
+    public void handleEvent(NewConnectedLineEvent event)
     {
     }
 
-    protected void handleEvent(HangupRequestEvent event)
+    public void handleEvent(NewExtenEvent event)
     {
     }
 
-    protected void handleEvent(DisconnectEvent event)
+    public void handleEvent(PeerStatusEvent event)
     {
     }
 
-    protected void handleEvent(DndStateEvent event)
+    public void handleEvent(PickupEvent event)
     {
     }
 
-    protected void handleEvent(ExtensionStatusEvent event)
+    public void handleEvent(PriEventEvent event)
     {
     }
 
-    protected void handleEvent(HoldedCallEvent event)
+    public void handleEvent(ProtocolIdentifierReceivedEvent event)
     {
     }
 
-    protected void handleEvent(HoldEvent event)
+    public void handleEvent(QueueEvent event)
     {
     }
 
-    protected void handleEvent(LogChannelEvent event)
+    public void handleEvent(JoinEvent event)
     {
     }
 
-    protected void handleEvent(MessageWaitingEvent event)
+    public void handleEvent(LeaveEvent event)
     {
     }
 
-    protected void handleEvent(NewExtenEvent event)
+    public void handleEvent(QueueCallerAbandonEvent event)
     {
     }
 
-    protected void handleEvent(PeerStatusEvent event)
+    public void handleEvent(QueueCallerJoinEvent event)
     {
     }
 
-    protected void handleEvent(ProtocolIdentifierReceivedEvent event)
+    public void handleEvent(QueueCallerLeaveEvent event)
     {
     }
 
-    protected void handleEvent(QueueEvent event)
+    public void handleEvent(QueueMemberPenaltyEvent event)
     {
     }
 
-    protected void handleEvent(RegistryEntryEvent event)
+    public void handleEvent(ReceiveFaxEvent event)
     {
     }
 
-    protected void handleEvent(RegistryEvent event)
+    public void handleEvent(RegistryEvent event)
     {
     }
 
-    protected void handleEvent(ReloadEvent event)
+    public void handleEvent(ReloadEvent event)
     {
     }
 
-    protected void handleEvent(RenameEvent event)
+    public void handleEvent(RenameEvent event)
     {
     }
 
-    protected void handleEvent(ShutdownEvent event)
+    public void handleEvent(ResponseEvent event)
     {
     }
 
-    protected void handleEvent(UserEvent event)
+    public void handleEvent(AgentsCompleteEvent event)
     {
     }
 
-    protected void handleEvent(AgentCompleteEvent event)
+    public void handleEvent(AgentsEvent event)
     {
     }
 
-    protected void handleEvent(AgentConnectEvent event)
+    public void handleEvent(AsyncAgiEvent event)
     {
     }
 
-    protected void handleEvent(AgentDumpEvent event)
+    public void handleEvent(ConfbridgeListCompleteEvent event)
     {
     }
 
-    protected void handleEvent(FaxReceivedEvent event)
+    public void handleEvent(ConfbridgeListEvent event)
     {
     }
 
-    protected void handleEvent(NewCallerIdEvent event)
+    public void handleEvent(ConfbridgeListRoomsCompleteEvent event)
     {
     }
 
-    protected void handleEvent(HangupEvent event)
+    public void handleEvent(ConfbridgeListRoomsEvent event)
     {
     }
 
-    protected void handleEvent(NewChannelEvent event)
+    public void handleEvent(CoreShowChannelEvent event)
     {
     }
 
-    protected void handleEvent(NewStateEvent event)
+    public void handleEvent(CoreShowChannelsCompleteEvent event)
     {
     }
 
-    protected void handleEvent(MeetMeJoinEvent event)
+    public void handleEvent(DahdiShowChannelsCompleteEvent event)
     {
     }
 
-    protected void handleEvent(MeetMeLeaveEvent event)
+    public void handleEvent(DahdiShowChannelsEvent event)
     {
     }
 
-    protected void handleEvent(MeetMeMuteEvent event)
+    public void handleEvent(DbGetResponseEvent event)
     {
     }
 
-    protected void handleEvent(MeetMeTalkingEvent event)
+    public void handleEvent(DongleDeviceEntryEvent event)
     {
     }
 
-    protected void handleEvent(ParkedCallGiveUpEvent event)
+    public void handleEvent(DongleShowDevicesCompleteEvent event)
     {
     }
 
-    protected void handleEvent(ParkedCallTimeOutEvent event)
+    public void handleEvent(EndpointList event)
     {
     }
 
-    protected void handleEvent(UnparkedCallEvent event)
+    public void handleEvent(EndpointListComplete event)
     {
     }
 
-    protected void handleEvent(QueueMemberAddedEvent event)
+    public void handleEvent(ListDialplanEvent event)
     {
     }
 
-    protected void handleEvent(QueueMemberPausedEvent event)
+    public void handleEvent(OriginateResponseEvent event)
     {
     }
 
-    protected void handleEvent(QueueMemberRemovedEvent event)
+    public void handleEvent(ParkedCallsCompleteEvent event)
     {
     }
 
-    protected void handleEvent(AgentsCompleteEvent event)
+    public void handleEvent(PeerEntryEvent event)
     {
     }
 
-    protected void handleEvent(AgentsEvent event)
+    public void handleEvent(PeerlistCompleteEvent event)
     {
     }
 
-    protected void handleEvent(DbGetResponseEvent event)
+    public void handleEvent(PeersEvent event)
     {
     }
 
-    protected void handleEvent(DongleNewSMSBase64Event event)
+    public void handleEvent(QueueEntryEvent event)
     {
     }
 
-    protected void handleEvent(DongleStatusEvent event)
+    public void handleEvent(QueueMemberEvent event)
     {
     }
 
-    protected void handleEvent(DongleCENDEvent event)
+    public void handleEvent(QueueParamsEvent event)
     {
     }
 
-    protected void handleEvent(DongleCallStateChangeEvent event)
+    public void handleEvent(QueueStatusCompleteEvent event)
     {
     }
 
-    protected void handleEvent(DongleNewSMSEvent event)
+    public void handleEvent(QueueSummaryCompleteEvent event)
     {
     }
 
-    protected void handleEvent(DongleNewCMGREvent event)
+    public void handleEvent(QueueSummaryEvent event)
     {
     }
 
-    protected void handleEvent(DongleDeviceEntryEvent event)
+    public void handleEvent(RegistrationsCompleteEvent event)
     {
     }
 
-    protected void handleEvent(JoinEvent event)
+    public void handleEvent(RegistryEntryEvent event)
     {
     }
 
-    protected void handleEvent(LeaveEvent event)
+    public void handleEvent(ShowDialplanCompleteEvent event)
     {
     }
 
-    protected void handleEvent(BridgeEvent event)
+    public void handleEvent(SkypeBuddyEntryEvent event)
     {
     }
 
-    protected void handleEvent(OriginateResponseEvent event)
+    public void handleEvent(SkypeBuddyListCompleteEvent event)
     {
     }
 
-    protected void handleEvent(ParkedCallEvent event)
+    public void handleEvent(SkypeLicenseEvent event)
     {
     }
 
-    protected void handleEvent(ParkedCallsCompleteEvent event)
+    public void handleEvent(SkypeLicenseListCompleteEvent event)
     {
     }
 
-    protected void handleEvent(PeerEntryEvent event)
+    public void handleEvent(StatusCompleteEvent event)
     {
     }
 
-    protected void handleEvent(PeerlistCompleteEvent event)
+    public void handleEvent(StatusEvent event)
     {
     }
 
-    protected void handleEvent(QueueEntryEvent event)
+    public void handleEvent(VoicemailUserEntryCompleteEvent event)
     {
     }
 
-    protected void handleEvent(QueueMemberEvent event)
+    public void handleEvent(VoicemailUserEntryEvent event)
     {
     }
 
-    protected void handleEvent(QueueMemberStatusEvent event)
+    public void handleEvent(ZapShowChannelsCompleteEvent event)
     {
     }
 
-    protected void handleEvent(QueueParamsEvent event)
+    public void handleEvent(ZapShowChannelsEvent event)
     {
     }
 
-    protected void handleEvent(QueueStatusCompleteEvent event)
+    public void handleEvent(ShutdownEvent event)
     {
     }
 
-    protected void handleEvent(RegistrationsCompleteEvent event)
+    public void handleEvent(SkypeAccountStatusEvent event)
     {
     }
 
-    protected void handleEvent(StatusCompleteEvent event)
+    public void handleEvent(SkypeBuddyStatusEvent event)
     {
     }
 
-    protected void handleEvent(StatusEvent event)
+    public void handleEvent(SkypeChatMessageEvent event)
     {
     }
 
-    protected void handleEvent(ZapShowChannelsCompleteEvent event)
+    public void handleEvent(SuccessfulAuthEvent event)
     {
     }
 
-    protected void handleEvent(DahdiShowChannelsCompleteEvent event)
+    public void handleEvent(TransferEvent event)
     {
     }
 
-    protected void handleEvent(ZapShowChannelsEvent event)
+    public void handleEvent(UserEvent event)
     {
     }
 
-    protected void handleEvent(DahdiShowChannelsEvent event)
+    public void handleEvent(PausedEvent event)
     {
     }
 
-    protected void handleEvent(CoreShowChannelEvent event)
+    public void handleEvent(UnpausedEvent event)
     {
     }
 
-    protected void handleEvent(CoreShowChannelsCompleteEvent event)
+    public void handleEvent(VarSetEvent event)
     {
+    }
+    
+    public void handleEvent(EndpointDetail event) 
+    {	
     }
+    
+    public void handleEvent(AorDetail event) 
+    {	
+    }
 
+    public void handleEvent(ContactStatusDetail event) 
+    {	
+    }
+    
+    public void handleEvent(EndpointDetailComplete event) 
+    {	
+    }
+    
     /**
      * Dispatches to the appropriate handleEvent(...) method.
-     * 
+     *
      * @param event the event to handle
      */
     @Override
     public void onManagerEvent(ManagerEvent event)
     {
 
-        // if this turns out to be slow, we could consider caching the reflection lookup
-
+        // if this turns out to be slow, we could consider caching the
+        // reflection lookup
         try
         {
-
-            Method method = this.getClass().getDeclaredMethod("handleEvent", new Class[]{event.getClass()});
+            Method method = this.getClass().getMethod("handleEvent", event.getClass());
             if (method != null)
             {
                 method.invoke(this, event);
@@ -499,11 +803,10 @@ public abstract class AbstractManagerEventListener implements ManagerEventListen
         }
         catch (Exception e)
         {
-            logger.error(e, e);
+            LOGGER.error(e, e);
         }
 
-        logger.error("The event " + event.getClass()
+        LOGGER.error("The event " + event.getClass()
                 + " couldn't be mapped to a method in AbstractManagerEventListener.java, someone should add it!");
-
     }
 }

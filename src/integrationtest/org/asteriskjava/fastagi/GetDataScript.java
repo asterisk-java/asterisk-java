@@ -10,7 +10,7 @@ public class GetDataScript extends BaseAgiScript
     public void service(AgiRequest request, AgiChannel channel) throws AgiException
     {
         channel.streamFile("tt-monkeys");
-        channel.sayDateTime(new Date().getTime());
+        channel.sayDateTime(System.currentTimeMillis());
     }
 
     public static void main(String[] args) throws Exception

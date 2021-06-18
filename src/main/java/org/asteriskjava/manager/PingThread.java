@@ -17,21 +17,21 @@
 package org.asteriskjava.manager;
 
 import java.util.HashSet;
-import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.asteriskjava.lock.LockableSet;
+import org.asteriskjava.lock.Locker.LockCloser;
 import org.asteriskjava.manager.action.PingAction;
 import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
 /**
- * A Thread that pings the Asterisk server at a given interval.
- * You can use this to prevent the connection being shut down when there is no
- * traffic.
+ * A Thread that pings the Asterisk server at a given interval. You can use this
+ * to prevent the connection being shut down when there is no traffic.
  * <p>
  * Since 1.0.0 PingThread supports mutliple connections so do don't have to
- * start multiple threads to keep several connections alive. 
+ * start multiple threads to keep several connections alive.
  *
  * @author srt
  * @version $Id$
@@ -50,18 +50,18 @@ public class PingThread extends Thread
     private long interval = DEFAULT_INTERVAL;
     private long timeout = DEFAULT_TIMEOUT;
     private volatile boolean die;
-    private final Set<ManagerConnection> connections;
+    private final LockableSet<ManagerConnection> connections;
 
     /**
-     * Creates a new PingThread. Use {@link #addConnection(ManagerConnection)} to add connections
-     * that will be pinged.
+     * Creates a new PingThread. Use {@link #addConnection(ManagerConnection)}
+     * to add connections that will be pinged.
      *
      * @since 1.0.0
      */
     public PingThread()
     {
         super();
-        this.connections = new HashSet<>();
+        this.connections = new LockableSet<>(new HashSet<>());
         this.die = false;
         long id = idCounter.getAndIncrement();
         setName("Asterisk-Java Ping-" + id);
@@ -80,8 +80,7 @@ public class PingThread extends Thread
     }
 
     /**
-     * Adjusts how often a PingAction is sent.
-     * <br>
+     * Adjusts how often a PingAction is sent. <br>
      * Default is 20000ms, i.e. 20 seconds.
      *
      * @param interval the interval in milliseconds
@@ -93,11 +92,9 @@ public class PingThread extends Thread
 
     /**
      * Sets the timeout to wait for the ManagerResponse before throwing an
-     * excpetion.
-     * <br>
+     * excpetion. <br>
      * If set to 0 the response will be ignored an no exception will be thrown
-     * at all.
-     * <br>
+     * at all. <br>
      * Default is 0.
      *
      * @param timeout the timeout in milliseconds or 0 to indicate no timeout.
@@ -116,7 +113,7 @@ public class PingThread extends Thread
      */
     public void addConnection(ManagerConnection connection)
     {
-        synchronized (connections)
+        try (LockCloser closer = connections.withLock())
         {
             connections.add(connection);
         }
@@ -130,7 +127,7 @@ public class PingThread extends Thread
      */
     public void removeConnection(ManagerConnection connection)
     {
-        synchronized (connections)
+        try (LockCloser closer = connections.withLock())
         {
             connections.remove(connection);
         }
@@ -165,7 +162,7 @@ public class PingThread extends Thread
                 break;
             }
 
-            synchronized (connections)
+            try (LockCloser closer = connections.withLock())
             {
                 for (ManagerConnection c : connections)
                 {

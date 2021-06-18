@@ -7,6 +7,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
+import org.asteriskjava.lock.Locker.LockCloser;
 import org.asteriskjava.pbx.ActivityCallback;
 import org.asteriskjava.pbx.AsteriskSettings;
 import org.asteriskjava.pbx.Call;
@@ -115,14 +116,17 @@ public class SplitActivityImpl extends ActivityHelper<SplitActivity> implements 
     final AtomicReference<CountDownLatch> renameEventReceived = new AtomicReference<>();
 
     @Override
-    synchronized public void onManagerEvent(final ManagerEvent event)
+    public void onManagerEvent(final ManagerEvent event)
     {
-        if (event instanceof RenameEvent)
+        try (LockCloser closer = this.withLock())
         {
-            RenameEvent rename = (RenameEvent) event;
-            if (rename.getChannel().isSame(channel1) || rename.getChannel().isSame(channel2))
+            if (event instanceof RenameEvent)
             {
-                renameEventReceived.get().countDown();
+                RenameEvent rename = (RenameEvent) event;
+                if (rename.getChannel().isSame(channel1) || rename.getChannel().isSame(channel2))
+                {
+                    renameEventReceived.get().countDown();
+                }
             }
         }
     }

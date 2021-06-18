@@ -19,9 +19,10 @@ package org.asteriskjava.manager.internal;
 import java.io.IOException;
 
 import org.asteriskjava.AsteriskVersion;
+import org.asteriskjava.lock.Lockable;
+import org.asteriskjava.lock.Locker.LockCloser;
 import org.asteriskjava.manager.action.ManagerAction;
 import org.asteriskjava.util.SocketConnectionFacade;
-
 
 /**
  * Default implementation of ManagerWriter interface.
@@ -29,16 +30,16 @@ import org.asteriskjava.util.SocketConnectionFacade;
  * @author srt
  * @version $Id$
  */
-public class ManagerWriterImpl implements ManagerWriter
+public class ManagerWriterImpl extends Lockable implements ManagerWriter
 {
     /**
      * Instance logger.
      */
-    //private final Log logger = LogFactory.getLog(getClass());
+    // private final Log logger = LogFactory.getLog(getClass());
 
     /**
-     * The action builder utility to convert ManagerAction to a String suitable to be sent to the
-     * asterisk server.
+     * The action builder utility to convert ManagerAction to a String suitable
+     * to be sent to the asterisk server.
      */
     private final ActionBuilder actionBuilder;
 
@@ -57,26 +58,34 @@ public class ManagerWriterImpl implements ManagerWriter
         actionBuilder.setTargetVersion(version);
     }
 
-    public synchronized void setSocket(final SocketConnectionFacade socket)
+    public void setSocket(final SocketConnectionFacade socket)
     {
-        this.socket = socket;
+        try (LockCloser closer = this.withLock())
+        {
+            this.socket = socket;
+        }
     }
 
-    public synchronized void sendAction(final ManagerAction action, final String internalActionId) throws IOException
+    public void sendAction(final ManagerAction action, final String internalActionId) throws IOException
     {
-        final String actionString;
-
-        if (socket == null)
+        try (LockCloser closer = this.withLock())
         {
-            throw new IllegalStateException("Unable to send action: socket is null");
+            final String actionString;
+
+            if (socket == null)
+            {
+                throw new IllegalStateException("Unable to send action: socket is null");
+            }
+
+            actionString = actionBuilder.buildAction(action, internalActionId);
+
+            socket.write(actionString);
+            socket.flush();
+
+            // TODO tracing
+            // logger.debug("Sent " + action.getAction() + " action with
+            // actionId '"
+            // + action.getActionId() + "':\n" + actionString);
         }
-
-        actionString = actionBuilder.buildAction(action, internalActionId);
-
-        socket.write(actionString);
-        socket.flush();
-
-        // TODO tracing
-        //logger.debug("Sent " + action.getAction() + " action with actionId '" + action.getActionId() + "':\n" + actionString);
     }
 }

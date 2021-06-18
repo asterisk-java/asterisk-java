@@ -12,7 +12,6 @@ public class QueueMemberPauseEvent extends QueueMemberPausedEvent
     Integer penalty;
     Integer status;
     Boolean ringinuse;
-    String iface;
     String stateInterface;
     Integer incall;
     String pausedreason;
@@ -135,21 +134,6 @@ public class QueueMemberPauseEvent extends QueueMemberPausedEvent
         this.ringinuse = ringinuse;
     }
 
-    /**
-     * @return the iface
-     */
-    public String getInterface()
-    {
-        return iface;
-    }
-
-    /**
-     * @param iface the iface to set
-     */
-    public void setInterface(String iface)
-    {
-        this.iface = iface;
-    }
 
     /**
      * @return the stateInterface

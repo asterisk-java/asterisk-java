@@ -54,9 +54,11 @@ public class DialActivityImpl extends ActivityHelper<DialActivity> implements Di
 
     private Map<String, String> channelVarsToSet;
 
+    private String dialOptions;
+
     public DialActivityImpl(final EndPoint originating, final EndPoint accepting, final CallerID toCallerID,
             final boolean hideToCallerID, final ActivityCallback<DialActivity> listener,
-            Map<String, String> channelVarsToSet)
+            Map<String, String> channelVarsToSet, String dialOptions)
     {
         super("Dial", listener);
         this._originating = originating;
@@ -65,6 +67,7 @@ public class DialActivityImpl extends ActivityHelper<DialActivity> implements Di
         this.hideToCallerId = hideToCallerID;
         this.cancelledByOperator = false;
         this.channelVarsToSet = channelVarsToSet;
+        this.dialOptions = dialOptions;
 
         this.startActivity(false);
     }
@@ -84,7 +87,7 @@ public class DialActivityImpl extends ActivityHelper<DialActivity> implements Di
             final AsteriskSettings profile = PBXFactory.getActiveProfile();
 
             final OriginateResult[] resultChannels = nr.dial(this, this._originating, this._accepting,
-                    profile.getManagementContext(), this.toCallerID, this.hideToCallerId, channelVarsToSet);
+                    profile.getManagementContext(), this.toCallerID, this.hideToCallerId, channelVarsToSet, dialOptions);
 
             if ((resultChannels[0] == null) || (resultChannels[1] == null))
             {
@@ -110,7 +113,7 @@ public class DialActivityImpl extends ActivityHelper<DialActivity> implements Di
 
                 DialActivityImpl.logger.debug("dialout succeeded: dest channel is :" + this.acceptingChannel);
 
-                if (this.validateChannel(this.acceptingChannel) == false)
+                if (!this.validateChannel(this.acceptingChannel))
                 {
                     this.setLastException(new PBXException(("dialed extension hungup unexpectedly")));
                     DialActivityImpl.logger.error("dialed extension hungup unexpectedly");
@@ -123,7 +126,7 @@ public class DialActivityImpl extends ActivityHelper<DialActivity> implements Di
         }
         finally
         {
-            if (success != true)
+            if (!success)
             {
                 this.hangup();
             }

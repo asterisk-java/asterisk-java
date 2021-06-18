@@ -72,11 +72,6 @@ public class StatusCompleteEvent extends ResponseEvent
         return listItems;
     }
 
-    public void setListitems(Integer listItems)
-    {
-        this.listItems = listItems;
-    }
-
     public String getEventList()
     {
         return eventList;
@@ -91,5 +86,5 @@ public class StatusCompleteEvent extends ResponseEvent
     {
         this.listItems = listItems;
     }
- 
+
 }

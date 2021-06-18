@@ -1,11 +1,12 @@
 package org.asteriskjava.fastagi;
 
 import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.RejectedExecutionException;
 
 import org.asteriskjava.fastagi.internal.AsyncAgiConnectionHandler;
 import org.asteriskjava.fastagi.internal.DefaultAgiChannelFactory;
+import org.asteriskjava.lock.LockableMap;
+import org.asteriskjava.lock.Locker.LockCloser;
 import org.asteriskjava.manager.ManagerConnection;
 import org.asteriskjava.manager.ManagerEventListener;
 import org.asteriskjava.manager.event.AsyncAgiEvent;
@@ -15,7 +16,8 @@ import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
 /**
- * AGI server for AGI over the Manager API (AsyncAGI).<p>
+ * AGI server for AGI over the Manager API (AsyncAGI).
+ * <p>
  * AsyncAGI is available since Asterisk 1.6.
  *
  * @since 1.0.0
@@ -23,11 +25,13 @@ import org.asteriskjava.util.LogFactory;
 public class AsyncAgiServer extends AbstractAgiServer implements ManagerEventListener
 {
     private final Log logger = LogFactory.getLog(getClass());
-    private final Map<Integer, AsyncAgiConnectionHandler> connectionHandlers;
+    private final LockableMap<Integer, AsyncAgiConnectionHandler> connectionHandlers;
 
     /**
-     * Creates a new AsyncAgiServer with a {@link DefaultAgiChannelFactory}.<p>
-     * Note that you must set a {@link org.asteriskjava.fastagi.MappingStrategy} before using it.
+     * Creates a new AsyncAgiServer with a {@link DefaultAgiChannelFactory}.
+     * <p>
+     * Note that you must set a {@link org.asteriskjava.fastagi.MappingStrategy}
+     * before using it.
      *
      * @see #setMappingStrategy(MappingStrategy)
      */
@@ -37,27 +41,32 @@ public class AsyncAgiServer extends AbstractAgiServer implements ManagerEventLis
     }
 
     /**
-     * Creates a new AsyncAgiServer with a custom {@link AgiChannelFactory}.<p>
-     * Note that you must set a {@link org.asteriskjava.fastagi.MappingStrategy} before using it.
+     * Creates a new AsyncAgiServer with a custom {@link AgiChannelFactory}.
+     * <p>
+     * Note that you must set a {@link org.asteriskjava.fastagi.MappingStrategy}
+     * before using it.
      *
-     * @param agiChannelFactory The factory to use for creating new AgiChannel instances.
+     * @param agiChannelFactory The factory to use for creating new AgiChannel
+     *            instances.
      * @see #setMappingStrategy(MappingStrategy)
      * @since 1.0.0
      */
     public AsyncAgiServer(AgiChannelFactory agiChannelFactory)
     {
         super(agiChannelFactory);
-        this.connectionHandlers = new HashMap<>();
+        this.connectionHandlers = new LockableMap<>(new HashMap<>());
     }
 
     /**
-     * Creates a new AsyncAgiServer with the given MappingStrategy.<p>
-     * Please note that Async AGI does not currently support passing a script name, so your
-     * MappingStrategy must be aware that the {@link org.asteriskjava.fastagi.AgiRequest#getScript() script}
-     * property of the AgiRequests will likely be <code>null</code>.
+     * Creates a new AsyncAgiServer with the given MappingStrategy.
+     * <p>
+     * Please note that Async AGI does not currently support passing a script
+     * name, so your MappingStrategy must be aware that the
+     * {@link org.asteriskjava.fastagi.AgiRequest#getScript() script} property
+     * of the AgiRequests will likely be <code>null</code>.
      *
-     * @param mappingStrategy the MappingStrategy to use to determine which AGI script to run
-     *                        for a certain request.
+     * @param mappingStrategy the MappingStrategy to use to determine which AGI
+     *            script to run for a certain request.
      */
     public AsyncAgiServer(MappingStrategy mappingStrategy)
     {
@@ -66,14 +75,17 @@ public class AsyncAgiServer extends AbstractAgiServer implements ManagerEventLis
     }
 
     /**
-     * Creates a new AsyncAgiServer with the given MappingStrategy.<p>
-     * Please note that Async AGI does not currently support passing a script name, so your
-     * MappingStrategy must be aware that the {@link org.asteriskjava.fastagi.AgiRequest#getScript() script}
-     * property of the AgiRequests will likely be <code>null</code>.
+     * Creates a new AsyncAgiServer with the given MappingStrategy.
+     * <p>
+     * Please note that Async AGI does not currently support passing a script
+     * name, so your MappingStrategy must be aware that the
+     * {@link org.asteriskjava.fastagi.AgiRequest#getScript() script} property
+     * of the AgiRequests will likely be <code>null</code>.
      *
-     * @param mappingStrategy   the MappingStrategy to use to determine which AGI script to run
-     *                          for a certain request.
-     * @param agiChannelFactory The factory to use for creating new AgiChannel instances.
+     * @param mappingStrategy the MappingStrategy to use to determine which AGI
+     *            script to run for a certain request.
+     * @param agiChannelFactory The factory to use for creating new AgiChannel
+     *            instances.
      */
     public AsyncAgiServer(MappingStrategy mappingStrategy, AgiChannelFactory agiChannelFactory)
     {
@@ -82,12 +94,15 @@ public class AsyncAgiServer extends AbstractAgiServer implements ManagerEventLis
     }
 
     /**
-     * Creates a new AsyncAgiServer that will execute the given AGI script for every
-     * request.<p>
-     * Internally this constructor uses a {@link org.asteriskjava.fastagi.StaticMappingStrategy}.
+     * Creates a new AsyncAgiServer that will execute the given AGI script for
+     * every request.
+     * <p>
+     * Internally this constructor uses a
+     * {@link org.asteriskjava.fastagi.StaticMappingStrategy}.
      *
-     * @param agiScript         the AGI script to execute.
-     * @param agiChannelFactory The factory to use for creating new AgiChannel instances.
+     * @param agiScript the AGI script to execute.
+     * @param agiChannelFactory The factory to use for creating new AgiChannel
+     *            instances.
      */
     public AsyncAgiServer(AgiScript agiScript, AgiChannelFactory agiChannelFactory)
     {
@@ -96,9 +111,11 @@ public class AsyncAgiServer extends AbstractAgiServer implements ManagerEventLis
     }
 
     /**
-     * Creates a new AsyncAgiServer that will execute the given AGI script for every
-     * request.<p>
-     * Internally this constructor uses a {@link org.asteriskjava.fastagi.StaticMappingStrategy}.
+     * Creates a new AsyncAgiServer that will execute the given AGI script for
+     * every request.
+     * <p>
+     * Internally this constructor uses a
+     * {@link org.asteriskjava.fastagi.StaticMappingStrategy}.
      *
      * @param agiScript the AGI script to execute.
      */
@@ -107,7 +124,6 @@ public class AsyncAgiServer extends AbstractAgiServer implements ManagerEventLis
         this(agiScript, new DefaultAgiChannelFactory());
         logger.debug("use default AgiChannelFactory");
     }
-
 
     public void onManagerEvent(ManagerEvent event)
     {
@@ -132,7 +148,8 @@ public class AsyncAgiServer extends AbstractAgiServer implements ManagerEventLis
 
         if (asyncAgiEvent.isStart())
         {
-            connectionHandler = new AsyncAgiConnectionHandler(getMappingStrategy(), asyncAgiEvent, this.getAgiChannelFactory());
+            connectionHandler = new AsyncAgiConnectionHandler(getMappingStrategy(), asyncAgiEvent,
+                    this.getAgiChannelFactory());
             setConnectionHandler(connection, channelName, connectionHandler);
             try
             {
@@ -141,7 +158,8 @@ public class AsyncAgiServer extends AbstractAgiServer implements ManagerEventLis
             catch (RejectedExecutionException e)
             {
                 logger.warn("Execution was rejected by pool. Try to increase the pool size.");
-                // release resources if execution was rejected due to the pool size
+                // release resources if execution was rejected due to the pool
+                // size
                 connectionHandler.release();
             }
         }
@@ -150,7 +168,8 @@ public class AsyncAgiServer extends AbstractAgiServer implements ManagerEventLis
             connectionHandler = getConnectionHandler(connection, channelName);
             if (connectionHandler == null)
             {
-                logger.info("No AsyncAgiConnectionHandler registered for channel " + channelName + ": Ignoring AsyncAgiEvent");
+                logger.info(
+                        "No AsyncAgiConnectionHandler registered for channel " + channelName + ": Ignoring AsyncAgiEvent");
                 return;
             }
 
@@ -188,15 +207,16 @@ public class AsyncAgiServer extends AbstractAgiServer implements ManagerEventLis
 
     private AsyncAgiConnectionHandler getConnectionHandler(ManagerConnection connection, String channelName)
     {
-        synchronized (connectionHandlers)
+        try (LockCloser closer = connectionHandlers.withLock())
         {
             return connectionHandlers.get(calculateHashKey(connection, channelName));
         }
     }
 
-    private void setConnectionHandler(ManagerConnection connection, String channelName, AsyncAgiConnectionHandler connectionHandler)
+    private void setConnectionHandler(ManagerConnection connection, String channelName,
+            AsyncAgiConnectionHandler connectionHandler)
     {
-        synchronized (connectionHandlers)
+        try (LockCloser closer = connectionHandlers.withLock())
         {
             connectionHandlers.put(calculateHashKey(connection, channelName), connectionHandler);
         }
@@ -204,7 +224,7 @@ public class AsyncAgiServer extends AbstractAgiServer implements ManagerEventLis
 
     private void removeConnectionHandler(ManagerConnection connection, String channelName)
     {
-        synchronized (connectionHandlers)
+        try (LockCloser closer = connectionHandlers.withLock())
         {
             connectionHandlers.remove(calculateHashKey(connection, channelName));
         }

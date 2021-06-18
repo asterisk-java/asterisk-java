@@ -33,6 +33,7 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -98,6 +99,27 @@ public class ReflectionUtil
         return accessors;
     }
 
+    private final static ConcurrentHashMap<Class< ? >, Map<String, Method>> setterMap = new ConcurrentHashMap<>();
+
+    /**
+     * The main benefit here is that there will not be repeated errors when
+     * inspecting classes for setters on every single Event being processed.
+     * <br>
+     * <br>
+     * While this method adds caching which is 100 times faster, the time
+     * Benefit is largely insignificant as the execution time was already very
+     * fast.
+     * 
+     * @param clazz
+     * @return
+     */
+    public static Map<String, Method> getSetters(Class< ? > clazz)
+    {
+        return setterMap.computeIfAbsent(clazz, (c) -> {
+            return getSettersInternal(c);
+        });
+    }
+
     /**
      * Returns a Map of setter methods of the given class.
      * <p>
@@ -109,7 +131,7 @@ public class ReflectionUtil
      * @param clazz the class to return the setters for
      * @return a Map of attributes and their accessor methods (setters)
      */
-    public static Map<String, Method> getSetters(Class< ? > clazz)
+    private static Map<String, Method> getSettersInternal(Class< ? > clazz)
     {
         final Map<String, Method> accessors = new HashMap<>();
         final Method[] methods = clazz.getMethods();
@@ -117,9 +139,7 @@ public class ReflectionUtil
         for (Method method : methods)
         {
             String name;
-            String methodName;
-
-            methodName = method.getName();
+            String methodName = method.getName();
             if (!methodName.startsWith("set"))
             {
                 continue;
@@ -131,11 +151,35 @@ public class ReflectionUtil
                 continue;
             }
 
-            // ok seems to be an accessor
+            // OK seems to be an setter
             name = methodName.substring("set".length()).toLowerCase(Locale.US);
-            accessors.put(name, method);
-        }
 
+            // if an event class implements a setter that exists in
+            // ManagerEvent, then prefer the setter from the extending class
+            Method existing = accessors.get(name);
+            if (existing != null)
+            {
+                logger.warn("multiple setters (case insensitive) exist for " + name + " on class(es) "
+                        + existing.getDeclaringClass() + " and " + method.getDeclaringClass());
+            }
+            if (existing == null)
+            {
+                // we don't have a mapping for this setter so add it.
+                accessors.put(name, method);
+            }
+            else if (method.getDeclaringClass().isAssignableFrom(existing.getDeclaringClass()))
+            {
+                // we already have a mapping for this setter, but this one is
+                // from an extending class so replace it.
+                logger.warn("Preferring setter from extending class " + existing + " -> " + method);
+                accessors.put(name, method);
+            }
+            else
+            {
+                // there is already a mapping for this setter from class
+                logger.warn("Preferring setter from extending class " + method + " -> " + existing);
+            }
+        }
         return accessors;
     }
 

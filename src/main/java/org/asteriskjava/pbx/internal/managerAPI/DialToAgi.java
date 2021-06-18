@@ -69,7 +69,7 @@ public class DialToAgi extends EventListenerBaseClass
                     ((AsteriskPBX) pbx).getManagementContext(), callerID, timeout, hideCallerId, channelVarsToSet);
 
             this.result[0] = trcResult;
-            if (trcResult.isSuccess() == true)
+            if (trcResult.isSuccess())
             {
                 if (trcResult.getChannel() != null)
                 {
@@ -140,7 +140,14 @@ public class DialToAgi extends EventListenerBaseClass
 
     public void abort()
     {
-        originator.abort("user abort");
+        if (originator != null)
+        {
+            originator.abort("user abort");
+        }
+        else
+        {
+            logger.error("Call to abort, but it doesn't look like the Dial had started yet");
+        }
     }
 
 }

@@ -11,6 +11,7 @@ public class ConfbridgeListRoomsEvent extends ResponseEvent
     private Integer parties;
     private Integer marked;
     private Boolean locked;
+    private String muted;
 
     public ConfbridgeListRoomsEvent(Object source)
     {
@@ -81,5 +82,15 @@ public class ConfbridgeListRoomsEvent extends ResponseEvent
     public Boolean getLocked()
     {
         return locked;
+    }
+
+    public String getMuted()
+    {
+        return muted;
+    }
+
+    public void setMuted(String muted)
+    {
+        this.muted = muted;
     }
 }

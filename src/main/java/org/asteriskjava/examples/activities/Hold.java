@@ -27,6 +27,7 @@ public class Hold
 
     static private void hold()
     {
+        String dialOptions = "";
         PBX pbx = PBXFactory.getActivePBX();
 
         // We are going to dial from extension 100
@@ -64,7 +65,7 @@ public class Hold
                 if (status == ActivityStatusEnum.FAILURE)
                     System.out.println("Oops something bad happened when we dialed.");
             }
-        });
+        }, dialOptions);
 
     }
 

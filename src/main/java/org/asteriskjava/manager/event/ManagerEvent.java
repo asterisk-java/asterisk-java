@@ -31,7 +31,7 @@ import org.asteriskjava.util.ReflectionUtil;
  * server. <br>
  * Events contain data pertaining to an event generated from within the Asterisk
  * core or an extension module. <br>
- * There is one conrete subclass of ManagerEvent per each supported Asterisk
+ * There is one concrete subclass of ManagerEvent per each supported Asterisk
  * Event.
  *
  * @author srt

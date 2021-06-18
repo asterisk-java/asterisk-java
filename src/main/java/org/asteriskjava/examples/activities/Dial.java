@@ -34,6 +34,8 @@ public class Dial
     {
         try
         {
+            String dialOptions = "";
+
             PBX pbx = PBXFactory.getActivePBX();
 
             // The trunk MUST match the section header (e.g. [default]) that
@@ -56,7 +58,7 @@ public class Dial
             // Trunk is currently ignored so set to null
             // The call is dialed and only returns when the call comes up (it
             // doesn't wait for the remote end to answer).
-            DialActivity dial = pbx.dial(from, fromCallerID, to, toCallerID);
+            DialActivity dial = pbx.dial(from, fromCallerID, to, toCallerID, dialOptions);
 
             Call call = dial.getNewCall();
 
@@ -73,6 +75,7 @@ public class Dial
 
     static private void asyncDial()
     {
+        String dialOptions = "";
         PBX pbx = PBXFactory.getActivePBX();
 
         // We are going to dial from extension 100
@@ -112,7 +115,7 @@ public class Dial
                 if (status == ActivityStatusEnum.FAILURE)
                     System.out.println("Oops something bad happened when we dialed.");
             }
-        });
+        }, dialOptions);
 
     }
 

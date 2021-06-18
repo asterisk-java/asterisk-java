@@ -37,7 +37,6 @@ public class QueueMemberRemovedEvent extends AbstractQueueMemberEvent
     Integer penalty;
     String stateinterface;
     String membership;
-    String _interface;
     Long callstaken;
     Boolean ringinuse;
     Long lastcall;
@@ -95,20 +94,7 @@ public class QueueMemberRemovedEvent extends AbstractQueueMemberEvent
 	public void setMembership(String membership)
 	{
 		this.membership = membership;
-	}
-
-
-	public String getInterface()
-	{
-		return _interface;
-	}
-
-
-	public void setInterface(String _interface)
-	{
-		this._interface = _interface;
-	}
-
+    }
 
 	public Long getCallstaken()
 	{

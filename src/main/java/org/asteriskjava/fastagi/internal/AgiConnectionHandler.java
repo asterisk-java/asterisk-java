@@ -169,10 +169,11 @@ public abstract class AgiConnectionHandler implements Runnable
 
     private void runScript(AgiScript script, AgiRequest request, AgiChannel channel)
     {
+        String channelName = channel.getName();
         String threadName;
         threadName = Thread.currentThread().getName();
 
-        logger.debug("Begin AgiScript " + getScriptName(script) + " on " + threadName);
+        logger.debug("Begin AgiScript " + describeAgiCall(threadName, channelName));
         try
         {
             script.service(request, channel);
@@ -180,15 +181,23 @@ public abstract class AgiConnectionHandler implements Runnable
         }
         catch (AgiException e)
         {
-            logger.error("AgiException running AgiScript " + getScriptName(script) + " on " + threadName, e);
+            logger.error("AgiException running AgiScript " + describeAgiCall(threadName, channelName), e);
             setStatusVariable(channel, AJ_AGISTATUS_FAILED);
         }
         catch (Exception e)
         {
-            logger.error("Exception running AgiScript " + getScriptName(script) + " on " + threadName, e);
+            logger.error("Exception running AgiScript " + describeAgiCall(threadName, channelName), e);
             setStatusVariable(channel, AJ_AGISTATUS_FAILED);
         }
-        logger.debug("End AgiScript " + getScriptName(script) + " on " + threadName);
+        finally
+        {
+            logger.debug("End AgiScript " + describeAgiCall(threadName, channelName));
+        }
+    }
+
+    private String describeAgiCall(String threadName, String channelName)
+    {
+        return getScriptName(script) + " on " + threadName + " on " + channelName;
     }
 
     protected String getScriptName(AgiScript script)

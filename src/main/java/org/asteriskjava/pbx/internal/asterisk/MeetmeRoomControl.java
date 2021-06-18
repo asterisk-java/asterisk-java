@@ -1,6 +1,5 @@
 package org.asteriskjava.pbx.internal.asterisk;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -9,6 +8,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.live.ManagerCommunicationException;
+import org.asteriskjava.lock.Locker.LockCloser;
 import org.asteriskjava.pbx.AsteriskSettings;
 import org.asteriskjava.pbx.Channel;
 import org.asteriskjava.pbx.ListenerPriority;
@@ -103,62 +103,65 @@ public class MeetmeRoomControl extends EventListenerBaseClass implements Coheren
      * returns the next available meetme room, or null if no rooms are
      * available.
      */
-    public synchronized MeetmeRoom findAvailableRoom(RoomOwner newOwner)
+    public MeetmeRoom findAvailableRoom(RoomOwner newOwner)
     {
-        int count = 0;
-        for (final MeetmeRoom room : this.rooms)
+        try (LockCloser closer = this.withLock())
         {
-            if (MeetmeRoomControl.logger.isDebugEnabled())
+            int count = 0;
+            for (final MeetmeRoom room : this.rooms)
             {
-                MeetmeRoomControl.logger.debug("room " + room.getRoomNumber() + " count " + count);
-            }
-            if (room.getOwner() == null || !room.getOwner().isRoomStillRequired())
-            {
-                /*
-                 * new code to attempt to recover uncleared meetme rooms safely
-                 */
-                try
+                if (MeetmeRoomControl.logger.isDebugEnabled())
                 {
-                    final Date lastUpdated = room.getLastUpdated();
-                    final long now = new Date().getTime();
-                    if (lastUpdated != null)
-                    {
-                        final long elapsedTime = now - lastUpdated.getTime();
-                        MeetmeRoomControl.logger
-                                .debug("room: " + room.getRoomNumber() + " count: " + count + " elapsed: " + elapsedTime);
-                        if ((elapsedTime > 7200000) && (room.getChannelCount() == 1))
-                        {
-                            MeetmeRoomControl.logger.debug("clearing room"); //$NON-NLS-1$
-                            room.setInactive();
-                        }
-                    }
+                    MeetmeRoomControl.logger.debug("room " + room.getRoomNumber() + " count " + count);
                 }
-                catch (final Exception e)
+                if (room.getOwner() == null || !room.getOwner().isRoomStillRequired())
                 {
                     /*
-                     * attempt to make this new change safe
+                     * new code to attempt to recover uncleared meetme rooms
+                     * safely
                      */
-                    MeetmeRoomControl.logger.error(e, e);
-                }
+                    try
+                    {
+                        final Long lastUpdated = room.getLastUpdated();
+                        final long now = System.currentTimeMillis();
+                        if (lastUpdated != null)
+                        {
+                            final long elapsedTime = now - lastUpdated;
+                            MeetmeRoomControl.logger.error(
+                                    "room: " + room.getRoomNumber() + " count: " + count + " elapsed: " + elapsedTime);
+                            if ((elapsedTime > 1800000) && (room.getChannelCount() < 2))
+                            {
+                                MeetmeRoomControl.logger.error("clearing room"); //$NON-NLS-1$
+                                room.setInactive();
+                            }
+                        }
+                    }
+                    catch (final Exception e)
+                    {
+                        /*
+                         * attempt to make this new change safe
+                         */
+                        MeetmeRoomControl.logger.error(e, e);
+                    }
 
-                if (room.getChannelCount() == 0)
+                    if (room.getChannelCount() == 0)
+                    {
+                        room.setInactive();
+                        room.setOwner(newOwner);
+                        MeetmeRoomControl.logger.info("Returning available room " + room.getRoomNumber());
+                        return room;
+                    }
+
+                }
+                else
                 {
-                    room.setInactive();
-                    room.setOwner(newOwner);
-                    MeetmeRoomControl.logger.warn("Returning available room " + room.getRoomNumber());
-                    return room;
+                    logger.warn("Meetme " + room.getRoomNumber() + " is still in use by " + room.getOwner());
                 }
-
+                count++;
             }
-            else
-            {
-                logger.warn("Meetme " + room.getRoomNumber() + " is still in use by " + room.getOwner());
-            }
-            count++;
+            MeetmeRoomControl.logger.error("no more available rooms");
+            return null;
         }
-        MeetmeRoomControl.logger.error("no more available rooms");
-        return null;
-
     }
 
     /**
@@ -168,23 +171,30 @@ public class MeetmeRoomControl extends EventListenerBaseClass implements Coheren
      * @param roomNumber the meetme room number
      * @return
      */
-    synchronized private MeetmeRoom findMeetmeRoom(final String roomNumber)
+    private MeetmeRoom findMeetmeRoom(final String roomNumber)
     {
-        MeetmeRoom foundRoom = null;
-        for (final MeetmeRoom room : this.rooms)
+        try (LockCloser closer = this.withLock())
         {
-            if (room.getRoomNumber().compareToIgnoreCase(roomNumber) == 0)
+            MeetmeRoom foundRoom = null;
+            for (final MeetmeRoom room : this.rooms)
             {
-                foundRoom = room;
-                break;
+                if (room.getRoomNumber().compareToIgnoreCase(roomNumber) == 0)
+                {
+                    foundRoom = room;
+                    break;
+                }
             }
+            return foundRoom;
         }
-        return foundRoom;
+
     }
 
-    synchronized MeetmeRoom getRoom(final int room)
+    MeetmeRoom getRoom(final int room)
     {
-        return this.rooms[room];
+        try (LockCloser closer = this.withLock())
+        {
+            return this.rooms[room];
+        }
     }
 
     @Override
@@ -223,7 +233,7 @@ public class MeetmeRoomControl extends EventListenerBaseClass implements Coheren
                 }
                 room.removeChannel(channel);
                 room.setLastUpdated();
-                if ((room.getChannelCount() < 2) && (room.getForceClose() == true))
+                if (room.getChannelCount() < 2 && room.getForceClose())
                 {
                     this.hangupChannels(room);
                     room.setInactive();
@@ -241,7 +251,7 @@ public class MeetmeRoomControl extends EventListenerBaseClass implements Coheren
     {
 
         final Channel Channels[] = room.getChannels();
-        if (room.isActive() == true)
+        if (room.isActive())
         {
             PBX pbx = PBXFactory.getActivePBX();
 
@@ -340,30 +350,32 @@ public class MeetmeRoomControl extends EventListenerBaseClass implements Coheren
         }
     }
 
-    private synchronized void parseMeetme(final String line) throws NoMeetmeException
+    private void parseMeetme(final String line) throws NoMeetmeException
     {
-
-        if (line != null)
+        try (LockCloser closer = this.withLock())
         {
-            if (line.toLowerCase().startsWith("no such command 'meetme'") == true) //$NON-NLS-1$
+            if (line != null)
             {
-                throw new NoMeetmeException("Asterisk is not configured correctly! Please enable the MeetMe app"); //$NON-NLS-1$
-            }
+                if (line.toLowerCase().startsWith("no such command 'meetme'")) //$NON-NLS-1$
+                {
+                    throw new NoMeetmeException("Asterisk is not configured correctly! Please enable the MeetMe app"); //$NON-NLS-1$
+                }
 
-            if ((line.toLowerCase().startsWith("no active meetme conferences.") == false) //$NON-NLS-1$
-                    && (line.toLowerCase().startsWith("conf num") == false) //$NON-NLS-1$
-                    && (line.toLowerCase().startsWith("* total number") == false) //$NON-NLS-1$
-                    && (line.toLowerCase().startsWith("no such conference") == false) //$NON-NLS-1$
-                    && (line.toLowerCase().startsWith("no such command 'meetme") == false) //$NON-NLS-1$
-            )
-            {
-                // Update the stats on each meetme
-                final String roomNumber = line.substring(0, 10).trim();
-                final String tmp = line.substring(11, 25).trim();
-                final int channelCount = Integer.parseInt(tmp);
+                if ((!line.toLowerCase().startsWith("no active meetme conferences.")) //$NON-NLS-1$
+                        && (!line.toLowerCase().startsWith("conf num")) //$NON-NLS-1$
+                        && (!line.toLowerCase().startsWith("* total number")) //$NON-NLS-1$
+                        && (!line.toLowerCase().startsWith("no such conference")) //$NON-NLS-1$
+                        && (!line.toLowerCase().startsWith("no such command 'meetme")) //$NON-NLS-1$
+                )
+                {
+                    // Update the stats on each meetme
+                    final String roomNumber = line.substring(0, 10).trim();
+                    final String tmp = line.substring(11, 25).trim();
+                    final int channelCount = Integer.parseInt(tmp);
 
-                final int roomNo = Integer.valueOf(roomNumber);
-                setRoomCount(roomNumber, channelCount, roomNo);
+                    final int roomNo = Integer.valueOf(roomNumber);
+                    setRoomCount(roomNumber, channelCount, roomNo);
+                }
             }
         }
     }
