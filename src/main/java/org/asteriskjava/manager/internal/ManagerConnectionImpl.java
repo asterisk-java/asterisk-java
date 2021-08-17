@@ -110,6 +110,7 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
             "4.0", // Asterisk 15
             "5.0", // Asterisk 16
             "6.0", // Asterisk 17
+            "7.0", // Asterisk 18
     };
 
     private static final AtomicLong idCounter = new AtomicLong(0);
