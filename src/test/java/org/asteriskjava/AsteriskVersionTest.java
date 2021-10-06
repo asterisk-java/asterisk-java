@@ -13,7 +13,7 @@ public class AsteriskVersionTest
     {
         assertNull(AsteriskVersion.getDetermineVersionFromString(""));
     }
-    
+
     @Test
     public void test13()
     {
@@ -32,5 +32,11 @@ public class AsteriskVersionTest
     {
         assertTrue(AsteriskVersion.getDetermineVersionFromString("Asterisk 15.1.0").equals(AsteriskVersion.ASTERISK_15));
     }
+
+	@Test
+	public void test18()
+	{
+		assertTrue(AsteriskVersion.getDetermineVersionFromString("Asterisk 18.1.0").equals(AsteriskVersion.ASTERISK_18));
+	}
 
 }
