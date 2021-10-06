@@ -7,6 +7,7 @@ public class QueueMemberPauseEvent extends QueueMemberPausedEvent
     // Logger logger = LogManager.getLogger();
     String membership;
     Long lastcall;
+    Long lastpause;
     Integer callsTaken;
     Integer penalty;
     Integer status;
@@ -51,6 +52,22 @@ public class QueueMemberPauseEvent extends QueueMemberPausedEvent
     public void setLastcall(Long lastcall)
     {
         this.lastcall = lastcall;
+    }
+
+    /**
+     * @return the lastpause time in seconds
+     */
+    public Long getLastpause()
+    {
+        return lastpause;
+    }
+
+    /**
+     * @param lastpause the lastpause time in seconds to set
+     */
+    public void setLastpause(Long lastpause)
+    {
+        this.lastpause = lastpause;
     }
 
     /**
@@ -150,12 +167,12 @@ public class QueueMemberPauseEvent extends QueueMemberPausedEvent
         this.incall = incall;
     }
 
-    public String getPausedreason() 
+    public String getPausedreason()
     {
         return pausedreason;
     }
 
-    public void setPausedreason(String pausedreason) 
+    public void setPausedreason(String pausedreason)
     {
         this.pausedreason = pausedreason;
     }
