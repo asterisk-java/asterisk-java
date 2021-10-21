@@ -29,41 +29,40 @@ import org.junit.Test;
 
 public class ManagerWriterImplTest
 {
-    private ManagerWriter managerWriter;
+	private ManagerWriter managerWriter;
 
-    @Before
-    public void setUp()
-    {
-        managerWriter = new ManagerWriterImpl();
-    }
+	@Before
+	public void setUp()
+	{
+		managerWriter = new ManagerWriterImpl();
+	}
 
-    @SuppressWarnings("cast")
-    @Test
-    public void testSendActionWithoutSocket() throws Exception
-    {
-        try
-        {
-            managerWriter.sendAction(new StatusAction(), null);
-            fail("Must throw IllegalStateException");
-        }
-        catch (IllegalStateException e)
-        {
-            assertTrue("Exception must be of type IllegalStateException", e instanceof IllegalStateException);
-        }
-    }
+	@Test
+	public void testSendActionWithoutSocket() throws Exception
+	{
+		try
+		{
+			managerWriter.sendAction(new StatusAction(), null);
+			fail("Must throw IllegalStateException");
+		}
+		catch (IllegalStateException e)
+		{
+			assertTrue("Exception must be of type IllegalStateException", e instanceof IllegalStateException);
+		}
+	}
 
-    @Test
-    public void testSendAction() throws Exception
-    {
-        SocketConnectionFacade socketConnectionFacade;
+	@Test
+	public void testSendAction() throws Exception
+	{
+		SocketConnectionFacade socketConnectionFacade;
 
-        socketConnectionFacade = createMock(SocketConnectionFacade.class);
-        socketConnectionFacade.write("action: Status\r\n\r\n");
-        socketConnectionFacade.flush();
-        replay(socketConnectionFacade);
+		socketConnectionFacade = createMock(SocketConnectionFacade.class);
+		socketConnectionFacade.write("action: Status\r\n\r\n");
+		socketConnectionFacade.flush();
+		replay(socketConnectionFacade);
 
-        managerWriter.setSocket(socketConnectionFacade);
-        managerWriter.sendAction(new StatusAction(), null);
-        verify(socketConnectionFacade);
-    }
+		managerWriter.setSocket(socketConnectionFacade);
+		managerWriter.sendAction(new StatusAction(), null);
+		verify(socketConnectionFacade);
+	}
 }
