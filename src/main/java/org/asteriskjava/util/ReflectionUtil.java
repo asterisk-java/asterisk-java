@@ -109,7 +109,7 @@ public class ReflectionUtil
      * While this method adds caching which is 100 times faster, the time
      * Benefit is largely insignificant as the execution time was already very
      * fast.
-     * 
+     *
      * @param clazz
      * @return
      */
@@ -167,7 +167,7 @@ public class ReflectionUtil
                 // we don't have a mapping for this setter so add it.
                 accessors.put(name, method);
             }
-            else if (method.getDeclaringClass().isAssignableFrom(existing.getDeclaringClass()))
+            else if (!method.getDeclaringClass().isAssignableFrom(existing.getDeclaringClass()))
             {
                 // we already have a mapping for this setter, but this one is
                 // from an extending class so replace it.
@@ -355,7 +355,7 @@ public class ReflectionUtil
     /**
      * retrieve all the classes that can be found on the classpath for the
      * specified packageName
-     * 
+     *
      * @param packageName
      * @return
      * @throws IOException
