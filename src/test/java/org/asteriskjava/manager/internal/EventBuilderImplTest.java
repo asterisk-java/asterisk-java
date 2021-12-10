@@ -16,36 +16,15 @@
  */
 package org.asteriskjava.manager.internal;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import org.asteriskjava.manager.event.*;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.asteriskjava.manager.event.AbstractChannelEvent;
-import org.asteriskjava.manager.event.AgentCalledEvent;
-import org.asteriskjava.manager.event.CdrEvent;
-import org.asteriskjava.manager.event.HangupEvent;
-import org.asteriskjava.manager.event.LogChannelEvent;
-import org.asteriskjava.manager.event.ManagerEvent;
-import org.asteriskjava.manager.event.MeetMeLeaveEvent;
-import org.asteriskjava.manager.event.MusicOnHoldEvent;
-import org.asteriskjava.manager.event.NewCallerIdEvent;
-import org.asteriskjava.manager.event.NewChannelEvent;
-import org.asteriskjava.manager.event.NewExtenEvent;
-import org.asteriskjava.manager.event.PeersEvent;
-import org.asteriskjava.manager.event.ResponseEvent;
-import org.asteriskjava.manager.event.RtpReceiverStatEvent;
-import org.asteriskjava.manager.event.ShutdownEvent;
-import org.asteriskjava.manager.event.StatusCompleteEvent;
-import org.asteriskjava.manager.event.T38FaxStatusEvent;
-import org.asteriskjava.manager.event.TransferEvent;
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.*;
 
 public class EventBuilderImplTest
 {
@@ -126,7 +105,23 @@ public class EventBuilderImplTest
         assertTrue("Wrong type", event instanceof UserEventDEvent);
     }
 
-    @Test
+	@Test
+	public void testBuildEventWithOverrideSetter() {
+		ManagerEvent event;
+
+		eventBuilder.registerEventClass(EEvent.class);
+		properties.put("event", "e");
+		properties.put("line", "true");
+		properties.put("exten", "1abz");
+		event = eventBuilder.buildEvent(this, properties);
+
+		assertTrue("Wrong type", event instanceof EEvent);
+		assertEquals("1abz", event.getExten());
+		assertEquals(Integer.valueOf(1), event.getLine());
+		assertTrue(((EEvent) event).getLineAsBoolean());
+	}
+
+	@Test
     public void testRegisterEventWithAbstractEvent()
     {
         try
