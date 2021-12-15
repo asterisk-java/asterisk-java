@@ -37,7 +37,7 @@ void main() {
   String version = "$major.$minor.$rev$postFix";
 
   replacePomVersion(join(dir, "pom.xml"), version);
-  replaceReadMeVersion(join(dir, "pom.xml"), version);
+  replaceReadMeVersion(join(dir, "README.MD"), version);
 
   'git pull'.run;
   'git add .'.run;
