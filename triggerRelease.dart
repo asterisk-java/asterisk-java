@@ -47,8 +47,6 @@ void main() {
   'git push origin tag $version'.run;
 }
 
-	  <version>3.18.0</version>
-
 void replaceReadMeVersion(String path, String version) {
   var tmp = '$path.tmp';
   if (exists(tmp)) {
