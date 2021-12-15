@@ -36,7 +36,8 @@ void main() {
 
   String version = "$major.$minor.$rev$postFix";
 
-  replace(join(dir, "pom.xml"), version);
+  replacePomVersion(join(dir, "pom.xml"), version);
+  replaceReadMeVersion(join(dir, "pom.xml"), version);
 
   'git pull'.run;
   'git add .'.run;
@@ -46,7 +47,25 @@ void main() {
   'git push origin tag $version'.run;
 }
 
-void replace(String path, String version) {
+	  <version>3.18.0</version>
+
+void replaceReadMeVersion(String path, String version) {
+  var tmp = '$path.tmp';
+  if (exists(tmp)) {
+    delete(tmp);
+  }
+  read(path).forEach((line) {
+    if (line.contains("<version>")) {
+      line = "	  <version>$version</version>";
+    }
+    tmp.append(line);
+  });
+  move(path, '$path.bak');
+  move(tmp, path);
+  delete('$path.bak');
+}
+
+void replacePomVersion(String path, String version) {
   var tmp = '$path.tmp';
   if (exists(tmp)) {
     delete(tmp);

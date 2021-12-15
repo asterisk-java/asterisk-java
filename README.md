@@ -52,15 +52,6 @@ Asterisk-Java 3.x (Java 1.8 and Asterisk Version 10 thru 18) (master)
 	  <version>3.18.0</version>
 	</dependency>
 
-Asterisk-Java 2.x (Java 1.7 and Asterisk < Version 10) (branch 2.0.4)
-
-	<dependency>
-	  <groupId>org.asteriskjava</groupId>
-	  <artifactId>asterisk-java</artifactId>
-	  <version>2.2.0</version>
-	</dependency>
-
-
 INSTALLATION FROM SOURCE
 ------------------------
 
