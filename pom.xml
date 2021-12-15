@@ -11,7 +11,7 @@
 
 
 	<properties>
-        <releaseVersion>3.17.0</releaseVersion>
+        <releaseVersion>3.18.0</releaseVersion>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
