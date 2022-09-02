@@ -1,40 +1,34 @@
 /*
- *  Copyright 2004-2006 Stefan Reuter
+ * Copyright 2004-2022 Asterisk-Java contributors
  *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.asteriskjava.fastagi.command;
 
 /**
- * Plays the given file, allowing playback to be interrupted by the given
- * digits, if any, and allows the listner to control the stream.<p>
- * If offset is provided then the audio will seek to sample offset before play
- * starts.<p>
- * Returns 0 if playback completes without a digit being pressed, or the ASCII
- * numerical value of the digit if one was pressed, or -1 on error or if the
- * channel was disconnected. <p>
- * Remember, the file extension must not be included in the filename.<p>
- * Available since Asterisk 1.2
+ * AGI Command: <b>CONTROL STREAM FILE</b>
+ * <p>
+ * Send the given file, allowing playback to be controlled by the given digits, if any.
+ * Use double quotes for the digits if you wish none to be permitted.
+ * If offsetms is provided then the audio will seek to offsetms before play starts.
+ * Returns 0 if playback completes without a digit being pressed, or the ASCII numerical value of the digit if one was pressed,
+ * or -1 on error or if the channel was disconnected. Returns the position where playback was terminated as endpos.
+ * <p>
+ * See: <a href="https://wiki.asterisk.org/wiki/display/AST/Asterisk+18+AGICommand_control+stream+file">AGI Command CONTROL STREAM FILE (Asterisk 18)</a>
  *
  * @author srt
- * @version $Id$
- * @since 0.2
  */
 public class ControlStreamFileCommand extends AbstractAgiCommand {
-    /**
-     * Serial version identifier.
-     */
     private static final long serialVersionUID = 3978141041352128820L;
 
     /**
@@ -59,9 +53,8 @@ public class ControlStreamFileCommand extends AbstractAgiCommand {
     private String pauseDigit;
 
     /**
-     * Creates a new ControlStreamFileCommand, streaming from the beginning. It
-     * uses the default digit "#" for forward and "*" for rewind and does not
-     * support pausing.
+     * Creates a new ControlStreamFileCommand, streaming from the beginning.
+     * It uses the default digit "#" for forward and "*" for rewind and does not support pausing.
      *
      * @param file the name of the file to stream, must not include extension.
      */
@@ -72,13 +65,11 @@ public class ControlStreamFileCommand extends AbstractAgiCommand {
     }
 
     /**
-     * Creates a new ControlStreamFileCommand, streaming from the beginning. It
-     * uses the default digit "#" for forward and "*" for rewind and does not
-     * support pausing.
+     * Creates a new ControlStreamFileCommand, streaming from the beginning.
+     * It uses the default digit "#" for forward and "*" for rewind and does not support pausing.
      *
      * @param file         the name of the file to stream, must not include extension.
-     * @param escapeDigits contains the digits that allow the user to interrupt
-     *                     this command.
+     * @param escapeDigits contains the digits that allow the user to interrupt this command.
      */
     public ControlStreamFileCommand(String file, String escapeDigits) {
         super();
@@ -89,13 +80,11 @@ public class ControlStreamFileCommand extends AbstractAgiCommand {
 
     /**
      * Creates a new ControlStreamFileCommand, streaming from the given offset.
-     * It uses the default digit "#" for forward and "*" for rewind and does not
-     * support pausing.
+     * It uses the default digit "#" for forward and "*" for rewind and does not support pausing.
      *
      * @param file         the name of the file to stream, must not include extension.
-     * @param escapeDigits contains the digits that allow the user to interrupt
-     *                     this command. May be <code>null</code> if you don't want the
-     *                     user to interrupt.
+     * @param escapeDigits contains the digits that allow the user to interrupt this command.
+     *                     May be <code>null</code> if you don't want the user to interrupt.
      * @param offset       the offset samples to skip before streaming.
      */
     public ControlStreamFileCommand(String file, String escapeDigits, int offset) {
@@ -110,17 +99,16 @@ public class ControlStreamFileCommand extends AbstractAgiCommand {
      * It allows the user to pause streaming by pressing the pauseDigit.
      *
      * @param file         the name of the file to stream, must not include extension.
-     * @param escapeDigits contains the digits that allow the user to interrupt
-     *                     this command. May be <code>null</code> if you don't want the
-     *                     user to interrupt.
+     * @param escapeDigits contains the digits that allow the user to interrupt this command.
+     *                     May be <code>null</code> if you don't want the user to interrupt.
      * @param offset       the offset samples to skip before streaming.
-     * @param forwardDigit the digit for fast forward.
+     * @param forwardDigit the digit for fast-forward.
      * @param rewindDigit  the digit for rewind.
      * @param pauseDigit   the digit for pause and unpause.
      */
-    public ControlStreamFileCommand(String file, String escapeDigits,
-                                    int offset, String forwardDigit, String rewindDigit,
-                                    String pauseDigit) {
+    public ControlStreamFileCommand(
+            String file, String escapeDigits, int offset, String forwardDigit, String rewindDigit, String pauseDigit
+    ) {
         super();
         this.file = file;
         this.escapeDigits = escapeDigits;
@@ -160,8 +148,7 @@ public class ControlStreamFileCommand extends AbstractAgiCommand {
     /**
      * Sets the digits that allow the user to interrupt this command.
      *
-     * @param escapeDigits the digits that allow the user to interrupt this
-     *                     command or <code>null</code> for none.
+     * @param escapeDigits the digits that allow the user to interrupt this command or <code>null</code> for none.
      */
     public void setEscapeDigits(String escapeDigits) {
         this.escapeDigits = escapeDigits;
@@ -186,9 +173,9 @@ public class ControlStreamFileCommand extends AbstractAgiCommand {
     }
 
     /**
-     * Returns the digit for fast forward.
+     * Returns the digit for fast-forward.
      *
-     * @return the digit for fast forward.
+     * @return the digit for fast-forward.
      */
     public String getForwardDigit() {
         return forwardDigit;
@@ -213,9 +200,9 @@ public class ControlStreamFileCommand extends AbstractAgiCommand {
     }
 
     /**
-     * Sets the control digits for fast forward and rewind.
+     * Sets the control digits for fast-forward and rewind.
      *
-     * @param forwardDigit the digit for fast forward.
+     * @param forwardDigit the digit for fast-forward.
      * @param rewindDigit  the digit for rewind.
      */
     public void setControlDigits(String forwardDigit, String rewindDigit) {
@@ -224,14 +211,13 @@ public class ControlStreamFileCommand extends AbstractAgiCommand {
     }
 
     /**
-     * Sets the control digits for fast forward, rewind and pause.
+     * Sets the control digits for fast-forward, rewind and pause.
      *
-     * @param forwardDigit the digit for fast forward.
+     * @param forwardDigit the digit for fast-forward.
      * @param rewindDigit  the digit for rewind.
      * @param pauseDigit   the digit for pause and unpause.
      */
-    public void setControlDigits(String forwardDigit, String rewindDigit,
-                                 String pauseDigit) {
+    public void setControlDigits(String forwardDigit, String rewindDigit, String pauseDigit) {
         this.forwardDigit = forwardDigit;
         this.rewindDigit = rewindDigit;
         this.pauseDigit = pauseDigit;
@@ -239,17 +225,14 @@ public class ControlStreamFileCommand extends AbstractAgiCommand {
 
     @Override
     public String buildCommand() {
-        StringBuilder sb;
-
-        sb = new StringBuilder("CONTROL STREAM FILE ");
+        StringBuilder sb = new StringBuilder("CONTROL STREAM FILE ");
         sb.append(escapeAndQuote(file));
         sb.append(" ");
         sb.append(escapeAndQuote(escapeDigits));
         if (offset >= 0) {
             sb.append(" ");
             sb.append(offset);
-        } else if (forwardDigit != null || rewindDigit != null
-                || pauseDigit != null) {
+        } else if (forwardDigit != null || rewindDigit != null || pauseDigit != null) {
             sb.append(" 0");
         }
 

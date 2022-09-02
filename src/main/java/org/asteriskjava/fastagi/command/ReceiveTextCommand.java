@@ -1,37 +1,30 @@
 /*
- *  Copyright 2004-2006 Stefan Reuter
+ * Copyright 2004-2022 Asterisk-Java contributors
  *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.asteriskjava.fastagi.command;
 
 /**
- * Receives a string of text on a channel.<p>
- * Specify timeout to be the maximum time to wait for input in milliseconds, or
- * 0 for infinite.<p>
- * Most channels do not support the reception of text.<p>
- * Returns -1 for failure or 1 for success, and the string in parentheses.<p>
- * Available since Asterisk 1.2.
+ * AGI Command: <b>RECEIVE TEXT</b>
+ * <p>
+ * Receives text from channels supporting it.
+ * <p>
+ * See: <a href="https://wiki.asterisk.org/wiki/display/AST/Asterisk+18+AGICommand_receive+text">AGI Command RECEIVE TEXT (Asterisk 18)</a>
  *
  * @author srt
- * @version $Id$
- * @since 0.2
  */
 public class ReceiveTextCommand extends AbstractAgiCommand {
-    /**
-     * Serial version identifier.
-     */
     private static final long serialVersionUID = 3256719598056387384L;
 
     /**
@@ -40,8 +33,7 @@ public class ReceiveTextCommand extends AbstractAgiCommand {
     private int timeout;
 
     /**
-     * Creates a new ReceiveTextCommand with a default timeout of 0 meaning to
-     * wait for ever.
+     * Creates a new ReceiveTextCommand with a default timeout of 0 meaning to wait forever.
      */
     public ReceiveTextCommand() {
         super();
@@ -51,8 +43,7 @@ public class ReceiveTextCommand extends AbstractAgiCommand {
     /**
      * Creates a new ReceiveTextCommand.
      *
-     * @param timeout the milliseconds to wait for the channel to receive the
-     *                text.
+     * @param timeout the milliseconds to wait for the channel to receive the text.
      */
     public ReceiveTextCommand(int timeout) {
         super();
@@ -71,8 +62,7 @@ public class ReceiveTextCommand extends AbstractAgiCommand {
     /**
      * Sets the milliseconds to wait for the channel to receive the text.
      *
-     * @param timeout the milliseconds to wait for the channel to receive the
-     *                text.
+     * @param timeout the milliseconds to wait for the channel to receive the text.
      */
     public void setTimeout(int timeout) {
         this.timeout = timeout;

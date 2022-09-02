@@ -1,36 +1,34 @@
 /*
- *  Copyright 2004-2006 Stefan Reuter
+ * Copyright 2004-2022 Asterisk-Java contributors
  *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.asteriskjava.fastagi.command;
 
 /**
+ * AGI Command: <b>SAY DATETIME</b>
+ * <p>
  * Say a given time, returning early if any of the given DTMF digits are
  * pressed.<p>
  * Returns 0 if playback completes without a digit being pressed, or the ASCII
  * numerical value of the digit if one was pressed or -1 on error/hangup.<p>
  * Available since Asterisk 1.2.
+ * <p>
+ * See: <a href="https://wiki.asterisk.org/wiki/display/AST/Asterisk+18+AGICommand_say+datetime">AGI Command SAY DATETIME (Asterisk 18)</a>
  *
  * @author srt
- * @version $Id$
- * @since 0.2
  */
 public class SayDateTimeCommand extends AbstractAgiCommand {
-    /**
-     * Serial version identifier
-     */
     private static final long serialVersionUID = -976344744239948036L;
 
     private static final String DEFAULT_FORMAT = "ABdY 'digits/at' IMp";
@@ -43,8 +41,7 @@ public class SayDateTimeCommand extends AbstractAgiCommand {
     /**
      * Creates a new SayDateTimeCommand that says the given time.
      *
-     * @param time the time to say in seconds elapsed since 00:00:00 on January
-     *             1, 1970, Coordinated Universal Time (UTC)
+     * @param time the time to say in seconds elapsed since 00:00:00 on January 1, 1970, Coordinated Universal Time (UTC)
      */
     public SayDateTimeCommand(long time) {
         super();
@@ -52,13 +49,10 @@ public class SayDateTimeCommand extends AbstractAgiCommand {
     }
 
     /**
-     * Creates a new SayDateTimeCommand that says the given time and allows
-     * interruption by one of the given escape digits.
+     * Creates a new SayDateTimeCommand that says the given time and allows interruption by one of the given escape digits.
      *
-     * @param time         the time to say in seconds elapsed since 00:00:00 on January
-     *                     1, 1970, Coordinated Universal Time (UTC)
-     * @param escapeDigits the digits that allow the user to interrupt this
-     *                     command or <code>null</code> for none.
+     * @param time         the time to say in seconds elapsed since 00:00:00 on January 1, 1970, Coordinated Universal Time (UTC)
+     * @param escapeDigits the digits that allow the user to interrupt this command or <code>null</code> for none.
      */
     public SayDateTimeCommand(long time, String escapeDigits) {
         super();
@@ -67,13 +61,10 @@ public class SayDateTimeCommand extends AbstractAgiCommand {
     }
 
     /**
-     * Creates a new SayDateTimeCommand that says the given time in the given
-     * format and allows interruption by one of the given escape digits.
+     * Creates a new SayDateTimeCommand that says the given time in the given format and allows interruption by one of the given escape digits.
      *
-     * @param time         the time to say in seconds elapsed since 00:00:00 on January
-     *                     1, 1970, Coordinated Universal Time (UTC)
-     * @param escapeDigits the digits that allow the user to interrupt this
-     *                     command or <code>null</code> for none.
+     * @param time         the time to say in seconds elapsed since 00:00:00 on January 1, 1970, Coordinated Universal Time (UTC)
+     * @param escapeDigits the digits that allow the user to interrupt this command or <code>null</code> for none.
      * @param format       the format the time should be said in
      */
     public SayDateTimeCommand(long time, String escapeDigits, String format) {
@@ -84,17 +75,12 @@ public class SayDateTimeCommand extends AbstractAgiCommand {
     }
 
     /**
-     * Creates a new SayDateTimeCommand that says the given time in the given
-     * format and timezone and allows interruption by one of the given escape
-     * digits.
+     * Creates a new SayDateTimeCommand that says the given time in the given format and timezone and allows interruption by one of the given escape digits.
      *
-     * @param time         the time to say in seconds elapsed since 00:00:00 on January
-     *                     1, 1970, Coordinated Universal Time (UTC)
-     * @param escapeDigits the digits that allow the user to interrupt this
-     *                     command or <code>null</code> for none.
+     * @param time         the time to say in seconds elapsed since 00:00:00 on January 1, 1970, Coordinated Universal Time (UTC)
+     * @param escapeDigits the digits that allow the user to interrupt this command or <code>null</code> for none.
      * @param format       the format the time should be said in
-     * @param timezone     the timezone to use when saying the time, for example
-     *                     "UTC" or "Europe/Berlin".
+     * @param timezone     the timezone to use when saying the time, for example "UTC" or "Europe/Berlin".
      */
     public SayDateTimeCommand(long time, String escapeDigits, String format,
                               String timezone) {
@@ -106,23 +92,19 @@ public class SayDateTimeCommand extends AbstractAgiCommand {
     }
 
     /**
-     * Returns the time to say in seconds elapsed since 00:00:00 on January 1,
-     * 1970, Coordinated Universal Time (UTC).
+     * Returns the time to say in seconds elapsed since 00:00:00 on January 1, 1970, Coordinated Universal Time (UTC).
      *
-     * @return the time to say in seconds elapsed since 00:00:00 on January 1,
-     * 1970, Coordinated Universal Time (UTC)
+     * @return the time to say in seconds elapsed since 00:00:00 on January 1, 1970, Coordinated Universal Time (UTC)
      */
     public long getTime() {
         return time;
     }
 
     /**
-     * Returns the time to say in seconds elapsed since 00:00:00 on January 1,
-     * 1970, Coordinated Universal Time (UTC).<p>
+     * Returns the time to say in seconds elapsed since 00:00:00 on January 1, 1970, Coordinated Universal Time (UTC).<p>
      * This property is mandatory.
      *
-     * @param time the time to say in seconds elapsed since 00:00:00 on January
-     *             1, 1970, Coordinated Universal Time (UTC)
+     * @param time the time to say in seconds elapsed since 00:00:00 on January 1, 1970, Coordinated Universal Time (UTC)
      */
     public void setTime(long time) {
         this.time = time;
@@ -140,8 +122,7 @@ public class SayDateTimeCommand extends AbstractAgiCommand {
     /**
      * Sets the digits that allow the user to interrupt this command.
      *
-     * @param escapeDigits the digits that allow the user to interrupt this
-     *                     command or <code>null</code> for none.
+     * @param escapeDigits the digits that allow the user to interrupt this command or <code>null</code> for none.
      */
     public void setEscapeDigits(String escapeDigits) {
         this.escapeDigits = escapeDigits;
@@ -182,8 +163,7 @@ public class SayDateTimeCommand extends AbstractAgiCommand {
      * <code>/usr/share/zoneinfo</code> on your Asterisk server.<p>
      * Defaults to machine default.
      *
-     * @param timezone the timezone to use when saying the time, for example
-     *                 "UTC" or "Europe/Berlin".
+     * @param timezone the timezone to use when saying the time, for example "UTC" or "Europe/Berlin".
      */
     public void setTimezone(String timezone) {
         this.timezone = timezone;

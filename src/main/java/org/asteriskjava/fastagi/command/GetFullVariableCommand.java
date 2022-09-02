@@ -1,40 +1,34 @@
 /*
- *  Copyright 2004-2006 Stefan Reuter
+ * Copyright 2004-2022 Asterisk-Java contributors
  *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.asteriskjava.fastagi.command;
 
 /**
- * Returns the value of the given channel varible and understands complex
- * variable names and builtin variables, unlike the GetVariableCommand.<p>
- * You can also use this command to use custom Asterisk functions. Syntax is
- * "func(args)".<p>
- * Returns 0 if the variable is not set or channel does not exist. Returns 1 if
- * the variable is set and returns the variable in parenthesis.<p>
- * Available since Asterisk 1.2<p>
+ * AGI Command: <b>GET FULL VARIABLE</b>
+ * <p>
+ * Evaluates the given expression against the channel specified by channelname, or the current channel if channelname is not provided.<br>
+ * Unlike GET VARIABLE, the expression is processed in a manner similar to dialplan evaluation,
+ * allowing complex and built-in variables to be accessed, e.g. The time is ${EPOCH}<br>
+ * Returns 0 if no channel matching channelname exists, 1 otherwise.<br>
  * Example return code: 200 result=1 (testvariable)
+ * <p>
+ * See: <a href="https://wiki.asterisk.org/wiki/display/AST/Asterisk+18+AGICommand_get+full+variable">AGI Command GET FULL VARIABLE (Asterisk 18)</a>
  *
  * @author srt
- * @version $Id$
- * @see org.asteriskjava.fastagi.command.GetVariableCommand
- * @since 0.2
  */
 public class GetFullVariableCommand extends AbstractAgiCommand {
-    /**
-     * Serial version identifier.
-     */
     private static final long serialVersionUID = 3256719598056387384L;
 
     /**
@@ -69,7 +63,7 @@ public class GetFullVariableCommand extends AbstractAgiCommand {
     /**
      * Returns the name of the variable to retrieve.
      *
-     * @return the the name of the variable to retrieve.
+     * @return the name of the variable to retrieve.
      */
     public String getVariable() {
         return variable;
@@ -77,8 +71,7 @@ public class GetFullVariableCommand extends AbstractAgiCommand {
 
     /**
      * Sets the name of the variable to retrieve.<p>
-     * You can also use custom dialplan functions (like "func(args)") as
-     * variable.
+     * You can also use custom dialplan functions (like "func(args)") as variable.
      *
      * @param variable the name of the variable to retrieve.
      */
@@ -87,7 +80,7 @@ public class GetFullVariableCommand extends AbstractAgiCommand {
     }
 
     /**
-     * Returns the the name of the channel.
+     * Returns the name of the channel.
      *
      * @return the name of the channel.
      */

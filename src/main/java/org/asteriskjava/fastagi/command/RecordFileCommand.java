@@ -1,40 +1,30 @@
 /*
- *  Copyright 2004-2006 Stefan Reuter
+ * Copyright 2004-2022 Asterisk-Java contributors
  *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.asteriskjava.fastagi.command;
 
 /**
- * Record to a file until a given dtmf digit in the sequence is received.
+ * AGI Command: <b>RECORD FILE</b>
  * <p>
- * Returns -1 on hangup or error.
+ * Records to a given file.
  * <p>
- * The format will specify what kind of file will be recorded. The timeout is
- * the maximum record time in milliseconds, or -1 for no timeout. Offset samples
- * is optional, and if provided will seek to the offset without exceeding the
- * end of the file. "maxSilence" is the number of seconds of maxSilence allowed
- * before the function returns despite the lack of dtmf digits or reaching
- * timeout.
+ * See: <a href="https://wiki.asterisk.org/wiki/display/AST/Asterisk+18+AGICommand_record+file">AGI Command RECORD FILE (Asterisk 18)</a>
  *
  * @author srt
- * @version $Id$
  */
 public class RecordFileCommand extends AbstractAgiCommand {
-    /**
-     * Serial version identifier.
-     */
     private static final long serialVersionUID = 3978141041352128820L;
 
     /**
@@ -63,13 +53,12 @@ public class RecordFileCommand extends AbstractAgiCommand {
     private int offset;
 
     /**
-     * Wheather a beep should be played before recording.
+     * Whether a beep should be played before recording.
      */
     private boolean beep;
 
     /**
-     * The amount of silence (in seconds) to allow before returning despite the
-     * lack of dtmf digits or reaching timeout.
+     * The amount of silence (in seconds) to allow before returning despite the lack of dtmf digits or reaching timeout.
      */
     private int maxSilence;
 
@@ -78,10 +67,8 @@ public class RecordFileCommand extends AbstractAgiCommand {
      *
      * @param file         the name of the file to stream, must not include extension.
      * @param format       the format of the file to be recorded, for example "wav".
-     * @param escapeDigits contains the digits that allow the user to end
-     *                     recording.
-     * @param timeout      the maximum record time in milliseconds, or -1 for no
-     *                     timeout.
+     * @param escapeDigits contains the digits that allow the user to end recording.
+     * @param timeout      the maximum record time in milliseconds, or -1 for no timeout.
      */
     public RecordFileCommand(String file, String format, String escapeDigits, int timeout) {
         super();
@@ -99,18 +86,16 @@ public class RecordFileCommand extends AbstractAgiCommand {
      *
      * @param file         the name of the file to stream, must not include extension.
      * @param format       the format of the file to be recorded, for example "wav".
-     * @param escapeDigits contains the digits that allow the user to end
-     *                     recording.
-     * @param timeout      the maximum record time in milliseconds, or -1 for no
-     *                     timeout.
+     * @param escapeDigits contains the digits that allow the user to end recording.
+     * @param timeout      the maximum record time in milliseconds, or -1 for no timeout.
      * @param offset       the offset samples to skip.
-     * @param beep         <code>true</code> if a beep should be played before
-     *                     recording.
+     * @param beep         <code>true</code> if a beep should be played before recording.
      * @param maxSilence   The amount of silence (in seconds) to allow before
      *                     returning despite the lack of dtmf digits or reaching timeout.
      */
-    public RecordFileCommand(String file, String format, String escapeDigits, int timeout, int offset, boolean beep,
-                             int maxSilence) {
+    public RecordFileCommand(
+            String file, String format, String escapeDigits, int timeout, int offset, boolean beep, int maxSilence
+    ) {
         super();
         this.file = file;
         this.format = format;
@@ -169,8 +154,7 @@ public class RecordFileCommand extends AbstractAgiCommand {
     /**
      * Sets the digits that allow the user to end recording.
      *
-     * @param escapeDigits the digits that allow the user to end recording or
-     *                     <code>null</code> for none.
+     * @param escapeDigits the digits that allow the user to end recording or <code>null</code> for none.
      */
     public void setEscapeDigits(String escapeDigits) {
         this.escapeDigits = escapeDigits;
@@ -188,8 +172,7 @@ public class RecordFileCommand extends AbstractAgiCommand {
     /**
      * Sets the maximum record time in milliseconds.
      *
-     * @param timeout the maximum record time in milliseconds, or -1 for no
-     *                timeout.
+     * @param timeout the maximum record time in milliseconds, or -1 for no timeout.
      */
     public void setTimeout(int timeout) {
         this.timeout = timeout;
@@ -216,8 +199,7 @@ public class RecordFileCommand extends AbstractAgiCommand {
     /**
      * Returns <code>true</code> if a beep should be played before recording.
      *
-     * @return <code>true</code> if a beep should be played before recording,
-     * <code>false</code> if not.
+     * @return <code>true</code> if a beep should be played before recording, <code>false</code> if not.
      */
     public boolean getBeep() {
         return beep;
@@ -226,30 +208,25 @@ public class RecordFileCommand extends AbstractAgiCommand {
     /**
      * Set to <code>true</code> to play a beep before recording.
      *
-     * @param beep <code>true</code> if a beep should be played before
-     *             recording, <code>false</code> if not.
+     * @param beep <code>true</code> if a beep should be played before recording, <code>false</code> if not.
      */
     public void setBeep(boolean beep) {
         this.beep = beep;
     }
 
     /**
-     * Returns the amount of silence (in seconds) to allow before returning
-     * despite the lack of dtmf digits or reaching timeout.
+     * Returns the amount of silence (in seconds) to allow before returning despite the lack of dtmf digits or reaching timeout.
      *
-     * @return the amount of silence (in seconds) to allow before returning
-     * despite the lack of dtmf digits or reaching timeout.
+     * @return the amount of silence (in seconds) to allow before returning despite the lack of dtmf digits or reaching timeout.
      */
     int getMaxSilence() {
         return maxSilence;
     }
 
     /**
-     * Sets the amount of silence (in seconds) to allow before returning despite
-     * the lack of dtmf digits or reaching timeout.
+     * Sets the amount of silence (in seconds) to allow before returning despite the lack of dtmf digits or reaching timeout.
      *
-     * @param maxSilence the amount of silence (in seconds) to allow before
-     *                   returning despite the lack of dtmf digits or reaching timeout.
+     * @param maxSilence the amount of silence (in seconds) to allow before returning despite the lack of dtmf digits or reaching timeout.
      */
     void setMaxSilence(int maxSilence) {
         this.maxSilence = maxSilence;

@@ -1,39 +1,32 @@
 /*
- *  Copyright 2004-2006 Stefan Reuter
+ * Copyright 2004-2022 Asterisk-Java contributors
  *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.asteriskjava.fastagi.command;
 
 /**
- * Plays the given file, and waits for the user to press one of the given
- * digits. If none of the esacpe digits is pressed while streaming the file this
- * command waits for the specified timeout still waiting for the user to press a
- * digit. Streaming always begins at the beginning.<p>
- * Returns 0 if no digit being pressed, or the ASCII numerical value of the
- * digit if one was pressed, or -1 on error or if the channel was disconnected.
- * <br>
+ * AGI Command: <b>GET OPTION</b>
+ * <p>
+ * Behaves similar to <code>STREAM FILE</code> but used with a timeout option.<br>
  * Remember, the file extension must not be included in the filename.
+ * <p>
+ * See: <a href="https://wiki.asterisk.org/wiki/display/AST/Asterisk+18+AGICommand_get+option">AGI Command GET OPTION (Asterisk 18)</a>
  *
  * @author srt
- * @version $Id$
- * @see org.asteriskjava.fastagi.command.StreamFileCommand
+ * @see StreamFileCommand
  */
 public class GetOptionCommand extends AbstractAgiCommand {
-    /**
-     * Serial version identifier.
-     */
     private static final long serialVersionUID = 3978141041352128820L;
 
     /**
@@ -55,8 +48,7 @@ public class GetOptionCommand extends AbstractAgiCommand {
      * Creates a new GetOptionCommand with a default timeout of 5 seconds.
      *
      * @param file         the name of the file to stream, must not include extension.
-     * @param escapeDigits contains the digits that the user is expected to
-     *                     press.
+     * @param escapeDigits contains the digits that the user is expected to press.
      */
     public GetOptionCommand(String file, String escapeDigits) {
         super();
@@ -69,10 +61,8 @@ public class GetOptionCommand extends AbstractAgiCommand {
      * Creates a new GetOptionCommand with the given timeout.
      *
      * @param file         the name of the file to stream, must not include extension.
-     * @param escapeDigits contains the digits that the user is expected to
-     *                     press.
-     * @param timeout      the timeout in milliseconds to wait if none of the defined
-     *                     esacpe digits was presses while streaming.
+     * @param escapeDigits contains the digits that the user is expected to press.
+     * @param timeout      the timeout in milliseconds to wait if none of the defined escape digits was presses while streaming.
      */
     public GetOptionCommand(String file, String escapeDigits, long timeout) {
         super();
@@ -118,8 +108,7 @@ public class GetOptionCommand extends AbstractAgiCommand {
     }
 
     /**
-     * Returns the timeout to wait if none of the defined esacpe digits was
-     * presses while streaming.
+     * Returns the timeout to wait if none of the defined escape digits was presses while streaming.
      *
      * @return the timeout in milliseconds.
      */
@@ -128,10 +117,9 @@ public class GetOptionCommand extends AbstractAgiCommand {
     }
 
     /**
-     * Sets the timeout to wait if none of the defined esacpe digits was presses
-     * while streaming.
+     * Sets the timeout to wait if none of the defined escape digits was presses while streaming.
      *
-     * @param timeout the timeout in milliks,seconds.
+     * @param timeout the timeout in millis,seconds.
      */
     public void setTimeout(long timeout) {
         this.timeout = timeout;
@@ -139,8 +127,6 @@ public class GetOptionCommand extends AbstractAgiCommand {
 
     @Override
     public String buildCommand() {
-        return "GET OPTION " + escapeAndQuote(file) + " "
-                + escapeAndQuote(escapeDigits)
-                + (timeout < 0 ? "" : " " + timeout);
+        return "GET OPTION " + escapeAndQuote(file) + " " + escapeAndQuote(escapeDigits) + (timeout < 0 ? "" : " " + timeout);
     }
 }
