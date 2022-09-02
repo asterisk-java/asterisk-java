@@ -19,12 +19,11 @@ package org.asteriskjava.fastagi.command;
 /**
  * Sends a message to the Asterisk console via the verbose message system.<p>
  * Always returns 1.
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public class VerboseCommand extends AbstractAgiCommand
-{
+public class VerboseCommand extends AbstractAgiCommand {
     /**
      * Serial version identifier.
      */
@@ -43,13 +42,12 @@ public class VerboseCommand extends AbstractAgiCommand
 
     /**
      * Creates a new VerboseCommand.
-     * 
+     *
      * @param message the message to send.
-     * @param level the verbosity level to use.<p>
-     *            Must be in [1..4]
+     * @param level   the verbosity level to use.<p>
+     *                Must be in [1..4]
      */
-    public VerboseCommand(String message, int level)
-    {
+    public VerboseCommand(String message, int level) {
         super();
         this.message = message;
         this.level = level;
@@ -57,48 +55,43 @@ public class VerboseCommand extends AbstractAgiCommand
 
     /**
      * Returns the message to send.
-     * 
+     *
      * @return the message to send.
      */
-    public String getMessage()
-    {
+    public String getMessage() {
         return message;
     }
 
     /**
      * Sets the message to send.
-     * 
+     *
      * @param message the message to send.
      */
-    public void setMessage(String message)
-    {
+    public void setMessage(String message) {
         this.message = message;
     }
 
     /**
      * Returns the level to use.
-     * 
+     *
      * @return the level to use.
      */
-    public int getLevel()
-    {
+    public int getLevel() {
         return level;
     }
 
     /**
      * Sets the level to use.<p>
      * Must be in in [1..4].
-     * 
+     *
      * @param level the level to use.
      */
-    public void setLevel(int level)
-    {
+    public void setLevel(int level) {
         this.level = level;
     }
 
     @Override
-   public String buildCommand()
-    {
+    public String buildCommand() {
         return "VERBOSE " + escapeAndQuote(message) + " " + level;
     }
 }

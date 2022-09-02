@@ -23,12 +23,11 @@ package org.asteriskjava.fastagi.command;
  * Coordinated Universal Time (UTC).<p>
  * Returns 0 if playback completes without a digit being pressed, or the ASCII
  * numerical value of the digit if one was pressed or -1 on error/hangup.
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public class SayTimeCommand extends AbstractAgiCommand
-{
+public class SayTimeCommand extends AbstractAgiCommand {
     /**
      * Serial version identifier.
      */
@@ -46,24 +45,22 @@ public class SayTimeCommand extends AbstractAgiCommand
 
     /**
      * Creates a new SayTimeCommand.
-     * 
+     *
      * @param time the time to say in seconds since 00:00:00 on January 1, 1970.
      */
-    public SayTimeCommand(long time)
-    {
+    public SayTimeCommand(long time) {
         super();
         this.time = time;
     }
 
     /**
      * Creates a new SayTimeCommand.
-     * 
-     * @param time the time to say in seconds since 00:00:00 on January 1, 1970.
+     *
+     * @param time         the time to say in seconds since 00:00:00 on January 1, 1970.
      * @param escapeDigits contains the digits that allow the user to interrupt
-     *            this command.
+     *                     this command.
      */
-    public SayTimeCommand(long time, String escapeDigits)
-    {
+    public SayTimeCommand(long time, String escapeDigits) {
         super();
         this.time = time;
         this.escapeDigits = escapeDigits;
@@ -71,48 +68,43 @@ public class SayTimeCommand extends AbstractAgiCommand
 
     /**
      * Returns the time to say in seconds since 00:00:00 on January 1, 1970.
-     * 
+     *
      * @return the time to say in seconds since 00:00:00 on January 1, 1970.
      */
-    public long getTime()
-    {
+    public long getTime() {
         return time;
     }
 
     /**
      * Sets the time to say in seconds since 00:00:00 on January 1, 1970.
-     * 
+     *
      * @param time the time to say in seconds since 00:00:00 on January 1, 1970.
      */
-    public void setTime(long time)
-    {
+    public void setTime(long time) {
         this.time = time;
     }
 
     /**
      * Returns the digits that allow the user to interrupt this command.
-     * 
+     *
      * @return the digits that allow the user to interrupt this command.
      */
-    public String getEscapeDigits()
-    {
+    public String getEscapeDigits() {
         return escapeDigits;
     }
 
     /**
      * Sets the digits that allow the user to interrupt this command.
-     * 
+     *
      * @param escapeDigits the time that allow the user to interrupt this
-     *            command or <code>null</code> for none.
+     *                     command or <code>null</code> for none.
      */
-    public void setEscapeDigits(String escapeDigits)
-    {
+    public void setEscapeDigits(String escapeDigits) {
         this.escapeDigits = escapeDigits;
     }
 
     @Override
-   public String buildCommand()
-    {
+    public String buildCommand() {
         return "SAY TIME " + time + " " + escapeAndQuote(escapeDigits);
     }
 }

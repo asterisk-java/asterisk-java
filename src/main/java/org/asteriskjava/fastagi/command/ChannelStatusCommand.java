@@ -30,12 +30,11 @@ package org.asteriskjava.fastagi.command;
  * <li>6 Line is up
  * <li>7 Line is busy
  * </ul>
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public class ChannelStatusCommand extends AbstractAgiCommand
-{
+public class ChannelStatusCommand extends AbstractAgiCommand {
     /**
      * Serial version identifier.
      */
@@ -50,47 +49,42 @@ public class ChannelStatusCommand extends AbstractAgiCommand
     /**
      * Creates a new ChannelStatusCommand that queries the current channel.
      */
-    public ChannelStatusCommand()
-    {
+    public ChannelStatusCommand() {
         super();
     }
 
     /**
      * Creates a new ChannelStatusCommand that queries the given channel.
-     * 
+     *
      * @param channel the name of the channel to query.
      */
-    public ChannelStatusCommand(String channel)
-    {
+    public ChannelStatusCommand(String channel) {
         super();
         this.channel = channel;
     }
 
     /**
      * Returns the name of the channel to query.
-     * 
+     *
      * @return the name of the channel to query or <code>null</code> for the
-     *         current channel.
+     * current channel.
      */
-    public String getChannel()
-    {
+    public String getChannel() {
         return channel;
     }
 
     /**
      * Sets the name of the channel to query.
-     * 
+     *
      * @param channel the name of the channel to query or <code>null</code>
-     *            for the current channel.
+     *                for the current channel.
      */
-    public void setChannel(String channel)
-    {
+    public void setChannel(String channel) {
         this.channel = channel;
     }
 
     @Override
-   public String buildCommand()
-    {
+    public String buildCommand() {
         return "CHANNEL STATUS"
                 + (channel == null ? "" : " " + escapeAndQuote(channel));
     }

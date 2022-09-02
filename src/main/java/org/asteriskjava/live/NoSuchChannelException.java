@@ -18,12 +18,11 @@ package org.asteriskjava.live;
 
 /**
  * Indicates that the channel is not available on the Asterisk server.
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public class NoSuchChannelException extends LiveException
-{
+public class NoSuchChannelException extends LiveException {
     /**
      * Serial version identifier.
      */
@@ -31,11 +30,10 @@ public class NoSuchChannelException extends LiveException
 
     /**
      * Creates a new instance with the given message.
-     * 
+     *
      * @param message the message
      */
-    public NoSuchChannelException(String message)
-    {
+    public NoSuchChannelException(String message) {
         super(message);
     }
 }

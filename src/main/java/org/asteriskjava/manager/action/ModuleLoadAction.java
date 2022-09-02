@@ -24,8 +24,7 @@ package org.asteriskjava.manager.action;
  * @version $Id$
  * @since 1.0.0
  */
-public class ModuleLoadAction extends AbstractManagerAction
-{
+public class ModuleLoadAction extends AbstractManagerAction {
     static final long serialVersionUID = 1L;
 
     public static final String SUBSYSTEM_CDR = "cdr";
@@ -46,8 +45,7 @@ public class ModuleLoadAction extends AbstractManagerAction
     /**
      * Creates a new ModuleLoadAction.
      */
-    public ModuleLoadAction()
-    {
+    public ModuleLoadAction() {
 
     }
 
@@ -59,8 +57,7 @@ public class ModuleLoadAction extends AbstractManagerAction
      *                 to reload all modules.
      * @param loadType the operation to perform ("load", "unload" or "reload").
      */
-    public ModuleLoadAction(String module, String loadType)
-    {
+    public ModuleLoadAction(String module, String loadType) {
         this.module = module;
         this.loadType = loadType;
     }
@@ -69,8 +66,7 @@ public class ModuleLoadAction extends AbstractManagerAction
      * Returns the name of this action, i.e. "ModuleLoad".
      */
     @Override
-    public String getAction()
-    {
+    public String getAction() {
         return "ModuleLoad";
     }
 
@@ -79,8 +75,7 @@ public class ModuleLoadAction extends AbstractManagerAction
      *
      * @return the name of the module or subsystem to perform the operation on.
      */
-    public String getModule()
-    {
+    public String getModule() {
         return module;
     }
 
@@ -99,8 +94,7 @@ public class ModuleLoadAction extends AbstractManagerAction
      * @see #SUBSYSTEM_RTP
      * @see #SUBSYSTEM_HTTP
      */
-    public void setModule(String module)
-    {
+    public void setModule(String module) {
         this.module = module;
     }
 
@@ -109,8 +103,7 @@ public class ModuleLoadAction extends AbstractManagerAction
      *
      * @return the operation to perform.
      */
-    public String getLoadType()
-    {
+    public String getLoadType() {
         return loadType;
     }
 
@@ -122,8 +115,7 @@ public class ModuleLoadAction extends AbstractManagerAction
      * @see #LOAD_TYPE_UNLOAD
      * @see #LOAD_TYPE_RELOAD
      */
-    public void setLoadType(String loadType)
-    {
+    public void setLoadType(String loadType) {
         this.loadType = loadType;
     }
 }

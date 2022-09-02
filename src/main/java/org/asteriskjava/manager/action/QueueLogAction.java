@@ -25,8 +25,7 @@ package org.asteriskjava.manager.action;
  * @version $Id$
  * @since 1.0.0
  */
-public class QueueLogAction extends AbstractManagerAction
-{
+public class QueueLogAction extends AbstractManagerAction {
     private static final long serialVersionUID = 1L;
 
     private String iface;
@@ -38,8 +37,7 @@ public class QueueLogAction extends AbstractManagerAction
     /**
      * Creates a new empty QueueLogAction.
      */
-    public QueueLogAction()
-    {
+    public QueueLogAction() {
 
     }
 
@@ -49,8 +47,7 @@ public class QueueLogAction extends AbstractManagerAction
      * @param queue the name of the queue to log the event for.
      * @param event the event to log.
      */
-    public QueueLogAction(String queue, String event)
-    {
+    public QueueLogAction(String queue, String event) {
         this.queue = queue;
         this.event = event;
     }
@@ -64,8 +61,7 @@ public class QueueLogAction extends AbstractManagerAction
      * @param iface    the interface of the member to log the event for, may be <code>null</code>.
      * @param uniqueId the unique id of the channel to log the event for, may be <code>null</code>.
      */
-    public QueueLogAction(String queue, String event, String message, String iface, String uniqueId)
-    {
+    public QueueLogAction(String queue, String event, String message, String iface, String uniqueId) {
         this.queue = queue;
         this.event = event;
         this.message = message;
@@ -79,8 +75,7 @@ public class QueueLogAction extends AbstractManagerAction
      * @return the name of this action.
      */
     @Override
-    public String getAction()
-    {
+    public String getAction() {
         return "QueueLog";
     }
 
@@ -89,8 +84,7 @@ public class QueueLogAction extends AbstractManagerAction
      *
      * @return the interface of the member to log the event for.
      */
-    public String getInterface()
-    {
+    public String getInterface() {
         return iface;
     }
 
@@ -99,8 +93,7 @@ public class QueueLogAction extends AbstractManagerAction
      *
      * @param iface the interface of the member to log the event for.
      */
-    public void setInterface(String iface)
-    {
+    public void setInterface(String iface) {
         this.iface = iface;
     }
 
@@ -109,8 +102,7 @@ public class QueueLogAction extends AbstractManagerAction
      *
      * @return the name of the queue to log the event for.
      */
-    public String getQueue()
-    {
+    public String getQueue() {
         return queue;
     }
 
@@ -120,8 +112,7 @@ public class QueueLogAction extends AbstractManagerAction
      *
      * @param queue the name of the queue to log the event for.
      */
-    public void setQueue(String queue)
-    {
+    public void setQueue(String queue) {
         this.queue = queue;
     }
 
@@ -130,8 +121,7 @@ public class QueueLogAction extends AbstractManagerAction
      *
      * @return the unique id of the channel to log the event for.
      */
-    public String getUniqueId()
-    {
+    public String getUniqueId() {
         return uniqueId;
     }
 
@@ -140,8 +130,7 @@ public class QueueLogAction extends AbstractManagerAction
      *
      * @param uniqueId the unique id of the channel to log the event for.
      */
-    public void setUniqueId(String uniqueId)
-    {
+    public void setUniqueId(String uniqueId) {
         this.uniqueId = uniqueId;
     }
 
@@ -150,8 +139,7 @@ public class QueueLogAction extends AbstractManagerAction
      *
      * @return the event to log.
      */
-    public String getEvent()
-    {
+    public String getEvent() {
         return event;
     }
 
@@ -161,8 +149,7 @@ public class QueueLogAction extends AbstractManagerAction
      *
      * @param event the event to log.
      */
-    public void setEvent(String event)
-    {
+    public void setEvent(String event) {
         this.event = event;
     }
 
@@ -171,8 +158,7 @@ public class QueueLogAction extends AbstractManagerAction
      *
      * @return the message to log.
      */
-    public String getMessage()
-    {
+    public String getMessage() {
         return message;
     }
 
@@ -181,8 +167,7 @@ public class QueueLogAction extends AbstractManagerAction
      *
      * @param message the message to log.
      */
-    public void setMessage(String message)
-    {
+    public void setMessage(String message) {
         this.message = message;
     }
 }

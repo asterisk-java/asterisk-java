@@ -11,8 +11,7 @@ import java.util.regex.Pattern;
  *
  * @since 1.0.0
  */
-public class AstState
-{
+public class AstState {
     /* from include/asterisk/channel.h */
 
     /**
@@ -67,8 +66,7 @@ public class AstState
 
     private static final Map<String, Integer> inverseStateMap;
 
-    static
-    {
+    static {
         final Map<String, Integer> tmpInverseStateMap = new HashMap<>();
 
         tmpInverseStateMap.put("Down", AST_STATE_DOWN);
@@ -87,8 +85,7 @@ public class AstState
 
     private static final Pattern UNKNOWN_STATE_PATTERN = Pattern.compile("^Unknown \\((\\d+)\\)$");
 
-    private AstState()
-    {
+    private AstState() {
 
     }
 
@@ -98,28 +95,21 @@ public class AstState
      * @param str state as a descriptive text.
      * @return numeric state.
      */
-    public static Integer str2state(String str)
-    {
+    public static Integer str2state(String str) {
         Integer state;
 
-        if (str == null)
-        {
+        if (str == null) {
             return null;
         }
 
         state = inverseStateMap.get(str);
 
-        if (state == null)
-        {
+        if (state == null) {
             Matcher matcher = UNKNOWN_STATE_PATTERN.matcher(str);
-            if (matcher.matches())
-            {
-                try
-                {
+            if (matcher.matches()) {
+                try {
                     state = Integer.valueOf(matcher.group(1));
-                }
-                catch (NumberFormatException e)
-                {
+                } catch (NumberFormatException e) {
                     // should not happen as the pattern requires \d+ for the state.
                     throw new IllegalArgumentException("Unable to convert state '" + str + "' to integer representation", e);
                 }

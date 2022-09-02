@@ -1,7 +1,5 @@
 package org.asteriskjava.fastagi.internal;
 
-import java.io.IOException;
-
 import org.asteriskjava.fastagi.AgiException;
 import org.asteriskjava.fastagi.AgiWriter;
 import org.asteriskjava.fastagi.command.AgiCommand;
@@ -11,56 +9,48 @@ import org.asteriskjava.manager.action.AgiAction;
 import org.asteriskjava.manager.response.ManagerError;
 import org.asteriskjava.manager.response.ManagerResponse;
 
+import java.io.IOException;
+
 /**
  * Implementation of AgiWriter that uses a {@link org.asteriskjava.manager.ManagerConnection} to send
  * {@link org.asteriskjava.fastagi.command.AgiCommand AgiCommands} as part of an AsyncAgi conversation.
  *
  * @see org.asteriskjava.manager.ManagerConnection
  * @see org.asteriskjava.manager.action.AgiAction
- * @since 1.0.0 
+ * @since 1.0.0
  */
-public class AsyncAgiWriter implements AgiWriter
-{
+public class AsyncAgiWriter implements AgiWriter {
     private final ManagerConnection connection;
     private volatile String channelName;
 
-    public AsyncAgiWriter(ManagerConnection connection, String channelName)
-    {
+    public AsyncAgiWriter(ManagerConnection connection, String channelName) {
         this.connection = connection;
         this.channelName = channelName;
     }
 
-    public void sendCommand(AgiCommand command) throws AgiException
-    {
+    public void sendCommand(AgiCommand command) throws AgiException {
         final AgiAction agiAction;
         final ManagerResponse response;
 
         agiAction = new AgiAction(channelName, command.buildCommand());
 
-        try
-        {
+        try {
             response = connection.sendAction(agiAction);
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             throw new AgiException("Unable to send AsyncAGI command to " + connection.getHostname() +
                     " for channel " + channelName, e);
-        }
-        catch (TimeoutException e)
-        {
+        } catch (TimeoutException e) {
             throw new AgiException("Timeout while sending AsyncAGI command to " + connection.getHostname() +
-                    " for channel " + channelName , e);
+                    " for channel " + channelName, e);
         }
 
-        if (response instanceof ManagerError)
-        {
+        if (response instanceof ManagerError) {
             throw new AgiException("Unable to send AsyncAGI command to " + connection.getHostname() +
                     " for channel " + channelName + ": " + response.getMessage());
         }
     }
 
-    public void updateChannelName(String channelName)
-    {
+    public void updateChannelName(String channelName) {
         this.channelName = channelName;
     }
 }

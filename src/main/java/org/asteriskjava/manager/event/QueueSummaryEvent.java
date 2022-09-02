@@ -16,8 +16,7 @@ import org.asteriskjava.manager.action.QueueSummaryAction;
  * @see QueueSummaryAction
  * @since 0.3
  */
-public class QueueSummaryEvent extends ResponseEvent
-{
+public class QueueSummaryEvent extends ResponseEvent {
     /**
      * Serial version identifier.
      */
@@ -30,8 +29,7 @@ public class QueueSummaryEvent extends ResponseEvent
     private Integer talkTime;
     private Integer longestHoldTime;
 
-    public QueueSummaryEvent(Object source)
-    {
+    public QueueSummaryEvent(Object source) {
         super(source);
     }
 
@@ -40,8 +38,7 @@ public class QueueSummaryEvent extends ResponseEvent
      *
      * @return the name of queue.
      */
-    public String getQueue()
-    {
+    public String getQueue() {
         return queue;
     }
 
@@ -50,8 +47,7 @@ public class QueueSummaryEvent extends ResponseEvent
      *
      * @param queue the name of queue.
      */
-    public void setQueue(String queue)
-    {
+    public void setQueue(String queue) {
         this.queue = queue;
     }
 
@@ -60,8 +56,7 @@ public class QueueSummaryEvent extends ResponseEvent
      *
      * @return the number of members logged in.
      */
-    public Integer getLoggedIn()
-    {
+    public Integer getLoggedIn() {
         return loggedIn;
     }
 
@@ -70,8 +65,7 @@ public class QueueSummaryEvent extends ResponseEvent
      *
      * @param loggedIn the number of members logged in.
      */
-    public void setLoggedIn(Integer loggedIn)
-    {
+    public void setLoggedIn(Integer loggedIn) {
         this.loggedIn = loggedIn;
     }
 
@@ -82,8 +76,7 @@ public class QueueSummaryEvent extends ResponseEvent
      *
      * @return the number of members logged in and not in a call.
      */
-    public Integer getAvailable()
-    {
+    public Integer getAvailable() {
         return available;
     }
 
@@ -92,8 +85,7 @@ public class QueueSummaryEvent extends ResponseEvent
      *
      * @param available the number of members logged in and not in a call.
      */
-    public void setAvailable(Integer available)
-    {
+    public void setAvailable(Integer available) {
         this.available = available;
     }
 
@@ -102,8 +94,7 @@ public class QueueSummaryEvent extends ResponseEvent
      *
      * @return the number of callers currently waiting in the queue.
      */
-    public Integer getCallers()
-    {
+    public Integer getCallers() {
         return callers;
     }
 
@@ -112,8 +103,7 @@ public class QueueSummaryEvent extends ResponseEvent
      *
      * @param callers the number of callers currently waiting in the queue.
      */
-    public void setCallers(Integer callers)
-    {
+    public void setCallers(Integer callers) {
         this.callers = callers;
     }
 
@@ -122,8 +112,7 @@ public class QueueSummaryEvent extends ResponseEvent
      *
      * @return the current avarage hold time for this queue.
      */
-    public Integer getHoldTime()
-    {
+    public Integer getHoldTime() {
         return holdTime;
     }
 
@@ -132,8 +121,7 @@ public class QueueSummaryEvent extends ResponseEvent
      *
      * @param holdTime the current avarage hold time for this queue.
      */
-    public void setHoldTime(Integer holdTime)
-    {
+    public void setHoldTime(Integer holdTime) {
         this.holdTime = holdTime;
     }
 
@@ -143,8 +131,7 @@ public class QueueSummaryEvent extends ResponseEvent
      * @return the current avarage talk time for this queue.
      * @since 1.0.0
      */
-    public Integer getTalkTime()
-    {
+    public Integer getTalkTime() {
         return talkTime;
     }
 
@@ -154,8 +141,7 @@ public class QueueSummaryEvent extends ResponseEvent
      * @param talkTime the current avarage talk time for this queue.
      * @since 1.0.0
      */
-    public void setTalkTime(Integer talkTime)
-    {
+    public void setTalkTime(Integer talkTime) {
         this.talkTime = talkTime;
     }
 
@@ -165,8 +151,7 @@ public class QueueSummaryEvent extends ResponseEvent
      * @return the longest hold time of the a queue entry currently in the queue.
      * @since 1.0.0
      */
-    public Integer getLongestHoldTime()
-    {
+    public Integer getLongestHoldTime() {
         return longestHoldTime;
     }
 
@@ -176,8 +161,7 @@ public class QueueSummaryEvent extends ResponseEvent
      * @param longestHoldTime the longest hold time of the a queue entry currently in the queue.
      * @since 1.0.0
      */
-    public void setLongestHoldTime(Integer longestHoldTime)
-    {
+    public void setLongestHoldTime(Integer longestHoldTime) {
         this.longestHoldTime = longestHoldTime;
     }
 }

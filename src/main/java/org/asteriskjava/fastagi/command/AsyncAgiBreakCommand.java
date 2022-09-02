@@ -22,8 +22,7 @@ package org.asteriskjava.fastagi.command;
  * @author srt
  * @version $Id$
  */
-public class AsyncAgiBreakCommand extends AbstractAgiCommand
-{
+public class AsyncAgiBreakCommand extends AbstractAgiCommand {
     /**
      * Serial version identifier.
      */
@@ -32,14 +31,12 @@ public class AsyncAgiBreakCommand extends AbstractAgiCommand
     /**
      * Creates a new AsyncAgiBreakCommand.
      */
-    public AsyncAgiBreakCommand()
-    {
+    public AsyncAgiBreakCommand() {
         super();
     }
 
     @Override
-    public String buildCommand()
-    {
+    public String buildCommand() {
         return "ASYNCAGI BREAK";
     }
 }

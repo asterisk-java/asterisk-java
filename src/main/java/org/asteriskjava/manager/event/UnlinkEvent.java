@@ -20,21 +20,20 @@ package org.asteriskjava.manager.event;
  * An UnlinkEvent is triggered when a link between two voice channels is discontinued, for example,
  * just before call completion.<p>
  * It is implemented in <code>channel.c</code>
- * 
+ *
  * @author srt
  * @version $Id$
  * @deprecated as of 1.0.0, use {@link org.asteriskjava.manager.event.BridgeEvent} and
- *             {@link BridgeEvent#isUnlink()} instead
+ * {@link BridgeEvent#isUnlink()} instead
  */
-@Deprecated public class UnlinkEvent extends BridgeEvent
-{
+@Deprecated
+public class UnlinkEvent extends BridgeEvent {
     /**
      * Serial version identifier.
      */
     static final long serialVersionUID = -2943257621137870024L;
 
-    public UnlinkEvent(Object source)
-    {
+    public UnlinkEvent(Object source) {
         super(source);
         setBridgeState(BRIDGE_STATE_UNLINK);
     }

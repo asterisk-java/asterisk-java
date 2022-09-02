@@ -6,8 +6,7 @@ package org.asteriskjava.manager.event;
  *
  * @since 1.0.0
  */
-public class ConfbridgeStartEvent extends AbstractConfbridgeEvent
-{
+public class ConfbridgeStartEvent extends AbstractConfbridgeEvent {
     /**
      * Serializable version identifier
      */
@@ -16,8 +15,7 @@ public class ConfbridgeStartEvent extends AbstractConfbridgeEvent
     @SuppressWarnings("unused")
     private String conference;
 
-    public ConfbridgeStartEvent(Object source)
-    {
+    public ConfbridgeStartEvent(Object source) {
         super(source);
     }
 

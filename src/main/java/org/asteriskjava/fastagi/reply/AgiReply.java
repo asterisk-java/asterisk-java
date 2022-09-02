@@ -25,13 +25,12 @@ import java.util.List;
  * of an AgiCommand and - depending on the command sent - additional information
  * returned, for example the value of a variable requested by a
  * GetVariableCommand.
- * 
- * @see org.asteriskjava.fastagi.command.AgiCommand
+ *
  * @author srt
  * @version $Id$
+ * @see org.asteriskjava.fastagi.command.AgiCommand
  */
-public interface AgiReply extends Serializable
-{
+public interface AgiReply extends Serializable {
     /**
      * Status code (100) indicating Asterisk needs to process the
      * AgiCommand and will report a final result code soon.
@@ -75,28 +74,28 @@ public interface AgiReply extends Serializable
 
     /**
      * Returns the first line of the raw reply.
-     * 
+     *
      * @return the first line of the raw reply.
      */
     String getFirstLine();
 
     /**
      * Returns a List containing the lines of the raw reply.
-     * 
+     *
      * @return a List containing the lines of the raw reply.
      */
     List<String> getLines();
 
     /**
      * Returns the return code (the result as int).
-     * 
+     *
      * @return the return code or -1 if the result is not an int.
      */
     int getResultCode();
 
     /**
      * Returns the return code as character.
-     * 
+     *
      * @return the return code as character.
      */
     char getResultCodeAsChar();
@@ -104,7 +103,7 @@ public interface AgiReply extends Serializable
     /**
      * Returns the result, that is the part directly following the "result="
      * string.
-     * 
+     *
      * @return the result.
      */
     String getResult();
@@ -119,7 +118,7 @@ public interface AgiReply extends Serializable
      * <li>511 Command Not Permitted on a dead channel (since Asterisk 1.6)
      * <li>520 Invalid command syntax
      * </ul>
-     * 
+     *
      * @return the status code.
      * @see #SC_TRYING
      * @see #SC_SUCCESS
@@ -135,11 +134,11 @@ public interface AgiReply extends Serializable
      * endpos attribute indicating the frame where the playback was stopped.
      * This can be retrieved by calling getAttribute("endpos") on the
      * corresponding reply.
-     * 
+     *
      * @param name the name of the attribute to retrieve. The name is case
-     *            insensitive.
+     *             insensitive.
      * @return the value of the attribute or <code>null</code> if it is not
-     *         set.
+     * set.
      */
     String getAttribute(String name);
 
@@ -148,7 +147,7 @@ public interface AgiReply extends Serializable
      * The meaning of this property depends on the command sent. Sometimes it
      * contains a flag like "timeout" or "hangup" or - in case of the
      * GetVariableCommand - the value of the variable.
-     * 
+     *
      * @return the text in the parenthesis or <code>null</code> if not set.
      */
     String getExtra();
@@ -156,18 +155,18 @@ public interface AgiReply extends Serializable
     /**
      * Returns the synopsis of the command sent if Asterisk expected a different
      * syntax (getStatus() == SC_INVALID_COMMAND_SYNTAX).
-     * 
+     *
      * @return the synopsis of the command sent, <code>null</code> if there
-     *         were no syntax errors.
+     * were no syntax errors.
      */
     String getSynopsis();
 
     /**
      * Returns the usage of the command sent if Asterisk expected a different
      * syntax (getStatus() == SC_INVALID_COMMAND_SYNTAX).
-     * 
+     *
      * @return the usage of the command sent, <code>null</code> if there were
-     *         no syntax errors.
+     * no syntax errors.
      */
     String getUsage();
 }

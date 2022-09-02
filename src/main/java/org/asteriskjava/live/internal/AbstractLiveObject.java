@@ -16,23 +16,22 @@
  */
 package org.asteriskjava.live.internal;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
-
 import org.asteriskjava.live.AsteriskServer;
 import org.asteriskjava.live.LiveObject;
 import org.asteriskjava.lock.Lockable;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+
 /**
  * Abstract base class for all live objects.
- * 
+ *
  * @author srt
  * @since 0.3
  */
-abstract class AbstractLiveObject extends Lockable implements LiveObject
-{
+abstract class AbstractLiveObject extends Lockable implements LiveObject {
     private final Log logger = LogFactory.getLog(this.getClass());
     private final PropertyChangeSupport changes;
     protected final AsteriskServerImpl server;
@@ -40,74 +39,58 @@ abstract class AbstractLiveObject extends Lockable implements LiveObject
     // last time this object was updated
     private long lastUpdate;
 
-    AbstractLiveObject(AsteriskServerImpl server)
-    {
+    AbstractLiveObject(AsteriskServerImpl server) {
         this.server = server;
         this.changes = new PropertyChangeSupport(this);
         stampLastUpdate();
     }
 
-    public AsteriskServer getServer()
-    {
+    public AsteriskServer getServer() {
         return server;
     }
 
-    public void addPropertyChangeListener(PropertyChangeListener listener)
-    {
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
         changes.addPropertyChangeListener(listener);
     }
 
-    public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener)
-    {
+    public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
         boolean haveToAdd = true;
-        for (PropertyChangeListener l : changes.getPropertyChangeListeners())
-        {
-            if (l == listener)
-            {
+        for (PropertyChangeListener l : changes.getPropertyChangeListeners()) {
+            if (l == listener) {
                 haveToAdd = false;
                 break;
             }
         }
-        if (haveToAdd)
-        {
+        if (haveToAdd) {
             changes.addPropertyChangeListener(propertyName, listener);
         }
     }
 
-    public void removePropertyChangeListener(PropertyChangeListener listener)
-    {
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
         changes.removePropertyChangeListener(listener);
     }
 
-    public void removePropertyChangeListener(String propertyName, PropertyChangeListener listener)
-    {
+    public void removePropertyChangeListener(String propertyName, PropertyChangeListener listener) {
         changes.removePropertyChangeListener(propertyName, listener);
     }
 
-    protected void firePropertyChange(String propertyName, Object oldValue, Object newValue)
-    {
-        if (oldValue != null || newValue != null)
-        {
+    protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
+        if (oldValue != null || newValue != null) {
             stampLastUpdate();
-            try
-            {
+            try {
                 changes.firePropertyChange(propertyName, oldValue, newValue);
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 logger.warn("Uncaught exception in PropertyChangeListener", e);
             }
         }
     }
 
     @Override
-    public long getLastUpdateMillis()
-    {
+    public long getLastUpdateMillis() {
         return lastUpdate;
     }
 
-    public void stampLastUpdate()
-    {
+    public void stampLastUpdate() {
         lastUpdate = System.currentTimeMillis();
     }
 }

@@ -1,22 +1,8 @@
 package org.asteriskjava.pbx.internal.activity;
 
-import java.io.IOException;
-import java.util.HashSet;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-
 import org.asteriskjava.lock.Locker.LockCloser;
 import org.asteriskjava.manager.TimeoutException;
-import org.asteriskjava.pbx.ActivityCallback;
-import org.asteriskjava.pbx.AsteriskSettings;
-import org.asteriskjava.pbx.Call;
-import org.asteriskjava.pbx.CallDirection;
-import org.asteriskjava.pbx.Channel;
-import org.asteriskjava.pbx.EndPoint;
-import org.asteriskjava.pbx.ListenerPriority;
-import org.asteriskjava.pbx.PBXException;
-import org.asteriskjava.pbx.PBXFactory;
-import org.asteriskjava.pbx.TechType;
+import org.asteriskjava.pbx.*;
 import org.asteriskjava.pbx.activities.ParkActivity;
 import org.asteriskjava.pbx.asterisk.wrap.actions.RedirectAction;
 import org.asteriskjava.pbx.asterisk.wrap.events.ManagerEvent;
@@ -26,6 +12,11 @@ import org.asteriskjava.pbx.internal.core.AsteriskPBX;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
 /**
  * The ParkActivity is used by the AsteriksPBX implementation to park a channel.
  * The park activity expects two channels which are two legs legs of the same
@@ -33,11 +24,10 @@ import org.asteriskjava.util.LogFactory;
  * hangupChannel (the second leg of the call) will be hung up. The (obvious?)
  * limitation is that we can't park something like a conference call as it has
  * more than two channels.
- * 
+ *
  * @author bsutton
  */
-public class ParkActivityImpl extends ActivityHelper<ParkActivity> implements ParkActivity
-{
+public class ParkActivityImpl extends ActivityHelper<ParkActivity> implements ParkActivity {
     private static final Log logger = LogFactory.getLog(ParkActivityImpl.class);
 
     /**
@@ -60,16 +50,13 @@ public class ParkActivityImpl extends ActivityHelper<ParkActivity> implements Pa
      * @param parkChannel the channel from the call which is the one which will
      * be parked. All other channels in the call will be hungup.
      */
-    public ParkActivityImpl(final Call call, final Channel parkChannel, final ActivityCallback<ParkActivity> listener)
-    {
+    public ParkActivityImpl(final Call call, final Channel parkChannel, final ActivityCallback<ParkActivity> listener) {
         super("ParkActivity", listener);
 
-        if (call == null)
-        {
+        if (call == null) {
             throw new IllegalArgumentException("call may not be null");
         }
-        if (parkChannel == null)
-        {
+        if (parkChannel == null) {
             throw new IllegalArgumentException("parkChannel may not be null");
         }
         this._parkChannel = parkChannel;
@@ -82,8 +69,7 @@ public class ParkActivityImpl extends ActivityHelper<ParkActivity> implements Pa
     }
 
     @Override
-    public boolean doActivity() throws PBXException
-    {
+    public boolean doActivity() throws PBXException {
         boolean success = false;
         final AsteriskPBX pbx = (AsteriskPBX) PBXFactory.getActivePBX();
 
@@ -92,8 +78,7 @@ public class ParkActivityImpl extends ActivityHelper<ParkActivity> implements Pa
         ParkActivityImpl.logger.info("***********            " + this._parkChannel + "                 ****************");
         ParkActivityImpl.logger.debug("*******************************************************************************");
 
-        try
-        {
+        try {
             final AsteriskSettings profile = PBXFactory.getActiveProfile();
 
             if (!pbx.waitForChannelToQuiescent(this._parkChannel, 3000))
@@ -105,53 +90,39 @@ public class ParkActivityImpl extends ActivityHelper<ParkActivity> implements Pa
                     pbx.getExtensionPark(), 1);
 
             final ManagerResponse response = pbx.sendAction(redirect, 1000);
-            if ((response != null) && (response.getResponse().compareToIgnoreCase("success") == 0))
-            {
+            if ((response != null) && (response.getResponse().compareToIgnoreCase("success") == 0)) {
                 // Hangup the call as we have parked the other side of
                 // the call.
-                if (this._call.getDirection() == CallDirection.INBOUND)
-                {
+                if (this._call.getDirection() == CallDirection.INBOUND) {
                     logger.warn("Hanging up");
                     pbx.hangup(this._call.getAcceptingParty());
-                }
-                else
-                {
+                } else {
                     logger.warn("Hanging up");
                     pbx.hangup(this._call.getOriginatingParty());
                 }
                 success = true;
             }
 
-        }
-        catch (IllegalArgumentException | IllegalStateException | IOException | TimeoutException e)
-        {
+        } catch (IllegalArgumentException | IllegalStateException | IOException | TimeoutException e) {
             ParkActivityImpl.logger.error(e, e);
             throw new PBXException(e);
 
-        }
-        finally
-        {
+        } finally {
             // we wait at most 2 seconds for the parking extension to
             // arrive.
-            try
-            {
-                if (success)
-                {
-                    if (!this._latch.await(2, TimeUnit.SECONDS))
-                    {
+            try {
+                if (success) {
+                    if (!this._latch.await(2, TimeUnit.SECONDS)) {
                         logger.warn("Timeout, continuing");
                     }
                 }
 
-                if (this._parkingLot == null)
-                {
+                if (this._parkingLot == null) {
                     success = false;
                     ParkActivityImpl.logger.warn("ParkCallEvent not recieved within 2 seconds of parking call.");
                     this.setLastException(new PBXException("ParkCallEvent  not recieved within 2 seconds of parking call."));
                 }
-            }
-            catch (final InterruptedException e)
-            {
+            } catch (final InterruptedException e) {
                 ParkActivityImpl.logger.error(e, e);
 
             }
@@ -161,15 +132,13 @@ public class ParkActivityImpl extends ActivityHelper<ParkActivity> implements Pa
     }
 
     @Override
-    public EndPoint getParkingLot()
-    {
+    public EndPoint getParkingLot() {
         return this._parkingLot;
     }
 
     @Override
-    public HashSet<Class< ? extends ManagerEvent>> requiredEvents()
-    {
-        HashSet<Class< ? extends ManagerEvent>> required = new HashSet<>();
+    public HashSet<Class<? extends ManagerEvent>> requiredEvents() {
+        HashSet<Class<? extends ManagerEvent>> required = new HashSet<>();
 
         required.add(ParkedCallEvent.class);
 
@@ -177,10 +146,8 @@ public class ParkActivityImpl extends ActivityHelper<ParkActivity> implements Pa
     }
 
     @Override
-    public void onManagerEvent(final ManagerEvent event)
-    {
-        try (LockCloser closer = this.withLock())
-        {
+    public void onManagerEvent(final ManagerEvent event) {
+        try (LockCloser closer = this.withLock()) {
             assert event instanceof ParkedCallEvent : "Unexpected event";
 
             final ParkedCallEvent parkedEvent = (ParkedCallEvent) event;
@@ -192,8 +159,7 @@ public class ParkActivityImpl extends ActivityHelper<ParkActivity> implements Pa
     }
 
     @Override
-    public ListenerPriority getPriority()
-    {
+    public ListenerPriority getPriority() {
         return ListenerPriority.NORMAL;
     }
 

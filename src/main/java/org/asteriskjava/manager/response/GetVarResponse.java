@@ -24,8 +24,7 @@ package org.asteriskjava.manager.response;
  * @see org.asteriskjava.manager.action.GetVarAction
  * @since 1.0.0
  */
-public class GetVarResponse extends ManagerResponse
-{
+public class GetVarResponse extends ManagerResponse {
     private static final long serialVersionUID = 1L;
 
     private String variable;
@@ -36,8 +35,7 @@ public class GetVarResponse extends ManagerResponse
      *
      * @return the name of the requested variable.
      */
-    public String getVariable()
-    {
+    public String getVariable() {
         return variable;
     }
 
@@ -46,8 +44,7 @@ public class GetVarResponse extends ManagerResponse
      *
      * @param variable the name of the requested variable.
      */
-    public void setVariable(String variable)
-    {
+    public void setVariable(String variable) {
         this.variable = variable;
     }
 
@@ -56,8 +53,7 @@ public class GetVarResponse extends ManagerResponse
      *
      * @return the value of the requested variable.
      */
-    public String getValue()
-    {
+    public String getValue() {
         return value;
     }
 
@@ -66,8 +62,7 @@ public class GetVarResponse extends ManagerResponse
      *
      * @param value the value of the requested variable.
      */
-    public void setValue(String value)
-    {
+    public void setValue(String value) {
         this.value = value;
     }
 }

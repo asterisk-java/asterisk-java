@@ -26,8 +26,7 @@ import org.asteriskjava.manager.response.SkypeBuddyResponse;
  * @since 1.0.0
  */
 @ExpectedResponse(SkypeBuddyResponse.class)
-public class SkypeBuddyAction extends AbstractManagerAction
-{
+public class SkypeBuddyAction extends AbstractManagerAction {
     /**
      * Serializable version identifier
      */
@@ -38,8 +37,7 @@ public class SkypeBuddyAction extends AbstractManagerAction
     /**
      * Creates a new SkypeBuddiesAction.
      */
-    public SkypeBuddyAction()
-    {
+    public SkypeBuddyAction() {
 
     }
 
@@ -49,8 +47,7 @@ public class SkypeBuddyAction extends AbstractManagerAction
      * @param user  the Skype username of the user to retrieve the buddy details for.
      * @param buddy the Skype username of the buddy.
      */
-    public SkypeBuddyAction(String user, String buddy)
-    {
+    public SkypeBuddyAction(String user, String buddy) {
         this.user = user;
         this.buddy = buddy;
     }
@@ -61,8 +58,7 @@ public class SkypeBuddyAction extends AbstractManagerAction
      *
      * @return the Skype username of the Skype for Asterisk user.
      */
-    public String getUser()
-    {
+    public String getUser() {
         return user;
     }
 
@@ -71,8 +67,7 @@ public class SkypeBuddyAction extends AbstractManagerAction
      *
      * @param user the Skype username of the Skype for Asterisk user.
      */
-    public void setUser(String user)
-    {
+    public void setUser(String user) {
         this.user = user;
     }
 
@@ -81,8 +76,7 @@ public class SkypeBuddyAction extends AbstractManagerAction
      *
      * @return the Skype username of the buddy.
      */
-    public String getBuddy()
-    {
+    public String getBuddy() {
         return buddy;
     }
 
@@ -92,8 +86,7 @@ public class SkypeBuddyAction extends AbstractManagerAction
      *
      * @param buddy the Skype username of the buddy.
      */
-    public void setBuddy(String buddy)
-    {
+    public void setBuddy(String buddy) {
         this.buddy = buddy;
     }
 
@@ -101,8 +94,7 @@ public class SkypeBuddyAction extends AbstractManagerAction
      * Returns the name of this action, i.e. "SkypeBuddy".
      */
     @Override
-    public String getAction()
-    {
+    public String getAction() {
         return "SkypeBuddy";
     }
 }

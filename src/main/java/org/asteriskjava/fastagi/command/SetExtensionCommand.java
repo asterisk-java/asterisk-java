@@ -18,12 +18,11 @@ package org.asteriskjava.fastagi.command;
 
 /**
  * Sets the extension for continuation upon exiting the application.
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public class SetExtensionCommand extends AbstractAgiCommand
-{
+public class SetExtensionCommand extends AbstractAgiCommand {
     /**
      * Serial version identifier.
      */
@@ -36,40 +35,36 @@ public class SetExtensionCommand extends AbstractAgiCommand
 
     /**
      * Creates a new SetPriorityCommand.
-     * 
+     *
      * @param extension the extension for continuation upon exiting the
-     *            application.
+     *                  application.
      */
-    public SetExtensionCommand(String extension)
-    {
+    public SetExtensionCommand(String extension) {
         super();
         this.extension = extension;
     }
 
     /**
      * Returns the extension for continuation upon exiting the application.
-     * 
+     *
      * @return the extension for continuation upon exiting the application.
      */
-    public String getExtension()
-    {
+    public String getExtension() {
         return extension;
     }
 
     /**
      * Sets the extension for continuation upon exiting the application.
-     * 
+     *
      * @param extension the extension for continuation upon exiting the
-     *            application.
+     *                  application.
      */
-    public void setExtension(String extension)
-    {
+    public void setExtension(String extension) {
         this.extension = extension;
     }
 
     @Override
-   public String buildCommand()
-    {
+    public String buildCommand() {
         return "SET EXTENSION " + escapeAndQuote(extension);
     }
 }

@@ -1,29 +1,24 @@
 package org.asteriskjava.util.internal.streamreader;
 
+import org.asteriskjava.util.Log;
+import org.asteriskjava.util.LogFactory;
+
 import java.io.IOException;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
-import org.asteriskjava.util.Log;
-import org.asteriskjava.util.LogFactory;
-
-public class FastScannerFactory
-{
+public class FastScannerFactory {
     private static final Log logger = LogFactory.getLog(FastScannerFactory.class);
 
     private static volatile boolean useLegacyScanner = false;
 
-    public static FastScanner getReader(Readable reader, Pattern pattern)
-    {
-        if (!useLegacyScanner)
-        {
-            if (pattern.pattern().equals("\r\n"))
-            {
+    public static FastScanner getReader(Readable reader, Pattern pattern) {
+        if (!useLegacyScanner) {
+            if (pattern.pattern().equals("\r\n")) {
                 return new FastScannerCrNl(reader);
             }
-            if (pattern.pattern().equals("\n"))
-            {
+            if (pattern.pattern().equals("\n")) {
                 return new FastScannerNl(reader);
             }
         }
@@ -38,32 +33,24 @@ public class FastScannerFactory
 
     }
 
-    public static void useLegacyScanner(boolean b)
-    {
+    public static void useLegacyScanner(boolean b) {
         useLegacyScanner = b;
     }
 
-    private static FastScanner getWrappedScanner(final Scanner scanner)
-    {
-        return new FastScanner()
-        {
+    private static FastScanner getWrappedScanner(final Scanner scanner) {
+        return new FastScanner() {
 
             @Override
-            public String next() throws IOException
-            {
-                try
-                {
+            public String next() throws IOException {
+                try {
                     return scanner.next();
-                }
-                catch (NoSuchElementException e)
-                {
+                } catch (NoSuchElementException e) {
                     return null;
                 }
             }
 
             @Override
-            public void close()
-            {
+            public void close() {
                 scanner.close();
             }
 

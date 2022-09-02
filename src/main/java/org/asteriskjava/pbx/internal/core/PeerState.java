@@ -4,8 +4,7 @@ import org.asteriskjava.pbx.asterisk.wrap.events.ChannelState;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
-public enum PeerState
-{
+public enum PeerState {
     DOWN(1, "Down", "OnHook", false), //$NON-NLS-1$ //$NON-NLS-2$
     UP(2, "Up", "OnPhone", true), //$NON-NLS-1$ //$NON-NLS-2$
     UNKNOWN(0, "Unknown", "Unknown", false), //$NON-NLS-1$ //$NON-NLS-2$
@@ -40,15 +39,12 @@ public enum PeerState
      */
     private int _priority;
 
-    public static PeerState valueByName(final String value)
-    {
+    public static PeerState valueByName(final String value) {
         PeerState status = NOTSET;
 
-        for (PeerState aState : PeerState.values())
-        {
+        for (PeerState aState : PeerState.values()) {
 
-            if (aState.getAsteriskStateName().compareToIgnoreCase(value) == 0)
-            {
+            if (aState.getAsteriskStateName().compareToIgnoreCase(value) == 0) {
                 status = aState;
                 break;
             }
@@ -56,20 +52,16 @@ public enum PeerState
         return status;
     }
 
-    private String getAsteriskStateName()
-    {
+    private String getAsteriskStateName() {
         return this._asteriskStateName;
     }
 
-    public static PeerState valueByChannelState(final ChannelState state)
-    {
+    public static PeerState valueByChannelState(final ChannelState state) {
         PeerState status = NOTSET;
 
-        for (PeerState aState : PeerState.values())
-        {
+        for (PeerState aState : PeerState.values()) {
 
-            if (aState.getAsteriskStateName().compareToIgnoreCase(state.name()) == 0)
-            {
+            if (aState.getAsteriskStateName().compareToIgnoreCase(state.name()) == 0) {
                 status = aState;
                 break;
             }
@@ -80,32 +72,27 @@ public enum PeerState
         return status;
     }
 
-    PeerState(int priority, final String asteriskStateName, final String label, boolean visible)
-    {
+    PeerState(int priority, final String asteriskStateName, final String label, boolean visible) {
         this._asteriskStateName = asteriskStateName;
         this.label = label;
         this._visible = visible;
         this._priority = priority;
     }
 
-    public String getLabel()
-    {
+    public String getLabel() {
         return this.label;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return this.label;
     }
 
-    public boolean isVisible()
-    {
+    public boolean isVisible() {
         return this._visible;
     }
 
-    public int getPriority()
-    {
+    public int getPriority() {
         return this._priority;
     }
 }

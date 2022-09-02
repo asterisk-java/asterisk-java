@@ -19,12 +19,11 @@ package org.asteriskjava.fastagi.command;
 /**
  * Sets the priority for continuation upon exiting the application.<p>
  * Since Asterisk 1.2 SetPriorityCommand also supports labels.
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public class SetPriorityCommand extends AbstractAgiCommand
-{
+public class SetPriorityCommand extends AbstractAgiCommand {
     /**
      * Serial version identifier.
      */
@@ -37,40 +36,36 @@ public class SetPriorityCommand extends AbstractAgiCommand
 
     /**
      * Creates a new SetPriorityCommand.
-     * 
+     *
      * @param priority the priority or label for continuation upon exiting the
-     *            application.
+     *                 application.
      */
-    public SetPriorityCommand(String priority)
-    {
+    public SetPriorityCommand(String priority) {
         super();
         this.priority = priority;
     }
 
     /**
      * Returns the priority or label for continuation upon exiting the application.
-     * 
+     *
      * @return the priority or label for continuation upon exiting the application.
      */
-    public String getPriority()
-    {
+    public String getPriority() {
         return priority;
     }
 
     /**
      * Sets the priority or label for continuation upon exiting the application.
-     * 
+     *
      * @param priority the priority or label for continuation upon exiting the
-     *            application.
+     *                 application.
      */
-    public void setPriority(String priority)
-    {
+    public void setPriority(String priority) {
         this.priority = priority;
     }
 
     @Override
-   public String buildCommand()
-    {
+    public String buildCommand() {
         return "SET PRIORITY " + escapeAndQuote(priority);
     }
 }

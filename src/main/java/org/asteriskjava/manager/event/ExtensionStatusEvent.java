@@ -33,8 +33,7 @@ package org.asteriskjava.manager.event;
  * @author srt
  * @version $Id$
  */
-public class ExtensionStatusEvent extends ManagerEvent
-{
+public class ExtensionStatusEvent extends ManagerEvent {
     /**
      * Serializable version identifier.
      */
@@ -70,9 +69,8 @@ public class ExtensionStatusEvent extends ManagerEvent
     private String callerId;
     private String statustext;
 
- 
-	public ExtensionStatusEvent(Object source)
-    {
+
+    public ExtensionStatusEvent(Object source) {
         super(source);
     }
 
@@ -84,13 +82,11 @@ public class ExtensionStatusEvent extends ManagerEvent
      * @return the hint (channel name) assigned to the extension.
      * @since 1.0.0
      */
-    public String getHint()
-    {
+    public String getHint() {
         return hint;
     }
 
-    public void setHint(String hint)
-    {
+    public void setHint(String hint) {
         this.hint = hint;
     }
 
@@ -106,16 +102,14 @@ public class ExtensionStatusEvent extends ManagerEvent
      * <li>UNAVAILABLE</li>
      * </ul>
      */
-    public Integer getStatus()
-    {
+    public Integer getStatus() {
         return status;
     }
 
     /**
      * Sets the state of the extension.
      */
-    public void setStatus(Integer status)
-    {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
@@ -127,8 +121,7 @@ public class ExtensionStatusEvent extends ManagerEvent
      * @return the Caller*ID.
      * @since 0.3
      */
-    public String getCallerId()
-    {
+    public String getCallerId() {
         return callerId;
     }
 
@@ -138,19 +131,16 @@ public class ExtensionStatusEvent extends ManagerEvent
      * @param callerId the Caller*ID.
      * @since 0.3
      */
-    public void setCallerId(String callerId)
-    {
+    public void setCallerId(String callerId) {
         this.callerId = callerId;
     }
-    
-    public String getStatustext()
- 	{
- 		return statustext;
- 	}
 
- 	public void setStatustext(String statustext)
- 	{
- 		this.statustext = statustext;
- 	}
+    public String getStatustext() {
+        return statustext;
+    }
+
+    public void setStatustext(String statustext) {
+        this.statustext = statustext;
+    }
 
 }

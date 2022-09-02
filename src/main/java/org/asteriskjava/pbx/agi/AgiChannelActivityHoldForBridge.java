@@ -8,46 +8,37 @@ import org.asteriskjava.pbx.Channel;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
-public class AgiChannelActivityHoldForBridge implements AgiChannelActivityAction
-{
+public class AgiChannelActivityHoldForBridge implements AgiChannelActivityAction {
     private final Log logger = LogFactory.getLog(this.getClass());
     private AgiChannelActivityBridge bridgeActivity;
     private volatile boolean hangup = true;
 
-    public AgiChannelActivityHoldForBridge(AgiChannelActivityBridge bridgeActivity)
-    {
+    public AgiChannelActivityHoldForBridge(AgiChannelActivityBridge bridgeActivity) {
         this.bridgeActivity = bridgeActivity;
     }
 
     @Override
-    public void execute(AgiChannel channel, Channel ichannel) throws AgiException, InterruptedException
-    {
-        try
-        {
+    public void execute(AgiChannel channel, Channel ichannel) throws AgiException, InterruptedException {
+        try {
             channel.playMusicOnHold();
             bridgeActivity.sleepWhileBridged();
 
-            if (hangup)
-            {
+            if (hangup) {
                 channel.hangup();
             }
-        }
-        catch (AgiHangupException e)
-        {
+        } catch (AgiHangupException e) {
             logger.warn(e.getMessage() + " " + channel.getName());
         }
 
     }
 
     @Override
-    public boolean isDisconnect(ActivityAgi activityAgi)
-    {
+    public boolean isDisconnect(ActivityAgi activityAgi) {
         return false;
     }
 
     @Override
-    public void cancel()
-    {
+    public void cancel() {
         // this seems a bit strange, but the logic here is that if you cancel
         // this action you want to invoke a new action. We can't end the bridge
         // from here, but not hanging up when it does collapse is
@@ -56,8 +47,7 @@ public class AgiChannelActivityHoldForBridge implements AgiChannelActivityAction
 
     }
 
-    public void hangupAfterBridge(boolean b)
-    {
+    public void hangupAfterBridge(boolean b) {
         hangup = b;
     }
 

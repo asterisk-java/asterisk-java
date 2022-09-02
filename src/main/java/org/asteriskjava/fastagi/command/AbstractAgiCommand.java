@@ -16,21 +16,20 @@
  */
 package org.asteriskjava.fastagi.command;
 
-import java.io.Serializable;
-
 import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
+import java.io.Serializable;
+
 /**
  * Abstract base class that provides some convenience methods for implementing
  * AgiCommand classes.
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public abstract class AbstractAgiCommand implements Serializable, AgiCommand
-{
+public abstract class AbstractAgiCommand implements Serializable, AgiCommand {
     /**
      * Serial version identifier.
      */
@@ -44,16 +43,14 @@ public abstract class AbstractAgiCommand implements Serializable, AgiCommand
     /**
      * Escapes and quotes a given String according to the rules set by
      * Asterisk's AGI.
-     * 
+     *
      * @param s the String to escape and quote
      * @return the transformed String
      */
-    protected String escapeAndQuote(String s)
-    {
+    protected String escapeAndQuote(String s) {
         String tmp;
 
-        if (s == null)
-        {
+        if (s == null) {
             return "\"\"";
         }
 
@@ -64,18 +61,14 @@ public abstract class AbstractAgiCommand implements Serializable, AgiCommand
         return "\"" + tmp + "\""; // add quotes
     }
 
-    protected String escapeAndQuote(String[] options)
-    {
-        if (options == null)
-        {
+    protected String escapeAndQuote(String[] options) {
+        if (options == null) {
             return escapeAndQuote((String) null);
         }
 
         final StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < options.length; i++)
-        {
-            if (i > 0)
-            {
+        for (int i = 0; i < options.length; i++) {
+            if (i > 0) {
                 sb.append(",");
             }
             sb.append(options[i]);
@@ -85,8 +78,7 @@ public abstract class AbstractAgiCommand implements Serializable, AgiCommand
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         StringBuilder sb;
 
         sb = new StringBuilder(getClass().getName()).append("[");
@@ -96,15 +88,12 @@ public abstract class AbstractAgiCommand implements Serializable, AgiCommand
         return sb.toString();
     }
 
-    public void setAsteriskVersion(AsteriskVersion asteriskVersion)
-    {
+    public void setAsteriskVersion(AsteriskVersion asteriskVersion) {
         this.asteriskVersion = asteriskVersion;
     }
 
-    AsteriskVersion getAsteriskVersion()
-    {
-        if (asteriskVersion == null)
-        {
+    AsteriskVersion getAsteriskVersion() {
+        if (asteriskVersion == null) {
             logger.warn("Asterisk Version isn't known, returning 1.4");
             return AsteriskVersion.ASTERISK_1_4;
         }

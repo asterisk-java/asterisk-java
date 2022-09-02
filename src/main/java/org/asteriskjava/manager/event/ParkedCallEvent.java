@@ -21,13 +21,12 @@ package org.asteriskjava.manager.event;
  * action id is set) and in response to a ParkedCallsAction.
  * <p>
  * It is implemented in <code>res/res_features.c</code>
- * 
- * @see org.asteriskjava.manager.action.ParkedCallsAction
+ *
  * @author srt
  * @version $Id$
+ * @see org.asteriskjava.manager.action.ParkedCallsAction
  */
-public class ParkedCallEvent extends AbstractParkedCallEvent
-{
+public class ParkedCallEvent extends AbstractParkedCallEvent {
     /**
      * Serializable version identifier
      */
@@ -39,8 +38,7 @@ public class ParkedCallEvent extends AbstractParkedCallEvent
     /**
      * @param source
      */
-    public ParkedCallEvent(Object source)
-    {
+    public ParkedCallEvent(Object source) {
         super(source);
     }
 
@@ -50,16 +48,14 @@ public class ParkedCallEvent extends AbstractParkedCallEvent
      * This corresponds to the <code>parkingtime</code> option in
      * <code>features.conf</code>.
      */
-    public Integer getTimeout()
-    {
+    public Integer getTimeout() {
         return timeout;
     }
 
     /**
      * Sets the number of seconds this call will be parked.
      */
-    public void setTimeout(Integer timeout)
-    {
+    public void setTimeout(Integer timeout) {
         this.timeout = timeout;
     }
 
@@ -67,24 +63,21 @@ public class ParkedCallEvent extends AbstractParkedCallEvent
      * Sets the unique id of the parked channel as a workaround for a typo in
      * asterisk manager event.
      */
-    public void setUnqiueId(String unqiueId)
-    {
+    public void setUnqiueId(String unqiueId) {
         setUniqueId(unqiueId);
     }
 
     /**
      * @param parkeelinkedid the parkeelinkedid to set
      */
-    public void setParkeelinkedid(String parkeelinkedid)
-    {
+    public void setParkeelinkedid(String parkeelinkedid) {
         this.parkeelinkedid = parkeelinkedid;
     }
 
     /**
      * @return the parkeelinkedid
      */
-    public String getParkeelinkedid()
-    {
+    public String getParkeelinkedid() {
         return parkeelinkedid;
     }
 

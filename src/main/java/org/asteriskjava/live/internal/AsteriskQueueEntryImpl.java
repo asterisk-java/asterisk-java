@@ -1,18 +1,17 @@
 package org.asteriskjava.live.internal;
 
-import java.util.Date;
-
 import org.asteriskjava.live.AsteriskQueueEntry;
 import org.asteriskjava.live.QueueEntryState;
 import org.asteriskjava.lock.Locker.LockCloser;
+
+import java.util.Date;
 
 /**
  * Default implementation of the AsteriskQueueEntry interface.
  *
  * @author gmi
  */
-class AsteriskQueueEntryImpl extends AbstractLiveObject implements AsteriskQueueEntry
-{
+class AsteriskQueueEntryImpl extends AbstractLiveObject implements AsteriskQueueEntry {
     private final AsteriskQueueImpl queue;
     private final AsteriskChannelImpl channel;
     private final Date dateJoined;
@@ -32,8 +31,7 @@ class AsteriskQueueEntryImpl extends AbstractLiveObject implements AsteriskQueue
     private int position = POSITION_UNDETERMINED;
 
     AsteriskQueueEntryImpl(AsteriskServerImpl server, AsteriskQueueImpl queue, AsteriskChannelImpl channel,
-            int reportedPosition, Date dateJoined)
-    {
+                           int reportedPosition, Date dateJoined) {
         super(server);
         this.queue = queue;
         this.channel = channel;
@@ -42,28 +40,23 @@ class AsteriskQueueEntryImpl extends AbstractLiveObject implements AsteriskQueue
         this.reportedPosition = reportedPosition;
     }
 
-    public String getChannelName()
-    {
+    public String getChannelName() {
         return channel.getName();
     }
 
-    public AsteriskQueueImpl getQueue()
-    {
+    public AsteriskQueueImpl getQueue() {
         return queue;
     }
 
-    public AsteriskChannelImpl getChannel()
-    {
+    public AsteriskChannelImpl getChannel() {
         return channel;
     }
 
-    public Date getDateJoined()
-    {
+    public Date getDateJoined() {
         return dateJoined;
     }
 
-    public Date getDateLeft()
-    {
+    public Date getDateLeft() {
         return dateLeft;
     }
 
@@ -73,11 +66,9 @@ class AsteriskQueueEntryImpl extends AbstractLiveObject implements AsteriskQueue
      *
      * @param dateLeft the date this member left the queue.
      */
-    void left(Date dateLeft)
-    {
+    void left(Date dateLeft) {
         QueueEntryState oldState;
-        try (LockCloser closer = this.withLock())
-        {
+        try (LockCloser closer = this.withLock()) {
             oldState = this.state;
             this.dateLeft = dateLeft;
             this.state = QueueEntryState.LEFT;
@@ -85,8 +76,7 @@ class AsteriskQueueEntryImpl extends AbstractLiveObject implements AsteriskQueue
         firePropertyChange(PROPERTY_STATE, oldState, state);
     }
 
-    public QueueEntryState getState()
-    {
+    public QueueEntryState getState() {
         return state;
     }
 
@@ -97,8 +87,7 @@ class AsteriskQueueEntryImpl extends AbstractLiveObject implements AsteriskQueue
      *
      * @return the position of the entry in the respective queue, starting at 1
      */
-    public int getReportedPosition()
-    {
+    public int getReportedPosition() {
         return reportedPosition;
     }
 
@@ -115,51 +104,42 @@ class AsteriskQueueEntryImpl extends AbstractLiveObject implements AsteriskQueue
      *
      * @return the position of the entry in the respective queue, starting at 1
      */
-    public int getPosition()
-    {
+    public int getPosition() {
         return position;
     }
 
-    void setPosition(int position)
-    {
+    void setPosition(int position) {
         int oldPosition = this.position;
         this.position = position;
         firePropertyChange(PROPERTY_POSITION, oldPosition, position);
     }
 
-    void setReportedPosition(int reportedPosition)
-    {
+    void setReportedPosition(int reportedPosition) {
         int oldPosition = this.reportedPosition;
         this.reportedPosition = reportedPosition;
         firePropertyChange(PROPERTY_REPORTED_POSITION, oldPosition, reportedPosition);
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         StringBuilder sb;
         int systemHashcode;
 
         sb = new StringBuilder("AsteriskQueueEntry[");
 
-        try (LockCloser closer = this.withLock())
-        {
+        try (LockCloser closer = this.withLock()) {
             sb.append("dateJoined=").append(getDateJoined()).append(",");
             sb.append("postition=").append(getPosition()).append(",");
             sb.append("dateLeft=").append(getDateLeft()).append(",");
             systemHashcode = System.identityHashCode(this);
         }
-        if (channel != null)
-        {
+        if (channel != null) {
             sb.append("channel=AsteriskChannel[");
-            try (LockCloser closer = channel.withLock())
-            {
+            try (LockCloser closer = channel.withLock()) {
                 sb.append("id='").append(channel.getId()).append("',");
                 sb.append("name='").append(channel.getName()).append("'],");
             }
-        }
-        else
-        {
+        } else {
             sb.append("channel=null,");
         }
         sb.append("systemHashcode=").append(systemHashcode);

@@ -27,21 +27,19 @@ package org.asteriskjava.manager.event;
  * @see org.asteriskjava.manager.action.SipShowRegistryAction
  * @since 1.0.0
  */
-public class RegistrationsCompleteEvent extends ResponseEvent
-{
+public class RegistrationsCompleteEvent extends ResponseEvent {
 
     /**
-    * 
-    */
-   private static final long serialVersionUID = 6269829662009989518L;
-   private Integer listItems;
+     *
+     */
+    private static final long serialVersionUID = 6269829662009989518L;
+    private Integer listItems;
     private String eventList;
 
     /**
      * Creates a new RegistrationsCompleteEvent.
      */
-    public RegistrationsCompleteEvent(Object source)
-    {
+    public RegistrationsCompleteEvent(Object source) {
         super(source);
     }
 
@@ -50,8 +48,7 @@ public class RegistrationsCompleteEvent extends ResponseEvent
      *
      * @return the number of SIP registrations that have been reported.
      */
-    public Integer getListItems()
-    {
+    public Integer getListItems() {
         return listItems;
     }
 
@@ -60,8 +57,7 @@ public class RegistrationsCompleteEvent extends ResponseEvent
      *
      * @param listItems the number of SIP registrations that have been reported.
      */
-    public void setListItems(Integer listItems)
-    {
+    public void setListItems(Integer listItems) {
         this.listItems = listItems;
     }
 
@@ -70,14 +66,12 @@ public class RegistrationsCompleteEvent extends ResponseEvent
      *
      * @return always returns "Complete" confirming that all RegistryEntry events have been sent.
      */
-    public String getEventList()
-    {
+    public String getEventList() {
         return eventList;
     }
 
 
-    public void setEventList(String eventList)
-    {
+    public void setEventList(String eventList) {
         this.eventList = eventList;
     }
 

@@ -1,9 +1,8 @@
 package org.asteriskjava.manager.event;
 
-public class PickupEvent extends ManagerEvent
-{
+public class PickupEvent extends ManagerEvent {
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
     private String accountcode;
@@ -26,198 +25,159 @@ public class PickupEvent extends ManagerEvent
     private String targetuniqueid;
     private String uniqueid;
 
-    public PickupEvent(Object source)
-    {
+    public PickupEvent(Object source) {
         super(source);
     }
 
-    public String getAccountcode()
-    {
+    public String getAccountcode() {
         return accountcode;
     }
 
-    public String getChannel()
-    {
+    public String getChannel() {
         return channel;
     }
 
-    public String getLanguage()
-    {
+    public String getLanguage() {
         return language;
     }
 
-    public String getLinkedid()
-    {
+    public String getLinkedid() {
         return linkedid;
     }
 
-    public String getTargetaccountcode()
-    {
+    public String getTargetaccountcode() {
         return targetaccountcode;
     }
 
-    public String getTargetcalleridname()
-    {
+    public String getTargetcalleridname() {
         return targetcalleridname;
     }
 
-    public String getTargetcalleridnum()
-    {
+    public String getTargetcalleridnum() {
         return targetcalleridnum;
     }
 
-    public String getTargetchannel()
-    {
+    public String getTargetchannel() {
         return targetchannel;
     }
 
-    public String getTargetchannelstate()
-    {
+    public String getTargetchannelstate() {
         return targetchannelstate;
     }
 
-    public String getTargetchannelstatedesc()
-    {
+    public String getTargetchannelstatedesc() {
         return targetchannelstatedesc;
     }
 
-    public String getTargetconnectedlinename()
-    {
+    public String getTargetconnectedlinename() {
         return targetconnectedlinename;
     }
 
-    public String getTargetconnectedlinenum()
-    {
+    public String getTargetconnectedlinenum() {
         return targetconnectedlinenum;
     }
 
-    public String getTargetcontext()
-    {
+    public String getTargetcontext() {
         return targetcontext;
     }
 
-    public String getTargetexten()
-    {
+    public String getTargetexten() {
         return targetexten;
     }
 
-    public String getTargetlanguage()
-    {
+    public String getTargetlanguage() {
         return targetlanguage;
     }
 
-    public String getTargetlinkedid()
-    {
+    public String getTargetlinkedid() {
         return targetlinkedid;
     }
 
-    public String getTargetpriority()
-    {
+    public String getTargetpriority() {
         return targetpriority;
     }
 
-    public String getTargetuniqueid()
-    {
+    public String getTargetuniqueid() {
         return targetuniqueid;
     }
 
-    public String getUniqueid()
-    {
+    public String getUniqueid() {
         return uniqueid;
     }
 
-    public void setAccountcode(String accountcode)
-    {
+    public void setAccountcode(String accountcode) {
         this.accountcode = accountcode;
     }
 
-    public void setChannel(String channel)
-    {
+    public void setChannel(String channel) {
         this.channel = channel;
     }
 
-    public void setLanguage(String language)
-    {
+    public void setLanguage(String language) {
         this.language = language;
     }
 
-    public void setLinkedid(String linkedid)
-    {
+    public void setLinkedid(String linkedid) {
         this.linkedid = linkedid;
     }
 
-    public void setTargetaccountcode(String targetaccountcode)
-    {
+    public void setTargetaccountcode(String targetaccountcode) {
         this.targetaccountcode = targetaccountcode;
     }
 
-    public void setTargetcalleridname(String targetcalleridname)
-    {
+    public void setTargetcalleridname(String targetcalleridname) {
         this.targetcalleridname = targetcalleridname;
     }
 
-    public void setTargetcalleridnum(String targetcalleridnum)
-    {
+    public void setTargetcalleridnum(String targetcalleridnum) {
         this.targetcalleridnum = targetcalleridnum;
     }
 
-    public void setTargetchannel(String targetchannel)
-    {
+    public void setTargetchannel(String targetchannel) {
         this.targetchannel = targetchannel;
     }
 
-    public void setTargetchannelstate(String targetchannelstate)
-    {
+    public void setTargetchannelstate(String targetchannelstate) {
         this.targetchannelstate = targetchannelstate;
     }
 
-    public void setTargetchannelstatedesc(String targetchannelstatedesc)
-    {
+    public void setTargetchannelstatedesc(String targetchannelstatedesc) {
         this.targetchannelstatedesc = targetchannelstatedesc;
     }
 
-    public void setTargetconnectedlinename(String targetconnectedlinename)
-    {
+    public void setTargetconnectedlinename(String targetconnectedlinename) {
         this.targetconnectedlinename = targetconnectedlinename;
     }
 
-    public void setTargetconnectedlinenum(String targetconnectedlinenum)
-    {
+    public void setTargetconnectedlinenum(String targetconnectedlinenum) {
         this.targetconnectedlinenum = targetconnectedlinenum;
     }
 
-    public void setTargetcontext(String targetcontext)
-    {
+    public void setTargetcontext(String targetcontext) {
         this.targetcontext = targetcontext;
     }
 
-    public void setTargetexten(String targetexten)
-    {
+    public void setTargetexten(String targetexten) {
         this.targetexten = targetexten;
     }
 
-    public void setTargetlanguage(String targetlanguage)
-    {
+    public void setTargetlanguage(String targetlanguage) {
         this.targetlanguage = targetlanguage;
     }
 
-    public void setTargetlinkedid(String targetlinkedid)
-    {
+    public void setTargetlinkedid(String targetlinkedid) {
         this.targetlinkedid = targetlinkedid;
     }
 
-    public void setTargetpriority(String targetpriority)
-    {
+    public void setTargetpriority(String targetpriority) {
         this.targetpriority = targetpriority;
     }
 
-    public void setTargetuniqueid(String targetuniqueid)
-    {
+    public void setTargetuniqueid(String targetuniqueid) {
         this.targetuniqueid = targetuniqueid;
     }
 
-    public void setUniqueid(String uniqueid)
-    {
+    public void setUniqueid(String uniqueid) {
         this.uniqueid = uniqueid;
     }
 

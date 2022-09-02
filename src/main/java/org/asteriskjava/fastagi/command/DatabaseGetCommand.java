@@ -21,12 +21,11 @@ package org.asteriskjava.fastagi.command;
  * Returns 0 if is not set. Returns 1 if the variable is set and returns the
  * value in parenthesis.<p>
  * Example return code: 200 result=1 (testvariable)
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public class DatabaseGetCommand extends AbstractAgiCommand
-{
+public class DatabaseGetCommand extends AbstractAgiCommand {
     /**
      * Serial version identifier.
      */
@@ -44,12 +43,11 @@ public class DatabaseGetCommand extends AbstractAgiCommand
 
     /**
      * Creates a new DatabaseGetCommand.
-     * 
+     *
      * @param family the family of the key to retrieve.
-     * @param key the key to retrieve.
+     * @param key    the key to retrieve.
      */
-    public DatabaseGetCommand(String family, String key)
-    {
+    public DatabaseGetCommand(String family, String key) {
         super();
         this.family = family;
         this.key = key;
@@ -57,47 +55,42 @@ public class DatabaseGetCommand extends AbstractAgiCommand
 
     /**
      * Returns the family of the key to retrieve.
-     * 
+     *
      * @return the family of the key to retrieve.
      */
-    public String getFamily()
-    {
+    public String getFamily() {
         return family;
     }
 
     /**
      * Sets the family of the key to retrieve.
-     * 
+     *
      * @param family the family of the key to retrieve.
      */
-    public void setFamily(String family)
-    {
+    public void setFamily(String family) {
         this.family = family;
     }
 
     /**
      * Returns the the key to retrieve.
-     * 
+     *
      * @return the key to retrieve.
      */
-    public String getKey()
-    {
+    public String getKey() {
         return key;
     }
 
     /**
      * Sets the key to retrieve.
-     * 
+     *
      * @param key the key to retrieve.
      */
-    public void setKey(String key)
-    {
+    public void setKey(String key) {
         this.key = key;
     }
 
     @Override
-   public String buildCommand()
-    {
+    public String buildCommand() {
         return "DATABASE GET " + escapeAndQuote(family) + " "
                 + escapeAndQuote(key);
     }

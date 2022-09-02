@@ -19,8 +19,7 @@ package org.asteriskjava.manager.event;
 /**
  * A FaxDocumentStatusEvent is an event of Digium's Fax For Asterisk add-on.
  */
-public class FaxDocumentStatusEvent extends AbstractFaxEvent
-{
+public class FaxDocumentStatusEvent extends AbstractFaxEvent {
     /**
      * Serial version identifier.
      */
@@ -43,8 +42,7 @@ public class FaxDocumentStatusEvent extends AbstractFaxEvent
     private String remoteDis;
 
 
-    public FaxDocumentStatusEvent(Object source)
-    {
+    public FaxDocumentStatusEvent(Object source) {
         super(source);
     }
 
@@ -52,8 +50,7 @@ public class FaxDocumentStatusEvent extends AbstractFaxEvent
     /**
      * @return the documentNumber
      */
-    public Integer getDocumentNumber()
-    {
+    public Integer getDocumentNumber() {
         return documentNumber;
     }
 
@@ -61,8 +58,7 @@ public class FaxDocumentStatusEvent extends AbstractFaxEvent
     /**
      * @param documentNumber the documentNumber to set
      */
-    public void setDocumentNumber(Integer documentNumber)
-    {
+    public void setDocumentNumber(Integer documentNumber) {
         this.documentNumber = documentNumber;
     }
 
@@ -70,8 +66,7 @@ public class FaxDocumentStatusEvent extends AbstractFaxEvent
     /**
      * @return the lastError
      */
-    public Integer getLastError()
-    {
+    public Integer getLastError() {
         return lastError;
     }
 
@@ -79,8 +74,7 @@ public class FaxDocumentStatusEvent extends AbstractFaxEvent
     /**
      * @param lastError the lastError to set
      */
-    public void setLastError(Integer lastError)
-    {
+    public void setLastError(Integer lastError) {
         this.lastError = lastError;
     }
 
@@ -88,8 +82,7 @@ public class FaxDocumentStatusEvent extends AbstractFaxEvent
     /**
      * @return the pageCount
      */
-    public Integer getPageCount()
-    {
+    public Integer getPageCount() {
         return pageCount;
     }
 
@@ -97,8 +90,7 @@ public class FaxDocumentStatusEvent extends AbstractFaxEvent
     /**
      * @param pageCount the pageCount to set
      */
-    public void setPageCount(Integer pageCount)
-    {
+    public void setPageCount(Integer pageCount) {
         this.pageCount = pageCount;
     }
 
@@ -106,8 +98,7 @@ public class FaxDocumentStatusEvent extends AbstractFaxEvent
     /**
      * @return the startPage
      */
-    public Integer getStartPage()
-    {
+    public Integer getStartPage() {
         return startPage;
     }
 
@@ -115,8 +106,7 @@ public class FaxDocumentStatusEvent extends AbstractFaxEvent
     /**
      * @param startPage the startPage to set
      */
-    public void setStartPage(Integer startPage)
-    {
+    public void setStartPage(Integer startPage) {
         this.startPage = startPage;
     }
 
@@ -124,8 +114,7 @@ public class FaxDocumentStatusEvent extends AbstractFaxEvent
     /**
      * @return the lastPageProcessed
      */
-    public Integer getLastPageProcessed()
-    {
+    public Integer getLastPageProcessed() {
         return lastPageProcessed;
     }
 
@@ -133,8 +122,7 @@ public class FaxDocumentStatusEvent extends AbstractFaxEvent
     /**
      * @param lastPageProcessed the lastPageProcessed to set
      */
-    public void setLastPageProcessed(Integer lastPageProcessed)
-    {
+    public void setLastPageProcessed(Integer lastPageProcessed) {
         this.lastPageProcessed = lastPageProcessed;
     }
 
@@ -142,8 +130,7 @@ public class FaxDocumentStatusEvent extends AbstractFaxEvent
     /**
      * @return the retransmitCount
      */
-    public Integer getRetransmitCount()
-    {
+    public Integer getRetransmitCount() {
         return retransmitCount;
     }
 
@@ -151,8 +138,7 @@ public class FaxDocumentStatusEvent extends AbstractFaxEvent
     /**
      * @param retransmitCount the retransmitCount to set
      */
-    public void setRetransmitCount(Integer retransmitCount)
-    {
+    public void setRetransmitCount(Integer retransmitCount) {
         this.retransmitCount = retransmitCount;
     }
 
@@ -160,8 +146,7 @@ public class FaxDocumentStatusEvent extends AbstractFaxEvent
     /**
      * @return the transferPels
      */
-    public Integer getTransferPels()
-    {
+    public Integer getTransferPels() {
         return transferPels;
     }
 
@@ -169,8 +154,7 @@ public class FaxDocumentStatusEvent extends AbstractFaxEvent
     /**
      * @param transferPels the transferPels to set
      */
-    public void setTransferPels(Integer transferPels)
-    {
+    public void setTransferPels(Integer transferPels) {
         this.transferPels = transferPels;
     }
 
@@ -178,8 +162,7 @@ public class FaxDocumentStatusEvent extends AbstractFaxEvent
     /**
      * @return the transferRate
      */
-    public Integer getTransferRate()
-    {
+    public Integer getTransferRate() {
         return transferRate;
     }
 
@@ -187,8 +170,7 @@ public class FaxDocumentStatusEvent extends AbstractFaxEvent
     /**
      * @param transferRate the transferRate to set
      */
-    public void setTransferRate(Integer transferRate)
-    {
+    public void setTransferRate(Integer transferRate) {
         this.transferRate = transferRate;
     }
 
@@ -196,8 +178,7 @@ public class FaxDocumentStatusEvent extends AbstractFaxEvent
     /**
      * @return the transferDuration
      */
-    public String getTransferDuration()
-    {
+    public String getTransferDuration() {
         return transferDuration;
     }
 
@@ -205,8 +186,7 @@ public class FaxDocumentStatusEvent extends AbstractFaxEvent
     /**
      * @param transferDuration the transferDuration to set
      */
-    public void setTransferDuration(String transferDuration)
-    {
+    public void setTransferDuration(String transferDuration) {
         this.transferDuration = transferDuration;
     }
 
@@ -214,8 +194,7 @@ public class FaxDocumentStatusEvent extends AbstractFaxEvent
     /**
      * @return the badLineCount
      */
-    public Integer getBadLineCount()
-    {
+    public Integer getBadLineCount() {
         return badLineCount;
     }
 
@@ -223,8 +202,7 @@ public class FaxDocumentStatusEvent extends AbstractFaxEvent
     /**
      * @param badLineCount the badLineCount to set
      */
-    public void setBadLineCount(Integer badLineCount)
-    {
+    public void setBadLineCount(Integer badLineCount) {
         this.badLineCount = badLineCount;
     }
 
@@ -232,8 +210,7 @@ public class FaxDocumentStatusEvent extends AbstractFaxEvent
     /**
      * @return the processedStatus
      */
-    public String getProcessedStatus()
-    {
+    public String getProcessedStatus() {
         return processedStatus;
     }
 
@@ -241,8 +218,7 @@ public class FaxDocumentStatusEvent extends AbstractFaxEvent
     /**
      * @param processedStatus the processedStatus to set
      */
-    public void setProcessedStatus(String processedStatus)
-    {
+    public void setProcessedStatus(String processedStatus) {
         this.processedStatus = processedStatus;
     }
 
@@ -250,8 +226,7 @@ public class FaxDocumentStatusEvent extends AbstractFaxEvent
     /**
      * @return the documentTime
      */
-    public String getDocumentTime()
-    {
+    public String getDocumentTime() {
         return documentTime;
     }
 
@@ -259,8 +234,7 @@ public class FaxDocumentStatusEvent extends AbstractFaxEvent
     /**
      * @param documentTime the documentTime to set
      */
-    public void setDocumentTime(String documentTime)
-    {
+    public void setDocumentTime(String documentTime) {
         this.documentTime = documentTime;
     }
 
@@ -268,8 +242,7 @@ public class FaxDocumentStatusEvent extends AbstractFaxEvent
     /**
      * @return the localSid
      */
-    public String getLocalSid()
-    {
+    public String getLocalSid() {
         return localSid;
     }
 
@@ -277,8 +250,7 @@ public class FaxDocumentStatusEvent extends AbstractFaxEvent
     /**
      * @param localSid the localSid to set
      */
-    public void setLocalSid(String localSid)
-    {
+    public void setLocalSid(String localSid) {
         this.localSid = localSid;
     }
 
@@ -286,8 +258,7 @@ public class FaxDocumentStatusEvent extends AbstractFaxEvent
     /**
      * @return the localDis
      */
-    public String getLocalDis()
-    {
+    public String getLocalDis() {
         return localDis;
     }
 
@@ -295,8 +266,7 @@ public class FaxDocumentStatusEvent extends AbstractFaxEvent
     /**
      * @param localDis the localDis to set
      */
-    public void setLocalDis(String localDis)
-    {
+    public void setLocalDis(String localDis) {
         this.localDis = localDis;
     }
 
@@ -304,8 +274,7 @@ public class FaxDocumentStatusEvent extends AbstractFaxEvent
     /**
      * @return the remoteSid
      */
-    public String getRemoteSid()
-    {
+    public String getRemoteSid() {
         return remoteSid;
     }
 
@@ -313,8 +282,7 @@ public class FaxDocumentStatusEvent extends AbstractFaxEvent
     /**
      * @param remoteSid the remoteSid to set
      */
-    public void setRemoteSid(String remoteSid)
-    {
+    public void setRemoteSid(String remoteSid) {
         this.remoteSid = remoteSid;
     }
 
@@ -322,8 +290,7 @@ public class FaxDocumentStatusEvent extends AbstractFaxEvent
     /**
      * @return the remoteDis
      */
-    public String getRemoteDis()
-    {
+    public String getRemoteDis() {
         return remoteDis;
     }
 
@@ -331,8 +298,7 @@ public class FaxDocumentStatusEvent extends AbstractFaxEvent
     /**
      * @param remoteDis the remoteDis to set
      */
-    public void setRemoteDis(String remoteDis)
-    {
+    public void setRemoteDis(String remoteDis) {
         this.remoteDis = remoteDis;
     }
 

@@ -26,13 +26,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLDecoder;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -45,10 +39,8 @@ import java.util.jar.JarFile;
  *
  * @author srt
  */
-public class ReflectionUtil
-{
-    private ReflectionUtil()
-    {
+public class ReflectionUtil {
+    private ReflectionUtil() {
         // hide constructor
     }
 
@@ -63,33 +55,26 @@ public class ReflectionUtil
      * @param clazz the class to return the getters for
      * @return a Map of attributes and their accessor methods (getters)
      */
-    public static Map<String, Method> getGetters(final Class< ? > clazz)
-    {
+    public static Map<String, Method> getGetters(final Class<?> clazz) {
         final Map<String, Method> accessors = new HashMap<>();
         final Method[] methods = clazz.getMethods();
 
-        for (Method method : methods)
-        {
+        for (Method method : methods) {
             String name = null;
             String methodName = method.getName();
 
-            if (methodName.startsWith("get"))
-            {
+            if (methodName.startsWith("get")) {
                 name = methodName.substring(3);
-            }
-            else if (methodName.startsWith("is"))
-            {
+            } else if (methodName.startsWith("is")) {
                 name = methodName.substring(2);
             }
 
-            if (name == null || name.length() == 0)
-            {
+            if (name == null || name.length() == 0) {
                 continue;
             }
 
             // skip methods with != 0 parameters
-            if (method.getParameterTypes().length != 0)
-            {
+            if (method.getParameterTypes().length != 0) {
                 continue;
             }
 
@@ -99,7 +84,7 @@ public class ReflectionUtil
         return accessors;
     }
 
-    private final static ConcurrentHashMap<Class< ? >, Map<String, Method>> setterMap = new ConcurrentHashMap<>();
+    private final static ConcurrentHashMap<Class<?>, Map<String, Method>> setterMap = new ConcurrentHashMap<>();
 
     /**
      * The main benefit here is that there will not be repeated errors when
@@ -113,8 +98,7 @@ public class ReflectionUtil
      * @param clazz
      * @return
      */
-    public static Map<String, Method> getSetters(Class< ? > clazz)
-    {
+    public static Map<String, Method> getSetters(Class<?> clazz) {
         return setterMap.computeIfAbsent(clazz, (c) -> {
             return getSettersInternal(c);
         });
@@ -131,23 +115,19 @@ public class ReflectionUtil
      * @param clazz the class to return the setters for
      * @return a Map of attributes and their accessor methods (setters)
      */
-    private static Map<String, Method> getSettersInternal(Class< ? > clazz)
-    {
+    private static Map<String, Method> getSettersInternal(Class<?> clazz) {
         final Map<String, Method> accessors = new HashMap<>();
         final Method[] methods = clazz.getMethods();
 
-        for (Method method : methods)
-        {
+        for (Method method : methods) {
             String name;
             String methodName = method.getName();
-            if (!methodName.startsWith("set"))
-            {
+            if (!methodName.startsWith("set")) {
                 continue;
             }
 
             // skip methods with != 1 parameters
-            if (method.getParameterTypes().length != 1)
-            {
+            if (method.getParameterTypes().length != 1) {
                 continue;
             }
 
@@ -157,25 +137,19 @@ public class ReflectionUtil
             // if an event class implements a setter that exists in
             // ManagerEvent, then prefer the setter from the extending class
             Method existing = accessors.get(name);
-            if (existing != null)
-            {
+            if (existing != null) {
                 logger.warn("multiple setters (case insensitive) exist for " + name + " on class(es) "
                         + existing.getDeclaringClass() + " and " + method.getDeclaringClass());
             }
-            if (existing == null)
-            {
+            if (existing == null) {
                 // we don't have a mapping for this setter so add it.
                 accessors.put(name, method);
-            }
-            else if (!method.getDeclaringClass().isAssignableFrom(existing.getDeclaringClass()))
-            {
+            } else if (!method.getDeclaringClass().isAssignableFrom(existing.getDeclaringClass())) {
                 // we already have a mapping for this setter, but this one is
                 // from an extending class so replace it.
                 logger.warn("Preferring setter from extending class " + existing + " -> " + method);
                 accessors.put(name, method);
-            }
-            else
-            {
+            } else {
                 // there is already a mapping for this setter from class
                 logger.warn("Preferring setter from extending class " + method + " -> " + existing);
             }
@@ -191,50 +165,39 @@ public class ReflectionUtil
      * @param s the original string
      * @return the string with all illegal characters stripped
      */
-    public static String stripIllegalCharacters(String s)
-    {
+    public static String stripIllegalCharacters(String s) {
         char c;
         boolean needsStrip = false;
         StringBuilder sb;
 
-        if (s == null)
-        {
+        if (s == null) {
             return null;
         }
 
-        for (int i = 0; i < s.length(); i++)
-        {
+        for (int i = 0; i < s.length(); i++) {
             c = s.charAt(i);
-            if (c >= '0' && c <= '9')
-            {
+            if (c >= '0' && c <= '9') {
                 // continue
             } // NOPMD
-            else if (c >= 'a' && c <= 'z')
-            {
+            else if (c >= 'a' && c <= 'z') {
                 // continue
             } // NOPMD
-            else
-            {
+            else {
                 needsStrip = true;
                 break;
             }
         }
 
-        if (!needsStrip)
-        {
+        if (!needsStrip) {
             return s;
         }
 
         sb = new StringBuilder(s.length());
-        for (int i = 0; i < s.length(); i++)
-        {
+        for (int i = 0; i < s.length(); i++) {
             c = s.charAt(i);
-            if (c >= '0' && c <= '9')
-            {
+            if (c >= '0' && c <= '9') {
                 sb.append(c);
-            }
-            else if (c >= 'a' && c <= 'z')
-            {
+            } else if (c >= 'a' && c <= 'z') {
                 sb.append(c);
             }
         }
@@ -248,19 +211,15 @@ public class ReflectionUtil
      *
      * @param s fully qualified name of the class to check.
      * @return <code>true</code> if the class is available, <code>false</code>
-     *         otherwise.
+     * otherwise.
      */
-    public static boolean isClassAvailable(String s)
-    {
+    public static boolean isClassAvailable(String s) {
         final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 
-        try
-        {
+        try {
             classLoader.loadClass(s);
             return true;
-        }
-        catch (ClassNotFoundException e)
-        {
+        } catch (ClassNotFoundException e) {
             return false;
         }
     }
@@ -273,35 +232,23 @@ public class ReflectionUtil
      * @param s fully qualified name of the class to instantiate.
      * @return the new instance or <code>null</code> on failure.
      */
-    public static Object newInstance(String s)
-    {
+    public static Object newInstance(String s) {
         final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 
-        try
-        {
-            Class< ? > clazz = classLoader.loadClass(s);
-            Constructor< ? > constructor = clazz.getConstructor();
+        try {
+            Class<?> clazz = classLoader.loadClass(s);
+            Constructor<?> constructor = clazz.getConstructor();
             return constructor.newInstance();
-        }
-        catch (ClassNotFoundException e)
-        {
+        } catch (ClassNotFoundException e) {
             return null;
-        }
-        catch (IllegalAccessException e)
-        {
+        } catch (IllegalAccessException e) {
             return null;
-        }
-        catch (InstantiationException e)
-        {
+        } catch (InstantiationException e) {
             return null;
-        }
-        catch (NoSuchMethodException e)
-        {
+        } catch (NoSuchMethodException e) {
             // no default constructor
             return null;
-        }
-        catch (InvocationTargetException e)
-        {
+        } catch (InvocationTargetException e) {
             // constructor threw an exception
             return null;
         }
@@ -318,34 +265,25 @@ public class ReflectionUtil
      * @return
      */
     @SuppressWarnings("unchecked")
-    public static <T> Set<Class<T>> loadClasses(String packageName, Class<T> baseClassOrInterface)
-    {
+    public static <T> Set<Class<T>> loadClasses(String packageName, Class<T> baseClassOrInterface) {
         Set<Class<T>> result = new HashSet<>();
 
-        try
-        {
+        try {
             Set<String> classNames = getClassNamesFromPackage(packageName);
             ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-            for (String className : classNames)
-            {
-                try
-                {
-                    Class< ? > clazz = classLoader.loadClass(packageName + "." + className);
-                    if (!Modifier.isAbstract(clazz.getModifiers()) && baseClassOrInterface.isAssignableFrom(clazz))
-                    {
+            for (String className : classNames) {
+                try {
+                    Class<?> clazz = classLoader.loadClass(packageName + "." + className);
+                    if (!Modifier.isAbstract(clazz.getModifiers()) && baseClassOrInterface.isAssignableFrom(clazz)) {
                         result.add((Class<T>) clazz);
                     }
-                }
-                catch (Throwable e)
-                {
+                } catch (Throwable e) {
                     logger.error(e, e);
                 }
 
             }
             logger.info("Loaded " + result.size());
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             logger.error(e, e);
         }
 
@@ -361,8 +299,7 @@ public class ReflectionUtil
      * @throws IOException
      * @throws URISyntaxException
      */
-    private static Set<String> getClassNamesFromPackage(String packageName) throws IOException, URISyntaxException
-    {
+    private static Set<String> getClassNamesFromPackage(String packageName) throws IOException, URISyntaxException {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         Enumeration<URL> packageURLs;
         Set<String> names = new HashSet<String>();
@@ -370,11 +307,9 @@ public class ReflectionUtil
         packageName = packageName.replace(".", "/");
         packageURLs = classLoader.getResources(packageName);
 
-        while (packageURLs.hasMoreElements())
-        {
+        while (packageURLs.hasMoreElements()) {
             URL packageURL = packageURLs.nextElement();
-            if (packageURL.getProtocol().equals("jar"))
-            {
+            if (packageURL.getProtocol().equals("jar")) {
                 String jarFileName;
 
                 Enumeration<JarEntry> jarEntries;
@@ -384,14 +319,11 @@ public class ReflectionUtil
                 jarFileName = URLDecoder.decode(packageURL.getFile(), "UTF-8");
                 jarFileName = jarFileName.substring(5, jarFileName.indexOf("!"));
                 logger.info(">" + jarFileName);
-                try (JarFile jf = new JarFile(jarFileName);)
-                {
+                try (JarFile jf = new JarFile(jarFileName);) {
                     jarEntries = jf.entries();
-                    while (jarEntries.hasMoreElements())
-                    {
+                    while (jarEntries.hasMoreElements()) {
                         entryName = jarEntries.nextElement().getName();
-                        if (entryName.startsWith(packageName) && entryName.endsWith(".class"))
-                        {
+                        if (entryName.startsWith(packageName) && entryName.endsWith(".class")) {
                             entryName = entryName.substring(packageName.length() + 1, entryName.lastIndexOf('.'));
                             names.add(entryName);
                         }
@@ -399,18 +331,14 @@ public class ReflectionUtil
                 }
 
                 // loop through files in classpath
-            }
-            else
-            {
+            } else {
                 URI uri = new URI(packageURL.toString());
                 File folder = new File(uri.getPath());
                 // won't work with path which contains blank (%20)
                 // File folder = new File(packageURL.getFile());
                 File[] files = folder.listFiles();
-                if (files != null)
-                {
-                    for (File actual : files)
-                    {
+                if (files != null) {
+                    for (File actual : files) {
                         String entryName = actual.getName();
                         entryName = entryName.substring(0, entryName.lastIndexOf('.'));
                         names.add(entryName);
@@ -421,11 +349,9 @@ public class ReflectionUtil
 
         // clean up
         Iterator<String> itr = names.iterator();
-        while (itr.hasNext())
-        {
+        while (itr.hasNext()) {
             String name = itr.next();
-            if (name.equals("package") || name.endsWith(".") || name.length() == 0)
-            {
+            if (name.equals("package") || name.endsWith(".") || name.length() == 0) {
                 itr.remove();
             }
         }

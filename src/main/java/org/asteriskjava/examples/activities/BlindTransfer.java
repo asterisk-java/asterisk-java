@@ -1,33 +1,23 @@
 package org.asteriskjava.examples.activities;
 
-import java.io.IOException;
-
 import org.asteriskjava.manager.AuthenticationFailedException;
 import org.asteriskjava.manager.TimeoutException;
-import org.asteriskjava.pbx.ActivityCallback;
-import org.asteriskjava.pbx.ActivityStatusEnum;
-import org.asteriskjava.pbx.Call;
+import org.asteriskjava.pbx.*;
 import org.asteriskjava.pbx.Call.OperandChannel;
-import org.asteriskjava.pbx.CallerID;
-import org.asteriskjava.pbx.EndPoint;
-import org.asteriskjava.pbx.PBX;
-import org.asteriskjava.pbx.PBXFactory;
-import org.asteriskjava.pbx.TechType;
-import org.asteriskjava.pbx.Trunk;
 import org.asteriskjava.pbx.activities.BlindTransferActivity;
 import org.asteriskjava.pbx.activities.DialActivity;
 import org.asteriskjava.pbx.internal.core.AsteriskPBX;
 
+import java.io.IOException;
+
 /**
  * dial somebody and then blind transfer the call to a third party.
- * 
+ *
  * @author bsutton
  */
-public class BlindTransfer
-{
+public class BlindTransfer {
 
-    static public void main(String[] args) throws IOException, AuthenticationFailedException, TimeoutException
-    {
+    static public void main(String[] args) throws IOException, AuthenticationFailedException, TimeoutException {
         /**
          * Initialise the PBX Factory. You need to implement your own
          * AsteriskSettings class.
@@ -46,8 +36,7 @@ public class BlindTransfer
         blindTransfer();
     }
 
-    static private void blindTransfer()
-    {
+    static private void blindTransfer() {
         String dialOptions = "";
 
         PBX pbx = PBXFactory.getActivePBX();
@@ -70,14 +59,11 @@ public class BlindTransfer
 
         // Start the dial and return immediately.
         // progress is provided via the ActivityCallback.
-        pbx.dial(from, fromCallerID, to, toCallerID, new ActivityCallback<DialActivity>()
-        {
+        pbx.dial(from, fromCallerID, to, toCallerID, new ActivityCallback<DialActivity>() {
 
             @Override
-            public void progress(DialActivity activity, ActivityStatusEnum status, String message)
-            {
-                if (status == ActivityStatusEnum.SUCCESS)
-                {
+            public void progress(DialActivity activity, ActivityStatusEnum status, String message) {
+                if (status == ActivityStatusEnum.SUCCESS) {
                     System.out.println("Dial all good so lets do a blind transfer");
                     PBX pbx = PBXFactory.getActivePBX();
                     // Call is up
@@ -85,13 +71,11 @@ public class BlindTransfer
                     CallerID toCallerID = pbx.buildCallerID("101", "I'm calling you");
                     EndPoint transferTarget = pbx.buildEndPoint(TechType.SIP, "101");
                     pbx.blindTransfer(call, OperandChannel.REMOTE_PARTY, transferTarget, toCallerID, false, 30L,
-                            new ActivityCallback<BlindTransferActivity>()
-                            {
+                            new ActivityCallback<BlindTransferActivity>() {
 
                                 @Override
                                 public void progress(BlindTransferActivity activity, ActivityStatusEnum status,
-                                        String message)
-                                {
+                                                     String message) {
                                     // if success the blind transfer completed.
                                 }
                             }, "");

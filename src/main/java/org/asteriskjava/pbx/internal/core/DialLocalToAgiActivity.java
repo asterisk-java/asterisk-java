@@ -1,22 +1,6 @@
 package org.asteriskjava.pbx.internal.core;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-
-import org.asteriskjava.pbx.Activity;
-import org.asteriskjava.pbx.ActivityCallback;
-import org.asteriskjava.pbx.ActivityStatusEnum;
-import org.asteriskjava.pbx.AsteriskSettings;
-import org.asteriskjava.pbx.CallerID;
-import org.asteriskjava.pbx.Channel;
-import org.asteriskjava.pbx.EndPoint;
-import org.asteriskjava.pbx.PBX;
-import org.asteriskjava.pbx.PBXException;
-import org.asteriskjava.pbx.PBXFactory;
+import org.asteriskjava.pbx.*;
 import org.asteriskjava.pbx.agi.ActivityAgi;
 import org.asteriskjava.pbx.agi.ActivityArrivalListener;
 import org.asteriskjava.pbx.asterisk.wrap.actions.OriginateAction;
@@ -24,8 +8,14 @@ import org.asteriskjava.pbx.asterisk.wrap.response.ManagerResponse;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
-public class DialLocalToAgiActivity implements Runnable, Activity
-{
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
+public class DialLocalToAgiActivity implements Runnable, Activity {
 
     private EndPoint from;
     private CallerID fromCallerID;
@@ -38,8 +28,7 @@ public class DialLocalToAgiActivity implements Runnable, Activity
     private Map<String, String> channelVarsToSet;
 
     public DialLocalToAgiActivity(EndPoint from, CallerID fromCallerID, ActivityCallback<DialLocalToAgiActivity> callback,
-            Map<String, String> channelVarsToSet)
-    {
+                                  Map<String, String> channelVarsToSet) {
         this.from = from;
         this.fromCallerID = fromCallerID;
         this.callback = callback;
@@ -51,8 +40,7 @@ public class DialLocalToAgiActivity implements Runnable, Activity
     // Logger logger = LogManager.getLogger();
 
     @Override
-    public void run()
-    {
+    public void run() {
         logger.debug("*******************************************************************************");
         logger.info("***********                    begin dial local to AGI                  ****************");
         logger.debug("***********                                                      ****************");
@@ -71,48 +59,35 @@ public class DialLocalToAgiActivity implements Runnable, Activity
 
         Map<String, String> myVars = new HashMap<>();
 
-        if (channelVarsToSet != null)
-        {
+        if (channelVarsToSet != null) {
             myVars.putAll(channelVarsToSet);
         }
 
         originate.setVariables(myVars);
 
-        ActivityArrivalListener listener = new ActivityArrivalListener()
-        {
+        ActivityArrivalListener listener = new ActivityArrivalListener() {
 
             @Override
-            public void channelArrived(Channel channel)
-            {
+            public void channelArrived(Channel channel) {
                 channels.add(channel);
-                if (isSuccess())
-                {
+                if (isSuccess()) {
                     latch.countDown();
                 }
             }
         };
-        try (AutoCloseable closeable = ActivityAgi.addArrivalListener(originate, listener);)
-        {
+        try (AutoCloseable closeable = ActivityAgi.addArrivalListener(originate, listener);) {
 
             ManagerResponse response = pbx.sendAction(originate, 5000);
-            if (response.getResponse().compareToIgnoreCase("Success") != 0)
-            {
+            if (response.getResponse().compareToIgnoreCase("Success") != 0) {
                 callback.progress(this, ActivityStatusEnum.FAILURE, ActivityStatusEnum.FAILURE.getDefaultMessage());
-            }
-            else
-            {
-                if (latch.await(5, TimeUnit.SECONDS))
-                {
+            } else {
+                if (latch.await(5, TimeUnit.SECONDS)) {
                     callback.progress(this, ActivityStatusEnum.SUCCESS, ActivityStatusEnum.SUCCESS.getDefaultMessage());
-                }
-                else
-                {
+                } else {
                     callback.progress(this, ActivityStatusEnum.FAILURE, ActivityStatusEnum.FAILURE.getDefaultMessage());
                 }
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             logger.error(e, e);
             callback.progress(this, ActivityStatusEnum.FAILURE, ActivityStatusEnum.FAILURE.getDefaultMessage());
 
@@ -120,19 +95,14 @@ public class DialLocalToAgiActivity implements Runnable, Activity
 
     }
 
-    public void abort(final String reason)
-    {
+    public void abort(final String reason) {
         logger.warn("Aborting originate ");
 
-        for (Channel channel : channels)
-        {
+        for (Channel channel : channels) {
             PBX pbx = PBXFactory.getActivePBX();
-            try
-            {
+            try {
                 pbx.hangup(channel);
-            }
-            catch (IllegalArgumentException | IllegalStateException | PBXException e)
-            {
+            } catch (IllegalArgumentException | IllegalStateException | PBXException e) {
                 logger.error(e, e);
 
             }
@@ -142,25 +112,21 @@ public class DialLocalToAgiActivity implements Runnable, Activity
     }
 
     @Override
-    public Throwable getLastException()
-    {
+    public Throwable getLastException() {
         return null;
     }
 
     @Override
-    public boolean isSuccess()
-    {
+    public boolean isSuccess() {
         return channels.size() == 2;
     }
 
-    public Channel getChannel1()
-    {
+    public Channel getChannel1() {
         return channels.get(0);
 
     }
 
-    public Channel getChannel2()
-    {
+    public Channel getChannel2() {
         return channels.get(1);
 
     }

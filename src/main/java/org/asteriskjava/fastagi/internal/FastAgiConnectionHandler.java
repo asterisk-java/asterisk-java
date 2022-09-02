@@ -16,13 +16,13 @@
  */
 package org.asteriskjava.fastagi.internal;
 
-import java.io.IOException;
-
 import org.asteriskjava.fastagi.AgiChannelFactory;
 import org.asteriskjava.fastagi.AgiReader;
 import org.asteriskjava.fastagi.AgiWriter;
 import org.asteriskjava.fastagi.MappingStrategy;
 import org.asteriskjava.util.SocketConnectionFacade;
+
+import java.io.IOException;
 
 /**
  * An AgiConnectionHandler for FastAGI.
@@ -33,8 +33,7 @@ import org.asteriskjava.util.SocketConnectionFacade;
  * @author srt
  * @version $Id$
  */
-public class FastAgiConnectionHandler extends AgiConnectionHandler
-{
+public class FastAgiConnectionHandler extends AgiConnectionHandler {
     /**
      * The socket connection.
      */
@@ -47,32 +46,26 @@ public class FastAgiConnectionHandler extends AgiConnectionHandler
      * @param socket            the socket connection to handle.
      * @param agiChannelFactory The factory to use for creating new AgiChannel instances.
      */
-    public FastAgiConnectionHandler(MappingStrategy mappingStrategy, SocketConnectionFacade socket, AgiChannelFactory agiChannelFactory)
-    {
+    public FastAgiConnectionHandler(MappingStrategy mappingStrategy, SocketConnectionFacade socket, AgiChannelFactory agiChannelFactory) {
         super(mappingStrategy, agiChannelFactory);
         this.socket = socket;
     }
 
     @Override
-    protected AgiReader createReader()
-    {
+    protected AgiReader createReader() {
         return new FastAgiReader(socket);
     }
 
     @Override
-    protected AgiWriter createWriter()
-    {
+    protected AgiWriter createWriter() {
         return new FastAgiWriter(socket);
     }
 
     @Override
-    public void release()
-    {
-        try
-        {
+    public void release() {
+        try {
             socket.close();
-        }
-        catch (IOException e) // NOPMD
+        } catch (IOException e) // NOPMD
         {
             // swallow
         }

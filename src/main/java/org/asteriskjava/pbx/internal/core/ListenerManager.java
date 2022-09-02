@@ -1,27 +1,20 @@
 package org.asteriskjava.pbx.internal.core;
 
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.TreeSet;
-
 import org.asteriskjava.lock.Lockable;
 import org.asteriskjava.pbx.asterisk.wrap.events.ManagerEvent;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
-public class ListenerManager extends Lockable
-{
+import java.util.*;
+
+public class ListenerManager extends Lockable {
     private final TreeSet<FilteredManagerListenerWrapper> listeners = new TreeSet<>(new ListenerPriorityComparator());
 
     Log logger = LogFactory.getLog(ListenerManager.class);
 
-    final class ListenerPriorityComparator implements Comparator<FilteredManagerListenerWrapper>
-    {
+    final class ListenerPriorityComparator implements Comparator<FilteredManagerListenerWrapper> {
         @Override
-        public int compare(FilteredManagerListenerWrapper lhs, FilteredManagerListenerWrapper rhs)
-        {
+        public int compare(FilteredManagerListenerWrapper lhs, FilteredManagerListenerWrapper rhs) {
 
             int result = lhs._listener.getPriority().compare(rhs._listener.getPriority());
 
@@ -32,47 +25,38 @@ public class ListenerManager extends Lockable
         }
     }
 
-    public void clear()
-    {
+    public void clear() {
         listeners.clear();
     }
 
-    public int size()
-    {
+    public int size() {
         return listeners.size();
     }
 
-    public Iterator<FilteredManagerListenerWrapper> iterator()
-    {
+    public Iterator<FilteredManagerListenerWrapper> iterator() {
         return listeners.iterator();
     }
 
-    public void addListener(FilteredManagerListener<ManagerEvent> listener)
-    {
+    public void addListener(FilteredManagerListener<ManagerEvent> listener) {
         listeners.add(new FilteredManagerListenerWrapper(listener));
     }
 
-    List<FilteredManagerListenerWrapper> getCopyAsList()
-    {
+    List<FilteredManagerListenerWrapper> getCopyAsList() {
         List<FilteredManagerListenerWrapper> list = new LinkedList<>();
-        for (FilteredManagerListenerWrapper listener : listeners)
-        {
+        for (FilteredManagerListenerWrapper listener : listeners) {
             list.add(listener);
         }
 
         return list;
     }
 
-    boolean removeListener(FilteredManagerListener<ManagerEvent> toRemove)
-    {
+    boolean removeListener(FilteredManagerListener<ManagerEvent> toRemove) {
         boolean removed = false;
         Iterator<FilteredManagerListenerWrapper> itr = listeners.iterator();
-        while (itr.hasNext())
-        {
+        while (itr.hasNext()) {
             FilteredManagerListenerWrapper container = itr.next();
             // logger.error("Checking " + container._listener + " " + toRemove);
-            if (container._listener == toRemove)
-            {
+            if (container._listener == toRemove) {
                 logger.debug("Removing listener " + toRemove);
                 itr.remove();
                 removed = true;

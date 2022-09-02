@@ -1,8 +1,5 @@
 package org.asteriskjava.pbx.agi;
 
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-
 import org.asteriskjava.fastagi.AgiChannel;
 import org.asteriskjava.fastagi.AgiException;
 import org.asteriskjava.fastagi.AgiHangupException;
@@ -11,14 +8,16 @@ import org.asteriskjava.pbx.Channel;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
 /**
  * Waits in silence for 10 seconds, then hangs up. This is useful where channels
  * are waiting for some external action to redirect/bridge them.
- * 
+ *
  * @author rsutton
  */
-public class AgiChannelActivityTransientHoldSilence implements AgiChannelActivityAction
-{
+public class AgiChannelActivityTransientHoldSilence implements AgiChannelActivityAction {
     private final Log logger = LogFactory.getLog(this.getClass());
 
     CountDownLatch latch = new CountDownLatch(1);
@@ -26,51 +25,38 @@ public class AgiChannelActivityTransientHoldSilence implements AgiChannelActivit
     boolean firstPass = true;
 
     @Override
-    public void execute(AgiChannel channel, Channel ichannel) throws AgiException, InterruptedException
-    {
-        try
-        {
+    public void execute(AgiChannel channel, Channel ichannel) throws AgiException, InterruptedException {
+        try {
             callReachedAgi = true;
             channel.answer();
-            if (!firstPass)
-            {
+            if (!firstPass) {
                 logger.error(ichannel + " is still on hold after first pass, Hanging up");
                 channel.hangup();
-            }
-            else
-            {
-                if (!latch.await(10, TimeUnit.SECONDS))
-                {
+            } else {
+                if (!latch.await(10, TimeUnit.SECONDS)) {
                     logger.warn("Exiting with timeout");
                 }
             }
-        }
-        catch (AgiHangupException e)
-        {
+        } catch (AgiHangupException e) {
             logger.warn(e);
-        }
-        finally
-        {
+        } finally {
             firstPass = false;
         }
 
     }
 
     @Override
-    public boolean isDisconnect(ActivityAgi activityAgi)
-    {
+    public boolean isDisconnect(ActivityAgi activityAgi) {
         return false;
     }
 
     @Override
-    public void cancel()
-    {
+    public void cancel() {
         latch.countDown();
 
     }
 
-    public boolean hasCallReachedAgi()
-    {
+    public boolean hasCallReachedAgi() {
         return callReachedAgi;
     }
 }

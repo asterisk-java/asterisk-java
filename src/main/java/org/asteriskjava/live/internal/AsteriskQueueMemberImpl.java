@@ -16,12 +16,7 @@
  */
 package org.asteriskjava.live.internal;
 
-import org.asteriskjava.live.AsteriskQueue;
-import org.asteriskjava.live.AsteriskQueueMember;
-import org.asteriskjava.live.InvalidPenaltyException;
-import org.asteriskjava.live.ManagerCommunicationException;
-import org.asteriskjava.live.NoSuchInterfaceException;
-import org.asteriskjava.live.QueueMemberState;
+import org.asteriskjava.live.*;
 import org.asteriskjava.lock.Locker.LockCloser;
 import org.asteriskjava.manager.action.QueuePauseAction;
 import org.asteriskjava.manager.action.QueuePenaltyAction;
@@ -37,8 +32,7 @@ import org.asteriskjava.util.AstUtil;
  * @see AsteriskQueueMember
  * @since 0.3.1
  */
-class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueueMember
-{
+class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueueMember {
     private AsteriskQueue queue;
     private QueueMemberState state;
     private String location;
@@ -51,19 +45,18 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
     /**
      * Creates a new queue member.
      *
-     * @param server server this channel belongs to.
-     * @param queue queue this member is registered to.
-     * @param location location of member.
-     * @param state state of this member.
-     * @param paused <code>true</code> if this member is currently paused,
-     *            <code>false</code> otherwise.
-     * @param penalty penalty of this member.
+     * @param server     server this channel belongs to.
+     * @param queue      queue this member is registered to.
+     * @param location   location of member.
+     * @param state      state of this member.
+     * @param paused     <code>true</code> if this member is currently paused,
+     *                   <code>false</code> otherwise.
+     * @param penalty    penalty of this member.
      * @param membership "dynamic" if the added member is a dynamic queue
-     *            member, "static" if the added member is a static queue member.
+     *                   member, "static" if the added member is a static queue member.
      */
     AsteriskQueueMemberImpl(final AsteriskServerImpl server, final AsteriskQueueImpl queue, String location,
-            QueueMemberState state, boolean paused, Integer penalty, String membership, Integer callsTaken, Long lastCall)
-    {
+                            QueueMemberState state, boolean paused, Integer penalty, String membership, Integer callsTaken, Long lastCall) {
         super(server);
         this.queue = queue;
         this.location = location;
@@ -75,29 +68,24 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
         this.membership = membership;
     }
 
-    public AsteriskQueue getQueue()
-    {
+    public AsteriskQueue getQueue() {
         return queue;
     }
 
-    public String getLocation()
-    {
+    public String getLocation() {
         return location;
     }
 
-    public QueueMemberState getState()
-    {
+    public QueueMemberState getState() {
         return state;
     }
 
     @Override
-    public Integer getCallsTaken()
-    {
+    public Integer getCallsTaken() {
         return callsTaken;
     }
 
-    public void setCallsTaken(Integer callsTaken)
-    {
+    public void setCallsTaken(Integer callsTaken) {
         this.callsTaken = callsTaken;
     }
 
@@ -106,49 +94,40 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
      * was hungup.
      *
      * @return the time (in seconds since 01/01/1970) the last successful call
-     *         answered by the added member was hungup.
+     * answered by the added member was hungup.
      */
     @Override
-    public Long getLastCall()
-    {
+    public Long getLastCall() {
         return lastCall;
     }
 
-    public void setLastCall(Long lastCall)
-    {
+    public void setLastCall(Long lastCall) {
         this.lastCall = lastCall;
     }
 
     @Deprecated
-    public boolean getPaused()
-    {
+    public boolean getPaused() {
         return isPaused();
     }
 
-    public boolean isPaused()
-    {
+    public boolean isPaused() {
         return paused;
     }
 
-    public void setPaused(boolean paused) throws ManagerCommunicationException, NoSuchInterfaceException
-    {
+    public void setPaused(boolean paused) throws ManagerCommunicationException, NoSuchInterfaceException {
         sendPauseAction(new QueuePauseAction(location, queue.getName(), paused));
     }
 
-    public void setPausedAll(boolean paused) throws ManagerCommunicationException, NoSuchInterfaceException
-    {
+    public void setPausedAll(boolean paused) throws ManagerCommunicationException, NoSuchInterfaceException {
         sendPauseAction(new QueuePauseAction(location, paused));
     }
 
-    private void sendPauseAction(QueuePauseAction action) throws ManagerCommunicationException, NoSuchInterfaceException
-    {
+    private void sendPauseAction(QueuePauseAction action) throws ManagerCommunicationException, NoSuchInterfaceException {
         final ManagerResponse response = server.sendAction(action);
 
-        if (response instanceof ManagerError)
-        {
+        if (response instanceof ManagerError) {
             // Message: Interface not found
-            if (action.getQueue() != null)
-            {
+            if (action.getQueue() != null) {
                 // Message: Interface not found
                 throw new NoSuchInterfaceException("Unable to change paused state for '" + action.getInterface() + "' on '"
                         + action.getQueue() + "': " + response.getMessage());
@@ -158,45 +137,37 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
         }
     }
 
-    public String getMembership()
-    {
+    public String getMembership() {
         return membership;
     }
 
-    public boolean isStatic()
-    {
+    public boolean isStatic() {
         return "static".equals(membership);
     }
 
-    public boolean isDynamic()
-    {
+    public boolean isDynamic() {
         return "dynamic".equals(membership);
     }
 
-    public Integer getPenalty()
-    {
+    public Integer getPenalty() {
         return penalty;
     }
 
     public void setPenalty(int penalty)
-            throws IllegalArgumentException, ManagerCommunicationException, InvalidPenaltyException
-    {
-        if (penalty < 0)
-        {
+            throws IllegalArgumentException, ManagerCommunicationException, InvalidPenaltyException {
+        if (penalty < 0) {
             throw new IllegalArgumentException("Penalty must not be negative");
         }
 
         final ManagerResponse response = server.sendAction(new QueuePenaltyAction(location, penalty, queue.getName()));
-        if (response instanceof ManagerError)
-        {
+        if (response instanceof ManagerError) {
             throw new InvalidPenaltyException(
                     "Unable to set penalty for '" + location + "' on '" + queue.getName() + "': " + response.getMessage());
         }
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         final StringBuilder sb;
 
         sb = new StringBuilder("AsteriskQueueMember[");
@@ -213,12 +184,9 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
         return sb.toString();
     }
 
-    boolean stateChanged(QueueMemberState state)
-    {
-        try (LockCloser closer = this.withLock())
-        {
-            if (!AstUtil.isEqual(this.state, state))
-            {
+    boolean stateChanged(QueueMemberState state) {
+        try (LockCloser closer = this.withLock()) {
+            if (!AstUtil.isEqual(this.state, state)) {
                 QueueMemberState oldState = this.state;
                 this.state = state;
                 firePropertyChange(PROPERTY_STATE, oldState, state);
@@ -228,12 +196,9 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
         }
     }
 
-    boolean penaltyChanged(Integer penalty)
-    {
-        try (LockCloser closer = this.withLock())
-        {
-            if (!AstUtil.isEqual(this.penalty, penalty))
-            {
+    boolean penaltyChanged(Integer penalty) {
+        try (LockCloser closer = this.withLock()) {
+            if (!AstUtil.isEqual(this.penalty, penalty)) {
                 Integer oldPenalty = this.penalty;
                 this.penalty = penalty;
                 firePropertyChange(PROPERTY_PENALTY, oldPenalty, penalty);
@@ -244,12 +209,9 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
         }
     }
 
-    boolean pausedChanged(boolean paused)
-    {
-        try (LockCloser closer = this.withLock())
-        {
-            if (!AstUtil.isEqual(this.paused, paused))
-            {
+    boolean pausedChanged(boolean paused) {
+        try (LockCloser closer = this.withLock()) {
+            if (!AstUtil.isEqual(this.paused, paused)) {
                 boolean oldPaused = this.paused;
                 this.paused = paused;
                 firePropertyChange(PROPERTY_PAUSED, oldPaused, paused);
@@ -259,12 +221,9 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
         }
     }
 
-    boolean callsTakenChanged(Integer callsTaken)
-    {
-        try (LockCloser closer = this.withLock())
-        {
-            if (!AstUtil.isEqual(this.callsTaken, callsTaken))
-            {
+    boolean callsTakenChanged(Integer callsTaken) {
+        try (LockCloser closer = this.withLock()) {
+            if (!AstUtil.isEqual(this.callsTaken, callsTaken)) {
                 Integer oldcallsTaken = this.callsTaken;
                 this.callsTaken = callsTaken;
                 firePropertyChange(PROPERTY_CALLSTAKEN, oldcallsTaken, callsTaken);
@@ -274,12 +233,9 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
         }
     }
 
-    boolean lastCallChanged(Long lastCall)
-    {
-        try (LockCloser closer = this.withLock())
-        {
-            if (!AstUtil.isEqual(this.lastCall, lastCall))
-            {
+    boolean lastCallChanged(Long lastCall) {
+        try (LockCloser closer = this.withLock()) {
+            if (!AstUtil.isEqual(this.lastCall, lastCall)) {
                 Long oldlastCall = this.lastCall;
                 this.lastCall = lastCall;
                 firePropertyChange(PROPERTY_LASTCALL, oldlastCall, lastCall);

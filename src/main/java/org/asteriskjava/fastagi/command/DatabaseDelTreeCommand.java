@@ -21,12 +21,11 @@ package org.asteriskjava.fastagi.command;
  * database.
  * <p>
  * Returns 1 if successful, 0 otherwise.
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public class DatabaseDelTreeCommand extends AbstractAgiCommand
-{
+public class DatabaseDelTreeCommand extends AbstractAgiCommand {
     /**
      * Serial version identifier.
      */
@@ -44,11 +43,10 @@ public class DatabaseDelTreeCommand extends AbstractAgiCommand
 
     /**
      * Creates a new DatabaseDelCommand to delete a whole family.
-     * 
+     *
      * @param family the family to delete.
      */
-    public DatabaseDelTreeCommand(String family)
-    {
+    public DatabaseDelTreeCommand(String family) {
         super();
         this.family = family;
     }
@@ -56,12 +54,11 @@ public class DatabaseDelTreeCommand extends AbstractAgiCommand
     /**
      * Creates a new DatabaseDelCommand to delete a keytree within a given
      * family.
-     * 
-     * @param family the family of the keytree to delete.
+     *
+     * @param family  the family of the keytree to delete.
      * @param keyTree the keytree to delete.
      */
-    public DatabaseDelTreeCommand(String family, String keyTree)
-    {
+    public DatabaseDelTreeCommand(String family, String keyTree) {
         super();
         this.family = family;
         this.keyTree = keyTree;
@@ -69,50 +66,44 @@ public class DatabaseDelTreeCommand extends AbstractAgiCommand
 
     /**
      * Returns the family of the key to delete.
-     * 
+     *
      * @return the family of the key to delete.
      */
-    public String getFamily()
-    {
+    public String getFamily() {
         return family;
     }
 
     /**
      * Sets the family of the key to delete.
-     * 
+     *
      * @param family the family of the key to delete.
      */
-    public void setFamily(String family)
-    {
+    public void setFamily(String family) {
         this.family = family;
     }
 
     /**
      * Returns the the keytree to delete.
-     * 
+     *
      * @return the keytree to delete.
      */
-    public String getKeyTree()
-    {
+    public String getKeyTree() {
         return keyTree;
     }
 
     /**
      * Sets the keytree to delete.
-     * 
+     *
      * @param keyTree the keytree to delete, <code>null</code> to delete the
-     *            whole family.
+     *                whole family.
      */
-    public void setKeyTree(String keyTree)
-    {
+    public void setKeyTree(String keyTree) {
         this.keyTree = keyTree;
     }
 
     @Override
-    public String buildCommand()
-    {
-        if (keyTree != null)
-        {
+    public String buildCommand() {
+        if (keyTree != null) {
             return "DATABASE DELTREE " + escapeAndQuote(family) + " " + escapeAndQuote(keyTree);
         }
         return "DATABASE DELTREE " + escapeAndQuote(family);

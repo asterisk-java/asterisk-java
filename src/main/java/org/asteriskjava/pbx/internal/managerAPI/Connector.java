@@ -1,10 +1,5 @@
 package org.asteriskjava.pbx.internal.managerAPI;
 
-import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.net.UnknownHostException;
-
 import org.asteriskjava.manager.AuthenticationFailedException;
 import org.asteriskjava.manager.ManagerConnection;
 import org.asteriskjava.manager.ManagerConnectionFactory;
@@ -13,18 +8,22 @@ import org.asteriskjava.pbx.AsteriskSettings;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
 /*
  * this class is a very thin wrapper around the manager connection class
  */
-public class Connector
-{
+public class Connector {
     private ManagerConnection managerConnection;
     private static final Log logger = LogFactory.getLog(Connector.class);
 
     /**
      * Establishes a Asterisk ManagerConnection as well as performing the
      * 'login' required by Asterisk.
-     * 
+     *
      * @param asteriskSettings
      * @return
      * @throws IOException
@@ -33,8 +32,7 @@ public class Connector
      * @throws IllegalStateException
      */
     public ManagerConnection connect(final AsteriskSettings asteriskSettings)
-            throws IOException, AuthenticationFailedException, TimeoutException, IllegalStateException
-    {
+            throws IOException, AuthenticationFailedException, TimeoutException, IllegalStateException {
         checkIfAsteriskRunning(asteriskSettings);
         this.makeConnection(asteriskSettings);
         return this.managerConnection;
@@ -48,15 +46,13 @@ public class Connector
      * they can go to the asterisk panel. Fix the problem and then we can retry
      * with the new connection settings within a couple of seconds rather than
      * waiting a minute for a timeout.
-     * 
+     *
      * @param asteriskSettings
      * @throws UnknownHostException
      * @throws IOException
      */
-    private void checkIfAsteriskRunning(AsteriskSettings asteriskSettings) throws UnknownHostException, IOException
-    {
-        try (Socket socket = new Socket())
-        {
+    private void checkIfAsteriskRunning(AsteriskSettings asteriskSettings) throws UnknownHostException, IOException {
+        try (Socket socket = new Socket()) {
             socket.setSoTimeout(2000);
 
             InetSocketAddress asteriskHost = new InetSocketAddress(asteriskSettings.getAsteriskIP(),
@@ -75,17 +71,13 @@ public class Connector
      * @throws IllegalStateException
      */
     private void makeConnection(final AsteriskSettings asteriskSettings)
-            throws IOException, AuthenticationFailedException, TimeoutException, IllegalStateException
-    {
+            throws IOException, AuthenticationFailedException, TimeoutException, IllegalStateException {
         ManagerConnectionFactory factory = null;
-        if (asteriskSettings.getManagerPortNo() == -1)
-        {
+        if (asteriskSettings.getManagerPortNo() == -1) {
             Connector.logger.debug("Using default port 5038."); //$NON-NLS-1$
             factory = new ManagerConnectionFactory(asteriskSettings.getAsteriskIP(), asteriskSettings.getManagerUsername(),
                     asteriskSettings.getManagerPassword());
-        }
-        else
-        {
+        } else {
             factory = new ManagerConnectionFactory(asteriskSettings.getAsteriskIP(), asteriskSettings.getManagerPortNo(),
                     asteriskSettings.getManagerUsername(), asteriskSettings.getManagerPassword());
 

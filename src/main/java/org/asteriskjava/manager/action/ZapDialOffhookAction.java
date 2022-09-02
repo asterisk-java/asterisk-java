@@ -18,12 +18,11 @@ package org.asteriskjava.manager.action;
 
 /**
  * The ZapDialOffhookAction dials a number on a zap channel while offhook.
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public class ZapDialOffhookAction extends AbstractManagerAction
-{
+public class ZapDialOffhookAction extends AbstractManagerAction {
     /**
      * Serializable version identifier
      */
@@ -34,21 +33,19 @@ public class ZapDialOffhookAction extends AbstractManagerAction
     /**
      * Creates a new empty ZapDialOffhookAction.
      */
-    public ZapDialOffhookAction()
-    {
+    public ZapDialOffhookAction() {
 
     }
 
     /**
      * Creates a new ZapDialOffhookAction that dials the given number on the
      * given zap channel.
-     * 
+     *
      * @param zapChannel the number of the zap channel
-     * @param number the number to dial
+     * @param number     the number to dial
      * @since 0.2
      */
-    public ZapDialOffhookAction(Integer zapChannel, String number)
-    {
+    public ZapDialOffhookAction(Integer zapChannel, String number) {
         this.zapChannel = zapChannel;
         this.number = number;
     }
@@ -57,16 +54,14 @@ public class ZapDialOffhookAction extends AbstractManagerAction
      * Returns the name of this action, i.e. "ZapDialOffhook".
      */
     @Override
-   public String getAction()
-    {
+    public String getAction() {
         return "ZapDialOffhook";
     }
 
     /**
      * Returns the number of the zap channel.
      */
-    public Integer getZapChannel()
-    {
+    public Integer getZapChannel() {
         return zapChannel;
     }
 
@@ -74,16 +69,14 @@ public class ZapDialOffhookAction extends AbstractManagerAction
      * Sets the number of the zap channel.<p>
      * This property is mandatory.
      */
-    public void setZapChannel(Integer channel)
-    {
+    public void setZapChannel(Integer channel) {
         this.zapChannel = channel;
     }
 
     /**
      * Returns the number to dial.
      */
-    public String getNumber()
-    {
+    public String getNumber() {
         return number;
     }
 
@@ -91,8 +84,7 @@ public class ZapDialOffhookAction extends AbstractManagerAction
      * Sets the number to dial.<p>
      * This property is mandatory.
      */
-    public void setNumber(String number)
-    {
+    public void setNumber(String number) {
         this.number = number;
     }
 }

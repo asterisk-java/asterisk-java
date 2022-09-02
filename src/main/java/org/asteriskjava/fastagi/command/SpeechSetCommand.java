@@ -24,8 +24,7 @@ package org.asteriskjava.fastagi.command;
  * @version $Id$
  * @since 1.0.0
  */
-public class SpeechSetCommand extends AbstractAgiCommand
-{
+public class SpeechSetCommand extends AbstractAgiCommand {
     /**
      * Serial version identifier.
      */
@@ -39,8 +38,7 @@ public class SpeechSetCommand extends AbstractAgiCommand
      * @param name  the name of the setting to set.
      * @param value the value to set.
      */
-    public SpeechSetCommand(String name, String value)
-    {
+    public SpeechSetCommand(String name, String value) {
         this.name = name;
         this.value = value;
     }
@@ -50,8 +48,7 @@ public class SpeechSetCommand extends AbstractAgiCommand
      *
      * @return the name of the setting to set.
      */
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
@@ -60,8 +57,7 @@ public class SpeechSetCommand extends AbstractAgiCommand
      *
      * @param name the name of the setting to set.
      */
-    public void setName(String name)
-    {
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -70,8 +66,7 @@ public class SpeechSetCommand extends AbstractAgiCommand
      *
      * @return the value to set.
      */
-    public String getValue()
-    {
+    public String getValue() {
         return value;
     }
 
@@ -80,14 +75,12 @@ public class SpeechSetCommand extends AbstractAgiCommand
      *
      * @param value the value to set.
      */
-    public void setValue(String value)
-    {
+    public void setValue(String value) {
         this.value = value;
     }
 
     @Override
-    public String buildCommand()
-    {
+    public String buildCommand() {
         return "SPEECH SET " + escapeAndQuote(name) + " " + escapeAndQuote(value);
     }
 }

@@ -21,12 +21,11 @@ package org.asteriskjava.fastagi.command;
  * given DTMF digits are received on the channel.<p>
  * Returns 0 if playback completes without a digit being pressed, or the ASCII
  * numerical value of the digit if one was pressed or -1 on error/hangup.
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public class SayPhoneticCommand extends AbstractAgiCommand
-{
+public class SayPhoneticCommand extends AbstractAgiCommand {
     /**
      * Serial version identifier.
      */
@@ -44,24 +43,22 @@ public class SayPhoneticCommand extends AbstractAgiCommand
 
     /**
      * Creates a new SayPhonticCommand.
-     * 
+     *
      * @param text the text to say.
      */
-    public SayPhoneticCommand(String text)
-    {
+    public SayPhoneticCommand(String text) {
         super();
         this.text = text;
     }
 
     /**
      * Creates a new SayPhoneticCommand.
-     * 
-     * @param text the text to say.
+     *
+     * @param text         the text to say.
      * @param escapeDigits contains the digits that allow the user to interrupt
-     *            this command.
+     *                     this command.
      */
-    public SayPhoneticCommand(String text, String escapeDigits)
-    {
+    public SayPhoneticCommand(String text, String escapeDigits) {
         super();
         this.text = text;
         this.escapeDigits = escapeDigits;
@@ -69,48 +66,43 @@ public class SayPhoneticCommand extends AbstractAgiCommand
 
     /**
      * Returns the text to say.
-     * 
+     *
      * @return the text to say.
      */
-    public String getText()
-    {
+    public String getText() {
         return text;
     }
 
     /**
      * Sets the text to say.
-     * 
+     *
      * @param text the text to say.
      */
-    public void setText(String text)
-    {
+    public void setText(String text) {
         this.text = text;
     }
 
     /**
      * Returns the digits that allow the user to interrupt this command.
-     * 
+     *
      * @return the digits that allow the user to interrupt this command.
      */
-    public String getEscapeDigits()
-    {
+    public String getEscapeDigits() {
         return escapeDigits;
     }
 
     /**
      * Sets the digits that allow the user to interrupt this command.
-     * 
+     *
      * @param escapeDigits the text that allow the user to interrupt this
-     *            command or <code>null</code> for none.
+     *                     command or <code>null</code> for none.
      */
-    public void setEscapeDigits(String escapeDigits)
-    {
+    public void setEscapeDigits(String escapeDigits) {
         this.escapeDigits = escapeDigits;
     }
 
     @Override
-   public String buildCommand()
-    {
+    public String buildCommand() {
         return "SAY PHONETIC " + escapeAndQuote(text) + " "
                 + escapeAndQuote(escapeDigits);
     }

@@ -30,17 +30,16 @@ package org.asteriskjava.manager.event;
  * @see org.asteriskjava.manager.event.MeetMeTalkingEvent
  * @since 0.2
  * @deprecated as of 1.0.0, use {@link org.asteriskjava.manager.event.MeetMeTalkingEvent} instead and check for
- *             {@link MeetMeTalkingEvent#getStatus()}.
+ * {@link MeetMeTalkingEvent#getStatus()}.
  */
-@Deprecated public class MeetMeStopTalkingEvent extends MeetMeTalkingEvent
-{
+@Deprecated
+public class MeetMeStopTalkingEvent extends MeetMeTalkingEvent {
     /**
      * Serializable version identifier.
      */
     private static final long serialVersionUID = 1L;
 
-    public MeetMeStopTalkingEvent(Object source)
-    {
+    public MeetMeStopTalkingEvent(Object source) {
         super(source);
         this.status = Boolean.FALSE;
     }

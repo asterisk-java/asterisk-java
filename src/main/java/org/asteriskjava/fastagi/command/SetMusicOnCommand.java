@@ -19,12 +19,11 @@ package org.asteriskjava.fastagi.command;
 /**
  * Turns on music on hold on the current channel.<p>
  * Always returns 0.
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public class SetMusicOnCommand extends AbstractAgiCommand
-{
+public class SetMusicOnCommand extends AbstractAgiCommand {
     /**
      * Serial version identifier.
      */
@@ -39,49 +38,44 @@ public class SetMusicOnCommand extends AbstractAgiCommand
      * Creates a new SetMusicOnCommand playing music from the default music on
      * hold class.
      */
-    public SetMusicOnCommand()
-    {
+    public SetMusicOnCommand() {
         super();
     }
 
     /**
      * Creates a new SetMusicOnCommand playing music from the default music on
      * hold class.
-     * 
+     *
      * @param musicOnHoldClass the music on hold class to play music from.
      */
-    public SetMusicOnCommand(String musicOnHoldClass)
-    {
+    public SetMusicOnCommand(String musicOnHoldClass) {
         this.musicOnHoldClass = musicOnHoldClass;
     }
 
     /**
      * Returns the music on hold class to play music from.
-     * 
+     *
      * @return the music on hold class to play music from or <code>null</code>
-     *         for the default class.
+     * for the default class.
      */
-    public String getMusicOnHoldClass()
-    {
+    public String getMusicOnHoldClass() {
         return musicOnHoldClass;
     }
 
     /**
      * Sets the music on hold class to play music from.
-     * 
+     *
      * @param musicOnHoldClass the music on hold class to play music from or
-     *            <code>null</code> for the default class.
+     *                         <code>null</code> for the default class.
      */
-    public void setMusicOnHoldClass(String musicOnHoldClass)
-    {
+    public void setMusicOnHoldClass(String musicOnHoldClass) {
         this.musicOnHoldClass = musicOnHoldClass;
     }
 
     @Override
-   public String buildCommand()
-    {
+    public String buildCommand() {
         return "SET MUSIC ON"
                 + (musicOnHoldClass == null ? "" : " "
-                        + escapeAndQuote(musicOnHoldClass));
+                + escapeAndQuote(musicOnHoldClass));
     }
 }

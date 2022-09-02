@@ -16,12 +16,21 @@
  */
 package org.asteriskjava.manager.internal;
 
-import static org.asteriskjava.manager.ManagerConnectionState.CONNECTED;
-import static org.asteriskjava.manager.ManagerConnectionState.CONNECTING;
-import static org.asteriskjava.manager.ManagerConnectionState.DISCONNECTED;
-import static org.asteriskjava.manager.ManagerConnectionState.DISCONNECTING;
-import static org.asteriskjava.manager.ManagerConnectionState.INITIAL;
-import static org.asteriskjava.manager.ManagerConnectionState.RECONNECTING;
+import org.asteriskjava.AsteriskVersion;
+import org.asteriskjava.lock.Lockable;
+import org.asteriskjava.lock.LockableList;
+import org.asteriskjava.lock.LockableMap;
+import org.asteriskjava.lock.Locker.LockCloser;
+import org.asteriskjava.manager.*;
+import org.asteriskjava.manager.action.*;
+import org.asteriskjava.manager.event.*;
+import org.asteriskjava.manager.response.*;
+import org.asteriskjava.pbx.util.LogTime;
+import org.asteriskjava.util.DateUtil;
+import org.asteriskjava.util.Log;
+import org.asteriskjava.util.LogFactory;
+import org.asteriskjava.util.SocketConnectionFacade;
+import org.asteriskjava.util.internal.SocketConnectionFacadeImpl;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -38,47 +47,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.asteriskjava.AsteriskVersion;
-import org.asteriskjava.lock.Lockable;
-import org.asteriskjava.lock.LockableList;
-import org.asteriskjava.lock.LockableMap;
-import org.asteriskjava.lock.Locker.LockCloser;
-import org.asteriskjava.manager.AuthenticationFailedException;
-import org.asteriskjava.manager.EventTimeoutException;
-import org.asteriskjava.manager.ExpectedResponse;
-import org.asteriskjava.manager.ManagerConnection;
-import org.asteriskjava.manager.ManagerConnectionState;
-import org.asteriskjava.manager.ManagerEventListener;
-import org.asteriskjava.manager.ResponseEvents;
-import org.asteriskjava.manager.SendActionCallback;
-import org.asteriskjava.manager.SendEventGeneratingActionCallback;
-import org.asteriskjava.manager.TimeoutException;
-import org.asteriskjava.manager.action.ChallengeAction;
-import org.asteriskjava.manager.action.CommandAction;
-import org.asteriskjava.manager.action.CoreSettingsAction;
-import org.asteriskjava.manager.action.EventGeneratingAction;
-import org.asteriskjava.manager.action.LoginAction;
-import org.asteriskjava.manager.action.LogoffAction;
-import org.asteriskjava.manager.action.ManagerAction;
-import org.asteriskjava.manager.action.UserEventAction;
-import org.asteriskjava.manager.event.ConnectEvent;
-import org.asteriskjava.manager.event.DialBeginEvent;
-import org.asteriskjava.manager.event.DialEvent;
-import org.asteriskjava.manager.event.DisconnectEvent;
-import org.asteriskjava.manager.event.ManagerEvent;
-import org.asteriskjava.manager.event.ProtocolIdentifierReceivedEvent;
-import org.asteriskjava.manager.event.ResponseEvent;
-import org.asteriskjava.manager.response.ChallengeResponse;
-import org.asteriskjava.manager.response.CommandResponse;
-import org.asteriskjava.manager.response.CoreSettingsResponse;
-import org.asteriskjava.manager.response.ManagerError;
-import org.asteriskjava.manager.response.ManagerResponse;
-import org.asteriskjava.pbx.util.LogTime;
-import org.asteriskjava.util.DateUtil;
-import org.asteriskjava.util.Log;
-import org.asteriskjava.util.LogFactory;
-import org.asteriskjava.util.SocketConnectionFacade;
-import org.asteriskjava.util.internal.SocketConnectionFacadeImpl;
+import static org.asteriskjava.manager.ManagerConnectionState.*;
 
 /**
  * Internal implemention of the ManagerConnection interface.
@@ -87,8 +56,7 @@ import org.asteriskjava.util.internal.SocketConnectionFacadeImpl;
  * @version $Id$
  * @see org.asteriskjava.manager.ManagerConnectionFactory
  */
-public class ManagerConnectionImpl extends Lockable implements ManagerConnection, Dispatcher
-{
+public class ManagerConnectionImpl extends Lockable implements ManagerConnection, Dispatcher {
     private static final int RECONNECTION_INTERVAL_1 = 50;
     private static final int RECONNECTION_INTERVAL_2 = 5000;
     private static final String DEFAULT_HOSTNAME = "localhost";
@@ -256,8 +224,7 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
     /**
      * Creates a new instance.
      */
-    public ManagerConnectionImpl()
-    {
+    public ManagerConnectionImpl() {
         this.id = idCounter.getAndIncrement();
         this.responseListeners = new LockableMap<>(new HashMap<>());
         this.responseEventListeners = new LockableMap<>(new HashMap<>());
@@ -267,13 +234,11 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
 
     // the following two methods can be overriden when running test cases to
     // return a mock object
-    protected ManagerReader createReader(Dispatcher dispatcher, Object source)
-    {
+    protected ManagerReader createReader(Dispatcher dispatcher, Object source) {
         return new ManagerReaderImpl(dispatcher, source);
     }
 
-    protected ManagerWriter createWriter()
-    {
+    protected ManagerWriter createWriter() {
         return new ManagerWriterImpl();
     }
 
@@ -284,8 +249,7 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
      *
      * @param hostname the hostname to connect to
      */
-    public void setHostname(String hostname)
-    {
+    public void setHostname(String hostname) {
         this.hostname = hostname;
     }
 
@@ -297,14 +261,10 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
      *
      * @param port the port to connect to
      */
-    public void setPort(int port)
-    {
-        if (port <= 0)
-        {
+    public void setPort(int port) {
+        if (port <= 0) {
             this.port = DEFAULT_PORT;
-        }
-        else
-        {
+        } else {
             this.port = port;
         }
     }
@@ -317,8 +277,7 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
      *            <code>false</code> for a plain text connection.
      * @since 0.3
      */
-    public void setSsl(boolean ssl)
-    {
+    public void setSsl(boolean ssl) {
         this.ssl = ssl;
     }
 
@@ -328,8 +287,7 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
      *
      * @param username the username to use for login
      */
-    public void setUsername(String username)
-    {
+    public void setUsername(String username) {
         this.username = username;
     }
 
@@ -339,14 +297,12 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
      *
      * @param password the password to use for login
      */
-    public void setPassword(String password)
-    {
+    public void setPassword(String password) {
         this.password = password;
     }
 
     @Override
-    public void setEncoding(Charset encoding)
-    {
+    public void setEncoding(Charset encoding) {
         this.encoding = encoding;
     }
 
@@ -359,8 +315,7 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
      * @param defaultResponseTimeout default response timeout in milliseconds
      * @since 0.2
      */
-    public void setDefaultResponseTimeout(long defaultResponseTimeout)
-    {
+    public void setDefaultResponseTimeout(long defaultResponseTimeout) {
         this.defaultResponseTimeout = defaultResponseTimeout;
     }
 
@@ -374,8 +329,7 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
      * @param defaultEventTimeout default event timeout in milliseconds
      * @since 0.2
      */
-    public void setDefaultEventTimeout(long defaultEventTimeout)
-    {
+    public void setDefaultEventTimeout(long defaultEventTimeout) {
         this.defaultEventTimeout = defaultEventTimeout;
     }
 
@@ -385,118 +339,94 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
      * Default is <code>true</code>.
      *
      * @param keepAliveAfterAuthenticationFailure <code>true</code> to try
-     *            reconnecting to ther asterisk serve even if the reconnection
-     *            attempt threw an AuthenticationFailedException,
-     *            <code>false</code> otherwise.
+     *                                            reconnecting to ther asterisk serve even if the reconnection
+     *                                            attempt threw an AuthenticationFailedException,
+     *                                            <code>false</code> otherwise.
      */
-    public void setKeepAliveAfterAuthenticationFailure(boolean keepAliveAfterAuthenticationFailure)
-    {
+    public void setKeepAliveAfterAuthenticationFailure(boolean keepAliveAfterAuthenticationFailure) {
         this.keepAliveAfterAuthenticationFailure = keepAliveAfterAuthenticationFailure;
     }
 
     /* Implementation of ManagerConnection interface */
 
-    public String getUsername()
-    {
+    public String getUsername() {
         return username;
     }
 
-    public String getPassword()
-    {
+    public String getPassword() {
         return password;
     }
 
     @Override
-    public Charset getEncoding()
-    {
+    public Charset getEncoding() {
         return encoding;
     }
 
-    public AsteriskVersion getVersion()
-    {
+    public AsteriskVersion getVersion() {
         return version;
     }
 
-    public String getHostname()
-    {
+    public String getHostname() {
         return hostname;
     }
 
-    public int getPort()
-    {
+    public int getPort() {
         return port;
     }
 
-    public boolean isSsl()
-    {
+    public boolean isSsl() {
         return ssl;
     }
 
-    public InetAddress getLocalAddress()
-    {
+    public InetAddress getLocalAddress() {
         return socket.getLocalAddress();
     }
 
-    public int getLocalPort()
-    {
+    public int getLocalPort() {
         return socket.getLocalPort();
     }
 
-    public InetAddress getRemoteAddress()
-    {
+    public InetAddress getRemoteAddress() {
         return socket.getRemoteAddress();
     }
 
-    public int getRemotePort()
-    {
+    public int getRemotePort() {
         return socket.getRemotePort();
     }
 
-    public void registerUserEventClass(Class< ? extends ManagerEvent> userEventClass)
-    {
-        if (reader == null)
-        {
+    public void registerUserEventClass(Class<? extends ManagerEvent> userEventClass) {
+        if (reader == null) {
             reader = createReader(this, this);
         }
 
         reader.registerEventClass(userEventClass);
     }
 
-    public void setSocketTimeout(int socketTimeout)
-    {
+    public void setSocketTimeout(int socketTimeout) {
         this.socketTimeout = socketTimeout;
     }
 
-    public void setSocketReadTimeout(int socketReadTimeout)
-    {
+    public void setSocketReadTimeout(int socketReadTimeout) {
         this.socketReadTimeout = socketReadTimeout;
     }
 
-    public void login() throws IOException, AuthenticationFailedException, TimeoutException
-    {
+    public void login() throws IOException, AuthenticationFailedException, TimeoutException {
         login(null);
     }
 
-    public void login(String eventMask) throws IOException, AuthenticationFailedException, TimeoutException
-    {
-        try (LockCloser closer = this.withLock())
-        {
-            if (state != INITIAL && state != DISCONNECTED)
-            {
+    public void login(String eventMask) throws IOException, AuthenticationFailedException, TimeoutException {
+        try (LockCloser closer = this.withLock()) {
+            if (state != INITIAL && state != DISCONNECTED) {
                 throw new IllegalStateException("Login may only be perfomed when in state "
                         + "INITIAL or DISCONNECTED, but connection is in state " + state);
             }
 
             state = CONNECTING;
             this.eventMask = eventMask;
-            try
-            {
+            try {
                 doLogin(defaultResponseTimeout, eventMask);
-            }
-            finally
-            {
-                if (state != CONNECTED)
-                {
+            } finally {
+                if (state != CONNECTED) {
                     state = DISCONNECTED;
                 }
             }
@@ -517,25 +447,23 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
      * the received challenge).
      * </ol>
      *
-     * @param timeout the maximum time to wait for the protocol identifier (in
-     *            ms)
+     * @param timeout   the maximum time to wait for the protocol identifier (in
+     *                  ms)
      * @param eventMask the event mask. Set to "on" if all events should be
-     *            send, "off" if not events should be sent or a combination of
-     *            "system", "call" and "log" (separated by ',') to specify what
-     *            kind of events should be sent.
-     * @throws IOException if there is an i/o problem.
+     *                  send, "off" if not events should be sent or a combination of
+     *                  "system", "call" and "log" (separated by ',') to specify what
+     *                  kind of events should be sent.
+     * @throws IOException                   if there is an i/o problem.
      * @throws AuthenticationFailedException if username or password are
-     *             incorrect and the login action returns an error or if the MD5
-     *             hash cannot be computed. The connection is closed in this
-     *             case.
-     * @throws TimeoutException if a timeout occurs while waiting for the
-     *             protocol identifier. The connection is closed in this case.
+     *                                       incorrect and the login action returns an error or if the MD5
+     *                                       hash cannot be computed. The connection is closed in this
+     *                                       case.
+     * @throws TimeoutException              if a timeout occurs while waiting for the
+     *                                       protocol identifier. The connection is closed in this case.
      */
     protected void doLogin(long timeout, String eventMask)
-            throws IOException, AuthenticationFailedException, TimeoutException
-    {
-        try (LockCloser closer = this.withLock())
-        {
+            throws IOException, AuthenticationFailedException, TimeoutException {
+        try (LockCloser closer = this.withLock()) {
             ChallengeAction challengeAction;
             ManagerResponse challengeResponse;
             String challenge;
@@ -543,89 +471,68 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
             LoginAction loginAction;
             ManagerResponse loginResponse;
 
-            if (socket == null)
-            {
+            if (socket == null) {
                 connect();
             }
 
-            if (protocolIdentifier.getValue() == null)
-            {
-                try
-                {
+            if (protocolIdentifier.getValue() == null) {
+                try {
                     protocolIdentifier.await(timeout);
-                }
-                catch (InterruptedException e) // NOPMD
+                } catch (InterruptedException e) // NOPMD
                 {
                     Thread.currentThread().interrupt();
                 }
             }
 
-            if (protocolIdentifier.getValue() == null)
-            {
+            if (protocolIdentifier.getValue() == null) {
                 disconnect();
-                if (reader != null && reader.getTerminationException() != null)
-                {
+                if (reader != null && reader.getTerminationException() != null) {
                     throw reader.getTerminationException();
                 }
                 throw new TimeoutException("Timeout waiting for protocol identifier");
             }
 
             challengeAction = new ChallengeAction("MD5");
-            try
-            {
+            try {
                 challengeResponse = sendAction(challengeAction);
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 disconnect();
                 throw new AuthenticationFailedException("Unable to send challenge action", e);
             }
 
-            if (challengeResponse instanceof ChallengeResponse)
-            {
+            if (challengeResponse instanceof ChallengeResponse) {
                 challenge = ((ChallengeResponse) challengeResponse).getChallenge();
-            }
-            else
-            {
+            } else {
                 disconnect();
                 throw new AuthenticationFailedException("Unable to get challenge from Asterisk. ChallengeAction returned: "
                         + challengeResponse.getMessage());
             }
 
-            try
-            {
+            try {
                 MessageDigest md;
 
                 md = MessageDigest.getInstance("MD5");
-                if (challenge != null)
-                {
+                if (challenge != null) {
                     md.update(challenge.getBytes(StandardCharsets.UTF_8));
                 }
-                if (password != null)
-                {
+                if (password != null) {
                     md.update(password.getBytes(StandardCharsets.UTF_8));
                 }
                 key = ManagerUtil.toHexString(md.digest());
-            }
-            catch (NoSuchAlgorithmException ex)
-            {
+            } catch (NoSuchAlgorithmException ex) {
                 disconnect();
                 throw new AuthenticationFailedException("Unable to create login key using MD5 Message Digest", ex);
             }
 
             loginAction = new LoginAction(username, "MD5", key, eventMask);
-            try
-            {
+            try {
                 loginResponse = sendAction(loginAction);
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 disconnect();
                 throw new AuthenticationFailedException("Unable to send login action", e);
             }
 
-            if (loginResponse instanceof ManagerError)
-            {
+            if (loginResponse instanceof ManagerError) {
                 disconnect();
                 throw new AuthenticationFailedException(loginResponse.getMessage());
             }
@@ -649,40 +556,29 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
         }
     }
 
-    protected AsteriskVersion determineVersion() throws IOException, TimeoutException
-    {
+    protected AsteriskVersion determineVersion() throws IOException, TimeoutException {
         int attempts = 0;
 
         logger.info("Got asterisk protocol identifier version " + protocolIdentifier.getValue());
 
-        while (attempts++ < MAX_VERSION_ATTEMPTS)
-        {
-            try
-            {
+        while (attempts++ < MAX_VERSION_ATTEMPTS) {
+            try {
                 AsteriskVersion version = determineVersionByCoreSettings();
                 if (version != null)
                     return version;
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
             }
 
-            try
-            {
+            try {
                 AsteriskVersion version = determineVersionByCoreShowVersion();
                 if (version != null)
                     return version;
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
             }
 
-            try
-            {
+            try {
                 Thread.sleep(RECONNECTION_VERSION_INTERVAL);
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 // ignore
             } // NOPMD
         }
@@ -699,12 +595,10 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
      * @return
      * @throws Exception
      */
-    protected AsteriskVersion determineVersionByCoreSettings() throws Exception
-    {
+    protected AsteriskVersion determineVersionByCoreSettings() throws Exception {
 
         ManagerResponse response = sendAction(new CoreSettingsAction());
-        if (!(response instanceof CoreSettingsResponse))
-        {
+        if (!(response instanceof CoreSettingsResponse)) {
             // NOTE: you need system or reporting permissions
             logger.info("Could not get core settings, do we have the necessary permissions?");
             return null;
@@ -721,20 +615,17 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
      * @return
      * @throws Exception
      */
-    protected AsteriskVersion determineVersionByCoreShowVersion() throws Exception
-    {
+    protected AsteriskVersion determineVersionByCoreShowVersion() throws Exception {
         final ManagerResponse coreShowVersionResponse = sendAction(new CommandAction(CMD_SHOW_VERSION));
 
-        if (coreShowVersionResponse == null || !(coreShowVersionResponse instanceof CommandResponse))
-        {
+        if (coreShowVersionResponse == null || !(coreShowVersionResponse instanceof CommandResponse)) {
             // this needs 'command' permissions
             logger.info("Could not get response for 'core show version'");
             return null;
         }
 
         final List<String> coreShowVersionResult = ((CommandResponse) coreShowVersionResponse).getResult();
-        if (coreShowVersionResult == null || coreShowVersionResult.isEmpty())
-        {
+        if (coreShowVersionResult == null || coreShowVersionResult.isEmpty()) {
             logger.warn("Got empty response for 'core show version'");
             return null;
         }
@@ -743,20 +634,16 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
         return AsteriskVersion.getDetermineVersionFromString(coreLine);
     }
 
-    protected void connect() throws IOException
-    {
-        try (LockCloser closer = this.withLock())
-        {
+    protected void connect() throws IOException {
+        try (LockCloser closer = this.withLock()) {
             logger.info("Connecting to " + hostname + ":" + port);
 
-            if (reader == null)
-            {
+            if (reader == null) {
                 logger.debug("Creating reader for " + hostname + ":" + port);
                 reader = createReader(this, this);
             }
 
-            if (writer == null)
-            {
+            if (writer == null) {
                 logger.debug("Creating writer");
                 writer = createWriter();
             }
@@ -767,8 +654,7 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
             logger.debug("Passing socket to reader");
             reader.setSocket(socket);
 
-            if (readerThread == null || !readerThread.isAlive() || reader.isDead())
-            {
+            if (readerThread == null || !readerThread.isAlive() || reader.isDead()) {
                 logger.debug("Creating and starting reader thread");
                 readerThread = new Thread(reader);
                 readerThread.setName(
@@ -782,31 +668,23 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
         }
     }
 
-    protected SocketConnectionFacade createSocket() throws IOException
-    {
+    protected SocketConnectionFacade createSocket() throws IOException {
         return new SocketConnectionFacadeImpl(hostname, port, ssl, socketTimeout, socketReadTimeout, encoding);
     }
 
-    public void logoff() throws IllegalStateException
-    {
-        try (LockCloser closer = this.withLock())
-        {
-            if (state != CONNECTED && state != RECONNECTING)
-            {
+    public void logoff() throws IllegalStateException {
+        try (LockCloser closer = this.withLock()) {
+            if (state != CONNECTED && state != RECONNECTING) {
                 throw new IllegalStateException("Logoff may only be perfomed when in state "
                         + "CONNECTED or RECONNECTING, but connection is in state " + state);
             }
 
             state = DISCONNECTING;
 
-            if (socket != null)
-            {
-                try
-                {
+            if (socket != null) {
+                try {
                     sendAction(new LogoffAction());
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                     logger.warn("Unable to send LogOff action", e);
                 }
             }
@@ -818,19 +696,13 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
     /**
      * Closes the socket connection.
      */
-    protected void disconnect()
-    {
-        try (LockCloser closer = this.withLock())
-        {
-            if (socket != null)
-            {
+    protected void disconnect() {
+        try (LockCloser closer = this.withLock()) {
+            if (socket != null) {
                 logger.info("Closing socket.");
-                try
-                {
+                try {
                     socket.close();
-                }
-                catch (IOException ex)
-                {
+                } catch (IOException ex) {
                     logger.warn("Unable to close socket: " + ex.getMessage());
                 }
                 socket = null;
@@ -840,8 +712,7 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
     }
 
     public ManagerResponse sendAction(ManagerAction action)
-            throws IOException, TimeoutException, IllegalArgumentException, IllegalStateException
-    {
+            throws IOException, TimeoutException, IllegalArgumentException, IllegalStateException {
         return sendAction(action, defaultResponseTimeout);
     }
 
@@ -851,76 +722,61 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
      * @param timeout - in milliseconds
      */
     public ManagerResponse sendAction(ManagerAction action, long timeout)
-            throws IOException, TimeoutException, IllegalArgumentException, IllegalStateException
-    {
+            throws IOException, TimeoutException, IllegalArgumentException, IllegalStateException {
 
         DefaultSendActionCallback callbackHandler = new DefaultSendActionCallback();
         ManagerResponse response = null;
-        try
-        {
+        try {
             sendAction(action, callbackHandler);
 
             // definitely return null for the response of user events
-            if (action instanceof UserEventAction)
-            {
+            if (action instanceof UserEventAction) {
                 return null;
             }
-            try
-            {
+            try {
                 response = callbackHandler.waitForResponse(timeout);
 
                 // no response?
-                if (response == null)
-                {
+                if (response == null) {
                     throw new TimeoutException("Timeout waiting for response to " + action.getAction()
                             + (action.getActionId() == null
-                                    ? ""
-                                    : " (actionId: " + action.getActionId() + "), Timeout=" + timeout + " Action="
-                                            + action.getAction()));
+                            ? ""
+                            : " (actionId: " + action.getActionId() + "), Timeout=" + timeout + " Action="
+                            + action.getAction()));
                 }
-            }
-            catch (InterruptedException ex)
-            {
+            } catch (InterruptedException ex) {
                 logger.warn("Interrupted while waiting for result");
                 Thread.currentThread().interrupt();
             }
-        }
-        finally
-        {
+        } finally {
             callbackHandler.dispose();
         }
         return response;
     }
 
     public void sendAction(ManagerAction action, SendActionCallback callback)
-            throws IOException, IllegalArgumentException, IllegalStateException
-    {
+            throws IOException, IllegalArgumentException, IllegalStateException {
         final String internalActionId;
 
-        if (action == null)
-        {
+        if (action == null) {
             throw new IllegalArgumentException("Unable to send action: action is null.");
         }
 
         // In general sending actions is only allowed while connected, though
         // there are a few exceptions, these are handled here:
         if ((state == CONNECTING || state == RECONNECTING) && (action instanceof ChallengeAction
-                || action instanceof LoginAction || isShowVersionCommandAction(action)))
-        {
+                || action instanceof LoginAction || isShowVersionCommandAction(action))) {
             // when (re-)connecting challenge and login actions are ok.
         } // NOPMD
-        else if (state == DISCONNECTING && action instanceof LogoffAction)
-        {
+        else if (state == DISCONNECTING && action instanceof LogoffAction) {
             // when disconnecting logoff action is ok.
         } // NOPMD
-        else if (state != CONNECTED)
-        {
+        else if (state != CONNECTED) {
             throw new IllegalStateException(
                     "Actions may only be sent when in state " + "CONNECTED, but connection is in state " + state);
         }
 
-        if (socket == null)
-        {
+        if (socket == null) {
             throw new IllegalStateException("Unable to send " + action.getAction() + " action: socket not connected.");
         }
 
@@ -928,30 +784,25 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
 
         // if the callbackHandler is null the user is obviously not interested
         // in the response, thats fine.
-        if (callback != null)
-        {
-            try (LockCloser closer = this.responseListeners.withLock())
-            {
+        if (callback != null) {
+            try (LockCloser closer = this.responseListeners.withLock()) {
                 this.responseListeners.put(internalActionId, callback);
             }
         }
 
-        Class< ? extends ManagerResponse> responseClass = getExpectedResponseClass(action.getClass());
-        if (responseClass != null)
-        {
+        Class<? extends ManagerResponse> responseClass = getExpectedResponseClass(action.getClass());
+        if (responseClass != null) {
             reader.expectResponseClass(internalActionId, responseClass);
         }
 
         writer.sendAction(action, internalActionId);
     }
 
-    boolean isShowVersionCommandAction(ManagerAction action)
-    {
+    boolean isShowVersionCommandAction(ManagerAction action) {
         if (action instanceof CoreSettingsAction)
             return true;
 
-        if (action instanceof CommandAction)
-        {
+        if (action instanceof CommandAction) {
             String cmd = ((CommandAction) action).getCommand();
             return CMD_SHOW_VERSION.equals(cmd);
         }
@@ -959,11 +810,9 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
         return false;
     }
 
-    private Class< ? extends ManagerResponse> getExpectedResponseClass(Class< ? extends ManagerAction> actionClass)
-    {
+    private Class<? extends ManagerResponse> getExpectedResponseClass(Class<? extends ManagerAction> actionClass) {
         final ExpectedResponse annotation = actionClass.getAnnotation(ExpectedResponse.class);
-        if (annotation == null)
-        {
+        if (annotation == null) {
             return null;
         }
 
@@ -971,8 +820,7 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
     }
 
     public ResponseEvents sendEventGeneratingAction(EventGeneratingAction action)
-            throws IOException, EventTimeoutException, IllegalArgumentException, IllegalStateException
-    {
+            throws IOException, EventTimeoutException, IllegalArgumentException, IllegalStateException {
         return sendEventGeneratingAction(action, defaultEventTimeout);
     }
 
@@ -980,30 +828,23 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
      * Implements synchronous sending of event generating actions.
      */
     public ResponseEvents sendEventGeneratingAction(EventGeneratingAction action, long timeout)
-            throws IOException, EventTimeoutException, IllegalArgumentException, IllegalStateException
-    {
+            throws IOException, EventTimeoutException, IllegalArgumentException, IllegalStateException {
         final ResponseEventsImpl responseEvents;
         final ResponseEventHandler responseEventHandler;
         final String internalActionId;
 
-        if (action == null)
-        {
+        if (action == null) {
             throw new IllegalArgumentException("Unable to send action: action is null.");
-        }
-        else if (action.getActionCompleteEventClass() == null)
-        {
+        } else if (action.getActionCompleteEventClass() == null) {
             throw new IllegalArgumentException(
                     "Unable to send action: actionCompleteEventClass for " + action.getClass().getName() + " is null.");
-        }
-        else if (!ResponseEvent.class.isAssignableFrom(action.getActionCompleteEventClass()))
-        {
+        } else if (!ResponseEvent.class.isAssignableFrom(action.getActionCompleteEventClass())) {
             throw new IllegalArgumentException(
                     "Unable to send action: actionCompleteEventClass (" + action.getActionCompleteEventClass().getName()
                             + ") for " + action.getClass().getName() + " is not a ResponseEvent.");
         }
 
-        if (state != CONNECTED)
-        {
+        if (state != CONNECTED) {
             throw new IllegalStateException(
                     "Actions may only be sent when in state " + "CONNECTED but connection is in state " + state);
         }
@@ -1013,58 +854,46 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
 
         internalActionId = createInternalActionId();
 
-        try
-        {
+        try {
             // register response handler...
-            try (LockCloser closer = this.responseListeners.withLock())
-            {
+            try (LockCloser closer = this.responseListeners.withLock()) {
                 this.responseListeners.put(internalActionId, responseEventHandler);
             }
 
             // ...and event handler.
-            try (LockCloser closer = this.responseEventListeners.withLock())
-            {
+            try (LockCloser closer = this.responseEventListeners.withLock()) {
                 this.responseEventListeners.put(internalActionId, responseEventHandler);
             }
 
             writer.sendAction(action, internalActionId);
             // only wait if response has not yet arrived.
-            if (responseEvents.getResponse() == null || !responseEvents.isComplete())
-            {
-                try
-                {
+            if (responseEvents.getResponse() == null || !responseEvents.isComplete()) {
+                try {
                     responseEvents.await(timeout);
-                }
-                catch (InterruptedException e)
-                {
+                } catch (InterruptedException e) {
                     logger.warn("Interrupted while waiting for response events.");
                     Thread.currentThread().interrupt();
                 }
             }
 
             // still no response or not all events received and timed out?
-            if (responseEvents.getResponse() == null || !responseEvents.isComplete())
-            {
+            if (responseEvents.getResponse() == null || !responseEvents.isComplete()) {
                 throw new EventTimeoutException(
                         "Timeout waiting for response or response events to " + action.getAction()
                                 + (action.getActionId() == null ? "" : " (actionId: " + action.getActionId() + ")"),
                         responseEvents);
             }
 
-        }
-        finally
-        {
+        } finally {
             // remove the event handler
-            try (LockCloser closer = this.responseEventListeners.withLock())
-            {
+            try (LockCloser closer = this.responseEventListeners.withLock()) {
                 this.responseEventListeners.remove(internalActionId);
             }
 
             // Note: The response handler should have already been removed
             // when the response was received, however we remove it here
             // just in case it was never received.
-            try (LockCloser closer = this.responseListeners.withLock())
-            {
+            try (LockCloser closer = this.responseListeners.withLock()) {
                 this.responseListeners.remove(internalActionId);
             }
 
@@ -1074,46 +903,36 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
     }
 
     public void sendEventGeneratingAction(EventGeneratingAction action, SendEventGeneratingActionCallback callback)
-            throws IOException, IllegalArgumentException, IllegalStateException
-    {
-        if (action == null)
-        {
+            throws IOException, IllegalArgumentException, IllegalStateException {
+        if (action == null) {
             throw new IllegalArgumentException("Unable to send action: action is null.");
-        }
-        else if (action.getActionCompleteEventClass() == null)
-        {
+        } else if (action.getActionCompleteEventClass() == null) {
             throw new IllegalArgumentException(
                     "Unable to send action: actionCompleteEventClass for " + action.getClass().getName() + " is null.");
-        }
-        else if (!ResponseEvent.class.isAssignableFrom(action.getActionCompleteEventClass()))
-        {
+        } else if (!ResponseEvent.class.isAssignableFrom(action.getActionCompleteEventClass())) {
             throw new IllegalArgumentException(
                     "Unable to send action: actionCompleteEventClass (" + action.getActionCompleteEventClass().getName()
                             + ") for " + action.getClass().getName() + " is not a ResponseEvent.");
         }
 
-        if (state != CONNECTED)
-        {
+        if (state != CONNECTED) {
             throw new IllegalStateException(
                     "Actions may only be sent when in state " + "CONNECTED but connection is in state " + state);
         }
 
         final String internalActionId = createInternalActionId();
 
-        if (callback != null)
-        {
+        if (callback != null) {
             AsyncEventGeneratingResponseHandler responseEventHandler = new AsyncEventGeneratingResponseHandler(
                     action.getActionCompleteEventClass(), callback);
 
             // register response handler...
-            try (LockCloser closer = this.responseListeners.withLock())
-            {
+            try (LockCloser closer = this.responseListeners.withLock()) {
                 this.responseListeners.put(internalActionId, responseEventHandler);
             }
 
             // ...and event handler.
-            try (LockCloser closer = this.responseEventListeners.withLock())
-            {
+            try (LockCloser closer = this.responseEventListeners.withLock()) {
                 this.responseEventListeners.put(internalActionId, responseEventHandler);
             }
         }
@@ -1126,12 +945,11 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
      * connection and a sequence.
      *
      * @return a new internal action id
-     * @see ManagerUtil#addInternalActionId(String,String)
+     * @see ManagerUtil#addInternalActionId(String, String)
      * @see ManagerUtil#getInternalActionId(String)
      * @see ManagerUtil#stripInternalActionId(String)
      */
-    private String createInternalActionId()
-    {
+    private String createInternalActionId() {
         final StringBuilder sb;
 
         sb = new StringBuilder();
@@ -1142,36 +960,28 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
         return sb.toString();
     }
 
-    public void addEventListener(final ManagerEventListener listener)
-    {
-        try (LockCloser closer = this.eventListeners.withLock())
-        {
+    public void addEventListener(final ManagerEventListener listener) {
+        try (LockCloser closer = this.eventListeners.withLock()) {
             // only add it if its not already there
-            if (!this.eventListeners.contains(listener))
-            {
+            if (!this.eventListeners.contains(listener)) {
                 this.eventListeners.add(listener);
             }
         }
     }
 
-    public void removeEventListener(final ManagerEventListener listener)
-    {
-        try (LockCloser closer = this.eventListeners.withLock())
-        {
-            if (this.eventListeners.contains(listener))
-            {
+    public void removeEventListener(final ManagerEventListener listener) {
+        try (LockCloser closer = this.eventListeners.withLock()) {
+            if (this.eventListeners.contains(listener)) {
                 this.eventListeners.remove(listener);
             }
         }
     }
 
-    public String getProtocolIdentifier()
-    {
+    public String getProtocolIdentifier() {
         return protocolIdentifier.getValue();
     }
 
-    public ManagerConnectionState getState()
-    {
+    public ManagerConnectionState getState() {
         return state;
     }
 
@@ -1185,15 +995,13 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
      * @param response the response received by the reader
      * @see ManagerReader
      */
-    public void dispatchResponse(ManagerResponse response, Integer requiredHandlingTime)
-    {
+    public void dispatchResponse(ManagerResponse response, Integer requiredHandlingTime) {
         final String actionId;
         String internalActionId;
         SendActionCallback listener;
 
         // shouldn't happen
-        if (response == null)
-        {
+        if (response == null) {
             logger.error("Unable to dispatch null response. This should never happen. Please file a bug.");
             return;
         }
@@ -1202,55 +1010,39 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
         internalActionId = null;
         listener = null;
 
-        if (actionId != null)
-        {
+        if (actionId != null) {
             internalActionId = ManagerUtil.getInternalActionId(actionId);
             response.setActionId(ManagerUtil.stripInternalActionId(actionId));
         }
 
-        if (logger.isDebugEnabled())
-        {
+        if (logger.isDebugEnabled()) {
             logger.debug("Dispatching response with internalActionId '" + internalActionId + "':\n" + response);
         }
 
-        if (internalActionId != null)
-        {
-            try (LockCloser closer = this.responseListeners.withLock())
-            {
+        if (internalActionId != null) {
+            try (LockCloser closer = this.responseListeners.withLock()) {
                 listener = responseListeners.get(internalActionId);
-                if (listener != null)
-                {
+                if (listener != null) {
                     this.responseListeners.remove(internalActionId);
-                }
-                else
-                {
+                } else {
                     // when using the async sendAction it's ok not to register a
                     // callback so if we don't find a response handler thats ok
                     logger.debug("No response listener registered for " + "internalActionId '" + internalActionId + "'");
                 }
             }
-        }
-        else
-        {
+        } else {
             logger.error(
                     "Unable to retrieve internalActionId from response: " + "actionId '" + actionId + "':\n" + response);
         }
 
-        if (listener != null)
-        {
+        if (listener != null) {
             LogTime timer = new LogTime();
-            try
-            {
+            try {
                 listener.onResponse(response);
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 logger.warn("Unexpected exception in response listener " + listener.getClass().getName(), e);
-            }
-            finally
-            {
-                if (requiredHandlingTime != null && timer.timeTaken() > requiredHandlingTime)
-                {
+            } finally {
+                if (requiredHandlingTime != null && timer.timeTaken() > requiredHandlingTime) {
                     logger.warn("Slow processing of event " + listener.getClass().getCanonicalName() + " "
                             + timer.timeTaken() + "MS \n" + response);
                 }
@@ -1267,17 +1059,14 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
      * @see #removeEventListener(ManagerEventListener)
      * @see ManagerReader
      */
-    public void dispatchEvent(ManagerEvent event, Integer requiredHandlingTime)
-    {
+    public void dispatchEvent(ManagerEvent event, Integer requiredHandlingTime) {
         // shouldn't happen
-        if (event == null)
-        {
+        if (event == null) {
             logger.error("Unable to dispatch null event. This should never happen. Please file a bug.");
             return;
         }
         dispatchLegacyEventIfNeeded(event, requiredHandlingTime);
-        if (logger.isDebugEnabled())
-        {
+        if (logger.isDebugEnabled()) {
             logger.debug("Dispatching event:\n" + event.toString());
         }
 
@@ -1286,45 +1075,33 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
         // These events are handled here at first:
 
         // Dispatch ResponseEvents to the appropriate responseEventListener
-        if (event instanceof ResponseEvent)
-        {
+        if (event instanceof ResponseEvent) {
             ResponseEvent responseEvent;
             String internalActionId;
 
             responseEvent = (ResponseEvent) event;
             internalActionId = responseEvent.getInternalActionId();
-            if (internalActionId != null)
-            {
-                try (LockCloser closer = responseEventListeners.withLock())
-                {
+            if (internalActionId != null) {
+                try (LockCloser closer = responseEventListeners.withLock()) {
                     ManagerEventListener listener;
 
                     listener = responseEventListeners.get(internalActionId);
-                    if (listener != null)
-                    {
+                    if (listener != null) {
                         LogTime timer = new LogTime();
-                        try
-                        {
+                        try {
                             listener.onManagerEvent(event);
-                        }
-                        catch (Exception e)
-                        {
+                        } catch (Exception e) {
                             logger.warn("Unexpected exception in response event listener " + listener.getClass().getName(),
                                     e);
-                        }
-                        finally
-                        {
-                            if (requiredHandlingTime != null && timer.timeTaken() > requiredHandlingTime)
-                            {
+                        } finally {
+                            if (requiredHandlingTime != null && timer.timeTaken() > requiredHandlingTime) {
                                 logger.warn("Slow processing of event " + listener.getClass().getCanonicalName() + " "
                                         + timer.timeTaken() + "MS \n" + event);
                             }
                         }
                     }
                 }
-            }
-            else
-            {
+            } else {
                 // ResponseEvent without internalActionId:
                 // this happens if the same event class is used as response
                 // event
@@ -1334,26 +1111,21 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
                 // + "internalActionId:\n" + responseEvent);
             } // NOPMD
         }
-        if (event instanceof DisconnectEvent)
-        {
+        if (event instanceof DisconnectEvent) {
             cleanupActionListeners((DisconnectEvent) event);
             // When we receive get disconnected while we are connected start
             // a new reconnect thread and set the state to RECONNECTING.
-            try (LockCloser closer = this.withLock())
-            {
-                if (state == CONNECTED)
-                {
+            try (LockCloser closer = this.withLock()) {
+                if (state == CONNECTED) {
                     state = RECONNECTING;
                     // close socket if still open and remove reference to
                     // readerThread
                     // After sending the DisconnectThread that thread will die
                     // anyway.
                     cleanup();
-                    Thread reconnectThread = new Thread(new Runnable()
-                    {
+                    Thread reconnectThread = new Thread(new Runnable() {
 
-                        public void run()
-                        {
+                        public void run() {
                             reconnect();
                         }
                     });
@@ -1366,17 +1138,14 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
                     // (clients) and after that the ManagerReaderThread is gone.
                     // So effectively we replaced the reader thread by a
                     // ReconnectThread.
-                }
-                else
-                {
+                } else {
                     // when we receive a DisconnectEvent while not connected we
                     // ignore it and do not send it to clients
                     return;
                 }
             }
         }
-        if (event instanceof ProtocolIdentifierReceivedEvent)
-        {
+        if (event instanceof ProtocolIdentifierReceivedEvent) {
             ProtocolIdentifierReceivedEvent protocolIdentifierReceivedEvent;
             String protocolIdentifier;
 
@@ -1394,10 +1163,8 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
      * Enro 2015-03 Workaround to continue having Legacy Events from Asterisk
      * 13.
      */
-    private void dispatchLegacyEventIfNeeded(ManagerEvent event, Integer requiredHandlingTime)
-    {
-        if (event instanceof DialBeginEvent)
-        {
+    private void dispatchLegacyEventIfNeeded(ManagerEvent event, Integer requiredHandlingTime) {
+        if (event instanceof DialBeginEvent) {
             DialEvent legacyEvent = new DialEvent((DialBeginEvent) event);
             dispatchEvent(legacyEvent, requiredHandlingTime);
         }
@@ -1408,25 +1175,16 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
      *
      * @param event the event to propagate
      */
-    private void fireEvent(ManagerEvent event, Integer requiredHandlingTime)
-    {
-        try (LockCloser closer = eventListeners.withLock())
-        {
-            for (ManagerEventListener listener : eventListeners)
-            {
+    private void fireEvent(ManagerEvent event, Integer requiredHandlingTime) {
+        try (LockCloser closer = eventListeners.withLock()) {
+            for (ManagerEventListener listener : eventListeners) {
                 LogTime timer = new LogTime();
-                try
-                {
+                try {
                     listener.onManagerEvent(event);
-                }
-                catch (RuntimeException e)
-                {
+                } catch (RuntimeException e) {
                     logger.warn("Unexpected exception in eventHandler " + listener.getClass().getName(), e);
-                }
-                finally
-                {
-                    if (requiredHandlingTime != null && timer.timeTaken() > requiredHandlingTime)
-                    {
+                } finally {
+                    if (requiredHandlingTime != null && timer.timeTaken() > requiredHandlingTime) {
                         logger.warn("Slow processing of event " + listener.getClass().getCanonicalName() + " "
                                 + timer.timeTaken() + "MS \n" + event);
                     }
@@ -1435,15 +1193,12 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
         }
     }
 
-    private boolean isSupportedProtocolIdentifier(final String identifier)
-    {
+    private boolean isSupportedProtocolIdentifier(final String identifier) {
 
         // Normal version checks
-        for (String supportedVersion : SUPPORTED_AMI_VERSIONS)
-        {
+        for (String supportedVersion : SUPPORTED_AMI_VERSIONS) {
             String prefix = "Asterisk Call Manager/" + supportedVersion + ".";
-            if (identifier.startsWith(prefix))
-            {
+            if (identifier.startsWith(prefix)) {
                 return true;
             }
         }
@@ -1466,12 +1221,10 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
      *
      * @param identifier the protocol version used by the Asterisk server.
      */
-    private void setProtocolIdentifier(final String identifier)
-    {
+    private void setProtocolIdentifier(final String identifier) {
         logger.info("Connected via " + identifier);
 
-        if (identifier == null || !isSupportedProtocolIdentifier(identifier))
-        {
+        if (identifier == null || !isSupportedProtocolIdentifier(identifier)) {
             logger.warn("Unsupported protocol version '" + identifier + "'. Use at your own risk.");
         }
         protocolIdentifier.setValue(identifier);
@@ -1488,46 +1241,34 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
      * This method is called when a {@link DisconnectEvent} is received from the
      * reader.
      */
-    private void reconnect()
-    {
+    private void reconnect() {
         int numTries;
 
         // try to reconnect
         numTries = 0;
-        while (true)
-        {
-            try
-            {
-                if (numTries < 10)
-                {
+        while (true) {
+            try {
+                if (numTries < 10) {
                     // try to reconnect quite fast for the firt 10 times
                     // this succeeds if the server has just been restarted
                     Thread.sleep(RECONNECTION_INTERVAL_1);
-                }
-                else
-                {
+                } else {
                     // slow down after 10 unsuccessful attempts asuming a
                     // shutdown of the server
                     Thread.sleep(RECONNECTION_INTERVAL_2);
                 }
-            }
-            catch (InterruptedException e)
-            {
+            } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
 
-            try
-            {
-                try (LockCloser closer = this.withLock())
-                {
-                    if (state != RECONNECTING)
-                    {
+            try {
+                try (LockCloser closer = this.withLock()) {
+                    if (state != RECONNECTING) {
                         break;
                     }
                     connect();
 
-                    try
-                    {
+                    try {
                         doLogin(defaultResponseTimeout, eventMask);
                         logger.info("Successfully reconnected.");
                         // everything is ok again, so we leave
@@ -1535,46 +1276,33 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
                         // no
                         // need to adjust it
                         break;
-                    }
-                    catch (AuthenticationFailedException e1)
-                    {
-                        if (keepAliveAfterAuthenticationFailure)
-                        {
+                    } catch (AuthenticationFailedException e1) {
+                        if (keepAliveAfterAuthenticationFailure) {
                             logger.error("Unable to log in after reconnect: " + e1.getMessage());
-                        }
-                        else
-                        {
+                        } else {
                             logger.error("Unable to log in after reconnect: " + e1.getMessage() + ". Giving up.");
                             state = DISCONNECTED;
                         }
-                    }
-                    catch (TimeoutException e1)
-                    {
+                    } catch (TimeoutException e1) {
                         // shouldn't happen - but happens!
                         logger.error("TimeoutException while trying to log in " + "after reconnect.");
                     }
                 }
-            }
-            catch (IOException e)
-            {
+            } catch (IOException e) {
                 // server seems to be still down, just continue to attempt
                 // reconnection
                 String message = e.getClass().getSimpleName();
-                if (e.getMessage() != null)
-                {
+                if (e.getMessage() != null) {
                     message = e.getMessage();
                 }
 
                 logger.warn("Exception while trying to reconnect: " + message);
-                try
-                {
+                try {
                     // Where multiple connections are present, spread out
                     // their reconnect attempts and prevent hard loop.
                     long randomSleep = (long) (Math.random() * 100);
                     TimeUnit.MILLISECONDS.sleep(50 + randomSleep);
-                }
-                catch (InterruptedException e1)
-                {
+                } catch (InterruptedException e1) {
                     logger.error(e1);
                 }
             }
@@ -1589,12 +1317,10 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
      *
      * @param event
      */
-    private void cleanupActionListeners(DisconnectEvent event)
-    {
+    private void cleanupActionListeners(DisconnectEvent event) {
         HashMap<String, SendActionCallback> oldResponseListeners = null;
 
-        try (LockCloser closer = responseListeners.withLock())
-        {
+        try (LockCloser closer = responseListeners.withLock()) {
             // Store remaining response listeners to be notified outside of
             // synchronized
             oldResponseListeners = new HashMap<String, SendActionCallback>(responseListeners);
@@ -1602,22 +1328,17 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
         }
 
         // Clear pending responseListeners that will not receive their responses
-        for (SendActionCallback responseListener : oldResponseListeners.values())
-        {
+        for (SendActionCallback responseListener : oldResponseListeners.values()) {
             // Allows to unblock waiting sendAction() calls
-            try
-            {
+            try {
                 responseListener.onResponse(null);
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 logger.warn("Exception notifying responseListener.onResponse(null)", ex);
             }
         }
 
         HashMap<String, ManagerEventListener> oldResponseEventListeners = null;
-        try (LockCloser closer = responseEventListeners.withLock())
-        {
+        try (LockCloser closer = responseEventListeners.withLock()) {
             // Store remaining responseEventListeners to be notified outside of
             // synchronized
             oldResponseEventListeners = new HashMap<String, ManagerEventListener>(responseEventListeners);
@@ -1626,37 +1347,30 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
 
         // Remove those already cleaned up via oldResponseListeners
         // TODO or should all be notified?
-        for (String discardedInternalActionId : oldResponseListeners.keySet())
-        {
+        for (String discardedInternalActionId : oldResponseListeners.keySet()) {
             oldResponseEventListeners.remove(discardedInternalActionId);
         }
 
         // Notify remaining responseEventListeners.
         // These could be EventGeneratingAction handlers that have received a
         // response but have not yet received the end event.
-        for (ManagerEventListener responseEventListener : oldResponseEventListeners.values())
-        {
-            try
-            {
+        for (ManagerEventListener responseEventListener : oldResponseEventListeners.values()) {
+            try {
                 // Allows to unblock waiting sendAction() calls
                 responseEventListener.onManagerEvent(event);
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 logger.warn("Exception notifying responseListener.onManagerEvent(DisconnectEvent)", ex);
             }
         }
     }
 
-    private void cleanup()
-    {
+    private void cleanup() {
         disconnect();
         this.readerThread = null;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         StringBuilder sb;
 
         sb = new StringBuilder("ManagerConnection[");
@@ -1673,26 +1387,22 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
     /**
      * A simple data object to store a ManagerResult.
      */
-    private static class DefaultSendActionCallback implements SendActionCallback, Serializable
-    {
+    private static class DefaultSendActionCallback implements SendActionCallback, Serializable {
         private static final long serialVersionUID = 7831097958568769220L;
         private ManagerResponse response;
         private final CountDownLatch latch = new CountDownLatch(1);
         private volatile boolean disposed = false;
         private LogTime timer = new LogTime();
 
-        private ManagerResponse waitForResponse(long timeout) throws InterruptedException
-        {
+        private ManagerResponse waitForResponse(long timeout) throws InterruptedException {
             latch.await(timeout, TimeUnit.MILLISECONDS);
             return this.response;
         }
 
         @Override
-        public void onResponse(ManagerResponse response)
-        {
+        public void onResponse(ManagerResponse response) {
             this.response = response;
-            if (disposed)
-            {
+            if (disposed) {
                 logger.error("Response arrived after Disposal and assumably Timeout " + response + " elapsed: "
                         + timer.timeTaken() + "(MS)");
                 logger.error("" + response.getDateReceived());
@@ -1700,8 +1410,7 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
             latch.countDown();
         }
 
-        private void dispose()
-        {
+        private void dispose() {
             disposed = true;
         }
 
@@ -1711,28 +1420,24 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
      * A combinded event and response handler that adds received events and the
      * response to a ResponseEvents object.
      */
-    private static class ResponseEventHandler implements ManagerEventListener, SendActionCallback
-    {
+    private static class ResponseEventHandler implements ManagerEventListener, SendActionCallback {
         private final ResponseEventsImpl events;
-        private final Class< ? > actionCompleteEventClass;
+        private final Class<?> actionCompleteEventClass;
 
         /**
          * Creates a new instance.
          *
-         * @param events the ResponseEventsImpl to store the events in
+         * @param events                   the ResponseEventsImpl to store the events in
          * @param actionCompleteEventClass the type of event that indicates that
-         *            all events have been received
+         *                                 all events have been received
          */
-        public ResponseEventHandler(ResponseEventsImpl events, Class< ? > actionCompleteEventClass)
-        {
+        public ResponseEventHandler(ResponseEventsImpl events, Class<?> actionCompleteEventClass) {
             this.events = events;
             this.actionCompleteEventClass = actionCompleteEventClass;
         }
 
-        public void onManagerEvent(ManagerEvent event)
-        {
-            if (event instanceof DisconnectEvent)
-            {
+        public void onManagerEvent(ManagerEvent event) {
+            if (event instanceof DisconnectEvent) {
                 // Set flag that must not wait for the response
                 events.setComplete(true);
                 // unblock potentially waiting synchronous call to
@@ -1743,8 +1448,7 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
             }
 
             // should always be a ResponseEvent, anyway...
-            if (event instanceof ResponseEvent)
-            {
+            if (event instanceof ResponseEvent) {
                 ResponseEvent responseEvent;
 
                 responseEvent = (ResponseEvent) event;
@@ -1752,23 +1456,19 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
             }
 
             // finished?
-            if (actionCompleteEventClass.isAssignableFrom(event.getClass()))
-            {
+            if (actionCompleteEventClass.isAssignableFrom(event.getClass())) {
                 events.setComplete(true);
                 // notify if action complete event and response have been
                 // received
-                if (events.getResponse() != null)
-                {
+                if (events.getResponse() != null) {
                     events.countDown();
                 }
             }
         }
 
-        public void onResponse(ManagerResponse response)
-        {
+        public void onResponse(ManagerResponse response) {
             // If disconnected
-            if (response == null)
-            {
+            if (response == null) {
                 // Set flag that must not wait for the response
                 events.setComplete(true);
                 // unblock potentially waiting synchronous call to
@@ -1779,31 +1479,27 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
             }
 
             events.setRepsonse(response);
-            if (response instanceof ManagerError)
-            {
+            if (response instanceof ManagerError) {
                 events.setComplete(true);
             }
 
             // finished?
             // notify if action complete event and response have been
             // received
-            if (events.isComplete())
-            {
+            if (events.isComplete()) {
                 events.countDown();
             }
         }
     }
 
-    private class AsyncEventGeneratingResponseHandler implements SendActionCallback, ManagerEventListener
-    {
-        private final Class< ? extends ResponseEvent> actionCompleteEventClass;
+    private class AsyncEventGeneratingResponseHandler implements SendActionCallback, ManagerEventListener {
+        private final Class<? extends ResponseEvent> actionCompleteEventClass;
         private final SendEventGeneratingActionCallback callback;
 
         private final ResponseEventsImpl events;
 
-        public AsyncEventGeneratingResponseHandler(Class< ? extends ResponseEvent> actionCompleteEventClass,
-                SendEventGeneratingActionCallback callback)
-        {
+        public AsyncEventGeneratingResponseHandler(Class<? extends ResponseEvent> actionCompleteEventClass,
+                                                   SendEventGeneratingActionCallback callback) {
             this.actionCompleteEventClass = actionCompleteEventClass;
             this.callback = callback;
 
@@ -1811,29 +1507,24 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
         }
 
         @Override
-        public void onManagerEvent(ManagerEvent event)
-        {
-            if (event instanceof DisconnectEvent)
-            {
+        public void onManagerEvent(ManagerEvent event) {
+            if (event instanceof DisconnectEvent) {
                 callback.onResponse(events);
                 return;
             }
 
             // should always be a ResponseEvent, anyway...
-            if (false == (event instanceof ResponseEvent))
-            {
+            if (false == (event instanceof ResponseEvent)) {
                 return;
             }
 
             ResponseEvent responseEvent = (ResponseEvent) event;
             events.addEvent(responseEvent);
 
-            if (actionCompleteEventClass.isAssignableFrom(event.getClass()))
-            {
+            if (actionCompleteEventClass.isAssignableFrom(event.getClass())) {
                 events.setComplete(true);
                 String internalActionId = responseEvent.getInternalActionId();
-                try (LockCloser closer = responseEventListeners.withLock())
-                {
+                try (LockCloser closer = responseEventListeners.withLock()) {
                     responseEventListeners.remove(internalActionId);
                 }
                 callback.onResponse(events);
@@ -1841,24 +1532,20 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
         }
 
         @Override
-        public void onResponse(ManagerResponse response)
-        {
+        public void onResponse(ManagerResponse response) {
             // If disconnected
-            if (response == null)
-            {
+            if (response == null) {
                 callback.onResponse(events);
                 return;
             }
 
             events.setRepsonse(response);
-            if (response instanceof ManagerError)
-            {
+            if (response instanceof ManagerError) {
                 events.setComplete(true);
             }
 
             // finished?
-            if (events.isComplete())
-            {
+            if (events.isComplete()) {
                 // invoke callback
                 callback.onResponse(events);
             }
@@ -1866,10 +1553,8 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
     }
 
     @Override
-    public void deregisterEventClass(Class< ? extends ManagerEvent> eventClass)
-    {
-        if (reader == null)
-        {
+    public void deregisterEventClass(Class<? extends ManagerEvent> eventClass) {
+        if (reader == null) {
             reader = createReader(this, this);
         }
 
@@ -1878,8 +1563,7 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
     }
 
     @Override
-    public void stop()
-    {
+    public void stop() {
         // NO_OP
     }
 }

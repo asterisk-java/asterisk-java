@@ -1,12 +1,12 @@
 /*
  * Copyright 2001-2004 The Apache Software Foundation.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,12 +16,12 @@
 
 package org.asteriskjava.util.internal;
 
-import java.io.Serializable;
-
 import org.asteriskjava.util.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.spi.LocationAwareLogger;
+
+import java.io.Serializable;
 
 /**
  * Implementation of {@link org.asteriskjava.util.Log} that maps to a SLF4J
@@ -30,30 +30,31 @@ import org.slf4j.spi.LocationAwareLogger;
  *
  * @version $Id$
  */
-public class Slf4JLogger implements Log, Serializable
-{
+public class Slf4JLogger implements Log, Serializable {
     /**
      * The serial version identifier.
      */
     private static final long serialVersionUID = 0L;
 
-    /** Log to this logger */
+    /**
+     * Log to this logger
+     */
     private transient Logger logger = null;
 
     static String FQCN = Slf4JLogger.class.getName();
 
-    /** Logger name */
-    private Class< ? > clazz = null;
+    /**
+     * Logger name
+     */
+    private Class<?> clazz = null;
 
-    public Slf4JLogger()
-    {
+    public Slf4JLogger() {
     }
 
     /**
      * Base constructor.
      */
-    public Slf4JLogger(Class< ? > clazz)
-    {
+    public Slf4JLogger(Class<?> clazz) {
         this.clazz = clazz;
         this.logger = getLogger();
     }
@@ -62,80 +63,70 @@ public class Slf4JLogger implements Log, Serializable
      * Log a message to the SLF4J Logger with <code>TRACE</code> priority.
      * Currently logs to <code>DEBUG</code> level in SLF4J.
      */
-    public void trace(Object message)
-    {
+    public void trace(Object message) {
         getLogger().trace(message.toString());
     }
 
     /**
      * Log an error to the SLF4J Logger with <code>TRACE</code> priority.
      */
-    public void trace(Object message, Throwable t)
-    {
+    public void trace(Object message, Throwable t) {
         getLogger().trace(message.toString(), t);
     }
 
     /**
      * Log a message to the SLF4J Logger with <code>DEBUG</code> priority.
      */
-    public void debug(Object message)
-    {
+    public void debug(Object message) {
         getLogger().debug(message.toString());
     }
 
     /**
      * Log an error to the SLF4J Logger with <code>DEBUG</code> priority.
      */
-    public void debug(Object message, Throwable t)
-    {
+    public void debug(Object message, Throwable t) {
         getLogger().debug(message.toString(), t);
     }
 
     /**
      * Log a message to the SLF4J Logger with <code>INFO</code> priority.
      */
-    public void info(Object message)
-    {
+    public void info(Object message) {
         getLogger().info(message.toString());
     }
 
     /**
      * Log an error to the SLF4J Logger with <code>INFO</code> priority.
      */
-    public void info(Object message, Throwable t)
-    {
+    public void info(Object message, Throwable t) {
         getLogger().info(message.toString(), t);
     }
 
     /**
      * Log a message to the SLF4J Logger with <code>WARN</code> priority.
      */
-    public void warn(Object message)
-    {
+    public void warn(Object message) {
         getLogger().warn(message.toString());
     }
 
     /**
      * Log an error to the SLF4J Logger with <code>WARN</code> priority.
      */
-    public void warn(Object message, Throwable t)
-    {
+    public void warn(Object message, Throwable t) {
         getLogger().warn(message.toString(), t);
     }
 
     /**
      * Log a message to the SLF4J Logger with <code>ERROR</code> priority.
      */
-    public void error(Object message)
-    {
+    public void error(Object message) {
         getLogger().error(message.toString());
     }
 
     /**
      * Log an error to the SLF4J Logger with <code>ERROR</code> priority.
      */
-    public void error(Object message, Throwable t)
-    {
+    public void error(Object message, Throwable t) {
         getLogger().error(message.toString(), t);
     }
 
@@ -144,8 +135,7 @@ public class Slf4JLogger implements Log, Serializable
      * <p>
      * Currently uses the <code>ERROR</code> priority in SLF4J.
      */
-    public void fatal(Object message)
-    {
+    public void fatal(Object message) {
         getLogger().error(message.toString());
     }
 
@@ -154,22 +144,18 @@ public class Slf4JLogger implements Log, Serializable
      * <p>
      * Currently uses the <code>ERROR</code> priority in SLF4J.
      */
-    public void fatal(Object message, Throwable t)
-    {
+    public void fatal(Object message, Throwable t) {
         getLogger().error(message.toString(), t);
     }
 
     /**
      * Return the native Logger instance we are using.
      */
-    public final Logger getLogger()
-    {
-        if (logger == null)
-        {
+    public final Logger getLogger() {
+        if (logger == null) {
             logger = LoggerFactory.getLogger(clazz);
         }
-        if (logger instanceof LocationAwareLogger)
-        {
+        if (logger instanceof LocationAwareLogger) {
             return new LocationAwareWrapper(FQCN, (LocationAwareLogger) logger);
         }
         return this.logger;
@@ -179,8 +165,7 @@ public class Slf4JLogger implements Log, Serializable
      * Check whether the SLF4J Logger used is enabled for <code>DEBUG</code>
      * priority.
      */
-    public boolean isDebugEnabled()
-    {
+    public boolean isDebugEnabled() {
         return getLogger().isDebugEnabled();
     }
 
@@ -188,8 +173,7 @@ public class Slf4JLogger implements Log, Serializable
      * Check whether the SLF4J Logger used is enabled for <code>ERROR</code>
      * priority.
      */
-    public boolean isErrorEnabled()
-    {
+    public boolean isErrorEnabled() {
         return getLogger().isErrorEnabled();
     }
 
@@ -198,8 +182,7 @@ public class Slf4JLogger implements Log, Serializable
      * priority. For SLF4J, this returns the value of
      * <code>isErrorEnabled()</code>
      */
-    public boolean isFatalEnabled()
-    {
+    public boolean isFatalEnabled() {
         return isErrorEnabled();
     }
 
@@ -207,8 +190,7 @@ public class Slf4JLogger implements Log, Serializable
      * Check whether the SLF4J Logger used is enabled for <code>INFO</code>
      * priority.
      */
-    public boolean isInfoEnabled()
-    {
+    public boolean isInfoEnabled() {
         return getLogger().isInfoEnabled();
     }
 
@@ -216,8 +198,7 @@ public class Slf4JLogger implements Log, Serializable
      * Check whether the SLF4J Logger used is enabled for <code>TRACE</code>
      * priority.
      */
-    public boolean isTraceEnabled()
-    {
+    public boolean isTraceEnabled() {
         return getLogger().isDebugEnabled();
     }
 
@@ -225,8 +206,7 @@ public class Slf4JLogger implements Log, Serializable
      * Check whether the SLF4J Logger used is enabled for <code>WARN</code>
      * priority.
      */
-    public boolean isWarnEnabled()
-    {
+    public boolean isWarnEnabled() {
         return getLogger().isWarnEnabled();
     }
 }

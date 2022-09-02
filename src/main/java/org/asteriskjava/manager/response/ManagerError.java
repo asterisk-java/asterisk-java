@@ -19,12 +19,11 @@ package org.asteriskjava.manager.response;
 /**
  * Represents an "Response: Error" response received from the asterisk server.
  * The cause for the error is given in the message attribute.
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public class ManagerError extends ManagerResponse
-{
+public class ManagerError extends ManagerResponse {
     /**
      * Serial version identifier
      */
@@ -33,8 +32,7 @@ public class ManagerError extends ManagerResponse
     /**
      * Creates a new ManagerError.
      */
-    public ManagerError()
-    {
+    public ManagerError() {
         super();
     }
 }

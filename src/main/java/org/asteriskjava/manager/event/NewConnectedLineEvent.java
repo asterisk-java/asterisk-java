@@ -3,10 +3,9 @@ package org.asteriskjava.manager.event;
 /**
  * Created by plhk on 1/15/15.
  */
-public class NewConnectedLineEvent extends ManagerEvent
-{
+public class NewConnectedLineEvent extends ManagerEvent {
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
     private String channel;
@@ -15,60 +14,49 @@ public class NewConnectedLineEvent extends ManagerEvent
     private String accountCode;
     private String linkedId;
 
-    public NewConnectedLineEvent(Object source)
-    {
+    public NewConnectedLineEvent(Object source) {
         super(source);
     }
 
-    public String getLanguage()
-    {
+    public String getLanguage() {
         return language;
     }
 
-    public void setLanguage(String language)
-    {
+    public void setLanguage(String language) {
         this.language = language;
     }
 
-    public String getChannel()
-    {
+    public String getChannel() {
         return channel;
     }
 
-    public void setChannel(String channel)
-    {
+    public void setChannel(String channel) {
         this.channel = channel;
     }
 
-    public String getUniqueId()
-    {
+    public String getUniqueId() {
         return uniqueId;
     }
 
-    public void setUniqueId(String uniqueId)
-    {
+    public void setUniqueId(String uniqueId) {
         this.uniqueId = uniqueId;
     }
 
-    public String getAccountCode()
-    {
+    public String getAccountCode() {
         return accountCode;
     }
 
-    public void setAccountCode(String accountCode)
-    {
+    public void setAccountCode(String accountCode) {
         this.accountCode = accountCode;
     }
 
-    public String getLinkedId()
-    {
+    public String getLinkedId() {
         return linkedId;
     }
 
-    public void setLinkedId(String linkedId)
-    {
+    public void setLinkedId(String linkedId) {
         this.linkedId = linkedId;
     }
 
- 
+
 }

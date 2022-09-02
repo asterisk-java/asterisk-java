@@ -21,12 +21,11 @@ package org.asteriskjava.manager.event;
  * unmuted.<p>
  * It is implemented in <code>apps/app_meetme.c</code><p>
  * Available since Asterisk 1.4.
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public class MeetMeMuteEvent extends AbstractMeetMeEvent
-{
+public class MeetMeMuteEvent extends AbstractMeetMeEvent {
     /**
      * Serializable version identifier.
      */
@@ -37,30 +36,27 @@ public class MeetMeMuteEvent extends AbstractMeetMeEvent
     /**
      * @param source
      */
-    public MeetMeMuteEvent(Object source)
-    {
+    public MeetMeMuteEvent(Object source) {
         super(source);
     }
 
     /**
      * Returns whether the user was muted or unmuted.
-     * 
+     *
      * @return <code>true</code> if ther user was muted,
-     *         <code>false</code> if the user was unmuted.
+     * <code>false</code> if the user was unmuted.
      */
-    public Boolean getStatus()
-    {
+    public Boolean getStatus() {
         return status;
     }
 
     /**
      * Sets whether the user was muted or unmuted.
-     * 
-     * @param status <code>true</code> if ther user was muted, 
+     *
+     * @param status <code>true</code> if ther user was muted,
      *               <code>false</code> if the user was unmuted.
      */
-    public void setStatus(Boolean status)
-    {
+    public void setStatus(Boolean status) {
         this.status = status;
     }
 }

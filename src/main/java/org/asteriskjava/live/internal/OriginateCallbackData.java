@@ -1,21 +1,20 @@
 /**
- * 
+ *
  */
 package org.asteriskjava.live.internal;
-
-import java.util.Date;
 
 import org.asteriskjava.live.OriginateCallback;
 import org.asteriskjava.manager.action.OriginateAction;
 
+import java.util.Date;
+
 /**
  * Wrapper class for OriginateCallbacks.
- * 
+ *
  * @author srt
  * @version $Id$
  */
-class OriginateCallbackData
-{
+class OriginateCallbackData {
     private OriginateAction originateAction;
     private Date dateSent;
     private OriginateCallback callback;
@@ -23,42 +22,36 @@ class OriginateCallbackData
 
     /**
      * Creates a new instance.
-     * 
+     *
      * @param originateAction the action that has been sent to the Asterisk
-     *            server
-     * @param dateSent date when the the action has been sent
-     * @param callback callback to notify about result
+     *                        server
+     * @param dateSent        date when the the action has been sent
+     * @param callback        callback to notify about result
      */
-    OriginateCallbackData(OriginateAction originateAction, Date dateSent, OriginateCallback callback)
-    {
+    OriginateCallbackData(OriginateAction originateAction, Date dateSent, OriginateCallback callback) {
         super();
         this.originateAction = originateAction;
         this.dateSent = dateSent;
         this.callback = callback;
     }
 
-    OriginateAction getOriginateAction()
-    {
+    OriginateAction getOriginateAction() {
         return originateAction;
     }
 
-    Date getDateSent()
-    {
+    Date getDateSent() {
         return dateSent;
     }
 
-    OriginateCallback getCallback()
-    {
+    OriginateCallback getCallback() {
         return callback;
     }
 
-    AsteriskChannelImpl getChannel()
-    {
+    AsteriskChannelImpl getChannel() {
         return channel;
     }
 
-    void setChannel(AsteriskChannelImpl channel)
-    {
+    void setChannel(AsteriskChannelImpl channel) {
         this.channel = channel;
     }
 }

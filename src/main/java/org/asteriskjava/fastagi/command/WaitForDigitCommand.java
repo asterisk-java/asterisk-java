@@ -21,12 +21,11 @@ package org.asteriskjava.fastagi.command;
  * Returns -1 on channel failure, 0 if no digit is received in the timeout, or
  * the numerical value of the ascii of the digit if one is received. Use -1 for
  * the timeout value if you desire the call to block indefinitely.
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public class WaitForDigitCommand extends AbstractAgiCommand
-{
+public class WaitForDigitCommand extends AbstractAgiCommand {
     /**
      * Serial version identifier.
      */
@@ -41,48 +40,43 @@ public class WaitForDigitCommand extends AbstractAgiCommand
      * Creates a new WaitForDigitCommand with a default timeout of -1 which
      * blocks the channel indefinitely.
      */
-    public WaitForDigitCommand()
-    {
+    public WaitForDigitCommand() {
         super();
         this.timeout = -1;
     }
 
     /**
      * Creates a new WaitForDigitCommand.
-     * 
+     *
      * @param timeout the milliseconds to wait for the channel to receive a DTMF
-     *            digit.
+     *                digit.
      */
-    public WaitForDigitCommand(long timeout)
-    {
+    public WaitForDigitCommand(long timeout) {
         super();
         this.timeout = timeout;
     }
 
     /**
      * Returns the milliseconds to wait for the channel to receive a DTMF digit.
-     * 
+     *
      * @return the milliseconds to wait for the channel to receive a DTMF digit.
      */
-    public long getTimeout()
-    {
+    public long getTimeout() {
         return timeout;
     }
 
     /**
      * Sets the milliseconds to wait for the channel to receive a DTMF digit.
-     * 
+     *
      * @param timeout the milliseconds to wait for the channel to receive a DTMF
-     *            digit.
+     *                digit.
      */
-    public void setTimeout(long timeout)
-    {
+    public void setTimeout(long timeout) {
         this.timeout = timeout;
     }
 
     @Override
-   public String buildCommand()
-    {
+    public String buildCommand() {
         return "WAIT FOR DIGIT " + timeout;
     }
 }

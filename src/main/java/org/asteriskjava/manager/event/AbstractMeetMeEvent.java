@@ -21,12 +21,11 @@ package org.asteriskjava.manager.event;
  * conference system) events.
  * <p>
  * MeetMe events are implemented in <code>apps/app_meetme.c</code>
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public abstract class AbstractMeetMeEvent extends ManagerEvent
-{
+public abstract class AbstractMeetMeEvent extends ManagerEvent {
     private static final long serialVersionUID = 1L;
     private String channel;
     private String uniqueId;
@@ -36,8 +35,7 @@ public abstract class AbstractMeetMeEvent extends ManagerEvent
     /**
      * @param source
      */
-    protected AbstractMeetMeEvent(Object source)
-    {
+    protected AbstractMeetMeEvent(Object source) {
         super(source);
     }
 
@@ -45,11 +43,10 @@ public abstract class AbstractMeetMeEvent extends ManagerEvent
      * Returns the name of the channel.
      * <p>
      * This property is available since Asterisk 1.4.
-     * 
+     *
      * @return the name of the channel.
      */
-    public String getChannel()
-    {
+    public String getChannel() {
         return channel;
     }
 
@@ -57,11 +54,10 @@ public abstract class AbstractMeetMeEvent extends ManagerEvent
      * Sets the name of the channel.
      * <p>
      * This property is available since Asterisk 1.4.
-     * 
+     *
      * @param channel the name of the channel.
      */
-    public void setChannel(String channel)
-    {
+    public void setChannel(String channel) {
         this.channel = channel;
     }
 
@@ -69,11 +65,10 @@ public abstract class AbstractMeetMeEvent extends ManagerEvent
      * Returns the unique id of the channel.
      * <p>
      * This property is available since Asterisk 1.4.
-     * 
+     *
      * @return the unique id of the channel.
      */
-    public String getUniqueId()
-    {
+    public String getUniqueId() {
         return uniqueId;
     }
 
@@ -81,31 +76,28 @@ public abstract class AbstractMeetMeEvent extends ManagerEvent
      * Sets the unique id of the channel.
      * <p>
      * This property is available since Asterisk 1.4.
-     * 
+     *
      * @param uniqueId the unique id of the channel.
      */
-    public void setUniqueId(String uniqueId)
-    {
+    public void setUniqueId(String uniqueId) {
         this.uniqueId = uniqueId;
     }
 
     /**
      * Returns the conference number.
-     * 
+     *
      * @return the conference number.
      */
-    public String getMeetMe()
-    {
+    public String getMeetMe() {
         return meetMe;
     }
 
     /**
      * Sets the conference number.
-     * 
+     *
      * @param meetMe the conference number.
      */
-    public void setMeetMe(String meetMe)
-    {
+    public void setMeetMe(String meetMe) {
         this.meetMe = meetMe;
     }
 
@@ -114,23 +106,21 @@ public abstract class AbstractMeetMeEvent extends ManagerEvent
      * <p>
      * This can be used for the "meetme (mute|unmute|kick)" commands. use
      * getUser() instead
-     * 
+     *
      * @return the index of the user in the conference.
      */
     @Deprecated
-    public Integer getUserNum()
-    {
+    public Integer getUserNum() {
         return getUser();
     }
 
     /**
      * Sets the index of the user in the conference.
-     * 
+     *
      * @param userNum the index of the user in the conference.
      */
     @Deprecated
-    public void setUserNum(Integer userNum)
-    {
+    public void setUserNum(Integer userNum) {
         this.setUser(userNum);
     }
 
@@ -138,21 +128,19 @@ public abstract class AbstractMeetMeEvent extends ManagerEvent
      * Returns the index of the user in the conference.
      * <p>
      * This can be used for the "meetme (mute|unmute|kick)" commands.
-     * 
+     *
      * @return the index of the user in the conference.
      */
-    public Integer getUser()
-    {
+    public Integer getUser() {
         return user;
     }
 
     /**
      * Sets the index of the user in the conference.
-     * 
+     *
      * @param userNum the index of the user in the conference.
      */
-    public void setUser(Integer userNum)
-    {
+    public void setUser(Integer userNum) {
         this.user = userNum;
     }
 }

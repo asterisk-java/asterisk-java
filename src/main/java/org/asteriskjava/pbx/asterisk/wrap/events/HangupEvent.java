@@ -5,8 +5,7 @@ import org.asteriskjava.pbx.InvalidChannelName;
 import org.asteriskjava.pbx.PBXFactory;
 import org.asteriskjava.pbx.internal.core.AsteriskPBX;
 
-public class HangupEvent extends ManagerEvent implements ChannelEvent
-{
+public class HangupEvent extends ManagerEvent implements ChannelEvent {
     private static final long serialVersionUID = 1L;
 
     /**
@@ -18,8 +17,7 @@ public class HangupEvent extends ManagerEvent implements ChannelEvent
     private final String causeTxt;
     private final String uniqueId;
 
-    public HangupEvent(final org.asteriskjava.manager.event.HangupEvent event) throws InvalidChannelName
-    {
+    public HangupEvent(final org.asteriskjava.manager.event.HangupEvent event) throws InvalidChannelName {
         super(event);
         final AsteriskPBX pbx = (AsteriskPBX) PBXFactory.getActivePBX();
 
@@ -30,29 +28,24 @@ public class HangupEvent extends ManagerEvent implements ChannelEvent
 
     }
 
-    public Integer getCause()
-    {
+    public Integer getCause() {
         return this.cause;
     }
 
-    public String getCauseTxt()
-    {
+    public String getCauseTxt() {
         return this.causeTxt;
     }
 
     @Override
-    public Channel getChannel()
-    {
+    public Channel getChannel() {
         return this.channel;
     }
 
-    public String getUniqueId()
-    {
+    public String getUniqueId() {
         return this.uniqueId;
     }
 
-    public String toString()
-    {
+    public String toString() {
         return "HangupEvent: channel:" + this.channel + " cause:" + this.causeTxt; //$NON-NLS-1$//$NON-NLS-2$
     }
 }

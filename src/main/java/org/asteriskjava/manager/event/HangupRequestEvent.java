@@ -21,8 +21,7 @@ package org.asteriskjava.manager.event;
  * <p>
  * It is implemented in <code>channel.c</code>
  */
-public class HangupRequestEvent extends AbstractChannelEvent
-{
+public class HangupRequestEvent extends AbstractChannelEvent {
     /**
      * Serializable version identifier.
      */
@@ -32,18 +31,15 @@ public class HangupRequestEvent extends AbstractChannelEvent
     private String language;
     private String linkedId;
 
-    public String getLanguage()
-    {
+    public String getLanguage() {
         return language;
     }
 
-    public void setLanguage(String language)
-    {
+    public void setLanguage(String language) {
         this.language = language;
     }
 
-    public HangupRequestEvent(Object source)
-    {
+    public HangupRequestEvent(Object source) {
         super(source);
     }
 
@@ -53,8 +49,7 @@ public class HangupRequestEvent extends AbstractChannelEvent
      * @return the hangup cause.
      * @see org.asteriskjava.live.HangupCause
      */
-    public Integer getCause()
-    {
+    public Integer getCause() {
         return cause;
     }
 
@@ -63,18 +58,15 @@ public class HangupRequestEvent extends AbstractChannelEvent
      *
      * @param cause the hangup cause.
      */
-    public void setCause(Integer cause)
-    {
+    public void setCause(Integer cause) {
         this.cause = cause;
     }
 
-    public String getLinkedId()
-    {
+    public String getLinkedId() {
         return linkedId;
     }
 
-    public void setLinkedId(String linkedId)
-    {
+    public void setLinkedId(String linkedId) {
         this.linkedId = linkedId;
     }
 

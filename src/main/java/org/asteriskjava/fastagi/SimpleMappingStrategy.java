@@ -22,7 +22,7 @@ import java.util.Map;
  * A MappingStrategy that is configured via a fixed set of properties.<p>
  * This mapping strategy is most useful when used with the Spring framework.<p>
  * Example (using Spring):
- * 
+ *
  * <pre>
  * &lt;beans&gt;
  *    &lt;bean id="mapping"
@@ -50,35 +50,31 @@ import java.util.Map;
  *    &lt;/bean&gt;
  * &lt;beans&gt;
  * </pre>
- * 
+ * <p>
  * LeastCostDialAgiScript and HelloAgiScript must both implement the AgiScript.<p>
- * 
+ *
  * @author srt
  * @version $Id$
  * @since 0.2
  */
-public class SimpleMappingStrategy implements MappingStrategy
-{
+public class SimpleMappingStrategy implements MappingStrategy {
     private Map<String, AgiScript> mappings;
 
     /**
      * Set the "path to AgiScript" mapping.<p>
      * Use the path (for example <code>hello.agi</code>) as key and your
      * AgiScript (for example <code>new HelloAgiScript()</code>) as value of
-     * this map. 
-     * 
+     * this map.
+     *
      * @param mappings the path to AgiScript mapping.
      */
-    public void setMappings(Map<String, AgiScript> mappings)
-    {
+    public void setMappings(Map<String, AgiScript> mappings) {
         this.mappings = mappings;
     }
 
     @Override
-    public AgiScript determineScript(AgiRequest request, AgiChannel channel)
-    {
-        if (mappings == null)
-        {
+    public AgiScript determineScript(AgiRequest request, AgiChannel channel) {
+        if (mappings == null) {
             return null;
         }
 

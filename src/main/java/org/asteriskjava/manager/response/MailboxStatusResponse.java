@@ -19,24 +19,22 @@ package org.asteriskjava.manager.response;
 /**
  * A MailboxStatusResponse is sent in response to a MailboxStatusAction and indicates if a set
  * of mailboxes contains waiting messages.
- * 
- * @see org.asteriskjava.manager.action.MailboxStatusAction
- * 
+ *
  * @author srt
  * @version $Id$
+ * @see org.asteriskjava.manager.action.MailboxStatusAction
  */
-public class MailboxStatusResponse extends ManagerResponse
-{
+public class MailboxStatusResponse extends ManagerResponse {
     /**
      * Serial version identifier
      */
     private static final long serialVersionUID = -7193581424292429279L;
-    
+
     /**
      * The name of the mailbox.
      */
     private String mailbox;
-    
+
     /**
      * Indicates if there are new messages waiting in the given set of mailboxes.
      */
@@ -44,19 +42,19 @@ public class MailboxStatusResponse extends ManagerResponse
 
     /**
      * Returns the names of the mailboxes, separated by ",".
+     *
      * @return the names of the mailbox.
      */
-    public String getMailbox()
-    {
+    public String getMailbox() {
         return mailbox;
     }
 
     /**
      * Sets the names of the mailboxes.
+     *
      * @param mailbox the names of the mailboxes.
      */
-    public void setMailbox(String mailbox)
-    {
+    public void setMailbox(String mailbox) {
         this.mailbox = mailbox;
     }
 
@@ -64,8 +62,7 @@ public class MailboxStatusResponse extends ManagerResponse
      * Returns Boolean.TRUE if at least one of the given mailboxes contains new messages;
      * Boolean.FALSE otherwise.
      */
-    public Boolean getWaiting()
-    {
+    public Boolean getWaiting() {
         return waiting;
     }
 
@@ -73,8 +70,7 @@ public class MailboxStatusResponse extends ManagerResponse
      * Set to Boolean.TRUE if at least one of the mailboxes contains new messages;
      * Boolean.FALSE otherwise.
      */
-    public void setWaiting(Boolean waiting)
-    {
+    public void setWaiting(Boolean waiting) {
         this.waiting = waiting;
     }
 }

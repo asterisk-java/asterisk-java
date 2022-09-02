@@ -1,4 +1,3 @@
-
 package org.asteriskjava.manager.action;
 
 import org.asteriskjava.manager.event.DongleShowDevicesCompleteEvent;
@@ -7,8 +6,7 @@ import org.asteriskjava.manager.event.ResponseEvent;
 
 public class DongleShowDevicesAction extends AbstractManagerAction
         implements
-            EventGeneratingAction
-{
+        EventGeneratingAction {
     /**
      * Serializable version identifier
      */
@@ -17,8 +15,7 @@ public class DongleShowDevicesAction extends AbstractManagerAction
     /**
      * Creates a new DahdiShowChannelsAction.
      */
-    public DongleShowDevicesAction()
-    {
+    public DongleShowDevicesAction() {
 
     }
 
@@ -26,13 +23,11 @@ public class DongleShowDevicesAction extends AbstractManagerAction
      * Returns the name of this action, i.e. "DahdiShowChannels".
      */
     @Override
-   public String getAction()
-    {
+    public String getAction() {
         return "DongleShowDevices";
     }
 
-    public Class<? extends ResponseEvent> getActionCompleteEventClass()
-    {
+    public Class<? extends ResponseEvent> getActionCompleteEventClass() {
         return DongleShowDevicesCompleteEvent.class;
     }
 }

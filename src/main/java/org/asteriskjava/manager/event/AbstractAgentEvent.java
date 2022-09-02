@@ -26,8 +26,7 @@ import java.util.Map;
  * @version $Id$
  * @since 0.2
  */
-public abstract class AbstractAgentEvent extends ManagerEvent
-{
+public abstract class AbstractAgentEvent extends ManagerEvent {
     private static final long serialVersionUID = 1L;
     private String channel;
     private String uniqueId;
@@ -36,8 +35,7 @@ public abstract class AbstractAgentEvent extends ManagerEvent
     private String memberName;
     private Map<String, String> variables;
 
-    protected AbstractAgentEvent(Object source)
-    {
+    protected AbstractAgentEvent(Object source) {
         super(source);
     }
 
@@ -46,13 +44,11 @@ public abstract class AbstractAgentEvent extends ManagerEvent
      *
      * @return the name of the channel.
      */
-    public String getChannel()
-    {
+    public String getChannel() {
         return channel;
     }
 
-    public void setChannel(String channel)
-    {
+    public void setChannel(String channel) {
         this.channel = channel;
     }
 
@@ -61,13 +57,11 @@ public abstract class AbstractAgentEvent extends ManagerEvent
      *
      * @return the unique id of the channel.
      */
-    public String getUniqueId()
-    {
+    public String getUniqueId() {
         return uniqueId;
     }
 
-    public void setUniqueId(String uniqueId)
-    {
+    public void setUniqueId(String uniqueId) {
         this.uniqueId = uniqueId;
     }
 
@@ -76,13 +70,11 @@ public abstract class AbstractAgentEvent extends ManagerEvent
      *
      * @return the name of the queue.
      */
-    public String getQueue()
-    {
+    public String getQueue() {
         return queue;
     }
 
-    public void setQueue(String queue)
-    {
+    public void setQueue(String queue) {
         this.queue = queue;
     }
 
@@ -91,13 +83,11 @@ public abstract class AbstractAgentEvent extends ManagerEvent
      *
      * @return the name of the member's interface.
      */
-    public String getMember()
-    {
+    public String getMember() {
         return member;
     }
 
-    public void setMember(String member)
-    {
+    public void setMember(String member) {
         this.member = member;
     }
 
@@ -108,13 +98,11 @@ public abstract class AbstractAgentEvent extends ManagerEvent
      *
      * @return the member name supplied for logging when the member is added.
      */
-    public String getMemberName()
-    {
+    public String getMemberName() {
         return memberName;
     }
 
-    public void setMemberName(String memberName)
-    {
+    public void setMemberName(String memberName) {
         this.memberName = memberName;
     }
 
@@ -126,8 +114,7 @@ public abstract class AbstractAgentEvent extends ManagerEvent
      * @return the channel variables.
      * @since 1.0.0
      */
-    public Map<String, String> getVariables()
-    {
+    public Map<String, String> getVariables() {
         return variables;
     }
 
@@ -138,8 +125,7 @@ public abstract class AbstractAgentEvent extends ManagerEvent
      * @param variables the channel variables.
      * @since 1.0.0
      */
-    public void setVariables(Map<String, String> variables)
-    {
+    public void setVariables(Map<String, String> variables) {
         this.variables = variables;
     }
 }

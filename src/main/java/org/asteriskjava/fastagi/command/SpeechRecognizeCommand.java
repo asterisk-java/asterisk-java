@@ -24,8 +24,7 @@ package org.asteriskjava.fastagi.command;
  * @version $Id$
  * @since 1.0.0
  */
-public class SpeechRecognizeCommand extends AbstractAgiCommand
-{
+public class SpeechRecognizeCommand extends AbstractAgiCommand {
     /**
      * Serial version identifier.
      */
@@ -41,8 +40,7 @@ public class SpeechRecognizeCommand extends AbstractAgiCommand
      * @param prompt  the prompt to play.
      * @param timeout the maximum recognition time in milliseconds.
      */
-    public SpeechRecognizeCommand(String prompt, int timeout)
-    {
+    public SpeechRecognizeCommand(String prompt, int timeout) {
         this.prompt = prompt;
         this.timeout = timeout;
         this.offset = 0;
@@ -55,8 +53,7 @@ public class SpeechRecognizeCommand extends AbstractAgiCommand
      * @param timeout the maximum recognition time in milliseconds.
      * @param offset  the offset samples to skip when playing the prompt.
      */
-    public SpeechRecognizeCommand(String prompt, int timeout, int offset)
-    {
+    public SpeechRecognizeCommand(String prompt, int timeout, int offset) {
         this.prompt = prompt;
         this.timeout = timeout;
         this.offset = offset;
@@ -67,8 +64,7 @@ public class SpeechRecognizeCommand extends AbstractAgiCommand
      *
      * @return the prompt to play.
      */
-    public String getPrompt()
-    {
+    public String getPrompt() {
         return prompt;
     }
 
@@ -77,8 +73,7 @@ public class SpeechRecognizeCommand extends AbstractAgiCommand
      *
      * @param prompt the prompt to play.
      */
-    public void setPrompt(String prompt)
-    {
+    public void setPrompt(String prompt) {
         this.prompt = prompt;
     }
 
@@ -87,8 +82,7 @@ public class SpeechRecognizeCommand extends AbstractAgiCommand
      *
      * @return the maximum recognition time in milliseconds.
      */
-    public int getTimeout()
-    {
+    public int getTimeout() {
         return timeout;
     }
 
@@ -97,8 +91,7 @@ public class SpeechRecognizeCommand extends AbstractAgiCommand
      *
      * @param timeout the maximum recognition time in milliseconds, or -1 for no timeout.
      */
-    public void setTimeout(int timeout)
-    {
+    public void setTimeout(int timeout) {
         this.timeout = timeout;
     }
 
@@ -107,8 +100,7 @@ public class SpeechRecognizeCommand extends AbstractAgiCommand
      *
      * @return the offset samples to skip when playing the prompt.
      */
-    public int getOffset()
-    {
+    public int getOffset() {
         return offset;
     }
 
@@ -117,14 +109,12 @@ public class SpeechRecognizeCommand extends AbstractAgiCommand
      *
      * @param offset the offset samples to skip when playing the prompt.
      */
-    public void setOffset(int offset)
-    {
+    public void setOffset(int offset) {
         this.offset = offset;
     }
 
     @Override
-    public String buildCommand()
-    {
+    public String buildCommand() {
         return "SPEECH RECOGNIZE " + escapeAndQuote(prompt) + " " + timeout + " " + offset;
     }
 }

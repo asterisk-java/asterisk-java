@@ -1,9 +1,5 @@
 package org.asteriskjava.pbx.internal.core;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
 import org.asteriskjava.lock.LockableList;
 import org.asteriskjava.lock.Locker.LockCloser;
 import org.asteriskjava.pbx.Channel;
@@ -11,6 +7,10 @@ import org.asteriskjava.pbx.ChannelHangupListener;
 import org.asteriskjava.pbx.asterisk.wrap.events.ChannelState;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * This is a fairly simple class which is used by a Peer to track what calls are
@@ -20,11 +20,10 @@ import org.asteriskjava.util.LogFactory;
  * that it can show if a handset is on a call. In this way the operator can tell
  * if a person is busy even before they call them. Essentially all this calls
  * does is track the set of channels associated with a call.
- * 
+ *
  * @author bsutton
  */
-public class CallTracker implements ChannelHangupListener
-{
+public class CallTracker implements ChannelHangupListener {
     private static final Log logger = LogFactory.getLog(CallTracker.class);
 
     /**
@@ -39,8 +38,7 @@ public class CallTracker implements ChannelHangupListener
 
     private CallEndedListener listener;
 
-    CallTracker(Peer peer, Channel initialChannel)
-    {
+    CallTracker(Peer peer, Channel initialChannel) {
         this._associatedChannels.add(initialChannel);
         initialChannel.addHangupListener(this);
         this.listener = peer;
@@ -53,43 +51,35 @@ public class CallTracker implements ChannelHangupListener
      * CallTracker for it. When the masquerade event finally turns up we will
      * realise it belongs to an existing CallTracker and as such we need to
      * merge the two CallTrackers.
-     * 
+     *
      * @param rhs
      */
-    void mergeCalls(CallTracker rhs)
-    {
-        try (LockCloser closer = this._associatedChannels.withLock())
-        {
+    void mergeCalls(CallTracker rhs) {
+        try (LockCloser closer = this._associatedChannels.withLock()) {
             this._associatedChannels.addAll(rhs._associatedChannels);
             // not certain this is necessary but lets just tidy up a bit.
             rhs._associatedChannels.clear();
         }
     }
 
-    public PeerState getState()
-    {
+    public PeerState getState() {
         return this._state;
     }
 
     /**
      * @param s
      */
-    public void setState(final ChannelState channelState)
-    {
+    public void setState(final ChannelState channelState) {
         this._state = PeerState.valueByChannelState(channelState);
     }
 
-    public int findChannel(Channel newChannel)
-    {
+    public int findChannel(Channel newChannel) {
         int index = -1;
-        try (LockCloser closer = this._associatedChannels.withLock())
-        {
+        try (LockCloser closer = this._associatedChannels.withLock()) {
 
-            for (int i = 0; i < this._associatedChannels.size(); i++)
-            {
+            for (int i = 0; i < this._associatedChannels.size(); i++) {
                 Channel channel = this._associatedChannels.get(i);
-                if (channel.isSame(newChannel))
-                {
+                if (channel.isSame(newChannel)) {
                     index = i;
                     break;
                 }
@@ -101,16 +91,13 @@ public class CallTracker implements ChannelHangupListener
 
     /**
      * Remove a channel from the call.
-     * 
+     *
      * @param channel
      */
-    public void remove(Channel channel)
-    {
-        try (LockCloser closer = this._associatedChannels.withLock())
-        {
+    public void remove(Channel channel) {
+        try (LockCloser closer = this._associatedChannels.withLock()) {
             int index = findChannel(channel);
-            if (index != -1)
-            {
+            if (index != -1) {
                 if (logger.isDebugEnabled())
                     logger.debug(
                             "CallTracker removing channel: " + this.toString() + " " + channel.getExtendedChannelName()); //$NON-NLS-1$ //$NON-NLS-2$
@@ -121,26 +108,19 @@ public class CallTracker implements ChannelHangupListener
 
     }
 
-    public void startSweep()
-    {
-        try (LockCloser closer = this._associatedChannels.withLock())
-        {
-            for (final Channel channel : this._associatedChannels)
-            {
+    public void startSweep() {
+        try (LockCloser closer = this._associatedChannels.withLock()) {
+            for (final Channel channel : this._associatedChannels) {
                 ((ChannelProxy) channel).getRealChannel().startSweep();
             }
         }
     }
 
-    public void endSweep()
-    {
+    public void endSweep() {
         final List<Channel> toremove = new LinkedList<>();
-        try (LockCloser closer = this._associatedChannels.withLock())
-        {
-            for (final Channel channel : this._associatedChannels)
-            {
-                if (!((ChannelProxy) channel).getRealChannel().wasMarkedDuringSweep())
-                {
+        try (LockCloser closer = this._associatedChannels.withLock()) {
+            for (final Channel channel : this._associatedChannels) {
+                if (!((ChannelProxy) channel).getRealChannel().wasMarkedDuringSweep()) {
                     toremove.add(channel);
                     logger.warn("removing channel " + this.hashCode() + " " + channel.getChannelName());//$NON-NLS-1$ //$NON-NLS-2$
                 }
@@ -150,58 +130,46 @@ public class CallTracker implements ChannelHangupListener
         }
 
         // Now tell each of the channels it has been hungup
-        for (final Channel channel : toremove)
-        {
+        for (final Channel channel : toremove) {
             ((ChannelProxy) channel).getRealChannel().notifyHangupListeners(-1,
                     "Lingering channel probably due to missed hangup event");
         }
 
     }
 
-    void dumpChannelList()
-    {
-        if (logger.isDebugEnabled())
-        {
+    void dumpChannelList() {
+        if (logger.isDebugEnabled()) {
             logger.debug("CallTracker: dump channellist:" + this); //$NON-NLS-1$
-            try (LockCloser closer = this._associatedChannels.withLock())
-            {
-                for (final Channel channel : this._associatedChannels)
-                {
+            try (LockCloser closer = this._associatedChannels.withLock()) {
+                for (final Channel channel : this._associatedChannels) {
                     logger.debug("--> " + channel.toString()); //$NON-NLS-1$
                 }
             }
         }
     }
 
-    public boolean hasEnded()
-    {
-        try (LockCloser closer = this._associatedChannels.withLock())
-        {
+    public boolean hasEnded() {
+        try (LockCloser closer = this._associatedChannels.withLock()) {
             return this._associatedChannels.size() == 0;
         }
     }
 
     @Override
-    public void channelHangup(Channel channel, Integer cause, String causeText)
-    {
+    public void channelHangup(Channel channel, Integer cause, String causeText) {
         remove(channel);
-        try (LockCloser closer = this._associatedChannels.withLock())
-        {
-            if (this._associatedChannels.size() == 0)
-            {
+        try (LockCloser closer = this._associatedChannels.withLock()) {
+            if (this._associatedChannels.size() == 0) {
                 this._state = PeerState.NOTSET;
                 notifyCallEndedListener();
             }
         }
     }
 
-    private void notifyCallEndedListener()
-    {
+    private void notifyCallEndedListener() {
         this.listener.callEnded(this);
     }
 
-    public String toString()
-    {
+    public String toString() {
         return this.listener + " : " + this._state; //$NON-NLS-1$
     }
 

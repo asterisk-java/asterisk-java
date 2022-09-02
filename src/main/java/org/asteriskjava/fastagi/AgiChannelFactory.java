@@ -9,8 +9,7 @@ package org.asteriskjava.fastagi;
  *
  * @since 1.0.0
  */
-public interface AgiChannelFactory
-{
+public interface AgiChannelFactory {
     /**
      * Creates a new AgiChannel.
      *

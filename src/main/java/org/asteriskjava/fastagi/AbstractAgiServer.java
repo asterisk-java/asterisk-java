@@ -1,22 +1,21 @@
 package org.asteriskjava.fastagi;
 
-import java.util.concurrent.RejectedExecutionException;
-import java.util.concurrent.SynchronousQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-
 import org.asteriskjava.fastagi.internal.DefaultAgiChannelFactory;
 import org.asteriskjava.util.DaemonThreadFactory;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
+
+import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Abstract base class for FastAGI and AsyncAGI servers.
  *
  * @since 1.0.0
  */
-public abstract class AbstractAgiServer
-{
+public abstract class AbstractAgiServer {
     private final Log logger = LogFactory.getLog(getClass());
 
     /**
@@ -59,8 +58,7 @@ public abstract class AbstractAgiServer
 
     private volatile boolean die = false;
 
-    public AbstractAgiServer()
-    {
+    public AbstractAgiServer() {
         this(new DefaultAgiChannelFactory());
     }
 
@@ -68,13 +66,11 @@ public abstract class AbstractAgiServer
      * Creates a new AbstractAgiServer with the given channel factory.
      *
      * @param agiChannelFactory the AgiChannelFactory to use for creating new
-     *            AgiChannel instances.
+     *                          AgiChannel instances.
      * @since 1.0.0
      */
-    public AbstractAgiServer(AgiChannelFactory agiChannelFactory)
-    {
-        if (agiChannelFactory == null)
-        {
+    public AbstractAgiServer(AgiChannelFactory agiChannelFactory) {
+        if (agiChannelFactory == null) {
             throw new IllegalArgumentException("AgiChannelFactory must not be null");
         }
 
@@ -87,10 +83,9 @@ public abstract class AbstractAgiServer
      * instances.
      *
      * @return the AgiChannelFactory to use for creating new AgiChannel
-     *         instances.
+     * instances.
      */
-    protected AgiChannelFactory getAgiChannelFactory()
-    {
+    protected AgiChannelFactory getAgiChannelFactory() {
         return this.agiChannelFactory;
     }
 
@@ -100,8 +95,7 @@ public abstract class AbstractAgiServer
      * @return the default number of worker threads in the thread pool.
      * @since 1.0.0
      */
-    public synchronized int getPoolSize()
-    {
+    public synchronized int getPoolSize() {
         return poolSize;
     }
 
@@ -115,15 +109,12 @@ public abstract class AbstractAgiServer
      * @throws IllegalArgumentException if the new pool size is negative
      * @see java.util.concurrent.ThreadPoolExecutor#setCorePoolSize(int)
      */
-    public synchronized void setPoolSize(int poolSize)
-    {
-        if (poolSize < 0)
-        {
+    public synchronized void setPoolSize(int poolSize) {
+        if (poolSize < 0) {
             throw new IllegalArgumentException("New poolSize (" + poolSize + ") is must not be negative");
         }
 
-        if (pool != null)
-        {
+        if (pool != null) {
             pool.setCorePoolSize(poolSize);
         }
         this.poolSize = poolSize;
@@ -135,8 +126,7 @@ public abstract class AbstractAgiServer
      * @return the maximum number of worker threads in the thread pool.
      * @since 1.0.0
      */
-    public synchronized int getMaximumPoolSize()
-    {
+    public synchronized int getMaximumPoolSize() {
         return maximumPoolSize;
     }
 
@@ -148,24 +138,20 @@ public abstract class AbstractAgiServer
      *
      * @param maximumPoolSize the maximum size of the worker thread pool.
      * @throws IllegalArgumentException if maximumPoolSize is less than current
-     *             pool size or less than or equal to 0.
+     *                                  pool size or less than or equal to 0.
      * @see java.util.concurrent.ThreadPoolExecutor#setMaximumPoolSize(int)
      */
-    public synchronized void setMaximumPoolSize(int maximumPoolSize)
-    {
-        if (maximumPoolSize <= 0)
-        {
+    public synchronized void setMaximumPoolSize(int maximumPoolSize) {
+        if (maximumPoolSize <= 0) {
             throw new IllegalArgumentException("New maximumPoolSize (" + maximumPoolSize + ") is must be positive");
         }
 
-        if (maximumPoolSize < poolSize)
-        {
+        if (maximumPoolSize < poolSize) {
             throw new IllegalArgumentException(
                     "New maximumPoolSize (" + maximumPoolSize + ") is less than current pool size (" + poolSize + ")");
         }
 
-        if (pool != null)
-        {
+        if (pool != null) {
             pool.setMaximumPoolSize(maximumPoolSize);
         }
         this.maximumPoolSize = maximumPoolSize;
@@ -177,36 +163,29 @@ public abstract class AbstractAgiServer
      *
      * @param mappingStrategy the mapping strategy to use.
      */
-    public void setMappingStrategy(MappingStrategy mappingStrategy)
-    {
+    public void setMappingStrategy(MappingStrategy mappingStrategy) {
         this.mappingStrategy = mappingStrategy;
     }
 
-    protected MappingStrategy getMappingStrategy()
-    {
+    protected MappingStrategy getMappingStrategy() {
         return mappingStrategy;
     }
 
-    protected boolean isDie()
-    {
+    protected boolean isDie() {
         return die;
     }
 
-    protected synchronized void shutdown()
-    {
+    protected synchronized void shutdown() {
         this.die = true;
-        if (pool != null)
-        {
+        if (pool != null) {
             pool.shutdown();
         }
     }
 
     @Override
-    protected void finalize() throws Throwable
-    {
+    protected void finalize() throws Throwable {
         this.die = true;
-        if (pool != null)
-        {
+        if (pool != null) {
             pool.shutdown();
         }
 
@@ -220,10 +199,8 @@ public abstract class AbstractAgiServer
      * @param command the command to run.
      * @throws RejectedExecutionException if the runnable can't be executed
      */
-    protected void execute(Runnable command) throws RejectedExecutionException
-    {
-        if (isDie())
-        {
+    protected void execute(Runnable command) throws RejectedExecutionException {
+        if (isDie()) {
             logger.warn("AgiServer is shutting down: Refused to execute AgiScript");
             return;
         }
@@ -231,15 +208,12 @@ public abstract class AbstractAgiServer
         getPool().execute(command);
     }
 
-    protected void handleException(String message, Exception e)
-    {
+    protected void handleException(String message, Exception e) {
         logger.warn(message, e);
     }
 
-    private synchronized ThreadPoolExecutor getPool()
-    {
-        if (pool == null)
-        {
+    private synchronized ThreadPoolExecutor getPool() {
+        if (pool == null) {
             pool = createPool();
             logger.info("Thread pool started.");
         }
@@ -250,24 +224,20 @@ public abstract class AbstractAgiServer
     /**
      * Returns the approximate number of AgiConnectionHandler threads that are
      * actively executing tasks.
-     * 
+     *
      * @see ThreadPoolExecutor#getActiveCount()
      * @see #getPoolActiveThreadCount()
      * @see org.asteriskjava.fastagi.internal.AgiConnectionHandler#AGI_CONNECTION_HANDLERS
      */
-    public int getPoolActiveTaskCount()
-    {
-        if (pool != null)
-        {
+    public int getPoolActiveTaskCount() {
+        if (pool != null) {
             return pool.getActiveCount();
         }
         return -1;
     }// getPoolActiveCount
 
-    public int getPoolActiveThreadCount()
-    {
-        if (pool != null)
-        {
+    public int getPoolActiveThreadCount() {
+        if (pool != null) {
             return pool.getPoolSize();
         }
         return -1;
@@ -281,7 +251,7 @@ public abstract class AbstractAgiServer
      * <p>
      * You can override this method to change this behavior. For example you can
      * use a cached pool with
-     * 
+     *
      * <pre>
      * return Executors.newCachedThreadPool(new DaemonThreadFactory());
      * </pre>
@@ -290,8 +260,7 @@ public abstract class AbstractAgiServer
      * @see #setPoolSize(int)
      * @see #setMaximumPoolSize(int)
      */
-    protected ThreadPoolExecutor createPool()
-    {
+    protected ThreadPoolExecutor createPool() {
         return new ThreadPoolExecutor(poolSize, (maximumPoolSize < poolSize) ? poolSize : maximumPoolSize, 50000L,
                 TimeUnit.MILLISECONDS, new SynchronousQueue<Runnable>(), new DaemonThreadFactory());
     }

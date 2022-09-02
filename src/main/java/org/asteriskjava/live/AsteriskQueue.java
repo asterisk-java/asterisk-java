@@ -26,8 +26,7 @@ import java.util.List;
  * @author itaqua
  * @version $Id$
  */
-public interface AsteriskQueue
-{
+public interface AsteriskQueue {
     String STRATEGY_RINGALL = "ringall";
     String STRATEGY_ROUNDROBIN = "roundrobin";
     String STRATAGY_LEAST_RECENT = "leastrecent";
@@ -91,7 +90,7 @@ public interface AsteriskQueue
      * Available since Asterisk 1.2
      *
      * @return the weight of this queue or <code>null</code> if not supported
-     *         by your version of Asterisk.
+     * by your version of Asterisk.
      */
     Integer getWeight();
 
@@ -138,63 +137,70 @@ public interface AsteriskQueue
 
     /**
      * Returns the number of abandoned calls.
-     * @author itaqua
+     *
      * @return the number of abandoned calls.
+     * @author itaqua
      */
     Integer getAbandoned();
 
     /**
      * Returns the ratio of calls answered within the specified service level per total completed
      * calls (in percent).
-     * @author itaqua
+     *
      * @return the ratio of calls answered within the specified service level per total completed
-     *         calls (in percent).
-     */
-	Double getServiceLevelPerf();
-
-	/**
-     * Returns the number of completed calls.
+     * calls (in percent).
      * @author itaqua
-     * @return the number of completed calls.
      */
-	Integer getCompleted();
+    Double getServiceLevelPerf();
 
-	/**
+    /**
+     * Returns the number of completed calls.
+     *
+     * @return the number of completed calls.
+     * @author itaqua
+     */
+    Integer getCompleted();
+
+    /**
      * Returns the current average talk time for this queue based on an exponential average.
      *
      * @return the current average talk time for this queue.
      */
-	Integer getTalkTime();
+    Integer getTalkTime();
 
-	/**
+    /**
      * Returns the current average holdtime for this queue (in seconds).
-     * @author itaqua
+     *
      * @return the current average holdtime for this queue (in seconds).
+     * @author itaqua
      */
-	Integer getHoldTime();
+    Integer getHoldTime();
 
-	/**
+    /**
      * Returns the number of calls currently waiting in the queue.
      * Is better to use get Waiting()
+     *
+     * @return the number of calls currently waiting in the queue.
      * @author itaqua
      * @see getWaiting()
-     * @return the number of calls currently waiting in the queue.
      */
-	Integer getCalls();
+    Integer getCalls();
 
-	/**
+    /**
      * Returns the number of calls currently waiting in the queue.
      * More verbose Method than getCalls()
-     * @author itaqua
+     *
      * @return the number of calls currently waiting in the queue.
+     * @author itaqua
      */
-	Integer getWaiting();
+    Integer getWaiting();
 
-	/**
+    /**
      * timestamp (miliseconds) of last update of this object
+     *
+     * @return
      * @todo maybe change this to an immutable object
      * @author itaqua
-     * @return
      */
     long getLastUpdateMillis();
 

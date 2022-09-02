@@ -16,39 +16,33 @@
  */
 package org.asteriskjava.fastagi.internal;
 
-import java.io.IOException;
-
 import org.asteriskjava.fastagi.AgiException;
 import org.asteriskjava.fastagi.AgiNetworkException;
 import org.asteriskjava.fastagi.AgiWriter;
 import org.asteriskjava.fastagi.command.AgiCommand;
 import org.asteriskjava.util.SocketConnectionFacade;
 
+import java.io.IOException;
+
 
 /**
  * Default implementation of the AGIWriter interface.
- * 
+ *
  * @author srt
  * @version $Id$
  */
-class FastAgiWriter implements AgiWriter
-{
+class FastAgiWriter implements AgiWriter {
     private final SocketConnectionFacade socket;
 
-    FastAgiWriter(SocketConnectionFacade socket)
-    {
+    FastAgiWriter(SocketConnectionFacade socket) {
         this.socket = socket;
     }
 
-    public void sendCommand(AgiCommand command) throws AgiException
-    {
-        try
-        {
+    public void sendCommand(AgiCommand command) throws AgiException {
+        try {
             socket.write(command.buildCommand() + "\n");
             socket.flush();
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             throw new AgiNetworkException(
                     "Unable to send command to Asterisk: " + e.getMessage(), e);
         }

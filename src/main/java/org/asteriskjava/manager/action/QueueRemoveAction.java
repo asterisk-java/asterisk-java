@@ -19,12 +19,11 @@ package org.asteriskjava.manager.action;
 /**
  * The QueueRemoveAction removes a member from a queue.<p>
  * It is implemented in <code>apps/app_queue.c</code>
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public class QueueRemoveAction extends AbstractManagerAction
-{
+public class QueueRemoveAction extends AbstractManagerAction {
     /**
      * Serializable version identifier
      */
@@ -39,62 +38,56 @@ public class QueueRemoveAction extends AbstractManagerAction
     /**
      * Creates a new empty QueueRemoveAction.
      */
-    public QueueRemoveAction()
-    {
+    public QueueRemoveAction() {
 
     }
 
     /**
      * Creates a new QueueRemoveAction that removes the member on the given
      * interface from the given queue.
-     * 
+     *
      * @param queue the name of the queue the member will be removed from
      * @param iface the interface of the member to remove
      * @since 0.2
      */
-    public QueueRemoveAction(String queue, String iface)
-    {
+    public QueueRemoveAction(String queue, String iface) {
         this.queue = queue;
         this.iface = iface;
     }
 
     /**
      * Returns the name of this action, i.e. "QueueRemove".
-     * 
+     *
      * @return the name of this action.
      */
     @Override
-   public String getAction()
-    {
+    public String getAction() {
         return "QueueRemove";
     }
 
     /**
      * Returns the name of the queue the member will be removed from.
-     * 
+     *
      * @return the name of the queue the member will be removed from.
      */
-    public String getQueue()
-    {
+    public String getQueue() {
         return queue;
     }
 
     /**
      * Sets the name of the queue the member will be removed from.<p>
      * This property is mandatory.
-     * 
+     *
      * @param queue the name of the queue the member will be removed from.
      */
-    public void setQueue(String queue)
-    {
+    public void setQueue(String queue) {
         this.queue = queue;
     }
 
     /**
      * Returns the interface to remove.
      */
-    public String getInterface()
-    {
+    public String getInterface() {
         return iface;
     }
 
@@ -102,8 +95,7 @@ public class QueueRemoveAction extends AbstractManagerAction
      * Sets the interface to remove.<p>
      * This property is mandatory.
      */
-    public void setInterface(String iface)
-    {
+    public void setInterface(String iface) {
         this.iface = iface;
     }
 }

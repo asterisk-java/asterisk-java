@@ -2,8 +2,7 @@ package org.asteriskjava.pbx.internal.managerAPI;
 
 import org.asteriskjava.pbx.Channel;
 
-public class OriginateResult
-{
+public class OriginateResult {
 
     private boolean channelHungup = false;
 
@@ -13,50 +12,41 @@ public class OriginateResult
 
     private String abortReason;
 
-    OriginateResult()
-    {
+    OriginateResult() {
         // not used
     }
 
-    public String getAbortReason()
-    {
+    public String getAbortReason() {
         return this.abortReason;
     }
 
-    void setAbortReason(final String reason)
-    {
+    void setAbortReason(final String reason) {
         this.abortReason = reason;
 
     }
 
-    public void setChannelData(final Channel channel)
-    {
+    public void setChannelData(final Channel channel) {
         this.newChannel = channel;
     }
 
-    public Channel getChannel()
-    {
+    public Channel getChannel() {
 
         return this.newChannel;
     }
 
-    public boolean isSuccess()
-    {
+    public boolean isSuccess() {
         return this.success;
     }
 
-    public void setSuccess(boolean success)
-    {
+    public void setSuccess(boolean success) {
         this.success = success;
     }
 
-    public boolean isChannelHungup()
-    {
+    public boolean isChannelHungup() {
         return this.channelHungup;
     }
 
-    public void setChannelHungup(boolean channel1Hungup)
-    {
+    public void setChannelHungup(boolean channel1Hungup) {
         this.channelHungup = channel1Hungup;
     }
 

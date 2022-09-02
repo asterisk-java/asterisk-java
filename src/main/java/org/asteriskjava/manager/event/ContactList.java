@@ -21,13 +21,12 @@ package org.asteriskjava.manager.event;
  * been reported in response to an PJSipShowContactsAction.
  * <p>
  * Available since Asterisk 16?
- * 
+ *
  * @author srt
  * @version $Id$
  * @since 3.0
  */
-public class ContactList extends ResponseEvent
-{
+public class ContactList extends ResponseEvent {
     /**
      * Serial version identifier.
      */
@@ -58,203 +57,164 @@ public class ContactList extends ResponseEvent
 
     /**
      * Creates a new instance.
-     * 
+     *
      * @param source
      */
-    public ContactList(Object source)
-    {
+    public ContactList(Object source) {
         super(source);
     }
 
-    public double getQualifyTimeout()
-    {
+    public double getQualifyTimeout() {
         return qualifyTimeout;
     }
 
-    public void setQualifyTimeout(double qualifyTimeout)
-    {
+    public void setQualifyTimeout(double qualifyTimeout) {
         this.qualifyTimeout = qualifyTimeout;
     }
 
-    public String getCallid()
-    {
+    public String getCallid() {
         return callid;
     }
 
-    public void setCallid(String callid)
-    {
+    public void setCallid(String callid) {
         this.callid = callid;
     }
 
-    public String getRegserver()
-    {
+    public String getRegserver() {
         return regserver;
     }
 
-    public void setRegserver(String regserver)
-    {
+    public void setRegserver(String regserver) {
         this.regserver = regserver;
     }
 
-    public String getRoundtripusec()
-    {
+    public String getRoundtripusec() {
         return roundtripusec;
     }
 
-    public void setRoundtripusec(String roundtripusec)
-    {
+    public void setRoundtripusec(String roundtripusec) {
         this.roundtripusec = roundtripusec;
     }
 
-    public long getExpirationtime()
-    {
+    public long getExpirationtime() {
         return expirationtime;
     }
 
-    public void setExpirationtime(long expirationtime)
-    {
+    public void setExpirationtime(long expirationtime) {
         this.expirationtime = expirationtime;
     }
 
-    public String getAuthenticatequalify()
-    {
+    public String getAuthenticatequalify() {
         return authenticatequalify;
     }
 
-    public void setAuthenticatequalify(String authenticatequalify)
-    {
+    public void setAuthenticatequalify(String authenticatequalify) {
         this.authenticatequalify = authenticatequalify;
     }
 
-    public String getObjectname()
-    {
+    public String getObjectname() {
         return objectname;
     }
 
-    public void setObjectname(String objectname)
-    {
+    public void setObjectname(String objectname) {
         this.objectname = objectname;
     }
 
-    public String getUseragent()
-    {
+    public String getUseragent() {
         return useragent;
     }
 
-    public void setUseragent(String useragent)
-    {
+    public void setUseragent(String useragent) {
         this.useragent = useragent;
     }
 
-    public String getUri()
-    {
+    public String getUri() {
         return uri;
     }
 
-    public void setUri(String uri)
-    {
+    public void setUri(String uri) {
         this.uri = uri;
     }
 
-    public String getViaaddr()
-    {
+    public String getViaaddr() {
         return viaaddr;
     }
 
-    public void setViaaddr(String viaaddr)
-    {
+    public void setViaaddr(String viaaddr) {
         this.viaaddr = viaaddr;
     }
 
-    public long getQualifyfrequency()
-    {
+    public long getQualifyfrequency() {
         return qualifyfrequency;
     }
 
-    public void setQualifyfrequency(Long qualifyfrequency)
-    {
+    public void setQualifyfrequency(Long qualifyfrequency) {
         this.qualifyfrequency = qualifyfrequency;
     }
 
-    public String getPath()
-    {
+    public String getPath() {
         return path;
     }
 
-    public void setPath(String path)
-    {
+    public void setPath(String path) {
         this.path = path;
     }
 
-    public String getEndpoint()
-    {
+    public String getEndpoint() {
         return endpoint;
     }
 
-    public void setEndpoint(String endpoint)
-    {
+    public void setEndpoint(String endpoint) {
         this.endpoint = endpoint;
     }
 
-    public String getViaport()
-    {
+    public String getViaport() {
         return viaport;
     }
 
-    public void setViaport(String viaport)
-    {
+    public void setViaport(String viaport) {
         this.viaport = viaport;
     }
 
-    public String getOutboundproxy()
-    {
+    public String getOutboundproxy() {
         return outboundproxy;
     }
 
-    public void setOutboundproxy(String outboundproxy)
-    {
+    public void setOutboundproxy(String outboundproxy) {
         this.outboundproxy = outboundproxy;
     }
 
-    public String getObjecttype()
-    {
+    public String getObjecttype() {
         return objecttype;
     }
 
-    public void setObjecttype(String objecttype)
-    {
+    public void setObjecttype(String objecttype) {
         this.objecttype = objecttype;
     }
 
-    public String getPruneonboot()
-    {
+    public String getPruneonboot() {
         return pruneonboot;
     }
 
-    public void setPruneonboot(String pruneonboot)
-    {
+    public void setPruneonboot(String pruneonboot) {
         this.pruneonboot = pruneonboot;
     }
 
-    public ContactStatusEnum getStatus()
-    {
+    public ContactStatusEnum getStatus() {
         return status;
     }
 
-    public void setStatus(String status)
-    {
+    public void setStatus(String status) {
         this.status = ContactStatusEnum.UNKNOWN;
 
-        if (status != null && status.length() > 0)
-        {
+        if (status != null && status.length() > 0) {
             this.status = ContactStatusEnum.valueOf(status.toUpperCase());
         }
 
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "ContactList [qualifyTimeout=" + qualifyTimeout + ", callid=" + callid + ", regserver=" + regserver
                 + ", roundtripusec=" + roundtripusec + ", expirationtime=" + expirationtime + ", authenticatequalify="
                 + authenticatequalify + ", objectname=" + objectname + ", useragent=" + useragent + ", uri=" + uri

@@ -16,10 +16,10 @@
  */
 package org.asteriskjava.manager.response;
 
+import org.asteriskjava.util.DateUtil;
+
 import java.util.Date;
 import java.util.TimeZone;
-
-import org.asteriskjava.util.DateUtil;
 
 /**
  * Corresponds to a CoreStatusAction and contains the current status summary of the
@@ -30,8 +30,7 @@ import org.asteriskjava.util.DateUtil;
  * @see org.asteriskjava.manager.action.CoreStatusAction
  * @since 1.0.0
  */
-public class CoreStatusResponse extends ManagerResponse
-{
+public class CoreStatusResponse extends ManagerResponse {
     private static final long serialVersionUID = 1L;
 
     private String coreStartupTime;
@@ -46,13 +45,11 @@ public class CoreStatusResponse extends ManagerResponse
      *
      * @return the time the server (core module) was last reloaded.
      */
-    public String getCoreReloadTime()
-    {
+    public String getCoreReloadTime() {
         return coreReloadTime;
     }
 
-    public void setCoreReloadTime(String s)
-    {
+    public void setCoreReloadTime(String s) {
         // format is %H:%M:%S
         this.coreReloadTime = s;
     }
@@ -63,13 +60,11 @@ public class CoreStatusResponse extends ManagerResponse
      *
      * @return the date the server (core module) was last reloaded.
      */
-    public String getCoreReloadDate()
-    {
+    public String getCoreReloadDate() {
         return coreReloadDate;
     }
 
-    public void setCoreReloadDate(String CoreReloadDate)
-    {
+    public void setCoreReloadDate(String CoreReloadDate) {
         this.coreReloadDate = CoreReloadDate;
     }
 
@@ -83,8 +78,7 @@ public class CoreStatusResponse extends ManagerResponse
      * @see #getCoreReloadTime()
      * @see #getCoreReloadDateTimeAsDate(java.util.TimeZone)
      */
-    public Date getCoreReloadDateTimeAsDate()
-    {
+    public Date getCoreReloadDateTimeAsDate() {
         return getCoreReloadDateTimeAsDate(null);
     }
 
@@ -98,10 +92,8 @@ public class CoreStatusResponse extends ManagerResponse
      * @see #getCoreReloadDate()
      * @see #getCoreReloadTime()
      */
-    public Date getCoreReloadDateTimeAsDate(TimeZone tz)
-    {
-        if (coreReloadDate == null || coreReloadTime == null)
-        {
+    public Date getCoreReloadDateTimeAsDate(TimeZone tz) {
+        if (coreReloadDate == null || coreReloadTime == null) {
             return null;
         }
 
@@ -114,13 +106,11 @@ public class CoreStatusResponse extends ManagerResponse
      *
      * @return the date the server was started.
      */
-    public String getCoreStartupDate()
-    {
+    public String getCoreStartupDate() {
         return coreStartupDate;
     }
 
-    public void setCoreStartupDate(String CoreStartupDate)
-    {
+    public void setCoreStartupDate(String CoreStartupDate) {
         this.coreStartupDate = CoreStartupDate;
     }
 
@@ -129,13 +119,11 @@ public class CoreStatusResponse extends ManagerResponse
      *
      * @return the time the server was started.
      */
-    public String getCoreStartupTime()
-    {
+    public String getCoreStartupTime() {
         return coreStartupTime;
     }
 
-    public void setCoreStartupTime(String s)
-    {
+    public void setCoreStartupTime(String s) {
         // format is %H:%M:%S
         this.coreStartupTime = s;
     }
@@ -150,8 +138,7 @@ public class CoreStatusResponse extends ManagerResponse
      * @see #getCoreStartupTime()
      * @see #getCoreStartupDateTimeAsDate(java.util.TimeZone)
      */
-    public Date getCoreStartupDateTimeAsDate()
-    {
+    public Date getCoreStartupDateTimeAsDate() {
         return getCoreStartupDateTimeAsDate(null);
     }
 
@@ -165,10 +152,8 @@ public class CoreStatusResponse extends ManagerResponse
      * @see #getCoreStartupDate()
      * @see #getCoreStartupTime()
      */
-    public Date getCoreStartupDateTimeAsDate(TimeZone tz)
-    {
-        if (coreStartupDate == null || coreStartupTime == null)
-        {
+    public Date getCoreStartupDateTimeAsDate(TimeZone tz) {
+        if (coreStartupDate == null || coreStartupTime == null) {
             return null;
         }
 
@@ -180,13 +165,11 @@ public class CoreStatusResponse extends ManagerResponse
      *
      * @return the number of currently active channels on the server.
      */
-    public Integer getCoreCurrentCalls()
-    {
+    public Integer getCoreCurrentCalls() {
         return coreCurrentCalls;
     }
 
-    public void setCoreCurrentCalls(Integer coreCurrentCalls)
-    {
+    public void setCoreCurrentCalls(Integer coreCurrentCalls) {
         this.coreCurrentCalls = coreCurrentCalls;
     }
 }

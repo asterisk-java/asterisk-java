@@ -22,8 +22,7 @@ package org.asteriskjava.manager.action;
  *
  * @since 1.0.0
  */
-public class SkypeRemoveBuddyAction extends AbstractManagerAction
-{
+public class SkypeRemoveBuddyAction extends AbstractManagerAction {
     /**
      * Serializable version identifier
      */
@@ -34,8 +33,7 @@ public class SkypeRemoveBuddyAction extends AbstractManagerAction
     /**
      * Creates a new SkypeRemoveBuddyAction.
      */
-    public SkypeRemoveBuddyAction()
-    {
+    public SkypeRemoveBuddyAction() {
 
     }
 
@@ -46,8 +44,7 @@ public class SkypeRemoveBuddyAction extends AbstractManagerAction
      * @param user  the Skype username of the user to add the buddy to.
      * @param buddy the Skype username of the buddy.
      */
-    public SkypeRemoveBuddyAction(String user, String buddy)
-    {
+    public SkypeRemoveBuddyAction(String user, String buddy) {
         this.user = user;
         this.buddy = buddy;
     }
@@ -58,8 +55,7 @@ public class SkypeRemoveBuddyAction extends AbstractManagerAction
      *
      * @return the Skype username of the Skype for Asterisk user.
      */
-    public String getUser()
-    {
+    public String getUser() {
         return user;
     }
 
@@ -68,8 +64,7 @@ public class SkypeRemoveBuddyAction extends AbstractManagerAction
      *
      * @param user the Skype username of the Skype for Asterisk user.
      */
-    public void setUser(String user)
-    {
+    public void setUser(String user) {
         this.user = user;
     }
 
@@ -78,8 +73,7 @@ public class SkypeRemoveBuddyAction extends AbstractManagerAction
      *
      * @return the Skype username of the buddy.
      */
-    public String getBuddy()
-    {
+    public String getBuddy() {
         return buddy;
     }
 
@@ -89,8 +83,7 @@ public class SkypeRemoveBuddyAction extends AbstractManagerAction
      *
      * @param buddy the Skype username of the buddy.
      */
-    public void setBuddy(String buddy)
-    {
+    public void setBuddy(String buddy) {
         this.buddy = buddy;
     }
 
@@ -98,8 +91,7 @@ public class SkypeRemoveBuddyAction extends AbstractManagerAction
      * Returns the name of this action, i.e. "SkypeRemoveBuddy".
      */
     @Override
-    public String getAction()
-    {
+    public String getAction() {
         return "SkypeRemoveBuddy";
     }
 }

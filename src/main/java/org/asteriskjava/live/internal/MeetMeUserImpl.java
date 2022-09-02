@@ -16,16 +16,15 @@
  */
 package org.asteriskjava.live.internal;
 
-import java.util.Date;
-
 import org.asteriskjava.live.ManagerCommunicationException;
 import org.asteriskjava.live.MeetMeUser;
 import org.asteriskjava.live.MeetMeUserState;
 import org.asteriskjava.lock.Locker.LockCloser;
 import org.asteriskjava.manager.action.CommandAction;
 
-class MeetMeUserImpl extends AbstractLiveObject implements MeetMeUser
-{
+import java.util.Date;
+
+class MeetMeUserImpl extends AbstractLiveObject implements MeetMeUser {
     private static final String COMMAND_PREFIX = "meetme";
     private static final String MUTE_COMMAND = "mute";
     private static final String UNMUTE_COMMAND = "unmute";
@@ -42,8 +41,7 @@ class MeetMeUserImpl extends AbstractLiveObject implements MeetMeUser
     private boolean muted;
 
     MeetMeUserImpl(AsteriskServerImpl server, MeetMeRoomImpl room, Integer userNumber, AsteriskChannelImpl channel,
-            Date dateJoined)
-    {
+                   Date dateJoined) {
         super(server);
         this.room = room;
         this.userNumber = userNumber;
@@ -52,42 +50,35 @@ class MeetMeUserImpl extends AbstractLiveObject implements MeetMeUser
         this.state = MeetMeUserState.JOINED;
     }
 
-    public MeetMeRoomImpl getRoom()
-    {
+    public MeetMeRoomImpl getRoom() {
         return room;
     }
 
-    public Integer getUserNumber()
-    {
+    public Integer getUserNumber() {
         return userNumber;
     }
 
-    public AsteriskChannelImpl getChannel()
-    {
+    public AsteriskChannelImpl getChannel() {
         return channel;
     }
 
-    public Date getDateJoined()
-    {
+    public Date getDateJoined() {
         return dateJoined;
     }
 
-    public Date getDateLeft()
-    {
+    public Date getDateLeft() {
         return dateLeft;
     }
 
     /**
      * Sets the status to {@link MeetMeUserState#LEFT} and dateLeft to the given
      * date.
-     * 
+     *
      * @param dateLeft the date this user left the room.
      */
-    void left(Date dateLeft)
-    {
+    void left(Date dateLeft) {
         MeetMeUserState oldState;
-        try (LockCloser closer = this.withLock())
-        {
+        try (LockCloser closer = this.withLock()) {
             oldState = this.state;
             this.dateLeft = dateLeft;
             this.state = MeetMeUserState.LEFT;
@@ -95,30 +86,25 @@ class MeetMeUserImpl extends AbstractLiveObject implements MeetMeUser
         firePropertyChange(PROPERTY_STATE, oldState, state);
     }
 
-    public MeetMeUserState getState()
-    {
+    public MeetMeUserState getState() {
         return state;
     }
 
-    public boolean isTalking()
-    {
+    public boolean isTalking() {
         return talking;
     }
 
-    void setTalking(boolean talking)
-    {
+    void setTalking(boolean talking) {
         boolean oldTalking = this.talking;
         this.talking = talking;
         firePropertyChange(PROPERTY_TALKING, oldTalking, talking);
     }
 
-    public boolean isMuted()
-    {
+    public boolean isMuted() {
         return muted;
     }
 
-    void setMuted(boolean muted)
-    {
+    void setMuted(boolean muted) {
         boolean oldMuted = this.muted;
         this.muted = muted;
         firePropertyChange(PROPERTY_MUTED, oldMuted, muted);
@@ -126,23 +112,19 @@ class MeetMeUserImpl extends AbstractLiveObject implements MeetMeUser
 
     // action methods
 
-    public void kick() throws ManagerCommunicationException
-    {
+    public void kick() throws ManagerCommunicationException {
         sendMeetMeUserCommand(KICK_COMMAND);
     }
 
-    public void mute() throws ManagerCommunicationException
-    {
+    public void mute() throws ManagerCommunicationException {
         sendMeetMeUserCommand(MUTE_COMMAND);
     }
 
-    public void unmute() throws ManagerCommunicationException
-    {
+    public void unmute() throws ManagerCommunicationException {
         sendMeetMeUserCommand(UNMUTE_COMMAND);
     }
 
-    private void sendMeetMeUserCommand(String command) throws ManagerCommunicationException
-    {
+    private void sendMeetMeUserCommand(String command) throws ManagerCommunicationException {
         StringBuilder sb = new StringBuilder();
         sb.append(COMMAND_PREFIX);
         sb.append(" ");
@@ -156,15 +138,13 @@ class MeetMeUserImpl extends AbstractLiveObject implements MeetMeUser
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         StringBuilder sb;
         int systemHashcode;
 
         sb = new StringBuilder("MeetMeUser[");
 
-        try (LockCloser closer = this.withLock())
-        {
+        try (LockCloser closer = this.withLock()) {
             sb.append("dateJoined='").append(getDateJoined()).append("',");
             sb.append("dateLeft='").append(getDateLeft()).append("',");
             sb.append("talking=").append(isTalking()).append(",");
@@ -173,8 +153,7 @@ class MeetMeUserImpl extends AbstractLiveObject implements MeetMeUser
             systemHashcode = System.identityHashCode(this);
         }
         sb.append("channel=AsteriskChannel[");
-        try (LockCloser closer = channel.withLock())
-        {
+        try (LockCloser closer = channel.withLock()) {
             sb.append("id='").append(channel.getId()).append("',");
             sb.append("name='").append(channel.getName()).append("'],");
         }

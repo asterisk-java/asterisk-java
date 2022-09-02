@@ -5,8 +5,7 @@ import org.asteriskjava.pbx.InvalidChannelName;
 import org.asteriskjava.pbx.PBXFactory;
 import org.asteriskjava.pbx.internal.core.AsteriskPBX;
 
-public class DialEvent extends ChannelEventHelper
-{
+public class DialEvent extends ChannelEventHelper {
     private static final long serialVersionUID = 1L;
 
     /**
@@ -17,8 +16,7 @@ public class DialEvent extends ChannelEventHelper
     private final String dialString;
     private final String dialStatus;
 
-    public DialEvent(final org.asteriskjava.manager.event.DialEvent event) throws InvalidChannelName
-    {
+    public DialEvent(final org.asteriskjava.manager.event.DialEvent event) throws InvalidChannelName {
         super(event.getChannel(), event.getUniqueId(), event.getCallerIdNum(), event.getCallerIdName());
 
         final AsteriskPBX pbx = (AsteriskPBX) PBXFactory.getActivePBX();
@@ -32,18 +30,15 @@ public class DialEvent extends ChannelEventHelper
 
     }
 
-    public Channel getDestination()
-    {
+    public Channel getDestination() {
         return this.destination;
     }
 
-    public String getDialString()
-    {
+    public String getDialString() {
         return this.dialString;
     }
 
-    public String getDialStatus()
-    {
+    public String getDialStatus() {
         return this.dialStatus;
     }
 

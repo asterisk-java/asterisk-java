@@ -22,11 +22,10 @@ package org.asteriskjava.fastagi.command;
  *
  * @author srt
  * @version $Id$
- * @since 1.0.0
  * @see org.asteriskjava.fastagi.command.SpeechCreateCommand
+ * @since 1.0.0
  */
-public class SpeechDestroyCommand extends AbstractAgiCommand
-{
+public class SpeechDestroyCommand extends AbstractAgiCommand {
     /**
      * Serial version identifier.
      */
@@ -35,14 +34,12 @@ public class SpeechDestroyCommand extends AbstractAgiCommand
     /**
      * Creates a new empty SpeechDestroyCommand.
      */
-    public SpeechDestroyCommand()
-    {
+    public SpeechDestroyCommand() {
         super();
     }
 
     @Override
-    public String buildCommand()
-    {
+    public String buildCommand() {
         return "SPEECH DESTROY";
     }
 }

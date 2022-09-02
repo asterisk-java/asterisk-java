@@ -20,13 +20,12 @@ package org.asteriskjava.manager.action;
  * Adds or updates an entry in the Asterisk database for a given family, key,
  * and value.<p>
  * Available since Asterisk 1.2
- * 
+ *
  * @author srt
  * @version $Id$
  * @since 0.2
  */
-public class DbPutAction extends AbstractManagerAction
-{
+public class DbPutAction extends AbstractManagerAction {
     /**
      * Serial version identifier.
      */
@@ -38,101 +37,91 @@ public class DbPutAction extends AbstractManagerAction
     /**
      * Creates a new empty DbPutAction.
      */
-    public DbPutAction()
-    {
+    public DbPutAction() {
 
     }
 
     /**
      * Creates a new DbPutAction that sets the value of the database entry with
      * the given key in the given family.
-     * 
+     *
      * @param family the family of the key
-     * @param key the key of the entry to set
-     * @param val the value to set
+     * @param key    the key of the entry to set
+     * @param val    the value to set
      * @since 0.2
      */
-    public DbPutAction(String family, String key, String val)
-    {
+    public DbPutAction(String family, String key, String val) {
         this.family = family;
         this.key = key;
         this.val = val;
     }
 
     @Override
-   public String getAction()
-    {
+    public String getAction() {
         return "DBPut";
     }
 
     /**
      * Returns the family of the key to set.
-     * 
+     *
      * @return the family of the key to set.
      */
-    public String getFamily()
-    {
+    public String getFamily() {
         return family;
     }
 
     /**
      * Sets the family of the key to set.
-     * 
+     *
      * @param family the family of the key to set.
      */
-    public void setFamily(String family)
-    {
+    public void setFamily(String family) {
         this.family = family;
     }
 
     /**
      * Returns the the key to set.
-     * 
+     *
      * @return the key to set.
      */
-    public String getKey()
-    {
+    public String getKey() {
         return key;
     }
 
     /**
      * Sets the key to set.
-     * 
+     *
      * @param key the key to set.
      */
-    public void setKey(String key)
-    {
+    public void setKey(String key) {
         this.key = key;
     }
 
     /**
      * Returns the value to set.
-     * 
+     *
      * @return the value to set.
      */
-    public String getVal()
-    {
+    public String getVal() {
         return val;
     }
 
     /**
      * Sets the value to set.
-     * 
+     *
      * @param val the value to set.
      */
-    public void setVal(String val)
-    {
+    public void setVal(String val) {
         this.val = val;
     }
-    
+
     /**
      * Returns the value to set for BRIstuffed versions.
-     * 
+     *
      * @return the value to set.
      * @since 1.0.0
      */
-    public String getValue()
-    {
+    public String getValue() {
         return val;
     }
 }

@@ -28,8 +28,7 @@ package org.asteriskjava.manager.event;
  * @version $Id$
  * @since 1.0.0
  */
-public class VarSetEvent extends ManagerEvent
-{
+public class VarSetEvent extends ManagerEvent {
     static final long serialVersionUID = 1L;
 
     private String channel;
@@ -40,18 +39,15 @@ public class VarSetEvent extends ManagerEvent
     private String linkedId;
     private String accountCode;
 
-    public String getLanguage()
-    {
+    public String getLanguage() {
         return language;
     }
 
-    public void setLanguage(String language)
-    {
+    public void setLanguage(String language) {
         this.language = language;
     }
 
-    public VarSetEvent(Object source)
-    {
+    public VarSetEvent(Object source) {
         super(source);
     }
 
@@ -60,15 +56,13 @@ public class VarSetEvent extends ManagerEvent
      * variables.
      *
      * @return the name of the channel or <code>null</code> for global
-     *         variables.
+     * variables.
      */
-    public String getChannel()
-    {
+    public String getChannel() {
         return channel;
     }
 
-    public void setChannel(String channel)
-    {
+    public void setChannel(String channel) {
         this.channel = channel;
     }
 
@@ -77,15 +71,13 @@ public class VarSetEvent extends ManagerEvent
      * variables.
      *
      * @return the unique id of the channel or <code>null</code> for global
-     *         variables.
+     * variables.
      */
-    public String getUniqueId()
-    {
+    public String getUniqueId() {
         return uniqueId;
     }
 
-    public void setUniqueId(String uniqueId)
-    {
+    public void setUniqueId(String uniqueId) {
         this.uniqueId = uniqueId;
     }
 
@@ -94,13 +86,11 @@ public class VarSetEvent extends ManagerEvent
      *
      * @return the name of the variable that has been set.
      */
-    public String getVariable()
-    {
+    public String getVariable() {
         return variable;
     }
 
-    public void setVariable(String variable)
-    {
+    public void setVariable(String variable) {
         this.variable = variable;
     }
 
@@ -109,34 +99,28 @@ public class VarSetEvent extends ManagerEvent
      *
      * @return the new value of the variable.
      */
-    public String getValue()
-    {
+    public String getValue() {
         return value;
     }
 
-    public void setValue(String value)
-    {
+    public void setValue(String value) {
         this.value = value;
     }
 
-    public String getLinkedId()
-    {
+    public String getLinkedId() {
         return linkedId;
     }
 
-    public void setLinkedId(String linkedId)
-    {
+    public void setLinkedId(String linkedId) {
         this.linkedId = linkedId;
     }
 
-    public String getAccountCode()
-    {
+    public String getAccountCode() {
         return accountCode;
     }
 
-    public void setAccountCode(String accountCode)
-    {
+    public void setAccountCode(String accountCode) {
         this.accountCode = accountCode;
     }
-    
+
 }

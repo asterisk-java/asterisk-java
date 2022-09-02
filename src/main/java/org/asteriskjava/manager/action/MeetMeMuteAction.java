@@ -20,12 +20,11 @@ package org.asteriskjava.manager.action;
  * The MeetMeMuteAction mutes a user in a conference.<p>
  * Defined in <code>apps/app_meetme.c</code><p>
  * Available since Asterisk 1.4.
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public class MeetMeMuteAction extends AbstractMeetMeMuteAction
-{
+public class MeetMeMuteAction extends AbstractMeetMeMuteAction {
     /**
      * Serializable version identifier
      */
@@ -34,19 +33,17 @@ public class MeetMeMuteAction extends AbstractMeetMeMuteAction
     /**
      * Creates a new empty MeetMeMuteAction.
      */
-    public MeetMeMuteAction()
-    {
+    public MeetMeMuteAction() {
         super();
     }
 
     /**
      * Creates a new MeetMeMuteAction.
-     * 
-     * @param meetMe the conference number.
+     *
+     * @param meetMe  the conference number.
      * @param userNum the index of the user in the conference.
      */
-    public MeetMeMuteAction(String meetMe, Integer userNum)
-    {
+    public MeetMeMuteAction(String meetMe, Integer userNum) {
         super(meetMe, userNum);
     }
 
@@ -54,8 +51,7 @@ public class MeetMeMuteAction extends AbstractMeetMeMuteAction
      * Returns the name of this action, i.e. "MeetMeMute".
      */
     @Override
-   public String getAction()
-    {
+    public String getAction() {
         return "MeetMeMute";
     }
 }

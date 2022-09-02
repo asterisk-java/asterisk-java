@@ -21,12 +21,11 @@ package org.asteriskjava.util;
  * <p>
  * Concrete instances of this interface are obtained by calling
  * {@link org.asteriskjava.util.LogFactory#getLog(Class)}.
- * 
+ *
  * @author srt
  * @see org.asteriskjava.util.LogFactory
  */
-public interface Log
-{
+public interface Log {
     void debug(Object obj);
 
     void info(Object obj);

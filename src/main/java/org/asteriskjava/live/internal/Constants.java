@@ -2,15 +2,13 @@ package org.asteriskjava.live.internal;
 
 /**
  * Defines constants used internally in the live package in multiple classes.
- * 
+ *
  * @author srt
  * @version $Id$
  */
-class Constants
-{
+class Constants {
     // hide constructor
-    private Constants()
-    {
+    private Constants() {
 
     }
 

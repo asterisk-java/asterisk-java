@@ -23,8 +23,7 @@ package org.asteriskjava.manager.action;
  * @author gmi
  * @since 1.0.0
  */
-public class DbDelTreeAction extends AbstractManagerAction
-{
+public class DbDelTreeAction extends AbstractManagerAction {
     private static final long serialVersionUID = 1L;
     private String family;
     private String key;
@@ -32,8 +31,7 @@ public class DbDelTreeAction extends AbstractManagerAction
     /**
      * Creates a new empty DbDelTreeAction.
      */
-    public DbDelTreeAction()
-    {
+    public DbDelTreeAction() {
 
     }
 
@@ -41,17 +39,15 @@ public class DbDelTreeAction extends AbstractManagerAction
      * Creates a new DbDelTreeAction.
      *
      * @param family the family of the key
-     * @param key the key of the entries to delete
+     * @param key    the key of the entries to delete
      */
-    public DbDelTreeAction(String family, String key)
-    {
+    public DbDelTreeAction(String family, String key) {
         this.family = family;
         this.key = key;
     }
 
     @Override
-    public String getAction()
-    {
+    public String getAction() {
         return "DBDelTree";
     }
 
@@ -60,8 +56,7 @@ public class DbDelTreeAction extends AbstractManagerAction
      *
      * @return the family of the key to delete
      */
-    public String getFamily()
-    {
+    public String getFamily() {
         return family;
     }
 
@@ -70,8 +65,7 @@ public class DbDelTreeAction extends AbstractManagerAction
      *
      * @param family the family of the key to delete
      */
-    public void setFamily(String family)
-    {
+    public void setFamily(String family) {
         this.family = family;
     }
 
@@ -80,8 +74,7 @@ public class DbDelTreeAction extends AbstractManagerAction
      *
      * @return the key to delete
      */
-    public String getKey()
-    {
+    public String getKey() {
         return key;
     }
 
@@ -90,8 +83,7 @@ public class DbDelTreeAction extends AbstractManagerAction
      *
      * @param key the key to delete
      */
-    public void setKey(String key)
-    {
+    public void setKey(String key) {
         this.key = key;
     }
 }

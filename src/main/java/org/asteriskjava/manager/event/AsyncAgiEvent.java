@@ -7,7 +7,6 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 
  * The following sub events are reported:
  * <ul>
  * <li>Start: A channel has started the AGI("agi:async") application and is awaiting Async AGI commands.</li>
@@ -24,8 +23,7 @@ import java.util.List;
  * @see org.asteriskjava.manager.action.AgiAction
  * @since 1.0.0
  */
-public class AsyncAgiEvent extends ResponseEvent
-{
+public class AsyncAgiEvent extends ResponseEvent {
     /**
      * Serializable version identifier.
      */
@@ -55,8 +53,7 @@ public class AsyncAgiEvent extends ResponseEvent
      *
      * @param source
      */
-    public AsyncAgiEvent(Object source)
-    {
+    public AsyncAgiEvent(Object source) {
         super(source);
     }
 
@@ -65,8 +62,7 @@ public class AsyncAgiEvent extends ResponseEvent
      *
      * @return the name of the channel this event occurred on.
      */
-    public String getChannel()
-    {
+    public String getChannel() {
         return channel;
     }
 
@@ -75,8 +71,7 @@ public class AsyncAgiEvent extends ResponseEvent
      *
      * @param channel the name of the channel this event occurred on.
      */
-    public void setChannel(String channel)
-    {
+    public void setChannel(String channel) {
         this.channel = channel;
     }
 
@@ -85,8 +80,7 @@ public class AsyncAgiEvent extends ResponseEvent
      *
      * @return the sub event type.
      */
-    public String getSubEvent()
-    {
+    public String getSubEvent() {
         return subEvent;
     }
 
@@ -95,8 +89,7 @@ public class AsyncAgiEvent extends ResponseEvent
      *
      * @param subEvent the sub event type.
      */
-    public void setSubEvent(String subEvent)
-    {
+    public void setSubEvent(String subEvent) {
         this.subEvent = subEvent;
     }
 
@@ -107,8 +100,7 @@ public class AsyncAgiEvent extends ResponseEvent
      * @return the command id.
      * @see org.asteriskjava.manager.action.AgiAction#setCommandId(String)
      */
-    public String getCommandId()
-    {
+    public String getCommandId() {
         return commandId;
     }
 
@@ -117,8 +109,7 @@ public class AsyncAgiEvent extends ResponseEvent
      *
      * @param commandId the command id.
      */
-    public void setCommandId(String commandId)
-    {
+    public void setCommandId(String commandId) {
         this.commandId = commandId;
     }
 
@@ -134,8 +125,7 @@ public class AsyncAgiEvent extends ResponseEvent
      *
      * @return the URL encoded result.
      */
-    public String getResult()
-    {
+    public String getResult() {
         return result;
     }
 
@@ -144,8 +134,7 @@ public class AsyncAgiEvent extends ResponseEvent
      *
      * @return the decoded result.
      */
-    public List<String> decodeResult()
-    {
+    public List<String> decodeResult() {
         return decode(getResult());
     }
 
@@ -154,8 +143,7 @@ public class AsyncAgiEvent extends ResponseEvent
      *
      * @param result the URL encoded result.
      */
-    public void setResult(String result)
-    {
+    public void setResult(String result) {
         this.result = result;
     }
 
@@ -177,8 +165,7 @@ public class AsyncAgiEvent extends ResponseEvent
      *
      * @return the URL encoded AGI environment.
      */
-    public String getEnv()
-    {
+    public String getEnv() {
         return env;
     }
 
@@ -186,30 +173,24 @@ public class AsyncAgiEvent extends ResponseEvent
      * Decodes the AGI environment and returns a list of lines.
      *
      * @return The decoded AGI environment or an empty list if the environment is not available (that is
-     *         if {@link #getEnv()} returns <code>null</code>).
+     * if {@link #getEnv()} returns <code>null</code>).
      * @see #getEnv()
      */
-    public List<String> decodeEnv()
-    {
+    public List<String> decodeEnv() {
         return decode(getEnv());
     }
 
-    private List<String> decode(String s)
-    {
+    private List<String> decode(String s) {
         final List<String> result = new ArrayList<>();
 
-        if (s == null)
-        {
+        if (s == null) {
             return result;
         }
 
-        try
-        {
+        try {
             final String decodedString = URLDecoder.decode(s, "UTF-8");
             result.addAll(Arrays.asList(decodedString.split("\n")));
-        }
-        catch (UnsupportedEncodingException e)
-        {
+        } catch (UnsupportedEncodingException e) {
             throw new RuntimeException("This JDK does not support UTF-8 encoding", e);
         }
 
@@ -221,8 +202,7 @@ public class AsyncAgiEvent extends ResponseEvent
      *
      * @param env the URL encoded AGI environment.
      */
-    public void setEnv(String env)
-    {
+    public void setEnv(String env) {
         this.env = env;
     }
 
@@ -231,8 +211,7 @@ public class AsyncAgiEvent extends ResponseEvent
      *
      * @return <code>true</code> if this is a "Start" sub event, <code>false</code> otherwise.
      */
-    public boolean isStart()
-    {
+    public boolean isStart() {
         return isSubEvent(SUB_EVENT_START);
     }
 
@@ -241,8 +220,7 @@ public class AsyncAgiEvent extends ResponseEvent
      *
      * @return <code>true</code> if this is an "Exec" sub event, <code>false</code> otherwise.
      */
-    public boolean isExec()
-    {
+    public boolean isExec() {
         return isSubEvent(SUB_EVENT_EXEC);
     }
 
@@ -251,13 +229,11 @@ public class AsyncAgiEvent extends ResponseEvent
      *
      * @return <code>true</code> if this is an "End" sub event, <code>false</code> otherwise.
      */
-    public boolean isEnd()
-    {
+    public boolean isEnd() {
         return isSubEvent(SUB_EVENT_END);
     }
 
-    protected boolean isSubEvent(String subEvent)
-    {
+    protected boolean isSubEvent(String subEvent) {
         return this.subEvent != null && this.subEvent.equalsIgnoreCase(subEvent);
     }
 }

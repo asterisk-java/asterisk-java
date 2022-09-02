@@ -24,13 +24,12 @@ package org.asteriskjava.manager.event;
  * See http://soft-switch.org/installing-spandsp.html for details.
  * <p>
  * Implemented in <code>apps/app_rxfax.c</code>.
- * 
+ *
  * @author srt
  * @version $Id$
  * @since 0.2
  */
-public class FaxReceivedEvent extends AbstractFaxEvent
-{
+public class FaxReceivedEvent extends AbstractFaxEvent {
     /**
      * Serial version identifier.
      */
@@ -44,150 +43,135 @@ public class FaxReceivedEvent extends AbstractFaxEvent
     private Integer transferRate;
     private String filename;
 
-    public FaxReceivedEvent(Object source)
-    {
+    public FaxReceivedEvent(Object source) {
         super(source);
     }
 
     /**
      * Returns the Caller*ID of the calling party or an empty string if none is
      * available.
-     * 
+     *
      * @return the Caller*ID of the calling party.
      */
-    public String getCallerId()
-    {
+    public String getCallerId() {
         return callerId;
     }
 
     /**
      * Sets the Caller*ID of the calling party.
-     * 
+     *
      * @param callerId the Caller*ID of the calling party.
      */
-    public void setCallerId(String callerId)
-    {
+    public void setCallerId(String callerId) {
         this.callerId = callerId;
     }
 
     /**
      * Retruns the identifier of the remote fax station.
-     * 
+     *
      * @return the identifier of the remote fax station.
      */
-    public String getRemoteStationId()
-    {
+    public String getRemoteStationId() {
         return remoteStationId;
     }
 
     /**
      * Sets the identifier of the remote fax station.
-     * 
+     *
      * @param remoteStationId the identifier of the remote fax station.
      */
-    public void setRemoteStationId(String remoteStationId)
-    {
+    public void setRemoteStationId(String remoteStationId) {
         this.remoteStationId = remoteStationId;
     }
 
     /**
      * Returns the identifier of the local fax station.
-     * 
+     *
      * @return the identifier of the local fax station.
      */
-    public String getLocalStationId()
-    {
+    public String getLocalStationId() {
         return localStationId;
     }
 
     /**
      * Sets the identifier of the local fax station.
-     * 
+     *
      * @param localStationId the identifier of the local fax station.
      */
-    public void setLocalStationId(String localStationId)
-    {
+    public void setLocalStationId(String localStationId) {
         this.localStationId = localStationId;
     }
 
     /**
      * Returns the number of pages transferred.
-     * 
+     *
      * @return the number of pages transferred.
      */
-    public Integer getPagesTransferred()
-    {
+    public Integer getPagesTransferred() {
         return pagesTransferred;
     }
 
     /**
      * Sets the number of pages transferred.
-     * 
+     *
      * @param pagesTransferred the number of pages transferred.
      */
-    public void setPagesTransferred(Integer pagesTransferred)
-    {
+    public void setPagesTransferred(Integer pagesTransferred) {
         this.pagesTransferred = pagesTransferred;
     }
 
     /**
      * Returns the row resolution of the received fax.
-     * 
+     *
      * @return the row resolution of the received fax.
      */
-    public Integer getResolution()
-    {
+    public Integer getResolution() {
         return resolution;
     }
 
     /**
      * Sets the row resolution of the received fax.
-     * 
+     *
      * @param resolution the row resolution of the received fax.
      */
-    public void setResolution(Integer resolution)
-    {
+    public void setResolution(Integer resolution) {
         this.resolution = resolution;
     }
 
     /**
      * Returns the transfer rate in bits/s.
-     * 
+     *
      * @return the transfer rate in bits/s.
      */
-    public Integer getTransferRate()
-    {
+    public Integer getTransferRate() {
         return transferRate;
     }
 
     /**
      * Sets the transfer rate in bits/s.
-     * 
+     *
      * @param transferRate the transfer rate in bits/s.
      */
-    public void setTransferRate(Integer transferRate)
-    {
+    public void setTransferRate(Integer transferRate) {
         this.transferRate = transferRate;
     }
 
     /**
      * Returns the filename of the received fax including its full path on the
      * Asterisk server.
-     * 
+     *
      * @return the filename of the received fax
      */
-    public String getFilename()
-    {
+    public String getFilename() {
         return filename;
     }
 
     /**
      * Sets the filename of the received fax.
-     * 
+     *
      * @param filename the filename of the received fax
      */
-    public void setFilename(String filename)
-    {
+    public void setFilename(String filename) {
         this.filename = filename;
     }
 }

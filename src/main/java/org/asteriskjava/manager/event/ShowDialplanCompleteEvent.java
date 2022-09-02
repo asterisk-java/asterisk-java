@@ -12,8 +12,7 @@ package org.asteriskjava.manager.event;
  * @see org.asteriskjava.manager.event.ListDialplanEvent
  * @since 1.0.0
  */
-public class ShowDialplanCompleteEvent extends ResponseEvent
-{
+public class ShowDialplanCompleteEvent extends ResponseEvent {
     private static final long serialVersionUID = 1L;
 
     private Integer listItems;
@@ -21,8 +20,7 @@ public class ShowDialplanCompleteEvent extends ResponseEvent
     private Integer listPriorities;
     private Integer listContexts;
 
-    public ShowDialplanCompleteEvent(Object source)
-    {
+    public ShowDialplanCompleteEvent(Object source) {
         super(source);
     }
 
@@ -31,13 +29,11 @@ public class ShowDialplanCompleteEvent extends ResponseEvent
      *
      * @return the total number of list items reported.
      */
-    public Integer getListItems()
-    {
+    public Integer getListItems() {
         return listItems;
     }
 
-    public void setListItems(Integer listItems)
-    {
+    public void setListItems(Integer listItems) {
         this.listItems = listItems;
     }
 
@@ -46,13 +42,11 @@ public class ShowDialplanCompleteEvent extends ResponseEvent
      *
      * @return the number of extensions reported.
      */
-    public Integer getListExtensions()
-    {
+    public Integer getListExtensions() {
         return listExtensions;
     }
 
-    public void setListExtensions(Integer listExtensions)
-    {
+    public void setListExtensions(Integer listExtensions) {
         this.listExtensions = listExtensions;
     }
 
@@ -61,13 +55,11 @@ public class ShowDialplanCompleteEvent extends ResponseEvent
      *
      * @return the number of priorites reported.
      */
-    public Integer getListPriorities()
-    {
+    public Integer getListPriorities() {
         return listPriorities;
     }
 
-    public void setListPriorities(Integer listPriorities)
-    {
+    public void setListPriorities(Integer listPriorities) {
         this.listPriorities = listPriorities;
     }
 
@@ -76,13 +68,11 @@ public class ShowDialplanCompleteEvent extends ResponseEvent
      *
      * @return the number of contexts reported.
      */
-    public Integer getListContexts()
-    {
+    public Integer getListContexts() {
         return listContexts;
     }
 
-    public void setListContexts(Integer listContexts)
-    {
+    public void setListContexts(Integer listContexts) {
         this.listContexts = listContexts;
     }
 }

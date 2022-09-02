@@ -29,37 +29,32 @@ import java.util.TreeMap;
  * the ugly details. If the file requested exists but does not contain at least
  * a line with a category, the ResponseBuilder won't create an instance of
  * GetConfigResponse, as it won't know what the empty response is.
- * 
- * @see org.asteriskjava.manager.action.GetConfigAction
+ *
  * @author martins
+ * @see org.asteriskjava.manager.action.GetConfigAction
  * @since 0.3
  */
-public class GetConfigResponse extends ManagerResponse
-{
+public class GetConfigResponse extends ManagerResponse {
     private static final long serialVersionUID = -2044248427247227390L;
-    
+
     private Map<Integer, String> categories;
     private Map<Integer, Map<Integer, String>> lines;
 
     /**
      * Returns the map of category numbers to category names.
-     * 
+     *
      * @return the map of category numbers to names.
      * @see org.asteriskjava.manager.response.GetConfigResponse#getLines
      */
-    public Map<Integer, String> getCategories()
-    {
-        if (categories == null)
-        {
+    public Map<Integer, String> getCategories() {
+        if (categories == null) {
             categories = new TreeMap<>();
         }
 
         Map<String, Object> responseMap = super.getAttributes();
-        for (Entry<String, Object> response : responseMap.entrySet())
-        {
+        for (Entry<String, Object> response : responseMap.entrySet()) {
             String key = response.getKey();
-            if (key.toLowerCase(Locale.US).contains("category"))
-            {
+            if (key.toLowerCase(Locale.US).contains("category")) {
                 String[] keyParts = key.split("-");
 
                 // if it doesn't have at least category-XXXXXX, skip
@@ -68,12 +63,9 @@ public class GetConfigResponse extends ManagerResponse
 
                 // try to get the number of this category, skip if we mess up
                 Integer categoryNumber;
-                try
-                {
+                try {
                     categoryNumber = Integer.parseInt(keyParts[1]);
-                }
-                catch (Exception exception)
-                {
+                } catch (Exception exception) {
                     continue;
                 }
 
@@ -86,65 +78,52 @@ public class GetConfigResponse extends ManagerResponse
 
     /**
      * Returns the map of line number to line value for a given category.
-     * 
+     *
      * @param categoryNumber a valid category number from getCategories.
      * @return the map of category numbers to names.
      * @see org.asteriskjava.manager.response.GetConfigResponse#getCategories
      */
-    public Map<Integer, String> getLines(int categoryNumber)
-    {
-        if (lines == null)
-        {
+    public Map<Integer, String> getLines(int categoryNumber) {
+        if (lines == null) {
             lines = new TreeMap<>();
         }
 
         Map<String, Object> responseMap = super.getAttributes();
-        for (Entry<String, Object> response : responseMap.entrySet())
-        {
+        for (Entry<String, Object> response : responseMap.entrySet()) {
             String key = response.getKey();
-            if (key.toLowerCase(Locale.US).contains("line"))
-            {
+            if (key.toLowerCase(Locale.US).contains("line")) {
                 String[] keyParts = key.split("-");
 
                 // if it doesn't have at least line-XXXXXX-XXXXXX, skip
-                if (keyParts.length < 3)
-                {
+                if (keyParts.length < 3) {
                     continue;
                 }
 
                 // try to get the number of this category, skip if we mess up
                 Integer potentialCategoryNumber;
-                try
-                {
+                try {
                     potentialCategoryNumber = Integer.parseInt(keyParts[1]);
-                }
-                catch (Exception exception)
-                {
+                } catch (Exception exception) {
                     continue;
                 }
 
                 // try to get the number of this line, skip if we mess up
                 Integer potentialLineNumber;
-                try
-                {
+                try {
                     potentialLineNumber = Integer.parseInt(keyParts[2]);
-                }
-                catch (Exception exception)
-                {
+                } catch (Exception exception) {
                     continue;
                 }
 
                 // get the List out for placing stuff in
                 Map<Integer, String> linesForCategory = lines.get(potentialCategoryNumber);
-                if (linesForCategory == null)
-                {
+                if (linesForCategory == null) {
                     linesForCategory = new TreeMap<>();
                 }
 
                 // put the line we just parsed into the line map for this category
                 linesForCategory.put(potentialLineNumber, (String) response.getValue());
-                if (!lines.containsKey(potentialCategoryNumber))
-                {
+                if (!lines.containsKey(potentialCategoryNumber)) {
                     lines.put(potentialCategoryNumber, linesForCategory);
                 }
             }

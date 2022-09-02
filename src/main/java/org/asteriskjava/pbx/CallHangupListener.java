@@ -1,8 +1,7 @@
 package org.asteriskjava.pbx;
 
-public interface CallHangupListener
-{
+public interface CallHangupListener {
 
-	void callHungup(Call call);
+    void callHungup(Call call);
 
 }

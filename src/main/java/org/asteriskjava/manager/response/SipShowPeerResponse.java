@@ -7,11 +7,10 @@ import java.util.Map;
  *
  * @author srt
  * @version $Id$
- * @since 1.0.0
  * @see org.asteriskjava.manager.action.SipShowPeerAction
+ * @since 1.0.0
  */
-public class SipShowPeerResponse extends ManagerResponse
-{
+public class SipShowPeerResponse extends ManagerResponse {
     private static final long serialVersionUID = 1L;
 
     private String channelType;
@@ -81,678 +80,542 @@ public class SipShowPeerResponse extends ManagerResponse
 
     private Map<String, String> chanVariable;
 
-    public String getChannelType()
-    {
+    public String getChannelType() {
         return channelType;
     }
 
-    public void setChannelType(String channelType)
-    {
+    public void setChannelType(String channelType) {
         this.channelType = channelType;
     }
 
-    public String getObjectName()
-    {
+    public String getObjectName() {
         return objectName;
     }
 
-    public void setObjectName(String objectName)
-    {
+    public void setObjectName(String objectName) {
         this.objectName = objectName;
     }
 
-    public String getChanObjectType()
-    {
+    public String getChanObjectType() {
         return chanObjectType;
     }
 
-    public void setChanObjectType(String chanObjectType)
-    {
+    public void setChanObjectType(String chanObjectType) {
         this.chanObjectType = chanObjectType;
     }
 
-    public Boolean getSecretExist()
-    {
+    public Boolean getSecretExist() {
         return secretExist;
     }
 
-    public void setSecretExist(Boolean secretExist)
-    {
+    public void setSecretExist(Boolean secretExist) {
         this.secretExist = secretExist;
     }
 
-    public Boolean getMd5SecretExist()
-    {
+    public Boolean getMd5SecretExist() {
         return md5SecretExist;
     }
 
-    public void setMd5SecretExist(Boolean md5SecretExist)
-    {
+    public void setMd5SecretExist(Boolean md5SecretExist) {
         this.md5SecretExist = md5SecretExist;
     }
 
-    public Boolean getRemoteSecretExist()
-    {
+    public Boolean getRemoteSecretExist() {
         return remoteSecretExist;
     }
 
-    public void setRemoteSecretExist(Boolean remoteSecretExist)
-    {
+    public void setRemoteSecretExist(Boolean remoteSecretExist) {
         this.remoteSecretExist = remoteSecretExist;
     }
 
-    public String getContext()
-    {
+    public String getContext() {
         return context;
     }
 
-    public void setContext(String context)
-    {
+    public void setContext(String context) {
         this.context = context;
     }
 
-    public String getLanguage()
-    {
+    public String getLanguage() {
         return language;
     }
 
-    public void setLanguage(String language)
-    {
+    public void setLanguage(String language) {
         this.language = language;
     }
 
-    public String getAccountCode()
-    {
+    public String getAccountCode() {
         return accountCode;
     }
 
-    public void setAccountCode(String accountCode)
-    {
+    public void setAccountCode(String accountCode) {
         this.accountCode = accountCode;
     }
 
-    public String getAmaFlags()
-    {
+    public String getAmaFlags() {
         return amaFlags;
     }
 
-    public void setAmaFlags(String amaFlags)
-    {
+    public void setAmaFlags(String amaFlags) {
         this.amaFlags = amaFlags;
     }
 
-    public String getCidCallingPres()
-    {
+    public String getCidCallingPres() {
         return cidCallingPres;
     }
 
-    public void setCidCallingPres(String cidCallingPres)
-    {
+    public void setCidCallingPres(String cidCallingPres) {
         this.cidCallingPres = cidCallingPres;
     }
 
-    public String getSipFromUser()
-    {
+    public String getSipFromUser() {
         return sipFromUser;
     }
 
-    public void setSipFromUser(String sipFromUser)
-    {
+    public void setSipFromUser(String sipFromUser) {
         this.sipFromUser = sipFromUser;
     }
 
-    public String getSipFromDomain()
-    {
+    public String getSipFromDomain() {
         return sipFromDomain;
     }
 
-    public void setSipFromDomain(String sipFromDomain)
-    {
+    public void setSipFromDomain(String sipFromDomain) {
         this.sipFromDomain = sipFromDomain;
     }
 
-    public String getCallGroup()
-    {
+    public String getCallGroup() {
         return callGroup;
     }
 
-    public void setCallGroup(String callGroup)
-    {
+    public void setCallGroup(String callGroup) {
         this.callGroup = callGroup;
     }
 
-    public String getPickupGroup()
-    {
+    public String getPickupGroup() {
         return pickupGroup;
     }
 
-    public void setPickupGroup(String pickupGroup)
-    {
+    public void setPickupGroup(String pickupGroup) {
         this.pickupGroup = pickupGroup;
     }
 
-    public String getVoiceMailbox()
-    {
+    public String getVoiceMailbox() {
         return voiceMailbox;
     }
 
-    public void setVoiceMailbox(String voiceMailbox)
-    {
+    public void setVoiceMailbox(String voiceMailbox) {
         this.voiceMailbox = voiceMailbox;
     }
 
-    public String getTransferMode()
-    {
+    public String getTransferMode() {
         return transferMode;
     }
 
-    public void setTransferMode(String transferMode)
-    {
+    public void setTransferMode(String transferMode) {
         this.transferMode = transferMode;
     }
 
-    public Integer getLastMsgsSent()
-    {
+    public Integer getLastMsgsSent() {
         return lastMsgsSent;
     }
 
-    public void setLastMsgsSent(Integer lastMsgsSent)
-    {
+    public void setLastMsgsSent(Integer lastMsgsSent) {
         this.lastMsgsSent = lastMsgsSent;
     }
 
-    public Integer getCallLimit()
-    {
+    public Integer getCallLimit() {
         return callLimit;
     }
 
-    public void setCallLimit(Integer callLimit)
-    {
+    public void setCallLimit(Integer callLimit) {
         this.callLimit = callLimit;
     }
 
-    public Integer getBusyLevel()
-    {
+    public Integer getBusyLevel() {
         return busyLevel;
     }
 
-    public void setBusyLevel(Integer busyLevel)
-    {
+    public void setBusyLevel(Integer busyLevel) {
         this.busyLevel = busyLevel;
     }
 
-    public Integer getMaxCallBr()
-    {
+    public Integer getMaxCallBr() {
         return maxCallBr;
     }
 
-    public void setMaxCallBr(String maxCallBr)
-    {
+    public void setMaxCallBr(String maxCallBr) {
         this.maxCallBr = stringToInteger(maxCallBr, "kbps");
     }
 
-    public Boolean getDynamic()
-    {
+    public Boolean getDynamic() {
         return dynamic;
     }
 
-    public void setDynamic(Boolean dynamic)
-    {
+    public void setDynamic(Boolean dynamic) {
         this.dynamic = dynamic;
     }
 
-    public String getCallerId()
-    {
+    public String getCallerId() {
         return callerId;
     }
 
-    public void setCallerId(String callerId)
-    {
+    public void setCallerId(String callerId) {
         this.callerId = callerId;
     }
 
-    public Long getRegExpire()
-    {
+    public Long getRegExpire() {
         return regExpire;
     }
 
-    public void setRegExpire(String regExpire)
-    {
+    public void setRegExpire(String regExpire) {
         this.regExpire = stringToLong(regExpire, "seconds");
     }
 
-    public Boolean getSipAuthInsecure()
-    {
+    public Boolean getSipAuthInsecure() {
         return sipAuthInsecure;
     }
 
-    public void setSipAuthInsecure(Boolean sipAuthInsecure)
-    {
+    public void setSipAuthInsecure(Boolean sipAuthInsecure) {
         this.sipAuthInsecure = sipAuthInsecure;
     }
 
-    public Boolean getSipNatSupport()
-    {
+    public Boolean getSipNatSupport() {
         return sipNatSupport;
     }
 
-    public void setSipNatSupport(Boolean sipNatSupport)
-    {
+    public void setSipNatSupport(Boolean sipNatSupport) {
         this.sipNatSupport = sipNatSupport;
     }
 
-    public Boolean getAcl()
-    {
+    public Boolean getAcl() {
         return acl;
     }
 
-    public void setAcl(Boolean acl)
-    {
+    public void setAcl(Boolean acl) {
         this.acl = acl;
     }
 
-    public Boolean getSipT38support()
-    {
+    public Boolean getSipT38support() {
         return sipT38support;
     }
 
-    public void setSipT38support(Boolean sipT38support)
-    {
+    public void setSipT38support(Boolean sipT38support) {
         this.sipT38support = sipT38support;
     }
 
-    public String getSipT38ec()
-    {
+    public String getSipT38ec() {
         return sipT38ec;
     }
 
-    public void setSipT38ec(String sipT38ec)
-    {
+    public void setSipT38ec(String sipT38ec) {
         this.sipT38ec = sipT38ec;
     }
 
-    public Long getSipT38MaxDtgrm()
-    {
+    public Long getSipT38MaxDtgrm() {
         return sipT38MaxDtgrm;
     }
 
-    public void setSipT38MaxDtgrm(Long sipT38MaxDtgrm)
-    {
+    public void setSipT38MaxDtgrm(Long sipT38MaxDtgrm) {
 
         /**
          * asterisk returns sipT38MaxDtgrm as 4394967295L when the value is -1
          * so I'm taking a long and then changing it to -1 if required
          */
-        if (sipT38MaxDtgrm == 4294967295L)
-        {
+        if (sipT38MaxDtgrm == 4294967295L) {
             this.sipT38MaxDtgrm = -1L;
-        }
-        else
-        {
-            if (sipT38MaxDtgrm < Integer.MAX_VALUE && sipT38MaxDtgrm > Integer.MIN_VALUE)
-            {
+        } else {
+            if (sipT38MaxDtgrm < Integer.MAX_VALUE && sipT38MaxDtgrm > Integer.MIN_VALUE) {
                 this.sipT38MaxDtgrm = sipT38MaxDtgrm;
             }
         }
     }
 
-    public Boolean getSipDirectMedia()
-    {
+    public Boolean getSipDirectMedia() {
         return sipDirectMedia;
     }
 
-    public void setSipDirectMedia(Boolean sipDirectMedia)
-    {
+    public void setSipDirectMedia(Boolean sipDirectMedia) {
         this.sipDirectMedia = sipDirectMedia;
     }
 
-    public Boolean getSipCanReinvite()
-    {
+    public Boolean getSipCanReinvite() {
         return sipCanReinvite;
     }
 
-    public void setSipCanReinvite(Boolean sipCanReinvite)
-    {
+    public void setSipCanReinvite(Boolean sipCanReinvite) {
         this.sipCanReinvite = sipCanReinvite;
     }
 
-    public Boolean getSipPromiscRedir()
-    {
+    public Boolean getSipPromiscRedir() {
         return sipPromiscRedir;
     }
 
-    public void setSipPromiscRedir(Boolean sipPromiscRedir)
-    {
+    public void setSipPromiscRedir(Boolean sipPromiscRedir) {
         this.sipPromiscRedir = sipPromiscRedir;
     }
 
-    public Boolean getSipUserPhone()
-    {
+    public Boolean getSipUserPhone() {
         return sipUserPhone;
     }
 
-    public void setSipUserPhone(Boolean sipUserPhone)
-    {
+    public void setSipUserPhone(Boolean sipUserPhone) {
         this.sipUserPhone = sipUserPhone;
     }
 
-    public Boolean getSipVideoSupport()
-    {
+    public Boolean getSipVideoSupport() {
         return sipVideoSupport;
     }
 
-    public void setSipVideoSupport(Boolean sipVideoSupport)
-    {
+    public void setSipVideoSupport(Boolean sipVideoSupport) {
         this.sipVideoSupport = sipVideoSupport;
     }
 
-    public Boolean getSipTextSupport()
-    {
+    public Boolean getSipTextSupport() {
         return sipTextSupport;
     }
 
-    public void setSipTextSupport(Boolean sipTextSupport)
-    {
+    public void setSipTextSupport(Boolean sipTextSupport) {
         this.sipTextSupport = sipTextSupport;
     }
 
-    public String getSipSessTimers()
-    {
+    public String getSipSessTimers() {
         return sipSessTimers;
     }
 
-    public void setSipSessTimers(String sipSessTimers)
-    {
+    public void setSipSessTimers(String sipSessTimers) {
         this.sipSessTimers = sipSessTimers;
     }
 
-    public String getSipSessRefresh()
-    {
+    public String getSipSessRefresh() {
         return sipSessRefresh;
     }
 
-    public void setSipSessRefresh(String sipSessRefresh)
-    {
+    public void setSipSessRefresh(String sipSessRefresh) {
         this.sipSessRefresh = sipSessRefresh;
     }
 
-    public Integer getSipSessExpires()
-    {
+    public Integer getSipSessExpires() {
         return sipSessExpires;
     }
 
-    public void setSipSessExpires(Integer sipSessExpires)
-    {
+    public void setSipSessExpires(Integer sipSessExpires) {
         this.sipSessExpires = sipSessExpires;
     }
 
-    public Integer getSipSessMin()
-    {
+    public Integer getSipSessMin() {
         return sipSessMin;
     }
 
-    public void setSipSessMin(Integer sipSessMin)
-    {
+    public void setSipSessMin(Integer sipSessMin) {
         this.sipSessMin = sipSessMin;
     }
 
-    public String getSipDtmfMode()
-    {
+    public String getSipDtmfMode() {
         return sipDtmfMode;
     }
 
-    public void setSipDtmfMode(String sipDtmfMode)
-    {
+    public void setSipDtmfMode(String sipDtmfMode) {
         this.sipDtmfMode = sipDtmfMode;
     }
 
-    public String getToHost()
-    {
+    public String getToHost() {
         return toHost;
     }
 
-    public void setToHost(String toHost)
-    {
+    public void setToHost(String toHost) {
         this.toHost = toHost;
     }
 
-    public String getAddressIp()
-    {
+    public String getAddressIp() {
         return addressIp;
     }
 
-    public void setAddressIp(String addressIp)
-    {
+    public void setAddressIp(String addressIp) {
         this.addressIp = addressIp;
     }
 
-    public Integer getAddressPort()
-    {
+    public Integer getAddressPort() {
         return addressPort;
     }
 
-    public void setAddressPort(Integer addressPort)
-    {
+    public void setAddressPort(Integer addressPort) {
         this.addressPort = addressPort;
     }
 
-    public String getDefaultAddrIp()
-    {
+    public String getDefaultAddrIp() {
         return defaultAddrIp;
     }
 
-    public void setDefaultAddrIp(String defaultAddrIp)
-    {
+    public void setDefaultAddrIp(String defaultAddrIp) {
         this.defaultAddrIp = defaultAddrIp;
     }
 
-    public Integer getDefaultAddrPort()
-    {
+    public Integer getDefaultAddrPort() {
         return defaultAddrPort;
     }
 
-    public void setDefaultAddrPort(Integer defaultAddrPort)
-    {
+    public void setDefaultAddrPort(Integer defaultAddrPort) {
         this.defaultAddrPort = defaultAddrPort;
     }
 
-    public String getDefaultUsername()
-    {
+    public String getDefaultUsername() {
         return defaultUsername;
     }
 
-    public void setDefaultUsername(String defaultUsername)
-    {
+    public void setDefaultUsername(String defaultUsername) {
         this.defaultUsername = defaultUsername;
     }
 
-    public String getRegExtension()
-    {
+    public String getRegExtension() {
         return regExtension;
     }
 
-    public void setRegExtension(String regExtension)
-    {
+    public void setRegExtension(String regExtension) {
         this.regExtension = regExtension;
     }
 
-    public String getCodecs()
-    {
+    public String getCodecs() {
         return codecs;
     }
 
-    public void setCodecs(String codecs)
-    {
+    public void setCodecs(String codecs) {
         this.codecs = codecs;
     }
 
-    public String getCodecOrder()
-    {
+    public String getCodecOrder() {
         return codecOrder;
     }
 
-    public void setCodecOrder(String codecOrder)
-    {
+    public void setCodecOrder(String codecOrder) {
         this.codecOrder = codecOrder;
     }
 
-    public String getStatus()
-    {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(String status)
-    {
+    public void setStatus(String status) {
         this.status = status;
     }
 
-    public String getSipUserAgent()
-    {
+    public String getSipUserAgent() {
         return sipUserAgent;
     }
 
-    public void setSipUserAgent(String sipUserAgent)
-    {
+    public void setSipUserAgent(String sipUserAgent) {
         this.sipUserAgent = sipUserAgent;
     }
 
-    public String getParkingLot()
-    {
+    public String getParkingLot() {
         return parkingLot;
     }
 
-    public void setParkingLot(String parkingLot)
-    {
+    public void setParkingLot(String parkingLot) {
         this.parkingLot = parkingLot;
     }
 
-    public String getRegContact()
-    {
+    public String getRegContact() {
         return regContact;
     }
 
-    public void setRegContact(String regContact)
-    {
+    public void setRegContact(String regContact) {
         // workaround for Asterisk bug:
-        if (regContact.startsWith(": "))
-        {
+        if (regContact.startsWith(": ")) {
             regContact = regContact.substring(2);
         }
         this.regContact = regContact;
     }
 
-    public Integer getQualifyFreq()
-    {
+    public Integer getQualifyFreq() {
         return qualifyFreq;
     }
 
-    public void setQualifyFreq(String qualifyFreq)
-    {
+    public void setQualifyFreq(String qualifyFreq) {
         // workaround for Asterisk bugs:
-        if (qualifyFreq.startsWith(": "))
-        {
+        if (qualifyFreq.startsWith(": ")) {
             qualifyFreq = qualifyFreq.substring(2);
         }
-        if (qualifyFreq.indexOf('\n') > -1)
-        {
+        if (qualifyFreq.indexOf('\n') > -1) {
             qualifyFreq = qualifyFreq.substring(0, qualifyFreq.indexOf('\n'));
         }
         this.qualifyFreq = stringToInteger(qualifyFreq, "ms");
     }
 
-    public Map<String, String> getChanVariable()
-    {
+    public Map<String, String> getChanVariable() {
         return chanVariable;
     }
 
-    public void setChanVariable(final Map<String, String> chanVariable)
-    {
+    public void setChanVariable(final Map<String, String> chanVariable) {
         this.chanVariable = chanVariable;
     }
 
-    public Integer getMaxForwards()
-    {
+    public Integer getMaxForwards() {
         return maxForwards;
     }
 
-    public void setMaxForwards(Integer maxForwards)
-    {
+    public void setMaxForwards(Integer maxForwards) {
         this.maxForwards = maxForwards;
     }
 
-    public String getToneZone()
-    {
+    public String getToneZone() {
         return toneZone;
     }
 
-    public void setToneZone(String toneZone)
-    {
+    public void setToneZone(String toneZone) {
         this.toneZone = toneZone;
     }
 
-    public String getSipUseReasonHeader()
-    {
+    public String getSipUseReasonHeader() {
         return sipUseReasonHeader;
     }
 
-    public void setSipUseReasonHeader(String sipUseReasonHeader)
-    {
+    public void setSipUseReasonHeader(String sipUseReasonHeader) {
         this.sipUseReasonHeader = sipUseReasonHeader;
     }
 
-    public String getSipEncryption()
-    {
+    public String getSipEncryption() {
         return sipEncryption;
     }
 
-    public void setSipEncryption(String sipEncryption)
-    {
+    public void setSipEncryption(String sipEncryption) {
         this.sipEncryption = sipEncryption;
     }
 
-    public String getSipForcerport()
-    {
+    public String getSipForcerport() {
         return sipForcerport;
     }
 
-    public void setSipForcerport(String sipForcerport)
-    {
+    public void setSipForcerport(String sipForcerport) {
         this.sipForcerport = sipForcerport;
     }
 
-    public String getSipRtpEngine()
-    {
+    public String getSipRtpEngine() {
         return sipRtpEngine;
     }
 
-    public void setSipRtpEngine(String sipRtpEngine)
-    {
+    public void setSipRtpEngine(String sipRtpEngine) {
         this.sipRtpEngine = sipRtpEngine;
     }
 
-    public String getSipComedia()
-    {
+    public String getSipComedia() {
         return sipComedia;
     }
 
-    public void setSipComedia(String sipComedia)
-    {
+    public void setSipComedia(String sipComedia) {
         this.sipComedia = sipComedia;
     }
 
-    public String getMohsuggest()
-    {
+    public String getMohsuggest() {
         return mohsuggest;
     }
 
-    public void setMohsuggest(String mohsuggest)
-    {
+    public void setMohsuggest(String mohsuggest) {
         this.mohsuggest = mohsuggest;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         StringBuilder builder = new StringBuilder();
         builder.append("SipShowPeerResponse [channelType=");
         builder.append(channelType);

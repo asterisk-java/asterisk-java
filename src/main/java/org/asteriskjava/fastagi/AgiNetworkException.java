@@ -19,12 +19,11 @@ package org.asteriskjava.fastagi;
 /**
  * The AgiNetworkException usally wraps an IOException denoting a network
  * problem while talking to the Asterisk server.
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public class AgiNetworkException extends AgiException
-{
+public class AgiNetworkException extends AgiException {
     /**
      * Serial version identifier.
      */
@@ -32,12 +31,11 @@ public class AgiNetworkException extends AgiException
 
     /**
      * Creates a new AgiNetworkException with the given message and cause.
-     * 
+     *
      * @param message a message describing the AgiException.
-     * @param cause the throwable that caused this exception.
+     * @param cause   the throwable that caused this exception.
      */
-    public AgiNetworkException(String message, Throwable cause)
-    {
+    public AgiNetworkException(String message, Throwable cause) {
         super(message, cause);
     }
 }

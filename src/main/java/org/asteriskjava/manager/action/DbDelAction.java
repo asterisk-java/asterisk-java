@@ -19,11 +19,10 @@ package org.asteriskjava.manager.action;
 /**
  * Deletes an entry in the Asterisk database for a given family and key.<p>
  * Available since Asterisk 1.2 with BRIStuff patches and since Asterisk 1.6
- * 
+ *
  * @author gmi
  */
-public class DbDelAction extends AbstractManagerAction
-{
+public class DbDelAction extends AbstractManagerAction {
     private static final long serialVersionUID = 921037572305993779L;
     private String family;
     private String key;
@@ -31,66 +30,59 @@ public class DbDelAction extends AbstractManagerAction
     /**
      * Creates a new empty DbDelAction.
      */
-    public DbDelAction()
-    {
+    public DbDelAction() {
 
     }
 
     /**
      * Creates a new DbDelAction that deletes the value of the database
-     * 
+     *
      * @param family the family of the key
-     * @param key the key of the entry to delete
+     * @param key    the key of the entry to delete
      */
-    public DbDelAction(String family, String key)
-    {
+    public DbDelAction(String family, String key) {
         this.family = family;
         this.key = key;
     }
 
     @Override
-    public String getAction()
-    {
+    public String getAction() {
         return "DBDel";
     }
 
     /**
      * Returns the family of the key to delete
-     * 
+     *
      * @return the family of the key to delete
      */
-    public String getFamily()
-    {
+    public String getFamily() {
         return family;
     }
 
     /**
      * Sets the family of the key to delete
-     * 
+     *
      * @param family the family of the key to delete
      */
-    public void setFamily(String family)
-    {
+    public void setFamily(String family) {
         this.family = family;
     }
 
     /**
      * Returns the the key to delete
-     * 
+     *
      * @return the key to delete
      */
-    public String getKey()
-    {
+    public String getKey() {
         return key;
     }
 
     /**
      * Sets the key to delete
-     * 
+     *
      * @param key the key to delete
      */
-    public void setKey(String key)
-    {
+    public void setKey(String key) {
         this.key = key;
     }
 }

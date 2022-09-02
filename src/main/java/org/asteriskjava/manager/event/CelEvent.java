@@ -1,10 +1,10 @@
 package org.asteriskjava.manager.event;
+
 /**
  * Raised when a Channel Event Log is generated for a channel.
  * https://wiki.asterisk.org/wiki/display/AST/Asterisk+13+ManagerEvent_CEL
  */
-public class CelEvent extends ManagerEvent
-{
+public class CelEvent extends ManagerEvent {
     private static final long serialVersionUID = 1L;
     public static final String CEL_EVENT_CHAN_START = "CHAN_START";
     public static final String CEL_EVENT_CHAN_END = "CHAN_END";
@@ -41,168 +41,135 @@ public class CelEvent extends ManagerEvent
     private String extra;
     private String channel;
 
-    public CelEvent(Object source)
-    {
+    public CelEvent(Object source) {
         super(source);
     }
 
-    public String getEventName()
-    {
+    public String getEventName() {
         return eventName;
     }
 
-    public void setEventName(String eventName)
-    {
+    public void setEventName(String eventName) {
         this.eventName = eventName;
     }
 
-    public String getAccountCode()
-    {
+    public String getAccountCode() {
         return accountCode;
     }
 
-    public void setAccountCode(String accountCode)
-    {
+    public void setAccountCode(String accountCode) {
         this.accountCode = accountCode;
-    }    
+    }
 
-    public String getCallerIDani()
-    {
+    public String getCallerIDani() {
         return callerIDani;
     }
 
-    public void setCallerIDani(String callerIDani)
-    {
+    public void setCallerIDani(String callerIDani) {
         this.callerIDani = callerIDani;
     }
 
-    public String getCallerIDrdnis()
-    {
+    public String getCallerIDrdnis() {
         return callerIDrdnis;
     }
 
-    public void setCallerIDrdnis(String callerIDrdnis)
-    {
+    public void setCallerIDrdnis(String callerIDrdnis) {
         this.callerIDrdnis = callerIDrdnis;
     }
 
-    public String getCallerIDdnid()
-    {
+    public String getCallerIDdnid() {
         return callerIDdnid;
     }
 
-    public void setCallerIDdnid(String callerIDdnid)
-    {
+    public void setCallerIDdnid(String callerIDdnid) {
         this.callerIDdnid = callerIDdnid;
     }
 
-    public String getApplication()
-    {
+    public String getApplication() {
         return application;
     }
 
-    public void setApplication(String application)
-    {
+    public void setApplication(String application) {
         this.application = application;
     }
 
-    public String getAppData()
-    {
+    public String getAppData() {
         return appData;
     }
 
-    public void setAppData(String appData)
-    {
+    public void setAppData(String appData) {
         this.appData = appData;
     }
 
-    public String getEventTime()
-    {
+    public String getEventTime() {
         return eventTime;
     }
 
-    public void setEventTime(String eventTime)
-    {
+    public void setEventTime(String eventTime) {
         this.eventTime = eventTime;
     }
 
-    public String getAmaFlags()
-    {
+    public String getAmaFlags() {
         return amaFlags;
     }
 
-    public void setAmaFlags(String amaFlags)
-    {
+    public void setAmaFlags(String amaFlags) {
         this.amaFlags = amaFlags;
     }
 
-    public String getUniqueID()
-    {
+    public String getUniqueID() {
         return uniqueID;
     }
 
-    public void setUniqueID(String uniqueID)
-    {
+    public void setUniqueID(String uniqueID) {
         this.uniqueID = uniqueID;
     }
 
-    public String getLinkedID()
-    {
+    public String getLinkedID() {
         return linkedID;
     }
 
-    public void setLinkedID(String linkedID)
-    {
+    public void setLinkedID(String linkedID) {
         this.linkedID = linkedID;
     }
 
-    public String getUserField()
-    {
+    public String getUserField() {
         return userField;
     }
 
-    public void setUserField(String userField)
-    {
+    public void setUserField(String userField) {
         this.userField = userField;
     }
 
-    public String getPeer()
-    {
+    public String getPeer() {
         return peer;
     }
 
-    public void setPeer(String peer)
-    {
+    public void setPeer(String peer) {
         this.peer = peer;
     }
 
-    public String getPeerAccount()
-    {
+    public String getPeerAccount() {
         return peerAccount;
     }
 
-    public void setPeerAccount(String peerAccount)
-    {
+    public void setPeerAccount(String peerAccount) {
         this.peerAccount = peerAccount;
     }
 
-    public String getExtra()
-    {
+    public String getExtra() {
         return extra;
     }
 
-    public void setExtra(String extra)
-    {
+    public void setExtra(String extra) {
         this.extra = extra;
     }
 
-    public String getChannel()
-    {
+    public String getChannel() {
         return channel;
     }
 
-    public void setChannel(String channel)
-    {
+    public void setChannel(String channel) {
         this.channel = channel;
     }
 }

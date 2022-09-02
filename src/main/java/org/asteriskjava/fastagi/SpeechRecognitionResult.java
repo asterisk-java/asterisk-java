@@ -1,10 +1,10 @@
 package org.asteriskjava.fastagi;
 
+import org.asteriskjava.fastagi.reply.AgiReply;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.asteriskjava.fastagi.reply.AgiReply;
 
 /**
  * Contains the results of a speech recognition command.
@@ -14,13 +14,11 @@ import org.asteriskjava.fastagi.reply.AgiReply;
  * @see org.asteriskjava.fastagi.command.SpeechRecognizeCommand
  * @since 1.0.0
  */
-public class SpeechRecognitionResult implements Serializable
-{
+public class SpeechRecognitionResult implements Serializable {
     private static final long serialVersionUID = 0L;
     private final AgiReply agiReply;
 
-    public SpeechRecognitionResult(AgiReply agiReply)
-    {
+    public SpeechRecognitionResult(AgiReply agiReply) {
         this.agiReply = agiReply;
     }
 
@@ -30,8 +28,7 @@ public class SpeechRecognitionResult implements Serializable
      * @return <code>true</code> if a DTMF digit was received, <code>false</code> otherwise.
      * @see #getDigit()
      */
-    public boolean isDtmf()
-    {
+    public boolean isDtmf() {
         return "digit".equals(agiReply.getExtra());
     }
 
@@ -43,8 +40,7 @@ public class SpeechRecognitionResult implements Serializable
      * @see #getScore()
      * @see #getGrammar()
      */
-    public boolean isSpeech()
-    {
+    public boolean isSpeech() {
         return "speech".equals(agiReply.getExtra());
     }
 
@@ -53,8 +49,7 @@ public class SpeechRecognitionResult implements Serializable
      *
      * @return <code>true</code> a timeout was encountered, <code>false</code> otherwise.
      */
-    public boolean isTimeout()
-    {
+    public boolean isTimeout() {
         return "timeout".equals(agiReply.getExtra());
     }
 
@@ -63,11 +58,9 @@ public class SpeechRecognitionResult implements Serializable
      *
      * @return the DTMF digit that was received or 0x0 if none was received.
      */
-    public char getDigit()
-    {
+    public char getDigit() {
         final String digit = agiReply.getAttribute("digit");
-        if (digit == null || digit.length() == 0)
-        {
+        if (digit == null || digit.length() == 0) {
             return 0x0;
         }
         return digit.charAt(0);
@@ -79,8 +72,7 @@ public class SpeechRecognitionResult implements Serializable
      *
      * @return the position where the prompt stopped playing, 0 if it was played completely.
      */
-    public int getEndpos()
-    {
+    public int getEndpos() {
         return Integer.parseInt(agiReply.getAttribute("endpos"));
     }
 
@@ -90,8 +82,7 @@ public class SpeechRecognitionResult implements Serializable
      *
      * @return the confidence score for the first recognition result or 0 if no speech was recognized.
      */
-    public int getScore()
-    {
+    public int getScore() {
         final String score0 = agiReply.getAttribute("score0");
         return score0 == null ? 0 : Integer.parseInt(score0);
     }
@@ -101,8 +92,7 @@ public class SpeechRecognitionResult implements Serializable
      *
      * @return the text for the first recognition result or <code>null</code> if no speech was recognized.
      */
-    public String getText()
-    {
+    public String getText() {
         return agiReply.getAttribute("text0");
     }
 
@@ -111,8 +101,7 @@ public class SpeechRecognitionResult implements Serializable
      *
      * @return the grammar for the first recognition result or <code>null</code> if no speech was recognized.
      */
-    public String getGrammar()
-    {
+    public String getGrammar() {
         return agiReply.getAttribute("grammar0");
     }
 
@@ -122,19 +111,16 @@ public class SpeechRecognitionResult implements Serializable
      *
      * @return the number of results recognized.
      */
-    public int getNumberOfResults()
-    {
+    public int getNumberOfResults() {
         final String numberOfResults = agiReply.getAttribute("results");
         return numberOfResults == null ? 0 : Integer.parseInt(numberOfResults);
     }
 
-    public List<SpeechResult> getAllResults()
-    {
+    public List<SpeechResult> getAllResults() {
         final int numberOfResults = getNumberOfResults();
         final List<SpeechResult> results = new ArrayList<>(numberOfResults);
 
-        for (int i = 0; i < numberOfResults; i++)
-        {
+        for (int i = 0; i < numberOfResults; i++) {
             SpeechResult result = new SpeechResult(
                     Integer.parseInt(agiReply.getAttribute("score" + i)),
                     agiReply.getAttribute("text" + i),
@@ -146,28 +132,23 @@ public class SpeechRecognitionResult implements Serializable
         return results;
     }
 
-    public String toString()
-    {
+    public String toString() {
         final StringBuilder sb = new StringBuilder("SpeechRecognitionResult[");
-        if (isDtmf())
-        {
+        if (isDtmf()) {
             sb.append("dtmf=true,");
             sb.append("digit=").append(getDigit()).append(",");
         }
-        if (isSpeech())
-        {
+        if (isSpeech()) {
             sb.append("speech=true,");
             sb.append("score=").append(getScore()).append(",");
             sb.append("text='").append(getText()).append("',");
             sb.append("grammar='").append(getGrammar()).append("',");
         }
-        if (isTimeout())
-        {
+        if (isTimeout()) {
             sb.append("timeout=true,");
         }
 
-        if (getNumberOfResults() > 1)
-        {
+        if (getNumberOfResults() > 1) {
             sb.append("numberOfResults=").append(getNumberOfResults()).append(",");
             sb.append("allResults=").append(getAllResults()).append(",");
         }
@@ -181,15 +162,13 @@ public class SpeechRecognitionResult implements Serializable
      *
      * @see SpeechRecognitionResult#getAllResults()
      */
-    public static class SpeechResult implements Serializable
-    {
+    public static class SpeechResult implements Serializable {
         private static final long serialVersionUID = 0L;
         private final int score;
         private final String text;
         private final String grammar;
 
-        private SpeechResult(int score, String text, String grammar)
-        {
+        private SpeechResult(int score, String text, String grammar) {
             this.score = score;
             this.text = text;
             this.grammar = grammar;
@@ -201,8 +180,7 @@ public class SpeechRecognitionResult implements Serializable
          *
          * @return the confidence score.
          */
-        public int getScore()
-        {
+        public int getScore() {
             return score;
         }
 
@@ -211,8 +189,7 @@ public class SpeechRecognitionResult implements Serializable
          *
          * @return the text
          */
-        public String getText()
-        {
+        public String getText() {
             return text;
         }
 
@@ -221,13 +198,11 @@ public class SpeechRecognitionResult implements Serializable
          *
          * @return the grammar
          */
-        public String getGrammar()
-        {
+        public String getGrammar() {
             return grammar;
         }
 
-        public String toString()
-        {
+        public String toString() {
             final StringBuilder sb = new StringBuilder("[");
             sb.append("score=").append(score).append(",");
             sb.append("text='").append(text).append("',");

@@ -30,12 +30,11 @@ package org.asteriskjava.fastagi.command;
  * Remember, filename follows the same conventions and uses the same file path
  * as dialplan applications like Playback or Background. The file extension must
  * not be included in the filename.
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public class StreamFileCommand extends AbstractAgiCommand
-{
+public class StreamFileCommand extends AbstractAgiCommand {
     /**
      * Serial version identifier.
      */
@@ -58,11 +57,10 @@ public class StreamFileCommand extends AbstractAgiCommand
 
     /**
      * Creates a new StreamFileCommand, streaming from the beginning.
-     * 
+     *
      * @param file the name of the file to stream, must not include extension.
      */
-    public StreamFileCommand(String file)
-    {
+    public StreamFileCommand(String file) {
         super();
         this.file = file;
         this.offset = -1;
@@ -70,13 +68,12 @@ public class StreamFileCommand extends AbstractAgiCommand
 
     /**
      * Creates a new StreamFileCommand, streaming from the beginning.
-     * 
-     * @param file the name of the file to stream, must not include extension.
+     *
+     * @param file         the name of the file to stream, must not include extension.
      * @param escapeDigits contains the digits that allow the user to interrupt
-     *            this command.
+     *                     this command.
      */
-    public StreamFileCommand(String file, String escapeDigits)
-    {
+    public StreamFileCommand(String file, String escapeDigits) {
         super();
         this.file = file;
         this.escapeDigits = escapeDigits;
@@ -85,15 +82,14 @@ public class StreamFileCommand extends AbstractAgiCommand
 
     /**
      * Creates a new StreamFileCommand, streaming from the given offset.
-     * 
-     * @param file the name of the file to stream, must not include extension.
+     *
+     * @param file         the name of the file to stream, must not include extension.
      * @param escapeDigits contains the digits that allow the user to interrupt
-     *            this command. Maybe <code>null</code> if you don't want the
-     *            user to interrupt.
-     * @param offset the offset samples to skip before streaming.
+     *                     this command. Maybe <code>null</code> if you don't want the
+     *                     user to interrupt.
+     * @param offset       the offset samples to skip before streaming.
      */
-    public StreamFileCommand(String file, String escapeDigits, int offset)
-    {
+    public StreamFileCommand(String file, String escapeDigits, int offset) {
         super();
         this.file = file;
         this.escapeDigits = escapeDigits;
@@ -102,68 +98,61 @@ public class StreamFileCommand extends AbstractAgiCommand
 
     /**
      * Returns the name of the file to stream.
-     * 
+     *
      * @return the name of the file to stream.
      */
-    public String getFile()
-    {
+    public String getFile() {
         return file;
     }
 
     /**
      * Sets the name of the file to stream.
-     * 
+     *
      * @param file the name of the file to stream, must not include extension.
      */
-    public void setFile(String file)
-    {
+    public void setFile(String file) {
         this.file = file;
     }
 
     /**
      * Returns the digits that allow the user to interrupt this command.
-     * 
+     *
      * @return the digits that allow the user to interrupt this command.
      */
-    public String getEscapeDigits()
-    {
+    public String getEscapeDigits() {
         return escapeDigits;
     }
 
     /**
      * Sets the digits that allow the user to interrupt this command.
-     * 
+     *
      * @param escapeDigits the digits that allow the user to interrupt this
-     *            command or <code>null</code> for none.
+     *                     command or <code>null</code> for none.
      */
-    public void setEscapeDigits(String escapeDigits)
-    {
+    public void setEscapeDigits(String escapeDigits) {
         this.escapeDigits = escapeDigits;
     }
 
     /**
      * Returns the offset samples to skip before streaming.
-     * 
+     *
      * @return the offset samples to skip before streaming.
      */
-    public int getOffset()
-    {
+    public int getOffset() {
         return offset;
     }
 
     /**
      * Sets the offset samples to skip before streaming.
-     * 
+     *
      * @param offset the offset samples to skip before streaming.
      */
-    public void setOffset(int offset)
-    {
+    public void setOffset(int offset) {
         this.offset = offset;
     }
 
     @Override
-   public String buildCommand()
-    {
+    public String buildCommand() {
         return "STREAM FILE " + escapeAndQuote(file) + " "
                 + escapeAndQuote(escapeDigits)
                 + (offset < 0 ? "" : " " + offset);

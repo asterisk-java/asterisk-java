@@ -16,9 +16,9 @@
  */
 package org.asteriskjava.manager.event;
 
-import java.nio.charset.StandardCharsets;
-
 import org.asteriskjava.util.Base64;
+
+import java.nio.charset.StandardCharsets;
 
 /**
  * A SkypeChatMessageEvent is triggered when a Skype Chat message is sent or
@@ -30,8 +30,7 @@ import org.asteriskjava.util.Base64;
  *
  * @since 1.0.0
  */
-public class SkypeChatMessageEvent extends ManagerEvent
-{
+public class SkypeChatMessageEvent extends ManagerEvent {
     /**
      * Serializable version identifier.
      */
@@ -41,8 +40,7 @@ public class SkypeChatMessageEvent extends ManagerEvent
     private String from;
     private String message;
 
-    public SkypeChatMessageEvent(Object source)
-    {
+    public SkypeChatMessageEvent(Object source) {
         super(source);
     }
 
@@ -51,8 +49,7 @@ public class SkypeChatMessageEvent extends ManagerEvent
      *
      * @return the Skype username of the recipient of this chat message.
      */
-    public String getTo()
-    {
+    public String getTo() {
         return to;
     }
 
@@ -61,8 +58,7 @@ public class SkypeChatMessageEvent extends ManagerEvent
      *
      * @param to the Skype username of the recipient of this chat message.
      */
-    public void setTo(String to)
-    {
+    public void setTo(String to) {
         this.to = to;
     }
 
@@ -71,8 +67,7 @@ public class SkypeChatMessageEvent extends ManagerEvent
      *
      * @return the Skype username of the sender of this chat message.
      */
-    public String getFrom()
-    {
+    public String getFrom() {
         return from;
     }
 
@@ -81,8 +76,7 @@ public class SkypeChatMessageEvent extends ManagerEvent
      *
      * @param from the Skype username of the sender of this chat message.
      */
-    public void setFrom(String from)
-    {
+    public void setFrom(String from) {
         this.from = from;
     }
 
@@ -91,8 +85,7 @@ public class SkypeChatMessageEvent extends ManagerEvent
      *
      * @return the Base64 encoded message.
      */
-    public String getMessage()
-    {
+    public String getMessage() {
         return message;
     }
 
@@ -101,8 +94,7 @@ public class SkypeChatMessageEvent extends ManagerEvent
      *
      * @param message the Base64 encoded message.
      */
-    public void setMessage(String message)
-    {
+    public void setMessage(String message) {
         this.message = message;
     }
 
@@ -111,10 +103,8 @@ public class SkypeChatMessageEvent extends ManagerEvent
      *
      * @return the decoded message.
      */
-    public String getDecodedMessage()
-    {
-        if (message == null)
-        {
+    public String getDecodedMessage() {
+        if (message == null) {
             return null;
         }
         return new String(Base64.base64ToByteArray(message), StandardCharsets.UTF_8);

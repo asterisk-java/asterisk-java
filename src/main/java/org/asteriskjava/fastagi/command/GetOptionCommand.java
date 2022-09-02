@@ -30,8 +30,7 @@ package org.asteriskjava.fastagi.command;
  * @version $Id$
  * @see org.asteriskjava.fastagi.command.StreamFileCommand
  */
-public class GetOptionCommand extends AbstractAgiCommand
-{
+public class GetOptionCommand extends AbstractAgiCommand {
     /**
      * Serial version identifier.
      */
@@ -59,8 +58,7 @@ public class GetOptionCommand extends AbstractAgiCommand
      * @param escapeDigits contains the digits that the user is expected to
      *                     press.
      */
-    public GetOptionCommand(String file, String escapeDigits)
-    {
+    public GetOptionCommand(String file, String escapeDigits) {
         super();
         this.file = file;
         this.escapeDigits = escapeDigits;
@@ -76,8 +74,7 @@ public class GetOptionCommand extends AbstractAgiCommand
      * @param timeout      the timeout in milliseconds to wait if none of the defined
      *                     esacpe digits was presses while streaming.
      */
-    public GetOptionCommand(String file, String escapeDigits, long timeout)
-    {
+    public GetOptionCommand(String file, String escapeDigits, long timeout) {
         super();
         this.file = file;
         this.escapeDigits = escapeDigits;
@@ -89,8 +86,7 @@ public class GetOptionCommand extends AbstractAgiCommand
      *
      * @return the name of the file to stream.
      */
-    public String getFile()
-    {
+    public String getFile() {
         return file;
     }
 
@@ -99,8 +95,7 @@ public class GetOptionCommand extends AbstractAgiCommand
      *
      * @param file the name of the file to stream, must not include extension.
      */
-    public void setFile(String file)
-    {
+    public void setFile(String file) {
         this.file = file;
     }
 
@@ -109,8 +104,7 @@ public class GetOptionCommand extends AbstractAgiCommand
      *
      * @return the digits that the user is expected to press.
      */
-    public String getEscapeDigits()
-    {
+    public String getEscapeDigits() {
         return escapeDigits;
     }
 
@@ -119,8 +113,7 @@ public class GetOptionCommand extends AbstractAgiCommand
      *
      * @param escapeDigits the digits that the user is expected to press.
      */
-    public void setEscapeDigits(String escapeDigits)
-    {
+    public void setEscapeDigits(String escapeDigits) {
         this.escapeDigits = escapeDigits;
     }
 
@@ -130,8 +123,7 @@ public class GetOptionCommand extends AbstractAgiCommand
      *
      * @return the timeout in milliseconds.
      */
-    public long getTimeout()
-    {
+    public long getTimeout() {
         return timeout;
     }
 
@@ -141,14 +133,12 @@ public class GetOptionCommand extends AbstractAgiCommand
      *
      * @param timeout the timeout in milliks,seconds.
      */
-    public void setTimeout(long timeout)
-    {
+    public void setTimeout(long timeout) {
         this.timeout = timeout;
     }
 
     @Override
-    public String buildCommand()
-    {
+    public String buildCommand() {
         return "GET OPTION " + escapeAndQuote(file) + " "
                 + escapeAndQuote(escapeDigits)
                 + (timeout < 0 ? "" : " " + timeout);

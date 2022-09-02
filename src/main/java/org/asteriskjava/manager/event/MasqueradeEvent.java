@@ -27,8 +27,7 @@ import org.asteriskjava.util.AstState;
  * @version $Id$
  * @since 1.0.0
  */
-public class MasqueradeEvent extends ManagerEvent
-{
+public class MasqueradeEvent extends ManagerEvent {
     static final long serialVersionUID = 1L;
 
     private String clone;
@@ -36,8 +35,7 @@ public class MasqueradeEvent extends ManagerEvent
     private String original;
     private String originalStateDesc;
 
-    public MasqueradeEvent(Object source)
-    {
+    public MasqueradeEvent(Object source) {
         super(source);
     }
 
@@ -46,13 +44,11 @@ public class MasqueradeEvent extends ManagerEvent
      *
      * @return the name of the clone channel.
      */
-    public String getClone()
-    {
+    public String getClone() {
         return clone;
     }
 
-    public void setClone(String clone)
-    {
+    public void setClone(String clone) {
         this.clone = clone;
     }
 
@@ -62,8 +58,7 @@ public class MasqueradeEvent extends ManagerEvent
      * @return the state of the clone channel.
      * @see org.asteriskjava.util.AstState
      */
-    public Integer getCloneState()
-    {
+    public Integer getCloneState() {
         return AstState.str2state(cloneStateDesc);
     }
 
@@ -72,13 +67,11 @@ public class MasqueradeEvent extends ManagerEvent
      *
      * @return the state of the clone channel as a descriptive text.
      */
-    public String getCloneStateDesc()
-    {
+    public String getCloneStateDesc() {
         return cloneStateDesc;
     }
 
-    public void setCloneState(String cloneState)
-    {
+    public void setCloneState(String cloneState) {
         this.cloneStateDesc = cloneState;
     }
 
@@ -87,13 +80,11 @@ public class MasqueradeEvent extends ManagerEvent
      *
      * @return the name of the original channel.
      */
-    public String getOriginal()
-    {
+    public String getOriginal() {
         return original;
     }
 
-    public void setOriginal(String original)
-    {
+    public void setOriginal(String original) {
         this.original = original;
     }
 
@@ -103,8 +94,7 @@ public class MasqueradeEvent extends ManagerEvent
      * @return the state of the original channel.
      * @see org.asteriskjava.util.AstState
      */
-    public Integer getOriginalState()
-    {
+    public Integer getOriginalState() {
         return AstState.str2state(originalStateDesc);
     }
 
@@ -113,13 +103,11 @@ public class MasqueradeEvent extends ManagerEvent
      *
      * @return the state of the original channel as a descriptive text.
      */
-    public String getOriginalStateDesc()
-    {
+    public String getOriginalStateDesc() {
         return originalStateDesc;
     }
 
-    public void setOriginalState(String originalState)
-    {
+    public void setOriginalState(String originalState) {
         this.originalStateDesc = originalState;
     }
 }

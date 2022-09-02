@@ -3,8 +3,7 @@ package org.asteriskjava.pbx;
 import java.util.Date;
 import java.util.List;
 
-public interface Call
-{
+public interface Call {
     /**
      * Used to identify which channel of a call an operation is to be performed
      * on. This is designed to stop the mis-use of some methods which operate on
@@ -12,12 +11,11 @@ public interface Call
      * which channel to operate on without having to explicitly pass in the
      * channel. Without this enum they could potentially pass in a channel which
      * is not owned by the call.
-     * 
+     *
      * @author bsutton
      */
 
-    enum OperandChannel
-    {
+    enum OperandChannel {
         /**
          * this party received (did not originate) the call
          */
@@ -65,7 +63,7 @@ public interface Call
 
     /**
      * retrieves the channel associated with the give Operand.
-     * 
+     *
      * @param lhs
      * @return
      */
@@ -75,7 +73,7 @@ public interface Call
      * This method use the CallDirection to determine which leg of the call is
      * the local call and which is the called/calling party. It then returns the
      * called/calling party.
-     * 
+     *
      * @return
      */
     Channel getRemoteParty();
@@ -84,13 +82,14 @@ public interface Call
      * This method use the CallDirection to determine which leg of the call is
      * the local call and which is the called/calling party. It then returns the
      * local call .
-     * 
+     *
      * @return
      */
     Channel getLocalParty();
 
     /**
      * Returns true of the Call can be split into two (or more) separate calls.
+     *
      * @return
      */
     boolean canSplit();
@@ -99,12 +98,14 @@ public interface Call
      * Returns the direction of the call.
      * The call Direction can be a little esoteric as a call can
      * come in and then be transferred out again. So is this an inbound or outbound call?
+     *
      * @return
      */
     CallDirection getDirection();
 
     /**
      * Returns a list of the Channels associated with this call.
+     *
      * @return
      */
     List<Channel> getChannels();

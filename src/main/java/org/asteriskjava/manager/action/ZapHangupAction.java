@@ -18,12 +18,11 @@ package org.asteriskjava.manager.action;
 
 /**
  * The ZapHangupAction hangs up a zap channel.
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public class ZapHangupAction extends AbstractManagerAction
-{
+public class ZapHangupAction extends AbstractManagerAction {
     /**
      * Serializable version identifier
      */
@@ -33,19 +32,17 @@ public class ZapHangupAction extends AbstractManagerAction
     /**
      * Creates a new empty ZapHangupAction.
      */
-    public ZapHangupAction()
-    {
+    public ZapHangupAction() {
 
     }
 
     /**
      * Creates a new ZapHangupAction that hangs up the given zap channel.
-     * 
+     *
      * @param zapChannel the number of the zap channel to hang up
      * @since 0.2
      */
-    public ZapHangupAction(Integer zapChannel)
-    {
+    public ZapHangupAction(Integer zapChannel) {
         this.zapChannel = zapChannel;
     }
 
@@ -53,16 +50,14 @@ public class ZapHangupAction extends AbstractManagerAction
      * Returns the name of this action, i.e. "ZapHangup".
      */
     @Override
-   public String getAction()
-    {
+    public String getAction() {
         return "ZapHangup";
     }
 
     /**
      * Returns the number of the zap channel to hangup.
      */
-    public Integer getZapChannel()
-    {
+    public Integer getZapChannel() {
         return zapChannel;
     }
 
@@ -70,8 +65,7 @@ public class ZapHangupAction extends AbstractManagerAction
      * Sets the number of the zap channel to hangup.<p>
      * This property is mandatory.
      */
-    public void setZapChannel(Integer channel)
-    {
+    public void setZapChannel(Integer channel) {
         this.zapChannel = channel;
     }
 }

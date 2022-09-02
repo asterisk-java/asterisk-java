@@ -17,8 +17,7 @@
 package org.asteriskjava.manager.event;
 
 
-public class ChanSpyStopEvent extends ManagerEvent
-{
+public class ChanSpyStopEvent extends ManagerEvent {
     /**
      * Serial version identifier
      */
@@ -33,201 +32,169 @@ public class ChanSpyStopEvent extends ManagerEvent
     private String spyerLinkedId;
     private Integer spyerChannelState;
     private Integer spyerPriority;
-    private String spyerContext;    
+    private String spyerContext;
     private String spyerLanguage;
-    private String spyerChannelStateDesc;    
+    private String spyerChannelStateDesc;
     private String spyerExten;
     private String spyerCallerIdNum;
     private String spyerConnectedLineNum;
-    private String spyerConnectedLineName;    
+    private String spyerConnectedLineName;
     private String spyerCallerIdName;
     private String spyerChannel;
-    
 
-    public ChanSpyStopEvent(Object source)
-    {
+
+    public ChanSpyStopEvent(Object source) {
         super(source);
     }
 
-   
-    public String getSpyeeChannel()
-    {
+
+    public String getSpyeeChannel() {
         return spyeechannel;
     }
 
-    public void setSpyeeChannel(String channel)
-    {
+    public void setSpyeeChannel(String channel) {
         this.spyeechannel = channel;
     }
 
 
-    public String getSpyeechannel()
-    {
+    public String getSpyeechannel() {
         return spyeechannel;
     }
 
 
-    public void setSpyeechannel(String spyeechannel)
-    {
+    public void setSpyeechannel(String spyeechannel) {
         this.spyeechannel = spyeechannel;
     }
 
 
-    public String getSpyerUniqueId()
-    {
+    public String getSpyerUniqueId() {
         return spyerUniqueId;
     }
 
 
-    public void setSpyerUniqueId(String spyerUniqueId)
-    {
+    public void setSpyerUniqueId(String spyerUniqueId) {
         this.spyerUniqueId = spyerUniqueId;
     }
 
 
-    public String getSpyerLinkedId()
-    {
+    public String getSpyerLinkedId() {
         return spyerLinkedId;
     }
 
 
-    public void setSpyerLinkedId(String spyerLinkedId)
-    {
+    public void setSpyerLinkedId(String spyerLinkedId) {
         this.spyerLinkedId = spyerLinkedId;
     }
 
 
-    public Integer getSpyerChannelState()
-    {
+    public Integer getSpyerChannelState() {
         return spyerChannelState;
     }
 
 
-    public void setSpyerChannelState(Integer spyerChannelState)
-    {
+    public void setSpyerChannelState(Integer spyerChannelState) {
         this.spyerChannelState = spyerChannelState;
     }
 
 
-    public Integer getSpyerPriority()
-    {
+    public Integer getSpyerPriority() {
         return spyerPriority;
     }
 
 
-    public void setSpyerPriority(Integer spyerPriority)
-    {
+    public void setSpyerPriority(Integer spyerPriority) {
         this.spyerPriority = spyerPriority;
     }
 
 
-    public String getSpyerContext()
-    {
+    public String getSpyerContext() {
         return spyerContext;
     }
 
 
-    public void setSpyerContext(String spyerContext)
-    {
+    public void setSpyerContext(String spyerContext) {
         this.spyerContext = spyerContext;
     }
 
 
-    public String getSpyerLanguage()
-    {
+    public String getSpyerLanguage() {
         return spyerLanguage;
     }
 
 
-    public void setSpyerLanguage(String spyerLanguage)
-    {
+    public void setSpyerLanguage(String spyerLanguage) {
         this.spyerLanguage = spyerLanguage;
     }
 
 
-    public String getSpyerChannelStateDesc()
-    {
+    public String getSpyerChannelStateDesc() {
         return spyerChannelStateDesc;
     }
 
 
-    public void setSpyerChannelStateDesc(String spyerChannelStateDesc)
-    {
+    public void setSpyerChannelStateDesc(String spyerChannelStateDesc) {
         this.spyerChannelStateDesc = spyerChannelStateDesc;
     }
 
 
-    public String getSpyerExten()
-    {
+    public String getSpyerExten() {
         return spyerExten;
     }
 
 
-    public void setSpyerExten(String spyerExten)
-    {
+    public void setSpyerExten(String spyerExten) {
         this.spyerExten = spyerExten;
     }
 
 
-    public String getSpyerCallerIdNum()
-    {
+    public String getSpyerCallerIdNum() {
         return spyerCallerIdNum;
     }
 
 
-    public void setSpyerCallerIdNum(String spyerCallerIdNum)
-    {
+    public void setSpyerCallerIdNum(String spyerCallerIdNum) {
         this.spyerCallerIdNum = spyerCallerIdNum;
     }
 
 
-    public String getSpyerConnectedLineNum()
-    {
+    public String getSpyerConnectedLineNum() {
         return spyerConnectedLineNum;
     }
 
 
-    public void setSpyerConnectedLineNum(String spyerConnectedLineNum)
-    {
+    public void setSpyerConnectedLineNum(String spyerConnectedLineNum) {
         this.spyerConnectedLineNum = spyerConnectedLineNum;
     }
 
 
-    public String getSpyerConnectedLineName()
-    {
+    public String getSpyerConnectedLineName() {
         return spyerConnectedLineName;
     }
 
 
-    public void setSpyerConnectedLineName(String spyerConnectedLineName)
-    {
+    public void setSpyerConnectedLineName(String spyerConnectedLineName) {
         this.spyerConnectedLineName = spyerConnectedLineName;
     }
 
 
-    public String getSpyerCallerIdName()
-    {
+    public String getSpyerCallerIdName() {
         return spyerCallerIdName;
     }
 
 
-    public void setSpyerCallerIdName(String spyerCallerIdName)
-    {
+    public void setSpyerCallerIdName(String spyerCallerIdName) {
         this.spyerCallerIdName = spyerCallerIdName;
     }
 
 
-    public String getSpyerChannel()
-    {
+    public String getSpyerChannel() {
         return spyerChannel;
     }
 
 
-    public void setSpyerChannel(String spyerChannel)
-    {
+    public void setSpyerChannel(String spyerChannel) {
         this.spyerChannel = spyerChannel;
     }
 
-    
-    
+
 }

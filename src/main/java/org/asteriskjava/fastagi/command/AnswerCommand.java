@@ -19,12 +19,11 @@ package org.asteriskjava.fastagi.command;
 /**
  * Answers channel if not already in answer state.<p>
  * Returns -1 on channel failure, or 0 if successful.
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public class AnswerCommand extends AbstractAgiCommand
-{
+public class AnswerCommand extends AbstractAgiCommand {
     /**
      * Serial version identifier.
      */
@@ -33,14 +32,12 @@ public class AnswerCommand extends AbstractAgiCommand
     /**
      * Creates a new AnswerCommand.
      */
-    public AnswerCommand()
-    {
+    public AnswerCommand() {
         super();
     }
 
     @Override
-   public String buildCommand()
-    {
+    public String buildCommand() {
         return "ANSWER";
     }
 }

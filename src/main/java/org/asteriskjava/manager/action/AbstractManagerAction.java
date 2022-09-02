@@ -16,21 +16,20 @@
  */
 package org.asteriskjava.manager.action;
 
+import org.asteriskjava.util.ReflectionUtil;
+
 import java.lang.reflect.Method;
 import java.util.Map;
-
-import org.asteriskjava.util.ReflectionUtil;
 
 /**
  * This class implements the ManagerAction interface and can serve as base class
  * for your concrete Action implementations.
- * 
+ *
  * @author srt
  * @version $Id$
  * @since 0.2
  */
-public abstract class AbstractManagerAction implements ManagerAction
-{
+public abstract class AbstractManagerAction implements ManagerAction {
     /**
      * Serializable version identifier.
      */
@@ -40,40 +39,33 @@ public abstract class AbstractManagerAction implements ManagerAction
 
     public abstract String getAction();
 
-    public String getActionId()
-    {
+    public String getActionId() {
         return actionId;
     }
 
-    public void setActionId(String actionId)
-    {
+    public void setActionId(String actionId) {
         this.actionId = actionId;
     }
 
     @Override
-    public String toString()
-    {
-    	StringBuilder sb;
+    public String toString() {
+        StringBuilder sb;
         Map<String, Method> getters;
 
         sb = new StringBuilder(getClass().getName() + "[");
         sb.append("action='").append(getAction()).append("',");
         getters = ReflectionUtil.getGetters(getClass());
-        for (Map.Entry<String, Method> entry : getters.entrySet())
-        {
+        for (Map.Entry<String, Method> entry : getters.entrySet()) {
             final String attribute = entry.getKey();
-            if ("action".equals(attribute) || "class".equals(attribute))
-            {
+            if ("action".equals(attribute) || "class".equals(attribute)) {
                 continue;
             }
 
-            try
-            {
+            try {
                 Object value;
                 value = entry.getValue().invoke(this);
                 sb.append(attribute).append("='").append(value).append("',");
-            }
-            catch (Exception e) // NOPMD
+            } catch (Exception e) // NOPMD
             {
                 // swallow
             }

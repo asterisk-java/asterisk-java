@@ -16,13 +16,13 @@
  */
 package org.asteriskjava.config;
 
+import org.asteriskjava.lock.LockableMap;
+import org.asteriskjava.lock.Locker.LockCloser;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-
-import org.asteriskjava.lock.LockableMap;
-import org.asteriskjava.lock.Locker.LockCloser;
 
 /**
  * An Asterisk configuration file read from the filesystem.
@@ -31,39 +31,31 @@ import org.asteriskjava.lock.Locker.LockCloser;
  * @version $Id$
  * @since 1.0.0
  */
-public class ConfigFileImpl implements ConfigFile
-{
+public class ConfigFileImpl implements ConfigFile {
     private final String filename;
     protected final LockableMap<String, Category> categories;
 
-    public ConfigFileImpl(String filename, Map<String, Category> categories)
-    {
+    public ConfigFileImpl(String filename, Map<String, Category> categories) {
         this.filename = filename;
         this.categories = new LockableMap<>(categories);
     }
 
-    public String getFilename()
-    {
+    public String getFilename() {
         return filename;
     }
 
-    public Map<String, List<String>> getCategories()
-    {
+    public Map<String, List<String>> getCategories() {
         final Map<String, List<String>> c;
 
         c = new TreeMap<>();
 
-        try (LockCloser closer = categories.withLock())
-        {
-            for (Category category : categories.values())
-            {
+        try (LockCloser closer = categories.withLock()) {
+            for (Category category : categories.values()) {
                 List<String> lines;
 
                 lines = new ArrayList<>();
-                for (ConfigElement element : category.getElements())
-                {
-                    if (element instanceof ConfigVariable)
-                    {
+                for (ConfigElement element : category.getElements()) {
+                    if (element instanceof ConfigVariable) {
                         ConfigVariable cv = (ConfigVariable) element;
                         lines.add(cv.getName() + "=" + cv.getValue());
                     }
@@ -75,24 +67,19 @@ public class ConfigFileImpl implements ConfigFile
         return c;
     }
 
-    public String getValue(String categoryName, String key)
-    {
+    public String getValue(String categoryName, String key) {
         final Category category;
 
         category = getCategory(categoryName);
-        if (category == null)
-        {
+        if (category == null) {
             return null;
         }
 
-        for (ConfigElement element : category.getElements())
-        {
-            if (element instanceof ConfigVariable)
-            {
+        for (ConfigElement element : category.getElements()) {
+            if (element instanceof ConfigVariable) {
                 ConfigVariable cv = (ConfigVariable) element;
 
-                if (cv.getName().equals(key))
-                {
+                if (cv.getName().equals(key)) {
                     return cv.getValue();
                 }
             }
@@ -100,26 +87,21 @@ public class ConfigFileImpl implements ConfigFile
         return null;
     }
 
-    public List<String> getValues(String categoryName, String key)
-    {
+    public List<String> getValues(String categoryName, String key) {
         final Category category;
         final List<String> result;
 
         category = getCategory(categoryName);
         result = new ArrayList<>();
-        if (category == null)
-        {
+        if (category == null) {
             return result;
         }
 
-        for (ConfigElement element : category.getElements())
-        {
-            if (element instanceof ConfigVariable)
-            {
+        for (ConfigElement element : category.getElements()) {
+            if (element instanceof ConfigVariable) {
                 ConfigVariable cv = (ConfigVariable) element;
 
-                if (cv.getName().equals(key))
-                {
+                if (cv.getName().equals(key)) {
                     result.add(cv.getValue());
                 }
             }
@@ -127,10 +109,8 @@ public class ConfigFileImpl implements ConfigFile
         return result;
     }
 
-    protected Category getCategory(String name)
-    {
-        try (LockCloser closer = categories.withLock())
-        {
+    protected Category getCategory(String name) {
+        try (LockCloser closer = categories.withLock()) {
             return categories.get(name);
         }
     }

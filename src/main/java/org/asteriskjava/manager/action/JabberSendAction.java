@@ -24,8 +24,7 @@ package org.asteriskjava.manager.action;
  * @version $Id$
  * @since 1.0.0
  */
-public class JabberSendAction extends AbstractManagerAction
-{
+public class JabberSendAction extends AbstractManagerAction {
     private static final long serialVersionUID = 1L;
 
     private String jabber;
@@ -35,8 +34,7 @@ public class JabberSendAction extends AbstractManagerAction
     /**
      * Creates a new JabberSendAction.
      */
-    public JabberSendAction()
-    {
+    public JabberSendAction() {
         super();
     }
 
@@ -47,8 +45,7 @@ public class JabberSendAction extends AbstractManagerAction
      * @param screenName the JID of the recipient.
      * @param message    the message to send to the recipient.
      */
-    public JabberSendAction(String jabber, String screenName, String message)
-    {
+    public JabberSendAction(String jabber, String screenName, String message) {
         this.jabber = jabber;
         this.screenName = screenName;
         this.message = message;
@@ -58,13 +55,11 @@ public class JabberSendAction extends AbstractManagerAction
      * Returns the name of this action, i.e. "Ping".
      */
     @Override
-    public String getAction()
-    {
+    public String getAction() {
         return "JabberSend";
     }
 
-    public String getJabber()
-    {
+    public String getJabber() {
         return jabber;
     }
 
@@ -73,13 +68,11 @@ public class JabberSendAction extends AbstractManagerAction
      *
      * @param jabber the client or transport Asterisk uses to connect to Jabber.
      */
-    public void setJabber(String jabber)
-    {
+    public void setJabber(String jabber) {
         this.jabber = jabber;
     }
 
-    public String getScreenName()
-    {
+    public String getScreenName() {
         return screenName;
     }
 
@@ -88,13 +81,11 @@ public class JabberSendAction extends AbstractManagerAction
      *
      * @param screenName the JID of the recipient.
      */
-    public void setScreenName(String screenName)
-    {
+    public void setScreenName(String screenName) {
         this.screenName = screenName;
     }
 
-    public String getMessage()
-    {
+    public String getMessage() {
         return message;
     }
 
@@ -103,8 +94,7 @@ public class JabberSendAction extends AbstractManagerAction
      *
      * @param message the message to send to the recipient.
      */
-    public void setMessage(String message)
-    {
+    public void setMessage(String message) {
         this.message = message;
     }
 }

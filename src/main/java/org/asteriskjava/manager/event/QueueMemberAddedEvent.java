@@ -20,13 +20,12 @@ package org.asteriskjava.manager.event;
  * A QueueMemberAddedEvent is triggered when a queue member is added to a queue.<p>
  * It is implemented in <code>apps/app_queue.c</code>.<p>
  * Available since Asterisk 1.2
- * 
+ *
  * @author srt
  * @version $Id$
  * @since 0.2
  */
-public class QueueMemberAddedEvent extends AbstractQueueMemberEvent
-{
+public class QueueMemberAddedEvent extends AbstractQueueMemberEvent {
     /**
      * Serial version identifier.
      */
@@ -38,99 +37,90 @@ public class QueueMemberAddedEvent extends AbstractQueueMemberEvent
     private Long lastCall;
     private Integer status;
     private Boolean paused;
-    
+
     private String stateinterface;
     private Boolean ringinuse;
 
-    public QueueMemberAddedEvent(Object source)
-    {
+    public QueueMemberAddedEvent(Object source) {
         super(source);
     }
 
     /**
      * Returns if the added member is a dynamic or static queue member.
-     * 
+     *
      * @return "dynamic" if the added member is a dynamic queue member, "static"
-     *         if the added member is a static queue member.
+     * if the added member is a static queue member.
      */
-    public String getMembership()
-    {
+    public String getMembership() {
         return membership;
     }
 
     /**
      * Sets if the added member is a dynamic or static queue member.
-     * 
+     *
      * @param membership "dynamic" if the added member is a dynamic queue
-     *            member, "static" if the added member is a static queue member.
+     *                   member, "static" if the added member is a static queue member.
      */
-    public void setMembership(String membership)
-    {
+    public void setMembership(String membership) {
         this.membership = membership;
     }
 
     /**
      * Returns the penalty for the added member. When calls are distributed
      * members with higher penalties are considered last.
-     * 
+     *
      * @return the penalty for the added member.
      */
-    public Integer getPenalty()
-    {
+    public Integer getPenalty() {
         return penalty;
     }
 
     /**
      * Sets the penalty for this member.
-     * 
+     *
      * @param penalty the penalty for this member.
      */
-    public void setPenalty(Integer penalty)
-    {
+    public void setPenalty(Integer penalty) {
         this.penalty = penalty;
     }
 
     /**
      * Returns the number of calls answered by the member.
-     * 
+     *
      * @return the number of calls answered by the member.
      */
-    public Integer getCallsTaken()
-    {
+    public Integer getCallsTaken() {
         return callsTaken;
     }
 
     /**
      * Sets the number of calls answered by the added member.
-     * 
+     *
      * @param callsTaken the number of calls answered by the added member.
      */
-    public void setCallsTaken(Integer callsTaken)
-    {
+    public void setCallsTaken(Integer callsTaken) {
         this.callsTaken = callsTaken;
     }
 
     /**
      * Returns the time the last successful call answered by the added member
      * was hungup.
-     * 
+     *
      * @return the time (in seconds since 01/01/1970) the last successful call
-     *         answered by the added member was hungup.
+     * answered by the added member was hungup.
      */
-    public Long getLastCall()
-    {
+    public Long getLastCall() {
         return lastCall;
     }
 
     /**
      * Sets the time the last successful call answered by this member was
      * hungup.
-     * 
+     *
      * @param lastCall the time (in seconds since 01/01/1970) the last
-     *            successful call answered by the added member was hungup.
+     *                 successful call answered by the added member was hungup.
      */
-    public void setLastCall(Long lastCall)
-    {
+    public void setLastCall(Long lastCall) {
         this.lastCall = lastCall;
     }
 
@@ -151,63 +141,55 @@ public class QueueMemberAddedEvent extends AbstractQueueMemberEvent
      * <dt>AST_DEVICE_UNAVAILABLE (5)</dt>
      * <dd>?</dd>
      * </dl>
-     * 
+     *
      * @return the status of this queue member.
      */
-    public Integer getStatus()
-    {
+    public Integer getStatus() {
         return status;
     }
 
     /**
      * Sets the status of this queue member.
-     * 
+     *
      * @param status the status of this queue member
      */
-    public void setStatus(Integer status)
-    {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
     /**
      * Returns if this queue member is paused (not accepting calls).<p>
-     * 
+     *
      * @return <code>Boolean.TRUE</code> if this member has been paused or
-     *         <code>Boolean.FALSE</code> if not.
+     * <code>Boolean.FALSE</code> if not.
      */
-    public Boolean getPaused()
-    {
+    public Boolean getPaused() {
         return paused;
     }
 
     /**
      * Sets if this member is paused.
-     * 
+     *
      * @param paused <code>Boolean.TRUE</code> if this member has been paused
-     *            or <code>Boolean.FALSE</code> if not.
+     *               or <code>Boolean.FALSE</code> if not.
      */
-    public void setPaused(Boolean paused)
-    {
+    public void setPaused(Boolean paused) {
         this.paused = paused;
     }
 
-	public String getStateinterface()
-	{
-		return stateinterface;
-	}
-
-	public void setStateinterface(String stateinterface)
-	{
-		this.stateinterface = stateinterface;
+    public String getStateinterface() {
+        return stateinterface;
     }
 
-	public Boolean getRinginuse()
-	{
-		return ringinuse;
-	}
+    public void setStateinterface(String stateinterface) {
+        this.stateinterface = stateinterface;
+    }
 
-	public void setRinginuse(Boolean ringinuse)
-	{
-		this.ringinuse = ringinuse;
-	}
+    public Boolean getRinginuse() {
+        return ringinuse;
+    }
+
+    public void setRinginuse(Boolean ringinuse) {
+        this.ringinuse = ringinuse;
+    }
 }

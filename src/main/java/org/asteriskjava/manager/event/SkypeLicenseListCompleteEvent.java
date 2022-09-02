@@ -25,15 +25,13 @@ package org.asteriskjava.manager.event;
  * @see org.asteriskjava.manager.action.SkypeLicenseListAction
  * @since 1.0.0
  */
-public class SkypeLicenseListCompleteEvent extends ResponseEvent
-{
+public class SkypeLicenseListCompleteEvent extends ResponseEvent {
     /**
      * Serial version identifier.
      */
     private static final long serialVersionUID = 1L;
 
-    public SkypeLicenseListCompleteEvent(Object source)
-    {
+    public SkypeLicenseListCompleteEvent(Object source) {
         super(source);
     }
 }

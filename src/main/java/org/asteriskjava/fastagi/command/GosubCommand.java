@@ -10,8 +10,7 @@ package org.asteriskjava.fastagi.command;
  * @author fadishei
  * @since 1.0.0
  */
-public class GosubCommand extends AbstractAgiCommand
-{
+public class GosubCommand extends AbstractAgiCommand {
     private static final long serialVersionUID = 1L;
 
     /**
@@ -42,8 +41,7 @@ public class GosubCommand extends AbstractAgiCommand
      * @param extension the extension in the called context.
      * @param priority  of the called extension.
      */
-    public GosubCommand(String context, String extension, String priority)
-    {
+    public GosubCommand(String context, String extension, String priority) {
         super();
         this.context = context;
         this.extension = extension;
@@ -58,8 +56,7 @@ public class GosubCommand extends AbstractAgiCommand
      * @param priority  the priority of the called extension.
      * @param arguments the arguments to be passed to the called subroutine.
      */
-    public GosubCommand(String context, String extension, String priority, String... arguments)
-    {
+    public GosubCommand(String context, String extension, String priority, String... arguments) {
         super();
         this.context = context;
         this.extension = extension;
@@ -72,8 +69,7 @@ public class GosubCommand extends AbstractAgiCommand
      *
      * @return the context of the subroutine to call.
      */
-    public String getContext()
-    {
+    public String getContext() {
         return context;
     }
 
@@ -82,8 +78,7 @@ public class GosubCommand extends AbstractAgiCommand
      *
      * @param context the context of the subroutine to call.
      */
-    public void setContext(String context)
-    {
+    public void setContext(String context) {
         this.context = context;
     }
 
@@ -92,8 +87,7 @@ public class GosubCommand extends AbstractAgiCommand
      *
      * @return the extension within the called context.
      */
-    public String getExtension()
-    {
+    public String getExtension() {
         return extension;
     }
 
@@ -102,8 +96,7 @@ public class GosubCommand extends AbstractAgiCommand
      *
      * @param extension the extension within the called context.
      */
-    public void setExtension(String extension)
-    {
+    public void setExtension(String extension) {
         this.extension = extension;
     }
 
@@ -112,8 +105,7 @@ public class GosubCommand extends AbstractAgiCommand
      *
      * @return the priority of the called extension.
      */
-    public String getPriority()
-    {
+    public String getPriority() {
         return priority;
     }
 
@@ -122,8 +114,7 @@ public class GosubCommand extends AbstractAgiCommand
      *
      * @param priority the priority of the called extension.
      */
-    public void setPriority(String priority)
-    {
+    public void setPriority(String priority) {
         this.priority = priority;
     }
 
@@ -132,8 +123,7 @@ public class GosubCommand extends AbstractAgiCommand
      *
      * @return the arguments to be passed to the subroutine.
      */
-    public String[] getArguments()
-    {
+    public String[] getArguments() {
         return arguments;
     }
 
@@ -142,21 +132,18 @@ public class GosubCommand extends AbstractAgiCommand
      *
      * @param arguments the arguments to be passed to the subroutine.
      */
-    public void setArguments(String[] arguments)
-    {
+    public void setArguments(String[] arguments) {
         this.arguments = arguments;
     }
 
     @Override
-    public String buildCommand()
-    {
+    public String buildCommand() {
         final StringBuilder sb = new StringBuilder("GOSUB ");
         sb.append(escapeAndQuote(context)).append(" ");
         sb.append(escapeAndQuote(extension)).append(" ");
         sb.append(escapeAndQuote(priority));
 
-        if (arguments != null)
-        {
+        if (arguments != null) {
             sb.append(" ").append(escapeAndQuote(arguments));
         }
 

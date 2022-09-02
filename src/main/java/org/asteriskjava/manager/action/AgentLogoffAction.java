@@ -19,13 +19,12 @@ package org.asteriskjava.manager.action;
 /**
  * The AgentLogoffAction sets an agent as no longer logged in.<p>
  * Available since Asterisk 1.2
- * 
+ *
  * @author srt
  * @version $Id$
  * @since 0.2
  */
-public class AgentLogoffAction extends AbstractManagerAction
-{
+public class AgentLogoffAction extends AbstractManagerAction {
     /**
      * Serializable version identifier
      */
@@ -36,89 +35,81 @@ public class AgentLogoffAction extends AbstractManagerAction
     /**
      * Creates a new empty AgentLogoffAction.
      */
-    public AgentLogoffAction()
-    {
+    public AgentLogoffAction() {
 
     }
 
     /**
      * Creates a new AgentLogoffAction that logs off the given agent
-     * 
+     *
      * @param agent the name of the agent to log off.
      */
-    public AgentLogoffAction(String agent)
-    {
+    public AgentLogoffAction(String agent) {
         this.agent = agent;
     }
 
     /**
      * Creates a new AgentLogoffAction that logs off the given agent
-     * 
+     *
      * @param agent the name of the agent to log off.
-     * @param soft Boolean.TRUE if exisiting calls should not be hung up on
-     *            logout.
+     * @param soft  Boolean.TRUE if exisiting calls should not be hung up on
+     *              logout.
      */
-    public AgentLogoffAction(String agent, Boolean soft)
-    {
+    public AgentLogoffAction(String agent, Boolean soft) {
         this(agent);
         this.soft = soft;
     }
 
     /**
      * Returns the name of this action, i.e. "AgentLogoff".
-     * 
+     *
      * @return the name of this action
      */
     @Override
-   public String getAction()
-    {
+    public String getAction() {
         return "AgentLogoff";
     }
 
     /**
      * Returns the name of the agent to log off, for example "1002".
-     * 
+     *
      * @return the name of the agent to log off
      */
-    public String getAgent()
-    {
+    public String getAgent() {
         return agent;
     }
 
     /**
      * Sets the name of the agent to log off, for example "1002".<p>
      * This is property is mandatory.
-     * 
+     *
      * @param agent the name of the agent to log off
      */
-    public void setAgent(String agent)
-    {
+    public void setAgent(String agent) {
         this.agent = agent;
     }
 
     /**
      * Returns whether to hangup existing calls or not.<p>
      * Default is to hangup existing calls on logoff.
-     * 
+     *
      * @return Boolean.TRUE if existing calls should not be hung up,
-     *         Boolean.FALSE otherwise. <code>null</code> if default should be
-     *         used.
+     * Boolean.FALSE otherwise. <code>null</code> if default should be
+     * used.
      */
-    public Boolean getSoft()
-    {
+    public Boolean getSoft() {
         return soft;
     }
 
     /**
      * Sets whether existing calls should be hung up or not.<p>
      * Default is to hangup existing calls on logoff.
-     * 
+     *
      * @param soft Boolean.TRUE if existing calls should not be hung up,
-     *            Boolean.FALSE otherwise. <code>null</code> if default should
-     *            be used.
+     *             Boolean.FALSE otherwise. <code>null</code> if default should
+     *             be used.
      */
-    public void setSoft(Boolean soft)
-    {
+    public void setSoft(Boolean soft) {
         this.soft = soft;
     }
 }

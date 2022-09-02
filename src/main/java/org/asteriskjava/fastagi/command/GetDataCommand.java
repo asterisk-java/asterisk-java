@@ -24,12 +24,11 @@ package org.asteriskjava.fastagi.command;
  * <p>
  * Input ends when the timeout is reached, the maximum number of digits is read
  * or the user presses #.
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public class GetDataCommand extends AbstractAgiCommand
-{
+public class GetDataCommand extends AbstractAgiCommand {
     /**
      * Serial version identifier.
      */
@@ -61,11 +60,10 @@ public class GetDataCommand extends AbstractAgiCommand
     /**
      * Creates a new GetDataCommand with default timeout and maxDigits set to
      * 1024.
-     * 
+     *
      * @param file the name of the file to stream, must not include extension.
      */
-    public GetDataCommand(String file)
-    {
+    public GetDataCommand(String file) {
         super();
         this.file = file;
         this.timeout = DEFAULT_TIMEOUT;
@@ -75,15 +73,14 @@ public class GetDataCommand extends AbstractAgiCommand
     /**
      * Creates a new GetDataCommand with the given timeout and maxDigits set to
      * 1024.
-     * 
-     * @param file the name of the file to stream, must not include extension.
+     *
+     * @param file    the name of the file to stream, must not include extension.
      * @param timeout the timeout in milliseconds to wait for data.
-     *            <p>
-     *            0 means standard timeout value, -1 means "ludicrous time"
-     *            (essentially never times out).
+     *                <p>
+     *                0 means standard timeout value, -1 means "ludicrous time"
+     *                (essentially never times out).
      */
-    public GetDataCommand(String file, long timeout)
-    {
+    public GetDataCommand(String file, long timeout) {
         super();
         this.file = file;
         this.timeout = timeout;
@@ -92,22 +89,20 @@ public class GetDataCommand extends AbstractAgiCommand
 
     /**
      * Creates a new GetDataCommand with the given timeout and maxDigits.
-     * 
-     * @param file the name of the file to stream, must not include extension.
-     * @param timeout the timeout in milliseconds to wait for data.
-     *            <p>
-     *            0 means standard timeout value, -1 means "ludicrous time"
-     *            (essentially never times out).
+     *
+     * @param file      the name of the file to stream, must not include extension.
+     * @param timeout   the timeout in milliseconds to wait for data.
+     *                  <p>
+     *                  0 means standard timeout value, -1 means "ludicrous time"
+     *                  (essentially never times out).
      * @param maxDigits the maximum number of digits to read.
-     *            <p>
-     *            Must be in [1..1024].
+     *                  <p>
+     *                  Must be in [1..1024].
      * @throws IllegalArgumentException if maxDigits is not in [1..1024]
      */
-    public GetDataCommand(String file, long timeout, int maxDigits) throws IllegalArgumentException
-    {
+    public GetDataCommand(String file, long timeout, int maxDigits) throws IllegalArgumentException {
         super();
-        if (maxDigits < 1 || maxDigits > 1024)
-        {
+        if (maxDigits < 1 || maxDigits > 1024) {
             throw new IllegalArgumentException("maxDigits must be in [1..1024]");
         }
 
@@ -118,11 +113,10 @@ public class GetDataCommand extends AbstractAgiCommand
 
     /**
      * Returns the name of the file to stream.
-     * 
+     *
      * @return the name of the file to stream.
      */
-    public String getFile()
-    {
+    public String getFile() {
         return file;
     }
 
@@ -130,59 +124,53 @@ public class GetDataCommand extends AbstractAgiCommand
      * Sets the name of the file to stream.
      * <p>
      * This attribute is mandatory.
-     * 
+     *
      * @param file the name of the file to stream, must not include extension.
      */
-    public void setFile(String file)
-    {
+    public void setFile(String file) {
         this.file = file;
     }
 
     /**
      * Returns the timeout to wait for data.
-     * 
+     *
      * @return the timeout in milliseconds to wait for data.
      */
-    public long getTimeout()
-    {
+    public long getTimeout() {
         return timeout;
     }
 
     /**
      * Sets the timeout to wait for data.
-     * 
+     *
      * @param timeout the timeout in milliseconds to wait for data.
-     *            <p>
-     *            0 means standard timeout value, -1 means "ludicrous time"
-     *            (essentially never times out).
+     *                <p>
+     *                0 means standard timeout value, -1 means "ludicrous time"
+     *                (essentially never times out).
      */
-    public void setTimeout(long timeout)
-    {
+    public void setTimeout(long timeout) {
         this.timeout = timeout;
     }
 
     /**
      * Returns the maximum number of digits to read.
-     * 
+     *
      * @return the maximum number of digits to read.
      */
-    public int getMaxDigits()
-    {
+    public int getMaxDigits() {
         return maxDigits;
     }
 
     /**
      * Sets the maximum number of digits to read.
-     * 
+     *
      * @param maxDigits the maximum number of digits to read.
-     *            <p>
-     *            Must be in [1..1024].
+     *                  <p>
+     *                  Must be in [1..1024].
      * @throws IllegalArgumentException if maxDigits is not in [1..1024]
      */
-    public void setMaxDigits(int maxDigits) throws IllegalArgumentException
-    {
-        if (maxDigits < 1 || maxDigits > 1024)
-        {
+    public void setMaxDigits(int maxDigits) throws IllegalArgumentException {
+        if (maxDigits < 1 || maxDigits > 1024) {
             throw new IllegalArgumentException("maxDigits must be in [1..1024]");
         }
 
@@ -190,12 +178,9 @@ public class GetDataCommand extends AbstractAgiCommand
     }
 
     @Override
-    public String buildCommand()
-    {
-        if (maxDigits == DEFAULT_MAX_DIGITS)
-        {
-            if (timeout == DEFAULT_TIMEOUT)
-            {
+    public String buildCommand() {
+        if (maxDigits == DEFAULT_MAX_DIGITS) {
+            if (timeout == DEFAULT_TIMEOUT) {
                 return "GET DATA " + escapeAndQuote(file);
             }
             return "GET DATA " + escapeAndQuote(file) + " " + timeout;

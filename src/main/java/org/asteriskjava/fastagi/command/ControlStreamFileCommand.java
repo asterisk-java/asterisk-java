@@ -26,13 +26,12 @@ package org.asteriskjava.fastagi.command;
  * channel was disconnected. <p>
  * Remember, the file extension must not be included in the filename.<p>
  * Available since Asterisk 1.2
- * 
+ *
  * @author srt
  * @version $Id$
  * @since 0.2
  */
-public class ControlStreamFileCommand extends AbstractAgiCommand
-{
+public class ControlStreamFileCommand extends AbstractAgiCommand {
     /**
      * Serial version identifier.
      */
@@ -63,11 +62,10 @@ public class ControlStreamFileCommand extends AbstractAgiCommand
      * Creates a new ControlStreamFileCommand, streaming from the beginning. It
      * uses the default digit "#" for forward and "*" for rewind and does not
      * support pausing.
-     * 
+     *
      * @param file the name of the file to stream, must not include extension.
      */
-    public ControlStreamFileCommand(String file)
-    {
+    public ControlStreamFileCommand(String file) {
         super();
         this.file = file;
         this.offset = -1;
@@ -77,13 +75,12 @@ public class ControlStreamFileCommand extends AbstractAgiCommand
      * Creates a new ControlStreamFileCommand, streaming from the beginning. It
      * uses the default digit "#" for forward and "*" for rewind and does not
      * support pausing.
-     * 
-     * @param file the name of the file to stream, must not include extension.
+     *
+     * @param file         the name of the file to stream, must not include extension.
      * @param escapeDigits contains the digits that allow the user to interrupt
-     *            this command.
+     *                     this command.
      */
-    public ControlStreamFileCommand(String file, String escapeDigits)
-    {
+    public ControlStreamFileCommand(String file, String escapeDigits) {
         super();
         this.file = file;
         this.escapeDigits = escapeDigits;
@@ -94,15 +91,14 @@ public class ControlStreamFileCommand extends AbstractAgiCommand
      * Creates a new ControlStreamFileCommand, streaming from the given offset.
      * It uses the default digit "#" for forward and "*" for rewind and does not
      * support pausing.
-     * 
-     * @param file the name of the file to stream, must not include extension.
+     *
+     * @param file         the name of the file to stream, must not include extension.
      * @param escapeDigits contains the digits that allow the user to interrupt
-     *            this command. May be <code>null</code> if you don't want the
-     *            user to interrupt.
-     * @param offset the offset samples to skip before streaming.
+     *                     this command. May be <code>null</code> if you don't want the
+     *                     user to interrupt.
+     * @param offset       the offset samples to skip before streaming.
      */
-    public ControlStreamFileCommand(String file, String escapeDigits, int offset)
-    {
+    public ControlStreamFileCommand(String file, String escapeDigits, int offset) {
         super();
         this.file = file;
         this.escapeDigits = escapeDigits;
@@ -112,20 +108,19 @@ public class ControlStreamFileCommand extends AbstractAgiCommand
     /**
      * Creates a new ControlStreamFileCommand, streaming from the given offset.
      * It allows the user to pause streaming by pressing the pauseDigit.
-     * 
-     * @param file the name of the file to stream, must not include extension.
+     *
+     * @param file         the name of the file to stream, must not include extension.
      * @param escapeDigits contains the digits that allow the user to interrupt
-     *            this command. May be <code>null</code> if you don't want the
-     *            user to interrupt.
-     * @param offset the offset samples to skip before streaming.
+     *                     this command. May be <code>null</code> if you don't want the
+     *                     user to interrupt.
+     * @param offset       the offset samples to skip before streaming.
      * @param forwardDigit the digit for fast forward.
-     * @param rewindDigit the digit for rewind.
-     * @param pauseDigit the digit for pause and unpause.
+     * @param rewindDigit  the digit for rewind.
+     * @param pauseDigit   the digit for pause and unpause.
      */
     public ControlStreamFileCommand(String file, String escapeDigits,
-            int offset, String forwardDigit, String rewindDigit,
-            String pauseDigit)
-    {
+                                    int offset, String forwardDigit, String rewindDigit,
+                                    String pauseDigit) {
         super();
         this.file = file;
         this.escapeDigits = escapeDigits;
@@ -137,154 +132,136 @@ public class ControlStreamFileCommand extends AbstractAgiCommand
 
     /**
      * Returns the name of the file to stream.
-     * 
+     *
      * @return the name of the file to stream.
      */
-    public String getFile()
-    {
+    public String getFile() {
         return file;
     }
 
     /**
      * Sets the name of the file to stream.
-     * 
+     *
      * @param file the name of the file to stream, must not include extension.
      */
-    public void setFile(String file)
-    {
+    public void setFile(String file) {
         this.file = file;
     }
 
     /**
      * Returns the digits that allow the user to interrupt this command.
-     * 
+     *
      * @return the digits that allow the user to interrupt this command.
      */
-    public String getEscapeDigits()
-    {
+    public String getEscapeDigits() {
         return escapeDigits;
     }
 
     /**
      * Sets the digits that allow the user to interrupt this command.
-     * 
+     *
      * @param escapeDigits the digits that allow the user to interrupt this
-     *            command or <code>null</code> for none.
+     *                     command or <code>null</code> for none.
      */
-    public void setEscapeDigits(String escapeDigits)
-    {
+    public void setEscapeDigits(String escapeDigits) {
         this.escapeDigits = escapeDigits;
     }
 
     /**
      * Returns the offset samples to skip before streaming.
-     * 
+     *
      * @return the offset samples to skip before streaming.
      */
-    public int getOffset()
-    {
+    public int getOffset() {
         return offset;
     }
 
     /**
      * Sets the offset samples to skip before streaming.
-     * 
+     *
      * @param offset the offset samples to skip before streaming.
      */
-    public void setOffset(int offset)
-    {
+    public void setOffset(int offset) {
         this.offset = offset;
     }
 
     /**
      * Returns the digit for fast forward.
-     * 
+     *
      * @return the digit for fast forward.
      */
-    public String getForwardDigit()
-    {
+    public String getForwardDigit() {
         return forwardDigit;
     }
 
     /**
      * Returns the digit for rewind.
-     * 
+     *
      * @return the digit for rewind.
      */
-    public String getRewindDigit()
-    {
+    public String getRewindDigit() {
         return rewindDigit;
     }
 
     /**
      * Retruns the digit for pause and unpause.
-     * 
+     *
      * @return the digit for pause and unpause.
      */
-    public String getPauseDigit()
-    {
+    public String getPauseDigit() {
         return pauseDigit;
     }
 
     /**
      * Sets the control digits for fast forward and rewind.
-     * 
+     *
      * @param forwardDigit the digit for fast forward.
-     * @param rewindDigit the digit for rewind.
+     * @param rewindDigit  the digit for rewind.
      */
-    public void setControlDigits(String forwardDigit, String rewindDigit)
-    {
+    public void setControlDigits(String forwardDigit, String rewindDigit) {
         this.forwardDigit = forwardDigit;
         this.rewindDigit = rewindDigit;
     }
 
     /**
      * Sets the control digits for fast forward, rewind and pause.
-     * 
+     *
      * @param forwardDigit the digit for fast forward.
-     * @param rewindDigit the digit for rewind.
-     * @param pauseDigit the digit for pause and unpause.
+     * @param rewindDigit  the digit for rewind.
+     * @param pauseDigit   the digit for pause and unpause.
      */
     public void setControlDigits(String forwardDigit, String rewindDigit,
-            String pauseDigit)
-    {
+                                 String pauseDigit) {
         this.forwardDigit = forwardDigit;
         this.rewindDigit = rewindDigit;
         this.pauseDigit = pauseDigit;
     }
 
     @Override
-   public String buildCommand()
-    {
-    	StringBuilder sb;
+    public String buildCommand() {
+        StringBuilder sb;
 
         sb = new StringBuilder("CONTROL STREAM FILE ");
         sb.append(escapeAndQuote(file));
         sb.append(" ");
         sb.append(escapeAndQuote(escapeDigits));
-        if (offset >= 0)
-        {
+        if (offset >= 0) {
             sb.append(" ");
             sb.append(offset);
-        }
-        else if (forwardDigit != null || rewindDigit != null
-                || pauseDigit != null)
-        {
+        } else if (forwardDigit != null || rewindDigit != null
+                || pauseDigit != null) {
             sb.append(" 0");
         }
 
-        if (forwardDigit != null || rewindDigit != null || pauseDigit != null)
-        {
+        if (forwardDigit != null || rewindDigit != null || pauseDigit != null) {
             sb.append(" ");
             sb.append(forwardDigit);
         }
-        if (rewindDigit != null || pauseDigit != null)
-        {
+        if (rewindDigit != null || pauseDigit != null) {
             sb.append(" ");
             sb.append(rewindDigit);
         }
-        if (pauseDigit != null)
-        {
+        if (pauseDigit != null) {
             sb.append(" ");
             sb.append(pauseDigit);
         }

@@ -18,12 +18,11 @@ package org.asteriskjava.fastagi.command;
 
 /**
  * Changes the callerid of the current channel.
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public class SetCallerIdCommand extends AbstractAgiCommand
-{
+public class SetCallerIdCommand extends AbstractAgiCommand {
     /**
      * Serial version identifier.
      */
@@ -36,38 +35,34 @@ public class SetCallerIdCommand extends AbstractAgiCommand
 
     /**
      * Creates a new SetCallerIdCommand.
-     * 
+     *
      * @param callerId the new callerId.
      */
-    public SetCallerIdCommand(String callerId)
-    {
+    public SetCallerIdCommand(String callerId) {
         super();
         this.callerId = callerId;
     }
 
     /**
      * Returns the new callerId.
-     * 
+     *
      * @return the new callerId.
      */
-    public String getCallerId()
-    {
+    public String getCallerId() {
         return callerId;
     }
 
     /**
      * Sets the new callerId.
-     * 
+     *
      * @param callerId the new callerId.
      */
-    public void setCallerId(String callerId)
-    {
+    public void setCallerId(String callerId) {
         this.callerId = callerId;
     }
 
     @Override
-   public String buildCommand()
-    {
+    public String buildCommand() {
         return "SET CALLERID " + escapeAndQuote(callerId);
     }
 }

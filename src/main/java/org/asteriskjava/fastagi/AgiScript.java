@@ -23,21 +23,19 @@ package org.asteriskjava.fastagi;
  * interface.<p>
  * Note: The implementation of AgiScript must be threadsafe as only one instance
  * is used by AsteriskServer to handle all requests to a resource.
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public interface AgiScript
-{
+public interface AgiScript {
     /**
      * The service method is called by the AsteriskServer whenever this
      * AgiScript should handle an incoming AgiRequest.
-     * 
+     *
      * @param request the initial data received from Asterisk when requesting
-     *            this script.
+     *                this script.
      * @param channel a handle to communicate with Asterisk such as sending
-     *            commands to the channel sending the request.
-     * 
+     *                commands to the channel sending the request.
      * @throws AgiException any exception thrown by your script will be logged.
      */
     void service(final AgiRequest request, final AgiChannel channel) throws AgiException;

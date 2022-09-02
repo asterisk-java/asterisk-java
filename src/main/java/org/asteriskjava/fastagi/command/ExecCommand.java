@@ -20,12 +20,11 @@ package org.asteriskjava.fastagi.command;
  * Executes an application with the given options.<p>
  * Returns whatever the application returns, or -2 if the application was not
  * found.
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public class ExecCommand extends AbstractAgiCommand
-{
+public class ExecCommand extends AbstractAgiCommand {
     /**
      * Serial version identifier.
      */
@@ -43,23 +42,21 @@ public class ExecCommand extends AbstractAgiCommand
 
     /**
      * Creates a new ExecCommand.
-     * 
+     *
      * @param application the name of the application to execute.
      */
-    public ExecCommand(String application)
-    {
+    public ExecCommand(String application) {
         super();
         this.application = application;
     }
 
     /**
      * Creates a new ExecCommand.
-     * 
+     *
      * @param application the name of the application to execute.
-     * @param options the options to pass to the application.
+     * @param options     the options to pass to the application.
      */
-    public ExecCommand(String application, String... options)
-    {
+    public ExecCommand(String application, String... options) {
         super();
         this.application = application;
         this.options = options;
@@ -67,47 +64,42 @@ public class ExecCommand extends AbstractAgiCommand
 
     /**
      * Returns the name of the application to execute.
-     * 
+     *
      * @return the name of the application to execute.
      */
-    public String getApplication()
-    {
+    public String getApplication() {
         return application;
     }
 
     /**
      * Sets the name of the application to execute.
-     * 
+     *
      * @param application the name of the application to execute.
      */
-    public void setApplication(String application)
-    {
+    public void setApplication(String application) {
         this.application = application;
     }
 
     /**
      * Returns the options to pass to the application.
-     * 
+     *
      * @return the options to pass to the application.
      */
-    public String[] getOptions()
-    {
+    public String[] getOptions() {
         return options;
     }
 
     /**
      * Sets the options to pass to the application.
-     * 
+     *
      * @param options the options to pass to the application.
      */
-    public void setOptions(String... options)
-    {
+    public void setOptions(String... options) {
         this.options = options;
     }
 
     @Override
-    public String buildCommand()
-    {
+    public String buildCommand() {
         return "EXEC " + escapeAndQuote(application) + " "
                 + escapeAndQuote(options);
     }

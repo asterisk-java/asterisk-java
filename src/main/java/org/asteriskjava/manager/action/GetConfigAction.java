@@ -28,16 +28,14 @@ import org.asteriskjava.manager.response.GetConfigResponse;
  * @since 0.3
  */
 @ExpectedResponse(GetConfigResponse.class)
-public class GetConfigAction extends AbstractManagerAction
-{
+public class GetConfigAction extends AbstractManagerAction {
     static final long serialVersionUID = 4753117770471622025L;
     private String filename;
 
     /**
      * Creates a new GetConfigAction.
      */
-    public GetConfigAction()
-    {
+    public GetConfigAction() {
 
     }
 
@@ -46,8 +44,7 @@ public class GetConfigAction extends AbstractManagerAction
      *
      * @param filename the name of the file to get.
      */
-    public GetConfigAction(String filename)
-    {
+    public GetConfigAction(String filename) {
         this.filename = filename;
     }
 
@@ -55,24 +52,21 @@ public class GetConfigAction extends AbstractManagerAction
      * Returns the name of this action, i.e. "GetConfig".
      */
     @Override
-    public String getAction()
-    {
+    public String getAction() {
         return "GetConfig";
     }
 
     /**
      * Returns the filename.
      */
-    public String getFilename()
-    {
+    public String getFilename() {
         return filename;
     }
 
     /**
      * Sets filename.
      */
-    public void setFilename(String filename)
-    {
+    public void setFilename(String filename) {
         this.filename = filename;
     }
 }

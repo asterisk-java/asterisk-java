@@ -29,12 +29,11 @@ package org.asteriskjava.manager.action;
  * This action corresponds the the AbsoluteTimeout command used in the dialplan.
  * <p>
  * Implemented in <code>manager.c</code>
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public class AbsoluteTimeoutAction extends AbstractManagerAction
-{
+public class AbsoluteTimeoutAction extends AbstractManagerAction {
     /**
      * Serializable version identifier
      */
@@ -46,20 +45,18 @@ public class AbsoluteTimeoutAction extends AbstractManagerAction
     /**
      * Creates a new empty AbsoluteTimeoutAction.
      */
-    public AbsoluteTimeoutAction()
-    {
+    public AbsoluteTimeoutAction() {
 
     }
 
     /**
      * Creates a new AbsoluteTimeoutAction with the given channel and timeout.
-     * 
+     *
      * @param channel the name of the channel
      * @param timeout the maximum duation of the call in seconds or 0 to cancel the AbsoluteTimeout
      * @since 0.2
      */
-    public AbsoluteTimeoutAction(String channel, Integer timeout)
-    {
+    public AbsoluteTimeoutAction(String channel, Integer timeout) {
         this.channel = channel;
         this.timeout = timeout;
     }
@@ -68,32 +65,28 @@ public class AbsoluteTimeoutAction extends AbstractManagerAction
      * Returns the name of this action, i.e. "AbsoluteTimeout".
      */
     @Override
-   public String getAction()
-    {
+    public String getAction() {
         return "AbsoluteTimeout";
     }
 
     /**
      * Returns the name of the channel.
      */
-    public String getChannel()
-    {
+    public String getChannel() {
         return channel;
     }
 
     /**
      * Sets the name of the channel.
      */
-    public void setChannel(String channel)
-    {
+    public void setChannel(String channel) {
         this.channel = channel;
     }
 
     /**
      * Returns the the maximum duation of the call (in seconds) to set.
      */
-    public Integer getTimeout()
-    {
+    public Integer getTimeout() {
         return timeout;
     }
 
@@ -101,8 +94,7 @@ public class AbsoluteTimeoutAction extends AbstractManagerAction
      * Sets the the maximum duation of the call (in seconds) to set on channel.<p>
      * Setting the timeout to 0 cancels the timeout.
      */
-    public void setTimeout(Integer timeout)
-    {
+    public void setTimeout(Integer timeout) {
         this.timeout = timeout;
     }
 }

@@ -24,8 +24,7 @@ package org.asteriskjava.manager.response;
  * @see org.asteriskjava.manager.action.ModuleCheckAction
  * @since 1.0.0
  */
-public class ModuleCheckResponse extends ManagerResponse
-{
+public class ModuleCheckResponse extends ManagerResponse {
     private static final long serialVersionUID = -7253724086340850957L;
 
     private String version;
@@ -35,13 +34,11 @@ public class ModuleCheckResponse extends ManagerResponse
      *
      * @return the version (svn revision) of the module.
      */
-    public String getVersion()
-    {
+    public String getVersion() {
         return version;
     }
 
-    public void setVersion(String version)
-    {
+    public void setVersion(String version) {
         this.version = version;
     }
 }

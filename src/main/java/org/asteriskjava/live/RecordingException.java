@@ -18,12 +18,11 @@ package org.asteriskjava.live;
 
 /**
  * Indicates that a record operation related issue has occured,
- * 
+ *
  * @author videanuadrian
  * @version $Id$
  */
-public class RecordingException extends LiveException
-{
+public class RecordingException extends LiveException {
     /**
      * Serial version identifier.
      */
@@ -32,11 +31,10 @@ public class RecordingException extends LiveException
 
     /**
      * Creates a new instance with the given message.
-     * 
+     *
      * @param message the message
      */
-    public RecordingException(String message)
-    {
+    public RecordingException(String message) {
         super(message);
     }
 }

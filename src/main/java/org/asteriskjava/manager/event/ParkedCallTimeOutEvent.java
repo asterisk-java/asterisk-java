@@ -23,13 +23,12 @@ package org.asteriskjava.manager.event;
  * It is implemented in <code>res/res_features.c</code>
  * <p>
  * Available since Asterisk 1.2
- * 
+ *
  * @author srt
  * @version $Id$
  * @since 0.2
  */
-public class ParkedCallTimeOutEvent extends AbstractUnParkedEvent
-{
+public class ParkedCallTimeOutEvent extends AbstractUnParkedEvent {
     /**
      * Serializable version identifier
      */
@@ -38,8 +37,7 @@ public class ParkedCallTimeOutEvent extends AbstractUnParkedEvent
     /**
      * @param source
      */
-    public ParkedCallTimeOutEvent(Object source)
-    {
+    public ParkedCallTimeOutEvent(Object source) {
         super(source);
     }
 }

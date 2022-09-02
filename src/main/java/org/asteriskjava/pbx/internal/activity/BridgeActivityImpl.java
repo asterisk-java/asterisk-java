@@ -1,30 +1,21 @@
 package org.asteriskjava.pbx.internal.activity;
 
+import org.asteriskjava.pbx.*;
+import org.asteriskjava.pbx.activities.BridgeActivity;
+import org.asteriskjava.pbx.agi.AgiChannelActivityBridge;
+import org.asteriskjava.pbx.agi.AgiChannelActivityHoldForBridge;
+import org.asteriskjava.pbx.asterisk.wrap.events.*;
+import org.asteriskjava.pbx.internal.core.AsteriskPBX;
+import org.asteriskjava.util.Log;
+import org.asteriskjava.util.LogFactory;
+
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import org.asteriskjava.pbx.ActivityCallback;
-import org.asteriskjava.pbx.Channel;
-import org.asteriskjava.pbx.ListenerPriority;
-import org.asteriskjava.pbx.PBXException;
-import org.asteriskjava.pbx.PBXFactory;
-import org.asteriskjava.pbx.activities.BridgeActivity;
-import org.asteriskjava.pbx.agi.AgiChannelActivityBridge;
-import org.asteriskjava.pbx.agi.AgiChannelActivityHoldForBridge;
-import org.asteriskjava.pbx.asterisk.wrap.events.BridgeEvent;
-import org.asteriskjava.pbx.asterisk.wrap.events.LinkEvent;
-import org.asteriskjava.pbx.asterisk.wrap.events.ManagerEvent;
-import org.asteriskjava.pbx.asterisk.wrap.events.StatusCompleteEvent;
-import org.asteriskjava.pbx.asterisk.wrap.events.StatusEvent;
-import org.asteriskjava.pbx.internal.core.AsteriskPBX;
-import org.asteriskjava.util.Log;
-import org.asteriskjava.util.LogFactory;
-
-public class BridgeActivityImpl extends ActivityHelper<BridgeActivity> implements BridgeActivity
-{
+public class BridgeActivityImpl extends ActivityHelper<BridgeActivity> implements BridgeActivity {
     private static final Log logger = LogFactory.getLog(BridgeActivityImpl.class);
     private final Channel _lhsChannel;
     private final Channel _rhsChannel;
@@ -32,8 +23,7 @@ public class BridgeActivityImpl extends ActivityHelper<BridgeActivity> implement
     private CountDownLatch _bridgeLatch;
 
     public BridgeActivityImpl(final Channel lhsChannel, final Channel rhsChannel,
-            final ActivityCallback<BridgeActivity> callback)
-    {
+                              final ActivityCallback<BridgeActivity> callback) {
         super("Bridge", callback);
 
         this._lhsChannel = lhsChannel;
@@ -42,8 +32,7 @@ public class BridgeActivityImpl extends ActivityHelper<BridgeActivity> implement
     }
 
     @Override
-    public boolean doActivity() throws PBXException
-    {
+    public boolean doActivity() throws PBXException {
         boolean success = false;
 
         BridgeActivityImpl.logger.debug("*******************************************************************************");
@@ -51,17 +40,14 @@ public class BridgeActivityImpl extends ActivityHelper<BridgeActivity> implement
         BridgeActivityImpl.logger.info("***********                  lhs:" + this._lhsChannel + " ****************");
         BridgeActivityImpl.logger.debug("***********                  rhs:" + this._rhsChannel + " ****************");
         BridgeActivityImpl.logger.debug("*******************************************************************************");
-        try
-        {
+        try {
 
             final AsteriskPBX pbx = (AsteriskPBX) PBXFactory.getActivePBX();
 
-            if (!pbx.moveChannelToAgi(_lhsChannel))
-            {
+            if (!pbx.moveChannelToAgi(_lhsChannel)) {
                 throw new PBXException("Channel: " + _lhsChannel + " couldn't be moved to agi");
             }
-            if (!pbx.moveChannelToAgi(_rhsChannel))
-            {
+            if (!pbx.moveChannelToAgi(_rhsChannel)) {
                 throw new PBXException("Channel: " + _rhsChannel + " couldn't be moved to agi");
             }
 
@@ -70,10 +56,8 @@ public class BridgeActivityImpl extends ActivityHelper<BridgeActivity> implement
             channels.add(_rhsChannel);
             if (!pbx.waitForChannelsToQuiescent(channels, 3000))
                 throw new PBXException("Channel: " + this._lhsChannel + " cannot be held as it is still in transition.");
-            try
-            {
-                if (pbx.isBridgeSupported())
-                {
+            try {
+                if (pbx.isBridgeSupported()) {
 
                     this._bridgeLatch = new CountDownLatch(1);
                     final AgiChannelActivityBridge action = new AgiChannelActivityBridge(_lhsChannel);
@@ -84,15 +68,11 @@ public class BridgeActivityImpl extends ActivityHelper<BridgeActivity> implement
                     success = this._bridgeLatch.await(3, TimeUnit.SECONDS);
 
                 }
-            }
-            catch (IllegalArgumentException | IllegalStateException | InterruptedException e)
-            {
+            } catch (IllegalArgumentException | IllegalStateException | InterruptedException e) {
                 throw new PBXException(e);
             }
 
-        }
-        catch (IllegalArgumentException | IllegalStateException e)
-        {
+        } catch (IllegalArgumentException | IllegalStateException e) {
             BridgeActivityImpl.logger.error(e, e);
             BridgeActivityImpl.logger.error(e, e);
             throw new PBXException(e);
@@ -101,9 +81,8 @@ public class BridgeActivityImpl extends ActivityHelper<BridgeActivity> implement
     }
 
     @Override
-    public HashSet<Class< ? extends ManagerEvent>> requiredEvents()
-    {
-        HashSet<Class< ? extends ManagerEvent>> required = new HashSet<>();
+    public HashSet<Class<? extends ManagerEvent>> requiredEvents() {
+        HashSet<Class<? extends ManagerEvent>> required = new HashSet<>();
         required.add(StatusCompleteEvent.class);
         required.add(StatusEvent.class);
         required.add(BridgeEvent.class);
@@ -112,17 +91,14 @@ public class BridgeActivityImpl extends ActivityHelper<BridgeActivity> implement
     }
 
     @Override
-    public ListenerPriority getPriority()
-    {
+    public ListenerPriority getPriority() {
         return ListenerPriority.NORMAL;
     }
 
     @Override
-    public void onManagerEvent(ManagerEvent event)
-    {
+    public void onManagerEvent(ManagerEvent event) {
 
-        if (event instanceof BridgeEvent)
-        {
+        if (event instanceof BridgeEvent) {
             BridgeEvent bridge = (BridgeEvent) event;
             if (bridge.isLink()
                     && (bridge.getChannel1().isSame(this._lhsChannel) || bridge.getChannel1().isSame(this._rhsChannel))

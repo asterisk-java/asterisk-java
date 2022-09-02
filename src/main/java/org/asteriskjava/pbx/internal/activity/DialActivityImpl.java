@@ -1,21 +1,6 @@
 package org.asteriskjava.pbx.internal.activity;
 
-import java.util.HashSet;
-import java.util.Map;
-
-import org.asteriskjava.pbx.ActivityCallback;
-import org.asteriskjava.pbx.AsteriskSettings;
-import org.asteriskjava.pbx.Call;
-import org.asteriskjava.pbx.CallDirection;
-import org.asteriskjava.pbx.CallImpl;
-import org.asteriskjava.pbx.CallerID;
-import org.asteriskjava.pbx.Channel;
-import org.asteriskjava.pbx.EndPoint;
-import org.asteriskjava.pbx.ListenerPriority;
-import org.asteriskjava.pbx.NewChannelListener;
-import org.asteriskjava.pbx.PBX;
-import org.asteriskjava.pbx.PBXException;
-import org.asteriskjava.pbx.PBXFactory;
+import org.asteriskjava.pbx.*;
 import org.asteriskjava.pbx.activities.DialActivity;
 import org.asteriskjava.pbx.asterisk.wrap.actions.SetVarAction;
 import org.asteriskjava.pbx.asterisk.wrap.events.ManagerEvent;
@@ -26,8 +11,10 @@ import org.asteriskjava.pbx.internal.managerAPI.OriginateResult;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
-public class DialActivityImpl extends ActivityHelper<DialActivity> implements DialActivity, NewChannelListener
-{
+import java.util.HashSet;
+import java.util.Map;
+
+public class DialActivityImpl extends ActivityHelper<DialActivity> implements DialActivity, NewChannelListener {
     private static final Log logger = LogFactory.getLog(DialActivityImpl.class);
 
     private final boolean hideToCallerId;
@@ -57,9 +44,8 @@ public class DialActivityImpl extends ActivityHelper<DialActivity> implements Di
     private String dialOptions;
 
     public DialActivityImpl(final EndPoint originating, final EndPoint accepting, final CallerID toCallerID,
-            final boolean hideToCallerID, final ActivityCallback<DialActivity> listener,
-            Map<String, String> channelVarsToSet, String dialOptions)
-    {
+                            final boolean hideToCallerID, final ActivityCallback<DialActivity> listener,
+                            Map<String, String> channelVarsToSet, String dialOptions) {
         super("Dial", listener);
         this._originating = originating;
         this._accepting = accepting;
@@ -73,12 +59,10 @@ public class DialActivityImpl extends ActivityHelper<DialActivity> implements Di
     }
 
     @Override
-    public boolean doActivity() throws PBXException
-    {
+    public boolean doActivity() throws PBXException {
         boolean success = false;
 
-        try (Dial nr = new Dial(this.toCallerID.toString()))
-        {
+        try (Dial nr = new Dial(this.toCallerID.toString())) {
             DialActivityImpl.logger.debug("*******************************************************************************");
             DialActivityImpl.logger.info("***********                    begin dial out                  ****************");
             DialActivityImpl.logger.info("***********               " + this._accepting + "             ****************");
@@ -89,20 +73,16 @@ public class DialActivityImpl extends ActivityHelper<DialActivity> implements Di
             final OriginateResult[] resultChannels = nr.dial(this, this._originating, this._accepting,
                     profile.getManagementContext(), this.toCallerID, this.hideToCallerId, channelVarsToSet, dialOptions);
 
-            if ((resultChannels[0] == null) || (resultChannels[1] == null))
-            {
+            if ((resultChannels[0] == null) || (resultChannels[1] == null)) {
                 // the dial failed
 
                 // so notify the operator.
                 // Unless the operated cancelled the call
-                if (!this.cancelledByOperator)
-                {
+                if (!this.cancelledByOperator) {
                     this.setLastException(new PBXException(("OperatorEndedCall")));
                     DialActivityImpl.logger.error("dialout to " + this._accepting.getFullyQualifiedName() + " failed.");
                 }
-            }
-            else
-            {
+            } else {
                 // Dial succeeded.
 
                 // - get new channel name from result
@@ -113,45 +93,33 @@ public class DialActivityImpl extends ActivityHelper<DialActivity> implements Di
 
                 DialActivityImpl.logger.debug("dialout succeeded: dest channel is :" + this.acceptingChannel);
 
-                if (!this.validateChannel(this.acceptingChannel))
-                {
+                if (!this.validateChannel(this.acceptingChannel)) {
                     this.setLastException(new PBXException(("dialed extension hungup unexpectedly")));
                     DialActivityImpl.logger.error("dialed extension hungup unexpectedly");
-                }
-                else
-                {
+                } else {
                     success = true;
                 }
             }
-        }
-        finally
-        {
-            if (!success)
-            {
+        } finally {
+            if (!success) {
                 this.hangup();
             }
         }
         return success;
     }
 
-    private void hangup()
-    {
-        try
-        {
+    private void hangup() {
+        try {
             final PBX pbx = PBXFactory.getActivePBX();
-            if (this.acceptingChannel != null)
-            {
+            if (this.acceptingChannel != null) {
                 logger.warn("Hanging up");
                 pbx.hangup(this.acceptingChannel);
             }
-            if (this.originatingChannel != null)
-            {
+            if (this.originatingChannel != null) {
                 logger.warn("Hanging up");
                 pbx.hangup(this.originatingChannel);
             }
-        }
-        catch (final Exception e)
-        {
+        } catch (final Exception e) {
             DialActivityImpl.logger.error(e, e);
         }
     }
@@ -161,45 +129,37 @@ public class DialActivityImpl extends ActivityHelper<DialActivity> implements Di
      * hangup the associated channels.
      */
     @Override
-    public void markCancelled()
-    {
+    public void markCancelled() {
         this.cancelledByOperator = true;
     }
 
     @Override
-    public Channel getOriginatingChannel()
-    {
+    public Channel getOriginatingChannel() {
         return this.originatingChannel;
     }
 
     @Override
-    public Channel getAcceptingChannel()
-    {
+    public Channel getAcceptingChannel() {
         return this.acceptingChannel;
     }
 
     @Override
-    public EndPoint getOriginatingEndPoint()
-    {
+    public EndPoint getOriginatingEndPoint() {
         return this._originating;
     }
 
     @Override
-    public EndPoint getAcceptingEndPoint()
-    {
+    public EndPoint getAcceptingEndPoint() {
         return this._accepting;
     }
 
     @Override
-    public void channelUpdate(final Channel channel)
-    {
-        if (channel.sameEndPoint(this._accepting))
-        {
+    public void channelUpdate(final Channel channel) {
+        if (channel.sameEndPoint(this._accepting)) {
             this.acceptingChannel = channel;
         }
 
-        if (channel.sameEndPoint(this._originating))
-        {
+        if (channel.sameEndPoint(this._originating)) {
             this.originatingChannel = channel;
         }
 
@@ -212,25 +172,20 @@ public class DialActivityImpl extends ActivityHelper<DialActivity> implements Di
      * @param channel the channel which is to be tested.
      */
     @Override
-    public boolean validateChannel(final Channel channel)
-    {
+    public boolean validateChannel(final Channel channel) {
 
         boolean ret = false;
         final SetVarAction var = new SetVarAction(channel, "testState", "1");
 
         ManagerResponse response = null;
-        try
-        {
+        try {
             AsteriskPBX pbx = (AsteriskPBX) PBXFactory.getActivePBX();
             response = pbx.sendAction(var, 500);
-        }
-        catch (final Exception e)
-        {
+        } catch (final Exception e) {
             DialActivityImpl.logger.debug(e, e);
             DialActivityImpl.logger.error("getVariable: " + e);
         }
-        if ((response != null) && (response.getAttribute("Response").compareToIgnoreCase("success") == 0))
-        {
+        if ((response != null) && (response.getAttribute("Response").compareToIgnoreCase("success") == 0)) {
             ret = true;
         }
 
@@ -239,34 +194,29 @@ public class DialActivityImpl extends ActivityHelper<DialActivity> implements Di
     }
 
     @Override
-    public boolean cancelledByOperator()
-    {
+    public boolean cancelledByOperator() {
         return this.cancelledByOperator;
     }
 
     @Override
-    public HashSet<Class< ? extends ManagerEvent>> requiredEvents()
-    {
-        HashSet<Class< ? extends ManagerEvent>> required = new HashSet<>();
+    public HashSet<Class<? extends ManagerEvent>> requiredEvents() {
+        HashSet<Class<? extends ManagerEvent>> required = new HashSet<>();
         // no required.
         return required;
     }
 
     @Override
-    public ListenerPriority getPriority()
-    {
+    public ListenerPriority getPriority() {
         return ListenerPriority.NORMAL;
     }
 
     @Override
-    public void onManagerEvent(ManagerEvent event)
-    {
+    public void onManagerEvent(ManagerEvent event) {
         // NOOP
     }
 
     @Override
-    public Call getNewCall()
-    {
+    public Call getNewCall() {
         return newCall;
     }
 

@@ -8,18 +8,15 @@ import org.asteriskjava.pbx.internal.core.AsteriskPBX;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
-public class RedirectToMeetMe
-{
+public class RedirectToMeetMe {
     private static final Log logger = LogFactory.getLog(RedirectToMeetMe.class);
 
-    public RedirectToMeetMe()
-    {
+    public RedirectToMeetMe() {
         super();
     }
 
     public boolean redirectToMeetme(final Channel channel, final String room, String bridgeProfile, String userProfile)
-            throws PBXException
-    {
+            throws PBXException {
         final AsteriskPBX pbx = (AsteriskPBX) PBXFactory.getActivePBX();
         /*
          * this procedure rediects the specified channel to the specified meetme
@@ -31,8 +28,7 @@ public class RedirectToMeetMe
 
         RedirectToMeetMe.logger.info("redirect to Meetme channel " + channel + " room " + room);
 
-        if (!pbx.moveChannelToAgi(channel))
-        {
+        if (!pbx.moveChannelToAgi(channel)) {
             throw new PBXException("Channel: " + channel + " couldn't be moved to agi");
         }
         channel.setCurrentActivityAction(new AgiChannelActivityMeetme(room, bridgeProfile, userProfile));

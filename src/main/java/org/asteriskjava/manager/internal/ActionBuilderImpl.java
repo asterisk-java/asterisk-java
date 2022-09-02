@@ -16,14 +16,6 @@
  */
 package org.asteriskjava.manager.internal;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-
 import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.manager.AsteriskMapping;
 import org.asteriskjava.manager.action.ManagerAction;
@@ -33,14 +25,17 @@ import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 import org.asteriskjava.util.ReflectionUtil;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.*;
+
 /**
  * Default implementation of the ActionBuilder interface.
  *
  * @author srt
  * @version $Id$
  */
-class ActionBuilderImpl implements ActionBuilder
-{
+class ActionBuilderImpl implements ActionBuilder {
 
     private static final String LINE_SEPARATOR = "\r\n";
     private static final String ATTRIBUTES_PROPERTY_NAME = "attributes";
@@ -55,10 +50,9 @@ class ActionBuilderImpl implements ActionBuilder
     /**
      * Creates a new ActionBuilder for Asterisk 1.0.
      */
-    ActionBuilderImpl()
-    {
+    ActionBuilderImpl() {
         this.targetVersion = AsteriskVersion.ASTERISK_1_0;
-        
+
         /*
          * When using the Reflection API to get all of the getters for building
          * actions to send, we ignore some of the getters
@@ -69,32 +63,26 @@ class ActionBuilderImpl implements ActionBuilder
         this.membersToIgnore.add(ATTRIBUTES_PROPERTY_NAME);
     }
 
-    public void setTargetVersion(AsteriskVersion targetVersion)
-    {
+    public void setTargetVersion(AsteriskVersion targetVersion) {
         this.targetVersion = targetVersion;
     }
 
-    public String buildAction(final ManagerAction action)
-    {
+    public String buildAction(final ManagerAction action) {
         return buildAction(action, null);
     }
 
     @SuppressWarnings("unchecked")
-    public String buildAction(final ManagerAction action, final String internalActionId)
-    {
+    public String buildAction(final ManagerAction action, final String internalActionId) {
         StringBuilder sb = new StringBuilder();
 
         sb.append("action: ");
         sb.append(action.getAction());
         sb.append(LINE_SEPARATOR);
-        if (internalActionId != null)
-        {
+        if (internalActionId != null) {
             sb.append("actionid: ");
             sb.append(ManagerUtil.addInternalActionId(action.getActionId(), internalActionId));
             sb.append(LINE_SEPARATOR);
-        }
-        else if (action.getActionId() != null)
-        {
+        } else if (action.getActionId() != null) {
             sb.append("actionid: ");
             sb.append(action.getActionId());
             sb.append(LINE_SEPARATOR);
@@ -104,19 +92,16 @@ class ActionBuilderImpl implements ActionBuilder
 
         // if this is a user event action, we need to grab the internal event,
         // otherwise do below as normal
-        if (action instanceof UserEventAction)
-        {
+        if (action instanceof UserEventAction) {
             UserEvent userEvent = ((UserEventAction) action).getUserEvent();
             appendUserEvent(sb, userEvent);
-            
+
             getters = ReflectionUtil.getGetters(userEvent.getClass());
 
             // eventually we may want to add more Map keys for events to ignore
             // when appending
             appendGetters(sb, userEvent, getters);
-        }
-        else
-        {
+        } else {
             getters = ReflectionUtil.getGetters(action.getClass());
 
             appendGetters(sb, action, getters);
@@ -124,26 +109,20 @@ class ActionBuilderImpl implements ActionBuilder
 
         // actions that have the special getAttributes method will
         // have their Map appended without a singular key or separator
-        if (getters.containsKey(ATTRIBUTES_PROPERTY_NAME))
-        {
+        if (getters.containsKey(ATTRIBUTES_PROPERTY_NAME)) {
             Method getter = getters.get(ATTRIBUTES_PROPERTY_NAME);
             Object value = null;
-            try
-            {
+            try {
                 value = getter.invoke(action);
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 logger.error("Unable to retrieve property '" + ATTRIBUTES_PROPERTY_NAME + "' of " + action.getClass(), ex);
             }
 
-            if (value instanceof Map)
-            {
+            if (value instanceof Map) {
                 Map<Object, Object> attributes = (Map<Object, Object>) value;
-                for (Map.Entry<Object, Object> entry : attributes.entrySet())
-                {
+                for (Map.Entry<Object, Object> entry : attributes.entrySet()) {
                     appendString(sb, entry.getKey() == null ? "null" : entry.getKey().toString(),
-                        entry.getValue() == null ? "null" : entry.getValue().toString());
+                            entry.getValue() == null ? "null" : entry.getValue().toString());
                 }
             }
         }
@@ -152,75 +131,58 @@ class ActionBuilderImpl implements ActionBuilder
         return sb.toString();
     }
 
-    private void appendMap(StringBuilder sb, String key, Map<String, String> values)
-    {
+    private void appendMap(StringBuilder sb, String key, Map<String, String> values) {
         String singularKey;
 
         // strip plural s (i.e. use "variable: " instead of "variables: "
-        if (key.endsWith("s"))
-        {
+        if (key.endsWith("s")) {
             singularKey = key.substring(0, key.length() - 1);
-        }
-        else
-        {
+        } else {
             singularKey = key;
         }
 
-        if (targetVersion.isAtLeast(AsteriskVersion.ASTERISK_1_2))
-        {
+        if (targetVersion.isAtLeast(AsteriskVersion.ASTERISK_1_2)) {
             appendMap12(sb, singularKey, values);
-        }
-        else
-        {
+        } else {
             appendMap10(sb, singularKey, values);
         }
     }
 
-    private void appendMap10(StringBuilder sb, String singularKey, Map<String, String> values)
-    {
+    private void appendMap10(StringBuilder sb, String singularKey, Map<String, String> values) {
         Iterator<Map.Entry<String, String>> entryIterator;
 
         sb.append(singularKey);
         sb.append(": ");
         entryIterator = values.entrySet().iterator();
-        while (entryIterator.hasNext())
-        {
+        while (entryIterator.hasNext()) {
             Map.Entry<String, String> entry;
 
             entry = entryIterator.next();
             sb.append(entry.getKey());
             sb.append("=");
-            if (entry.getValue() != null)
-            {
+            if (entry.getValue() != null) {
                 sb.append(entry.getValue());
             }
 
-            if (entryIterator.hasNext())
-            {
+            if (entryIterator.hasNext()) {
                 sb.append("|");
             }
         }
         sb.append(LINE_SEPARATOR);
     }
 
-    private void appendMap12(StringBuilder sb, String singularKey, Map<String, String> values)
-    {
-        for (Map.Entry<String, String> entry : values.entrySet())
-        {
+    private void appendMap12(StringBuilder sb, String singularKey, Map<String, String> values) {
+        for (Map.Entry<String, String> entry : values.entrySet()) {
             sb.append(singularKey);
             sb.append(": ");
             sb.append(entry.getKey());
             sb.append("=");
-            if (entry.getValue() != null)
-            {
-                if (entry.getKey().equalsIgnoreCase("Content"))
-                {
+            if (entry.getValue() != null) {
+                if (entry.getKey().equalsIgnoreCase("Content")) {
                     String sp[] = entry.getValue().split("\n");
-                    if (sp.length > 0)
-                    {
+                    if (sp.length > 0) {
                         sb.append(sp[0]);
-                        for (int i = 1; i < sp.length; i++)
-                        {
+                        for (int i = 1; i < sp.length; i++) {
                             sb.append(LINE_SEPARATOR);
                             sb.append(singularKey);
                             sb.append(": ");
@@ -230,9 +192,7 @@ class ActionBuilderImpl implements ActionBuilder
                         }
                     }
 
-                }
-                else
-                {
+                } else {
                     sb.append(entry.getValue());
                 }
             }
@@ -241,23 +201,20 @@ class ActionBuilderImpl implements ActionBuilder
         }
     }
 
-    private void appendString(StringBuilder sb, String key, String value)
-    {
+    private void appendString(StringBuilder sb, String key, String value) {
         sb.append(key);
         sb.append(": ");
         sb.append(value);
         sb.append(LINE_SEPARATOR);
     }
 
-    private void appendUserEvent(StringBuilder sb, UserEvent event)
-    {
+    private void appendUserEvent(StringBuilder sb, UserEvent event) {
         Class<?> clazz = event.getClass();
 
         String className = clazz.getName();
         String eventType = className.substring(className.lastIndexOf('.') + 1).toLowerCase(Locale.ENGLISH);
 
-        if (eventType.endsWith("event"))
-        {
+        if (eventType.endsWith("event")) {
             eventType = eventType.substring(0, eventType.length() - "event".length());
         }
 
@@ -265,134 +222,98 @@ class ActionBuilderImpl implements ActionBuilder
     }
 
     @SuppressWarnings("unchecked")
-    private void appendGetters(StringBuilder sb, Object action, Map<String, Method> getters)
-    {
-        for (Map.Entry<String, Method> entry : getters.entrySet())
-        {
+    private void appendGetters(StringBuilder sb, Object action, Map<String, Method> getters) {
+        for (Map.Entry<String, Method> entry : getters.entrySet()) {
             final String name = entry.getKey();
             final Method getter = entry.getValue();
             final Object value;
 
-            if (membersToIgnore.contains(name))
-            {
+            if (membersToIgnore.contains(name)) {
                 continue;
             }
 
-            try
-            {
+            try {
                 value = getter.invoke(action);
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 logger.error("Unable to retrieve property '" + name + "' of " + action.getClass(), ex);
                 continue;
             }
 
-            if (value == null || value instanceof Class)
-            {
+            if (value == null || value instanceof Class) {
                 continue;
             }
 
             final String mappedName = mapToAsterisk(getter);
-            if (value instanceof Map)
-            {
+            if (value instanceof Map) {
                 appendMap(sb, mappedName, (Map<String, String>) value);
-            }
-            else if (value instanceof String)
-            {
+            } else if (value instanceof String) {
                 appendString(sb, mappedName, (String) value);
-            }
-            else
-            {
+            } else {
                 appendString(sb, mappedName, value.toString());
             }
         }
     }
 
-    private static String mapToAsterisk(Method getter)
-    {
+    private static String mapToAsterisk(Method getter) {
         AsteriskMapping annotation;
 
         // check annotation of getter method
         annotation
-            = getter.getAnnotation(AsteriskMapping.class
-            );
-        if (annotation != null)
-        {
+                = getter.getAnnotation(AsteriskMapping.class
+        );
+        if (annotation != null) {
             return annotation.value();
         }
 
         // check annotation of setter method
         String setterName = determineSetterName(getter.getName());
-        try
-        {
+        try {
             Method setter = getter.getDeclaringClass().getDeclaredMethod(setterName, getter.getReturnType());
             annotation
-                = setter.getAnnotation(AsteriskMapping.class
-                );
-            if (annotation != null)
-            {
+                    = setter.getAnnotation(AsteriskMapping.class
+            );
+            if (annotation != null) {
                 return annotation.value();
             }
-        }
-        catch (NoSuchMethodException e)
-        {
+        } catch (NoSuchMethodException e) {
             // ok, no setter method
         }
 
         // check annotation of field
         String fieldName = determineFieldName(getter.getName());
-        try
-        {
+        try {
             Field field = getter.getDeclaringClass().getDeclaredField(fieldName);
             annotation
-                = field.getAnnotation(AsteriskMapping.class
-                );
-            if (annotation != null)
-            {
+                    = field.getAnnotation(AsteriskMapping.class
+            );
+            if (annotation != null) {
                 return annotation.value();
             }
-        }
-        catch (NoSuchFieldException e)
-        {
+        } catch (NoSuchFieldException e) {
             // ok, no field
         }
 
         return fieldName.toLowerCase(Locale.US);
     }
 
-    static String determineSetterName(String getterName)
-    {
-        if (getterName.startsWith("get"))
-        {
+    static String determineSetterName(String getterName) {
+        if (getterName.startsWith("get")) {
             return "set" + getterName.substring(3);
-        }
-        else if (getterName.startsWith("is"))
-        {
+        } else if (getterName.startsWith("is")) {
             return "set" + getterName.substring(2);
-        }
-        else
-        {
+        } else {
             throw new IllegalArgumentException("Getter '" + getterName + "' doesn't start with either 'get' or 'is'");
         }
     }
 
-    static String determineFieldName(String accessorName)
-    {
-        if (accessorName.startsWith("get"))
-        {
+    static String determineFieldName(String accessorName) {
+        if (accessorName.startsWith("get")) {
             return lcFirst(accessorName.substring(3));
-        }
-        else if (accessorName.startsWith("is"))
-        {
+        } else if (accessorName.startsWith("is")) {
             return lcFirst(accessorName.substring(2));
-        }
-        else if (accessorName.startsWith("set"))
-        {
+        } else if (accessorName.startsWith("set")) {
             return lcFirst(accessorName.substring(3));
-        }
-        else
-        {
+        } else {
             throw new IllegalArgumentException("Accessor '" + accessorName + "' doesn't start with either 'get', 'is' or 'set'");
         }
     }
@@ -403,10 +324,8 @@ class ActionBuilderImpl implements ActionBuilder
      * @param s the string to convert.
      * @return the converted string.
      */
-    private static String lcFirst(String s)
-    {
-        if (s == null || s.isEmpty())
-        {
+    private static String lcFirst(String s) {
+        if (s == null || s.isEmpty()) {
             return s;
         }
 

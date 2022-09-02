@@ -24,12 +24,11 @@ package org.asteriskjava.live;
  * <li>state</li>
  * </ul>
  *
- * @since 0.3.1
  * @author Patrick Breucking
  * @version $Id$
+ * @since 0.3.1
  */
-public interface AsteriskAgent extends LiveObject
-{
+public interface AsteriskAgent extends LiveObject {
     String PROPERTY_STATE = "state";
 
     /**

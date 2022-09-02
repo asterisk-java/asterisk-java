@@ -19,12 +19,11 @@ package org.asteriskjava.manager;
 /**
  * An AuthenticationFailedException is thrown when a login fails due to an incorrect username and/or
  * password.
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public class AuthenticationFailedException extends Exception
-{
+public class AuthenticationFailedException extends Exception {
     /**
      * Serializable version identifier
      */
@@ -32,22 +31,20 @@ public class AuthenticationFailedException extends Exception
 
     /**
      * Creates a new AuthenticationFailedException with the given message.
-     * 
+     *
      * @param message message describing the authentication failure
      */
-    public AuthenticationFailedException(final String message)
-    {
+    public AuthenticationFailedException(final String message) {
         super(message);
     }
 
     /**
      * Creates a new AuthenticationFailedException with the given message and cause.
-     * 
+     *
      * @param message message describing the authentication failure
-     * @param cause exception that caused the authentication failure
+     * @param cause   exception that caused the authentication failure
      */
-    public AuthenticationFailedException(final String message, final Throwable cause)
-    {
+    public AuthenticationFailedException(final String message, final Throwable cause) {
         super(message, cause);
     }
 }

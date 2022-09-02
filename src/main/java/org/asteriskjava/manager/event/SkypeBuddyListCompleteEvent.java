@@ -25,16 +25,14 @@ package org.asteriskjava.manager.event;
  * @see org.asteriskjava.manager.action.SkypeBuddiesAction
  * @since 1.0.0
  */
-public class SkypeBuddyListCompleteEvent extends ResponseEvent
-{
+public class SkypeBuddyListCompleteEvent extends ResponseEvent {
     /**
      * Serial version identifier.
      */
     private static final long serialVersionUID = 1L;
     private Integer listItems;
 
-    public SkypeBuddyListCompleteEvent(Object source)
-    {
+    public SkypeBuddyListCompleteEvent(Object source) {
         super(source);
     }
 
@@ -43,8 +41,7 @@ public class SkypeBuddyListCompleteEvent extends ResponseEvent
      *
      * @return the number of buddies that have been reported.
      */
-    public Integer getListItems()
-    {
+    public Integer getListItems() {
         return listItems;
     }
 
@@ -53,8 +50,7 @@ public class SkypeBuddyListCompleteEvent extends ResponseEvent
      *
      * @param listItems the number of buddies that have been reported.
      */
-    public void setListItems(Integer listItems)
-    {
+    public void setListItems(Integer listItems) {
         this.listItems = listItems;
     }
 }

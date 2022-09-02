@@ -1,5 +1,9 @@
 package org.asteriskjava.util.internal;
 
+import org.asteriskjava.util.DateUtil;
+import org.asteriskjava.util.Log;
+import org.asteriskjava.util.LogFactory;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -12,15 +16,10 @@ import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
-import org.asteriskjava.util.DateUtil;
-import org.asteriskjava.util.Log;
-import org.asteriskjava.util.LogFactory;
-
 /**
  * Writes a trace file to the file system.
  */
-public class FileTrace implements Trace
-{
+public class FileTrace implements Trace {
     public static final String TRACE_DIRECTORY_PROPERTY = "org.asteriskjava.trace.directory";
     protected static final String FILE_PREFIX = "aj-trace";
     protected static final String FILE_SUFFIX = ".txt";
@@ -34,15 +33,13 @@ public class FileTrace implements Trace
     private boolean exceptionLogged = false;
     private RandomAccessFile randomAccessFile;
 
-    public FileTrace(Socket socket) throws IOException
-    {
+    public FileTrace(Socket socket) throws IOException {
         randomAccessFile = new RandomAccessFile(getFile(socket), "rw");
         channel = randomAccessFile.getChannel();
         print(getHeader(socket));
     }
 
-    private String getHeader(Socket socket)
-    {
+    private String getHeader(Socket socket) {
         final StringBuilder sb = new StringBuilder();
         sb.append("Local:  ");
         sb.append(socket.getLocalAddress());
@@ -59,8 +56,7 @@ public class FileTrace implements Trace
         return sb.toString();
     }
 
-    private File getFile(Socket socket)
-    {
+    private File getFile(Socket socket) {
         final String directory = System.getProperty(TRACE_DIRECTORY_PROPERTY, System.getProperty("java.io.tmpdir"));
         final String fileName = getFileName(socket);
 
@@ -68,8 +64,7 @@ public class FileTrace implements Trace
         return new File(directory, fileName);
     }
 
-    private String getFileName(Socket socket)
-    {
+    private String getFileName(Socket socket) {
         final StringBuilder sb = new StringBuilder(FILE_PREFIX);
         sb.append("_");
         sb.append(df.format(DateUtil.getDate()));
@@ -85,50 +80,37 @@ public class FileTrace implements Trace
         return sb.toString();
     }
 
-    public synchronized void received(String s)
-    {
-        try
-        {
+    public synchronized void received(String s) {
+        try {
             print(format("<<< ", s));
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             logException(e);
         }
     }
 
-    public synchronized void sent(String s)
-    {
-        try
-        {
+    public synchronized void sent(String s) {
+        try {
             print(format(">>> ", s));
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             logException(e);
         }
     }
 
-    private void logException(IOException e)
-    {
+    private void logException(IOException e) {
         // avoid excessive failure logging
-        if (exceptionLogged)
-        {
+        if (exceptionLogged) {
             return;
         }
         logger.warn("Unable to write trace to disk", e);
         exceptionLogged = true;
     }
 
-    protected String format(String prefix, String s)
-    {
+    protected String format(String prefix, String s) {
         final StringBuilder sb = new StringBuilder(df.format(DateUtil.getDate()));
         final String filler = String.format("%" + sb.length() + "s", "");
         String[] lines = s.split("\n");
-        for (int i = 0; i < lines.length; i++)
-        {
-            if (i != 0)
-            {
+        for (int i = 0; i < lines.length; i++) {
+            if (i != 0) {
                 sb.append(filler);
             }
             sb.append(" ");
@@ -139,36 +121,28 @@ public class FileTrace implements Trace
         return sb.toString();
     }
 
-    protected void print(String s) throws IOException
-    {
+    protected void print(String s) throws IOException {
         final CharBuffer charBuffer = CharBuffer.allocate(s.length());
         charBuffer.put(s);
         charBuffer.flip();
         print(charset.encode(charBuffer));
     }
 
-    private void print(ByteBuffer byteBuffer) throws IOException
-    {
+    private void print(ByteBuffer byteBuffer) throws IOException {
         int bytesWritten = 0;
-        while (bytesWritten < byteBuffer.remaining())
-        {
+        while (bytesWritten < byteBuffer.remaining()) {
             // Loop if only part of the buffer contents get written.
             bytesWritten = channel.write(byteBuffer);
-            if (bytesWritten == 0)
-            {
+            if (bytesWritten == 0) {
                 throw new IOException("Unable to write trace to channel. Media may be full.");
             }
         }
     }
 
-    public void close()
-    {
-        try
-        {
+    public void close() {
+        try {
             randomAccessFile.close();
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             logException(e);
         }
     }

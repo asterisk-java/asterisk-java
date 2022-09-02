@@ -34,8 +34,7 @@ import java.util.regex.Pattern;
  *
  * @author martins
  */
-public class ChannelReloadEvent extends ManagerEvent
-{
+public class ChannelReloadEvent extends ManagerEvent {
     /**
      * Serializable version identifier.
      */
@@ -102,8 +101,7 @@ public class ChannelReloadEvent extends ManagerEvent
     /**
      * @param source
      */
-    public ChannelReloadEvent(Object source)
-    {
+    public ChannelReloadEvent(Object source) {
         super(source);
     }
 
@@ -113,13 +111,11 @@ public class ChannelReloadEvent extends ManagerEvent
      * @return the type of channel that was reloaded (e.g. SIP)
      * @since 1.0.0
      */
-    public String getChannelType()
-    {
+    public String getChannelType() {
         return channelType;
     }
 
-    public void setChannelType(String channelType)
-    {
+    public void setChannelType(String channelType) {
         this.channelType = channelType;
     }
 
@@ -130,13 +126,12 @@ public class ChannelReloadEvent extends ManagerEvent
      * @return the type of channel that was reloaded (e.g. SIP)
      * @deprecated use {@link #getChannelType()} instead.
      */
-    @Deprecated public String getChannel()
-    {
+    @Deprecated
+    public String getChannel() {
         return channelType;
     }
 
-    public void setChannel(String channel)
-    {
+    public void setChannel(String channel) {
         this.channelType = channel;
     }
 
@@ -145,10 +140,9 @@ public class ChannelReloadEvent extends ManagerEvent
      * channel (e.g. sip peer definitions).
      *
      * @return the number of peers defined during the configuration of this
-     *         channel (e.g. sip peer definitions)
+     * channel (e.g. sip peer definitions)
      */
-    public Integer getPeerCount()
-    {
+    public Integer getPeerCount() {
         return peerCount;
     }
 
@@ -156,17 +150,15 @@ public class ChannelReloadEvent extends ManagerEvent
      * @param peerCount the number of peers defined during the configuration of
      *                  this channel (e.g. sip peer definitions)
      */
-    public void setPeerCount(Integer peerCount)
-    {
+    public void setPeerCount(Integer peerCount) {
         this.peerCount = peerCount;
     }
 
     /**
      * @return the number of registrations with other channels (e.g.
-     *         registrations with other sip proxies)
+     * registrations with other sip proxies)
      */
-    public Integer getRegistryCount()
-    {
+    public Integer getRegistryCount() {
         return registryCount;
     }
 
@@ -174,8 +166,7 @@ public class ChannelReloadEvent extends ManagerEvent
      * @param registryCount the number of registrations with other channels
      *                      (e.g. registrations with other sip proxies)
      */
-    public void setRegistryCount(Integer registryCount)
-    {
+    public void setRegistryCount(Integer registryCount) {
         this.registryCount = registryCount;
     }
 
@@ -189,8 +180,7 @@ public class ChannelReloadEvent extends ManagerEvent
      * @see #getReloadReasonCode()
      * @see #getReloadReasonDescription()
      */
-    public String getReloadReason()
-    {
+    public String getReloadReason() {
         return reloadReason;
     }
 
@@ -200,19 +190,16 @@ public class ChannelReloadEvent extends ManagerEvent
      *
      * @param reloadReason the reason that this channel was reloaded
      */
-    public void setReloadReason(String reloadReason)
-    {
+    public void setReloadReason(String reloadReason) {
         Matcher matcher;
 
         this.reloadReason = reloadReason;
-        if (reloadReason == null)
-        {
+        if (reloadReason == null) {
             return;
         }
 
         matcher = REASON_PATTERN.matcher(reloadReason);
-        if (matcher.matches())
-        {
+        if (matcher.matches()) {
             reloadReasonCode = matcher.group(1);
             reloadReasonDescription = matcher.group(2);
         }
@@ -234,8 +221,7 @@ public class ChannelReloadEvent extends ManagerEvent
      * @see org.asteriskjava.manager.event.ChannelReloadEvent#REASON_RELOAD
      * @see org.asteriskjava.manager.event.ChannelReloadEvent#REASON_MANAGER_RELOAD
      */
-    public String getReloadReasonCode()
-    {
+    public String getReloadReasonCode() {
         return reloadReasonCode;
     }
 
@@ -245,17 +231,15 @@ public class ChannelReloadEvent extends ManagerEvent
      *
      * @return the descriptive version of the reason for the reload.
      */
-    public String getReloadReasonDescription()
-    {
+    public String getReloadReasonDescription() {
         return reloadReasonDescription;
     }
 
     /**
      * @return the number of users defined during the configuration of this
-     *         channel (e.g. sip user definitions)
+     * channel (e.g. sip user definitions)
      */
-    public Integer getUserCount()
-    {
+    public Integer getUserCount() {
         return userCount;
     }
 
@@ -263,8 +247,7 @@ public class ChannelReloadEvent extends ManagerEvent
      * @param userCount the number of users defined during the configuration of
      *                  this channel (e.g. sip user definitions)
      */
-    public void setUserCount(Integer userCount)
-    {
+    public void setUserCount(Integer userCount) {
         this.userCount = userCount;
     }
 }

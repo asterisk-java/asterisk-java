@@ -8,8 +8,7 @@ import org.asteriskjava.pbx.internal.core.ChannelProxy;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
-public class RenameEvent extends ManagerEvent implements ChannelEvent
-{
+public class RenameEvent extends ManagerEvent implements ChannelEvent {
     private static final long serialVersionUID = 1L;
 
     private static final Log logger = LogFactory.getLog(RenameEvent.class);
@@ -26,8 +25,7 @@ public class RenameEvent extends ManagerEvent implements ChannelEvent
 
     private String uniqueId;
 
-    public RenameEvent(final org.asteriskjava.manager.event.RenameEvent event) throws InvalidChannelName
-    {
+    public RenameEvent(final org.asteriskjava.manager.event.RenameEvent event) throws InvalidChannelName {
         super(event);
         final AsteriskPBX pbx = (AsteriskPBX) PBXFactory.getActivePBX();
 
@@ -45,24 +43,20 @@ public class RenameEvent extends ManagerEvent implements ChannelEvent
     }
 
     @Override
-    public final Channel getChannel()
-    {
+    public final Channel getChannel() {
         return this._channel;
     }
 
-    public final String getNewName()
-    {
+    public final String getNewName() {
         return this._newName;
     }
 
-    public final String getUniqueId()
-    {
+    public final String getUniqueId() {
         return uniqueId;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         org.asteriskjava.manager.event.RenameEvent rawEvent = (org.asteriskjava.manager.event.RenameEvent) getSource();
         return "RenameEvent: existing channel: " + this._channel + " newname=" + this._newName //$NON-NLS-1$ //$NON-NLS-2$
                 + "rawExisting:" + rawEvent.getChannel() + " rawNewname:" + rawEvent.getNewname() //$NON-NLS-1$ //$NON-NLS-2$

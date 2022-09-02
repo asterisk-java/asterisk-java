@@ -25,8 +25,7 @@ package org.asteriskjava.manager.action;
  * @author srt
  * @version $Id$
  */
-public class QueueAddAction extends AbstractManagerAction
-{
+public class QueueAddAction extends AbstractManagerAction {
     private static final long serialVersionUID = 2L;
     private String queue;
     private String iface;
@@ -38,8 +37,7 @@ public class QueueAddAction extends AbstractManagerAction
     /**
      * Creates a new empty QueueAddAction.
      */
-    public QueueAddAction()
-    {
+    public QueueAddAction() {
 
     }
 
@@ -52,8 +50,7 @@ public class QueueAddAction extends AbstractManagerAction
      *              use the channel name, e.g. "SIP/1234".
      * @since 0.2
      */
-    public QueueAddAction(String queue, String iface)
-    {
+    public QueueAddAction(String queue, String iface) {
         this.queue = queue;
         this.iface = iface;
     }
@@ -70,8 +67,7 @@ public class QueueAddAction extends AbstractManagerAction
      *                distributed members with higher penalties are considered last.
      * @since 0.2
      */
-    public QueueAddAction(String queue, String iface, Integer penalty)
-    {
+    public QueueAddAction(String queue, String iface, Integer penalty) {
         this.queue = queue;
         this.iface = iface;
         this.penalty = penalty;
@@ -81,8 +77,7 @@ public class QueueAddAction extends AbstractManagerAction
      * Returns the name of this action, i.e. "QueueAdd".
      */
     @Override
-    public String getAction()
-    {
+    public String getAction() {
         return "QueueAdd";
     }
 
@@ -91,8 +86,7 @@ public class QueueAddAction extends AbstractManagerAction
      *
      * @return the name of the queue the new member will be added to.
      */
-    public String getQueue()
-    {
+    public String getQueue() {
         return queue;
     }
 
@@ -102,8 +96,7 @@ public class QueueAddAction extends AbstractManagerAction
      *
      * @param queue the name of the queue the new member will be added to.
      */
-    public void setQueue(String queue)
-    {
+    public void setQueue(String queue) {
         this.queue = queue;
     }
 
@@ -112,8 +105,7 @@ public class QueueAddAction extends AbstractManagerAction
      *
      * @return the name of the channel to dial to reach this member.
      */
-    public String getInterface()
-    {
+    public String getInterface() {
         return iface;
     }
 
@@ -123,8 +115,7 @@ public class QueueAddAction extends AbstractManagerAction
      *
      * @param iface the name of the channel to dial to reach this member, e.g. "SIP/1234".
      */
-    public void setInterface(String iface)
-    {
+    public void setInterface(String iface) {
         this.iface = iface;
     }
 
@@ -133,8 +124,7 @@ public class QueueAddAction extends AbstractManagerAction
      *
      * @return the penalty for this member.
      */
-    public Integer getPenalty()
-    {
+    public Integer getPenalty() {
         return penalty;
     }
 
@@ -147,8 +137,7 @@ public class QueueAddAction extends AbstractManagerAction
      *
      * @param penalty the penalty for this member.
      */
-    public void setPenalty(Integer penalty)
-    {
+    public void setPenalty(Integer penalty) {
         this.penalty = penalty;
     }
 
@@ -158,8 +147,7 @@ public class QueueAddAction extends AbstractManagerAction
      * @return Boolean.TRUE if the queue member should be paused when added.
      * @since 0.2
      */
-    public Boolean getPaused()
-    {
+    public Boolean getPaused() {
         return paused;
     }
 
@@ -170,8 +158,7 @@ public class QueueAddAction extends AbstractManagerAction
      *               added.
      * @since 0.2
      */
-    public void setPaused(Boolean paused)
-    {
+    public void setPaused(Boolean paused) {
         this.paused = paused;
     }
 
@@ -182,8 +169,7 @@ public class QueueAddAction extends AbstractManagerAction
      * @return the name of the queue memeber (agent name).
      * @since 1.0.0
      */
-    public String getMemberName()
-    {
+    public String getMemberName() {
         return memberName;
     }
 
@@ -194,8 +180,7 @@ public class QueueAddAction extends AbstractManagerAction
      * @param memberName the name of the queue memeber (agent name).
      * @since 1.0.0
      */
-    public void setMemberName(String memberName)
-    {
+    public void setMemberName(String memberName) {
         this.memberName = memberName;
     }
 
@@ -206,8 +191,7 @@ public class QueueAddAction extends AbstractManagerAction
      * @return the name of the channel from which to read devicestate changes.
      * @since 1.0.0
      */
-    public String getStateInterface()
-    {
+    public String getStateInterface() {
         return stateInterface;
     }
 
@@ -218,8 +202,7 @@ public class QueueAddAction extends AbstractManagerAction
      * @param stateInterface the name of the channel from which to read devicestate changes.
      * @since 1.0.0
      */
-    public void setStateInterface(String stateInterface)
-    {
+    public void setStateInterface(String stateInterface) {
         this.stateInterface = stateInterface;
     }
 }

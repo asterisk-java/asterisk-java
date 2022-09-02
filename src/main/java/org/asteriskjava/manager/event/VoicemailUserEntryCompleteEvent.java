@@ -23,14 +23,13 @@ package org.asteriskjava.manager.event;
  * <p>
  * Available since Asterisk 1.6
  *
- * @see VoicemailUserEntryEvent
- * @see org.asteriskjava.manager.action.VoicemailUsersListAction
  * @author srt
  * @version $Id$
+ * @see VoicemailUserEntryEvent
+ * @see org.asteriskjava.manager.action.VoicemailUsersListAction
  * @since 1.0.0
  */
-public class VoicemailUserEntryCompleteEvent extends ResponseEvent
-{
+public class VoicemailUserEntryCompleteEvent extends ResponseEvent {
     /**
      * Serial version identifier.
      */
@@ -41,8 +40,7 @@ public class VoicemailUserEntryCompleteEvent extends ResponseEvent
      *
      * @param source
      */
-    public VoicemailUserEntryCompleteEvent(Object source)
-    {
+    public VoicemailUserEntryCompleteEvent(Object source) {
         super(source);
     }
 }

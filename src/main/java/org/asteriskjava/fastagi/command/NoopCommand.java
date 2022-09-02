@@ -18,12 +18,11 @@ package org.asteriskjava.fastagi.command;
 
 /**
  * Does nothing.
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public class NoopCommand extends AbstractAgiCommand
-{
+public class NoopCommand extends AbstractAgiCommand {
     /**
      * Serial version identifier.
      */
@@ -32,14 +31,12 @@ public class NoopCommand extends AbstractAgiCommand
     /**
      * Creates a new NoopCommand.
      */
-    public NoopCommand()
-    {
+    public NoopCommand() {
         super();
     }
 
     @Override
-   public String buildCommand()
-    {
+    public String buildCommand() {
         return "NOOP";
     }
 }

@@ -16,6 +16,10 @@
  */
 package org.asteriskjava.fastagi;
 
+import org.asteriskjava.lock.Lockable;
+import org.asteriskjava.util.Log;
+import org.asteriskjava.util.LogFactory;
+
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.net.MalformedURLException;
@@ -24,10 +28,6 @@ import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.asteriskjava.lock.Lockable;
-import org.asteriskjava.util.Log;
-import org.asteriskjava.util.LogFactory;
-
 /**
  * Abstract base class for common mapping strategies. <br>
  * If you implement your own mapping strategy you can derive from this class.
@@ -35,8 +35,7 @@ import org.asteriskjava.util.LogFactory;
  * @author srt
  * @since 0.3
  */
-public abstract class AbstractMappingStrategy extends Lockable implements MappingStrategy
-{
+public abstract class AbstractMappingStrategy extends Lockable implements MappingStrategy {
     /**
      * Reference to Asterisk-Java's logging subsystem.
      */
@@ -46,8 +45,7 @@ public abstract class AbstractMappingStrategy extends Lockable implements Mappin
     private ClassLoader defaultClassLoader = null;
 
     @Override
-    public AgiScript determineScript(AgiRequest request, AgiChannel channel)
-    {
+    public AgiScript determineScript(AgiRequest request, AgiChannel channel) {
         return determineScript(request);
     }
 
@@ -65,36 +63,28 @@ public abstract class AbstractMappingStrategy extends Lockable implements Mappin
      * loader.
      *
      * @return the ClassLoader to use for loading AgiScript classes and load
-     *         other resources like the mapping properties file.
+     * other resources like the mapping properties file.
      * @since 1.0.0
      */
-    protected synchronized ClassLoader getClassLoader()
-    {
-        if (defaultClassLoader == null)
-        {
+    protected synchronized ClassLoader getClassLoader() {
+        if (defaultClassLoader == null) {
             final ClassLoader parentClassLoader = Thread.currentThread().getContextClassLoader();
             final List<URL> dirUrls = new ArrayList<>();
 
-            for (String scriptPathEntry : DEFAULT_SCRIPT_PATH)
-            {
+            for (String scriptPathEntry : DEFAULT_SCRIPT_PATH) {
                 final File scriptDir = new File(scriptPathEntry);
-                if (!scriptDir.isDirectory())
-                {
+                if (!scriptDir.isDirectory()) {
                     continue;
                 }
 
-                try
-                {
+                try {
                     dirUrls.add(scriptDir.toURI().toURL());
-                }
-                catch (MalformedURLException e)
-                {
+                } catch (MalformedURLException e) {
                     // should not happen
                 }
             }
 
-            if (dirUrls.isEmpty())
-            {
+            if (dirUrls.isEmpty()) {
                 return parentClassLoader;
             }
 
@@ -108,47 +98,39 @@ public abstract class AbstractMappingStrategy extends Lockable implements Mappin
      * Creates a new instance of an AGI script.
      *
      * @param className Class name of the AGI script. The class must implement
-     *            {@link AgiScript}.
+     *                  {@link AgiScript}.
      * @return the created instance of the AGI script class. If the instance
-     *         can't be created an error is logged and <code>null</code> is
-     *         returned.
+     * can't be created an error is logged and <code>null</code> is
+     * returned.
      */
     @SuppressWarnings("unchecked")
-    protected AgiScript createAgiScriptInstance(String className)
-    {
-        Class< ? > tmpClass;
+    protected AgiScript createAgiScriptInstance(String className) {
+        Class<?> tmpClass;
         Class<AgiScript> agiScriptClass;
         Constructor<AgiScript> constructor;
         AgiScript agiScript;
 
         agiScript = null;
 
-        try
-        {
+        try {
             tmpClass = getClassLoader().loadClass(className);
-        }
-        catch (ClassNotFoundException e1)
-        {
+        } catch (ClassNotFoundException e1) {
             logger.debug("Unable to create AgiScript instance of type " + className
                     + ": Class not found, make sure the class exists and is available on the CLASSPATH");
             return null;
         }
 
-        if (!AgiScript.class.isAssignableFrom(tmpClass))
-        {
+        if (!AgiScript.class.isAssignableFrom(tmpClass)) {
             logger.warn("Unable to create AgiScript instance of type " + className
                     + ": Class does not implement the AgiScript interface");
             return null;
         }
 
         agiScriptClass = (Class<AgiScript>) tmpClass;
-        try
-        {
+        try {
             constructor = agiScriptClass.getConstructor();
             agiScript = constructor.newInstance();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             logger.warn("Unable to create AgiScript instance of type " + className, e);
         }
 

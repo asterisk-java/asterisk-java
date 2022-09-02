@@ -16,55 +16,43 @@
  */
 package org.asteriskjava.fastagi.internal;
 
+import org.asteriskjava.fastagi.*;
+import org.asteriskjava.fastagi.reply.AgiReply;
+import org.asteriskjava.util.SocketConnectionFacade;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.asteriskjava.fastagi.AgiException;
-import org.asteriskjava.fastagi.AgiHangupException;
-import org.asteriskjava.fastagi.AgiNetworkException;
-import org.asteriskjava.fastagi.AgiReader;
-import org.asteriskjava.fastagi.AgiRequest;
-import org.asteriskjava.fastagi.reply.AgiReply;
-import org.asteriskjava.util.SocketConnectionFacade;
-
 /**
  * Default implementation of the AgiReader implementation.
- * 
+ *
  * @author srt
  * @version $Id$
  */
-class FastAgiReader implements AgiReader
-{
+class FastAgiReader implements AgiReader {
     private final SocketConnectionFacade socket;
 
-    FastAgiReader(SocketConnectionFacade socket)
-    {
+    FastAgiReader(SocketConnectionFacade socket) {
         this.socket = socket;
     }
 
-    public AgiRequest readRequest() throws AgiException
-    {
+    public AgiRequest readRequest() throws AgiException {
         AgiRequestImpl request;
         String line;
         List<String> lines;
 
         lines = new ArrayList<>();
 
-        try
-        {
-            while ((line = socket.readLine()) != null)
-            {
-                if (line.length() == 0)
-                {
+        try {
+            while ((line = socket.readLine()) != null) {
+                if (line.length() == 0) {
                     break;
                 }
 
                 lines.add(line);
             }
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             throw new AgiNetworkException("Unable to read request from Asterisk: " + e.getMessage(), e);
         }
 
@@ -77,39 +65,30 @@ class FastAgiReader implements AgiReader
         return request;
     }
 
-    public AgiReply readReply() throws AgiException
-    {
+    public AgiReply readReply() throws AgiException {
         AgiReply reply;
         List<String> lines;
         String line;
 
         lines = new ArrayList<>();
 
-        try
-        {
+        try {
             line = socket.readLine();
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             // readline throws IOException if the connection has been closed
             throw new AgiHangupException();
         }
 
-        if (line == null)
-        {
+        if (line == null) {
             throw new AgiHangupException();
         }
 
         // TODO Asterisk 1.6 sends "HANGUP" when the channel is hung up.
         // System.out.println(line);
-        if (line.startsWith("HANGUP"))
-        {
-            if (line.length() > 6)
-            {
+        if (line.startsWith("HANGUP")) {
+            if (line.length() > 6) {
                 line = line.substring(6);
-            }
-            else
-            {
+            } else {
                 return readReply();
             }
         }
@@ -117,21 +96,15 @@ class FastAgiReader implements AgiReader
         lines.add(line);
 
         // read synopsis and usage if statuscode is 520
-        if (line.startsWith(Integer.toString(AgiReply.SC_INVALID_COMMAND_SYNTAX)))
-        {
-            try
-            {
-                while ((line = socket.readLine()) != null)
-                {
+        if (line.startsWith(Integer.toString(AgiReply.SC_INVALID_COMMAND_SYNTAX))) {
+            try {
+                while ((line = socket.readLine()) != null) {
                     lines.add(line);
-                    if (line.startsWith(Integer.toString(AgiReply.SC_INVALID_COMMAND_SYNTAX)))
-                    {
+                    if (line.startsWith(Integer.toString(AgiReply.SC_INVALID_COMMAND_SYNTAX))) {
                         break;
                     }
                 }
-            }
-            catch (IOException e)
-            {
+            } catch (IOException e) {
                 throw new AgiNetworkException("Unable to read reply from Asterisk: " + e.getMessage(), e);
             }
         }
@@ -139,8 +112,7 @@ class FastAgiReader implements AgiReader
         reply = new AgiReplyImpl(lines);
 
         // Special handling for gosub, see AJ-257
-        if (reply.getStatus() == AgiReply.SC_TRYING)
-        {
+        if (reply.getStatus() == AgiReply.SC_TRYING) {
             return readReply();
         }
         return reply;

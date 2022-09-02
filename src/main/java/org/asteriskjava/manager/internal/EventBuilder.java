@@ -16,19 +16,18 @@
  */
 package org.asteriskjava.manager.internal;
 
-import java.util.Map;
-
 import org.asteriskjava.manager.event.ManagerEvent;
+
+import java.util.Map;
 
 /**
  * Transforms maps of attributes to instances of ManagerEvent.
- * 
- * @see org.asteriskjava.manager.event.ManagerEvent
+ *
  * @author srt
  * @version $Id$
+ * @see org.asteriskjava.manager.event.ManagerEvent
  */
-interface EventBuilder
-{
+interface EventBuilder {
     /**
      * Registers a new event class. The event this class is registered for is
      * simply derived from the name of the class by stripping any package name
@@ -38,23 +37,23 @@ interface EventBuilder
      * <p>
      * The event class must be a concrete class with a default constructor (one
      * that takes no arguments).
-     * 
+     *
      * @param clazz the event class to register, must extend
-     *            {@link ManagerEvent}.
+     *              {@link ManagerEvent}.
      * @throws IllegalArgumentException if clazz is not a valid event class
      */
-    void registerEventClass(Class< ? extends ManagerEvent> clazz) throws IllegalArgumentException;
+    void registerEventClass(Class<? extends ManagerEvent> clazz) throws IllegalArgumentException;
 
     /**
      * Builds the event based on the given map of attributes and the registered
      * event classes.
-     * 
-     * @param source source attribute for the event
+     *
+     * @param source     source attribute for the event
      * @param attributes map containing event attributes
      * @return a concrete instance of ManagerEvent or <code>null</code> if no
-     *         event class was registered for the event type.
+     * event class was registered for the event type.
      */
     ManagerEvent buildEvent(Object source, Map<String, Object> attributes);
 
-    void deregisterEventClass(Class< ? extends ManagerEvent> eventClass);
+    void deregisterEventClass(Class<? extends ManagerEvent> eventClass);
 }

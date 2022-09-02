@@ -20,13 +20,12 @@ import java.io.Serializable;
 
 /**
  * An Asterisk voicemailbox with status.
- * 
+ *
  * @author srt
  * @version $Id$
  * @since 0.3
  */
-public class Voicemailbox implements Serializable
-{
+public class Voicemailbox implements Serializable {
     /**
      * Serial version identifier.
      */
@@ -39,13 +38,12 @@ public class Voicemailbox implements Serializable
 
     /**
      * Creates a new instance.
-     * 
+     *
      * @param mailbox the name of this mailbox as defined in <code>voicemail.conf</code>.
      * @param context the context of this mailbox as defined in <code>voicemail.conf</code>.
-     * @param user the user of this mailbox as defined in <code>voicemail.conf</code>.
+     * @param user    the user of this mailbox as defined in <code>voicemail.conf</code>.
      */
-    public Voicemailbox(String mailbox, String context, String user)
-    {
+    public Voicemailbox(String mailbox, String context, String user) {
         this.mailbox = mailbox;
         this.context = context;
         this.user = user;
@@ -53,78 +51,70 @@ public class Voicemailbox implements Serializable
 
     /**
      * Returns the name of this mailbox as defined in <code>voicemail.conf</code>.
-     * 
+     *
      * @return the name of this mailbox as defined in <code>voicemail.conf</code>.
      */
-    public String getMailbox()
-    {
+    public String getMailbox() {
         return mailbox;
     }
 
     /**
      * Returns the context of this mailbox as defined in <code>voicemail.conf</code>.
-     * 
+     *
      * @return the context of this mailbox as defined in <code>voicemail.conf</code>.
      */
-    public String getContext()
-    {
+    public String getContext() {
         return context;
     }
 
     /**
      * Returns the user (usually the full name) of this mailbox as defined in <code>voicemail.conf</code>.
-     * 
+     *
      * @return the user of this mailbox as defined in <code>voicemail.conf</code>.
      */
-    public String getUser()
-    {
+    public String getUser() {
         return user;
     }
 
     /**
      * Returns the number of new messages.
-     * 
+     *
      * @return the number of new messages.
      */
-    public int getNewMessages()
-    {
+    public int getNewMessages() {
         return newMessages;
     }
 
     /**
      * Sets the number of new messages.
-     * 
+     *
      * @param newMessages the number of new messages.
      */
-    public void setNewMessages(int newMessages)
-    {
+    public void setNewMessages(int newMessages) {
         this.newMessages = newMessages;
     }
 
     /**
      * Returns the number of old messages.
-     * 
+     *
      * @return the number of old messages.
      */
-    public int getOldMessages()
-    {
+    public int getOldMessages() {
         return oldMessages;
     }
 
     /**
      * Sets the number of old messages.
-     * 
+     *
      * @param oldMessages the number of old messages.
      */
-    public void setOldMessages(int oldMessages)
-    {
+    public void setOldMessages(int oldMessages) {
         this.oldMessages = oldMessages;
     }
 
     @Override
-   public String toString()
-    {
-    	StringBuilder sb;
+    public String toString() {
+        StringBuilder sb;
 
         sb = new StringBuilder(100);
         sb.append("Voicemailbox[");

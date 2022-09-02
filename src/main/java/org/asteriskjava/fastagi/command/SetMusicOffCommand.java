@@ -19,12 +19,11 @@ package org.asteriskjava.fastagi.command;
 /**
  * Turns off music on hold on the current channel.<p>
  * Always returns 0.
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public class SetMusicOffCommand extends AbstractAgiCommand
-{
+public class SetMusicOffCommand extends AbstractAgiCommand {
     /**
      * Serial version identifier.
      */
@@ -33,14 +32,12 @@ public class SetMusicOffCommand extends AbstractAgiCommand
     /**
      * Creates a new SetMusicOffCommand.
      */
-    public SetMusicOffCommand()
-    {
+    public SetMusicOffCommand() {
         super();
     }
 
     @Override
-   public String buildCommand()
-    {
+    public String buildCommand() {
         return "SET MUSIC OFF";
     }
 }

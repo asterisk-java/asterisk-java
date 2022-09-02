@@ -1,10 +1,9 @@
 package org.asteriskjava.manager.event;
 
-public class DialBeginEvent extends DialEvent
-{
+public class DialBeginEvent extends DialEvent {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
     private String language;
@@ -15,74 +14,60 @@ public class DialBeginEvent extends DialEvent
 
     private String accountcode;
 
-    public DialBeginEvent(Object source)
-    {
+    public DialBeginEvent(Object source) {
         super(source);
         setSubEvent(SUBEVENT_BEGIN);
     }
 
-    public String getLanguage()
-    {
+    public String getLanguage() {
         return language;
     }
 
-    public void setLanguage(String language)
-    {
+    public void setLanguage(String language) {
         this.language = language;
     }
 
-    public String getDestLanguage()
-    {
+    public String getDestLanguage() {
         return destlanguage;
     }
 
-    public void setDestLanguage(String destlanguage)
-    {
+    public void setDestLanguage(String destlanguage) {
         this.destlanguage = destlanguage;
     }
 
-    public String getDestAccountCode()
-    {
+    public String getDestAccountCode() {
         return destAccountCode;
     }
 
-    public void setDestAccountCode(String destAccountCode)
-    {
+    public void setDestAccountCode(String destAccountCode) {
         this.destAccountCode = destAccountCode;
     }
 
-    public String getDestlanguage()
-    {
+    public String getDestlanguage() {
         return destlanguage;
     }
 
-    public String getLinkedId()
-    {
+    public String getLinkedId() {
         return linkedId;
     }
 
-    public void setLinkedId(String linkedId)
-    {
+    public void setLinkedId(String linkedId) {
         this.linkedId = linkedId;
     }
 
-    public String getDestLinkedId()
-    {
+    public String getDestLinkedId() {
         return destLinkedId;
     }
 
-    public void setDestLinkedId(String destLinkedId)
-    {
+    public void setDestLinkedId(String destLinkedId) {
         this.destLinkedId = destLinkedId;
     }
 
-    public String getAccountcode()
-    {
+    public String getAccountcode() {
         return accountcode;
     }
 
-    public void setAccountcode(String accountcode)
-    {
+    public void setAccountcode(String accountcode) {
         this.accountcode = accountcode;
     }
 

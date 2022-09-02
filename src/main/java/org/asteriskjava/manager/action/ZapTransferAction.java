@@ -18,12 +18,11 @@ package org.asteriskjava.manager.action;
 
 /**
  * The ZapTransferAction transfers a zap channel.
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public class ZapTransferAction extends AbstractManagerAction
-{
+public class ZapTransferAction extends AbstractManagerAction {
     /**
      * Serializable version identifier
      */
@@ -34,16 +33,14 @@ public class ZapTransferAction extends AbstractManagerAction
      * Returns the name of this action, i.e. "ZapTransfer".
      */
     @Override
-   public String getAction()
-    {
+    public String getAction() {
         return "ZapTransfer";
     }
 
     /**
      * Returns the number of the zap channel to transfer.
      */
-    public Integer getZapChannel()
-    {
+    public Integer getZapChannel() {
         return zapChannel;
     }
 
@@ -51,8 +48,7 @@ public class ZapTransferAction extends AbstractManagerAction
      * Sets the number of the zap channel to transfer.<p>
      * This property is mandatory.
      */
-    public void setZapChannel(Integer channel)
-    {
+    public void setZapChannel(Integer channel) {
         this.zapChannel = channel;
     }
 }

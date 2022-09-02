@@ -25,8 +25,7 @@ package org.asteriskjava.manager.response;
  * @see org.asteriskjava.manager.action.ChallengeAction
  * @see org.asteriskjava.manager.action.LoginAction
  */
-public class ChallengeResponse extends ManagerResponse
-{
+public class ChallengeResponse extends ManagerResponse {
     private static final long serialVersionUID = -7253724086340850957L;
 
     private String challenge;
@@ -37,13 +36,11 @@ public class ChallengeResponse extends ManagerResponse
      * @return the challenge to use when creating the key for log in.
      * @see org.asteriskjava.manager.action.LoginAction#setKey(String)
      */
-    public String getChallenge()
-    {
+    public String getChallenge() {
         return challenge;
     }
 
-    public void setChallenge(String challenge)
-    {
+    public void setChallenge(String challenge) {
         this.challenge = challenge;
     }
 }

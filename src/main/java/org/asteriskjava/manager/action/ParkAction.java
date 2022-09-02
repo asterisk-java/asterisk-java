@@ -21,12 +21,11 @@ package org.asteriskjava.manager.action;
  * <p>
  * Defined in <code>res/res_features.c</code><p>
  * Available since Asterisk 1.4.
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public class ParkAction extends AbstractManagerAction
-{
+public class ParkAction extends AbstractManagerAction {
     /**
      * Serializable version identifier
      */
@@ -39,20 +38,18 @@ public class ParkAction extends AbstractManagerAction
     /**
      * Creates a new empty ParkAction.
      */
-    public ParkAction()
-    {
+    public ParkAction() {
         super();
     }
 
     /**
      * Creates a new ParkAction.
-     * 
-     * @param channel name of the channel to park.
+     *
+     * @param channel  name of the channel to park.
      * @param channel2 name of the channel to announce park info to and return
-     *            to on timeout.
+     *                 to on timeout.
      */
-    public ParkAction(String channel, String channel2)
-    {
+    public ParkAction(String channel, String channel2) {
         super();
         this.channel = channel;
         this.channel2 = channel2;
@@ -60,14 +57,13 @@ public class ParkAction extends AbstractManagerAction
 
     /**
      * Creates a new ParkAction with a timeout.
-     * 
-     * @param channel the name of the channel to park.
+     *
+     * @param channel  the name of the channel to park.
      * @param channel2 the name of the channel to announce park info to and
-     *            return to on timeout.
-     * @param timeout the timeout in seconds before callback.
+     *                 return to on timeout.
+     * @param timeout  the timeout in seconds before callback.
      */
-    public ParkAction(String channel, String channel2, Integer timeout)
-    {
+    public ParkAction(String channel, String channel2, Integer timeout) {
         super();
         this.channel = channel;
         this.channel2 = channel2;
@@ -78,41 +74,37 @@ public class ParkAction extends AbstractManagerAction
      * Returns the name of this action, i.e. "Park".
      */
     @Override
-   public String getAction()
-    {
+    public String getAction() {
         return "Park";
     }
 
     /**
      * Returns the name of the channel to park.
-     * 
+     *
      * @return the name of the channel to park.
      */
-    public String getChannel()
-    {
+    public String getChannel() {
         return channel;
     }
 
     /**
      * Sets the name of the channel to park.<p>
      * This property is mandatory.
-     * 
+     *
      * @param channel the name of the channel to park.
      */
-    public void setChannel(String channel)
-    {
+    public void setChannel(String channel) {
         this.channel = channel;
     }
 
     /**
      * Returns the name of the channel to announce park info to and return to on
      * timeout.
-     * 
+     *
      * @return the name of the channel to announce park info to and return to on
-     *         timeout.
+     * timeout.
      */
-    public String getChannel2()
-    {
+    public String getChannel2() {
         return channel2;
     }
 
@@ -120,32 +112,29 @@ public class ParkAction extends AbstractManagerAction
      * Sets the name of the channel to announce park info to and return to on
      * timeout.<p>
      * This property is mandatory.
-     * 
+     *
      * @param channel2 the name of the channel to announce park info to and
-     *            return to on timeout.
+     *                 return to on timeout.
      */
-    public void setChannel2(String channel2)
-    {
+    public void setChannel2(String channel2) {
         this.channel2 = channel2;
     }
 
     /**
      * Returns the timeout in seconds before callback.
-     * 
+     *
      * @return the timeout in seconds before callback.
      */
-    public Integer getTimeout()
-    {
+    public Integer getTimeout() {
         return timeout;
     }
 
     /**
      * Sets the timeout in seconds before callback.
-     * 
+     *
      * @param timeout the timeout in seconds before callback.
      */
-    public void setTimeout(Integer timeout)
-    {
+    public void setTimeout(Integer timeout) {
         this.timeout = timeout;
     }
 }

@@ -1,7 +1,6 @@
 package org.asteriskjava.fastagi.command;
 
-public class QueueCommand extends AbstractAgiCommand
-{
+public class QueueCommand extends AbstractAgiCommand {
 
     /**
      * Serial version identifier.
@@ -13,16 +12,14 @@ public class QueueCommand extends AbstractAgiCommand
     /**
      * Creates a new AnswerCommand.
      */
-    public QueueCommand(String queue)
-    {
+    public QueueCommand(String queue) {
         super();
         this.queue = queue;
 
     }
 
     @Override
-    public String buildCommand()
-    {
+    public String buildCommand() {
         String command = "EXEC " + escapeAndQuote("queue") + " " + escapeAndQuote(queue);
         // if (options != null && options.length() > 0)
         // {

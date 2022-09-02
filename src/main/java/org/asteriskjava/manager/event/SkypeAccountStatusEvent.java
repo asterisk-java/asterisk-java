@@ -1,6 +1,6 @@
 /*
  *  Copyright 2004-2006 Stefan Reuter
- *  
+ *
  *  amended 2010 Allan Wylie
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,8 +26,7 @@ package org.asteriskjava.manager.event;
  *
  * @since 1.0.0
  */
-public class SkypeAccountStatusEvent extends ManagerEvent
-{
+public class SkypeAccountStatusEvent extends ManagerEvent {
     private static final long serialVersionUID = 1L;
     private String username;
     private String status;
@@ -35,8 +34,7 @@ public class SkypeAccountStatusEvent extends ManagerEvent
     static final String STATUS_LOGGED_IN = "Logged In";
     static final String STATUS_LOGGED_OUT = "Logged Out";
 
-    public SkypeAccountStatusEvent(Object source)
-    {
+    public SkypeAccountStatusEvent(Object source) {
         super(source);
     }
 
@@ -45,8 +43,7 @@ public class SkypeAccountStatusEvent extends ManagerEvent
      *
      * @return the name of the Skype user.
      */
-    public String getUsername()
-    {
+    public String getUsername() {
         return username;
     }
 
@@ -55,8 +52,7 @@ public class SkypeAccountStatusEvent extends ManagerEvent
      *
      * @param username the name of the Skype user.
      */
-    public void setUsername(String username)
-    {
+    public void setUsername(String username) {
         this.username = username;
     }
 
@@ -65,8 +61,7 @@ public class SkypeAccountStatusEvent extends ManagerEvent
      *
      * @return the Skype user status.
      */
-    public String getStatus()
-    {
+    public String getStatus() {
         return status;
     }
 
@@ -75,8 +70,7 @@ public class SkypeAccountStatusEvent extends ManagerEvent
      *
      * @param status user status.
      */
-    public void setStatus(String status)
-    {
+    public void setStatus(String status) {
         this.status = status;
     }
 }

@@ -30,8 +30,7 @@ import org.asteriskjava.manager.event.SkypeBuddyListCompleteEvent;
  * @see org.asteriskjava.manager.event.SkypeLicenseListCompleteEvent
  * @since 1.0.0
  */
-public class SkypeLicenseListAction extends AbstractManagerAction implements EventGeneratingAction
-{
+public class SkypeLicenseListAction extends AbstractManagerAction implements EventGeneratingAction {
     /**
      * Serializable version identifier
      */
@@ -40,8 +39,7 @@ public class SkypeLicenseListAction extends AbstractManagerAction implements Eve
     /**
      * Creates a new SkypeLicenseListAction.
      */
-    public SkypeLicenseListAction()
-    {
+    public SkypeLicenseListAction() {
 
     }
 
@@ -49,13 +47,11 @@ public class SkypeLicenseListAction extends AbstractManagerAction implements Eve
      * Returns the name of this action, i.e. "SkypeLicenseList".
      */
     @Override
-    public String getAction()
-    {
+    public String getAction() {
         return "SkypeLicenseList";
     }
 
-    public Class<? extends ResponseEvent> getActionCompleteEventClass()
-    {
+    public Class<? extends ResponseEvent> getActionCompleteEventClass() {
         return SkypeBuddyListCompleteEvent.class;
     }
 }

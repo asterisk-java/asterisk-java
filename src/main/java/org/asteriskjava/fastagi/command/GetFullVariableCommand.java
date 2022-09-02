@@ -25,14 +25,13 @@ package org.asteriskjava.fastagi.command;
  * the variable is set and returns the variable in parenthesis.<p>
  * Available since Asterisk 1.2<p>
  * Example return code: 200 result=1 (testvariable)
- * 
- * @since 0.2
+ *
  * @author srt
  * @version $Id$
  * @see org.asteriskjava.fastagi.command.GetVariableCommand
+ * @since 0.2
  */
-public class GetFullVariableCommand extends AbstractAgiCommand
-{
+public class GetFullVariableCommand extends AbstractAgiCommand {
     /**
      * Serial version identifier.
      */
@@ -47,23 +46,21 @@ public class GetFullVariableCommand extends AbstractAgiCommand
 
     /**
      * Creates a new GetFullVariableCommand.
-     * 
+     *
      * @param variable the name of the variable to retrieve.
      */
-    public GetFullVariableCommand(String variable)
-    {
+    public GetFullVariableCommand(String variable) {
         super();
         this.variable = variable;
     }
 
     /**
      * Creates a new GetFullVariableCommand.
-     * 
+     *
      * @param variable the name of the variable to retrieve.
-     * @param channel the name of the channel.
+     * @param channel  the name of the channel.
      */
-    public GetFullVariableCommand(String variable, String channel)
-    {
+    public GetFullVariableCommand(String variable, String channel) {
         super();
         this.variable = variable;
         this.channel = channel;
@@ -71,11 +68,10 @@ public class GetFullVariableCommand extends AbstractAgiCommand
 
     /**
      * Returns the name of the variable to retrieve.
-     * 
+     *
      * @return the the name of the variable to retrieve.
      */
-    public String getVariable()
-    {
+    public String getVariable() {
         return variable;
     }
 
@@ -83,44 +79,39 @@ public class GetFullVariableCommand extends AbstractAgiCommand
      * Sets the name of the variable to retrieve.<p>
      * You can also use custom dialplan functions (like "func(args)") as
      * variable.
-     * 
+     *
      * @param variable the name of the variable to retrieve.
      */
-    public void setVariable(String variable)
-    {
+    public void setVariable(String variable) {
         this.variable = variable;
     }
 
     /**
      * Returns the the name of the channel.
-     * 
+     *
      * @return the name of the channel.
      */
-    public String getChannel()
-    {
+    public String getChannel() {
         return channel;
     }
 
     /**
      * Sets the name of the channel.
-     * 
+     *
      * @param channel the name of the channel.
      */
-    public void setChannel(String channel)
-    {
+    public void setChannel(String channel) {
         this.channel = channel;
     }
 
     @Override
-   public String buildCommand()
-    {
-    	StringBuilder sb;
+    public String buildCommand() {
+        StringBuilder sb;
 
         sb = new StringBuilder("GET FULL VARIABLE ");
         sb.append(escapeAndQuote(variable));
 
-        if (channel != null)
-        {
+        if (channel != null) {
             sb.append(" ");
             sb.append(escapeAndQuote(channel));
         }

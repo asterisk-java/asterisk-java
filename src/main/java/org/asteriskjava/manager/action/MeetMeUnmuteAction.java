@@ -20,12 +20,11 @@ package org.asteriskjava.manager.action;
  * The MeetMeUnmuteAction unmutes a user in a conference.<p>
  * Defined in <code>apps/app_meetme.c</code><p>
  * Available since Asterisk 1.4.
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public class MeetMeUnmuteAction extends AbstractMeetMeMuteAction
-{
+public class MeetMeUnmuteAction extends AbstractMeetMeMuteAction {
     /**
      * Serializable version identifier
      */
@@ -34,19 +33,17 @@ public class MeetMeUnmuteAction extends AbstractMeetMeMuteAction
     /**
      * Creates a new empty MeetMeUnmuteAction.
      */
-    public MeetMeUnmuteAction()
-    {
+    public MeetMeUnmuteAction() {
         super();
     }
 
     /**
      * Creates a new MeetMeUnmuteAction.
-     * 
-     * @param meetMe the conference number.
+     *
+     * @param meetMe  the conference number.
      * @param userNum the index of the user in the conference.
      */
-    public MeetMeUnmuteAction(String meetMe, Integer userNum)
-    {
+    public MeetMeUnmuteAction(String meetMe, Integer userNum) {
         super(meetMe, userNum);
     }
 
@@ -54,8 +51,7 @@ public class MeetMeUnmuteAction extends AbstractMeetMeMuteAction
      * Returns the name of this action, i.e. "MeetMeUnmute".
      */
     @Override
-   public String getAction()
-    {
+    public String getAction() {
         return "MeetMeUnmute";
     }
 }

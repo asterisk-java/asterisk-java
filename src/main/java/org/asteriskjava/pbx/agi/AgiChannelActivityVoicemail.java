@@ -5,31 +5,26 @@ import org.asteriskjava.fastagi.AgiException;
 import org.asteriskjava.pbx.AgiChannelActivityAction;
 import org.asteriskjava.pbx.Channel;
 
-public class AgiChannelActivityVoicemail implements AgiChannelActivityAction
-{
+public class AgiChannelActivityVoicemail implements AgiChannelActivityAction {
 
-    public AgiChannelActivityVoicemail(String mailbox)
-    {
+    public AgiChannelActivityVoicemail(String mailbox) {
         // TODO Auto-generated constructor stub
     }
 
     @Override
-    public void execute(AgiChannel channel, Channel ichannel) throws AgiException, InterruptedException
-    {
+    public void execute(AgiChannel channel, Channel ichannel) throws AgiException, InterruptedException {
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    public boolean isDisconnect(ActivityAgi activityAgi)
-    {
+    public boolean isDisconnect(ActivityAgi activityAgi) {
         // TODO Auto-generated method stub
         return false;
     }
 
     @Override
-    public void cancel()
-    {
+    public void cancel() {
         // TODO Auto-generated method stub
 
     }

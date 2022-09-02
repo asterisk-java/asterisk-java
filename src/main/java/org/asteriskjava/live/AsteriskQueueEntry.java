@@ -13,8 +13,7 @@ import java.util.Date;
  *
  * @author gmi
  */
-public interface AsteriskQueueEntry extends LiveObject
-{
+public interface AsteriskQueueEntry extends LiveObject {
     String PROPERTY_STATE = "state";
     String PROPERTY_POSITION = "position";
     String PROPERTY_REPORTED_POSITION = "reportedPosition";
@@ -36,7 +35,7 @@ public interface AsteriskQueueEntry extends LiveObject
      * member left when entering {@link QueueEntryState#LEFT}.
      *
      * @return the date this member left the Queue or
-     *         <code>null</code> if the user did not yet leave.
+     * <code>null</code> if the user did not yet leave.
      */
     Date getDateLeft();
 

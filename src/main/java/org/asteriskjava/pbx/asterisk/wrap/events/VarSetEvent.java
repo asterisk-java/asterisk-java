@@ -5,8 +5,7 @@ import org.asteriskjava.pbx.InvalidChannelName;
 import org.asteriskjava.pbx.PBXFactory;
 import org.asteriskjava.pbx.internal.core.AsteriskPBX;
 
-public class VarSetEvent extends ManagerEvent implements ChannelEvent
-{
+public class VarSetEvent extends ManagerEvent implements ChannelEvent {
     private static final long serialVersionUID = 1L;
 
     /**
@@ -18,8 +17,7 @@ public class VarSetEvent extends ManagerEvent implements ChannelEvent
 
     private String _variableValue;
 
-    public VarSetEvent(final org.asteriskjava.manager.event.VarSetEvent event) throws InvalidChannelName
-    {
+    public VarSetEvent(final org.asteriskjava.manager.event.VarSetEvent event) throws InvalidChannelName {
         super(event);
         final AsteriskPBX pbx = (AsteriskPBX) PBXFactory.getActivePBX();
         this._channel = pbx.internalRegisterChannel(event.getChannel(), event.getUniqueId());
@@ -28,18 +26,15 @@ public class VarSetEvent extends ManagerEvent implements ChannelEvent
     }
 
     @Override
-    public Channel getChannel()
-    {
+    public Channel getChannel() {
         return this._channel;
     }
 
-    public String getVariableName()
-    {
+    public String getVariableName() {
         return this._variableName;
     }
 
-    public String getVariableValue()
-    {
+    public String getVariableValue() {
         return this._variableValue;
     }
 

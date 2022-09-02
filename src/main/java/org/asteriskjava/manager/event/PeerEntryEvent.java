@@ -30,8 +30,7 @@ package org.asteriskjava.manager.event;
  * @version $Id$
  * @since 0.2
  */
-public class PeerEntryEvent extends ResponseEvent
-{
+public class PeerEntryEvent extends ResponseEvent {
     /**
      * Serial version identifier.
      */
@@ -67,8 +66,7 @@ public class PeerEntryEvent extends ResponseEvent
      *
      * @param source
      */
-    public PeerEntryEvent(Object source)
-    {
+    public PeerEntryEvent(Object source) {
         super(source);
     }
 
@@ -79,23 +77,19 @@ public class PeerEntryEvent extends ResponseEvent
      * @see #CHANNEL_TYPE_SIP
      * @see #CHANNEL_TYPE_IAX
      */
-    public String getChannelType()
-    {
+    public String getChannelType() {
         return channelType;
     }
 
-    public void setChannelType(String channelType)
-    {
+    public void setChannelType(String channelType) {
         this.channelType = channelType;
     }
 
-    public String getObjectName()
-    {
+    public String getObjectName() {
         return objectName;
     }
 
-    public void setObjectName(String objectName)
-    {
+    public void setObjectName(String objectName) {
         this.objectName = objectName;
     }
 
@@ -103,13 +97,11 @@ public class PeerEntryEvent extends ResponseEvent
      * @return
      * @since 1.0.0
      */
-    public String getObjectUserName()
-    {
+    public String getObjectUserName() {
         return objectUserName;
     }
 
-    public void setObjectUserName(String objectUserName)
-    {
+    public void setObjectUserName(String objectUserName) {
         this.objectUserName = objectUserName;
     }
 
@@ -118,13 +110,11 @@ public class PeerEntryEvent extends ResponseEvent
      *
      * @return "peer" or "user".
      */
-    public String getChanObjectType()
-    {
+    public String getChanObjectType() {
         return chanObjectType;
     }
 
-    public void setChanObjectType(String chanObjectType)
-    {
+    public void setChanObjectType(String chanObjectType) {
         this.chanObjectType = chanObjectType;
     }
 
@@ -133,8 +123,7 @@ public class PeerEntryEvent extends ResponseEvent
      *
      * @return the IP address of the peer or "-none-" if none is available.
      */
-    public String getIpAddress()
-    {
+    public String getIpAddress() {
         return ipAddress;
     }
 
@@ -143,8 +132,7 @@ public class PeerEntryEvent extends ResponseEvent
      *
      * @param ipAddress the IP address of the peer.
      */
-    public void setIpAddress(String ipAddress)
-    {
+    public void setIpAddress(String ipAddress) {
         this.ipAddress = ipAddress;
     }
 
@@ -155,13 +143,11 @@ public class PeerEntryEvent extends ResponseEvent
      * @deprecated since 1.0.0, use {@link #getPort()} instead.
      */
     @Deprecated
-    public Integer getIpPort()
-    {
+    public Integer getIpPort() {
         return port;
     }
 
-    public void setIpPort(Integer ipPort)
-    {
+    public void setIpPort(Integer ipPort) {
         this.port = ipPort;
     }
 
@@ -171,33 +157,27 @@ public class PeerEntryEvent extends ResponseEvent
      * @return the port of the peer.
      * @since 1.0.0
      */
-    public Integer getPort()
-    {
+    public Integer getPort() {
         return port;
     }
 
-    public void setPort(Integer port)
-    {
+    public void setPort(Integer port) {
         this.port = port;
     }
 
-    public Boolean getDynamic()
-    {
+    public Boolean getDynamic() {
         return dynamic;
     }
 
-    public void setDynamic(Boolean dynamic)
-    {
+    public void setDynamic(Boolean dynamic) {
         this.dynamic = dynamic;
     }
 
-    public Boolean getNatSupport()
-    {
+    public Boolean getNatSupport() {
         return natSupport;
     }
 
-    public void setNatSupport(Boolean natSupport)
-    {
+    public void setNatSupport(Boolean natSupport) {
         this.natSupport = natSupport;
     }
 
@@ -206,16 +186,14 @@ public class PeerEntryEvent extends ResponseEvent
      * Available since Asterisk 1.8
      *
      * @return <code>true</code> if the nat option is set to
-     *         <code>force_rport</code>, <code>false</code> otherwise or
-     *         <code>null</code> if not supported by Asterisk.
+     * <code>force_rport</code>, <code>false</code> otherwise or
+     * <code>null</code> if not supported by Asterisk.
      */
-    public Boolean getForceRport()
-    {
+    public Boolean getForceRport() {
         return forceRport;
     }
 
-    public void setForceRport(Boolean forceRport)
-    {
+    public void setForceRport(Boolean forceRport) {
         this.forceRport = forceRport;
     }
 
@@ -224,8 +202,7 @@ public class PeerEntryEvent extends ResponseEvent
      *
      * @since 0.3
      */
-    public Boolean getVideoSupport()
-    {
+    public Boolean getVideoSupport() {
         return videoSupport;
     }
 
@@ -234,8 +211,7 @@ public class PeerEntryEvent extends ResponseEvent
      *
      * @since 0.3
      */
-    public void setVideoSupport(Boolean videoSupport)
-    {
+    public void setVideoSupport(Boolean videoSupport) {
         this.videoSupport = videoSupport;
     }
 
@@ -245,27 +221,23 @@ public class PeerEntryEvent extends ResponseEvent
      * Available since Asterisk 1.6.
      *
      * @return <code>true</code> if the peer supports text messages,
-     *         <code>false</code> otherwise or <code>null</code> if the property
-     *         is not set (i.e. for Asterisk prior to 1.6).
+     * <code>false</code> otherwise or <code>null</code> if the property
+     * is not set (i.e. for Asterisk prior to 1.6).
      * @since 1.0.0
      */
-    public Boolean getTextSupport()
-    {
+    public Boolean getTextSupport() {
         return textSupport;
     }
 
-    public void setTextSupport(Boolean textSupport)
-    {
+    public void setTextSupport(Boolean textSupport) {
         this.textSupport = textSupport;
     }
 
-    public Boolean getAcl()
-    {
+    public Boolean getAcl() {
         return acl;
     }
 
-    public void setAcl(Boolean acl)
-    {
+    public void setAcl(Boolean acl) {
         this.acl = acl;
     }
 
@@ -288,8 +260,7 @@ public class PeerEntryEvent extends ResponseEvent
      *
      * @return the status of this peer.
      */
-    public String getStatus()
-    {
+    public String getStatus() {
         return status;
     }
 
@@ -298,8 +269,7 @@ public class PeerEntryEvent extends ResponseEvent
      *
      * @param status the status of this peer.
      */
-    public void setStatus(String status)
-    {
+    public void setStatus(String status) {
         this.status = status;
     }
 
@@ -308,8 +278,7 @@ public class PeerEntryEvent extends ResponseEvent
      *
      * @since 0.3
      */
-    public String getRealtimeDevice()
-    {
+    public String getRealtimeDevice() {
         return realtimeDevice;
     }
 
@@ -318,8 +287,7 @@ public class PeerEntryEvent extends ResponseEvent
      *
      * @since 0.3
      */
-    public void setRealtimeDevice(String realtimeDevice)
-    {
+    public void setRealtimeDevice(String realtimeDevice) {
         this.realtimeDevice = realtimeDevice;
     }
 
@@ -329,106 +297,92 @@ public class PeerEntryEvent extends ResponseEvent
      * Available since Asterisk 1.6.
      *
      * @return <code>true</code> if trunking is used, <code>false</code> if not
-     *         or <code>null</code> if not set.
+     * or <code>null</code> if not set.
      * @since 1.0.0
      */
-    public Boolean getTrunk()
-    {
+    public Boolean getTrunk() {
         return trunk;
     }
 
-    public void setTrunk(Boolean trunk)
-    {
+    public void setTrunk(Boolean trunk) {
         this.trunk = trunk;
     }
 
-    public String getEncryption()
-    {
+    public String getEncryption() {
         return encryption;
     }
 
-    public void setEncryption(String encryption)
-    {
+    public void setEncryption(String encryption) {
         this.encryption = encryption;
     }
 
     /**
      * @return the autoComedia
      */
-    public String getAutoComedia()
-    {
+    public String getAutoComedia() {
         return autoComedia;
     }
 
     /**
      * @param autoComedia the autoComedia to set
      */
-    public void setAutoComedia(String autoComedia)
-    {
+    public void setAutoComedia(String autoComedia) {
         this.autoComedia = autoComedia;
     }
 
     /**
      * @return the autoForcerport
      */
-    public String getAutoForcerport()
-    {
+    public String getAutoForcerport() {
         return autoForcerport;
     }
 
     /**
      * @param autoForcerport the autoForcerport to set
      */
-    public void setAutoForcerport(String autoForcerport)
-    {
+    public void setAutoForcerport(String autoForcerport) {
         this.autoForcerport = autoForcerport;
     }
 
     /**
      * @return the comedia
      */
-    public String getComedia()
-    {
+    public String getComedia() {
         return comedia;
     }
 
     /**
      * @param comedia the comedia to set
      */
-    public void setComedia(String comedia)
-    {
+    public void setComedia(String comedia) {
         this.comedia = comedia;
     }
 
     /**
      * @return the description
      */
-    public String getDescription()
-    {
+    public String getDescription() {
         return description;
     }
 
     /**
      * @param the description to set
      */
-    public void setDescription(String description)
-    {
+    public void setDescription(String description) {
         this.description = description;
     }
 
     /**
      * @return the accountcode
      */
-    public String getAccountcode()
-    {
+    public String getAccountcode() {
         return accountcode;
     }
 
     /**
      * @param the accountcode to set
      */
-    public void setAccountcode(String accountcode)
-    {
+    public void setAccountcode(String accountcode) {
         this.accountcode = accountcode;
     }
 

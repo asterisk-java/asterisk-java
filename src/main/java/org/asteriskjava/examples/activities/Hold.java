@@ -1,32 +1,21 @@
 package org.asteriskjava.examples.activities;
 
-import org.asteriskjava.pbx.ActivityCallback;
-import org.asteriskjava.pbx.ActivityStatusEnum;
-import org.asteriskjava.pbx.Call;
-import org.asteriskjava.pbx.CallerID;
-import org.asteriskjava.pbx.Channel;
-import org.asteriskjava.pbx.EndPoint;
-import org.asteriskjava.pbx.PBX;
-import org.asteriskjava.pbx.PBXFactory;
-import org.asteriskjava.pbx.TechType;
+import org.asteriskjava.pbx.*;
 import org.asteriskjava.pbx.activities.DialActivity;
 import org.asteriskjava.pbx.activities.HoldActivity;
 
 /**
  * dial somebody and then put them on hold.
- * 
+ *
  * @author bsutton
  */
-public class Hold
-{
+public class Hold {
 
-    static public void main(String[] args)
-    {
+    static public void main(String[] args) {
         hold();
     }
 
-    static private void hold()
-    {
+    static private void hold() {
         String dialOptions = "";
         PBX pbx = PBXFactory.getActivePBX();
 
@@ -42,14 +31,11 @@ public class Hold
 
         // Start the dial and return immediately.
         // progress is provided via the ActivityCallback.
-        pbx.dial(from, fromCallerID, to, toCallerID, new ActivityCallback<DialActivity>()
-        {
+        pbx.dial(from, fromCallerID, to, toCallerID, new ActivityCallback<DialActivity>() {
 
             @Override
-            public void progress(DialActivity activity, ActivityStatusEnum status, String message)
-            {
-                if (status == ActivityStatusEnum.SUCCESS)
-                {
+            public void progress(DialActivity activity, ActivityStatusEnum status, String message) {
+                if (status == ActivityStatusEnum.SUCCESS) {
                     System.out.println("Dial all good so lets place them on hold");
                     PBX pbx = PBXFactory.getActivePBX();
                     // Call is up

@@ -23,16 +23,14 @@ package org.asteriskjava.manager.event;
  * @version $Id$
  * @since 1.0.0
  */
-public abstract class AbstractRtpStatEvent extends ManagerEvent
-{
+public abstract class AbstractRtpStatEvent extends ManagerEvent {
     private static final long serialVersionUID = 1L;
 
     private Long ssrc;
     private Long lostPackets;
     private Double jitter;
 
-    public AbstractRtpStatEvent(Object source)
-    {
+    public AbstractRtpStatEvent(Object source) {
         super(source);
     }
 
@@ -41,13 +39,11 @@ public abstract class AbstractRtpStatEvent extends ManagerEvent
      *
      * @return the synchronization source identifier.
      */
-    public Long getSsrc()
-    {
+    public Long getSsrc() {
         return ssrc;
     }
 
-    public void setSsrc(Long ssrc)
-    {
+    public void setSsrc(Long ssrc) {
         this.ssrc = ssrc;
     }
 
@@ -56,23 +52,19 @@ public abstract class AbstractRtpStatEvent extends ManagerEvent
      *
      * @return the number of lost packets.
      */
-    public Long getLostPackets()
-    {
+    public Long getLostPackets() {
         return lostPackets;
     }
 
-    public void setLostPackets(Long lostPackets)
-    {
+    public void setLostPackets(Long lostPackets) {
         this.lostPackets = lostPackets;
     }
 
-    public Double getJitter()
-    {
+    public Double getJitter() {
         return jitter;
     }
 
-    public void setJitter(Double jitter)
-    {
+    public void setJitter(Double jitter) {
         this.jitter = jitter;
     }
 }

@@ -28,8 +28,7 @@ import java.util.List;
  * @version $Id$
  * @since 0.2
  */
-public class PeersEvent extends ResponseEvent
-{
+public class PeersEvent extends ResponseEvent {
     /**
      * Serial version identifier.
      */
@@ -45,18 +44,15 @@ public class PeersEvent extends ResponseEvent
      *
      * @param source
      */
-    public PeersEvent( Object source )
-    {
+    public PeersEvent(Object source) {
         super(source);
     }
 
-    public List<PeerEntryEvent> getChildEvents()
-    {
+    public List<PeerEntryEvent> getChildEvents() {
         return childEvents;
     }
 
-    public void setChildEvents( List<PeerEntryEvent> childEvents )
-    {
+    public void setChildEvents(List<PeerEntryEvent> childEvents) {
         this.childEvents = childEvents;
     }
 }

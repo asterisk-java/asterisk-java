@@ -23,15 +23,14 @@ import java.io.IOException;
  * TCP/IP sockets.<p>
  * It hides the details of the underlying I/O system used for server socket
  * communication.
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public interface ServerSocketFacade
-{
+public interface ServerSocketFacade {
     /**
      * Waits for a new incoming connection.
-     * 
+     *
      * @return the new connection.
      * @throws IOException if an I/O error occurs when waiting for a connection.
      */
@@ -39,7 +38,7 @@ public interface ServerSocketFacade
 
     /**
      * Unbinds and closes the server socket.
-     * 
+     *
      * @throws IOException if the server socket cannot be closed.
      */
     void close() throws IOException;
@@ -48,7 +47,7 @@ public interface ServerSocketFacade
      * Connection is dropped if it stales on read longer than the timeout.
      *
      * @param socketReadTimeout the read timeout value to be used in
-     *            milliseconds.
+     *                          milliseconds.
      * @see java.net.Socket#setSoTimeout(int)
      * @since 3.0.0
      */

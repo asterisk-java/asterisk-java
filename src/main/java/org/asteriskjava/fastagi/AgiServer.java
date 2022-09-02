@@ -20,7 +20,7 @@ import java.io.IOException;
 
 /**
  * Listens for incoming FastAGI connections, reads the inital data and builds an
- * {@link AgiRequest} that is then handed over to the appropriate 
+ * {@link AgiRequest} that is then handed over to the appropriate
  * {@link org.asteriskjava.fastagi.AgiScript} for processing.<p>
  * To pass a call from Asterisk to the AGI server add an extension to your
  * dialplan that makes use of the AGI() application. For example:
@@ -33,44 +33,43 @@ import java.io.IOException;
  * <ul>
  * <li><code>NOT_FOUND</code> if no AGI script had been configured to
  * handle the request.
- * <li><code>SUCCESS</code> if the AGI script was executed successfully. 
+ * <li><code>SUCCESS</code> if the AGI script was executed successfully.
  * <li><code>FAILED</code> if the AGI script terminated abnormally by
  * throwing an exception or there was an internal error processing it.
  * </ul>
  * If Asterisk-Java was not able to process the request because its thread
- * pool was exhausted the <code>AJ_AGISTATUS</code> variable is not set. 
+ * pool was exhausted the <code>AJ_AGISTATUS</code> variable is not set.
  * <p>
  * The <code>AJ_AGISTATUS</code> variable complements the <code>AGISTATUS</code>
  * variable that is set by Asterisk to <code>SUCCESS</code>, <code>FAILURE</code>
- * or <code>HANGUP</code> and is available since Asterisk 1.4. 
- * 
- * @see org.asteriskjava.fastagi.AgiServerThread
+ * or <code>HANGUP</code> and is available since Asterisk 1.4.
+ *
  * @author srt
  * @version $Id$
+ * @see org.asteriskjava.fastagi.AgiServerThread
  */
-public interface AgiServer
-{
+public interface AgiServer {
     /**
      * Starts this AgiServer.<p>
      * After calling startup() this AgiServer is ready to receive requests from
      * Asterisk servers and process them.<p>
      * Note that this method will not return until the AgiServer has been shut down.
-     * If you want to run the AgiServer in the background use wrap it with an 
+     * If you want to run the AgiServer in the background use wrap it with an
      * {@link AgiServerThread}.
-     * 
-     * @throws IOException if the server socket cannot be bound.
+     *
+     * @throws IOException           if the server socket cannot be bound.
      * @throws IllegalStateException if this AgiServer is already running.
      */
     void startup() throws IOException, IllegalStateException;
 
     /**
      * Stops this AgiServer.<p>
-     * The server socket is closed, new connections are refused and resources 
+     * The server socket is closed, new connections are refused and resources
      * are freed. Any running {@link AgiScript}s are finish before shutdown
      * completes.
-     * 
+     *
      * @throws IllegalStateException if this AgiServer is already shut down or
-     *             has not yet been started.
+     *                               has not yet been started.
      */
     void shutdown() throws IllegalStateException;
 
@@ -78,7 +77,7 @@ public interface AgiServer
      * Connection is dropped if it stales on read longer than the timeout.
      *
      * @param socketReadTimeout the read timeout value to be used in
-     *            milliseconds.
+     *                          milliseconds.
      * @see java.net.Socket#setSoTimeout(int)
      * @since 3.0.0
      */

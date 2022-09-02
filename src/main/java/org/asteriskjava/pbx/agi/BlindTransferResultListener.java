@@ -1,7 +1,6 @@
 package org.asteriskjava.pbx.agi;
 
-public interface BlindTransferResultListener
-{
+public interface BlindTransferResultListener {
 
     void result(String status, boolean success);
 

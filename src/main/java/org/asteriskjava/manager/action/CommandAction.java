@@ -43,16 +43,14 @@ import org.asteriskjava.manager.response.CommandResponse;
  * @see org.asteriskjava.manager.response.CommandResponse
  */
 @ExpectedResponse(CommandResponse.class)
-public class CommandAction extends AbstractManagerAction
-{
+public class CommandAction extends AbstractManagerAction {
     static final long serialVersionUID = 4753117770471622025L;
     protected String command;
 
     /**
      * Creates a new CommandAction.
      */
-    public CommandAction()
-    {
+    public CommandAction() {
 
     }
 
@@ -62,8 +60,7 @@ public class CommandAction extends AbstractManagerAction
      * @param command the CLI command to execute.
      * @since 0.2
      */
-    public CommandAction(String command)
-    {
+    public CommandAction(String command) {
         this.command = command;
     }
 
@@ -71,24 +68,21 @@ public class CommandAction extends AbstractManagerAction
      * Returns the name of this action, i.e. "Command".
      */
     @Override
-    public String getAction()
-    {
+    public String getAction() {
         return "Command";
     }
 
     /**
      * Returns the command.
      */
-    public String getCommand()
-    {
+    public String getCommand() {
         return command;
     }
 
     /**
      * Sets the CLI command to send to the Asterisk server.
      */
-    public void setCommand(String command)
-    {
+    public void setCommand(String command) {
         this.command = command;
     }
 }

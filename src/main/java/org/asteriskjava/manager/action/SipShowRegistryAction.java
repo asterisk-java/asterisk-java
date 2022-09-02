@@ -33,28 +33,24 @@ import org.asteriskjava.manager.event.ResponseEvent;
  * @see RegistryEntryEvent
  * @since 1.0.0
  */
-public class SipShowRegistryAction extends AbstractManagerAction implements EventGeneratingAction
-{
+public class SipShowRegistryAction extends AbstractManagerAction implements EventGeneratingAction {
     /**
-    * 
-    */
-   private static final long serialVersionUID = -4501597578392156556L;
+     *
+     */
+    private static final long serialVersionUID = -4501597578392156556L;
 
-   /**
+    /**
      * Creates a new SipShowRegistryAction.
      */
-    public SipShowRegistryAction()
-    {
+    public SipShowRegistryAction() {
     }
 
     @Override
-    public String getAction()
-    {
+    public String getAction() {
         return "SipShowRegistry";
     }
 
-    public Class<? extends ResponseEvent> getActionCompleteEventClass()
-    {
+    public Class<? extends ResponseEvent> getActionCompleteEventClass() {
         return RegistrationsCompleteEvent.class;
     }
 }

@@ -1,15 +1,9 @@
 package org.asteriskjava.pbx.asterisk.wrap.events;
 
-import org.asteriskjava.pbx.Channel;
-import org.asteriskjava.pbx.EndPoint;
-import org.asteriskjava.pbx.InvalidChannelName;
-import org.asteriskjava.pbx.PBX;
-import org.asteriskjava.pbx.PBXFactory;
-import org.asteriskjava.pbx.TechType;
+import org.asteriskjava.pbx.*;
 import org.asteriskjava.pbx.internal.core.ChannelImpl;
 
-public class OriginateResponseEvent extends ResponseEvent implements ChannelEvent
-{
+public class OriginateResponseEvent extends ResponseEvent implements ChannelEvent {
 
     private static final long serialVersionUID = 1L;
 
@@ -23,8 +17,7 @@ public class OriginateResponseEvent extends ResponseEvent implements ChannelEven
     private final Integer reason;
 
     public OriginateResponseEvent(final org.asteriskjava.manager.event.OriginateResponseEvent event)
-            throws InvalidChannelName
-    {
+            throws InvalidChannelName {
         super(event);
 
         PBX pbx = PBXFactory.getActivePBX();
@@ -32,15 +25,12 @@ public class OriginateResponseEvent extends ResponseEvent implements ChannelEven
         // The doco says this should be a channel but under 1.4 it comes up as
         // an endpoint.
         this.isChannel = pbx.isChannel(event.getChannel());
-        if (this.isChannel)
-        {
+        if (this.isChannel) {
             this.channel = ChannelEventHelper.registerChannel(event.getChannel(),
                     (event.getUniqueId() == null ? ChannelImpl.UNKNOWN_UNIQUE_ID : event.getUniqueId()),
                     event.getCallerIdNum(), event.getCallerIdName());
             this.endPoint = null;
-        }
-        else
-        {
+        } else {
             this.endPoint = pbx.buildEndPoint(TechType.SIP, event.getChannel());
             this.channel = null;
         }
@@ -52,44 +42,36 @@ public class OriginateResponseEvent extends ResponseEvent implements ChannelEven
 
     }
 
-    public String getResponse()
-    {
+    public String getResponse() {
         return this.response;
     }
 
-    public String getContext()
-    {
+    public String getContext() {
         return this.context;
     }
 
-    public String getExten()
-    {
+    public String getExten() {
         return this.exten;
     }
 
-    public Integer getReason()
-    {
+    public Integer getReason() {
         return this.reason;
     }
 
-    public boolean isChannel()
-    {
+    public boolean isChannel() {
         return this.isChannel;
     }
 
     @Override
-    public Channel getChannel()
-    {
+    public Channel getChannel() {
         return this.channel;
     }
 
-    public EndPoint getEndPoint()
-    {
+    public EndPoint getEndPoint() {
         return this.endPoint;
     }
 
-    public boolean isSuccess()
-    {
+    public boolean isSuccess() {
         return "Success".equalsIgnoreCase(this.response); //$NON-NLS-1$
     }
 

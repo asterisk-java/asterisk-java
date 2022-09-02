@@ -18,13 +18,12 @@ package org.asteriskjava.manager.event;
 
 /**
  * Response to an OriginateAction.
- * 
- * @see org.asteriskjava.manager.action.OriginateAction
+ *
  * @author srt
  * @version $Id$
+ * @see org.asteriskjava.manager.action.OriginateAction
  */
-public class OriginateResponseEvent extends ResponseEvent
-{
+public class OriginateResponseEvent extends ResponseEvent {
     /**
      * Serial version identifier.
      */
@@ -39,104 +38,88 @@ public class OriginateResponseEvent extends ResponseEvent
     /**
      * @param source
      */
-    public OriginateResponseEvent(Object source)
-    {
+    public OriginateResponseEvent(Object source) {
         super(source);
     }
 
     /**
      * Returns the result of the corresponding Originate action.
-     * 
+     *
      * @return "Success" or "Failure"
      */
-    public String getResponse()
-    {
+    public String getResponse() {
         return response;
     }
 
     /**
      * Sets the result of the corresponding Originate action.
-     * 
+     *
      * @param response "Success" or "Failure"
      */
-    public void setResponse(String response)
-    {
+    public void setResponse(String response) {
         this.response = response;
     }
-    
-    public boolean isSuccess()
-    {
+
+    public boolean isSuccess() {
         return "Success".equalsIgnoreCase(response);
     }
 
     /**
      * Returns the name of the channel to connect to the outgoing call.
      */
-    public String getChannel()
-    {
+    public String getChannel() {
         return channel;
     }
 
     /**
      * Sets the name of the channel to connect to the outgoing call.
      */
-    public void setChannel(String channel)
-    {
+    public void setChannel(String channel) {
         this.channel = channel;
     }
 
-    public Integer getReason()
-    {
+    public Integer getReason() {
         return reason;
     }
 
-    public void setReason(Integer reason)
-    {
+    public void setReason(Integer reason) {
         this.reason = reason;
     }
 
     /**
      * Returns the unique id of the originated channel.
-     * 
+     *
      * @return the unique id of the originated channel or "&lt;null&gt;" if none
-     *         is available.
+     * is available.
      */
-    public String getUniqueId()
-    {
+    public String getUniqueId() {
         return uniqueId;
     }
 
-    public void setUniqueId(String uniqueId)
-    {
+    public void setUniqueId(String uniqueId) {
         this.uniqueId = uniqueId;
     }
 
     // for backward compatibility only
-    public void setCallerId(String callerId)
-    {
-        if (getCallerIdNum() == null)
-        {
+    public void setCallerId(String callerId) {
+        if (getCallerIdNum() == null) {
             setCallerIdNum(callerId);
         }
     }
 
-    public String getData()
-    {
+    public String getData() {
         return data;
     }
 
-    public void setData(String data)
-    {
+    public void setData(String data) {
         this.data = data;
     }
 
-    public String getApplication()
-    {
+    public String getApplication() {
         return application;
     }
 
-    public void setApplication(String application)
-    {
+    public void setApplication(String application) {
         this.application = application;
     }
 }

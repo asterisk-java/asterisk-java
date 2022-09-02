@@ -18,8 +18,7 @@ import org.asteriskjava.manager.response.MailboxCountResponse;
  * @see org.asteriskjava.manager.response.MailboxCountResponse
  */
 @ExpectedResponse(MailboxCountResponse.class)
-public class MailboxCountAction extends AbstractManagerAction
-{
+public class MailboxCountAction extends AbstractManagerAction {
     static final long serialVersionUID = -6900421919824575941L;
 
     private String mailbox;
@@ -27,8 +26,7 @@ public class MailboxCountAction extends AbstractManagerAction
     /**
      * Creates a new empty MailboxCountAction.
      */
-    public MailboxCountAction()
-    {
+    public MailboxCountAction() {
 
     }
 
@@ -42,8 +40,7 @@ public class MailboxCountAction extends AbstractManagerAction
      *                "default" is assumed.
      * @since 0.2
      */
-    public MailboxCountAction(String mailbox)
-    {
+    public MailboxCountAction(String mailbox) {
         this.mailbox = mailbox;
     }
 
@@ -51,16 +48,14 @@ public class MailboxCountAction extends AbstractManagerAction
      * Returns the name of this action, i.e. "MailboxCount".
      */
     @Override
-    public String getAction()
-    {
+    public String getAction() {
         return "MailboxCount";
     }
 
     /**
      * Returns the name of the mailbox to query.
      */
-    public String getMailbox()
-    {
+    public String getMailbox() {
         return mailbox;
     }
 
@@ -70,8 +65,7 @@ public class MailboxCountAction extends AbstractManagerAction
      * mailboxnumber@context.If no context is specified "default" is assumed.<p>
      * This property is mandatory.
      */
-    public void setMailbox(String mailbox)
-    {
+    public void setMailbox(String mailbox) {
         this.mailbox = mailbox;
     }
 }

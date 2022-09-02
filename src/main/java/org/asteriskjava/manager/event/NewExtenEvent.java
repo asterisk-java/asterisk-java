@@ -20,12 +20,11 @@ package org.asteriskjava.manager.event;
  * A NewExtenEvent is triggered when a channel is connected to a new extension.
  * <p>
  * It is implemented in <code>pbx.c</code>
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public class NewExtenEvent extends ManagerEvent
-{
+public class NewExtenEvent extends ManagerEvent {
     /**
      * Serializable version identifier
      */
@@ -43,50 +42,43 @@ public class NewExtenEvent extends ManagerEvent
     /**
      * @param source
      */
-    public NewExtenEvent(Object source)
-    {
+    public NewExtenEvent(Object source) {
         super(source);
     }
 
-    public String getLanguage()
-    {
+    public String getLanguage() {
         return language;
     }
 
-    public void setLanguage(String language)
-    {
+    public void setLanguage(String language) {
         this.language = language;
     }
 
     /**
      * Returns the unique id of the channel.
      */
-    public String getUniqueId()
-    {
+    public String getUniqueId() {
         return uniqueId;
     }
 
     /**
      * Sets the unique id of the channel.
      */
-    public void setUniqueId(String uniqueId)
-    {
+    public void setUniqueId(String uniqueId) {
         this.uniqueId = uniqueId;
     }
 
     /**
      * Returns the name of the application that is executed.
      */
-    public String getApplication()
-    {
+    public String getApplication() {
         return application;
     }
 
     /**
      * Sets the name of the application that is executed.
      */
-    public void setApplication(String application)
-    {
+    public void setApplication(String application) {
         this.application = application;
     }
 
@@ -94,69 +86,59 @@ public class NewExtenEvent extends ManagerEvent
      * Returns the parameters passed to the application that is executed. The
      * parameters are separated by a '|' character.
      */
-    public String getAppData()
-    {
+    public String getAppData() {
         return appData;
     }
 
     /**
      * Sets the parameters passed to the application that is executed.
      */
-    public void setAppData(String appData)
-    {
+    public void setAppData(String appData) {
         this.appData = appData;
     }
 
     /**
      * Returns the name of the channel.
      */
-    public String getChannel()
-    {
+    public String getChannel() {
         return channel;
     }
 
     /**
      * Sets the name of the channel.
      */
-    public void setChannel(String channel)
-    {
+    public void setChannel(String channel) {
         this.channel = channel;
     }
 
     /**
      * Returns the extension.
      */
-    public String getExtension()
-    {
+    public String getExtension() {
         return extension;
     }
 
     /**
      * Sets the extension.
      */
-    public void setExtension(String extension)
-    {
+    public void setExtension(String extension) {
         this.extension = extension;
     }
 
-    public String getAccountCode()
-    {
+    public String getAccountCode() {
         return accountCode;
     }
 
-    public void setAccountCode(String accountCode)
-    {
+    public void setAccountCode(String accountCode) {
         this.accountCode = accountCode;
     }
 
-    public String getLinkedId()
-    {
+    public String getLinkedId() {
         return linkedId;
     }
 
-    public void setLinkedId(String linkedId)
-    {
+    public void setLinkedId(String linkedId) {
         this.linkedId = linkedId;
     }
-    
+
 }

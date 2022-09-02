@@ -19,8 +19,7 @@ package org.asteriskjava.manager.event;
 /**
  * A SendFaxEvent is an event of Digium's Fax For Asterisk add-on.
  */
-public class SendFaxEvent extends AbstractFaxEvent
-{
+public class SendFaxEvent extends AbstractFaxEvent {
     /**
      * Serial version identifier.
      */
@@ -34,8 +33,7 @@ public class SendFaxEvent extends AbstractFaxEvent
     private String fileName;
 
 
-    public SendFaxEvent(Object source)
-    {
+    public SendFaxEvent(Object source) {
         super(source);
     }
 
@@ -43,8 +41,7 @@ public class SendFaxEvent extends AbstractFaxEvent
     /**
      * @return the callerId
      */
-    public String getCallerId()
-    {
+    public String getCallerId() {
         return callerId;
     }
 
@@ -52,8 +49,7 @@ public class SendFaxEvent extends AbstractFaxEvent
     /**
      * @param callerId the callerId to set
      */
-    public void setCallerId(String callerId)
-    {
+    public void setCallerId(String callerId) {
         this.callerId = callerId;
     }
 
@@ -61,8 +57,7 @@ public class SendFaxEvent extends AbstractFaxEvent
     /**
      * @return the localStationId
      */
-    public String getLocalStationId()
-    {
+    public String getLocalStationId() {
         return localStationId;
     }
 
@@ -70,8 +65,7 @@ public class SendFaxEvent extends AbstractFaxEvent
     /**
      * @param localStationId the localStationId to set
      */
-    public void setLocalStationId(String localStationId)
-    {
+    public void setLocalStationId(String localStationId) {
         this.localStationId = localStationId;
     }
 
@@ -79,8 +73,7 @@ public class SendFaxEvent extends AbstractFaxEvent
     /**
      * @return the remoteStationId
      */
-    public String getRemoteStationId()
-    {
+    public String getRemoteStationId() {
         return remoteStationId;
     }
 
@@ -88,8 +81,7 @@ public class SendFaxEvent extends AbstractFaxEvent
     /**
      * @param remoteStationId the remoteStationId to set
      */
-    public void setRemoteStationId(String remoteStationId)
-    {
+    public void setRemoteStationId(String remoteStationId) {
         this.remoteStationId = remoteStationId;
     }
 
@@ -97,8 +89,7 @@ public class SendFaxEvent extends AbstractFaxEvent
     /**
      * @return the pagesTransferred
      */
-    public String getPagesTransferred()
-    {
+    public String getPagesTransferred() {
         return pagesTransferred;
     }
 
@@ -106,8 +97,7 @@ public class SendFaxEvent extends AbstractFaxEvent
     /**
      * @param pagesTransferred the pagesTransferred to set
      */
-    public void setPagesTransferred(String pagesTransferred)
-    {
+    public void setPagesTransferred(String pagesTransferred) {
         this.pagesTransferred = pagesTransferred;
     }
 
@@ -115,8 +105,7 @@ public class SendFaxEvent extends AbstractFaxEvent
     /**
      * @return the resolution
      */
-    public String getResolution()
-    {
+    public String getResolution() {
         return resolution;
     }
 
@@ -124,8 +113,7 @@ public class SendFaxEvent extends AbstractFaxEvent
     /**
      * @param resolution the resolution to set
      */
-    public void setResolution(String resolution)
-    {
+    public void setResolution(String resolution) {
         this.resolution = resolution;
     }
 
@@ -133,8 +121,7 @@ public class SendFaxEvent extends AbstractFaxEvent
     /**
      * @return the transferRate
      */
-    public String getTransferRate()
-    {
+    public String getTransferRate() {
         return transferRate;
     }
 
@@ -142,8 +129,7 @@ public class SendFaxEvent extends AbstractFaxEvent
     /**
      * @param transferRate the transferRate to set
      */
-    public void setTransferRate(String transferRate)
-    {
+    public void setTransferRate(String transferRate) {
         this.transferRate = transferRate;
     }
 
@@ -151,8 +137,7 @@ public class SendFaxEvent extends AbstractFaxEvent
     /**
      * @return the fileName
      */
-    public String getFileName()
-    {
+    public String getFileName() {
         return fileName;
     }
 
@@ -160,8 +145,7 @@ public class SendFaxEvent extends AbstractFaxEvent
     /**
      * @param fileName the fileName to set
      */
-    public void setFileName(String fileName)
-    {
+    public void setFileName(String fileName) {
         this.fileName = fileName;
     }
 

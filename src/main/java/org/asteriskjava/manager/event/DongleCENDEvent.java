@@ -1,28 +1,25 @@
 package org.asteriskjava.manager.event;
 
-public class DongleCENDEvent extends ManagerEvent
-{
-  private static final long serialVersionUID = 3257845467831284784L;
-  private String device;
-  private String endstatus;
-  private String cccause;
-  private String duration;
-  private String callidx;
-  
-  
+public class DongleCENDEvent extends ManagerEvent {
+    private static final long serialVersionUID = 3257845467831284784L;
+    private String device;
+    private String endstatus;
+    private String cccause;
+    private String duration;
+    private String callidx;
 
-  public DongleCENDEvent(Object source)
-  {
-    super(source);
-  }
 
-  public String getDevice() {
-    return this.device;
-  }
+    public DongleCENDEvent(Object source) {
+        super(source);
+    }
 
-  public void setDevice(String device) {
-    this.device = device;
-  }
+    public String getDevice() {
+        return this.device;
+    }
+
+    public void setDevice(String device) {
+        this.device = device;
+    }
 
     public String getCallidx() {
         return callidx;
@@ -56,8 +53,5 @@ public class DongleCENDEvent extends ManagerEvent
         this.endstatus = endstatus;
     }
 
- 
-
-  
 
 }

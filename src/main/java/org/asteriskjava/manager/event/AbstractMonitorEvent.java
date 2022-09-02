@@ -24,17 +24,15 @@ package org.asteriskjava.manager.event;
  * @version $Id$
  * @since 1.0.0
  */
-public abstract class AbstractMonitorEvent extends ManagerEvent
-{
-	private static final long serialVersionUID = 1L;
-	private String channel;
+public abstract class AbstractMonitorEvent extends ManagerEvent {
+    private static final long serialVersionUID = 1L;
+    private String channel;
     private String uniqueId;
 
     /**
      * @param source
      */
-    protected AbstractMonitorEvent(Object source)
-    {
+    protected AbstractMonitorEvent(Object source) {
         super(source);
     }
 
@@ -43,13 +41,11 @@ public abstract class AbstractMonitorEvent extends ManagerEvent
      *
      * @return the name of the channel.
      */
-    public String getChannel()
-    {
+    public String getChannel() {
         return channel;
     }
 
-    public void setChannel(String channel)
-    {
+    public void setChannel(String channel) {
         this.channel = channel;
     }
 
@@ -58,13 +54,11 @@ public abstract class AbstractMonitorEvent extends ManagerEvent
      *
      * @return the unique id of the channel.
      */
-    public String getUniqueId()
-    {
+    public String getUniqueId() {
         return uniqueId;
     }
 
-    public void setUniqueId(String uniqueId)
-    {
+    public void setUniqueId(String uniqueId) {
         this.uniqueId = uniqueId;
     }
 }

@@ -19,12 +19,11 @@ package org.asteriskjava.manager.action;
 /**
  * With the EventsAction you can specify what kind of events should be sent to
  * this manager connection.
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public class EventsAction extends AbstractManagerAction
-{
+public class EventsAction extends AbstractManagerAction {
     /**
      * Serializable version identifier.
      */
@@ -35,23 +34,21 @@ public class EventsAction extends AbstractManagerAction
     /**
      * Creates a new empty EventsAction.
      */
-    public EventsAction()
-    {
+    public EventsAction() {
 
     }
 
     /**
      * Creates a new EventsAction that applies the given event mask to the
      * current manager connection.
-     * 
+     *
      * @param eventMask the event mask. Set to "on" if all events should be
-     *            send, "off" if not events should be sent or a combination of
-     *            "system", "call" and "log" (separated by ',') to specify what
-     *            kind of events should be sent.
+     *                  send, "off" if not events should be sent or a combination of
+     *                  "system", "call" and "log" (separated by ',') to specify what
+     *                  kind of events should be sent.
      * @since 0.2
      */
-    public EventsAction(String eventMask)
-    {
+    public EventsAction(String eventMask) {
         this.eventMask = eventMask;
     }
 
@@ -59,16 +56,14 @@ public class EventsAction extends AbstractManagerAction
      * Returns the name of this action, i.e. "Events".
      */
     @Override
-   public String getAction()
-    {
+    public String getAction() {
         return "Events";
     }
 
     /**
      * Returns the event mask.
      */
-    public String getEventMask()
-    {
+    public String getEventMask() {
         return eventMask;
     }
 
@@ -78,8 +73,7 @@ public class EventsAction extends AbstractManagerAction
      * sent or a combination of "system", "call" and "log" (separated by ',') to
      * specify what kind of events should be sent.
      */
-    public void setEventMask(String eventMask)
-    {
+    public void setEventMask(String eventMask) {
         this.eventMask = eventMask;
     }
 }

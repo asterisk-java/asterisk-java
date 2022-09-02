@@ -26,8 +26,7 @@ import org.asteriskjava.manager.response.SkypeLicenseStatusResponse;
  * @since 1.0.0
  */
 @ExpectedResponse(SkypeLicenseStatusResponse.class)
-public class SkypeLicenseStatusAction extends AbstractManagerAction
-{
+public class SkypeLicenseStatusAction extends AbstractManagerAction {
     /**
      * Serializable version identifier
      */
@@ -36,8 +35,7 @@ public class SkypeLicenseStatusAction extends AbstractManagerAction
     /**
      * Creates a new SkypeLicenseStatusAction.
      */
-    public SkypeLicenseStatusAction()
-    {
+    public SkypeLicenseStatusAction() {
 
     }
 
@@ -45,8 +43,7 @@ public class SkypeLicenseStatusAction extends AbstractManagerAction
      * Returns the name of this action, i.e. "SkypeLicenseStatus".
      */
     @Override
-    public String getAction()
-    {
+    public String getAction() {
         return "SkypeLicenseStatus";
     }
 }

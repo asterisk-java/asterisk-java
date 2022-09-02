@@ -23,8 +23,7 @@ package org.asteriskjava.manager.event;
  *
  * @author srt
  */
-public class JoinEvent extends QueueEvent
-{
+public class JoinEvent extends QueueEvent {
     /**
      * Serializable version identifier.
      */
@@ -33,8 +32,7 @@ public class JoinEvent extends QueueEvent
     protected String callerIdName;
     protected Integer position;
 
-    public JoinEvent(Object source)
-    {
+    public JoinEvent(Object source) {
         super(source);
     }
 
@@ -46,8 +44,7 @@ public class JoinEvent extends QueueEvent
      * @deprecated since 1.0.0, use {@link #getCallerIdNum()} instead.
      */
     @Deprecated
-    public String getCallerId()
-    {
+    public String getCallerId() {
         return callerIdNum;
     }
 
@@ -55,26 +52,23 @@ public class JoinEvent extends QueueEvent
      * Sets the Caller*ID number of the channel that joined the queue.
      *
      * @param callerId the Caller*ID number of the channel that joined the
-     *            queue.
+     *                 queue.
      */
-    public void setCallerId(String callerId)
-    {
+    public void setCallerId(String callerId) {
         this.callerIdNum = callerId;
     }
 
     /**
      * Returns the position of the joined channel in the queue.
      */
-    public Integer getPosition()
-    {
+    public Integer getPosition() {
         return position;
     }
 
     /**
      * Sets the position of the joined channel in the queue.
      */
-    public void setPosition(Integer position)
-    {
+    public void setPosition(Integer position) {
         this.position = position;
     }
 

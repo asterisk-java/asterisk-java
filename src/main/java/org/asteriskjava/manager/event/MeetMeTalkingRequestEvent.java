@@ -27,8 +27,7 @@ package org.asteriskjava.manager.event;
  * @version $Id$
  * @since 1.0.0
  */
-public class MeetMeTalkingRequestEvent extends AbstractMeetMeEvent
-{
+public class MeetMeTalkingRequestEvent extends AbstractMeetMeEvent {
     /**
      * Serializable version identifier.
      */
@@ -39,8 +38,7 @@ public class MeetMeTalkingRequestEvent extends AbstractMeetMeEvent
     /**
      * @param source
      */
-    public MeetMeTalkingRequestEvent(Object source)
-    {
+    public MeetMeTalkingRequestEvent(Object source) {
         super(source);
     }
 
@@ -50,15 +48,13 @@ public class MeetMeTalkingRequestEvent extends AbstractMeetMeEvent
      * Returns whether the user has started or stopped requesting talking.
      *
      * @return <code>true</code> if ther user has started requesting talking,
-     *         <code>false</code> if the user has stopped requesting talking.
+     * <code>false</code> if the user has stopped requesting talking.
      */
-    public Boolean getStatus()
-    {
+    public Boolean getStatus() {
         return status;
     }
 
-    public void setStatus(Boolean status)
-    {
+    public void setStatus(Boolean status) {
         this.status = status;
     }
 }

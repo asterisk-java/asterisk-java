@@ -17,15 +17,13 @@
 package org.asteriskjava.live;
 
 
-public class ManagerCommunicationException extends LiveException
-{
+public class ManagerCommunicationException extends LiveException {
     /**
      * Serial version identifier.
      */
     private static final long serialVersionUID = -1183197752451685927L;
 
-    public ManagerCommunicationException(String message, Throwable cause)
-    {
+    public ManagerCommunicationException(String message, Throwable cause) {
         super(message, cause);
     }
 }

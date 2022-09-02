@@ -35,56 +35,50 @@ import java.util.List;
  * in <code>fastagi-mapping.properties</code> and - if the properties file is
  * not present on the classpath or contains no mapping for the request - uses
  * a {@link ClassNameMappingStrategy} to get the script.
- * 
+ *
+ * @author srt
+ * @version $Id$
  * @see ResourceBundleMappingStrategy
  * @see ClassNameMappingStrategy
- * @author srt
  * @since 0.3
- * @version $Id$
  */
-public class CompositeMappingStrategy implements MappingStrategy
-{
+public class CompositeMappingStrategy implements MappingStrategy {
     private List<MappingStrategy> strategies;
 
     /**
      * Creates a new empty CompositeMappingStrategy.
      */
-    public CompositeMappingStrategy()
-    {
+    public CompositeMappingStrategy() {
         super();
     }
 
     /**
      * Creates a new CompositeMappingStrategy.
-     * 
+     *
      * @param strategies the strategies to use.
      */
-    public CompositeMappingStrategy(MappingStrategy... strategies)
-    {
+    public CompositeMappingStrategy(MappingStrategy... strategies) {
         super();
         this.strategies = new ArrayList<>(Arrays.asList(strategies));
     }
 
     /**
      * Creates a new CompositeMappingStrategy.
-     * 
+     *
      * @param strategies the strategies to use.
      */
-    public CompositeMappingStrategy(List<MappingStrategy> strategies)
-    {
+    public CompositeMappingStrategy(List<MappingStrategy> strategies) {
         super();
         this.strategies = new ArrayList<>(strategies);
     }
 
     /**
      * Adds a strategy (at the end of the list).
-     * 
+     *
      * @param strategy the strategy to add.
      */
-    public void addStrategy(MappingStrategy strategy)
-    {
-        if (strategies == null)
-        {
+    public void addStrategy(MappingStrategy strategy) {
+        if (strategies == null) {
             strategies = new ArrayList<>();
         }
         strategies.add(strategy);
@@ -92,29 +86,24 @@ public class CompositeMappingStrategy implements MappingStrategy
 
     /**
      * Sets the strategies to use.
-     * 
+     *
      * @param strategies the strategies to use.
      */
-    public void setStrategies(List<MappingStrategy> strategies)
-    {
+    public void setStrategies(List<MappingStrategy> strategies) {
         this.strategies = new ArrayList<>(strategies);
     }
 
     @Override
-    public AgiScript determineScript(AgiRequest request, AgiChannel channel)
-    {
+    public AgiScript determineScript(AgiRequest request, AgiChannel channel) {
         AgiScript script = null;
 
-        if (strategies == null)
-        {
+        if (strategies == null) {
             return null;
         }
 
-        for (MappingStrategy strategy : strategies)
-        {
+        for (MappingStrategy strategy : strategies) {
             script = strategy.determineScript(request, channel);
-            if (script != null)
-            {
+            if (script != null) {
                 break;
             }
         }

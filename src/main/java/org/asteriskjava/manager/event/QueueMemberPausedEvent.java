@@ -26,8 +26,7 @@ package org.asteriskjava.manager.event;
  * @version $Id$
  * @since 0.2
  */
-public class QueueMemberPausedEvent extends AbstractQueueMemberEvent
-{
+public class QueueMemberPausedEvent extends AbstractQueueMemberEvent {
     /**
      * Serial version identifier.
      */
@@ -40,8 +39,7 @@ public class QueueMemberPausedEvent extends AbstractQueueMemberEvent
      */
     private String reason;
 
-    public QueueMemberPausedEvent(Object source)
-    {
+    public QueueMemberPausedEvent(Object source) {
         super(source);
     }
 
@@ -49,10 +47,9 @@ public class QueueMemberPausedEvent extends AbstractQueueMemberEvent
      * Returns if this queue member is paused (not accepting calls).<p>
      *
      * @return <code>Boolean.TRUE</code> if this member has been paused or
-     *         <code>Boolean.FALSE</code> if not.
+     * <code>Boolean.FALSE</code> if not.
      */
-    public Boolean getPaused()
-    {
+    public Boolean getPaused() {
         return paused;
     }
 
@@ -62,8 +59,7 @@ public class QueueMemberPausedEvent extends AbstractQueueMemberEvent
      * @param paused <code>Boolean.TRUE</code> if this member has been paused
      *               or <code>Boolean.FALSE</code> if not.
      */
-    public void setPaused(Boolean paused)
-    {
+    public void setPaused(Boolean paused) {
         this.paused = paused;
     }
 
@@ -74,8 +70,7 @@ public class QueueMemberPausedEvent extends AbstractQueueMemberEvent
      *
      * @return the reason specified for the pause.
      */
-    public String getReason()
-    {
+    public String getReason() {
         return reason;
     }
 
@@ -84,8 +79,7 @@ public class QueueMemberPausedEvent extends AbstractQueueMemberEvent
      *
      * @param reason the reason why the queue member has been paused.
      */
-    public void setReason(String reason)
-    {
+    public void setReason(String reason) {
         this.reason = reason;
     }
 }

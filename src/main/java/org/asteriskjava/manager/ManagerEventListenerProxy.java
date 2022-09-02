@@ -1,13 +1,9 @@
 package org.asteriskjava.manager;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-
 import org.asteriskjava.manager.event.ManagerEvent;
 import org.asteriskjava.util.DaemonThreadFactory;
+
+import java.util.concurrent.*;
 
 /**
  * Proxies a ManagerEventListener and dispatches events asynchronously by using
@@ -27,38 +23,40 @@ import org.asteriskjava.util.DaemonThreadFactory;
  * ...
  * connection.addEventListener(new ManagerEventListenerProxy(myListener));
  * </pre>
- * 
+ *
  * @author srt
  * @author fink
  * @since 0.3
  */
 public class ManagerEventListenerProxy implements ManagerEventListener {
-		private final ThreadPoolExecutor executor;
+    private final ThreadPoolExecutor executor;
     private final ManagerEventListener target;
 
 
     /**
      * Creates a new ManagerEventListenerProxy that notifies the given target
      * asynchronously when new events are received.
-     * 
+     *
      * @param target the target listener to invoke.
      * @see Executors#newSingleThreadExecutor(ThreadFactory)
      */
     public ManagerEventListenerProxy(ManagerEventListener target) {
-	    executor = new ThreadPoolExecutor(1, 1, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>(), new DaemonThreadFactory());
-	    this.target = target;
-	    if (target == null) {
-		    throw new NullPointerException("ManagerEventListener target is null!");
-	    }
+        executor = new ThreadPoolExecutor(1, 1, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>(), new DaemonThreadFactory());
+        this.target = target;
+        if (target == null) {
+            throw new NullPointerException("ManagerEventListener target is null!");
+        }
     }//new
 
 
-    @Override public void onManagerEvent(final ManagerEvent event) {
-			executor.execute(new Runnable() {
-					@Override public void run() {
-							target.onManagerEvent(event);
-					}
-			});
+    @Override
+    public void onManagerEvent(final ManagerEvent event) {
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                target.onManagerEvent(event);
+            }
+        });
     }//onManagerEvent
 
 
@@ -66,13 +64,13 @@ public class ManagerEventListenerProxy implements ManagerEventListener {
         executor.shutdown();
     }
 
-		public static class Access {
-		    private Access() {
-		        
-		    }
-		    
-			public static int getThreadQueueSize (ManagerEventListenerProxy proxy) {
-				return proxy.executor.getQueue().size();
-			}
-		}//Access
+    public static class Access {
+        private Access() {
+
+        }
+
+        public static int getThreadQueueSize(ManagerEventListenerProxy proxy) {
+            return proxy.executor.getQueue().size();
+        }
+    }//Access
 }

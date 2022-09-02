@@ -1,7 +1,5 @@
 package org.asteriskjava.pbx.asterisk.wrap.events;
 
-import java.util.Date;
-
 import org.asteriskjava.pbx.Channel;
 import org.asteriskjava.pbx.InvalidChannelName;
 import org.asteriskjava.pbx.PBXFactory;
@@ -9,8 +7,9 @@ import org.asteriskjava.pbx.internal.core.AsteriskPBX;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
-public class BlindTransferEvent extends ManagerEvent
-{
+import java.util.Date;
+
+public class BlindTransferEvent extends ManagerEvent {
     private static final long serialVersionUID = 1L;
 
     @SuppressWarnings("unused")
@@ -22,8 +21,7 @@ public class BlindTransferEvent extends ManagerEvent
 
     private final Channel transfererChannel;
 
-    public BlindTransferEvent(final org.asteriskjava.manager.event.BlindTransferEvent event) throws InvalidChannelName
-    {
+    public BlindTransferEvent(final org.asteriskjava.manager.event.BlindTransferEvent event) throws InvalidChannelName {
         super(event);
         rawEvent = event;
 
@@ -34,293 +32,235 @@ public class BlindTransferEvent extends ManagerEvent
 
     }
 
-    public String getBridgeUniqueId()
-    {
+    public String getBridgeUniqueId() {
         return rawEvent.getBridgeUniqueId();
     }
 
-    public String getBridgeType()
-    {
+    public String getBridgeType() {
         return rawEvent.getBridgeType();
     }
 
-    public Integer getBridgeNumChannels()
-    {
+    public Integer getBridgeNumChannels() {
         return rawEvent.getBridgeNumChannels();
     }
 
-    public String getBridgeCreator()
-    {
+    public String getBridgeCreator() {
         return rawEvent.getBridgeCreator();
     }
 
-    public String getBridgeName()
-    {
+    public String getBridgeName() {
         return rawEvent.getBridgeName();
     }
 
-    public String getBridgeTechnology()
-    {
+    public String getBridgeTechnology() {
         return rawEvent.getBridgeTechnology();
     }
 
-    public String getCallerIdName()
-    {
+    public String getCallerIdName() {
         return rawEvent.getCallerIdName();
     }
 
-    public String getAccountCode()
-    {
+    public String getAccountCode() {
         return rawEvent.getAccountCode();
     }
 
-    public String getBridgevideosourcemode()
-    {
+    public String getBridgevideosourcemode() {
         return rawEvent.getBridgevideosourcemode();
     }
 
-    public String getConnectedLineNum()
-    {
+    public String getConnectedLineNum() {
         return rawEvent.getConnectedLineNum();
     }
 
-    public String getConnectedLineName()
-    {
+    public String getConnectedLineName() {
         return rawEvent.getConnectedLineName();
     }
 
-    public Integer getPriority()
-    {
+    public Integer getPriority() {
         return rawEvent.getPriority();
     }
 
-    public Integer getChannelState()
-    {
+    public Integer getChannelState() {
         return rawEvent.getChannelState();
     }
 
-    public String getChannelStateDesc()
-    {
+    public String getChannelStateDesc() {
         return rawEvent.getChannelStateDesc();
     }
 
-    public String getExten()
-    {
+    public String getExten() {
         return rawEvent.getExten();
     }
 
-    public String getCallerIdNum()
-    {
+    public String getCallerIdNum() {
         return rawEvent.getCallerIdNum();
     }
 
-    public String getContext()
-    {
+    public String getContext() {
         return rawEvent.getContext();
     }
 
-    public Date getDateReceived()
-    {
+    public Date getDateReceived() {
         return rawEvent.getDateReceived();
     }
 
-    public String getPrivilege()
-    {
+    public String getPrivilege() {
         return rawEvent.getPrivilege();
     }
 
-    public String getExtension()
-    {
+    public String getExtension() {
         return rawEvent.getExtension();
     }
 
-    public String getIsexternal()
-    {
+    public String getIsexternal() {
         return rawEvent.getIsexternal();
     }
 
-    public String getResult()
-    {
+    public String getResult() {
         return rawEvent.getResult();
     }
 
-    public final String getServer()
-    {
+    public final String getServer() {
         return rawEvent.getServer();
     }
 
-    public String getFile()
-    {
+    public String getFile() {
         return rawEvent.getFile();
     }
 
-    public Integer getLine()
-    {
+    public Integer getLine() {
         return rawEvent.getLine();
     }
 
-    public String getFunc()
-    {
+    public String getFunc() {
         return rawEvent.getFunc();
     }
 
-    public Integer getSequenceNumber()
-    {
+    public Integer getSequenceNumber() {
         return rawEvent.getSequenceNumber();
     }
 
-    public Object getSource()
-    {
+    public Object getSource() {
         return rawEvent.getSource();
     }
 
-    public String getTransfererUniqueId()
-    {
+    public String getTransfererUniqueId() {
         return rawEvent.getTransfererUniqueId();
     }
 
-    public String getTransfererConnectedLineNum()
-    {
+    public String getTransfererConnectedLineNum() {
         return rawEvent.getTransfererConnectedLineNum();
     }
 
-    public String getTransfererConnectedLineName()
-    {
+    public String getTransfererConnectedLineName() {
         return rawEvent.getTransfererConnectedLineName();
     }
 
-    public String getTransfererCallerIdName()
-    {
+    public String getTransfererCallerIdName() {
         return rawEvent.getTransfererCallerIdName();
     }
 
-    public String getTransfererCallerIdNum()
-    {
+    public String getTransfererCallerIdNum() {
         return rawEvent.getTransfererCallerIdNum();
     }
 
-    public Channel getTransfererChannel()
-    {
+    public Channel getTransfererChannel() {
         return transfererChannel;
     }
 
-    public String getTransfererChannelState()
-    {
+    public String getTransfererChannelState() {
         return rawEvent.getTransfererChannelState();
     }
 
-    public String getTransfererChannelStateDesc()
-    {
+    public String getTransfererChannelStateDesc() {
         return rawEvent.getTransfererChannelStateDesc();
     }
 
-    public Integer getTransfererPriority()
-    {
+    public Integer getTransfererPriority() {
         return rawEvent.getTransfererPriority();
     }
 
-    public String getTransfererContext()
-    {
+    public String getTransfererContext() {
         return rawEvent.getTransfererContext();
     }
 
-    public String getTransfereeUniqueId()
-    {
+    public String getTransfereeUniqueId() {
         return rawEvent.getTransfereeUniqueId();
     }
 
-    public String getTransfereeConnectedLineNum()
-    {
+    public String getTransfereeConnectedLineNum() {
         return rawEvent.getTransfereeConnectedLineNum();
     }
 
-    public String getTransfereeConnectedLineName()
-    {
+    public String getTransfereeConnectedLineName() {
         return rawEvent.getTransfereeConnectedLineName();
     }
 
-    public String getTransfereeCallerIdName()
-    {
+    public String getTransfereeCallerIdName() {
         return rawEvent.getTransfereeCallerIdName();
     }
 
-    public String getTransfereeCallerIdNum()
-    {
+    public String getTransfereeCallerIdNum() {
         return rawEvent.getTransfereeCallerIdNum();
     }
 
-    public Channel getTransfereeChannel()
-    {
+    public Channel getTransfereeChannel() {
         return transfereeChannel;
     }
 
-    public String getTransfereeChannelState()
-    {
+    public String getTransfereeChannelState() {
         return rawEvent.getTransfereeChannelState();
     }
 
-    public String getTransfereeChannelStateDesc()
-    {
+    public String getTransfereeChannelStateDesc() {
         return rawEvent.getTransfereeChannelStateDesc();
     }
 
-    public Integer getTransfereePriority()
-    {
+    public Integer getTransfereePriority() {
         return rawEvent.getTransfereePriority();
     }
 
-    public final Double getTimestamp()
-    {
+    public final Double getTimestamp() {
         return rawEvent.getTimestamp();
     }
 
-    public String getTransfereeContext()
-    {
+    public String getTransfereeContext() {
         return rawEvent.getTransfereeContext();
     }
 
-    public String getTransfereeExten()
-    {
+    public String getTransfereeExten() {
         return rawEvent.getTransfereeExten();
     }
 
-    public String getTransfereeLinkedId()
-    {
+    public String getTransfereeLinkedId() {
         return rawEvent.getTransfereeLinkedId();
     }
 
-    public String getTransfererAccountCode()
-    {
+    public String getTransfererAccountCode() {
         return rawEvent.getTransfererAccountCode();
     }
 
-    public String getTransfererExten()
-    {
+    public String getTransfererExten() {
         return rawEvent.getTransfererExten();
     }
 
-    public String getTransfererLanguage()
-    {
+    public String getTransfererLanguage() {
         return rawEvent.getTransfererLanguage();
     }
 
-    public String getSystemName()
-    {
+    public String getSystemName() {
         return rawEvent.getSystemName();
     }
 
-    public String getTransfererLinkedId()
-    {
+    public String getTransfererLinkedId() {
         return rawEvent.getTransfererLinkedId();
     }
 
-    public String getTransfereeLanguage()
-    {
+    public String getTransfereeLanguage() {
         return rawEvent.getTransfereeLanguage();
     }
 
-    public String toString()
-    {
+    public String toString() {
         return rawEvent.toString();
     }
 

@@ -1,7 +1,6 @@
 package org.asteriskjava.fastagi.command;
 
-public class MeetmeCommand extends AbstractAgiCommand
-{
+public class MeetmeCommand extends AbstractAgiCommand {
     /**
      * Serial version identifier.
      */
@@ -12,19 +11,16 @@ public class MeetmeCommand extends AbstractAgiCommand
     /**
      * Creates a new AnswerCommand.
      */
-    public MeetmeCommand(String room, String options)
-    {
+    public MeetmeCommand(String room, String options) {
         super();
         this.room = room;
         this.options = options;
     }
 
     @Override
-    public String buildCommand()
-    {
+    public String buildCommand() {
         String command = "EXEC " + escapeAndQuote("meetme") + " " + escapeAndQuote(room);
-        if (options != null && options.length() > 0)
-        {
+        if (options != null && options.length() > 0) {
             command += "|" + escapeAndQuote(options);
         }
 

@@ -16,11 +16,11 @@
  */
 package org.asteriskjava.manager.internal;
 
-import java.io.IOException;
-
 import org.asteriskjava.manager.event.ManagerEvent;
 import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.util.SocketConnectionFacade;
+
+import java.io.IOException;
 
 /**
  * The ManagerReader reads events and responses from the asterisk server, parses
@@ -36,8 +36,7 @@ import org.asteriskjava.util.SocketConnectionFacade;
  * @see org.asteriskjava.manager.internal.ResponseBuilder
  * @see org.asteriskjava.manager.DefaultManagerConnection
  */
-public interface ManagerReader extends Runnable
-{
+public interface ManagerReader extends Runnable {
     String COMMAND_RESULT_RESPONSE_KEY = "__result__";
 
     /**
@@ -56,9 +55,9 @@ public interface ManagerReader extends Runnable
      * @see EventBuilder
      * @see ManagerEvent
      */
-    void registerEventClass(Class< ? extends ManagerEvent> event);
+    void registerEventClass(Class<? extends ManagerEvent> event);
 
-    void expectResponseClass(String internalActionId, Class< ? extends ManagerResponse> responseClass);
+    void expectResponseClass(String internalActionId, Class<? extends ManagerResponse> responseClass);
 
     /**
      * Terminates this reader.
@@ -69,7 +68,7 @@ public interface ManagerReader extends Runnable
      * Checks whether this reader is terminating or terminated.
      *
      * @return <code>true</code> if this reader is terminating or terminated,
-     *         <code>false</code> otherwise.
+     * <code>false</code> otherwise.
      */
     boolean isDead();
 
@@ -77,9 +76,9 @@ public interface ManagerReader extends Runnable
      * Returns the Exception that caused this reader to terminate if any.
      *
      * @return the Exception that caused this reader to terminate if any or
-     *         <code>null</code> if not.
+     * <code>null</code> if not.
      */
     IOException getTerminationException();
 
-    void deregisterEventClass(Class< ? extends ManagerEvent> eventClass);
+    void deregisterEventClass(Class<? extends ManagerEvent> eventClass);
 }

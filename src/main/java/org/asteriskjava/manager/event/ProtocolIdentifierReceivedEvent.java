@@ -17,17 +17,16 @@
 package org.asteriskjava.manager.event;
 
 /**
- * A ProtocolIdentifierReceivedEvent is triggered when the network connection to the Asterisk 
+ * A ProtocolIdentifierReceivedEvent is triggered when the network connection to the Asterisk
  * server has been established and the protocol identifier has been sent.<p>
  * It is a pseudo event not directly related to an Asterisk generated event.<p>
  * The ProtocolIdentifierReceivedEvent is not dispatched to clients so you will
  * probably never see it.
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public class ProtocolIdentifierReceivedEvent extends ManagerEvent
-{
+public class ProtocolIdentifierReceivedEvent extends ManagerEvent {
     /**
      * Serializable version identifier
      */
@@ -41,28 +40,25 @@ public class ProtocolIdentifierReceivedEvent extends ManagerEvent
     /**
      * @param source
      */
-    public ProtocolIdentifierReceivedEvent(Object source)
-    {
+    public ProtocolIdentifierReceivedEvent(Object source) {
         super(source);
     }
 
     /**
      * Returns the version of the protocol.
-     * 
+     *
      * @return the version of the protocol.
      */
-    public String getProtocolIdentifier()
-    {
+    public String getProtocolIdentifier() {
         return protocolIdentifier;
     }
 
     /**
      * Sets the version of the protocol.
-     * 
+     *
      * @param protocolIdentifier the version of the protocol.
      */
-    public void setProtocolIdentifier(String protocolIdentifier)
-    {
+    public void setProtocolIdentifier(String protocolIdentifier) {
         this.protocolIdentifier = protocolIdentifier;
     }
 }

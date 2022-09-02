@@ -19,8 +19,7 @@ package org.asteriskjava.manager.event;
 /**
  * Enro 2015-03: Asterisk 13 Support
  */
-public class AbstractUnParkedEvent extends AbstractParkedCallEvent
-{
+public class AbstractUnParkedEvent extends AbstractParkedCallEvent {
     /**
      * Serializable version identifier
      */
@@ -42,128 +41,103 @@ public class AbstractUnParkedEvent extends AbstractParkedCallEvent
     /**
      * @param source
      */
-    public AbstractUnParkedEvent(Object source)
-    {
+    public AbstractUnParkedEvent(Object source) {
         super(source);
     }
 
-    public String getParkerChannel()
-    {
+    public String getParkerChannel() {
         return parkerChannel;
     }
 
-    public void setParkerChannel(String parkerChannel)
-    {
+    public void setParkerChannel(String parkerChannel) {
         this.parkerChannel = parkerChannel;
     }
 
-    public Integer getParkerChannelState()
-    {
+    public Integer getParkerChannelState() {
         return parkerChannelState;
     }
 
-    public void setParkerChannelState(Integer parkerChannelState)
-    {
+    public void setParkerChannelState(Integer parkerChannelState) {
         this.parkerChannelState = parkerChannelState;
     }
 
-    public String getParkerChannelStateDesc()
-    {
+    public String getParkerChannelStateDesc() {
         return parkerChannelStateDesc;
     }
 
-    public void setParkerChannelStateDesc(String parkerChannelStateDesc)
-    {
+    public void setParkerChannelStateDesc(String parkerChannelStateDesc) {
         this.parkerChannelStateDesc = parkerChannelStateDesc;
     }
 
-    public String getParkerCallerIDNum()
-    {
+    public String getParkerCallerIDNum() {
         return parkerCallerIDNum;
     }
 
-    public void setParkerCallerIDNum(String parkerCallerIDNum)
-    {
+    public void setParkerCallerIDNum(String parkerCallerIDNum) {
         this.parkerCallerIDNum = parkerCallerIDNum;
     }
 
-    public String getParkerCallerIDName()
-    {
+    public String getParkerCallerIDName() {
         return parkerCallerIDName;
     }
 
-    public void setParkerCallerIDName(String parkerCallerIDName)
-    {
+    public void setParkerCallerIDName(String parkerCallerIDName) {
         this.parkerCallerIDName = parkerCallerIDName;
     }
 
-    public String getParkerConnectedLineNum()
-    {
+    public String getParkerConnectedLineNum() {
         return parkerConnectedLineNum;
     }
 
-    public void setParkerConnectedLineNum(String parkerConnectedLineNum)
-    {
+    public void setParkerConnectedLineNum(String parkerConnectedLineNum) {
         this.parkerConnectedLineNum = parkerConnectedLineNum;
     }
 
-    public String getParkerConnectedLineName()
-    {
+    public String getParkerConnectedLineName() {
         return parkerConnectedLineName;
     }
 
-    public void setParkerConnectedLineName(String parkerConnectedLineName)
-    {
+    public void setParkerConnectedLineName(String parkerConnectedLineName) {
         this.parkerConnectedLineName = parkerConnectedLineName;
     }
 
-    public String getParkerAccountCode()
-    {
+    public String getParkerAccountCode() {
         return parkerAccountCode;
     }
 
-    public void setParkerAccountCode(String parkerAccountCode)
-    {
+    public void setParkerAccountCode(String parkerAccountCode) {
         this.parkerAccountCode = parkerAccountCode;
     }
 
-    public String getParkerContext()
-    {
+    public String getParkerContext() {
         return parkerContext;
     }
 
-    public void setParkerContext(String parkerContext)
-    {
+    public void setParkerContext(String parkerContext) {
         this.parkerContext = parkerContext;
     }
 
-    public String getParkerExten()
-    {
+    public String getParkerExten() {
         return parkerExten;
     }
 
-    public void setParkerExten(String parkerExten)
-    {
+    public void setParkerExten(String parkerExten) {
         this.parkerExten = parkerExten;
     }
 
-    public String getParkerPriority()
-    {
+    public String getParkerPriority() {
         return parkerPriority;
     }
 
-    public void setParkerPriority(String parkerPriority)
-    {
+    public void setParkerPriority(String parkerPriority) {
         this.parkerPriority = parkerPriority;
     }
 
-    public String getParkerUniqueid()
-    {
+    public String getParkerUniqueid() {
         return parkerUniqueid;
     }
 
-    public void setParkerUniqueid(String parkerUniqueid)
-    {
+    public void setParkerUniqueid(String parkerUniqueid) {
         this.parkerUniqueid = parkerUniqueid;
     }
 }

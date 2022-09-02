@@ -16,9 +16,9 @@
  */
 package org.asteriskjava.manager.internal;
 
-import java.util.Map;
-
 import org.asteriskjava.manager.response.ManagerResponse;
+
+import java.util.Map;
 
 
 /**
@@ -28,8 +28,7 @@ import org.asteriskjava.manager.response.ManagerResponse;
  * @version $Id$
  * @see org.asteriskjava.manager.response.ManagerResponse
  */
-interface ResponseBuilder
-{
+interface ResponseBuilder {
     /**
      * Constructs an instance of ManagerResponse based on a map of attributes.
      *

@@ -26,8 +26,7 @@ package org.asteriskjava.fastagi;
  * @version $Id$
  * @since 1.0.0
  */
-public class AgiSpeechException extends AgiException
-{
+public class AgiSpeechException extends AgiException {
     /**
      * Serial version identifier.
      */
@@ -38,8 +37,7 @@ public class AgiSpeechException extends AgiException
      *
      * @param message the message
      */
-    public AgiSpeechException(String message)
-    {
+    public AgiSpeechException(String message) {
         super(message);
     }
 }

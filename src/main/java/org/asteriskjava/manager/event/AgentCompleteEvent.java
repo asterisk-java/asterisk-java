@@ -23,13 +23,12 @@ package org.asteriskjava.manager.event;
  * It is implemented in <code>apps/app_queue.c</code>.
  * <p>
  * Available since Asterisk 1.2
- * 
+ *
  * @author srt
  * @version $Id$
  * @since 0.2
  */
-public class AgentCompleteEvent extends AbstractAgentEvent
-{
+public class AgentCompleteEvent extends AbstractAgentEvent {
     /**
      * Serial version identifier.
      */
@@ -51,7 +50,7 @@ public class AgentCompleteEvent extends AbstractAgentEvent
     private String destChannel;
     private String destChannelState;
     private String iface;
-    
+
     private String destAccountCode;
     private String language;
     private String destLanguage;
@@ -59,323 +58,280 @@ public class AgentCompleteEvent extends AbstractAgentEvent
     private String destLinkedId;
     private String accountCode;
 
-    public AgentCompleteEvent(Object source)
-    {
+    public AgentCompleteEvent(Object source) {
         super(source);
     }
 
     /**
      * Returns the amount of time the caller was on hold.
-     * 
+     *
      * @return the amount of time the caller was on hold in seconds.
      */
-    public Long getHoldTime()
-    {
+    public Long getHoldTime() {
         return holdTime;
     }
 
     /**
      * Sets the amount of time the caller was on hold.
-     * 
+     *
      * @param holdtime the amount of time the caller was on hold in seconds.
      */
-    public void setHoldTime(Long holdtime)
-    {
+    public void setHoldTime(Long holdtime) {
         this.holdTime = holdtime;
     }
 
     /**
      * Returns the amount of time the caller talked to the agent.
-     * 
+     *
      * @return the amount of time the caller talked to the agent in seconds.
      */
-    public Long getTalkTime()
-    {
+    public Long getTalkTime() {
         return talkTime;
     }
 
     /**
      * Sets the amount of time the caller talked to the agent.
-     * 
+     *
      * @param talkTime the amount of time the caller talked to the agent in
-     *            seconds.
+     *                 seconds.
      */
-    public void setTalkTime(Long talkTime)
-    {
+    public void setTalkTime(Long talkTime) {
         this.talkTime = talkTime;
     }
 
     /**
      * Returns if the agent or the caller terminated the call.
-     * 
+     *
      * @return "agent" if the agent terminated the call, "caller" if the caller
-     *         terminated the call.
+     * terminated the call.
      */
-    public String getReason()
-    {
+    public String getReason() {
         return reason;
     }
 
     /**
      * Sets if the agent or the caller terminated the call.
-     * 
+     *
      * @param reason "agent" if the agent terminated the call, "caller" if the
-     *            caller terminated the call.
+     *               caller terminated the call.
      */
-    public void setReason(String reason)
-    {
+    public void setReason(String reason) {
         this.reason = reason;
     }
 
     /**
      * @return the destExten
      */
-    public String getDestExten()
-    {
+    public String getDestExten() {
         return destExten;
     }
 
     /**
      * @param destExten the destExten to set
      */
-    public void setDestExten(String destExten)
-    {
+    public void setDestExten(String destExten) {
         this.destExten = destExten;
     }
 
     /**
      * @return the destChannelStateDesc
      */
-    public String getDestChannelStateDesc()
-    {
+    public String getDestChannelStateDesc() {
         return destChannelStateDesc;
     }
 
     /**
      * @param destChannelStateDesc the destChannelStateDesc to set
      */
-    public void setDestChannelStateDesc(String destChannelStateDesc)
-    {
+    public void setDestChannelStateDesc(String destChannelStateDesc) {
         this.destChannelStateDesc = destChannelStateDesc;
     }
 
     /**
      * @return the destUniqueId
      */
-    public String getDestUniqueId()
-    {
+    public String getDestUniqueId() {
         return destUniqueId;
     }
 
     /**
      * @param destUniqueId the destUniqueId to set
      */
-    public void setDestUniqueId(String destUniqueId)
-    {
+    public void setDestUniqueId(String destUniqueId) {
         this.destUniqueId = destUniqueId;
     }
 
     /**
      * @return the destConnectedLineNum
      */
-    public String getDestConnectedLineNum()
-    {
+    public String getDestConnectedLineNum() {
         return destConnectedLineNum;
     }
 
     /**
      * @param destConnectedLineNum the destConnectedLineNum to set
      */
-    public void setDestConnectedLineNum(String destConnectedLineNum)
-    {
+    public void setDestConnectedLineNum(String destConnectedLineNum) {
         this.destConnectedLineNum = destConnectedLineNum;
     }
 
     /**
      * @return the destConnectedLineName
      */
-    public String getDestConnectedLineName()
-    {
+    public String getDestConnectedLineName() {
         return destConnectedLineName;
     }
 
     /**
      * @param destConnectedLineName the destConnectedLineName to set
      */
-    public void setDestConnectedLineName(String destConnectedLineName)
-    {
+    public void setDestConnectedLineName(String destConnectedLineName) {
         this.destConnectedLineName = destConnectedLineName;
     }
 
     /**
      * @return the destCallerIdName
      */
-    public String getDestCallerIdName()
-    {
+    public String getDestCallerIdName() {
         return destCallerIdName;
     }
 
     /**
      * @param destCallerIdName the destCallerIdName to set
      */
-    public void setDestCallerIdName(String destCallerIdName)
-    {
+    public void setDestCallerIdName(String destCallerIdName) {
         this.destCallerIdName = destCallerIdName;
     }
 
     /**
      * @return the destCallerIdNum
      */
-    public String getDestCallerIdNum()
-    {
+    public String getDestCallerIdNum() {
         return destCallerIdNum;
     }
 
     /**
      * @param destCallerIdNum the destCallerIdNum to set
      */
-    public void setDestCallerIdNum(String destCallerIdNum)
-    {
+    public void setDestCallerIdNum(String destCallerIdNum) {
         this.destCallerIdNum = destCallerIdNum;
     }
 
     /**
      * @return the destContext
      */
-    public String getDestContext()
-    {
+    public String getDestContext() {
         return destContext;
     }
 
     /**
      * @param destContext the destContext to set
      */
-    public void setDestContext(String destContext)
-    {
+    public void setDestContext(String destContext) {
         this.destContext = destContext;
     }
 
     /**
      * @return the destPriority
      */
-    public String getDestPriority()
-    {
+    public String getDestPriority() {
         return destPriority;
     }
 
     /**
      * @param destPriority the destPriority to set
      */
-    public void setDestPriority(String destPriority)
-    {
+    public void setDestPriority(String destPriority) {
         this.destPriority = destPriority;
     }
 
     /**
      * @return the destChannel
      */
-    public String getDestChannel()
-    {
+    public String getDestChannel() {
         return destChannel;
     }
 
     /**
      * @param destChannel the destChannel to set
      */
-    public void setDestChannel(String destChannel)
-    {
+    public void setDestChannel(String destChannel) {
         this.destChannel = destChannel;
     }
 
     /**
      * @return the destChannelState
      */
-    public String getDestChannelState()
-    {
+    public String getDestChannelState() {
         return destChannelState;
     }
 
     /**
      * @param destChannelState the destChannelState to set
      */
-    public void setDestChannelState(String destChannelState)
-    {
+    public void setDestChannelState(String destChannelState) {
         this.destChannelState = destChannelState;
     }
 
     /**
      * @return the iface
      */
-    public String getInterface()
-    {
+    public String getInterface() {
         return iface;
     }
 
     /**
      * @param iface the iface to set
      */
-    public void setInterface(String iface)
-    {
+    public void setInterface(String iface) {
         this.iface = iface;
     }
 
-    public String getLanguage()
-    {
+    public String getLanguage() {
         return language;
     }
 
-    public void setLanguage(String language)
-    {
+    public void setLanguage(String language) {
         this.language = language;
     }
 
-    public String getDestAccountCode()
-    {
+    public String getDestAccountCode() {
         return destAccountCode;
     }
 
-    public void setDestAccountCode(String destAccountCode)
-    {
+    public void setDestAccountCode(String destAccountCode) {
         this.destAccountCode = destAccountCode;
     }
 
-    public String getDestLanguage()
-    {
+    public String getDestLanguage() {
         return destLanguage;
     }
 
-    public void setDestLanguage(String destLanguage)
-    {
+    public void setDestLanguage(String destLanguage) {
         this.destLanguage = destLanguage;
     }
 
-    public String getLinkedId()
-    {
+    public String getLinkedId() {
         return linkedId;
     }
 
-    public void setLinkedId(String linkedId)
-    {
+    public void setLinkedId(String linkedId) {
         this.linkedId = linkedId;
     }
 
-    public String getDestLinkedId()
-    {
+    public String getDestLinkedId() {
         return destLinkedId;
     }
 
-    public void setDestLinkedId(String destLinkedId)
-    {
+    public void setDestLinkedId(String destLinkedId) {
         this.destLinkedId = destLinkedId;
     }
 
-    public String getAccountCode()
-    {
+    public String getAccountCode() {
         return accountCode;
     }
 
-    public void setAccountCode(String accountCode)
-    {
+    public void setAccountCode(String accountCode) {
         this.accountCode = accountCode;
     }
 }

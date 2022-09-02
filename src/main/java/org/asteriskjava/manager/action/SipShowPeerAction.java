@@ -26,16 +26,15 @@ import org.asteriskjava.manager.response.SipShowPeerResponse;
  * to retrieve the properties. Consider using {@link org.asteriskjava.manager.action.SipPeersAction}
  * instead.<p>
  * Available since Asterisk 1.2
- * 
+ *
  * @author srt
  * @version $Id$
- * @since 0.2
  * @see org.asteriskjava.manager.action.SipPeersAction
  * @see org.asteriskjava.manager.response.SipShowPeerResponse
+ * @since 0.2
  */
 @ExpectedResponse(SipShowPeerResponse.class)
-public class SipShowPeerAction extends AbstractManagerAction
-{
+public class SipShowPeerAction extends AbstractManagerAction {
     /**
      * Serial version identifier.
      */
@@ -45,8 +44,7 @@ public class SipShowPeerAction extends AbstractManagerAction
     /**
      * Creates a new empty SipShowPeerAction.
      */
-    public SipShowPeerAction()
-    {
+    public SipShowPeerAction() {
 
     }
 
@@ -56,29 +54,26 @@ public class SipShowPeerAction extends AbstractManagerAction
      * <p>
      * This is just the peer name without the channel type prefix. For example
      * if your channel is called "SIP/john", the peer name is just "john".
-     * 
+     *
      * @param peer the name of the SIP peer to retrieve details for.
      * @since 0.2
      */
-    public SipShowPeerAction(String peer)
-    {
+    public SipShowPeerAction(String peer) {
         this.peer = peer;
     }
 
     @Override
-   public String getAction()
-    {
+    public String getAction() {
         return "SIPShowPeer";
     }
 
     /**
      * Returns the name of the peer to retrieve.<p>
      * This parameter is mandatory.
-     * 
+     *
      * @return the name of the peer to retrieve without the channel type prefix.
      */
-    public String getPeer()
-    {
+    public String getPeer() {
         return peer;
     }
 
@@ -89,11 +84,10 @@ public class SipShowPeerAction extends AbstractManagerAction
      * if your channel is called "SIP/john", the peer name is just "john".
      * <p>
      * This parameter is mandatory.
-     * 
+     *
      * @param peer the name of the peer to retrieve without the channel type prefix.
      */
-    public void setPeer(String peer)
-    {
+    public void setPeer(String peer) {
         this.peer = peer;
     }
 }

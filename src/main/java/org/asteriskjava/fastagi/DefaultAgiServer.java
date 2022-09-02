@@ -16,23 +16,19 @@
  */
 package org.asteriskjava.fastagi;
 
+import org.asteriskjava.fastagi.internal.AgiConnectionHandler;
+import org.asteriskjava.fastagi.internal.DefaultAgiChannelFactory;
+import org.asteriskjava.fastagi.internal.FastAgiConnectionHandler;
+import org.asteriskjava.util.*;
+import org.asteriskjava.util.internal.ServerSocketFacadeImpl;
+import org.asteriskjava.util.internal.SocketConnectionFacadeImpl;
+
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.concurrent.RejectedExecutionException;
-
-import org.asteriskjava.fastagi.internal.AgiConnectionHandler;
-import org.asteriskjava.fastagi.internal.DefaultAgiChannelFactory;
-import org.asteriskjava.fastagi.internal.FastAgiConnectionHandler;
-import org.asteriskjava.util.Log;
-import org.asteriskjava.util.LogFactory;
-import org.asteriskjava.util.ReflectionUtil;
-import org.asteriskjava.util.ServerSocketFacade;
-import org.asteriskjava.util.SocketConnectionFacade;
-import org.asteriskjava.util.internal.ServerSocketFacadeImpl;
-import org.asteriskjava.util.internal.SocketConnectionFacadeImpl;
 
 /**
  * Default implementation of the {@link org.asteriskjava.fastagi.AgiServer}
@@ -41,8 +37,7 @@ import org.asteriskjava.util.internal.SocketConnectionFacadeImpl;
  * @author srt
  * @version $Id$
  */
-public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
-{
+public class DefaultAgiServer extends AbstractAgiServer implements AgiServer {
     private final Log logger = LogFactory.getLog(getClass());
 
     /**
@@ -55,7 +50,9 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
      */
     private static final int DEFAULT_BIND_PORT = 4573;
 
-    /** Default 50? Windows server max 200? */
+    /**
+     * Default 50? Windows server max 200?
+     */
     private static final int BACKLOG = 200;
 
     private ServerSocketFacade serverSocket;
@@ -75,8 +72,7 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
     /**
      * Creates a new DefaultAgiServer.
      */
-    public DefaultAgiServer()
-    {
+    public DefaultAgiServer() {
         this(null, null);
 
     }
@@ -86,10 +82,9 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
      * AgiChannels
      *
      * @param agiChannelFactory The factory to use for creating new AgiChannel
-     *            instances.
+     *                          instances.
      */
-    public DefaultAgiServer(AgiChannelFactory agiChannelFactory)
-    {
+    public DefaultAgiServer(AgiChannelFactory agiChannelFactory) {
         this(null, null, agiChannelFactory);
     }
 
@@ -98,10 +93,9 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
      * alternative resource bundle.
      *
      * @param configResourceBundleName the name of the conifiguration resource
-     *            bundle (default is "fastagi").
+     *                                 bundle (default is "fastagi").
      */
-    public DefaultAgiServer(String configResourceBundleName)
-    {
+    public DefaultAgiServer(String configResourceBundleName) {
         this(configResourceBundleName, null);
     }
 
@@ -110,11 +104,10 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
      * {@link MappingStrategy}.
      *
      * @param mappingStrategy the MappingStrategy to use to determine the
-     *            AgiScript to run.
+     *                        AgiScript to run.
      * @since 1.0.0
      */
-    public DefaultAgiServer(MappingStrategy mappingStrategy)
-    {
+    public DefaultAgiServer(MappingStrategy mappingStrategy) {
         this(null, mappingStrategy);
     }
 
@@ -125,8 +118,7 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
      * @param agiScript the AgiScript to run.
      * @since 1.0.0
      */
-    public DefaultAgiServer(AgiScript agiScript)
-    {
+    public DefaultAgiServer(AgiScript agiScript) {
         this(null, new StaticMappingStrategy(agiScript));
     }
 
@@ -135,13 +127,12 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
      * alternative resource bundle and uses the given {@link MappingStrategy}.
      *
      * @param configResourceBundleName the name of the conifiguration resource
-     *            bundle (default is "fastagi").
-     * @param mappingStrategy the MappingStrategy to use to determine the
-     *            AgiScript to run.
+     *                                 bundle (default is "fastagi").
+     * @param mappingStrategy          the MappingStrategy to use to determine the
+     *                                 AgiScript to run.
      * @since 1.0.0
      */
-    public DefaultAgiServer(String configResourceBundleName, MappingStrategy mappingStrategy)
-    {
+    public DefaultAgiServer(String configResourceBundleName, MappingStrategy mappingStrategy) {
         this(configResourceBundleName, mappingStrategy, new DefaultAgiChannelFactory());
     }
 
@@ -150,47 +141,38 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
      * alternative resource bundle and uses the given {@link MappingStrategy}.
      *
      * @param configResourceBundleName the name of the conifiguration resource
-     *            bundle (default is "fastagi").
-     * @param mappingStrategy the MappingStrategy to use to determine the
-     *            AgiScript to run.
-     * @param agiChannelFactory The factory to use for creating new AgiChannel
-     *            instances.
+     *                                 bundle (default is "fastagi").
+     * @param mappingStrategy          the MappingStrategy to use to determine the
+     *                                 AgiScript to run.
+     * @param agiChannelFactory        The factory to use for creating new AgiChannel
+     *                                 instances.
      * @since 1.0.0
      */
     public DefaultAgiServer(String configResourceBundleName, MappingStrategy mappingStrategy,
-            AgiChannelFactory agiChannelFactory)
-    {
+                            AgiChannelFactory agiChannelFactory) {
         super(agiChannelFactory);
 
-        if (mappingStrategy == null)
-        {
+        if (mappingStrategy == null) {
             final CompositeMappingStrategy compositeMappingStrategy = new CompositeMappingStrategy();
 
             compositeMappingStrategy.addStrategy(new ResourceBundleMappingStrategy());
             compositeMappingStrategy.addStrategy(new ClassNameMappingStrategy());
-            if (ReflectionUtil.isClassAvailable("javax.script.ScriptEngineManager"))
-            {
+            if (ReflectionUtil.isClassAvailable("javax.script.ScriptEngineManager")) {
                 MappingStrategy scriptEngineMappingStrategy = (MappingStrategy) ReflectionUtil
                         .newInstance("org.asteriskjava.fastagi.ScriptEngineMappingStrategy");
-                if (scriptEngineMappingStrategy != null)
-                {
+                if (scriptEngineMappingStrategy != null) {
                     compositeMappingStrategy.addStrategy(scriptEngineMappingStrategy);
                 }
-            }
-            else
-            {
+            } else {
                 logger.warn("ScriptEngine support disabled: It is only availble when running at least Java 6");
             }
 
             setMappingStrategy(compositeMappingStrategy);
-        }
-        else
-        {
+        } else {
             setMappingStrategy(mappingStrategy);
         }
 
-        if (configResourceBundleName != null)
-        {
+        if (configResourceBundleName != null) {
             this.configResourceBundleName = configResourceBundleName;
         }
 
@@ -205,8 +187,7 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
      * @deprecated use {@link #setPort(int)} instead
      */
     @Deprecated
-    public void setBindPort(int bindPort)
-    {
+    public void setBindPort(int bindPort) {
         this.port = bindPort;
     }
 
@@ -217,8 +198,7 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
      * @param port the port to bind to.
      * @since 0.2
      */
-    public void setPort(int port)
-    {
+    public void setPort(int port) {
         this.port = port;
     }
 
@@ -228,90 +208,72 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
      * @return the TCP port this server is configured to bind to.
      * @since 1.0.0
      */
-    public int getPort()
-    {
+    public int getPort() {
         return port;
     }
 
     /**
      * Returns the address this server is configured to bind to.
-     * 
+     *
      * @return the address this server is configured to bind to.
      */
-    public InetAddress getAddress()
-    {
+    public InetAddress getAddress() {
         return address;
     }
 
     /**
      * Sets the address to bind server.
-     * 
+     *
      * @param address the address to bind to.
      */
-    public void setAddress(InetAddress address)
-    {
+    public void setAddress(InetAddress address) {
         this.address = address;
     }
 
-    private void loadConfig()
-    {
+    private void loadConfig() {
         final ResourceBundle resourceBundle;
 
-        try
-        {
+        try {
             resourceBundle = ResourceBundle.getBundle(configResourceBundleName);
-        }
-        catch (MissingResourceException e)
-        {
+        } catch (MissingResourceException e) {
             return;
         }
 
-        try
-        {
+        try {
             String portString;
 
-            try
-            {
+            try {
                 portString = resourceBundle.getString("port");
-            }
-            catch (MissingResourceException e)
-            {
+            } catch (MissingResourceException e) {
                 // for backward compatibility only
                 portString = resourceBundle.getString("bindPort");
             }
             port = Integer.parseInt(portString);
-        }
-        catch (Exception e) // NOPMD
+        } catch (Exception e) // NOPMD
         {
             // swallow
         }
 
-        try
-        {
+        try {
             setPoolSize(Integer.parseInt(resourceBundle.getString("poolSize")));
-        }
-        catch (Exception e) // NOPMD
+        } catch (Exception e) // NOPMD
         {
             // swallow
         }
 
-        try
-        {
+        try {
             setMaximumPoolSize(Integer.parseInt(resourceBundle.getString("maximumPoolSize")));
-        }
-        catch (Exception e) // NOPMD
+        } catch (Exception e) // NOPMD
         {
             // swallow
         }
     }
 
-    public void setSocketReadTimeout(int socketReadTimeout)
-    {
+    public void setSocketReadTimeout(int socketReadTimeout) {
         this.socketReadTimeout = socketReadTimeout;
     }
 
-    protected ServerSocketFacade createServerSocket() throws IOException
-    {
+    protected ServerSocketFacade createServerSocket() throws IOException {
         // referred to the address by getAddress(), so that overloading the
         // getAddress() method works as expected
         ServerSocketFacade serverSocketFacade = new ServerSocketFacadeImpl(port, BACKLOG, getAddress());
@@ -319,46 +281,34 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
         return serverSocketFacade;
     }
 
-    public void startup() throws IOException, IllegalStateException
-    {
-        try
-        {
+    public void startup() throws IOException, IllegalStateException {
+        try {
             serverSocket = createServerSocket();
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             logger.error("Unable start AgiServer: cannot to bind to *:" + port + ".", e);
             throw e;
         }
         // referred to the address by getAddress(), so that overloading the
         // getAddress() method works as expected
-        if (getAddress() != null)
-        {
+        if (getAddress() != null) {
             // referred to the address by getAddress(), so that overloading the
             // getAddress() method works as expected
             logger.info("Listening on " + getAddress() + ":" + port + ".");
-        }
-        else
-        {
+        } else {
             logger.info("Listening on *:" + port + ".");
         }
 
         // loop will be terminated by accept() throwing an IOException when the
         // ServerSocket is closed.
-        while (true)
-        {
+        while (true) {
             final SocketConnectionFacade socket;
 
             // accept connection
-            try
-            {
+            try {
                 socket = serverSocket.accept();
-            }
-            catch (IOException e)
-            {
+            } catch (IOException e) {
                 // swallow only if shutdown
-                if (isDie())
-                {
+                if (isDie()) {
                     break;
                 }
                 // handle exception but continue to run
@@ -371,12 +321,9 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
             // execute connection handler
             final AgiConnectionHandler connectionHandler = new FastAgiConnectionHandler(getMappingStrategy(), socket,
                     this.getAgiChannelFactory());
-            try
-            {
+            try {
                 execute(connectionHandler);
-            }
-            catch (RejectedExecutionException e)
-            {
+            } catch (RejectedExecutionException e) {
                 logger.warn("Execution was rejected by pool. Try to increase the pool size.");
                 // release resources like closing the socket if execution was
                 // rejected due to the pool size
@@ -390,13 +337,10 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
      * @deprecated use {@link #startup()} instead.
      */
     @Deprecated
-    public void run()
-    {
-        try
-        {
+    public void run() {
+        try {
             startup();
-        }
-        catch (IOException e) // NOPMD
+        } catch (IOException e) // NOPMD
         {
             // nothing we can do about that and exceptions have already been
             // logged
@@ -405,38 +349,29 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
     }
 
     @Override
-    public synchronized void shutdown() throws IllegalStateException
-    {
+    public synchronized void shutdown() throws IllegalStateException {
         // setting the death flag causes the accept() loop to exit when a
         // SocketException occurs.
         super.shutdown();
 
-        if (serverSocket != null)
-        {
-            try
-            {
+        if (serverSocket != null) {
+            try {
                 // closes the server socket and throws a SocketException on
                 // Threads waiting in accept()
                 serverSocket.close();
-            }
-            catch (IOException e)
-            {
+            } catch (IOException e) {
                 logger.warn("IOException while closing server socket.", e);
             }
         }
     }
 
     @Override
-    protected void finalize() throws Throwable
-    {
+    protected void finalize() throws Throwable {
 
-        if (serverSocket != null)
-        {
-            try
-            {
+        if (serverSocket != null) {
+            try {
                 serverSocket.close();
-            }
-            catch (IOException e) // NOPMD
+            } catch (IOException e) // NOPMD
             {
                 // swallow
             }
@@ -453,8 +388,7 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
      * @deprecated since 1.0.0 use {@link org.asteriskjava.Cli} instead.
      */
     @Deprecated
-    public static void main(String[] args) throws Exception
-    {
+    public static void main(String[] args) throws Exception {
         final AgiServer server;
 
         server = new DefaultAgiServer();

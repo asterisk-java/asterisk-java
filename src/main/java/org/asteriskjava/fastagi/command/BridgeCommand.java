@@ -2,8 +2,7 @@ package org.asteriskjava.fastagi.command;
 
 import org.asteriskjava.AsteriskVersion;
 
-public class BridgeCommand extends AbstractAgiCommand
-{
+public class BridgeCommand extends AbstractAgiCommand {
     /**
      * Serial version identifier.
      */
@@ -14,25 +13,19 @@ public class BridgeCommand extends AbstractAgiCommand
     /**
      * Creates a new AnswerCommand.
      */
-    public BridgeCommand(String channel, String options)
-    {
+    public BridgeCommand(String channel, String options) {
         super();
         this.channel = channel;
         this.options = options;
     }
 
     @Override
-    public String buildCommand()
-    {
+    public String buildCommand() {
         String command = "EXEC " + escapeAndQuote("bridge") + " " + escapeAndQuote(channel);
-        if (options != null && options.length() > 0)
-        {
-            if (getAsteriskVersion().isAtLeast(AsteriskVersion.ASTERISK_13))
-            {
+        if (options != null && options.length() > 0) {
+            if (getAsteriskVersion().isAtLeast(AsteriskVersion.ASTERISK_13)) {
                 command += "," + escapeAndQuote(options);
-            }
-            else
-            {
+            } else {
                 command += "|" + escapeAndQuote(options);
             }
         }

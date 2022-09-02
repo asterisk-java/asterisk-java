@@ -25,8 +25,7 @@ package org.asteriskjava.manager.event;
  * @see org.asteriskjava.manager.action.SkypeLicenseListAction
  * @since 1.0.0
  */
-public class SkypeLicenseEvent extends ResponseEvent
-{
+public class SkypeLicenseEvent extends ResponseEvent {
     /**
      * Serial version identifier.
      */
@@ -37,8 +36,7 @@ public class SkypeLicenseEvent extends ResponseEvent
     private Integer channels;
     private String status;
 
-    public SkypeLicenseEvent(Object source)
-    {
+    public SkypeLicenseEvent(Object source) {
         super(source);
     }
 
@@ -47,8 +45,7 @@ public class SkypeLicenseEvent extends ResponseEvent
      *
      * @return the license key.
      */
-    public String getKey()
-    {
+    public String getKey() {
         return key;
     }
 
@@ -57,8 +54,7 @@ public class SkypeLicenseEvent extends ResponseEvent
      *
      * @param key the license key.
      */
-    public void setKey(String key)
-    {
+    public void setKey(String key) {
         this.key = key;
     }
 
@@ -67,8 +63,7 @@ public class SkypeLicenseEvent extends ResponseEvent
      *
      * @return the date the license expires in the format "YYYY-MM-DD".
      */
-    public String getExpires()
-    {
+    public String getExpires() {
         return expires;
     }
 
@@ -77,18 +72,15 @@ public class SkypeLicenseEvent extends ResponseEvent
      *
      * @param expires the date the license expires in the format "YYYY-MM-DD".
      */
-    public void setExpires(String expires)
-    {
+    public void setExpires(String expires) {
         this.expires = expires;
     }
 
-    public String getHostId()
-    {
+    public String getHostId() {
         return hostId;
     }
 
-    public void setHostId(String hostId)
-    {
+    public void setHostId(String hostId) {
         this.hostId = hostId;
     }
 
@@ -97,8 +89,7 @@ public class SkypeLicenseEvent extends ResponseEvent
      *
      * @return the number of licensed channels.
      */
-    public Integer getChannels()
-    {
+    public Integer getChannels() {
         return channels;
     }
 
@@ -107,18 +98,15 @@ public class SkypeLicenseEvent extends ResponseEvent
      *
      * @param channels the number of licensed channels.
      */
-    public void setChannels(Integer channels)
-    {
+    public void setChannels(Integer channels) {
         this.channels = channels;
     }
 
-    public String getStatus()
-    {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(String status)
-    {
+    public void setStatus(String status) {
         this.status = status;
     }
 }

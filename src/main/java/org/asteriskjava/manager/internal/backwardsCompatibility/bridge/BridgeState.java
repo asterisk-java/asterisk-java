@@ -1,11 +1,5 @@
 package org.asteriskjava.manager.internal.backwardsCompatibility.bridge;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-
 import org.asteriskjava.lock.LockableMap;
 import org.asteriskjava.lock.Locker.LockCloser;
 import org.asteriskjava.manager.event.BridgeEnterEvent;
@@ -14,14 +8,15 @@ import org.asteriskjava.manager.event.BridgeLeaveEvent;
 import org.asteriskjava.manager.event.ManagerEvent;
 import org.asteriskjava.util.DateUtil;
 
+import java.util.*;
+
 /**
  * Track the current members of a bridge, emmitting BridgeEvents when 2 members
  * join or breakup
  *
  * @author rsutton
  */
-class BridgeState
-{
+class BridgeState {
     // private final Log logger = LogFactory.getLog(getClass());
 
     private static final BridgeEnterEventComparator BRIDGE_ENTER_EVENT_COMPARATOR = new BridgeEnterEventComparator();
@@ -29,10 +24,8 @@ class BridgeState
 
     private final LockableMap<String, BridgeEnterEvent> members = new LockableMap<>(new HashMap<>());
 
-    ManagerEvent destroy()
-    {
-        try (LockCloser closer = members.withLock())
-        {
+    ManagerEvent destroy() {
+        try (LockCloser closer = members.withLock()) {
             members.clear();
         }
         return null;
@@ -44,26 +37,21 @@ class BridgeState
      * @param event
      * @return
      */
-    ManagerEvent addMember(BridgeEnterEvent event)
-    {
+    ManagerEvent addMember(BridgeEnterEvent event) {
         List<BridgeEnterEvent> remaining = null;
 
-        if (HOLDING_BRIDGE_TECH.equals(event.getBridgeTechnology()))
-        {
+        if (HOLDING_BRIDGE_TECH.equals(event.getBridgeTechnology())) {
             /* channels in a holding bridge aren't bridged to one another */
             return null;
         }
 
-        try (LockCloser closer = members.withLock())
-        {
-            if (members.put(event.getChannel(), event) == null && members.size() == 2)
-            {
+        try (LockCloser closer = members.withLock()) {
+            if (members.put(event.getChannel(), event) == null && members.size() == 2) {
                 remaining = new ArrayList<>(members.values());
             }
         }
 
-        if (remaining == null)
-        {
+        if (remaining == null) {
             return null;
         }
 
@@ -84,24 +72,19 @@ class BridgeState
      * @return
      */
 
-    ManagerEvent removeMember(BridgeLeaveEvent event)
-    {
+    ManagerEvent removeMember(BridgeLeaveEvent event) {
         List<BridgeEnterEvent> remaining = new LinkedList<>();
 
-        if (HOLDING_BRIDGE_TECH.equals(event.getBridgeTechnology()))
-        {
+        if (HOLDING_BRIDGE_TECH.equals(event.getBridgeTechnology())) {
             /* channels in a holding bridge aren't bridged to one another */
             return null;
         }
 
-        try (LockCloser closer = members.withLock())
-        {
+        try (LockCloser closer = members.withLock()) {
             remaining.addAll(members.values());
 
-            if (members.remove(event.getChannel()) != null)
-            {
-                if (remaining.size() == 2)
-                {
+            if (members.remove(event.getChannel()) != null) {
+                if (remaining.size() == 2) {
                     return buildBridgeEvent(BridgeEvent.BRIDGE_STATE_UNLINK, remaining);
                 }
             }
@@ -114,8 +97,7 @@ class BridgeState
 
     }
 
-    private BridgeEvent buildBridgeEvent(String bridgeState, List<BridgeEnterEvent> members)
-    {
+    private BridgeEvent buildBridgeEvent(String bridgeState, List<BridgeEnterEvent> members) {
         Collections.sort(members, BRIDGE_ENTER_EVENT_COMPARATOR);
 
         BridgeEvent bridgeEvent = new BridgeEvent(this);

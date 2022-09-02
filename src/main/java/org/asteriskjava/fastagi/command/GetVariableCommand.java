@@ -23,12 +23,11 @@ package org.asteriskjava.fastagi.command;
  * Returns 0 if the variable is not set. Returns 1 if the variable is set and
  * returns the variable in parenthesis.<p>
  * Example return code: 200 result=1 (testvariable)
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public class GetVariableCommand extends AbstractAgiCommand
-{
+public class GetVariableCommand extends AbstractAgiCommand {
     /**
      * Serial version identifier.
      */
@@ -41,22 +40,20 @@ public class GetVariableCommand extends AbstractAgiCommand
 
     /**
      * Creates a new GetVariableCommand.
-     * 
+     *
      * @param variable the name of the variable to retrieve.
      */
-    public GetVariableCommand(String variable)
-    {
+    public GetVariableCommand(String variable) {
         super();
         this.variable = variable;
     }
 
     /**
      * Returns the name of the variable to retrieve.
-     * 
+     *
      * @return the the name of the variable to retrieve.
      */
-    public String getVariable()
-    {
+    public String getVariable() {
         return variable;
     }
 
@@ -64,17 +61,15 @@ public class GetVariableCommand extends AbstractAgiCommand
      * Sets the name of the variable to retrieve.<p>
      * Since Asterisk 1.2 you can also use custom dialplan functions (like
      * "func(args)") as variable.
-     * 
+     *
      * @param variable the name of the variable to retrieve.
      */
-    public void setVariable(String variable)
-    {
+    public void setVariable(String variable) {
         this.variable = variable;
     }
 
     @Override
-   public String buildCommand()
-    {
+    public String buildCommand() {
         return "GET VARIABLE " + escapeAndQuote(variable);
     }
 }

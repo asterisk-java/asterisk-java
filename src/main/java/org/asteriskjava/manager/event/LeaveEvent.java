@@ -19,11 +19,10 @@ package org.asteriskjava.manager.event;
 /**
  * A LeaveEvent is triggered when a channel leaves a queue.<p>
  * It is implemented in <code>apps/app_queue.c</code>
- * 
+ *
  * @author srt
  */
-public class LeaveEvent extends QueueEvent
-{
+public class LeaveEvent extends QueueEvent {
     /**
      * Serializable version identifier
      */
@@ -34,21 +33,18 @@ public class LeaveEvent extends QueueEvent
     /**
      * @param source
      */
-    public LeaveEvent(Object source)
-    {
+    public LeaveEvent(Object source) {
         super(source);
     }
 
     /**
      * @return the position of the caller at the time they leave the queue
      */
-    public Integer getPosition()
-    {
+    public Integer getPosition() {
         return position;
     }
 
-    public void setPosition(Integer position)
-    {
+    public void setPosition(Integer position) {
         this.position = position;
     }
 }

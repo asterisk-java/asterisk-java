@@ -16,16 +16,16 @@
  */
 package org.asteriskjava.manager;
 
-import java.io.IOException;
-import java.net.InetAddress;
-import java.nio.charset.Charset;
-
 import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.manager.action.EventGeneratingAction;
 import org.asteriskjava.manager.action.ManagerAction;
 import org.asteriskjava.manager.event.ManagerEvent;
 import org.asteriskjava.manager.internal.ManagerConnectionImpl;
 import org.asteriskjava.manager.response.ManagerResponse;
+
+import java.io.IOException;
+import java.net.InetAddress;
+import java.nio.charset.Charset;
 
 /**
  * Default implemention of the
@@ -43,19 +43,17 @@ import org.asteriskjava.manager.response.ManagerResponse;
  * data from Asterisk once it is
  * {@link org.asteriskjava.manager.ManagerConnectionState#CONNECTING}.
  *
- * @see org.asteriskjava.manager.ManagerConnectionFactory
  * @author srt
  * @version $Id$
+ * @see org.asteriskjava.manager.ManagerConnectionFactory
  */
-public class DefaultManagerConnection implements ManagerConnection
-{
+public class DefaultManagerConnection implements ManagerConnection {
     private ManagerConnectionImpl impl;
 
     /**
      * Creates a new instance.
      */
-    public DefaultManagerConnection()
-    {
+    public DefaultManagerConnection() {
         this.impl = new ManagerConnectionImpl();
     }
 
@@ -67,8 +65,7 @@ public class DefaultManagerConnection implements ManagerConnection
      * @param username the username to use for login
      * @param password the password to use for login
      */
-    public DefaultManagerConnection(String hostname, String username, String password)
-    {
+    public DefaultManagerConnection(String hostname, String username, String password) {
         this();
         impl.setHostname(hostname);
         impl.setUsername(username);
@@ -79,13 +76,12 @@ public class DefaultManagerConnection implements ManagerConnection
      * Creates a new instance with the given connection parameters.
      *
      * @param hostname the hostname of the Asterisk server to connect to.
-     * @param port the port where Asterisk listens for incoming Manager API
-     *            connections, usually 5038.
+     * @param port     the port where Asterisk listens for incoming Manager API
+     *                 connections, usually 5038.
      * @param username the username to use for login
      * @param password the password to use for login
      */
-    public DefaultManagerConnection(String hostname, int port, String username, String password)
-    {
+    public DefaultManagerConnection(String hostname, int port, String username, String password) {
         this();
         impl.setHostname(hostname);
         impl.setPort(port);
@@ -100,8 +96,7 @@ public class DefaultManagerConnection implements ManagerConnection
      *
      * @param hostname the hostname to connect to
      */
-    public void setHostname(String hostname)
-    {
+    public void setHostname(String hostname) {
         impl.setHostname(hostname);
     }
 
@@ -113,8 +108,7 @@ public class DefaultManagerConnection implements ManagerConnection
      *
      * @param port the port to connect to
      */
-    public void setPort(int port)
-    {
+    public void setPort(int port) {
         impl.setPort(port);
     }
 
@@ -127,8 +121,7 @@ public class DefaultManagerConnection implements ManagerConnection
      *            <code>false</code> for a plain text connection.
      * @since 0.3
      */
-    public void setSsl(boolean ssl)
-    {
+    public void setSsl(boolean ssl) {
         impl.setSsl(ssl);
     }
 
@@ -138,8 +131,7 @@ public class DefaultManagerConnection implements ManagerConnection
      *
      * @param username the username to use for login
      */
-    public void setUsername(String username)
-    {
+    public void setUsername(String username) {
         impl.setUsername(username);
     }
 
@@ -149,14 +141,12 @@ public class DefaultManagerConnection implements ManagerConnection
      *
      * @param password the password to use for login
      */
-    public void setPassword(String password)
-    {
+    public void setPassword(String password) {
         impl.setPassword(password);
     }
 
     @Override
-    public void setEncoding(Charset encoding)
-    {
+    public void setEncoding(Charset encoding) {
         impl.setEncoding(encoding);
     }
 
@@ -171,8 +161,7 @@ public class DefaultManagerConnection implements ManagerConnection
      * @deprecated use {@link #setDefaultResponseTimeout(long)} instead
      */
     @Deprecated
-    public void setDefaultTimeout(long defaultTimeout)
-    {
+    public void setDefaultTimeout(long defaultTimeout) {
         impl.setDefaultResponseTimeout(defaultTimeout);
     }
 
@@ -186,8 +175,7 @@ public class DefaultManagerConnection implements ManagerConnection
      * @param defaultResponseTimeout default response timeout in milliseconds
      * @since 0.2
      */
-    public void setDefaultResponseTimeout(long defaultResponseTimeout)
-    {
+    public void setDefaultResponseTimeout(long defaultResponseTimeout) {
         impl.setDefaultResponseTimeout(defaultResponseTimeout);
     }
 
@@ -201,8 +189,7 @@ public class DefaultManagerConnection implements ManagerConnection
      * @param defaultEventTimeout default event timeout in milliseconds
      * @since 0.2
      */
-    public void setDefaultEventTimeout(long defaultEventTimeout)
-    {
+    public void setDefaultEventTimeout(long defaultEventTimeout) {
         impl.setDefaultEventTimeout(defaultEventTimeout);
     }
 
@@ -212,11 +199,10 @@ public class DefaultManagerConnection implements ManagerConnection
      * It does nothing.
      *
      * @deprecated no longer needed as we now use an interrupt based response
-     *             checking approach.
+     * checking approach.
      */
     @Deprecated
-    public void setSleepTime(long sleepTime)
-    {
+    public void setSleepTime(long sleepTime) {
 
     }
 
@@ -226,161 +212,132 @@ public class DefaultManagerConnection implements ManagerConnection
      * <p>
      * Default is <code>true</code>.
      */
-    public void setKeepAliveAfterAuthenticationFailure(boolean keepAliveAfterAuthenticationFailure)
-    {
+    public void setKeepAliveAfterAuthenticationFailure(boolean keepAliveAfterAuthenticationFailure) {
         impl.setKeepAliveAfterAuthenticationFailure(keepAliveAfterAuthenticationFailure);
     }
 
     /* Implementation of ManagerConnection interface */
 
-    public String getHostname()
-    {
+    public String getHostname() {
         return impl.getHostname();
     }
 
-    public int getPort()
-    {
+    public int getPort() {
         return impl.getPort();
     }
 
-    public String getUsername()
-    {
+    public String getUsername() {
         return impl.getUsername();
     }
 
-    public String getPassword()
-    {
+    public String getPassword() {
         return impl.getPassword();
     }
 
     @Override
-    public Charset getEncoding()
-    {
+    public Charset getEncoding() {
         return impl.getEncoding();
     }
 
-    public AsteriskVersion getVersion()
-    {
+    public AsteriskVersion getVersion() {
         return impl.getVersion();
     }
 
-    public boolean isSsl()
-    {
+    public boolean isSsl() {
         return impl.isSsl();
     }
 
-    public InetAddress getLocalAddress()
-    {
+    public InetAddress getLocalAddress() {
         return impl.getLocalAddress();
     }
 
-    public int getLocalPort()
-    {
+    public int getLocalPort() {
         return impl.getLocalPort();
     }
 
-    public InetAddress getRemoteAddress()
-    {
+    public InetAddress getRemoteAddress() {
         return impl.getRemoteAddress();
     }
 
-    public int getRemotePort()
-    {
+    public int getRemotePort() {
         return impl.getRemotePort();
     }
 
-    public void registerUserEventClass(Class< ? extends ManagerEvent> userEventClass)
-    {
+    public void registerUserEventClass(Class<? extends ManagerEvent> userEventClass) {
         impl.registerUserEventClass(userEventClass);
     }
 
-    public void setSocketTimeout(int socketTimeout)
-    {
+    public void setSocketTimeout(int socketTimeout) {
         impl.setSocketTimeout(socketTimeout);
     }
 
-    public void setSocketReadTimeout(int socketReadTimeout)
-    {
+    public void setSocketReadTimeout(int socketReadTimeout) {
         impl.setSocketReadTimeout(socketReadTimeout);
     }
 
-    public void login() throws IllegalStateException, IOException, AuthenticationFailedException, TimeoutException
-    {
+    public void login() throws IllegalStateException, IOException, AuthenticationFailedException, TimeoutException {
         impl.login();
     }
 
     public void login(String events)
-            throws IllegalStateException, IOException, AuthenticationFailedException, TimeoutException
-    {
+            throws IllegalStateException, IOException, AuthenticationFailedException, TimeoutException {
         impl.login(events);
     }
 
-    public void logoff() throws IllegalStateException
-    {
+    public void logoff() throws IllegalStateException {
         impl.logoff();
     }
 
     public ManagerResponse sendAction(ManagerAction action)
-            throws IOException, TimeoutException, IllegalArgumentException, IllegalStateException
-    {
+            throws IOException, TimeoutException, IllegalArgumentException, IllegalStateException {
         return impl.sendAction(action);
     }
 
     public ManagerResponse sendAction(ManagerAction action, long timeout)
-            throws IOException, TimeoutException, IllegalArgumentException, IllegalStateException
-    {
+            throws IOException, TimeoutException, IllegalArgumentException, IllegalStateException {
         return impl.sendAction(action, timeout);
     }
 
     public void sendAction(ManagerAction action, SendActionCallback callbackHandler)
-            throws IOException, IllegalArgumentException, IllegalStateException
-    {
+            throws IOException, IllegalArgumentException, IllegalStateException {
         impl.sendAction(action, callbackHandler);
     }
 
     public ResponseEvents sendEventGeneratingAction(EventGeneratingAction action)
-            throws IOException, EventTimeoutException, IllegalArgumentException, IllegalStateException
-    {
+            throws IOException, EventTimeoutException, IllegalArgumentException, IllegalStateException {
         return impl.sendEventGeneratingAction(action);
     }
 
     public ResponseEvents sendEventGeneratingAction(EventGeneratingAction action, long timeout)
-            throws IOException, EventTimeoutException, IllegalArgumentException, IllegalStateException
-    {
+            throws IOException, EventTimeoutException, IllegalArgumentException, IllegalStateException {
         return impl.sendEventGeneratingAction(action, timeout);
     }
 
     @Override
     public void sendEventGeneratingAction(EventGeneratingAction action,
-            SendEventGeneratingActionCallback callback)
-            throws IOException, IllegalArgumentException, IllegalStateException
-    {
+                                          SendEventGeneratingActionCallback callback)
+            throws IOException, IllegalArgumentException, IllegalStateException {
         impl.sendEventGeneratingAction(action, callback);
     }
 
-    public void addEventListener(final ManagerEventListener listener)
-    {
+    public void addEventListener(final ManagerEventListener listener) {
         impl.addEventListener(listener);
     }
 
-    public void removeEventListener(final ManagerEventListener listener)
-    {
+    public void removeEventListener(final ManagerEventListener listener) {
         impl.removeEventListener(listener);
     }
 
-    public String getProtocolIdentifier()
-    {
+    public String getProtocolIdentifier() {
         return impl.getProtocolIdentifier();
     }
 
-    public ManagerConnectionState getState()
-    {
+    public ManagerConnectionState getState() {
         return impl.getState();
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         final StringBuilder sb = new StringBuilder("DefaultManagerConnection[");
         sb.append("hostname='").append(getHostname()).append("',");
         sb.append("port=").append(getPort()).append("]");
@@ -388,8 +345,7 @@ public class DefaultManagerConnection implements ManagerConnection
     }
 
     @Override
-    public void deregisterEventClass(Class< ? extends ManagerEvent> eventClass)
-    {
+    public void deregisterEventClass(Class<? extends ManagerEvent> eventClass) {
         impl.deregisterEventClass(eventClass);
 
     }

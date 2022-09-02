@@ -5,8 +5,7 @@ import org.asteriskjava.pbx.InvalidChannelName;
 import org.asteriskjava.pbx.PBXFactory;
 import org.asteriskjava.pbx.internal.core.AsteriskPBX;
 
-public abstract class ChannelEventHelper extends ManagerEvent implements ChannelEvent
-{
+public abstract class ChannelEventHelper extends ManagerEvent implements ChannelEvent {
     private static final long serialVersionUID = 1L;
 
     /**
@@ -14,50 +13,39 @@ public abstract class ChannelEventHelper extends ManagerEvent implements Channel
      */
     private final Channel channel;
 
-    protected ChannelEventHelper(final org.asteriskjava.manager.event.AbstractChannelEvent event) throws InvalidChannelName
-    {
+    protected ChannelEventHelper(final org.asteriskjava.manager.event.AbstractChannelEvent event) throws InvalidChannelName {
         this(event.getChannel(), event.getUniqueId(), event.getCallerIdNum(), event.getCallerIdName());
     }
 
     protected ChannelEventHelper(final String channel, final String uniqueId, final String callerIdNum,
-            final String callerIdName) throws InvalidChannelName
-    {
+                                 final String callerIdName) throws InvalidChannelName {
         super(""); // we must have a source but since don't have one pass
-                   // anything.
-        if (channel != null)
-        {
+        // anything.
+        if (channel != null) {
             this.channel = ChannelEventHelper.registerChannel(channel, uniqueId, callerIdNum, callerIdName);
-        }
-        else
-        {
+        } else {
             this.channel = null;
         }
     }
 
-    public ChannelEventHelper(final String channel, final String uniqueId) throws InvalidChannelName
-    {
+    public ChannelEventHelper(final String channel, final String uniqueId) throws InvalidChannelName {
         super("");// we must have a source but since don't have one pass
-                  // anything.
+        // anything.
         final AsteriskPBX pbx = (AsteriskPBX) PBXFactory.getActivePBX();
-        if (channel != null)
-        {
+        if (channel != null) {
             this.channel = pbx.internalRegisterChannel(channel, uniqueId);
-        }
-        else
-        {
+        } else {
             this.channel = null;
         }
     }
 
     @Override
-    public Channel getChannel()
-    {
+    public Channel getChannel() {
         return this.channel;
     }
 
     public static Channel registerChannel(final String channelName, final String uniqueId, final String callerIdNum,
-            final String callerIdName) throws InvalidChannelName
-    {
+                                          final String callerIdName) throws InvalidChannelName {
         final AsteriskPBX pbx = (AsteriskPBX) PBXFactory.getActivePBX();
 
         final Channel channel = pbx.internalRegisterChannel(channelName, uniqueId);

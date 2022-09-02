@@ -19,14 +19,12 @@ package org.asteriskjava.manager.response;
 /**
  * A MailboxCountResponse is sent in response to a MailboxCountAction and contains the number of old
  * and new messages in a mailbox.
- * 
- * @see org.asteriskjava.manager.action.MailboxCountAction
- * 
+ *
  * @author srt
  * @version $Id$
+ * @see org.asteriskjava.manager.action.MailboxCountAction
  */
-public class MailboxCountResponse extends ManagerResponse
-{
+public class MailboxCountResponse extends ManagerResponse {
     /**
      * Serial version identifier
      */
@@ -38,48 +36,42 @@ public class MailboxCountResponse extends ManagerResponse
     /**
      * Returns the name of the mailbox.
      */
-    public String getMailbox()
-    {
+    public String getMailbox() {
         return mailbox;
     }
 
     /**
      * Sets the name of the mailbox.
      */
-    public void setMailbox(String mailbox)
-    {
+    public void setMailbox(String mailbox) {
         this.mailbox = mailbox;
     }
 
     /**
      * Returns the number of new messages in the mailbox.
      */
-    public Integer getNewMessages()
-    {
+    public Integer getNewMessages() {
         return newMessages;
     }
 
     /**
      * Sets the number of new messages in the mailbox.
      */
-    public void setNewMessages(Integer newMessages)
-    {
+    public void setNewMessages(Integer newMessages) {
         this.newMessages = newMessages;
     }
 
     /**
      * Returns the number of old messages in the mailbox.
      */
-    public Integer getOldMessages()
-    {
+    public Integer getOldMessages() {
         return oldMessages;
     }
 
     /**
      * Sets the number of old messages in the mailbox.
      */
-    public void setOldMessages(Integer oldMessages)
-    {
+    public void setOldMessages(Integer oldMessages) {
         this.oldMessages = oldMessages;
     }
 }

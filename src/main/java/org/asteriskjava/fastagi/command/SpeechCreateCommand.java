@@ -22,12 +22,11 @@ package org.asteriskjava.fastagi.command;
  *
  * @author srt
  * @version $Id$
- * @since 1.0.0
  * @see org.asteriskjava.fastagi.command.SpeechDestroyCommand
  * @see org.asteriskjava.fastagi.command.SpeechLoadGrammarCommand
+ * @since 1.0.0
  */
-public class SpeechCreateCommand extends AbstractAgiCommand
-{
+public class SpeechCreateCommand extends AbstractAgiCommand {
     /**
      * Serial version identifier.
      */
@@ -39,8 +38,7 @@ public class SpeechCreateCommand extends AbstractAgiCommand
      *
      * @param engine the name of the speech engine to use for subsequent Speech AGI commands.
      */
-    public SpeechCreateCommand(String engine)
-    {
+    public SpeechCreateCommand(String engine) {
         this.engine = engine;
     }
 
@@ -49,8 +47,7 @@ public class SpeechCreateCommand extends AbstractAgiCommand
      *
      * @return the name of the speech engine to use for subsequent Speech AGI commands.
      */
-    public String getEngine()
-    {
+    public String getEngine() {
         return engine;
     }
 
@@ -59,14 +56,12 @@ public class SpeechCreateCommand extends AbstractAgiCommand
      *
      * @param engine the name of the speech engine to use for subsequent Speech AGI commands.
      */
-    public void setEngine(String engine)
-    {
+    public void setEngine(String engine) {
         this.engine = engine;
     }
 
     @Override
-    public String buildCommand()
-    {
+    public String buildCommand() {
         return "SPEECH CREATE " + escapeAndQuote(engine);
     }
 }

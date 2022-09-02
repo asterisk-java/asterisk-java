@@ -21,12 +21,11 @@ package org.asteriskjava.fastagi.command;
  * received on the channel.<p>
  * Returns 0 if playback completes without a digit being pressed, or the ASCII
  * numerical value of the digit if one was pressed or -1 on error/hangup.
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public class SayNumberCommand extends AbstractAgiCommand
-{
+public class SayNumberCommand extends AbstractAgiCommand {
     /**
      * Serial version identifier.
      */
@@ -44,24 +43,22 @@ public class SayNumberCommand extends AbstractAgiCommand
 
     /**
      * Creates a new SayNumberCommand.
-     * 
+     *
      * @param number the number to say.
      */
-    public SayNumberCommand(String number)
-    {
+    public SayNumberCommand(String number) {
         super();
         this.number = number;
     }
 
     /**
      * Creates a new SayNumberCommand.
-     * 
-     * @param number the number to say.
+     *
+     * @param number       the number to say.
      * @param escapeDigits contains the number that allow the user to
-     *            interrupt this command.
+     *                     interrupt this command.
      */
-    public SayNumberCommand(String number, String escapeDigits)
-    {
+    public SayNumberCommand(String number, String escapeDigits) {
         super();
         this.number = number;
         this.escapeDigits = escapeDigits;
@@ -69,48 +66,43 @@ public class SayNumberCommand extends AbstractAgiCommand
 
     /**
      * Returns the number to say.
-     * 
+     *
      * @return the number to say.
      */
-    public String getNumber()
-    {
+    public String getNumber() {
         return number;
     }
 
     /**
      * Sets the number to say.
-     * 
+     *
      * @param number the number to say.
      */
-    public void setNumber(String number)
-    {
+    public void setNumber(String number) {
         this.number = number;
     }
 
     /**
      * Returns the number that allow the user to interrupt this command.
-     * 
+     *
      * @return the number that allow the user to interrupt this command.
      */
-    public String getEscapeDigits()
-    {
+    public String getEscapeDigits() {
         return escapeDigits;
     }
 
     /**
      * Sets the number that allow the user to interrupt this command.
-     * 
+     *
      * @param escapeDigits the number that allow the user to interrupt this
-     *            command or <code>null</code> for none.
+     *                     command or <code>null</code> for none.
      */
-    public void setEscapeDigits(String escapeDigits)
-    {
+    public void setEscapeDigits(String escapeDigits) {
         this.escapeDigits = escapeDigits;
     }
 
     @Override
-   public String buildCommand()
-    {
+    public String buildCommand() {
         return "SAY NUMBER " + escapeAndQuote(number) + " "
                 + escapeAndQuote(escapeDigits);
     }

@@ -1,16 +1,11 @@
 package org.asteriskjava.pbx.asterisk.wrap.events;
 
-import java.util.Map;
-
-import org.asteriskjava.pbx.CallerID;
-import org.asteriskjava.pbx.Channel;
-import org.asteriskjava.pbx.DialPlanExtension;
-import org.asteriskjava.pbx.InvalidChannelName;
-import org.asteriskjava.pbx.PBXFactory;
+import org.asteriskjava.pbx.*;
 import org.asteriskjava.pbx.internal.core.AsteriskPBX;
 
-public class StatusEvent extends ResponseEvent implements ChannelEvent
-{
+import java.util.Map;
+
+public class StatusEvent extends ResponseEvent implements ChannelEvent {
     private static final long serialVersionUID = 1L;
 
     private final Channel channel;
@@ -26,8 +21,7 @@ public class StatusEvent extends ResponseEvent implements ChannelEvent
     private final Map<String, String> variables;
     private final String uniqueId;
 
-    public StatusEvent(final org.asteriskjava.manager.event.StatusEvent event) throws InvalidChannelName
-    {
+    public StatusEvent(final org.asteriskjava.manager.event.StatusEvent event) throws InvalidChannelName {
         super(event);
         final AsteriskPBX pbx = (AsteriskPBX) PBXFactory.getActivePBX();
 
@@ -49,63 +43,51 @@ public class StatusEvent extends ResponseEvent implements ChannelEvent
     }
 
     @Override
-    public final Channel getChannel()
-    {
+    public final Channel getChannel() {
         return this.channel;
     }
 
-    public final CallerID getCallerId()
-    {
+    public final CallerID getCallerId() {
         return this.callerId;
     }
 
-    public final String getAccountCode()
-    {
+    public final String getAccountCode() {
         return this.accountCode;
     }
 
-    public final ChannelState getState()
-    {
+    public final ChannelState getState() {
         return this.channelState;
     }
 
-    public final String getChannelStateDesc()
-    {
+    public final String getChannelStateDesc() {
         return this.channelStateDesc;
     }
 
-    public final String getContext()
-    {
+    public final String getContext() {
         return this.context;
     }
 
-    public final DialPlanExtension getExtension()
-    {
+    public final DialPlanExtension getExtension() {
         return this.extension;
     }
 
-    public final Integer getPriority()
-    {
+    public final Integer getPriority() {
         return this.priority;
     }
 
-    public final Integer getSeconds()
-    {
+    public final Integer getSeconds() {
         return this.seconds;
     }
 
-    public final Channel getBridgedChannel()
-    {
+    public final Channel getBridgedChannel() {
         return this.bridgedChannel;
     }
 
-    public final Map<String, String> getVariables()
-    {
+    public final Map<String, String> getVariables() {
         return this.variables;
     }
 
-    public String getUniqueId()
-    {
+    public String getUniqueId() {
         return this.uniqueId;
     }
 }

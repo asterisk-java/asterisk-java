@@ -23,14 +23,13 @@ package org.asteriskjava.manager.action;
  * An unsuccessful login results in an ManagerError being received from the
  * server with a message set to "Authentication failed" and the socket being
  * closed by Asterisk.
- * 
- * @see org.asteriskjava.manager.action.ChallengeAction
- * @see org.asteriskjava.manager.response.ManagerError
+ *
  * @author srt
  * @version $Id$
+ * @see org.asteriskjava.manager.action.ChallengeAction
+ * @see org.asteriskjava.manager.response.ManagerError
  */
-public class LoginAction extends AbstractManagerAction
-{
+public class LoginAction extends AbstractManagerAction {
     /**
      * Serializable version identifier
      */
@@ -45,40 +44,37 @@ public class LoginAction extends AbstractManagerAction
     /**
      * Creates a new empty LoginAction.
      */
-    public LoginAction()
-    {
-        
+    public LoginAction() {
+
     }
-    
+
     /**
      * Creates a new LoginAction that performs a cleartext login.<p>
      * You should not use cleartext login if you are concerned about security,
      * using {@link ChallengeAction} and login with a password hash instead.
-     * 
+     *
      * @param username the username as configured in Asterisk's
-     *            <code>manager.conf</code>
-     * @param secret the user's password as configured in Asterisk's
-     *            <code>manager.conf</code>
+     *                 <code>manager.conf</code>
+     * @param secret   the user's password as configured in Asterisk's
+     *                 <code>manager.conf</code>
      * @since 0.2
      */
-    public LoginAction(String username, String secret)
-    {
+    public LoginAction(String username, String secret) {
         this.username = username;
         this.secret = secret;
     }
 
     /**
      * Creates a new LoginAction that performs a login via challenge/response.
-     * 
+     *
      * @param username the username as configured in Asterisk's
-     *            <code>manager.conf</code>
+     *                 <code>manager.conf</code>
      * @param authType the digest alogrithm, must match the digest algorithm
-     *            that was used with the corresponding ChallengeAction.
-     * @param key the hash of the user's password and the challenge
+     *                 that was used with the corresponding ChallengeAction.
+     * @param key      the hash of the user's password and the challenge
      * @since 0.2
      */
-    public LoginAction(String username, String authType, String key)
-    {
+    public LoginAction(String username, String authType, String key) {
         this.username = username;
         this.authType = authType;
         this.key = key;
@@ -86,21 +82,20 @@ public class LoginAction extends AbstractManagerAction
 
     /**
      * Creates a new LoginAction that performs a login via challenge/response.
-     * 
+     *
      * @param username the username as configured in Asterisk's
-     *            <code>manager.conf</code>
+     *                 <code>manager.conf</code>
      * @param authType the digest alogrithm, must match the digest algorithm
-     *            that was used with the corresponding ChallengeAction.
-     * @param key the hash of the user's password and the challenge
-     * @param events the event mask. Set to "on" if all events should be send,
-     *            "off" if not events should be sent or a combination of
-     *            "system", "call" and "log" (separated by ',') to specify what
-     *            kind of events should be sent.
+     *                 that was used with the corresponding ChallengeAction.
+     * @param key      the hash of the user's password and the challenge
+     * @param events   the event mask. Set to "on" if all events should be send,
+     *                 "off" if not events should be sent or a combination of
+     *                 "system", "call" and "log" (separated by ',') to specify what
+     *                 kind of events should be sent.
      * @since 0.2
      */
     public LoginAction(String username, String authType, String key,
-            String events)
-    {
+                       String events) {
         this.username = username;
         this.authType = authType;
         this.key = key;
@@ -111,32 +106,28 @@ public class LoginAction extends AbstractManagerAction
      * Returns the name of this action, i.e. "Login".
      */
     @Override
-   public String getAction()
-    {
+    public String getAction() {
         return "Login";
     }
 
     /**
      * Returns the username.
      */
-    public String getUsername()
-    {
+    public String getUsername() {
         return username;
     }
 
     /**
      * Sets the username as configured in asterik's <code>manager.conf</code>.
      */
-    public void setUsername(String username)
-    {
+    public void setUsername(String username) {
         this.username = username;
     }
 
     /**
      * Returns the secret.
      */
-    public String getSecret()
-    {
+    public String getSecret() {
         return secret;
     }
 
@@ -146,16 +137,14 @@ public class LoginAction extends AbstractManagerAction
      * <code>manager.conf</code>.<p>
      * The secret and key properties are mutually exclusive.
      */
-    public void setSecret(String secret)
-    {
+    public void setSecret(String secret) {
         this.secret = secret;
     }
 
     /**
      * Returns the digest alogrithm when using challenge/response.
      */
-    public String getAuthType()
-    {
+    public String getAuthType() {
         return authType;
     }
 
@@ -165,47 +154,42 @@ public class LoginAction extends AbstractManagerAction
      * the user's password.<p>
      * Currently Asterisk supports only "MD5".
      */
-    public void setAuthType(String authType)
-    {
+    public void setAuthType(String authType) {
         this.authType = authType;
     }
 
     /**
      * @return Returns the key.
      */
-    public String getKey()
-    {
+    public String getKey() {
         return key;
     }
 
     /**
      * @param key The key to set.
      */
-    public void setKey(String key)
-    {
+    public void setKey(String key) {
         this.key = key;
     }
 
     /**
      * Returns the event mask.
-     * 
+     *
      * @return the event mask.
      */
-    public String getEvents()
-    {
+    public String getEvents() {
         return events;
     }
 
     /**
      * Sets the event mask.
-     * 
+     *
      * @param events the event mask. Set to "on" if all events should be send,
-     *            "off" if not events should be sent or a combination of
-     *            "system", "call" and "log" (separated by ',') to specify what
-     *            kind of events should be sent.
+     *               "off" if not events should be sent or a combination of
+     *               "system", "call" and "log" (separated by ',') to specify what
+     *               kind of events should be sent.
      */
-    public void setEvents(String events)
-    {
+    public void setEvents(String events) {
         this.events = events;
     }
 }

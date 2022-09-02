@@ -16,18 +16,14 @@
  */
 package org.asteriskjava.fastagi.internal;
 
-import java.util.List;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
-
-import org.asteriskjava.fastagi.AgiChannelFactory;
-import org.asteriskjava.fastagi.AgiException;
-import org.asteriskjava.fastagi.AgiReader;
-import org.asteriskjava.fastagi.AgiWriter;
-import org.asteriskjava.fastagi.MappingStrategy;
+import org.asteriskjava.fastagi.*;
 import org.asteriskjava.fastagi.command.AsyncAgiBreakCommand;
 import org.asteriskjava.manager.ManagerConnection;
 import org.asteriskjava.manager.event.AsyncAgiEvent;
+
+import java.util.List;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * An AgiConnectionHandler for AsyncAGI.
@@ -38,8 +34,7 @@ import org.asteriskjava.manager.event.AsyncAgiEvent;
  * @author srt
  * @version $Id$
  */
-public class AsyncAgiConnectionHandler extends AgiConnectionHandler
-{
+public class AsyncAgiConnectionHandler extends AgiConnectionHandler {
     private final ManagerConnection connection;
     private volatile String channelName;
     private final List<String> environment;
@@ -54,11 +49,9 @@ public class AsyncAgiConnectionHandler extends AgiConnectionHandler
      * @param agiChannelFactory  The factory to use for creating new AgiChannel instances.
      * @throws IllegalArgumentException if asyncAgiStartEvent is not a start sub type".
      */
-    public AsyncAgiConnectionHandler(MappingStrategy mappingStrategy, AsyncAgiEvent asyncAgiStartEvent, AgiChannelFactory agiChannelFactory) throws IllegalArgumentException
-    {
+    public AsyncAgiConnectionHandler(MappingStrategy mappingStrategy, AsyncAgiEvent asyncAgiStartEvent, AgiChannelFactory agiChannelFactory) throws IllegalArgumentException {
         super(mappingStrategy, agiChannelFactory);
-        if (!asyncAgiStartEvent.isStart())
-        {
+        if (!asyncAgiStartEvent.isStart()) {
             throw new IllegalArgumentException("AsyncAgiEvent passed to AsyncAgiConnectionHandler is not a start sub event");
         }
         connection = (ManagerConnection) asyncAgiStartEvent.getSource();
@@ -69,46 +62,37 @@ public class AsyncAgiConnectionHandler extends AgiConnectionHandler
     }
 
     @Override
-    protected AgiReader createReader()
-    {
+    protected AgiReader createReader() {
         return new AsyncAgiReader(connection, environment, asyncAgiEvents);
     }
 
     @Override
-    protected AgiWriter createWriter()
-    {
+    protected AgiWriter createWriter() {
         writer = new AsyncAgiWriter(connection, channelName);
         return writer;
     }
 
     @Override
-    public void release()
-    {
-        if (writer != null && (getScript() != null || ! isIgnoreMissingScripts()))
-        {
-            try
-            {
+    public void release() {
+        if (writer != null && (getScript() != null || !isIgnoreMissingScripts())) {
+            try {
                 writer.sendCommand(new AsyncAgiBreakCommand());
-            }
-            catch (AgiException e) // NOPMD
+            } catch (AgiException e) // NOPMD
             {
                 // ignore
             }
         }
     }
 
-    public void onAsyncAgiExecEvent(AsyncAgiEvent event)
-    {
+    public void onAsyncAgiExecEvent(AsyncAgiEvent event) {
         asyncAgiEvents.offer(event);
     }
 
-    public void onAsyncAgiEndEvent(AsyncAgiEvent event)
-    {
+    public void onAsyncAgiEndEvent(AsyncAgiEvent event) {
         asyncAgiEvents.offer(event);
     }
 
-    public void updateChannelName(String channelName)
-    {
+    public void updateChannelName(String channelName) {
         this.channelName = channelName;
         writer.updateChannelName(channelName);
     }

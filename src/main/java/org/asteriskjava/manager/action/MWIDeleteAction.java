@@ -16,38 +16,32 @@
  */
 package org.asteriskjava.manager.action;
 
-public class MWIDeleteAction extends AbstractManagerAction
-{
+public class MWIDeleteAction extends AbstractManagerAction {
     static final long serialVersionUID = 1L;
     private String mailbox;
 
     /**
      * Creates a new MWIDeleteAction.
      */
-    public MWIDeleteAction()
-    {
+    public MWIDeleteAction() {
 
     }
 
-    public MWIDeleteAction(String mailbox)
-    {
+    public MWIDeleteAction(String mailbox) {
         this.mailbox = mailbox;
 
     }
 
-    public String getMailbox()
-    {
+    public String getMailbox() {
         return mailbox;
     }
 
-    public void setMailbox(String mailbox)
-    {
+    public void setMailbox(String mailbox) {
         this.mailbox = mailbox;
     }
 
     @Override
-    public String getAction()
-    {
+    public String getAction() {
         return "MWIDelete";
     }
 

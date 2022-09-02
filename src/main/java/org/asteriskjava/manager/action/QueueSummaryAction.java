@@ -11,15 +11,14 @@ import org.asteriskjava.manager.event.ResponseEvent;
  * <p>
  * This action has been added by
  * <a href="http://bugs.digium.com/view.php?id=8035">http://bugs.digium.com/view.php?id=8035</a>.
- * 
- * @see QueueSummaryEvent
- * @see QueueSummaryCompleteEvent
+ *
  * @author srt
  * @version $Id$
+ * @see QueueSummaryEvent
+ * @see QueueSummaryCompleteEvent
  * @since 0.3
  */
-public class QueueSummaryAction extends AbstractManagerAction implements EventGeneratingAction
-{
+public class QueueSummaryAction extends AbstractManagerAction implements EventGeneratingAction {
     /**
      * Serial version identifier.
      */
@@ -30,52 +29,46 @@ public class QueueSummaryAction extends AbstractManagerAction implements EventGe
      * Creates a new QueueSummaryAction that retrieves the summary for all
      * queues.
      */
-    public QueueSummaryAction()
-    {
+    public QueueSummaryAction() {
 
     }
 
     /**
      * Creates a new QueueSummaryAction that retrieves the summary for the given
      * queue.
-     * 
+     *
      * @param queue name of the queue to retrieve the summary for.
      */
-    public QueueSummaryAction(String queue)
-    {
+    public QueueSummaryAction(String queue) {
         this.queue = queue;
     }
 
     @Override
-    public String getAction()
-    {
+    public String getAction() {
         return "QueueSummary";
     }
 
-    public Class<? extends ResponseEvent> getActionCompleteEventClass()
-    {
+    public Class<? extends ResponseEvent> getActionCompleteEventClass() {
         return QueueSummaryCompleteEvent.class;
     }
 
     /**
      * Returns the name of the queue to retrieve the summary for.
-     * 
+     *
      * @return the name of the queue to retrieve the summary for or
-     *         <code>null</code> to retrieve the summary for all queues.
+     * <code>null</code> to retrieve the summary for all queues.
      */
-    public String getQueue()
-    {
+    public String getQueue() {
         return queue;
     }
 
     /**
      * Sets the name of the queue to retrieve the summary for.
-     * 
+     *
      * @param queue the name of the queue to retrieve the summary for or
-     *            <code>null</code> to retrieve the summary for all queues.
+     *              <code>null</code> to retrieve the summary for all queues.
      */
-    public void setQueue(String queue)
-    {
+    public void setQueue(String queue) {
         this.queue = queue;
     }
 }

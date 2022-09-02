@@ -92,11 +92,10 @@ import org.asteriskjava.pbx.internal.core.ChannelImpl;
  * channel. At the end of the swap the original (new) channel is left active (as
  * it has the clones guts) and the clone (pre-existing) is inactive so we can
  * hangup the clone as it is no longer needed.
- * 
+ *
  * @author bsutton
  */
-public class MasqueradeEvent extends ManagerEvent
-{
+public class MasqueradeEvent extends ManagerEvent {
     private static final long serialVersionUID = 1L;
 
     private final Channel _original;
@@ -107,8 +106,7 @@ public class MasqueradeEvent extends ManagerEvent
 
     private ChannelState originalState;
 
-    public MasqueradeEvent(final org.asteriskjava.manager.event.MasqueradeEvent event) throws InvalidChannelName
-    {
+    public MasqueradeEvent(final org.asteriskjava.manager.event.MasqueradeEvent event) throws InvalidChannelName {
         super(event);
         final AsteriskPBX pbx = (AsteriskPBX) PBXFactory.getActivePBX();
 
@@ -120,31 +118,26 @@ public class MasqueradeEvent extends ManagerEvent
 
     /**
      * Returns the original channel
-     * 
+     *
      * @return
      */
-    public Channel getOriginal()
-    {
+    public Channel getOriginal() {
         return this._original;
     }
 
-    public Channel getClone()
-    {
+    public Channel getClone() {
         return this._clone;
     }
 
-    public ChannelState getCloneState()
-    {
+    public ChannelState getCloneState() {
         return this.cloneState;
     }
 
-    public ChannelState getOriginalState()
-    {
+    public ChannelState getOriginalState() {
         return this.originalState;
     }
 
-    public String toString()
-    {
+    public String toString() {
         // Even though it talks about the original channel
         return "MasqueradeEvent: originalChannel(new):" + this._original + " cloned from (pre-existing):" + this._clone; //$NON-NLS-1$//$NON-NLS-2$
     }

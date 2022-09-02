@@ -24,8 +24,7 @@ package org.asteriskjava.manager.event;
  * @author srt
  * @version $Id$
  */
-public class ReloadEvent extends ManagerEvent
-{
+public class ReloadEvent extends ManagerEvent {
     /**
      * Serializable version identifier.
      */
@@ -44,8 +43,7 @@ public class ReloadEvent extends ManagerEvent
     private String status;
     private String message;
 
-    public ReloadEvent(Object source)
-    {
+    public ReloadEvent(Object source) {
         super(source);
     }
 
@@ -56,8 +54,7 @@ public class ReloadEvent extends ManagerEvent
      * @return the name of the module that has been reloaded.
      * @since 1.0.0
      */
-    public String getModule()
-    {
+    public String getModule() {
         return module;
     }
 
@@ -67,8 +64,7 @@ public class ReloadEvent extends ManagerEvent
      * @param module the name of the module that has been reloaded.
      * @since 1.0.0
      */
-    public void setModule(String module)
-    {
+    public void setModule(String module) {
         this.module = module;
     }
 
@@ -77,14 +73,13 @@ public class ReloadEvent extends ManagerEvent
      * Available since Asterisk 1.6.
      *
      * @return "Enabled" if the module is endabled, "Disabled" if it is disabled.
-     * @since 1.0.0
      * @see #STATUS_ENABLED
      * @see #STATUS_DISABLED
      * @see #isEnabled()
      * @see #isDisabled()
+     * @since 1.0.0
      */
-    public String getStatus()
-    {
+    public String getStatus() {
         return status;
     }
 
@@ -94,18 +89,15 @@ public class ReloadEvent extends ManagerEvent
      * @param status "Enabled" if the module is endabled, "Disabled" if it is disabled.
      * @since 1.0.0
      */
-    public void setStatus(String status)
-    {
+    public void setStatus(String status) {
         this.status = status;
     }
 
-    public String getMessage()
-    {
+    public String getMessage() {
         return message;
     }
 
-    public void setMessage(String message)
-    {
+    public void setMessage(String message) {
         this.message = message;
     }
 
@@ -114,12 +106,11 @@ public class ReloadEvent extends ManagerEvent
      * Available since Asterisk 1.6.
      *
      * @return <code>true</code> the module is now enabled, <code>false</code> if it is disabled.
-     *         For Asterisk versions up to 1.4 that do not support the "Status" property <code>false</code> is returned.
+     * For Asterisk versions up to 1.4 that do not support the "Status" property <code>false</code> is returned.
      * @see #getStatus()
      * @since 1.0.0
      */
-    public boolean isEnabled()
-    {
+    public boolean isEnabled() {
         return STATUS_ENABLED.equalsIgnoreCase(status);
     }
 
@@ -128,12 +119,11 @@ public class ReloadEvent extends ManagerEvent
      * Available since Asterisk 1.6.
      *
      * @return <code>true</code> the module is now disabled, <code>false</code> if it is enabled.
-     *         For Asterisk versions up to 1.4 that do not support the "Status" property <code>false</code> is returned.
+     * For Asterisk versions up to 1.4 that do not support the "Status" property <code>false</code> is returned.
      * @see #getStatus()
      * @since 1.0.0
      */
-    public boolean isDisabled()
-    {
+    public boolean isDisabled() {
         return STATUS_DISABLED.equalsIgnoreCase(status);
     }
 }

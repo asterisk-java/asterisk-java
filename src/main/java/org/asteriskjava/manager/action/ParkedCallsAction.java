@@ -23,16 +23,15 @@ import org.asteriskjava.manager.event.ResponseEvent;
  * The ParkedCallsAction requests a list of all currently parked calls.<p>
  * For each active channel a ParkedCallEvent is generated. After all parked
  * calls have been reported a ParkedCallsCompleteEvent is generated.
- * 
- * @see org.asteriskjava.manager.event.ParkedCallEvent
- * @see org.asteriskjava.manager.event.ParkedCallsCompleteEvent
+ *
  * @author srt
  * @version $Id$
+ * @see org.asteriskjava.manager.event.ParkedCallEvent
+ * @see org.asteriskjava.manager.event.ParkedCallsCompleteEvent
  */
 public class ParkedCallsAction extends AbstractManagerAction
         implements
-            EventGeneratingAction
-{
+        EventGeneratingAction {
     /**
      * Serializable version identifier
      */
@@ -41,8 +40,7 @@ public class ParkedCallsAction extends AbstractManagerAction
     /**
      * Creates a new ParkedCallsAction.
      */
-    public ParkedCallsAction()
-    {
+    public ParkedCallsAction() {
 
     }
 
@@ -50,13 +48,11 @@ public class ParkedCallsAction extends AbstractManagerAction
      * Returns the name of this action, i.e. "ParkedCalls".
      */
     @Override
-   public String getAction()
-    {
+    public String getAction() {
         return "ParkedCalls";
     }
 
-    public Class<? extends ResponseEvent> getActionCompleteEventClass()
-    {
+    public Class<? extends ResponseEvent> getActionCompleteEventClass() {
         return ParkedCallsCompleteEvent.class;
     }
 }

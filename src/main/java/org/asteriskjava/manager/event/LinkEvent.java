@@ -27,17 +27,16 @@ package org.asteriskjava.manager.event;
  * @author srt
  * @version $Id$
  * @deprecated as of 1.0.0, use {@link org.asteriskjava.manager.event.BridgeEvent} and
- *             {@link BridgeEvent#isLink()} instead
+ * {@link BridgeEvent#isLink()} instead
  */
-@Deprecated public class LinkEvent extends BridgeEvent
-{
+@Deprecated
+public class LinkEvent extends BridgeEvent {
     /**
      * Serializable version identifier.
      */
     static final long serialVersionUID = -4023240534975776225L;
 
-    public LinkEvent(Object source)
-    {
+    public LinkEvent(Object source) {
         super(source);
         setBridgeState(BRIDGE_STATE_LINK);
     }

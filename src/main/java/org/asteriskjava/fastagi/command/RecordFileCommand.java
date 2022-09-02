@@ -27,12 +27,11 @@ package org.asteriskjava.fastagi.command;
  * end of the file. "maxSilence" is the number of seconds of maxSilence allowed
  * before the function returns despite the lack of dtmf digits or reaching
  * timeout.
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public class RecordFileCommand extends AbstractAgiCommand
-{
+public class RecordFileCommand extends AbstractAgiCommand {
     /**
      * Serial version identifier.
      */
@@ -76,16 +75,15 @@ public class RecordFileCommand extends AbstractAgiCommand
 
     /**
      * Creates a new RecordFileCommand.
-     * 
-     * @param file the name of the file to stream, must not include extension.
-     * @param format the format of the file to be recorded, for example "wav".
+     *
+     * @param file         the name of the file to stream, must not include extension.
+     * @param format       the format of the file to be recorded, for example "wav".
      * @param escapeDigits contains the digits that allow the user to end
-     *            recording.
-     * @param timeout the maximum record time in milliseconds, or -1 for no
-     *            timeout.
+     *                     recording.
+     * @param timeout      the maximum record time in milliseconds, or -1 for no
+     *                     timeout.
      */
-    public RecordFileCommand(String file, String format, String escapeDigits, int timeout)
-    {
+    public RecordFileCommand(String file, String format, String escapeDigits, int timeout) {
         super();
         this.file = file;
         this.format = format;
@@ -98,22 +96,21 @@ public class RecordFileCommand extends AbstractAgiCommand
 
     /**
      * Creates a new RecordFileCommand.
-     * 
-     * @param file the name of the file to stream, must not include extension.
-     * @param format the format of the file to be recorded, for example "wav".
+     *
+     * @param file         the name of the file to stream, must not include extension.
+     * @param format       the format of the file to be recorded, for example "wav".
      * @param escapeDigits contains the digits that allow the user to end
-     *            recording.
-     * @param timeout the maximum record time in milliseconds, or -1 for no
-     *            timeout.
-     * @param offset the offset samples to skip.
-     * @param beep <code>true</code> if a beep should be played before
-     *            recording.
-     * @param maxSilence The amount of silence (in seconds) to allow before
-     *            returning despite the lack of dtmf digits or reaching timeout.
+     *                     recording.
+     * @param timeout      the maximum record time in milliseconds, or -1 for no
+     *                     timeout.
+     * @param offset       the offset samples to skip.
+     * @param beep         <code>true</code> if a beep should be played before
+     *                     recording.
+     * @param maxSilence   The amount of silence (in seconds) to allow before
+     *                     returning despite the lack of dtmf digits or reaching timeout.
      */
     public RecordFileCommand(String file, String format, String escapeDigits, int timeout, int offset, boolean beep,
-            int maxSilence)
-    {
+                             int maxSilence) {
         super();
         this.file = file;
         this.format = format;
@@ -126,155 +123,140 @@ public class RecordFileCommand extends AbstractAgiCommand
 
     /**
      * Returns the name of the file to stream.
-     * 
+     *
      * @return the name of the file to stream.
      */
-    public String getFile()
-    {
+    public String getFile() {
         return file;
     }
 
     /**
      * Sets the name of the file to stream.
-     * 
+     *
      * @param file the name of the file to stream, must not include extension.
      */
-    public void setFile(String file)
-    {
+    public void setFile(String file) {
         this.file = file;
     }
 
     /**
      * Returns the format of the file to be recorded, for example "wav".
-     * 
+     *
      * @return the format of the file to be recorded, for example "wav".
      */
-    public String getFormat()
-    {
+    public String getFormat() {
         return format;
     }
 
     /**
      * Sets the format of the file to be recorded, for example "wav".
-     * 
+     *
      * @param format the format of the file to be recorded, for example "wav".
      */
-    public void setFormat(String format)
-    {
+    public void setFormat(String format) {
         this.format = format;
     }
 
     /**
      * Returns the digits that allow the user to end recording.
-     * 
+     *
      * @return the digits that allow the user to end recording.
      */
-    public String getEscapeDigits()
-    {
+    public String getEscapeDigits() {
         return escapeDigits;
     }
 
     /**
      * Sets the digits that allow the user to end recording.
-     * 
+     *
      * @param escapeDigits the digits that allow the user to end recording or
-     *            <code>null</code> for none.
+     *                     <code>null</code> for none.
      */
-    public void setEscapeDigits(String escapeDigits)
-    {
+    public void setEscapeDigits(String escapeDigits) {
         this.escapeDigits = escapeDigits;
     }
 
     /**
      * Returns the maximum record time in milliseconds.
-     * 
+     *
      * @return the maximum record time in milliseconds.
      */
-    public int getTimeout()
-    {
+    public int getTimeout() {
         return timeout;
     }
 
     /**
      * Sets the maximum record time in milliseconds.
-     * 
+     *
      * @param timeout the maximum record time in milliseconds, or -1 for no
-     *            timeout.
+     *                timeout.
      */
-    public void setTimeout(int timeout)
-    {
+    public void setTimeout(int timeout) {
         this.timeout = timeout;
     }
 
     /**
      * Returns the offset samples to skip.
-     * 
+     *
      * @return the offset samples to skip.
      */
-    public int getOffset()
-    {
+    public int getOffset() {
         return offset;
     }
 
     /**
      * Sets the offset samples to skip.
-     * 
+     *
      * @param offset the offset samples to skip.
      */
-    public void setOffset(int offset)
-    {
+    public void setOffset(int offset) {
         this.offset = offset;
     }
 
     /**
      * Returns <code>true</code> if a beep should be played before recording.
-     * 
+     *
      * @return <code>true</code> if a beep should be played before recording,
-     *         <code>false</code> if not.
+     * <code>false</code> if not.
      */
-    public boolean getBeep()
-    {
+    public boolean getBeep() {
         return beep;
     }
 
     /**
      * Set to <code>true</code> to play a beep before recording.
-     * 
+     *
      * @param beep <code>true</code> if a beep should be played before
-     *            recording, <code>false</code> if not.
+     *             recording, <code>false</code> if not.
      */
-    public void setBeep(boolean beep)
-    {
+    public void setBeep(boolean beep) {
         this.beep = beep;
     }
 
     /**
      * Returns the amount of silence (in seconds) to allow before returning
      * despite the lack of dtmf digits or reaching timeout.
-     * 
+     *
      * @return the amount of silence (in seconds) to allow before returning
-     *         despite the lack of dtmf digits or reaching timeout.
+     * despite the lack of dtmf digits or reaching timeout.
      */
-    int getMaxSilence()
-    {
+    int getMaxSilence() {
         return maxSilence;
     }
 
     /**
      * Sets the amount of silence (in seconds) to allow before returning despite
      * the lack of dtmf digits or reaching timeout.
-     * 
+     *
      * @param maxSilence the amount of silence (in seconds) to allow before
-     *            returning despite the lack of dtmf digits or reaching timeout.
+     *                   returning despite the lack of dtmf digits or reaching timeout.
      */
-    void setMaxSilence(int maxSilence)
-    {
+    void setMaxSilence(int maxSilence) {
         this.maxSilence = maxSilence;
     }
 
     @Override
-   public String buildCommand()
-    {
+    public String buildCommand() {
         return "RECORD FILE " + escapeAndQuote(file) + " " + escapeAndQuote(format) + " " + escapeAndQuote(escapeDigits)
                 + " " + timeout + " " + offset + (beep ? " BEEP" : "") + " s=" + maxSilence;
     }

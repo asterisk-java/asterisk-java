@@ -1,23 +1,16 @@
 package org.asteriskjava.pbx.internal.activity;
 
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-
-import org.asteriskjava.pbx.ActivityCallback;
-import org.asteriskjava.pbx.Call;
+import org.asteriskjava.pbx.*;
 import org.asteriskjava.pbx.Call.OperandChannel;
-import org.asteriskjava.pbx.CallDirection;
-import org.asteriskjava.pbx.CallImpl;
-import org.asteriskjava.pbx.Channel;
-import org.asteriskjava.pbx.ListenerPriority;
-import org.asteriskjava.pbx.PBXException;
-import org.asteriskjava.pbx.PBXFactory;
 import org.asteriskjava.pbx.activities.JoinActivity;
 import org.asteriskjava.pbx.asterisk.wrap.events.ManagerEvent;
 import org.asteriskjava.pbx.internal.core.AsteriskPBX;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
+
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * The JoinActivity is used by the AsteriksPBX implementation to Join two
@@ -25,11 +18,10 @@ import org.asteriskjava.util.LogFactory;
  * each a leg of a different call it will then join those two channels into a
  * single call.iChannel hangupChannel, The channels that remain in the
  * originating calls will be hungup implicitly.
- * 
+ *
  * @author bsutton
  */
-public class JoinActivityImpl extends ActivityHelper<JoinActivity> implements JoinActivity
-{
+public class JoinActivityImpl extends ActivityHelper<JoinActivity> implements JoinActivity {
 
     private static final Log logger = LogFactory.getLog(JoinActivityImpl.class);
 
@@ -48,19 +40,18 @@ public class JoinActivityImpl extends ActivityHelper<JoinActivity> implements Jo
      * Joins a specific channel from this call with a specific channel from
      * another call which results in a new Call object being created. Channels
      * that do not participate in the join are left in their original Call.
-     * 
-     * @param lhsCall one of the calls we are joining
+     *
+     * @param lhsCall            one of the calls we are joining
      * @param originatingOperand the channel from lhsCall call that will
-     *            participate in the join as the originating Channel
-     * @param rhsCall the other call we are joining.
-     * @param acceptingOperand the channel from the rhsCall that will
-     *            participate in the join as the accepting channel.
+     *                           participate in the join as the originating Channel
+     * @param rhsCall            the other call we are joining.
+     * @param acceptingOperand   the channel from the rhsCall that will
+     *                           participate in the join as the accepting channel.
      * @return
      * @throws PBXException
      */
     public JoinActivityImpl(final Call lhsCall, OperandChannel originatingOperand, final Call rhsCall,
-            OperandChannel acceptingOperand, CallDirection direction, final ActivityCallback<JoinActivity> listener)
-    {
+                            OperandChannel acceptingOperand, CallDirection direction, final ActivityCallback<JoinActivity> listener) {
         super("JoinActivity", listener);
 
         callSite = new Exception("Call site");
@@ -71,23 +62,19 @@ public class JoinActivityImpl extends ActivityHelper<JoinActivity> implements Jo
         this._acceptingOperand = acceptingOperand;
         this._direction = direction;
 
-        if (this._lhsCall == null)
-        {
+        if (this._lhsCall == null) {
             throw new IllegalArgumentException("lhsCall may not be null");
         }
 
-        if (this._originatingOperand == null)
-        {
+        if (this._originatingOperand == null) {
             throw new IllegalArgumentException("lhsOperand may not be null");
         }
 
-        if (this._rhsCall == null)
-        {
+        if (this._rhsCall == null) {
             throw new IllegalArgumentException("rhsCall may not be null");
         }
 
-        if (this._acceptingOperand == null)
-        {
+        if (this._acceptingOperand == null) {
             throw new IllegalArgumentException("rhsOperand may not be null");
         }
 
@@ -95,8 +82,7 @@ public class JoinActivityImpl extends ActivityHelper<JoinActivity> implements Jo
     }
 
     @Override
-    public boolean doActivity() throws PBXException
-    {
+    public boolean doActivity() throws PBXException {
         boolean success = false;
         final AsteriskPBX pbx = (AsteriskPBX) PBXFactory.getActivePBX();
 
@@ -106,25 +92,21 @@ public class JoinActivityImpl extends ActivityHelper<JoinActivity> implements Jo
         JoinActivityImpl.logger.debug("***********            " + this._rhsCall + "                 ****************");
         JoinActivityImpl.logger.debug("*******************************************************************************");
 
-        try
-        {
+        try {
             final Channel rhsChannel = this._rhsCall.getOperandChannel(this._acceptingOperand);
             final Channel lhsChannel = this._lhsCall.getOperandChannel(this._originatingOperand);
 
-            if (!pbx.moveChannelToAgi(rhsChannel))
-            {
+            if (!pbx.moveChannelToAgi(rhsChannel)) {
                 throw new PBXException("Channel: " + rhsChannel + " couldn't be moved to agi");
             }
-            if (!pbx.moveChannelToAgi(lhsChannel))
-            {
+            if (!pbx.moveChannelToAgi(lhsChannel)) {
                 throw new PBXException("Channel: " + lhsChannel + " couldn't be moved to agi");
             }
 
             List<Channel> channels = new LinkedList<>();
             channels.add(lhsChannel);
             channels.add(rhsChannel);
-            if (!pbx.waitForChannelsToQuiescent(channels, 3000))
-            {
+            if (!pbx.waitForChannelsToQuiescent(channels, 3000)) {
                 logger.error(callSite, callSite);
                 throw new PBXException("Channel: " + rhsChannel + " cannot be joined as it is still in transition.");
             }
@@ -134,9 +116,7 @@ public class JoinActivityImpl extends ActivityHelper<JoinActivity> implements Jo
                     this._direction);
             success = true;
 
-        }
-        catch (RuntimeException e)
-        {
+        } catch (RuntimeException e) {
             logger.error(e, e);
             logger.error(callSite, callSite);
             throw new PBXException(e);
@@ -146,28 +126,24 @@ public class JoinActivityImpl extends ActivityHelper<JoinActivity> implements Jo
     }
 
     @Override
-    public HashSet<Class< ? extends ManagerEvent>> requiredEvents()
-    {
-        HashSet<Class< ? extends ManagerEvent>> required = new HashSet<>();
+    public HashSet<Class<? extends ManagerEvent>> requiredEvents() {
+        HashSet<Class<? extends ManagerEvent>> required = new HashSet<>();
 
         return required;
     }
 
     @Override
-    synchronized public void onManagerEvent(final ManagerEvent event)
-    {
+    synchronized public void onManagerEvent(final ManagerEvent event) {
         // NOOP
     }
 
     @Override
-    public ListenerPriority getPriority()
-    {
+    public ListenerPriority getPriority() {
         return ListenerPriority.NORMAL;
     }
 
     @Override
-    public Call getJoinedCall()
-    {
+    public Call getJoinedCall() {
         return this._joined;
     }
 

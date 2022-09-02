@@ -30,15 +30,13 @@ import org.asteriskjava.manager.response.CoreStatusResponse;
  * @since 1.0.0
  */
 @ExpectedResponse(CoreStatusResponse.class)
-public class CoreStatusAction extends AbstractManagerAction
-{
+public class CoreStatusAction extends AbstractManagerAction {
     static final long serialVersionUID = 1L;
 
     /**
      * Creates a new CoreStatusAction.
      */
-    public CoreStatusAction()
-    {
+    public CoreStatusAction() {
 
     }
 
@@ -46,8 +44,7 @@ public class CoreStatusAction extends AbstractManagerAction
      * Returns the name of this action, i.e. "CoreStatus".
      */
     @Override
-    public String getAction()
-    {
+    public String getAction() {
         return "CoreStatus";
     }
 }

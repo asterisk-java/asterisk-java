@@ -19,12 +19,11 @@ package org.asteriskjava.manager.event;
 /**
  * A MessageWaitingEvent is triggered when someone leaves voicemail.<p>
  * It is implemented in <code>apps/app_voicemail.c</code>
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public class MessageWaitingEvent extends ManagerEvent
-{
+public class MessageWaitingEvent extends ManagerEvent {
     /**
      * Serializable version identifier
      */
@@ -37,8 +36,7 @@ public class MessageWaitingEvent extends ManagerEvent
     /**
      * @param source
      */
-    public MessageWaitingEvent(Object source)
-    {
+    public MessageWaitingEvent(Object source) {
         super(source);
     }
 
@@ -46,81 +44,77 @@ public class MessageWaitingEvent extends ManagerEvent
      * Returns the name of the mailbox that has waiting messages.<p>
      * The name of the mailbox is of the form numberOfMailbox@context, e.g.
      * 1234@default.
-     * 
+     *
      * @return the name of the mailbox that has waiting messages
      */
-    public String getMailbox()
-    {
+    public String getMailbox() {
         return mailbox;
     }
 
     /**
      * Sets the name of the mailbox that has waiting messages.
-     * 
+     *
      * @param mailbox the name of the mailbox that has waiting messages
      */
-    public void setMailbox(String mailbox)
-    {
+    public void setMailbox(String mailbox) {
         this.mailbox = mailbox;
     }
 
     /**
      * Returns the number of new messages in the mailbox.
-     * 
+     *
      * @return the number of new messages in the mailbox
      */
-    public Integer getWaiting()
-    {
+    public Integer getWaiting() {
         return waiting;
     }
 
     /**
      * Sets the number of new messages in the mailbox.
-     * 
+     *
      * @param waiting the number of new messages in the mailbox
      */
-    public void setWaiting(Integer waiting)
-    {
+    public void setWaiting(Integer waiting) {
         this.waiting = waiting;
     }
 
     /**
      * Returns the number of new messages in this mailbox.
+     *
      * @return the number of new messages in this mailbox.
      * @since 0.2
      */
-    public Integer getNew()
-    {
+    public Integer getNew() {
         return newMessages;
     }
 
     /**
      * Sets the number of new messages in this mailbox.
+     *
      * @param newMessages the number of new messages in this mailbox.
      * @since 0.2
      */
-    public void setNew(Integer newMessages)
-    {
+    public void setNew(Integer newMessages) {
         this.newMessages = newMessages;
     }
 
     /**
      * Returns the number of old messages in this mailbox.
+     *
      * @return the number of old messages in this mailbox.
      * @since 0.2
      */
-    public Integer getOld()
-    {
+    public Integer getOld() {
         return oldMessages;
     }
 
     /**
      * Sets the number of old messages in this mailbox.
+     *
      * @param oldMessages the number of old messages in this mailbox.
      * @since 0.2
      */
-    public void setOld(Integer oldMessages)
-    {
+    public void setOld(Integer oldMessages) {
         this.oldMessages = oldMessages;
     }
 }

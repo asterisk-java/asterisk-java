@@ -18,12 +18,11 @@ package org.asteriskjava.fastagi.command;
 
 /**
  * Sets the given channel varible to the given value.
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public class SetVariableCommand extends AbstractAgiCommand
-{
+public class SetVariableCommand extends AbstractAgiCommand {
     /**
      * Serial version identifier.
      */
@@ -41,12 +40,11 @@ public class SetVariableCommand extends AbstractAgiCommand
 
     /**
      * Creates a new GetVariableCommand.
-     * 
+     *
      * @param variable the name of the variable to set.
-     * @param value the value to set.
+     * @param value    the value to set.
      */
-    public SetVariableCommand(String variable, String value)
-    {
+    public SetVariableCommand(String variable, String value) {
         super();
         this.variable = variable;
         this.value = value;
@@ -54,47 +52,42 @@ public class SetVariableCommand extends AbstractAgiCommand
 
     /**
      * Returns the name of the variable to set.
-     * 
+     *
      * @return the the name of the variable to set.
      */
-    public String getVariable()
-    {
+    public String getVariable() {
         return variable;
     }
 
     /**
      * Sets the name of the variable to set.
-     * 
+     *
      * @param variable the name of the variable to set.
      */
-    public void setVariable(String variable)
-    {
+    public void setVariable(String variable) {
         this.variable = variable;
     }
 
     /**
      * Returns the value to set.
-     * 
+     *
      * @return the value to set.
      */
-    public String getValue()
-    {
+    public String getValue() {
         return value;
     }
 
     /**
      * Sets the value to set.
-     * 
+     *
      * @param value the value to set.
      */
-    public void setValue(String value)
-    {
+    public void setValue(String value) {
         this.value = value;
     }
 
     @Override
-   public String buildCommand()
-    {
+    public String buildCommand() {
         return "SET VARIABLE " + escapeAndQuote(variable) + " "
                 + escapeAndQuote(value);
     }

@@ -2,8 +2,7 @@ package org.asteriskjava.fastagi.command;
 
 import org.asteriskjava.AsteriskVersion;
 
-public class ConfbridgeCommand extends AbstractAgiCommand
-{
+public class ConfbridgeCommand extends AbstractAgiCommand {
     /**
      * Serial version identifier.
      */
@@ -14,25 +13,21 @@ public class ConfbridgeCommand extends AbstractAgiCommand
     /**
      * Creates a new AnswerCommand.
      */
-    public ConfbridgeCommand(String room, String profile)
-    {
+    public ConfbridgeCommand(String room, String profile) {
         super();
         this.room = room;
         this.profile = profile;
     }
 
     @Override
-    public String buildCommand()
-    {
+    public String buildCommand() {
         String separator = "|";
-        if (getAsteriskVersion().isAtLeast(AsteriskVersion.ASTERISK_10))
-        {
+        if (getAsteriskVersion().isAtLeast(AsteriskVersion.ASTERISK_10)) {
             separator = ",";
         }
 
         String command = "EXEC " + escapeAndQuote("confbridge") + " " + escapeAndQuote(room);
-        if (profile != null && profile.length() > 0)
-        {
+        if (profile != null && profile.length() > 0) {
             command += separator + escapeAndQuote(profile);
         }
 

@@ -26,8 +26,7 @@ package org.asteriskjava.fastagi.command;
  * @see org.asteriskjava.fastagi.command.SpeechActivateGrammarCommand
  * @since 1.0.0
  */
-public class SpeechLoadGrammarCommand extends AbstractAgiCommand
-{
+public class SpeechLoadGrammarCommand extends AbstractAgiCommand {
     /**
      * Serial version identifier.
      */
@@ -42,8 +41,7 @@ public class SpeechLoadGrammarCommand extends AbstractAgiCommand
      * @param name the name of the grammar, used to activate the gammer later.
      * @param path the path to the grammar.
      */
-    public SpeechLoadGrammarCommand(String name, String path)
-    {
+    public SpeechLoadGrammarCommand(String name, String path) {
         this.name = name;
         this.path = path;
     }
@@ -53,8 +51,7 @@ public class SpeechLoadGrammarCommand extends AbstractAgiCommand
      *
      * @return the name of the grammar.
      */
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
@@ -63,8 +60,7 @@ public class SpeechLoadGrammarCommand extends AbstractAgiCommand
      *
      * @param name the name of the grammar.
      */
-    public void setName(String name)
-    {
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -73,8 +69,7 @@ public class SpeechLoadGrammarCommand extends AbstractAgiCommand
      *
      * @return the path to the grammar.
      */
-    public String getPath()
-    {
+    public String getPath() {
         return path;
     }
 
@@ -83,14 +78,12 @@ public class SpeechLoadGrammarCommand extends AbstractAgiCommand
      *
      * @param path the path to the grammar.
      */
-    public void setPath(String path)
-    {
+    public void setPath(String path) {
         this.path = path;
     }
 
     @Override
-    public String buildCommand()
-    {
+    public String buildCommand() {
         return "SPEECH LOAD GRAMMAR " + escapeAndQuote(name) + " " + escapeAndQuote(path);
     }
 }

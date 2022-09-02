@@ -22,12 +22,11 @@ package org.asteriskjava.fastagi.command;
  * Returns 0 if image is sent, or if the channel does not support image
  * transmission. Returns -1 only on error/hangup.<p>
  * Image names should not include extensions.
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public class SendImageCommand extends AbstractAgiCommand
-{
+public class SendImageCommand extends AbstractAgiCommand {
     /**
      * Serial version identifier.
      */
@@ -40,38 +39,34 @@ public class SendImageCommand extends AbstractAgiCommand
 
     /**
      * Creates a new SendImageCommand.
-     * 
+     *
      * @param image the image to send, should not include extension.
      */
-    public SendImageCommand(String image)
-    {
+    public SendImageCommand(String image) {
         super();
         this.image = image;
     }
 
     /**
      * Returns the image to send.
-     * 
+     *
      * @return the image to send.
      */
-    public String getImage()
-    {
+    public String getImage() {
         return image;
     }
 
     /**
      * Sets the image to send.
-     * 
+     *
      * @param image the image to send, should not include extension.
      */
-    public void setImage(String image)
-    {
+    public void setImage(String image) {
         this.image = image;
     }
 
     @Override
-   public String buildCommand()
-    {
+    public String buildCommand() {
         return "SEND IMAGE " + escapeAndQuote(image);
     }
 }

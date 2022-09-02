@@ -26,8 +26,7 @@ package org.asteriskjava.fastagi.command;
  * @see org.asteriskjava.fastagi.command.SpeechDeactivateGrammarCommand
  * @since 1.0.0
  */
-public class SpeechActivateGrammarCommand extends AbstractAgiCommand
-{
+public class SpeechActivateGrammarCommand extends AbstractAgiCommand {
     /**
      * Serial version identifier.
      */
@@ -39,8 +38,7 @@ public class SpeechActivateGrammarCommand extends AbstractAgiCommand
      *
      * @param name the name of the grammar.
      */
-    public SpeechActivateGrammarCommand(String name)
-    {
+    public SpeechActivateGrammarCommand(String name) {
         this.name = name;
     }
 
@@ -49,8 +47,7 @@ public class SpeechActivateGrammarCommand extends AbstractAgiCommand
      *
      * @return the name of the grammar.
      */
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
@@ -59,14 +56,12 @@ public class SpeechActivateGrammarCommand extends AbstractAgiCommand
      *
      * @param name the name of the grammar.
      */
-    public void setName(String name)
-    {
+    public void setName(String name) {
         this.name = name;
     }
 
     @Override
-    public String buildCommand()
-    {
+    public String buildCommand() {
         return "SPEECH ACTIVATE GRAMMAR " + escapeAndQuote(name);
     }
 }

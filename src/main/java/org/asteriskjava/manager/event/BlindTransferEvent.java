@@ -3,10 +3,9 @@ package org.asteriskjava.manager.event;
 /**
  * Created by Alexander Polakov <apolyakov@beget.ru> on 1/26/15.
  */
-public class BlindTransferEvent extends AbstractBridgeEvent
-{
+public class BlindTransferEvent extends AbstractBridgeEvent {
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
     private String transfererUniqueId;
@@ -44,318 +43,255 @@ public class BlindTransferEvent extends AbstractBridgeEvent
     private String transfereeLanguage;
     private String transfereeaccountcode;
 
-    public BlindTransferEvent(Object source)
-    {
+    public BlindTransferEvent(Object source) {
         super(source);
     }
 
-    public String getTransfererUniqueId()
-    {
+    public String getTransfererUniqueId() {
         return transfererUniqueId;
     }
 
-    public void setTransfererUniqueId(String transfererUniqueId)
-    {
+    public void setTransfererUniqueId(String transfererUniqueId) {
         this.transfererUniqueId = transfererUniqueId;
     }
 
-    public String getTransfererConnectedLineNum()
-    {
+    public String getTransfererConnectedLineNum() {
         return transfererConnectedLineNum;
     }
 
-    public void setTransfererConnectedLineNum(String transfererConnectedLineNum)
-    {
+    public void setTransfererConnectedLineNum(String transfererConnectedLineNum) {
         this.transfererConnectedLineNum = transfererConnectedLineNum;
     }
 
-    public String getTransfererConnectedLineName()
-    {
+    public String getTransfererConnectedLineName() {
         return transfererConnectedLineName;
     }
 
-    public void setTransfererConnectedLineName(String transfererConnectedLineName)
-    {
+    public void setTransfererConnectedLineName(String transfererConnectedLineName) {
         this.transfererConnectedLineName = transfererConnectedLineName;
     }
 
-    public String getTransfererCallerIdName()
-    {
+    public String getTransfererCallerIdName() {
         return transfererCallerIdName;
     }
 
-    public void setTransfererCallerIdName(String transfererCallerIdName)
-    {
+    public void setTransfererCallerIdName(String transfererCallerIdName) {
         this.transfererCallerIdName = transfererCallerIdName;
     }
 
-    public String getTransfererCallerIdNum()
-    {
+    public String getTransfererCallerIdNum() {
         return transfererCallerIdNum;
     }
 
-    public void setTransfererCallerIdNum(String transfererCallerIdNum)
-    {
+    public void setTransfererCallerIdNum(String transfererCallerIdNum) {
         this.transfererCallerIdNum = transfererCallerIdNum;
     }
 
-    public String getTransfererChannel()
-    {
+    public String getTransfererChannel() {
         return transfererChannel;
     }
 
-    public void setTransfererChannel(String transfererChannel)
-    {
+    public void setTransfererChannel(String transfererChannel) {
         this.transfererChannel = transfererChannel;
     }
 
-    public String getTransfererChannelState()
-    {
+    public String getTransfererChannelState() {
         return transfererChannelState;
     }
 
-    public void setTransfererChannelState(String transfererChannelState)
-    {
+    public void setTransfererChannelState(String transfererChannelState) {
         this.transfererChannelState = transfererChannelState;
     }
 
-    public String getTransfererChannelStateDesc()
-    {
+    public String getTransfererChannelStateDesc() {
         return transfererChannelStateDesc;
     }
 
-    public void setTransfererChannelStateDesc(String transfererChannelStateDesc)
-    {
+    public void setTransfererChannelStateDesc(String transfererChannelStateDesc) {
         this.transfererChannelStateDesc = transfererChannelStateDesc;
     }
 
-    public Integer getTransfererPriority()
-    {
+    public Integer getTransfererPriority() {
         return transfererPriority;
     }
 
-    public void setTransfererPriority(Integer transfererPriority)
-    {
+    public void setTransfererPriority(Integer transfererPriority) {
         this.transfererPriority = transfererPriority;
     }
 
-    public String getTransfererContext()
-    {
+    public String getTransfererContext() {
         return transfererContext;
     }
 
-    public void setTransfererContext(String transfererContext)
-    {
+    public void setTransfererContext(String transfererContext) {
         this.transfererContext = transfererContext;
     }
 
-    public String getTransfereeUniqueId()
-    {
+    public String getTransfereeUniqueId() {
         return transfereeUniqueId;
     }
 
-    public void setTransfereeUniqueId(String transfereeUniqueId)
-    {
+    public void setTransfereeUniqueId(String transfereeUniqueId) {
         this.transfereeUniqueId = transfereeUniqueId;
     }
 
-    public String getTransfereeConnectedLineNum()
-    {
+    public String getTransfereeConnectedLineNum() {
         return transfereeConnectedLineNum;
     }
 
-    public void setTransfereeConnectedLineNum(String transfereeConnectedLineNum)
-    {
+    public void setTransfereeConnectedLineNum(String transfereeConnectedLineNum) {
         this.transfereeConnectedLineNum = transfereeConnectedLineNum;
     }
 
-    public String getTransfereeConnectedLineName()
-    {
+    public String getTransfereeConnectedLineName() {
         return transfereeConnectedLineName;
     }
 
-    public void setTransfereeConnectedLineName(String transfereeConnectedLineName)
-    {
+    public void setTransfereeConnectedLineName(String transfereeConnectedLineName) {
         this.transfereeConnectedLineName = transfereeConnectedLineName;
     }
 
-    public String getTransfereeCallerIdName()
-    {
+    public String getTransfereeCallerIdName() {
         return transfereeCallerIdName;
     }
 
-    public void setTransfereeCallerIdName(String transfereeCallerIdName)
-    {
+    public void setTransfereeCallerIdName(String transfereeCallerIdName) {
         this.transfereeCallerIdName = transfereeCallerIdName;
     }
 
-    public String getTransfereeCallerIdNum()
-    {
+    public String getTransfereeCallerIdNum() {
         return transfereeCallerIdNum;
     }
 
-    public void setTransfereeCallerIdNum(String transfereeCallerIdNum)
-    {
+    public void setTransfereeCallerIdNum(String transfereeCallerIdNum) {
         this.transfereeCallerIdNum = transfereeCallerIdNum;
     }
 
-    public String getTransfereeChannel()
-    {
+    public String getTransfereeChannel() {
         return transfereeChannel;
     }
 
-    public void setTransfereeChannel(String transfereeChannel)
-    {
+    public void setTransfereeChannel(String transfereeChannel) {
         this.transfereeChannel = transfereeChannel;
     }
 
-    public String getTransfereeChannelState()
-    {
+    public String getTransfereeChannelState() {
         return transfereeChannelState;
     }
 
-    public void setTransfereeChannelState(String transfereeChannelState)
-    {
+    public void setTransfereeChannelState(String transfereeChannelState) {
         this.transfereeChannelState = transfereeChannelState;
     }
 
-    public String getTransfereeChannelStateDesc()
-    {
+    public String getTransfereeChannelStateDesc() {
         return transfereeChannelStateDesc;
     }
 
-    public void setTransfereeChannelStateDesc(String transfereeChannelStateDesc)
-    {
+    public void setTransfereeChannelStateDesc(String transfereeChannelStateDesc) {
         this.transfereeChannelStateDesc = transfereeChannelStateDesc;
     }
 
-    public Integer getTransfereePriority()
-    {
+    public Integer getTransfereePriority() {
         return transfereePriority;
     }
 
-    public void setTransfereePriority(Integer transfereePriority)
-    {
+    public void setTransfereePriority(Integer transfereePriority) {
         this.transfereePriority = transfereePriority;
     }
 
-    public String getTransfereeContext()
-    {
+    public String getTransfereeContext() {
         return transfereeContext;
     }
 
-    public void setTransfereeContext(String transfereeContext)
-    {
+    public void setTransfereeContext(String transfereeContext) {
         this.transfereeContext = transfereeContext;
     }
 
-    public String getExtension()
-    {
+    public String getExtension() {
         return extension;
     }
 
-    public void setExtension(String extension)
-    {
+    public void setExtension(String extension) {
         this.extension = extension;
     }
 
-    public String getIsexternal()
-    {
+    public String getIsexternal() {
         return isexternal;
     }
 
-    public void setIsexternal(String isexternal)
-    {
+    public void setIsexternal(String isexternal) {
         this.isexternal = isexternal;
     }
 
-    public String getResult()
-    {
+    public String getResult() {
         return result;
     }
 
-    public void setResult(String result)
-    {
+    public void setResult(String result) {
         this.result = result;
     }
 
-    public String getTransfereeExten()
-    {
+    public String getTransfereeExten() {
         return transfereeExten;
     }
 
-    public void setTransfereeExten(String transfereeExten)
-    {
+    public void setTransfereeExten(String transfereeExten) {
         this.transfereeExten = transfereeExten;
     }
 
-    public String getTransfereeLinkedId()
-    {
+    public String getTransfereeLinkedId() {
         return transfereeLinkedId;
     }
 
-    public void setTransfereeLinkedId(String transfereeLinkedId)
-    {
+    public void setTransfereeLinkedId(String transfereeLinkedId) {
         this.transfereeLinkedId = transfereeLinkedId;
     }
 
-    public String getTransfererAccountCode()
-    {
+    public String getTransfererAccountCode() {
         return transfererAccountCode;
     }
 
-    public void setTransfererAccountCode(String transfererAccountCode)
-    {
+    public void setTransfererAccountCode(String transfererAccountCode) {
         this.transfererAccountCode = transfererAccountCode;
     }
 
-    public String getTransfererExten()
-    {
+    public String getTransfererExten() {
         return transfererExten;
     }
 
-    public void setTransfererExten(String transfererExten)
-    {
+    public void setTransfererExten(String transfererExten) {
         this.transfererExten = transfererExten;
     }
 
-    public String getTransfererLanguage()
-    {
+    public String getTransfererLanguage() {
         return transfererLanguage;
     }
 
-    public void setTransfererLanguage(String transfererLanguage)
-    {
+    public void setTransfererLanguage(String transfererLanguage) {
         this.transfererLanguage = transfererLanguage;
     }
 
-    public String getTransfererLinkedId()
-    {
+    public String getTransfererLinkedId() {
         return transfererLinkedId;
     }
 
-    public void setTransfererLinkedId(String transfererLinkedId)
-    {
+    public void setTransfererLinkedId(String transfererLinkedId) {
         this.transfererLinkedId = transfererLinkedId;
     }
 
-    public String getTransfereeLanguage()
-    {
+    public String getTransfereeLanguage() {
         return transfereeLanguage;
     }
 
-    public void setTransfereeLanguage(String transfereeLanguage)
-    {
+    public void setTransfereeLanguage(String transfereeLanguage) {
         this.transfereeLanguage = transfereeLanguage;
     }
 
-    public void setTransfereeaccountcode(String transfereeaccountcode)
-    {
+    public void setTransfereeaccountcode(String transfereeaccountcode) {
         this.transfereeaccountcode = transfereeaccountcode;
     }
 
-    public String getTransfereeaccountcode()
-    {
+    public String getTransfereeaccountcode() {
         return transfereeaccountcode;
     }
 
