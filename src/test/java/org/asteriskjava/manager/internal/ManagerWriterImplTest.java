@@ -21,9 +21,9 @@ import org.asteriskjava.util.SocketConnectionFacade;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.easymock.EasyMock.*;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.Mockito.mock;
 
 class ManagerWriterImplTest {
     private ManagerWriter managerWriter;
@@ -47,13 +47,11 @@ class ManagerWriterImplTest {
     void testSendAction() throws Exception {
         SocketConnectionFacade socketConnectionFacade;
 
-        socketConnectionFacade = createMock(SocketConnectionFacade.class);
+        socketConnectionFacade = mock(SocketConnectionFacade.class);
         socketConnectionFacade.write("action: Status\r\n\r\n");
         socketConnectionFacade.flush();
-        replay(socketConnectionFacade);
 
         managerWriter.setSocket(socketConnectionFacade);
         managerWriter.sendAction(new StatusAction(), null);
-        verify(socketConnectionFacade);
     }
 }

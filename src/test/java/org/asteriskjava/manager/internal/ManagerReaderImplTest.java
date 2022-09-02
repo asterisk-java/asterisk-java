@@ -30,8 +30,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static org.easymock.EasyMock.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class ManagerReaderImplTest {
     private Date now;
@@ -46,7 +47,7 @@ class ManagerReaderImplTest {
         dispatcher = new MockedDispatcher();
         managerReader = new ManagerReaderImpl(dispatcher, this);
 
-        socketConnectionFacade = createMock(SocketConnectionFacade.class);
+        socketConnectionFacade = mock(SocketConnectionFacade.class);
     }
 
     @AfterEach
@@ -66,15 +67,12 @@ class ManagerReaderImplTest {
 
     @Test
     void testRunReceivingProtocolIdentifier() throws Exception {
-        expect(socketConnectionFacade.readLine()).andReturn("Asterisk Call Manager/1.0");
-        expect(socketConnectionFacade.readLine()).andReturn(null);
-
-        replay(socketConnectionFacade);
+        when(socketConnectionFacade.readLine())
+                .thenReturn("Asterisk Call Manager/1.0")
+                .thenReturn(null);
 
         managerReader.setSocket(socketConnectionFacade);
         managerReader.run();
-
-        verify(socketConnectionFacade);
 
         assertEquals(2, dispatcher.dispatchedEvents.size(), "not exactly two events dispatched");
 
@@ -90,16 +88,13 @@ class ManagerReaderImplTest {
 
     @Test
     void testRunReceivingEvent() throws Exception {
-        expect(socketConnectionFacade.readLine()).andReturn("Event: StatusComplete");
-        expect(socketConnectionFacade.readLine()).andReturn("");
-        expect(socketConnectionFacade.readLine()).andReturn(null);
-
-        replay(socketConnectionFacade);
+        when(socketConnectionFacade.readLine())
+                .thenReturn("Event: StatusComplete")
+                .thenReturn("")
+                .thenReturn(null);
 
         managerReader.setSocket(socketConnectionFacade);
         managerReader.run();
-
-        verify(socketConnectionFacade);
 
         assertEquals(2, dispatcher.dispatchedEvents.size(), "not exactly two events dispatched");
 
@@ -109,18 +104,15 @@ class ManagerReaderImplTest {
 
     @Test
     void testRunReceivingEventWithMapProperty() throws Exception {
-        expect(socketConnectionFacade.readLine()).andReturn("Event: AgentCalled");
-        expect(socketConnectionFacade.readLine()).andReturn("Variable: var1=val1");
-        expect(socketConnectionFacade.readLine()).andReturn("Variable: var2=val2");
-        expect(socketConnectionFacade.readLine()).andReturn("");
-        expect(socketConnectionFacade.readLine()).andReturn(null);
-
-        replay(socketConnectionFacade);
+        when(socketConnectionFacade.readLine())
+                .thenReturn("Event: AgentCalled")
+                .thenReturn("Variable: var1=val1")
+                .thenReturn("Variable: var2=val2")
+                .thenReturn("")
+                .thenReturn(null);
 
         managerReader.setSocket(socketConnectionFacade);
         managerReader.run();
-
-        verify(socketConnectionFacade);
 
         assertEquals(2, dispatcher.dispatchedEvents.size(), "not exactly two events dispatched");
 
@@ -137,17 +129,14 @@ class ManagerReaderImplTest {
 
     @Test
     void testRunReceivingEventWithMapPropertyAndOnlyOneEntry() throws Exception {
-        expect(socketConnectionFacade.readLine()).andReturn("Event: AgentCalled");
-        expect(socketConnectionFacade.readLine()).andReturn("Variable: var1=val1");
-        expect(socketConnectionFacade.readLine()).andReturn("");
-        expect(socketConnectionFacade.readLine()).andReturn(null);
-
-        replay(socketConnectionFacade);
+        when(socketConnectionFacade.readLine())
+                .thenReturn("Event: AgentCalled")
+                .thenReturn("Variable: var1=val1")
+                .thenReturn("")
+                .thenReturn(null);
 
         managerReader.setSocket(socketConnectionFacade);
         managerReader.run();
-
-        verify(socketConnectionFacade);
 
         assertEquals(2, dispatcher.dispatchedEvents.size(), "not exactly two events dispatched");
 
@@ -163,18 +152,15 @@ class ManagerReaderImplTest {
 
     @Test
     void testWorkaroundForAsteriskBug13319() throws Exception {
-        expect(socketConnectionFacade.readLine()).andReturn("Event: RTCPReceived");
-        expect(socketConnectionFacade.readLine()).andReturn("From 192.168.0.1:1234");
-        expect(socketConnectionFacade.readLine()).andReturn("HighestSequence: 999");
-        expect(socketConnectionFacade.readLine()).andReturn("");
-        expect(socketConnectionFacade.readLine()).andReturn(null);
-
-        replay(socketConnectionFacade);
+        when(socketConnectionFacade.readLine())
+                .thenReturn("Event: RTCPReceived")
+                .thenReturn("From 192.168.0.1:1234")
+                .thenReturn("HighestSequence: 999")
+                .thenReturn("")
+                .thenReturn(null);
 
         managerReader.setSocket(socketConnectionFacade);
         managerReader.run();
-
-        verify(socketConnectionFacade);
 
         assertEquals(2, dispatcher.dispatchedEvents.size(), "not exactly two events dispatched");
 
@@ -192,16 +178,13 @@ class ManagerReaderImplTest {
     void XtestRunReceivingUserEvent() throws Exception {
         managerReader.registerEventClass(MyUserEvent.class);
 
-        expect(socketConnectionFacade.readLine()).andReturn("Event: MyUser");
-        expect(socketConnectionFacade.readLine()).andReturn("");
-        expect(socketConnectionFacade.readLine()).andReturn(null);
-
-        replay(socketConnectionFacade);
+        when(socketConnectionFacade.readLine())
+                .thenReturn("Event: MyUser")
+                .thenReturn("")
+                .thenReturn(null);
 
         managerReader.setSocket(socketConnectionFacade);
         managerReader.run();
-
-        verify(socketConnectionFacade);
 
         assertEquals(2, dispatcher.dispatchedEvents.size(), "not exactly two events dispatched");
 
@@ -213,17 +196,14 @@ class ManagerReaderImplTest {
 
     @Test
     void testRunReceivingResponse() throws Exception {
-        expect(socketConnectionFacade.readLine()).andReturn("Response: Success");
-        expect(socketConnectionFacade.readLine()).andReturn("Message: Authentication accepted");
-        expect(socketConnectionFacade.readLine()).andReturn("");
-        expect(socketConnectionFacade.readLine()).andReturn(null);
-
-        replay(socketConnectionFacade);
+        when(socketConnectionFacade.readLine())
+                .thenReturn("Response: Success")
+                .thenReturn("Message: Authentication accepted")
+                .thenReturn("")
+                .thenReturn(null);
 
         managerReader.setSocket(socketConnectionFacade);
         managerReader.run();
-
-        verify(socketConnectionFacade);
 
         assertEquals(1, dispatcher.dispatchedResponses.size(), "not exactly one response dispatched");
 
@@ -245,22 +225,19 @@ class ManagerReaderImplTest {
     void testRunReceivingCommandResponse() throws Exception {
         List<String> result = new ArrayList<String>();
 
-        expect(socketConnectionFacade.readLine()).andReturn("Response: Follows");
-        expect(socketConnectionFacade.readLine()).andReturn("ActionID: 678#12345");
-        expect(socketConnectionFacade.readLine()).andReturn("Line1\nLine2\n--END COMMAND--");
-        expect(socketConnectionFacade.readLine()).andReturn("");
-        expect(socketConnectionFacade.readLine()).andReturn(null);
+        when(socketConnectionFacade.readLine())
+                .thenReturn("Response: Follows")
+                .thenReturn("ActionID: 678#12345")
+                .thenReturn("Line1\nLine2\n--END COMMAND--")
+                .thenReturn("")
+                .thenReturn(null);
 
         result.add("Line1");
         result.add("Line2");
 
-        replay(socketConnectionFacade);
-
         managerReader.setSocket(socketConnectionFacade);
         managerReader.expectResponseClass("678", CommandResponse.class);
         managerReader.run();
-
-        verify(socketConnectionFacade);
 
         assertEquals(1, dispatcher.dispatchedResponses.size(), "not exactly one response dispatched");
 
@@ -279,14 +256,10 @@ class ManagerReaderImplTest {
 
     @Test
     void testRunCatchingIOException() throws Exception {
-        expect(socketConnectionFacade.readLine()).andThrow(new IOException("Something happened to the network..."));
-
-        replay(socketConnectionFacade);
+        when(socketConnectionFacade.readLine()).thenThrow(new IOException("Something happened to the network..."));
 
         managerReader.setSocket(socketConnectionFacade);
         managerReader.run();
-
-        verify(socketConnectionFacade);
 
         assertEquals(0, dispatcher.dispatchedResponses.size(), "must not dispatch a response");
 

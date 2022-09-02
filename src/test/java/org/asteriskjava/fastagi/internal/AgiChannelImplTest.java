@@ -24,9 +24,10 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.easymock.EasyMock.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class AgiChannelImplTest {
     private AgiWriter agiWriter;
@@ -35,8 +36,8 @@ class AgiChannelImplTest {
 
     @BeforeEach
     void setUp() {
-        this.agiWriter = createMock(AgiWriter.class);
-        this.agiReader = createMock(AgiReader.class);
+        this.agiWriter = mock(AgiWriter.class);
+        this.agiReader = mock(AgiReader.class);
         this.agiChannel = new AgiChannelImpl(null, agiWriter, agiReader);
     }
 
@@ -51,16 +52,9 @@ class AgiChannelImplTest {
 
         command = new NoopCommand();
 
-        agiWriter.sendCommand(command);
-        expect(agiReader.readReply()).andReturn(reply);
-
-        replay(agiWriter);
-        replay(agiReader);
+        when(agiReader.readReply()).thenReturn(reply);
 
         assertEquals(reply, agiChannel.sendCommand(command));
-
-        verify(agiWriter);
-        verify(agiReader);
     }
 
     @Test
@@ -74,11 +68,7 @@ class AgiChannelImplTest {
 
         command = new NoopCommand();
 
-        agiWriter.sendCommand(command);
-        expect(agiReader.readReply()).andReturn(reply);
-
-        replay(agiWriter);
-        replay(agiReader);
+        when(agiReader.readReply()).thenReturn(reply);
 
         try {
             agiChannel.sendCommand(command);
@@ -86,9 +76,6 @@ class AgiChannelImplTest {
         } catch (InvalidOrUnknownCommandException e) {
             assertEquals("Invalid or unknown command: NOOP", e.getMessage(), "Incorrect message");
         }
-
-        verify(agiWriter);
-        verify(agiReader);
     }
 
     @Test
@@ -104,11 +91,7 @@ class AgiChannelImplTest {
 
         command = new NoopCommand();
 
-        agiWriter.sendCommand(command);
-        expect(agiReader.readReply()).andReturn(reply);
-
-        replay(agiWriter);
-        replay(agiReader);
+        when(agiReader.readReply()).thenReturn(reply);
 
         try {
             agiChannel.sendCommand(command);
@@ -118,9 +101,6 @@ class AgiChannelImplTest {
             assertEquals("NOOP Synopsis", e.getSynopsis(), "Incorrect sysnopsis");
             assertEquals("NOOP Usage", e.getUsage(), "Incorrect usage");
         }
-
-        verify(agiWriter);
-        verify(agiReader);
     }
 
     public static class SimpleAgiReply implements AgiReply {

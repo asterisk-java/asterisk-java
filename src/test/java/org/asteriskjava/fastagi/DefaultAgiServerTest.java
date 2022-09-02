@@ -24,8 +24,9 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-import static org.easymock.EasyMock.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class DefaultAgiServerTest {
     private DefaultAgiServer server;
@@ -49,18 +50,18 @@ class DefaultAgiServerTest {
     }
 
     void XtestStartup() throws Exception {
-        socket = createMock(SocketConnectionFacade.class);
+        socket = mock(SocketConnectionFacade.class);
 
-        expect(socket.readLine()).andReturn(null);
-        expect(socket.getLocalAddress()).andReturn(null);
-        expect(socket.getLocalPort()).andReturn(1);
-        expect(socket.getRemoteAddress()).andReturn(null);
-        expect(socket.getRemotePort()).andReturn(2);
+        when(socket.readLine())
+                .thenReturn(null)
+                .thenReturn(null);
+        when(socket.getLocalPort()).thenReturn(1);
+        when(socket.getRemoteAddress()).thenReturn(null);
+        when(socket.getRemotePort()).thenReturn(2);
         socket.write("VERBOSE \"No script configured for null\" 1\n");
         socket.flush();
-        expect(socket.readLine()).andReturn(null);
+        when(socket.readLine()).thenReturn(null);
         socket.close();
-        replay(socket);
 
         try {
             server.startup();
@@ -71,8 +72,6 @@ class DefaultAgiServerTest {
 
         assertEquals(2, serverSocket.acceptCalls, "serverSocket.accept() not called 2 times");
         assertEquals(1, serverSocket.closeCalls, "serverSocket.close() not called");
-
-        verify(socket);
     }
 
     class MockedDefaultAgiServer extends DefaultAgiServer {

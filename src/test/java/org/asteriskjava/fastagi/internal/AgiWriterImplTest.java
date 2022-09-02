@@ -22,7 +22,8 @@ import org.asteriskjava.util.SocketConnectionFacade;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.easymock.EasyMock.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 class AgiWriterImplTest {
     private AgiWriter agiWriter;
@@ -30,7 +31,7 @@ class AgiWriterImplTest {
 
     @BeforeEach
     void setUp() {
-        this.socket = createMock(SocketConnectionFacade.class);
+        this.socket = mock(SocketConnectionFacade.class);
         this.agiWriter = new FastAgiWriter(socket);
     }
 
@@ -40,13 +41,9 @@ class AgiWriterImplTest {
 
         command = new StreamFileCommand("welcome");
 
-        socket.write("STREAM FILE \"welcome\" \"\"\n");
-        socket.flush();
-
-        replay(socket);
-
         agiWriter.sendCommand(command);
 
-        verify(socket);
+        verify(socket).write("STREAM FILE \"welcome\" \"\"\n");
+        verify(socket).flush();
     }
 }

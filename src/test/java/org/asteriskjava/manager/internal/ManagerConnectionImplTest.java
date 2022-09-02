@@ -38,8 +38,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.easymock.EasyMock.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class ManagerConnectionImplTest {
     protected SocketConnectionFacade mockSocket;
@@ -55,7 +56,7 @@ class ManagerConnectionImplTest {
         mockWriter.setExpectedKey("40b1b887502902a8ce61a16e44630f7c");
 
         mockReader = new ManagerReaderMock();
-        mockSocket = createMock(SocketConnectionFacade.class);
+        mockSocket = mock(SocketConnectionFacade.class);
         mc = new MockedManagerConnectionImpl(mockReader, mockWriter, mockSocket);
         mockWriter.setDispatcher(mc);
     }
@@ -70,10 +71,9 @@ class ManagerConnectionImplTest {
     void testRegisterUserEventClass() {
         ManagerReader managerReader;
 
-        managerReader = createMock(ManagerReader.class);
+        managerReader = mock(ManagerReader.class);
 
         managerReader.registerEventClass(MyUserEvent.class);
-        replay(managerReader);
 
         mc = new MockedManagerConnectionImpl(managerReader, mockWriter, mockSocket);
         mc.registerUserEventClass(MyUserEvent.class);
@@ -81,8 +81,6 @@ class ManagerConnectionImplTest {
         assertEquals(0, mc.createSocketCalls, "unexpected call to createSocket");
         assertEquals(0, mc.createWriterCalls, "unexpected call to createWriter");
         assertEquals(1, mc.createReaderCalls, "createReader not called 1 time");
-
-        verify(managerReader);
     }
 
     @Test
@@ -93,8 +91,6 @@ class ManagerConnectionImplTest {
         long duration;
 
         listener = new MockedManagerEventListener();
-
-        replay(mockSocket);
 
         mc.setUsername("username");
         mc.setPassword("password");
@@ -139,7 +135,6 @@ class ManagerConnectionImplTest {
          */
         assertTrue(listener.eventsHandled.get(0) instanceof ConnectEvent, "event handled must be a ConnectEvent");
 
-        verify(mockSocket);
         assertTrue(duration <= 2000,
                 "login() took longer than 2 second, probably a notify error (duration was " + duration + " is msec)");
     }
@@ -147,7 +142,6 @@ class ManagerConnectionImplTest {
     @Test
     void testLoginIncorrectKey() throws Exception {
         mockSocket.close();
-        replay(mockSocket);
 
         mockWriter.setExpectedUsername("username");
         // md5 sum of 12345password
@@ -183,14 +177,10 @@ class ManagerConnectionImplTest {
         }
         assertEquals(1, mockReader.runCalls, "run() not called 1 time");
         assertEquals(0, mockReader.dieCalls, "unexpected call to die()");
-
-        verify(mockSocket);
     }
 
     @Test
     void testLoginIOExceptionOnConnect() throws Exception {
-        replay(mockSocket);
-
         mc.setThrowIOExceptionOnFirstSocketCreate(true);
         try {
             mc.login();
@@ -209,8 +199,6 @@ class ManagerConnectionImplTest {
         assertEquals(0, mockReader.setSocketCalls, "unexpected call to setSocket()");
         assertEquals(0, mockReader.runCalls, "unexpected call to run()");
         assertEquals(0, mockReader.dieCalls, "unexpected call to die()");
-
-        verify(mockSocket);
     }
 
     @Test
@@ -218,7 +206,6 @@ class ManagerConnectionImplTest {
         mc.setDefaultResponseTimeout(50);
 
         mockSocket.close();
-        replay(mockSocket);
 
         // provoke timeout
         mockWriter.setSendProtocolIdentifierReceivedEvent(false);
@@ -245,8 +232,6 @@ class ManagerConnectionImplTest {
         Thread.sleep(10);
         assertEquals(1, mockReader.runCalls, "run() not called 1 time");
         assertEquals(0, mockReader.dieCalls, "unexpected call to die()");
-
-        verify(mockSocket);
     }
 
     @Test
@@ -254,7 +239,6 @@ class ManagerConnectionImplTest {
         mc.setDefaultResponseTimeout(200);
 
         mockSocket.close();
-        replay(mockSocket);
 
         // provoke timeout
         mockWriter.setSendResponse(false);
@@ -283,14 +267,11 @@ class ManagerConnectionImplTest {
         Thread.sleep(10);
         assertEquals(1, mockReader.runCalls, "run() not called 1 time");
         assertEquals(0, mockReader.dieCalls, "unexpected call to die()");
-
-        verify(mockSocket);
     }
 
     @Test
     void testLogoffWhenConnected() throws Exception {
         mockSocket.close();
-        replay(mockSocket);
 
         // fake connect
         mc.connect();
@@ -299,13 +280,10 @@ class ManagerConnectionImplTest {
         mc.logoff();
 
         assertEquals(1, mockWriter.logoffActionsSent, "logoff action not sent 1 time");
-        verify(mockSocket);
     }
 
     @Test
     void testLogoffWhenNotConnected() {
-        replay(mockSocket);
-
         try {
             mc.logoff();
             fail("Expected IllegalStateException when calling logoff when not connected");
@@ -314,7 +292,6 @@ class ManagerConnectionImplTest {
         }
 
         assertEquals(0, mockWriter.logoffActionsSent, "unexpected logoff action sent");
-        verify(mockSocket);
     }
 
     @Test
@@ -431,7 +408,6 @@ class ManagerConnectionImplTest {
     void testReconnect() throws Exception {
         DisconnectEvent disconnectEvent;
 
-        replay(mockSocket);
         disconnectEvent = new DisconnectEvent(this);
 
         // fake successful login
@@ -454,15 +430,12 @@ class ManagerConnectionImplTest {
         assertEquals(0, mockWriter.otherActionsSent, "unexpected other actions sent");
 
         assertEquals(ManagerConnectionState.CONNECTED, mc.getState(), "state is not CONNECTED");
-
-        verify(mockSocket);
     }
 
     @Test
     void testReconnectWithIOException() throws Exception {
         DisconnectEvent disconnectEvent;
 
-        replay(mockSocket);
         disconnectEvent = new DisconnectEvent(this);
 
         // fake successful login
@@ -487,8 +460,6 @@ class ManagerConnectionImplTest {
 
         assertEquals(ManagerConnectionState.CONNECTED, mc.getState(), "state is not CONNECTED");
 
-        verify(mockSocket);
-
     }
 
     @Test
@@ -496,7 +467,6 @@ class ManagerConnectionImplTest {
         DisconnectEvent disconnectEvent;
 
         mockSocket.close();
-        replay(mockSocket);
         disconnectEvent = new DisconnectEvent(this);
 
         // fake successful login
@@ -521,8 +491,6 @@ class ManagerConnectionImplTest {
         assertEquals(0, mockWriter.otherActionsSent, "unexpected other actions sent");
 
         assertEquals(ManagerConnectionState.CONNECTED, mc.getState(), "state is not CONNECTED");
-
-        verify(mockSocket);
     }
 
     @SuppressWarnings("unchecked")
@@ -534,10 +502,10 @@ class ManagerConnectionImplTest {
 
         // verify that event handlers are called in the correct order
         event = new NewChannelEvent(this);
-        list = createMock(List.class);
+        list = mock(List.class);
         for (int i = 0; i < count; i++) {
             final int index = i;
-            expect(list.add(index)).andReturn(true);
+            when(list.add(index)).thenReturn(true);
             mc.addEventListener(new ManagerEventListener() {
                 public void onManagerEvent(ManagerEvent event) {
                     list.add(index);
@@ -545,9 +513,7 @@ class ManagerConnectionImplTest {
             });
         }
 
-        replay(list);
         mc.dispatchEvent(event, null);
-        verify(list);
     }
 
     @Test
