@@ -1,43 +1,38 @@
 package org.asteriskjava.util;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 import java.util.TimeZone;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class DateUtilTest
-{
+class DateUtilTest {
     TimeZone defaultTimeZone;
     final String dateString = "2006-05-19 11:54:48";
 
-    @Before
-    public void setUp()
-    {
+    @BeforeEach
+    void setUp() {
         defaultTimeZone = TimeZone.getDefault();
         TimeZone.setDefault(TimeZone.getTimeZone("GMT"));
     }
 
-    @After
-    public void tearDown()
-    {
+    @AfterEach
+    void tearDown() {
         TimeZone.setDefault(defaultTimeZone);
     }
 
     @Test
-    public void testGetStartTimeAsDate()
-    {
+    void testGetStartTimeAsDate() {
         final Date result = DateUtil.parseDateTime(dateString);
         assertEquals(1148039688000L, result.getTime());
         assertEquals("Fri May 19 11:54:48 GMT 2006", result.toString());
     }
 
     @Test
-    public void testGetStartTimeAsDateWithTimeZone()
-    {
+    void testGetStartTimeAsDateWithTimeZone() {
         final TimeZone tz = TimeZone.getTimeZone("GMT+2");
         final Date result = DateUtil.parseDateTime(dateString, tz);
         assertEquals(1148032488000L, result.getTime());

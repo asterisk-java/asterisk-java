@@ -1,49 +1,43 @@
 package org.asteriskjava.manager.event;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.TimeZone;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class CdrEventTest
-{
+class CdrEventTest {
     CdrEvent cdrEvent;
     TimeZone defaultTimeZone;
 
-    @Before
-    public void setUp()
-    {
+    @BeforeEach
+    void setUp() {
         cdrEvent = new CdrEvent(this);
         cdrEvent.setStartTime("2006-05-19 11:54:48");
         defaultTimeZone = TimeZone.getDefault();
         TimeZone.setDefault(TimeZone.getTimeZone("GMT"));
     }
 
-    @After
-    public void tearDown()
-    {
+    @AfterEach
+    void tearDown() {
         TimeZone.setDefault(defaultTimeZone);
     }
 
     @Test
-    public void testGetStartTimeAsDate()
-    {
+    void testGetStartTimeAsDate() {
         assertEquals(1148039688000L, cdrEvent.getStartTimeAsDate().getTime());
     }
 
     @Test
-    public void testGetStartTimeAsDateWithTimeZone()
-    {
+    void testGetStartTimeAsDateWithTimeZone() {
         TimeZone tz = TimeZone.getTimeZone("GMT+2");
         assertEquals(1148032488000L, cdrEvent.getStartTimeAsDate(tz).getTime());
     }
 
     @Test
-    public void testBug()
-    {
+    void testBug() {
         TimeZone.setDefault(TimeZone.getTimeZone("Europe/Monaco"));
 
         cdrEvent.setStartTime("2006-05-29 13:17:21");

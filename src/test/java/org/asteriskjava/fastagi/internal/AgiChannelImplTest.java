@@ -16,42 +16,32 @@
  */
 package org.asteriskjava.fastagi.internal;
 
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import org.asteriskjava.fastagi.*;
+import org.asteriskjava.fastagi.command.NoopCommand;
+import org.asteriskjava.fastagi.reply.AgiReply;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import org.asteriskjava.fastagi.AgiChannel;
-import org.asteriskjava.fastagi.AgiReader;
-import org.asteriskjava.fastagi.AgiWriter;
-import org.asteriskjava.fastagi.InvalidCommandSyntaxException;
-import org.asteriskjava.fastagi.InvalidOrUnknownCommandException;
-import org.asteriskjava.fastagi.command.NoopCommand;
-import org.asteriskjava.fastagi.reply.AgiReply;
-import org.junit.Before;
-import org.junit.Test;
+import static org.easymock.EasyMock.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
-public class AgiChannelImplTest
-{
+class AgiChannelImplTest {
     private AgiWriter agiWriter;
     private AgiReader agiReader;
     private AgiChannel agiChannel;
 
-    @Before
-    public void setUp()
-    {
+    @BeforeEach
+    void setUp() {
         this.agiWriter = createMock(AgiWriter.class);
         this.agiReader = createMock(AgiReader.class);
         this.agiChannel = new AgiChannelImpl(null, agiWriter, agiReader);
     }
 
     @Test
-    public void testSendCommand() throws Exception
-    {
+    void testSendCommand() throws Exception {
         SimpleAgiReply reply;
         NoopCommand command;
 
@@ -74,8 +64,7 @@ public class AgiChannelImplTest
     }
 
     @Test
-    public void testSendCommandWithInvalidOrUnknownCommandResponse() throws Exception
-    {
+    void testSendCommandWithInvalidOrUnknownCommandResponse() throws Exception {
         SimpleAgiReply reply;
         NoopCommand command;
 
@@ -91,14 +80,11 @@ public class AgiChannelImplTest
         replay(agiWriter);
         replay(agiReader);
 
-        try
-        {
+        try {
             agiChannel.sendCommand(command);
             fail("must throw InvalidOrUnknownCommandException");
-        }
-        catch (InvalidOrUnknownCommandException e)
-        {
-            assertEquals("Incorrect message", "Invalid or unknown command: NOOP", e.getMessage());
+        } catch (InvalidOrUnknownCommandException e) {
+            assertEquals("Invalid or unknown command: NOOP", e.getMessage(), "Incorrect message");
         }
 
         verify(agiWriter);
@@ -106,8 +92,7 @@ public class AgiChannelImplTest
     }
 
     @Test
-    public void testSendCommandWithInvalidCommandSyntaxResponse() throws Exception
-    {
+    void testSendCommandWithInvalidCommandSyntaxResponse() throws Exception {
         SimpleAgiReply reply;
         NoopCommand command;
 
@@ -125,97 +110,79 @@ public class AgiChannelImplTest
         replay(agiWriter);
         replay(agiReader);
 
-        try
-        {
+        try {
             agiChannel.sendCommand(command);
             fail("must throw InvalidCommandSyntaxException");
-        }
-        catch (InvalidCommandSyntaxException e)
-        {
-            assertEquals("Incorrect message", "Invalid command syntax: NOOP Synopsis", e.getMessage());
-            assertEquals("Incorrect sysnopsis", "NOOP Synopsis", e.getSynopsis());
-            assertEquals("Incorrect usage", "NOOP Usage", e.getUsage());
+        } catch (InvalidCommandSyntaxException e) {
+            assertEquals("Invalid command syntax: NOOP Synopsis", e.getMessage(), "Incorrect message");
+            assertEquals("NOOP Synopsis", e.getSynopsis(), "Incorrect sysnopsis");
+            assertEquals("NOOP Usage", e.getUsage(), "Incorrect usage");
         }
 
         verify(agiWriter);
         verify(agiReader);
     }
 
-    public class SimpleAgiReply implements AgiReply
-    {
+    public static class SimpleAgiReply implements AgiReply {
         private static final long serialVersionUID = 1L;
         private int status;
         private String result;
         private String synopsis;
         private String usage;
 
-        public String getFirstLine()
-        {
+        public String getFirstLine() {
             throw new UnsupportedOperationException();
         }
 
-        public void setUsage(String usage)
-        {
+        public void setUsage(String usage) {
             this.usage = usage;
         }
 
-        public void setSynopsis(String synopsis)
-        {
+        public void setSynopsis(String synopsis) {
             this.synopsis = synopsis;
         }
 
-        public void setResult(String result)
-        {
+        public void setResult(String result) {
             this.result = result;
         }
 
-        public void setStatus(int status)
-        {
+        public void setStatus(int status) {
             this.status = status;
         }
 
-        public List<String> getLines()
-        {
+        public List<String> getLines() {
             throw new UnsupportedOperationException();
         }
 
-        public int getResultCode()
-        {
+        public int getResultCode() {
             throw new UnsupportedOperationException();
         }
 
-        public char getResultCodeAsChar()
-        {
+        public char getResultCodeAsChar() {
             throw new UnsupportedOperationException();
         }
 
-        public String getResult()
-        {
+        public String getResult() {
             return result;
         }
 
-        public int getStatus()
-        {
+        public int getStatus() {
             return status;
         }
 
-        public String getAttribute(String name)
-        {
+        public String getAttribute(String name) {
             throw new UnsupportedOperationException();
         }
 
-        public String getExtra()
-        {
+        public String getExtra() {
             throw new UnsupportedOperationException();
         }
 
-        public String getSynopsis()
-        {
+        public String getSynopsis() {
             return synopsis;
         }
 
-        public String getUsage()
-        {
+        public String getUsage() {
             return usage;
         }
     }

@@ -17,16 +17,15 @@
 package org.asteriskjava.manager.internal.backwardsCompatibility.bridge;
 
 import org.asteriskjava.manager.event.BridgeEnterEvent;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class BridgeEnterEventComparatorTest
-{
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+class BridgeEnterEventComparatorTest {
     private BridgeEnterEventComparator bridgeEnterEventComparator = new BridgeEnterEventComparator();
 
     @Test
-    public void withoutPrefix_shouldId2BeGreater()
-    {
+    void withoutPrefix_shouldId2BeGreater() {
         // given
         BridgeEnterEvent bridgeEnterEvent1 = createBridgeEnterEvent("1515590350.29");
         BridgeEnterEvent bridgeEnterEvent2 = createBridgeEnterEvent("1515590353.30");
@@ -35,12 +34,11 @@ public class BridgeEnterEventComparatorTest
         int compareResult = bridgeEnterEventComparator.compare(bridgeEnterEvent1, bridgeEnterEvent2);
 
         // then
-        Assert.assertEquals(-1, compareResult);
+        assertEquals(-1, compareResult);
     }
 
     @Test
-    public void withoutPrefix_shouldId1BeGreater()
-    {
+    void withoutPrefix_shouldId1BeGreater() {
         // given
         BridgeEnterEvent bridgeEnterEvent1 = createBridgeEnterEvent("1515590353.30");
         BridgeEnterEvent bridgeEnterEvent2 = createBridgeEnterEvent("1515590350.29");
@@ -49,12 +47,11 @@ public class BridgeEnterEventComparatorTest
         int compareResult = bridgeEnterEventComparator.compare(bridgeEnterEvent1, bridgeEnterEvent2);
 
         // then
-        Assert.assertEquals(1, compareResult);
+        assertEquals(1, compareResult);
     }
 
     @Test
-    public void withoutPrefix_shouldId2BeGreaterForSameSerials()
-    {
+    void withoutPrefix_shouldId2BeGreaterForSameSerials() {
         // given
         BridgeEnterEvent bridgeEnterEvent1 = createBridgeEnterEvent("1515590350.30");
         BridgeEnterEvent bridgeEnterEvent2 = createBridgeEnterEvent("1515590353.30");
@@ -63,12 +60,11 @@ public class BridgeEnterEventComparatorTest
         int compareResult = bridgeEnterEventComparator.compare(bridgeEnterEvent1, bridgeEnterEvent2);
 
         // then
-        Assert.assertEquals(-1, compareResult);
+        assertEquals(-1, compareResult);
     }
 
     @Test
-    public void withoutPrefix_shouldId1BeGreaterForSameSerials()
-    {
+    void withoutPrefix_shouldId1BeGreaterForSameSerials() {
         // given
         BridgeEnterEvent bridgeEnterEvent1 = createBridgeEnterEvent("1515590353.30");
         BridgeEnterEvent bridgeEnterEvent2 = createBridgeEnterEvent("1515590350.30");
@@ -77,12 +73,11 @@ public class BridgeEnterEventComparatorTest
         int compareResult = bridgeEnterEventComparator.compare(bridgeEnterEvent1, bridgeEnterEvent2);
 
         // then
-        Assert.assertEquals(1, compareResult);
+        assertEquals(1, compareResult);
     }
 
     @Test
-    public void withoutPrefix_shouldId2BeGreaterForSameEpoch()
-    {
+    void withoutPrefix_shouldId2BeGreaterForSameEpoch() {
         // given
         BridgeEnterEvent bridgeEnterEvent1 = createBridgeEnterEvent("1515590353.29");
         BridgeEnterEvent bridgeEnterEvent2 = createBridgeEnterEvent("1515590353.30");
@@ -91,12 +86,11 @@ public class BridgeEnterEventComparatorTest
         int compareResult = bridgeEnterEventComparator.compare(bridgeEnterEvent1, bridgeEnterEvent2);
 
         // then
-        Assert.assertEquals(-1, compareResult);
+        assertEquals(-1, compareResult);
     }
 
     @Test
-    public void withoutPrefix_shouldId1BeGreaterForSameEpoch()
-    {
+    void withoutPrefix_shouldId1BeGreaterForSameEpoch() {
         // given
         BridgeEnterEvent bridgeEnterEvent1 = createBridgeEnterEvent("1515590353.30");
         BridgeEnterEvent bridgeEnterEvent2 = createBridgeEnterEvent("1515590353.29");
@@ -105,12 +99,11 @@ public class BridgeEnterEventComparatorTest
         int compareResult = bridgeEnterEventComparator.compare(bridgeEnterEvent1, bridgeEnterEvent2);
 
         // then
-        Assert.assertEquals(1, compareResult);
+        assertEquals(1, compareResult);
     }
 
     @Test
-    public void withoutPrefix_shouldIdsBeEqual()
-    {
+    void withoutPrefix_shouldIdsBeEqual() {
         // given
         BridgeEnterEvent bridgeEnterEvent1 = createBridgeEnterEvent("1515590353.30");
         BridgeEnterEvent bridgeEnterEvent2 = createBridgeEnterEvent("1515590353.30");
@@ -119,12 +112,11 @@ public class BridgeEnterEventComparatorTest
         int compareResult = bridgeEnterEventComparator.compare(bridgeEnterEvent1, bridgeEnterEvent2);
 
         // then
-        Assert.assertEquals(0, compareResult);
+        assertEquals(0, compareResult);
     }
 
     @Test
-    public void withPrefix_shouldId2BeGreater()
-    {
+    void withPrefix_shouldId2BeGreater() {
         // given
         BridgeEnterEvent bridgeEnterEvent1 = createBridgeEnterEvent("some_prefix-1515590350.29");
         BridgeEnterEvent bridgeEnterEvent2 = createBridgeEnterEvent("some_prefix-1515590353.30");
@@ -133,12 +125,11 @@ public class BridgeEnterEventComparatorTest
         int compareResult = bridgeEnterEventComparator.compare(bridgeEnterEvent1, bridgeEnterEvent2);
 
         // then
-        Assert.assertEquals(-1, compareResult);
+        assertEquals(-1, compareResult);
     }
 
     @Test
-    public void withPrefix_shouldId1BeGreater()
-    {
+    void withPrefix_shouldId1BeGreater() {
         // given
         BridgeEnterEvent bridgeEnterEvent1 = createBridgeEnterEvent("some_prefix-1515590353.30");
         BridgeEnterEvent bridgeEnterEvent2 = createBridgeEnterEvent("some_prefix-1515590350.29");
@@ -147,12 +138,11 @@ public class BridgeEnterEventComparatorTest
         int compareResult = bridgeEnterEventComparator.compare(bridgeEnterEvent1, bridgeEnterEvent2);
 
         // then
-        Assert.assertEquals(1, compareResult);
+        assertEquals(1, compareResult);
     }
 
     @Test
-    public void withPrefix_shouldId2BeGreaterForSameSerials()
-    {
+    void withPrefix_shouldId2BeGreaterForSameSerials() {
         // given
         BridgeEnterEvent bridgeEnterEvent1 = createBridgeEnterEvent("some_prefix-1515590350.30");
         BridgeEnterEvent bridgeEnterEvent2 = createBridgeEnterEvent("some_prefix-1515590353.30");
@@ -161,12 +151,11 @@ public class BridgeEnterEventComparatorTest
         int compareResult = bridgeEnterEventComparator.compare(bridgeEnterEvent1, bridgeEnterEvent2);
 
         // then
-        Assert.assertEquals(-1, compareResult);
+        assertEquals(-1, compareResult);
     }
 
     @Test
-    public void withPrefix_shouldId1BeGreaterForSameSerials()
-    {
+    void withPrefix_shouldId1BeGreaterForSameSerials() {
         // given
         BridgeEnterEvent bridgeEnterEvent1 = createBridgeEnterEvent("some_prefix-1515590353.30");
         BridgeEnterEvent bridgeEnterEvent2 = createBridgeEnterEvent("some_prefix-1515590350.30");
@@ -175,12 +164,11 @@ public class BridgeEnterEventComparatorTest
         int compareResult = bridgeEnterEventComparator.compare(bridgeEnterEvent1, bridgeEnterEvent2);
 
         // then
-        Assert.assertEquals(1, compareResult);
+        assertEquals(1, compareResult);
     }
 
     @Test
-    public void withPrefix_shouldId2BeGreaterForSameEpoch()
-    {
+    void withPrefix_shouldId2BeGreaterForSameEpoch() {
         // given
         BridgeEnterEvent bridgeEnterEvent1 = createBridgeEnterEvent("some_prefix-1515590350.29");
         BridgeEnterEvent bridgeEnterEvent2 = createBridgeEnterEvent("some_prefix-1515590350.30");
@@ -189,12 +177,11 @@ public class BridgeEnterEventComparatorTest
         int compareResult = bridgeEnterEventComparator.compare(bridgeEnterEvent1, bridgeEnterEvent2);
 
         // then
-        Assert.assertEquals(-1, compareResult);
+        assertEquals(-1, compareResult);
     }
 
     @Test
-    public void withPrefix_shouldId1BeGreaterForSameEpoch()
-    {
+    void withPrefix_shouldId1BeGreaterForSameEpoch() {
         // given
         BridgeEnterEvent bridgeEnterEvent1 = createBridgeEnterEvent("some_prefix-1515590350.30");
         BridgeEnterEvent bridgeEnterEvent2 = createBridgeEnterEvent("some_prefix-1515590350.29");
@@ -203,12 +190,11 @@ public class BridgeEnterEventComparatorTest
         int compareResult = bridgeEnterEventComparator.compare(bridgeEnterEvent1, bridgeEnterEvent2);
 
         // then
-        Assert.assertEquals(1, compareResult);
+        assertEquals(1, compareResult);
     }
 
     @Test
-    public void withPrefix_shouldIdsBeEqual()
-    {
+    void withPrefix_shouldIdsBeEqual() {
         // given
         BridgeEnterEvent bridgeEnterEvent1 = createBridgeEnterEvent("some_prefix-1515590353.30");
         BridgeEnterEvent bridgeEnterEvent2 = createBridgeEnterEvent("some_prefix-1515590353.30");
@@ -217,12 +203,11 @@ public class BridgeEnterEventComparatorTest
         int compareResult = bridgeEnterEventComparator.compare(bridgeEnterEvent1, bridgeEnterEvent2);
 
         // then
-        Assert.assertEquals(0, compareResult);
+        assertEquals(0, compareResult);
     }
 
     @Test
-    public void shouldBothIdsDoesNotMatchPattern()
-    {
+    void shouldBothIdsDoesNotMatchPattern() {
         // given
         BridgeEnterEvent bridgeEnterEvent1 = createBridgeEnterEvent("some_id_1");
         BridgeEnterEvent bridgeEnterEvent2 = createBridgeEnterEvent("some_id_2");
@@ -231,12 +216,11 @@ public class BridgeEnterEventComparatorTest
         int compareResult = bridgeEnterEventComparator.compare(bridgeEnterEvent1, bridgeEnterEvent2);
 
         // then
-        Assert.assertEquals(0, compareResult);
+        assertEquals(0, compareResult);
     }
 
     @Test
-    public void shouldId1DoesNotMatchPattern()
-    {
+    void shouldId1DoesNotMatchPattern() {
         // given
         BridgeEnterEvent bridgeEnterEvent1 = createBridgeEnterEvent("some_id_1");
         BridgeEnterEvent bridgeEnterEvent2 = createBridgeEnterEvent("some_prefix-1515590353.30");
@@ -245,11 +229,11 @@ public class BridgeEnterEventComparatorTest
         int compareResult = bridgeEnterEventComparator.compare(bridgeEnterEvent1, bridgeEnterEvent2);
 
         // then
-        Assert.assertEquals(-1, compareResult);
+        assertEquals(-1, compareResult);
     }
 
     @Test
-    public void shouldId2DoesNotMatchPattern() {
+    void shouldId2DoesNotMatchPattern() {
         // given
         BridgeEnterEvent bridgeEnterEvent1 = createBridgeEnterEvent("some_prefix-1515590353.30");
         BridgeEnterEvent bridgeEnterEvent2 = createBridgeEnterEvent("some_id_2");
@@ -258,11 +242,10 @@ public class BridgeEnterEventComparatorTest
         int compareResult = bridgeEnterEventComparator.compare(bridgeEnterEvent1, bridgeEnterEvent2);
 
         // then
-        Assert.assertEquals(1, compareResult);
+        assertEquals(1, compareResult);
     }
 
-    private static BridgeEnterEvent createBridgeEnterEvent(String uniqueId)
-    {
+    private static BridgeEnterEvent createBridgeEnterEvent(String uniqueId) {
         BridgeEnterEvent bridgeEnterEvent = new BridgeEnterEvent(new Object());
         bridgeEnterEvent.setUniqueId(uniqueId);
         return bridgeEnterEvent;

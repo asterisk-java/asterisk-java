@@ -1,27 +1,22 @@
 package org.asteriskjava.util;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class AstUtilTest
-{
+class AstUtilTest {
     @Test
-    public void testIsTrue()
-    {
-        assertTrue("on must be true", AstUtil.isTrue("on"));
-        assertTrue("ON must be true", AstUtil.isTrue("ON"));
-        assertTrue("Enabled must be true", AstUtil.isTrue("Enabled"));
-        assertTrue("true must be true", AstUtil.isTrue("true"));
-        assertFalse("false must be false", AstUtil.isTrue("false"));
-        assertFalse("null must be false", AstUtil.isTrue(null));
+    void testIsTrue() {
+        assertTrue(AstUtil.isTrue("on"), "on must be true");
+        assertTrue(AstUtil.isTrue("ON"), "ON must be true");
+        assertTrue(AstUtil.isTrue("Enabled"), "Enabled must be true");
+        assertTrue(AstUtil.isTrue("true"), "true must be true");
+        assertFalse(AstUtil.isTrue("false"), "false must be false");
+        assertFalse(AstUtil.isTrue(null), "null must be false");
     }
 
     @Test
-    public void testParseCallerIdName()
-    {
+    void testParseCallerIdName() {
         assertEquals("Hans Wurst", AstUtil.parseCallerId("\"Hans Wurst\"<1234>")[0]);
         assertEquals("Hans Wurst", AstUtil.parseCallerId("\"Hans Wurst\" <1234>")[0]);
         assertEquals("Hans Wurst", AstUtil.parseCallerId("\" Hans Wurst \" <1234>")[0]);
@@ -42,8 +37,7 @@ public class AstUtilTest
     }
 
     @Test
-    public void testParseCallerIdNumber()
-    {
+    void testParseCallerIdNumber() {
         assertEquals("1234", AstUtil.parseCallerId("\"Hans Wurst\"<1234>")[1]);
         assertEquals("1234", AstUtil.parseCallerId("\"Hans Wurst\" <1234>")[1]);
         assertEquals("1234", AstUtil.parseCallerId("Hans Wurst <  1234 >   ")[1]);
@@ -57,30 +51,26 @@ public class AstUtilTest
     }
 
     @Test
-    public void testAJ120()
-    {
+    void testAJ120() {
         String s = "\"3496853210\" <3496853210>";
         assertEquals("3496853210", AstUtil.parseCallerId(s)[0]);
         assertEquals("3496853210", AstUtil.parseCallerId(s)[1]);
     }
 
     @Test
-    public void testIsNull()
-    {
-        assertTrue("null must be null", AstUtil.isNull(null));
-        assertTrue("unknown must be null", AstUtil.isNull("unknown"));
-        assertTrue("<unknown> must be null", AstUtil.isNull("<unknown>"));
+    void testIsNull() {
+        assertTrue(AstUtil.isNull(null), "null must be null");
+        assertTrue(AstUtil.isNull("unknown"), "unknown must be null");
+        assertTrue(AstUtil.isNull("<unknown>"), "<unknown> must be null");
     }
 
     @Test
-    public void testIsNullForIpAddressInPeerEntryEvent()
-    {
-        assertTrue("\"-none-\" must be considered null", AstUtil.isNull("-none-"));
+    void testIsNullForIpAddressInPeerEntryEvent() {
+        assertTrue(AstUtil.isNull("-none-"), "\"-none-\" must be considered null");
     }
 
     @Test
-    public void testIsEqual()
-    {
+    void testIsEqual() {
         assertTrue(AstUtil.isEqual(null, null));
         assertTrue(AstUtil.isEqual("", ""));
         assertFalse(AstUtil.isEqual(null, ""));

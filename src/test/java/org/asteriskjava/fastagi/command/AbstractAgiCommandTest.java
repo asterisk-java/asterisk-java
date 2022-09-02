@@ -16,74 +16,65 @@
  */
 package org.asteriskjava.fastagi.command;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class AbstractAgiCommandTest
-{
+class AbstractAgiCommandTest {
     private MyCommand myCommand;
 
     @Test
-    public void testEscapeAndQuote()
-    {
+    void testEscapeAndQuote() {
         myCommand = new MyCommand("just a string");
 
         assertEquals("MY \"just a string\"", myCommand.buildCommand());
     }
 
     @Test
-    public void testEscapeAndQuoteWithNullString()
-    {
+    void testEscapeAndQuoteWithNullString() {
         myCommand = new MyCommand(null);
 
         assertEquals("MY \"\"", myCommand.buildCommand());
     }
 
     @Test
-    public void testEscapeAndQuoteWithEmptyString()
-    {
+    void testEscapeAndQuoteWithEmptyString() {
         myCommand = new MyCommand("");
 
         assertEquals("MY \"\"", myCommand.buildCommand());
     }
 
     @Test
-    public void testEscapeAndQuoteWithStringContainingQuotes()
-    {
+    void testEscapeAndQuoteWithStringContainingQuotes() {
         myCommand = new MyCommand("\"John Doe\" is calling");
 
         assertEquals("MY \"\\\"John Doe\\\" is calling\"", myCommand.buildCommand());
     }
 
     @Test
-    public void testEscapeAndQuoteWithStringContainingNewline()
-    {
+    void testEscapeAndQuoteWithStringContainingNewline() {
         myCommand = new MyCommand("Caller is:\nJohn Doe");
 
         assertEquals("MY \"Caller is:John Doe\"", myCommand.buildCommand());
     }
 
     @Test
-    public void testEscapedQuotesAJ192() {
+    void testEscapedQuotesAJ192() {
         myCommand = new MyCommand("first \\\" second \\\" third");
 
         assertEquals("MY \"first \\\\\\\" second \\\\\\\" third\"", myCommand.buildCommand());
     }
 
-    public class MyCommand extends AbstractAgiCommand
-    {
+    public class MyCommand extends AbstractAgiCommand {
         private static final long serialVersionUID = 3976731484641833012L;
         private String s;
 
-        public MyCommand(String s)
-        {
+        public MyCommand(String s) {
             this.s = s;
         }
 
         @Override
-      public String buildCommand()
-        {
+        public String buildCommand() {
             return "MY " + escapeAndQuote(s);
         }
     }

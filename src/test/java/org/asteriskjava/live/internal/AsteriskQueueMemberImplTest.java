@@ -16,22 +16,21 @@
  */
 package org.asteriskjava.live.internal;
 
-import static org.junit.Assert.assertEquals;
+import org.asteriskjava.live.QueueMemberState;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import org.asteriskjava.live.QueueMemberState;
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author Patrick Breucking
  * @version $Id$
  * @since 0.1
  */
-public class AsteriskQueueMemberImplTest
-{
+class AsteriskQueueMemberImplTest {
 
     private AsteriskQueueMemberImpl queueMember;
     private int numberOfChanges;
@@ -39,9 +38,8 @@ public class AsteriskQueueMemberImplTest
     // private QueueManager qManager;
     private AsteriskQueueImpl queue;
 
-    @Before
-    public void setUp()
-    {
+    @BeforeEach
+    void setUp() {
         server = new AsteriskServerImpl();
         // ChannelManager channelManager = new ChannelManager(server);
         // qManager = new QueueManager(server, channelManager);
@@ -54,8 +52,7 @@ public class AsteriskQueueMemberImplTest
     }
 
     @Test
-    public void testQueueMemberEvents()
-    {
+    void testQueueMemberEvents() {
         /*
          * Test should generate a new member like queueMember = new
          */
@@ -80,14 +77,12 @@ public class AsteriskQueueMemberImplTest
         // AsteriskQueueMember member = members.iterator().next();
         // assertEquals("Agent/777", member.getLocation());
         assertEquals(QueueMemberState.DEVICE_UNKNOWN, queueMember.getState());
-        queueMember.addPropertyChangeListener(new PropertyChangeListener()
-        {
-            public void propertyChange(PropertyChangeEvent evt)
-            {
-                assertEquals("wrong propertyName", "state", evt.getPropertyName());
-                assertEquals("wrong oldValue", QueueMemberState.DEVICE_UNKNOWN, evt.getOldValue());
-                assertEquals("wrong newValue", QueueMemberState.DEVICE_BUSY, evt.getNewValue());
-                assertEquals("wrong queue member", queueMember, evt.getSource());
+        queueMember.addPropertyChangeListener(new PropertyChangeListener() {
+            public void propertyChange(PropertyChangeEvent evt) {
+                assertEquals("state", evt.getPropertyName(), "wrong propertyName");
+                assertEquals(QueueMemberState.DEVICE_UNKNOWN, evt.getOldValue(), "wrong oldValue");
+                assertEquals(QueueMemberState.DEVICE_BUSY, evt.getNewValue(), "wrong newValue");
+                assertEquals(queueMember, evt.getSource(), "wrong queue member");
                 numberOfChanges++;
             }
 
@@ -96,13 +91,13 @@ public class AsteriskQueueMemberImplTest
         // queue.addAsteriskQueueListener(new AsteriskQueueListener()
         // {
         //
-        // public void onEntryLeave(AsteriskChannel channel)
+        // void onEntryLeave(AsteriskChannel channel)
         // {
         // // TODO Auto-generated method stub
         //
         // }
         //
-        // public void onMemberStateChange(AsteriskQueueMember member)
+        // void onMemberStateChange(AsteriskQueueMember member)
         // {
         // assertEquals("wrong newValue", QueueMemberState.DEVICE_BUSY,
         // member.getState());
@@ -112,7 +107,7 @@ public class AsteriskQueueMemberImplTest
         //
         // }
         //
-        // public void onNewEntry(AsteriskChannel channel)
+        // void onNewEntry(AsteriskChannel channel)
         // {
         // // TODO Auto-generated method stub
         //
@@ -126,6 +121,6 @@ public class AsteriskQueueMemberImplTest
         // qmse.setStatus(3);
         // server.onManagerEvent(qmse);
         queueMember.stateChanged(QueueMemberState.DEVICE_BUSY);
-        assertEquals("wrong number of propagated changes", 1, numberOfChanges);
+        assertEquals(1, numberOfChanges, "wrong number of propagated changes");
     }
 }

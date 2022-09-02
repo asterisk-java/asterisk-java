@@ -16,45 +16,39 @@
  */
 package org.asteriskjava.fastagi.command;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ExecCommandTest
-{
+class ExecCommandTest {
     private ExecCommand execCommand;
 
     @Test
-    public void testDefault()
-    {
+    void testDefault() {
         execCommand = new ExecCommand("DIAL");
         assertEquals("EXEC \"DIAL\" \"\"", execCommand.buildCommand());
     }
 
     @Test
-    public void testWithSingleOption()
-    {
+    void testWithSingleOption() {
         execCommand = new ExecCommand("DIAL", "SIP/1234");
         assertEquals("EXEC \"DIAL\" \"SIP/1234\"", execCommand.buildCommand());
     }
 
     @Test
-    public void testWithMultipleOptionsSingleParameterPipeSeparated()
-    {
+    void testWithMultipleOptionsSingleParameterPipeSeparated() {
         execCommand = new ExecCommand("DIAL", "SIP/1234|30");
         assertEquals("EXEC \"DIAL\" \"SIP/1234|30\"", execCommand.buildCommand());
     }
 
     @Test
-    public void testWithMultipleOptionsSingleParameterCommaSeparated()
-    {
+    void testWithMultipleOptionsSingleParameterCommaSeparated() {
         execCommand = new ExecCommand("DIAL", "SIP/1234,30");
         assertEquals("EXEC \"DIAL\" \"SIP/1234,30\"", execCommand.buildCommand());
     }
 
     @Test
-    public void testWithMultipleOptionsMultipleParameters()
-    {
+    void testWithMultipleOptionsMultipleParameters() {
         execCommand = new ExecCommand("DIAL", "SIP/1234", "30");
         assertEquals("EXEC \"DIAL\" \"SIP/1234,30\"", execCommand.buildCommand());
     }

@@ -1,47 +1,41 @@
 package org.asteriskjava.manager.response;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class SipShowPeerResponseTest
-{
+class SipShowPeerResponseTest {
     private SipShowPeerResponse response;
 
-    @Before
-    public void setUp()
-    {
+    @BeforeEach
+    void setUp() {
         response = new SipShowPeerResponse();
     }
 
     @Test
-    public void testSetQualifyFreq()
-    {
+    void testSetQualifyFreq() {
         response.setQualifyFreq("6000 ms");
-        assertEquals("Incorrect qualifyFreq", 6000, (int) response.getQualifyFreq());
+        assertEquals(6000, (int) response.getQualifyFreq(), "Incorrect qualifyFreq");
     }
 
     @Test
-    public void testSetQualifyFreqWithWorkaround()
-    {
+    void testSetQualifyFreqWithWorkaround() {
         response.setQualifyFreq(": 6000 ms\n");
-        assertEquals("Incorrect qualifyFreq", 6000, (int) response.getQualifyFreq());
+        assertEquals(6000, (int) response.getQualifyFreq(), "Incorrect qualifyFreq");
     }
 
     @Test
-    public void testSetQualifyFreqWithWorkaroundAndChanVariable()
-    {
+    void testSetQualifyFreqWithWorkaroundAndChanVariable() {
         response.setQualifyFreq(": 60000 ms\nChanVariable:\n PHBX_ID,191");
-        assertEquals("Incorrect qualifyFreq", 60000, (int) response.getQualifyFreq());
+        assertEquals(60000, (int) response.getQualifyFreq(), "Incorrect qualifyFreq");
     }
-    
+
     @Test
-    public void testSetMohsuggest()
-    {
+    void testSetMohsuggest() {
         response.setMohsuggest("default");
-        assertEquals("Incorrect mohsuggest", "default",response.getMohsuggest());
+        assertEquals("default", response.getMohsuggest(), "Incorrect mohsuggest");
     }
-    
-    
+
+
 }

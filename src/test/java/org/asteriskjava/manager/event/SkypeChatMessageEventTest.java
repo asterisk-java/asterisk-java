@@ -1,16 +1,14 @@
 package org.asteriskjava.manager.event;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class SkypeChatMessageEventTest
-{
+class SkypeChatMessageEventTest {
     @Test
-    public void testGetDecodedMessage()
-    {
+    void testGetDecodedMessage() {
         final SkypeChatMessageEvent event = new SkypeChatMessageEvent(this);
         event.setMessage("aMO2w7bDtj8=");
-        assertEquals("Inocrrectly decoded message", "h\u00F6\u00F6\u00F6?", event.getDecodedMessage());
+        assertEquals("h\u00F6\u00F6\u00F6?", event.getDecodedMessage(), "Inocrrectly decoded message");
     }
 }

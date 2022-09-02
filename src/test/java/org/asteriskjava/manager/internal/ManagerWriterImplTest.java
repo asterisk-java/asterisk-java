@@ -16,53 +16,44 @@
  */
 package org.asteriskjava.manager.internal;
 
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import org.asteriskjava.manager.action.StatusAction;
 import org.asteriskjava.util.SocketConnectionFacade;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class ManagerWriterImplTest
-{
-	private ManagerWriter managerWriter;
+import static org.easymock.EasyMock.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
-	@Before
-	public void setUp()
-	{
-		managerWriter = new ManagerWriterImpl();
-	}
+class ManagerWriterImplTest {
+    private ManagerWriter managerWriter;
 
-	@Test
-	public void testSendActionWithoutSocket() throws Exception
-	{
-		try
-		{
-			managerWriter.sendAction(new StatusAction(), null);
-			fail("Must throw IllegalStateException");
-		}
-		catch (IllegalStateException e)
-		{
-			assertTrue("Exception must be of type IllegalStateException", e instanceof IllegalStateException);
-		}
-	}
+    @BeforeEach
+    void setUp() {
+        managerWriter = new ManagerWriterImpl();
+    }
 
-	@Test
-	public void testSendAction() throws Exception
-	{
-		SocketConnectionFacade socketConnectionFacade;
+    @Test
+    void testSendActionWithoutSocket() throws Exception {
+        try {
+            managerWriter.sendAction(new StatusAction(), null);
+            fail("Must throw IllegalStateException");
+        } catch (IllegalStateException e) {
+            assertTrue(e instanceof IllegalStateException, "Exception must be of type IllegalStateException");
+        }
+    }
 
-		socketConnectionFacade = createMock(SocketConnectionFacade.class);
-		socketConnectionFacade.write("action: Status\r\n\r\n");
-		socketConnectionFacade.flush();
-		replay(socketConnectionFacade);
+    @Test
+    void testSendAction() throws Exception {
+        SocketConnectionFacade socketConnectionFacade;
 
-		managerWriter.setSocket(socketConnectionFacade);
-		managerWriter.sendAction(new StatusAction(), null);
-		verify(socketConnectionFacade);
-	}
+        socketConnectionFacade = createMock(SocketConnectionFacade.class);
+        socketConnectionFacade.write("action: Status\r\n\r\n");
+        socketConnectionFacade.flush();
+        replay(socketConnectionFacade);
+
+        managerWriter.setSocket(socketConnectionFacade);
+        managerWriter.sendAction(new StatusAction(), null);
+        verify(socketConnectionFacade);
+    }
 }

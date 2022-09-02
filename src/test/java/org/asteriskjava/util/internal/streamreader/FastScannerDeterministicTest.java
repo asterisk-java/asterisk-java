@@ -1,7 +1,7 @@
 package org.asteriskjava.util.internal.streamreader;
 
 import org.asteriskjava.util.internal.SocketConnectionFacadeImpl;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -13,16 +13,16 @@ import java.nio.file.Paths;
 import java.util.NoSuchElementException;
 import java.util.regex.Pattern;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class FastScannerDeterministicTest {
+class FastScannerDeterministicTest {
     @Test
-    public void testCrNlScanner() throws Exception {
+    void testCrNlScanner() throws Exception {
         testScanner(10000, SocketConnectionFacadeImpl.NL_PATTERN);
     }
 
     @Test
-    public void testNlScanner() throws Exception {
+    void testNlScanner() throws Exception {
         testScanner(10000, SocketConnectionFacadeImpl.CRNL_PATTERN);
     }
 
@@ -44,7 +44,7 @@ public class FastScannerDeterministicTest {
                 // System.out.println("L: " + t + " " + t.length());
                 ctr++;
             }
-            assertTrue("Counter expected : " + (testLines) + " got " + ctr, (testLines) == ctr);
+            assertEquals((testLines), ctr, "Counter expected : " + (testLines) + " got " + ctr);
 
         } catch (NoSuchElementException e) {
         }
@@ -53,7 +53,7 @@ public class FastScannerDeterministicTest {
     }
 
     @Test
-    public void testBR2Accuraccy3() throws Exception {
+    void testBR2Accuraccy3() throws Exception {
         URL resource = this.getClass().getClassLoader().getResource("NlStreamReaderFast273316816601633219.txt");
         final byte[] bytes = Files.readAllBytes(Paths.get(resource.toURI()));
 

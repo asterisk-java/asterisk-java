@@ -1,6 +1,8 @@
 package org.asteriskjava.util.internal.streamreader;
 
-import static org.junit.Assert.fail;
+import ch.qos.logback.core.encoder.ByteArrayUtil;
+import org.asteriskjava.util.internal.SocketConnectionFacadeImpl;
+import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -13,55 +15,39 @@ import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
 
-import org.asteriskjava.util.internal.SocketConnectionFacadeImpl;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.fail;
 
-import ch.qos.logback.core.encoder.ByteArrayUtil;
-
-public class FastScannerRandomTest
-{
+class FastScannerRandomTest {
     @Test
-    public void compareOutputOfNlFastScannerToScanner() throws Exception
-    {
+    void compareOutputOfNlFastScannerToScanner() throws Exception {
         setupTest(SocketConnectionFacadeImpl.NL_PATTERN, "NL");
-
     }
 
     @Test
-    public void compareOutputOfCrNlFastScannerToScanner() throws Exception
-    {
+    void compareOutputOfCrNlFastScannerToScanner() throws Exception {
         setupTest(SocketConnectionFacadeImpl.CRNL_PATTERN, "CR NL");
-
     }
 
-    void setupTest(final Pattern pattern, String caption) throws InterruptedException
-    {
+    void setupTest(final Pattern pattern, String caption) {
 
         final AtomicInteger ctr = new AtomicInteger();
 
         int tests = 50;
 
-        for (int i = 0; i < tests; i++)
-        {
+        for (int i = 0; i < tests; i++) {
 
-            try
-            {
+            try {
                 String testData = generateTestData(1_000_000);
                 compare(testData, pattern);
                 System.out.println(caption + " Completed " + (ctr.incrementAndGet()) * 1 + "MB");
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 e.printStackTrace();
                 fail();
             }
-
         }
-
     }
 
-    boolean compare(String testData, Pattern pattern) throws IOException
-    {
+    void compare(String testData, Pattern pattern) throws IOException {
 
         InputStream inputStream1 = new ByteArrayInputStream(testData.getBytes());
         InputStreamReader reader1 = new InputStreamReader(inputStream1, StandardCharsets.UTF_8);
@@ -79,15 +65,12 @@ public class FastScannerRandomTest
 
         scanner.useDelimiter(pattern);
 
-        try
-        {
-            while ((scannerResult = scanner.next()) != null)
-            {
+        try {
+            while ((scannerResult = scanner.next()) != null) {
                 ctr++;
                 fastResult = fast.next();
 
-                if (!fastResult.equals(scannerResult))
-                {
+                if (!fastResult.equals(scannerResult)) {
 
                     System.out.println("Expected " + ByteArrayUtil.toHexString(scannerResult.getBytes()));
                     System.out.println("Got      " + ByteArrayUtil.toHexString(fastResult.getBytes()));
@@ -97,25 +80,18 @@ public class FastScannerRandomTest
                     throw new RuntimeException("Mismatched output");
                 }
             }
-        }
-        catch (NoSuchElementException e)
-        {
-            if (fast.next() != null)
-            {
+        } catch (NoSuchElementException e) {
+            if (fast.next() != null) {
                 throw new RuntimeException("Expected null, not something else");
             }
             // Scanner normally throws this exception at the end of the stream
-        }
-        finally
-        {
+        } finally {
             scanner.close();
             fast.close();
         }
-        return false;
     }
 
-    public static String generateTestData(int byteSize)
-    {
+    public static String generateTestData(int byteSize) {
         Random rand = new Random();
         String bodyData = "abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(),.<>[] {};':\"";
         bodyData += bodyData.toUpperCase();
@@ -123,21 +99,16 @@ public class FastScannerRandomTest
         String[] terminators = new String[]{"\n", "\r", "\r\n", "\n\r"};
 
         StringBuilder builder = new StringBuilder(byteSize * 2);
-        for (int i = 0; i < byteSize; i++)
-        {
-            if (Math.random() * 100 > 98)
-            {
+        for (int i = 0; i < byteSize; i++) {
+            if (Math.random() * 100 > 98) {
                 // 2 % chance of a line ending
                 builder.append(terminators[rand.nextInt(terminators.length)]);
-            }
-            else
-            {
+            } else {
                 int position = rand.nextInt(bodyData.length());
                 builder.append(bodyData.substring(position, position + 1));
             }
         }
 
         return builder.toString();
-
     }
 }

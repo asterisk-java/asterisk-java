@@ -16,24 +16,21 @@
  */
 package org.asteriskjava.fastagi.command;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class GetDataCommandTest
-{
+class GetDataCommandTest {
     private GetDataCommand getDataCommand;
 
     @Test
-    public void testDefault()
-    {
+    void testDefault() {
         getDataCommand = new GetDataCommand("VAR1");
         assertEquals("GET DATA \"VAR1\"", getDataCommand.buildCommand());
     }
 
     @Test
-    public void testSetTimeout()
-    {
+    void testSetTimeout() {
         getDataCommand = new GetDataCommand("VAR1");
         getDataCommand.setTimeout(10000);
         assertEquals(10000, getDataCommand.getTimeout());
@@ -42,8 +39,7 @@ public class GetDataCommandTest
     }
 
     @Test
-    public void testSetMaxDigits()
-    {
+    void testSetMaxDigits() {
         getDataCommand = new GetDataCommand("VAR1");
         getDataCommand.setMaxDigits(10);
         assertEquals(0, getDataCommand.getTimeout());
@@ -52,8 +48,7 @@ public class GetDataCommandTest
     }
 
     @Test
-    public void testSetTimeoutAndMaxDigits()
-    {
+    void testSetTimeoutAndMaxDigits() {
         getDataCommand = new GetDataCommand("VAR1");
         getDataCommand.setTimeout(10000);
         getDataCommand.setMaxDigits(20);

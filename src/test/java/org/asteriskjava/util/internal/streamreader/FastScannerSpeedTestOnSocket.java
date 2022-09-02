@@ -1,5 +1,8 @@
 package org.asteriskjava.util.internal.streamreader;
 
+import org.asteriskjava.util.internal.SocketConnectionFacadeImpl;
+import org.junit.jupiter.api.Test;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -10,19 +13,11 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
-import org.asteriskjava.util.internal.SocketConnectionFacadeImpl;
-import org.junit.Test;
-
-public class FastScannerSpeedTestOnSocket
-{
-
+class FastScannerSpeedTestOnSocket {
     @Test
-    public void testScannerSpeed() throws Exception
-    {
-        try
-        {
-            for (int i = 10; i-- > 0;)
-            {
+    void testScannerSpeed() throws Exception {
+        try {
+            for (int i = 10; i-- > 0; ) {
 
                 Socket echoSocket = new Socket("127.0.0.1", FastScannerTestSocketSource.portNumber);
 
@@ -31,36 +26,29 @@ public class FastScannerSpeedTestOnSocket
 
                 long start = System.currentTimeMillis();
                 int ctr = 0;
-                try (Scanner scanner = new Scanner(reader);)
-                {
+                try (Scanner scanner = new Scanner(reader);) {
 
                     scanner.useDelimiter(Pattern.compile("\r\n"));
 
                     @SuppressWarnings("unused")
                     String t;
-                    while ((t = scanner.next()) != null)
-                    {
+                    while ((t = scanner.next()) != null) {
                         // System.out.println(t);
                         ctr++;
                     }
                     System.out.print(ctr + "\t");
-                }
-                catch (NoSuchElementException e)
-                {
+                } catch (NoSuchElementException e) {
                     System.out.print(ctr + "\t");
                 }
                 System.out.println((System.currentTimeMillis() - start) + " ms");
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             System.out.println(
                     "If you want to run FastScannerSpeedTestOnSocket, you'll need to run FastScannerTestSocketSource first");
         }
     }
 
-    private InputStreamReader getReader(Socket echoSocket) throws UnknownHostException, IOException, InterruptedException
-    {
+    private InputStreamReader getReader(Socket echoSocket) throws UnknownHostException, IOException, InterruptedException {
 
         InputStream inputStream = echoSocket.getInputStream();
 
@@ -69,15 +57,13 @@ public class FastScannerSpeedTestOnSocket
     }
 
     @Test
-    public void test1() throws Exception
-    {
+    void test1() throws Exception {
         System.out.println("\nTesting fast CrNlStream");
         fastScannerSpeedTest(SocketConnectionFacadeImpl.CRNL_PATTERN);
     }
 
     @Test
-    public void test2() throws Exception
-    {
+    void test2() throws Exception {
         /*
          * the random test data generates quite a lot of /n which means we will
          * get a LOT more lines when checking for /n
@@ -86,12 +72,9 @@ public class FastScannerSpeedTestOnSocket
         fastScannerSpeedTest(SocketConnectionFacadeImpl.NL_PATTERN);
     }
 
-    private void fastScannerSpeedTest(Pattern pattern) throws Exception
-    {
-        try
-        {
-            for (int i = 10; i-- > 0;)
-            {
+    private void fastScannerSpeedTest(Pattern pattern) throws Exception {
+        try {
+            for (int i = 10; i-- > 0; ) {
                 Socket echoSocket = new Socket("127.0.0.1", FastScannerTestSocketSource.portNumber);
 
                 InputStreamReader reader = getReader(echoSocket);
@@ -99,27 +82,21 @@ public class FastScannerSpeedTestOnSocket
                 FastScanner scanner = FastScannerFactory.getReader(reader, pattern);
 
                 long start = System.currentTimeMillis();
-                try
-                {
+                try {
                     int ctr = 0;
                     @SuppressWarnings("unused")
                     String t;
-                    while ((t = scanner.next()) != null)
-                    {
+                    while ((t = scanner.next()) != null) {
                         // System.out.println(t);
                         ctr++;
                     }
                     System.out.print(ctr + "\t");
 
-                }
-                catch (NoSuchElementException e)
-                {
+                } catch (NoSuchElementException e) {
                 }
                 System.out.println((System.currentTimeMillis() - start) + " ms");
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             System.out.println(
                     "If you want to run FastScannerSpeedTestOnSocket, you'll need to run FastScannerTestSocketSource first");
         }

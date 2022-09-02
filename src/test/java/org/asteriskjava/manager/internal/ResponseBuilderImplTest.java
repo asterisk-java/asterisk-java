@@ -16,72 +16,61 @@
  */
 package org.asteriskjava.manager.internal;
 
-import static org.junit.Assert.assertEquals;
+import org.asteriskjava.manager.response.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.asteriskjava.manager.response.ChallengeResponse;
-import org.asteriskjava.manager.response.ExtensionStateResponse;
-import org.asteriskjava.manager.response.MailboxCountResponse;
-import org.asteriskjava.manager.response.MailboxStatusResponse;
-import org.asteriskjava.manager.response.ManagerError;
-import org.asteriskjava.manager.response.ManagerResponse;
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ResponseBuilderImplTest
-{
+class ResponseBuilderImplTest {
     private ResponseBuilderImpl responseBuilder;
     private Map<String, Object> attributes;
 
-    @Before
-    public void setUp()
-    {
+    @BeforeEach
+    void setUp() {
         this.responseBuilder = new ResponseBuilderImpl();
         this.attributes = new HashMap<String, Object>();
     }
 
     @Test
-    public void testBuildResponse()
-    {
+    void testBuildResponse() {
         ManagerResponse response;
 
         attributes.put("response", "Success");
 
         response = responseBuilder.buildResponse(ManagerResponse.class, attributes);
-        assertEquals("Response of wrong type", ManagerResponse.class, response.getClass());
-        assertEquals("Response not set correctly", "Success", response.getResponse());
+        assertEquals(ManagerResponse.class, response.getClass(), "Response of wrong type");
+        assertEquals("Success", response.getResponse(), "Response not set correctly");
     }
 
     @Test
-    public void testBuildResponseWithoutResponseClass()
-    {
+    void testBuildResponseWithoutResponseClass() {
         ManagerResponse response;
 
         attributes.put("response", "Success");
 
         response = responseBuilder.buildResponse(null, attributes);
-        assertEquals("Response of wrong type", ManagerResponse.class, response.getClass());
-        assertEquals("Response not set correctly", "Success", response.getResponse());
+        assertEquals(ManagerResponse.class, response.getClass(), "Response of wrong type");
+        assertEquals("Success", response.getResponse(), "Response not set correctly");
     }
 
     @Test
-    public void testBuildError()
-    {
+    void testBuildError() {
         ManagerResponse response;
 
         attributes.put("response", "Error");
         attributes.put("message", "Missing action in request");
 
         response = responseBuilder.buildResponse(ManagerResponse.class, attributes);
-        assertEquals("Response of wrong type", ManagerError.class, response.getClass());
-        assertEquals("Message not set correctly", "Missing action in request", response.getMessage());
+        assertEquals(ManagerError.class, response.getClass(), "Response of wrong type");
+        assertEquals("Missing action in request", response.getMessage(), "Message not set correctly");
     }
 
     @Test
-    public void testBuildErrorWithActionId()
-    {
+    void testBuildErrorWithActionId() {
         ManagerResponse response;
 
         attributes.put("response", "Error");
@@ -89,25 +78,23 @@ public class ResponseBuilderImplTest
         attributes.put("message", "Missing action in request");
 
         response = responseBuilder.buildResponse(ManagerResponse.class, attributes);
-        assertEquals("ActionId not set correctly", "1234", response.getActionId());
+        assertEquals("1234", response.getActionId(), "ActionId not set correctly");
     }
 
     @Test
-    public void testBuildChallengeResponse()
-    {
+    void testBuildChallengeResponse() {
         ManagerResponse response;
 
         attributes.put("response", "Success");
         attributes.put("challenge", "131494410");
 
         response = responseBuilder.buildResponse(ChallengeResponse.class, attributes);
-        assertEquals("Response of wrong type", ChallengeResponse.class, response.getClass());
-        assertEquals("Challenge not set correctly", "131494410", ((ChallengeResponse) response).getChallenge());
+        assertEquals(ChallengeResponse.class, response.getClass(), "Response of wrong type");
+        assertEquals("131494410", ((ChallengeResponse) response).getChallenge(), "Challenge not set correctly");
     }
 
     @Test
-    public void testBuildMailboxStatusResponse()
-    {
+    void testBuildMailboxStatusResponse() {
         ManagerResponse response;
 
         attributes.put("response", "Success");
@@ -116,16 +103,15 @@ public class ResponseBuilderImplTest
         attributes.put("waiting", "1");
 
         response = responseBuilder.buildResponse(MailboxStatusResponse.class, attributes);
-        assertEquals("Response of wrong type", MailboxStatusResponse.class, response.getClass());
+        assertEquals(MailboxStatusResponse.class, response.getClass(), "Response of wrong type");
 
         MailboxStatusResponse mailboxStatusResponse = (MailboxStatusResponse) response;
-        assertEquals("Mailbox not set correctly", "123", mailboxStatusResponse.getMailbox());
-        assertEquals("Waiting not set correctly", Boolean.TRUE, mailboxStatusResponse.getWaiting());
+        assertEquals("123", mailboxStatusResponse.getMailbox(), "Mailbox not set correctly");
+        assertEquals(Boolean.TRUE, mailboxStatusResponse.getWaiting(), "Waiting not set correctly");
     }
 
     @Test
-    public void testBuildMailboxStatusResponseWithNoWaiting()
-    {
+    void testBuildMailboxStatusResponseWithNoWaiting() {
         ManagerResponse response;
 
         attributes.put("response", "Success");
@@ -134,16 +120,15 @@ public class ResponseBuilderImplTest
         attributes.put("waiting", "0");
 
         response = responseBuilder.buildResponse(MailboxStatusResponse.class, attributes);
-        assertEquals("Response of wrong type", MailboxStatusResponse.class, response.getClass());
+        assertEquals(MailboxStatusResponse.class, response.getClass(), "Response of wrong type");
 
         MailboxStatusResponse mailboxStatusResponse = (MailboxStatusResponse) response;
-        assertEquals("Mailbox not set correctly", "123,user2", mailboxStatusResponse.getMailbox());
-        assertEquals("Waiting not set correctly", Boolean.FALSE, mailboxStatusResponse.getWaiting());
+        assertEquals("123,user2", mailboxStatusResponse.getMailbox(), "Mailbox not set correctly");
+        assertEquals(Boolean.FALSE, mailboxStatusResponse.getWaiting(), "Waiting not set correctly");
     }
 
     @Test
-    public void testBuildMailboxCountResponse()
-    {
+    void testBuildMailboxCountResponse() {
         ManagerResponse response;
 
         attributes.put("response", "Success");
@@ -153,17 +138,16 @@ public class ResponseBuilderImplTest
         attributes.put("oldmessages", "5");
 
         response = responseBuilder.buildResponse(MailboxCountResponse.class, attributes);
-        assertEquals("Response of wrong type", MailboxCountResponse.class, response.getClass());
+        assertEquals(MailboxCountResponse.class, response.getClass(), "Response of wrong type");
 
         MailboxCountResponse mailboxCountResponse = (MailboxCountResponse) response;
-        assertEquals("Mailbox not set correctly", "123@myctx", mailboxCountResponse.getMailbox());
-        assertEquals("New messages not set correctly", Integer.valueOf(2), mailboxCountResponse.getNewMessages());
-        assertEquals("Old messages set correctly", Integer.valueOf(5), mailboxCountResponse.getOldMessages());
+        assertEquals("123@myctx", mailboxCountResponse.getMailbox(), "Mailbox not set correctly");
+        assertEquals(Integer.valueOf(2), mailboxCountResponse.getNewMessages(), "New messages not set correctly");
+        assertEquals(Integer.valueOf(5), mailboxCountResponse.getOldMessages(), "Old messages set correctly");
     }
 
     @Test
-    public void testBuildExtensionStateResponse()
-    {
+    void testBuildExtensionStateResponse() {
         ManagerResponse response;
 
         attributes.put("response", "Success");
@@ -174,12 +158,12 @@ public class ResponseBuilderImplTest
         attributes.put("status", "-1");
 
         response = responseBuilder.buildResponse(ExtensionStateResponse.class, attributes);
-        assertEquals("Response of wrong type", ExtensionStateResponse.class, response.getClass());
+        assertEquals(ExtensionStateResponse.class, response.getClass(), "Response of wrong type");
 
         ExtensionStateResponse extensionStateResponse = (ExtensionStateResponse) response;
-        assertEquals("Exten not set correctly", "1", extensionStateResponse.getExten());
-        assertEquals("Context not set correctly", "default", extensionStateResponse.getContext());
-        assertEquals("Hint not set correctly", "", extensionStateResponse.getHint());
-        assertEquals("Status not set correctly", Integer.valueOf(-1), extensionStateResponse.getStatus());
+        assertEquals("1", extensionStateResponse.getExten(), "Exten not set correctly");
+        assertEquals("default", extensionStateResponse.getContext(), "Context not set correctly");
+        assertEquals("", extensionStateResponse.getHint(), "Hint not set correctly");
+        assertEquals(Integer.valueOf(-1), extensionStateResponse.getStatus(), "Status not set correctly");
     }
 }

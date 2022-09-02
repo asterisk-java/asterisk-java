@@ -1,30 +1,26 @@
 package org.asteriskjava.manager.event;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class SkypeBuddyStatusEventTest
-{
+class SkypeBuddyStatusEventTest {
     private SkypeBuddyStatusEvent event;
 
-    @Before
-    public void setUp()
-    {
+    @BeforeEach
+    void setUp() {
         event = new SkypeBuddyStatusEvent(this);
         event.setBuddy("Skype/user@the.buddy");
     }
 
     @Test
-    public void testGetUser()
-    {
+    void testGetUser() {
         assertEquals("user", event.getUser());
     }
 
     @Test
-    public void testGetBuddySkypename()
-    {
+    void testGetBuddySkypename() {
         assertEquals("the.buddy", event.getBuddySkypename());
     }
 }

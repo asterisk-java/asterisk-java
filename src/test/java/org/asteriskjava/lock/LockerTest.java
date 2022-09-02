@@ -1,27 +1,23 @@
 package org.asteriskjava.lock;
 
+import org.asteriskjava.lock.Locker.LockCloser;
+import org.junit.jupiter.api.Test;
+
 import java.util.concurrent.TimeUnit;
 
-import org.asteriskjava.lock.Locker.LockCloser;
-import org.junit.Test;
-
-public class LockerTest
-{
+class LockerTest {
 
     private final Lockable sync = new Lockable();
 
     @Test
-    public void test1()
-    {
+    void test1() {
         Locker.disable();
         int seconds = 2;
 
         int a = 0;
         long start = System.currentTimeMillis();
-        while (System.currentTimeMillis() - start < seconds * 1000)
-        {
-            try (LockCloser closer = sync.withLock())
-            {
+        while (System.currentTimeMillis() - start < seconds * 1000) {
+            try (LockCloser closer = sync.withLock()) {
                 a++;
             }
         }
@@ -30,10 +26,8 @@ public class LockerTest
         Locker.enable();
         a = 0;
         start = System.currentTimeMillis();
-        while (System.currentTimeMillis() - start < seconds * 1000)
-        {
-            try (LockCloser closer = sync.withLock())
-            {
+        while (System.currentTimeMillis() - start < seconds * 1000) {
+            try (LockCloser closer = sync.withLock()) {
                 a++;
             }
         }
@@ -41,10 +35,8 @@ public class LockerTest
 
         a = 0;
         start = System.currentTimeMillis();
-        while (System.currentTimeMillis() - start < seconds * 1000)
-        {
-            synchronized (sync)
-            {
+        while (System.currentTimeMillis() - start < seconds * 1000) {
+            synchronized (sync) {
                 a++;
             }
         }
@@ -58,8 +50,7 @@ public class LockerTest
     int concurrentCounter3 = 0;
 
     @Test
-    public void testConcurrency() throws InterruptedException
-    {
+    void testConcurrency() throws InterruptedException {
         Lockable s1 = new Lockable();
         Lockable s2 = new Lockable();
         Lockable s3 = new Lockable();
@@ -69,10 +60,8 @@ public class LockerTest
         Locker.enable();
         stop = false;
         Runnable runable2 = () -> {
-            while (!stop)
-            {
-                try (LockCloser closer = s1.withLock())
-                {
+            while (!stop) {
+                try (LockCloser closer = s1.withLock()) {
                     concurrentCounter2++;
                 }
             }
@@ -89,10 +78,8 @@ public class LockerTest
         stop = false;
 
         Runnable runable = () -> {
-            while (!stop)
-            {
-                try (LockCloser closer = s2.withLock())
-                {
+            while (!stop) {
+                try (LockCloser closer = s2.withLock()) {
                     concurrentCounter1++;
                 }
             }
@@ -108,10 +95,8 @@ public class LockerTest
         stop = false;
 
         Runnable runable3 = () -> {
-            while (!stop)
-            {
-                synchronized (s3)
-                {
+            while (!stop) {
+                synchronized (s3) {
                     concurrentCounter3++;
                 }
             }

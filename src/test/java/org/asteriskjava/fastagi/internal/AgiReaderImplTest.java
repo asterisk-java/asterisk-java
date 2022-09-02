@@ -16,38 +16,32 @@
  */
 package org.asteriskjava.fastagi.internal;
 
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
-import java.net.InetAddress;
-
 import org.asteriskjava.fastagi.AgiHangupException;
 import org.asteriskjava.fastagi.AgiReader;
 import org.asteriskjava.fastagi.AgiRequest;
 import org.asteriskjava.fastagi.reply.AgiReply;
 import org.asteriskjava.util.SocketConnectionFacade;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class AgiReaderImplTest
-{
+import java.net.InetAddress;
+
+import static org.easymock.EasyMock.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
+class AgiReaderImplTest {
     private AgiReader agiReader;
     private SocketConnectionFacade socket;
 
-    @Before
-    public void setUp()
-    {
+    @BeforeEach
+    void setUp() {
         this.socket = createMock(SocketConnectionFacade.class);
         this.agiReader = new FastAgiReader(socket);
     }
 
     @Test
-    public void testReadRequest() throws Exception
-    {
+    void testReadRequest() throws Exception {
         AgiRequest request;
 
         expect(socket.readLine()).andReturn("agi_network: yes");
@@ -76,26 +70,25 @@ public class AgiReaderImplTest
 
         request = agiReader.readRequest();
 
-        assertEquals("incorrect script", "myscript.agi", request.getScript());
-        assertEquals("incorrect requestURL", "agi://host/myscript.agi", request.getRequestURL());
-        assertEquals("incorrect channel", "SIP/1234-d715", request.getChannel());
-        assertEquals("incorrect local address", ipLocal[0], request.getLocalAddress().getAddress()[0]);
-        assertEquals("incorrect local address", ipLocal[1], request.getLocalAddress().getAddress()[1]);
-        assertEquals("incorrect local address", ipLocal[2], request.getLocalAddress().getAddress()[2]);
-        assertEquals("incorrect local address", ipLocal[3], request.getLocalAddress().getAddress()[3]);
-        assertEquals("incorrect local port", 1234, request.getLocalPort());
-        assertEquals("incorrect remote address", ipRemote[0], request.getRemoteAddress().getAddress()[0]);
-        assertEquals("incorrect remote address", ipRemote[1], request.getRemoteAddress().getAddress()[1]);
-        assertEquals("incorrect remote address", ipRemote[2], request.getRemoteAddress().getAddress()[2]);
-        assertEquals("incorrect remote address", ipRemote[3], request.getRemoteAddress().getAddress()[3]);
-        assertEquals("incorrect remote port", 1235, request.getRemotePort());
+        assertEquals("myscript.agi", request.getScript(), "incorrect script");
+        assertEquals("agi://host/myscript.agi", request.getRequestURL(), "incorrect requestURL");
+        assertEquals("SIP/1234-d715", request.getChannel(), "incorrect channel");
+        assertEquals(ipLocal[0], request.getLocalAddress().getAddress()[0], "incorrect local address");
+        assertEquals(ipLocal[1], request.getLocalAddress().getAddress()[1], "incorrect local address");
+        assertEquals(ipLocal[2], request.getLocalAddress().getAddress()[2], "incorrect local address");
+        assertEquals(ipLocal[3], request.getLocalAddress().getAddress()[3], "incorrect local address");
+        assertEquals(1234, request.getLocalPort(), "incorrect local port");
+        assertEquals(ipRemote[0], request.getRemoteAddress().getAddress()[0], "incorrect remote address");
+        assertEquals(ipRemote[1], request.getRemoteAddress().getAddress()[1], "incorrect remote address");
+        assertEquals(ipRemote[2], request.getRemoteAddress().getAddress()[2], "incorrect remote address");
+        assertEquals(ipRemote[3], request.getRemoteAddress().getAddress()[3], "incorrect remote address");
+        assertEquals(1235, request.getRemotePort(), "incorrect remote port");
 
         verify(socket);
     }
 
     @Test
-    public void testReadReply() throws Exception
-    {
+    void testReadReply() throws Exception {
         AgiReply reply;
 
         expect(socket.readLine()).andReturn("200 result=49 endpos=2240");
@@ -104,15 +97,14 @@ public class AgiReaderImplTest
 
         reply = agiReader.readReply();
 
-        assertEquals("Incorrect status", AgiReply.SC_SUCCESS, reply.getStatus());
-        assertEquals("Incorrect result", 49, reply.getResultCode());
+        assertEquals(AgiReply.SC_SUCCESS, reply.getStatus(), "Incorrect status");
+        assertEquals(49, reply.getResultCode(), "Incorrect result");
 
         verify(socket);
     }
 
     @Test
-    public void testReadReplyInvalidOrUnknownCommand() throws Exception
-    {
+    void testReadReplyInvalidOrUnknownCommand() throws Exception {
         AgiReply reply;
 
         expect(socket.readLine()).andReturn("510 Invalid or unknown command");
@@ -121,14 +113,13 @@ public class AgiReaderImplTest
 
         reply = agiReader.readReply();
 
-        assertEquals("Incorrect status", AgiReply.SC_INVALID_OR_UNKNOWN_COMMAND, reply.getStatus());
+        assertEquals(AgiReply.SC_INVALID_OR_UNKNOWN_COMMAND, reply.getStatus(), "Incorrect status");
 
         verify(socket);
     }
 
     @Test
-    public void testReadReplyInvalidCommandSyntax() throws Exception
-    {
+    void testReadReplyInvalidCommandSyntax() throws Exception {
         AgiReply reply;
 
         expect(socket.readLine()).andReturn("520-Invalid command syntax.  Proper usage follows:");
@@ -142,26 +133,22 @@ public class AgiReaderImplTest
 
         reply = agiReader.readReply();
 
-        assertEquals("Incorrect status", AgiReply.SC_INVALID_COMMAND_SYNTAX, reply.getStatus());
-        assertEquals("Incorrect synopsis", "DATABASE DEL <family> <key>", reply.getSynopsis());
+        assertEquals(AgiReply.SC_INVALID_COMMAND_SYNTAX, reply.getStatus(), "Incorrect status");
+        assertEquals("DATABASE DEL <family> <key>", reply.getSynopsis(), "Incorrect synopsis");
 
         verify(socket);
     }
 
     @Test
-    public void testReadReplyWhenHungUp() throws Exception
-    {
+    void testReadReplyWhenHungUp() throws Exception {
         expect(socket.readLine()).andReturn(null);
 
         replay(socket);
 
-        try
-        {
+        try {
             agiReader.readReply();
             fail("Must throw AgiHangupException");
-        }
-        catch (AgiHangupException e)
-        {
+        } catch (AgiHangupException e) {
         }
 
         verify(socket);

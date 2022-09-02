@@ -17,72 +17,65 @@
 package org.asteriskjava.manager.internal;
 
 import org.asteriskjava.manager.event.*;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class EventBuilderImplTest
-{
+class EventBuilderImplTest {
     private EventBuilder eventBuilder;
     private Map<String, Object> properties;
 
-    @Before
-    public void setUp()
-    {
+    @BeforeEach
+    void setUp() {
         this.eventBuilder = new EventBuilderImpl();
         this.properties = new HashMap<String, Object>();
     }
 
     @Test
-    public void testRegisterEvent()
-    {
+    void testRegisterEvent() {
         eventBuilder.registerEventClass(NewChannelEvent.class);
     }
 
     @Test
-    public void testRegisterUserEventWithA()
-    {
+    void testRegisterUserEventWithA() {
         ManagerEvent event;
 
         eventBuilder.registerEventClass(A.class);
         properties.put("event", "UserEventA");
         event = eventBuilder.buildEvent(this, properties);
 
-        assertTrue("Wrong type", event instanceof A);
+        assertTrue(event instanceof A, "Wrong type");
     }
 
     @Test
-    public void testRegisterUserEventWithBEvent()
-    {
+    void testRegisterUserEventWithBEvent() {
         ManagerEvent event;
 
         eventBuilder.registerEventClass(BEvent.class);
         properties.put("event", "UserEventB");
         event = eventBuilder.buildEvent(this, properties);
 
-        assertTrue("Wrong type", event instanceof BEvent);
+        assertTrue(event instanceof BEvent, "Wrong type");
     }
 
     @Test
-    public void testRegisterUserEventWithUserEventC()
-    {
+    void testRegisterUserEventWithUserEventC() {
         ManagerEvent event;
 
         eventBuilder.registerEventClass(UserEventC.class);
         properties.put("event", "UserEventC");
         event = eventBuilder.buildEvent(this, properties);
 
-        assertTrue("Wrong type", event instanceof UserEventC);
+        assertTrue(event instanceof UserEventC, "Wrong type");
     }
 
     @Test
-    public void testRegisterUserEventWithUserEventCAndAsterisk14()
-    {
+    void testRegisterUserEventWithUserEventCAndAsterisk14() {
         ManagerEvent event;
 
         eventBuilder.registerEventClass(UserEventC.class);
@@ -90,60 +83,54 @@ public class EventBuilderImplTest
         properties.put("userevent", "C");
         event = eventBuilder.buildEvent(this, properties);
 
-        assertTrue("Wrong type", event instanceof UserEventC);
+        assertTrue(event instanceof UserEventC, "Wrong type");
     }
 
     @Test
-    public void testRegisterUserEventWithUserEventDEvent()
-    {
+    void testRegisterUserEventWithUserEventDEvent() {
         ManagerEvent event;
 
         eventBuilder.registerEventClass(UserEventDEvent.class);
         properties.put("event", "UserEventD");
         event = eventBuilder.buildEvent(this, properties);
 
-        assertTrue("Wrong type", event instanceof UserEventDEvent);
+        assertTrue(event instanceof UserEventDEvent, "Wrong type");
     }
 
-	@Test
-	public void testBuildEventWithOverrideSetter() {
-		ManagerEvent event;
+    @Test
+    void testBuildEventWithOverrideSetter() {
+        ManagerEvent event;
 
-		eventBuilder.registerEventClass(EEvent.class);
-		properties.put("event", "e");
-		properties.put("line", "true");
-		properties.put("exten", "1abz");
-		event = eventBuilder.buildEvent(this, properties);
+        eventBuilder.registerEventClass(EEvent.class);
+        properties.put("event", "e");
+        properties.put("line", "true");
+        properties.put("exten", "1abz");
+        event = eventBuilder.buildEvent(this, properties);
 
-		assertTrue("Wrong type", event instanceof EEvent);
-		assertEquals("1abz", event.getExten());
-		assertEquals(Integer.valueOf(1), event.getLine());
-		assertTrue(((EEvent) event).getLineAsBoolean());
-	}
+        assertTrue(event instanceof EEvent, "Wrong type");
+        assertEquals("1abz", event.getExten());
+        assertEquals(Integer.valueOf(1), event.getLine());
+        assertTrue(((EEvent) event).getLineAsBoolean());
+    }
 
-	@Test
-    public void testRegisterEventWithAbstractEvent()
-    {
-        try
-        {
+    @Test
+    void testRegisterEventWithAbstractEvent() {
+        try {
             eventBuilder.registerEventClass(AbstractChannelEvent.class);
             fail("registerEvent() must not accept abstract classes");
-        }
-        catch (IllegalArgumentException ex)
-        {
+        } catch (IllegalArgumentException ex) {
         }
     }
 
     /*
-     * public void testGetSetters() { Map setters; EventBuilderImpl eventBuilder
+     * void testGetSetters() { Map setters; EventBuilderImpl eventBuilder
      * = getEventBuilder(); setters =
      * eventBuilder.getSetters(NewChannelEvent.class); assertTrue("Setter not
      * found", setters.containsKey("callerid")); }
      */
 
     @Test
-    public void testBuildEventWithMixedCaseSetter()
-    {
+    void testBuildEventWithMixedCaseSetter() {
         String callerid = "1234";
         NewChannelEvent event;
 
@@ -152,14 +139,13 @@ public class EventBuilderImplTest
         event = (NewChannelEvent) eventBuilder.buildEvent(this, properties);
 
         assertNotNull(event);
-        assertEquals("Returned event is of wrong type", NewChannelEvent.class, event.getClass());
-        assertEquals("String property not set correctly", callerid, event.getCallerIdNum());
-        assertEquals("Source not set correctly", this, event.getSource());
+        assertEquals(NewChannelEvent.class, event.getClass(), "Returned event is of wrong type");
+        assertEquals(callerid, event.getCallerIdNum(), "String property not set correctly");
+        assertEquals(this, event.getSource(), "Source not set correctly");
     }
 
     @Test
-    public void testBuildEventWithIntegerProperty()
-    {
+    void testBuildEventWithIntegerProperty() {
         String channel = "SIP/1234";
         Integer priority = 1;
         NewExtenEvent event;
@@ -170,14 +156,13 @@ public class EventBuilderImplTest
         event = (NewExtenEvent) eventBuilder.buildEvent(this, properties);
 
         assertNotNull(event);
-        assertEquals("Returned event is of wrong type", NewExtenEvent.class, event.getClass());
-        assertEquals("String property not set correctly", channel, event.getChannel());
-        assertEquals("Integer property not set correctly", priority, event.getPriority());
+        assertEquals(NewExtenEvent.class, event.getClass(), "Returned event is of wrong type");
+        assertEquals(channel, event.getChannel(), "String property not set correctly");
+        assertEquals(priority, event.getPriority(), "Integer property not set correctly");
     }
 
     @Test
-    public void testBuildEventWithBooleanProperty()
-    {
+    void testBuildEventWithBooleanProperty() {
         ShutdownEvent event;
 
         eventBuilder.registerEventClass(ShutdownEvent.class);
@@ -186,13 +171,12 @@ public class EventBuilderImplTest
         event = (ShutdownEvent) eventBuilder.buildEvent(this, properties);
 
         assertNotNull(event);
-        assertEquals("Returned event is of wrong type", ShutdownEvent.class, event.getClass());
-        assertEquals("Boolean property not set correctly", Boolean.TRUE, event.getRestart());
+        assertEquals(ShutdownEvent.class, event.getClass(), "Returned event is of wrong type");
+        assertEquals(Boolean.TRUE, event.getRestart(), "Boolean property not set correctly");
     }
 
     @Test
-    public void testBuildEventWithBooleanPropertyOfValueYes()
-    {
+    void testBuildEventWithBooleanPropertyOfValueYes() {
         ShutdownEvent event;
 
         eventBuilder.registerEventClass(ShutdownEvent.class);
@@ -201,13 +185,12 @@ public class EventBuilderImplTest
         event = (ShutdownEvent) eventBuilder.buildEvent(this, properties);
 
         assertNotNull(event);
-        assertEquals("Returned event is of wrong type", ShutdownEvent.class, event.getClass());
-        assertEquals("Boolean property not set correctly", Boolean.TRUE, event.getRestart());
+        assertEquals(ShutdownEvent.class, event.getClass(), "Returned event is of wrong type");
+        assertEquals(Boolean.TRUE, event.getRestart(), "Boolean property not set correctly");
     }
 
     @Test
-    public void testBuildEventWithBooleanPropertyOfValueNo()
-    {
+    void testBuildEventWithBooleanPropertyOfValueNo() {
         ShutdownEvent event;
 
         eventBuilder.registerEventClass(ShutdownEvent.class);
@@ -216,13 +199,12 @@ public class EventBuilderImplTest
         event = (ShutdownEvent) eventBuilder.buildEvent(this, properties);
 
         assertNotNull(event);
-        assertEquals("Returned event is of wrong type", ShutdownEvent.class, event.getClass());
-        assertEquals("Boolean property not set correctly", Boolean.FALSE, event.getRestart());
+        assertEquals(ShutdownEvent.class, event.getClass(), "Returned event is of wrong type");
+        assertEquals(Boolean.FALSE, event.getRestart(), "Boolean property not set correctly");
     }
 
     @Test
-    public void testBuildEventWithUnregisteredEvent()
-    {
+    void testBuildEventWithUnregisteredEvent() {
         ManagerEvent event;
 
         properties.put("event", "Nonexisting");
@@ -232,8 +214,7 @@ public class EventBuilderImplTest
     }
 
     @Test
-    public void testBuildEventWithEmptyAttributes()
-    {
+    void testBuildEventWithEmptyAttributes() {
         ManagerEvent event;
 
         event = eventBuilder.buildEvent(this, properties);
@@ -242,8 +223,7 @@ public class EventBuilderImplTest
     }
 
     @Test
-    public void testBuildEventWithResponseEvent()
-    {
+    void testBuildEventWithResponseEvent() {
         ManagerEvent event;
 
         properties.put("event", "StatusComplete");
@@ -251,13 +231,12 @@ public class EventBuilderImplTest
         event = eventBuilder.buildEvent(this, properties);
 
         assertNotNull(event);
-        assertEquals("Returned event is of wrong type", StatusCompleteEvent.class, event.getClass());
-        assertEquals("ActionId not set correctly", "origId", ((ResponseEvent) event).getActionId());
+        assertEquals(StatusCompleteEvent.class, event.getClass(), "Returned event is of wrong type");
+        assertEquals("origId", ((ResponseEvent) event).getActionId(), "ActionId not set correctly");
     }
 
     @Test
-    public void testBuildEventWithSourceProperty()
-    {
+    void testBuildEventWithSourceProperty() {
         ManagerEvent event;
 
         properties.put("event", "Cdr");
@@ -265,12 +244,11 @@ public class EventBuilderImplTest
         event = eventBuilder.buildEvent(this, properties);
 
         assertNotNull(event);
-        assertEquals("Src property not set correctly", "source value", ((CdrEvent) event).getSrc());
+        assertEquals("source value", ((CdrEvent) event).getSrc(), "Src property not set correctly");
     }
 
     @Test
-    public void testBuildEventWithClassProperty()
-    {
+    void testBuildEventWithClassProperty() {
         ManagerEvent event;
 
         properties.put("event", "MusicOnHold");
@@ -278,12 +256,11 @@ public class EventBuilderImplTest
         event = eventBuilder.buildEvent(this, properties);
 
         assertNotNull(event);
-        assertEquals("ClassName property not set correctly", "default", ((MusicOnHoldEvent) event).getClassName());
+        assertEquals("default", ((MusicOnHoldEvent) event).getClassName(), "ClassName property not set correctly");
     }
 
     @Test
-    public void testBuildEventWithSpecialCharacterProperty()
-    {
+    void testBuildEventWithSpecialCharacterProperty() {
         ManagerEvent event;
 
         properties.put("event", "Hangup");
@@ -291,12 +268,11 @@ public class EventBuilderImplTest
         event = eventBuilder.buildEvent(this, properties);
 
         assertNotNull(event);
-        assertEquals("CauseTxt property not set correctly", "some text", ((HangupEvent) event).getCauseTxt());
+        assertEquals("some text", ((HangupEvent) event).getCauseTxt(), "CauseTxt property not set correctly");
     }
 
     @Test
-    public void testBuildEventWithCidCallingPres()
-    {
+    void testBuildEventWithCidCallingPres() {
         ManagerEvent event;
 
         properties.put("event", "Newcallerid");
@@ -304,15 +280,12 @@ public class EventBuilderImplTest
         event = eventBuilder.buildEvent(this, properties);
 
         assertNotNull(event);
-        assertEquals("CidCallingPres property not set correctly", Integer.valueOf(123),
-                ((NewCallerIdEvent) event).getCidCallingPres());
-        assertEquals("CidCallingPresTxt property not set correctly", "nice description",
-                ((NewCallerIdEvent) event).getCidCallingPresTxt());
+        assertEquals(Integer.valueOf(123), ((NewCallerIdEvent) event).getCidCallingPres(), "CidCallingPres property not set correctly");
+        assertEquals("nice description", ((NewCallerIdEvent) event).getCidCallingPresTxt(), "CidCallingPresTxt property not set correctly");
     }
 
     @Test
-    public void testBuildEventWithCidCallingPresAndEmptyTxt()
-    {
+    void testBuildEventWithCidCallingPresAndEmptyTxt() {
         ManagerEvent event;
 
         properties.put("event", "Newcallerid");
@@ -320,15 +293,12 @@ public class EventBuilderImplTest
         event = eventBuilder.buildEvent(this, properties);
 
         assertNotNull(event);
-        assertEquals("CidCallingPres property not set correctly", Integer.valueOf(123),
-                ((NewCallerIdEvent) event).getCidCallingPres());
-        assertNull("CidCallingPresTxt property not set correctly (must be null)",
-                ((NewCallerIdEvent) event).getCidCallingPresTxt());
+        assertEquals(Integer.valueOf(123), ((NewCallerIdEvent) event).getCidCallingPres(), "CidCallingPres property not set correctly");
+        assertNull(((NewCallerIdEvent) event).getCidCallingPresTxt(), "CidCallingPresTxt property not set correctly (must be null)");
     }
 
     @Test
-    public void testBuildEventWithCidCallingPresAndMissingTxt()
-    {
+    void testBuildEventWithCidCallingPresAndMissingTxt() {
         ManagerEvent event;
 
         properties.put("event", "Newcallerid");
@@ -336,15 +306,12 @@ public class EventBuilderImplTest
         event = eventBuilder.buildEvent(this, properties);
 
         assertNotNull(event);
-        assertEquals("CidCallingPres property not set correctly", Integer.valueOf(123),
-                ((NewCallerIdEvent) event).getCidCallingPres());
-        assertNull("CidCallingPresTxt property not set correctly (must be null)",
-                ((NewCallerIdEvent) event).getCidCallingPresTxt());
+        assertEquals(Integer.valueOf(123), ((NewCallerIdEvent) event).getCidCallingPres(), "CidCallingPres property not set correctly");
+        assertNull(((NewCallerIdEvent) event).getCidCallingPresTxt(), "CidCallingPresTxt property not set correctly (must be null)");
     }
 
     @Test
-    public void testBuildEventWithInvalidCidCallingPres()
-    {
+    void testBuildEventWithInvalidCidCallingPres() {
         ManagerEvent event;
 
         properties.put("event", "Newcallerid");
@@ -352,15 +319,12 @@ public class EventBuilderImplTest
         event = eventBuilder.buildEvent(this, properties);
 
         assertNotNull(event);
-        assertNull("CidCallingPres property not set correctly (must be null)",
-                ((NewCallerIdEvent) event).getCidCallingPres());
-        assertNull("CidCallingPresTxt property not set correctly (must be null)",
-                ((NewCallerIdEvent) event).getCidCallingPresTxt());
+        assertNull(((NewCallerIdEvent) event).getCidCallingPres(), "CidCallingPres property not set correctly (must be null)");
+        assertNull(((NewCallerIdEvent) event).getCidCallingPresTxt(), "CidCallingPresTxt property not set correctly (must be null)");
     }
 
     @Test
-    public void testBuildEventWithReason()
-    {
+    void testBuildEventWithReason() {
         ManagerEvent event;
 
         properties.put("event", "LogChannel");
@@ -368,13 +332,12 @@ public class EventBuilderImplTest
         event = eventBuilder.buildEvent(this, properties);
 
         assertNotNull(event);
-        assertEquals("Reason property not set correctly", Integer.valueOf(123), ((LogChannelEvent) event).getReason());
-        assertEquals("ReasonTxt property not set correctly", "a reason", ((LogChannelEvent) event).getReasonTxt());
+        assertEquals(Integer.valueOf(123), ((LogChannelEvent) event).getReason(), "Reason property not set correctly");
+        assertEquals("a reason", ((LogChannelEvent) event).getReasonTxt(), "ReasonTxt property not set correctly");
     }
 
     @Test
-    public void testBuildEventWithTimestamp()
-    {
+    void testBuildEventWithTimestamp() {
         ManagerEvent event;
 
         properties.put("event", "NewChannel");
@@ -382,12 +345,11 @@ public class EventBuilderImplTest
         event = eventBuilder.buildEvent(this, properties);
 
         assertNotNull(event);
-        assertEquals("Timestamp property not set correctly", 1159310429.569108D, event.getTimestamp(), 0.0001);
+        assertEquals(1159310429.569108D, event.getTimestamp(), 0.0001, "Timestamp property not set correctly");
     }
 
     @Test
-    public void testBuildEventWithLong()
-    {
+    void testBuildEventWithLong() {
         ManagerEvent event;
 
         properties.put("event", "MeetmeLeave");
@@ -395,12 +357,11 @@ public class EventBuilderImplTest
         event = eventBuilder.buildEvent(this, properties);
 
         assertNotNull(event);
-        assertEquals("Duration property not set correctly", new Long(569108), ((MeetMeLeaveEvent) event).getDuration());
+        assertEquals(new Long(569108), ((MeetMeLeaveEvent) event).getDuration(), "Duration property not set correctly");
     }
 
     @Test
-    public void testBuildEventWithDouble()
-    {
+    void testBuildEventWithDouble() {
         ManagerEvent event;
 
         properties.put("event", "RTPReceiverStat");
@@ -408,12 +369,11 @@ public class EventBuilderImplTest
         event = eventBuilder.buildEvent(this, properties);
 
         assertNotNull(event);
-        assertEquals("Transit property not set correctly", 12.3456, ((RtpReceiverStatEvent) event).getTransit(), 0.0001);
+        assertEquals(12.3456, ((RtpReceiverStatEvent) event).getTransit(), 0.0001, "Transit property not set correctly");
     }
 
     @Test
-    public void testBuildEventWithNullLiteral()
-    {
+    void testBuildEventWithNullLiteral() {
         CdrEvent event;
 
         properties.put("event", "Cdr");
@@ -421,13 +381,12 @@ public class EventBuilderImplTest
         event = (CdrEvent) eventBuilder.buildEvent(this, properties);
 
         assertNotNull(event);
-        assertEquals("Returned event is of wrong type", CdrEvent.class, event.getClass());
-        assertNull("Property with value \"<none>\" is not null", event.getChannel());
+        assertEquals(CdrEvent.class, event.getClass(), "Returned event is of wrong type");
+        assertNull(event.getChannel(), "Property with value \"<none>\" is not null");
     }
 
     @Test
-    public void testBuildEventWithDashInPropertyName()
-    {
+    void testBuildEventWithDashInPropertyName() {
         TransferEvent event;
 
         properties.put("event", "Transfer");
@@ -435,13 +394,12 @@ public class EventBuilderImplTest
         event = (TransferEvent) eventBuilder.buildEvent(this, properties);
 
         assertNotNull(event);
-        assertEquals("Returned event is of wrong type", TransferEvent.class, event.getClass());
-        assertEquals("Property SIP-Callid is not set correctly", "12345", event.getSipCallId());
+        assertEquals(TransferEvent.class, event.getClass(), "Returned event is of wrong type");
+        assertEquals("12345", event.getSipCallId(), "Property SIP-Callid is not set correctly");
     }
 
     @Test
-    public void testBuildEventForRtpReceiverStatEventAJ162()
-    {
+    void testBuildEventForRtpReceiverStatEventAJ162() {
         RtpReceiverStatEvent event;
 
         properties.put("event", "RtpReceiverStat");
@@ -450,13 +408,12 @@ public class EventBuilderImplTest
         event = (RtpReceiverStatEvent) eventBuilder.buildEvent(this, properties);
 
         assertNotNull(event);
-        assertEquals("Returned event is of wrong type", RtpReceiverStatEvent.class, event.getClass());
-        assertEquals("Property SSRC is not set correctly", 3776236237l, (long) event.getSsrc());
+        assertEquals(RtpReceiverStatEvent.class, event.getClass(), "Returned event is of wrong type");
+        assertEquals(3776236237l, (long) event.getSsrc(), "Property SSRC is not set correctly");
     }
 
     @Test
-    public void testBuildEventForRtpReceiverStatEventAJ139()
-    {
+    void testBuildEventForRtpReceiverStatEventAJ139() {
         RtpReceiverStatEvent event;
 
         properties.put("event", "RtpReceiverStat");
@@ -464,13 +421,12 @@ public class EventBuilderImplTest
         event = (RtpReceiverStatEvent) eventBuilder.buildEvent(this, properties);
 
         assertNotNull(event);
-        assertEquals("Returned event is of wrong type", RtpReceiverStatEvent.class, event.getClass());
-        assertEquals("Property receivedPacket is not set correctly", 0, (long) event.getReceivedPackets());
+        assertEquals(RtpReceiverStatEvent.class, event.getClass(), "Returned event is of wrong type");
+        assertEquals(0, (long) event.getReceivedPackets(), "Property receivedPacket is not set correctly");
     }
 
     @Test
-    public void testBuildEventWithMapProperty()
-    {
+    void testBuildEventWithMapProperty() {
         AgentCalledEvent event;
 
         properties.put("event", "AgentCalled");
@@ -478,15 +434,14 @@ public class EventBuilderImplTest
         event = (AgentCalledEvent) eventBuilder.buildEvent(this, properties);
 
         assertNotNull(event);
-        assertEquals("Returned event is of wrong type", AgentCalledEvent.class, event.getClass());
-        assertEquals("Property variables[var1] is not set correctly", "val1", event.getVariables().get("var1"));
-        assertEquals("Property variables[var2] is not set correctly", "val2", event.getVariables().get("var2"));
-        assertEquals("Invalid size of variables property", 2, event.getVariables().size());
+        assertEquals(AgentCalledEvent.class, event.getClass(), "Returned event is of wrong type");
+        assertEquals("val1", event.getVariables().get("var1"), "Property variables[var1] is not set correctly");
+        assertEquals("val2", event.getVariables().get("var2"), "Property variables[var2] is not set correctly");
+        assertEquals(2, event.getVariables().size(), "Invalid size of variables property");
     }
 
     @Test
-    public void testBuildEventWithMapPropertyAndOnlyOneEntry()
-    {
+    void testBuildEventWithMapPropertyAndOnlyOneEntry() {
         AgentCalledEvent event;
 
         properties.put("event", "AgentCalled");
@@ -494,14 +449,13 @@ public class EventBuilderImplTest
         event = (AgentCalledEvent) eventBuilder.buildEvent(this, properties);
 
         assertNotNull(event);
-        assertEquals("Returned event is of wrong type", AgentCalledEvent.class, event.getClass());
-        assertEquals("Property variables[var1] is not set correctly", "val1", event.getVariables().get("var1"));
-        assertEquals("Invalid size of variables property", 1, event.getVariables().size());
+        assertEquals(AgentCalledEvent.class, event.getClass(), "Returned event is of wrong type");
+        assertEquals("val1", event.getVariables().get("var1"), "Property variables[var1] is not set correctly");
+        assertEquals(1, event.getVariables().size(), "Invalid size of variables property");
     }
 
     @Test
-    public void testBuildEventWithSpace()
-    {
+    void testBuildEventWithSpace() {
         T38FaxStatusEvent event;
 
         properties.put("event", "T38FaxStatus");
@@ -509,13 +463,12 @@ public class EventBuilderImplTest
         event = (T38FaxStatusEvent) eventBuilder.buildEvent(this, properties);
 
         assertNotNull(event);
-        assertEquals("Returned event is of wrong type", T38FaxStatusEvent.class, event.getClass());
-        assertEquals("Property 'T38 Session Duration' is not set correctly", "120", event.getT38SessionDuration());
+        assertEquals(T38FaxStatusEvent.class, event.getClass(), "Returned event is of wrong type");
+        assertEquals("120", event.getT38SessionDuration(), "Property 'T38 Session Duration' is not set correctly");
     }
 
     @Test
-    public void testBuildEventWithPeerEntryEventList()
-    {
+    void testBuildEventWithPeerEntryEventList() {
         PeersEvent event;
 
         properties.put("event", Arrays.asList("PeerEntry", "PeerEntry", "PeerEntry", "PeerlistComplete"));
@@ -526,23 +479,19 @@ public class EventBuilderImplTest
         event = (PeersEvent) eventBuilder.buildEvent(this, properties);
 
         assertNotNull(event);
-        assertEquals("Returned event is of wrong type", PeersEvent.class, event.getClass());
-        assertEquals("ActionId is invalid", "123", event.getActionId());
-        assertEquals("Property events[objectname] is not set correctly", "a101",
-                event.getChildEvents().get(0).getObjectName());
-        assertEquals("Property events[status] is not set correctly", "OK", event.getChildEvents().get(0).getStatus());
-        assertEquals("Property events[objectname] is not set correctly", "a102",
-                event.getChildEvents().get(1).getObjectName());
-        assertNull("UNKNOWN literal returns NULL status", event.getChildEvents().get(1).getStatus());
-        assertEquals("Property events[objectname] is not set correctly", "a103",
-                event.getChildEvents().get(2).getObjectName());
-        assertEquals("Property events[status] is not set correctly", "LAGGED", event.getChildEvents().get(2).getStatus());
-        assertEquals("Invalid size of peers property", 3, event.getChildEvents().size());
+        assertEquals(PeersEvent.class, event.getClass(), "Returned event is of wrong type");
+        assertEquals("123", event.getActionId(), "ActionId is invalid");
+        assertEquals("a101", event.getChildEvents().get(0).getObjectName(), "Property events[objectname] is not set correctly");
+        assertEquals("OK", event.getChildEvents().get(0).getStatus(), "Property events[status] is not set correctly");
+        assertEquals("a102", event.getChildEvents().get(1).getObjectName(), "Property events[objectname] is not set correctly");
+        assertNull(event.getChildEvents().get(1).getStatus(), "UNKNOWN literal returns NULL status");
+        assertEquals("a103", event.getChildEvents().get(2).getObjectName(), "Property events[objectname] is not set correctly");
+        assertEquals("LAGGED", event.getChildEvents().get(2).getStatus(), "Property events[status] is not set correctly");
+        assertEquals(3, event.getChildEvents().size(), "Invalid size of peers property");
     }
 
     @Test
-    public void testBuildEventWithOnePeerEntryEventList()
-    {
+    void testBuildEventWithOnePeerEntryEventList() {
         PeersEvent event;
 
         properties.put("event", Arrays.asList("PeerEntry", "PeerlistComplete"));
@@ -553,11 +502,10 @@ public class EventBuilderImplTest
         event = (PeersEvent) eventBuilder.buildEvent(this, properties);
 
         assertNotNull(event);
-        assertEquals("Returned event is of wrong type", PeersEvent.class, event.getClass());
-        assertEquals("ActionId is invalid", "123", event.getActionId());
-        assertEquals("Property events[objectname] is not set correctly", "a101",
-                event.getChildEvents().get(0).getObjectName());
-        assertEquals("Property events[status] is not set correctly", "OK", event.getChildEvents().get(0).getStatus());
-        assertEquals("Invalid size of peers property", 1, event.getChildEvents().size());
+        assertEquals(PeersEvent.class, event.getClass(), "Returned event is of wrong type");
+        assertEquals("123", event.getActionId(), "ActionId is invalid");
+        assertEquals("a101", event.getChildEvents().get(0).getObjectName(), "Property events[objectname] is not set correctly");
+        assertEquals("OK", event.getChildEvents().get(0).getStatus(), "Property events[status] is not set correctly");
+        assertEquals(1, event.getChildEvents().size(), "Invalid size of peers property");
     }
 }

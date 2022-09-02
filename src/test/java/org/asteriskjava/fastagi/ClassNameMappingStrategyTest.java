@@ -16,34 +16,29 @@
  */
 package org.asteriskjava.fastagi;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class ClassNameMappingStrategyTest
-{
+class ClassNameMappingStrategyTest {
     private ClassNameMappingStrategy mappingStrategy;
 
-    @Before
-    public void setUp()
-    {
+    @BeforeEach
+    void setUp() {
         this.mappingStrategy = new ClassNameMappingStrategy();
     }
 
     @Test
-    public void testDetermineScript()
-    {
+    void testDetermineScript() {
         AgiScript scriptFirstPass;
         AgiScript scriptSecondPass;
         AgiRequest request;
 
-        request = new SimpleAgiRequest()
-        {
+        request = new SimpleAgiRequest() {
             @Override
-            public String getScript()
-            {
+            public String getScript() {
                 return "org.asteriskjava.fastagi.HelloAgiScript";
             }
         };
@@ -51,24 +46,21 @@ public class ClassNameMappingStrategyTest
         scriptFirstPass = mappingStrategy.determineScript(request);
         scriptSecondPass = mappingStrategy.determineScript(request);
 
-        assertEquals("incorrect script determined", scriptFirstPass.getClass(), HelloAgiScript.class);
+        assertEquals(scriptFirstPass.getClass(), HelloAgiScript.class, "incorrect script determined");
 
-        assertTrue("script instances are not cached", scriptFirstPass == scriptSecondPass);
+        assertTrue(scriptFirstPass == scriptSecondPass, "script instances are not cached");
     }
 
     @Test
-    public void testDetermineScriptWithNonSharedInstance()
-    {
+    void testDetermineScriptWithNonSharedInstance() {
         AgiScript scriptFirstPass;
         AgiScript scriptSecondPass;
         AgiRequest request;
 
         mappingStrategy.setShareInstances(false);
-        request = new SimpleAgiRequest()
-        {
+        request = new SimpleAgiRequest() {
             @Override
-            public String getScript()
-            {
+            public String getScript() {
                 return "org.asteriskjava.fastagi.HelloAgiScript";
             }
         };
@@ -76,8 +68,8 @@ public class ClassNameMappingStrategyTest
         scriptFirstPass = mappingStrategy.determineScript(request);
         scriptSecondPass = mappingStrategy.determineScript(request);
 
-        assertEquals("incorrect script determined", scriptFirstPass.getClass(), HelloAgiScript.class);
+        assertEquals(scriptFirstPass.getClass(), HelloAgiScript.class, "incorrect script determined");
 
-        assertTrue("returned a shared instance", scriptFirstPass != scriptSecondPass);
+        assertTrue(scriptFirstPass != scriptSecondPass, "returned a shared instance");
     }
 }

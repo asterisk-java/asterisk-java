@@ -1,21 +1,18 @@
 package org.asteriskjava.live;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class QueueMemberStateTest
-{
+class QueueMemberStateTest {
     @Test
-    public void testValueOf()
-    {
+    void testValueOf() {
         assertEquals(QueueMemberState.DEVICE_INUSE, QueueMemberState.valueOf("DEVICE_INUSE"));
         assertEquals(QueueMemberState.DEVICE_INUSE, QueueMemberState.valueOf(2));
     }
 
     @Test
-    public void testToString()
-    {
+    void testToString() {
         assertEquals("DEVICE_INUSE", QueueMemberState.DEVICE_INUSE.toString());
     }
 }
