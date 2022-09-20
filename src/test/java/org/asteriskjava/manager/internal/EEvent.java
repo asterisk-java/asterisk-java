@@ -17,7 +17,6 @@
 package org.asteriskjava.manager.internal;
 
 import org.asteriskjava.manager.event.ManagerEvent;
-import org.asteriskjava.manager.event.UserEvent;
 
 public class EEvent
 	extends ManagerEvent {
