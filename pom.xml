@@ -171,6 +171,24 @@
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 			<version>30.1-jre</version>
+			<exclusions>
+				<exclusion>
+				    <groupId>com.google.errorprone</groupId>
+				    <artifactId>error_prone_annotations</artifactId>
+				</exclusion>
+				<exclusion>
+				    <groupId>com.google.code.findbugs</groupId>
+				    <artifactId>jsr305</artifactId>
+				</exclusion>
+				<exclusion>
+				    <groupId>com.google.j2objc</groupId>
+				    <artifactId>j2objc-annotations</artifactId>
+				</exclusion>
+				<exclusion>
+				    <groupId>com.google.guava</groupId>
+				    <artifactId>listenablefuture</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -194,6 +212,12 @@
             <groupId>org.reflections</groupId>
             <artifactId>reflections</artifactId>
             <version>0.10.2</version>
+	    <exclusions>
+                <exclusion>
+                    <groupId>com.google.code.findbugs</groupId>
+                    <artifactId>jsr305</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 	</dependencies>
 	<profiles>
