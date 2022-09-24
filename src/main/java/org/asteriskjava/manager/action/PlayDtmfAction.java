@@ -17,8 +17,10 @@
 package org.asteriskjava.manager.action;
 
 /**
- * The PlayDTMFAction plays a DTMF digit on the specified channel.<p>
- * It is definied in <code>apps/app_senddtmf.c</code>.<p>
+ * The PlayDTMFAction plays a DTMF digit on the specified channel.
+ * <p>
+ * It is definied in <code>apps/app_senddtmf.c</code>.
+ * <p>
  * Available since Asterisk 1.2.8
  *
  * @author srt
@@ -33,12 +35,12 @@ public class PlayDtmfAction extends AbstractManagerAction {
 
     private String channel;
     private String digit;
+    private Integer duration = null;
 
     /**
      * Creates a new empty PlayDtmfAction.
      */
     public PlayDtmfAction() {
-
     }
 
     /**
@@ -94,5 +96,15 @@ public class PlayDtmfAction extends AbstractManagerAction {
      */
     public void setDigit(String digit) {
         this.digit = digit;
+    }
+
+    public void setDuration(Integer duration)
+    {
+        this.duration = duration;
+    }
+
+    public Integer getDuration()
+    {
+        return duration;
     }
 }
