@@ -16,23 +16,22 @@
  */
 package org.asteriskjava.manager;
 
-import java.util.EventListener;
-
 import org.asteriskjava.manager.event.ManagerEvent;
+
+import java.util.EventListener;
 
 
 /**
  * An interface to listen for events received from an Asterisk server.
- * 
- * @see org.asteriskjava.manager.event.ManagerEvent
+ *
  * @author srt
  * @version $Id$
+ * @see org.asteriskjava.manager.event.ManagerEvent
  */
-public interface ManagerEventListener extends EventListener
-{
+public interface ManagerEventListener extends EventListener {
     /**
      * This method is called when an event is received.
-     * 
+     *
      * @param event the event that has been received
      */
     void onManagerEvent(ManagerEvent event);

@@ -23,8 +23,7 @@ package org.asteriskjava.manager.action;
  *
  * @author SYON Communications Inc.
  */
-public class LocalOptimizeAwayAction extends AbstractManagerAction
-{
+public class LocalOptimizeAwayAction extends AbstractManagerAction {
     /**
      * Serializable version identifier.
      */
@@ -34,8 +33,7 @@ public class LocalOptimizeAwayAction extends AbstractManagerAction
     /**
      * Creates a new empty LocalOptimizeAwayAction.
      */
-    public LocalOptimizeAwayAction()
-    {
+    public LocalOptimizeAwayAction() {
 
     }
 
@@ -44,18 +42,16 @@ public class LocalOptimizeAwayAction extends AbstractManagerAction
      *
      * @param channel Name of the channel for clears the flag.
      */
-    public LocalOptimizeAwayAction(String channel)
-    {
-	this.channel = channel;
+    public LocalOptimizeAwayAction(String channel) {
+        this.channel = channel;
     }
 
     /**
      * Returns the name of this action, i.e. "LocalOptimizeAway".
      */
     @Override
-    public String getAction()
-    {
-	return "LocalOptimizeAway";
+    public String getAction() {
+        return "LocalOptimizeAway";
     }
 
     /**
@@ -63,9 +59,8 @@ public class LocalOptimizeAwayAction extends AbstractManagerAction
      *
      * @return Name of the channel for clears the flag.
      */
-    public String getChannel()
-    {
-	return channel;
+    public String getChannel() {
+        return channel;
     }
 
     /**
@@ -73,9 +68,8 @@ public class LocalOptimizeAwayAction extends AbstractManagerAction
      *
      * @param channel Name of the channel for clears the flag.
      */
-    public void setChannel(String channel)
-    {
-	this.channel = channel;
+    public void setChannel(String channel) {
+        this.channel = channel;
     }
 
 }

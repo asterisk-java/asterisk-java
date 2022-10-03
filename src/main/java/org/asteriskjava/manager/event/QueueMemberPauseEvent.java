@@ -1,7 +1,6 @@
 package org.asteriskjava.manager.event;
 
-public class QueueMemberPauseEvent extends QueueMemberPausedEvent
-{
+public class QueueMemberPauseEvent extends QueueMemberPausedEvent {
     private static final long serialVersionUID = 58564514209197321L;
 
     // Logger logger = LogManager.getLogger();
@@ -16,8 +15,7 @@ public class QueueMemberPauseEvent extends QueueMemberPausedEvent
     Integer incall;
     String pausedreason;
 
-    public QueueMemberPauseEvent(Object source)
-    {
+    public QueueMemberPauseEvent(Object source) {
         super(source);
         // TODO Auto-generated constructor stub
     }
@@ -25,112 +23,98 @@ public class QueueMemberPauseEvent extends QueueMemberPausedEvent
     /**
      * @return the membership
      */
-    public String getMembership()
-    {
+    public String getMembership() {
         return membership;
     }
 
     /**
      * @param membership the membership to set
      */
-    public void setMembership(String membership)
-    {
+    public void setMembership(String membership) {
         this.membership = membership;
     }
 
     /**
      * @return the lastcall
      */
-    public Long getLastcall()
-    {
+    public Long getLastcall() {
         return lastcall;
     }
 
     /**
      * @param lastcall the lastcall to set
      */
-    public void setLastcall(Long lastcall)
-    {
+    public void setLastcall(Long lastcall) {
         this.lastcall = lastcall;
     }
 
     /**
      * @return the lastpause time in seconds
      */
-    public Long getLastpause()
-    {
+    public Long getLastpause() {
         return lastpause;
     }
 
     /**
      * @param lastpause the lastpause time in seconds to set
      */
-    public void setLastpause(Long lastpause)
-    {
+    public void setLastpause(Long lastpause) {
         this.lastpause = lastpause;
     }
 
     /**
      * @return the callsTaken
      */
-    public Integer getCallsTaken()
-    {
+    public Integer getCallsTaken() {
         return callsTaken;
     }
 
     /**
      * @param callsTaken the callsTaken to set
      */
-    public void setCallsTaken(Integer callsTaken)
-    {
+    public void setCallsTaken(Integer callsTaken) {
         this.callsTaken = callsTaken;
     }
 
     /**
      * @return the penalty
      */
-    public Integer getPenalty()
-    {
+    public Integer getPenalty() {
         return penalty;
     }
 
     /**
      * @param penalty the penalty to set
      */
-    public void setPenalty(Integer penalty)
-    {
+    public void setPenalty(Integer penalty) {
         this.penalty = penalty;
     }
 
     /**
      * @return the status
      */
-    public Integer getStatus()
-    {
+    public Integer getStatus() {
         return status;
     }
 
     /**
      * @param status the status to set
      */
-    public void setStatus(Integer status)
-    {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
     /**
      * @return the ringinuse
      */
-    public Boolean getRinginuse()
-    {
+    public Boolean getRinginuse() {
         return ringinuse;
     }
 
     /**
      * @param ringinuse the ringinuse to set
      */
-    public void setRinginuse(Boolean ringinuse)
-    {
+    public void setRinginuse(Boolean ringinuse) {
         this.ringinuse = ringinuse;
     }
 
@@ -138,42 +122,36 @@ public class QueueMemberPauseEvent extends QueueMemberPausedEvent
     /**
      * @return the stateInterface
      */
-    public String getStateInterface()
-    {
+    public String getStateInterface() {
         return stateInterface;
     }
 
     /**
      * @param stateInterface the stateInterface to set
      */
-    public void setStateInterface(String stateInterface)
-    {
+    public void setStateInterface(String stateInterface) {
         this.stateInterface = stateInterface;
     }
 
     /**
      * @return get Incall
      */
-    public Integer getIncall()
-    {
+    public Integer getIncall() {
         return incall;
     }
 
     /**
      * @param setIncall the incall to set
      */
-    public void setIncall(Integer incall)
-    {
+    public void setIncall(Integer incall) {
         this.incall = incall;
     }
 
-    public String getPausedreason()
-    {
+    public String getPausedreason() {
         return pausedreason;
     }
 
-    public void setPausedreason(String pausedreason)
-    {
+    public void setPausedreason(String pausedreason) {
         this.pausedreason = pausedreason;
     }
 

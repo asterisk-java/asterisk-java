@@ -21,13 +21,12 @@ package org.asteriskjava.manager.event;
  * AgentCallbackLogin is logged of.
  * <p>
  * It is implemented in <code>channels/chan_agent.c</code>
- * 
- * @see org.asteriskjava.manager.event.AgentCallbackLoginEvent
+ *
  * @author srt
  * @version $Id$
+ * @see org.asteriskjava.manager.event.AgentCallbackLoginEvent
  */
-public class AgentCallbackLogoffEvent extends ManagerEvent
-{
+public class AgentCallbackLogoffEvent extends ManagerEvent {
     /**
      * Serializable version identifier
      */
@@ -41,44 +40,37 @@ public class AgentCallbackLogoffEvent extends ManagerEvent
     /**
      * @param source
      */
-    public AgentCallbackLogoffEvent(Object source)
-    {
+    public AgentCallbackLogoffEvent(Object source) {
         super(source);
     }
 
     /**
      * Returns the name of the agent that logged off.
      */
-    public String getAgent()
-    {
+    public String getAgent() {
         return agent;
     }
 
     /**
      * Sets the name of the agent that logged off.
      */
-    public void setAgent(String agent)
-    {
+    public void setAgent(String agent) {
         this.agent = agent;
     }
 
-    public String getLoginChan()
-    {
+    public String getLoginChan() {
         return loginChan;
     }
 
-    public void setLoginChan(String loginChan)
-    {
+    public void setLoginChan(String loginChan) {
         this.loginChan = loginChan;
     }
 
-    public Long getLoginTime()
-    {
+    public Long getLoginTime() {
         return loginTime;
     }
 
-    public void setLoginTime(Long loginTime)
-    {
+    public void setLoginTime(Long loginTime) {
         this.loginTime = loginTime;
     }
 
@@ -87,26 +79,22 @@ public class AgentCallbackLogoffEvent extends ManagerEvent
      * logged off due to not answering the phone in time. Autologoff is configured by setting
      * <code>autologoff</code> to the appropriate number of seconds in <code>agents.conf</code>.
      */
-    public String getReason()
-    {
+    public String getReason() {
         return reason;
     }
 
     /**
      * Sets the reason for the logoff.
      */
-    public void setReason(String reason)
-    {
+    public void setReason(String reason) {
         this.reason = reason;
     }
 
-    public String getUniqueId()
-    {
+    public String getUniqueId() {
         return uniqueId;
     }
 
-    public void setUniqueId(String uniqueId)
-    {
+    public void setUniqueId(String uniqueId) {
         this.uniqueId = uniqueId;
     }
 }

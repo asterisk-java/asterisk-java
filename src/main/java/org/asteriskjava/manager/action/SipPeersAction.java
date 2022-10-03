@@ -25,7 +25,7 @@ import org.asteriskjava.manager.event.ResponseEvent;
  * the details. When all peers have been reported a PeerlistCompleteEvent is
  * sent.<p>
  * Available since Asterisk 1.2
- * 
+ * <p>
  * Permission required: write=system
  *
  * @author srt
@@ -34,8 +34,7 @@ import org.asteriskjava.manager.event.ResponseEvent;
  * @see org.asteriskjava.manager.event.PeerlistCompleteEvent
  * @since 0.2
  */
-public class SipPeersAction extends AbstractManagerAction implements EventGeneratingAction
-{
+public class SipPeersAction extends AbstractManagerAction implements EventGeneratingAction {
     /**
      * Serial version identifier.
      */
@@ -44,19 +43,16 @@ public class SipPeersAction extends AbstractManagerAction implements EventGenera
     /**
      * Creates a new SipPeersAction.
      */
-    public SipPeersAction()
-    {
+    public SipPeersAction() {
 
     }
 
     @Override
-    public String getAction()
-    {
+    public String getAction() {
         return "SIPPeers";
     }
 
-    public Class<? extends ResponseEvent> getActionCompleteEventClass()
-    {
+    public Class<? extends ResponseEvent> getActionCompleteEventClass() {
         return PeerlistCompleteEvent.class;
     }
 }

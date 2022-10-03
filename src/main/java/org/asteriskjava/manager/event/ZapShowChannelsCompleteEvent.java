@@ -19,15 +19,13 @@ package org.asteriskjava.manager.event;
 /**
  * A ZapShowChannelsCompleteEvent is triggered after the state of all zap channels has been reported
  * in response to a ZapShowChannelsAction.
- * 
- * @see org.asteriskjava.manager.action.ZapShowChannelsAction
- * @see org.asteriskjava.manager.event.ZapShowChannelsEvent
- * 
+ *
  * @author srt
  * @version $Id$
+ * @see org.asteriskjava.manager.action.ZapShowChannelsAction
+ * @see org.asteriskjava.manager.event.ZapShowChannelsEvent
  */
-public class ZapShowChannelsCompleteEvent extends ResponseEvent
-{
+public class ZapShowChannelsCompleteEvent extends ResponseEvent {
     /**
      * Serial version identifier
      */
@@ -36,8 +34,7 @@ public class ZapShowChannelsCompleteEvent extends ResponseEvent
     /**
      * @param source
      */
-    public ZapShowChannelsCompleteEvent(Object source)
-    {
+    public ZapShowChannelsCompleteEvent(Object source) {
         super(source);
     }
 }

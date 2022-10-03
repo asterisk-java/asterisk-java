@@ -16,28 +16,27 @@
  */
 package org.asteriskjava.manager.internal;
 
-import java.io.IOException;
-
 import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.manager.action.ManagerAction;
 import org.asteriskjava.util.SocketConnectionFacade;
+
+import java.io.IOException;
 
 
 /**
  * The ManagerWriter transforms actions using an ActionBuilder and sends them to
  * the asterisk server.<p>
  * This class is intended to be used only by the DefaultManagerConnection.
- * 
- * @see org.asteriskjava.manager.internal.ActionBuilder
- * @see org.asteriskjava.manager.DefaultManagerConnection
+ *
  * @author srt
  * @version $Id$
+ * @see org.asteriskjava.manager.internal.ActionBuilder
+ * @see org.asteriskjava.manager.DefaultManagerConnection
  */
-public interface ManagerWriter
-{
+public interface ManagerWriter {
     /**
      * Sets the version of the target Asterisk server.
-     * 
+     *
      * @param targetVersion the version of the target Asterisk server.
      * @since 0.2
      */
@@ -45,15 +44,15 @@ public interface ManagerWriter
 
     /**
      * Sets the socket to use for writing to Asterisk.
-     * 
+     *
      * @param socket the socket to use for writing to Asterisk.
      */
     void setSocket(final SocketConnectionFacade socket);
 
     /**
      * Sends the given action to the asterisk server.
-     * 
-     * @param action the action to send to the asterisk server.
+     *
+     * @param action           the action to send to the asterisk server.
      * @param internalActionId the internal action id to add.
      * @throws IOException if there is a problem sending the action.
      */

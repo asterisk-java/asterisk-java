@@ -22,8 +22,7 @@ package org.asteriskjava.manager.action;
  *
  * @since 1.0.0
  */
-public class SkypeChatSendAction extends AbstractManagerAction
-{
+public class SkypeChatSendAction extends AbstractManagerAction {
     /**
      * Serializable version identifier
      */
@@ -35,20 +34,18 @@ public class SkypeChatSendAction extends AbstractManagerAction
     /**
      * Creates a new SkypeAddBuddyAction.
      */
-    public SkypeChatSendAction()
-    {
+    public SkypeChatSendAction() {
 
     }
 
     /**
      * Creates a new SkypeChatSendAction with the given parameters.
      *
-     * @param user the Skype username of the sender of this chat message.
+     * @param user      the Skype username of the sender of this chat message.
      * @param skypename the Skype username of the recipient of this chat message.
-     * @param message the message to send. Must not contain newlines but you can use "\r".
+     * @param message   the message to send. Must not contain newlines but you can use "\r".
      */
-    public SkypeChatSendAction(String user, String skypename, String message)
-    {
+    public SkypeChatSendAction(String user, String skypename, String message) {
         this.user = user;
         this.skypename = skypename;
         this.message = message;
@@ -59,8 +56,7 @@ public class SkypeChatSendAction extends AbstractManagerAction
      *
      * @return the Skype username of the recipient of this chat message.
      */
-    public String getSkypename()
-    {
+    public String getSkypename() {
         return skypename;
     }
 
@@ -69,8 +65,7 @@ public class SkypeChatSendAction extends AbstractManagerAction
      *
      * @param skypename the Skype username of the recipient of this chat message.
      */
-    public void setSkypename(String skypename)
-    {
+    public void setSkypename(String skypename) {
         this.skypename = skypename;
     }
 
@@ -79,8 +74,7 @@ public class SkypeChatSendAction extends AbstractManagerAction
      *
      * @return the Skype username of the sender of this chat message.
      */
-    public String getUser()
-    {
+    public String getUser() {
         return user;
     }
 
@@ -89,8 +83,7 @@ public class SkypeChatSendAction extends AbstractManagerAction
      *
      * @param user the Skype username of the sender of this chat message.
      */
-    public void setUser(String user)
-    {
+    public void setUser(String user) {
         this.user = user;
     }
 
@@ -99,8 +92,7 @@ public class SkypeChatSendAction extends AbstractManagerAction
      *
      * @return the message to send.
      */
-    public String getMessage()
-    {
+    public String getMessage() {
         return message;
     }
 
@@ -109,8 +101,7 @@ public class SkypeChatSendAction extends AbstractManagerAction
      *
      * @param message the message to send.
      */
-    public void setMessage(String message)
-    {
+    public void setMessage(String message) {
         this.message = message;
     }
 
@@ -118,8 +109,7 @@ public class SkypeChatSendAction extends AbstractManagerAction
      * Returns the name of this action, i.e. "SkypeChatSend".
      */
     @Override
-    public String getAction()
-    {
+    public String getAction() {
         return "SkypeChatSend";
     }
 }

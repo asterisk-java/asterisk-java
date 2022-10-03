@@ -30,8 +30,7 @@ import org.asteriskjava.manager.event.SkypeBuddyListCompleteEvent;
  * @see org.asteriskjava.manager.event.SkypeBuddyListCompleteEvent
  * @since 1.0.0
  */
-public class SkypeBuddiesAction extends AbstractManagerAction implements EventGeneratingAction
-{
+public class SkypeBuddiesAction extends AbstractManagerAction implements EventGeneratingAction {
     /**
      * Serializable version identifier
      */
@@ -41,8 +40,7 @@ public class SkypeBuddiesAction extends AbstractManagerAction implements EventGe
     /**
      * Creates a new SkypeBuddiesAction.
      */
-    public SkypeBuddiesAction()
-    {
+    public SkypeBuddiesAction() {
 
     }
 
@@ -51,8 +49,7 @@ public class SkypeBuddiesAction extends AbstractManagerAction implements EventGe
      *
      * @param user the Skype username of the user to retrieve the buddy list for.
      */
-    public SkypeBuddiesAction(String user)
-    {
+    public SkypeBuddiesAction(String user) {
         this.user = user;
     }
 
@@ -62,8 +59,7 @@ public class SkypeBuddiesAction extends AbstractManagerAction implements EventGe
      *
      * @return the Skype username of the user to retrieve the buddy list for.
      */
-    public String getUser()
-    {
+    public String getUser() {
         return user;
     }
 
@@ -72,8 +68,7 @@ public class SkypeBuddiesAction extends AbstractManagerAction implements EventGe
      *
      * @param user the Skype username of the user to retrieve the buddy list for.
      */
-    public void setUser(String user)
-    {
+    public void setUser(String user) {
         this.user = user;
     }
 
@@ -81,13 +76,11 @@ public class SkypeBuddiesAction extends AbstractManagerAction implements EventGe
      * Returns the name of this action, i.e. "SkypeBuddies".
      */
     @Override
-    public String getAction()
-    {
+    public String getAction() {
         return "SkypeBuddies";
     }
 
-    public Class<? extends ResponseEvent> getActionCompleteEventClass()
-    {
+    public Class<? extends ResponseEvent> getActionCompleteEventClass() {
         return SkypeBuddyListCompleteEvent.class;
     }
 }

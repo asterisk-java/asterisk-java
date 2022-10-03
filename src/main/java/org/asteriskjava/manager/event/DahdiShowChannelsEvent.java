@@ -19,14 +19,12 @@ package org.asteriskjava.manager.event;
 /**
  * A DahdiShowChannelsEvent is triggered in response to a DahdiShowChannelsAction and shows the state of
  * a Dahdi channel.
- * 
- * @see org.asteriskjava.manager.action.DahdiShowChannelsAction
- * 
+ *
  * @author srt
  * @version $Id$
+ * @see org.asteriskjava.manager.action.DahdiShowChannelsAction
  */
-public class DahdiShowChannelsEvent extends ResponseEvent
-{
+public class DahdiShowChannelsEvent extends ResponseEvent {
     /**
      * Serial version identifier
      */
@@ -81,17 +79,14 @@ public class DahdiShowChannelsEvent extends ResponseEvent
     }
 
 
-    
-
     /**
      * @param source
      */
-    public DahdiShowChannelsEvent(Object source)
-    {
+    public DahdiShowChannelsEvent(Object source) {
         super(source);
     }
 
-  
+
     /**
      * Returns the signalling of this Dahdi channel.<p>
      * Possible values are:
@@ -121,39 +116,35 @@ public class DahdiShowChannelsEvent extends ResponseEvent
      * <li>Pseudo Signalling</li>
      * </ul>
      */
-    public String getSignalling()
-    {
+    public String getSignalling() {
         return signalling;
     }
 
     /**
      * Sets the signalling of this Dahdi channel.
      */
-    public void setSignalling(String signalling)
-    {
+    public void setSignalling(String signalling) {
         this.signalling = signalling;
     }
 
     /**
      * Returns whether dnd (do not disturb) is enabled for this Dahdi channel.
-     * 
+     *
      * @return Boolean.TRUE if dnd is enabled, Boolean.FALSE if it is disabled,
-     *         <code>null</code> if not set.
+     * <code>null</code> if not set.
      * @since 0.3
      */
-    public Boolean getDnd()
-    {
+    public Boolean getDnd() {
         return dnd;
     }
 
     /**
      * Sets whether dnd (do not disturb) is enabled for this Dahdi channel.
-     * 
+     *
      * @param dnd Boolean.TRUE if dnd is enabled, Boolean.FALSE if it is disabled.
      * @since 0.3
      */
-    public void setDnd(Boolean dnd)
-    {
+    public void setDnd(Boolean dnd) {
         this.dnd = dnd;
     }
 
@@ -170,16 +161,14 @@ public class DahdiShowChannelsEvent extends ResponseEvent
      * <li>No Alarm</li>
      * </ul>
      */
-    public String getAlarm()
-    {
+    public String getAlarm() {
         return alarm;
     }
 
     /**
      * Sets the alarm state of this Dahdi channel.
      */
-    public void setAlarm(String alarm)
-    {
+    public void setAlarm(String alarm) {
         this.alarm = alarm;
     }
 }

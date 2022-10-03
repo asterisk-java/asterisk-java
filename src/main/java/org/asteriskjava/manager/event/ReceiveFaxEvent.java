@@ -3,8 +3,7 @@ package org.asteriskjava.manager.event;
 /**
  * A ReceiveFaxEvent is an event of Digium's Fax For Asterisk add-on.
  */
-public class ReceiveFaxEvent extends ManagerEvent
-{
+public class ReceiveFaxEvent extends ManagerEvent {
     private static final long serialVersionUID = 0L;
     private String channel;
     private String callerId;
@@ -15,88 +14,71 @@ public class ReceiveFaxEvent extends ManagerEvent
     private Integer transferRate;
     private String fileName;
 
-    public ReceiveFaxEvent(Object source)
-    {
+    public ReceiveFaxEvent(Object source) {
         super(source);
     }
 
-    public String getChannel()
-    {
+    public String getChannel() {
         return channel;
     }
 
-    public void setChannel(String channel)
-    {
+    public void setChannel(String channel) {
         this.channel = channel;
     }
 
-    public String getCallerId()
-    {
+    public String getCallerId() {
         return callerId;
     }
 
-    public void setCallerId(String callerId)
-    {
+    public void setCallerId(String callerId) {
         this.callerId = callerId;
     }
 
-    public String getRemoteStationId()
-    {
+    public String getRemoteStationId() {
         return remoteStationId;
     }
 
-    public void setRemoteStationId(String remoteStationId)
-    {
+    public void setRemoteStationId(String remoteStationId) {
         this.remoteStationId = remoteStationId;
     }
 
-    public String getLocalStationId()
-    {
+    public String getLocalStationId() {
         return localStationId;
     }
 
-    public void setLocalStationId(String localStationId)
-    {
+    public void setLocalStationId(String localStationId) {
         this.localStationId = localStationId;
     }
 
-    public Integer getPagesTransferred()
-    {
+    public Integer getPagesTransferred() {
         return pagesTransferred;
     }
 
-    public void setPagesTransferred(Integer pagesTransferred)
-    {
+    public void setPagesTransferred(Integer pagesTransferred) {
         this.pagesTransferred = pagesTransferred;
     }
 
-    public String getResolution()
-    {
+    public String getResolution() {
         return resolution;
     }
 
-    public void setResolution(String resolution)
-    {
+    public void setResolution(String resolution) {
         this.resolution = resolution;
     }
 
-    public Integer getTransferRate()
-    {
+    public Integer getTransferRate() {
         return transferRate;
     }
 
-    public void setTransferRate(Integer transferRate)
-    {
+    public void setTransferRate(Integer transferRate) {
         this.transferRate = transferRate;
     }
 
-    public String getFileName()
-    {
+    public String getFileName() {
         return fileName;
     }
 
-    public void setFileName(String fileName)
-    {
+    public void setFileName(String fileName) {
         this.fileName = fileName;
     }
 }

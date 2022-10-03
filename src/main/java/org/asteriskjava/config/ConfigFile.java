@@ -26,8 +26,7 @@ import java.util.Map;
  * @version $Id$
  * @since 1.0.0
  */
-public interface ConfigFile
-{
+public interface ConfigFile {
     /**
      * Returns the filename.
      *

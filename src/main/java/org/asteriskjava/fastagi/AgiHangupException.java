@@ -21,25 +21,23 @@ package org.asteriskjava.fastagi;
  * processing the {@link org.asteriskjava.fastagi.AgiRequest}.<p>
  * Up to Asterisk 1.4 hanging up the channel also closes the TCP connection,
  * since Asterisk 1.6 the connection is kept alive but commands that
- * require an active channel return status code 
+ * require an active channel return status code
  * {@link org.asteriskjava.fastagi.reply.AgiReply#SC_DEAD_CHANNEL}. Both events
  * are translated to an AgiHangupException.
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public class AgiHangupException extends AgiException
-{
+public class AgiHangupException extends AgiException {
     /**
      * Serial version identifier.
      */
     private static final long serialVersionUID = 3256444698691252274L;
-    
+
     /**
      * Creates a new AgiHangupException.
      */
-    public AgiHangupException()
-    {
+    public AgiHangupException() {
         super("Channel was hung up.");
     }
 }

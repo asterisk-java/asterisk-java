@@ -27,8 +27,7 @@ package org.asteriskjava.manager.event;
  * @version $Id$
  * @since 0.2
  */
-public class DialEvent extends ManagerEvent
-{
+public class DialEvent extends ManagerEvent {
     /**
      * Serializable version identifier.
      */
@@ -90,8 +89,7 @@ public class DialEvent extends ManagerEvent
     private String dialString;
     private String dialStatus;
 
-    public DialEvent(Object source)
-    {
+    public DialEvent(Object source) {
         super(source);
     }
 
@@ -99,8 +97,7 @@ public class DialEvent extends ManagerEvent
      * Enro 2015-03 Workaround to build legacy DialEvent (unsupported in
      * Asterisk 13) from new DialBeginEvent Asterisk 13.
      */
-    public DialEvent(DialBeginEvent dialBeginEvent)
-    {
+    public DialEvent(DialBeginEvent dialBeginEvent) {
         this(dialBeginEvent.getSource());
         setDateReceived(dialBeginEvent.getDateReceived());
         setTimestamp(dialBeginEvent.getTimestamp());
@@ -125,16 +122,14 @@ public class DialEvent extends ManagerEvent
      * available except for the dial status.
      *
      * @return "Begin" or "End" for Asterisk since 1.6, "Begin" for Asterisk
-     *         prior to 1.6.
+     * prior to 1.6.
      * @since 1.0.0
      */
-    public String getSubEvent()
-    {
+    public String getSubEvent() {
         return subEvent;
     }
 
-    public void setSubEvent(String subEvent)
-    {
+    public void setSubEvent(String subEvent) {
         this.subEvent = subEvent;
     }
 
@@ -144,8 +139,7 @@ public class DialEvent extends ManagerEvent
      * @return the name of the source channel.
      * @since 1.0.0
      */
-    public String getChannel()
-    {
+    public String getChannel() {
         return channel;
     }
 
@@ -155,8 +149,7 @@ public class DialEvent extends ManagerEvent
      * @param channel the name of the source channel.
      * @since 1.0.0
      */
-    public void setChannel(String channel)
-    {
+    public void setChannel(String channel) {
         this.channel = channel;
     }
 
@@ -167,8 +160,7 @@ public class DialEvent extends ManagerEvent
      * @deprecated as of 1.0.0, use {@link #getChannel()} instead.
      */
     @Deprecated
-    public String getSrc()
-    {
+    public String getSrc() {
         return channel;
     }
 
@@ -180,8 +172,7 @@ public class DialEvent extends ManagerEvent
      *
      * @param src the name of the source channel.
      */
-    public void setSrc(String src)
-    {
+    public void setSrc(String src) {
         this.channel = src;
     }
 
@@ -190,13 +181,11 @@ public class DialEvent extends ManagerEvent
      *
      * @return the name of the destination channel.
      */
-    public String getDestination()
-    {
+    public String getDestination() {
         return destination;
     }
 
-    public String getDestChannel()
-    {
+    public String getDestChannel() {
         return getDestination();
     }
 
@@ -205,13 +194,11 @@ public class DialEvent extends ManagerEvent
      *
      * @param destination the name of the destination channel.
      */
-    public void setDestination(String destination)
-    {
+    public void setDestination(String destination) {
         this.destination = destination;
     }
 
-    public void setDestChannel(String destination)
-    {
+    public void setDestChannel(String destination) {
         setDestination(destination);
     }
 
@@ -222,8 +209,7 @@ public class DialEvent extends ManagerEvent
      * @deprecated as of 1.0.0, use {@link #getCallerIdNum()} instead.
      */
     @Deprecated
-    public String getCallerId()
-    {
+    public String getCallerId() {
         return getCallerIdNum();
     }
 
@@ -234,8 +220,7 @@ public class DialEvent extends ManagerEvent
      * @deprecated as of 1.0.0, use {@link #setCallerIdNum()} instead.
      */
     @Deprecated
-    public void setCallerId(String callerId)
-    {
+    public void setCallerId(String callerId) {
         setCallerIdNum(callerId);
     }
 
@@ -245,8 +230,7 @@ public class DialEvent extends ManagerEvent
      * @return the unique ID of the source channel.
      * @since 1.0.0
      */
-    public String getUniqueId()
-    {
+    public String getUniqueId() {
         return uniqueId;
     }
 
@@ -256,8 +240,7 @@ public class DialEvent extends ManagerEvent
      * @param srcUniqueId the unique ID of the source channel.
      * @since 1.0.0
      */
-    public void setUniqueId(String srcUniqueId)
-    {
+    public void setUniqueId(String srcUniqueId) {
         this.uniqueId = srcUniqueId;
     }
 
@@ -268,8 +251,7 @@ public class DialEvent extends ManagerEvent
      * @deprecated as of 1.0.0, use {@link #getUniqueId()} instead.
      */
     @Deprecated
-    public String getSrcUniqueId()
-    {
+    public String getSrcUniqueId() {
         return uniqueId;
     }
 
@@ -281,8 +263,7 @@ public class DialEvent extends ManagerEvent
      *
      * @param srcUniqueId the unique ID of the source channel.
      */
-    public void setSrcUniqueId(String srcUniqueId)
-    {
+    public void setSrcUniqueId(String srcUniqueId) {
         this.uniqueId = srcUniqueId;
     }
 
@@ -291,8 +272,7 @@ public class DialEvent extends ManagerEvent
      *
      * @return the unique ID of the destination channel.
      */
-    public String getDestUniqueId()
-    {
+    public String getDestUniqueId() {
         return destUniqueId;
     }
 
@@ -301,8 +281,7 @@ public class DialEvent extends ManagerEvent
      *
      * @param destUniqueId the unique ID of the destination channel.
      */
-    public void setDestUniqueId(String destUniqueId)
-    {
+    public void setDestUniqueId(String destUniqueId) {
         this.destUniqueId = destUniqueId;
     }
 
@@ -314,8 +293,7 @@ public class DialEvent extends ManagerEvent
      * @return the dial string passed to the Dial application.
      * @since 1.0.0
      */
-    public String getDialString()
-    {
+    public String getDialString() {
         return dialString;
     }
 
@@ -325,8 +303,7 @@ public class DialEvent extends ManagerEvent
      * @param dialString the dial string passed to the Dial application.
      * @since 1.0.0
      */
-    public void setDialString(String dialString)
-    {
+    public void setDialString(String dialString) {
         this.dialString = dialString;
     }
 
@@ -352,19 +329,16 @@ public class DialEvent extends ManagerEvent
      * @return the completion status of the dial application.
      * @since 1.0.0
      */
-    public String getDialStatus()
-    {
+    public String getDialStatus() {
         return dialStatus;
     }
 
-    public void setDialStatus(String dialStatus)
-    {
+    public void setDialStatus(String dialStatus) {
         this.dialStatus = dialStatus;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         StringBuilder builder = new StringBuilder();
         builder.append("DialEvent [subEvent=");
         builder.append(subEvent);
@@ -392,93 +366,75 @@ public class DialEvent extends ManagerEvent
         return builder.toString();
     }
 
-    public Integer getDestChannelState()
-    {
+    public Integer getDestChannelState() {
         return destChannelState;
     }
 
-    public void setDestChannelState(Integer destChannelState)
-    {
+    public void setDestChannelState(Integer destChannelState) {
         this.destChannelState = destChannelState;
     }
 
-    public String getDestContext()
-    {
+    public String getDestContext() {
         return destContext;
     }
 
-    public void setDestContext(String destContext)
-    {
+    public void setDestContext(String destContext) {
         this.destContext = destContext;
     }
 
-    public Integer getDestPriority()
-    {
+    public Integer getDestPriority() {
         return destPriority;
     }
 
-    public void setDestPriority(Integer destPriority)
-    {
+    public void setDestPriority(Integer destPriority) {
         this.destPriority = destPriority;
     }
 
-    public String getDestChannelStateDesc()
-    {
+    public String getDestChannelStateDesc() {
         return destChannelStateDesc;
     }
 
-    public void setDestChannelStateDesc(String destChannelStateDesc)
-    {
+    public void setDestChannelStateDesc(String destChannelStateDesc) {
         this.destChannelStateDesc = destChannelStateDesc;
     }
 
-    public String getDestExten()
-    {
+    public String getDestExten() {
         return destExten;
     }
 
-    public void setDestExten(String destExten)
-    {
+    public void setDestExten(String destExten) {
         this.destExten = destExten;
     }
 
-    public String getDestConnectedLineName()
-    {
+    public String getDestConnectedLineName() {
         return destConnectedLineName;
     }
 
-    public void setDestConnectedLineName(String destConnectedLineName)
-    {
+    public void setDestConnectedLineName(String destConnectedLineName) {
         this.destConnectedLineName = destConnectedLineName;
     }
 
-    public String getDestConnectedLineNum()
-    {
+    public String getDestConnectedLineNum() {
         return destConnectedLineNum;
     }
 
-    public void setDestConnectedLineNum(String destConnectedLineNum)
-    {
+    public void setDestConnectedLineNum(String destConnectedLineNum) {
         this.destConnectedLineNum = destConnectedLineNum;
     }
 
-    public String getDestCallerIdName()
-    {
+    public String getDestCallerIdName() {
         return destCallerIdName;
     }
 
-    public void setDestCallerIdName(String destCallerIdName)
-    {
+    public void setDestCallerIdName(String destCallerIdName) {
         this.destCallerIdName = destCallerIdName;
     }
 
-    public String getDestCallerIdNum()
-    {
+    public String getDestCallerIdNum() {
         return destCallerIdNum;
     }
 
-    public void setDestCallerIdNum(String destCallerIdNum)
-    {
+    public void setDestCallerIdNum(String destCallerIdNum) {
         this.destCallerIdNum = destCallerIdNum;
     }
 }

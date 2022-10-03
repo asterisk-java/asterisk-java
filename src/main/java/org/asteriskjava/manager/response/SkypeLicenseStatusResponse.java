@@ -22,8 +22,7 @@ package org.asteriskjava.manager.response;
  * @see org.asteriskjava.manager.action.SkypeLicenseStatusAction
  * @since 1.0.0
  */
-public class SkypeLicenseStatusResponse extends ManagerResponse
-{
+public class SkypeLicenseStatusResponse extends ManagerResponse {
     private static final long serialVersionUID = 0L;
 
     private Integer callsLicensed;
@@ -33,8 +32,7 @@ public class SkypeLicenseStatusResponse extends ManagerResponse
      *
      * @return the total number of concurrent Skype calls currently licenced for this system.
      */
-    public Integer getCallsLicensed()
-    {
+    public Integer getCallsLicensed() {
         return callsLicensed;
     }
 
@@ -43,8 +41,7 @@ public class SkypeLicenseStatusResponse extends ManagerResponse
      *
      * @param callsLicensed the total number of concurrent Skype calls currently licenced for this system.
      */
-    public void setCallsLicensed(Integer callsLicensed)
-    {
+    public void setCallsLicensed(Integer callsLicensed) {
         this.callsLicensed = callsLicensed;
     }
 }

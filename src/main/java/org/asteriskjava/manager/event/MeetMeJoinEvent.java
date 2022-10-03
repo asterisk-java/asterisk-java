@@ -27,8 +27,7 @@ package org.asteriskjava.manager.event;
  * @author srt
  * @version $Id$
  */
-public class MeetMeJoinEvent extends AbstractMeetMeEvent
-{
+public class MeetMeJoinEvent extends AbstractMeetMeEvent {
     /**
      * Serializable version identifier.
      */
@@ -37,8 +36,7 @@ public class MeetMeJoinEvent extends AbstractMeetMeEvent
     /**
      * @param source
      */
-    public MeetMeJoinEvent(Object source)
-    {
+    public MeetMeJoinEvent(Object source) {
         super(source);
     }
 }

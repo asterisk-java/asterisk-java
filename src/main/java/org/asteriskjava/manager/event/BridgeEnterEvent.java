@@ -3,10 +3,9 @@ package org.asteriskjava.manager.event;
 /**
  * Created by Alexander Polakov <apolyakov@beget.ru> on 1/26/15.
  */
-public class BridgeEnterEvent extends AbstractBridgeEvent
-{
+public class BridgeEnterEvent extends AbstractBridgeEvent {
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 2L;
     private String uniqueId;
@@ -16,58 +15,47 @@ public class BridgeEnterEvent extends AbstractBridgeEvent
 
     private String swapuniqueid;
 
-    public BridgeEnterEvent(Object source)
-    {
+    public BridgeEnterEvent(Object source) {
         super(source);
     }
 
-    public String getLanguage()
-    {
+    public String getLanguage() {
         return language;
     }
 
-    public void setLanguage(String language)
-    {
+    public void setLanguage(String language) {
         this.language = language;
     }
 
-    public String getChannel()
-    {
+    public String getChannel() {
         return channel;
     }
 
-    public void setChannel(String channel)
-    {
+    public void setChannel(String channel) {
         this.channel = channel;
     }
 
-    public String getUniqueId()
-    {
+    public String getUniqueId() {
         return uniqueId;
     }
 
-    public void setUniqueId(String uniqueId)
-    {
+    public void setUniqueId(String uniqueId) {
         this.uniqueId = uniqueId;
     }
 
-    public String getLinkedId()
-    {
+    public String getLinkedId() {
         return linkedId;
     }
 
-    public void setLinkedId(String linkedId)
-    {
+    public void setLinkedId(String linkedId) {
         this.linkedId = linkedId;
     }
 
-    public String getSwapuniqueid()
-    {
+    public String getSwapuniqueid() {
         return swapuniqueid;
     }
 
-    public void setSwapuniqueid(String swapuniqueid)
-    {
+    public void setSwapuniqueid(String swapuniqueid) {
         this.swapuniqueid = swapuniqueid;
     }
 

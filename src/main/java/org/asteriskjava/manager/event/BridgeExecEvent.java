@@ -25,8 +25,7 @@ package org.asteriskjava.manager.event;
  * @version $Id$
  * @since 1.0.0
  */
-public class BridgeExecEvent extends ManagerEvent
-{
+public class BridgeExecEvent extends ManagerEvent {
     /**
      * Serializable version identifier.
      */
@@ -40,8 +39,7 @@ public class BridgeExecEvent extends ManagerEvent
     private String channel1;
     private String channel2;
 
-    public BridgeExecEvent(Object source)
-    {
+    public BridgeExecEvent(Object source) {
         super(source);
     }
 
@@ -56,13 +54,11 @@ public class BridgeExecEvent extends ManagerEvent
      * @see #RESPONSE_FAILED
      * @see #RESPONSE_SUCCESS
      */
-    public String getResponse()
-    {
+    public String getResponse() {
         return response;
     }
 
-    public void setResponse(String response)
-    {
+    public void setResponse(String response) {
         this.response = response;
     }
 
@@ -77,13 +73,11 @@ public class BridgeExecEvent extends ManagerEvent
      *
      * @return the reason for failure or <code>null</code> on success.
      */
-    public String getReason()
-    {
+    public String getReason() {
         return reason;
     }
 
-    public void setReason(String reason)
-    {
+    public void setReason(String reason) {
         this.reason = reason;
     }
 
@@ -92,13 +86,11 @@ public class BridgeExecEvent extends ManagerEvent
      *
      * @return name of the first channel.
      */
-    public String getChannel1()
-    {
+    public String getChannel1() {
         return channel1;
     }
 
-    public void setChannel1(String channel1)
-    {
+    public void setChannel1(String channel1) {
         this.channel1 = channel1;
     }
 
@@ -107,13 +99,11 @@ public class BridgeExecEvent extends ManagerEvent
      *
      * @return name of the second channel.
      */
-    public String getChannel2()
-    {
+    public String getChannel2() {
         return channel2;
     }
 
-    public void setChannel2(String channel2)
-    {
+    public void setChannel2(String channel2) {
         this.channel2 = channel2;
     }
 }

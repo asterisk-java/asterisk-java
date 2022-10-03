@@ -26,8 +26,7 @@ import java.util.Map;
  * @author srt
  * @version $Id$
  */
-public enum HangupCause
-{
+public enum HangupCause {
     AST_CAUSE_UNALLOCATED(1),
     AST_CAUSE_NO_ROUTE_TRANSIT_NET(2),
     AST_CAUSE_NO_ROUTE_DESTINATION(3),
@@ -88,13 +87,11 @@ public enum HangupCause
     AST_CAUSE_NOTDEFINED(0),
     AST_CAUSE_NOSUCHDRIVER(AST_CAUSE_CHAN_NOT_IMPLEMENTED);
 
-    HangupCause(int code)
-    {
+    HangupCause(int code) {
         this.code = code;
     }
 
-    HangupCause(HangupCause cause)
-    {
+    HangupCause(HangupCause cause) {
         this.code = cause.code;
     }
 
@@ -104,8 +101,7 @@ public enum HangupCause
      *
      * @return the numeric cause code.
      */
-    public int getCode()
-    {
+    public int getCode() {
         return code;
     }
 
@@ -115,15 +111,12 @@ public enum HangupCause
      *
      * @param code the numeric cause code.
      * @return the corresponding HangupCode enum or
-     *         <code>null</code> if there is no such HangupCause.
+     * <code>null</code> if there is no such HangupCause.
      */
-    public static synchronized HangupCause getByCode(int code)
-    {
-        if (causes == null)
-        {
+    public static synchronized HangupCause getByCode(int code) {
+        if (causes == null) {
             causes = new HashMap<>();
-            for (HangupCause cause : values())
-            {
+            for (HangupCause cause : values()) {
                 causes.put(cause.code, cause);
             }
         }
@@ -132,10 +125,8 @@ public enum HangupCause
     }
 
     @Override
-    public String toString()
-    {
-        if (name().startsWith("AST_CAUSE_"))
-        {
+    public String toString() {
+        if (name().startsWith("AST_CAUSE_")) {
             return name().substring(10);
         }
         return name();

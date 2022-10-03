@@ -19,12 +19,11 @@ package org.asteriskjava.fastagi;
 /**
  * An InvalidOrUnknownCommandException is thrown when the reader receives a reply
  * with status code 510.
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public class InvalidOrUnknownCommandException extends AgiException
-{
+public class InvalidOrUnknownCommandException extends AgiException {
     /**
      * Serial version identifier.
      */
@@ -32,11 +31,10 @@ public class InvalidOrUnknownCommandException extends AgiException
 
     /**
      * Creates a new InvalidOrUnknownCommandException.
-     * 
+     *
      * @param command the invalid or unknown command.
      */
-    public InvalidOrUnknownCommandException(String command)
-    {
+    public InvalidOrUnknownCommandException(String command) {
         super("Invalid or unknown command: " + command);
     }
 }

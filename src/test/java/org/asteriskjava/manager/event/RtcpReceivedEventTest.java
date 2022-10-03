@@ -1,53 +1,46 @@
 package org.asteriskjava.manager.event;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class RtcpReceivedEventTest
-{
+class RtcpReceivedEventTest {
     private RtcpReceivedEvent rtcpReceivedEvent;
 
-    @Before
-    public void setUp()
-    {
+    @BeforeEach
+    void setUp() {
         rtcpReceivedEvent = new RtcpReceivedEvent(this);
     }
 
     @Test
-    public void testFrom()
-    {
+    void testFrom() {
         rtcpReceivedEvent.setFrom("192.168.0.1:1234");
-        assertEquals("192.168.0.1", rtcpReceivedEvent.getFromAddress().getHostAddress());
+        assertEquals(rtcpReceivedEvent.getFromAddress().getHostAddress(), "192.168.0.1");
         assertEquals(new Integer(1234), rtcpReceivedEvent.getFromPort());
     }
 
     @Test
-    public void testPt()
-    {
+    void testPt() {
         rtcpReceivedEvent.setPt("200(Sender Report)");
         assertEquals(new Long(200), rtcpReceivedEvent.getPt());
         assertEquals(new Long(RtcpReceivedEvent.PT_SENDER_REPORT), rtcpReceivedEvent.getPt());
     }
 
     @Test
-    public void testDlSr()
-    {
+    void testDlSr() {
         rtcpReceivedEvent.setDlSr("1.2345(sec)");
         assertEquals(1.2345, rtcpReceivedEvent.getDlSr(), 0.00001);
     }
 
     @Test
-    public void testDlSrWithSpace()
-    {
+    void testDlSrWithSpace() {
         rtcpReceivedEvent.setDlSr("1.2345 (sec)"); // as used in RTCPSent
         assertEquals(1.2345, rtcpReceivedEvent.getDlSr(), 0.00001);
     }
 
     @Test
-    public void testRtt()
-    {
+    void testRtt() {
         rtcpReceivedEvent.setRtt("12345(sec)");
         assertEquals(new Double(12345), rtcpReceivedEvent.getRtt());
     }

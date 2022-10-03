@@ -4,8 +4,7 @@ import org.asteriskjava.pbx.util.LogTime;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
-public class EventLifeMonitor<T>
-{
+public class EventLifeMonitor<T> {
     private static final Log logger = LogFactory.getLog(EventLifeMonitor.class);
 
     /*
@@ -17,23 +16,19 @@ public class EventLifeMonitor<T>
 
     private final LogTime age;
 
-    public EventLifeMonitor(final T event)
-    {
+    public EventLifeMonitor(final T event) {
         this.theEvent = event;
         this.age = new LogTime();
     }
 
-    public void assessAge()
-    {
-        if (this.age.timeTaken() > 2000)
-        {
+    public void assessAge() {
+        if (this.age.timeTaken() > 2000) {
             EventLifeMonitor.logger.warn("event age : " + this.age.timeTaken()); //$NON-NLS-1$
         }
 
     }
 
-    public T getEvent()
-    {
+    public T getEvent() {
         return this.theEvent;
     }
 }

@@ -16,371 +16,280 @@
  */
 package org.asteriskjava.manager.internal;
 
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import org.asteriskjava.manager.event.*;
+import org.asteriskjava.manager.response.CommandResponse;
+import org.asteriskjava.manager.response.ManagerResponse;
+import org.asteriskjava.util.DateUtil;
+import org.asteriskjava.util.SocketConnectionFacade;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.asteriskjava.manager.event.AgentCalledEvent;
-import org.asteriskjava.manager.event.DisconnectEvent;
-import org.asteriskjava.manager.event.ManagerEvent;
-import org.asteriskjava.manager.event.ProtocolIdentifierReceivedEvent;
-import org.asteriskjava.manager.event.RtcpReceivedEvent;
-import org.asteriskjava.manager.event.StatusCompleteEvent;
-import org.asteriskjava.manager.response.CommandResponse;
-import org.asteriskjava.manager.response.ManagerResponse;
-import org.asteriskjava.util.DateUtil;
-import org.asteriskjava.util.SocketConnectionFacade;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
-public class ManagerReaderImplTest
-{
-	private Date now;
-	private MockedDispatcher dispatcher;
-	private SocketConnectionFacade socketConnectionFacade;
-	private ManagerReader managerReader;
-
-	@Before
-	public void setUp()
-	{
-		now = new Date();
-		DateUtil.overrideCurrentDate(now);
-		dispatcher = new MockedDispatcher();
-		managerReader = new ManagerReaderImpl(dispatcher, this);
-
-		socketConnectionFacade = createMock(SocketConnectionFacade.class);
-	}
-
-	@After
-	public void tearDown()
-	{
-		DateUtil.overrideCurrentDate(null);
-	}
-
-	@Test
-	public void testRunWithoutSocket()
-	{
-		try
-		{
-			managerReader.run();
-			fail("Must throw IllegalStateException");
-		}
-		catch (IllegalStateException e)
-		{
-			assertTrue("Exception must be of type IllegalStateException", e instanceof IllegalStateException);
-		}
-	}
-
-	@Test
-	public void testRunReceivingProtocolIdentifier() throws Exception
-	{
-		expect(socketConnectionFacade.readLine()).andReturn("Asterisk Call Manager/1.0");
-		expect(socketConnectionFacade.readLine()).andReturn(null);
-
-		replay(socketConnectionFacade);
-
-		managerReader.setSocket(socketConnectionFacade);
-		managerReader.run();
-
-		verify(socketConnectionFacade);
-
-		assertEquals("not exactly two events dispatched", 2, dispatcher.dispatchedEvents.size());
-
-		assertEquals("first event must be a ProtocolIdentifierReceivedEvent", ProtocolIdentifierReceivedEvent.class,
-				dispatcher.dispatchedEvents.get(0).getClass());
-
-		assertEquals("ProtocolIdentifierReceivedEvent contains incorrect protocol identifier",
-				"Asterisk Call Manager/1.0",
-				((ProtocolIdentifierReceivedEvent) dispatcher.dispatchedEvents.get(0)).getProtocolIdentifier());
-
-		assertEquals("ProtocolIdentifierReceivedEvent contains incorrect dateReceived", now,
-				dispatcher.dispatchedEvents.get(0).getDateReceived());
-
-		assertEquals("second event must be a DisconnectEvent", DisconnectEvent.class,
-				dispatcher.dispatchedEvents.get(1).getClass());
-
-		assertEquals("DisconnectEvent contains incorrect dateReceived", now,
-				dispatcher.dispatchedEvents.get(1).getDateReceived());
-	}
-
-	@Test
-	public void testRunReceivingEvent() throws Exception
-	{
-		expect(socketConnectionFacade.readLine()).andReturn("Event: StatusComplete");
-		expect(socketConnectionFacade.readLine()).andReturn("");
-		expect(socketConnectionFacade.readLine()).andReturn(null);
-
-		replay(socketConnectionFacade);
-
-		managerReader.setSocket(socketConnectionFacade);
-		managerReader.run();
-
-		verify(socketConnectionFacade);
-
-		assertEquals("not exactly two events dispatched", 2, dispatcher.dispatchedEvents.size());
-
-		assertEquals("first event must be a StatusCompleteEvent", StatusCompleteEvent.class,
-				dispatcher.dispatchedEvents.get(0).getClass());
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+class ManagerReaderImplTest {
+    private Date now;
+    private MockedDispatcher dispatcher;
+    private SocketConnectionFacade socketConnectionFacade;
+    private ManagerReader managerReader;
+
+    @BeforeEach
+    void setUp() {
+        now = new Date();
+        DateUtil.overrideCurrentDate(now);
+        dispatcher = new MockedDispatcher();
+        managerReader = new ManagerReaderImpl(dispatcher, this);
+
+        socketConnectionFacade = mock(SocketConnectionFacade.class);
+    }
+
+    @AfterEach
+    void tearDown() {
+        DateUtil.overrideCurrentDate(null);
+    }
+
+    @Test
+    void testRunWithoutSocket() {
+        try {
+            managerReader.run();
+            fail("Must throw IllegalStateException");
+        } catch (IllegalStateException e) {
+            assertTrue(e instanceof IllegalStateException, "Exception must be of type IllegalStateException");
+        }
+    }
+
+    @Test
+    void testRunReceivingProtocolIdentifier() throws Exception {
+        when(socketConnectionFacade.readLine())
+                .thenReturn("Asterisk Call Manager/1.0")
+                .thenReturn(null);
+
+        managerReader.setSocket(socketConnectionFacade);
+        managerReader.run();
+
+        assertEquals(2, dispatcher.dispatchedEvents.size(), "not exactly two events dispatched");
+
+        assertEquals(ProtocolIdentifierReceivedEvent.class, dispatcher.dispatchedEvents.get(0).getClass(), "first event must be a ProtocolIdentifierReceivedEvent");
+
+        assertEquals("Asterisk Call Manager/1.0", ((ProtocolIdentifierReceivedEvent) dispatcher.dispatchedEvents.get(0)).getProtocolIdentifier(), "ProtocolIdentifierReceivedEvent contains incorrect protocol identifier");
+
+        assertEquals(now, dispatcher.dispatchedEvents.get(0).getDateReceived(), "ProtocolIdentifierReceivedEvent contains incorrect dateReceived");
+        assertEquals(DisconnectEvent.class, dispatcher.dispatchedEvents.get(1).getClass(), "second event must be a DisconnectEvent");
+
+        assertEquals(now, dispatcher.dispatchedEvents.get(1).getDateReceived(), "DisconnectEvent contains incorrect dateReceived");
+    }
+
+    @Test
+    void testRunReceivingEvent() throws Exception {
+        when(socketConnectionFacade.readLine())
+                .thenReturn("Event: StatusComplete")
+                .thenReturn("")
+                .thenReturn(null);
 
-		assertEquals("second event must be a DisconnectEvent", DisconnectEvent.class,
-				dispatcher.dispatchedEvents.get(1).getClass());
-	}
+        managerReader.setSocket(socketConnectionFacade);
+        managerReader.run();
 
-	@Test
-	public void testRunReceivingEventWithMapProperty() throws Exception
-	{
-		expect(socketConnectionFacade.readLine()).andReturn("Event: AgentCalled");
-		expect(socketConnectionFacade.readLine()).andReturn("Variable: var1=val1");
-		expect(socketConnectionFacade.readLine()).andReturn("Variable: var2=val2");
-		expect(socketConnectionFacade.readLine()).andReturn("");
-		expect(socketConnectionFacade.readLine()).andReturn(null);
+        assertEquals(2, dispatcher.dispatchedEvents.size(), "not exactly two events dispatched");
 
-		replay(socketConnectionFacade);
+        assertEquals(StatusCompleteEvent.class, dispatcher.dispatchedEvents.get(0).getClass(), "first event must be a StatusCompleteEvent");
+        assertEquals(DisconnectEvent.class, dispatcher.dispatchedEvents.get(1).getClass(), "second event must be a DisconnectEvent");
+    }
+
+    @Test
+    void testRunReceivingEventWithMapProperty() throws Exception {
+        when(socketConnectionFacade.readLine())
+                .thenReturn("Event: AgentCalled")
+                .thenReturn("Variable: var1=val1")
+                .thenReturn("Variable: var2=val2")
+                .thenReturn("")
+                .thenReturn(null);
 
-		managerReader.setSocket(socketConnectionFacade);
-		managerReader.run();
+        managerReader.setSocket(socketConnectionFacade);
+        managerReader.run();
 
-		verify(socketConnectionFacade);
+        assertEquals(2, dispatcher.dispatchedEvents.size(), "not exactly two events dispatched");
 
-		assertEquals("not exactly two events dispatched", 2, dispatcher.dispatchedEvents.size());
+        assertEquals(AgentCalledEvent.class, dispatcher.dispatchedEvents.get(0).getClass(), "first event must be a AgentCalledEvent");
 
-		assertEquals("first event must be a AgentCalledEvent", AgentCalledEvent.class,
-				dispatcher.dispatchedEvents.get(0).getClass());
+        AgentCalledEvent event = (AgentCalledEvent) dispatcher.dispatchedEvents.get(0);
+        assertEquals(AgentCalledEvent.class, event.getClass(), "Returned event is of wrong type");
+        assertEquals("val1", event.getVariables().get("var1"), "Property variables[var1] is not set correctly");
+        assertEquals("val2", event.getVariables().get("var2"), "Property variables[var2] is not set correctly");
+        assertEquals(2, event.getVariables().size(), "Invalid size of variables property");
 
-		AgentCalledEvent event = (AgentCalledEvent) dispatcher.dispatchedEvents.get(0);
-		assertEquals("Returned event is of wrong type", AgentCalledEvent.class, event.getClass());
-		assertEquals("Property variables[var1] is not set correctly", "val1", event.getVariables().get("var1"));
-		assertEquals("Property variables[var2] is not set correctly", "val2", event.getVariables().get("var2"));
-		assertEquals("Invalid size of variables property", 2, event.getVariables().size());
+        assertEquals(DisconnectEvent.class, dispatcher.dispatchedEvents.get(1).getClass(), "second event must be an DisconnectEvent");
+    }
 
-		assertEquals("second event must be an DisconnectEvent", DisconnectEvent.class,
-				dispatcher.dispatchedEvents.get(1).getClass());
-	}
+    @Test
+    void testRunReceivingEventWithMapPropertyAndOnlyOneEntry() throws Exception {
+        when(socketConnectionFacade.readLine())
+                .thenReturn("Event: AgentCalled")
+                .thenReturn("Variable: var1=val1")
+                .thenReturn("")
+                .thenReturn(null);
 
-	@Test
-	public void testRunReceivingEventWithMapPropertyAndOnlyOneEntry() throws Exception
-	{
-		expect(socketConnectionFacade.readLine()).andReturn("Event: AgentCalled");
-		expect(socketConnectionFacade.readLine()).andReturn("Variable: var1=val1");
-		expect(socketConnectionFacade.readLine()).andReturn("");
-		expect(socketConnectionFacade.readLine()).andReturn(null);
+        managerReader.setSocket(socketConnectionFacade);
+        managerReader.run();
 
-		replay(socketConnectionFacade);
+        assertEquals(2, dispatcher.dispatchedEvents.size(), "not exactly two events dispatched");
 
-		managerReader.setSocket(socketConnectionFacade);
-		managerReader.run();
+        assertEquals(AgentCalledEvent.class, dispatcher.dispatchedEvents.get(0).getClass(), "first event must be a AgentCalledEvent");
 
-		verify(socketConnectionFacade);
+        AgentCalledEvent event = (AgentCalledEvent) dispatcher.dispatchedEvents.get(0);
+        assertEquals(AgentCalledEvent.class, event.getClass(), "Returned event is of wrong type");
+        assertEquals("val1", event.getVariables().get("var1"), "Property variables[var1] is not set correctly");
+        assertEquals(1, event.getVariables().size(), "Invalid size of variables property");
 
-		assertEquals("not exactly two events dispatched", 2, dispatcher.dispatchedEvents.size());
+        assertEquals(DisconnectEvent.class, dispatcher.dispatchedEvents.get(1).getClass(), "second event must be an DisconnectEvent");
+    }
 
-		assertEquals("first event must be a AgentCalledEvent", AgentCalledEvent.class,
-				dispatcher.dispatchedEvents.get(0).getClass());
+    @Test
+    void testWorkaroundForAsteriskBug13319() throws Exception {
+        when(socketConnectionFacade.readLine())
+                .thenReturn("Event: RTCPReceived")
+                .thenReturn("From 192.168.0.1:1234")
+                .thenReturn("HighestSequence: 999")
+                .thenReturn("")
+                .thenReturn(null);
 
-		AgentCalledEvent event = (AgentCalledEvent) dispatcher.dispatchedEvents.get(0);
-		assertEquals("Returned event is of wrong type", AgentCalledEvent.class, event.getClass());
-		assertEquals("Property variables[var1] is not set correctly", "val1", event.getVariables().get("var1"));
-		assertEquals("Invalid size of variables property", 1, event.getVariables().size());
+        managerReader.setSocket(socketConnectionFacade);
+        managerReader.run();
 
-		assertEquals("second event must be an DisconnectEvent", DisconnectEvent.class,
-				dispatcher.dispatchedEvents.get(1).getClass());
-	}
+        assertEquals(2, dispatcher.dispatchedEvents.size(), "not exactly two events dispatched");
 
-	@Test
-	public void testWorkaroundForAsteriskBug13319() throws Exception
-	{
-		expect(socketConnectionFacade.readLine()).andReturn("Event: RTCPReceived");
-		expect(socketConnectionFacade.readLine()).andReturn("From 192.168.0.1:1234");
-		expect(socketConnectionFacade.readLine()).andReturn("HighestSequence: 999");
-		expect(socketConnectionFacade.readLine()).andReturn("");
-		expect(socketConnectionFacade.readLine()).andReturn(null);
+        assertEquals(RtcpReceivedEvent.class, dispatcher.dispatchedEvents.get(0).getClass(), "first event must be a RtcpReceivedEvent");
 
-		replay(socketConnectionFacade);
+        RtcpReceivedEvent rtcpReceivedEvent = (RtcpReceivedEvent) dispatcher.dispatchedEvents.get(0);
+        assertEquals("192.168.0.1", rtcpReceivedEvent.getFromAddress().getHostAddress(), "Invalid from address on RtcpReceivedEvent");
+        assertEquals(new Integer(1234), rtcpReceivedEvent.getFromPort(), "Invalid from port on RtcpReceivedEvent");
+        assertEquals(new Long(999), rtcpReceivedEvent.getHighestSequence(), "Invalid highest sequence on RtcpReceivedEvent");
 
-		managerReader.setSocket(socketConnectionFacade);
-		managerReader.run();
+        assertEquals(DisconnectEvent.class, dispatcher.dispatchedEvents.get(1).getClass(), "second event must be a DisconnectEvent");
+    }
 
-		verify(socketConnectionFacade);
+    // todo fix testRunReceivingUserEvent
+    void XtestRunReceivingUserEvent() throws Exception {
+        managerReader.registerEventClass(MyUserEvent.class);
 
-		assertEquals("not exactly two events dispatched", 2, dispatcher.dispatchedEvents.size());
+        when(socketConnectionFacade.readLine())
+                .thenReturn("Event: MyUser")
+                .thenReturn("")
+                .thenReturn(null);
 
-		assertEquals("first event must be a RtcpReceivedEvent", RtcpReceivedEvent.class,
-				dispatcher.dispatchedEvents.get(0).getClass());
+        managerReader.setSocket(socketConnectionFacade);
+        managerReader.run();
 
-		RtcpReceivedEvent rtcpReceivedEvent = (RtcpReceivedEvent) dispatcher.dispatchedEvents.get(0);
-		assertEquals("Invalid from address on RtcpReceivedEvent", "192.168.0.1",
-				rtcpReceivedEvent.getFromAddress().getHostAddress());
-		assertEquals("Invalid from port on RtcpReceivedEvent", new Integer(1234), rtcpReceivedEvent.getFromPort());
-		assertEquals("Invalid highest sequence on RtcpReceivedEvent", new Long(999),
-				rtcpReceivedEvent.getHighestSequence());
+        assertEquals(2, dispatcher.dispatchedEvents.size(), "not exactly two events dispatched");
 
-		assertEquals("second event must be a DisconnectEvent", DisconnectEvent.class,
-				dispatcher.dispatchedEvents.get(1).getClass());
-	}
+        assertEquals(MyUserEvent.class, dispatcher.dispatchedEvents.get(0).getClass(), "first event must be a MyUserEvent");
 
-	// todo fix testRunReceivingUserEvent
-	public void XtestRunReceivingUserEvent() throws Exception
-	{
-		managerReader.registerEventClass(MyUserEvent.class);
+        assertEquals(DisconnectEvent.class, dispatcher.dispatchedEvents.get(1).getClass(), "second event must be a DisconnectEvent");
 
-		expect(socketConnectionFacade.readLine()).andReturn("Event: MyUser");
-		expect(socketConnectionFacade.readLine()).andReturn("");
-		expect(socketConnectionFacade.readLine()).andReturn(null);
+    }
 
-		replay(socketConnectionFacade);
+    @Test
+    void testRunReceivingResponse() throws Exception {
+        when(socketConnectionFacade.readLine())
+                .thenReturn("Response: Success")
+                .thenReturn("Message: Authentication accepted")
+                .thenReturn("")
+                .thenReturn(null);
 
-		managerReader.setSocket(socketConnectionFacade);
-		managerReader.run();
+        managerReader.setSocket(socketConnectionFacade);
+        managerReader.run();
 
-		verify(socketConnectionFacade);
+        assertEquals(1, dispatcher.dispatchedResponses.size(), "not exactly one response dispatched");
 
-		assertEquals("not exactly two events dispatched", 2, dispatcher.dispatchedEvents.size());
+        assertEquals(ManagerResponse.class, dispatcher.dispatchedResponses.get(0).getClass(), "first response must be a ManagerResponse");
+        assertEquals("Success", dispatcher.dispatchedResponses.get(0).getResponse(), "ManagerResponse contains incorrect response");
 
-		assertEquals("first event must be a MyUserEvent", MyUserEvent.class,
-				dispatcher.dispatchedEvents.get(0).getClass());
+        assertEquals("Authentication accepted", dispatcher.dispatchedResponses.get(0).getMessage(), "ManagerResponse contains incorrect message");
 
-		assertEquals("second event must be a DisconnectEvent", DisconnectEvent.class,
-				dispatcher.dispatchedEvents.get(1).getClass());
-	}
+        assertEquals("Authentication accepted", dispatcher.dispatchedResponses.get(0).getAttribute("MESSAGE"), "ManagerResponse contains incorrect message (via getAttribute)");
 
-	@Test
-	public void testRunReceivingResponse() throws Exception
-	{
-		expect(socketConnectionFacade.readLine()).andReturn("Response: Success");
-		expect(socketConnectionFacade.readLine()).andReturn("Message: Authentication accepted");
-		expect(socketConnectionFacade.readLine()).andReturn("");
-		expect(socketConnectionFacade.readLine()).andReturn(null);
+        assertEquals(now, dispatcher.dispatchedResponses.get(0).getDateReceived(), "ManagerResponse contains incorrect dateReceived");
 
-		replay(socketConnectionFacade);
+        assertEquals(1, dispatcher.dispatchedEvents.size(), "not exactly one events dispatched");
 
-		managerReader.setSocket(socketConnectionFacade);
-		managerReader.run();
+        assertEquals(DisconnectEvent.class, dispatcher.dispatchedEvents.get(0).getClass(), "first event must be a DisconnectEvent");
+    }
 
-		verify(socketConnectionFacade);
+    @Test
+    void testRunReceivingCommandResponse() throws Exception {
+        List<String> result = new ArrayList<String>();
 
-		assertEquals("not exactly one response dispatched", 1, dispatcher.dispatchedResponses.size());
+        when(socketConnectionFacade.readLine())
+                .thenReturn("Response: Follows")
+                .thenReturn("ActionID: 678#12345")
+                .thenReturn("Line1\nLine2\n--END COMMAND--")
+                .thenReturn("")
+                .thenReturn(null);
 
-		assertEquals("first response must be a ManagerResponse", ManagerResponse.class,
-				dispatcher.dispatchedResponses.get(0).getClass());
+        result.add("Line1");
+        result.add("Line2");
 
-		assertEquals("ManagerResponse contains incorrect response", "Success",
-				dispatcher.dispatchedResponses.get(0).getResponse());
+        managerReader.setSocket(socketConnectionFacade);
+        managerReader.expectResponseClass("678", CommandResponse.class);
+        managerReader.run();
 
-		assertEquals("ManagerResponse contains incorrect message", "Authentication accepted",
-				dispatcher.dispatchedResponses.get(0).getMessage());
+        assertEquals(1, dispatcher.dispatchedResponses.size(), "not exactly one response dispatched");
 
-		assertEquals("ManagerResponse contains incorrect message (via getAttribute)", "Authentication accepted",
-				dispatcher.dispatchedResponses.get(0).getAttribute("MESSAGE"));
+        assertEquals(CommandResponse.class, dispatcher.dispatchedResponses.get(0).getClass(), "first response must be a CommandResponse");
 
-		assertEquals("ManagerResponse contains incorrect dateReceived", now,
-				dispatcher.dispatchedResponses.get(0).getDateReceived());
+        assertEquals("Follows", dispatcher.dispatchedResponses.get(0).getResponse(), "CommandResponse contains incorrect response");
 
-		assertEquals("not exactly one events dispatched", 1, dispatcher.dispatchedEvents.size());
+        assertEquals("678#12345", dispatcher.dispatchedResponses.get(0).getActionId(), "CommandResponse contains incorrect actionId");
 
-		assertEquals("first event must be a DisconnectEvent", DisconnectEvent.class,
-				dispatcher.dispatchedEvents.get(0).getClass());
-	}
+        assertEquals("678#12345", dispatcher.dispatchedResponses.get(0).getAttribute("actionId"), "CommandResponse contains incorrect actionId (via getAttribute)");
 
-	@Test
-	public void testRunReceivingCommandResponse() throws Exception
-	{
-		List<String> result = new ArrayList<String>();
+        assertEquals(result, ((CommandResponse) dispatcher.dispatchedResponses.get(0)).getResult(), "CommandResponse contains incorrect result");
 
-		expect(socketConnectionFacade.readLine()).andReturn("Response: Follows");
-		expect(socketConnectionFacade.readLine()).andReturn("ActionID: 678#12345");
-		expect(socketConnectionFacade.readLine()).andReturn("Line1\nLine2\n--END COMMAND--");
-		expect(socketConnectionFacade.readLine()).andReturn("");
-		expect(socketConnectionFacade.readLine()).andReturn(null);
+        assertEquals(now, dispatcher.dispatchedResponses.get(0).getDateReceived(), "CommandResponse contains incorrect dateReceived");
+    }
 
-		result.add("Line1");
-		result.add("Line2");
+    @Test
+    void testRunCatchingIOException() throws Exception {
+        when(socketConnectionFacade.readLine()).thenThrow(new IOException("Something happened to the network..."));
 
-		replay(socketConnectionFacade);
+        managerReader.setSocket(socketConnectionFacade);
+        managerReader.run();
 
-		managerReader.setSocket(socketConnectionFacade);
-		managerReader.expectResponseClass("678", CommandResponse.class);
-		managerReader.run();
+        assertEquals(0, dispatcher.dispatchedResponses.size(), "must not dispatch a response");
 
-		verify(socketConnectionFacade);
+        assertEquals(1, dispatcher.dispatchedEvents.size(), "not exactly one events dispatched");
 
-		assertEquals("not exactly one response dispatched", 1, dispatcher.dispatchedResponses.size());
+        assertEquals(DisconnectEvent.class, dispatcher.dispatchedEvents.get(0).getClass(), "first event must be a DisconnectEvent");
+    }
 
-		assertEquals("first response must be a CommandResponse", CommandResponse.class,
-				dispatcher.dispatchedResponses.get(0).getClass());
+    private class MockedDispatcher implements Dispatcher {
+        List<ManagerEvent> dispatchedEvents;
+        List<ManagerResponse> dispatchedResponses;
 
-		assertEquals("CommandResponse contains incorrect response", "Follows",
-				dispatcher.dispatchedResponses.get(0).getResponse());
+        public MockedDispatcher() {
+            this.dispatchedEvents = new ArrayList<ManagerEvent>();
+            this.dispatchedResponses = new ArrayList<ManagerResponse>();
+        }
 
-		assertEquals("CommandResponse contains incorrect actionId", "678#12345",
-				dispatcher.dispatchedResponses.get(0).getActionId());
+        @Override
+        public void dispatchResponse(ManagerResponse response, Integer requiredHandlingTime) {
+            dispatchedResponses.add(response);
+        }
 
-		assertEquals("CommandResponse contains incorrect actionId (via getAttribute)", "678#12345",
-				dispatcher.dispatchedResponses.get(0).getAttribute("actionId"));
+        @Override
+        public void dispatchEvent(ManagerEvent event, Integer requiredHandlingTime) {
+            dispatchedEvents.add(event);
+        }
 
-		assertEquals("CommandResponse contains incorrect result", result,
-				((CommandResponse) dispatcher.dispatchedResponses.get(0)).getResult());
-
-		assertEquals("CommandResponse contains incorrect dateReceived", now,
-				dispatcher.dispatchedResponses.get(0).getDateReceived());
-	}
-
-	@Test
-	public void testRunCatchingIOException() throws Exception
-	{
-		expect(socketConnectionFacade.readLine()).andThrow(new IOException("Something happened to the network..."));
-
-		replay(socketConnectionFacade);
-
-		managerReader.setSocket(socketConnectionFacade);
-		managerReader.run();
-
-		verify(socketConnectionFacade);
-
-		assertEquals("must not dispatch a response", 0, dispatcher.dispatchedResponses.size());
-
-		assertEquals("not exactly one events dispatched", 1, dispatcher.dispatchedEvents.size());
-
-		assertEquals("first event must be a DisconnectEvent", DisconnectEvent.class,
-				dispatcher.dispatchedEvents.get(0).getClass());
-	}
-
-	private class MockedDispatcher implements Dispatcher
-	{
-		List<ManagerEvent> dispatchedEvents;
-		List<ManagerResponse> dispatchedResponses;
-
-		public MockedDispatcher()
-		{
-			this.dispatchedEvents = new ArrayList<ManagerEvent>();
-			this.dispatchedResponses = new ArrayList<ManagerResponse>();
-		}
-
-		@Override
-		public void dispatchResponse(ManagerResponse response, Integer requiredHandlingTime)
-		{
-			dispatchedResponses.add(response);
-		}
-
-		@Override
-		public void dispatchEvent(ManagerEvent event, Integer requiredHandlingTime)
-		{
-			dispatchedEvents.add(event);
-		}
-
-		@Override
-		public void stop()
-		{
-			// NO_OP
-		}
-	}
+        @Override
+        public void stop() {
+            // NO_OP
+        }
+    }
 }

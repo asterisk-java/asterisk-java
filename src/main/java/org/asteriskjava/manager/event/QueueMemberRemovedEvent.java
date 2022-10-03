@@ -21,18 +21,17 @@ package org.asteriskjava.manager.event;
  * queue.<p>
  * It is implemented in <code>apps/app_queue.c</code>.<p>
  * Available since Asterisk 1.2
- * 
+ *
  * @author srt
  * @version $Id$
  * @since 0.2
  */
-public class QueueMemberRemovedEvent extends AbstractQueueMemberEvent
-{
+public class QueueMemberRemovedEvent extends AbstractQueueMemberEvent {
     /**
      * Serial version identifier.
      */
     private static final long serialVersionUID = 2108033737226142194L;
-    
+
     Boolean paused;
     Integer penalty;
     String stateinterface;
@@ -41,105 +40,88 @@ public class QueueMemberRemovedEvent extends AbstractQueueMemberEvent
     Boolean ringinuse;
     Long lastcall;
     Integer status;
-    
 
-    public QueueMemberRemovedEvent(Object source)
-    {
+
+    public QueueMemberRemovedEvent(Object source) {
         super(source);
     }
 
 
-	public Boolean getPaused()
-	{
-		return paused;
-	}
-
-
-	public void setPaused(Boolean paused)
-	{
-		this.paused = paused;
-	}
-
-
-	public Integer getPenalty()
-	{
-		return penalty;
-	}
-
-
-	public void setPenalty(Integer penalty)
-	{
-		this.penalty = penalty;
-	}
-
-
-	public String getStateinterface()
-	{
-		return stateinterface;
-	}
-
-
-	public void setStateinterface(String stateinterface)
-	{
-		this.stateinterface = stateinterface;
-	}
-
-
-	public String getMembership()
-	{
-		return membership;
-	}
-
-
-	public void setMembership(String membership)
-	{
-		this.membership = membership;
+    public Boolean getPaused() {
+        return paused;
     }
 
-	public Long getCallstaken()
-	{
-		return callstaken;
-	}
+
+    public void setPaused(Boolean paused) {
+        this.paused = paused;
+    }
 
 
-	public void setCallstaken(Long callstaken)
-	{
-		this.callstaken = callstaken;
-	}
+    public Integer getPenalty() {
+        return penalty;
+    }
 
 
-	public Boolean getRinginuse()
-	{
-		return ringinuse;
-	}
+    public void setPenalty(Integer penalty) {
+        this.penalty = penalty;
+    }
 
 
-	public void setRinginuse(Boolean ringinuse)
-	{
-		this.ringinuse = ringinuse;
-	}
+    public String getStateinterface() {
+        return stateinterface;
+    }
 
 
-	public Long getLastcall()
-	{
-		return lastcall;
-	}
+    public void setStateinterface(String stateinterface) {
+        this.stateinterface = stateinterface;
+    }
 
 
-	public void setLastcall(Long lastcall)
-	{
-		this.lastcall = lastcall;
-	}
+    public String getMembership() {
+        return membership;
+    }
 
 
-	public Integer getStatus()
-	{
-		return status;
-	}
+    public void setMembership(String membership) {
+        this.membership = membership;
+    }
+
+    public Long getCallstaken() {
+        return callstaken;
+    }
 
 
-	public void setStatus(Integer status)
-	{
-		this.status = status;
-	}
+    public void setCallstaken(Long callstaken) {
+        this.callstaken = callstaken;
+    }
+
+
+    public Boolean getRinginuse() {
+        return ringinuse;
+    }
+
+
+    public void setRinginuse(Boolean ringinuse) {
+        this.ringinuse = ringinuse;
+    }
+
+
+    public Long getLastcall() {
+        return lastcall;
+    }
+
+
+    public void setLastcall(Long lastcall) {
+        this.lastcall = lastcall;
+    }
+
+
+    public Integer getStatus() {
+        return status;
+    }
+
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
 }

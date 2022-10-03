@@ -22,8 +22,7 @@ package org.asteriskjava.manager.action;
  *
  * @since 1.0.0
  */
-public class SkypeAddBuddyAction extends AbstractManagerAction
-{
+public class SkypeAddBuddyAction extends AbstractManagerAction {
     /**
      * Serializable version identifier
      */
@@ -35,8 +34,7 @@ public class SkypeAddBuddyAction extends AbstractManagerAction
     /**
      * Creates a new SkypeAddBuddyAction.
      */
-    public SkypeAddBuddyAction()
-    {
+    public SkypeAddBuddyAction() {
 
     }
 
@@ -47,8 +45,7 @@ public class SkypeAddBuddyAction extends AbstractManagerAction
      * @param user  the Skype username of the user to add the buddy to.
      * @param buddy the Skype username of the buddy.
      */
-    public SkypeAddBuddyAction(String user, String buddy)
-    {
+    public SkypeAddBuddyAction(String user, String buddy) {
         this.user = user;
         this.buddy = buddy;
     }
@@ -61,8 +58,7 @@ public class SkypeAddBuddyAction extends AbstractManagerAction
      * @param buddy   the Skype username of the buddy.
      * @param authMsg the auth message.
      */
-    public SkypeAddBuddyAction(String user, String buddy, String authMsg)
-    {
+    public SkypeAddBuddyAction(String user, String buddy, String authMsg) {
         this.user = user;
         this.buddy = buddy;
         this.authMsg = authMsg;
@@ -74,8 +70,7 @@ public class SkypeAddBuddyAction extends AbstractManagerAction
      *
      * @return the Skype username of the Skype for Asterisk user.
      */
-    public String getUser()
-    {
+    public String getUser() {
         return user;
     }
 
@@ -84,8 +79,7 @@ public class SkypeAddBuddyAction extends AbstractManagerAction
      *
      * @param user the Skype username of the Skype for Asterisk user.
      */
-    public void setUser(String user)
-    {
+    public void setUser(String user) {
         this.user = user;
     }
 
@@ -94,8 +88,7 @@ public class SkypeAddBuddyAction extends AbstractManagerAction
      *
      * @return the Skype username of the buddy.
      */
-    public String getBuddy()
-    {
+    public String getBuddy() {
         return buddy;
     }
 
@@ -105,8 +98,7 @@ public class SkypeAddBuddyAction extends AbstractManagerAction
      *
      * @param buddy the Skype username of the buddy.
      */
-    public void setBuddy(String buddy)
-    {
+    public void setBuddy(String buddy) {
         this.buddy = buddy;
     }
 
@@ -115,8 +107,7 @@ public class SkypeAddBuddyAction extends AbstractManagerAction
      *
      * @return the auth message.
      */
-    public String getAuthMsg()
-    {
+    public String getAuthMsg() {
         return authMsg;
     }
 
@@ -125,8 +116,7 @@ public class SkypeAddBuddyAction extends AbstractManagerAction
      *
      * @param authMsg the auth message.
      */
-    public void setAuthMsg(String authMsg)
-    {
+    public void setAuthMsg(String authMsg) {
         this.authMsg = authMsg;
     }
 
@@ -134,8 +124,7 @@ public class SkypeAddBuddyAction extends AbstractManagerAction
      * Returns the name of this action, i.e. "SkypeAddBuddy".
      */
     @Override
-    public String getAction()
-    {
+    public String getAction() {
         return "SkypeAddBuddy";
     }
 }

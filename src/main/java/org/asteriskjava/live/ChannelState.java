@@ -22,12 +22,11 @@ import org.asteriskjava.util.AstState;
  * The lifecycle status of an {@link org.asteriskjava.live.AsteriskChannel}.
  * <br>
  * Defined in <code>channel.c</code> function <code>ast_state2str</code>.
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public enum ChannelState
-{
+public enum ChannelState {
     /**
      * Channel is down and available.
      * This is the initial state of the channel when it is not yet in use.
@@ -91,8 +90,7 @@ public enum ChannelState
      *
      * @param status the numerical status code.
      */
-    ChannelState(int status)
-    {
+    ChannelState(int status) {
         this.status = status;
     }
 
@@ -101,8 +99,7 @@ public enum ChannelState
      *
      * @return the numerical status code.
      */
-    public int getStatus()
-    {
+    public int getStatus() {
         return status;
     }
 
@@ -113,17 +110,13 @@ public enum ChannelState
      * @param status integer representation of the status.
      * @return corresponding ChannelState object or <code>null</code> if none matches.
      */
-    public static ChannelState valueOf(Integer status)
-    {
-        if (status == null)
-        {
+    public static ChannelState valueOf(Integer status) {
+        if (status == null) {
             return null;
         }
 
-        for (ChannelState tmp : ChannelState.values())
-        {
-            if (tmp.getStatus() == status)
-            {
+        for (ChannelState tmp : ChannelState.values()) {
+            if (tmp.getStatus() == status) {
                 return tmp;
             }
         }

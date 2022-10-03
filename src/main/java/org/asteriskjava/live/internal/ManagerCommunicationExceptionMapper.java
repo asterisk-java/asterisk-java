@@ -23,15 +23,13 @@ import org.asteriskjava.manager.EventTimeoutException;
  * Maps exceptions received from
  * {@link org.asteriskjava.manager.ManagerConnection} to the corresponding
  * {@link org.asteriskjava.live.ManagerCommunicationException}.
- * 
+ *
  * @author srt
  * @version $Id$
  */
-class ManagerCommunicationExceptionMapper
-{
+class ManagerCommunicationExceptionMapper {
     // hide constructor
-    private ManagerCommunicationExceptionMapper()
-    {
+    private ManagerCommunicationExceptionMapper() {
 
     }
 
@@ -40,23 +38,17 @@ class ManagerCommunicationExceptionMapper
      * {@link org.asteriskjava.manager.ManagerConnection} when sending a
      * {@link org.asteriskjava.manager.action.ManagerAction} to the corresponding
      * {@link org.asteriskjava.live.ManagerCommunicationException}.
-     * 
+     *
      * @param actionName name of the action that has been tried to send
-     * @param exception exception received
+     * @param exception  exception received
      * @return the corresponding ManagerCommunicationException
      */
-    static ManagerCommunicationException mapSendActionException(String actionName, Exception exception)
-    {
-        if (exception instanceof IllegalStateException)
-        {
+    static ManagerCommunicationException mapSendActionException(String actionName, Exception exception) {
+        if (exception instanceof IllegalStateException) {
             return new ManagerCommunicationException("Not connected to Asterisk Server", exception);
-        }
-        else if (exception instanceof EventTimeoutException)
-        {
+        } else if (exception instanceof EventTimeoutException) {
             return new ManagerCommunicationException("Timeout waiting for events from " + actionName + "Action", exception);
-        }
-        else
-        {
+        } else {
             return new ManagerCommunicationException("Unable to send " + actionName + "Action", exception);
         }
     }

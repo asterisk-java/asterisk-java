@@ -1,39 +1,33 @@
 package org.asteriskjava.manager.response;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.TimeZone;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class CoreStatusResponseTest
-{
+class CoreStatusResponseTest {
     private TimeZone tz = TimeZone.getTimeZone("Europe/Berlin");
     private CoreStatusResponse response;
     private TimeZone defaultTimeZone;
 
-    @Before
-    public void setUp()
-    {
+    @BeforeEach
+    void setUp() {
         this.response = new CoreStatusResponse();
         defaultTimeZone = TimeZone.getDefault();
         TimeZone.setDefault(tz);
     }
 
-    @After
-    public void tearDown()
-    {
+    @AfterEach
+    void tearDown() {
         TimeZone.setDefault(defaultTimeZone);
     }
 
     @Test
-    public void testGetCoreStartupTimeAsDate()
-    {
-        assertNotNull("TimeZone not found", tz);
+    void testGetCoreStartupTimeAsDate() {
+        assertNotNull(tz, "TimeZone not found");
         response.setCoreStartupDate("2009-05-27");
         response.setCoreStartupTime("02:49:15");
 
@@ -41,9 +35,8 @@ public class CoreStatusResponseTest
     }
 
     @Test
-    public void testGetCoreStartupTimeAsDateIfDateIsNull()
-    {
-        assertNotNull("TimeZone not found", tz);
+    void testGetCoreStartupTimeAsDateIfDateIsNull() {
+        assertNotNull(tz, "TimeZone not found");
         response.setCoreStartupDate(null); // before Asterisk 1.6.2
         response.setCoreStartupTime("02:49:15");
 

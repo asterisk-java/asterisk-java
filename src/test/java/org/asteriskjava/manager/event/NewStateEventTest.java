@@ -1,31 +1,27 @@
 package org.asteriskjava.manager.event;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class NewStateEventTest
-{
+class NewStateEventTest {
     private NewStateEvent newStateEvent;
 
-    @Before
-    public void setUp()
-    {
+    @BeforeEach
+    void setUp() {
         newStateEvent = new NewStateEvent(this);
     }
 
     @Test
-    public void testWithState()
-    {
+    void testWithState() {
         newStateEvent.setState("Ring");
         assertEquals(new Integer(4), newStateEvent.getChannelState());
         assertEquals("Ring", newStateEvent.getChannelStateDesc());
     }
 
     @Test
-    public void testWithUnknownState()
-    {
+    void testWithUnknownState() {
         newStateEvent.setState("Unknown (4)");
         assertEquals(new Integer(4), newStateEvent.getChannelState());
     }

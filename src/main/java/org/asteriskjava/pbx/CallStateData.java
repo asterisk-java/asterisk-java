@@ -1,5 +1,4 @@
 package org.asteriskjava.pbx;
 
-public class CallStateData
-{
+public class CallStateData {
 }

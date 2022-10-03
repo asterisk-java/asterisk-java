@@ -12,13 +12,11 @@ import java.util.Set;
  * @author srt
  * @version $Id$
  */
-public class AstUtil
-{
+public class AstUtil {
     private static final Set<String> TRUE_LITERALS;
     private static final Set<String> NULL_LITERALS;
 
-    static
-    {
+    static {
         TRUE_LITERALS = new HashSet<>(20);
         TRUE_LITERALS.add("yes");
         TRUE_LITERALS.add("true");
@@ -43,8 +41,7 @@ public class AstUtil
         NULL_LITERALS.add("(null)"); // appData in ListDialplanEvent
     }
 
-    private AstUtil()
-    {
+    private AstUtil() {
         // hide constructor
     }
 
@@ -52,7 +49,7 @@ public class AstUtil
      * Checks if a String represents <code>true</code> or <code>false</code>
      * according to Asterisk's logic. <br>
      * The original implementation is <code>util.c</code> is as follows: <br>
-     * 
+     *
      * <pre>
      *     int ast_true(const char *s)
      *     {
@@ -70,7 +67,7 @@ public class AstUtil
      *         return 0;
      *     }
      * </pre>
-     * 
+     *
      * <br>
      * To support the dnd property of
      * {@link org.asteriskjava.manager.event.ZapShowChannelsEvent} this method
@@ -78,17 +75,14 @@ public class AstUtil
      *
      * @param o the Object (usually a String) to check for <code>true</code>.
      * @return <code>true</code> if s represents <code>true</code>,
-     *         <code>false</code> otherwise.
+     * <code>false</code> otherwise.
      */
-    public static boolean isTrue(Object o)
-    {
-        if (o == null)
-        {
+    public static boolean isTrue(Object o) {
+        if (o == null) {
             return false;
         }
 
-        if (o instanceof Boolean)
-        {
+        if (o instanceof Boolean) {
             return (Boolean) o;
         }
 
@@ -99,10 +93,9 @@ public class AstUtil
      * @param a an object
      * @param b an object to be compared with {@code a} for equality
      * @return {@code true} if the arguments are equal to each other and
-     *         {@code false} otherwise
+     * {@code false} otherwise
      */
-    public static boolean isEqual(Object a, Object b)
-    {
+    public static boolean isEqual(Object a, Object b) {
         return a == b || a != null && a.equals(b);
     }
 
@@ -116,16 +109,14 @@ public class AstUtil
      * @param s the string to parse
      * @return a String[] with name (index 0) and number (index 1)
      */
-    public static String[] parseCallerId(String s)
-    {
+    public static String[] parseCallerId(String s) {
         final String[] result = new String[2];
         final int lbPosition;
         final int rbPosition;
         String name;
         String number;
 
-        if (s == null)
-        {
+        if (s == null) {
             return result;
         }
 
@@ -133,29 +124,24 @@ public class AstUtil
         rbPosition = s.lastIndexOf('>');
 
         // no opening and closing brace? use value as CallerId name
-        if (lbPosition < 0 || rbPosition < 0)
-        {
+        if (lbPosition < 0 || rbPosition < 0) {
             name = s.trim();
-            if (name.length() == 0)
-            {
+            if (name.length() == 0) {
                 name = null;
             }
             result[0] = name;
             return result;
         }
         number = s.substring(lbPosition + 1, rbPosition).trim();
-        if (number.length() == 0)
-        {
+        if (number.length() == 0) {
             number = null;
         }
 
         name = s.substring(0, lbPosition).trim();
-        if (name.startsWith("\"") && name.endsWith("\"") && name.length() > 1)
-        {
+        if (name.startsWith("\"") && name.endsWith("\"") && name.length() > 1) {
             name = name.substring(1, name.length() - 1).trim();
         }
-        if (name.length() == 0)
-        {
+        if (name.length() == 0) {
             name = null;
         }
 
@@ -171,61 +157,58 @@ public class AstUtil
      * "&lt;null&gt;". <br>
      * To find such replacements search for <code>S_OR</code> in Asterisk's
      * source code. You will find things like
-     * 
+     *
      * <pre>
      * S_OR(chan-&gt;cid.cid_num, "&lt;unknown&gt;")
      * fdprintf(fd, "agi_callerid: %s\n", S_OR(chan-&gt;cid.cid_num, "unknown"));
      * </pre>
-     * 
+     * <p>
      * and more...
      *
      * @param s the string to test, may be <code>null</code>. If s is not a
-     *            string the only test that is performed is a check for
-     *            <code>null</code>.
+     *          string the only test that is performed is a check for
+     *          <code>null</code>.
      * @return <code>true</code> if the s was <code>null</code> in Asterisk;
-     *         <code>false</code> otherwise.
+     * <code>false</code> otherwise.
      */
-    public static boolean isNull(Object s)
-    {
-        if (s == null)
-        {
+    public static boolean isNull(Object s) {
+        if (s == null) {
             return true;
         }
 
-        if (!(s instanceof String))
-        {
+        if (!(s instanceof String)) {
             return false;
         }
 
         return NULL_LITERALS.contains(((String) s).toLowerCase(Locale.US));
     }
+
     /**
      * Converts a non-standard Asterisk boolean String value into something the Boolean class
      * String constructor recognizes.
-     * 
-     * Asterisk can return various strings that represent truth values.  
+     * <p>
+     * Asterisk can return various strings that represent truth values.
      * This method converts them into standard True/False, or null if null.
-     * 
+     *
      * @param value
      * @return <code>true</code> if the String is "true" or "yes" (case insensitive).
-     * 		  <code>false</code> if the String is "false" or "no" (case insensitive).
-     * 		  <code>null</code> if the String is null.
+     * <code>false</code> if the String is "false" or "no" (case insensitive).
+     * <code>null</code> if the String is null.
      * @throws <code>IllegalArgumentException</code> if any other value not listed above.
      */
-    
-	public static String convertAsteriskBooleanStringToStandardBooleanString(String value) {
-		if (value == null)  return null;
-		switch (value.toLowerCase())
-		{
-			case "true":
-			case "yes":
-				return "True";
-			case "false":
-			case "no":
-				return "False";
-			default:
-				throw new IllegalArgumentException("value of:" + value + " was not recognized as a boolean");
-		}
-		
-	}
+
+    public static String convertAsteriskBooleanStringToStandardBooleanString(String value) {
+        if (value == null) return null;
+        switch (value.toLowerCase()) {
+            case "true":
+            case "yes":
+                return "True";
+            case "false":
+            case "no":
+                return "False";
+            default:
+                throw new IllegalArgumentException("value of:" + value + " was not recognized as a boolean");
+        }
+
+    }
 }

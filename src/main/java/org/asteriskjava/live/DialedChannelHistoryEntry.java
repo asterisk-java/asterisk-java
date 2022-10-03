@@ -25,8 +25,7 @@ import java.util.Date;
  * @version $Id$
  * @since 0.3
  */
-public class DialedChannelHistoryEntry
-{
+public class DialedChannelHistoryEntry {
     private final Date date;
     private final AsteriskChannel channel;
 
@@ -36,8 +35,7 @@ public class DialedChannelHistoryEntry
      * @param date    the date the channel was dialed.
      * @param channel the channel that has been dialed.
      */
-    public DialedChannelHistoryEntry(Date date, AsteriskChannel channel)
-    {
+    public DialedChannelHistoryEntry(Date date, AsteriskChannel channel) {
         this.date = date;
         this.channel = channel;
     }
@@ -47,8 +45,7 @@ public class DialedChannelHistoryEntry
      *
      * @return the date the channel was dialed.
      */
-    public Date getDate()
-    {
+    public Date getDate() {
         return date;
     }
 
@@ -57,14 +54,12 @@ public class DialedChannelHistoryEntry
      *
      * @return the channel that has been dialed.
      */
-    public AsteriskChannel getChannel()
-    {
+    public AsteriskChannel getChannel() {
         return channel;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         final StringBuilder sb;
 
         sb = new StringBuilder("DialedChannelHistoryEntry[");

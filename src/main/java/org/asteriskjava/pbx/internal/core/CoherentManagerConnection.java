@@ -1,31 +1,9 @@
 package org.asteriskjava.pbx.internal.core;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-
-import javax.naming.OperationNotSupportedException;
-
 import org.asteriskjava.AsteriskVersion;
-import org.asteriskjava.manager.AuthenticationFailedException;
-import org.asteriskjava.manager.EventTimeoutException;
-import org.asteriskjava.manager.ManagerConnection;
-import org.asteriskjava.manager.ManagerConnectionState;
-import org.asteriskjava.manager.TimeoutException;
-import org.asteriskjava.pbx.AsteriskSettings;
-import org.asteriskjava.pbx.Channel;
-import org.asteriskjava.pbx.ListenerPriority;
-import org.asteriskjava.pbx.PBX;
-import org.asteriskjava.pbx.PBXException;
-import org.asteriskjava.pbx.PBXFactory;
-import org.asteriskjava.pbx.asterisk.wrap.actions.EventGeneratingAction;
-import org.asteriskjava.pbx.asterisk.wrap.actions.GetVarAction;
-import org.asteriskjava.pbx.asterisk.wrap.actions.ListCommandsAction;
-import org.asteriskjava.pbx.asterisk.wrap.actions.ManagerAction;
-import org.asteriskjava.pbx.asterisk.wrap.actions.SetVarAction;
+import org.asteriskjava.manager.*;
+import org.asteriskjava.pbx.*;
+import org.asteriskjava.pbx.asterisk.wrap.actions.*;
 import org.asteriskjava.pbx.asterisk.wrap.events.ConnectEvent;
 import org.asteriskjava.pbx.asterisk.wrap.events.DisconnectEvent;
 import org.asteriskjava.pbx.asterisk.wrap.events.ManagerEvent;
@@ -34,6 +12,14 @@ import org.asteriskjava.pbx.asterisk.wrap.response.ManagerResponse;
 import org.asteriskjava.pbx.internal.managerAPI.Connector;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
+
+import javax.naming.OperationNotSupportedException;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 /**
  * This is a wrapper class for the asterisk manager. <br>
@@ -64,12 +50,11 @@ import org.asteriskjava.util.LogFactory;
  * coherent (i.e events are processed in the correct order). <br>
  * <br>
  * For connections that generate large number of events you should use
- * 
+ *
  * @see org.asteriskjava.pbx.internal.core.CoherentManagerEventQueue Note:
- *      events for any action are distributed to all listeners!
+ * events for any action are distributed to all listeners!
  */
-class CoherentManagerConnection implements FilteredManagerListener<ManagerEvent>
-{
+class CoherentManagerConnection implements FilteredManagerListener<ManagerEvent> {
 
     static private Log logger = LogFactory.getLog(CoherentManagerConnection.class);
 
@@ -116,32 +101,23 @@ class CoherentManagerConnection implements FilteredManagerListener<ManagerEvent>
     private boolean expectRenameEvents = true;
 
     public static synchronized void init()
-            throws IllegalStateException, IOException, AuthenticationFailedException, TimeoutException, InterruptedException
-    {
+            throws IllegalStateException, IOException, AuthenticationFailedException, TimeoutException, InterruptedException {
         if (self != null)
             logger.warn("The CoherentManagerConnection has already been initialised");
-        else
-        {
+        else {
             self = new CoherentManagerConnection();
             boolean done = false;
-            while (!done)
-            {
-                try
-                {
+            while (!done) {
+                try {
 
                     self.checkConnection();
                     self.checkFeatures();
                     done = true;
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                     logger.error(e, e);
-                    try
-                    {
+                    try {
                         TimeUnit.MILLISECONDS.sleep(500);
-                    }
-                    catch (InterruptedException e1)
-                    {
+                    } catch (InterruptedException e1) {
                         throw e1;
                     }
                 }
@@ -151,13 +127,11 @@ class CoherentManagerConnection implements FilteredManagerListener<ManagerEvent>
         self.checkConnection();
     }
 
-    public static void reset()
-    {
+    public static void reset() {
         self = null;
     }
 
-    public static synchronized CoherentManagerConnection getInstance()
-    {
+    public static synchronized CoherentManagerConnection getInstance() {
         if (self == null)
             throw new IllegalStateException("The CoherentManagerConnection has not been initialised");
 
@@ -167,22 +141,18 @@ class CoherentManagerConnection implements FilteredManagerListener<ManagerEvent>
     }
 
     private CoherentManagerConnection()
-            throws IllegalStateException, IOException, AuthenticationFailedException, TimeoutException
-    {
+            throws IllegalStateException, IOException, AuthenticationFailedException, TimeoutException {
         super();
         connector = new Connector();
         this.configureConnection();
     }
 
-    public AsteriskVersion getVersion() throws IllegalStateException
-    {
+    public AsteriskVersion getVersion() throws IllegalStateException {
         return CoherentManagerConnection.managerConnection.getVersion();
     }
 
-    public void setVariable(final Channel channel, final String variableName, final String value) throws PBXException
-    {
-        try
-        {
+    public void setVariable(final Channel channel, final String variableName, final String value) throws PBXException {
+        try {
             /*
              * Sets the specified variable on the specified channel to the
              * specified value.
@@ -195,21 +165,16 @@ class CoherentManagerConnection implements FilteredManagerListener<ManagerEvent>
                 throw new PBXException("Channel: " + channel + " cannot be retrieved as it is still in transition.");
 
             response = sendAction(setVariable, 500);
-            if ((response != null) && (response.getResponse().compareToIgnoreCase("success") == 0))
-            {
+            if ((response != null) && (response.getResponse().compareToIgnoreCase("success") == 0)) {
                 // $NON-NLS-1$
 
                 CoherentManagerConnection.logger.debug("set variable " + variableName + " to " + value //$NON-NLS-2$
                         + " on " + channel);
-            }
-            else
-            {
+            } else {
                 throw new PBXException("failed to set variable '" + variableName + "' on channel " + channel + " to '" //$NON-NLS-2$ //$NON-NLS-3$
                         + value + "'" + (response != null ? " Error:" + response.getMessage() : "")); //$NON-NLS-2$ //$NON-NLS-3$
             }
-        }
-        catch (IllegalArgumentException | IllegalStateException | IOException | TimeoutException e)
-        {
+        } catch (IllegalArgumentException | IllegalStateException | IOException | TimeoutException e) {
             logger.error(e, e);
             throw new PBXException(e);
 
@@ -220,33 +185,28 @@ class CoherentManagerConnection implements FilteredManagerListener<ManagerEvent>
     /**
      * Retrieves and returns the value of a variable associated with a channel.
      * If the variable is empty or null then an empty string is returned.
-     * 
+     *
      * @param channel
      * @param variableName
      * @return
      */
-    public String getVariable(final Channel channel, final String variableName)
-    {
+    public String getVariable(final Channel channel, final String variableName) {
         String value = "";
         final GetVarAction var = new GetVarAction(channel, variableName);
 
-        try
-        {
+        try {
             PBX pbx = PBXFactory.getActivePBX();
             if (!pbx.waitForChannelToQuiescent(channel, 3000))
                 throw new PBXException("Channel: " + channel + " cannot be retrieved as it is still in transition.");
 
             ManagerResponse convertedResponse = sendAction(var, 500);
-            if (convertedResponse != null)
-            {
+            if (convertedResponse != null) {
                 value = convertedResponse.getAttribute("value");
                 if (value == null)
                     value = "";
                 CoherentManagerConnection.logger.debug("getVarAction returned name:" + variableName + " value:" + value); //$NON-NLS-2$
             }
-        }
-        catch (final Exception e)
-        {
+        } catch (final Exception e) {
             CoherentManagerConnection.logger.debug(e, e);
             CoherentManagerConnection.logger.error("getVariable: " + e);
         }
@@ -257,22 +217,16 @@ class CoherentManagerConnection implements FilteredManagerListener<ManagerEvent>
      * Allows the caller to send an action to asterisk without waiting for the
      * response. You should only use this if you don't care whether the action
      * actually succeeds.
-     * 
+     *
      * @param sa
      */
-    public static void sendActionNoWait(final ManagerAction action)
-    {
-        final Thread background = new Thread()
-        {
+    public static void sendActionNoWait(final ManagerAction action) {
+        final Thread background = new Thread() {
             @Override
-            public void run()
-            {
-                try
-                {
+            public void run() {
+                try {
                     CoherentManagerConnection.sendAction(action, 5000);
-                }
-                catch (final Exception e)
-                {
+                } catch (final Exception e) {
                     CoherentManagerConnection.logger.error(e, e);
                 }
             }
@@ -283,14 +237,12 @@ class CoherentManagerConnection implements FilteredManagerListener<ManagerEvent>
     }
 
     public static ResponseEvents sendEventGeneratingAction(EventGeneratingAction action)
-            throws EventTimeoutException, IllegalArgumentException, IllegalStateException, IOException
-    {
+            throws EventTimeoutException, IllegalArgumentException, IllegalStateException, IOException {
         org.asteriskjava.manager.ResponseEvents events = CoherentManagerConnection.managerConnection
                 .sendEventGeneratingAction(action.getAJEventGeneratingAction());
 
         ResponseEvents convertedEvents = new ResponseEvents();
-        for (org.asteriskjava.manager.event.ResponseEvent event : events.getEvents())
-        {
+        for (org.asteriskjava.manager.event.ResponseEvent event : events.getEvents()) {
             convertedEvents.add(CoherentEventFactory.build(event));
         }
         return convertedEvents;
@@ -298,14 +250,12 @@ class CoherentManagerConnection implements FilteredManagerListener<ManagerEvent>
     }
 
     public static ResponseEvents sendEventGeneratingAction(EventGeneratingAction action, int timeout)
-            throws EventTimeoutException, IllegalArgumentException, IllegalStateException, IOException
-    {
+            throws EventTimeoutException, IllegalArgumentException, IllegalStateException, IOException {
         org.asteriskjava.manager.ResponseEvents events = CoherentManagerConnection.managerConnection
                 .sendEventGeneratingAction(action.getAJEventGeneratingAction(), timeout);
 
         ResponseEvents convertedEvents = new ResponseEvents();
-        for (org.asteriskjava.manager.event.ResponseEvent event : events.getEvents())
-        {
+        for (org.asteriskjava.manager.event.ResponseEvent event : events.getEvents()) {
             convertedEvents.add(CoherentEventFactory.build(event));
         }
         return convertedEvents;
@@ -314,7 +264,7 @@ class CoherentManagerConnection implements FilteredManagerListener<ManagerEvent>
 
     /**
      * Sends an Asterisk action and waits for a ManagerRespose.
-     * 
+     *
      * @param action
      * @param timeout timeout in milliseconds
      * @return
@@ -325,15 +275,13 @@ class CoherentManagerConnection implements FilteredManagerListener<ManagerEvent>
      * @throws OperationNotSupportedException
      */
     public static ManagerResponse sendAction(final ManagerAction action, final int timeout)
-            throws IllegalArgumentException, IllegalStateException, IOException, TimeoutException
-    {
+            throws IllegalArgumentException, IllegalStateException, IOException, TimeoutException {
         if (logger.isDebugEnabled())
             CoherentManagerConnection.logger.debug("Sending Action: " + action.toString());
 
         CoherentManagerConnection.getInstance();
         if ((CoherentManagerConnection.managerConnection != null)
-                && (CoherentManagerConnection.managerConnection.getState() == ManagerConnectionState.CONNECTED))
-        {
+                && (CoherentManagerConnection.managerConnection.getState() == ManagerConnectionState.CONNECTED)) {
             final org.asteriskjava.manager.action.ManagerAction ajAction = action.getAJAction();
 
             org.asteriskjava.manager.response.ManagerResponse response = CoherentManagerConnection.managerConnection
@@ -344,8 +292,7 @@ class CoherentManagerConnection implements FilteredManagerListener<ManagerEvent>
             if (response != null)
                 convertedResponse = CoherentEventFactory.build(response);
 
-            if ((convertedResponse != null) && (convertedResponse.getResponse().compareToIgnoreCase("Error") == 0))
-            {
+            if ((convertedResponse != null) && (convertedResponse.getResponse().compareToIgnoreCase("Error") == 0)) {
                 CoherentManagerConnection.logger.warn("Action '" + ajAction + "' failed, Response: "
                         + convertedResponse.getResponse() + " Message: " + convertedResponse.getMessage());
             }
@@ -355,39 +302,31 @@ class CoherentManagerConnection implements FilteredManagerListener<ManagerEvent>
         throw new IllegalStateException("not connected.");
     }
 
-    private void checkConnection()
-    {
+    private void checkConnection() {
         int trys = 3;
 
         this._reconnectLatch = new CountDownLatch(1);
         while ((trys > 0) && ((CoherentManagerConnection.managerConnection == null)
-                || (CoherentManagerConnection.managerConnection.getState() != ManagerConnectionState.CONNECTED)))
-        {
-            if (trys == 3)
-            {
+                || (CoherentManagerConnection.managerConnection.getState() != ManagerConnectionState.CONNECTED))) {
+            if (trys == 3) {
                 CoherentManagerConnection.logger.warn("Awaiting Manager connection");
             }
-            try
-            {
+            try {
 
                 this._reconnectLatch.await(300, TimeUnit.MILLISECONDS);
-            }
-            catch (final InterruptedException e)
-            {
+            } catch (final InterruptedException e) {
                 CoherentManagerConnection.logger.error(e, e);
             }
             trys--;
         }
     }
 
-    public ManagerConnectionState getState()
-    {
+    public ManagerConnectionState getState() {
         return CoherentManagerConnection.managerConnection.getState();
     }
 
     private void configureConnection()
-            throws IOException, AuthenticationFailedException, TimeoutException, IllegalStateException
-    {
+            throws IOException, AuthenticationFailedException, TimeoutException, IllegalStateException {
         final AsteriskSettings profile = PBXFactory.getActiveProfile();
         CoherentManagerConnection.managerConnection = CoherentManagerConnection.connector.connect(profile);
 
@@ -400,8 +339,7 @@ class CoherentManagerConnection implements FilteredManagerListener<ManagerEvent>
         // garbage collected.
         CoherentManagerEventQueue newRealtime = new CoherentManagerEventQueue("Realtime",
                 CoherentManagerConnection.managerConnection);
-        if (this.realtimeEventQueue != null)
-        {
+        if (this.realtimeEventQueue != null) {
             this.realtimeEventQueue.stop();
             newRealtime.transferListeners(this.realtimeEventQueue);
         }
@@ -409,16 +347,14 @@ class CoherentManagerConnection implements FilteredManagerListener<ManagerEvent>
 
         CoherentManagerEventQueue newStandard = new CoherentManagerEventQueue("Standard",
                 CoherentManagerConnection.managerConnection);
-        if (this.eventQueue != null)
-        {
+        if (this.eventQueue != null) {
             this.eventQueue.stop();
             newStandard.transferListeners(this.eventQueue);
         }
         this.eventQueue = newStandard;
     }
 
-    private void checkFeatures() throws IOException, TimeoutException
-    {
+    private void checkFeatures() throws IOException, TimeoutException {
         final AsteriskSettings profile = PBXFactory.getActiveProfile();
 
         // Determine if the Bridge and Mute events are available.
@@ -426,60 +362,46 @@ class CoherentManagerConnection implements FilteredManagerListener<ManagerEvent>
         ManagerResponse convertedResponse = sendAction(lca, 500);
         boolean bridgeFound = false;
         boolean muteAudioFound = false;
-        for (final String command : convertedResponse.getAttributes().keySet())
-        {
-            if (command.toLowerCase().contains("bridge"))
-            {
+        for (final String command : convertedResponse.getAttributes().keySet()) {
+            if (command.toLowerCase().contains("bridge")) {
                 bridgeFound = true;
             }
-            if (command.toLowerCase().contains("muteaudio"))
-            {
+            if (command.toLowerCase().contains("muteaudio")) {
                 muteAudioFound = true;
             }
         }
-        if (CoherentManagerConnection.managerConnection.getVersion().isAtLeast(AsteriskVersion.ASTERISK_13))
-        {
+        if (CoherentManagerConnection.managerConnection.getVersion().isAtLeast(AsteriskVersion.ASTERISK_13)) {
             // we are really checking for the use of PJ SIP
             expectRenameEvents = false;
         }
         this.canMuteAudio = muteAudioFound;
-        if (profile.getDisableBridge())
-        {
+        if (profile.getDisableBridge()) {
             this.canBridge = false;
-        }
-        else
-        {
+        } else {
             this.canBridge = bridgeFound;
         }
     }
 
-    public void shutDown()
-    {
+    public void shutDown() {
         CoherentManagerConnection.managerConnection.removeEventListener(this.eventQueue);
         this.eventQueue.stop();
-        try
-        {
+        try {
             CoherentManagerConnection.managerConnection.logoff();
-        }
-        catch (final Exception e)
-        {
+        } catch (final Exception e) {
             CoherentManagerConnection.logger.debug("Manager logging off");
             CoherentManagerConnection.logger.debug(e, e);
         }
     }
 
-    public boolean isBridgeSupported()
-    {
+    public boolean isBridgeSupported() {
         return this.canBridge;
     }
 
-    public boolean isMuteAudioSupported()
-    {
+    public boolean isMuteAudioSupported() {
         return this.canMuteAudio;
     }
 
-    public void removeListener(FilteredManagerListener<ManagerEvent> listener)
-    {
+    public void removeListener(FilteredManagerListener<ManagerEvent> listener) {
         if (listener.getPriority() == ListenerPriority.REALTIME)
             this.realtimeEventQueue.removeListener(listener);
         else
@@ -487,8 +409,7 @@ class CoherentManagerConnection implements FilteredManagerListener<ManagerEvent>
 
     }
 
-    public void addListener(FilteredManagerListener<ManagerEvent> listener)
-    {
+    public void addListener(FilteredManagerListener<ManagerEvent> listener) {
         if (listener.getPriority() == ListenerPriority.REALTIME)
             this.realtimeEventQueue.addListener(listener);
         else
@@ -497,41 +418,34 @@ class CoherentManagerConnection implements FilteredManagerListener<ManagerEvent>
     }
 
     @Override
-    public HashSet<Class< ? extends ManagerEvent>> requiredEvents()
-    {
-        HashSet<Class< ? extends ManagerEvent>> required = new HashSet<>();
+    public HashSet<Class<? extends ManagerEvent>> requiredEvents() {
+        HashSet<Class<? extends ManagerEvent>> required = new HashSet<>();
         required.add(ConnectEvent.class);
         required.add(DisconnectEvent.class);
         return required;
     }
 
     @Override
-    public String getName()
-    {
+    public String getName() {
         return "CoherentManagerConnection";
     }
 
     @Override
-    public ListenerPriority getPriority()
-    {
+    public ListenerPriority getPriority() {
         return ListenerPriority.REALTIME;
     }
 
     @Override
-    public void onManagerEvent(ManagerEvent event)
-    {
+    public void onManagerEvent(ManagerEvent event) {
         // Special handler for the connect event in case we are
         // wait()ing for
         // the connection to complete. This wakes the code up in the shortest
         // time possible
         // by notifying it of the connection.
-        if (event instanceof ConnectEvent)
-        {
+        if (event instanceof ConnectEvent) {
             logger.warn("****************** Asterisk manager connection acquired **************************");
             this._reconnectLatch.countDown();
-        }
-        else if (event instanceof DisconnectEvent)
-        {
+        } else if (event instanceof DisconnectEvent) {
             logger.warn("****************** Asterisk manager connection lost **************************");
             // new Thread(new Runnable()
             // {
@@ -544,8 +458,7 @@ class CoherentManagerConnection implements FilteredManagerListener<ManagerEvent>
 
     }
 
-    public boolean expectRenameEvents()
-    {
+    public boolean expectRenameEvents() {
         return expectRenameEvents;
     }
 

@@ -21,16 +21,15 @@ package org.asteriskjava.manager.event;
  * reported in response to an SIPPeersAction or SIPShowPeerAction.
  * <p>
  * Available since Asterisk 1.2
- * 
+ *
+ * @author srt
+ * @version $Id$
  * @see org.asteriskjava.manager.event.PeerEntryEvent
  * @see org.asteriskjava.manager.action.SipPeersAction
  * @see org.asteriskjava.manager.action.SipShowPeerAction
- * @author srt
- * @version $Id$
  * @since 0.2
  */
-public class EndpointList extends ResponseEvent
-{
+public class EndpointList extends ResponseEvent {
     /**
      * Serial version identifier.
      */
@@ -51,31 +50,28 @@ public class EndpointList extends ResponseEvent
 
     /**
      * Creates a new instance.
-     * 
+     *
      * @param source
      */
-    public EndpointList(Object source)
-    {
+    public EndpointList(Object source) {
         super(source);
     }
 
     /**
      * Returns the number of PeerEvents that have been reported.
-     * 
+     *
      * @return the number of PeerEvents that have been reported.
      */
-    public Integer getListItems()
-    {
+    public Integer getListItems() {
         return listItems;
     }
 
     /**
      * Sets the number of PeerEvents that have been reported.
-     * 
+     *
      * @param listItems the number of PeerEvents that have been reported.
      */
-    public void setListItems(Integer listItems)
-    {
+    public void setListItems(Integer listItems) {
         this.listItems = listItems;
     }
 
@@ -85,116 +81,94 @@ public class EndpointList extends ResponseEvent
      * Available since Asterisk 1.6.
      *
      * @return always returns "Complete" confirming that all PeerEntry events have
-     *         been sent.
+     * been sent.
      * @since 1.0.0
      */
-    public String getEventList()
-    {
+    public String getEventList() {
         return eventList;
     }
 
-    public void setEventList(String eventList)
-    {
+    public void setEventList(String eventList) {
         this.eventList = eventList;
     }
 
-    public String getAor()
-    {
+    public String getAor() {
         return aor;
     }
 
-    public void setAor(String aor)
-    {
+    public void setAor(String aor) {
         this.aor = aor;
     }
 
-    public String getAuths()
-    {
+    public String getAuths() {
         return auths;
     }
 
-    public void setAuths(String auths)
-    {
+    public void setAuths(String auths) {
         this.auths = auths;
     }
 
-    public String getObjectName()
-    {
+    public String getObjectName() {
         return objectName;
     }
 
-    public void setObjectName(String objectName)
-    {
+    public void setObjectName(String objectName) {
         this.objectName = objectName;
     }
 
-    public String getTransport()
-    {
+    public String getTransport() {
         return transport;
     }
 
-    public void setTransport(String transport)
-    {
+    public void setTransport(String transport) {
         this.transport = transport;
     }
 
-    public String getOutboundAuths()
-    {
+    public String getOutboundAuths() {
         return outboundAuths;
     }
 
-    public void setOutboundAuths(String outboundAuths)
-    {
+    public void setOutboundAuths(String outboundAuths) {
         this.outboundAuths = outboundAuths;
     }
 
-    public String getDevicestate()
-    {
+    public String getDevicestate() {
         return devicestate;
     }
 
-    public void setDevicestate(String devicestate)
-    {
+    public void setDevicestate(String devicestate) {
         this.devicestate = devicestate;
     }
 
-    public String getEvent()
-    {
+    public String getEvent() {
         return event;
     }
 
-    public void setEvent(String event)
-    {
+    public void setEvent(String event) {
         this.event = event;
     }
 
-    public String getObjectType()
-    {
+    public String getObjectType() {
         return objectType;
     }
 
-    public void setObjectType(String objectType)
-    {
+    public void setObjectType(String objectType) {
         this.objectType = objectType;
     }
 
-    public String getContacts()
-    {
+    public String getContacts() {
         return contacts;
     }
 
-    public void setContacts(String contacts)
-    {
+    public void setContacts(String contacts) {
         this.contacts = contacts;
     }
 
-    public String getActiveChannels()
-    {
+    public String getActiveChannels() {
         return activeChannels;
     }
 
-    public void setActiveChannels(String activeChannels)
-    {
+    public void setActiveChannels(String activeChannels) {
         this.activeChannels = activeChannels;
     }
 }

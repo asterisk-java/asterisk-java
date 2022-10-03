@@ -18,12 +18,11 @@ package org.asteriskjava.manager.action;
 
 /**
  * The ZapDNDOnAction switches a zap channel "Do Not Disturb" status on.
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public class ZapDndOnAction extends AbstractManagerAction
-{
+public class ZapDndOnAction extends AbstractManagerAction {
     /**
      * Serializable version identifier
      */
@@ -33,37 +32,33 @@ public class ZapDndOnAction extends AbstractManagerAction
     /**
      * Creates a new empty ZapDndOnAction.
      */
-    public ZapDndOnAction()
-    {
+    public ZapDndOnAction() {
 
     }
 
     /**
      * Creates a new ZapDndOnAction that enables "Do Not Disturb" status for
      * the given zap channel.
-     * 
+     *
      * @param zapChannel the number of the zap channel
      * @since 0.2
      */
-    public ZapDndOnAction(Integer zapChannel)
-    {
+    public ZapDndOnAction(Integer zapChannel) {
         this.zapChannel = zapChannel;
     }
-    
+
     /**
      * Returns the name of this action, i.e. "ZapDNDOn".
      */
     @Override
-   public String getAction()
-    {
+    public String getAction() {
         return "ZapDNDOn";
     }
 
     /**
      * Returns the number of the zap channel to switch to dnd on.
      */
-    public Integer getZapChannel()
-    {
+    public Integer getZapChannel() {
         return zapChannel;
     }
 
@@ -71,8 +66,7 @@ public class ZapDndOnAction extends AbstractManagerAction
      * Sets the number of the zap channel to switch to dnd on.<p>
      * This property is mandatory.
      */
-    public void setZapChannel(Integer channel)
-    {
+    public void setZapChannel(Integer channel) {
         this.zapChannel = channel;
     }
 }

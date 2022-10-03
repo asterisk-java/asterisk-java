@@ -23,16 +23,15 @@ import org.asteriskjava.manager.event.ResponseEvent;
  * The DahdiShowChannelsAction requests the state of all Dahdi channels.<p>
  * For each Dahdi channel aDahdiShowChannelsEvent is generated. After all Dahdi
  * channels have been listed a DahdiShowChannelsCompleteEvent is generated.
- * 
- * @see org.asteriskjava.manager.event.DahdiShowChannelsEvent
- * @see org.asteriskjava.manager.event.DahdiShowChannelsCompleteEvent
+ *
  * @author srt
  * @version $Id$
+ * @see org.asteriskjava.manager.event.DahdiShowChannelsEvent
+ * @see org.asteriskjava.manager.event.DahdiShowChannelsCompleteEvent
  */
 public class DahdiShowChannelsAction extends AbstractManagerAction
         implements
-            EventGeneratingAction
-{
+        EventGeneratingAction {
     /**
      * Serializable version identifier
      */
@@ -41,8 +40,7 @@ public class DahdiShowChannelsAction extends AbstractManagerAction
     /**
      * Creates a new DahdiShowChannelsAction.
      */
-    public DahdiShowChannelsAction()
-    {
+    public DahdiShowChannelsAction() {
 
     }
 
@@ -50,13 +48,11 @@ public class DahdiShowChannelsAction extends AbstractManagerAction
      * Returns the name of this action, i.e. "DahdiShowChannels".
      */
     @Override
-   public String getAction()
-    {
+    public String getAction() {
         return "DahdiShowChannels";
     }
 
-    public Class<? extends ResponseEvent> getActionCompleteEventClass()
-    {
+    public Class<? extends ResponseEvent> getActionCompleteEventClass() {
         return DahdiShowChannelsCompleteEvent.class;
     }
 }

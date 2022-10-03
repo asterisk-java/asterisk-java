@@ -16,42 +16,34 @@
  */
 package org.asteriskjava.fastagi.internal;
 
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-
 import org.asteriskjava.fastagi.AgiWriter;
 import org.asteriskjava.fastagi.command.StreamFileCommand;
 import org.asteriskjava.util.SocketConnectionFacade;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class AgiWriterImplTest
-{
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+
+class AgiWriterImplTest {
     private AgiWriter agiWriter;
     private SocketConnectionFacade socket;
 
-    @Before
-    public void setUp()
-    {
-        this.socket = createMock(SocketConnectionFacade.class);
+    @BeforeEach
+    void setUp() {
+        this.socket = mock(SocketConnectionFacade.class);
         this.agiWriter = new FastAgiWriter(socket);
     }
 
     @Test
-    public void testSendCommand() throws Exception
-    {
+    void testSendCommand() throws Exception {
         StreamFileCommand command;
 
         command = new StreamFileCommand("welcome");
 
-        socket.write("STREAM FILE \"welcome\" \"\"\n");
-        socket.flush();
-
-        replay(socket);
-
         agiWriter.sendCommand(command);
 
-        verify(socket);
+        verify(socket).write("STREAM FILE \"welcome\" \"\"\n");
+        verify(socket).flush();
     }
 }

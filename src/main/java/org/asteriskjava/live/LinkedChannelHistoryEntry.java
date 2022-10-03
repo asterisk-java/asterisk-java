@@ -25,8 +25,7 @@ import java.util.Date;
  * @version $Id$
  * @since 0.3
  */
-public class LinkedChannelHistoryEntry
-{
+public class LinkedChannelHistoryEntry {
     private final Date dateLinked;
     private Date dateUnlinked;
     private final AsteriskChannel channel;
@@ -37,8 +36,7 @@ public class LinkedChannelHistoryEntry
      * @param dateLinked the date the channel was linked.
      * @param channel    the channel that has been linked.
      */
-    public LinkedChannelHistoryEntry(Date dateLinked, AsteriskChannel channel)
-    {
+    public LinkedChannelHistoryEntry(Date dateLinked, AsteriskChannel channel) {
         this.dateLinked = dateLinked;
         this.channel = channel;
     }
@@ -48,8 +46,7 @@ public class LinkedChannelHistoryEntry
      *
      * @return the date the channel was linked.
      */
-    public Date getDateLinked()
-    {
+    public Date getDateLinked() {
         return dateLinked;
     }
 
@@ -58,8 +55,7 @@ public class LinkedChannelHistoryEntry
      *
      * @return the date the channel was unlinked.
      */
-    public Date getDateUnlinked()
-    {
+    public Date getDateUnlinked() {
         return dateUnlinked;
     }
 
@@ -68,8 +64,7 @@ public class LinkedChannelHistoryEntry
      *
      * @param dateUnlinked the date the channel was unlinked.
      */
-    public void setDateUnlinked(Date dateUnlinked)
-    {
+    public void setDateUnlinked(Date dateUnlinked) {
         this.dateUnlinked = dateUnlinked;
     }
 
@@ -78,14 +73,12 @@ public class LinkedChannelHistoryEntry
      *
      * @return the channel that has been linked.
      */
-    public AsteriskChannel getChannel()
-    {
+    public AsteriskChannel getChannel() {
         return channel;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         final StringBuilder sb;
 
         sb = new StringBuilder(100);

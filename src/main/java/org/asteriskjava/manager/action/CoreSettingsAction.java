@@ -31,15 +31,13 @@ import org.asteriskjava.manager.response.CoreSettingsResponse;
  * @since 1.0.0
  */
 @ExpectedResponse(CoreSettingsResponse.class)
-public class CoreSettingsAction extends AbstractManagerAction
-{
+public class CoreSettingsAction extends AbstractManagerAction {
     static final long serialVersionUID = 1L;
 
     /**
      * Creates a new CoreSettingsAction.
      */
-    public CoreSettingsAction()
-    {
+    public CoreSettingsAction() {
 
     }
 
@@ -47,8 +45,7 @@ public class CoreSettingsAction extends AbstractManagerAction
      * Returns the name of this action, i.e. "CoreSettings".
      */
     @Override
-    public String getAction()
-    {
+    public String getAction() {
         return "CoreSettings";
     }
 }

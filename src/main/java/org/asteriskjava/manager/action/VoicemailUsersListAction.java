@@ -34,8 +34,7 @@ import org.asteriskjava.manager.event.VoicemailUserEntryCompleteEvent;
  * @see org.asteriskjava.manager.event.VoicemailUserEntryCompleteEvent
  * @since 1.0.0
  */
-public class VoicemailUsersListAction extends AbstractManagerAction implements EventGeneratingAction
-{
+public class VoicemailUsersListAction extends AbstractManagerAction implements EventGeneratingAction {
     /**
      * Serial version identifier.
      */
@@ -44,19 +43,16 @@ public class VoicemailUsersListAction extends AbstractManagerAction implements E
     /**
      * Creates a new VoicemailUsersListAction.
      */
-    public VoicemailUsersListAction()
-    {
+    public VoicemailUsersListAction() {
 
     }
 
     @Override
-    public String getAction()
-    {
+    public String getAction() {
         return "VoicemailUsersList";
     }
 
-    public Class<? extends ResponseEvent> getActionCompleteEventClass()
-    {
+    public Class<? extends ResponseEvent> getActionCompleteEventClass() {
         return VoicemailUserEntryCompleteEvent.class;
     }
 }

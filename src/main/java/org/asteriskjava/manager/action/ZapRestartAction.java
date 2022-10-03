@@ -5,13 +5,12 @@ package org.asteriskjava.manager.action;
  * interfaces.
  * <p>
  * Available since Asterisk 1.4.
- * 
+ *
  * @author srt
- * @since 0.3
  * @version $Id$
+ * @since 0.3
  */
-public class ZapRestartAction extends AbstractManagerAction
-{
+public class ZapRestartAction extends AbstractManagerAction {
     /**
      * Serial version identifier.
      */
@@ -20,14 +19,12 @@ public class ZapRestartAction extends AbstractManagerAction
     /**
      * Creates a new ZapRestartAction.
      */
-    public ZapRestartAction()
-    {
+    public ZapRestartAction() {
 
     }
 
     @Override
-    public String getAction()
-    {
+    public String getAction() {
         return "ZapRestart";
     }
 }

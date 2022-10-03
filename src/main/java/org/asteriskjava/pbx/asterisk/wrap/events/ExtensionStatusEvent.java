@@ -1,11 +1,9 @@
 package org.asteriskjava.pbx.asterisk.wrap.events;
 
-public class ExtensionStatusEvent extends ManagerEvent
-{
+public class ExtensionStatusEvent extends ManagerEvent {
     private static final long serialVersionUID = 1L;
 
-    enum Status
-    {
+    enum Status {
 
         /**
          * No device INUSE or BUSY.
@@ -34,18 +32,14 @@ public class ExtensionStatusEvent extends ManagerEvent
 
         int _status;
 
-        Status(int status)
-        {
+        Status(int status) {
             this._status = status;
         }
 
-        static Status valueOf(Integer status)
-        {
+        static Status valueOf(Integer status) {
             Status theStatus = null;
-            for (Status aStatus : Status.values())
-            {
-                if (aStatus._status == status)
-                {
+            for (Status aStatus : Status.values()) {
+                if (aStatus._status == status) {
                     theStatus = aStatus;
                     break;
                 }
@@ -59,8 +53,7 @@ public class ExtensionStatusEvent extends ManagerEvent
     private final String hint;
     private final Status status;
 
-    public ExtensionStatusEvent(final org.asteriskjava.manager.event.ExtensionStatusEvent event)
-    {
+    public ExtensionStatusEvent(final org.asteriskjava.manager.event.ExtensionStatusEvent event) {
         super(event);
         this.exten = event.getExten();
         this.context = event.getContext();
@@ -68,23 +61,19 @@ public class ExtensionStatusEvent extends ManagerEvent
         this.status = Status.valueOf(event.getStatus());
     }
 
-    public String getExten()
-    {
+    public String getExten() {
         return this.exten;
     }
 
-    public String getContext()
-    {
+    public String getContext() {
         return this.context;
     }
 
-    public String getHint()
-    {
+    public String getHint() {
         return this.hint;
     }
 
-    public Status getStatus()
-    {
+    public Status getStatus() {
         return this.status;
     }
 

@@ -21,13 +21,12 @@ package org.asteriskjava.manager;
  * ResponseEvents are not completely received within the expected time period.<p>
  * This exception allows you to retrieve the partial result, that is the events
  * that have been successfully received before the timeout occured.
- * 
+ *
  * @author srt
  * @version $Id$
  * @since 0.2
  */
-public class EventTimeoutException extends TimeoutException
-{
+public class EventTimeoutException extends TimeoutException {
     /**
      * Serial version identifier.
      */
@@ -37,13 +36,12 @@ public class EventTimeoutException extends TimeoutException
     /**
      * Creates a new EventTimeoutException with the given message and partial
      * result.
-     * 
-     * @param message message with details about the timeout.
+     *
+     * @param message       message with details about the timeout.
      * @param partialResult the ResponseEvents object filled with the parts that
-     *            have been received before the timeout occured.
+     *                      have been received before the timeout occured.
      */
-    public EventTimeoutException(String message, ResponseEvents partialResult)
-    {
+    public EventTimeoutException(String message, ResponseEvents partialResult) {
         super(message);
         this.partialResult = partialResult;
     }
@@ -55,13 +53,12 @@ public class EventTimeoutException extends TimeoutException
      * wherever possible. This is only a hack to handle those versions of
      * Asterisk that don't follow the Manager API conventions, for example by
      * not sending the correct ActionCompleteEvent.
-     * 
+     *
      * @return the ResponseEvents object filled with the parts that have been
-     *         received before the timeout occured. Note: The response attribute
-     *         may be <code>null</code> when no response has been received.
+     * received before the timeout occured. Note: The response attribute
+     * may be <code>null</code> when no response has been received.
      */
-    public ResponseEvents getPartialResult()
-    {
+    public ResponseEvents getPartialResult() {
         return partialResult;
     }
 }

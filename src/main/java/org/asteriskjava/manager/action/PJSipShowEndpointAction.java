@@ -24,9 +24,9 @@ import org.asteriskjava.manager.event.ResponseEvent;
  * <p>
  * For the given endpoint, the call will return several events, including
  * EndpointDetail, AorDetail, AuthDetail, TransportDetail, ContactStatusDetail,and IdentifyDetail.
- * 
+ * <p>
  * Some events may appear multiple times.
- * 
+ * <p>
  * When all events have been reported an EndpointDetailComplete is
  * sent.
  * <p>
@@ -42,39 +42,35 @@ import org.asteriskjava.manager.event.ResponseEvent;
  * @see org.asteriskjava.manager.event.EndpointDetailComplete
  * @since 12
  */
-public class PJSipShowEndpointAction extends AbstractManagerAction implements EventGeneratingAction
-{
-	/**
+public class PJSipShowEndpointAction extends AbstractManagerAction implements EventGeneratingAction {
+    /**
      * Serial version identifier.
      */
-	private static final long serialVersionUID = -5508189961610900058L;
-	private String endpoint;
-    
+    private static final long serialVersionUID = -5508189961610900058L;
+    private String endpoint;
 
-	public String getEndpoint() {
-		return endpoint;
-	}
 
-	public void setEndpoint(String endpoint) {
-		this.endpoint = endpoint;
-	}
+    public String getEndpoint() {
+        return endpoint;
+    }
 
-	/**
+    public void setEndpoint(String endpoint) {
+        this.endpoint = endpoint;
+    }
+
+    /**
      * Creates a new SipPeersAction.
      */
-    public PJSipShowEndpointAction()
-    {
+    public PJSipShowEndpointAction() {
 
     }
 
     @Override
-    public String getAction()
-    {
+    public String getAction() {
         return "PJSIPShowEndpoint";
     }
 
-    public Class< ? extends ResponseEvent> getActionCompleteEventClass()
-    {
+    public Class<? extends ResponseEvent> getActionCompleteEventClass() {
         return EndpointDetailComplete.class;
     }
 }

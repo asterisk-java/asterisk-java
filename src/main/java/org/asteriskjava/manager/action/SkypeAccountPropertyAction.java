@@ -25,8 +25,7 @@ import java.util.Map;
  *
  * @since 1.0.0
  */
-public class SkypeAccountPropertyAction extends AbstractManagerAction
-{
+public class SkypeAccountPropertyAction extends AbstractManagerAction {
     /**
      * Serializable version identifier
      */
@@ -48,8 +47,7 @@ public class SkypeAccountPropertyAction extends AbstractManagerAction
     /**
      * Creates a new SkypeAccountPropertyAction.
      */
-    public SkypeAccountPropertyAction()
-    {
+    public SkypeAccountPropertyAction() {
 
     }
 
@@ -60,8 +58,7 @@ public class SkypeAccountPropertyAction extends AbstractManagerAction
      * @param user      the Skype username of the user to add the buddy to.
      * @param variables the properties to set. Must not be <code>null</code>
      */
-    public SkypeAccountPropertyAction(String user, Map<String, String> variables)
-    {
+    public SkypeAccountPropertyAction(String user, Map<String, String> variables) {
         this.user = user;
         setVariables(variables);
     }
@@ -72,8 +69,7 @@ public class SkypeAccountPropertyAction extends AbstractManagerAction
      *
      * @return the Skype username of the Skype for Asterisk user.
      */
-    public String getUser()
-    {
+    public String getUser() {
         return user;
     }
 
@@ -82,42 +78,34 @@ public class SkypeAccountPropertyAction extends AbstractManagerAction
      *
      * @param user the Skype username of the Skype for Asterisk user.
      */
-    public void setUser(String user)
-    {
+    public void setUser(String user) {
         this.user = user;
     }
 
-    public Map<String, String> getVariables()
-    {
+    public Map<String, String> getVariables() {
         return new HashMap<>(variables);
     }
 
-    public void setVariables(Map<String, String> variables)
-    {
-        if (variables == null)
-        {
+    public void setVariables(Map<String, String> variables) {
+        if (variables == null) {
             throw new IllegalArgumentException("Variables cannot be null");
         }
         this.variables = new HashMap<>(variables);
     }
 
-    public void setTimezone(String timezone)
-    {
+    public void setTimezone(String timezone) {
         variables.put(PROPERTY_TIMEZONE, timezone);
     }
 
-    public void setSkypename(String skypename)
-    {
+    public void setSkypename(String skypename) {
         variables.put(PROPERTY_SKYPENAME, skypename);
     }
 
-    public void setAvailability(String availability)
-    {
+    public void setAvailability(String availability) {
         variables.put(PROPERTY_AVAILABILITY, availability);
     }
 
-    public void setFullname(String fullname)
-    {
+    public void setFullname(String fullname) {
         variables.put(PROPERTY_FULLNAME, fullname);
     }
 
@@ -126,8 +114,7 @@ public class SkypeAccountPropertyAction extends AbstractManagerAction
      *
      * @param language the ISO language code.
      */
-    public void setLanguage(String language)
-    {
+    public void setLanguage(String language) {
         variables.put(PROPERTY_LANGUAGE, language);
     }
 
@@ -136,28 +123,23 @@ public class SkypeAccountPropertyAction extends AbstractManagerAction
      *
      * @param country the country code.
      */
-    public void setCountry(String country)
-    {
+    public void setCountry(String country) {
         variables.put(PROPERTY_COUNTRY, country);
     }
 
-    public void setPhoneHome(String phoneHome)
-    {
+    public void setPhoneHome(String phoneHome) {
         variables.put(PROPERTY_PHONE_HOME, phoneHome);
     }
 
-    public void setPhoneOffice(String phoneOffice)
-    {
+    public void setPhoneOffice(String phoneOffice) {
         variables.put(PROPERTY_PHONE_OFFICE, phoneOffice);
     }
 
-    public void setPhoneMobile(String phoneMobile)
-    {
+    public void setPhoneMobile(String phoneMobile) {
         variables.put(PROPERTY_PHONE_MOBILE, phoneMobile);
     }
 
-    public void setAbout(String about)
-    {
+    public void setAbout(String about) {
         variables.put(PROPERTY_ABOUT, about);
     }
 
@@ -165,8 +147,7 @@ public class SkypeAccountPropertyAction extends AbstractManagerAction
      * Returns the name of this action, i.e. "SkypeAccountProperty".
      */
     @Override
-    public String getAction()
-    {
+    public String getAction() {
         return "SkypeAccountProperty";
     }
 }

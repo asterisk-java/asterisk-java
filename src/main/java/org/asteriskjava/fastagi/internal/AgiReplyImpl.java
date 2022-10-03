@@ -16,15 +16,11 @@
  */
 package org.asteriskjava.fastagi.internal;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import org.asteriskjava.fastagi.reply.AgiReply;
+
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.asteriskjava.fastagi.reply.AgiReply;
 
 /**
  * Default implementation of the AgiReply interface.
@@ -32,8 +28,7 @@ import org.asteriskjava.fastagi.reply.AgiReply;
  * @author srt
  * @version $Id$
  */
-public class AgiReplyImpl implements AgiReply
-{
+public class AgiReplyImpl implements AgiReply {
     private static final Pattern STATUS_PATTERN = Pattern.compile("^(\\d{3})[ -]");
     private static final Pattern RESULT_PATTERN = Pattern.compile("^200 result=(\\S+)");
     private static final Pattern PARENTHESIS_PATTERN = Pattern.compile("^200 result=\\S* +\\((.*)\\)");
@@ -81,140 +76,112 @@ public class AgiReplyImpl implements AgiReply
      */
     private String usage;
 
-    AgiReplyImpl()
-    {
+    AgiReplyImpl() {
         super();
         this.status = null;
     }
 
-    AgiReplyImpl(List<String> lines)
-    {
+    AgiReplyImpl(List<String> lines) {
         this();
-        if (lines != null)
-        {
+        if (lines != null) {
             this.lines = new ArrayList<>(lines);
-            if (!lines.isEmpty())
-            {
+            if (!lines.isEmpty()) {
                 firstLine = lines.get(0);
             }
         }
     }
 
-    public String getFirstLine()
-    {
+    public String getFirstLine() {
         return firstLine;
     }
 
-    public List<String> getLines()
-    {
+    public List<String> getLines() {
         return lines;
     }
 
-    public int getResultCode()
-    {
+    public int getResultCode() {
         String result;
 
         result = getResult();
-        if (result == null)
-        {
+        if (result == null) {
             return -1;
         }
 
-        try
-        {
+        try {
             return Integer.parseInt(result);
-        }
-        catch (NumberFormatException e)
-        {
+        } catch (NumberFormatException e) {
             return -1;
         }
     }
 
-    public char getResultCodeAsChar()
-    {
+    public char getResultCodeAsChar() {
         int resultCode;
 
         resultCode = getResultCode();
-        if (resultCode < 0)
-        {
+        if (resultCode < 0) {
             return 0x0;
         }
 
         return (char) resultCode;
     }
 
-    public String getResult()
-    {
-        if (result != null)
-        {
+    public String getResult() {
+        if (result != null) {
             return result;
         }
 
         final Matcher matcher = RESULT_PATTERN.matcher(firstLine);
-        if (matcher.find())
-        {
+        if (matcher.find()) {
             result = matcher.group(1);
-        }
-        else
+        } else
             result = "";
         return result;
     }
 
-    public int getStatus()
-    {
-        if (status != null)
-        {
+    public int getStatus() {
+        if (status != null) {
             return status;
         }
 
-        if (firstLine == null)
-        {
+        if (firstLine == null) {
             return -1;
         }
 
         final Matcher matcher = STATUS_PATTERN.matcher(firstLine);
-        if (matcher.find())
-        {
+        if (matcher.find()) {
             status = Integer.parseInt(matcher.group(1));
             return status;
         }
         return -1;
     }
 
-    public String getAttribute(String name)
-    {
-        if (getStatus() != SC_SUCCESS)
-        {
+    public String getAttribute(String name) {
+        if (getStatus() != SC_SUCCESS) {
             return null;
         }
 
-        if ("result".equalsIgnoreCase(name))
-        {
+        if ("result".equalsIgnoreCase(name)) {
             return getResult();
         }
 
         return getAttributes().get(name.toLowerCase(Locale.ENGLISH));
     }
 
-    protected Map<String, String> getAttributes()
-    {
-        if (attributes != null)
-        {
+    protected Map<String, String> getAttributes() {
+        if (attributes != null) {
             return attributes;
         }
 
         attributes = new HashMap<>();
 
         final Matcher matcher = ADDITIONAL_ATTRIBUTES_PATTERN.matcher(firstLine);
-        if (matcher.find())
-        {
+        if (matcher.find()) {
             attributes.putAll(parseAttributes(matcher.group(2)));
         }
         return attributes;
     }
 
-    Map<String, String> parseAttributes(String s)
-    {
+    Map<String, String> parseAttributes(String s) {
         StringBuilder keyBuilder = new StringBuilder();
         StringBuilder valueBuilder = new StringBuilder();
         Map<String, String> map = new HashMap<>();
@@ -222,41 +189,27 @@ public class AgiReplyImpl implements AgiReply
         boolean inKey = true;
         boolean inQuotes = false;
         char previousChar = 0x0;
-        for (int i = 0; i < s.length(); i++)
-        {
+        for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
-            if (c == '=' && inKey)
-            {
+            if (c == '=' && inKey) {
                 inKey = false;
                 inQuotes = false;
-            }
-            else if (c == ' ' && !inKey && !inQuotes)
-            {
+            } else if (c == ' ' && !inKey && !inQuotes) {
                 map.put(keyBuilder.toString().toLowerCase(Locale.ENGLISH), valueBuilder.toString());
                 keyBuilder.delete(0, keyBuilder.length());
                 valueBuilder.delete(0, valueBuilder.length());
                 inKey = true;
-            }
-            else if (c == '"' && !inKey)
-            {
-                if (previousChar == '\\')
-                {
+            } else if (c == '"' && !inKey) {
+                if (previousChar == '\\') {
                     valueBuilder.deleteCharAt(valueBuilder.length() - 1);
                     valueBuilder.append(c);
-                }
-                else
-                {
+                } else {
                     inQuotes = !inQuotes;
                 }
-            }
-            else
-            {
-                if (inKey)
-                {
+            } else {
+                if (inKey) {
                     keyBuilder.append(c);
-                }
-                else
-                {
+                } else {
                     valueBuilder.append(c);
                 }
             }
@@ -264,8 +217,7 @@ public class AgiReplyImpl implements AgiReply
             previousChar = c;
         }
 
-        if (keyBuilder.length() > 0)
-        {
+        if (keyBuilder.length() > 0) {
             map.put(keyBuilder.toString().toLowerCase(Locale.ENGLISH), valueBuilder.toString());
         }
         return map;
@@ -273,43 +225,35 @@ public class AgiReplyImpl implements AgiReply
 
     private boolean extraCreated;
 
-    public String getExtra()
-    {
-        if (getStatus() != SC_SUCCESS)
-        {
+    public String getExtra() {
+        if (getStatus() != SC_SUCCESS) {
             return null;
         }
 
-        if (extraCreated)
-        {
+        if (extraCreated) {
             return extra;
         }
 
         final Matcher matcher = PARENTHESIS_PATTERN.matcher(firstLine);
-        if (matcher.find())
-        {
+        if (matcher.find()) {
             extra = matcher.group(1);
         }
         extraCreated = true;
         return extra;
     }
 
-    public String getSynopsis()
-    {
-        if (getStatus() != SC_INVALID_COMMAND_SYNTAX)
-        {
+    public String getSynopsis() {
+        if (getStatus() != SC_INVALID_COMMAND_SYNTAX) {
             return null;
         }
 
-        if (synopsis == null && lines.size() > 1)
-        {
+        if (synopsis == null && lines.size() > 1) {
             final String secondLine;
             final Matcher synopsisMatcher;
 
             secondLine = lines.get(1);
             synopsisMatcher = SYNOPSIS_PATTERN.matcher(secondLine);
-            if (synopsisMatcher.find())
-            {
+            if (synopsisMatcher.find()) {
                 synopsis = synopsisMatcher.group(1);
             }
         }
@@ -321,22 +265,18 @@ public class AgiReplyImpl implements AgiReply
      * syntax (getStatus() == SC_INVALID_COMMAND_SYNTAX).
      *
      * @return the usage of the command sent, <code>null</code> if there were no
-     *         syntax errors.
+     * syntax errors.
      */
-    public String getUsage()
-    {
-        if (usage == null)
-        {
+    public String getUsage() {
+        if (usage == null) {
             StringBuilder usageSB;
 
             usageSB = new StringBuilder();
-            for (int i = 2; i < lines.size(); i++)
-            {
+            for (int i = 2; i < lines.size(); i++) {
                 String line;
 
                 line = lines.get(i);
-                if (END_OF_PROPER_USAGE.equals(line))
-                {
+                if (END_OF_PROPER_USAGE.equals(line)) {
                     break;
                 }
 
@@ -349,20 +289,17 @@ public class AgiReplyImpl implements AgiReply
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         StringBuilder sb;
 
         sb = new StringBuilder("AgiReply[");
         sb.append("status=").append(getStatus()).append(",");
-        if (status == SC_SUCCESS)
-        {
+        if (status == SC_SUCCESS) {
             sb.append("result='").append(getResult()).append("',");
             sb.append("extra='").append(getExtra()).append("',");
             sb.append("attributes=").append(getAttributes()).append(",");
         }
-        if (status == SC_INVALID_COMMAND_SYNTAX)
-        {
+        if (status == SC_INVALID_COMMAND_SYNTAX) {
             sb.append("synopsis='").append(getSynopsis()).append("',");
         }
         sb.append("systemHashcode=").append(System.identityHashCode(this));

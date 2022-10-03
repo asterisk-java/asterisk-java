@@ -1,34 +1,32 @@
 package org.asteriskjava.manager.event;
 
-public class DongleNewSMSEvent extends ManagerEvent
-{
-  private static final long serialVersionUID = 3257845467831284784L;
-  private String from;
-  private String messageline0;
-  private String device;
-  private String linecount;
-  
+public class DongleNewSMSEvent extends ManagerEvent {
+    private static final long serialVersionUID = 3257845467831284784L;
+    private String from;
+    private String messageline0;
+    private String device;
+    private String linecount;
 
-  public DongleNewSMSEvent(Object source)
-  {
-    super(source);
-  }
 
-  public String getDevice() {
-    return this.device;
-  }
+    public DongleNewSMSEvent(Object source) {
+        super(source);
+    }
 
-  public void setDevice(String device) {
-    this.device = device;
-  }
+    public String getDevice() {
+        return this.device;
+    }
 
-  public String getFrom() {
-    return this.from;
-  }
+    public void setDevice(String device) {
+        this.device = device;
+    }
 
-  public void setFrom(String from) {
-    this.from = from;
-  }
+    public String getFrom() {
+        return this.from;
+    }
+
+    public void setFrom(String from) {
+        this.from = from;
+    }
 
     public String getLinecount() {
         return linecount;

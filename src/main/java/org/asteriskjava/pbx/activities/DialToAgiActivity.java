@@ -4,8 +4,7 @@ import org.asteriskjava.pbx.Activity;
 import org.asteriskjava.pbx.Channel;
 import org.asteriskjava.pbx.EndPoint;
 
-public interface DialToAgiActivity extends Activity
-{
+public interface DialToAgiActivity extends Activity {
 
     void markCancelled();
 

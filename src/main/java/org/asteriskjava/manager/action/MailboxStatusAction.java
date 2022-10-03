@@ -28,8 +28,7 @@ import org.asteriskjava.manager.response.MailboxStatusResponse;
  * @see org.asteriskjava.manager.response.MailboxStatusResponse
  */
 @ExpectedResponse(MailboxStatusResponse.class)
-public class MailboxStatusAction extends AbstractManagerAction
-{
+public class MailboxStatusAction extends AbstractManagerAction {
     static final long serialVersionUID = -3845028207155711950L;
 
     private String mailbox;
@@ -37,8 +36,7 @@ public class MailboxStatusAction extends AbstractManagerAction
     /**
      * Creates a new empty MailboxStatusAction.
      */
-    public MailboxStatusAction()
-    {
+    public MailboxStatusAction() {
 
     }
 
@@ -52,8 +50,7 @@ public class MailboxStatusAction extends AbstractManagerAction
      *                "default" is assumed.
      * @since 0.2
      */
-    public MailboxStatusAction(String mailbox)
-    {
+    public MailboxStatusAction(String mailbox) {
         this.mailbox = mailbox;
     }
 
@@ -61,16 +58,14 @@ public class MailboxStatusAction extends AbstractManagerAction
      * Returns the name of this action, i.e. "MailboxStatus".
      */
     @Override
-    public String getAction()
-    {
+    public String getAction() {
         return "MailboxStatus";
     }
 
     /**
      * Returns the name of the mailbox to query.
      */
-    public String getMailbox()
-    {
+    public String getMailbox() {
         return mailbox;
     }
 
@@ -84,8 +79,7 @@ public class MailboxStatusAction extends AbstractManagerAction
      * This property is mandatory.<p>
      * Example: "1234,1235@mycontext"
      */
-    public void setMailbox(String mailbox)
-    {
+    public void setMailbox(String mailbox) {
         this.mailbox = mailbox;
     }
 }

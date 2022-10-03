@@ -1,22 +1,7 @@
 package org.asteriskjava.pbx.internal.activity;
 
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
-
 import org.asteriskjava.lock.Locker.LockCloser;
-import org.asteriskjava.pbx.ActivityCallback;
-import org.asteriskjava.pbx.AsteriskSettings;
-import org.asteriskjava.pbx.Call;
-import org.asteriskjava.pbx.CallImpl;
-import org.asteriskjava.pbx.Channel;
-import org.asteriskjava.pbx.EndPoint;
-import org.asteriskjava.pbx.ListenerPriority;
-import org.asteriskjava.pbx.PBXException;
-import org.asteriskjava.pbx.PBXFactory;
+import org.asteriskjava.pbx.*;
 import org.asteriskjava.pbx.activities.SplitActivity;
 import org.asteriskjava.pbx.agi.AgiChannelActivityBridge;
 import org.asteriskjava.pbx.agi.AgiChannelActivityHold;
@@ -28,16 +13,22 @@ import org.asteriskjava.pbx.internal.core.ChannelProxy;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
+
 /**
  * The SplitActivity is used by the AsteriksPBX to split a call and place the
  * component channels into the specialist Activity fastagi. The SplitActivity
  * can only split a call with two channels. The (obvious?) limitation is that we
  * can't split something in a conference call as it has more than two channels.
- * 
+ *
  * @author bsutton
  */
-public class SplitActivityImpl extends ActivityHelper<SplitActivity> implements SplitActivity
-{
+public class SplitActivityImpl extends ActivityHelper<SplitActivity> implements SplitActivity {
     private static final Log logger = LogFactory.getLog(SplitActivityImpl.class);
 
     private Call _callToSplit;
@@ -54,20 +45,18 @@ public class SplitActivityImpl extends ActivityHelper<SplitActivity> implements 
      * Splits a call by moving each of its two channels into the Activity agi.
      * The channels will sit in the agi (with no audio) until something is done
      * with them. As such you should leave them split for too long.
-     * 
+     *
      * @param callToSplit The call to split
      * @param listener
      */
-    public SplitActivityImpl(final Call callToSplit, final ActivityCallback<SplitActivity> listener)
-    {
+    public SplitActivityImpl(final Call callToSplit, final ActivityCallback<SplitActivity> listener) {
         super("SplitActivity", listener);
 
         renameEventReceived.set(new CountDownLatch(1));
         this._callToSplit = callToSplit;
 
         List<Channel> tmp = callToSplit.getChannels();
-        if (tmp.size() > 1)
-        {
+        if (tmp.size() > 1) {
             channel1 = tmp.get(0);
             channel2 = tmp.get(1);
         }
@@ -76,8 +65,7 @@ public class SplitActivityImpl extends ActivityHelper<SplitActivity> implements 
     }
 
     @Override
-    public boolean doActivity() throws PBXException
-    {
+    public boolean doActivity() throws PBXException {
 
         SplitActivityImpl.logger.debug("*******************************************************************************");
         SplitActivityImpl.logger.info("***********                    begin split               ****************");
@@ -90,13 +78,11 @@ public class SplitActivityImpl extends ActivityHelper<SplitActivity> implements 
         // target.
         boolean success = false;
 
-        if (this.channel2 != null)
-        {
+        if (this.channel2 != null) {
             success = splitTwo();
 
             // Now update the call to reflect the split
-            if (success)
-            {
+            if (success) {
                 this._lhsCall = ((CallImpl) this._callToSplit).split(channel1);
                 this._rhsCall = ((CallImpl) this._callToSplit).split(channel2);
             }
@@ -105,9 +91,8 @@ public class SplitActivityImpl extends ActivityHelper<SplitActivity> implements 
     }
 
     @Override
-    public HashSet<Class< ? extends ManagerEvent>> requiredEvents()
-    {
-        HashSet<Class< ? extends ManagerEvent>> required = new HashSet<>();
+    public HashSet<Class<? extends ManagerEvent>> requiredEvents() {
+        HashSet<Class<? extends ManagerEvent>> required = new HashSet<>();
 
         required.add(RenameEvent.class);
         return required;
@@ -116,15 +101,11 @@ public class SplitActivityImpl extends ActivityHelper<SplitActivity> implements 
     final AtomicReference<CountDownLatch> renameEventReceived = new AtomicReference<>();
 
     @Override
-    public void onManagerEvent(final ManagerEvent event)
-    {
-        try (LockCloser closer = this.withLock())
-        {
-            if (event instanceof RenameEvent)
-            {
+    public void onManagerEvent(final ManagerEvent event) {
+        try (LockCloser closer = this.withLock()) {
+            if (event instanceof RenameEvent) {
                 RenameEvent rename = (RenameEvent) event;
-                if (rename.getChannel().isSame(channel1) || rename.getChannel().isSame(channel2))
-                {
+                if (rename.getChannel().isSame(channel1) || rename.getChannel().isSame(channel2)) {
                     renameEventReceived.get().countDown();
                 }
             }
@@ -132,38 +113,35 @@ public class SplitActivityImpl extends ActivityHelper<SplitActivity> implements 
     }
 
     @Override
-    public ListenerPriority getPriority()
-    {
+    public ListenerPriority getPriority() {
         return ListenerPriority.NORMAL;
     }
 
     /**
      * After a call has been split we get two new calls. One will hold the
      * original remote party and the other will hold the original local party.
-     * 
+     *
      * @return the call which holds the original remote party.
      */
     @Override
-    public Call getLHSCall()
-    {
+    public Call getLHSCall() {
         return this._lhsCall;
     }
 
     /**
      * After a call has been split we get two new calls. One will hold the
      * original remote party and the other will hold the original local party.
-     * 
+     *
      * @return the call which holds the original local party.
      */
     @Override
-    public Call getRHSCall()
-    {
+    public Call getRHSCall() {
         return this._rhsCall;
     }
 
     /**
      * Splits two channels moving them to defined endpoints.
-     * 
+     *
      * @param lhs
      * @param lhsTarget
      * @param lhsTargetContext
@@ -173,21 +151,18 @@ public class SplitActivityImpl extends ActivityHelper<SplitActivity> implements 
      * @return
      * @throws PBXException
      */
-    private boolean splitTwo() throws PBXException
-    {
+    private boolean splitTwo() throws PBXException {
         final AsteriskSettings profile = PBXFactory.getActiveProfile();
         AsteriskPBX pbx = (AsteriskPBX) PBXFactory.getActivePBX();
 
-        if (channel1 == channel2)
-        {
+        if (channel1 == channel2) {
             throw new PBXException("channel1 is the same as channel2. if I let this happen, asterisk will core dump :)");
         }
 
         List<Channel> channels = new LinkedList<>();
         channels.add(channel1);
         channels.add(channel2);
-        if (!pbx.waitForChannelsToQuiescent(channels, 3000))
-        {
+        if (!pbx.waitForChannelsToQuiescent(channels, 3000)) {
             logger.error(callSite, callSite);
             throw new PBXException(
                     "Channel: " + channel1 + " or " + channel2 + " cannot be split as they are still in transition.");
@@ -210,13 +185,10 @@ public class SplitActivityImpl extends ActivityHelper<SplitActivity> implements 
         // taking an undesired action
         // when the AgiChannelActivityBridge channel has it's acitvity
         // cancelled.
-        if (channel2.getCurrentActivityAction() instanceof AgiChannelActivityBridge)
-        {
+        if (channel2.getCurrentActivityAction() instanceof AgiChannelActivityBridge) {
             channel1.setCurrentActivityAction(agi1);
             channel2.setCurrentActivityAction(agi2);
-        }
-        else
-        {
+        } else {
             channel2.setCurrentActivityAction(agi2);
             channel1.setCurrentActivityAction(agi1);
         }
@@ -236,22 +208,17 @@ public class SplitActivityImpl extends ActivityHelper<SplitActivity> implements 
 
         boolean ret = false;
         {
-            try
-            {
+            try {
 
                 renameEventReceived.set(new CountDownLatch(1));
                 // final ManagerResponse response =
                 pbx.sendAction(redirect, 1000);
-                if (pbx.expectRenameEvents())
-                {
+                if (pbx.expectRenameEvents()) {
 
                     // wait for channels to unbridge
-                    if (!renameEventReceived.get().await(2000, TimeUnit.MILLISECONDS))
-                    {
+                    if (!renameEventReceived.get().await(2000, TimeUnit.MILLISECONDS)) {
                         logger.error("There was no rename event");
-                    }
-                    else
-                    {
+                    } else {
                         logger.warn("Channels are renaming, now waiting for Quiescent");
                     }
                 }
@@ -260,32 +227,26 @@ public class SplitActivityImpl extends ActivityHelper<SplitActivity> implements 
 
                 channels.add(channel1);
                 channels.add(channel2);
-                if (!pbx.waitForChannelsToQuiescent(channels, 3000))
-                {
+                if (!pbx.waitForChannelsToQuiescent(channels, 3000)) {
                     logger.error(callSite, callSite);
                     throw new PBXException("Channel: " + channel1 + " or " + channel2
                             + " cannot be split as they are still in transition.");
                 }
 
                 double ctr = 0;
-                while ((!agi1.hasCallReachedAgi() || !agi2.hasCallReachedAgi()) && ctr < 10)
-                {
+                while ((!agi1.hasCallReachedAgi() || !agi2.hasCallReachedAgi()) && ctr < 10) {
                     Thread.sleep(100);
                     ctr += 100.0 / 1000.0;
-                    if (!agi1.hasCallReachedAgi())
-                    {
+                    if (!agi1.hasCallReachedAgi()) {
                         logger.info("Waiting on (agi1) " + channel1);
                     }
-                    if (!agi2.hasCallReachedAgi())
-                    {
+                    if (!agi2.hasCallReachedAgi()) {
                         logger.info("Waiting on (agi2) " + channel2);
                     }
                 }
                 ret = agi1.hasCallReachedAgi() && agi2.hasCallReachedAgi();
 
-            }
-            catch (final Exception e)
-            {
+            } catch (final Exception e) {
                 logger.error(e, e);
             }
         }

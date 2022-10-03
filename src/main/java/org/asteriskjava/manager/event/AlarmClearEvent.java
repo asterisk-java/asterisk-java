@@ -19,12 +19,11 @@ package org.asteriskjava.manager.event;
 /**
  * An AlarmEvent is triggered when a Zap channel leaves alarm state.<p>
  * It is implemented in <code>channels/chan_zap.c</code>
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public class AlarmClearEvent extends ManagerEvent
-{
+public class AlarmClearEvent extends ManagerEvent {
     /**
      * Serializable version identifier
      */
@@ -38,28 +37,25 @@ public class AlarmClearEvent extends ManagerEvent
     /**
      * @param source
      */
-    public AlarmClearEvent(Object source)
-    {
+    public AlarmClearEvent(Object source) {
         super(source);
     }
 
     /**
      * Returns the number of the zap channel that left alarm state.
-     * 
+     *
      * @return the number of the zap channel that left alarm state.
      */
-    public Integer getChannel()
-    {
+    public Integer getChannel() {
         return channel;
     }
 
     /**
      * Sets the number of the zap channel that left alarm state.
-     * 
+     *
      * @param channel the number of the zap channel that left alarm state.
      */
-    public void setChannel(Integer channel)
-    {
+    public void setChannel(Integer channel) {
         this.channel = channel;
     }
 }

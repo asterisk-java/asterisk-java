@@ -16,13 +16,12 @@
  */
 package org.asteriskjava.fastagi;
 
+import org.asteriskjava.AsteriskVersion;
+
 import java.net.InetAddress;
 import java.util.Map;
 
-import org.asteriskjava.AsteriskVersion;
-
-public class SimpleAgiRequest implements AgiRequest
-{
+public class SimpleAgiRequest implements AgiRequest {
     InetAddress localAddress;
     int localPort;
     InetAddress remoteAddress;
@@ -30,48 +29,39 @@ public class SimpleAgiRequest implements AgiRequest
     private String script;
     private AsteriskVersion asteriskVersion = AsteriskVersion.ASTERISK_13;
 
-    public SimpleAgiRequest()
-    {
+    public SimpleAgiRequest() {
         this.script = "hello.agi";
     }
 
-    public SimpleAgiRequest(String script)
-    {
+    public SimpleAgiRequest(String script) {
         this.script = script;
     }
 
-    public Map<String, String> getRequest()
-    {
+    public Map<String, String> getRequest() {
         throw new UnsupportedOperationException();
     }
 
-    public String getScript()
-    {
+    public String getScript() {
         return script;
     }
 
-    public String getRequestURL()
-    {
+    public String getRequestURL() {
         throw new UnsupportedOperationException();
     }
 
-    public String getChannel()
-    {
+    public String getChannel() {
         throw new UnsupportedOperationException();
     }
 
-    public String getUniqueId()
-    {
+    public String getUniqueId() {
         throw new UnsupportedOperationException();
     }
 
-    public String getType()
-    {
+    public String getType() {
         throw new UnsupportedOperationException();
     }
 
-    public String getLanguage()
-    {
+    public String getLanguage() {
         throw new UnsupportedOperationException();
     }
 
@@ -82,142 +72,115 @@ public class SimpleAgiRequest implements AgiRequest
      * Caller ID.
      *
      * @return the Caller*ID number, for example "1234", if no Caller*ID is set
-     *         or it is "unknown" <code>null</code> is returned.
+     * or it is "unknown" <code>null</code> is returned.
      * @deprecated as of 0.3, use {@link #getCallerIdNumber()} instead.
      */
-    public String getCallerId()
-    {
+    public String getCallerId() {
         throw new UnsupportedOperationException();
     }
 
-    public String getCallerIdNumber()
-    {
+    public String getCallerIdNumber() {
         throw new UnsupportedOperationException();
     }
 
-    public String getCallerIdName()
-    {
+    public String getCallerIdName() {
         throw new UnsupportedOperationException();
     }
 
-    public String getDnid()
-    {
+    public String getDnid() {
         throw new UnsupportedOperationException();
     }
 
-    public String getRdnis()
-    {
+    public String getRdnis() {
         throw new UnsupportedOperationException();
     }
 
-    public String getContext()
-    {
+    public String getContext() {
         throw new UnsupportedOperationException();
     }
 
-    public String getExtension()
-    {
+    public String getExtension() {
         throw new UnsupportedOperationException();
     }
 
-    public Integer getPriority()
-    {
+    public Integer getPriority() {
         throw new UnsupportedOperationException();
     }
 
-    public Boolean getEnhanced()
-    {
+    public Boolean getEnhanced() {
         throw new UnsupportedOperationException();
     }
 
-    public String getAccountCode()
-    {
+    public String getAccountCode() {
         throw new UnsupportedOperationException();
     }
 
-    public Integer getCallingAni2()
-    {
+    public Integer getCallingAni2() {
         throw new UnsupportedOperationException();
     }
 
-    public Integer getCallingPres()
-    {
+    public Integer getCallingPres() {
         throw new UnsupportedOperationException();
     }
 
-    public Integer getCallingTns()
-    {
+    public Integer getCallingTns() {
         throw new UnsupportedOperationException();
     }
 
-    public Integer getCallingTon()
-    {
+    public Integer getCallingTon() {
         throw new UnsupportedOperationException();
     }
 
-    public String getParameter(String name)
-    {
+    public String getParameter(String name) {
         throw new UnsupportedOperationException();
     }
 
-    public String[] getParameterValues(String name)
-    {
+    public String[] getParameterValues(String name) {
         throw new UnsupportedOperationException();
     }
 
-    public Map<String, String[]> getParameterMap()
-    {
+    public Map<String, String[]> getParameterMap() {
         throw new UnsupportedOperationException();
     }
 
-    public String[] getArguments()
-    {
+    public String[] getArguments() {
         throw new UnsupportedOperationException();
     }
 
-    public InetAddress getLocalAddress()
-    {
+    public InetAddress getLocalAddress() {
         return localAddress;
     }
 
-    public void setLocalAddress(InetAddress localAddress)
-    {
+    public void setLocalAddress(InetAddress localAddress) {
         this.localAddress = localAddress;
     }
 
-    public int getLocalPort()
-    {
+    public int getLocalPort() {
         return localPort;
     }
 
-    public void setLocalPort(int localPort)
-    {
+    public void setLocalPort(int localPort) {
         this.localPort = localPort;
     }
 
-    public InetAddress getRemoteAddress()
-    {
+    public InetAddress getRemoteAddress() {
         return remoteAddress;
     }
 
-    public void setRemoteAddress(InetAddress remoteAddress)
-    {
+    public void setRemoteAddress(InetAddress remoteAddress) {
         this.remoteAddress = remoteAddress;
     }
 
-    public int getRemotePort()
-    {
+    public int getRemotePort() {
         return remotePort;
     }
 
-    public void setRemotePort(int remotePort)
-    {
+    public void setRemotePort(int remotePort) {
         this.remotePort = remotePort;
     }
 
     @Override
-    public AsteriskVersion getAsteriskVersion()
-    {
+    public AsteriskVersion getAsteriskVersion() {
         return asteriskVersion;
     }
 }

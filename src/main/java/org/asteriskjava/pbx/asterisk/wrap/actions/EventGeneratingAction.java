@@ -1,8 +1,7 @@
 package org.asteriskjava.pbx.asterisk.wrap.actions;
 
-public interface EventGeneratingAction
-{
+public interface EventGeneratingAction {
 
-	org.asteriskjava.manager.action.EventGeneratingAction getAJEventGeneratingAction();
+    org.asteriskjava.manager.action.EventGeneratingAction getAJEventGeneratingAction();
 
 }

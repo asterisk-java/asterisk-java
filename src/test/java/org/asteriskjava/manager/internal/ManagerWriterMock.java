@@ -16,8 +16,6 @@
  */
 package org.asteriskjava.manager.internal;
 
-import java.io.IOException;
-
 import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.manager.action.ChallengeAction;
 import org.asteriskjava.manager.action.LoginAction;
@@ -30,8 +28,9 @@ import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.util.DateUtil;
 import org.asteriskjava.util.SocketConnectionFacade;
 
-public class ManagerWriterMock implements ManagerWriter
-{
+import java.io.IOException;
+
+public class ManagerWriterMock implements ManagerWriter {
     private static final String CHALLENGE = "12345";
     private static final long CONNECT_LATENCY = 50;
     private static final long RESPONSE_LATENCY = 20;
@@ -48,53 +47,39 @@ public class ManagerWriterMock implements ManagerWriter
     public int logoffActionsSent = 0;
     public int otherActionsSent = 0;
 
-    public ManagerWriterMock()
-    {
+    public ManagerWriterMock() {
     }
 
-    public void setTargetVersion(AsteriskVersion version)
-    {
+    public void setTargetVersion(AsteriskVersion version) {
     }
 
-    public void setDispatcher(Dispatcher dispatcher)
-    {
+    public void setDispatcher(Dispatcher dispatcher) {
         this.dispatcher = dispatcher;
     }
 
-    public void setExpectedKey(String key)
-    {
+    public void setExpectedKey(String key) {
         this.expectedKey = key;
     }
 
-    public void setExpectedUsername(String username)
-    {
+    public void setExpectedUsername(String username) {
         this.expectedUsername = username;
     }
 
-    public void setSendResponse(boolean sendResponse)
-    {
+    public void setSendResponse(boolean sendResponse) {
         this.sendResponse = sendResponse;
     }
 
-    public void setSendProtocolIdentifierReceivedEvent(boolean sendConnectEvent)
-    {
+    public void setSendProtocolIdentifierReceivedEvent(boolean sendConnectEvent) {
         this.sendProtocolIdentifierReceivedEvent = sendConnectEvent;
     }
 
-    public void setSocket(SocketConnectionFacade socket)
-    {
-        if (sendProtocolIdentifierReceivedEvent)
-        {
-            Thread future = new Thread(new Runnable()
-            {
-                public void run()
-                {
-                    try
-                    {
+    public void setSocket(SocketConnectionFacade socket) {
+        if (sendProtocolIdentifierReceivedEvent) {
+            Thread future = new Thread(new Runnable() {
+                public void run() {
+                    try {
                         Thread.sleep(CONNECT_LATENCY);
-                    }
-                    catch (InterruptedException e)
-                    {
+                    } catch (InterruptedException e) {
                         Thread.currentThread().interrupt();
                     }
                     ProtocolIdentifierReceivedEvent protocolIdentifierReceivedEvent;
@@ -108,22 +93,18 @@ public class ManagerWriterMock implements ManagerWriter
         }
     }
 
-    public void sendAction(ManagerAction action, String internalActionId) throws IOException
-    {
-        if (action instanceof ChallengeAction)
-        {
+    public void sendAction(ManagerAction action, String internalActionId) throws IOException {
+        if (action instanceof ChallengeAction) {
             ChallengeAction challengeAction = (ChallengeAction) action;
             String authType = challengeAction.getAuthType();
 
-            if (!authType.equals("MD5"))
-            {
+            if (!authType.equals("MD5")) {
                 throw new RuntimeException("Expected authType 'MD5' got '" + authType + "'");
             }
 
             challengeActionsSent++;
 
-            if (sendResponse)
-            {
+            if (sendResponse) {
                 ChallengeResponse challengeResponse;
 
                 challengeResponse = new ChallengeResponse();
@@ -131,41 +112,33 @@ public class ManagerWriterMock implements ManagerWriter
                 challengeResponse.setChallenge(CHALLENGE);
                 dispatchLater(challengeResponse);
             }
-        }
-        else if (action instanceof LoginAction)
-        {
+        } else if (action instanceof LoginAction) {
 
             LoginAction loginAction = (LoginAction) action;
             String username = loginAction.getUsername();
             String key = loginAction.getKey();
             String authType = loginAction.getAuthType();
 
-            if (!"MD5".equals(authType))
-            {
+            if (!"MD5".equals(authType)) {
                 throw new RuntimeException("Expected authType 'MD5' got '" + authType + "'");
             }
 
-            if (!expectedUsername.equals(username))
-            {
+            if (!expectedUsername.equals(username)) {
                 throw new RuntimeException("Expected username '" + expectedUsername + "' got '" + username + "'");
             }
 
             loginActionsSent++;
 
-            if (sendResponse)
-            {
+            if (sendResponse) {
                 ManagerResponse loginResponse;
 
                 // let testReconnectWithKeepAliveAfterAuthenticationFailure
                 // succeed after
                 // 3 unsuccessful attempts
-                if (key.equals(expectedKey) || loginActionsSent > 2)
-                {
+                if (key.equals(expectedKey) || loginActionsSent > 2) {
                     loginResponse = new ManagerResponse();
                     loginResponse.setResponse("Success");
-                }
-                else
-                {
+                } else {
                     loginResponse = new ManagerError();
                     loginResponse.setResponse("Error");
                     loginResponse.setMessage("Authentication failed");
@@ -173,13 +146,10 @@ public class ManagerWriterMock implements ManagerWriter
                 loginResponse.setActionId(ManagerUtil.addInternalActionId(action.getActionId(), internalActionId));
                 dispatchLater(loginResponse);
             }
-        }
-        else if (action instanceof LogoffAction)
-        {
+        } else if (action instanceof LogoffAction) {
             logoffActionsSent++;
 
-            if (sendResponse)
-            {
+            if (sendResponse) {
                 ManagerResponse response;
 
                 response = new ManagerResponse();
@@ -187,13 +157,10 @@ public class ManagerWriterMock implements ManagerWriter
                 response.setResponse("Success");
                 dispatchLater(response);
             }
-        }
-        else
-        {
+        } else {
             otherActionsSent++;
 
-            if (sendResponse)
-            {
+            if (sendResponse) {
                 ManagerResponse response;
 
                 response = new ManagerResponse();
@@ -204,18 +171,12 @@ public class ManagerWriterMock implements ManagerWriter
         }
     }
 
-    private void dispatchLater(final ManagerResponse response)
-    {
-        Thread future = new Thread(new Runnable()
-        {
-            public void run()
-            {
-                try
-                {
+    private void dispatchLater(final ManagerResponse response) {
+        Thread future = new Thread(new Runnable() {
+            public void run() {
+                try {
                     Thread.sleep(RESPONSE_LATENCY);
-                }
-                catch (InterruptedException e)
-                {
+                } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                 }
                 dispatcher.dispatchResponse(response, null);

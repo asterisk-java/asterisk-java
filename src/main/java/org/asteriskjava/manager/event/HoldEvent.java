@@ -32,22 +32,20 @@ package org.asteriskjava.manager.event;
  * @version $Id$
  * @since 0.2
  */
-public class HoldEvent extends AbstractHoldEvent
-{
+public class HoldEvent extends AbstractHoldEvent {
     /**
      * Serializable version identifier.
      */
     private static final long serialVersionUID = 0L;
 
     private String musicClass;
-    
+
     /**
      * Creates a new HoldEvent.
      *
      * @param source
      */
-    public HoldEvent(Object source)
-    {
+    public HoldEvent(Object source) {
         super(source);
         /*
          * Asterisk prior to 1.6 and after 11 uses Hold and Unhold events
@@ -58,14 +56,12 @@ public class HoldEvent extends AbstractHoldEvent
         setStatus(true);
     }
 
-    public String getMusicClass()
-    {
+    public String getMusicClass() {
         return musicClass;
     }
 
-    public void setMusicClass(String musicClass)
-    {
+    public void setMusicClass(String musicClass) {
         this.musicClass = musicClass;
     }
-    
+
 }

@@ -20,49 +20,42 @@ package org.asteriskjava.manager.event;
  * A QueueStatusCompleteEvent is triggered after the state of all queues has been reported in response
  * to a QueueStatusAction.<p>
  * Since Asterisk 1.2
- * 
- * @see org.asteriskjava.manager.action.QueueStatusAction
- * 
+ *
  * @author srt
  * @version $Id$
+ * @see org.asteriskjava.manager.action.QueueStatusAction
  * @since 0.2
  */
-public class QueueStatusCompleteEvent extends ResponseEvent
-{
+public class QueueStatusCompleteEvent extends ResponseEvent {
     /**
      * Serial version identifier
      */
     private static final long serialVersionUID = -1177773673509373297L;
-    
+
     private Integer listItems;
     private String eventList;
 
     /**
      * @param source
      */
-    public QueueStatusCompleteEvent(Object source)
-    {
+    public QueueStatusCompleteEvent(Object source) {
         super(source);
     }
 
-    public Integer getListItems()
-    {
+    public Integer getListItems() {
         return listItems;
     }
 
-    public void setListItems(Integer listItems)
-    {
+    public void setListItems(Integer listItems) {
         this.listItems = listItems;
     }
 
-    public String getEventList()
-    {
+    public String getEventList() {
         return eventList;
     }
 
-    public void setEventList(String eventList)
-    {
+    public void setEventList(String eventList) {
         this.eventList = eventList;
     }
-    
+
 }

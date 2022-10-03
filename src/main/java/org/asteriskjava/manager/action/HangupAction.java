@@ -23,8 +23,7 @@ package org.asteriskjava.manager.action;
  * @author srt
  * @version $Id$
  */
-public class HangupAction extends AbstractManagerAction
-{
+public class HangupAction extends AbstractManagerAction {
     /**
      * Serializable version identifier
      */
@@ -36,8 +35,7 @@ public class HangupAction extends AbstractManagerAction
     /**
      * Creates a new empty HangupAction.
      */
-    public HangupAction()
-    {
+    public HangupAction() {
 
     }
 
@@ -47,8 +45,7 @@ public class HangupAction extends AbstractManagerAction
      * @param channel the name of the channel to hangup.
      * @since 0.2
      */
-    public HangupAction(String channel)
-    {
+    public HangupAction(String channel) {
         this.channel = channel;
     }
 
@@ -59,8 +56,7 @@ public class HangupAction extends AbstractManagerAction
      * @param cause   the cause code. The cause code must be &gt;= 0 and &lt;= 127.
      * @since 1.0.0
      */
-    public HangupAction(String channel, int cause)
-    {
+    public HangupAction(String channel, int cause) {
         this.channel = channel;
         this.cause = cause;
     }
@@ -69,8 +65,7 @@ public class HangupAction extends AbstractManagerAction
      * Returns the name of this action, i.e. "Hangup".
      */
     @Override
-    public String getAction()
-    {
+    public String getAction() {
         return "Hangup";
     }
 
@@ -79,8 +74,7 @@ public class HangupAction extends AbstractManagerAction
      *
      * @return the name of the channel to hangup.
      */
-    public String getChannel()
-    {
+    public String getChannel() {
         return channel;
     }
 
@@ -90,8 +84,7 @@ public class HangupAction extends AbstractManagerAction
      *
      * @param channel the name of the channel to hangup.
      */
-    public void setChannel(String channel)
-    {
+    public void setChannel(String channel) {
         this.channel = channel;
     }
 
@@ -101,8 +94,7 @@ public class HangupAction extends AbstractManagerAction
      * @return the hangup cause.
      * @since 1.0.0
      */
-    public Integer getCause()
-    {
+    public Integer getCause() {
         return cause;
     }
 
@@ -113,8 +105,7 @@ public class HangupAction extends AbstractManagerAction
      * @param cause the hangup cause.
      * @since 1.0.0
      */
-    public void setCause(Integer cause)
-    {
+    public void setCause(Integer cause) {
         this.cause = cause;
     }
 }

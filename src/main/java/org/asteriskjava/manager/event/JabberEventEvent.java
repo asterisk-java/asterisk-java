@@ -25,35 +25,29 @@ package org.asteriskjava.manager.event;
  * @version $Id$
  * @since 1.0.0
  */
-public class JabberEventEvent extends ManagerEvent
-{
+public class JabberEventEvent extends ManagerEvent {
     private static final long serialVersionUID = 1L;
 
     private String account;
     private String packet;
 
-    public JabberEventEvent(Object source)
-    {
+    public JabberEventEvent(Object source) {
         super(source);
     }
 
-    public String getAccount()
-    {
+    public String getAccount() {
         return account;
     }
 
-    public void setAccount(String account)
-    {
+    public void setAccount(String account) {
         this.account = account;
     }
 
-    public String getPacket()
-    {
+    public String getPacket() {
         return packet;
     }
 
-    public void setPacket(String packet)
-    {
+    public void setPacket(String packet) {
         this.packet = packet;
     }
 }

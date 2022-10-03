@@ -23,15 +23,13 @@ package org.asteriskjava.manager.event;
  * @author srt
  * @version $Id$
  */
-public abstract class AbstractChannelStateEvent extends AbstractChannelEvent
-{
+public abstract class AbstractChannelStateEvent extends AbstractChannelEvent {
     /**
      * Serializable version identifier.
      */
     static final long serialVersionUID = 0L;
 
-    protected AbstractChannelStateEvent(Object source)
-    {
+    protected AbstractChannelStateEvent(Object source) {
         super(source);
     }
 
@@ -41,12 +39,11 @@ public abstract class AbstractChannelStateEvent extends AbstractChannelEvent
      *
      * @return the new state of the channel as a descriptive text.
      * @deprecated as of 1.0.0, use {@link #getChannelStateDesc()} instead or
-     *             even better switch to numeric values as returned by
-     *             {@link #getChannelState()}.
+     * even better switch to numeric values as returned by
+     * {@link #getChannelState()}.
      */
     @Deprecated
-    public String getState()
-    {
+    public String getState() {
         return getChannelStateDesc();
     }
 
@@ -57,8 +54,7 @@ public abstract class AbstractChannelStateEvent extends AbstractChannelEvent
      *
      * @param state the new state of the channel as a descriptive text.
      */
-    public void setState(String state)
-    {
+    public void setState(String state) {
         setChannelStateDesc(state);
     }
 }

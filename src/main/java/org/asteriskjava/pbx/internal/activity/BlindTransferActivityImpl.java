@@ -1,43 +1,28 @@
 package org.asteriskjava.pbx.internal.activity;
 
+import org.asteriskjava.lock.Locker.LockCloser;
+import org.asteriskjava.pbx.*;
+import org.asteriskjava.pbx.Call.OperandChannel;
+import org.asteriskjava.pbx.activities.BlindTransferActivity;
+import org.asteriskjava.pbx.agi.AgiChannelActivityBlindTransfer;
+import org.asteriskjava.pbx.agi.BlindTransferResultListener;
+import org.asteriskjava.pbx.asterisk.wrap.events.*;
+import org.asteriskjava.pbx.internal.core.AsteriskPBX;
+import org.asteriskjava.util.Log;
+import org.asteriskjava.util.LogFactory;
+
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import org.asteriskjava.lock.Locker.LockCloser;
-import org.asteriskjava.pbx.ActivityCallback;
-import org.asteriskjava.pbx.Call;
-import org.asteriskjava.pbx.Call.OperandChannel;
-import org.asteriskjava.pbx.CallDirection;
-import org.asteriskjava.pbx.CallImpl;
-import org.asteriskjava.pbx.CallerID;
-import org.asteriskjava.pbx.Channel;
-import org.asteriskjava.pbx.EndPoint;
-import org.asteriskjava.pbx.ListenerPriority;
-import org.asteriskjava.pbx.PBXException;
-import org.asteriskjava.pbx.PBXFactory;
-import org.asteriskjava.pbx.activities.BlindTransferActivity;
-import org.asteriskjava.pbx.agi.AgiChannelActivityBlindTransfer;
-import org.asteriskjava.pbx.agi.BlindTransferResultListener;
-import org.asteriskjava.pbx.asterisk.wrap.events.BridgeEvent;
-import org.asteriskjava.pbx.asterisk.wrap.events.DialEvent;
-import org.asteriskjava.pbx.asterisk.wrap.events.HangupEvent;
-import org.asteriskjava.pbx.asterisk.wrap.events.LinkEvent;
-import org.asteriskjava.pbx.asterisk.wrap.events.ManagerEvent;
-import org.asteriskjava.pbx.asterisk.wrap.events.UnlinkEvent;
-import org.asteriskjava.pbx.internal.core.AsteriskPBX;
-import org.asteriskjava.util.Log;
-import org.asteriskjava.util.LogFactory;
-
 /**
  * The BlindTransferActivity is used by the AsteriksPBX to transfer a live
  * channel to an endpoint that may need to be dialed.
- * 
+ *
  * @author bsutton
  */
-public class BlindTransferActivityImpl extends ActivityHelper<BlindTransferActivity> implements BlindTransferActivity
-{
+public class BlindTransferActivityImpl extends ActivityHelper<BlindTransferActivity> implements BlindTransferActivity {
     private static final Log logger = LogFactory.getLog(BlindTransferActivityImpl.class);
 
     private final Call _call;
@@ -72,18 +57,17 @@ public class BlindTransferActivityImpl extends ActivityHelper<BlindTransferActiv
     /**
      * Blind transfers a live channel to a given endpoint which may need to be
      * dialed. When we dial the endpoint we display the 'toCallerID'.
-     * 
+     *
      * @param channelToTransfer The channel which is being transfered
-     * @param transferTarget The target to transfer (connect) the channel to.
-     * @param toCallerID The caller id to display on the target endpoint.
-     * @param timeout The time to wait (in seconds) for the activity to
-     *            complete.
+     * @param transferTarget    The target to transfer (connect) the channel to.
+     * @param toCallerID        The caller id to display on the target endpoint.
+     * @param timeout           The time to wait (in seconds) for the activity to
+     *                          complete.
      * @param listener
      */
     public BlindTransferActivityImpl(Call call, final Call.OperandChannel channelToTransfer, final EndPoint transferTarget,
-            final CallerID toCallerID, boolean autoAnswer, long timeout,
-            final ActivityCallback<BlindTransferActivity> listener, String dialOptions)
-    {
+                                     final CallerID toCallerID, boolean autoAnswer, long timeout,
+                                     final ActivityCallback<BlindTransferActivity> listener, String dialOptions) {
         super("BlindTransferActivity", listener);
 
         this._call = Objects.requireNonNull(call);
@@ -100,8 +84,7 @@ public class BlindTransferActivityImpl extends ActivityHelper<BlindTransferActiv
     }
 
     public BlindTransferActivityImpl(Channel agentChannel, EndPoint transferTarget, CallerID toCallerID, boolean autoAnswer,
-            int timeout, ActivityCallback<BlindTransferActivity> iCallback, String dialOptions) throws PBXException
-    {
+                                     int timeout, ActivityCallback<BlindTransferActivity> iCallback, String dialOptions) throws PBXException {
         super("BlindTransferActivity", iCallback);
 
         this._transferTarget = transferTarget;
@@ -117,8 +100,7 @@ public class BlindTransferActivityImpl extends ActivityHelper<BlindTransferActiv
     }
 
     @Override
-    public boolean doActivity() throws PBXException
-    {
+    public boolean doActivity() throws PBXException {
 
         boolean success = false;
         AsteriskPBX pbx = (AsteriskPBX) PBXFactory.getActivePBX();
@@ -127,8 +109,7 @@ public class BlindTransferActivityImpl extends ActivityHelper<BlindTransferActiv
          * when a link event occurs this call will be removed from the active
          * call list.
          */
-        try
-        {
+        try {
 
             logger.debug("*******************************************************************************");
             logger.info("***********                    begin blind transfer            ****************");
@@ -137,8 +118,7 @@ public class BlindTransferActivityImpl extends ActivityHelper<BlindTransferActiv
             logger.debug("***********            " + this._toCallerID + "                            ****************");
             logger.debug("*******************************************************************************");
 
-            if (!pbx.moveChannelToAgi(actualChannelToTransfer))
-            {
+            if (!pbx.moveChannelToAgi(actualChannelToTransfer)) {
                 throw new PBXException("Channel: " + this._channelToTransfer + " couldn't be moved to agi");
             }
 
@@ -151,21 +131,17 @@ public class BlindTransferActivityImpl extends ActivityHelper<BlindTransferActiv
             // initial answer sequence. If we don't clear it then then transfer
             // target will be auto-answered, which is fun but bad.
             String sipHeader = null;
-            if (this._autoAnswer)
-            {
+            if (this._autoAnswer) {
                 sipHeader = PBXFactory.getActiveProfile().getAutoAnswer();
             }
 
             this._latch = new CountDownLatch(1);
 
-            BlindTransferResultListener listener = new BlindTransferResultListener()
-            {
+            BlindTransferResultListener listener = new BlindTransferResultListener() {
 
                 @Override
-                public void result(String status, boolean success)
-                {
-                    if (_completionCause == null)
-                    {
+                public void result(String status, boolean success) {
+                    if (_completionCause == null) {
                         _completionCause = CompletionCause.FAILED;
                     }
                     _latch.countDown();
@@ -183,33 +159,22 @@ public class BlindTransferActivityImpl extends ActivityHelper<BlindTransferActiv
             // TODO control the caller id.
 
             success = this._latch.await(this._timeout, TimeUnit.SECONDS);
-            if (!success)
-            {
+            if (!success) {
                 this._completionCause = CompletionCause.TIMEOUT;
-            }
-            else if (_completionCause == CompletionCause.CANCELLED)
-            {
+            } else if (_completionCause == CompletionCause.CANCELLED) {
                 logger.warn("Cancelled, hanging up dialed channel");
                 pbx.hangup(dialedChannel);
-            }
-
-            else
-            {
+            } else {
                 Call call = ((CallImpl) _call).split(actualChannelToTransfer);
                 Call rhsCall = new CallImpl(_transferTargetChannel, CallDirection.OUTBOUND);
-                try
-                {
+                try {
                     _newCall = ((CallImpl) call).join(OperandChannel.ORIGINATING_PARTY, rhsCall,
                             OperandChannel.ORIGINATING_PARTY, CallDirection.OUTBOUND);
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                     logger.error("New call doesn't seem to exist!?");
                 }
             }
-        }
-        catch (final Exception e)
-        {
+        } catch (final Exception e) {
             logger.error("error occurred in blindtransfer", e);
             this.setLastException(new PBXException(e));
         }
@@ -218,9 +183,8 @@ public class BlindTransferActivityImpl extends ActivityHelper<BlindTransferActiv
     }
 
     @Override
-    public HashSet<Class< ? extends ManagerEvent>> requiredEvents()
-    {
-        HashSet<Class< ? extends ManagerEvent>> required = new HashSet<>();
+    public HashSet<Class<? extends ManagerEvent>> requiredEvents() {
+        HashSet<Class<? extends ManagerEvent>> required = new HashSet<>();
 
         required.add(BridgeEvent.class);
         required.add(LinkEvent.class);
@@ -231,51 +195,36 @@ public class BlindTransferActivityImpl extends ActivityHelper<BlindTransferActiv
     }
 
     @Override
-    public void onManagerEvent(final ManagerEvent event)
-    {
-        try (LockCloser closer = this.withLock())
-        {
-            if (event instanceof BridgeEvent)
-            {
+    public void onManagerEvent(final ManagerEvent event) {
+        try (LockCloser closer = this.withLock()) {
+            if (event instanceof BridgeEvent) {
                 BridgeEvent bridge = (BridgeEvent) event;
-                if (bridge.isLink())
-                {
-                    if (bridge.getChannel1().isSame(_call.getOperandChannel(this._channelToTransfer)))
-                    {
+                if (bridge.isLink()) {
+                    if (bridge.getChannel1().isSame(_call.getOperandChannel(this._channelToTransfer))) {
                         this._completionCause = CompletionCause.BRIDGED;
                         this._transferTargetChannel = bridge.getChannel2();
                         this._latch.countDown();
-                    }
-                    else if (bridge.getChannel2().isSame(_call.getOperandChannel(this._channelToTransfer)))
-                    {
+                    } else if (bridge.getChannel2().isSame(_call.getOperandChannel(this._channelToTransfer))) {
                         this._completionCause = CompletionCause.BRIDGED;
                         this._transferTargetChannel = bridge.getChannel1();
                         this._latch.countDown();
                     }
                 }
-            }
-            else if (event instanceof HangupEvent)
-            {
+            } else if (event instanceof HangupEvent) {
                 HangupEvent hangup = (HangupEvent) event;
-                if (hangup.getChannel().isSame(_call.getOperandChannel(this._channelToTransfer)))
-                {
+                if (hangup.getChannel().isSame(_call.getOperandChannel(this._channelToTransfer))) {
                     this._completionCause = CompletionCause.HANGUP;
                     this._latch.countDown();
                 }
-                if (hangup.getChannel().isSame(dialedChannel))
-                {
+                if (hangup.getChannel().isSame(dialedChannel)) {
                     this._completionCause = CompletionCause.HANGUP;
                     this._latch.countDown();
                 }
-            }
-            else if (event instanceof DialEvent)
-            {
+            } else if (event instanceof DialEvent) {
                 DialEvent dialEvent = (DialEvent) event;
-                if (dialEvent.getChannel() != null)
-                {
+                if (dialEvent.getChannel() != null) {
                     Channel operandChannel = _call.getOperandChannel(_channelToTransfer);
-                    if (dialEvent.getChannel().isSame(operandChannel))
-                    {
+                    if (dialEvent.getChannel().isSame(operandChannel)) {
                         DialEvent de = (DialEvent) event;
                         dialedChannel = de.getDestination();
                     }
@@ -286,14 +235,12 @@ public class BlindTransferActivityImpl extends ActivityHelper<BlindTransferActiv
     }
 
     @Override
-    public ListenerPriority getPriority()
-    {
+    public ListenerPriority getPriority() {
         return ListenerPriority.NORMAL;
     }
 
     @Override
-    public CompletionCause getCompletionCause()
-    {
+    public CompletionCause getCompletionCause() {
         return this._completionCause;
     }
 
@@ -301,39 +248,33 @@ public class BlindTransferActivityImpl extends ActivityHelper<BlindTransferActiv
      * cancels the BlindTransfer.
      */
     @Override
-    public void cancel()
-    {
+    public void cancel() {
         this._completionCause = CompletionCause.CANCELLED;
         this._latch.countDown();
     }
 
     @Override
-    public Channel getChannelToTransfer()
-    {
+    public Channel getChannelToTransfer() {
         return _call.getOperandChannel(this._channelToTransfer);
     }
 
     @Override
-    public CallerID getTransferTargetCallerID()
-    {
+    public CallerID getTransferTargetCallerID() {
         return this._toCallerID;
     }
 
     @Override
-    public EndPoint getTransferTarget()
-    {
+    public EndPoint getTransferTarget() {
         return this._transferTarget;
     }
 
     @Override
-    public Channel getTransferTargetChannel()
-    {
+    public Channel getTransferTargetChannel() {
         return this._transferTargetChannel;
     }
 
     @Override
-    public Call getNewCall() throws PBXException
-    {
+    public Call getNewCall() throws PBXException {
         return _newCall;
     }
 }

@@ -1,16 +1,14 @@
 package org.asteriskjava.manager.event;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class AsyncAgiEventTest
-{
+class AsyncAgiEventTest {
     @Test
-    public void testDecodeEnv()
-    {
+    void testDecodeEnv() {
         AsyncAgiEvent event = new AsyncAgiEvent(this);
         List<String> env;
 
@@ -41,8 +39,7 @@ public class AsyncAgiEventTest
     }
 
     @Test
-    public void testDecodeEnvWithMoreThanTwoDelimiters()
-    {
+    void testDecodeEnvWithMoreThanTwoDelimiters() {
         AsyncAgiEvent event = new AsyncAgiEvent(this);
         List<String> env;
 

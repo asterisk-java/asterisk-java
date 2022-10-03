@@ -24,14 +24,12 @@ import java.util.List;
  * Follows" line followed by the raw output of the command including empty lines. At the end of the
  * command output a line containing "--END COMMAND--" is sent. The reader parses this response into
  * a CommandResponse object to hide these details.
- * 
- * @see org.asteriskjava.manager.action.CommandAction
- * 
+ *
  * @author srt
  * @version $Id$
+ * @see org.asteriskjava.manager.action.CommandAction
  */
-public class CommandResponse extends ManagerResponse
-{
+public class CommandResponse extends ManagerResponse {
     private static final long serialVersionUID = 1L;
 
     private String privilege;
@@ -43,13 +41,11 @@ public class CommandResponse extends ManagerResponse
      * @return always "Command"
      * @since 1.0.0
      */
-    public String getPrivilege()
-    {
+    public String getPrivilege() {
         return privilege;
     }
 
-    public void setPrivilege(String privilege)
-    {
+    public void setPrivilege(String privilege) {
         this.privilege = privilege;
     }
 
@@ -58,16 +54,14 @@ public class CommandResponse extends ManagerResponse
      *
      * @return a List of strings representing the lines returned by the CLI command.
      */
-    public List<String> getResult()
-    {
+    public List<String> getResult() {
         return result;
     }
 
     /**
      * Sets the result.
      */
-    public void setResult(List<String> result)
-    {
+    public void setResult(List<String> result) {
         this.result = result;
     }
 }

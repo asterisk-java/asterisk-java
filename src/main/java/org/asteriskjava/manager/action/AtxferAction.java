@@ -26,8 +26,7 @@ package org.asteriskjava.manager.action;
  * @version $Id$
  * @since 1.0.0
  */
-public class AtxferAction extends AbstractManagerAction
-{
+public class AtxferAction extends AbstractManagerAction {
     static final long serialVersionUID = 1L;
 
     private String channel;
@@ -38,8 +37,7 @@ public class AtxferAction extends AbstractManagerAction
     /**
      * Creates a new empty AtxferAction.
      */
-    public AtxferAction()
-    {
+    public AtxferAction() {
 
     }
 
@@ -52,8 +50,7 @@ public class AtxferAction extends AbstractManagerAction
      * @param exten    the destination extension
      * @param priority the destination priority
      */
-    public AtxferAction(String channel, String context, String exten, Integer priority)
-    {
+    public AtxferAction(String channel, String context, String exten, Integer priority) {
         this.channel = channel;
         this.context = context;
         this.exten = exten;
@@ -65,8 +62,7 @@ public class AtxferAction extends AbstractManagerAction
      * Returns the name of this action, i.e. "Atxfer".
      */
     @Override
-    public String getAction()
-    {
+    public String getAction() {
         return "Atxfer";
     }
 
@@ -75,8 +71,7 @@ public class AtxferAction extends AbstractManagerAction
      *
      * @return the name of the channel to transfer
      */
-    public String getChannel()
-    {
+    public String getChannel() {
         return channel;
     }
 
@@ -85,8 +80,7 @@ public class AtxferAction extends AbstractManagerAction
      *
      * @param channel the name of the channel to transfer
      */
-    public void setChannel(String channel)
-    {
+    public void setChannel(String channel) {
         this.channel = channel;
     }
 
@@ -95,8 +89,7 @@ public class AtxferAction extends AbstractManagerAction
      *
      * @return the destination context
      */
-    public String getContext()
-    {
+    public String getContext() {
         return context;
     }
 
@@ -105,8 +98,7 @@ public class AtxferAction extends AbstractManagerAction
      *
      * @param context the destination context
      */
-    public void setContext(String context)
-    {
+    public void setContext(String context) {
         this.context = context;
     }
 
@@ -115,8 +107,7 @@ public class AtxferAction extends AbstractManagerAction
      *
      * @return the destination extension
      */
-    public String getExten()
-    {
+    public String getExten() {
         return exten;
     }
 
@@ -125,8 +116,7 @@ public class AtxferAction extends AbstractManagerAction
      *
      * @param exten the destination extension
      */
-    public void setExten(String exten)
-    {
+    public void setExten(String exten) {
         this.exten = exten;
     }
 
@@ -135,8 +125,7 @@ public class AtxferAction extends AbstractManagerAction
      *
      * @return the destination priority
      */
-    public Integer getPriority()
-    {
+    public Integer getPriority() {
         return priority;
     }
 
@@ -145,8 +134,7 @@ public class AtxferAction extends AbstractManagerAction
      *
      * @param priority the destination priority
      */
-    public void setPriority(Integer priority)
-    {
+    public void setPriority(Integer priority) {
         this.priority = priority;
     }
 }

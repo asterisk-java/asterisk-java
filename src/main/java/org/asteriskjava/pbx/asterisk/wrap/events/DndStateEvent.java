@@ -6,8 +6,7 @@ import org.asteriskjava.pbx.PBXFactory;
 import org.asteriskjava.pbx.internal.core.AsteriskPBX;
 import org.asteriskjava.pbx.internal.core.ChannelImpl;
 
-public class DndStateEvent extends ManagerEvent implements ChannelEvent
-{
+public class DndStateEvent extends ManagerEvent implements ChannelEvent {
     private static final long serialVersionUID = 1L;
 
     /**
@@ -20,8 +19,7 @@ public class DndStateEvent extends ManagerEvent implements ChannelEvent
      */
     private final Boolean state;
 
-    public DndStateEvent(final org.asteriskjava.manager.event.DndStateEvent event) throws InvalidChannelName
-    {
+    public DndStateEvent(final org.asteriskjava.manager.event.DndStateEvent event) throws InvalidChannelName {
         super(event);
         final AsteriskPBX pbx = (AsteriskPBX) PBXFactory.getActivePBX();
         this.channel = pbx.internalRegisterChannel(event.getChannel(), ChannelImpl.UNKNOWN_UNIQUE_ID);
@@ -29,13 +27,11 @@ public class DndStateEvent extends ManagerEvent implements ChannelEvent
     }
 
     @Override
-    public Channel getChannel()
-    {
+    public Channel getChannel() {
         return this.channel;
     }
 
-    public Boolean getState()
-    {
+    public Boolean getState() {
         return this.state;
     }
 }

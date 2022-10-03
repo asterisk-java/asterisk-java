@@ -21,13 +21,12 @@ package org.asteriskjava.manager.event;
  * or leaves DND (do not disturb) state.<p>
  * It is implemented in <code>channels/chan_zap.c</code>.<p>
  * Available since Asterisk 1.2
- * 
+ *
  * @author srt
  * @version $Id$
  * @since 0.2
  */
-public class DndStateEvent extends ManagerEvent
-{
+public class DndStateEvent extends ManagerEvent {
     /**
      * Serializable version identifier
      */
@@ -45,11 +44,10 @@ public class DndStateEvent extends ManagerEvent
 
     /**
      * Creates a new DNDStateEvent.
-     * 
+     *
      * @param source
      */
-    public DndStateEvent(Object source)
-    {
+    public DndStateEvent(Object source) {
         super(source);
     }
 
@@ -57,34 +55,30 @@ public class DndStateEvent extends ManagerEvent
      * Returns the name of the channel. The channel name is of the form
      * "Zap/&lt;channel number&gt;".
      */
-    public String getChannel()
-    {
+    public String getChannel() {
         return channel;
     }
 
     /**
      * Sets the name of the channel.
      */
-    public void setChannel(String channel)
-    {
+    public void setChannel(String channel) {
         this.channel = channel;
     }
 
     /**
      * Returns DND state of the channel.
-     * 
+     *
      * @return Boolean.TRUE if do not disturb is on, Boolean.FALSE if it is off.
      */
-    public Boolean getState()
-    {
+    public Boolean getState() {
         return state;
     }
 
     /**
      * Sets the DND state of the channel.
      */
-    public void setState(Boolean state)
-    {
+    public void setState(Boolean state) {
         this.state = state;
     }
 }

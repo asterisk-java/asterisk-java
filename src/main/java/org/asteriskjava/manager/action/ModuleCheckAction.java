@@ -31,8 +31,7 @@ import org.asteriskjava.manager.response.ModuleCheckResponse;
  * @since 1.0.0
  */
 @ExpectedResponse(ModuleCheckResponse.class)
-public class ModuleCheckAction extends AbstractManagerAction
-{
+public class ModuleCheckAction extends AbstractManagerAction {
     static final long serialVersionUID = 1L;
 
     private String module;
@@ -40,8 +39,7 @@ public class ModuleCheckAction extends AbstractManagerAction
     /**
      * Creates a new ModuleCheckAction.
      */
-    public ModuleCheckAction()
-    {
+    public ModuleCheckAction() {
 
     }
 
@@ -50,8 +48,7 @@ public class ModuleCheckAction extends AbstractManagerAction
      *
      * @param module the name of the module (including or not including the ".so" extension).
      */
-    public ModuleCheckAction(String module)
-    {
+    public ModuleCheckAction(String module) {
         this.module = module;
     }
 
@@ -59,8 +56,7 @@ public class ModuleCheckAction extends AbstractManagerAction
      * Returns the name of this action, i.e. "ModuleLoad".
      */
     @Override
-    public String getAction()
-    {
+    public String getAction() {
         return "ModuleCheck";
     }
 
@@ -69,8 +65,7 @@ public class ModuleCheckAction extends AbstractManagerAction
      *
      * @return the name of the module to check.
      */
-    public String getModule()
-    {
+    public String getModule() {
         return module;
     }
 
@@ -79,8 +74,7 @@ public class ModuleCheckAction extends AbstractManagerAction
      *
      * @param module the name of the module (including or not including the ".so" extension) to check.
      */
-    public void setModule(String module)
-    {
+    public void setModule(String module) {
         this.module = module;
     }
 }

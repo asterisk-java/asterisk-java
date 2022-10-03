@@ -23,14 +23,13 @@ package org.asteriskjava.manager.event;
  *
  * @author srt
  * @version $Id$
- * @since 1.0.0
  * @see org.asteriskjava.manager.event.MonitorStopEvent
+ * @since 1.0.0
  */
-public class MonitorStartEvent extends AbstractMonitorEvent
-{
+public class MonitorStartEvent extends AbstractMonitorEvent {
     private static final long serialVersionUID = 253533286571341499L;
-    public MonitorStartEvent(Object source)
-    {
+
+    public MonitorStartEvent(Object source) {
         super(source);
     }
 }

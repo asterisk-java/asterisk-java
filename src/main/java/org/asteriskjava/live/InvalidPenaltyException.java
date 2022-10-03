@@ -22,8 +22,7 @@ package org.asteriskjava.live;
  * @author srt
  * @version $Id$
  */
-public class InvalidPenaltyException extends LiveException
-{
+public class InvalidPenaltyException extends LiveException {
     /**
      * Serial version identifier.
      */
@@ -34,8 +33,7 @@ public class InvalidPenaltyException extends LiveException
      *
      * @param message the message
      */
-    public InvalidPenaltyException(String message)
-    {
+    public InvalidPenaltyException(String message) {
         super(message);
     }
 }

@@ -26,8 +26,7 @@ package org.asteriskjava.manager.event;
  * @version $Id$
  * @since 1.0.0
  */
-public class RtpReceiverStatEvent extends AbstractRtpStatEvent
-{
+public class RtpReceiverStatEvent extends AbstractRtpStatEvent {
     private static final long serialVersionUID = 1L;
 
     private Long receivedPackets;
@@ -35,8 +34,7 @@ public class RtpReceiverStatEvent extends AbstractRtpStatEvent
     private Long rrCount;
     private String accountCode;
 
-    public RtpReceiverStatEvent(Object source)
-    {
+    public RtpReceiverStatEvent(Object source) {
         super(source);
     }
 
@@ -45,23 +43,19 @@ public class RtpReceiverStatEvent extends AbstractRtpStatEvent
      *
      * @return the number of packets received.
      */
-    public Long getReceivedPackets()
-    {
+    public Long getReceivedPackets() {
         return receivedPackets;
     }
 
-    public void setReceivedPackets(Long receivedPackets)
-    {
+    public void setReceivedPackets(Long receivedPackets) {
         this.receivedPackets = receivedPackets;
     }
 
-    public Double getTransit()
-    {
+    public Double getTransit() {
         return transit;
     }
 
-    public void setTransit(Double transit)
-    {
+    public void setTransit(Double transit) {
         this.transit = transit;
     }
 
@@ -70,25 +64,21 @@ public class RtpReceiverStatEvent extends AbstractRtpStatEvent
      *
      * @return the number of receiver reports.
      */
-    public Long getRrCount()
-    {
+    public Long getRrCount() {
         return rrCount;
     }
 
-    public void setRrCount(Long rrCount)
-    {
+    public void setRrCount(Long rrCount) {
         this.rrCount = rrCount;
     }
 
-    public String getAccountCode()
-    {
+    public String getAccountCode() {
         return accountCode;
     }
 
-    public void setAccountCode(String accountCode)
-    {
+    public void setAccountCode(String accountCode) {
         this.accountCode = accountCode;
     }
-    
-    
+
+
 }

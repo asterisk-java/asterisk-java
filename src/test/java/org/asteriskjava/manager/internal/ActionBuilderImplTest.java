@@ -16,36 +16,26 @@
  */
 package org.asteriskjava.manager.internal;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import org.asteriskjava.AsteriskVersion;
+import org.asteriskjava.manager.action.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.asteriskjava.AsteriskVersion;
-import org.asteriskjava.manager.action.AbstractManagerAction;
-import org.asteriskjava.manager.action.AgentsAction;
-import org.asteriskjava.manager.action.OriginateAction;
-import org.asteriskjava.manager.action.SipNotifyAction;
-import org.asteriskjava.manager.action.UpdateConfigAction;
-import org.asteriskjava.manager.action.UserEventAction;
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class ActionBuilderImplTest
-{
+class ActionBuilderImplTest {
     private ActionBuilderImpl actionBuilder;
 
-    @Before
-    public void setUp()
-    {
+    @BeforeEach
+    void setUp() {
         this.actionBuilder = new ActionBuilderImpl();
     }
 
     @Test
-    public void testBuildAction()
-    {
+    void testBuildAction() {
         MyAction myAction;
         String actual;
 
@@ -56,16 +46,15 @@ public class ActionBuilderImplTest
 
         actual = actionBuilder.buildAction(myAction);
 
-        assertTrue("Action name missing", actual.indexOf("action: My\r\n") >= 0);
-        assertTrue("First property missing", actual.indexOf("firstproperty: first value\r\n") >= 0);
-        assertTrue("Second property missing", actual.indexOf("secondproperty: 2\r\n") >= 0);
-        assertTrue("Missing trailing CRNL CRNL", actual.endsWith("\r\n\r\n"));
-        assertEquals("Incorrect length", 61, actual.length());
+        assertTrue(actual.indexOf("action: My\r\n") >= 0, "Action name missing");
+        assertTrue(actual.indexOf("firstproperty: first value\r\n") >= 0, "First property missing");
+        assertTrue(actual.indexOf("secondproperty: 2\r\n") >= 0, "Second property missing");
+        assertTrue(actual.endsWith("\r\n\r\n"), "Missing trailing CRNL CRNL");
+        assertEquals(61, actual.length(), "Incorrect length");
     }
 
     @Test
-    public void testBuildActionWithNullValue()
-    {
+    void testBuildActionWithNullValue() {
         MyAction myAction;
         String actual;
 
@@ -74,15 +63,14 @@ public class ActionBuilderImplTest
 
         actual = actionBuilder.buildAction(myAction);
 
-        assertTrue("Action name missing", actual.indexOf("action: My\r\n") >= 0);
-        assertTrue("First property missing", actual.indexOf("firstproperty: first value\r\n") >= 0);
-        assertTrue("Missing trailing CRNL CRNL", actual.endsWith("\r\n\r\n"));
-        assertEquals("Incorrect length", 42, actual.length());
+        assertTrue(actual.indexOf("action: My\r\n") >= 0, "Action name missing");
+        assertTrue(actual.indexOf("firstproperty: first value\r\n") >= 0, "First property missing");
+        assertTrue(actual.endsWith("\r\n\r\n"), "Missing trailing CRNL CRNL");
+        assertEquals(42, actual.length(), "Incorrect length");
     }
 
     @Test
-    public void testBuildEventGeneratingAction()
-    {
+    void testBuildEventGeneratingAction() {
         AgentsAction action;
         String actual;
 
@@ -90,14 +78,13 @@ public class ActionBuilderImplTest
 
         actual = actionBuilder.buildAction(action);
 
-        assertTrue("Action name missing", actual.indexOf("action: Agents\r\n") >= 0);
-        assertTrue("Action contains actionCompleteEventClass property", actual.indexOf("actioncompleteeventclass:") == -1);
-        assertTrue("Missing trailing CRNL CRNL", actual.endsWith("\r\n\r\n"));
+        assertTrue(actual.indexOf("action: Agents\r\n") >= 0, "Action name missing");
+        assertTrue(actual.indexOf("actioncompleteeventclass:") == -1, "Action contains actionCompleteEventClass property");
+        assertTrue(actual.endsWith("\r\n\r\n"), "Missing trailing CRNL CRNL");
     }
-    
+
     @Test
-    public void testBuildUpdateConfigAction()
-    {
+    void testBuildUpdateConfigAction() {
         UpdateConfigAction action;
         action = new UpdateConfigAction();
         action.setSrcFilename("sourcefile.conf");
@@ -106,20 +93,19 @@ public class ActionBuilderImplTest
         action.addCommand(UpdateConfigAction.ACTION_NEWCAT, "testcategory", null, null, null);
 
         String actual = actionBuilder.buildAction(action);
-        
-        assertTrue("Action name missing", actual.indexOf("action: UpdateConfig") >= 0);
-        assertTrue("Source filename missing", actual.indexOf("srcfilename: sourcefile.conf") >= 0);
-        assertTrue("Destination filename missing", actual.indexOf("dstfilename: destfile.conf") >= 0);
-        assertTrue("Correct reload setting missing", actual.indexOf("reload: Yes") >= 0);
-        
-        assertFalse("Action must have zero-padded 6 digit numbering", actual.indexOf("Action-0:") >= 0);
-        assertFalse("UpdateConfig actions must not have more than one 'action' header", actual.indexOf("action: Action") >= 0);
-        assertTrue("Action missing category testcategory - " + actual, actual.indexOf("Cat-000000: testcategory") >= 0);
+
+        assertTrue(actual.indexOf("action: UpdateConfig") >= 0, "Action name missing");
+        assertTrue(actual.indexOf("srcfilename: sourcefile.conf") >= 0, "Source filename missing");
+        assertTrue(actual.indexOf("dstfilename: destfile.conf") >= 0, "Destination filename missing");
+        assertTrue(actual.indexOf("reload: Yes") >= 0, "Correct reload setting missing");
+
+        assertFalse(actual.indexOf("Action-0:") >= 0, "Action must have zero-padded 6 digit numbering");
+        assertFalse(actual.indexOf("action: Action") >= 0, "UpdateConfig actions must not have more than one 'action' header");
+        assertTrue(actual.indexOf("Cat-000000: testcategory") >= 0, "Action missing category testcategory - " + actual);
     }
 
     @Test
-    public void testBuildUserEventAction()
-    {
+    void testBuildUserEventAction() {
         UserEventAction action;
         action = new UserEventAction();
 
@@ -136,17 +122,16 @@ public class ActionBuilderImplTest
         event.setMapMember(mapMemberTest);
 
         String actual = actionBuilder.buildAction(action);
-        assertTrue("Action name missing", actual.indexOf("action: UserEvent\r\n") >= 0);
-        assertTrue("Event name missing", actual.indexOf("UserEvent: myuser\r\n") >= 0);
-        assertTrue("Regular member missing", actual.indexOf("stringmember: stringMemberValue\r\n") >= 0);
-        assertTrue("Map member missing", actual.indexOf("mapmember: Key1=Value1|Key2=Value2|Key3=Value3\r\n") >= 0);
-        assertTrue("Missing trailing CRNL CRNL", actual.endsWith("\r\n\r\n"));
+        assertTrue(actual.indexOf("action: UserEvent\r\n") >= 0, "Action name missing");
+        assertTrue(actual.indexOf("UserEvent: myuser\r\n") >= 0, "Event name missing");
+        assertTrue(actual.indexOf("stringmember: stringMemberValue\r\n") >= 0, "Regular member missing");
+        assertTrue(actual.indexOf("mapmember: Key1=Value1|Key2=Value2|Key3=Value3\r\n") >= 0, "Map member missing");
+        assertTrue(actual.endsWith("\r\n\r\n"), "Missing trailing CRNL CRNL");
     }
 
     @SuppressWarnings("deprecation")
     @Test
-    public void testBuildActionWithVariablesForAsterisk10()
-    {
+    void testBuildActionWithVariablesForAsterisk10() {
         OriginateAction originateAction;
         String actual;
 
@@ -155,14 +140,12 @@ public class ActionBuilderImplTest
 
         actual = actionBuilder.buildAction(originateAction);
 
-        assertTrue("Incorrect mapping of variable property for Asterisk 1.0",
-                actual.indexOf("variable: var1=value1|var2=value2\r\n") >= 0);
+        assertTrue(actual.indexOf("variable: var1=value1|var2=value2\r\n") >= 0, "Incorrect mapping of variable property for Asterisk 1.0");
     }
 
     @SuppressWarnings("deprecation")
     @Test
-    public void testBuildActionWithVariablesForAsterisk10WithNullValues()
-    {
+    void testBuildActionWithVariablesForAsterisk10WithNullValues() {
         OriginateAction originateAction;
         String actual;
 
@@ -171,14 +154,12 @@ public class ActionBuilderImplTest
 
         actual = actionBuilder.buildAction(originateAction);
 
-        assertTrue("Incorrect mapping of variable property for Asterisk 1.0",
-                actual.indexOf("variable: var1=value1|var2=|var3=value3\r\n") >= 0);
+        assertTrue(actual.indexOf("variable: var1=value1|var2=|var3=value3\r\n") >= 0, "Incorrect mapping of variable property for Asterisk 1.0");
     }
 
     @SuppressWarnings("deprecation")
     @Test
-    public void testBuildActionWithVariablesForAsterisk12()
-    {
+    void testBuildActionWithVariablesForAsterisk12() {
         OriginateAction originateAction;
         String actual;
 
@@ -188,14 +169,12 @@ public class ActionBuilderImplTest
         actionBuilder.setTargetVersion(AsteriskVersion.ASTERISK_1_2);
         actual = actionBuilder.buildAction(originateAction);
 
-        assertTrue("Incorrect mapping of variable property for Asterisk 1.2",
-                actual.indexOf("variable: var1=value1\r\nvariable: var2=value2\r\n") >= 0);
+        assertTrue(actual.indexOf("variable: var1=value1\r\nvariable: var2=value2\r\n") >= 0, "Incorrect mapping of variable property for Asterisk 1.2");
     }
 
     @SuppressWarnings("deprecation")
     @Test
-    public void testBuildActionWithVariablesForAsterisk12WithNullValues()
-    {
+    void testBuildActionWithVariablesForAsterisk12WithNullValues() {
         OriginateAction originateAction;
         String actual;
 
@@ -205,13 +184,11 @@ public class ActionBuilderImplTest
         actionBuilder.setTargetVersion(AsteriskVersion.ASTERISK_1_2);
         actual = actionBuilder.buildAction(originateAction);
 
-        assertTrue("Incorrect mapping of variable property for Asterisk 1.2",
-                actual.indexOf("variable: var1=value1\r\nvariable: var2=\r\nvariable: var3=value3\r\n") >= 0);
+        assertTrue(actual.indexOf("variable: var1=value1\r\nvariable: var2=\r\nvariable: var3=value3\r\n") >= 0, "Incorrect mapping of variable property for Asterisk 1.2");
     }
 
     @Test
-    public void testBuildActionWithVariableMapForAsterisk12()
-    {
+    void testBuildActionWithVariableMapForAsterisk12() {
         OriginateAction originateAction;
         Map<String, String> map;
         String actual;
@@ -227,13 +204,11 @@ public class ActionBuilderImplTest
         actionBuilder.setTargetVersion(AsteriskVersion.ASTERISK_1_2);
         actual = actionBuilder.buildAction(originateAction);
 
-        assertTrue("Incorrect mapping of variable property for Asterisk 1.2",
-                actual.indexOf("variable: var1=value1\r\nvariable: VAR2=value2\r\n") >= 0);
+        assertTrue(actual.indexOf("variable: var1=value1\r\nvariable: VAR2=value2\r\n") >= 0, "Incorrect mapping of variable property for Asterisk 1.2");
     }
 
     @Test
-    public void testBuildActionForSipNotifyAction()
-    {
+    void testBuildActionForSipNotifyAction() {
         SipNotifyAction action;
         String actual;
 
@@ -244,105 +219,86 @@ public class ActionBuilderImplTest
         actionBuilder.setTargetVersion(AsteriskVersion.ASTERISK_1_6);
         actual = actionBuilder.buildAction(action);
 
-        assertTrue("Incorrect mapping of variable property",
-                actual.indexOf("variable: var1=value1\r\nvariable: var2=value2\r\n") >= 0);
+        assertTrue(actual.indexOf("variable: var1=value1\r\nvariable: var2=value2\r\n") >= 0, "Incorrect mapping of variable property");
     }
 
     @Test
-    public void testBuildActionWithAnnotatedGetter()
-    {
+    void testBuildActionWithAnnotatedGetter() {
         AnnotatedAction action = new AnnotatedAction("value1", "value2", "value3");
         String actual = actionBuilder.buildAction(action);
 
-        assertTrue("Incorrect mapping of property with annotated getter",
-                actual.indexOf("property-1: value1\r\n") >= 0);
+        assertTrue(actual.indexOf("property-1: value1\r\n") >= 0, "Incorrect mapping of property with annotated getter");
     }
 
     @Test
-    public void testDetermineSetterName()
-    {
+    void testDetermineSetterName() {
         assertEquals("setProperty1", ActionBuilderImpl.determineSetterName("getProperty1"));
         assertEquals("setProperty1", ActionBuilderImpl.determineSetterName("isProperty1"));
     }
 
     @Test
-    public void testBuildActionWithAnnotatedSetter()
-    {
+    void testBuildActionWithAnnotatedSetter() {
         AnnotatedAction action = new AnnotatedAction("value1", "value2", "value3");
         String actual = actionBuilder.buildAction(action);
 
-        assertTrue("Incorrect mapping of property with annotated setter",
-                actual.indexOf("property-2: value2\r\n") >= 0);
+        assertTrue(actual.indexOf("property-2: value2\r\n") >= 0, "Incorrect mapping of property with annotated setter");
     }
 
     @Test
-    public void testDetermineFieldName()
-    {
+    void testDetermineFieldName() {
         assertEquals("property1", ActionBuilderImpl.determineFieldName("getProperty1"));
         assertEquals("property1", ActionBuilderImpl.determineFieldName("isProperty1"));
         assertEquals("property1", ActionBuilderImpl.determineFieldName("setProperty1"));
     }
 
     @Test
-    public void testBuildActionWithAnnotatedField()
-    {
+    void testBuildActionWithAnnotatedField() {
         AnnotatedAction action = new AnnotatedAction("value1", "value2", "value3");
         String actual = actionBuilder.buildAction(action);
 
-        assertTrue("Incorrect mapping of property with annotated field",
-                actual.indexOf("property-3: value3\r\n") >= 0);
+        assertTrue(actual.indexOf("property-3: value3\r\n") >= 0, "Incorrect mapping of property with annotated field");
     }
 
-    class MyAction extends AbstractManagerAction
-    {
+    class MyAction extends AbstractManagerAction {
         private static final long serialVersionUID = 3257568425345102641L;
         private String firstProperty;
         private Integer secondProperty;
         private String nonPublicProperty;
 
         @Override
-        public String getAction()
-        {
+        public String getAction() {
             return "My";
         }
 
-        public String getFirstProperty()
-        {
+        public String getFirstProperty() {
             return firstProperty;
         }
 
-        public void setFirstProperty(String firstProperty)
-        {
+        public void setFirstProperty(String firstProperty) {
             this.firstProperty = firstProperty;
         }
 
-        public Integer getSecondProperty()
-        {
+        public Integer getSecondProperty() {
             return secondProperty;
         }
 
-        public void setSecondProperty(Integer secondProperty)
-        {
+        public void setSecondProperty(Integer secondProperty) {
             this.secondProperty = secondProperty;
         }
 
-        protected String getNonPublicProperty()
-        {
+        protected String getNonPublicProperty() {
             return nonPublicProperty;
         }
 
-        protected void setNonPublicProperty(String privateProperty)
-        {
+        protected void setNonPublicProperty(String privateProperty) {
             this.nonPublicProperty = privateProperty;
         }
 
-        public String get()
-        {
+        public String get() {
             return "This method must not be considered a getter";
         }
 
-        public String getIndexedProperty(int i)
-        {
+        public String getIndexedProperty(int i) {
             return "This method must not be considered a getter relevant for building the action";
         }
     }

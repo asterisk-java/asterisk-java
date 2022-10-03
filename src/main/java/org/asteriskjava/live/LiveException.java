@@ -18,12 +18,11 @@ package org.asteriskjava.live;
 
 /**
  * Base class for exceptions thrown by the live package.
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public abstract class LiveException extends RuntimeException
-{
+public abstract class LiveException extends RuntimeException {
     /**
      * Serial version identifier.
      */
@@ -31,22 +30,20 @@ public abstract class LiveException extends RuntimeException
 
     /**
      * Creates a new instance with the given message.
-     * 
+     *
      * @param message the message
      */
-    protected LiveException(String message)
-    {
+    protected LiveException(String message) {
         super(message);
     }
 
     /**
      * Creates a new instance with the given message and cause.
-     * 
+     *
      * @param message the message
-     * @param cause the cause
+     * @param cause   the cause
      */
-    protected LiveException(String message, Throwable cause)
-    {
+    protected LiveException(String message, Throwable cause) {
         super(message, cause);
     }
 }

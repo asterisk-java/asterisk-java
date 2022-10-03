@@ -16,8 +16,7 @@ package org.asteriskjava.manager.event;
  * @version $Id$
  * @since 1.0.0.10
  */
-public class AbstractHoldEvent extends ManagerEvent
-{
+public class AbstractHoldEvent extends ManagerEvent {
     /**
      * Serializable version identifier.
      */
@@ -36,18 +35,17 @@ public class AbstractHoldEvent extends ManagerEvent
     private String uniqueId;
 
     private Boolean status;
-    
+
     private String linkedId;
     private String language;
-    
+
 
     /**
      * Creates a new HoldEvent.
      *
      * @param source
      */
-    public AbstractHoldEvent(Object source)
-    {
+    public AbstractHoldEvent(Object source) {
         super(source);
     }
 
@@ -56,8 +54,7 @@ public class AbstractHoldEvent extends ManagerEvent
      *
      * @return channel the name of the channel.
      */
-    public String getChannel()
-    {
+    public String getChannel() {
         return channel;
     }
 
@@ -66,8 +63,7 @@ public class AbstractHoldEvent extends ManagerEvent
      *
      * @param channel the name of the channel.
      */
-    public void setChannel(String channel)
-    {
+    public void setChannel(String channel) {
         this.channel = channel;
     }
 
@@ -76,8 +72,7 @@ public class AbstractHoldEvent extends ManagerEvent
      *
      * @return the unique id of the channel.
      */
-    public String getUniqueId()
-    {
+    public String getUniqueId() {
         return uniqueId;
     }
 
@@ -86,8 +81,7 @@ public class AbstractHoldEvent extends ManagerEvent
      *
      * @param uniqueId the unique id of the channel.
      */
-    public void setUniqueId(String uniqueId)
-    {
+    public void setUniqueId(String uniqueId) {
         this.uniqueId = uniqueId;
     }
 
@@ -95,11 +89,10 @@ public class AbstractHoldEvent extends ManagerEvent
      * Returns whether this is a hold or unhold event.
      *
      * @return <code>true</code> if this a hold event, <code>false</code> if
-     *         it's an unhold event.
+     * it's an unhold event.
      * @since 1.0.0
      */
-    public Boolean getStatus()
-    {
+    public Boolean getStatus() {
         return status;
     }
 
@@ -107,11 +100,10 @@ public class AbstractHoldEvent extends ManagerEvent
      * Returns whether this is a hold or unhold event.
      *
      * @param status <code>true</code> if this a hold event, <code>false</code>
-     *            if it's an unhold event.
+     *               if it's an unhold event.
      * @since 1.0.0
      */
-    public void setStatus(Boolean status)
-    {
+    public void setStatus(Boolean status) {
         this.status = status;
     }
 
@@ -119,11 +111,10 @@ public class AbstractHoldEvent extends ManagerEvent
      * Returns whether this is a hold event.
      *
      * @return <code>true</code> if this a hold event, <code>false</code> if
-     *         it's an unhold event.
+     * it's an unhold event.
      * @since 1.0.0
      */
-    public boolean isHold()
-    {
+    public boolean isHold() {
         return status != null && status;
     }
 
@@ -131,41 +122,34 @@ public class AbstractHoldEvent extends ManagerEvent
      * Returns whether this is an unhold event.
      *
      * @return <code>true</code> if this an unhold event, <code>false</code> if
-     *         it's a hold event.
+     * it's a hold event.
      * @since 1.0.0
      */
-    public boolean isUnhold()
-    {
+    public boolean isUnhold() {
         return status != null && !status;
     }
 
-    public String getAccountCode()
-    {
+    public String getAccountCode() {
         return accountCode;
     }
 
-    public void setAccountCode(String accountCode)
-    {
+    public void setAccountCode(String accountCode) {
         this.accountCode = accountCode;
     }
 
-    public String getLinkedId()
-    {
+    public String getLinkedId() {
         return linkedId;
     }
 
-    public void setLinkedId(String linkedId)
-    {
+    public void setLinkedId(String linkedId) {
         this.linkedId = linkedId;
     }
 
-    public String getLanguage()
-    {
+    public String getLanguage() {
         return language;
     }
 
-    public void setLanguage(String language)
-    {
+    public void setLanguage(String language) {
         this.language = language;
     }
 }

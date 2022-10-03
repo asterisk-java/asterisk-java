@@ -22,7 +22,7 @@ import java.util.Map;
 /**
  * A MappingStrategy that determines the AGIScript based on the fully
  * qualified class name given in the AGI URL.<p>
- * To use this ClassNameMappingStrategy the calls to your 
+ * To use this ClassNameMappingStrategy the calls to your
  * {@link org.asteriskjava.fastagi.AgiScript} in
  * your dialplan should look like this:
  * <pre>
@@ -30,34 +30,31 @@ import java.util.Map;
  * </pre>
  * Where com.example.agi.MyScript is the fully qualified name of your
  * AgiScript.
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public class ClassNameMappingStrategy extends AbstractMappingStrategy
-{
+public class ClassNameMappingStrategy extends AbstractMappingStrategy {
     private Map<String, AgiScript> instances;
     private boolean shareInstances;
 
     /**
      * Creates a new ClassNameMappingStrategy using shared instances.
      */
-    public ClassNameMappingStrategy()
-    {
+    public ClassNameMappingStrategy() {
         this(true);
     }
 
     /**
      * Creates a new ClassNameMappingStrategy indicating whether to use shared
      * instances or not.
-     * 
+     *
      * @param shareInstances <code>true</code> to use shared instances,
      *                       <code>false</code> to create a new instance for
      *                       each request.
      * @since 0.3
      */
-    public ClassNameMappingStrategy(boolean shareInstances)
-    {
+    public ClassNameMappingStrategy(boolean shareInstances) {
         super();
         this.instances = new HashMap<>();
         this.shareInstances = shareInstances;
@@ -69,38 +66,32 @@ public class ClassNameMappingStrategy extends AbstractMappingStrategy
      * AGIScript, if set to <code>false</code> a new instance is created for
      * each request.<p>
      * Default is <code>true</code>.
-     * 
+     *
      * @param shareInstances <code>true</code> to use shared instances,
      *                       <code>false</code> to create a new instance for
      *                       each request.
      * @since 0.3
      */
-    public synchronized void setShareInstances(boolean shareInstances)
-    {
+    public synchronized void setShareInstances(boolean shareInstances) {
         this.shareInstances = shareInstances;
     }
 
-    public synchronized AgiScript determineScript(AgiRequest request)
-    {
+    public synchronized AgiScript determineScript(AgiRequest request) {
         AgiScript script;
 
-        if (shareInstances)
-        {
+        if (shareInstances) {
             script = instances.get(request.getScript());
-            if (script != null)
-            {
+            if (script != null) {
                 return script;
             }
         }
 
         script = createAgiScriptInstance(request.getScript());
-        if (script == null)
-        {
+        if (script == null) {
             return null;
         }
 
-        if (shareInstances)
-        {
+        if (shareInstances) {
             instances.put(request.getScript(), script);
         }
 

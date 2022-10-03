@@ -20,15 +20,15 @@ package org.asteriskjava.manager.event;
  * An OriginateSuccessEvent is triggered when the execution of an
  * OriginateAction succeeded.<p>
  * Deprecated since Asterisk 1.4.
- * 
+ *
+ * @author srt
+ * @version $Id$
  * @see org.asteriskjava.manager.action.OriginateAction
  * @see OriginateResponseEvent
  * @deprecated
- * @author srt
- * @version $Id$
  */
-@Deprecated public class OriginateSuccessEvent extends OriginateResponseEvent
-{
+@Deprecated
+public class OriginateSuccessEvent extends OriginateResponseEvent {
     /**
      * Serializable version identifier
      */
@@ -37,8 +37,7 @@ package org.asteriskjava.manager.event;
     /**
      * @param source
      */
-    public OriginateSuccessEvent(Object source)
-    {
+    public OriginateSuccessEvent(Object source) {
         super(source);
         setResponse("Success");
     }

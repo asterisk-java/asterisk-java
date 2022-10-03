@@ -25,8 +25,7 @@ package org.asteriskjava.manager.event;
  * @version $Id$
  * @since 1.0.0
  */
-public class TransferEvent extends ManagerEvent
-{
+public class TransferEvent extends ManagerEvent {
     private static final long serialVersionUID = 1L;
 
     public static final String TRANSFER_METHOD_SIP = "SIP";
@@ -45,8 +44,7 @@ public class TransferEvent extends ManagerEvent
     private String transferContext;
     private Boolean transfer2Parking;
 
-    public TransferEvent(Object source)
-    {
+    public TransferEvent(Object source) {
         super(source);
     }
 
@@ -55,13 +53,11 @@ public class TransferEvent extends ManagerEvent
      *
      * @return channel the name of the transfering channel.
      */
-    public String getChannel()
-    {
+    public String getChannel() {
         return channel;
     }
 
-    public void setChannel(String channel)
-    {
+    public void setChannel(String channel) {
         this.channel = channel;
     }
 
@@ -70,13 +66,11 @@ public class TransferEvent extends ManagerEvent
      *
      * @return the unique id of the transfering channel.
      */
-    public String getUniqueId()
-    {
+    public String getUniqueId() {
         return uniqueId;
     }
 
-    public void setUniqueId(String uniqueId)
-    {
+    public void setUniqueId(String uniqueId) {
         this.uniqueId = uniqueId;
     }
 
@@ -85,13 +79,11 @@ public class TransferEvent extends ManagerEvent
      *
      * @return the transfer method ("SIP").
      */
-    public String getTransferMethod()
-    {
+    public String getTransferMethod() {
         return transferMethod;
     }
 
-    public void setTransferMethod(String transferMethod)
-    {
+    public void setTransferMethod(String transferMethod) {
         this.transferMethod = transferMethod;
     }
 
@@ -103,8 +95,7 @@ public class TransferEvent extends ManagerEvent
      * @see #TRANSFER_TYPE_ATTENDED
      * @see #TRANSFER_TYPE_BLIND
      */
-    public String getTransferType()
-    {
+    public String getTransferType() {
         return transferType;
     }
 
@@ -113,8 +104,7 @@ public class TransferEvent extends ManagerEvent
      *
      * @return <code>true</code> if this is an attended transfer, <code>false</code> if not.
      */
-    public boolean isAttended()
-    {
+    public boolean isAttended() {
         return TRANSFER_TYPE_ATTENDED.equals(transferType);
     }
 
@@ -123,13 +113,11 @@ public class TransferEvent extends ManagerEvent
      *
      * @return <code>true</code> if this is an blind transfer, <code>false</code> if not.
      */
-    public boolean isBlind()
-    {
+    public boolean isBlind() {
         return TRANSFER_TYPE_BLIND.equals(transferType);
     }
 
-    public void setTransferType(String transferType)
-    {
+    public void setTransferType(String transferType) {
         this.transferType = transferType;
     }
 
@@ -138,13 +126,11 @@ public class TransferEvent extends ManagerEvent
      *
      * @return the SIP call id.
      */
-    public String getSipCallId()
-    {
+    public String getSipCallId() {
         return sipCallId;
     }
 
-    public void setSipCallId(String sipCallId)
-    {
+    public void setSipCallId(String sipCallId) {
         this.sipCallId = sipCallId;
     }
 
@@ -153,13 +139,11 @@ public class TransferEvent extends ManagerEvent
      *
      * @return the name of the target channel.
      */
-    public String getTargetChannel()
-    {
+    public String getTargetChannel() {
         return targetChannel;
     }
 
-    public void setTargetChannel(String targetChannel)
-    {
+    public void setTargetChannel(String targetChannel) {
         this.targetChannel = targetChannel;
     }
 
@@ -168,13 +152,11 @@ public class TransferEvent extends ManagerEvent
      *
      * @return the unique id of the target channel.
      */
-    public String getTargetUniqueId()
-    {
+    public String getTargetUniqueId() {
         return targetUniqueId;
     }
 
-    public void setTargetUniqueId(String targetUniqueId)
-    {
+    public void setTargetUniqueId(String targetUniqueId) {
         this.targetUniqueId = targetUniqueId;
     }
 
@@ -184,15 +166,13 @@ public class TransferEvent extends ManagerEvent
      * is returned.
      *
      * @return the target extension the call is transfered to or <code>null</code> for attended
-     *         transfers.
+     * transfers.
      */
-    public String getTransferExten()
-    {
+    public String getTransferExten() {
         return transferExten;
     }
 
-    public void setTransferExten(String transferExten)
-    {
+    public void setTransferExten(String transferExten) {
         this.transferExten = transferExten;
     }
 
@@ -201,15 +181,13 @@ public class TransferEvent extends ManagerEvent
      * blind transfers. If the call is transfered to a parking extension <code>null</code> is returned.
      *
      * @return the target context the call is transfered to or <code>null</code> for attended
-     *         transfers and transfers to a parking extension.
+     * transfers and transfers to a parking extension.
      */
-    public String getTransferContext()
-    {
+    public String getTransferContext() {
         return transferContext;
     }
 
-    public void setTransferContext(String transferContext)
-    {
+    public void setTransferContext(String transferContext) {
         this.transferContext = transferContext;
     }
 
@@ -218,13 +196,11 @@ public class TransferEvent extends ManagerEvent
      *
      * @return Boolean.TRUE if this is a transfer to a parking extension, <code>null</code> otherwise.
      */
-    public Boolean getTransfer2Parking()
-    {
+    public Boolean getTransfer2Parking() {
         return transfer2Parking;
     }
 
-    public void setTransfer2Parking(Boolean transfer2Parking)
-    {
+    public void setTransfer2Parking(Boolean transfer2Parking) {
         this.transfer2Parking = transfer2Parking;
     }
 
@@ -233,8 +209,7 @@ public class TransferEvent extends ManagerEvent
      *
      * @return <code>true</code> if this is a transfer to a parking extension, <code>false</code> otherwise.
      */
-    public boolean isParking()
-    {
+    public boolean isParking() {
         return transfer2Parking != null && transfer2Parking;
     }
 }

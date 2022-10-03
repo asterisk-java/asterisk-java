@@ -22,14 +22,13 @@ package org.asteriskjava.manager.event;
  * To enable talker detection you must pass the option 'T' to the MeetMe application.<p>
  * It is implemented in <code>apps/app_meetme.c</code><p>
  * Available since Asterisk 1.2
- * 
- * @see org.asteriskjava.manager.event.MeetMeStopTalkingEvent
+ *
  * @author srt
  * @version $Id$
+ * @see org.asteriskjava.manager.event.MeetMeStopTalkingEvent
  * @since 0.2
  */
-public class MeetMeTalkingEvent extends AbstractMeetMeEvent
-{
+public class MeetMeTalkingEvent extends AbstractMeetMeEvent {
     /**
      * Serializable version identifier.
      */
@@ -37,8 +36,7 @@ public class MeetMeTalkingEvent extends AbstractMeetMeEvent
 
     protected Boolean status = Boolean.TRUE;
 
-    public MeetMeTalkingEvent(Object source)
-    {
+    public MeetMeTalkingEvent(Object source) {
         super(source);
     }
 
@@ -51,18 +49,16 @@ public class MeetMeTalkingEvent extends AbstractMeetMeEvent
      * start and stop. For backwards compatibility this property defaults to
      * <code>true</code> so when used with version 1.2 of Asterisk you get
      * <code>true</code>.
-     * 
+     *
      * @return <code>true</code> if ther user has started talking,
-     *         <code>false</code> if the user has stopped talking.
+     * <code>false</code> if the user has stopped talking.
      * @since 0.3
      */
-    public Boolean getStatus()
-    {
+    public Boolean getStatus() {
         return status;
     }
 
-    public void setStatus(Boolean status)
-    {
+    public void setStatus(Boolean status) {
         this.status = status;
     }
 }

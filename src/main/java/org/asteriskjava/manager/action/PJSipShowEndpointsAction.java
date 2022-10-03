@@ -34,8 +34,7 @@ import org.asteriskjava.manager.event.ResponseEvent;
  * @see org.asteriskjava.manager.event.PeerlistCompleteEvent
  * @since 12
  */
-public class PJSipShowEndpointsAction extends AbstractManagerAction implements EventGeneratingAction
-{
+public class PJSipShowEndpointsAction extends AbstractManagerAction implements EventGeneratingAction {
     /**
      * Serial version identifier.
      */
@@ -44,19 +43,16 @@ public class PJSipShowEndpointsAction extends AbstractManagerAction implements E
     /**
      * Creates a new SipPeersAction.
      */
-    public PJSipShowEndpointsAction()
-    {
+    public PJSipShowEndpointsAction() {
 
     }
 
     @Override
-    public String getAction()
-    {
+    public String getAction() {
         return "PJSIPShowEndpoints";
     }
 
-    public Class< ? extends ResponseEvent> getActionCompleteEventClass()
-    {
+    public Class<? extends ResponseEvent> getActionCompleteEventClass() {
         return EndpointListComplete.class;
     }
 }

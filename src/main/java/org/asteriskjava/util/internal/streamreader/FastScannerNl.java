@@ -1,5 +1,7 @@
-
 package org.asteriskjava.util.internal.streamreader;
+
+import org.asteriskjava.util.Log;
+import org.asteriskjava.util.LogFactory;
 
 import java.io.BufferedWriter;
 import java.io.Closeable;
@@ -11,11 +13,7 @@ import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.asteriskjava.util.Log;
-import org.asteriskjava.util.LogFactory;
-
-public class FastScannerNl implements FastScanner
-{
+public class FastScannerNl implements FastScanner {
     private static final Log logger = LogFactory.getLog(FastScannerNl.class);
 
     private static final int BUFFER_SIZE = 8192;
@@ -35,22 +33,19 @@ public class FastScannerNl implements FastScanner
 
     private BufferedWriter writer;
 
-    public FastScannerNl(Readable reader)
-    {
+    public FastScannerNl(Readable reader) {
         this.readableReference.set(reader);
 
         // createFileWriter();
 
     }
 
-    public String next() throws IOException
-    {
+    public String next() throws IOException {
         int bytes = 0;
 
         // check for a line in the buffer
         String line = getLine(false);
-        if (line == null)
-        {
+        if (line == null) {
             // doing this instead of a synchronized block to avoid a possible
             // deadlock between calling readable.read() and a call to close() on
             // another thread, which it appears that Asterisk-Java permits
@@ -58,8 +53,7 @@ public class FastScannerNl implements FastScanner
             Readable readable = readableReference.get();
 
             // read from the stream to the buffer
-            while (readable != null && (bytes = readable.read(cbuf)) > -1)
-            {
+            while (readable != null && (bytes = readable.read(cbuf)) > -1) {
                 // writeToFile(bytes);
 
                 // set buffer position to 0
@@ -70,10 +64,8 @@ public class FastScannerNl implements FastScanner
                 // try to get a line from the buffer
                 line = getLine(bytes >= 0);
 
-                if (line != null)
-                {
-                    if (isFirst && line.length() == 0)
-                    {
+                if (line != null) {
+                    if (isFirst && line.length() == 0) {
                         // if the first character of the stream is the line
                         // terminator, try again
                         line = getLine(bytes >= 0);
@@ -85,22 +77,18 @@ public class FastScannerNl implements FastScanner
         }
         // clear the first line flag
         isFirst = false;
-        if (line == null)
-
-        {
+        if (line == null) {
             // the line is empty, get the contents from the StringBuilder if any
             String tmp = result.toString();
             result.setLength(0);
 
             // if the reader is closed and there is no output
-            if (readableReference.get() == null && tmp.length() == 0)
-            {
+            if (readableReference.get() == null && tmp.length() == 0) {
                 return null;
             }
 
             // if at the end of the inputStream and there is no output
-            if (bytes == -1 && tmp.length() == 0)
-            {
+            if (bytes == -1 && tmp.length() == 0) {
                 return null;
             }
             return tmp;
@@ -109,15 +97,11 @@ public class FastScannerNl implements FastScanner
 
     }
 
-    protected String getLine(boolean endOfLine)
-    {
+    protected String getLine(boolean endOfLine) {
         // iterate the buffer, looking for the end character
-        for (int i = start; i < end; i++)
-        {
-            if (cbuf.get(i) == nlChar)
-            {
-                if (i > start)
-                {
+        for (int i = start; i < end; i++) {
+            if (cbuf.get(i) == nlChar) {
+                if (i > start) {
                     // add the buffer contents up to i to the output buffer
                     result.append(cbuf.subSequence(start, start + (i - start)));
                 }
@@ -133,8 +117,7 @@ public class FastScannerNl implements FastScanner
 
             }
         }
-        if (end >= start)
-        {
+        if (end >= start) {
             // we've hit the end of the buffer, copy the contents to the
             // StringBuilder, then return null so we'll loop again and get the
             // next part
@@ -145,21 +128,16 @@ public class FastScannerNl implements FastScanner
         return null;
     }
 
-    public void close()
-    {
+    public void close() {
         // synchronized (sync)
         // {
         if (closed)
             return;
-        if (readableReference.get() instanceof Closeable)
-        {
-            try
-            {
+        if (readableReference.get() instanceof Closeable) {
+            try {
                 ((Closeable) readableReference.get()).close();
                 // closeFileWriter();
-            }
-            catch (IOException ioe)
-            {
+            } catch (IOException ioe) {
                 logger.error(ioe, ioe);
             }
         }
@@ -169,29 +147,23 @@ public class FastScannerNl implements FastScanner
     }
 
     @SuppressWarnings("unused")
-    private void createFileWriter()
-    {
-        try
-        {
+    private void createFileWriter() {
+        try {
             logfile = File.createTempFile(this.getClass().getSimpleName(), "txt");
             writer = Files.newBufferedWriter(logfile.toPath(), Charset.defaultCharset(), StandardOpenOption.APPEND);
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     @SuppressWarnings("unused")
-    private void writeToFile(int bytes) throws IOException
-    {
+    private void writeToFile(int bytes) throws IOException {
         String lines = new StringBuffer().append(cbuf, 0, bytes).toString();
         writer.append(lines, 0, bytes);
     }
 
     @SuppressWarnings("unused")
-    private void closeFileWriter() throws IOException
-    {
+    private void closeFileWriter() throws IOException {
         writer.flush();
         writer.close();
     }

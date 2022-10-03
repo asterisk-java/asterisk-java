@@ -24,8 +24,7 @@ package org.asteriskjava.manager.event;
  * @author srt
  * @version $Id$
  */
-public class NewChannelEvent extends AbstractChannelStateEvent
-{
+public class NewChannelEvent extends AbstractChannelStateEvent {
     /**
      * Serializable version identifier.
      */
@@ -33,30 +32,25 @@ public class NewChannelEvent extends AbstractChannelStateEvent
     private String language;
     private String linkedid;
 
-    public NewChannelEvent(Object source)
-    {
+    public NewChannelEvent(Object source) {
         super(source);
     }
 
-    public String getLanguage()
-    {
+    public String getLanguage() {
         return language;
     }
 
-    public void setLanguage(String language)
-    {
+    public void setLanguage(String language) {
         this.language = language;
     }
 
-    public String getLinkedid()
-    {
+    public String getLinkedid() {
         return linkedid;
     }
 
-    public void setLinkedid(String linkedid)
-    {
+    public void setLinkedid(String linkedid) {
         this.linkedid = linkedid;
     }
-    
-    
+
+
 }

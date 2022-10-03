@@ -2,11 +2,10 @@ package org.asteriskjava.pbx;
 
 /**
  * Describes the direction of the call.
- * 
+ *
  * @author bsutton
  */
-public enum CallDirection
-{
+public enum CallDirection {
     /**
      * INBOUND - call
      */
@@ -33,19 +32,15 @@ public enum CallDirection
 
     private final int dbValue;
 
-    CallDirection(final int dbValue)
-    {
+    CallDirection(final int dbValue) {
         this.dbValue = dbValue;
     }
 
-    public static CallDirection valueOf(final int dbValue)
-    {
+    public static CallDirection valueOf(final int dbValue) {
         CallDirection result = null;
 
-        for (final CallDirection direction : CallDirection.values())
-        {
-            if (direction.dbValue == dbValue)
-            {
+        for (final CallDirection direction : CallDirection.values()) {
+            if (direction.dbValue == dbValue) {
                 result = direction;
                 break;
             }

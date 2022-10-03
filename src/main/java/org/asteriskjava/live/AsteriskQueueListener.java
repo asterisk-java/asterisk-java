@@ -8,8 +8,7 @@ package org.asteriskjava.live;
  * @author gmi
  * @since 0.3
  */
-public interface AsteriskQueueListener
-{
+public interface AsteriskQueueListener {
     /**
      * Called whenever an entry appears in the queue.
      *
@@ -36,7 +35,7 @@ public interface AsteriskQueueListener
      * @param entry
      */
     void onEntryServiceLevelExceeded(AsteriskQueueEntry entry);
-    
+
     /**
      * Called whenever a new member is added to the queue.
      *

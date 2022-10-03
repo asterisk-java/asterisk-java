@@ -29,8 +29,7 @@ package org.asteriskjava.manager.event;
  * @see org.asteriskjava.manager.action.VoicemailUsersListAction
  * @since 1.0.0
  */
-public class VoicemailUserEntryEvent extends ResponseEvent
-{
+public class VoicemailUserEntryEvent extends ResponseEvent {
     /**
      * Serial version identifier.
      */
@@ -70,8 +69,7 @@ public class VoicemailUserEntryEvent extends ResponseEvent
      *
      * @param source
      */
-    public VoicemailUserEntryEvent(Object source)
-    {
+    public VoicemailUserEntryEvent(Object source) {
         super(source);
     }
 
@@ -80,8 +78,7 @@ public class VoicemailUserEntryEvent extends ResponseEvent
      *
      * @return the voicemail context.
      */
-    public String getVmContext()
-    {
+    public String getVmContext() {
         return vmContext;
     }
 
@@ -90,8 +87,7 @@ public class VoicemailUserEntryEvent extends ResponseEvent
      *
      * @param vmContext the voicemail context.
      */
-    public void setVmContext(String vmContext)
-    {
+    public void setVmContext(String vmContext) {
         this.vmContext = vmContext;
     }
 
@@ -100,8 +96,7 @@ public class VoicemailUserEntryEvent extends ResponseEvent
      *
      * @return the mailbox id.
      */
-    public String getVoicemailbox()
-    {
+    public String getVoicemailbox() {
         return voicemailbox;
     }
 
@@ -110,8 +105,7 @@ public class VoicemailUserEntryEvent extends ResponseEvent
      *
      * @param voicemailbox the mailbox id.
      */
-    public void setVoicemailbox(String voicemailbox)
-    {
+    public void setVoicemailbox(String voicemailbox) {
         this.voicemailbox = voicemailbox;
     }
 
@@ -120,8 +114,7 @@ public class VoicemailUserEntryEvent extends ResponseEvent
      *
      * @return the full name of the voicemail user.
      */
-    public String getFullname()
-    {
+    public String getFullname() {
         return fullname;
     }
 
@@ -130,8 +123,7 @@ public class VoicemailUserEntryEvent extends ResponseEvent
      *
      * @param fullname the full name of the voicemail user.
      */
-    public void setFullname(String fullname)
-    {
+    public void setFullname(String fullname) {
         this.fullname = fullname;
     }
 
@@ -140,8 +132,7 @@ public class VoicemailUserEntryEvent extends ResponseEvent
      *
      * @return the email address of the voicemail user.
      */
-    public String getEmail()
-    {
+    public String getEmail() {
         return email;
     }
 
@@ -150,8 +141,7 @@ public class VoicemailUserEntryEvent extends ResponseEvent
      *
      * @param email the email address of the voicemail user.
      */
-    public void setEmail(String email)
-    {
+    public void setEmail(String email) {
         this.email = email;
     }
 
@@ -161,8 +151,7 @@ public class VoicemailUserEntryEvent extends ResponseEvent
      *
      * @return the email adress of pager of the voicemail user.
      */
-    public String getPager()
-    {
+    public String getPager() {
         return pager;
     }
 
@@ -171,8 +160,7 @@ public class VoicemailUserEntryEvent extends ResponseEvent
      *
      * @param pager the email adress of pager of the voicemail user.
      */
-    public void setPager(String pager)
-    {
+    public void setPager(String pager) {
         this.pager = pager;
     }
 
@@ -181,8 +169,7 @@ public class VoicemailUserEntryEvent extends ResponseEvent
      *
      * @return the email address used for the "from" header when sending notification emails.
      */
-    public String getServerEmail()
-    {
+    public String getServerEmail() {
         return serverEmail;
     }
 
@@ -191,8 +178,7 @@ public class VoicemailUserEntryEvent extends ResponseEvent
      *
      * @param serverEmail the email address used for the "from" header when sending notification emails.
      */
-    public void setServerEmail(String serverEmail)
-    {
+    public void setServerEmail(String serverEmail) {
         this.serverEmail = serverEmail;
     }
 
@@ -201,8 +187,7 @@ public class VoicemailUserEntryEvent extends ResponseEvent
      *
      * @return the custom mail command used to send notifications to the voicemail user.
      */
-    public String getMailCommand()
-    {
+    public String getMailCommand() {
         return mailCommand;
     }
 
@@ -211,28 +196,23 @@ public class VoicemailUserEntryEvent extends ResponseEvent
      *
      * @param mailCommand the custom mail command used to send notifications to the voicemail user.
      */
-    public void setMailCommand(String mailCommand)
-    {
+    public void setMailCommand(String mailCommand) {
         this.mailCommand = mailCommand;
     }
 
-    public String getLanguage()
-    {
+    public String getLanguage() {
         return language;
     }
 
-    public void setLanguage(String language)
-    {
+    public void setLanguage(String language) {
         this.language = language;
     }
 
-    public String getTimezone()
-    {
+    public String getTimezone() {
         return timezone;
     }
 
-    public void setTimezone(String timezone)
-    {
+    public void setTimezone(String timezone) {
         this.timezone = timezone;
     }
 
@@ -241,10 +221,9 @@ public class VoicemailUserEntryEvent extends ResponseEvent
      * voicemail features menu.
      *
      * @return the dialplan context used by the "return phone call" feature in the advanced
-     *         voicemail features menu.
+     * voicemail features menu.
      */
-    public String getCallback()
-    {
+    public String getCallback() {
         return callback;
     }
 
@@ -255,8 +234,7 @@ public class VoicemailUserEntryEvent extends ResponseEvent
      * @param callback the dialplan context used by the "return phone call" feature in the advanced
      *                 voicemail features menu.
      */
-    public void setCallback(String callback)
-    {
+    public void setCallback(String callback) {
         this.callback = callback;
     }
 
@@ -265,10 +243,9 @@ public class VoicemailUserEntryEvent extends ResponseEvent
      * voicemail features menu.
      *
      * @return the dialplan context used by the "place an outgoing call" feature in the advanced
-     *         voicemail features menu.
+     * voicemail features menu.
      */
-    public String getDialout()
-    {
+    public String getDialout() {
         return dialout;
     }
 
@@ -279,18 +256,15 @@ public class VoicemailUserEntryEvent extends ResponseEvent
      * @param dialout the dialplan context used by the "place an outgoing call" feature in the advanced
      *                voicemail features menu.
      */
-    public void setDialout(String dialout)
-    {
+    public void setDialout(String dialout) {
         this.dialout = dialout;
     }
 
-    public String getUniqueId()
-    {
+    public String getUniqueId() {
         return uniqueId;
     }
 
-    public void setUniqueId(String uniqueId)
-    {
+    public void setUniqueId(String uniqueId) {
         this.uniqueId = uniqueId;
     }
 
@@ -299,8 +273,7 @@ public class VoicemailUserEntryEvent extends ResponseEvent
      *
      * @return the dialplan context the user is dropped into after he has pressed * or 0 to exit voicemail.
      */
-    public String getExitContext()
-    {
+    public String getExitContext() {
         return exitContext;
     }
 
@@ -309,38 +282,31 @@ public class VoicemailUserEntryEvent extends ResponseEvent
      *
      * @param exitContext the dialplan context the user is dropped into after he has pressed * or 0 to exit voicemail.
      */
-    public void setExitContext(String exitContext)
-    {
+    public void setExitContext(String exitContext) {
         this.exitContext = exitContext;
     }
 
-    public Integer getSayDurationMinimum()
-    {
+    public Integer getSayDurationMinimum() {
         return sayDurationMinimum;
     }
 
-    public void setSayDurationMinimum(Integer sayDurationMinimum)
-    {
+    public void setSayDurationMinimum(Integer sayDurationMinimum) {
         this.sayDurationMinimum = sayDurationMinimum;
     }
 
-    public Boolean getSayEnvelope()
-    {
+    public Boolean getSayEnvelope() {
         return sayEnvelope;
     }
 
-    public void setSayEnvelope(Boolean sayEnvelope)
-    {
+    public void setSayEnvelope(Boolean sayEnvelope) {
         this.sayEnvelope = sayEnvelope;
     }
 
-    public Boolean getSayCid()
-    {
+    public Boolean getSayCid() {
         return sayCid;
     }
 
-    public void setSayCid(Boolean sayCid)
-    {
+    public void setSayCid(Boolean sayCid) {
         this.sayCid = sayCid;
     }
 
@@ -350,8 +316,7 @@ public class VoicemailUserEntryEvent extends ResponseEvent
      *
      * @return Booelan.TRUE if message will be attached, Boolean.FALSE if not, <code>null</code> if unset.
      */
-    public Boolean getAttachMessage()
-    {
+    public Boolean getAttachMessage() {
         return attachMessage;
     }
 
@@ -361,18 +326,15 @@ public class VoicemailUserEntryEvent extends ResponseEvent
      *
      * @param attachMessage Booelan.TRUE if message will be attached, Boolean.FALSE if not, <code>null</code> if unset.
      */
-    public void setAttachMessage(Boolean attachMessage)
-    {
+    public void setAttachMessage(Boolean attachMessage) {
         this.attachMessage = attachMessage;
     }
 
-    public String getAttachmentFormat()
-    {
+    public String getAttachmentFormat() {
         return attachmentFormat;
     }
 
-    public void setAttachmentFormat(String attachmentFormat)
-    {
+    public void setAttachmentFormat(String attachmentFormat) {
         this.attachmentFormat = attachmentFormat;
     }
 
@@ -380,10 +342,9 @@ public class VoicemailUserEntryEvent extends ResponseEvent
      * Returns whether messages will be deleted from the voicemailbox (after having been emailed).
      *
      * @return Booelan.TRUE if messages will be deleted from the voicemailbox, Boolean.FALSE if not,
-     *         <code>null</code> if unset.
+     * <code>null</code> if unset.
      */
-    public Boolean getDeleteMessage()
-    {
+    public Boolean getDeleteMessage() {
         return deleteMessage;
     }
 
@@ -392,8 +353,7 @@ public class VoicemailUserEntryEvent extends ResponseEvent
      *
      * @param deleteMessage Booelan.TRUE if messages will be deleted from the voicemailbox, Boolean.FALSE if not.
      */
-    public void setDeleteMessage(Boolean deleteMessage)
-    {
+    public void setDeleteMessage(Boolean deleteMessage) {
         this.deleteMessage = deleteMessage;
     }
 
@@ -402,8 +362,7 @@ public class VoicemailUserEntryEvent extends ResponseEvent
      *
      * @return the volume gain used for voicemails sent via email.
      */
-    public Double getVolumeGain()
-    {
+    public Double getVolumeGain() {
         return volumeGain;
     }
 
@@ -412,28 +371,23 @@ public class VoicemailUserEntryEvent extends ResponseEvent
      *
      * @param volumeGain the volume gain used for voicemails sent via email.
      */
-    public void setVolumeGain(Double volumeGain)
-    {
+    public void setVolumeGain(Double volumeGain) {
         this.volumeGain = volumeGain;
     }
 
-    public Boolean getCanReview()
-    {
+    public Boolean getCanReview() {
         return canReview;
     }
 
-    public void setCanReview(Boolean canReview)
-    {
+    public void setCanReview(Boolean canReview) {
         this.canReview = canReview;
     }
 
-    public Boolean getCallOperator()
-    {
+    public Boolean getCallOperator() {
         return callOperator;
     }
 
-    public void setCallOperator(Boolean callOperator)
-    {
+    public void setCallOperator(Boolean callOperator) {
         this.callOperator = callOperator;
     }
 
@@ -442,8 +396,7 @@ public class VoicemailUserEntryEvent extends ResponseEvent
      *
      * @return the maximum number of messages per folder or 0 for unlimited.
      */
-    public Integer getMaxMessageCount()
-    {
+    public Integer getMaxMessageCount() {
         return maxMessageCount;
     }
 
@@ -452,8 +405,7 @@ public class VoicemailUserEntryEvent extends ResponseEvent
      *
      * @param maxMessageCount the maximum number of messages per folder.
      */
-    public void setMaxMessageCount(Integer maxMessageCount)
-    {
+    public void setMaxMessageCount(Integer maxMessageCount) {
         this.maxMessageCount = maxMessageCount;
     }
 
@@ -462,8 +414,7 @@ public class VoicemailUserEntryEvent extends ResponseEvent
      *
      * @return the maximum duration in seconds.
      */
-    public Integer getMaxMessageLength()
-    {
+    public Integer getMaxMessageLength() {
         return maxMessageLength;
     }
 
@@ -472,18 +423,15 @@ public class VoicemailUserEntryEvent extends ResponseEvent
      *
      * @param maxMessageLength the maximum duration in seconds.
      */
-    public void setMaxMessageLength(Integer maxMessageLength)
-    {
+    public void setMaxMessageLength(Integer maxMessageLength) {
         this.maxMessageLength = maxMessageLength;
     }
 
-    public Integer getNewMessageCount()
-    {
+    public Integer getNewMessageCount() {
         return newMessageCount;
     }
 
-    public void setNewMessageCount(Integer newMessageCount)
-    {
+    public void setNewMessageCount(Integer newMessageCount) {
         this.newMessageCount = newMessageCount;
     }
 
@@ -493,8 +441,7 @@ public class VoicemailUserEntryEvent extends ResponseEvent
      *
      * @return the number of old messages for this voicemail user.
      */
-    public Integer getOldMessageCount()
-    {
+    public Integer getOldMessageCount() {
         return oldMessageCount;
     }
 
@@ -503,8 +450,7 @@ public class VoicemailUserEntryEvent extends ResponseEvent
      *
      * @param oldMessageCount the number of old messages for this voicemail user.
      */
-    public void setOldMessageCount(Integer oldMessageCount)
-    {
+    public void setOldMessageCount(Integer oldMessageCount) {
         this.oldMessageCount = oldMessageCount;
     }
 
@@ -514,8 +460,7 @@ public class VoicemailUserEntryEvent extends ResponseEvent
      *
      * @return the username of the IMAP account associated with this mailbox.
      */
-    public String getImapUser()
-    {
+    public String getImapUser() {
         return imapUser;
     }
 
@@ -524,8 +469,7 @@ public class VoicemailUserEntryEvent extends ResponseEvent
      *
      * @param imapUser the username of the IMAP account associated with this mailbox.
      */
-    public void setImapUser(String imapUser)
-    {
+    public void setImapUser(String imapUser) {
         this.imapUser = imapUser;
     }
 }

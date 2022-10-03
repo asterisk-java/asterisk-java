@@ -18,12 +18,11 @@ package org.asteriskjava.manager.event;
 
 /**
  * A QueueMemberStatusEvent shows the status of a QueueMemberEvent
- * 
+ *
  * @author Asteria Solutions Group, Inc. http://www.asteriasgi.com/
  * @version $Id$
  */
-public class QueueMemberStatusEvent extends QueueMemberEvent
-{
+public class QueueMemberStatusEvent extends QueueMemberEvent {
     /**
      * Serializable version identifier
      */
@@ -35,34 +34,29 @@ public class QueueMemberStatusEvent extends QueueMemberEvent
     /**
      * @param source
      */
-    public QueueMemberStatusEvent(Object source)
-    {
+    public QueueMemberStatusEvent(Object source) {
         super(source);
     }
 
     /**
      * @return the ringinuse
      */
-    public String getRinginuse()
-    {
+    public String getRinginuse() {
         return ringinuse;
     }
 
     /**
      * @param ringinuse the ringinuse to set
      */
-    public void setRinginuse(String ringinuse)
-    {
+    public void setRinginuse(String ringinuse) {
         this.ringinuse = ringinuse;
     }
 
-    public Integer getWrapuptime()
-    {
+    public Integer getWrapuptime() {
         return wrapuptime;
     }
 
-    public void setWrapuptime(Integer wrapuptime)
-    {
+    public void setWrapuptime(Integer wrapuptime) {
         this.wrapuptime = wrapuptime;
     }
 }

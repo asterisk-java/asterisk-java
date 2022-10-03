@@ -25,8 +25,7 @@ package org.asteriskjava.manager.action;
  * @version $Id$
  * @since 1.0.0
  */
-public class QueuePenaltyAction extends AbstractManagerAction
-{
+public class QueuePenaltyAction extends AbstractManagerAction {
     /**
      * Serializable version identifier.
      */
@@ -39,8 +38,7 @@ public class QueuePenaltyAction extends AbstractManagerAction
     /**
      * Creates a new empty QueuePenaltyAction.
      */
-    public QueuePenaltyAction()
-    {
+    public QueuePenaltyAction() {
 
     }
 
@@ -51,8 +49,7 @@ public class QueuePenaltyAction extends AbstractManagerAction
      * @param iface   the interface of the member to set the penalty for
      * @param penalty new penalty value.
      */
-    public QueuePenaltyAction(String iface, int penalty)
-    {
+    public QueuePenaltyAction(String iface, int penalty) {
         this.iface = iface;
         this.penalty = penalty;
     }
@@ -65,8 +62,7 @@ public class QueuePenaltyAction extends AbstractManagerAction
      * @param penalty new penalty value.
      * @param queue   the queue the member is assigned the penalty for
      */
-    public QueuePenaltyAction(String iface, int penalty, String queue)
-    {
+    public QueuePenaltyAction(String iface, int penalty, String queue) {
         this.iface = iface;
         this.penalty = penalty;
         this.queue = queue;
@@ -78,8 +74,7 @@ public class QueuePenaltyAction extends AbstractManagerAction
      * @return the name of this action.
      */
     @Override
-    public String getAction()
-    {
+    public String getAction() {
         return "QueuePenalty";
     }
 
@@ -88,8 +83,7 @@ public class QueuePenaltyAction extends AbstractManagerAction
      *
      * @return the interface of the member to to set the penalty for.
      */
-    public String getInterface()
-    {
+    public String getInterface() {
         return iface;
     }
 
@@ -99,8 +93,7 @@ public class QueuePenaltyAction extends AbstractManagerAction
      *
      * @param iface the interface of the member to to set the penalty for.
      */
-    public void setInterface(String iface)
-    {
+    public void setInterface(String iface) {
         this.iface = iface;
     }
 
@@ -109,8 +102,7 @@ public class QueuePenaltyAction extends AbstractManagerAction
      *
      * @return the new penalty.
      */
-    public Integer getPenalty()
-    {
+    public Integer getPenalty() {
         return penalty;
     }
 
@@ -120,8 +112,7 @@ public class QueuePenaltyAction extends AbstractManagerAction
      *
      * @param penalty the new penalty.
      */
-    public void setPenalty(Integer penalty)
-    {
+    public void setPenalty(Integer penalty) {
         this.penalty = penalty;
     }
 
@@ -130,8 +121,7 @@ public class QueuePenaltyAction extends AbstractManagerAction
      *
      * @return the name of the queue.
      */
-    public String getQueue()
-    {
+    public String getQueue() {
         return queue;
     }
 
@@ -140,8 +130,7 @@ public class QueuePenaltyAction extends AbstractManagerAction
      *
      * @param queue the name of the queue or <code>null</code> for all queues.
      */
-    public void setQueue(String queue)
-    {
+    public void setQueue(String queue) {
         this.queue = queue;
     }
 }

@@ -1,32 +1,24 @@
 package org.asteriskjava.pbx.internal.managerAPI;
 
+import org.asteriskjava.pbx.*;
+
 import java.util.HashMap;
 import java.util.Map;
 
-import org.asteriskjava.pbx.AsteriskSettings;
-import org.asteriskjava.pbx.CallerID;
-import org.asteriskjava.pbx.EndPoint;
-import org.asteriskjava.pbx.ListenerPriority;
-import org.asteriskjava.pbx.NewChannelListener;
-import org.asteriskjava.pbx.PBXFactory;
-
-public class OriginateToExtension extends OriginateBaseClass
-{
+public class OriginateToExtension extends OriginateBaseClass {
 
     /*
      * this class generates and issues ActionEvents to asterisk through the
      * manager. This is the asterisk coal face.
      */
 
-    public OriginateToExtension(final NewChannelListener listener)
-    {
+    public OriginateToExtension(final NewChannelListener listener) {
         super(listener, null, null);
 
     }
 
     public OriginateResult originate(final EndPoint localHandset, final EndPoint targetExtension, final boolean autoAnswer,
-            final CallerID callerID, final String context)
-    {
+                                     final CallerID callerID, final String context) {
         /*
          * A new call is originated on the nominated channel to the specified
          * extension.
@@ -36,8 +28,7 @@ public class OriginateToExtension extends OriginateBaseClass
         final AsteriskSettings profile = PBXFactory.getActiveProfile();
 
         final HashMap<String, String> myVars = new HashMap<>(1);
-        if (autoAnswer)
-        {
+        if (autoAnswer) {
             RedirectCall.setAutoAnswer(myVars, profile);
         }
 
@@ -45,9 +36,8 @@ public class OriginateToExtension extends OriginateBaseClass
     }
 
     public OriginateResult originate(final EndPoint localHandset, final EndPoint targetExtension, final boolean autoAnswer,
-            final String context, final CallerID callerID, Integer timeout, final boolean hideCallerId,
-            Map<String, String> channelVarsToSet)
-    {
+                                     final String context, final CallerID callerID, Integer timeout, final boolean hideCallerId,
+                                     Map<String, String> channelVarsToSet) {
         /*
          * A new call is originated on the nominated channel to the specified
          * extension.
@@ -57,12 +47,10 @@ public class OriginateToExtension extends OriginateBaseClass
         final AsteriskSettings profile = PBXFactory.getActiveProfile();
 
         final HashMap<String, String> myVars = new HashMap<>(1);
-        if (autoAnswer)
-        {
+        if (autoAnswer) {
             RedirectCall.setAutoAnswer(myVars, profile);
         }
-        if (channelVarsToSet != null)
-        {
+        if (channelVarsToSet != null) {
             myVars.putAll(channelVarsToSet);
         }
 
@@ -70,8 +58,7 @@ public class OriginateToExtension extends OriginateBaseClass
     }
 
     @Override
-    public ListenerPriority getPriority()
-    {
+    public ListenerPriority getPriority() {
         return ListenerPriority.NORMAL;
     }
 

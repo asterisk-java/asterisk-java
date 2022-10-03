@@ -16,156 +16,144 @@
  */
 package org.asteriskjava.fastagi.internal;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
-public class AgiReplyImplTest
-{
+class AgiReplyImplTest {
     private List<String> lines;
 
-    @Before
-    public void setUp()
-    {
-        this.lines = new ArrayList<String>();
+    @BeforeEach
+    void setUp() {
+        this.lines = new ArrayList<>();
     }
 
     @Test
-    public void testBuildReply()
-    {
+    void testBuildReply() {
         AgiReplyImpl reply;
 
         lines.add("200 result=49");
 
         reply = new AgiReplyImpl(lines);
 
-        assertEquals("Incorrect status", AgiReplyImpl.SC_SUCCESS, reply.getStatus());
-        assertEquals("Incorrect result", 49, reply.getResultCode());
-        assertEquals("Incorrect result as character", '1', reply.getResultCodeAsChar());
-        assertEquals("Incorrect result when get via getAttribute()", "49", reply.getAttribute("result"));
+        assertEquals(AgiReplyImpl.SC_SUCCESS, reply.getStatus(), "Incorrect status");
+        assertEquals(49, reply.getResultCode(), "Incorrect result");
+        assertEquals('1', reply.getResultCodeAsChar(), "Incorrect result as character");
+        assertEquals("49", reply.getAttribute("result"), "Incorrect result when get via getAttribute()");
     }
 
     @Test
-    public void testBuildReplyWithAdditionalAttribute()
-    {
+    void testBuildReplyWithAdditionalAttribute() {
         AgiReplyImpl reply;
 
         lines.add("200 result=49 endpos=2240");
 
         reply = new AgiReplyImpl(lines);
 
-        assertEquals("Incorrect status", AgiReplyImpl.SC_SUCCESS, reply.getStatus());
-        assertEquals("Incorrect result", 49, reply.getResultCode());
-        assertEquals("Incorrect result as character", '1', reply.getResultCodeAsChar());
-        assertEquals("Incorrect result when get via getAttribute()", "49", reply.getAttribute("result"));
-        assertEquals("Incorrect endpos attribute", "2240", reply.getAttribute("endpos"));
+        assertEquals(AgiReplyImpl.SC_SUCCESS, reply.getStatus(), "Incorrect status");
+        assertEquals(49, reply.getResultCode(), "Incorrect result");
+        assertEquals('1', reply.getResultCodeAsChar(), "Incorrect result as character");
+        assertEquals("49", reply.getAttribute("result"), "Incorrect result when get via getAttribute()");
+        assertEquals("2240", reply.getAttribute("endpos"), "Incorrect endpos attribute");
     }
 
     @Test
-    public void testBuildReplyWithMultipleAdditionalAttribute()
-    {
+    void testBuildReplyWithMultipleAdditionalAttribute() {
         AgiReplyImpl reply;
 
         lines.add("200 result=49 startpos=1234 endpos=2240");
 
         reply = new AgiReplyImpl(lines);
 
-        assertEquals("Incorrect status", AgiReplyImpl.SC_SUCCESS, reply.getStatus());
-        assertEquals("Incorrect result", 49, reply.getResultCode());
-        assertEquals("Incorrect result as character", '1', reply.getResultCodeAsChar());
-        assertEquals("Incorrect result when get via getAttribute()", "49", reply.getAttribute("result"));
-        assertEquals("Incorrect startpos attribute", "1234", reply.getAttribute("startpos"));
-        assertEquals("Incorrect endpos attribute", "2240", reply.getAttribute("endpos"));
+        assertEquals(AgiReplyImpl.SC_SUCCESS, reply.getStatus(), "Incorrect status");
+        assertEquals(49, reply.getResultCode(), "Incorrect result");
+        assertEquals('1', reply.getResultCodeAsChar(), "Incorrect result as character");
+        assertEquals("49", reply.getAttribute("result"), "Incorrect result when get via getAttribute()");
+        assertEquals("1234", reply.getAttribute("startpos"), "Incorrect startpos attribute");
+        assertEquals("2240", reply.getAttribute("endpos"), "Incorrect endpos attribute");
     }
 
     @Test
-    public void testBuildReplyWithQuotedAttribute()
-    {
+    void testBuildReplyWithQuotedAttribute() {
         AgiReplyImpl reply;
 
         lines.add("200 result=1 (speech) endpos=0 results=1 score0=969 text0=\"123456789\" grammar0=digits");
 
         reply = new AgiReplyImpl(lines);
 
-        assertEquals("Incorrect status", AgiReplyImpl.SC_SUCCESS, reply.getStatus());
-        assertEquals("Incorrect result", 1, reply.getResultCode());
-        assertEquals("Incorrect result when get via getAttribute()", "1", reply.getAttribute("result"));
-        assertEquals("Incorrect endpos attribute", "0", reply.getAttribute("endpos"));
-        assertEquals("Incorrect extra", "speech", reply.getExtra());
-        assertEquals("Incorrect text0 attribute", "123456789", reply.getAttribute("text0"));
+        assertEquals(AgiReplyImpl.SC_SUCCESS, reply.getStatus(), "Incorrect status");
+        assertEquals(1, reply.getResultCode(), "Incorrect result");
+        assertEquals("1", reply.getAttribute("result"), "Incorrect result when get via getAttribute()");
+        assertEquals("0", reply.getAttribute("endpos"), "Incorrect endpos attribute");
+        assertEquals("speech", reply.getExtra(), "Incorrect extra");
+        assertEquals("123456789", reply.getAttribute("text0"), "Incorrect text0 attribute");
     }
 
     @Test
-    public void testBuildReplyWithQuotedAttribute2()
-    {
+    void testBuildReplyWithQuotedAttribute2() {
         AgiReplyImpl reply;
 
         lines.add("200 result=1 (speech) endpos=0 results=1 score0=969 text0=\"hi \\\"joe!\\\"\" grammar0=digits");
 
         reply = new AgiReplyImpl(lines);
 
-        assertEquals("Incorrect status", AgiReplyImpl.SC_SUCCESS, reply.getStatus());
-        assertEquals("Incorrect result", 1, reply.getResultCode());
-        assertEquals("Incorrect result when get via getAttribute()", "1", reply.getAttribute("result"));
-        assertEquals("Incorrect endpos attribute", "0", reply.getAttribute("endpos"));
-        assertEquals("Incorrect extra", "speech", reply.getExtra());
-        assertEquals("Incorrect text0 attribute", "hi \"joe!\"", reply.getAttribute("text0"));
+        assertEquals(AgiReplyImpl.SC_SUCCESS, reply.getStatus(), "Incorrect status");
+        assertEquals(1, reply.getResultCode(), "Incorrect result");
+        assertEquals("1", reply.getAttribute("result"), "Incorrect result when get via getAttribute()");
+        assertEquals("0", reply.getAttribute("endpos"), "Incorrect endpos attribute");
+        assertEquals("speech", reply.getExtra(), "Incorrect extra");
+        assertEquals("hi \"joe!\"", reply.getAttribute("text0"), "Incorrect text0 attribute");
     }
 
-    public void testBla()
-    {
+    void testBla() {
         System.out.println(005);
     }
 
     @Test
-    public void testBuildReplyWithParenthesis()
-    {
+    void testBuildReplyWithParenthesis() {
         AgiReplyImpl reply;
 
         lines.add("200 result=1 ((hello)(world))");
 
         reply = new AgiReplyImpl(lines);
 
-        assertEquals("Incorrect status", AgiReplyImpl.SC_SUCCESS, reply.getStatus());
-        assertEquals("Incorrect result", 1, reply.getResultCode());
-        assertEquals("Incorrect parenthesis", "(hello)(world)", reply.getExtra());
+        assertEquals(AgiReplyImpl.SC_SUCCESS, reply.getStatus(), "Incorrect status");
+        assertEquals(1, reply.getResultCode(), "Incorrect result");
+        assertEquals("(hello)(world)", reply.getExtra(), "Incorrect parenthesis");
     }
 
     @Test
-    public void testBuildReplyWithAdditionalAttributeAndParenthesis()
-    {
+    void testBuildReplyWithAdditionalAttributeAndParenthesis() {
         AgiReplyImpl reply;
 
         lines.add("200 result=1 ((hello)(world)) endpos=2240");
 
         reply = new AgiReplyImpl(lines);
 
-        assertEquals("Incorrect status", AgiReplyImpl.SC_SUCCESS, reply.getStatus());
-        assertEquals("Incorrect result", 1, reply.getResultCode());
-        assertEquals("Incorrect parenthesis", "(hello)(world)", reply.getExtra());
-        assertEquals("Incorrect endpos attribute", "2240", reply.getAttribute("endpos"));
+        assertEquals(AgiReplyImpl.SC_SUCCESS, reply.getStatus(), "Incorrect status");
+        assertEquals(1, reply.getResultCode(), "Incorrect result");
+        assertEquals("(hello)(world)", reply.getExtra(), "Incorrect parenthesis");
+        assertEquals("2240", reply.getAttribute("endpos"), "Incorrect endpos attribute");
     }
 
     @Test
-    public void testBuildReplyInvalidOrUnknownCommand()
-    {
+    void testBuildReplyInvalidOrUnknownCommand() {
         AgiReplyImpl reply;
 
         lines.add("510 Invalid or unknown command");
 
         reply = new AgiReplyImpl(lines);
 
-        assertEquals("Incorrect status", AgiReplyImpl.SC_INVALID_OR_UNKNOWN_COMMAND, reply.getStatus());
+        assertEquals(AgiReplyImpl.SC_INVALID_OR_UNKNOWN_COMMAND, reply.getStatus(), "Incorrect status");
     }
 
     @Test
-    public void testBuildReplyInvalidCommandSyntax()
-    {
+    void testBuildReplyInvalidCommandSyntax() {
         AgiReplyImpl reply;
 
         lines.add("520-Invalid command syntax.  Proper usage follows:");
@@ -177,16 +165,13 @@ public class AgiReplyImplTest
 
         reply = new AgiReplyImpl(lines);
 
-        assertEquals("Incorrect status", AgiReplyImpl.SC_INVALID_COMMAND_SYNTAX, reply.getStatus());
-        assertEquals("Incorrect synopsis", "DATABASE DEL <family> <key>", reply.getSynopsis());
-        assertEquals("Incorrect usage",
-                "Deletes an entry in the Asterisk database for a given family and key. Returns 1 if succesful, 0 otherwise",
-                reply.getUsage());
+        assertEquals(AgiReplyImpl.SC_INVALID_COMMAND_SYNTAX, reply.getStatus(), "Incorrect status");
+        assertEquals("DATABASE DEL <family> <key>", reply.getSynopsis(), "Incorrect synopsis");
+        assertEquals("Deletes an entry in the Asterisk database for a given family and key. Returns 1 if succesful, 0 otherwise", reply.getUsage(), "Incorrect usage");
     }
 
     @Test
-    public void testBuildReplyInvalidCommandSyntaxWithOnlyUsage()
-    {
+    void testBuildReplyInvalidCommandSyntaxWithOnlyUsage() {
         AgiReplyImpl reply;
 
         lines.add("520-Invalid command syntax.  Proper usage follows:");
@@ -198,40 +183,36 @@ public class AgiReplyImplTest
 
         reply = new AgiReplyImpl(lines);
 
-        assertEquals("Incorrect status", AgiReplyImpl.SC_INVALID_COMMAND_SYNTAX, reply.getStatus());
+        assertEquals(AgiReplyImpl.SC_INVALID_COMMAND_SYNTAX, reply.getStatus(), "Incorrect status");
         // due to the lazy initialization in use this getUsage() could fail if
         // we don't call it before getSynopsis()
-        assertEquals("Incorrect usage",
-                "Deletes an entry in the Asterisk database for a given family and key. Returns 1 if succesful, 0 otherwise",
-                reply.getUsage());
-        assertEquals("Incorrect synopsis", "DATABASE DEL <family> <key>", reply.getSynopsis());
+        assertEquals("Deletes an entry in the Asterisk database for a given family and key. Returns 1 if succesful, 0 otherwise", reply.getUsage(), "Incorrect usage");
+        assertEquals("DATABASE DEL <family> <key>", reply.getSynopsis(), "Incorrect synopsis");
     }
 
     @Test
-    public void testBuildReplyWithLeadingSpace()
-    {
+    void testBuildReplyWithLeadingSpace() {
         AgiReplyImpl reply;
 
         lines.add("200 result= (timeout)");
 
         reply = new AgiReplyImpl(lines);
 
-        assertEquals("Incorrect status", AgiReplyImpl.SC_SUCCESS, reply.getStatus());
-        assertEquals("Incorrect extra", "timeout", reply.getExtra());
+        assertEquals(AgiReplyImpl.SC_SUCCESS, reply.getStatus(), "Incorrect status");
+        assertEquals("timeout", reply.getExtra(), "Incorrect extra");
     }
 
     @Test
-    public void testBuildReplyWithEmptyResultAndTimeout()
-    {
+    void testBuildReplyWithEmptyResultAndTimeout() {
         AgiReplyImpl reply;
 
         lines.add("200 result= (timeout)");
 
         reply = new AgiReplyImpl(lines);
 
-        assertFalse("Incorrect result", reply.getResult().equals("timeout"));
-        assertEquals("Incorrect result", "", reply.getResult());
-        assertEquals("Incorrect extra", "timeout", reply.getExtra());
+        assertFalse(reply.getResult().equals("timeout"), "Incorrect result");
+        assertEquals("", reply.getResult(), "Incorrect result");
+        assertEquals("timeout", reply.getExtra(), "Incorrect extra");
 
     }
 }

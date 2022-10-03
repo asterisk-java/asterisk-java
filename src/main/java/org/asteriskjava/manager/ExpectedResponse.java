@@ -1,12 +1,12 @@
 package org.asteriskjava.manager;
 
-import static java.lang.annotation.ElementType.TYPE;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
+import org.asteriskjava.manager.response.ManagerResponse;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import org.asteriskjava.manager.response.ManagerResponse;
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * Indicates that an annotated {@link org.asteriskjava.manager.action.ManagerAction} expects
@@ -17,7 +17,6 @@ import org.asteriskjava.manager.response.ManagerResponse;
  */
 @Target(TYPE)
 @Retention(RUNTIME)
-public @interface ExpectedResponse
-{
+public @interface ExpectedResponse {
     Class<? extends ManagerResponse> value();
 }

@@ -47,11 +47,10 @@ import org.asteriskjava.manager.event.QueueMemberEvent;
  * @author <a href="mailto:patrick.breucking{@nospam}gonicus.de">Patrick Breucking</a>
  * @author itaqua
  * @version $Id$
- * @since 0.3.1
  * @see org.asteriskjava.manager.event.QueueMemberEvent
+ * @since 0.3.1
  */
-public enum QueueMemberState
-{
+public enum QueueMemberState {
     DEVICE_UNKNOWN(QueueMemberEvent.AST_DEVICE_UNKNOWN),
 
     /**
@@ -89,8 +88,6 @@ public enum QueueMemberState
     DEVICE_ONHOLD(QueueMemberEvent.AST_DEVICE_ONHOLD);
 
 
-
-
     private final int status;
 
     /**
@@ -98,8 +95,7 @@ public enum QueueMemberState
      *
      * @param status the numerical status code.
      */
-    QueueMemberState(int status)
-    {
+    QueueMemberState(int status) {
         this.status = status;
     }
 
@@ -107,10 +103,9 @@ public enum QueueMemberState
      * Returns the numerical status code.
      *
      * @return the numerical status code.
-     * @see org.asteriskjava.manager.event.QueueMemberEvent#getStatus() 
+     * @see org.asteriskjava.manager.event.QueueMemberEvent#getStatus()
      */
-    public int getStatus()
-    {
+    public int getStatus() {
         return status;
     }
 
@@ -121,17 +116,13 @@ public enum QueueMemberState
      * @param status integer representation of the status.
      * @return corresponding QueueMemberState object or <code>null</code> if none matches.
      */
-    public static QueueMemberState valueOf(Integer status)
-    {
-        if (status == null)
-        {
+    public static QueueMemberState valueOf(Integer status) {
+        if (status == null) {
             return null;
         }
 
-        for (QueueMemberState tmp : QueueMemberState.values())
-        {
-            if (tmp.getStatus() == status)
-            {
+        for (QueueMemberState tmp : QueueMemberState.values()) {
+            if (tmp.getStatus() == status) {
                 return tmp;
             }
         }

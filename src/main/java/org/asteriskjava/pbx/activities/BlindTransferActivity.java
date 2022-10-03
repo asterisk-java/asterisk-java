@@ -1,22 +1,15 @@
 package org.asteriskjava.pbx.activities;
 
-import org.asteriskjava.pbx.Activity;
-import org.asteriskjava.pbx.Call;
-import org.asteriskjava.pbx.CallerID;
-import org.asteriskjava.pbx.Channel;
-import org.asteriskjava.pbx.EndPoint;
-import org.asteriskjava.pbx.PBXException;
+import org.asteriskjava.pbx.*;
 
-public interface BlindTransferActivity extends Activity
-{
+public interface BlindTransferActivity extends Activity {
     /**
      * A bridged call is a successful transfer all other options are a failed
      * transfer.
-     * 
+     *
      * @author bsutton
      */
-    enum CompletionCause
-    {
+    enum CompletionCause {
         // The call was bridged.
         BRIDGED("Connected")
         // The call hungup
@@ -31,13 +24,11 @@ public interface BlindTransferActivity extends Activity
 
         String message;
 
-        CompletionCause(String message)
-        {
+        CompletionCause(String message) {
             this.message = message;
         }
 
-        public String getMessage()
-        {
+        public String getMessage() {
             return message;
         }
     }
@@ -56,7 +47,7 @@ public interface BlindTransferActivity extends Activity
 
     /**
      * The call created as a result of the blind transfer being answered.
-     * 
+     *
      * @return
      * @throws PBXException
      */

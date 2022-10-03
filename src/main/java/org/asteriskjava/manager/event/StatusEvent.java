@@ -26,8 +26,7 @@ import java.util.Map;
  * @version $Id$
  * @see org.asteriskjava.manager.action.StatusAction
  */
-public class StatusEvent extends ResponseEvent
-{
+public class StatusEvent extends ResponseEvent {
     /**
      * Serial version identifier.
      */
@@ -57,8 +56,7 @@ public class StatusEvent extends ResponseEvent
     private String readtrans;
     private String language;
 
-    public StatusEvent(Object source)
-    {
+    public StatusEvent(Object source) {
         super(source);
     }
 
@@ -67,8 +65,7 @@ public class StatusEvent extends ResponseEvent
      *
      * @return the name of this channel.
      */
-    public String getChannel()
-    {
+    public String getChannel() {
         return channel;
     }
 
@@ -77,8 +74,7 @@ public class StatusEvent extends ResponseEvent
      *
      * @param channel the name of this channel.
      */
-    public void setChannel(String channel)
-    {
+    public void setChannel(String channel) {
         this.channel = channel;
     }
 
@@ -89,12 +85,11 @@ public class StatusEvent extends ResponseEvent
      * {@link #getCallerIdNum()} instead.
      *
      * @return the Caller*ID Number of this channel or <code>null</code> if none
-     *         is available.
+     * is available.
      * @deprecated
      */
     @Deprecated
-    public String getCallerId()
-    {
+    public String getCallerId() {
         return callerIdNum;
     }
 
@@ -105,8 +100,7 @@ public class StatusEvent extends ResponseEvent
      *
      * @param callerIdNum the Caller*ID Number to set.
      */
-    public void setCallerId(String callerIdNum)
-    {
+    public void setCallerId(String callerIdNum) {
         this.callerIdNum = callerIdNum;
     }
 
@@ -116,8 +110,7 @@ public class StatusEvent extends ResponseEvent
      * @return the account code of this channel.
      * @since 1.0.0
      */
-    public String getAccountCode()
-    {
+    public String getAccountCode() {
         return accountCode;
     }
 
@@ -127,8 +120,7 @@ public class StatusEvent extends ResponseEvent
      * @param accountCode the account code of this channel.
      * @since 1.0.0
      */
-    public void setAccountCode(String accountCode)
-    {
+    public void setAccountCode(String accountCode) {
         this.accountCode = accountCode;
     }
 
@@ -139,8 +131,7 @@ public class StatusEvent extends ResponseEvent
      * @deprecated since 1.0.0, use {@link #getAccountCode()} instead.
      */
     @Deprecated
-    public String getAccount()
-    {
+    public String getAccount() {
         return accountCode;
     }
 
@@ -152,8 +143,7 @@ public class StatusEvent extends ResponseEvent
      *
      * @param account the account code of this channel.
      */
-    public void setAccount(String account)
-    {
+    public void setAccount(String account) {
         this.accountCode = account;
     }
 
@@ -164,23 +154,19 @@ public class StatusEvent extends ResponseEvent
      * @deprecated use {@link #getChannelStateDesc()} instead.
      */
     @Deprecated
-    public String getState()
-    {
+    public String getState() {
         return getChannelStateDesc();
     }
 
-    public void setState(String state)
-    {
+    public void setState(String state) {
         setChannelStateDesc(state);
     }
 
-    public String getExtension()
-    {
+    public String getExtension() {
         return getExten();
     }
 
-    public void setExtension(String extension)
-    {
+    public void setExtension(String extension) {
         setExten(extension);
     }
 
@@ -189,8 +175,7 @@ public class StatusEvent extends ResponseEvent
      *
      * @return the number of elapsed seconds.
      */
-    public Integer getSeconds()
-    {
+    public Integer getSeconds() {
         return seconds;
     }
 
@@ -199,8 +184,7 @@ public class StatusEvent extends ResponseEvent
      *
      * @param seconds the number of elapsed seconds.
      */
-    public void setSeconds(Integer seconds)
-    {
+    public void setSeconds(Integer seconds) {
         this.seconds = seconds;
     }
 
@@ -210,8 +194,7 @@ public class StatusEvent extends ResponseEvent
      * @return the name of the linked channel if this channel is bridged.
      * @since 1.0.0
      */
-    public String getBridgedChannel()
-    {
+    public String getBridgedChannel() {
         return bridgedChannel;
     }
 
@@ -219,11 +202,10 @@ public class StatusEvent extends ResponseEvent
      * Sets the name of the linked channel.
      *
      * @param bridgedChannel the name of the linked channel if this channel is
-     *            bridged.
+     *                       bridged.
      * @since 1.0.0
      */
-    public void setBridgedChannel(String bridgedChannel)
-    {
+    public void setBridgedChannel(String bridgedChannel) {
         this.bridgedChannel = bridgedChannel;
     }
 
@@ -234,8 +216,7 @@ public class StatusEvent extends ResponseEvent
      * @deprecated as of 1.0.0, use {@link #getBridgedChannel()} instead.
      */
     @Deprecated
-    public String getLink()
-    {
+    public String getLink() {
         return bridgedChannel;
     }
 
@@ -246,8 +227,7 @@ public class StatusEvent extends ResponseEvent
      *
      * @param link the name of the linked channel if this channel is bridged.
      */
-    public void setLink(String link)
-    {
+    public void setLink(String link) {
         this.bridgedChannel = link;
     }
 
@@ -259,8 +239,7 @@ public class StatusEvent extends ResponseEvent
      * @return the unique id of the linked channel if this channel is bridged.
      * @since 1.0.0
      */
-    public String getBridgedUniqueId()
-    {
+    public String getBridgedUniqueId() {
         return bridgedUniqueId;
     }
 
@@ -270,11 +249,10 @@ public class StatusEvent extends ResponseEvent
      * Available since Asterisk 1.6.
      *
      * @param bridgedUniqueId the unique id of the linked channel if this
-     *            channel is bridged.
+     *                        channel is bridged.
      * @since 1.0.0
      */
-    public void setBridgedUniqueId(String bridgedUniqueId)
-    {
+    public void setBridgedUniqueId(String bridgedUniqueId) {
         this.bridgedUniqueId = bridgedUniqueId;
     }
 
@@ -283,8 +261,7 @@ public class StatusEvent extends ResponseEvent
      *
      * @return the unique id of this channel.
      */
-    public String getUniqueId()
-    {
+    public String getUniqueId() {
         return uniqueId;
     }
 
@@ -293,8 +270,7 @@ public class StatusEvent extends ResponseEvent
      *
      * @param uniqueId the unique id of this channel.
      */
-    public void setUniqueId(String uniqueId)
-    {
+    public void setUniqueId(String uniqueId) {
         this.uniqueId = uniqueId;
     }
 
@@ -308,8 +284,7 @@ public class StatusEvent extends ResponseEvent
      * @return the channel variables.
      * @since 1.0.0
      */
-    public Map<String, String> getVariables()
-    {
+    public Map<String, String> getVariables() {
         return variables;
     }
 
@@ -321,202 +296,167 @@ public class StatusEvent extends ResponseEvent
      * @param variables the channel variables.
      * @since 1.0.0
      */
-    public void setVariables(Map<String, String> variables)
-    {
+    public void setVariables(Map<String, String> variables) {
         this.variables = variables;
     }
 
-    public String getLinkedId()
-    {
+    public String getLinkedId() {
         return linkedId;
     }
 
-    public void setLinkedId(String linkedId)
-    {
+    public void setLinkedId(String linkedId) {
         this.linkedId = linkedId;
     }
 
-    public String getData()
-    {
+    public String getData() {
         return data;
     }
 
-    public void setData(String data)
-    {
+    public void setData(String data) {
         this.data = data;
     }
 
-    public String getReadFormat()
-    {
+    public String getReadFormat() {
         return readFormat;
     }
 
-    public void setReadFormat(String readFormat)
-    {
+    public void setReadFormat(String readFormat) {
         this.readFormat = readFormat;
     }
 
-    public String getWriteFormat()
-    {
+    public String getWriteFormat() {
         return writeFormat;
     }
 
-    public void setWriteFormat(String writeFormat)
-    {
+    public void setWriteFormat(String writeFormat) {
         this.writeFormat = writeFormat;
     }
 
-    public String getType()
-    {
+    public String getType() {
         return type;
     }
 
-    public void setType(String type)
-    {
+    public void setType(String type) {
         this.type = type;
     }
 
-    public String getEffectiveConnectedLineName()
-    {
+    public String getEffectiveConnectedLineName() {
         return effectiveConnectedLineName;
     }
 
-    public void setEffectiveConnectedLineName(String effectiveConnectedLineName)
-    {
+    public void setEffectiveConnectedLineName(String effectiveConnectedLineName) {
         this.effectiveConnectedLineName = effectiveConnectedLineName;
     }
 
-    public String getEffectiveConnectedLineNum()
-    {
+    public String getEffectiveConnectedLineNum() {
         return effectiveConnectedLineNum;
     }
 
-    public void setEffectiveConnectedLineNum(String effectiveConnectedLineNum)
-    {
+    public void setEffectiveConnectedLineNum(String effectiveConnectedLineNum) {
         this.effectiveConnectedLineNum = effectiveConnectedLineNum;
     }
 
-    public String getApplication()
-    {
+    public String getApplication() {
         return application;
     }
 
-    public void setApplication(String application)
-    {
+    public void setApplication(String application) {
         this.application = application;
     }
 
-    public String getCallGroup()
-    {
+    public String getCallGroup() {
         return callGroup;
     }
 
-    public void setCallGroup(String callGroup)
-    {
+    public void setCallGroup(String callGroup) {
         this.callGroup = callGroup;
     }
 
-    public String getNativeFormats()
-    {
+    public String getNativeFormats() {
         return nativeFormats;
     }
 
-    public void setNativeFormats(String nativeFormats)
-    {
+    public void setNativeFormats(String nativeFormats) {
         this.nativeFormats = nativeFormats;
     }
 
-    public String getPickupGroup()
-    {
+    public String getPickupGroup() {
         return pickupGroup;
     }
 
-    public void setPickupGroup(String pickupGroup)
-    {
+    public void setPickupGroup(String pickupGroup) {
         this.pickupGroup = pickupGroup;
     }
 
-    public String getTimeToHangup()
-    {
+    public String getTimeToHangup() {
         return timeToHangup;
     }
 
-    public void setTimeToHangup(String timeToHangup)
-    {
+    public void setTimeToHangup(String timeToHangup) {
         this.timeToHangup = timeToHangup;
     }
 
     /**
      * @return the dnid
      */
-    public String getDnid()
-    {
+    public String getDnid() {
         return dnid;
     }
 
     /**
      * @param dnid the dnid to set
      */
-    public void setDnid(String dnid)
-    {
+    public void setDnid(String dnid) {
         this.dnid = dnid;
     }
 
     /**
      * @return the writetrans
      */
-    public String getWritetrans()
-    {
+    public String getWritetrans() {
         return writetrans;
     }
 
     /**
      * @param writetrans the writetrans to set
      */
-    public void setWritetrans(String writetrans)
-    {
+    public void setWritetrans(String writetrans) {
         this.writetrans = writetrans;
     }
 
     /**
      * @return the bridgeid
      */
-    public String getBridgeId()
-    {
+    public String getBridgeId() {
         return bridgeId;
     }
 
     /**
      * @param bridgeid the bridgeid to set
      */
-    public void setBridgeId(String bridgeid)
-    {
+    public void setBridgeId(String bridgeid) {
         this.bridgeId = bridgeid;
     }
 
     /**
      * @return the readtrans
      */
-    public String getReadtrans()
-    {
+    public String getReadtrans() {
         return readtrans;
     }
 
     /**
      * @param readtrans the readtrans to set
      */
-    public void setReadtrans(String readtrans)
-    {
+    public void setReadtrans(String readtrans) {
         this.readtrans = readtrans;
     }
 
-    public String getLanguage()
-    {
+    public String getLanguage() {
         return language;
     }
 
-    public void setLanguage(String language)
-    {
+    public void setLanguage(String language) {
         this.language = language;
     }
 }

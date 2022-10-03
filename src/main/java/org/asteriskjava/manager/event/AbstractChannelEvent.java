@@ -18,12 +18,11 @@ package org.asteriskjava.manager.event;
 
 /**
  * Abstract base class providing common properties channel related events.
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public abstract class AbstractChannelEvent extends ManagerEvent
-{
+public abstract class AbstractChannelEvent extends ManagerEvent {
     /**
      * Serializable version identifier.
      */
@@ -41,38 +40,33 @@ public abstract class AbstractChannelEvent extends ManagerEvent
      */
     protected String uniqueId;
 
-    protected AbstractChannelEvent(Object source)
-    {
+    protected AbstractChannelEvent(Object source) {
         super(source);
     }
 
     /**
      * Returns the name of the channel.
-     * 
+     *
      * @return the name of the channel.
      */
-    public final String getChannel()
-    {
+    public final String getChannel() {
         return channel;
     }
 
-    public final void setChannel(String channel)
-    {
+    public final void setChannel(String channel) {
         this.channel = channel;
     }
 
     /**
      * Returns the unique id of the channel.
-     * 
+     *
      * @return the unique id of the channel.
      */
-    public final String getUniqueId()
-    {
+    public final String getUniqueId() {
         return uniqueId;
     }
 
-    public final void setUniqueId(String uniqueId)
-    {
+    public final void setUniqueId(String uniqueId) {
         this.uniqueId = uniqueId;
     }
 
@@ -81,24 +75,22 @@ public abstract class AbstractChannelEvent extends ManagerEvent
      * has been set.
      *
      * @return the Caller*ID
-     * @deprecated
      * @see #getCallerIdNum()
+     * @deprecated
      */
     @Deprecated
-    public final String getCallerId()
-    {
+    public final String getCallerId() {
         return getCallerIdNum();
     }
 
     /**
      * Sets the Caller*ID of the channel.
-     * 
+     *
      * @param callerId the Caller*ID of the channel.
      * @deprecated
      */
     @Deprecated
-    public final void setCallerId(String callerId)
-    {
+    public final void setCallerId(String callerId) {
         setCallerIdNum(callerId);
     }
 
@@ -109,39 +101,33 @@ public abstract class AbstractChannelEvent extends ManagerEvent
      * @return the Caller*ID number
      * @since 0.3
      */
-    public final String getCallerIdNum()
-    {
+    public final String getCallerIdNum() {
         return callerIdNum;
     }
 
-    public final void setCallerIdNum(String callerIdNum)
-    {
+    public final void setCallerIdNum(String callerIdNum) {
         this.callerIdNum = callerIdNum;
     }
 
     /**
      * Returns the Caller*ID Name of the channel if set or <code>null</code> if
      * none has been set.
-     * 
+     *
      * @return the Caller*ID Name of the channel.
      */
-    public final String getCallerIdName()
-    {
+    public final String getCallerIdName() {
         return callerIdName;
     }
 
-    public final void setCallerIdName(String callerIdName)
-    {
+    public final void setCallerIdName(String callerIdName) {
         this.callerIdName = callerIdName;
     }
 
-    public String getAccountCode()
-    {
+    public String getAccountCode() {
         return accountCode;
     }
 
-    public void setAccountCode(String accountCode)
-    {
+    public void setAccountCode(String accountCode) {
         this.accountCode = accountCode;
     }
 }

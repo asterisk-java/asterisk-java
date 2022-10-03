@@ -16,13 +16,13 @@
  */
 package org.asteriskjava.util.internal;
 
+import org.asteriskjava.util.ServerSocketFacade;
+import org.asteriskjava.util.SocketConnectionFacade;
+
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-
-import org.asteriskjava.util.ServerSocketFacade;
-import org.asteriskjava.util.SocketConnectionFacade;
 
 
 /**
@@ -32,20 +32,17 @@ import org.asteriskjava.util.SocketConnectionFacade;
  * @author srt
  * @version $Id$
  */
-public class ServerSocketFacadeImpl implements ServerSocketFacade
-{
+public class ServerSocketFacadeImpl implements ServerSocketFacade {
     private ServerSocket serverSocket;
 
     private int socketReadTimeout = SocketConnectionFacadeImpl.MAX_SOCKET_READ_TIMEOUT_MILLIS;
 
     public ServerSocketFacadeImpl(int port, int backlog, InetAddress bindAddress)
-            throws IOException
-    {
+            throws IOException {
         this.serverSocket = new ServerSocket(port, backlog, bindAddress);
     }
 
-    public SocketConnectionFacade accept() throws IOException
-    {
+    public SocketConnectionFacade accept() throws IOException {
         Socket socket;
 
         socket = serverSocket.accept();
@@ -53,13 +50,11 @@ public class ServerSocketFacadeImpl implements ServerSocketFacade
         return new SocketConnectionFacadeImpl(socket, socketReadTimeout);
     }
 
-    public void close() throws IOException
-    {
+    public void close() throws IOException {
         serverSocket.close();
     }
 
-    public void setSocketReadTimeout(int socketReadTimeout)
-    {
+    public void setSocketReadTimeout(int socketReadTimeout) {
         this.socketReadTimeout = socketReadTimeout;
     }
 }

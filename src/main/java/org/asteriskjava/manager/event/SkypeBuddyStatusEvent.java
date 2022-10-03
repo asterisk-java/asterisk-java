@@ -1,6 +1,6 @@
 /*
  *  Copyright 2004-2006 Stefan Reuter
- *  
+ *
  *  amended 2010 - Allan Wylie
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,8 +29,7 @@ import java.util.regex.Pattern;
  *
  * @since 1.0.0
  */
-public class SkypeBuddyStatusEvent extends ManagerEvent
-{
+public class SkypeBuddyStatusEvent extends ManagerEvent {
     /**
      * Serializable version identifier.
      */
@@ -63,8 +62,7 @@ public class SkypeBuddyStatusEvent extends ManagerEvent
     private String buddyStatus;
 
 
-    public SkypeBuddyStatusEvent(Object source)
-    {
+    public SkypeBuddyStatusEvent(Object source) {
         super(source);
     }
 
@@ -78,8 +76,7 @@ public class SkypeBuddyStatusEvent extends ManagerEvent
      * @see #getUser()
      * @see #getBuddySkypename()
      */
-    public String getBuddy()
-    {
+    public String getBuddy() {
         return buddy;
     }
 
@@ -88,8 +85,7 @@ public class SkypeBuddyStatusEvent extends ManagerEvent
      *
      * @return the Skype username of the Skype for Asterisk user.
      */
-    public String getUser()
-    {
+    public String getUser() {
         return buddyGroup(1);
     }
 
@@ -98,20 +94,16 @@ public class SkypeBuddyStatusEvent extends ManagerEvent
      *
      * @return the Skype username of the buddy who changed his status.
      */
-    public String getBuddySkypename()
-    {
+    public String getBuddySkypename() {
         return buddyGroup(2);
     }
 
-    private String buddyGroup(int group)
-    {
-        if (buddy == null)
-        {
+    private String buddyGroup(int group) {
+        if (buddy == null) {
             return null;
         }
         final Matcher buddyMatcher = BUDDY_PATTERN.matcher(buddy);
-        if (buddyMatcher.matches())
-        {
+        if (buddyMatcher.matches()) {
             return buddyMatcher.group(group);
         }
         return null;
@@ -122,8 +114,7 @@ public class SkypeBuddyStatusEvent extends ManagerEvent
      *
      * @param buddy the address of the buddy.
      */
-    public void setBuddy(String buddy)
-    {
+    public void setBuddy(String buddy) {
         this.buddy = buddy;
     }
 
@@ -132,13 +123,11 @@ public class SkypeBuddyStatusEvent extends ManagerEvent
      *
      * @return the status of the buddy.
      */
-    public String getBuddyStatus()
-    {
+    public String getBuddyStatus() {
         return buddyStatus;
     }
 
-    public void setBuddyStatus(String buddyStatus)
-    {
+    public void setBuddyStatus(String buddyStatus) {
         this.buddyStatus = buddyStatus;
     }
 }

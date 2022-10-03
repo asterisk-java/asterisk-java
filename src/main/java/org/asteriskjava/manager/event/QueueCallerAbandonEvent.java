@@ -23,11 +23,10 @@ package org.asteriskjava.manager.event;
  * It is implemented in <code>apps/app_queue.c</code>
  * <p>
  * Available since Asterisk 1.4.
- * 
+ *
  * @author martins
  */
-public class QueueCallerAbandonEvent extends QueueEvent
-{
+public class QueueCallerAbandonEvent extends QueueEvent {
     /**
      * Serializable version identifier
      */
@@ -38,93 +37,80 @@ public class QueueCallerAbandonEvent extends QueueEvent
     private Integer holdTime;
     private String linkedId;
     private String language;
-    
+
     private String accountcode;
-    
+
     /**
      * @param source
      */
-    public QueueCallerAbandonEvent(Object source)
-    {
+    public QueueCallerAbandonEvent(Object source) {
         super(source);
     }
 
     /**
      * @return the amount of time in seconds the caller was on hold
      */
-    public Integer getHoldTime()
-    {
+    public Integer getHoldTime() {
         return holdTime;
     }
 
     /**
      * @param holdTime the amount of time in seconds the caller was on hold
      */
-    public void setHoldTime(Integer holdTime)
-    {
+    public void setHoldTime(Integer holdTime) {
         this.holdTime = holdTime;
     }
 
     /**
      * @return the original position of the caller in the queue
      */
-    public Integer getOriginalPosition()
-    {
+    public Integer getOriginalPosition() {
         return originalPosition;
     }
 
     /**
      * @param originalPosition the original position of the caller in the queue
      */
-    public void setOriginalPosition(Integer originalPosition)
-    {
+    public void setOriginalPosition(Integer originalPosition) {
         this.originalPosition = originalPosition;
     }
 
     /**
      * @return the position of the caller at the time they abandoned the queue
      */
-    public Integer getPosition()
-    {
+    public Integer getPosition() {
         return position;
     }
 
     /**
      * @param position the position of the caller at the time they abandoned the
-     *            queue
+     *                 queue
      */
-    public void setPosition(Integer position)
-    {
+    public void setPosition(Integer position) {
         this.position = position;
     }
 
-    public String getLanguage()
-    {
+    public String getLanguage() {
         return language;
     }
 
-    public void setLanguage(String language)
-    {
+    public void setLanguage(String language) {
         this.language = language;
     }
 
-    public String getLinkedId()
-    {
+    public String getLinkedId() {
         return linkedId;
     }
 
-    public void setLinkedId(String linkedId)
-    {
+    public void setLinkedId(String linkedId) {
         this.linkedId = linkedId;
     }
 
-	public String getAccountcode()
-	{
-		return accountcode;
-	}
+    public String getAccountcode() {
+        return accountcode;
+    }
 
-	public void setAccountcode(String accountcode)
-	{
-		this.accountcode = accountcode;
-	}
+    public void setAccountcode(String accountcode) {
+        this.accountcode = accountcode;
+    }
 }

@@ -42,7 +42,7 @@ import org.asteriskjava.manager.response.GetVarResponse;
  * String value = response.getAttribute("Value");
  * System.out.println("MY_VAR on " + channel + " is " + value);
  * </pre>
- * Where <code>c</code> is an instance of 
+ * Where <code>c</code> is an instance of
  * {@link org.asteriskjava.manager.ManagerConnection} and <code>channel</code>
  * contains the name of a channel instance, for example "SIP/1234-9cd".
  * <p>
@@ -52,13 +52,12 @@ import org.asteriskjava.manager.response.GetVarResponse;
  * <p>
  * Since Asterisk 1.4 this action also supports built-in functions like
  * <code>DB()</code>, <code>CALLERID()</code> and <code>ENV()</code>.
- * 
+ *
  * @author srt
  * @version $Id$
  */
 @ExpectedResponse(GetVarResponse.class)
-public class GetVarAction extends AbstractManagerAction
-{
+public class GetVarAction extends AbstractManagerAction {
     private static final long serialVersionUID = 5239805071977668779L;
     private String channel;
     private String variable;
@@ -66,32 +65,29 @@ public class GetVarAction extends AbstractManagerAction
     /**
      * Creates a new empty GetVarAction.
      */
-    public GetVarAction()
-    {
+    public GetVarAction() {
 
     }
 
     /**
      * Creates a new GetVarAction that queries for the given global variable.
-     * 
+     *
      * @param variable the name of the global variable to query.
      * @since 0.2
      */
-    public GetVarAction(String variable)
-    {
+    public GetVarAction(String variable) {
         this.variable = variable;
     }
 
     /**
      * Creates a new GetVarAction that queries for the given local channel
      * variable.
-     * 
-     * @param channel the name of the channel, for example "SIP/1234-9cd".
+     *
+     * @param channel  the name of the channel, for example "SIP/1234-9cd".
      * @param variable the name of the variable to query.
      * @since 0.2
      */
-    public GetVarAction(String channel, String variable)
-    {
+    public GetVarAction(String channel, String variable) {
         this.channel = channel;
         this.variable = variable;
     }
@@ -100,8 +96,7 @@ public class GetVarAction extends AbstractManagerAction
      * Returns the name of this action, i.e. "GetVar".
      */
     @Override
-   public String getAction()
-    {
+    public String getAction() {
         return "GetVar";
     }
 
@@ -109,36 +104,32 @@ public class GetVarAction extends AbstractManagerAction
      * Returns the name of the channel if you query for a local channel variable
      * or <code>null</code> if it is a global variable.
      */
-    public String getChannel()
-    {
+    public String getChannel() {
         return channel;
     }
 
     /**
      * Sets the name of the channel if you query for a local channel variable.
      * Leave empty to query for a global variable.
-     * 
+     *
      * @param channel the channel if you query for a local channel variable or
-     *            <code>null</code> to query for a gloabl variable.
+     *                <code>null</code> to query for a gloabl variable.
      */
-    public void setChannel(String channel)
-    {
+    public void setChannel(String channel) {
         this.channel = channel;
     }
 
     /**
      * Retruns the name of the variable to query.
      */
-    public String getVariable()
-    {
+    public String getVariable() {
         return variable;
     }
 
     /**
      * Sets the name of the variable to query.
      */
-    public void setVariable(String variable)
-    {
+    public void setVariable(String variable) {
         this.variable = variable;
     }
 }

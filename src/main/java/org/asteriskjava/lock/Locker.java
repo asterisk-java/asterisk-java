@@ -1,5 +1,10 @@
 package org.asteriskjava.lock;
 
+import com.google.common.util.concurrent.RateLimiter;
+import org.asteriskjava.pbx.util.LogTime;
+import org.asteriskjava.util.Log;
+import org.asteriskjava.util.LogFactory;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -10,20 +15,13 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
-import org.asteriskjava.pbx.util.LogTime;
-import org.asteriskjava.util.Log;
-import org.asteriskjava.util.LogFactory;
-
-import com.google.common.util.concurrent.RateLimiter;
-
-public class Locker
-{
+public class Locker {
 
     private static final Log logger = LogFactory.getLog(Locker.class);
 
     private static volatile boolean diags = false;
 
-    private static ScheduledFuture< ? > future;
+    private static ScheduledFuture<?> future;
     private static final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 
     private static final Object sync = new Object();
@@ -34,22 +32,16 @@ public class Locker
 
     private static final RateLimiter waitRateLimiter = RateLimiter.create(4);
 
-    public static LockCloser doWithLock(final Lockable lockable)
-    {
-        try
-        {
-            if (diags)
-            {
-                synchronized (sync)
-                {
+    public static LockCloser doWithLock(final Lockable lockable) {
+        try {
+            if (diags) {
+                synchronized (sync) {
                     keepList.put(lockable.getLockableId(), lockable);
                 }
                 return lockWithDiags(lockable);
             }
             return simpleLock(lockable);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
@@ -57,18 +49,15 @@ public class Locker
 
     /**
      * determine the caller to Locker
-     * 
+     *
      * @param lockable
      * @return
      */
-    static String getCaller(Lockable lockable)
-    {
+    static String getCaller(Lockable lockable) {
         StackTraceElement[] trace = new Exception().getStackTrace();
         String name = lockable.getClass().getCanonicalName();
-        for (StackTraceElement element : trace)
-        {
-            if (element.getFileName() != null && !element.getFileName().contains(Locker.class.getSimpleName()))
-            {
+        for (StackTraceElement element : trace) {
+            if (element.getFileName() != null && !element.getFileName().contains(Locker.class.getSimpleName())) {
                 name = element.getFileName() + " " + element.getMethodName() + " " + element.getLineNumber() + " "
                         + element.getClassName();
                 break;
@@ -78,8 +67,7 @@ public class Locker
         return name;
     }
 
-    public interface LockCloser extends AutoCloseable
-    {
+    public interface LockCloser extends AutoCloseable {
         public void close();
     }
 
@@ -88,14 +76,12 @@ public class Locker
 
     private static final LogTime startTime = new LogTime();
 
-    private static LockCloser simpleLock(Lockable lockable) throws InterruptedException
-    {
+    private static LockCloser simpleLock(Lockable lockable) throws InterruptedException {
         LogTime acquireTimer = new LogTime();
         ReentrantLock lock = lockable.getInternalLock();
         lock.lock();
         // lock acquired!
-        if (acquireTimer.timeTaken() > 1_000 && warnRateLimiter.tryAcquire())
-        {
+        if (acquireTimer.timeTaken() > 1_000 && warnRateLimiter.tryAcquire()) {
             logger.warn("Locks are being held for to long, waited " + acquireTimer.timeTaken()
                     + "ms, you can enable lock diagnostics by calling Locker.enable()");
         }
@@ -104,11 +90,9 @@ public class Locker
         return () -> {
             lock.unlock();
 
-            if (holdTimer.timeTaken() > 500 && warnRateLimiter.tryAcquire())
-            {
+            if (holdTimer.timeTaken() > 500 && warnRateLimiter.tryAcquire()) {
                 // don't start warning for the first 10 seconds
-                if (startTime.timeTaken() > 10_000)
-                {
+                if (startTime.timeTaken() > 10_000) {
                     logger.warn("Locks are being held for to long (" + holdTimer.timeTaken()
                             + "ms), you can enable lock diagnostics by calling Locker.enable()");
                 }
@@ -116,25 +100,19 @@ public class Locker
         };
     }
 
-    private static LockCloser lockWithDiags(Lockable lockable) throws InterruptedException
-    {
+    private static LockCloser lockWithDiags(Lockable lockable) throws InterruptedException {
 
         int offset = lockable.addLockRequested();
         long waitStart = System.currentTimeMillis();
 
         ReentrantLock lock = lockable.getInternalLock();
-        while (!lock.tryLock(100, TimeUnit.MILLISECONDS))
-        {
-            if (!lockable.isLockDumped() && lockable.getDumpRateLimit().tryAcquire())
-            {
+        while (!lock.tryLock(100, TimeUnit.MILLISECONDS)) {
+            if (!lockable.isLockDumped() && lockable.getDumpRateLimit().tryAcquire()) {
                 lockable.setLockDumped(true);
                 dumpThread(lockable.threadHoldingLock.get(),
                         "Waiting on lock... blocked by... id:" + lockable.getLockableId());
-            }
-            else
-            {
-                if (waitRateLimiter.tryAcquire())
-                {
+            } else {
+                if (waitRateLimiter.tryAcquire()) {
                     long elapsed = System.currentTimeMillis() - waitStart;
                     logger.warn("waiting " + elapsed + "(MS) id:" + lockable.getLockableId());
                 }
@@ -146,12 +124,10 @@ public class Locker
 
         long acquiredAt = System.currentTimeMillis();
         lockable.threadHoldingLock.set(Thread.currentThread());
-        return new LockCloser()
-        {
+        return new LockCloser() {
 
             @Override
-            public void close()
-            {
+            public void close() {
                 // ignore any wait that may have been caused by Locker code, so
                 // count the waiters before we release the lock
                 long waiters = lockable.getLockRequested() - offset;
@@ -168,30 +144,26 @@ public class Locker
                 lockable.addLockTotalHoldTime(holdTime);
 
                 long averageHoldTime = lockable.getLockAverageHoldTime();
-                if ((waiters > 0 && holdTime > averageHoldTime * 2) || dumped)
-                {
+                if ((waiters > 0 && holdTime > averageHoldTime * 2) || dumped) {
                     // some threads waited
                     String message = "Lock held for (" + holdTime + "MS), " + waiters
                             + " threads waited for some of that time! " + getCaller(lockable) + " id:"
                             + lockable.getLockableId();
                     logger.warn(message);
-                    if (holdTime > averageHoldTime * 10.0 || dumped)
-                    {
+                    if (holdTime > averageHoldTime * 10.0 || dumped) {
                         Exception trace = new Exception(message);
                         logger.error(trace, trace);
                     }
                 }
 
-                if (holdTime > averageHoldTime * 5.0)
-                {
+                if (holdTime > averageHoldTime * 5.0) {
                     // long hold!
                     String message = "Lock hold of lock (" + holdTime + "MS), average is "
                             + lockable.getLockAverageHoldTime() + " " + getCaller(lockable) + " id:"
                             + lockable.getLockableId();
 
                     logger.warn(message);
-                    if (holdTime > averageHoldTime * 10.0)
-                    {
+                    if (holdTime > averageHoldTime * 10.0) {
                         Exception trace = new Exception(message);
                         logger.error(trace, trace);
                     }
@@ -201,34 +173,26 @@ public class Locker
 
     }
 
-    public static void dumpThread(Thread thread, String message)
-    {
+    public static void dumpThread(Thread thread, String message) {
 
-        if (thread != null)
-        {
+        if (thread != null) {
             StackTraceElement[] trace = thread.getStackTrace();
 
             String dump = "";
 
             int i = 0;
-            for (; i < trace.length; i++)
-            {
+            for (; i < trace.length; i++) {
                 StackTraceElement ste = trace[i];
                 dump += "\tat " + ste.toString();
                 dump += '\n';
             }
             logger.error(message);
-            if (dump.length() > 0)
-            {
+            if (dump.length() > 0) {
                 logger.error(dump);
-            }
-            else
-            {
+            } else {
                 logger.error("Unable to create dump, thread seems to have exited.");
             }
-        }
-        else
-        {
+        } else {
             logger.error("Thread hasn't been set: " + message);
         }
 
@@ -237,38 +201,28 @@ public class Locker
     /**
      * start dumping lock stats once per minute, can't be stopped once started.
      */
-    public static void enable()
-    {
-        synchronized (sync)
-        {
-            if (!diags)
-            {
+    public static void enable() {
+        synchronized (sync) {
+            if (!diags) {
                 diags = true;
                 future = executor.scheduleWithFixedDelay(() -> {
                     dumpStats();
                 }, 1, 1, TimeUnit.MINUTES);
                 logger.warn("Lock checking enabled");
-            }
-            else
-            {
+            } else {
                 logger.warn("Already enabled");
             }
         }
     }
 
-    public static void disable()
-    {
-        synchronized (sync)
-        {
-            if (diags)
-            {
+    public static void disable() {
+        synchronized (sync) {
+            if (diags) {
                 diags = false;
                 future.cancel(false);
                 dumpStats();
                 logger.warn("Lock checking disabled");
-            }
-            else
-            {
+            } else {
                 logger.warn("Lock checking is already disabled");
             }
         }
@@ -276,21 +230,17 @@ public class Locker
 
     private static volatile boolean first = true;
 
-    static void dumpStats()
-    {
+    static void dumpStats() {
         List<Lockable> lockables = new LinkedList<>();
 
-        synchronized (sync)
-        {
+        synchronized (sync) {
             lockables.addAll(keepList.values());
             keepList.clear();
         }
 
         boolean activity = false;
-        for (Lockable lockable : lockables)
-        {
-            if (lockable.wasLockBlocked())
-            {
+        for (Lockable lockable : lockables) {
+            if (lockable.wasLockBlocked()) {
                 int waited = lockable.getLockWaited();
                 int waitTime = lockable.getLockTotalWaitTime();
                 int acquired = lockable.getLockAcquired();
@@ -307,9 +257,7 @@ public class Locker
             }
         }
 
-        if (first || activity)
-
-        {
+        if (first || activity) {
             logger.warn("Will dump Lock stats each minute when there is contention...");
             first = false;
         }

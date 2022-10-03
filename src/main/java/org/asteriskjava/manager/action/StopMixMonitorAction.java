@@ -18,15 +18,14 @@ package org.asteriskjava.manager.action;
 
 /**
  * Stop the specified MixMonitor on the specified channel.
- *
+ * <p>
  * Available since Asterisk 11
  *
  * @see MixMonitorAction
  * @see PauseMixMonitorAction
  * @see MixMonitorMuteAction
  */
-public class StopMixMonitorAction extends AbstractManagerAction
-{
+public class StopMixMonitorAction extends AbstractManagerAction {
     private static final long serialVersionUID = 1L;
     private String channel;
     private String mixMonitorId;
@@ -34,8 +33,7 @@ public class StopMixMonitorAction extends AbstractManagerAction
     /**
      * Creates a new empty StopMixMonitorAction
      */
-    public StopMixMonitorAction()
-    {
+    public StopMixMonitorAction() {
         super();
     }
 
@@ -43,10 +41,9 @@ public class StopMixMonitorAction extends AbstractManagerAction
      * Creates a StopMixMonitorAction that stops all MixMonitors on the
      * specified channel.
      *
-     * @param channel	the name of the channel
+     * @param channel the name of the channel
      */
-    public StopMixMonitorAction(String channel)
-    {
+    public StopMixMonitorAction(String channel) {
         this(channel, null);
     }
 
@@ -54,11 +51,10 @@ public class StopMixMonitorAction extends AbstractManagerAction
      * Creates a StopMixMonitorAction that stops the specified MixMonitor on
      * the specified channel.
      *
-     * @param channel		the name of the channel
-     * @param mixMonitorId	the ID of the MixMonitor to stop
+     * @param channel      the name of the channel
+     * @param mixMonitorId the ID of the MixMonitor to stop
      */
-    public StopMixMonitorAction(String channel, String mixMonitorId)
-    {
+    public StopMixMonitorAction(String channel, String mixMonitorId) {
         this.channel = channel;
         this.mixMonitorId = mixMonitorId;
     }
@@ -69,8 +65,7 @@ public class StopMixMonitorAction extends AbstractManagerAction
      * @return the name of the AMI action that this class implements
      */
     @Override
-    public String getAction()
-    {
+    public String getAction() {
         return "StopMixMonitor";
     }
 
@@ -79,8 +74,7 @@ public class StopMixMonitorAction extends AbstractManagerAction
      *
      * @return the Asterisk channel name
      */
-    public String getChannel()
-    {
+    public String getChannel() {
         return channel;
     }
 
@@ -89,8 +83,7 @@ public class StopMixMonitorAction extends AbstractManagerAction
      *
      * @param channel the Asterisk channel name
      */
-    public void setChannel(String channel)
-    {
+    public void setChannel(String channel) {
         this.channel = channel;
     }
 
@@ -99,8 +92,7 @@ public class StopMixMonitorAction extends AbstractManagerAction
      *
      * @return the MixMonitor ID
      */
-    public String getMixMonitorId()
-    {
+    public String getMixMonitorId() {
         return mixMonitorId;
     }
 
@@ -109,8 +101,7 @@ public class StopMixMonitorAction extends AbstractManagerAction
      *
      * @param mixMonitorId the MixMonitor ID
      */
-    public void setMixMonitorId(String mixMonitorId)
-    {
+    public void setMixMonitorId(String mixMonitorId) {
         this.mixMonitorId = mixMonitorId;
     }
 }

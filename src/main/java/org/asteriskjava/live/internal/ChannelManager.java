@@ -16,53 +16,21 @@
  */
 package org.asteriskjava.live.internal;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-
-import org.asteriskjava.live.AsteriskChannel;
-import org.asteriskjava.live.CallerId;
-import org.asteriskjava.live.ChannelState;
-import org.asteriskjava.live.Extension;
-import org.asteriskjava.live.HangupCause;
-import org.asteriskjava.live.ManagerCommunicationException;
-import org.asteriskjava.live.NoSuchChannelException;
+import org.asteriskjava.live.*;
 import org.asteriskjava.lock.LockableMap;
 import org.asteriskjava.lock.Locker.LockCloser;
 import org.asteriskjava.manager.ResponseEvents;
 import org.asteriskjava.manager.action.StatusAction;
-import org.asteriskjava.manager.event.AbstractChannelEvent;
-import org.asteriskjava.manager.event.BridgeEvent;
-import org.asteriskjava.manager.event.CdrEvent;
-import org.asteriskjava.manager.event.DialEvent;
-import org.asteriskjava.manager.event.DtmfEvent;
-import org.asteriskjava.manager.event.HangupEvent;
-import org.asteriskjava.manager.event.ManagerEvent;
-import org.asteriskjava.manager.event.MonitorStartEvent;
-import org.asteriskjava.manager.event.MonitorStopEvent;
-import org.asteriskjava.manager.event.NewCallerIdEvent;
-import org.asteriskjava.manager.event.NewChannelEvent;
-import org.asteriskjava.manager.event.NewExtenEvent;
-import org.asteriskjava.manager.event.NewStateEvent;
-import org.asteriskjava.manager.event.ParkedCallEvent;
-import org.asteriskjava.manager.event.ParkedCallGiveUpEvent;
-import org.asteriskjava.manager.event.ParkedCallTimeOutEvent;
-import org.asteriskjava.manager.event.RenameEvent;
-import org.asteriskjava.manager.event.StatusEvent;
-import org.asteriskjava.manager.event.UnparkedCallEvent;
-import org.asteriskjava.manager.event.VarSetEvent;
+import org.asteriskjava.manager.event.*;
 import org.asteriskjava.util.DaemonThreadFactory;
 import org.asteriskjava.util.DateUtil;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
+
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Manages channel events on behalf of an AsteriskServer.
@@ -70,8 +38,7 @@ import org.asteriskjava.util.LogFactory;
  * @author srt
  * @version $Id$
  */
-class ChannelManager
-{
+class ChannelManager {
     private final Log logger = LogFactory.getLog(getClass());
 
     /**
@@ -95,18 +62,15 @@ class ChannelManager
      *
      * @param server the server this channel manager belongs to.
      */
-    ChannelManager(AsteriskServerImpl server)
-    {
+    ChannelManager(AsteriskServerImpl server) {
         this.server = server;
     }
 
-    void initialize() throws ManagerCommunicationException
-    {
+    void initialize() throws ManagerCommunicationException {
         initialize(null);
     }
 
-    void initialize(List<String> variables) throws ManagerCommunicationException
-    {
+    void initialize(List<String> variables) throws ManagerCommunicationException {
         ResponseEvents re;
 
         shutdown();
@@ -116,10 +80,8 @@ class ChannelManager
         StatusAction sa = new StatusAction();
         sa.setVariables(variables);
         re = server.sendEventGeneratingAction(sa);
-        for (ManagerEvent event : re.getEvents())
-        {
-            if (event instanceof StatusEvent)
-            {
+        for (ManagerEvent event : re.getEvents()) {
+            if (event instanceof StatusEvent) {
                 handleStatusEvent((StatusEvent) event);
             }
         }
@@ -127,20 +89,16 @@ class ChannelManager
 
     }
 
-    void disconnected()
-    {
+    void disconnected() {
         shutdown();
         logger.debug("ChannelManager has been disconnected from Asterisk.");
     }
 
-    private void shutdown()
-    {
-        if (traceScheduledExecutorService != null)
-        {
+    private void shutdown() {
+        if (traceScheduledExecutorService != null) {
             traceScheduledExecutorService.shutdown();
         }
-        try (LockCloser closer = channels.withLock())
-        {
+        try (LockCloser closer = channels.withLock()) {
             channels.clear();
         }
 
@@ -151,17 +109,13 @@ class ChannelManager
      *
      * @return a collection of all active AsteriskChannels.
      */
-    Collection<AsteriskChannel> getChannels()
-    {
+    Collection<AsteriskChannel> getChannels() {
         Collection<AsteriskChannel> copy;
 
-        try (LockCloser closer = channels.withLock())
-        {
+        try (LockCloser closer = channels.withLock()) {
             copy = new ArrayList<>(channels.size() + 2);
-            for (AsteriskChannel channel : channels.values())
-            {
-                if (channel.getState() != ChannelState.HUNGUP)
-                {
+            for (AsteriskChannel channel : channels.values()) {
+                if (channel.getState() != ChannelState.HUNGUP) {
                     copy.add(channel);
                 }
             }
@@ -169,10 +123,8 @@ class ChannelManager
         return copy;
     }
 
-    private void addChannel(AsteriskChannelImpl channel)
-    {
-        try (LockCloser closer = channels.withLock())
-        {
+    private void addChannel(AsteriskChannelImpl channel) {
+        try (LockCloser closer = channels.withLock()) {
             channels.put(channel.getId(), channel);
         }
     }
@@ -181,22 +133,17 @@ class ChannelManager
      * Removes channels that have been hung more than {@link #REMOVAL_THRESHOLD}
      * milliseconds.
      */
-    private void removeOldChannels()
-    {
+    private void removeOldChannels() {
         Iterator<AsteriskChannelImpl> i;
 
-        try (LockCloser closer = channels.withLock())
-        {
+        try (LockCloser closer = channels.withLock()) {
             i = channels.values().iterator();
-            while (i.hasNext())
-            {
+            while (i.hasNext()) {
                 final AsteriskChannel channel = i.next();
                 final Date dateOfRemoval = channel.getDateOfRemoval();
-                if (channel.getState() == ChannelState.HUNGUP && dateOfRemoval != null)
-                {
+                if (channel.getState() == ChannelState.HUNGUP && dateOfRemoval != null) {
                     final long diff = DateUtil.getDate().getTime() - dateOfRemoval.getTime();
-                    if (diff >= REMOVAL_THRESHOLD)
-                    {
+                    if (diff >= REMOVAL_THRESHOLD) {
                         i.remove();
                     }
                 }
@@ -205,32 +152,23 @@ class ChannelManager
     }
 
     private AsteriskChannelImpl addNewChannel(String uniqueId, final String name, Date dateOfCreation, String callerIdNumber,
-            String callerIdName, ChannelState state, String account)
-    {
+                                              String callerIdName, ChannelState state, String account) {
         final AsteriskChannelImpl channel = new AsteriskChannelImpl(server, name, uniqueId, dateOfCreation);
         channel.setCallerId(new CallerId(callerIdName, callerIdNumber));
         channel.setAccount(account);
         channel.stateChanged(dateOfCreation, state);
         logger.info("Adding channel " + channel.getName() + "(" + channel.getId() + ")");
 
-        if (SLEEP_TIME_BEFORE_GET_VAR > 0)
-        {
+        if (SLEEP_TIME_BEFORE_GET_VAR > 0) {
             long start = System.currentTimeMillis();
             long end = start + SLEEP_TIME_BEFORE_GET_VAR;
-            while (System.currentTimeMillis() < end)
-            {
-                try
-                {
+            while (System.currentTimeMillis() < end) {
+                try {
                     channel.getVariable(Constants.VARIABLE_TRACE_ID);
-                }
-                catch (NoSuchChannelException | ManagerCommunicationException e)
-                {
-                    try
-                    {
+                } catch (NoSuchChannelException | ManagerCommunicationException e) {
+                    try {
                         Thread.sleep(1L);
-                    }
-                    catch (InterruptedException intEx)
-                    {
+                    } catch (InterruptedException intEx) {
                         Thread.currentThread().interrupt();
                     }
                 }
@@ -243,28 +181,21 @@ class ChannelManager
         addChannel(channel);
 
         // todo getChannelImplById -> LinkedHashMap, callbacks order
-        traceScheduledExecutorService.schedule(new Runnable()
-        {
+        traceScheduledExecutorService.schedule(new Runnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 final String traceId = getTraceId(channel);
                 channel.setTraceId(traceId);
 
                 if (traceId != null && (!name.toLowerCase(Locale.ENGLISH).startsWith("local/") || name.endsWith(",1")
-                        || name.endsWith(";1")))
-                {
+                        || name.endsWith(";1"))) {
                     final OriginateCallbackData callbackData = server.getOriginateCallbackDataByTraceId(traceId);
 
-                    if (callbackData != null && callbackData.getChannel() == null)
-                    {
+                    if (callbackData != null && callbackData.getChannel() == null) {
                         callbackData.setChannel(channel);
-                        try
-                        {
+                        try {
                             callbackData.getCallback().onDialing(channel);
-                        }
-                        catch (Throwable t)
-                        {
+                        } catch (Throwable t) {
                             logger.warn("Exception dispatching originate progress. " + channel, t);
                         } // t
                     } // i
@@ -276,73 +207,57 @@ class ChannelManager
         return channel;
     }// addNewChannel
 
-    void handleStatusEvent(StatusEvent event)
-    {
+    void handleStatusEvent(StatusEvent event) {
         AsteriskChannelImpl channel;
         final Extension extension;
         boolean isNew = false;
         Map<String, String> variables = event.getVariables();
 
         channel = getChannelImplById(event.getUniqueId());
-        if (channel == null)
-        {
+        if (channel == null) {
             Date dateOfCreation;
 
-            if (event.getSeconds() != null)
-            {
+            if (event.getSeconds() != null) {
                 dateOfCreation = new Date(DateUtil.getDate().getTime() - (event.getSeconds() * 1000L));
-            }
-            else
-            {
+            } else {
                 dateOfCreation = DateUtil.getDate();
             }
             channel = new AsteriskChannelImpl(server, event.getChannel(), event.getUniqueId(), dateOfCreation);
             isNew = true;
-            if (variables != null)
-            {
-                for (Entry<String, String> variable : variables.entrySet())
-                {
+            if (variables != null) {
+                for (Entry<String, String> variable : variables.entrySet()) {
                     channel.updateVariable(variable.getKey(), variable.getValue());
                 }
             }
         }
 
-        if (event.getContext() == null && event.getExtension() == null && event.getPriority() == null)
-        {
+        if (event.getContext() == null && event.getExtension() == null && event.getPriority() == null) {
             extension = null;
-        }
-        else
-        {
+        } else {
             extension = new Extension(event.getContext(), event.getExtension(), event.getPriority());
         }
 
-        try (LockCloser closer = channel.withLock())
-        {
+        try (LockCloser closer = channel.withLock()) {
             channel.setCallerId(new CallerId(event.getCallerIdName(), event.getCallerIdNum()));
             channel.setAccount(event.getAccountCode());
-            if (event.getChannelState() != null)
-            {
+            if (event.getChannelState() != null) {
                 channel.stateChanged(event.getDateReceived(), ChannelState.valueOf(event.getChannelState()));
             }
             channel.extensionVisited(event.getDateReceived(), extension);
 
-            if (event.getBridgedChannel() != null)
-            {
+            if (event.getBridgedChannel() != null) {
                 final AsteriskChannelImpl linkedChannel = getChannelImplByName(event.getBridgedChannel());
-                if (linkedChannel != null)
-                {
+                if (linkedChannel != null) {
                     // the date used here is not correct!
                     channel.channelLinked(event.getDateReceived(), linkedChannel);
-                    try (LockCloser closer2 = linkedChannel.withLock())
-                    {
+                    try (LockCloser closer2 = linkedChannel.withLock()) {
                         linkedChannel.channelLinked(event.getDateReceived(), channel);
                     }
                 }
             }
         }
 
-        if (isNew)
-        {
+        if (isNew) {
             logger.info("Adding new channel " + channel.getName());
             addChannel(channel);
             server.fireNewAsteriskChannel(channel);
@@ -356,29 +271,23 @@ class ChannelManager
      *
      * @param name the name of the requested channel.
      * @return the (most recent) channel if found, in any state, or null if none
-     *         found.
+     * found.
      */
-    AsteriskChannelImpl getChannelImplByName(String name)
-    {
+    AsteriskChannelImpl getChannelImplByName(String name) {
         Date dateOfCreation = null;
         AsteriskChannelImpl channel = null;
 
-        if (name == null)
-        {
+        if (name == null) {
             return null;
         }
 
-        try (LockCloser closer = channels.withLock())
-        {
-            for (AsteriskChannelImpl tmp : channels.values())
-            {
-                if (name.equals(tmp.getName()))
-                {
+        try (LockCloser closer = channels.withLock()) {
+            for (AsteriskChannelImpl tmp : channels.values()) {
+                if (name.equals(tmp.getName())) {
                     // return the most recent channel or when dates are similar,
                     // the active one
                     if (dateOfCreation == null || tmp.getDateOfCreation().after(dateOfCreation)
-                            || (tmp.getDateOfCreation().equals(dateOfCreation) && tmp.getState() != ChannelState.HUNGUP))
-                    {
+                            || (tmp.getDateOfCreation().equals(dateOfCreation) && tmp.getState() != ChannelState.HUNGUP)) {
                         channel = tmp;
                         dateOfCreation = channel.getDateOfCreation();
                     }
@@ -395,8 +304,7 @@ class ChannelManager
      * @param name the name of the requested channel.
      * @return the NON-HUNGUP channel if found, or null if none is found.
      */
-    AsteriskChannelImpl getChannelImplByNameAndActive(String name)
-    {
+    AsteriskChannelImpl getChannelImplByNameAndActive(String name) {
 
         // In non bristuffed AST 1.2, we don't have uniqueid header to match the
         // channel
@@ -407,17 +315,13 @@ class ChannelManager
 
         AsteriskChannelImpl channel = null;
 
-        if (name == null)
-        {
+        if (name == null) {
             return null;
         }
 
-        try (LockCloser closer = channels.withLock())
-        {
-            for (AsteriskChannelImpl tmp : channels.values())
-            {
-                if (name.equals(tmp.getName()) && tmp.getState() != ChannelState.HUNGUP)
-                {
+        try (LockCloser closer = channels.withLock()) {
+            for (AsteriskChannelImpl tmp : channels.values()) {
+                if (name.equals(tmp.getName()) && tmp.getState() != ChannelState.HUNGUP) {
                     channel = tmp;
                 }
             }
@@ -425,15 +329,12 @@ class ChannelManager
         return channel;
     }
 
-    AsteriskChannelImpl getChannelImplById(String uniqueId)
-    {
-        if (uniqueId == null)
-        {
+    AsteriskChannelImpl getChannelImplById(String uniqueId) {
+        if (uniqueId == null) {
             return null;
         }
 
-        try (LockCloser closer = channels.withLock())
-        {
+        try (LockCloser closer = channels.withLock()) {
             return channels.get(uniqueId);
         }
     }// getChannelImplById
@@ -447,62 +348,46 @@ class ChannelManager
      *
      * @param localChannel one side
      * @return the other side, or <code>null</code> if not available or if the
-     *         given channel is not a local channel.
+     * given channel is not a local channel.
      */
-    AsteriskChannelImpl getOtherSideOfLocalChannel(AsteriskChannel localChannel)
-    {
+    AsteriskChannelImpl getOtherSideOfLocalChannel(AsteriskChannel localChannel) {
         final String name;
         final char num;
 
-        if (localChannel == null)
-        {
+        if (localChannel == null) {
             return null;
         }
 
         name = localChannel.getName();
         if (name == null || !name.startsWith("Local/")
-                || (name.charAt(name.length() - 2) != ',' && name.charAt(name.length() - 2) != ';'))
-        {
+                || (name.charAt(name.length() - 2) != ',' && name.charAt(name.length() - 2) != ';')) {
             return null;
         }
 
         num = name.charAt(name.length() - 1);
 
-        if (num == '1')
-        {
+        if (num == '1') {
             return getChannelImplByName(name.substring(0, name.length() - 1) + "2");
-        }
-        else if (num == '2')
-        {
+        } else if (num == '2') {
             return getChannelImplByName(name.substring(0, name.length() - 1) + "1");
-        }
-        else
-        {
+        } else {
             return null;
         }
     }
 
-    void handleNewChannelEvent(NewChannelEvent event)
-    {
+    void handleNewChannelEvent(NewChannelEvent event) {
         final AsteriskChannelImpl channel = getChannelImplById(event.getUniqueId());
 
-        if (channel == null)
-        {
-            if (event.getChannel() == null)
-            {
+        if (channel == null) {
+            if (event.getChannel() == null) {
                 logger.info("Ignored NewChannelEvent with empty channel name (uniqueId=" + event.getUniqueId() + ")");
-            }
-            else
-            {
+            } else {
                 addNewChannel(event.getUniqueId(), event.getChannel(), event.getDateReceived(), event.getCallerIdNum(),
                         event.getCallerIdName(), ChannelState.valueOf(event.getChannelState()), event.getAccountCode());
             }
-        }
-        else
-        {
+        } else {
             // channel had already been created probably by a NewCallerIdEvent
-            try (LockCloser closer = channel.withLock())
-            {
+            try (LockCloser closer = channel.withLock()) {
                 channel.nameChanged(event.getDateReceived(), event.getChannel());
                 channel.setCallerId(new CallerId(event.getCallerIdName(), event.getCallerIdNum()));
                 channel.stateChanged(event.getDateReceived(), ChannelState.valueOf(event.getChannelState()));
@@ -510,14 +395,12 @@ class ChannelManager
         }
     }
 
-    void handleNewExtenEvent(NewExtenEvent event)
-    {
+    void handleNewExtenEvent(NewExtenEvent event) {
         AsteriskChannelImpl channel;
         final Extension extension;
 
         channel = getChannelImplById(event.getUniqueId());
-        if (channel == null)
-        {
+        if (channel == null) {
             logger.warn("handleNewExtenEvent: Ignored NewExtenEvent for unknown channel " + event.getChannel());
             return;
         }
@@ -525,27 +408,22 @@ class ChannelManager
         extension = new Extension(event.getContext(), event.getExtension(), event.getPriority(), event.getApplication(),
                 event.getAppData());
 
-        try (LockCloser closer = channel.withLock())
-        {
+        try (LockCloser closer = channel.withLock()) {
             channel.extensionVisited(event.getDateReceived(), extension);
         }
     }
 
-    private void idChanged(AsteriskChannelImpl channel, AbstractChannelEvent event)
-    {
-        if (channel != null)
-        {
+    private void idChanged(AsteriskChannelImpl channel, AbstractChannelEvent event) {
+        if (channel != null) {
             final String oldId = channel.getId();
             final String newId = event.getUniqueId();
 
-            if (oldId != null && oldId.equals(newId))
-            {
+            if (oldId != null && oldId.equals(newId)) {
                 return;
             }
 
             logger.info("Changing unique_id for '" + channel.getName() + "' from " + oldId + " to " + newId + " < " + event);
-            try (LockCloser closer = channels.withLock())
-            {
+            try (LockCloser closer = channels.withLock()) {
                 channels.remove(oldId);
                 channels.put(newId, channel);
                 channel.idChanged(event.getDateReceived(), newId);
@@ -553,19 +431,16 @@ class ChannelManager
         }
     }// idChanged
 
-    void handleNewStateEvent(NewStateEvent event)
-    {
+    void handleNewStateEvent(NewStateEvent event) {
         AsteriskChannelImpl channel = getChannelImplById(event.getUniqueId());
 
-        if (channel == null)
-        {
+        if (channel == null) {
             // NewStateEvent can occur for an existing channel that now has a
             // different unique id (originate with Local/)
             channel = getChannelImplByNameAndActive(event.getChannel());
             idChanged(channel, event);
 
-            if (channel == null)
-            {
+            if (channel == null) {
                 logger.info("Creating new channel due to NewStateEvent '" + event.getChannel() + "' unique id "
                         + event.getUniqueId());
                 // NewStateEvent can occur instead of a NewChannelEvent
@@ -579,25 +454,21 @@ class ChannelManager
         // previously received through a
         // NewCallerIdEvent. This happens at least on outgoing legs from the
         // queue application to agents.
-        if (event.getCallerIdNum() != null || event.getCallerIdName() != null)
-        {
+        if (event.getCallerIdNum() != null || event.getCallerIdName() != null) {
             String cidnum = "";
             String cidname = "";
             CallerId currentCallerId = channel.getCallerId();
 
-            if (currentCallerId != null)
-            {
+            if (currentCallerId != null) {
                 cidnum = currentCallerId.getNumber();
                 cidname = currentCallerId.getName();
             }
 
-            if (event.getCallerIdNum() != null)
-            {
+            if (event.getCallerIdNum() != null) {
                 cidnum = event.getCallerIdNum();
             }
 
-            if (event.getCallerIdName() != null)
-            {
+            if (event.getCallerIdName() != null) {
                 cidname = event.getCallerIdName();
             }
 
@@ -609,39 +480,32 @@ class ChannelManager
             // channel uniqueid, indicating the channel has been
             // renamed but no related RenameEvent has been received.
             // This happens with mISDN channels (see AJ-153)
-            if (event.getChannel() != null && !event.getChannel().equals(channel.getName()))
-            {
+            if (event.getChannel() != null && !event.getChannel().equals(channel.getName())) {
                 logger.info("Renaming channel (following NewStateEvent) '" + channel.getName() + "' to '"
                         + event.getChannel() + "'");
-                try (LockCloser closer = channel.withLock())
-                {
+                try (LockCloser closer = channel.withLock()) {
                     channel.nameChanged(event.getDateReceived(), event.getChannel());
                 }
             }
         }
 
-        if (event.getChannelState() != null)
-        {
-            try (LockCloser closer = channel.withLock())
-            {
+        if (event.getChannelState() != null) {
+            try (LockCloser closer = channel.withLock()) {
                 channel.stateChanged(event.getDateReceived(), ChannelState.valueOf(event.getChannelState()));
             }
         }
     }
 
-    void handleNewCallerIdEvent(NewCallerIdEvent event)
-    {
+    void handleNewCallerIdEvent(NewCallerIdEvent event) {
         AsteriskChannelImpl channel = getChannelImplById(event.getUniqueId());
 
-        if (channel == null)
-        {
+        if (channel == null) {
             // NewCallerIdEvent can occur for an existing channel that now has a
             // different unique id (originate with Local/)
             channel = getChannelImplByNameAndActive(event.getChannel());
             idChanged(channel, event);
 
-            if (channel == null)
-            {
+            if (channel == null) {
                 // NewCallerIdEvent can occur before NewChannelEvent
                 channel = addNewChannel(event.getUniqueId(), event.getChannel(), event.getDateReceived(),
                         event.getCallerIdNum(), event.getCallerIdName(), ChannelState.DOWN,
@@ -649,30 +513,25 @@ class ChannelManager
             }
         }
 
-        try (LockCloser closer = channel.withLock())
-        {
+        try (LockCloser closer = channel.withLock()) {
             channel.setCallerId(new CallerId(event.getCallerIdName(), event.getCallerIdNum()));
         }
     }
 
-    void handleHangupEvent(HangupEvent event)
-    {
+    void handleHangupEvent(HangupEvent event) {
         HangupCause cause = null;
         AsteriskChannelImpl channel = getChannelImplById(event.getUniqueId());
 
-        if (channel == null)
-        {
+        if (channel == null) {
             logger.warn("handleHangupEvent: Ignored HangupEvent for unknown channel " + event.getChannel());
             return;
         }
 
-        if (event.getCause() != null)
-        {
+        if (event.getCause() != null) {
             cause = HangupCause.getByCode(event.getCause());
         }
 
-        try (LockCloser closer = channel.withLock())
-        {
+        try (LockCloser closer = channel.withLock()) {
             channel.hungup(event.getDateReceived(), cause, event.getCauseTxt());
         }
 
@@ -680,27 +539,21 @@ class ChannelManager
         removeOldChannels();
     }
 
-    void handleDialEvent(DialEvent event)
-    {
+    void handleDialEvent(DialEvent event) {
         final AsteriskChannelImpl sourceChannel = getChannelImplById(event.getUniqueId());
         final AsteriskChannelImpl destinationChannel = getChannelImplById(event.getDestUniqueId());
 
-        if (sourceChannel == null)
-        {
+        if (sourceChannel == null) {
             logger.warn("handleDialEvent: Ignored DialEvent for unknown source channel " + event.getChannel()
                     + " with unique id " + event.getUniqueId());
             return;
         }
-        if (destinationChannel == null)
-        {
-            if (DialEvent.SUBEVENT_END.equalsIgnoreCase(event.getSubEvent()))
-            {
+        if (destinationChannel == null) {
+            if (DialEvent.SUBEVENT_END.equalsIgnoreCase(event.getSubEvent())) {
                 sourceChannel.updateVariable(AsteriskChannel.VAR_AJ_DIAL_STATUS, event.getDialStatus());
                 logger.info("handleDialEvent: Ignored DialEvent for unknown dst channel " + event.getDestination()
                         + " with unique_id " + event.getDestUniqueId());
-            }
-            else
-            {
+            } else {
                 logger.warn("handleDialEvent: Ignored DialEvent for unknown dst channel " + event.getDestination()
                         + " with unique_id " + event.getDestUniqueId());
             }
@@ -710,109 +563,88 @@ class ChannelManager
         logger.info(sourceChannel.getName() + " dialed " + destinationChannel.getName());
         getTraceId(sourceChannel);
         getTraceId(destinationChannel);
-        try (LockCloser closer = sourceChannel.withLock())
-        {
+        try (LockCloser closer = sourceChannel.withLock()) {
             sourceChannel.channelDialed(event.getDateReceived(), destinationChannel);
         }
-        try (LockCloser closer = destinationChannel.withLock())
-        {
+        try (LockCloser closer = destinationChannel.withLock()) {
             destinationChannel.channelDialing(event.getDateReceived(), sourceChannel);
         }
     }
 
-    void handleBridgeEvent(BridgeEvent event)
-    {
+    void handleBridgeEvent(BridgeEvent event) {
         final AsteriskChannelImpl channel1 = getChannelImplById(event.getUniqueId1());
         final AsteriskChannelImpl channel2 = getChannelImplById(event.getUniqueId2());
 
-        if (channel1 == null)
-        {
+        if (channel1 == null) {
             logger.warn("handleBridgeEvent: Ignored BridgeEvent for unknown channel " + event.getChannel1());
             return;
         }
-        if (channel2 == null)
-        {
+        if (channel2 == null) {
             logger.warn("handleBridgeEvent: Ignored BridgeEvent for unknown channel " + event.getChannel2());
             return;
         }
 
-        if (event.isLink())
-        {
+        if (event.isLink()) {
             logger.info("Linking channels " + channel1.getName() + " and " + channel2.getName());
-            try (LockCloser closer = channel1.withLock())
-            {
+            try (LockCloser closer = channel1.withLock()) {
                 channel1.channelLinked(event.getDateReceived(), channel2);
             }
 
-            try (LockCloser closer = channel2.withLock())
-            {
+            try (LockCloser closer = channel2.withLock()) {
                 channel2.channelLinked(event.getDateReceived(), channel1);
             }
         }
 
-        if (event.isUnlink())
-        {
+        if (event.isUnlink()) {
             logger.info("Unlinking channels " + channel1.getName() + " and " + channel2.getName());
-            try (LockCloser closer = channel1.withLock())
-            {
+            try (LockCloser closer = channel1.withLock()) {
                 channel1.channelUnlinked(event.getDateReceived());
             }
 
-            try (LockCloser closer = channel2.withLock())
-            {
+            try (LockCloser closer = channel2.withLock()) {
                 channel2.channelUnlinked(event.getDateReceived());
             }
         }
     }
 
-    void handleRenameEvent(RenameEvent event)
-    {
+    void handleRenameEvent(RenameEvent event) {
         AsteriskChannelImpl channel = getChannelImplById(event.getUniqueId());
 
-        if (channel == null)
-        {
+        if (channel == null) {
             logger.warn("handleRenameEvent: Ignored RenameEvent for unknown channel with uniqueId " + event.getUniqueId());
             return;
         }
 
         logger.info("Renaming channel '" + channel.getName() + "' to '" + event.getNewname() + "', uniqueId is "
                 + event.getUniqueId());
-        try (LockCloser closer = channel.withLock())
-        {
+        try (LockCloser closer = channel.withLock()) {
             channel.nameChanged(event.getDateReceived(), event.getNewname());
         }
     }
 
-    void handleCdrEvent(CdrEvent event)
-    {
+    void handleCdrEvent(CdrEvent event) {
         final AsteriskChannelImpl channel = getChannelImplById(event.getUniqueId());
         final AsteriskChannelImpl destinationChannel = getChannelImplByName(event.getDestinationChannel());
         final CallDetailRecordImpl cdr;
 
-        if (channel == null)
-        {
+        if (channel == null) {
             logger.info("Ignored CdrEvent for unknown channel with uniqueId " + event.getUniqueId());
             return;
         }
 
         cdr = new CallDetailRecordImpl(channel, destinationChannel, event);
 
-        try (LockCloser closer = channel.withLock())
-        {
+        try (LockCloser closer = channel.withLock()) {
             channel.callDetailRecordReceived(event.getDateReceived(), cdr);
         }
     }
 
-    private String getTraceId(AsteriskChannel channel)
-    {
+    private String getTraceId(AsteriskChannel channel) {
         String traceId;
 
-        try
-        {
+        try {
             traceId = channel.getVariable(Constants.VARIABLE_TRACE_ID);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             traceId = null;
         }
         // logger.info("TraceId for channel " + channel.getName() + " is " +
@@ -820,21 +652,18 @@ class ChannelManager
         return traceId;
     }
 
-    void handleParkedCallEvent(ParkedCallEvent event)
-    {
+    void handleParkedCallEvent(ParkedCallEvent event) {
         logger.info("Trace - ChannelManager.java - handleParkedCallEvent: " + event);
         // Only bristuffed versions: AsteriskChannelImpl channel =
         // getChannelImplById(event.getUniqueId());
         AsteriskChannelImpl channel = getChannelImplByNameAndActive(event.getParkeeChannel());
 
-        if (channel == null)
-        {
+        if (channel == null) {
             logger.info("Ignored ParkedCallEvent for unknown channel " + event.getParkeeChannel());
             return;
         }
 
-        try (LockCloser closer = channel.withLock())
-        {
+        try (LockCloser closer = channel.withLock()) {
             Extension ext = new Extension(null,
                     (event.getParkingSpace() != null) ? event.getParkingSpace() : event.getExten(), 1);
             String parkinglot = event.getParkingLot();
@@ -843,195 +672,161 @@ class ChannelManager
         }
     }
 
-    void handleParkedCallGiveUpEvent(ParkedCallGiveUpEvent event)
-    {
+    void handleParkedCallGiveUpEvent(ParkedCallGiveUpEvent event) {
         // Only bristuffed versions: AsteriskChannelImpl channel =
         // getChannelImplById(event.getUniqueId());
         AsteriskChannelImpl channel = getChannelImplByNameAndActive(event.getParkeeChannel());
 
-        if (channel == null)
-        {
+        if (channel == null) {
             logger.info("Ignored ParkedCallGiveUpEvent for unknown channel " + event.getParkeeChannel());
             return;
         }
 
         Extension wasParkedAt = channel.getParkedAt();
 
-        if (wasParkedAt == null)
-        {
+        if (wasParkedAt == null) {
             logger.info("Ignored ParkedCallGiveUpEvent as the channel was not parked");
             return;
         }
 
-        try (LockCloser closer = channel.withLock())
-        {
+        try (LockCloser closer = channel.withLock()) {
             channel.setParkedAt(null, null);
         }
         logger.info("Channel " + channel.getName() + " is unparked (GiveUp) from " + wasParkedAt.getExtension());
     }
 
-    void handleParkedCallTimeOutEvent(ParkedCallTimeOutEvent event)
-    {
+    void handleParkedCallTimeOutEvent(ParkedCallTimeOutEvent event) {
         // Only bristuffed versions: AsteriskChannelImpl channel =
         // getChannelImplById(event.getUniqueId());
         final AsteriskChannelImpl channel = getChannelImplByNameAndActive(event.getParkeeChannel());
 
-        if (channel == null)
-        {
+        if (channel == null) {
             logger.info("Ignored ParkedCallTimeOutEvent for unknown channel " + event.getParkeeChannel());
             return;
         }
 
         Extension wasParkedAt = channel.getParkedAt();
 
-        if (wasParkedAt == null)
-        {
+        if (wasParkedAt == null) {
             logger.info("Ignored ParkedCallTimeOutEvent as the channel was not parked");
             return;
         }
 
-        try (LockCloser closer = channel.withLock())
-        {
+        try (LockCloser closer = channel.withLock()) {
             channel.setParkedAt(null, null);
         }
         logger.info("Channel " + channel.getName() + " is unparked (Timeout) from " + wasParkedAt.getExtension());
     }
 
-    void handleUnparkedCallEvent(UnparkedCallEvent event)
-    {
+    void handleUnparkedCallEvent(UnparkedCallEvent event) {
         // Only bristuffed versions: AsteriskChannelImpl channel =
         // getChannelImplById(event.getUniqueId());
         final AsteriskChannelImpl channel = getChannelImplByNameAndActive(event.getParkeeChannel());
 
-        if (channel == null)
-        {
+        if (channel == null) {
             logger.info("Ignored UnparkedCallEvent for unknown channel " + event.getParkeeChannel());
             return;
         }
 
         Extension wasParkedAt = channel.getParkedAt();
 
-        if (wasParkedAt == null)
-        {
+        if (wasParkedAt == null) {
             logger.info("Ignored UnparkedCallEvent as the channel was not parked");
             return;
         }
 
-        try (LockCloser closer = channel.withLock())
-        {
+        try (LockCloser closer = channel.withLock()) {
             channel.setParkedAt(null, null);
         }
         logger.info("Channel " + channel.getName() + " is unparked (moved away) from " + wasParkedAt.getExtension());
     }
 
-    void handleVarSetEvent(VarSetEvent event)
-    {
-        if (event.getUniqueId() == null)
-        {
+    void handleVarSetEvent(VarSetEvent event) {
+        if (event.getUniqueId() == null) {
             return;
         }
 
         final AsteriskChannelImpl channel = getChannelImplById(event.getUniqueId());
-        if (channel == null)
-        {
+        if (channel == null) {
             logger.info("Ignored VarSetEvent for unknown channel with uniqueId " + event.getUniqueId());
             return;
         }
 
-        try (LockCloser closer = channel.withLock())
-        {
+        try (LockCloser closer = channel.withLock()) {
             channel.updateVariable(event.getVariable(), event.getValue());
         }
     }
 
-    void handleDtmfEvent(DtmfEvent event)
-    {
+    void handleDtmfEvent(DtmfEvent event) {
         // we are only intrested in END events
-        if (event.isBegin())
-        {
+        if (event.isBegin()) {
             return;
         }
 
-        if (event.getUniqueId() == null)
-        {
+        if (event.getUniqueId() == null) {
             return;
         }
 
         final AsteriskChannelImpl channel = getChannelImplById(event.getUniqueId());
-        if (channel == null)
-        {
+        if (channel == null) {
             logger.info("Ignored DtmfEvent for unknown channel with uniqueId " + event.getUniqueId());
             return;
         }
 
         final Character dtmfDigit;
-        if (event.getDigit() == null || event.getDigit().length() < 1)
-        {
+        if (event.getDigit() == null || event.getDigit().length() < 1) {
             dtmfDigit = null;
-        }
-        else
-        {
+        } else {
             dtmfDigit = event.getDigit().charAt(0);
         }
 
-        try (LockCloser closer = channel.withLock())
-        {
-            if (event.isReceived())
-            {
+        try (LockCloser closer = channel.withLock()) {
+            if (event.isReceived()) {
                 channel.dtmfReceived(dtmfDigit);
             }
-            if (event.isSent())
-            {
+            if (event.isSent()) {
                 channel.dtmfSent(dtmfDigit);
             }
         }
     }
 
-    void handleMonitorStartEvent(MonitorStartEvent event)
-    {
+    void handleMonitorStartEvent(MonitorStartEvent event) {
         final AsteriskChannelImpl channel = getChannelImplByNameAndActive(event.getChannel());
 
-        if (channel == null)
-        {
+        if (channel == null) {
             logger.info("Ignored MonitorStartEvent for unknown channel " + event.getChannel());
             return;
         }
 
         boolean isMonitored = channel.isMonitored();
 
-        if (isMonitored)
-        {
+        if (isMonitored) {
             logger.info("Ignored MonitorStartEvent as the channel was already monitored");
             return;
         }
 
-        try (LockCloser closer = channel.withLock())
-        {
+        try (LockCloser closer = channel.withLock()) {
             channel.setMonitored(true);
         }
         logger.info("Channel " + channel.getName() + " is monitored");
     }
 
-    void handleMonitorStopEvent(MonitorStopEvent event)
-    {
+    void handleMonitorStopEvent(MonitorStopEvent event) {
         final AsteriskChannelImpl channel = getChannelImplByNameAndActive(event.getChannel());
 
-        if (channel == null)
-        {
+        if (channel == null) {
             logger.info("Ignored MonitorStopEvent for unknown channel " + event.getChannel());
             return;
         }
 
         boolean isMonitored = channel.isMonitored();
 
-        if (!isMonitored)
-        {
+        if (!isMonitored) {
             logger.info("Ignored MonitorStopEvent as the channel was not monitored");
             return;
         }
 
-        try (LockCloser closer = channel.withLock())
-        {
+        try (LockCloser closer = channel.withLock()) {
             channel.setMonitored(false);
         }
         logger.info("Channel " + channel.getName() + " is not monitored");

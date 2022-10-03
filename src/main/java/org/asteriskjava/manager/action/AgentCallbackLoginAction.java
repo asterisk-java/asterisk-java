@@ -30,8 +30,8 @@ package org.asteriskjava.manager.action;
  * @since 0.2
  * @deprecated use {@link org.asteriskjava.manager.action.QueueAddAction} instead.
  */
-@Deprecated public class AgentCallbackLoginAction extends AbstractManagerAction
-{
+@Deprecated
+public class AgentCallbackLoginAction extends AbstractManagerAction {
     /**
      * Serializable version identifier.
      */
@@ -45,8 +45,7 @@ package org.asteriskjava.manager.action;
     /**
      * Creates a new empty AgentCallbackLoginAction.
      */
-    public AgentCallbackLoginAction()
-    {
+    public AgentCallbackLoginAction() {
 
     }
 
@@ -58,8 +57,7 @@ package org.asteriskjava.manager.action;
      * @param exten the extension that is called to connect a queue member with
      *              this agent
      */
-    public AgentCallbackLoginAction(String agent, String exten)
-    {
+    public AgentCallbackLoginAction(String agent, String exten) {
         this.agent = agent;
         this.exten = exten;
     }
@@ -73,8 +71,7 @@ package org.asteriskjava.manager.action;
      *                this agent
      * @param context the context of the extension to use for callback
      */
-    public AgentCallbackLoginAction(String agent, String exten, String context)
-    {
+    public AgentCallbackLoginAction(String agent, String exten, String context) {
         this(agent, exten);
         this.context = context;
     }
@@ -95,8 +92,7 @@ package org.asteriskjava.manager.action;
      *                   <code>null</code> if default should be used.
      * @since 1.0.0
      */
-    public AgentCallbackLoginAction(String agent, String exten, String context, Boolean ackCall, Long wrapupTime)
-    {
+    public AgentCallbackLoginAction(String agent, String exten, String context, Boolean ackCall, Long wrapupTime) {
         this(agent, exten, context);
         this.ackCall = ackCall;
         this.wrapupTime = wrapupTime;
@@ -108,8 +104,7 @@ package org.asteriskjava.manager.action;
      * @return the name of this action
      */
     @Override
-    public String getAction()
-    {
+    public String getAction() {
         return "AgentCallbackLogin";
     }
 
@@ -118,8 +113,7 @@ package org.asteriskjava.manager.action;
      *
      * @return the name of the agent to log in
      */
-    public String getAgent()
-    {
+    public String getAgent() {
         return agent;
     }
 
@@ -129,8 +123,7 @@ package org.asteriskjava.manager.action;
      *
      * @param agent the name of the agent to log in
      */
-    public void setAgent(String agent)
-    {
+    public void setAgent(String agent) {
         this.agent = agent;
     }
 
@@ -139,8 +132,7 @@ package org.asteriskjava.manager.action;
      *
      * @return the extension to use for callback.
      */
-    public String getExten()
-    {
+    public String getExten() {
         return exten;
     }
 
@@ -150,8 +142,7 @@ package org.asteriskjava.manager.action;
      *
      * @param exten the extension to use for callback.
      */
-    public void setExten(String exten)
-    {
+    public void setExten(String exten) {
         this.exten = exten;
     }
 
@@ -160,8 +151,7 @@ package org.asteriskjava.manager.action;
      *
      * @return the context of the extension to use for callback.
      */
-    public String getContext()
-    {
+    public String getContext() {
         return context;
     }
 
@@ -170,8 +160,7 @@ package org.asteriskjava.manager.action;
      *
      * @param context the context of the extension to use for callback.
      */
-    public void setContext(String context)
-    {
+    public void setContext(String context) {
         this.context = context;
     }
 
@@ -179,11 +168,10 @@ package org.asteriskjava.manager.action;
      * Returns if an acknowledgement is needed when agent is called back.
      *
      * @return <code>Boolean.TRUE</code> if acknowledgement by '#' is required when agent is
-     *         called back, <code>Boolean.FALSE</code> otherwise. <code>null</code> if
-     *         default should be used.
+     * called back, <code>Boolean.FALSE</code> otherwise. <code>null</code> if
+     * default should be used.
      */
-    public Boolean getAckCall()
-    {
+    public Boolean getAckCall() {
         return ackCall;
     }
 
@@ -196,8 +184,7 @@ package org.asteriskjava.manager.action;
      *                '#' when agent is called back, <code>Boolean.FALSE</code> otherwise.
      *                <code>null</code> if default should be used.
      */
-    public void setAckCall(Boolean ackCall)
-    {
+    public void setAckCall(Boolean ackCall) {
         this.ackCall = ackCall;
     }
 
@@ -206,10 +193,9 @@ package org.asteriskjava.manager.action;
      * can receive a new call.
      *
      * @return the minimum amount of time after disconnecting before the caller
-     *         can receive a new call in seconds.
+     * can receive a new call in seconds.
      */
-    public Long getWrapupTime()
-    {
+    public Long getWrapupTime() {
         return wrapupTime;
     }
 
@@ -223,8 +209,7 @@ package org.asteriskjava.manager.action;
      *                   the caller can receive a new call.
      *                   <code>null</code> if default should be used.
      */
-    public void setWrapupTime(Long wrapupTime)
-    {
+    public void setWrapupTime(Long wrapupTime) {
         this.wrapupTime = wrapupTime;
     }
 }

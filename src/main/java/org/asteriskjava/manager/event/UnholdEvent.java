@@ -30,23 +30,21 @@ package org.asteriskjava.manager.event;
  * @version $Id$
  * @see org.asteriskjava.manager.event.HoldEvent
  * @since 0.2 Enro 2015-03: No longer deprecated since Asterisk 13 uses this
- *        again.
+ * again.
  */
-public class UnholdEvent extends AbstractHoldEvent
-{
+public class UnholdEvent extends AbstractHoldEvent {
     /**
      * Serializable version identifier.
      */
     static final long serialVersionUID = 1L;
-    
-    
+
+
     /**
      * Creates a new UnholdEvent.
      *
      * @param source
      */
-    public UnholdEvent(Object source)
-    {
+    public UnholdEvent(Object source) {
         super(source);
         setStatus(false);
     }

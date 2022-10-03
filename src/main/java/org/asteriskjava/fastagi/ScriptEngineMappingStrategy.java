@@ -16,14 +16,14 @@
  */
 package org.asteriskjava.fastagi;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
+import org.asteriskjava.util.Log;
+import org.asteriskjava.util.LogFactory;
+
+import javax.script.Bindings;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -33,14 +33,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 
-import javax.script.Bindings;
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
-
-import org.asteriskjava.util.Log;
-import org.asteriskjava.util.LogFactory;
-
 /**
  * A MappingStrategy that uses {@link javax.script.ScriptEngine} to run
  * AgiScripts. This MappingStrategy can be used to run JavaScript, Groovy,
@@ -48,8 +40,7 @@ import org.asteriskjava.util.LogFactory;
  *
  * @since 1.0.0
  */
-public class ScriptEngineMappingStrategy implements MappingStrategy
-{
+public class ScriptEngineMappingStrategy implements MappingStrategy {
     protected final Log logger = LogFactory.getLog(getClass());
 
     /**
@@ -73,8 +64,7 @@ public class ScriptEngineMappingStrategy implements MappingStrategy
      * Creates a new ScriptEngineMappingStrategy that searches for scripts in
      * the current directory.
      */
-    public ScriptEngineMappingStrategy()
-    {
+    public ScriptEngineMappingStrategy() {
         this(DEFAULT_SCRIPT_PATH, DEFAULT_LIB_PATH);
     }
 
@@ -83,11 +73,10 @@ public class ScriptEngineMappingStrategy implements MappingStrategy
      * the given path.
      *
      * @param scriptPath array of directory names to search for script files.
-     * @param libPath array of directory names to search for additional
-     *            libraries (jar files).
+     * @param libPath    array of directory names to search for additional
+     *                   libraries (jar files).
      */
-    public ScriptEngineMappingStrategy(String[] scriptPath, String[] libPath)
-    {
+    public ScriptEngineMappingStrategy(String[] scriptPath, String[] libPath) {
         setScriptPath(scriptPath);
         setLibPath(libPath);
     }
@@ -99,8 +88,7 @@ public class ScriptEngineMappingStrategy implements MappingStrategy
      *
      * @param scriptPath array of directory names to search for script files.
      */
-    public void setScriptPath(String[] scriptPath)
-    {
+    public void setScriptPath(String[] scriptPath) {
         this.scriptPath = Arrays.copyOf(scriptPath, scriptPath.length);
     }
 
@@ -110,28 +98,24 @@ public class ScriptEngineMappingStrategy implements MappingStrategy
      * Default is "lib".
      *
      * @param libPath array of directory names to search for additional
-     *            libraries (jar files).
+     *                libraries (jar files).
      */
-    public void setLibPath(String[] libPath)
-    {
+    public void setLibPath(String[] libPath) {
         this.libPath = Arrays.copyOf(libPath, libPath.length);
     }
 
     @Override
-    public AgiScript determineScript(AgiRequest request, AgiChannel channel)
-    {
+    public AgiScript determineScript(AgiRequest request, AgiChannel channel) {
         // check is a file corresponding to the AGI request is found on the
         // scriptPath
         final File file = searchFile(request.getScript(), scriptPath);
-        if (file == null)
-        {
+        if (file == null) {
             return null;
         }
 
         // check if there is a ScriptEngine that can handle the file
         final ScriptEngine scriptEngine = getScriptEngine(file);
-        if (scriptEngine == null)
-        {
+        if (scriptEngine == null) {
             logger.debug("No ScriptEngine found that can handle '" + file.getPath() + "'");
             return null;
         }
@@ -145,11 +129,9 @@ public class ScriptEngineMappingStrategy implements MappingStrategy
      * @param file the file to search a ScriptEngine for.
      * @return the ScriptEngine or <code>null</code> if none is found.
      */
-    protected ScriptEngine getScriptEngine(File file)
-    {
+    protected ScriptEngine getScriptEngine(File file) {
         final String extension = getExtension(file.getName());
-        if (extension == null)
-        {
+        if (extension == null) {
             return null;
         }
 
@@ -164,10 +146,8 @@ public class ScriptEngineMappingStrategy implements MappingStrategy
      * @return the ScriptEngineManager to use for loading the ScriptEngine.
      * @see javax.script.ScriptEngineManager#ScriptEngineManager()
      */
-    protected synchronized ScriptEngineManager getScriptEngineManager()
-    {
-        if (scriptEngineManager == null)
-        {
+    protected synchronized ScriptEngineManager getScriptEngineManager() {
+        if (scriptEngineManager == null) {
             this.scriptEngineManager = new ScriptEngineManager(getClassLoader());
         }
         return scriptEngineManager;
@@ -181,54 +161,40 @@ public class ScriptEngineMappingStrategy implements MappingStrategy
      * @return the ClassLoader to use for the ScriptEngineManager.
      * @see #getScriptEngineManager()
      */
-    protected ClassLoader getClassLoader()
-    {
+    protected ClassLoader getClassLoader() {
         final ClassLoader parentClassLoader = Thread.currentThread().getContextClassLoader();
         final List<URL> jarFileUrls = new ArrayList<>();
 
-        if (libPath == null || libPath.length == 0)
-        {
+        if (libPath == null || libPath.length == 0) {
             return parentClassLoader;
         }
 
-        for (String libPathEntry : libPath)
-        {
+        for (String libPathEntry : libPath) {
             final File libDir = new File(libPathEntry);
-            if (!libDir.isDirectory())
-            {
+            if (!libDir.isDirectory()) {
                 continue;
             }
 
-            final File[] jarFiles = libDir.listFiles(new FilenameFilter()
-            {
-                public boolean accept(File dir, String name)
-                {
+            final File[] jarFiles = libDir.listFiles(new FilenameFilter() {
+                public boolean accept(File dir, String name) {
                     return name.endsWith(".jar");
                 }
             });
-            if (jarFiles != null)
-            {
+            if (jarFiles != null) {
 
-                for (File jarFile : jarFiles)
-                {
-                    try
-                    {
+                for (File jarFile : jarFiles) {
+                    try {
                         jarFileUrls.add(jarFile.toURI().toURL());
-                    }
-                    catch (MalformedURLException e)
-                    {
+                    } catch (MalformedURLException e) {
                         // should not happen
                     }
                 }
-            }
-            else
-            {
+            } else {
                 logger.error("Didn't find any jar files at " + libDir.getAbsolutePath());
             }
         }
 
-        if (jarFileUrls.isEmpty())
-        {
+        if (jarFileUrls.isEmpty()) {
             return parentClassLoader;
         }
 
@@ -239,53 +205,41 @@ public class ScriptEngineMappingStrategy implements MappingStrategy
      * Searches for the file with the given name on the path.
      *
      * @param scriptName the name of the file to search for.
-     * @param path an array of directories to search for the file in order of
-     *            preference.
+     * @param path       an array of directories to search for the file in order of
+     *                   preference.
      * @return the canonical file if found on the path or <code>null</code> if
-     *         not found.
+     * not found.
      */
-    protected File searchFile(String scriptName, String[] path)
-    {
-        if (scriptName == null || path == null)
-        {
+    protected File searchFile(String scriptName, String[] path) {
+        if (scriptName == null || path == null) {
             return null;
         }
 
-        for (String pathElement : path)
-        {
+        for (String pathElement : path) {
             final File pathElementDir = new File(pathElement);
             // skip if pathElement is not a directory
-            if (!pathElementDir.isDirectory())
-            {
+            if (!pathElementDir.isDirectory()) {
                 continue;
             }
 
             final File file = new File(pathElementDir, scriptName.replaceAll("/", Matcher.quoteReplacement(File.separator)));
-            if (!file.exists())
-            {
+            if (!file.exists()) {
                 continue;
             }
 
-            try
-            {
+            try {
                 // prevent attacks with scripts using ".." in their name.
-                if (!isInside(file, pathElementDir))
-                {
+                if (!isInside(file, pathElementDir)) {
                     return null;
                 }
-            }
-            catch (IOException e)
-            {
+            } catch (IOException e) {
                 logger.warn("Unable to check whether '" + file.getPath() + "' is below '" + pathElementDir.getPath() + "'");
                 continue;
             }
 
-            try
-            {
+            try {
                 return file.getCanonicalFile();
-            }
-            catch (IOException e)
-            {
+            } catch (IOException e) {
                 logger.error("Unable to get canonical file for '" + file.getPath() + "'", e);
             }
         }
@@ -297,14 +251,13 @@ public class ScriptEngineMappingStrategy implements MappingStrategy
      * directory) or not.
      *
      * @param file the file to check.
-     * @param dir the directory to check.
+     * @param dir  the directory to check.
      * @return <code>true</code> if file is below directory, <code>false</code>
-     *         otherwise.
+     * otherwise.
      * @throws IOException if the canonical path of file or dir cannot be
-     *             determined.
+     *                     determined.
      */
-    protected final boolean isInside(File file, File dir) throws IOException
-    {
+    protected final boolean isInside(File file, File dir) throws IOException {
         return file.getCanonicalPath().startsWith(dir.getCanonicalPath());
     }
 
@@ -313,71 +266,59 @@ public class ScriptEngineMappingStrategy implements MappingStrategy
      *
      * @param scriptName the name of the script to return the extension of.
      * @return the extension of the script or <code>null</code> if there is no
-     *         extension.
+     * extension.
      */
-    protected static String getExtension(String scriptName)
-    {
-        if (scriptName == null)
-        {
+    protected static String getExtension(String scriptName) {
+        if (scriptName == null) {
             return null;
         }
 
         int filePosition = scriptName.lastIndexOf("/");
         String fileName;
 
-        if (scriptName.lastIndexOf("\\") > filePosition)
-        {
+        if (scriptName.lastIndexOf("\\") > filePosition) {
             filePosition = scriptName.lastIndexOf("\\");
         }
 
-        if (filePosition >= 0)
-        {
+        if (filePosition >= 0) {
             fileName = scriptName.substring(filePosition + 1);
-        }
-        else
-        {
+        } else {
             fileName = scriptName;
         }
 
         final int extensionPosition = fileName.lastIndexOf(".");
-        if (extensionPosition >= 0)
-        {
+        if (extensionPosition >= 0) {
             return fileName.substring(extensionPosition + 1);
         }
 
         return null;
     }
 
-    protected static Reader getReader(File file) throws FileNotFoundException
-    {
+    protected static Reader getReader(File file) throws FileNotFoundException {
         final InputStream is = new FileInputStream(file);
         return new InputStreamReader(is, StandardCharsets.UTF_8);
     }
 
-    protected class ScriptEngineAgiScript implements NamedAgiScript
-    {
+    protected class ScriptEngineAgiScript implements NamedAgiScript {
         final File file;
         final ScriptEngine scriptEngine;
 
         /**
          * Creates a new ScriptEngineAgiScript.
          *
-         * @param file the file that contains the script to execute.
+         * @param file         the file that contains the script to execute.
          * @param scriptEngine the ScriptEngine to use for executing the script.
          */
-        public ScriptEngineAgiScript(File file, ScriptEngine scriptEngine)
-        {
+        public ScriptEngineAgiScript(File file, ScriptEngine scriptEngine) {
             this.file = file;
             this.scriptEngine = scriptEngine;
         }
 
-        public String getName()
-        {
+        public String getName() {
             return file == null ? null : file.getName();
         }
 
-        public void service(AgiRequest request, AgiChannel channel) throws AgiException
-        {
+        public void service(AgiRequest request, AgiChannel channel) throws AgiException {
             final Bindings bindings = scriptEngine.createBindings();
 
             bindings.put(ScriptEngine.FILENAME, file.getPath());
@@ -387,16 +328,11 @@ public class ScriptEngineMappingStrategy implements MappingStrategy
             // support for custom bindings
             populateBindings(file, request, channel, bindings);
 
-            try
-            {
+            try {
                 scriptEngine.eval(getReader(file), bindings);
-            }
-            catch (ScriptException e)
-            {
+            } catch (ScriptException e) {
                 throw new AgiException("Execution of script '" + file.getPath() + "' with ScriptEngine failed", e);
-            }
-            catch (FileNotFoundException e)
-            {
+            } catch (FileNotFoundException e) {
                 throw new AgiException("Script '" + file.getPath() + "' not found", e);
             }
         }
@@ -408,13 +344,12 @@ public class ScriptEngineMappingStrategy implements MappingStrategy
      * are available to scripts under the bindings "request", "channel" and
      * "javax.script.filename".
      *
-     * @param file the script file.
-     * @param request the AGI request.
-     * @param channel the AGI channel.
+     * @param file     the script file.
+     * @param request  the AGI request.
+     * @param channel  the AGI channel.
      * @param bindings the bindings to populate.
      */
-    protected void populateBindings(File file, AgiRequest request, AgiChannel channel, Bindings bindings)
-    {
+    protected void populateBindings(File file, AgiRequest request, AgiChannel channel, Bindings bindings) {
 
     }
 }

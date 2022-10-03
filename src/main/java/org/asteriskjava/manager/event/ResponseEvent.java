@@ -26,14 +26,12 @@ package org.asteriskjava.manager.event;
  * @version $Id$
  * @see org.asteriskjava.manager.action.ManagerAction
  */
-public abstract class ResponseEvent extends ManagerEvent
-{
+public abstract class ResponseEvent extends ManagerEvent {
     private static final long serialVersionUID = 1L;
     protected String actionId;
     private String internalActionId;
 
-    public ResponseEvent(Object source)
-    {
+    public ResponseEvent(Object source) {
         super(source);
     }
 
@@ -43,11 +41,10 @@ public abstract class ResponseEvent extends ManagerEvent
      * <code>null</code>.
      *
      * @return the action id of the ManagerAction that caused this event or
-     *         <code>null</code> if none was set.
+     * <code>null</code> if none was set.
      * @see org.asteriskjava.manager.action.ManagerAction#setActionId(String)
      */
-    public final String getActionId()
-    {
+    public final String getActionId() {
         return actionId;
     }
 
@@ -55,10 +52,9 @@ public abstract class ResponseEvent extends ManagerEvent
      * Sets the action id of the ManagerAction that caused this event.
      *
      * @param actionId the action id of the ManagerAction that caused this
-     *            event.
+     *                 event.
      */
-    public final void setActionId(String actionId)
-    {
+    public final void setActionId(String actionId) {
         this.actionId = actionId;
     }
 
@@ -70,11 +66,10 @@ public abstract class ResponseEvent extends ManagerEvent
      * used in application code.
      *
      * @return the internal action id of the ManagerAction that caused this
-     *         event.
+     * event.
      * @since 0.2
      */
-    public final String getInternalActionId()
-    {
+    public final String getInternalActionId() {
         return internalActionId;
     }
 
@@ -82,11 +77,10 @@ public abstract class ResponseEvent extends ManagerEvent
      * Sets the internal action id of the ManagerAction that caused this event.
      *
      * @param internalActionId the internal action id of the ManagerAction that
-     *            caused this event.
+     *                         caused this event.
      * @since 0.2
      */
-    public final void setInternalActionId(String internalActionId)
-    {
+    public final void setInternalActionId(String internalActionId) {
         this.internalActionId = internalActionId;
     }
 }

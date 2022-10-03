@@ -19,13 +19,12 @@ package org.asteriskjava.manager.response;
 /**
  * A MixMonitorResponse is sent in response to a MixMonitorAction and provides
  * the ID of the MixMonitor that was started on the referenced channel.
- *
+ * <p>
  * Available since Asterisk 11
  *
  * @see org.asteriskjava.manager.action.MixMonitorAction;
  */
-public class MixMonitorResponse extends ManagerResponse
-{
+public class MixMonitorResponse extends ManagerResponse {
     private static final long serialVersionUID = 1L;
     private String mixMonitorId;
 
@@ -34,8 +33,7 @@ public class MixMonitorResponse extends ManagerResponse
      *
      * @return the MixMonitor ID
      */
-    public String getMixMonitorId()
-    {
+    public String getMixMonitorId() {
         return mixMonitorId;
     }
 
@@ -44,8 +42,7 @@ public class MixMonitorResponse extends ManagerResponse
      *
      * @param mixMonitorId the MixMonitor ID
      */
-    public void setMixMonitorId(String mixMonitorId)
-    {
+    public void setMixMonitorId(String mixMonitorId) {
         this.mixMonitorId = mixMonitorId;
     }
 }

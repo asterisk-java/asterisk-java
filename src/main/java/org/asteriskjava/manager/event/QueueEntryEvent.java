@@ -26,8 +26,7 @@ package org.asteriskjava.manager.event;
  * @version $Id: QueueEntryEvent.java 1360 2009-09-04 01:08:57Z srt $
  * @see org.asteriskjava.manager.action.QueueStatusAction
  */
-public class QueueEntryEvent extends ResponseEvent
-{
+public class QueueEntryEvent extends ResponseEvent {
     /**
      * Serializable version identifier
      */
@@ -42,48 +41,42 @@ public class QueueEntryEvent extends ResponseEvent
     /**
      * @param source
      */
-    public QueueEntryEvent(Object source)
-    {
+    public QueueEntryEvent(Object source) {
         super(source);
     }
 
     /**
      * Returns the name of the queue that contains this entry.
      */
-    public String getQueue()
-    {
+    public String getQueue() {
         return queue;
     }
 
     /**
      * Sets the name of the queue that contains this entry.
      */
-    public void setQueue(String queue)
-    {
+    public void setQueue(String queue) {
         this.queue = queue;
     }
 
     /**
      * Returns the position of this entry in the queue.
      */
-    public Integer getPosition()
-    {
+    public Integer getPosition() {
         return position;
     }
 
     /**
      * Sets the position of this entry in the queue.
      */
-    public void setPosition(Integer position)
-    {
+    public void setPosition(Integer position) {
         this.position = position;
     }
 
     /**
      * Returns the name of the channel of this entry.
      */
-    public String getChannel()
-    {
+    public String getChannel() {
         return channel;
     }
 
@@ -95,13 +88,11 @@ public class QueueEntryEvent extends ResponseEvent
      * @return the unique id of the channel of this entry.
      * @since 1.0.0
      */
-    public String getUniqueId()
-    {
+    public String getUniqueId() {
         return uniqueId;
     }
 
-    public void setUniqueId(String uniqueId)
-    {
+    public void setUniqueId(String uniqueId) {
         this.uniqueId = uniqueId;
     }
 
@@ -110,8 +101,7 @@ public class QueueEntryEvent extends ResponseEvent
      *
      * @param channel the name of the channel of this entry.
      */
-    public void setChannel(String channel)
-    {
+    public void setChannel(String channel) {
         this.channel = channel;
     }
 
@@ -120,8 +110,7 @@ public class QueueEntryEvent extends ResponseEvent
      *
      * @return the the Caller*ID number of this entry.
      */
-    public String getCallerId()
-    {
+    public String getCallerId() {
         return callerId;
     }
 
@@ -130,24 +119,21 @@ public class QueueEntryEvent extends ResponseEvent
      *
      * @param callerId the the Caller*ID number of this entry.
      */
-    public void setCallerId(String callerId)
-    {
+    public void setCallerId(String callerId) {
         this.callerId = callerId;
     }
 
     /**
      * Returns the number of seconds this entry has spent in the queue.
      */
-    public Long getWait()
-    {
+    public Long getWait() {
         return wait;
     }
 
     /**
      * Sets the number of seconds this entry has spent in the queue.
      */
-    public void setWait(Long wait)
-    {
+    public void setWait(Long wait) {
         this.wait = wait;
     }
 

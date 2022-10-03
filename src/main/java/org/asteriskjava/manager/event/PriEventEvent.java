@@ -8,16 +8,14 @@ package org.asteriskjava.manager.event;
  * @version $Id$
  * @since 1.0.0
  */
-public class PriEventEvent extends ManagerEvent
-{
-   private static final long serialVersionUID = 3257069450639290810L;
-   private String priEvent;
+public class PriEventEvent extends ManagerEvent {
+    private static final long serialVersionUID = 3257069450639290810L;
+    private String priEvent;
     private Integer priEventCode;
     private String dChannel;
     private Integer span;
 
-    public PriEventEvent(Object source)
-    {
+    public PriEventEvent(Object source) {
         super(source);
     }
 
@@ -48,13 +46,11 @@ public class PriEventEvent extends ManagerEvent
      * @return the textual representation of the event code.
      * @see #getPriEventCode()
      */
-    public String getPriEvent()
-    {
+    public String getPriEvent() {
         return priEvent;
     }
 
-    public void setPriEvent(String priEvent)
-    {
+    public void setPriEvent(String priEvent) {
         this.priEvent = priEvent;
     }
 
@@ -64,13 +60,11 @@ public class PriEventEvent extends ManagerEvent
      * @return the numerical pri event code.
      * @see #getPriEvent()
      */
-    public Integer getPriEventCode()
-    {
+    public Integer getPriEventCode() {
         return priEventCode;
     }
 
-    public void setPriEventCode(Integer priEventCode)
-    {
+    public void setPriEventCode(Integer priEventCode) {
         this.priEventCode = priEventCode;
     }
 
@@ -79,13 +73,11 @@ public class PriEventEvent extends ManagerEvent
      *
      * @return the D-Channel the event occurred on.
      */
-    public String getDChannel()
-    {
+    public String getDChannel() {
         return dChannel;
     }
 
-    public void setDChannel(String dChannel)
-    {
+    public void setDChannel(String dChannel) {
         this.dChannel = dChannel;
     }
 
@@ -94,13 +86,11 @@ public class PriEventEvent extends ManagerEvent
      *
      * @return the span the event occurred on.
      */
-    public Integer getSpan()
-    {
+    public Integer getSpan() {
         return span;
     }
 
-    public void setSpan(Integer span)
-    {
+    public void setSpan(Integer span) {
         this.span = span;
     }
 }

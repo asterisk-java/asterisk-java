@@ -16,22 +16,21 @@
  */
 package org.asteriskjava.live.internal;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TimeZone;
-
 import org.asteriskjava.live.AmaFlags;
 import org.asteriskjava.live.AsteriskChannel;
 import org.asteriskjava.live.CallDetailRecord;
 import org.asteriskjava.live.Disposition;
 import org.asteriskjava.manager.event.CdrEvent;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TimeZone;
+
 /**
  * Default implementation of the CallDetailRecord interface.
  */
-public class CallDetailRecordImpl implements CallDetailRecord
-{
+public class CallDetailRecordImpl implements CallDetailRecord {
     private static final Map<String, Disposition> DISPOSITION_MAP;
     private static final Map<String, AmaFlags> AMA_FLAGS_MAP;
     private final AsteriskChannelImpl channel;
@@ -51,8 +50,7 @@ public class CallDetailRecordImpl implements CallDetailRecord
     private final AmaFlags amaFlags;
     private final String userField;
 
-    static
-    {
+    static {
         DISPOSITION_MAP = new HashMap<>();
         DISPOSITION_MAP.put(CdrEvent.DISPOSITION_ANSWERED, Disposition.ANSWERED);
         DISPOSITION_MAP.put(CdrEvent.DISPOSITION_BUSY, Disposition.BUSY);
@@ -67,8 +65,7 @@ public class CallDetailRecordImpl implements CallDetailRecord
         AMA_FLAGS_MAP.put(CdrEvent.AMA_FLAG_UNKNOWN, AmaFlags.UNKNOWN);
     }
 
-    CallDetailRecordImpl(AsteriskChannelImpl channel, AsteriskChannelImpl destinationChannel, CdrEvent cdrEvent)
-    {
+    CallDetailRecordImpl(AsteriskChannelImpl channel, AsteriskChannelImpl destinationChannel, CdrEvent cdrEvent) {
         //TODO add timezone to AsteriskServer
         TimeZone tz = TimeZone.getDefault();
         this.channel = channel;
@@ -84,97 +81,76 @@ public class CallDetailRecordImpl implements CallDetailRecord
         endDate = cdrEvent.getEndTimeAsDate(tz);
         duration = cdrEvent.getDuration();
         billableSeconds = cdrEvent.getBillableSeconds();
-        if (cdrEvent.getAmaFlags() != null)
-        {
+        if (cdrEvent.getAmaFlags() != null) {
             amaFlags = AMA_FLAGS_MAP.get(cdrEvent.getAmaFlags());
-        }
-        else
-        {
+        } else {
             amaFlags = null;
         }
-        if (cdrEvent.getDisposition() != null)
-        {
+        if (cdrEvent.getDisposition() != null) {
             disposition = DISPOSITION_MAP.get(cdrEvent.getDisposition());
-        }
-        else
-        {
+        } else {
             disposition = null;
         }
         userField = cdrEvent.getUserField();
     }
 
-    public AsteriskChannel getChannel()
-    {
+    public AsteriskChannel getChannel() {
         return channel;
     }
 
-    public AsteriskChannel getDestinationChannel()
-    {
+    public AsteriskChannel getDestinationChannel() {
         return destinationChannel;
     }
 
-    public String getAccountCode()
-    {
+    public String getAccountCode() {
         return accountCode;
     }
 
-    public AmaFlags getAmaFlags()
-    {
+    public AmaFlags getAmaFlags() {
         return amaFlags;
     }
 
-    public Date getAnswerDate()
-    {
+    public Date getAnswerDate() {
         return answerDate;
     }
 
-    public Integer getBillableSeconds()
-    {
+    public Integer getBillableSeconds() {
         return billableSeconds;
     }
 
-    public String getDestinationContext()
-    {
+    public String getDestinationContext() {
         return destinationContext;
     }
 
-    public String getDestinationExtension()
-    {
+    public String getDestinationExtension() {
         return destinationExtension;
     }
 
-    public Disposition getDisposition()
-    {
+    public Disposition getDisposition() {
         return disposition;
     }
 
-    public Integer getDuration()
-    {
+    public Integer getDuration() {
         return duration;
     }
 
-    public Date getEndDate()
-    {
+    public Date getEndDate() {
         return endDate;
     }
 
-    public String getLastApplication()
-    {
+    public String getLastApplication() {
         return lastApplication;
     }
 
-    public String getLastAppData()
-    {
+    public String getLastAppData() {
         return lastAppData;
     }
 
-    public Date getStartDate()
-    {
+    public Date getStartDate() {
         return startDate;
     }
 
-    public String getUserField()
-    {
+    public String getUserField() {
         return userField;
     }
 }

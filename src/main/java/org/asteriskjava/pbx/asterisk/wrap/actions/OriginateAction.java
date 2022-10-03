@@ -1,14 +1,13 @@
 package org.asteriskjava.pbx.asterisk.wrap.actions;
 
-import java.util.Map;
-
 import org.asteriskjava.pbx.CallerID;
 import org.asteriskjava.pbx.Channel;
 import org.asteriskjava.pbx.EndPoint;
 import org.asteriskjava.pbx.internal.asterisk.CallerIDImpl;
 
-public class OriginateAction extends AbstractManagerAction
-{
+import java.util.Map;
+
+public class OriginateAction extends AbstractManagerAction {
 
     /**
      * Asterisk uses the term channel but it actually appears to be an endpoint
@@ -39,26 +38,22 @@ public class OriginateAction extends AbstractManagerAction
     private String channelId;
     private String otherChannelId;
 
-    public OriginateAction()
-    {
+    public OriginateAction() {
     }
 
-    public String toString()
-    {
+    public String toString() {
         return "OriginateAction: endPoint/Channel=" + (this._endPoint == null ? this._channel : this._endPoint) + " context=" //$NON-NLS-1$ //$NON-NLS-2$
                 + this._context + " extension=" + this._extension + " callerId=" + this._callerID; //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     @Override
-    public org.asteriskjava.manager.action.ManagerAction getAJAction()
-    {
+    public org.asteriskjava.manager.action.ManagerAction getAJAction() {
         final org.asteriskjava.manager.action.OriginateAction action = new org.asteriskjava.manager.action.OriginateAction();
         action.setActionId(getActionId());
 
         // Was the channel or an end point passed.
         String channel = (this._channel != null ? this._channel.getChannelName() : this._endPoint.getFullyQualifiedName());
-        if (this._option != null)
-        {
+        if (this._option != null) {
             channel += this._option;
         }
         action.setChannel((channel));
@@ -77,87 +72,71 @@ public class OriginateAction extends AbstractManagerAction
         return action;
     }
 
-    public void setEndPoint(final EndPoint endPoint)
-    {
+    public void setEndPoint(final EndPoint endPoint) {
         this._endPoint = endPoint;
         this._channel = null;
     }
 
-    public void setChannel(Channel channel)
-    {
+    public void setChannel(Channel channel) {
         this._channel = channel;
         this._endPoint = null;
 
     }
 
-    public void setOption(final String option)
-    {
+    public void setOption(final String option) {
         this._option = option;
 
     }
 
-    public void setContext(final String context)
-    {
+    public void setContext(final String context) {
         this._context = context;
 
     }
 
-    public void setExten(final EndPoint extension)
-    {
+    public void setExten(final EndPoint extension) {
         this._extension = extension;
 
     }
 
-    public void setPriority(final int priority)
-    {
+    public void setPriority(final int priority) {
         this._priority = priority;
 
     }
 
-    public void setCallingPres(final int callingPres)
-    {
+    public void setCallingPres(final int callingPres) {
         this._callingPres = callingPres;
 
     }
 
-    public void setCallerId(final CallerID callerID)
-    {
+    public void setCallerId(final CallerID callerID) {
         this._callerID = callerID;
 
     }
 
-    public void setVariables(final Map<String, String> variables)
-    {
-        if (_variables == null)
-        {
+    public void setVariables(final Map<String, String> variables) {
+        if (_variables == null) {
             this._variables = variables;
-        }
-        else
-        {
+        } else {
             this._variables.putAll(variables);
         }
 
     }
 
-    public void setAsync(final boolean async)
-    {
+    public void setAsync(final boolean async) {
         this._async = async;
 
     }
 
-    public void setTimeout(final long timeout)
-    {
+    public void setTimeout(final long timeout) {
         this._timeout = timeout;
 
     }
 
-    public void setChannelId(String channelId)
-    {
+    public void setChannelId(String channelId) {
         this.channelId = channelId;
     }
 
-    public void setOtherChannelId(String otherChannelId)
-    {
+    public void setOtherChannelId(String otherChannelId) {
         this.otherChannelId = otherChannelId;
     }
 

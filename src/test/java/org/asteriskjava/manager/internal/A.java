@@ -18,12 +18,10 @@ package org.asteriskjava.manager.internal;
 
 import org.asteriskjava.manager.event.UserEvent;
 
-public class A extends UserEvent
-{
+public class A extends UserEvent {
     private static final long serialVersionUID = 3545240219457894199L;
 
-    public A(Object source)
-    {
+    public A(Object source) {
         super(source);
     }
 }

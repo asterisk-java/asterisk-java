@@ -1,12 +1,12 @@
 /*
  *  Copyright 2009 Sebastian.
- * 
+ *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -26,8 +26,7 @@ package org.asteriskjava.manager.event;
  * @see org.asteriskjava.manager.event.CoreShowChannelEvent
  * @since 1.0.0
  */
-public class CoreShowChannelsCompleteEvent extends ResponseEvent
-{
+public class CoreShowChannelsCompleteEvent extends ResponseEvent {
 
     /**
      * Serial version identifier.
@@ -37,8 +36,7 @@ public class CoreShowChannelsCompleteEvent extends ResponseEvent
     private Integer listitems;
     private String eventlist;
 
-    public CoreShowChannelsCompleteEvent(Object source)
-    {
+    public CoreShowChannelsCompleteEvent(Object source) {
         super(source);
     }
 
@@ -48,13 +46,11 @@ public class CoreShowChannelsCompleteEvent extends ResponseEvent
      * @return the status of the list.
      * @since 1.0.0
      */
-    public String getEventlist()
-    {
+    public String getEventlist() {
         return eventlist;
     }
 
-    public void setEventlist(String eventlist)
-    {
+    public void setEventlist(String eventlist) {
         this.eventlist = eventlist;
     }
 
@@ -63,8 +59,7 @@ public class CoreShowChannelsCompleteEvent extends ResponseEvent
      *
      * @return the number of channels reported.
      */
-    public Integer getListitems()
-    {
+    public Integer getListitems() {
         return listitems;
     }
 
@@ -73,8 +68,7 @@ public class CoreShowChannelsCompleteEvent extends ResponseEvent
      *
      * @param listitems the number of channels reported.
      */
-    public void setListitems(Integer listitems)
-    {
+    public void setListitems(Integer listitems) {
         this.listitems = listitems;
     }
 

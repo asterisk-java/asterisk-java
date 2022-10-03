@@ -26,8 +26,7 @@ import java.util.Date;
  * @version $Id$
  * @since 0.3
  */
-public class ChannelStateHistoryEntry implements Serializable
-{
+public class ChannelStateHistoryEntry implements Serializable {
     /**
      * Serial version identifier.
      */
@@ -41,8 +40,7 @@ public class ChannelStateHistoryEntry implements Serializable
      * @param date  the date the channel entered the state.
      * @param state the state the channel entered.
      */
-    public ChannelStateHistoryEntry(Date date, ChannelState state)
-    {
+    public ChannelStateHistoryEntry(Date date, ChannelState state) {
         this.date = date;
         this.state = state;
     }
@@ -52,8 +50,7 @@ public class ChannelStateHistoryEntry implements Serializable
      *
      * @return the date the channel entered the state.
      */
-    public Date getDate()
-    {
+    public Date getDate() {
         return date;
     }
 
@@ -62,14 +59,12 @@ public class ChannelStateHistoryEntry implements Serializable
      *
      * @return the state the channel entered.
      */
-    public ChannelState getState()
-    {
+    public ChannelState getState() {
         return state;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         final StringBuilder sb;
 
         sb = new StringBuilder("ChannelStateHistoryEntry[");

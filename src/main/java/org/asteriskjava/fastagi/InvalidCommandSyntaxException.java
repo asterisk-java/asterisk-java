@@ -19,12 +19,11 @@ package org.asteriskjava.fastagi;
 /**
  * An InvalidCommandSyntaxException is thrown when the reader receives a reply
  * with status code 520.
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public class InvalidCommandSyntaxException extends AgiException
-{
+public class InvalidCommandSyntaxException extends AgiException {
     /**
      * Serial version identifier.
      */
@@ -36,12 +35,11 @@ public class InvalidCommandSyntaxException extends AgiException
     /**
      * Creates a new InvalidCommandSyntaxException with the given synopsis and
      * usage.
-     * 
+     *
      * @param synopsis the synopsis of the command.
-     * @param usage the usage of the command.
+     * @param usage    the usage of the command.
      */
-    public InvalidCommandSyntaxException(String synopsis, String usage)
-    {
+    public InvalidCommandSyntaxException(String synopsis, String usage) {
         super("Invalid command syntax: " + synopsis);
         this.synopsis = synopsis;
         this.usage = usage;
@@ -49,21 +47,19 @@ public class InvalidCommandSyntaxException extends AgiException
 
     /**
      * Returns the synopsis of the command that was called with invalid syntax.
-     * 
+     *
      * @return the synopsis of the command that was called with invalid syntax.
      */
-    public String getSynopsis()
-    {
+    public String getSynopsis() {
         return synopsis;
     }
 
     /**
      * Returns a description of the command that was called with invalid syntax.
-     * 
+     *
      * @return a description of the command that was called with invalid syntax.
      */
-    public String getUsage()
-    {
+    public String getUsage() {
         return usage;
     }
 }

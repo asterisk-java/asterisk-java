@@ -19,14 +19,13 @@ package org.asteriskjava.manager.event;
 /**
  * A StatusCompleteEvent is triggered after the state of all channels has been
  * reported in response to a StatusAction.
- * 
- * @see org.asteriskjava.manager.action.StatusAction
- * @see org.asteriskjava.manager.event.StatusEvent
+ *
  * @author srt
  * @version $Id$
+ * @see org.asteriskjava.manager.action.StatusAction
+ * @see org.asteriskjava.manager.event.StatusEvent
  */
-public class StatusCompleteEvent extends ResponseEvent
-{
+public class StatusCompleteEvent extends ResponseEvent {
     /**
      * Serial version identifier.
      */
@@ -36,8 +35,7 @@ public class StatusCompleteEvent extends ResponseEvent
     private Integer listItems;
     private String eventList;
 
-    public StatusCompleteEvent(Object source)
-    {
+    public StatusCompleteEvent(Object source) {
         super(source);
     }
 
@@ -49,8 +47,7 @@ public class StatusCompleteEvent extends ResponseEvent
      * @return the number of channels reported.
      * @since 1.0.0
      */
-    public Integer getItems()
-    {
+    public Integer getItems() {
         return items;
     }
 
@@ -62,28 +59,23 @@ public class StatusCompleteEvent extends ResponseEvent
      * @param items the number of channels reported.
      * @since 1.0.0
      */
-    public void setItems(Integer items)
-    {
+    public void setItems(Integer items) {
         this.items = items;
     }
 
-    public Integer getListItems()
-    {
+    public Integer getListItems() {
         return listItems;
     }
 
-    public String getEventList()
-    {
+    public String getEventList() {
         return eventList;
     }
 
-    public void setEventList(String eventList)
-    {
+    public void setEventList(String eventList) {
         this.eventList = eventList;
     }
 
-    public void setListItems(Integer listItems)
-    {
+    public void setListItems(Integer listItems) {
         this.listItems = listItems;
     }
 

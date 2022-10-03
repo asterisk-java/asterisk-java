@@ -28,18 +28,17 @@ import org.asteriskjava.manager.event.ResponseEvent;
  * Since Asterisk 1.2 a QueueStatusCompleteEvent is sent to denote the end of
  * the generated dump.<p>
  * This action is implemented in <code>apps/app_queue.c</code>
- * 
+ *
+ * @author srt
+ * @version $Id$
  * @see org.asteriskjava.manager.event.QueueParamsEvent
  * @see org.asteriskjava.manager.event.QueueMemberEvent
  * @see org.asteriskjava.manager.event.QueueEntryEvent
  * @see org.asteriskjava.manager.event.QueueStatusCompleteEvent
- * @author srt
- * @version $Id$
  */
 public class QueueStatusAction extends AbstractManagerAction
         implements
-            EventGeneratingAction
-{
+        EventGeneratingAction {
     /**
      * Serializable version identifier
      */
@@ -51,8 +50,7 @@ public class QueueStatusAction extends AbstractManagerAction
     /**
      * Creates a new QueueStatusAction.
      */
-    public QueueStatusAction()
-    {
+    public QueueStatusAction() {
 
     }
 
@@ -60,59 +58,53 @@ public class QueueStatusAction extends AbstractManagerAction
      * Returns the name of this action, i.e. "QueueStatus".
      */
     @Override
-   public String getAction()
-    {
+    public String getAction() {
         return "QueueStatus";
     }
 
     /**
      * Returns the queue filter.
-     * 
+     *
      * @return the queue filter.
      * @since 0.2
      */
-    public String getQueue()
-    {
+    public String getQueue() {
         return queue;
     }
 
     /**
      * Sets the queue filter. If set QueueParamEvents are only generated for the
      * given queue name.
-     * 
+     *
      * @param queue the queue filter.
      * @since 0.2
      */
-    public void setQueue(String queue)
-    {
+    public void setQueue(String queue) {
         this.queue = queue;
     }
 
     /**
      * Returns the member filter.
-     * 
+     *
      * @return the member filter.
      * @since 0.2
      */
-    public String getMember()
-    {
+    public String getMember() {
         return member;
     }
 
     /**
      * Sets the member filter. If set QueueMemberEvents are only generated for the
      * given member name.
-     * 
+     *
      * @param member the member filter.
      * @since 0.2
      */
-    public void setMember(String member)
-    {
+    public void setMember(String member) {
         this.member = member;
     }
 
-    public Class<? extends ResponseEvent> getActionCompleteEventClass()
-    {
+    public Class<? extends ResponseEvent> getActionCompleteEventClass() {
         return QueueStatusCompleteEvent.class;
     }
 }

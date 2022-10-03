@@ -26,39 +26,38 @@ import java.util.Date;
  * <li>muted
  * <li>state
  * </ul>
- * 
- * @see org.asteriskjava.live.MeetMeRoom
+ *
  * @author srt
+ * @see org.asteriskjava.live.MeetMeRoom
  * @since 0.3
  */
-public interface MeetMeUser extends LiveObject
-{
+public interface MeetMeUser extends LiveObject {
     String PROPERTY_TALKING = "talking";
     String PROPERTY_MUTED = "muted";
     String PROPERTY_STATE = "state";
-    
+
     /**
      * Returns whether this user is currently talking or not.<p>
      * Asterisk supports talker detection since version 1.2.
-     * 
+     *
      * @return <code>true</code> if this user is currently talking and
-     *         talker detection is supported, <code>false</code> otherwise. 
+     * talker detection is supported, <code>false</code> otherwise.
      */
     boolean isTalking();
 
     /**
      * Returns whether this user is muted or not.<p>
      * Supported since Asterisk version 1.4.
-     * 
+     *
      * @return <code>true</code> if this user is muted and
-     *         mute detection is supported, <code>false</code> otherwise. 
+     * mute detection is supported, <code>false</code> otherwise.
      */
     boolean isMuted();
-    
+
     /**
      * Returns the date this user joined the MeetMe room.<p>
      * This property is immutable.
-     * 
+     *
      * @return the date this user joined the MeetMe room.
      */
     Date getDateJoined();
@@ -68,16 +67,16 @@ public interface MeetMeUser extends LiveObject
      * This property is <code>null</code> as long as the user is
      * in state {@link MeetMeUserState#JOINED} and set to date the
      * user left when entering {@link MeetMeUserState#LEFT}.
-     * 
-     * @return the date this user left the MeetMe room or 
-     *         <code>null</code> if the user did not yet leave.
+     *
+     * @return the date this user left the MeetMe room or
+     * <code>null</code> if the user did not yet leave.
      */
     Date getDateLeft();
-    
+
     /**
      * Returns the lifecycle status of this MeetMeUser.<p>
      * Initially the user is in state {@link MeetMeUserState#JOINED}.
-     * 
+     *
      * @return the lifecycle status of this MeetMeUser.
      */
     MeetMeUserState getState();
@@ -85,7 +84,7 @@ public interface MeetMeUser extends LiveObject
     /**
      * Returns the MeetMe room this user joined.<p>
      * This property is immutable.
-     * 
+     *
      * @return the MeetMe room this user joined.
      */
     MeetMeRoom getRoom();
@@ -94,7 +93,7 @@ public interface MeetMeUser extends LiveObject
      * Returns the user number assigned to this user in the room.<p>
      * Usually you won't need to access this property directly.<p>
      * This property is immutable.
-     * 
+     *
      * @return the user number assigned to this user in the room.
      */
     Integer getUserNumber();
@@ -102,28 +101,28 @@ public interface MeetMeUser extends LiveObject
     /**
      * Returns the channel associated with this user.<p>
      * This property is immutable.
-     * 
+     *
      * @return the channel associated with this user.
      */
     AsteriskChannel getChannel();
 
     /**
      * Stops sending voice from this user to the MeetMe room.
-     * 
+     *
      * @throws ManagerCommunicationException if there is a problem talking to the Asterisk server.
      */
     void mute() throws ManagerCommunicationException;
 
     /**
      * (Re)starts sending voice from this user to the MeetMe room.
-     * 
+     *
      * @throws ManagerCommunicationException if there is a problem talking to the Asterisk server.
      */
     void unmute() throws ManagerCommunicationException;
 
     /**
      * Removes this user from the MeetMe room.
-     * 
+     *
      * @throws ManagerCommunicationException if there is a problem talking to the Asterisk server.
      */
     void kick() throws ManagerCommunicationException;

@@ -24,16 +24,14 @@ import org.asteriskjava.manager.event.ResponseEvent;
  * For each agent an AgentsEvent is generated. After the state of all agents has been
  * reported an AgentsCompleteEvent is generated.<p>
  * Available since Asterisk 1.2
- * 
- * @see org.asteriskjava.manager.event.AgentsEvent
- * @see org.asteriskjava.manager.event.AgentsCompleteEvent
- * 
+ *
  * @author srt
  * @version $Id$
+ * @see org.asteriskjava.manager.event.AgentsEvent
+ * @see org.asteriskjava.manager.event.AgentsCompleteEvent
  * @since 0.2
  */
-public class AgentsAction extends AbstractManagerAction implements EventGeneratingAction
-{
+public class AgentsAction extends AbstractManagerAction implements EventGeneratingAction {
     /**
      * Serializable version identifier
      */
@@ -42,22 +40,19 @@ public class AgentsAction extends AbstractManagerAction implements EventGenerati
     /**
      * Creates a new AgentsAction.
      */
-    public AgentsAction()
-    {
-        
+    public AgentsAction() {
+
     }
-    
+
     /**
      * Returns the name of this action, i.e. "Agents".
      */
     @Override
-   public String getAction()
-    {
+    public String getAction() {
         return "Agents";
     }
 
-   public Class<? extends ResponseEvent> getActionCompleteEventClass()
-    {
+    public Class<? extends ResponseEvent> getActionCompleteEventClass() {
         return AgentsCompleteEvent.class;
     }
 }

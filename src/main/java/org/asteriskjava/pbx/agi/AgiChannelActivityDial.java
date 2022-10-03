@@ -1,38 +1,33 @@
 package org.asteriskjava.pbx.agi;
 
-import java.util.concurrent.CountDownLatch;
-
 import org.asteriskjava.fastagi.AgiChannel;
 import org.asteriskjava.fastagi.AgiException;
 import org.asteriskjava.pbx.AgiChannelActivityAction;
 import org.asteriskjava.pbx.Channel;
 
-public class AgiChannelActivityDial implements AgiChannelActivityAction
-{
+import java.util.concurrent.CountDownLatch;
+
+public class AgiChannelActivityDial implements AgiChannelActivityAction {
 
     CountDownLatch latch = new CountDownLatch(1);
     private String target;
     private String sipHeader;
     private String dialOptions;
 
-    public AgiChannelActivityDial(String target, String dialOptions)
-    {
+    public AgiChannelActivityDial(String target, String dialOptions) {
         this.target = target;
         this.dialOptions = dialOptions;
     }
 
-    public AgiChannelActivityDial(String fullyQualifiedName, String sipHeader, String dialOptions)
-    {
+    public AgiChannelActivityDial(String fullyQualifiedName, String sipHeader, String dialOptions) {
         target = fullyQualifiedName;
         this.sipHeader = sipHeader;
         this.dialOptions = dialOptions;
     }
 
     @Override
-    public void execute(AgiChannel channel, Channel ichannel) throws AgiException, InterruptedException
-    {
-        if (sipHeader != null)
-        {
+    public void execute(AgiChannel channel, Channel ichannel) throws AgiException, InterruptedException {
+        if (sipHeader != null) {
             channel.setVariable("__SIPADDHEADER", sipHeader);
         }
         // setting the activity to hold, means that when the call falls out of
@@ -47,14 +42,12 @@ public class AgiChannelActivityDial implements AgiChannelActivityAction
     }
 
     @Override
-    public boolean isDisconnect(ActivityAgi activityAgi)
-    {
+    public boolean isDisconnect(ActivityAgi activityAgi) {
         return false;
     }
 
     @Override
-    public void cancel()
-    {
+    public void cancel() {
         latch.countDown();
 
     }

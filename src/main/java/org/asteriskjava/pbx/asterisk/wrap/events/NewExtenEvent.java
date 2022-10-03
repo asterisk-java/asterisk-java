@@ -5,8 +5,7 @@ import org.asteriskjava.pbx.InvalidChannelName;
 import org.asteriskjava.pbx.PBXFactory;
 import org.asteriskjava.pbx.internal.core.AsteriskPBX;
 
-public class NewExtenEvent extends ManagerEvent implements ChannelEvent
-{
+public class NewExtenEvent extends ManagerEvent implements ChannelEvent {
     private static final long serialVersionUID = 1L;
 
     private final String context;
@@ -16,8 +15,7 @@ public class NewExtenEvent extends ManagerEvent implements ChannelEvent
     private final Integer priority;
     private final Channel channel;
 
-    public NewExtenEvent(final org.asteriskjava.manager.event.NewExtenEvent event) throws InvalidChannelName
-    {
+    public NewExtenEvent(final org.asteriskjava.manager.event.NewExtenEvent event) throws InvalidChannelName {
         super(event);
         final AsteriskPBX pbx = (AsteriskPBX) PBXFactory.getActivePBX();
 
@@ -29,34 +27,28 @@ public class NewExtenEvent extends ManagerEvent implements ChannelEvent
         this.priority = event.getPriority();
     }
 
-    public String getContext()
-    {
+    public String getContext() {
         return this.context;
     }
 
-    public String getExtension()
-    {
+    public String getExtension() {
         return this.extension;
     }
 
-    public String getApplication()
-    {
+    public String getApplication() {
         return this.application;
     }
 
-    public String getAppData()
-    {
+    public String getAppData() {
         return this.appData;
     }
 
-    public Integer getPriority()
-    {
+    public Integer getPriority() {
         return this.priority;
     }
 
     @Override
-    public Channel getChannel()
-    {
+    public Channel getChannel() {
         return this.channel;
     }
 

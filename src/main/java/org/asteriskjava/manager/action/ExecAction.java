@@ -30,7 +30,7 @@ import org.asteriskjava.manager.response.CommandResponse;
  * contains the CLI output.
  * <p>
  * Example:
- * 
+ *
  * <pre>
  * CommandAction commandAction = new CommandAction("iax2 show peers");
  * CommandResponse response = (CommandResponse) c.sendAction(commandAction);
@@ -39,7 +39,7 @@ import org.asteriskjava.manager.response.CommandResponse;
  *     System.out.println(line);
  * }
  * </pre>
- * 
+ * <p>
  * Where <code>c</code> is an instance of
  * {@link org.asteriskjava.manager.ManagerConnection}.
  *
@@ -48,16 +48,14 @@ import org.asteriskjava.manager.response.CommandResponse;
  * @see org.asteriskjava.manager.response.CommandResponse
  */
 @ExpectedResponse(CommandResponse.class)
-public class ExecAction extends AbstractManagerAction
-{
+public class ExecAction extends AbstractManagerAction {
     static final long serialVersionUID = 4753117770471622025L;
     protected String command;
 
     /**
      * Creates a new CommandAction.
      */
-    public ExecAction()
-    {
+    public ExecAction() {
 
     }
 
@@ -67,8 +65,7 @@ public class ExecAction extends AbstractManagerAction
      * @param command the CLI command to execute.
      * @since 0.2
      */
-    public ExecAction(String command)
-    {
+    public ExecAction(String command) {
         this.command = command;
     }
 
@@ -76,24 +73,21 @@ public class ExecAction extends AbstractManagerAction
      * Returns the name of this action, i.e. "Command".
      */
     @Override
-    public String getAction()
-    {
+    public String getAction() {
         return "exec";
     }
 
     /**
      * Returns the command.
      */
-    public String getCommand()
-    {
+    public String getCommand() {
         return command;
     }
 
     /**
      * Sets the CLI command to send to the Asterisk server.
      */
-    public void setCommand(String command)
-    {
+    public void setCommand(String command) {
         this.command = command;
     }
 }

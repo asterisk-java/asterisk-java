@@ -1,19 +1,18 @@
 package org.asteriskjava.config.dialplan;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.asteriskjava.config.ConfigElement;
 import org.asteriskjava.config.ConfigFileReader;
 import org.asteriskjava.config.ConfigParseException;
 import org.asteriskjava.config.ConfigVariable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /*
  *   Interprets extensions.conf as a special kind of config file, the dialplan.
  *   - Line numbers correspond with pbx_config.c, tags/1.4.19 revision 96024
  */
-public class ExtensionsConfigFileReader extends ConfigFileReader
-{
+public class ExtensionsConfigFileReader extends ConfigFileReader {
     /*
      * This method corresponds to an iteration of the loop at line 2212 Notes:
      * 1. [general] and [globals] are allowed to be a context here if they
@@ -21,8 +20,7 @@ public class ExtensionsConfigFileReader extends ConfigFileReader
      * regular ConfigVariable.
      */
     @Override
-    protected ConfigElement processTextLine(String configfile, int lineno, String line) throws ConfigParseException
-    {
+    protected ConfigElement processTextLine(String configfile, int lineno, String line) throws ConfigParseException {
         ConfigElement configElement;
 
         if ((line.trim().startsWith("exten") || line.trim().startsWith("include")) && currentCategory != null
@@ -37,14 +35,11 @@ public class ExtensionsConfigFileReader extends ConfigFileReader
          * macros, contexts to differentiate them from categories, switch for
          * realtime, and more.
          */
-        if (line.trim().startsWith("exten"))
-        {
+        if (line.trim().startsWith("exten")) {
             configElement = parseExtension(configfile, lineno, line);
             currentCategory.addElement(configElement);
             return configElement;
-        }
-        else if (line.trim().startsWith("include"))
-        {
+        } else if (line.trim().startsWith("include")) {
             // use parseVariable since we have access to it
             ConfigVariable configvar = parseVariable(configfile, lineno, line);
             configElement = new ConfigInclude(configfile, lineno, configvar.getValue());
@@ -59,8 +54,7 @@ public class ExtensionsConfigFileReader extends ConfigFileReader
     }
 
     /* Roughly corresponds to pbx_config.c:2222 */
-    protected ConfigExtension parseExtension(String configfile, int lineno, String line) throws ConfigParseException
-    {
+    protected ConfigExtension parseExtension(String configfile, int lineno, String line) throws ConfigParseException {
         ConfigVariable initialVariable = parseVariable(configfile, lineno, line);
 
         if (!initialVariable.getName().equals("exten"))
@@ -85,60 +79,47 @@ public class ExtensionsConfigFileReader extends ConfigFileReader
     }
 
     /* Roughly corresponds to pbx_config.c:2276 */
-    private static String[] harvestApplicationWithArguments(String arg)
-    {
+    private static String[] harvestApplicationWithArguments(String arg) {
         List<String> args = new ArrayList<>();
 
-        if (arg.trim().length() >= 0)
-        {
+        if (arg.trim().length() >= 0) {
             String appl = "", data = "";
 
             /* Find the first occurrence of either '(' or ',' */
             int firstc = arg.indexOf(',');
             int firstp = arg.indexOf('(');
 
-            if (firstc != -1 && (firstp == -1 || firstc < firstp))
-            {
+            if (firstc != -1 && (firstp == -1 || firstc < firstp)) {
                 /* comma found, no parenthesis */
                 /* or both found, but comma found first */
                 String[] split = arg.split(",");
                 appl = split[0];
                 for (int i = 1; i < split.length; i++)
                     data += split[i] + (i + 1 < split.length ? "," : "");
-            }
-            else if (firstc == -1 && firstp == -1)
-            {
+            } else if (firstc == -1 && firstp == -1) {
                 /* Neither found */
                 data = "";
-            }
-            else
-            {
+            } else {
                 /* Final remaining case is parenthesis found first */
                 String[] split = arg.split("\\(");
                 appl = split[0];
                 for (int i = 1; i < split.length; i++)
                     data += split[i] + (i + 1 < split.length ? "(" : "");
                 int end = data.lastIndexOf(')');
-                if (end == -1)
-                {
+                if (end == -1) {
                     // ast_log(LOG_WARNING, "No closing parenthesis found?
                     // '%s(%s'\n", appl, data);
-                }
-                else if (end == data.length() - 1)
-                {
+                } else if (end == data.length() - 1) {
                     data = data.substring(0, end);
                 }
                 data = processQuotesAndSlashes(data, ',', '|');
             }
 
-            if (!appl.trim().equals(""))
-            {
+            if (!appl.trim().equals("")) {
                 args.add(appl.trim());
-                if (!data.trim().equals(""))
-                {
+                if (!data.trim().equals("")) {
                     String[] dataSplit = data.split("\\|");
-                    for (String aDataSplit : dataSplit)
-                    {
+                    for (String aDataSplit : dataSplit) {
                         args.add(aDataSplit.trim());
                     }
                 }
@@ -148,8 +129,7 @@ public class ExtensionsConfigFileReader extends ConfigFileReader
         return args.toArray(new String[args.size()]);
     }
 
-    public ExtensionsConfigFile readExtensionsFile(String configfile)
-    {
+    public ExtensionsConfigFile readExtensionsFile(String configfile) {
         super.readFile(configfile);
         /* at some point, we may want to resolve back references */
         /* that include or goto from one context to another */
@@ -157,32 +137,22 @@ public class ExtensionsConfigFileReader extends ConfigFileReader
     }
 
     /* ast_process_quotes_and_slashes rewritten to be java friendly */
-    private static String processQuotesAndSlashes(String start, char find, char replace_with)
-    {
+    private static String processQuotesAndSlashes(String start, char find, char replace_with) {
         String dataPut = "";
         int inEscape = 0;
         int inQuotes = 0;
 
         char[] startChars = start.toCharArray();
-        for (char startChar : startChars)
-        {
-            if (inEscape != 0)
-            {
+        for (char startChar : startChars) {
+            if (inEscape != 0) {
                 dataPut += startChar; /* Always goes verbatim */
                 inEscape = 0;
-            }
-            else
-            {
-                if (startChar == '\\')
-                {
+            } else {
+                if (startChar == '\\') {
                     inEscape = 1; /* Do not copy \ into the data */
-                }
-                else if (startChar == '\'')
-                {
+                } else if (startChar == '\'') {
                     inQuotes = 1 - inQuotes; /* Do not copy ' into the data */
-                }
-                else
-                {
+                } else {
                     /* Replace , with |, unless in quotes */
                     dataPut += inQuotes != 0 ? startChar : ((startChar == find) ? replace_with : startChar);
                 }

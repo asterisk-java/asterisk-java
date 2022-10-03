@@ -19,15 +19,13 @@ package org.asteriskjava.manager.event;
 /**
  * A DahdiShowChannelsCompleteEvent is triggered after the state of all Dahdi channels has been reported
  * in response to a DahdiShowChannelsAction.
- * 
- * @see org.asteriskjava.manager.action.DahdiShowChannelsAction
- * @see org.asteriskjava.manager.event.DahdiShowChannelsEvent
- * 
+ *
  * @author srt
  * @version $Id$
+ * @see org.asteriskjava.manager.action.DahdiShowChannelsAction
+ * @see org.asteriskjava.manager.event.DahdiShowChannelsEvent
  */
-public class DahdiShowChannelsCompleteEvent extends ResponseEvent
-{
+public class DahdiShowChannelsCompleteEvent extends ResponseEvent {
     /**
      * Serial version identifier
      */
@@ -44,28 +42,25 @@ public class DahdiShowChannelsCompleteEvent extends ResponseEvent
     public void setItems(Integer items) {
         this.items = items;
     }
-    
+
     /**
      * @param source
      */
-    public DahdiShowChannelsCompleteEvent(Object source)
-    {
+    public DahdiShowChannelsCompleteEvent(Object source) {
         super(source);
     }
 
-      /**
+    /**
      * Returns if the status of the eventlist (should be Complete).<p>
      *
      * @return the status of the list.
      * @since 1.0.0
      */
-    public String getEventlist()
-    {
+    public String getEventlist() {
         return eventlist;
     }
 
-    public void setEventlist(String eventlist)
-    {
+    public void setEventlist(String eventlist) {
         this.eventlist = eventlist;
     }
 
@@ -74,8 +69,7 @@ public class DahdiShowChannelsCompleteEvent extends ResponseEvent
      *
      * @return the number of channels reported.
      */
-    public Integer getListitems()
-    {
+    public Integer getListitems() {
         return listitems;
     }
 
@@ -84,8 +78,7 @@ public class DahdiShowChannelsCompleteEvent extends ResponseEvent
      *
      * @param listitems the number of channels reported.
      */
-    public void setListitems(Integer listitems)
-    {
+    public void setListitems(Integer listitems) {
         this.listitems = listitems;
     }
 

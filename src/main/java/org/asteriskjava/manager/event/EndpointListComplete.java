@@ -21,14 +21,13 @@ package org.asteriskjava.manager.event;
  * reported in response to a PJSIPShowEndpoints event.
  * <p>
  * Available since Asterisk 12
- * 
- * @see org.asteriskjava.manager.event.PJSipShowEndpoints
+ *
  * @author srt
  * @version $Id$
+ * @see org.asteriskjava.manager.event.PJSipShowEndpoints
  * @since 12
  */
-public class EndpointListComplete extends ResponseEvent
-{
+public class EndpointListComplete extends ResponseEvent {
     /**
      * Serial version identifier.
      */
@@ -38,31 +37,28 @@ public class EndpointListComplete extends ResponseEvent
 
     /**
      * Creates a new instance.
-     * 
+     *
      * @param source
      */
-    public EndpointListComplete(Object source)
-    {
+    public EndpointListComplete(Object source) {
         super(source);
     }
 
     /**
      * Returns the number of Endpoints that have been reported.
-     * 
+     *
      * @return the number of Endpoints that have been reported.
      */
-    public Integer getListItems()
-    {
+    public Integer getListItems() {
         return listItems;
     }
 
     /**
      * Sets the number of Endpoints that have been reported.
-     * 
+     *
      * @param listItems the number of PeerEvents that have been reported.
      */
-    public void setListItems(Integer listItems)
-    {
+    public void setListItems(Integer listItems) {
         this.listItems = listItems;
     }
 
@@ -72,16 +68,14 @@ public class EndpointListComplete extends ResponseEvent
      * Available since Asterisk 1.6.
      *
      * @return always returns "Complete" confirming that all PeerEntry events have
-     *         been sent.
+     * been sent.
      * @since 1.0.0
      */
-    public String getEventList()
-    {
+    public String getEventList() {
         return eventList;
     }
 
-    public void setEventList(String eventList)
-    {
+    public void setEventList(String eventList) {
         this.eventList = eventList;
     }
 }

@@ -24,8 +24,7 @@ package org.asteriskjava.manager.event;
  * @version $Id$
  * @since 1.0.0
  */
-public class ModuleLoadReportEvent extends ManagerEvent
-{
+public class ModuleLoadReportEvent extends ManagerEvent {
     /**
      * Serializable version identifier.
      */
@@ -40,8 +39,7 @@ public class ModuleLoadReportEvent extends ManagerEvent
     private String moduleSelection;
     private Integer moduleCount;
 
-    public ModuleLoadReportEvent(Object source)
-    {
+    public ModuleLoadReportEvent(Object source) {
         super(source);
     }
 
@@ -51,41 +49,35 @@ public class ModuleLoadReportEvent extends ManagerEvent
      * @return the load status.
      * @see #MODULE_LOAD_STATUS_DONE
      */
-    public String getModuleLoadStatus()
-    {
+    public String getModuleLoadStatus() {
         return moduleLoadStatus;
     }
 
-    public void setModuleLoadStatus(String moduleLoadStatus)
-    {
+    public void setModuleLoadStatus(String moduleLoadStatus) {
         this.moduleLoadStatus = moduleLoadStatus;
     }
 
     /**
      * Returns whether loading the pre-load modules has been completed or all modules
-     * have been loaded. 
+     * have been loaded.
      *
      * @return "Preload" or "All"
      * @see #MODULE_SELECTION_PRELOAD
      * @see #MODULE_SELECTION_ALL
      */
-    public String getModuleSelection()
-    {
+    public String getModuleSelection() {
         return moduleSelection;
     }
 
-    public boolean isPreload()
-    {
+    public boolean isPreload() {
         return MODULE_SELECTION_PRELOAD.equals(moduleSelection);
     }
 
-    public boolean isAll()
-    {
+    public boolean isAll() {
         return MODULE_SELECTION_ALL.equals(moduleSelection);
     }
 
-    public void setModuleSelection(String moduleSelection)
-    {
+    public void setModuleSelection(String moduleSelection) {
         this.moduleSelection = moduleSelection;
     }
 
@@ -94,13 +86,11 @@ public class ModuleLoadReportEvent extends ManagerEvent
      *
      * @return the number of modules that have been loaded.
      */
-    public Integer getModuleCount()
-    {
+    public Integer getModuleCount() {
         return moduleCount;
     }
 
-    public void setModuleCount(Integer moduleCount)
-    {
+    public void setModuleCount(Integer moduleCount) {
         this.moduleCount = moduleCount;
     }
 }

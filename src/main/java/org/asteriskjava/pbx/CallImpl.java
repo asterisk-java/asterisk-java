@@ -1,15 +1,15 @@
 package org.asteriskjava.pbx;
 
+import org.asteriskjava.pbx.activities.BlindTransferActivity;
+import org.asteriskjava.util.DateUtil;
+import org.asteriskjava.util.Log;
+import org.asteriskjava.util.LogFactory;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import org.asteriskjava.pbx.activities.BlindTransferActivity;
-import org.asteriskjava.util.DateUtil;
-import org.asteriskjava.util.Log;
-import org.asteriskjava.util.LogFactory;
 
 /**
  * Holds a call which may consist of 0, 1, 2 or 3 channels. When dialing out a
@@ -22,12 +22,11 @@ import org.asteriskjava.util.LogFactory;
  * Joining two existing calls The 'originating' channel is the first channel
  * introduced to the call and is stored in the zeroth element of the channel
  * list.
- * 
+ *
  * @author bsutton
  */
 
-public class CallImpl implements ChannelHangupListener, Call
-{
+public class CallImpl implements ChannelHangupListener, Call {
     private static final Log logger = LogFactory.getLog(CallImpl.class);
 
     /**
@@ -44,8 +43,7 @@ public class CallImpl implements ChannelHangupListener, Call
     /*
      * transfer types
      */
-    public enum TransferType
-    {
+    public enum TransferType {
         NONE, ASSISTED, BLIND
     }
 
@@ -100,7 +98,7 @@ public class CallImpl implements ChannelHangupListener, Call
 
     /**
      * The primary key for the Contact record.
-     * 
+     *
      * @return
      */
     private Integer _contactId;
@@ -115,11 +113,10 @@ public class CallImpl implements ChannelHangupListener, Call
      * of NJR. Note: a calls ownership can change over time. All calls start as
      * UNOWNED. If we answer a call it becomes SELF. If we put a call on hold
      * and another NJR instances answers it then it can then become REMOTE.
-     * 
+     *
      * @author bsutton
      */
-    public enum OWNER
-    {
+    public enum OWNER {
         SELF
     }
 
@@ -127,8 +124,7 @@ public class CallImpl implements ChannelHangupListener, Call
 
     protected BlindTransferActivity _transferActivity;
 
-    public CallImpl(Channel originatingChannel, CallDirection direction) throws PBXException
-    {
+    public CallImpl(Channel originatingChannel, CallDirection direction) throws PBXException {
         logger.debug("Created call=" + originatingChannel + " direction=" + direction); //$NON-NLS-1$ //$NON-NLS-2$
         this._owner = OWNER.SELF;
         this._uniquecallID = CallImpl.global_call_identifier_index.incrementAndGet();
@@ -138,8 +134,7 @@ public class CallImpl implements ChannelHangupListener, Call
 
     }
 
-    public CallImpl(Channel originatingChannel, Channel acceptingChannel, CallDirection direction) throws PBXException
-    {
+    public CallImpl(Channel originatingChannel, Channel acceptingChannel, CallDirection direction) throws PBXException {
         logger.debug("Created call=" + originatingChannel + " direction=" + direction); //$NON-NLS-1$ //$NON-NLS-2$
         this._owner = OWNER.SELF;
         this._uniquecallID = CallImpl.global_call_identifier_index.incrementAndGet();
@@ -150,8 +145,7 @@ public class CallImpl implements ChannelHangupListener, Call
 
     }
 
-    public CallImpl(Channel agent, Channel callee) throws PBXException
-    {
+    public CallImpl(Channel agent, Channel callee) throws PBXException {
         this._owner = OWNER.SELF;
         this._uniquecallID = CallImpl.global_call_identifier_index.incrementAndGet();
         this._direction = CallDirection.OUTBOUND;
@@ -165,18 +159,17 @@ public class CallImpl implements ChannelHangupListener, Call
      * Joins a specific channel from this call with a specific channel from
      * another call which results in a new Call object being created. Channels
      * that do not participate in the join are left in their original Call.
-     * 
+     *
      * @param originatingOperand the channel from this call that will
-     *            participate in the join as the originating Channel
-     * @param rhs the call we are joining to.
-     * @param acceptingOperand the channel from the rhs call that will
-     *            participate in the join as the accepting channel.
+     *                           participate in the join as the originating Channel
+     * @param rhs                the call we are joining to.
+     * @param acceptingOperand   the channel from the rhs call that will
+     *                           participate in the join as the accepting channel.
      * @return
      * @throws PBXException
      */
     public CallImpl join(OperandChannel originatingOperand, Call rhs, OperandChannel acceptingOperand,
-            CallDirection direction) throws PBXException
-    {
+                         CallDirection direction) throws PBXException {
         CallImpl joinTo = (CallImpl) rhs;
 
         Channel originatingParty = null;
@@ -211,19 +204,15 @@ public class CallImpl implements ChannelHangupListener, Call
         return joined;
     }
 
-    private Date minDate(Date d1, Date d2)
-    {
+    private Date minDate(Date d1, Date d2) {
 
-        if (d1 == null)
-        {
+        if (d1 == null) {
             return d2;
         }
-        if (d2 == null)
-        {
+        if (d2 == null) {
             return d1;
         }
-        if (d1.before(d2))
-        {
+        if (d1.before(d2)) {
             return d1;
         }
         return d2;
@@ -320,12 +309,11 @@ public class CallImpl implements ChannelHangupListener, Call
     /**
      * Splits a channel out of a call into a separate call. This method should
      * only be called from the SplitActivity.
-     * 
+     *
      * @return the resulting call.
      * @throws PBXException
      */
-    public Call split(OperandChannel channelToSplit) throws PBXException
-    {
+    public Call split(OperandChannel channelToSplit) throws PBXException {
         Channel channel = this.getOperandChannel(channelToSplit);
         channel.removeListener(this);
 
@@ -333,8 +321,7 @@ public class CallImpl implements ChannelHangupListener, Call
 
         // If this is the operator channel we need to flip the default
         // direction.
-        if (this.getLocalParty() != null && this.getLocalParty().isSame(channel))
-        {
+        if (this.getLocalParty() != null && this.getLocalParty().isSame(channel)) {
             direction = CallDirection.OUTBOUND;
         }
 
@@ -342,48 +329,42 @@ public class CallImpl implements ChannelHangupListener, Call
         call._owner = OWNER.SELF;
 
         // clear the channel have just split out.
-        switch (channelToSplit)
-        {
-            case ACCEPTING_PARTY :
+        switch (channelToSplit) {
+            case ACCEPTING_PARTY:
                 this.setAcceptingParty(null);
                 break;
-            case LOCAL_PARTY :
-                if (this._direction == CallDirection.INBOUND)
-                {
+            case LOCAL_PARTY:
+                if (this._direction == CallDirection.INBOUND) {
                     this.setAcceptingParty(null);
-                }
-                else
-                {
+                } else {
                     this.setOriginatingParty(null);
                 }
                 break;
-            case ORIGINATING_PARTY :
+            case ORIGINATING_PARTY:
                 this.setOriginatingParty(null);
                 break;
-            case REMOTE_PARTY :
+            case REMOTE_PARTY:
                 if (this._direction == CallDirection.INBOUND)
                     this.setOriginatingParty(null);
                 else
                     this.setAcceptingParty(null);
                 break;
-            case TRANSFER_TARGET_PARTY :
+            case TRANSFER_TARGET_PARTY:
                 this.setTransferTargetParty(null);
                 break;
-            default :
+            default:
                 break;
         }
 
         return call;
     }
 
-    public Call split(Channel channelToSplit) throws PBXException
-    {
+    public Call split(Channel channelToSplit) throws PBXException {
         channelToSplit.removeListener(this);
         CallDirection direction = CallDirection.INBOUND;
         // If this is the operator channel we need to flip the default
         // direction.
-        if (this.getLocalParty() != null && this.getLocalParty().isSame(channelToSplit))
-        {
+        if (this.getLocalParty() != null && this.getLocalParty().isSame(channelToSplit)) {
             direction = CallDirection.OUTBOUND;
         }
 
@@ -400,58 +381,40 @@ public class CallImpl implements ChannelHangupListener, Call
     }
 
     @Override
-    public void channelHangup(Channel channel, Integer cause, String causeText)
-    {
-        try
-        {
-            if (isSameChannel(this._originatingParty, channel))
-            {
+    public void channelHangup(Channel channel, Integer cause, String causeText) {
+        try {
+            if (isSameChannel(this._originatingParty, channel)) {
                 this.setOriginatingParty(null);
                 logger.debug("Removed originatingParty=" + channel + " from Call=" + this._uniquecallID //$NON-NLS-1$ //$NON-NLS-2$
                         + " as channel was hung up"); //$NON-NLS-1$
-            }
-
-            else if (isSameChannel(this._acceptingParty, channel))
-            {
+            } else if (isSameChannel(this._acceptingParty, channel)) {
                 this.setAcceptingParty(null);
                 logger.debug("Removed acceptingParty=" + channel + " from Call=" + this._uniquecallID //$NON-NLS-1$ //$NON-NLS-2$
                         + " as channel was hung up"); //$NON-NLS-1$
 
-            }
-
-            else if (isSameChannel(this._transferTargetParty, channel))
-            {
+            } else if (isSameChannel(this._transferTargetParty, channel)) {
                 this.setTransferTargetParty(null);
                 logger.debug("Removed transferTarget=" + channel + " from Call=" + this._uniquecallID //$NON-NLS-1$ //$NON-NLS-2$
                         + " as channel was hung up"); //$NON-NLS-1$
-            }
-
-            else
-            {
+            } else {
                 logger.warn("Received hangup for unknown channel=" + channel.getChannelId() + " on Call=" //$NON-NLS-1$ //$NON-NLS-2$
                         + this._uniquecallID + " as channel was hung up"); //$NON-NLS-1$
             }
-            if (!this.isLive())
-            {
+            if (!this.isLive()) {
                 notifyCallHangupListeners();
             }
-        }
-        catch (PBXException e)
-        {
+        } catch (PBXException e) {
             // not much we can do here so just log it
             logger.error(e, e);
         }
     }
 
-    private boolean isSameChannel(Channel lhs, Channel rhs)
-    {
+    private boolean isSameChannel(Channel lhs, Channel rhs) {
         return lhs != null && rhs != null && lhs.isSame(rhs);
     }
 
-    private void notifyCallHangupListeners()
-    {
-        for (CallHangupListener listener : this._hangupListeners)
-        {
+    private void notifyCallHangupListeners() {
+        for (CallHangupListener listener : this._hangupListeners) {
             listener.callHungup(this);
         }
 
@@ -462,13 +425,12 @@ public class CallImpl implements ChannelHangupListener, Call
      * that came up. Whilst a call must always start with an originating channel
      * as a call is shutting down it will get to the point where it will have no
      * channels. In these cases the return will be null.
-     * 
+     *
      * @return null or the originating channel.
      */
 
     @Override
-    public Channel getOriginatingParty()
-    {
+    public Channel getOriginatingParty() {
         return this._originatingParty;
     }
 
@@ -500,110 +462,91 @@ public class CallImpl implements ChannelHangupListener, Call
      * Call this method to indicate that this is an outbound call originated by
      * this NJR instance. These type of calls are not seen by a remote operator
      * unless they are put on hold.
-     * 
+     *
      * @param remoteChannel - the remote channel this call connected to when
-     *            dialing.
+     *                      dialing.
      * @throws PBXException
      */
-    public void callDialedOut(Channel remoteChannel, CallerID fromClid, CallerID toClid) throws PBXException
-    {
+    public void callDialedOut(Channel remoteChannel, CallerID fromClid, CallerID toClid) throws PBXException {
 
         // -- moved to ANSWER
     }
 
     @Override
-    public Date getCallStartTime()
-    {
+    public Date getCallStartTime() {
         return this._callStarted;
     }
 
-    public Integer getContactId()
-    {
+    public Integer getContactId() {
         return this._contactId;
     }
 
     /**
      * The current transfer target.
-     * 
+     *
      * @return
      */
-    public EndPoint getTransferTarget()
-    {
+    public EndPoint getTransferTarget() {
         return this._transferTarget;
     }
 
-    public CallerID getTransferTargetCallerID()
-    {
+    public CallerID getTransferTargetCallerID() {
         return this._transferTargetCallerID;
     }
 
     @Override
-    public CallerID getAcceptingPartyCallerID()
-    {
+    public CallerID getAcceptingPartyCallerID() {
         return this._acceptingPartyCallerID;
     }
 
     @Override
-    public CallerID getOriginatingPartyCallerID()
-    {
+    public CallerID getOriginatingPartyCallerID() {
         return this._originatingPartyCallerID;
     }
 
     @Override
-    public CallerID getRemotePartyCallerID()
-    {
+    public CallerID getRemotePartyCallerID() {
         CallerID remoteCallerID = null;
 
-        if (this.getDirection() == CallDirection.INBOUND)
-        {
+        if (this.getDirection() == CallDirection.INBOUND) {
             remoteCallerID = this.getOriginatingPartyCallerID();
-        }
-        else
-        {
+        } else {
             remoteCallerID = this.getAcceptingPartyCallerID();
         }
         return remoteCallerID;
     }
 
-    public Date getHoldStartTime()
-    {
+    public Date getHoldStartTime() {
         return this._holdStarted;
     }
 
-    public EndPoint getParkingLot()
-    {
+    public EndPoint getParkingLot() {
         return this._parkingLot;
     }
 
-    public Date getTimeAtDialIn()
-    {
+    public Date getTimeAtDialIn() {
         return this._timeAtDialin;
     }
 
-    public TransferType getTransferType()
-    {
+    public TransferType getTransferType() {
         return this.transferType;
     }
 
-    public String getUniqueCallID()
-    {
+    public String getUniqueCallID() {
         /*
          * this is a unique call identifier.
          */
         return "" + this._uniquecallID; //$NON-NLS-1$
     }
 
-    public boolean isCallParked()
-    {
+    public boolean isCallParked() {
         return this._parked;
     }
 
-    private void setOriginatingParty(Channel originatingParty) throws PBXException
-    {
+    private void setOriginatingParty(Channel originatingParty) throws PBXException {
         this._originatingParty = originatingParty;
 
-        if (originatingParty != null)
-        {
+        if (originatingParty != null) {
             if (!this._originatingParty.canDetectHangup() && this._acceptingParty != null
                     && !this._acceptingParty.canDetectHangup())
                 throw new PBXException("Call.BothWithNoHangupDetection"); //$NON-NLS-1$
@@ -612,12 +555,10 @@ public class CallImpl implements ChannelHangupListener, Call
         }
     }
 
-    private void setAcceptingParty(Channel acceptingParty) throws PBXException
-    {
+    private void setAcceptingParty(Channel acceptingParty) throws PBXException {
         this._acceptingParty = acceptingParty;
 
-        if (acceptingParty != null)
-        {
+        if (acceptingParty != null) {
             if (!this._acceptingParty.canDetectHangup() && this._originatingParty != null
                     && !this._originatingParty.canDetectHangup())
                 throw new PBXException("Call.BothWithNoHangupDetection"); //$NON-NLS-1$
@@ -626,12 +567,10 @@ public class CallImpl implements ChannelHangupListener, Call
         }
     }
 
-    private void setTransferTargetParty(Channel transferTargetParty)
-    {
+    private void setTransferTargetParty(Channel transferTargetParty) {
         this._transferTargetParty = transferTargetParty;
 
-        if (transferTargetParty != null)
-        {
+        if (transferTargetParty != null) {
             this._transferTargetParty.addHangupListener(this);
         }
     }
@@ -640,11 +579,10 @@ public class CallImpl implements ChannelHangupListener, Call
      * The contact id is just used when refilling the list of contacts so we
      * know which one is selected at the moment. It probably should be stored
      * here!
-     * 
+     *
      * @param _contactId
      */
-    public void setContactId(final Integer _contactId)
-    {
+    public void setContactId(final Integer _contactId) {
         this._contactId = _contactId;
 
     }
@@ -655,20 +593,18 @@ public class CallImpl implements ChannelHangupListener, Call
     // }
 
     @Override
-    public CallDirection getDirection()
-    {
+    public CallDirection getDirection() {
         return this._direction;
     }
 
     /**
      * Call this method to get a notification when this call hangs up.
-     * 
+     *
      * @param listener
      * @return true if the hangup listener was added. False if the call has
-     *         already been hungup.
+     * already been hungup.
      */
-    public boolean addHangupListener(CallHangupListener listener)
-    {
+    public boolean addHangupListener(CallHangupListener listener) {
         boolean callStillUp = true;
 
         if ((this._originatingParty != null && this._originatingParty.isLive())
@@ -683,11 +619,10 @@ public class CallImpl implements ChannelHangupListener, Call
 
     /**
      * returns true if the call has any active channels.
-     * 
+     *
      * @return
      */
-    public boolean isLive()
-    {
+    public boolean isLive() {
         boolean live = false;
         if ((this._originatingParty != null && this._originatingParty.isLive())
                 || (this._acceptingParty != null && this._acceptingParty.isLive())
@@ -699,35 +634,26 @@ public class CallImpl implements ChannelHangupListener, Call
     /**
      * @return true if this call is owned by another instance of NJR.
      */
-    public OWNER getOwner()
-    {
+    public OWNER getOwner() {
         return this._owner;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "State: Originating Channel:" + getOriginatingParty() + " Direction: " //$NON-NLS-1$ //$NON-NLS-2$
-                                                                                      // //$NON-NLS-3$
+                // //$NON-NLS-3$
                 + this.getDirection() + " accepting:" + this._acceptingParty; //$NON-NLS-1$
     }
 
     @Override
-    public boolean contains(Channel parkChannel)
-    {
+    public boolean contains(Channel parkChannel) {
         boolean found = false;
 
-        if (isSameChannel(this._originatingParty, parkChannel))
-        {
+        if (isSameChannel(this._originatingParty, parkChannel)) {
             found = true;
-        }
-        else if (isSameChannel(this._acceptingParty, parkChannel))
-        {
+        } else if (isSameChannel(this._acceptingParty, parkChannel)) {
             found = true;
-        }
-
-        else if (isSameChannel(this._transferTargetParty, parkChannel))
-        {
+        } else if (isSameChannel(this._transferTargetParty, parkChannel)) {
             found = true;
         }
 
@@ -735,14 +661,12 @@ public class CallImpl implements ChannelHangupListener, Call
     }
 
     @Override
-    public Channel getAcceptingParty()
-    {
+    public Channel getAcceptingParty() {
         return this._acceptingParty;
     }
 
     @Override
-    public Channel getTransferTargetParty()
-    {
+    public Channel getTransferTargetParty() {
         return this._transferTargetParty;
     }
 
@@ -751,23 +675,18 @@ public class CallImpl implements ChannelHangupListener, Call
      * This method use the CallDirection to determine which leg of the call is
      * the local call and which is the called/calling party. It then returns the
      * called/calling party.
-     * 
+     *
      * @return
      */
-    public Channel getRemoteParty()
-    {
+    public Channel getRemoteParty() {
         Channel remoteChannel = null;
 
-        if (this.getDirection() == CallDirection.INBOUND)
-        {
+        if (this.getDirection() == CallDirection.INBOUND) {
             remoteChannel = this.getOriginatingParty();
-        }
-        else
-        {
+        } else {
             remoteChannel = this.getAcceptingParty();
         }
-        if (remoteChannel == null)
-        {
+        if (remoteChannel == null) {
             logger.error("remoteChannel is null for {}" + this.getDirection());
         }
         return remoteChannel;
@@ -778,12 +697,11 @@ public class CallImpl implements ChannelHangupListener, Call
      * This method use the CallDirection to determine which leg of the call is
      * the local call and which is the called/calling party. It then returns the
      * local call .
-     * 
+     *
      * @return
      */
     @Override
-    public Channel getLocalParty()
-    {
+    public Channel getLocalParty() {
 
         if (this.getDirection() == CallDirection.OUTBOUND)
             return this.getOriginatingParty();
@@ -793,46 +711,41 @@ public class CallImpl implements ChannelHangupListener, Call
     }
 
     @Override
-    public boolean canSplit()
-    {
+    public boolean canSplit() {
         return (this._originatingParty != null && this._acceptingParty != null && this._transferTargetParty == null);
     }
 
     @Override
-    public Channel getOperandChannel(OperandChannel operand)
-    {
+    public Channel getOperandChannel(OperandChannel operand) {
         final Channel channel;
 
-        switch (operand)
-        {
-            case ACCEPTING_PARTY :
+        switch (operand) {
+            case ACCEPTING_PARTY:
                 channel = this._acceptingParty;
                 break;
-            case ORIGINATING_PARTY :
+            case ORIGINATING_PARTY:
                 channel = this._originatingParty;
                 break;
-            case REMOTE_PARTY :
+            case REMOTE_PARTY:
                 channel = getRemoteParty();
                 break;
-            case TRANSFER_TARGET_PARTY :
+            case TRANSFER_TARGET_PARTY:
                 channel = this._transferTargetParty;
                 break;
-            case LOCAL_PARTY :
+            case LOCAL_PARTY:
                 channel = this.getLocalParty();
                 break;
-            default :
+            default:
                 // should never happen
                 throw new IllegalArgumentException("An unsupported operand was passed:" + operand); //$NON-NLS-1$
         }
-        if (channel == null)
-        {
+        if (channel == null) {
             logger.warn("failed to get channel for " + operand);
         }
         return channel;
     }
 
-    public boolean isSame(Call rhs)
-    {
+    public boolean isSame(Call rhs) {
         return this._uniquecallID == ((CallImpl) rhs)._uniquecallID;
     }
 
@@ -840,8 +753,7 @@ public class CallImpl implements ChannelHangupListener, Call
      * Returns all of the Channels associated with this call.
      */
     @Override
-    public List<Channel> getChannels()
-    {
+    public List<Channel> getChannels() {
         List<Channel> channels = new LinkedList<>();
         if (_acceptingParty != null)
             channels.add(_acceptingParty);

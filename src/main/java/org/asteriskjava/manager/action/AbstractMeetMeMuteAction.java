@@ -18,12 +18,11 @@ package org.asteriskjava.manager.action;
 
 /**
  * Abstract base class for mute and unmute actions.
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public abstract class AbstractMeetMeMuteAction extends AbstractManagerAction
-{
+public abstract class AbstractMeetMeMuteAction extends AbstractManagerAction {
     /**
      * Serializable version identifier
      */
@@ -32,13 +31,11 @@ public abstract class AbstractMeetMeMuteAction extends AbstractManagerAction
     private String meetMe;
     private Integer userNum;
 
-    protected AbstractMeetMeMuteAction()
-    {
+    protected AbstractMeetMeMuteAction() {
         super();
     }
 
-    protected AbstractMeetMeMuteAction(String meetMe, Integer userNum)
-    {
+    protected AbstractMeetMeMuteAction(String meetMe, Integer userNum) {
         super();
         this.meetMe = meetMe;
         this.userNum = userNum;
@@ -46,43 +43,39 @@ public abstract class AbstractMeetMeMuteAction extends AbstractManagerAction
 
     /**
      * Returns the conference number.
-     * 
+     *
      * @return the conference number.
      */
-    public String getMeetMe()
-    {
+    public String getMeetMe() {
         return meetMe;
     }
 
     /**
      * Sets the conference number.<p>
      * This property is mandatory.
-     * 
+     *
      * @param meetMe the conference number.
      */
-    public void setMeetMe(String meetMe)
-    {
+    public void setMeetMe(String meetMe) {
         this.meetMe = meetMe;
     }
 
     /**
      * Returns the index of the user in the conference.
-     * 
+     *
      * @return the index of the user in the conference.
      */
-    public Integer getUserNum()
-    {
+    public Integer getUserNum() {
         return userNum;
     }
 
     /**
      * Sets the index of the user in the conference.<p>
      * This property is mandatory.
-     * 
+     *
      * @param userNum the index of the user in the conference.
      */
-    public void setUserNum(Integer userNum)
-    {
+    public void setUserNum(Integer userNum) {
         this.userNum = userNum;
     }
 }

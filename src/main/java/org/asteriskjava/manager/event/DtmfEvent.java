@@ -39,8 +39,7 @@ package org.asteriskjava.manager.event;
  * @version $Id$
  * @since 1.0.0
  */
-public class DtmfEvent extends ManagerEvent
-{
+public class DtmfEvent extends ManagerEvent {
     /**
      * Serializable version identifier.
      */
@@ -55,7 +54,7 @@ public class DtmfEvent extends ManagerEvent
     private String direction;
     private Boolean begin;
     private Boolean end;
-    
+
     private String language;
     private String linkedId;
     private String accountCode;
@@ -65,8 +64,7 @@ public class DtmfEvent extends ManagerEvent
      *
      * @param source
      */
-    public DtmfEvent(Object source)
-    {
+    public DtmfEvent(Object source) {
         super(source);
     }
 
@@ -76,8 +74,7 @@ public class DtmfEvent extends ManagerEvent
      *
      * @return the channel name.
      */
-    public String getChannel()
-    {
+    public String getChannel() {
         return channel;
     }
 
@@ -86,8 +83,7 @@ public class DtmfEvent extends ManagerEvent
      *
      * @param channel the channel name.
      */
-    public void setChannel(String channel)
-    {
+    public void setChannel(String channel) {
         this.channel = channel;
     }
 
@@ -96,8 +92,7 @@ public class DtmfEvent extends ManagerEvent
      *
      * @return the unique id of the channel.
      */
-    public String getUniqueId()
-    {
+    public String getUniqueId() {
         return uniqueId;
     }
 
@@ -106,8 +101,7 @@ public class DtmfEvent extends ManagerEvent
      *
      * @param uniqueId the unique id of the the channel.
      */
-    public void setUniqueId(String uniqueId)
-    {
+    public void setUniqueId(String uniqueId) {
         this.uniqueId = uniqueId;
     }
 
@@ -116,8 +110,7 @@ public class DtmfEvent extends ManagerEvent
      *
      * @return the DTMF digit that was sent or received.
      */
-    public String getDigit()
-    {
+    public String getDigit() {
         return digit;
     }
 
@@ -126,8 +119,7 @@ public class DtmfEvent extends ManagerEvent
      *
      * @param digit the DTMF digit that was sent or received.
      */
-    public void setDigit(String digit)
-    {
+    public void setDigit(String digit) {
         this.digit = digit;
     }
 
@@ -140,12 +132,11 @@ public class DtmfEvent extends ManagerEvent
      * </ul>
      *
      * @return "Reveived" if the DTMF was received (sent from the device to Asterisk) or "Sent" if the DTMF
-     *         digit was sent (sent from Asterisk to the device).
+     * digit was sent (sent from Asterisk to the device).
      * @see #DIRECTION_RECEIVED
      * @see #DIRECTION_SENT
      */
-    public String getDirection()
-    {
+    public String getDirection() {
         return direction;
     }
 
@@ -154,8 +145,7 @@ public class DtmfEvent extends ManagerEvent
      *
      * @param direction "Received" or "Sent".
      */
-    public void setDirection(String direction)
-    {
+    public void setDirection(String direction) {
         this.direction = direction;
     }
 
@@ -168,10 +158,9 @@ public class DtmfEvent extends ManagerEvent
      * DTMF.
      *
      * @return <code>true</code> if this is a DTMF begin event (key pressed),
-     *         <code>false</code> otherwise.
+     * <code>false</code> otherwise.
      */
-    public Boolean isBegin()
-    {
+    public Boolean isBegin() {
         return begin != null && begin;
     }
 
@@ -181,8 +170,7 @@ public class DtmfEvent extends ManagerEvent
      * @param begin <code>true</code> if this is a DTMF begin event (key pressed),
      *              <code>false</code> otherwise.
      */
-    public void setBegin(Boolean begin)
-    {
+    public void setBegin(Boolean begin) {
         this.begin = begin;
     }
 
@@ -192,10 +180,9 @@ public class DtmfEvent extends ManagerEvent
      * DTMF you will only see DTMF end events.
      *
      * @return <code>true</code> if this is a DTMF end event (key released),
-     *         <code>false</code> otherwise.
+     * <code>false</code> otherwise.
      */
-    public boolean isEnd()
-    {
+    public boolean isEnd() {
         return end != null && end;
     }
 
@@ -205,8 +192,7 @@ public class DtmfEvent extends ManagerEvent
      * @param end <code>true</code> if this is a DTMF end event (key released),
      *            <code>false</code> otherwise.
      */
-    public void setEnd(Boolean end)
-    {
+    public void setEnd(Boolean end) {
         this.end = end;
     }
 
@@ -214,11 +200,10 @@ public class DtmfEvent extends ManagerEvent
      * Returns whether the DTMF digit was received by Asterisk (sent from the device to Asterisk).
      *
      * @return <code>true</code> if the DTMF digit was received by Asterisk,
-     *         <code>false</code> otherwise.
+     * <code>false</code> otherwise.
      * @see #getDirection()
      */
-    public boolean isReceived()
-    {
+    public boolean isReceived() {
         return DIRECTION_RECEIVED.equalsIgnoreCase(direction);
     }
 
@@ -226,43 +211,36 @@ public class DtmfEvent extends ManagerEvent
      * Returns whether the DTMF digit was sent from Asterisk to the device.
      *
      * @return <code>true</code> if the DTMF digit was sent from Asterisk to the device,
-     *         <code>false</code> otherwise.
+     * <code>false</code> otherwise.
      * @see #getDirection()
      */
-    public boolean isSent()
-    {
+    public boolean isSent() {
         return DIRECTION_SENT.equalsIgnoreCase(direction);
     }
 
-    public String getLanguage()
-    {
+    public String getLanguage() {
         return language;
     }
 
-    public void setLanguage(String language)
-    {
+    public void setLanguage(String language) {
         this.language = language;
     }
 
-    public String getLinkedId()
-    {
+    public String getLinkedId() {
         return linkedId;
     }
 
-    public void setLinkedId(String linkedId)
-    {
+    public void setLinkedId(String linkedId) {
         this.linkedId = linkedId;
     }
 
-    public String getAccountCode()
-    {
+    public String getAccountCode() {
         return accountCode;
     }
 
-    public void setAccountCode(String accountCode)
-    {
+    public void setAccountCode(String accountCode) {
         this.accountCode = accountCode;
     }
-    
-    
+
+
 }

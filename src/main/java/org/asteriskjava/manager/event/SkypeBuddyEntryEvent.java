@@ -25,8 +25,7 @@ package org.asteriskjava.manager.event;
  * @see org.asteriskjava.manager.action.SkypeBuddiesAction
  * @since 1.0.0
  */
-public class SkypeBuddyEntryEvent extends ResponseEvent
-{
+public class SkypeBuddyEntryEvent extends ResponseEvent {
     /**
      * Serial version identifier.
      */
@@ -35,8 +34,7 @@ public class SkypeBuddyEntryEvent extends ResponseEvent
     private String status;
     private String fullname;
 
-    public SkypeBuddyEntryEvent(Object source)
-    {
+    public SkypeBuddyEntryEvent(Object source) {
         super(source);
     }
 
@@ -45,8 +43,7 @@ public class SkypeBuddyEntryEvent extends ResponseEvent
      *
      * @return the Skype username of the buddy.
      */
-    public String getBuddy()
-    {
+    public String getBuddy() {
         return buddy;
     }
 
@@ -55,8 +52,7 @@ public class SkypeBuddyEntryEvent extends ResponseEvent
      *
      * @param buddy the Skype username of the buddy.
      */
-    public void setBuddy(String buddy)
-    {
+    public void setBuddy(String buddy) {
         this.buddy = buddy;
     }
 
@@ -65,8 +61,7 @@ public class SkypeBuddyEntryEvent extends ResponseEvent
      *
      * @return the status of the buddy.
      */
-    public String getStatus()
-    {
+    public String getStatus() {
         return status;
     }
 
@@ -75,8 +70,7 @@ public class SkypeBuddyEntryEvent extends ResponseEvent
      *
      * @param status the status of the buddy.
      */
-    public void setStatus(String status)
-    {
+    public void setStatus(String status) {
         this.status = status;
     }
 
@@ -85,8 +79,7 @@ public class SkypeBuddyEntryEvent extends ResponseEvent
      *
      * @return the full name of the buddy.
      */
-    public String getFullname()
-    {
+    public String getFullname() {
         return fullname;
     }
 
@@ -95,8 +88,7 @@ public class SkypeBuddyEntryEvent extends ResponseEvent
      *
      * @param fullname the full name of the buddy.
      */
-    public void setFullname(String fullname)
-    {
+    public void setFullname(String fullname) {
         this.fullname = fullname;
     }
 }

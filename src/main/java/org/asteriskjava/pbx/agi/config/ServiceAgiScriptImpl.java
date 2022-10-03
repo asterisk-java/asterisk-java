@@ -15,17 +15,15 @@ import org.asteriskjava.util.LogFactory;
  * <br>
  * Requires an implementing agi to provide it's name and parameter list via
  * getScriptName() and getParameters.
- * 
+ *
  * @author rsutton
  */
-abstract public class ServiceAgiScriptImpl extends BaseAgiScript implements ServiceAgiScript
-{
+abstract public class ServiceAgiScriptImpl extends BaseAgiScript implements ServiceAgiScript {
     static transient Log logger = LogFactory.getLog(ServiceAgiScriptImpl.class);
     protected AgiRequest request;
     protected AgiChannel channel;
 
-    public synchronized void service(AgiRequest request, AgiChannel channel) throws AgiException
-    {
+    public synchronized void service(AgiRequest request, AgiChannel channel) throws AgiException {
         this.request = request;
         this.channel = channel;
         service();
@@ -34,21 +32,19 @@ abstract public class ServiceAgiScriptImpl extends BaseAgiScript implements Serv
     /**
      * field variables request and channel will be set prior to calling
      * service() AgiRequest request AgiChannel channel
-     * 
+     *
      * @throws AgiException
      */
 
     public abstract void service() throws AgiException;
 
-    protected String required(String name, String parameter) throws AgiException
-    {
+    protected String required(String name, String parameter) throws AgiException {
         if (parameter == null || parameter.length() == 0)
             throw new AgiException("Required parameter " + name + " missing.");
         return parameter;
     }
 
-    protected String getParameter(String name) throws AgiException
-    {
+    protected String getParameter(String name) throws AgiException {
         return required(name, request.getParameter(name));
     }
 

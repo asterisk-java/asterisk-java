@@ -11,16 +11,14 @@ package org.asteriskjava.manager.event;
  * @since 12
  */
 
-public class AorDetail extends ResponseEvent
-{
+public class AorDetail extends ResponseEvent {
 
     /**
      * Serial version identifier.
      */
     private static final long serialVersionUID = 2634171854313358591L;
 
-    public AorDetail(Object source)
-    {
+    public AorDetail(Object source) {
         super(source);
     }
 
@@ -43,183 +41,147 @@ public class AorDetail extends ResponseEvent
     private int contactsRegistered;
     private String endpointName;
 
-    public String getObjectType()
-    {
+    public String getObjectType() {
         return objectType;
     }
 
-    public void setObjectType(String objectType)
-    {
+    public void setObjectType(String objectType) {
         this.objectType = objectType;
     }
 
-    public String getObjectName()
-    {
+    public String getObjectName() {
         return objectName;
     }
 
-    public void setObjectName(String objectName)
-    {
+    public void setObjectName(String objectName) {
         this.objectName = objectName;
     }
 
-    public int getMinimumExpiration()
-    {
+    public int getMinimumExpiration() {
         return minimumExpiration;
     }
 
-    public void setMinimumExpiration(int minimumExpiration)
-    {
+    public void setMinimumExpiration(int minimumExpiration) {
         this.minimumExpiration = minimumExpiration;
     }
 
-    public int getDefaultExpiration()
-    {
+    public int getDefaultExpiration() {
         return defaultExpiration;
     }
 
-    public void setDefaultExpiration(int defaultExpiration)
-    {
+    public void setDefaultExpiration(int defaultExpiration) {
         this.defaultExpiration = defaultExpiration;
     }
 
-    public Float getQualifyTimeout()
-    {
+    public Float getQualifyTimeout() {
         return qualifyTimeout;
     }
 
-    public void setQualifyTimeout(Float qualifyTimeout)
-    {
+    public void setQualifyTimeout(Float qualifyTimeout) {
         this.qualifyTimeout = qualifyTimeout;
     }
 
-    public String getMailboxes()
-    {
+    public String getMailboxes() {
         return mailboxes;
     }
 
-    public void setMailboxes(String mailboxes)
-    {
+    public void setMailboxes(String mailboxes) {
         this.mailboxes = mailboxes;
     }
 
-    public Boolean isSupportPath()
-    {
+    public Boolean isSupportPath() {
         return supportPath;
     }
 
-    public void setSupportPath(Boolean supportPath)
-    {
+    public void setSupportPath(Boolean supportPath) {
         this.supportPath = supportPath;
     }
 
-    public String getVoicemailExtension()
-    {
+    public String getVoicemailExtension() {
         return voicemailExtension;
     }
 
-    public void setVoicemailExtension(String voicemailExtension)
-    {
+    public void setVoicemailExtension(String voicemailExtension) {
         this.voicemailExtension = voicemailExtension;
     }
 
-    public int getMaxContacts()
-    {
+    public int getMaxContacts() {
         return maxContacts;
     }
 
-    public void setMaxContacts(int maxContacts)
-    {
+    public void setMaxContacts(int maxContacts) {
         this.maxContacts = maxContacts;
     }
 
-    public Boolean isAuthenticateQualify()
-    {
+    public Boolean isAuthenticateQualify() {
         return authenticateQualify;
     }
 
-    public void setAuthenticateQualify(Boolean authenticateQualify)
-    {
+    public void setAuthenticateQualify(Boolean authenticateQualify) {
         this.authenticateQualify = authenticateQualify;
     }
 
-    public String getContacts()
-    {
+    public String getContacts() {
         return contacts;
     }
 
-    public void setContacts(String contacts)
-    {
+    public void setContacts(String contacts) {
         this.contacts = contacts;
     }
 
-    public int getMaximumExpiration()
-    {
+    public int getMaximumExpiration() {
         return maximumExpiration;
     }
 
-    public void setMaximumExpiration(int maximumExpiration)
-    {
+    public void setMaximumExpiration(int maximumExpiration) {
         this.maximumExpiration = maximumExpiration;
     }
 
-    public int getQualifyFrequency()
-    {
+    public int getQualifyFrequency() {
         return qualifyFrequency;
     }
 
-    public void setQualifyFrequency(int qualifyFrequency)
-    {
+    public void setQualifyFrequency(int qualifyFrequency) {
         this.qualifyFrequency = qualifyFrequency;
     }
 
-    public Boolean isRemoveExisting()
-    {
+    public Boolean isRemoveExisting() {
         return removeExisting;
     }
 
-    public void setRemoveExisting(Boolean removeExisting)
-    {
+    public void setRemoveExisting(Boolean removeExisting) {
         this.removeExisting = removeExisting;
     }
 
-    public String getOutboundProxy()
-    {
+    public String getOutboundProxy() {
         return outboundProxy;
     }
 
-    public void setOutboundProxy(String outboundProxy)
-    {
+    public void setOutboundProxy(String outboundProxy) {
         this.outboundProxy = outboundProxy;
     }
 
-    public int getTotalContacts()
-    {
+    public int getTotalContacts() {
         return totalContacts;
     }
 
-    public void setTotalContacts(int totalContacts)
-    {
+    public void setTotalContacts(int totalContacts) {
         this.totalContacts = totalContacts;
     }
 
-    public int getContactsRegistered()
-    {
+    public int getContactsRegistered() {
         return contactsRegistered;
     }
 
-    public void setContactsRegistered(int contactsRegistered)
-    {
+    public void setContactsRegistered(int contactsRegistered) {
         this.contactsRegistered = contactsRegistered;
     }
 
-    public String getEndpointName()
-    {
+    public String getEndpointName() {
         return endpointName;
     }
 
-    public void setEndpointName(String endpointName)
-    {
+    public void setEndpointName(String endpointName) {
         this.endpointName = endpointName;
     }
 

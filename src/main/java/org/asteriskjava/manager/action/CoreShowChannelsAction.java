@@ -1,12 +1,12 @@
 /*
  *  Copyright 2009 Sebastian.
- * 
+ *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -32,27 +32,23 @@ import org.asteriskjava.manager.event.ResponseEvent;
  * @see org.asteriskjava.manager.event.CoreShowChannelsCompleteEvent
  * @since 1.0.0
  */
-public class CoreShowChannelsAction extends AbstractManagerAction implements EventGeneratingAction
-{
+public class CoreShowChannelsAction extends AbstractManagerAction implements EventGeneratingAction {
 
     /**
      * Serializable version identifier.
      */
     static final long serialVersionUID = 0L;
 
-    public CoreShowChannelsAction()
-    {
+    public CoreShowChannelsAction() {
 
     }
 
     @Override
-    public String getAction()
-    {
+    public String getAction() {
         return "CoreShowChannels";
     }
 
-    public Class<? extends ResponseEvent> getActionCompleteEventClass()
-    {
+    public Class<? extends ResponseEvent> getActionCompleteEventClass() {
         return CoreShowChannelsCompleteEvent.class;
     }
 

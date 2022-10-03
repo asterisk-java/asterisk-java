@@ -24,8 +24,7 @@ package org.asteriskjava.manager.event;
  * @author srt
  * @version $Id$
  */
-public class HangupEvent extends AbstractChannelStateEvent
-{
+public class HangupEvent extends AbstractChannelStateEvent {
     /**
      * Serializable version identifier.
      */
@@ -36,18 +35,15 @@ public class HangupEvent extends AbstractChannelStateEvent
     private String language;
     private String linkedId;
 
-    public HangupEvent(Object source)
-    {
+    public HangupEvent(Object source) {
         super(source);
     }
 
-    public String getLanguage()
-    {
+    public String getLanguage() {
         return language;
     }
 
-    public void setLanguage(String language)
-    {
+    public void setLanguage(String language) {
         this.language = language;
     }
 
@@ -57,8 +53,7 @@ public class HangupEvent extends AbstractChannelStateEvent
      * @return the hangup cause.
      * @see org.asteriskjava.live.HangupCause
      */
-    public Integer getCause()
-    {
+    public Integer getCause() {
         return cause;
     }
 
@@ -67,8 +62,7 @@ public class HangupEvent extends AbstractChannelStateEvent
      *
      * @param cause the hangup cause.
      */
-    public void setCause(Integer cause)
-    {
+    public void setCause(Integer cause) {
         this.cause = cause;
     }
 
@@ -78,8 +72,7 @@ public class HangupEvent extends AbstractChannelStateEvent
      * @return the textual representation of the hangup cause.
      * @since 0.2
      */
-    public String getCauseTxt()
-    {
+    public String getCauseTxt() {
         return causeTxt;
     }
 
@@ -89,24 +82,20 @@ public class HangupEvent extends AbstractChannelStateEvent
      * @param causeTxt the textual representation of the hangup cause.
      * @since 0.2
      */
-    public void setCauseTxt(String causeTxt)
-    {
+    public void setCauseTxt(String causeTxt) {
         this.causeTxt = causeTxt;
     }
 
-    public String getLinkedId()
-    {
+    public String getLinkedId() {
         return linkedId;
     }
 
-    public void setLinkedId(String linkedId)
-    {
+    public void setLinkedId(String linkedId) {
         this.linkedId = linkedId;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         StringBuilder builder = new StringBuilder();
         builder.append("HangupEvent [cause=");
         builder.append(cause);

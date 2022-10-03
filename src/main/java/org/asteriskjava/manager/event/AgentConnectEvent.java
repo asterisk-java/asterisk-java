@@ -22,13 +22,12 @@ package org.asteriskjava.manager.event;
  * It is implemented in <code>apps/app_queue.c</code>.
  * <p>
  * Available since Asterisk 1.2
- * 
+ *
  * @author srt
  * @version $Id$
  * @since 0.2
  */
-public class AgentConnectEvent extends AbstractAgentEvent
-{
+public class AgentConnectEvent extends AbstractAgentEvent {
     /**
      * Serial version identifier.
      */
@@ -55,31 +54,28 @@ public class AgentConnectEvent extends AbstractAgentEvent
     private String destLinkedId;
     private String destLanguage;
     private String language;
-    
+
     private String accountcode;
 
-    public AgentConnectEvent(Object source)
-    {
+    public AgentConnectEvent(Object source) {
         super(source);
     }
 
     /**
      * Returns the amount of time the caller was on hold.
-     * 
+     *
      * @return the amount of time the caller was on hold in seconds.
      */
-    public Long getHoldTime()
-    {
+    public Long getHoldTime() {
         return holdTime;
     }
 
     /**
      * Sets the amount of time the caller was on hold.
-     * 
+     *
      * @param holdtime the amount of time the caller was on hold in seconds.
      */
-    public void setHoldTime(Long holdtime)
-    {
+    public void setHoldTime(Long holdtime) {
         this.holdTime = holdtime;
     }
 
@@ -89,23 +85,21 @@ public class AgentConnectEvent extends AbstractAgentEvent
      * particular call from the queue.
      * <p>
      * Available since Asterisk 1.4.
-     * 
+     *
      * @return the unique ID of the queue member channel that is taking the
-     *         call.
+     * call.
      */
-    public String getBridgedChannel()
-    {
+    public String getBridgedChannel() {
         return bridgedChannel;
     }
 
     /**
      * Sets the unique ID of the queue member channel that is taking the call.
-     * 
+     *
      * @param bridgedChannel the unique ID of the queue member channel that is
-     *            taking the call.
+     *                       taking the call.
      */
-    public void setBridgedChannel(String bridgedChannel)
-    {
+    public void setBridgedChannel(String bridgedChannel) {
         this.bridgedChannel = bridgedChannel;
     }
 
@@ -116,268 +110,230 @@ public class AgentConnectEvent extends AbstractAgentEvent
      * Available since Asterisk 1.6.
      *
      * @return the amount of time the agent's channel was ringing before
-     *         answered in seconds.
+     * answered in seconds.
      * @since 1.0.0
      */
-    public Long getRingtime()
-    {
+    public Long getRingtime() {
         return ringtime;
     }
 
-    public void setRingtime(Long ringtime)
-    {
+    public void setRingtime(Long ringtime) {
         this.ringtime = ringtime;
     }
 
     /**
      * @return the destExten
      */
-    public String getDestExten()
-    {
+    public String getDestExten() {
         return destExten;
     }
 
     /**
      * @param destExten the destExten to set
      */
-    public void setDestExten(String destExten)
-    {
+    public void setDestExten(String destExten) {
         this.destExten = destExten;
     }
 
     /**
      * @return the destChannelStateDesc
      */
-    public String getDestChannelStateDesc()
-    {
+    public String getDestChannelStateDesc() {
         return destChannelStateDesc;
     }
 
     /**
      * @param destChannelStateDesc the destChannelStateDesc to set
      */
-    public void setDestChannelStateDesc(String destChannelStateDesc)
-    {
+    public void setDestChannelStateDesc(String destChannelStateDesc) {
         this.destChannelStateDesc = destChannelStateDesc;
     }
 
     /**
      * @return the destUniqueId
      */
-    public String getDestUniqueId()
-    {
+    public String getDestUniqueId() {
         return destUniqueId;
     }
 
     /**
      * @param destUniqueId the destUniqueId to set
      */
-    public void setDestUniqueId(String destUniqueId)
-    {
+    public void setDestUniqueId(String destUniqueId) {
         this.destUniqueId = destUniqueId;
     }
 
     /**
      * @return the destConnectedLineNum
      */
-    public String getDestConnectedLineNum()
-    {
+    public String getDestConnectedLineNum() {
         return destConnectedLineNum;
     }
 
     /**
      * @param destConnectedLineNum the destConnectedLineNum to set
      */
-    public void setDestConnectedLineNum(String destConnectedLineNum)
-    {
+    public void setDestConnectedLineNum(String destConnectedLineNum) {
         this.destConnectedLineNum = destConnectedLineNum;
     }
 
     /**
      * @return the destConnectedLineName
      */
-    public String getDestConnectedLineName()
-    {
+    public String getDestConnectedLineName() {
         return destConnectedLineName;
     }
 
     /**
      * @param destConnectedLineName the destConnectedLineName to set
      */
-    public void setDestConnectedLineName(String destConnectedLineName)
-    {
+    public void setDestConnectedLineName(String destConnectedLineName) {
         this.destConnectedLineName = destConnectedLineName;
     }
 
     /**
      * @return the destCallerIdName
      */
-    public String getDestCallerIdName()
-    {
+    public String getDestCallerIdName() {
         return destCallerIdName;
     }
 
     /**
      * @param destCallerIdName the destCallerIdName to set
      */
-    public void setDestCallerIdName(String destCallerIdName)
-    {
+    public void setDestCallerIdName(String destCallerIdName) {
         this.destCallerIdName = destCallerIdName;
     }
 
     /**
      * @return the destCallerIdNum
      */
-    public String getDestCallerIdNum()
-    {
+    public String getDestCallerIdNum() {
         return destCallerIdNum;
     }
 
     /**
      * @param destCallerIdNum the destCallerIdNum to set
      */
-    public void setDestCallerIdNum(String destCallerIdNum)
-    {
+    public void setDestCallerIdNum(String destCallerIdNum) {
         this.destCallerIdNum = destCallerIdNum;
     }
 
     /**
      * @return the destContext
      */
-    public String getDestContext()
-    {
+    public String getDestContext() {
         return destContext;
     }
 
     /**
      * @param destContext the destContext to set
      */
-    public void setDestContext(String destContext)
-    {
+    public void setDestContext(String destContext) {
         this.destContext = destContext;
     }
 
     /**
      * @return the destPriority
      */
-    public String getDestPriority()
-    {
+    public String getDestPriority() {
         return destPriority;
     }
 
     /**
      * @param destPriority the destPriority to set
      */
-    public void setDestPriority(String destPriority)
-    {
+    public void setDestPriority(String destPriority) {
         this.destPriority = destPriority;
     }
 
     /**
      * @return the destChannel
      */
-    public String getDestChannel()
-    {
+    public String getDestChannel() {
         return destChannel;
     }
 
     /**
      * @param destChannel the destChannel to set
      */
-    public void setDestChannel(String destChannel)
-    {
+    public void setDestChannel(String destChannel) {
         this.destChannel = destChannel;
     }
 
     /**
      * @return the destChannelState
      */
-    public String getDestChannelState()
-    {
+    public String getDestChannelState() {
         return destChannelState;
     }
 
     /**
      * @param destChannelState the destChannelState to set
      */
-    public void setDestChannelState(String destChannelState)
-    {
+    public void setDestChannelState(String destChannelState) {
         this.destChannelState = destChannelState;
     }
 
     /**
      * @return the iface
      */
-    public String getInterface()
-    {
+    public String getInterface() {
         return iface;
     }
 
     /**
      * @param iface the iface to set
      */
-    public void setInterface(String iface)
-    {
+    public void setInterface(String iface) {
         this.iface = iface;
     }
-    
-    public String getDestAccountCode()
-    {
+
+    public String getDestAccountCode() {
         return destAccountCode;
     }
 
-    public void setDestAccountCode(String destAccountCode)
-    {
+    public void setDestAccountCode(String destAccountCode) {
         this.destAccountCode = destAccountCode;
     }
-  
-    public String getLinkedId()
-    {
+
+    public String getLinkedId() {
         return linkedId;
     }
 
-    public void setLinkedId(String linkedId)
-    {
+    public void setLinkedId(String linkedId) {
         this.linkedId = linkedId;
     }
 
-    public String getDestLinkedId()
-    {
+    public String getDestLinkedId() {
         return destLinkedId;
     }
 
-    public void setDestLinkedId(String destLinkedId)
-    {
+    public void setDestLinkedId(String destLinkedId) {
         this.destLinkedId = destLinkedId;
     }
 
-    public String getDestLanguage()
-    {
+    public String getDestLanguage() {
         return destLanguage;
     }
 
-    public void setDestLanguage(String destLanguage)
-    {
+    public void setDestLanguage(String destLanguage) {
         this.destLanguage = destLanguage;
     }
 
-    public String getLanguage()
-    {
+    public String getLanguage() {
         return language;
     }
 
-    public void setLanguage(String language)
-    {
+    public void setLanguage(String language) {
         this.language = language;
     }
 
-	public String getAccountcode()
-	{
-		return accountcode;
-	}
+    public String getAccountcode() {
+        return accountcode;
+    }
 
-	public void setAccountcode(String accountcode)
-	{
-		this.accountcode = accountcode;
-	}
+    public void setAccountcode(String accountcode) {
+        this.accountcode = accountcode;
+    }
 }

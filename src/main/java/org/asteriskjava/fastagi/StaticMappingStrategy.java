@@ -5,12 +5,10 @@ package org.asteriskjava.fastagi;
  *
  * @since 1.0.0
  */
-public class StaticMappingStrategy implements MappingStrategy
-{
+public class StaticMappingStrategy implements MappingStrategy {
     private AgiScript agiScript;
 
-    public StaticMappingStrategy()
-    {
+    public StaticMappingStrategy() {
     }
 
     /**
@@ -18,8 +16,7 @@ public class StaticMappingStrategy implements MappingStrategy
      *
      * @param agiScript the script to map to.
      */
-    public StaticMappingStrategy(AgiScript agiScript)
-    {
+    public StaticMappingStrategy(AgiScript agiScript) {
         this.agiScript = agiScript;
     }
 
@@ -28,14 +25,12 @@ public class StaticMappingStrategy implements MappingStrategy
      *
      * @param agiScript the AgiScript to map to.
      */
-    public void setAgiScript(AgiScript agiScript)
-    {
+    public void setAgiScript(AgiScript agiScript) {
         this.agiScript = agiScript;
     }
 
     @Override
-    public AgiScript determineScript(AgiRequest request, AgiChannel channel)
-    {
+    public AgiScript determineScript(AgiRequest request, AgiChannel channel) {
         return agiScript;
     }
 }

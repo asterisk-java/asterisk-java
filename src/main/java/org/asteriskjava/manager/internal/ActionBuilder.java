@@ -23,15 +23,14 @@ import org.asteriskjava.manager.action.ManagerAction;
 /**
  * Transforms ManagerActions to Strings suitable to be sent to Asterisk.<p>
  * The attributes are determined using reflection.
- * 
+ *
  * @author srt
  * @version $Id$
  */
-interface ActionBuilder
-{
+interface ActionBuilder {
     /**
      * Sets the version of the Asterisk server to built the action for.
-     * 
+     *
      * @param targetVersion the version of the target Asterisk server.
      * @since 0.2
      */
@@ -42,7 +41,7 @@ interface ActionBuilder
      * Asterisk actions consist of an unordered set of key value pairs corresponding to the
      * attributes of the ManagerActions. Key and value are separated by a colon (":"), key value
      * pairs by a CR/NL ("\r\n"). An action is terminated by an empty line ("\r\n\r\n").
-     * 
+     *
      * @param action the action to transform
      * @return a String representing the given action in an asterisk compatible format
      */
@@ -53,8 +52,8 @@ interface ActionBuilder
      * Asterisk actions consist of an unordered set of key value pairs corresponding to the
      * attributes of the ManagerActions. Key and value are separated by a colon (":"), key value
      * pairs by a CR/NL ("\r\n"). An action is terminated by an empty line ("\r\n\r\n").
-     * 
-     * @param action the action to transform
+     *
+     * @param action           the action to transform
      * @param internalActionId the internal action id to add
      * @return a String representing the given action in an asterisk compatible format
      */

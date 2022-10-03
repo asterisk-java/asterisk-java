@@ -32,26 +32,22 @@ import org.asteriskjava.manager.event.ShowDialplanCompleteEvent;
  * @see org.asteriskjava.manager.event.ShowDialplanCompleteEvent
  * @since 1.0.0
  */
-public class ShowDialplanAction extends AbstractManagerAction implements EventGeneratingAction
-{
+public class ShowDialplanAction extends AbstractManagerAction implements EventGeneratingAction {
     private static final long serialVersionUID = 1L;
 
     /**
      * Creates a new ShowDialplanAction.
      */
-    public ShowDialplanAction()
-    {
+    public ShowDialplanAction() {
 
     }
 
     @Override
-    public String getAction()
-    {
+    public String getAction() {
         return "ShowDialplan";
     }
 
-    public Class<? extends ResponseEvent> getActionCompleteEventClass()
-    {
+    public Class<? extends ResponseEvent> getActionCompleteEventClass() {
         return ShowDialplanCompleteEvent.class;
     }
 }

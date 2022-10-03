@@ -1,24 +1,18 @@
 package org.asteriskjava.manager.event;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-/**
- *
- */
-public class T38FaxStatusEventTest
-{
+class T38FaxStatusEventTest {
     @Test
-    public void testStripUnit()
-    {
+    void testStripUnit() {
         T38FaxStatusEvent event = new T38FaxStatusEvent(this);
         assertEquals("0.022", event.stripUnit("0.022 sec."));
     }
 
     @Test
-    public void testParseProperties()
-    {
+    void testParseProperties() {
         T38FaxStatusEvent event = new T38FaxStatusEvent(this);
         event.setTotalLag("-9 ms");
         event.setMaxLag("4 ms");

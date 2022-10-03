@@ -16,10 +16,10 @@
  */
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.util.DateUtil;
+
 import java.util.Date;
 import java.util.TimeZone;
-
-import org.asteriskjava.util.DateUtil;
 
 /**
  * A CdrEvent is triggered when a call detail record is generated, usually at the end of a call.<p>
@@ -30,8 +30,7 @@ import org.asteriskjava.util.DateUtil;
  * @author srt
  * @version $Id$
  */
-public class CdrEvent extends ManagerEvent
-{
+public class CdrEvent extends ManagerEvent {
     /**
      * Serializable version identifier
      */
@@ -71,8 +70,7 @@ public class CdrEvent extends ManagerEvent
     /**
      * @param source
      */
-    public CdrEvent(Object source)
-    {
+    public CdrEvent(Object source) {
         super(source);
     }
 
@@ -82,8 +80,7 @@ public class CdrEvent extends ManagerEvent
      *
      * @return the account number.
      */
-    public String getAccountCode()
-    {
+    public String getAccountCode() {
         return accountCode;
     }
 
@@ -92,8 +89,7 @@ public class CdrEvent extends ManagerEvent
      *
      * @param accountCode the account number.
      */
-    public void setAccountCode(String accountCode)
-    {
+    public void setAccountCode(String accountCode) {
         this.accountCode = accountCode;
     }
 
@@ -103,8 +99,7 @@ public class CdrEvent extends ManagerEvent
      *
      * @return the Caller*ID number.
      */
-    public String getSrc()
-    {
+    public String getSrc() {
         return src;
     }
 
@@ -113,8 +108,7 @@ public class CdrEvent extends ManagerEvent
      *
      * @param source the Caller*ID number.
      */
-    public void setSrc(String source)
-    {
+    public void setSrc(String source) {
         this.src = source;
     }
 
@@ -124,8 +118,7 @@ public class CdrEvent extends ManagerEvent
      *
      * @return the destination extension.
      */
-    public String getDestination()
-    {
+    public String getDestination() {
         return destination;
     }
 
@@ -134,8 +127,7 @@ public class CdrEvent extends ManagerEvent
      *
      * @param destination the destination extension.
      */
-    public void setDestination(String destination)
-    {
+    public void setDestination(String destination) {
         this.destination = destination;
     }
 
@@ -145,8 +137,7 @@ public class CdrEvent extends ManagerEvent
      *
      * @return the destination context.
      */
-    public String getDestinationContext()
-    {
+    public String getDestinationContext() {
         return destinationContext;
     }
 
@@ -155,8 +146,7 @@ public class CdrEvent extends ManagerEvent
      *
      * @param destinationContext the destination context.
      */
-    public void setDestinationContext(String destinationContext)
-    {
+    public void setDestinationContext(String destinationContext) {
         this.destinationContext = destinationContext;
     }
 
@@ -166,8 +156,7 @@ public class CdrEvent extends ManagerEvent
      *
      * @return the Caller*ID with text
      */
-    public String getCallerId()
-    {
+    public String getCallerId() {
         return callerId;
     }
 
@@ -176,8 +165,7 @@ public class CdrEvent extends ManagerEvent
      *
      * @param callerId the Caller*ID with text.
      */
-    public void setCallerId(String callerId)
-    {
+    public void setCallerId(String callerId) {
         this.callerId = callerId;
     }
 
@@ -187,8 +175,7 @@ public class CdrEvent extends ManagerEvent
      *
      * @return the name of the channel.
      */
-    public String getChannel()
-    {
+    public String getChannel() {
         return channel;
     }
 
@@ -197,8 +184,7 @@ public class CdrEvent extends ManagerEvent
      *
      * @param channel the name of the channel.
      */
-    public void setChannel(String channel)
-    {
+    public void setChannel(String channel) {
         this.channel = channel;
     }
 
@@ -208,8 +194,7 @@ public class CdrEvent extends ManagerEvent
      *
      * @return the name of the destination channel or <code>null</code> if not available.
      */
-    public String getDestinationChannel()
-    {
+    public String getDestinationChannel() {
         return destinationChannel;
     }
 
@@ -218,8 +203,7 @@ public class CdrEvent extends ManagerEvent
      *
      * @param destinationChannel the name of the destination channel.
      */
-    public void setDestinationChannel(String destinationChannel)
-    {
+    public void setDestinationChannel(String destinationChannel) {
         this.destinationChannel = destinationChannel;
     }
 
@@ -229,8 +213,7 @@ public class CdrEvent extends ManagerEvent
      *
      * @return the last application or <code>null</code> if not avaialble.
      */
-    public String getLastApplication()
-    {
+    public String getLastApplication() {
         return lastApplication;
     }
 
@@ -239,8 +222,7 @@ public class CdrEvent extends ManagerEvent
      *
      * @param lastApplication the last application.
      */
-    public void setLastApplication(String lastApplication)
-    {
+    public void setLastApplication(String lastApplication) {
         this.lastApplication = lastApplication;
     }
 
@@ -250,8 +232,7 @@ public class CdrEvent extends ManagerEvent
      *
      * @return the last application's data or <code>null</code> if not avaialble.
      */
-    public String getLastData()
-    {
+    public String getLastData() {
         return lastData;
     }
 
@@ -260,8 +241,7 @@ public class CdrEvent extends ManagerEvent
      *
      * @param lastData the last application's data.
      */
-    public void setLastData(String lastData)
-    {
+    public void setLastData(String lastData) {
         this.lastData = lastData;
     }
 
@@ -272,8 +252,7 @@ public class CdrEvent extends ManagerEvent
      * @return A string of the format "%Y-%m-%d %T" (strftime(3)) representing the date/time the
      * call has started, for example "2006-05-19 11:54:48".
      */
-    public String getStartTime()
-    {
+    public String getStartTime() {
         return startTime;
     }
 
@@ -285,8 +264,7 @@ public class CdrEvent extends ManagerEvent
      * @return the start time as Date object.
      * @since 0.3
      */
-    public Date getStartTimeAsDate()
-    {
+    public Date getStartTimeAsDate() {
         return DateUtil.parseDateTime(startTime);
     }
 
@@ -297,8 +275,7 @@ public class CdrEvent extends ManagerEvent
      * @return the start time as Date object.
      * @since 0.3
      */
-    public Date getStartTimeAsDate(TimeZone tz)
-    {
+    public Date getStartTimeAsDate(TimeZone tz) {
         return DateUtil.parseDateTime(startTime, tz);
     }
 
@@ -307,8 +284,7 @@ public class CdrEvent extends ManagerEvent
      *
      * @param startTime the date/time when the call has started.
      */
-    public void setStartTime(String startTime)
-    {
+    public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
 
@@ -319,8 +295,7 @@ public class CdrEvent extends ManagerEvent
      * @return A string of the format "%Y-%m-%d %T" (strftime(3)) representing the date/time the
      * call was answered, for example "2006-05-19 11:55:01"
      */
-    public String getAnswerTime()
-    {
+    public String getAnswerTime() {
         return answerTime;
     }
 
@@ -332,8 +307,7 @@ public class CdrEvent extends ManagerEvent
      * @return the answer time as Date object.
      * @since 0.3
      */
-    public Date getAnswerTimeAsDate()
-    {
+    public Date getAnswerTimeAsDate() {
         return DateUtil.parseDateTime(answerTime);
     }
 
@@ -344,8 +318,7 @@ public class CdrEvent extends ManagerEvent
      * @return the answer time as Date object.
      * @since 0.3
      */
-    public Date getAnswerTimeAsDate(TimeZone tz)
-    {
+    public Date getAnswerTimeAsDate(TimeZone tz) {
         return DateUtil.parseDateTime(answerTime, tz);
     }
 
@@ -354,8 +327,7 @@ public class CdrEvent extends ManagerEvent
      *
      * @param answerTime the date/time when the call was answered.
      */
-    public void setAnswerTime(String answerTime)
-    {
+    public void setAnswerTime(String answerTime) {
         this.answerTime = answerTime;
     }
 
@@ -366,8 +338,7 @@ public class CdrEvent extends ManagerEvent
      * @return A string of the format "%Y-%m-%d %T" (strftime(3)) representing the date/time the
      * call has ended, for example "2006-05-19 11:58:21"
      */
-    public String getEndTime()
-    {
+    public String getEndTime() {
         return endTime;
     }
 
@@ -379,8 +350,7 @@ public class CdrEvent extends ManagerEvent
      * @return the end time as Date object.
      * @since 0.3
      */
-    public Date getEndTimeAsDate()
-    {
+    public Date getEndTimeAsDate() {
         return DateUtil.parseDateTime(endTime);
     }
 
@@ -391,8 +361,7 @@ public class CdrEvent extends ManagerEvent
      * @return the end time as Date object.
      * @since 0.3
      */
-    public Date getEndTimeAsDate(TimeZone tz)
-    {
+    public Date getEndTimeAsDate(TimeZone tz) {
         return DateUtil.parseDateTime(endTime, tz);
     }
 
@@ -401,8 +370,7 @@ public class CdrEvent extends ManagerEvent
      *
      * @param endTime the date/time when the call has ended.
      */
-    public void setEndTime(String endTime)
-    {
+    public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
 
@@ -412,8 +380,7 @@ public class CdrEvent extends ManagerEvent
      *
      * @return the total time in system in seconds.
      */
-    public Integer getDuration()
-    {
+    public Integer getDuration() {
         return duration;
     }
 
@@ -422,8 +389,7 @@ public class CdrEvent extends ManagerEvent
      *
      * @param duration total time in system in seconds.
      */
-    public void setDuration(Integer duration)
-    {
+    public void setDuration(Integer duration) {
         this.duration = duration;
     }
 
@@ -433,8 +399,7 @@ public class CdrEvent extends ManagerEvent
      *
      * @return the total time in call in seconds.
      */
-    public Integer getBillableSeconds()
-    {
+    public Integer getBillableSeconds() {
         return billableSeconds;
     }
 
@@ -443,8 +408,7 @@ public class CdrEvent extends ManagerEvent
      *
      * @param billableSeconds the total time in call in seconds.
      */
-    public void setBillableSeconds(Integer billableSeconds)
-    {
+    public void setBillableSeconds(Integer billableSeconds) {
         this.billableSeconds = billableSeconds;
     }
 
@@ -462,8 +426,7 @@ public class CdrEvent extends ManagerEvent
      *
      * @return the disposition.
      */
-    public String getDisposition()
-    {
+    public String getDisposition() {
         return disposition;
     }
 
@@ -472,8 +435,7 @@ public class CdrEvent extends ManagerEvent
      *
      * @param disposition the disposition.
      */
-    public void setDisposition(String disposition)
-    {
+    public void setDisposition(String disposition) {
         this.disposition = disposition;
     }
 
@@ -490,8 +452,7 @@ public class CdrEvent extends ManagerEvent
      *
      * @return the AMA flags.
      */
-    public String getAmaFlags()
-    {
+    public String getAmaFlags() {
         return amaFlags;
     }
 
@@ -500,8 +461,7 @@ public class CdrEvent extends ManagerEvent
      *
      * @param amaFlags the AMA (Automated Message Accounting) flags.
      */
-    public void setAmaFlags(String amaFlags)
-    {
+    public void setAmaFlags(String amaFlags) {
         this.amaFlags = amaFlags;
     }
 
@@ -510,8 +470,7 @@ public class CdrEvent extends ManagerEvent
      *
      * @return the unique id of the channel.
      */
-    public String getUniqueId()
-    {
+    public String getUniqueId() {
         return uniqueId;
     }
 
@@ -520,8 +479,7 @@ public class CdrEvent extends ManagerEvent
      *
      * @param uniqueId the unique id of the channel.
      */
-    public void setUniqueId(String uniqueId)
-    {
+    public void setUniqueId(String uniqueId) {
         this.uniqueId = uniqueId;
     }
 
@@ -531,8 +489,7 @@ public class CdrEvent extends ManagerEvent
      *
      * @return the user-defined field.
      */
-    public String getUserField()
-    {
+    public String getUserField() {
         return userField;
     }
 
@@ -541,27 +498,27 @@ public class CdrEvent extends ManagerEvent
      *
      * @param userField the user-defined field
      */
-    public void setUserField(String userField)
-    {
+    public void setUserField(String userField) {
         this.userField = userField;
     }
 
-	/**
-	 * Returns record filename.
-	 * @return record filename.
-	 */
+    /**
+     * Returns record filename.
+     *
+     * @return record filename.
+     */
 
-	public String getRecordfile() {
-		return recordfile;
-	}
+    public String getRecordfile() {
+        return recordfile;
+    }
 
-	/**
-	 * Sets record filename.
-	 *
-	 * @param recordfile record filename.
-	 */
+    /**
+     * Sets record filename.
+     *
+     * @param recordfile record filename.
+     */
 
-	public void setRecordfile(String recordfile) {
-		this.recordfile = recordfile;
-	}
+    public void setRecordfile(String recordfile) {
+        this.recordfile = recordfile;
+    }
 }

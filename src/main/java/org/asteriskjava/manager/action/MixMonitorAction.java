@@ -21,7 +21,7 @@ import org.asteriskjava.manager.response.MixMonitorResponse;
 
 /**
  * Start a MixMonitor on the specified channel.
- *
+ * <p>
  * Available since Asterisk 11
  *
  * @see org.asteriskjava.manager.response.MixMonitorResponse
@@ -30,8 +30,7 @@ import org.asteriskjava.manager.response.MixMonitorResponse;
  * @see MixMonitorMuteAction
  */
 @ExpectedResponse(MixMonitorResponse.class)
-public class MixMonitorAction extends AbstractManagerAction
-{
+public class MixMonitorAction extends AbstractManagerAction {
     private static final long serialVersionUID = 1L;
     private String channel;
     private String file;
@@ -41,8 +40,7 @@ public class MixMonitorAction extends AbstractManagerAction
     /**
      * Creates a new empty MixMonitorAction
      */
-    public MixMonitorAction()
-    {
+    public MixMonitorAction() {
         super();
     }
 
@@ -50,10 +48,9 @@ public class MixMonitorAction extends AbstractManagerAction
      * Creates a new MixMonitorAction that starts monitoring the given channel
      * using a default filename.
      *
-     * @param channel	the name of the channel to monitor
+     * @param channel the name of the channel to monitor
      */
-    public MixMonitorAction(String channel)
-    {
+    public MixMonitorAction(String channel) {
         this(channel, null, null, null);
     }
 
@@ -61,11 +58,10 @@ public class MixMonitorAction extends AbstractManagerAction
      * Creates a new MixMonitorAction that starts monitoring the given channel
      * with the specified filename.
      *
-     * @param channel	the name of the channel to monitor
-     * @param filename	the filename to use for the recording
+     * @param channel  the name of the channel to monitor
+     * @param filename the filename to use for the recording
      */
-    public MixMonitorAction(String channel, String filename)
-    {
+    public MixMonitorAction(String channel, String filename) {
         this(channel, filename, null, null);
     }
 
@@ -73,12 +69,11 @@ public class MixMonitorAction extends AbstractManagerAction
      * Creates a new MixMonitorAction with options that starts monitoring the
      * given channel with the specified filename.
      *
-     * @param channel	the name of the channel to monitor
-     * @param filename	the filename to use for the recording
-     * @param options	the MixMonitor options to use when starting the recording
+     * @param channel  the name of the channel to monitor
+     * @param filename the filename to use for the recording
+     * @param options  the MixMonitor options to use when starting the recording
      */
-    public MixMonitorAction(String channel, String filename, String options)
-    {
+    public MixMonitorAction(String channel, String filename, String options) {
         this(channel, filename, options, null);
     }
 
@@ -86,16 +81,15 @@ public class MixMonitorAction extends AbstractManagerAction
      * Creates a new MixMonitorAction with options that starts monitoring the
      * given channel with the specified filename. Also takes a command to
      * execute when the recording has ended.
-     *
+     * <p>
      * The {@code command} option has been available since Asterisk 12
      *
-     * @param channel	the name of the channel to monitor
-     * @param filename	the filename to use for the recording
-     * @param options	the MixMonitor options to use when starting the recording
-     * @param command	the command to execute when the recording is complete
+     * @param channel  the name of the channel to monitor
+     * @param filename the filename to use for the recording
+     * @param options  the MixMonitor options to use when starting the recording
+     * @param command  the command to execute when the recording is complete
      */
-    public MixMonitorAction(String channel, String filename, String options, String command)
-    {
+    public MixMonitorAction(String channel, String filename, String options, String command) {
         this.channel = channel;
         this.file = filename;
         this.options = options;
@@ -108,8 +102,7 @@ public class MixMonitorAction extends AbstractManagerAction
      * @return the name of the AMI action that this class implements
      */
     @Override
-    public String getAction()
-    {
+    public String getAction() {
         return "MixMonitor";
     }
 
@@ -118,8 +111,7 @@ public class MixMonitorAction extends AbstractManagerAction
      *
      * @return the Asterisk channel name
      */
-    public String getChannel()
-    {
+    public String getChannel() {
         return channel;
     }
 
@@ -128,8 +120,7 @@ public class MixMonitorAction extends AbstractManagerAction
      *
      * @param channel the Asterisk channel name
      */
-    public void setChannel(String channel)
-    {
+    public void setChannel(String channel) {
         this.channel = channel;
     }
 
@@ -138,8 +129,7 @@ public class MixMonitorAction extends AbstractManagerAction
      *
      * @return the recording filename
      */
-    public String getFile()
-    {
+    public String getFile() {
         return file;
     }
 
@@ -148,8 +138,7 @@ public class MixMonitorAction extends AbstractManagerAction
      *
      * @param filename the recording filename
      */
-    public void setFile(String filename)
-    {
+    public void setFile(String filename) {
         this.file = filename;
     }
 
@@ -158,8 +147,7 @@ public class MixMonitorAction extends AbstractManagerAction
      *
      * @return the MixMonitor options
      */
-    public String getOptions()
-    {
+    public String getOptions() {
         return options;
     }
 
@@ -170,34 +158,31 @@ public class MixMonitorAction extends AbstractManagerAction
      *
      * @param options the MixMonitor options
      */
-    public void setOptions(String options)
-    {
+    public void setOptions(String options) {
         this.options = options;
     }
 
     /**
      * Get the command to be executed when the MixMonitor recording has
      * ended.
-     *
+     * <p>
      * Available since Asterisk 12
      *
      * @return the command to execute
      */
-    public String getCommand()
-    {
+    public String getCommand() {
         return command;
     }
 
     /**
      * Sets the command to be executed when the MixMonitor recording has
      * ended.
-     *
+     * <p>
      * Available since Asterisk 12
      *
      * @param command the command to execute
      */
-    public void setCommand(String command)
-    {
+    public void setCommand(String command) {
         this.command = command;
     }
 }

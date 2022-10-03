@@ -23,52 +23,42 @@ import org.asteriskjava.util.Log;
  * <p>
  * This logger is only used if neither log4j nor java.util.logging are available
  * which should not happen anyway as Asterisk-Java depends on at least JDK 1.5.
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public class NullLog implements Log
-{
+public class NullLog implements Log {
     /**
      * Creates a new NullLog.
      */
-    public NullLog()
-    {
+    public NullLog() {
     }
 
-    public void debug(Object obj)
-    {
+    public void debug(Object obj) {
     }
 
-    public void info(Object obj)
-    {
+    public void info(Object obj) {
     }
 
-    public void warn(Object obj)
-    {
+    public void warn(Object obj) {
     }
 
-    public void warn(Object obj, Throwable ex)
-    {
+    public void warn(Object obj, Throwable ex) {
     }
 
-    public void error(Object obj)
-    {
+    public void error(Object obj) {
     }
 
-    public void error(Object obj, Throwable ex)
-    {
+    public void error(Object obj, Throwable ex) {
     }
 
     @Override
-    public boolean isDebugEnabled()
-    {
+    public boolean isDebugEnabled() {
         return false;
     }
 
     @Override
-    public void debug(Object e, Throwable e2)
-    {
+    public void debug(Object e, Throwable e2) {
 
     }
 }

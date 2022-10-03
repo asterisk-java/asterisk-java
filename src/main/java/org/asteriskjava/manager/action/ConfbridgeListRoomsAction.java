@@ -10,8 +10,7 @@ import org.asteriskjava.manager.event.ResponseEvent;
  *
  * @since 1.0.0
  */
-public class ConfbridgeListRoomsAction extends AbstractManagerAction implements EventGeneratingAction
-{
+public class ConfbridgeListRoomsAction extends AbstractManagerAction implements EventGeneratingAction {
     private static final long serialVersionUID = 1L;
 
     /**
@@ -19,14 +18,12 @@ public class ConfbridgeListRoomsAction extends AbstractManagerAction implements 
      */
 
     @Override
-    public String getAction()
-    {
+    public String getAction() {
         return "ConfbridgeListRooms";
     }
 
     @Override
-    public Class< ? extends ResponseEvent> getActionCompleteEventClass()
-    {
+    public Class<? extends ResponseEvent> getActionCompleteEventClass() {
         return ConfbridgeListRoomsCompleteEvent.class;
     }
 }

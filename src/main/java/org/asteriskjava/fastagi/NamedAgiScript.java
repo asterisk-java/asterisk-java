@@ -21,8 +21,7 @@ package org.asteriskjava.fastagi;
  *
  * @since 1.0.0
  */
-public interface NamedAgiScript extends AgiScript
-{
+public interface NamedAgiScript extends AgiScript {
     /**
      * Returns the name of the script.
      *

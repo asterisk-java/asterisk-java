@@ -25,13 +25,12 @@ package org.asteriskjava.manager.event;
  * @version $Id$
  * @since 1.0.0
  */
-public class RegistryEntryEvent extends ResponseEvent
-{
+public class RegistryEntryEvent extends ResponseEvent {
     /**
-    * 
-    */
-   private static final long serialVersionUID = -7158046719541054868L;
-   private Integer port;
+     *
+     */
+    private static final long serialVersionUID = -7158046719541054868L;
+    private Integer port;
     private String username;
     private String state;
     private Integer refresh;
@@ -43,8 +42,7 @@ public class RegistryEntryEvent extends ResponseEvent
      *
      * @param source
      */
-    public RegistryEntryEvent(Object source)
-    {
+    public RegistryEntryEvent(Object source) {
         super(source);
     }
 
@@ -53,8 +51,7 @@ public class RegistryEntryEvent extends ResponseEvent
      *
      * @return epoch since the last registration.
      */
-    public Long getRegistrationTime()
-    {
+    public Long getRegistrationTime() {
         return registrationTime;
     }
 
@@ -64,8 +61,7 @@ public class RegistryEntryEvent extends ResponseEvent
      *
      * @param registrationTime the epoch of the last registration.
      */
-    public void setRegistrationTime(String registrationTime)
-    {
+    public void setRegistrationTime(String registrationTime) {
         this.registrationTime = Long.valueOf(registrationTime);
     }
 
@@ -74,8 +70,7 @@ public class RegistryEntryEvent extends ResponseEvent
      *
      * @return the port number.
      */
-    public Integer getPort()
-    {
+    public Integer getPort() {
         return port;
     }
 
@@ -84,8 +79,7 @@ public class RegistryEntryEvent extends ResponseEvent
      *
      * @param port the port number.
      */
-    public void setPort(Integer port)
-    {
+    public void setPort(Integer port) {
         this.port = port;
     }
 
@@ -94,8 +88,7 @@ public class RegistryEntryEvent extends ResponseEvent
      *
      * @return the username.
      */
-    public String getUsername()
-    {
+    public String getUsername() {
         return username;
     }
 
@@ -104,8 +97,7 @@ public class RegistryEntryEvent extends ResponseEvent
      *
      * @param username the username.
      */
-    public void setUsername(String username)
-    {
+    public void setUsername(String username) {
         this.username = username;
     }
 
@@ -114,8 +106,7 @@ public class RegistryEntryEvent extends ResponseEvent
      *
      * @return the IP address or the hostname.
      */
-    public String getHost()
-    {
+    public String getHost() {
         return host;
     }
 
@@ -124,8 +115,7 @@ public class RegistryEntryEvent extends ResponseEvent
      *
      * @param host IP address or hostname.
      */
-    public void setHost(String host)
-    {
+    public void setHost(String host) {
         this.host = host;
     }
 
@@ -134,8 +124,7 @@ public class RegistryEntryEvent extends ResponseEvent
      *
      * @return the value of state
      */
-    public String getState()
-    {
+    public String getState() {
         return state;
     }
 
@@ -144,8 +133,7 @@ public class RegistryEntryEvent extends ResponseEvent
      *
      * @param state new value of state
      */
-    public void setState(String state)
-    {
+    public void setState(String state) {
         this.state = state;
     }
 
@@ -154,8 +142,7 @@ public class RegistryEntryEvent extends ResponseEvent
      *
      * @return the value of refresh.
      */
-    public Integer getRefresh()
-    {
+    public Integer getRefresh() {
         return refresh;
     }
 
@@ -164,8 +151,7 @@ public class RegistryEntryEvent extends ResponseEvent
      *
      * @param refresh new value of refresh
      */
-    public void setRefresh(Integer refresh)
-    {
+    public void setRefresh(Integer refresh) {
         this.refresh = refresh;
     }
 }

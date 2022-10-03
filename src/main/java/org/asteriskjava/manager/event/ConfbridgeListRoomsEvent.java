@@ -1,7 +1,6 @@
 package org.asteriskjava.manager.event;
 
-public class ConfbridgeListRoomsEvent extends ResponseEvent
-{
+public class ConfbridgeListRoomsEvent extends ResponseEvent {
     /**
      * Serializable version identifier
      */
@@ -13,24 +12,21 @@ public class ConfbridgeListRoomsEvent extends ResponseEvent
     private Boolean locked;
     private String muted;
 
-    public ConfbridgeListRoomsEvent(Object source)
-    {
+    public ConfbridgeListRoomsEvent(Object source) {
         super(source);
     }
 
     /**
      * Sets the id of the conference to be listed.
      */
-    public void setConference(String conference)
-    {
+    public void setConference(String conference) {
         this.conference = conference;
     }
 
     /**
      * Returns the id of the conference to be listed.
      */
-    public String getConference()
-    {
+    public String getConference() {
         return conference;
     }
 
@@ -39,8 +35,7 @@ public class ConfbridgeListRoomsEvent extends ResponseEvent
      *
      * @param parties the number of participants in this conference.
      */
-    public void setParties(Integer parties)
-    {
+    public void setParties(Integer parties) {
         this.parties = parties;
     }
 
@@ -49,8 +44,7 @@ public class ConfbridgeListRoomsEvent extends ResponseEvent
      *
      * @return the number of participants in this conference.
      */
-    public Integer getParties()
-    {
+    public Integer getParties() {
         return parties;
     }
 
@@ -59,8 +53,7 @@ public class ConfbridgeListRoomsEvent extends ResponseEvent
      *
      * @param marked the number of marked participants in this conference.
      */
-    public void setMarked(Integer marked)
-    {
+    public void setMarked(Integer marked) {
         this.marked = marked;
     }
 
@@ -69,28 +62,23 @@ public class ConfbridgeListRoomsEvent extends ResponseEvent
      *
      * @return the number of marked participants in this conference.
      */
-    public Integer getMarked()
-    {
+    public Integer getMarked() {
         return marked;
     }
 
-    public void setLocked(Boolean locked)
-    {
+    public void setLocked(Boolean locked) {
         this.locked = locked;
     }
 
-    public Boolean getLocked()
-    {
+    public Boolean getLocked() {
         return locked;
     }
 
-    public String getMuted()
-    {
+    public String getMuted() {
         return muted;
     }
 
-    public void setMuted(String muted)
-    {
+    public void setMuted(String muted) {
         this.muted = muted;
     }
 }

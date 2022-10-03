@@ -19,8 +19,7 @@ package org.asteriskjava.manager.event;
 /**
  * An AbstractFaxEvent is a base class for fax related events
  */
-public class AbstractFaxEvent extends ManagerEvent
-{
+public class AbstractFaxEvent extends ManagerEvent {
     /**
      * Serial version identifier.
      */
@@ -28,8 +27,7 @@ public class AbstractFaxEvent extends ManagerEvent
     private String channel;
     private Integer faxSession;
 
-    public AbstractFaxEvent(Object source)
-    {
+    public AbstractFaxEvent(Object source) {
         super(source);
     }
 
@@ -37,8 +35,7 @@ public class AbstractFaxEvent extends ManagerEvent
     /**
      * @return the channel
      */
-    public String getChannel()
-    {
+    public String getChannel() {
         return channel;
     }
 
@@ -46,8 +43,7 @@ public class AbstractFaxEvent extends ManagerEvent
     /**
      * @param channel the channel to set
      */
-    public void setChannel(String channel)
-    {
+    public void setChannel(String channel) {
         this.channel = channel;
     }
 
@@ -55,8 +51,7 @@ public class AbstractFaxEvent extends ManagerEvent
     /**
      * @return the faxSession
      */
-    public Integer getFaxSession()
-    {
+    public Integer getFaxSession() {
         return faxSession;
     }
 
@@ -64,8 +59,7 @@ public class AbstractFaxEvent extends ManagerEvent
     /**
      * @param faxSession the faxSession to set
      */
-    public void setFaxSession(Integer faxSession)
-    {
+    public void setFaxSession(Integer faxSession) {
         this.faxSession = faxSession;
     }
 

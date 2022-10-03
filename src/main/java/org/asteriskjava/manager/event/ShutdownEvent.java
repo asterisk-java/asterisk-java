@@ -19,12 +19,11 @@ package org.asteriskjava.manager.event;
 /**
  * A ShutdownEvent is triggered when the asterisk server is shut down or restarted.<p>
  * It is implemented in <code>asterisk.c</code>
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public class ShutdownEvent extends ManagerEvent
-{
+public class ShutdownEvent extends ManagerEvent {
     /**
      * Serial version identifier
      */
@@ -36,8 +35,7 @@ public class ShutdownEvent extends ManagerEvent
     /**
      * @param source
      */
-    public ShutdownEvent(Object source)
-    {
+    public ShutdownEvent(Object source) {
         super(source);
     }
 
@@ -45,13 +43,11 @@ public class ShutdownEvent extends ManagerEvent
      * Returns the kind of shutdown or restart. Possible values are "Uncleanly" and "Cleanly". A
      * shutdown is considered unclean if there are any active channels when the system is shut down.
      */
-    public String getShutdown()
-    {
+    public String getShutdown() {
         return shutdown;
     }
 
-    public void setShutdown(String shutdown)
-    {
+    public void setShutdown(String shutdown) {
         this.shutdown = shutdown;
     }
 
@@ -59,13 +55,11 @@ public class ShutdownEvent extends ManagerEvent
      * Returns <code>true</code> if the server has been restarted; <code>false</code> if it has
      * been halted.
      */
-    public Boolean getRestart()
-    {
+    public Boolean getRestart() {
         return restart;
     }
 
-    public void setRestart(Boolean restart)
-    {
+    public void setRestart(Boolean restart) {
         this.restart = restart;
     }
 }

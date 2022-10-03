@@ -20,12 +20,11 @@ package org.asteriskjava.manager.event;
  * A RenameEvent is triggered when the name of a channel is changed.
  * <p>
  * It is implemented in <code>channel.c</code>
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public class RenameEvent extends ManagerEvent
-{
+public class RenameEvent extends ManagerEvent {
     /**
      * Serializable version identifier.
      */
@@ -51,28 +50,25 @@ public class RenameEvent extends ManagerEvent
      */
     protected String uniqueId;
 
-    public RenameEvent(Object source)
-    {
+    public RenameEvent(Object source) {
         super(source);
     }
 
     /**
      * Returns the new name of the channel.
-     * 
+     *
      * @return the new name of the channel.
      */
-    public final String getNewname()
-    {
+    public final String getNewname() {
         return newname;
     }
 
     /**
      * Sets the new name of the channel.
-     * 
+     *
      * @param newname the new name of the channel.
      */
-    public final void setNewname(final String newname)
-    {
+    public final void setNewname(final String newname) {
         this.newname = newname;
     }
 
@@ -82,8 +78,7 @@ public class RenameEvent extends ManagerEvent
      * @return the old name of the channel.
      * @since 1.0.0
      */
-    public String getChannel()
-    {
+    public String getChannel() {
         return channel;
     }
 
@@ -94,19 +89,18 @@ public class RenameEvent extends ManagerEvent
      * @param channel the old name of the channel.
      * @since 1.0.0
      */
-    public void setChannel(String channel)
-    {
+    public void setChannel(String channel) {
         this.channel = channel;
     }
 
     /**
      * Returns the old name of the channel.
-     * 
+     *
      * @return the old name of the channel.
      * @deprecated use {@link #getChannel} instead.
      */
-    @Deprecated public final String getOldname()
-    {
+    @Deprecated
+    public final String getOldname() {
         return channel;
     }
 
@@ -114,31 +108,28 @@ public class RenameEvent extends ManagerEvent
      * Sets the old name of the channel.<p>
      * The "Oldchannel" property is used by Asterisk up to 1.4 and has been renamed to "Channel"
      * as of Asterisk 1.6.
-     * 
+     *
      * @param oldname the old name of the channel.
      */
-    public final void setOldname(final String oldname)
-    {
+    public final void setOldname(final String oldname) {
         this.channel = oldname;
     }
 
     /**
      * Returns the unique id of the channel.
-     * 
+     *
      * @return the unique id of the channel.
      */
-    public final String getUniqueId()
-    {
+    public final String getUniqueId() {
         return uniqueId;
     }
 
     /**
      * Sets the unique id of the channel.
-     * 
+     *
      * @param uniqueId the unique id of the channel.
      */
-    public final void setUniqueId(final String uniqueId)
-    {
+    public final void setUniqueId(final String uniqueId) {
         this.uniqueId = uniqueId;
     }
 
@@ -149,12 +140,11 @@ public class RenameEvent extends ManagerEvent
      * <p>
      * The purpose of this property is unclear as the unique id is supposed to
      * never change.
-     * 
+     *
      * @return the new unique id of the channel.
      * @since 0.3
      */
-    public final String getNewUniqueId()
-    {
+    public final String getNewUniqueId() {
         return newUniqueId;
     }
 
@@ -165,12 +155,11 @@ public class RenameEvent extends ManagerEvent
      * <p>
      * The purpose of this property is unclear as the unique id is supposed to
      * never change.
-     * 
+     *
      * @param newUniqueId the new unique id of the channel.
      * @since 0.3
      */
-    public final void setNewUniqueId(final String newUniqueId)
-    {
+    public final void setNewUniqueId(final String newUniqueId) {
         this.newUniqueId = newUniqueId;
     }
 }

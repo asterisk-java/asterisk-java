@@ -1,12 +1,12 @@
 /*
  *  Copyright 2009 Sebastian.
- * 
+ *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,8 +25,7 @@ package org.asteriskjava.manager.event;
  * @see org.asteriskjava.manager.action.CoreShowChannelsAction
  * @since 1.0.0
  */
-public class CoreShowChannelEvent extends ResponseEvent
-{
+public class CoreShowChannelEvent extends ResponseEvent {
     /**
      * Serializable version identifier.
      */
@@ -45,8 +44,7 @@ public class CoreShowChannelEvent extends ResponseEvent
     private String language;
 
 
-    public CoreShowChannelEvent(Object source)
-    {
+    public CoreShowChannelEvent(Object source) {
         super(source);
     }
 
@@ -61,13 +59,11 @@ public class CoreShowChannelEvent extends ResponseEvent
      *
      * @return accountcode
      */
-    public String getAccountcode()
-    {
+    public String getAccountcode() {
         return accountcode;
     }
 
-    public void setAccountcode(String accountcode)
-    {
+    public void setAccountcode(String accountcode) {
         this.accountcode = accountcode;
     }
 
@@ -76,13 +72,11 @@ public class CoreShowChannelEvent extends ResponseEvent
      *
      * @return aplication name
      */
-    public String getApplication()
-    {
+    public String getApplication() {
         return application;
     }
 
-    public void setApplication(String application)
-    {
+    public void setApplication(String application) {
         this.application = application;
     }
 
@@ -92,13 +86,11 @@ public class CoreShowChannelEvent extends ResponseEvent
      *
      * @return aplication data
      */
-    public String getApplicationdata()
-    {
+    public String getApplicationdata() {
         return applicationdata;
     }
 
-    public void setApplicationdata(String applicationdata)
-    {
+    public void setApplicationdata(String applicationdata) {
         this.applicationdata = applicationdata;
     }
 
@@ -107,13 +99,11 @@ public class CoreShowChannelEvent extends ResponseEvent
      *
      * @return Channel name
      */
-    public String getBridgedChannel()
-    {
+    public String getBridgedChannel() {
         return bridgedChannel;
     }
 
-    public void setBridgedChannel(String bridgedChannel)
-    {
+    public void setBridgedChannel(String bridgedChannel) {
         this.bridgedChannel = bridgedChannel;
     }
 
@@ -123,14 +113,12 @@ public class CoreShowChannelEvent extends ResponseEvent
      * @return uniqueid
      */
     @Deprecated
-    public String getBridgeduniqueid()
-    {
+    public String getBridgeduniqueid() {
         return bridgeid;
     }
 
     @Deprecated
-    public void setBridgeduniqueid(String bridgeduniqueid)
-    {
+    public void setBridgeduniqueid(String bridgeduniqueid) {
         this.bridgeid = bridgeduniqueid;
     }
 
@@ -139,13 +127,11 @@ public class CoreShowChannelEvent extends ResponseEvent
      *
      * @return uniqueid
      */
-    public String getBridgeid()
-    {
+    public String getBridgeid() {
         return bridgeid;
     }
 
-    public void setBridgeid(String bridgeid)
-    {
+    public void setBridgeid(String bridgeid) {
         this.bridgeid = bridgeid;
     }
 
@@ -154,13 +140,11 @@ public class CoreShowChannelEvent extends ResponseEvent
      *
      * @return Channel name
      */
-    public String getChannel()
-    {
+    public String getChannel() {
         return channel;
     }
 
-    public void setChannel(String channel)
-    {
+    public void setChannel(String channel) {
         this.channel = channel;
     }
 
@@ -169,13 +153,11 @@ public class CoreShowChannelEvent extends ResponseEvent
      *
      * @return duration
      */
-    public String getDuration()
-    {
+    public String getDuration() {
         return duration;
     }
 
-    public void setDuration(String duration)
-    {
+    public void setDuration(String duration) {
         this.duration = duration;
     }
 
@@ -184,13 +166,11 @@ public class CoreShowChannelEvent extends ResponseEvent
      *
      * @return extension
      */
-    public String getExtension()
-    {
+    public String getExtension() {
         return extension;
     }
 
-    public void setExtension(String extension)
-    {
+    public void setExtension(String extension) {
         this.extension = extension;
     }
 
@@ -199,13 +179,11 @@ public class CoreShowChannelEvent extends ResponseEvent
      *
      * @return uniqueid
      */
-    public String getUniqueid()
-    {
+    public String getUniqueid() {
         return uniqueid;
     }
 
-    public void setUniqueid(String uniqueid)
-    {
+    public void setUniqueid(String uniqueid) {
         this.uniqueid = uniqueid;
     }
 

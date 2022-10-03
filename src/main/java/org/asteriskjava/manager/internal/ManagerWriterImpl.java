@@ -16,22 +16,21 @@
  */
 package org.asteriskjava.manager.internal;
 
-import java.io.IOException;
-
 import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.lock.Lockable;
 import org.asteriskjava.lock.Locker.LockCloser;
 import org.asteriskjava.manager.action.ManagerAction;
 import org.asteriskjava.util.SocketConnectionFacade;
 
+import java.io.IOException;
+
 /**
  * Default implementation of ManagerWriter interface.
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public class ManagerWriterImpl extends Lockable implements ManagerWriter
-{
+public class ManagerWriterImpl extends Lockable implements ManagerWriter {
     /**
      * Instance logger.
      */
@@ -48,32 +47,25 @@ public class ManagerWriterImpl extends Lockable implements ManagerWriter
     /**
      * Creates a new ManagerWriter.
      */
-    public ManagerWriterImpl()
-    {
+    public ManagerWriterImpl() {
         this.actionBuilder = new ActionBuilderImpl();
     }
 
-    public void setTargetVersion(AsteriskVersion version)
-    {
+    public void setTargetVersion(AsteriskVersion version) {
         actionBuilder.setTargetVersion(version);
     }
 
-    public void setSocket(final SocketConnectionFacade socket)
-    {
-        try (LockCloser closer = this.withLock())
-        {
+    public void setSocket(final SocketConnectionFacade socket) {
+        try (LockCloser closer = this.withLock()) {
             this.socket = socket;
         }
     }
 
-    public void sendAction(final ManagerAction action, final String internalActionId) throws IOException
-    {
-        try (LockCloser closer = this.withLock())
-        {
+    public void sendAction(final ManagerAction action, final String internalActionId) throws IOException {
+        try (LockCloser closer = this.withLock()) {
             final String actionString;
 
-            if (socket == null)
-            {
+            if (socket == null) {
                 throw new IllegalStateException("Unable to send action: socket is null");
             }
 

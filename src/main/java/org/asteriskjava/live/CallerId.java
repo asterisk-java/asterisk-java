@@ -16,9 +16,9 @@
  */
 package org.asteriskjava.live;
 
-import java.io.Serializable;
-
 import org.asteriskjava.util.AstUtil;
+
+import java.io.Serializable;
 
 /**
  * Represents a Caller*ID containing name and number.
@@ -29,8 +29,7 @@ import org.asteriskjava.util.AstUtil;
  * @version $Id$
  * @since 0.3
  */
-public class CallerId implements Serializable
-{
+public class CallerId implements Serializable {
     /**
      * Serial version identifier.
      */
@@ -44,8 +43,7 @@ public class CallerId implements Serializable
      * @param name   the Caller*ID name.
      * @param number the Caller*ID number.
      */
-    public CallerId(String name, String number)
-    {
+    public CallerId(String name, String number) {
         this.name = (AstUtil.isNull(name)) ? null : name;
         this.number = (AstUtil.isNull(number)) ? null : number;
     }
@@ -55,8 +53,7 @@ public class CallerId implements Serializable
      *
      * @return the Caller*ID name.
      */
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
@@ -65,8 +62,7 @@ public class CallerId implements Serializable
      *
      * @return the Caller*ID number.
      */
-    public String getNumber()
-    {
+    public String getNumber() {
         return number;
     }
 
@@ -78,8 +74,7 @@ public class CallerId implements Serializable
      * @return the corresponding CallerId object which is never <code>null</code>.
      * @see AstUtil#parseCallerId(String)
      */
-    public static CallerId valueOf(String s)
-    {
+    public static CallerId valueOf(String s) {
         final String[] parsedCallerId;
 
         parsedCallerId = AstUtil.parseCallerId(s);
@@ -91,24 +86,20 @@ public class CallerId implements Serializable
      * <code>"Some Name" &lt;1234&gt;</code>.
      */
     @Override
-    public String toString()
-    {
+    public String toString() {
         final StringBuilder sb;
 
         sb = new StringBuilder();
-        if (name != null)
-        {
+        if (name != null) {
             sb.append("\"");
             sb.append(name);
             sb.append("\"");
-            if (number != null)
-            {
+            if (number != null) {
                 sb.append(" ");
             }
         }
 
-        if (number != null)
-        {
+        if (number != null) {
             sb.append("<");
             sb.append(number);
             sb.append(">");
@@ -117,25 +108,20 @@ public class CallerId implements Serializable
     }
 
     @Override
-    public boolean equals(Object o)
-    {
-        if (this == o)
-        {
+    public boolean equals(Object o) {
+        if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass())
-        {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
 
         CallerId callerId = (CallerId) o;
 
-        if (name != null ? !name.equals(callerId.name) : callerId.name != null)
-        {
+        if (name != null ? !name.equals(callerId.name) : callerId.name != null) {
             return false;
         }
-        if (number != null ? !number.equals(callerId.number) : callerId.number != null)
-        {
+        if (number != null ? !number.equals(callerId.number) : callerId.number != null) {
             return false;
         }
 
@@ -143,8 +129,7 @@ public class CallerId implements Serializable
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         int result = name != null ? name.hashCode() : 0;
         result = 31 * result + (number != null ? number.hashCode() : 0);
         return result;

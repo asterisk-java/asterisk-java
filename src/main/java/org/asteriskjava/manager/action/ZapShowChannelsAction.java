@@ -23,16 +23,15 @@ import org.asteriskjava.manager.event.ZapShowChannelsCompleteEvent;
  * The ZapShowChannelsAction requests the state of all zap channels.<p>
  * For each zap channel a ZapShowChannelsEvent is generated. After all zap
  * channels have been listed a ZapShowChannelsCompleteEvent is generated.
- * 
- * @see org.asteriskjava.manager.event.ZapShowChannelsEvent
- * @see org.asteriskjava.manager.event.ZapShowChannelsCompleteEvent
+ *
  * @author srt
  * @version $Id$
+ * @see org.asteriskjava.manager.event.ZapShowChannelsEvent
+ * @see org.asteriskjava.manager.event.ZapShowChannelsCompleteEvent
  */
 public class ZapShowChannelsAction extends AbstractManagerAction
         implements
-            EventGeneratingAction
-{
+        EventGeneratingAction {
     /**
      * Serializable version identifier
      */
@@ -41,8 +40,7 @@ public class ZapShowChannelsAction extends AbstractManagerAction
     /**
      * Creates a new ZapShowChannelsAction.
      */
-    public ZapShowChannelsAction()
-    {
+    public ZapShowChannelsAction() {
 
     }
 
@@ -50,13 +48,11 @@ public class ZapShowChannelsAction extends AbstractManagerAction
      * Returns the name of this action, i.e. "ZapShowChannels".
      */
     @Override
-   public String getAction()
-    {
+    public String getAction() {
         return "ZapShowChannels";
     }
 
-    public Class<? extends ResponseEvent> getActionCompleteEventClass()
-    {
+    public Class<? extends ResponseEvent> getActionCompleteEventClass() {
         return ZapShowChannelsCompleteEvent.class;
     }
 }

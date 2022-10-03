@@ -6,8 +6,7 @@ package org.asteriskjava.manager.event;
  *
  * @since 1.0.0
  */
-public class ConfbridgeJoinEvent extends AbstractConfbridgeEvent
-{
+public class ConfbridgeJoinEvent extends AbstractConfbridgeEvent {
     /**
      * Serializable version identifier
      */
@@ -15,18 +14,15 @@ public class ConfbridgeJoinEvent extends AbstractConfbridgeEvent
 
     String muted;
 
-    public ConfbridgeJoinEvent(Object source)
-    {
+    public ConfbridgeJoinEvent(Object source) {
         super(source);
     }
 
-    public String getMuted()
-    {
+    public String getMuted() {
         return muted;
     }
 
-    public void setMuted(String muted)
-    {
+    public void setMuted(String muted) {
         this.muted = muted;
     }
 

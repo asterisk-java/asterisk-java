@@ -16,14 +16,6 @@
  */
 package org.asteriskjava.live.internal;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import org.asteriskjava.live.AsteriskQueue;
 import org.asteriskjava.live.AsteriskQueueEntry;
 import org.asteriskjava.live.AsteriskQueueListener;
@@ -35,31 +27,29 @@ import org.asteriskjava.util.AstUtil;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
+import java.util.*;
+
 /**
  * Default implementation of the AsteriskQueue interface.
  *
  * @author srt
  * @version $Id$
  */
-class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
-{
+class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue {
     /**
      * TimerTask that monitors exceeding service levels.
      *
      * @author Patrick Breucking
      */
-    private class ServiceLevelTimerTask extends TimerTask
-    {
+    private class ServiceLevelTimerTask extends TimerTask {
         private final AsteriskQueueEntry entry;
 
-        ServiceLevelTimerTask(AsteriskQueueEntry entry)
-        {
+        ServiceLevelTimerTask(AsteriskQueueEntry entry) {
             this.entry = entry;
         }
 
         @Override
-        public void run()
-        {
+        public void run() {
             fireServiceLevelExceeded(entry);
         }
     }
@@ -70,7 +60,9 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
     private String strategy;
     private Integer serviceLevel;
 
-    /** 101118 Octavio Luna Agregado para Ver cambios en Vivo **/
+    /**
+     * 101118 Octavio Luna Agregado para Ver cambios en Vivo
+     **/
     private Integer calls;
     private Integer holdTime;
     private Integer talkTime;
@@ -87,9 +79,8 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
     private final LockableMap<AsteriskQueueEntry, ServiceLevelTimerTask> serviceLevelTimerTasks;
 
     AsteriskQueueImpl(AsteriskServerImpl server, String name, Integer max, String strategy, Integer serviceLevel,
-            Integer weight, Integer calls, Integer holdTime, Integer talkTime, Integer completed, Integer abandoned,
-            Double serviceLevelPerf)
-    {
+                      Integer weight, Integer calls, Integer holdTime, Integer talkTime, Integer completed, Integer abandoned,
+                      Double serviceLevelPerf) {
         super(server);
         this.name = name;
         this.max = max;
@@ -111,23 +102,19 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
         stampLastUpdate();
     }
 
-    void cancelServiceLevelTimer()
-    {
+    void cancelServiceLevelTimer() {
         timer.cancel();
     }
 
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
-    public Integer getMax()
-    {
+    public Integer getMax() {
         return max;
     }
 
-    public String getStrategy()
-    {
+    public String getStrategy() {
         return strategy;
     }
 
@@ -135,10 +122,8 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
      * @param max
      * @return true if value updated, false otherwise
      */
-    boolean setMax(Integer max)
-    {
-        if (!AstUtil.isEqual(this.max, max))
-        {
+    boolean setMax(Integer max) {
+        if (!AstUtil.isEqual(this.max, max)) {
             this.max = max;
             stampLastUpdate();
             return true;
@@ -146,8 +131,7 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
         return false;
     }
 
-    public Integer getServiceLevel()
-    {
+    public Integer getServiceLevel() {
         return serviceLevel;
     }
 
@@ -155,10 +139,8 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
      * @param serviceLevel
      * @return
      */
-    boolean setServiceLevel(Integer serviceLevel)
-    {
-        if (!AstUtil.isEqual(this.serviceLevel, serviceLevel))
-        {
+    boolean setServiceLevel(Integer serviceLevel) {
+        if (!AstUtil.isEqual(this.serviceLevel, serviceLevel)) {
             this.serviceLevel = serviceLevel;
             stampLastUpdate();
             return true;
@@ -168,8 +150,7 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
     }
 
     @Override
-    public Integer getCalls()
-    {
+    public Integer getCalls() {
         return calls;
     }
 
@@ -177,10 +158,8 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
      * @param calls
      * @return true if value updated, false otherwise
      */
-    boolean setCalls(Integer calls)
-    {
-        if (!AstUtil.isEqual(this.calls, calls))
-        {
+    boolean setCalls(Integer calls) {
+        if (!AstUtil.isEqual(this.calls, calls)) {
             this.calls = calls;
             stampLastUpdate();
             return true;
@@ -189,14 +168,12 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
     }
 
     @Override
-    public Integer getWaiting()
-    {
+    public Integer getWaiting() {
         return calls;
     }
 
     @Override
-    public Integer getHoldTime()
-    {
+    public Integer getHoldTime() {
         return holdTime;
     }
 
@@ -204,10 +181,8 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
      * @param holdTime
      * @return true if value updated, false otherwise
      */
-    boolean setHoldTime(Integer holdTime)
-    {
-        if (!AstUtil.isEqual(this.holdTime, holdTime))
-        {
+    boolean setHoldTime(Integer holdTime) {
+        if (!AstUtil.isEqual(this.holdTime, holdTime)) {
             this.holdTime = holdTime;
             stampLastUpdate();
             return true;
@@ -216,8 +191,7 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
     }
 
     @Override
-    public Integer getTalkTime()
-    {
+    public Integer getTalkTime() {
         return talkTime;
     }
 
@@ -225,10 +199,8 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
      * @param talkTime
      * @return true if value updated, false otherwise
      */
-    boolean setTalkTime(Integer talkTime)
-    {
-        if (!AstUtil.isEqual(this.talkTime, talkTime))
-        {
+    boolean setTalkTime(Integer talkTime) {
+        if (!AstUtil.isEqual(this.talkTime, talkTime)) {
             this.talkTime = talkTime;
             stampLastUpdate();
             return true;
@@ -237,8 +209,7 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
     }
 
     @Override
-    public Integer getCompleted()
-    {
+    public Integer getCompleted() {
         return completed;
     }
 
@@ -246,10 +217,8 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
      * @param completed
      * @return true if value updated, false otherwise
      */
-    boolean setCompleted(Integer completed)
-    {
-        if (!AstUtil.isEqual(this.completed, completed))
-        {
+    boolean setCompleted(Integer completed) {
+        if (!AstUtil.isEqual(this.completed, completed)) {
             this.completed = completed;
             stampLastUpdate();
             return true;
@@ -258,8 +227,7 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
     }
 
     @Override
-    public Integer getAbandoned()
-    {
+    public Integer getAbandoned() {
         return abandoned;
     }
 
@@ -267,10 +235,8 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
      * @param abandoned
      * @return true if value updated, false otherwise
      */
-    boolean setAbandoned(Integer abandoned)
-    {
-        if (!AstUtil.isEqual(this.abandoned, abandoned))
-        {
+    boolean setAbandoned(Integer abandoned) {
+        if (!AstUtil.isEqual(this.abandoned, abandoned)) {
             this.abandoned = abandoned;
             stampLastUpdate();
             return true;
@@ -280,8 +246,7 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
     }
 
     @Override
-    public Double getServiceLevelPerf()
-    {
+    public Double getServiceLevelPerf() {
         return serviceLevelPerf;
     }
 
@@ -289,10 +254,8 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
      * @param serviceLevelPerf
      * @return true if value updated, false otherwise
      */
-    boolean setServiceLevelPerf(Double serviceLevelPerf)
-    {
-        if (!AstUtil.isEqual(this.serviceLevelPerf, serviceLevelPerf))
-        {
+    boolean setServiceLevelPerf(Double serviceLevelPerf) {
+        if (!AstUtil.isEqual(this.serviceLevelPerf, serviceLevelPerf)) {
             this.serviceLevelPerf = serviceLevelPerf;
             stampLastUpdate();
             return true;
@@ -300,8 +263,7 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
         return false;
     }
 
-    public Integer getWeight()
-    {
+    public Integer getWeight() {
         return weight;
     }
 
@@ -309,10 +271,8 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
      * @param weight
      * @return true if value updated, false otherwise
      */
-    boolean setWeight(Integer weight)
-    {
-        if (!AstUtil.isEqual(this.weight, weight))
-        {
+    boolean setWeight(Integer weight) {
+        if (!AstUtil.isEqual(this.weight, weight)) {
             this.weight = weight;
             stampLastUpdate();
             return true;
@@ -320,10 +280,8 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
         return false;
     }
 
-    public List<AsteriskQueueEntry> getEntries()
-    {
-        try (LockCloser closer = entries.withLock())
-        {
+    public List<AsteriskQueueEntry> getEntries() {
+        try (LockCloser closer = entries.withLock()) {
             return new ArrayList<AsteriskQueueEntry>(entries);
         }
     }
@@ -332,17 +290,13 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
      * Shifts the position of the queue entries if needed (and fire PCE on queue
      * entries if appropriate).
      */
-    private void shift()
-    {
+    private void shift() {
         int currentPos = 1; // Asterisk starts at 1
 
-        try (LockCloser closer = entries.withLock())
-        {
-            for (AsteriskQueueEntryImpl qe : entries)
-            {
+        try (LockCloser closer = entries.withLock()) {
+            for (AsteriskQueueEntryImpl qe : entries) {
                 // Only set (and fire PCE on qe) if necessary
-                if (qe.getPosition() != currentPos)
-                {
+                if (qe.getPosition() != currentPos) {
                     qe.setPosition(currentPos);
                 }
                 currentPos++;
@@ -361,21 +315,17 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
      * <li>NewQueueEntry on server</li>
      * </ul>
      *
-     * @param channel the channel that joined the queue
+     * @param channel          the channel that joined the queue
      * @param reportedPosition the position as given by Asterisk (currently not
-     *            used)
-     * @param dateReceived the date the hannel joined the queue
+     *                         used)
+     * @param dateReceived     the date the hannel joined the queue
      */
-    void createNewEntry(AsteriskChannelImpl channel, int reportedPosition, Date dateReceived)
-    {
+    void createNewEntry(AsteriskChannelImpl channel, int reportedPosition, Date dateReceived) {
         AsteriskQueueEntryImpl qe = new AsteriskQueueEntryImpl(server, this, channel, reportedPosition, dateReceived);
 
-        try (LockCloser closer = entries.withLock())
-        {
-            if (getEntry(channel.getName()) != null)
-            {
-                if (logger.isDebugEnabled())
-                {
+        try (LockCloser closer = entries.withLock()) {
+            if (getEntry(channel.getName()) != null) {
+                if (logger.isDebugEnabled()) {
                     logger.debug("Ignored duplicate queue entry during population in queue " + name + " for channel "
                             + channel.getName());
                 }
@@ -391,12 +341,10 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
         }
 
         long delay = serviceLevel * 1000L;
-        if (delay > 0)
-        {
+        if (delay > 0) {
             ServiceLevelTimerTask timerTask = new ServiceLevelTimerTask(qe);
             timer.schedule(timerTask, delay);
-            try (LockCloser closer = serviceLevelTimerTasks.withLock())
-            {
+            try (LockCloser closer = serviceLevelTimerTasks.withLock()) {
                 serviceLevelTimerTasks.put(qe, timerTask);
             }
         }
@@ -421,15 +369,12 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
      * <li>PCE on other queue entries if shifted</li>
      * </ul>
      *
-     * @param entry an existing entry object.
+     * @param entry        an existing entry object.
      * @param dateReceived the remove event was received.
      */
-    void removeEntry(AsteriskQueueEntryImpl entry, Date dateReceived)
-    {
-        try (LockCloser closer = serviceLevelTimerTasks.withLock())
-        {
-            if (serviceLevelTimerTasks.containsKey(entry))
-            {
+    void removeEntry(AsteriskQueueEntryImpl entry, Date dateReceived) {
+        try (LockCloser closer = serviceLevelTimerTasks.withLock()) {
+            if (serviceLevelTimerTasks.containsKey(entry)) {
                 ServiceLevelTimerTask timerTask = serviceLevelTimerTasks.get(entry);
                 timerTask.cancel();
                 serviceLevelTimerTasks.remove(entry);
@@ -437,20 +382,17 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
         }
 
         boolean changed;
-        try (LockCloser closer = entries.withLock())
-        {
+        try (LockCloser closer = entries.withLock()) {
             changed = entries.remove(entry);
 
-            if (changed)
-            {
+            if (changed) {
                 // Keep the lock !
                 shift();
             }
         }
 
         // Fire outside lock
-        if (changed)
-        {
+        if (changed) {
             entry.getChannel().setQueueEntry(null);
             entry.left(dateReceived);
             fireEntryLeave(entry);
@@ -458,8 +400,7 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         final StringBuilder sb;
 
         sb = new StringBuilder("AsteriskQueue[");
@@ -475,12 +416,10 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
         sb.append("abandoned='").append(getAbandoned()).append("',");
         sb.append("serviceLevelPerf='").append(getServiceLevelPerf()).append("',");
 
-        try (LockCloser closer = entries.withLock())
-        {
+        try (LockCloser closer = entries.withLock()) {
             sb.append("entries='").append(entries.toString()).append("',");
         }
-        try (LockCloser closer = members.withLock())
-        {
+        try (LockCloser closer = members.withLock()) {
             sb.append("members='").append(members.toString()).append("',");
         }
         sb.append("systemHashcode=").append(System.identityHashCode(this));
@@ -489,18 +428,14 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
         return sb.toString();
     }
 
-    public void addAsteriskQueueListener(AsteriskQueueListener listener)
-    {
-        try (LockCloser closer = listeners.withLock())
-        {
+    public void addAsteriskQueueListener(AsteriskQueueListener listener) {
+        try (LockCloser closer = listeners.withLock()) {
             listeners.add(listener);
         }
     }
 
-    public void removeAsteriskQueueListener(AsteriskQueueListener listener)
-    {
-        try (LockCloser closer = listeners.withLock())
-        {
+    public void removeAsteriskQueueListener(AsteriskQueueListener listener) {
+        try (LockCloser closer = listeners.withLock()) {
             listeners.remove(listener);
         }
     }
@@ -510,18 +445,12 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
      *
      * @param entry that joins the queue
      */
-    void fireNewEntry(AsteriskQueueEntryImpl entry)
-    {
-        try (LockCloser closer = listeners.withLock())
-        {
-            for (AsteriskQueueListener listener : listeners)
-            {
-                try
-                {
+    void fireNewEntry(AsteriskQueueEntryImpl entry) {
+        try (LockCloser closer = listeners.withLock()) {
+            for (AsteriskQueueListener listener : listeners) {
+                try {
                     listener.onNewEntry(entry);
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                     logger.warn("Exception in onNewEntry()", e);
                 }
             }
@@ -533,18 +462,12 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
      *
      * @param entry that leaves the queue.
      */
-    void fireEntryLeave(AsteriskQueueEntryImpl entry)
-    {
-        try (LockCloser closer = listeners.withLock())
-        {
-            for (AsteriskQueueListener listener : listeners)
-            {
-                try
-                {
+    void fireEntryLeave(AsteriskQueueEntryImpl entry) {
+        try (LockCloser closer = listeners.withLock()) {
+            for (AsteriskQueueListener listener : listeners) {
+                try {
                     listener.onEntryLeave(entry);
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                     logger.warn("Exception in onEntryLeave()", e);
                 }
             }
@@ -557,18 +480,12 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
      *
      * @param member added to the queue
      */
-    void fireMemberAdded(AsteriskQueueMemberImpl member)
-    {
-        try (LockCloser closer = listeners.withLock())
-        {
-            for (AsteriskQueueListener listener : listeners)
-            {
-                try
-                {
+    void fireMemberAdded(AsteriskQueueMemberImpl member) {
+        try (LockCloser closer = listeners.withLock()) {
+            for (AsteriskQueueListener listener : listeners) {
+                try {
                     listener.onMemberAdded(member);
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                     logger.warn("Exception in onMemberAdded()", e);
                 }
             }
@@ -581,18 +498,12 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
      *
      * @param member that has been removed.
      */
-    void fireMemberRemoved(AsteriskQueueMemberImpl member)
-    {
-        try (LockCloser closer = listeners.withLock())
-        {
-            for (AsteriskQueueListener listener : listeners)
-            {
-                try
-                {
+    void fireMemberRemoved(AsteriskQueueMemberImpl member) {
+        try (LockCloser closer = listeners.withLock()) {
+            for (AsteriskQueueListener listener : listeners) {
+                try {
                     listener.onMemberRemoved(member);
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                     logger.warn("Exception in onMemberRemoved()", e);
                 }
             }
@@ -604,11 +515,9 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
      *
      * @see org.asteriskjava.live.AsteriskQueue#getMembers()
      */
-    public Collection<AsteriskQueueMember> getMembers()
-    {
+    public Collection<AsteriskQueueMember> getMembers() {
         List<AsteriskQueueMember> listOfMembers = new ArrayList<>(members.size());
-        try (LockCloser closer = members.withLock())
-        {
+        try (LockCloser closer = members.withLock()) {
             listOfMembers.addAll(members.values());
         }
         return listOfMembers;
@@ -620,12 +529,9 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
      * @param location ot the member
      * @return the member by its location.
      */
-    AsteriskQueueMemberImpl getMember(String location)
-    {
-        try (LockCloser closer = members.withLock())
-        {
-            if (members.containsKey(location))
-            {
+    AsteriskQueueMemberImpl getMember(String location) {
+        try (LockCloser closer = members.withLock()) {
+            if (members.containsKey(location)) {
                 return members.get(location);
             }
         }
@@ -637,13 +543,10 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
      *
      * @param member to add
      */
-    void addMember(AsteriskQueueMemberImpl member)
-    {
-        try (LockCloser closer = members.withLock())
-        {
+    void addMember(AsteriskQueueMemberImpl member) {
+        try (LockCloser closer = members.withLock()) {
             // Check if member already exists
-            if (members.containsValue(member))
-            {
+            if (members.containsValue(member)) {
                 return;
             }
             // If not, add the new member.
@@ -660,15 +563,12 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
      * @param location of the member
      * @return the requested member.
      */
-    AsteriskQueueMemberImpl getMemberByLocation(String location)
-    {
+    AsteriskQueueMemberImpl getMemberByLocation(String location) {
         AsteriskQueueMemberImpl member;
-        try (LockCloser closer = members.withLock())
-        {
+        try (LockCloser closer = members.withLock()) {
             member = members.get(location);
         }
-        if (member == null)
-        {
+        if (member == null) {
             logger.error("Requested member at location " + location + " not found!");
         }
         return member;
@@ -679,18 +579,12 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
      *
      * @param member the changed member.
      */
-    void fireMemberStateChanged(AsteriskQueueMemberImpl member)
-    {
-        try (LockCloser closer = listeners.withLock())
-        {
-            for (AsteriskQueueListener listener : listeners)
-            {
-                try
-                {
+    void fireMemberStateChanged(AsteriskQueueMemberImpl member) {
+        try (LockCloser closer = listeners.withLock()) {
+            for (AsteriskQueueListener listener : listeners) {
+                try {
                     listener.onMemberStateChange(member);
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                     logger.warn("Exception in onMemberStateChange()", e);
                 }
             }
@@ -703,14 +597,10 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
      * @param channelName The entry's channel name.
      * @return the queue entry if found, null otherwise.
      */
-    AsteriskQueueEntryImpl getEntry(String channelName)
-    {
-        try (LockCloser closer = entries.withLock())
-        {
-            for (AsteriskQueueEntryImpl entry : entries)
-            {
-                if (entry.getChannel().getName().equals(channelName))
-                {
+    AsteriskQueueEntryImpl getEntry(String channelName) {
+        try (LockCloser closer = entries.withLock()) {
+            for (AsteriskQueueEntryImpl entry : entries) {
+                if (entry.getChannel().getName().equals(channelName)) {
                     return entry;
                 }
             }
@@ -723,13 +613,10 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
      *
      * @param member the member to remove.
      */
-    public void removeMember(AsteriskQueueMemberImpl member)
-    {
-        try (LockCloser closer = members.withLock())
-        {
+    public void removeMember(AsteriskQueueMemberImpl member) {
+        try (LockCloser closer = members.withLock()) {
             // Check if member exists
-            if (!members.containsValue(member))
-            {
+            if (!members.containsValue(member)) {
                 return;
             }
             // If so, remove the member.
@@ -740,18 +627,12 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
         fireMemberRemoved(member);
     }
 
-    void fireServiceLevelExceeded(AsteriskQueueEntry entry)
-    {
-        try (LockCloser closer = listeners.withLock())
-        {
-            for (AsteriskQueueListener listener : listeners)
-            {
-                try
-                {
+    void fireServiceLevelExceeded(AsteriskQueueEntry entry) {
+        try (LockCloser closer = listeners.withLock()) {
+            for (AsteriskQueueListener listener : listeners) {
+                try {
                     listener.onEntryServiceLevelExceeded(entry);
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                     logger.warn("Exception in fireServiceLevelExceeded()", e);
                 }
             }
@@ -764,19 +645,14 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
      * @param position the position, starting at 1.
      * @return the queue entry if exiting at this position, null otherwise.
      */
-    AsteriskQueueEntryImpl getEntry(int position)
-    {
+    AsteriskQueueEntryImpl getEntry(int position) {
         // positions in asterisk start at 1, but list starts at 0
         position--;
         AsteriskQueueEntryImpl foundEntry = null;
-        try (LockCloser closer = entries.withLock())
-        {
-            try
-            {
+        try (LockCloser closer = entries.withLock()) {
+            try {
                 foundEntry = entries.get(position);
-            }
-            catch (IndexOutOfBoundsException e)
-            {
+            } catch (IndexOutOfBoundsException e) {
                 // For consistency with the above method,
                 // swallow. We might indeed request the 1st one from time to
                 // time

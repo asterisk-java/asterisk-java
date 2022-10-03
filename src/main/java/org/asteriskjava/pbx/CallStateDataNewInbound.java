@@ -3,8 +3,7 @@ package org.asteriskjava.pbx;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
-public class CallStateDataNewInbound extends CallStateData
-{
+public class CallStateDataNewInbound extends CallStateData {
     @SuppressWarnings("unused")
     private static final Log logger = LogFactory.getLog(CallStateDataNewInbound.class);
 
@@ -12,19 +11,16 @@ public class CallStateDataNewInbound extends CallStateData
 
     private final String _fromDID;
 
-    public CallStateDataNewInbound(String fromDID, CallerID originatingPartyCallerID)
-    {
+    public CallStateDataNewInbound(String fromDID, CallerID originatingPartyCallerID) {
         this._originatingPartyCallerID = originatingPartyCallerID;
         this._fromDID = fromDID;
     }
 
-    public CallerID getOriginatingPartyCallerID()
-    {
+    public CallerID getOriginatingPartyCallerID() {
         return this._originatingPartyCallerID;
     }
 
-    public String getFromDID()
-    {
+    public String getFromDID() {
         return this._fromDID;
     }
 }

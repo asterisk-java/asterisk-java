@@ -19,28 +19,28 @@ package org.asteriskjava.manager.internal;
 import org.asteriskjava.manager.event.ManagerEvent;
 
 public class EEvent
-	extends ManagerEvent {
+        extends ManagerEvent {
 
-	private static final long serialVersionUID = 3545240219457894199L;
+    private static final long serialVersionUID = 3545240219457894199L;
 
-	private Boolean line;
+    private Boolean line;
 
-	public EEvent(Object source) {
-		super(source);
-	}
+    public EEvent(Object source) {
+        super(source);
+    }
 
-	public Boolean getLineAsBoolean() {
-		return line;
-	}
+    public Boolean getLineAsBoolean() {
+        return line;
+    }
 
-	public void setLine(Boolean line) {
-		this.line = line;
-		if (line == null) {
-			super.setLine(null);
-		} else if (line) {
-			super.setLine(1);
-		} else {
-			super.setLine(0);
-		}
-	}
+    public void setLine(Boolean line) {
+        this.line = line;
+        if (line == null) {
+            super.setLine(null);
+        } else if (line) {
+            super.setLine(1);
+        } else {
+            super.setLine(0);
+        }
+    }
 }

@@ -26,20 +26,19 @@ package org.asteriskjava.live;
  * and it is called exactly once.<br>
  * Otherwise one of {@link #onSuccess(AsteriskChannel)} {@link #onBusy(AsteriskChannel)} or
  * {@link #onNoAnswer(AsteriskChannel)} is called exactly once.
- * 
+ *
+ * @author srt
+ * @version $Id$
  * @see AsteriskServer#originateToApplicationAsync(String, String, String, long, OriginateCallback)
  * @see AsteriskServer#originateToApplicationAsync(String, String, String, long, CallerId, java.util.Map, OriginateCallback)
  * @see AsteriskServer#originateToExtensionAsync(String, String, String, int, long, OriginateCallback)
  * @see AsteriskServer#originateToExtensionAsync(String, String, String, int, long, CallerId, java.util.Map, OriginateCallback)
- * @author srt
- * @version $Id$
  * @since 0.3
  */
-public interface OriginateCallback
-{
+public interface OriginateCallback {
     /**
      * Called when the channel has been created and before it starts ringing.
-     * 
+     *
      * @param channel the channel created.
      */
     void onDialing(AsteriskChannel channel);
@@ -47,7 +46,7 @@ public interface OriginateCallback
     /**
      * Called if the originate was successful and the called party answered the
      * call.
-     * 
+     *
      * @param channel the channel created.
      */
     void onSuccess(AsteriskChannel channel);
@@ -55,7 +54,7 @@ public interface OriginateCallback
     /**
      * Called if the originate was unsuccessful because the called party did not
      * answer the call.
-     * 
+     *
      * @param channel the channel created.
      */
     void onNoAnswer(AsteriskChannel channel);
@@ -63,7 +62,7 @@ public interface OriginateCallback
     /**
      * Called if the originate was unsuccessful because the called party was
      * busy.
-     * 
+     *
      * @param channel the channel created.
      */
     void onBusy(AsteriskChannel channel);
@@ -71,7 +70,7 @@ public interface OriginateCallback
     /**
      * Called if the originate failed for example due to an invalid channel name
      * or an originate to an unregistered SIP or IAX peer.
-     * 
+     *
      * @param cause the exception that caused the failure.
      */
     void onFailure(LiveException cause);

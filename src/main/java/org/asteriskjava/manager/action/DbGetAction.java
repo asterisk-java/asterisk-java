@@ -31,8 +31,7 @@ import org.asteriskjava.manager.event.ResponseEvent;
  * @see org.asteriskjava.manager.event.DbGetResponseEvent
  * @since 0.2
  */
-public class DbGetAction extends AbstractManagerAction implements EventGeneratingAction
-{
+public class DbGetAction extends AbstractManagerAction implements EventGeneratingAction {
     /**
      * Serial version identifier
      */
@@ -43,8 +42,7 @@ public class DbGetAction extends AbstractManagerAction implements EventGeneratin
     /**
      * Creates a new empty DbGetAction.
      */
-    public DbGetAction()
-    {
+    public DbGetAction() {
 
     }
 
@@ -56,15 +54,13 @@ public class DbGetAction extends AbstractManagerAction implements EventGeneratin
      * @param key    the key of the entry to retrieve
      * @since 0.2
      */
-    public DbGetAction(String family, String key)
-    {
+    public DbGetAction(String family, String key) {
         this.family = family;
         this.key = key;
     }
 
     @Override
-    public String getAction()
-    {
+    public String getAction() {
         return "DBGet";
     }
 
@@ -73,8 +69,7 @@ public class DbGetAction extends AbstractManagerAction implements EventGeneratin
      *
      * @return the family of the key.
      */
-    public String getFamily()
-    {
+    public String getFamily() {
         return family;
     }
 
@@ -83,8 +78,7 @@ public class DbGetAction extends AbstractManagerAction implements EventGeneratin
      *
      * @param family the family of the key.
      */
-    public void setFamily(String family)
-    {
+    public void setFamily(String family) {
         this.family = family;
     }
 
@@ -93,8 +87,7 @@ public class DbGetAction extends AbstractManagerAction implements EventGeneratin
      *
      * @return the key of the entry to retrieve.
      */
-    public String getKey()
-    {
+    public String getKey() {
         return key;
     }
 
@@ -103,13 +96,11 @@ public class DbGetAction extends AbstractManagerAction implements EventGeneratin
      *
      * @param key the key of the entry to retrieve.
      */
-    public void setKey(String key)
-    {
+    public void setKey(String key) {
         this.key = key;
     }
 
-    public Class<? extends ResponseEvent> getActionCompleteEventClass()
-    {
+    public Class<? extends ResponseEvent> getActionCompleteEventClass() {
         return DbGetResponseEvent.class;
     }
 }

@@ -26,8 +26,7 @@ package org.asteriskjava.manager.event;
  *
  * @author Leonardo de Souza
  */
-public class QueueCallerJoinEvent extends QueueEvent
-{
+public class QueueCallerJoinEvent extends QueueEvent {
 
     /**
      * Serializable version identifier
@@ -42,57 +41,48 @@ public class QueueCallerJoinEvent extends QueueEvent
     /**
      * @param source
      */
-    public QueueCallerJoinEvent(Object source)
-    {
+    public QueueCallerJoinEvent(Object source) {
         super(source);
     }
 
     /**
      * @return the position of the caller at the time they abandoned the queue
      */
-    public Integer getPosition()
-    {
+    public Integer getPosition() {
         return position;
     }
 
     /**
      * @param position the position of the caller at the time they abandoned the
-     *            queue
+     *                 queue
      */
-    public void setPosition(Integer position)
-    {
+    public void setPosition(Integer position) {
         this.position = position;
     }
 
- 
-    public String getLanguage()
-    {
+
+    public String getLanguage() {
         return language;
     }
 
-    public void setLanguage(String language)
-    {
+    public void setLanguage(String language) {
         this.language = language;
     }
 
-    public String getLinkedId()
-    {
+    public String getLinkedId() {
         return linkedId;
     }
 
-    public void setLinkedId(String linkedId)
-    {
+    public void setLinkedId(String linkedId) {
         this.linkedId = linkedId;
     }
 
-	public String getAccountcode()
-	{
-		return accountcode;
-	}
+    public String getAccountcode() {
+        return accountcode;
+    }
 
-	public void setAccountcode(String accountcode)
-	{
-		this.accountcode = accountcode;
-	}
-    
+    public void setAccountcode(String accountcode) {
+        this.accountcode = accountcode;
+    }
+
 }

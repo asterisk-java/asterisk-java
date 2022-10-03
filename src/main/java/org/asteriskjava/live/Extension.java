@@ -18,8 +18,7 @@ package org.asteriskjava.live;
 
 import java.io.Serializable;
 
-public class Extension implements Serializable
-{
+public class Extension implements Serializable {
     /**
      * Serial version identifier.
      */
@@ -35,8 +34,7 @@ public class Extension implements Serializable
      * @param extension
      * @param priority
      */
-    public Extension(String context, String extension, Integer priority)
-    {
+    public Extension(String context, String extension, Integer priority) {
         this(context, extension, priority, null, null);
     }
 
@@ -48,8 +46,7 @@ public class Extension implements Serializable
      * @param appData
      */
     public Extension(String context, String extension,
-                     Integer priority, String application, String appData)
-    {
+                     Integer priority, String application, String appData) {
         this.context = context;
         this.extension = extension;
         this.priority = priority;
@@ -57,35 +54,29 @@ public class Extension implements Serializable
         this.appData = appData;
     }
 
-    public String getContext()
-    {
+    public String getContext() {
         return context;
     }
 
-    public String getExtension()
-    {
+    public String getExtension() {
         return extension;
     }
 
-    public Integer getPriority()
-    {
+    public Integer getPriority() {
         return priority;
     }
 
-    public String getApplication()
-    {
+    public String getApplication() {
         return application;
     }
 
-    public String getAppData()
-    {
+    public String getAppData() {
         return appData;
     }
 
     @Override
-    public String toString()
-    {
-    	StringBuilder sb;
+    public String toString() {
+        StringBuilder sb;
 
         sb = new StringBuilder("Extension[");
         sb.append("context='").append(getContext()).append("',");

@@ -1,14 +1,13 @@
 package org.asteriskjava.pbx.asterisk.wrap.events;
 
-import java.util.Date;
-
 import org.asteriskjava.pbx.Channel;
 import org.asteriskjava.pbx.InvalidChannelName;
 import org.asteriskjava.pbx.PBXFactory;
 import org.asteriskjava.pbx.internal.core.AsteriskPBX;
 
-public class DialBeginEvent extends ChannelEventHelper
-{
+import java.util.Date;
+
+public class DialBeginEvent extends ChannelEventHelper {
     private static final long serialVersionUID = 1L;
 
     /**
@@ -18,8 +17,7 @@ public class DialBeginEvent extends ChannelEventHelper
 
     final org.asteriskjava.manager.event.DialBeginEvent rawEvent;
 
-    public DialBeginEvent(final org.asteriskjava.manager.event.DialBeginEvent event) throws InvalidChannelName
-    {
+    public DialBeginEvent(final org.asteriskjava.manager.event.DialBeginEvent event) throws InvalidChannelName {
         super(event.getChannel(), event.getUniqueId(), event.getCallerIdNum(), event.getCallerIdName());
 
         final AsteriskPBX pbx = (AsteriskPBX) PBXFactory.getActivePBX();
@@ -32,221 +30,178 @@ public class DialBeginEvent extends ChannelEventHelper
 
     }
 
-    public String getDestination()
-    {
+    public String getDestination() {
         return rawEvent.getDestination();
     }
 
-    public String getLanguage()
-    {
+    public String getLanguage() {
         return rawEvent.getLanguage();
     }
 
-    public String getDestLanguage()
-    {
+    public String getDestLanguage() {
         return rawEvent.getDestLanguage();
     }
 
-    public String getDestAccountCode()
-    {
+    public String getDestAccountCode() {
         return rawEvent.getDestAccountCode();
     }
 
-    public String getDestLinkedId()
-    {
+    public String getDestLinkedId() {
         return rawEvent.getDestLinkedId();
     }
 
-    public String getLinkedId()
-    {
+    public String getLinkedId() {
         return rawEvent.getLinkedId();
     }
 
-    public String getCallerIdName()
-    {
+    public String getCallerIdName() {
         return rawEvent.getCallerIdName();
     }
 
-    public String getConnectedLineNum()
-    {
+    public String getConnectedLineNum() {
         return rawEvent.getConnectedLineNum();
     }
 
-    public String getConnectedLineName()
-    {
+    public String getConnectedLineName() {
         return rawEvent.getConnectedLineName();
     }
 
-    public Integer getPriority()
-    {
+    public Integer getPriority() {
         return rawEvent.getPriority();
     }
 
-    public Integer getChannelState()
-    {
+    public Integer getChannelState() {
         return rawEvent.getChannelState();
     }
 
-    public String getChannelStateDesc()
-    {
+    public String getChannelStateDesc() {
         return rawEvent.getChannelStateDesc();
     }
 
-    public String getExten()
-    {
+    public String getExten() {
         return rawEvent.getExten();
     }
 
-    public String getCallerIdNum()
-    {
+    public String getCallerIdNum() {
         return rawEvent.getCallerIdNum();
     }
 
-    public String getContext()
-    {
+    public String getContext() {
         return rawEvent.getContext();
     }
 
-    public String getSubEvent()
-    {
+    public String getSubEvent() {
         return rawEvent.getSubEvent();
     }
 
-    public Date getDateReceived()
-    {
+    public Date getDateReceived() {
         return rawEvent.getDateReceived();
     }
 
     @SuppressWarnings("deprecation")
-    public String getSrc()
-    {
+    public String getSrc() {
         return rawEvent.getSrc();
     }
 
-    public String getPrivilege()
-    {
+    public String getPrivilege() {
         return rawEvent.getPrivilege();
     }
 
-    public final Double getTimestamp()
-    {
+    public final Double getTimestamp() {
         return rawEvent.getTimestamp();
     }
 
-    public Channel getDestChannel()
-    {
+    public Channel getDestChannel() {
         return destChannel;
     }
 
     @SuppressWarnings("deprecation")
-    public String getCallerId()
-    {
+    public String getCallerId() {
         return rawEvent.getCallerId();
     }
 
-    public final String getServer()
-    {
+    public final String getServer() {
         return rawEvent.getServer();
     }
 
-    public String getUniqueId()
-    {
+    public String getUniqueId() {
         return rawEvent.getUniqueId();
     }
 
-    public String getSystemName()
-    {
+    public String getSystemName() {
         return rawEvent.getSystemName();
     }
 
     @SuppressWarnings("deprecation")
-    public String getSrcUniqueId()
-    {
+    public String getSrcUniqueId() {
         return rawEvent.getSrcUniqueId();
     }
 
-    public String getFile()
-    {
+    public String getFile() {
         return rawEvent.getFile();
     }
 
-    public String getDestUniqueId()
-    {
+    public String getDestUniqueId() {
         return rawEvent.getDestUniqueId();
     }
 
-    public Integer getLine()
-    {
+    public Integer getLine() {
         return rawEvent.getLine();
     }
 
-    public String getDialString()
-    {
+    public String getDialString() {
         return rawEvent.getDialString();
     }
 
-    public String getDialStatus()
-    {
+    public String getDialStatus() {
         return rawEvent.getDialStatus();
     }
 
-    public String getFunc()
-    {
+    public String getFunc() {
         return rawEvent.getFunc();
     }
 
-    public Integer getSequenceNumber()
-    {
+    public Integer getSequenceNumber() {
         return rawEvent.getSequenceNumber();
     }
 
-    public Integer getDestChannelState()
-    {
+    public Integer getDestChannelState() {
         return rawEvent.getDestChannelState();
     }
 
-    public String getDestContext()
-    {
+    public String getDestContext() {
         return rawEvent.getDestContext();
     }
 
-    public Integer getDestPriority()
-    {
+    public Integer getDestPriority() {
         return rawEvent.getDestPriority();
     }
 
-    public String getDestChannelStateDesc()
-    {
+    public String getDestChannelStateDesc() {
         return rawEvent.getDestChannelStateDesc();
     }
 
-    public String getDestExten()
-    {
+    public String getDestExten() {
         return rawEvent.getDestExten();
     }
 
-    public String getDestConnectedLineName()
-    {
+    public String getDestConnectedLineName() {
         return rawEvent.getDestConnectedLineName();
     }
 
-    public String getDestConnectedLineNum()
-    {
+    public String getDestConnectedLineNum() {
         return rawEvent.getDestConnectedLineNum();
     }
 
-    public String getDestCallerIdName()
-    {
+    public String getDestCallerIdName() {
         return rawEvent.getDestCallerIdName();
     }
 
-    public String getDestCallerIdNum()
-    {
+    public String getDestCallerIdNum() {
         return rawEvent.getDestCallerIdNum();
     }
 
-    public Object getSource()
-    {
+    public Object getSource() {
         return rawEvent.getSource();
     }
 

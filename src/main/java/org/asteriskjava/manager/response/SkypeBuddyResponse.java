@@ -22,8 +22,7 @@ package org.asteriskjava.manager.response;
  * @see org.asteriskjava.manager.action.SkypeBuddyAction
  * @since 1.0.0
  */
-public class SkypeBuddyResponse extends ManagerResponse
-{
+public class SkypeBuddyResponse extends ManagerResponse {
     private static final long serialVersionUID = 0L;
 
     private String skypename;
@@ -37,43 +36,35 @@ public class SkypeBuddyResponse extends ManagerResponse
     private String phoneMobile;
     private String about;
 
-    public String getSkypename()
-    {
+    public String getSkypename() {
         return skypename;
     }
 
-    public void setSkypename(String skypename)
-    {
+    public void setSkypename(String skypename) {
         this.skypename = skypename;
     }
 
-    public String getTimezone()
-    {
+    public String getTimezone() {
         return timezone;
     }
 
-    public void setTimezone(String timezone)
-    {
+    public void setTimezone(String timezone) {
         this.timezone = timezone;
     }
 
-    public String getAvailability()
-    {
+    public String getAvailability() {
         return availability;
     }
 
-    public void setAvailability(String availability)
-    {
+    public void setAvailability(String availability) {
         this.availability = availability;
     }
 
-    public String getFullname()
-    {
+    public String getFullname() {
         return fullname;
     }
 
-    public void setFullname(String fullname)
-    {
+    public void setFullname(String fullname) {
         this.fullname = fullname;
     }
 
@@ -82,8 +73,7 @@ public class SkypeBuddyResponse extends ManagerResponse
      *
      * @return the ISO language code.
      */
-    public String getLanguage()
-    {
+    public String getLanguage() {
         return language;
     }
 
@@ -92,8 +82,7 @@ public class SkypeBuddyResponse extends ManagerResponse
      *
      * @param language the ISO language code.
      */
-    public void setLanguage(String language)
-    {
+    public void setLanguage(String language) {
         this.language = language;
     }
 
@@ -102,8 +91,7 @@ public class SkypeBuddyResponse extends ManagerResponse
      *
      * @return the ISO country code (in lower case).
      */
-    public String getCountry()
-    {
+    public String getCountry() {
         return country;
     }
 
@@ -112,48 +100,39 @@ public class SkypeBuddyResponse extends ManagerResponse
      *
      * @param country the country code.
      */
-    public void setCountry(String country)
-    {
+    public void setCountry(String country) {
         this.country = country;
     }
 
-    public String getPhoneHome()
-    {
+    public String getPhoneHome() {
         return phoneHome;
     }
 
-    public void setPhoneHome(String phoneHome)
-    {
+    public void setPhoneHome(String phoneHome) {
         this.phoneHome = phoneHome;
     }
 
-    public String getPhoneOffice()
-    {
+    public String getPhoneOffice() {
         return phoneOffice;
     }
 
-    public void setPhoneOffice(String phoneOffice)
-    {
+    public void setPhoneOffice(String phoneOffice) {
         this.phoneOffice = phoneOffice;
     }
 
-    public String getPhoneMobile()
-    {
+    public String getPhoneMobile() {
         return phoneMobile;
     }
 
-    public void setPhoneMobile(String phoneMobile)
-    {
+    public void setPhoneMobile(String phoneMobile) {
         this.phoneMobile = phoneMobile;
     }
 
-    public String getAbout()
-    {
+    public String getAbout() {
         return about;
     }
 
-    public void setAbout(String about)
-    {
+    public void setAbout(String about) {
         this.about = about;
     }
 }

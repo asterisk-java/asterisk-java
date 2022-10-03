@@ -5,15 +5,13 @@ package org.asteriskjava.manager.event;
  *
  * @since 1.0.0
  */
-public class ConfbridgeLeaveEvent extends AbstractConfbridgeEvent
-{
+public class ConfbridgeLeaveEvent extends AbstractConfbridgeEvent {
     /**
      * Serializable version identifier
      */
     private static final long serialVersionUID = 1L;
 
-    public ConfbridgeLeaveEvent(Object source)
-    {
+    public ConfbridgeLeaveEvent(Object source) {
         super(source);
     }
 

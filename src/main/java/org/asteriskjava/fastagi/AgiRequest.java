@@ -16,24 +16,23 @@
  */
 package org.asteriskjava.fastagi;
 
+import org.asteriskjava.AsteriskVersion;
+
 import java.net.InetAddress;
 import java.util.Map;
-
-import org.asteriskjava.AsteriskVersion;
 
 /**
  * Provides client request information to an {@link org.asteriskjava.fastagi.AgiScript}.<p>
  * This includes information about the channel the script is invoked on and
  * parameters passed from the dialplan.
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public interface AgiRequest
-{
+public interface AgiRequest {
     /**
      * Returns a Map containing the raw request name/value pairs.
-     * 
+     *
      * @return Map contain raw request name/value pairs.
      */
     Map<String, String> getRequest();
@@ -44,7 +43,7 @@ public interface AgiRequest
      * parameters stripped off.<p>
      * As Async AGI does not yet pass a script parameter this property will
      * be <code>null</code> for requests received through Async AGI.
-     * 
+     *
      * @return the name of the script to execute.
      */
     String getScript();
@@ -52,36 +51,36 @@ public interface AgiRequest
     /**
      * Returns the full URL of the requestURL in the form
      * <code>agi://host[:port][/script][?param1=value1&amp;param2=value2]</code>.
-     * 
+     *
      * @return the full URL of the requestURL in the form
-     *         <code>agi://host[:port][/script][?param1=value1&amp;param2=value2]</code>.
+     * <code>agi://host[:port][/script][?param1=value1&amp;param2=value2]</code>.
      */
     String getRequestURL();
 
     /**
      * Returns the name of the channel.
-     * 
+     *
      * @return the name of the channel.
      */
     String getChannel();
 
     /**
      * Returns the unqiue id of the channel.
-     * 
+     *
      * @return the unqiue id of the channel.
      */
     String getUniqueId();
 
     /**
      * Returns the type of the channel, for example "SIP".
-     * 
+     *
      * @return the type of the channel, for example "SIP".
      */
     String getType();
 
     /**
      * Returns the language set for the current channel, for example "en".
-     * 
+     *
      * @return the language set for the current channel, for example "en".
      */
     String getLanguage();
@@ -90,36 +89,37 @@ public interface AgiRequest
      * Returns the Caller*ID number, for example "1234".<p>
      * Note: even with Asterisk 1.0 is contains only the numerical part
      * of the Caller ID.
-     * 
+     *
      * @return the Caller*ID number, for example "1234", if no Caller*ID is set or it
-     *         is "unknown" <code>null</code> is returned.
+     * is "unknown" <code>null</code> is returned.
      * @deprecated as of 0.3, use {@link #getCallerIdNumber()} instead.
      */
-    @Deprecated String getCallerId();
+    @Deprecated
+    String getCallerId();
 
     /**
      * Returns the Caller*ID number, for example "1234".<p>
      * Note: even with Asterisk 1.0 is contains only the numerical part
      * of the Caller ID.
-     * 
+     *
      * @return the Caller*ID number, for example "1234", if no Caller*ID is set or it
-     *         is "unknown" <code>null</code> is returned.
+     * is "unknown" <code>null</code> is returned.
      */
     String getCallerIdNumber();
 
     /**
      * Returns the the Caller*ID Name, for example "John Doe".
-     * 
+     *
      * @return the the Caller*ID Name, for example "John Doe", if no Caller*ID
-     *         Name is set or it is "unknown" <code>null</code> is returned.
+     * Name is set or it is "unknown" <code>null</code> is returned.
      */
     String getCallerIdName();
 
     /**
      * Returns the number, that has been dialed by the user.
-     * 
+     *
      * @return the dialed number, if no DNID is available or it is "unknown"
-     *         <code>null</code> is returned.
+     * <code>null</code> is returned.
      */
     String getDnid();
 
@@ -127,51 +127,51 @@ public interface AgiRequest
      * If this call has been forwared, the number of the person doing the
      * redirect is returned (Redirected dialed number identification service).<p>
      * This is usally only only available on PRI.
-     * 
+     *
      * @return the number of the person doing the redirect, , if no RDNIS is
-     *         available or it is "unknown" <code>null</code> is returned.
+     * available or it is "unknown" <code>null</code> is returned.
      */
     String getRdnis();
 
     /**
      * Returns the context in the dial plan from which the AGI script was
      * called.
-     * 
+     *
      * @return the context in the dial plan from which the AGI script was
-     *         called.
+     * called.
      */
     String getContext();
 
     /**
      * Returns the extension in the dial plan from which the AGI script was
      * called.
-     * 
+     *
      * @return the extension in the dial plan from which the AGI script was
-     *         called.
+     * called.
      */
     String getExtension();
 
     /**
      * Returns the priority of the dial plan entry the AGI script was
      * called from.
-     * 
+     *
      * @return the priority of the dial plan entry the AGI script was
-     *         called from.
+     * called from.
      */
     Integer getPriority();
 
     /**
      * Returns wheather this agi is passed audio (EAGI - Enhanced AGI).<p>
      * Enhanced AGI is currently not supported on FastAGI.
-     * 
+     *
      * @return Boolean.TRUE if this agi is passed audio, Boolean.FALSE
-     *         otherwise.
+     * otherwise.
      */
     Boolean getEnhanced();
 
     /**
      * Returns the account code set for the call.
-     * 
+     *
      * @return the account code set for the call.
      */
     String getAccountCode();
@@ -179,7 +179,7 @@ public interface AgiRequest
     /**
      * Returns the Callerid presentation/screening.<p>
      * Available since Asterisk 1.2.
-     * 
+     *
      * @return the Callerid presentation/screening.
      * @since 0.2
      */
@@ -188,7 +188,7 @@ public interface AgiRequest
     /**
      * Returns the Callerid ANI 2 (Info digits).<p>
      * Available since Asterisk 1.2.
-     * 
+     *
      * @return the Callerid ANI 2 (Info digits).
      * @since 0.2
      */
@@ -197,7 +197,7 @@ public interface AgiRequest
     /**
      * Returns the Callerid Type of Number.<p>
      * Available since Asterisk 1.2.
-     * 
+     *
      * @return the Callerid Type of Number.
      * @since 0.2
      */
@@ -206,7 +206,7 @@ public interface AgiRequest
     /**
      * Returns the Callerid Transit Network Select.<p>
      * Available since Asterisk 1.2.
-     * 
+     *
      * @return the Callerid Transit Network Select.
      * @since 0.2
      */
@@ -221,9 +221,9 @@ public interface AgiRequest
      * If you use this method with a multivalued parameter, the value returned
      * is equal to the first value in the array returned by
      * <code>getParameterValues</code>.
-     * 
+     *
      * @param name a String containing the name of the parameter whose value is
-     *            requested.
+     *             requested.
      * @return a String representing the single value of the parameter.
      * @see #getParameterValues(String)
      */
@@ -234,7 +234,7 @@ public interface AgiRequest
      * request parameter has, or
      * an empty array if the parameter does not exist.<p>
      * If the parameter has a single value, the array has a length of 1.
-     * 
+     *
      * @param name a String containing the name of the parameter whose value is requested.
      * @return an array of String objects containing the parameter's values.
      */
@@ -242,10 +242,10 @@ public interface AgiRequest
 
     /**
      * Returns a Map of the parameters of this request.
-     * 
+     *
      * @return a java.util.Map containing parameter names as keys and parameter
-     *         values as map values. The keys in the parameter map are of type
-     *         String. The values in the parameter map are of type String array.
+     * values as map values. The keys in the parameter map are of type
+     * String. The values in the parameter map are of type String array.
      */
     Map<String, String[]> getParameterMap();
 
@@ -264,7 +264,7 @@ public interface AgiRequest
     /**
      * Returns the local address this channel, that is the IP address of the AGI
      * server.
-     * 
+     *
      * @return the local address this channel.
      * @since 0.2
      */
@@ -273,7 +273,7 @@ public interface AgiRequest
     /**
      * Returns the local port of this channel, that is the port the AGI server
      * is listening on.
-     * 
+     *
      * @return the local port of this socket channel.
      * @since 0.2
      */
@@ -282,7 +282,7 @@ public interface AgiRequest
     /**
      * Returns the remote address of this channel, that is the IP address of the
      * Asterisk server.
-     * 
+     *
      * @return the remote address of this channel.
      * @since 0.2
      */
@@ -291,7 +291,7 @@ public interface AgiRequest
     /**
      * Returns the remote port of this channel, that is the client port the
      * Asterisk server is using for the AGI connection.
-     * 
+     *
      * @return the remote port of this channel.
      * @since 0.2
      */

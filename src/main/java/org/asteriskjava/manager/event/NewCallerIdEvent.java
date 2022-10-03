@@ -20,12 +20,11 @@ package org.asteriskjava.manager.event;
 /**
  * A NewCallerIdEvent is triggered when the caller id of a channel changes.<p>
  * It is implemented in <code>channel.c</code>
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public class NewCallerIdEvent extends AbstractChannelEvent
-{
+public class NewCallerIdEvent extends AbstractChannelEvent {
     /**
      * Serializable version identifier.
      */
@@ -39,86 +38,72 @@ public class NewCallerIdEvent extends AbstractChannelEvent
     private String language;
     private String linkedId;
 
-    public NewCallerIdEvent(Object source)
-    {
+    public NewCallerIdEvent(Object source) {
         super(source);
     }
 
-    public String getLanguage()
-    {
-    	return language;
+    public String getLanguage() {
+        return language;
     }
-    
-    public void setLanguage(String language)
-    {
-    	this.language = language;
+
+    public void setLanguage(String language) {
+        this.language = language;
     }
-    
+
     /**
      * Returns the CallerId presentation/screening.
-     * 
+     *
      * @return the CallerId presentation/screening.
      * @since 0.2
      */
-    public Integer getCidCallingPres()
-    {
+    public Integer getCidCallingPres() {
         return cidCallingPres;
     }
 
     /**
      * Returns the textual respresentation of the CallerId presentation/screening.
-     * 
+     *
      * @return the textual respresentation of the CallerId presentation/screening.
      * @since 0.2
      */
-    public String getCidCallingPresTxt()
-    {
+    public String getCidCallingPresTxt() {
         return cidCallingPresTxt;
     }
 
     /**
      * Sets the CallerId presentation/screening in the form "%d (%s)".
-     * 
+     *
      * @param s the CallerId presentation/screening in the form "%d (%s)".
      * @since 0.2
      */
-    public void setCidCallingPres(String s)
-    {
+    public void setCidCallingPres(String s) {
         int spaceIdx;
 
-        if (s == null)
-        {
+        if (s == null) {
             return;
         }
 
         spaceIdx = s.indexOf(' ');
-        if (spaceIdx <= 0)
-        {
+        if (spaceIdx <= 0) {
             spaceIdx = s.length();
         }
 
-        try
-        {
+        try {
             this.cidCallingPres = Integer.valueOf(s.substring(0, spaceIdx));
-        }
-        catch (NumberFormatException e)
-        {
+        } catch (NumberFormatException e) {
             return;
         }
 
-        if (s.length() > spaceIdx + 3)
-        {
+        if (s.length() > spaceIdx + 3) {
             this.cidCallingPresTxt = s.substring(spaceIdx + 2, s.length() - 1);
         }
     }
 
-    public String getLinkedId()
-    {
+    public String getLinkedId() {
         return linkedId;
     }
 
-    public void setLinkedId(String linkedId)
-    {
+    public void setLinkedId(String linkedId) {
         this.linkedId = linkedId;
     }
 }

@@ -30,16 +30,14 @@ import org.asteriskjava.manager.response.ChallengeResponse;
  * @see org.asteriskjava.manager.response.ChallengeResponse
  */
 @ExpectedResponse(ChallengeResponse.class)
-public class ChallengeAction extends AbstractManagerAction
-{
+public class ChallengeAction extends AbstractManagerAction {
     static final long serialVersionUID = 7240516124871953971L;
     private String authType;
 
     /**
      * Creates a new empty ChallengeAction.
      */
-    public ChallengeAction()
-    {
+    public ChallengeAction() {
 
     }
 
@@ -50,8 +48,7 @@ public class ChallengeAction extends AbstractManagerAction
      * @param authType the digest alogrithm to use.
      * @since 0.2
      */
-    public ChallengeAction(String authType)
-    {
+    public ChallengeAction(String authType) {
         this.authType = authType;
     }
 
@@ -59,24 +56,21 @@ public class ChallengeAction extends AbstractManagerAction
      * Returns Returns the name of this action, i.e. "Challenge".
      */
     @Override
-    public String getAction()
-    {
+    public String getAction() {
         return "Challenge";
     }
 
     /**
      * Returns the digest alogrithm to use.
      */
-    public String getAuthType()
-    {
+    public String getAuthType() {
         return authType;
     }
 
     /**
      * Sets the digest alogrithm to use. Currently asterisk only supports "MD5".
      */
-    public void setAuthType(String authType)
-    {
+    public void setAuthType(String authType) {
         this.authType = authType;
     }
 }

@@ -1,27 +1,21 @@
 package org.asteriskjava.pbx.agi;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-
+import com.google.common.util.concurrent.RateLimiter;
 import org.asteriskjava.fastagi.AgiException;
 import org.asteriskjava.fastagi.AgiHangupException;
-import org.asteriskjava.pbx.AgiChannelActivityAction;
-import org.asteriskjava.pbx.Channel;
-import org.asteriskjava.pbx.ChannelHangupListener;
-import org.asteriskjava.pbx.InvalidChannelName;
-import org.asteriskjava.pbx.PBXFactory;
+import org.asteriskjava.pbx.*;
 import org.asteriskjava.pbx.agi.config.ServiceAgiScriptImpl;
 import org.asteriskjava.pbx.asterisk.wrap.actions.OriginateAction;
 import org.asteriskjava.pbx.internal.core.AsteriskPBX;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
-import com.google.common.util.concurrent.RateLimiter;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
-public abstract class ActivityAgi extends ServiceAgiScriptImpl
-{
+public abstract class ActivityAgi extends ServiceAgiScriptImpl {
 
     public static final String ARRIVAL_KEY = "ActivityAgiArrivalKey";
 
@@ -29,13 +23,11 @@ public abstract class ActivityAgi extends ServiceAgiScriptImpl
 
     private static final Map<String, ActivityArrivalListener> arrivalListeners = new ConcurrentHashMap<>();
 
-    public static AutoCloseable addArrivalListener(OriginateAction originate, ActivityArrivalListener listener)
-    {
+    public static AutoCloseable addArrivalListener(OriginateAction originate, ActivityArrivalListener listener) {
 
         final String key = UUID.randomUUID().toString();
         arrivalListeners.put(key, listener);
-        if (arrivalListeners.size() > 100)
-        {
+        if (arrivalListeners.size() > 100) {
             // pick one at random to remove
             ActivityArrivalListener leaked = arrivalListeners.remove(arrivalListeners.keySet().iterator().next());
             logger.error("Arrival Listeners are leaking" + leaked.getClass().getCanonicalName());
@@ -44,12 +36,10 @@ public abstract class ActivityAgi extends ServiceAgiScriptImpl
         Map<String, String> vars = new HashMap<>();
         vars.put("_" + ARRIVAL_KEY, key);
         originate.setVariables(vars);
-        return new AutoCloseable()
-        {
+        return new AutoCloseable() {
 
             @Override
-            public void close() throws Exception
-            {
+            public void close() throws Exception {
                 arrivalListeners.remove(key);
 
             }
@@ -57,21 +47,17 @@ public abstract class ActivityAgi extends ServiceAgiScriptImpl
     }
 
     @Override
-    public void service() throws AgiException
-    {
+    public void service() throws AgiException {
         Channel channelProxy = null;
         String channelName = channel.getName();
 
-        try
-        {
+        try {
             AsteriskPBX pbx = (AsteriskPBX) PBXFactory.getActivePBX();
             String proxyId = getVariable("proxyId");
-            if (proxyId != null && proxyId.length() > 0)
-            {
+            if (proxyId != null && proxyId.length() > 0) {
                 channelProxy = pbx.getProxyById(proxyId);
             }
-            if (channelProxy == null)
-            {
+            if (channelProxy == null) {
                 logger.info("'proxyId' var not set or proxy doesn't exist anymore, trying to match the channel name... "
                         + channelName);
                 channelProxy = pbx.internalRegisterChannel(channel.getName(), channel.getUniqueId());
@@ -81,15 +67,12 @@ public abstract class ActivityAgi extends ServiceAgiScriptImpl
             logger.info("Channel " + channelName + " arrived in agi");
 
             channelProxy.setIsInAgi(true);
-            channelProxy.addHangupListener(new ChannelHangupListener()
-            {
+            channelProxy.addHangupListener(new ChannelHangupListener() {
 
                 @Override
-                public void channelHangup(Channel channel, Integer cause, String causeText)
-                {
+                public void channelHangup(Channel channel, Integer cause, String causeText) {
                     final AgiChannelActivityAction currentActivityAction = channel.getCurrentActivityAction();
-                    if (currentActivityAction != null)
-                    {
+                    if (currentActivityAction != null) {
                         currentActivityAction.cancel();
                     }
 
@@ -97,25 +80,21 @@ public abstract class ActivityAgi extends ServiceAgiScriptImpl
             });
 
             AgiChannelActivityAction action = channelProxy.getCurrentActivityAction();
-            if (action == null)
-            {
+            if (action == null) {
                 action = new AgiChannelActivityHold();
             }
 
             String arrivalKey = channel.getVariable(ARRIVAL_KEY);
-            if (arrivalKey != null && arrivalKey.length() > 0)
-            {
+            if (arrivalKey != null && arrivalKey.length() > 0) {
                 ActivityArrivalListener listener = arrivalListeners.get(arrivalKey);
-                if (listener != null)
-                {
+                if (listener != null) {
                     listener.channelArrived(channelProxy);
                 }
             }
 
             boolean isAlive = true;
             RateLimiter slowRateLimiter = RateLimiter.create(2);
-            while (!action.isDisconnect(this) && isAlive)
-            {
+            while (!action.isDisconnect(this) && isAlive) {
                 action.execute(this.channel, channelProxy);
 
                 action = channelProxy.getCurrentActivityAction();
@@ -124,13 +103,9 @@ public abstract class ActivityAgi extends ServiceAgiScriptImpl
                 slowRateLimiter.acquire();
             }
 
-        }
-        catch (AgiHangupException e)
-        {
+        } catch (AgiHangupException e) {
             logger.warn("Channel hungup " + channelName);
-        }
-        catch (InvalidChannelName | InterruptedException e)
-        {
+        } catch (InvalidChannelName | InterruptedException e) {
             logger.error(e, e);
         }
 
@@ -138,16 +113,11 @@ public abstract class ActivityAgi extends ServiceAgiScriptImpl
 
     }
 
-    private boolean checkChannelIsStillUp()
-    {
-        try
-
-        {
+    private boolean checkChannelIsStillUp() {
+        try {
             this.answer();
             return true;
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
 
         }
         return false;

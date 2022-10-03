@@ -21,16 +21,15 @@ package org.asteriskjava.manager.event;
  * reported in response to an SIPPeersAction or SIPShowPeerAction.
  * <p>
  * Available since Asterisk 1.2
- * 
+ *
+ * @author srt
+ * @version $Id$
  * @see org.asteriskjava.manager.event.PeerEntryEvent
  * @see org.asteriskjava.manager.action.SipPeersAction
  * @see org.asteriskjava.manager.action.SipShowPeerAction
- * @author srt
- * @version $Id$
  * @since 0.2
  */
-public class ContactListComplete extends ResponseEvent
-{
+public class ContactListComplete extends ResponseEvent {
     /**
      * Serial version identifier.
      */
@@ -40,31 +39,28 @@ public class ContactListComplete extends ResponseEvent
 
     /**
      * Creates a new instance.
-     * 
+     *
      * @param source
      */
-    public ContactListComplete(Object source)
-    {
+    public ContactListComplete(Object source) {
         super(source);
     }
 
     /**
      * Returns the number of PeerEvents that have been reported.
-     * 
+     *
      * @return the number of PeerEvents that have been reported.
      */
-    public Integer getListItems()
-    {
+    public Integer getListItems() {
         return listItems;
     }
 
     /**
      * Sets the number of PeerEvents that have been reported.
-     * 
+     *
      * @param listItems the number of PeerEvents that have been reported.
      */
-    public void setListItems(Integer listItems)
-    {
+    public void setListItems(Integer listItems) {
         this.listItems = listItems;
     }
 
@@ -74,16 +70,14 @@ public class ContactListComplete extends ResponseEvent
      * Available since Asterisk 1.6.
      *
      * @return always returns "Complete" confirming that all PeerEntry events
-     *         have been sent.
+     * have been sent.
      * @since 1.0.0
      */
-    public String getEventList()
-    {
+    public String getEventList() {
         return eventList;
     }
 
-    public void setEventList(String eventList)
-    {
+    public void setEventList(String eventList) {
         this.eventList = eventList;
     }
 }

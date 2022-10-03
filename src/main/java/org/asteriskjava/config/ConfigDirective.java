@@ -1,13 +1,10 @@
 package org.asteriskjava.config;
 
-public abstract class ConfigDirective extends ConfigElement
-{
-    protected ConfigDirective()
-    {
+public abstract class ConfigDirective extends ConfigElement {
+    protected ConfigDirective() {
     }
 
-    protected ConfigDirective(String filename, int lineno)
-    {
+    protected ConfigDirective(String filename, int lineno) {
         super(filename, lineno);
     }
 }

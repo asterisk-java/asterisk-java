@@ -16,33 +16,26 @@
  */
 package org.asteriskjava.fastagi.internal;
 
-import java.io.UnsupportedEncodingException;
-import java.net.InetAddress;
-import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.StringTokenizer;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.fastagi.AgiRequest;
 import org.asteriskjava.util.AstUtil;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
+import java.io.UnsupportedEncodingException;
+import java.net.InetAddress;
+import java.net.URLDecoder;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * Default implementation of the AGIRequest interface.
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public class AgiRequestImpl implements AgiRequest
-{
+public class AgiRequestImpl implements AgiRequest {
     private final Log logger = LogFactory.getLog(getClass());
     private static final Pattern SCRIPT_PATTERN = Pattern.compile("^([^\\?]*)\\?(.*)$");
     private static final Pattern PARAMETER_PATTERN = Pattern.compile("^(.*)=(.*)$");
@@ -71,10 +64,9 @@ public class AgiRequestImpl implements AgiRequest
      * Creates a new AGIRequestImpl.
      *
      * @param environment the first lines as received from Asterisk containing
-     *            the environment.
+     *                    the environment.
      */
-    AgiRequestImpl(final List<String> environment)
-    {
+    AgiRequestImpl(final List<String> environment) {
         this(buildMap(environment));
     }
 
@@ -82,19 +74,16 @@ public class AgiRequestImpl implements AgiRequest
      * Creates a new AgiRequestImpl based on a preparsed map of parameters.
      *
      * @param request a map representing the AGI request. Keys must not contain
-     *            the "agi_" or "ogi_" prefix.
+     *                the "agi_" or "ogi_" prefix.
      * @since 1.0.0
      */
-    private AgiRequestImpl(final Map<String, String> request)
-    {
+    private AgiRequestImpl(final Map<String, String> request) {
         this.request = request;
 
         script = request.get("network_script");
-        if (script != null)
-        {
+        if (script != null) {
             Matcher scriptMatcher = SCRIPT_PATTERN.matcher(script);
-            if (scriptMatcher.matches())
-            {
+            if (scriptMatcher.matches()) {
                 script = scriptMatcher.group(1);
                 parameters = scriptMatcher.group(2);
             }
@@ -106,25 +95,22 @@ public class AgiRequestImpl implements AgiRequest
      * prefix stripped) and the corresponding values.
      * <p>
      * Syntactically invalid and empty variables are skipped.
-     * 
+     *
      * @param lines the environment to transform.
      * @return a map with the variables set corresponding to the given
-     *         environment.
+     * environment.
      * @throws IllegalArgumentException if lines is <code>null</code>
      */
-    private static Map<String, String> buildMap(final Collection<String> lines) throws IllegalArgumentException
-    {
+    private static Map<String, String> buildMap(final Collection<String> lines) throws IllegalArgumentException {
         final Map<String, String> map;
 
-        if (lines == null)
-        {
+        if (lines == null) {
             throw new IllegalArgumentException("Environment must not be null.");
         }
 
         map = new HashMap<>();
 
-        for (String line : lines)
-        {
+        for (String line : lines) {
             int colonPosition;
             String key;
             String value;
@@ -132,28 +118,24 @@ public class AgiRequestImpl implements AgiRequest
             colonPosition = line.indexOf(':');
 
             // no colon on the line?
-            if (colonPosition < 0)
-            {
+            if (colonPosition < 0) {
                 continue;
             }
 
             // key doesn't start with agi_ or ogi_?
-            if (!line.startsWith("agi_") && !line.startsWith("ogi_"))
-            {
+            if (!line.startsWith("agi_") && !line.startsWith("ogi_")) {
                 continue;
             }
 
             // first colon in line is last character -> no value present?
-            if (line.length() < colonPosition + 2)
-            {
+            if (line.length() < colonPosition + 2) {
                 continue;
             }
 
             key = line.substring(4, colonPosition).toLowerCase(Locale.ENGLISH);
             value = line.substring(colonPosition + 2);
 
-            if (value.length() != 0)
-            {
+            if (value.length() != 0) {
                 map.put(key, value);
             }
         }
@@ -161,88 +143,76 @@ public class AgiRequestImpl implements AgiRequest
         return map;
     }
 
-    public Map<String, String> getRequest()
-    {
+    public Map<String, String> getRequest() {
         return request;
     }
 
     /**
      * Returns the name of the script to execute.
-     * 
+     *
      * @return the name of the script to execute.
      */
-    public synchronized String getScript()
-    {
+    public synchronized String getScript() {
         return script;
     }
 
     /**
      * Returns the full URL of the request in the form
      * agi://host[:port][/script].
-     * 
+     *
      * @return the full URL of the request in the form
-     *         agi://host[:port][/script].
+     * agi://host[:port][/script].
      */
-    public String getRequestURL()
-    {
+    public String getRequestURL() {
         return request.get("request");
     }
 
     @Override
-    public AsteriskVersion getAsteriskVersion()
-    {
+    public AsteriskVersion getAsteriskVersion() {
         AsteriskVersion detected = AsteriskVersion.getDetermineVersionFromString("Asterisk " + request.get("version"));
         return detected != null ? detected : AsteriskVersion.DEFAULT_VERSION;
     }
 
     /**
      * Returns the name of the channel.
-     * 
+     *
      * @return the name of the channel.
      */
-    public String getChannel()
-    {
+    public String getChannel() {
         return request.get("channel");
     }
 
     /**
      * Returns the unqiue id of the channel.
-     * 
+     *
      * @return the unqiue id of the channel.
      */
-    public String getUniqueId()
-    {
+    public String getUniqueId() {
         return request.get("uniqueid");
     }
 
-    public String getType()
-    {
+    public String getType() {
         return request.get("type");
     }
 
-    public String getLanguage()
-    {
+    public String getLanguage() {
         return request.get("language");
     }
 
     @Deprecated
-    public String getCallerId()
-    {
+    public String getCallerId() {
         return getCallerIdNumber();
     }
 
-    public String getCallerIdNumber()
-    {
+    public String getCallerIdNumber() {
         String callerIdName;
         String callerId;
 
         callerIdName = request.get("calleridname");
         callerId = request.get("callerid");
-        if (callerIdName != null)
-        {
+        if (callerIdName != null) {
             // Asterisk 1.2
-            if (callerId == null || "unknown".equals(callerId))
-            {
+            if (callerId == null || "unknown".equals(callerId)) {
                 return null;
             }
 
@@ -252,16 +222,13 @@ public class AgiRequestImpl implements AgiRequest
         return getCallerId10();
     }
 
-    public String getCallerIdName()
-    {
+    public String getCallerIdName() {
         String callerIdName;
 
         callerIdName = request.get("calleridname");
-        if (callerIdName != null)
-        {
+        if (callerIdName != null) {
             // Asterisk 1.2
-            if ("unknown".equals(callerIdName))
-            {
+            if ("unknown".equals(callerIdName)) {
                 return null;
             }
 
@@ -273,22 +240,19 @@ public class AgiRequestImpl implements AgiRequest
 
     /**
      * Returns the Caller*ID number using Asterisk 1.0 logic.
-     * 
+     *
      * @return the Caller*ID number
      */
-    private synchronized String getCallerId10()
-    {
+    private synchronized String getCallerId10() {
         final String[] parsedCallerId;
 
-        if (!callerIdCreated)
-        {
+        if (!callerIdCreated) {
             rawCallerId = request.get("callerid");
             callerIdCreated = true;
         }
 
         parsedCallerId = AstUtil.parseCallerId(rawCallerId);
-        if (parsedCallerId[1] == null)
-        {
+        if (parsedCallerId[1] == null) {
             return parsedCallerId[0];
         }
         return parsedCallerId[1];
@@ -296,13 +260,11 @@ public class AgiRequestImpl implements AgiRequest
 
     /**
      * Returns the Caller*ID name using Asterisk 1.0 logic.
-     * 
+     *
      * @return the Caller*ID name
      */
-    private synchronized String getCallerIdName10()
-    {
-        if (!callerIdCreated)
-        {
+    private synchronized String getCallerIdName10() {
+        if (!callerIdCreated) {
             rawCallerId = request.get("callerid");
             callerIdCreated = true;
         }
@@ -310,59 +272,48 @@ public class AgiRequestImpl implements AgiRequest
         return AstUtil.parseCallerId(rawCallerId)[0];
     }
 
-    public String getDnid()
-    {
+    public String getDnid() {
         String dnid;
 
         dnid = request.get("dnid");
 
-        if (dnid == null || "unknown".equals(dnid))
-        {
+        if (dnid == null || "unknown".equals(dnid)) {
             return null;
         }
 
         return dnid;
     }
 
-    public String getRdnis()
-    {
+    public String getRdnis() {
         String rdnis;
 
         rdnis = request.get("rdnis");
 
-        if (rdnis == null || "unknown".equals(rdnis))
-        {
+        if (rdnis == null || "unknown".equals(rdnis)) {
             return null;
         }
 
         return rdnis;
     }
 
-    public String getContext()
-    {
+    public String getContext() {
         return request.get("context");
     }
 
-    public String getExtension()
-    {
+    public String getExtension() {
         return request.get("extension");
     }
 
-    public Integer getPriority()
-    {
-        if (request.get("priority") != null)
-        {
+    public Integer getPriority() {
+        if (request.get("priority") != null) {
             return Integer.valueOf(request.get("priority"));
         }
         return null;
     }
 
-    public Boolean getEnhanced()
-    {
-        if (request.get("enhanced") != null)
-        {
-            if ("1.0".equals(request.get("enhanced")))
-            {
+    public Boolean getEnhanced() {
+        if (request.get("enhanced") != null) {
+            if ("1.0".equals(request.get("enhanced"))) {
                 return Boolean.TRUE;
             }
             return Boolean.FALSE;
@@ -370,97 +321,72 @@ public class AgiRequestImpl implements AgiRequest
         return null;
     }
 
-    public String getAccountCode()
-    {
+    public String getAccountCode() {
         return request.get("accountcode");
     }
 
-    public Integer getCallingAni2()
-    {
-        if (request.get("callingani2") == null)
-        {
+    public Integer getCallingAni2() {
+        if (request.get("callingani2") == null) {
             return null;
         }
 
-        try
-        {
+        try {
             return Integer.valueOf(request.get("callingani2"));
-        }
-        catch (NumberFormatException e)
-        {
+        } catch (NumberFormatException e) {
             return null;
         }
     }
 
-    public Integer getCallingPres()
-    {
-        if (request.get("callingpres") == null)
-        {
+    public Integer getCallingPres() {
+        if (request.get("callingpres") == null) {
             return null;
         }
 
-        try
-        {
+        try {
             return Integer.valueOf(request.get("callingpres"));
-        }
-        catch (NumberFormatException e)
-        {
+        } catch (NumberFormatException e) {
             return null;
         }
     }
 
-    public Integer getCallingTns()
-    {
-        if (request.get("callingtns") == null)
-        {
+    public Integer getCallingTns() {
+        if (request.get("callingtns") == null) {
             return null;
         }
 
-        try
-        {
+        try {
             return Integer.valueOf(request.get("callingtns"));
-        }
-        catch (NumberFormatException e)
-        {
+        } catch (NumberFormatException e) {
             return null;
         }
     }
 
-    public Integer getCallingTon()
-    {
-        if (request.get("callington") == null)
-        {
+    public Integer getCallingTon() {
+        if (request.get("callington") == null) {
             return null;
         }
 
-        try
-        {
+        try {
             return Integer.valueOf(request.get("callington"));
-        }
-        catch (NumberFormatException e)
-        {
+        } catch (NumberFormatException e) {
             return null;
         }
     }
 
-    public String getParameter(String name)
-    {
+    public String getParameter(String name) {
         String[] values;
 
         values = getParameterValues(name);
 
-        if (values == null || values.length == 0)
-        {
+        if (values == null || values.length == 0) {
             return null;
         }
 
         return values[0];
     }
 
-    public synchronized String[] getParameterValues(String name)
-    {
-        if (getParameterMap().isEmpty())
-        {
+    public synchronized String[] getParameterValues(String name) {
+        if (getParameterMap().isEmpty()) {
             return new String[0];
         }
 
@@ -468,10 +394,8 @@ public class AgiRequestImpl implements AgiRequest
         return values == null ? new String[0] : values;
     }
 
-    public synchronized Map<String, String[]> getParameterMap()
-    {
-        if (parameterMap == null)
-        {
+    public synchronized Map<String, String[]> getParameterMap() {
+        if (parameterMap == null) {
             parameterMap = parseParameters(parameters);
         }
         return parameterMap;
@@ -479,12 +403,11 @@ public class AgiRequestImpl implements AgiRequest
 
     /**
      * Parses the given parameter string and caches the result.
-     * 
+     *
      * @param s the parameter string to parse
      * @return a Map made up of parameter names their values
      */
-    private synchronized Map<String, String[]> parseParameters(String s)
-    {
+    private synchronized Map<String, String[]> parseParameters(String s) {
         Map<String, List<String>> parameterMap;
         Map<String, String[]> result;
         StringTokenizer st;
@@ -492,14 +415,12 @@ public class AgiRequestImpl implements AgiRequest
         parameterMap = new HashMap<>();
         result = new HashMap<>();
 
-        if (s == null)
-        {
+        if (s == null) {
             return result;
         }
 
         st = new StringTokenizer(s, "&");
-        while (st.hasMoreTokens())
-        {
+        while (st.hasMoreTokens()) {
             String parameter;
             Matcher parameterMatcher;
             String name;
@@ -508,48 +429,35 @@ public class AgiRequestImpl implements AgiRequest
 
             parameter = st.nextToken();
             parameterMatcher = PARAMETER_PATTERN.matcher(parameter);
-            if (parameterMatcher.matches())
-            {
-                try
-                {
+            if (parameterMatcher.matches()) {
+                try {
                     name = URLDecoder.decode(parameterMatcher.group(1), "UTF-8");
                     value = URLDecoder.decode(parameterMatcher.group(2), "UTF-8");
-                }
-                catch (UnsupportedEncodingException e)
-                {
+                } catch (UnsupportedEncodingException e) {
                     logger.error("Unable to decode parameter '" + parameter + "'", e);
                     continue;
                 }
-            }
-            else
-            {
-                try
-                {
+            } else {
+                try {
                     name = URLDecoder.decode(parameter, "UTF-8");
                     value = "";
-                }
-                catch (UnsupportedEncodingException e)
-                {
+                } catch (UnsupportedEncodingException e) {
                     logger.error("Unable to decode parameter '" + parameter + "'", e);
                     continue;
                 }
             }
 
-            if (parameterMap.get(name) == null)
-            {
+            if (parameterMap.get(name) == null) {
                 values = new ArrayList<>();
                 values.add(value);
                 parameterMap.put(name, values);
-            }
-            else
-            {
+            } else {
                 values = parameterMap.get(name);
                 values.add(value);
             }
         }
 
-        for (Map.Entry<String, List<String>> entry : parameterMap.entrySet())
-        {
+        for (Map.Entry<String, List<String>> entry : parameterMap.entrySet()) {
             String[] valueArray;
 
             valueArray = new String[entry.getValue().size()];
@@ -559,82 +467,67 @@ public class AgiRequestImpl implements AgiRequest
         return result;
     }
 
-    public synchronized String[] getArguments()
-    {
-        if (arguments != null)
-        {
+    public synchronized String[] getArguments() {
+        if (arguments != null) {
             return arguments.clone();
         }
 
         final Map<Integer, String> map = new HashMap<>();
         int maxIndex = 0;
-        for (Map.Entry<String, String> entry : request.entrySet())
-        {
-            if (!entry.getKey().startsWith("arg_"))
-            {
+        for (Map.Entry<String, String> entry : request.entrySet()) {
+            if (!entry.getKey().startsWith("arg_")) {
                 continue;
             }
 
             int index = Integer.parseInt(entry.getKey().substring(4));
-            if (index > maxIndex)
-            {
+            if (index > maxIndex) {
                 maxIndex = index;
             }
             map.put(index, entry.getValue());
         }
 
         arguments = new String[maxIndex];
-        for (int i = 0; i < maxIndex; i++)
-        {
+        for (int i = 0; i < maxIndex; i++) {
             arguments[i] = map.get(i + 1);
         }
 
         return arguments.clone();
     }
 
-    public InetAddress getLocalAddress()
-    {
+    public InetAddress getLocalAddress() {
         return localAddress;
     }
 
-    void setLocalAddress(InetAddress localAddress)
-    {
+    void setLocalAddress(InetAddress localAddress) {
         this.localAddress = localAddress;
     }
 
-    public int getLocalPort()
-    {
+    public int getLocalPort() {
         return localPort;
     }
 
-    void setLocalPort(int localPort)
-    {
+    void setLocalPort(int localPort) {
         this.localPort = localPort;
     }
 
-    public InetAddress getRemoteAddress()
-    {
+    public InetAddress getRemoteAddress() {
         return remoteAddress;
     }
 
-    void setRemoteAddress(InetAddress remoteAddress)
-    {
+    void setRemoteAddress(InetAddress remoteAddress) {
         this.remoteAddress = remoteAddress;
     }
 
-    public int getRemotePort()
-    {
+    public int getRemotePort() {
         return remotePort;
     }
 
-    void setRemotePort(int remotePort)
-    {
+    void setRemotePort(int remotePort) {
         this.remotePort = remotePort;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         StringBuilder sb;
 
         sb = new StringBuilder("AgiRequest[");

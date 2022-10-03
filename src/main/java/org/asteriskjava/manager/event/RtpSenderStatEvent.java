@@ -26,16 +26,14 @@ package org.asteriskjava.manager.event;
  * @version $Id$
  * @since 1.0.0
  */
-public class RtpSenderStatEvent extends AbstractRtpStatEvent
-{
+public class RtpSenderStatEvent extends AbstractRtpStatEvent {
     private static final long serialVersionUID = 1L;
 
     private Long sentPackets;
     private Long srCount;
     private Double rtt;
 
-    public RtpSenderStatEvent(Object source)
-    {
+    public RtpSenderStatEvent(Object source) {
         super(source);
     }
 
@@ -44,13 +42,11 @@ public class RtpSenderStatEvent extends AbstractRtpStatEvent
      *
      * @return the number of packets sent.
      */
-    public Long getSentPackets()
-    {
+    public Long getSentPackets() {
         return sentPackets;
     }
 
-    public void setSentPackets(Long sentPackets)
-    {
+    public void setSentPackets(Long sentPackets) {
         this.sentPackets = sentPackets;
     }
 
@@ -59,23 +55,19 @@ public class RtpSenderStatEvent extends AbstractRtpStatEvent
      *
      * @return the number of sender reports.
      */
-    public Long getSrCount()
-    {
+    public Long getSrCount() {
         return srCount;
     }
 
-    public void setSrCount(Long srCount)
-    {
+    public void setSrCount(Long srCount) {
         this.srCount = srCount;
     }
 
-    public Double getRtt()
-    {
+    public Double getRtt() {
         return rtt;
     }
 
-    public void setRtt(Double rtt)
-    {
+    public void setRtt(Double rtt) {
         this.rtt = rtt;
     }
 }

@@ -27,8 +27,7 @@ package org.asteriskjava.manager.event;
  * @author srt
  * @since 1.0.0
  */
-public class MusicOnHoldEvent extends ManagerEvent
-{
+public class MusicOnHoldEvent extends ManagerEvent {
     private static final long serialVersionUID = 1L;
 
     public static final String STATE_START = "Start";
@@ -42,8 +41,7 @@ public class MusicOnHoldEvent extends ManagerEvent
     private String linkedId;
     private String language;
 
-    public MusicOnHoldEvent(Object source)
-    {
+    public MusicOnHoldEvent(Object source) {
         super(source);
     }
 
@@ -52,8 +50,7 @@ public class MusicOnHoldEvent extends ManagerEvent
      *
      * @return channel the name of the channel.
      */
-    public String getChannel()
-    {
+    public String getChannel() {
         return channel;
     }
 
@@ -62,18 +59,15 @@ public class MusicOnHoldEvent extends ManagerEvent
      *
      * @param channel the name of the channel.
      */
-    public void setChannel(String channel)
-    {
+    public void setChannel(String channel) {
         this.channel = channel;
     }
 
-    public String getClassName()
-    {
+    public String getClassName() {
         return this.className;
     }
 
-    public void setClazz(String className)
-    {
+    public void setClazz(String className) {
         this.className = className;
     }
 
@@ -82,8 +76,7 @@ public class MusicOnHoldEvent extends ManagerEvent
      *
      * @return the unique id of the channel.
      */
-    public String getUniqueId()
-    {
+    public String getUniqueId() {
         return uniqueId;
     }
 
@@ -92,8 +85,7 @@ public class MusicOnHoldEvent extends ManagerEvent
      *
      * @param uniqueId the unique id of the channel.
      */
-    public void setUniqueId(String uniqueId)
-    {
+    public void setUniqueId(String uniqueId) {
         this.uniqueId = uniqueId;
     }
 
@@ -102,19 +94,17 @@ public class MusicOnHoldEvent extends ManagerEvent
      * music on hold started or stopped on the channel.
      *
      * @return "Start" if music on hold started or "Stop" if music on hold
-     *         stopped on the channel.
+     * stopped on the channel.
      * @see #STATE_START
      * @see #STATE_STOP
      * @see #isStart()
      * @see #isStop()
      */
-    public String getState()
-    {
+    public String getState() {
         return state;
     }
 
-    public void setState(String state)
-    {
+    public void setState(String state) {
         this.state = state;
     }
 
@@ -122,10 +112,9 @@ public class MusicOnHoldEvent extends ManagerEvent
      * Returns whether this is a start event.
      *
      * @return <code>true</code> if this a start event, <code>false</code>
-     *         otherwise.
+     * otherwise.
      */
-    public boolean isStart()
-    {
+    public boolean isStart() {
         return STATE_START.equals(state);
     }
 
@@ -133,41 +122,34 @@ public class MusicOnHoldEvent extends ManagerEvent
      * Returns whether this is a stop event.
      *
      * @return <code>true</code> if this an stop event, <code>false</code>
-     *         otherwise.
+     * otherwise.
      */
-    public boolean isStop()
-    {
+    public boolean isStop() {
         return STATE_STOP.equals(state);
     }
 
-    public String getAccountCode()
-    {
+    public String getAccountCode() {
         return accountCode;
     }
 
-    public void setAccountCode(String accountCode)
-    {
+    public void setAccountCode(String accountCode) {
         this.accountCode = accountCode;
     }
-    
-    public String getLinkedId()
-    {
+
+    public String getLinkedId() {
         return linkedId;
     }
 
-    public void setLinkedId(String linkedId)
-    {
+    public void setLinkedId(String linkedId) {
         this.linkedId = linkedId;
     }
 
-    public String getLanguage()
-    {
+    public String getLanguage() {
         return language;
     }
 
-    public void setLanguage(String language)
-    {
+    public void setLanguage(String language) {
         this.language = language;
     }
-    
+
 }

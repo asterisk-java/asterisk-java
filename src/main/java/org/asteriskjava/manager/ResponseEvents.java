@@ -16,28 +16,27 @@
  */
 package org.asteriskjava.manager;
 
-import java.util.Collection;
-
 import org.asteriskjava.manager.event.ResponseEvent;
 import org.asteriskjava.manager.response.ManagerResponse;
 
+import java.util.Collection;
+
 
 /**
- * Contains the result of executing an 
+ * Contains the result of executing an
  * {@link org.asteriskjava.manager.action.EventGeneratingAction}, that is the
- * {@link org.asteriskjava.manager.response.ManagerResponse} and any received 
+ * {@link org.asteriskjava.manager.response.ManagerResponse} and any received
  * {@link org.asteriskjava.manager.event.ManagerEvent}s.
- * 
- * @see org.asteriskjava.manager.action.EventGeneratingAction
+ *
  * @author srt
  * @version $Id$
+ * @see org.asteriskjava.manager.action.EventGeneratingAction
  * @since 0.2
  */
-public interface ResponseEvents
-{
+public interface ResponseEvents {
     /**
      * Returns the response received.
-     * 
+     *
      * @return the response received.
      */
     ManagerResponse getResponse();
@@ -45,7 +44,7 @@ public interface ResponseEvents
     /**
      * Returns a Collection of ManagerEvents that have been received including
      * the last one that indicates completion.
-     * 
+     *
      * @return a Collection of ManagerEvents received.
      */
     Collection<ResponseEvent> getEvents();

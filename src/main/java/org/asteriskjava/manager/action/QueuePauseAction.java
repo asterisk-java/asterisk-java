@@ -21,13 +21,12 @@ package org.asteriskjava.manager.action;
  * available again).<p>
  * It is implemented in <code>apps/app_queue.c</code><p>
  * Available since Asterisk 1.2.
- * 
+ *
  * @author srt
  * @version $Id$
  * @since 0.2
  */
-public class QueuePauseAction extends AbstractManagerAction
-{
+public class QueuePauseAction extends AbstractManagerAction {
     /**
      * Serializable version identifier
      */
@@ -41,19 +40,17 @@ public class QueuePauseAction extends AbstractManagerAction
     /**
      * Creates a new empty QueuePauseAction.
      */
-    public QueuePauseAction()
-    {
+    public QueuePauseAction() {
 
     }
 
     /**
      * Creates a new QueuePauseAction that makes the member on the given
      * interface unavailable on all queues.
-     * 
+     *
      * @param iface the interface of the member to make unavailable
      */
-    public QueuePauseAction(String iface)
-    {
+    public QueuePauseAction(String iface) {
         this.iface = iface;
         this.paused = Boolean.TRUE;
     }
@@ -61,12 +58,11 @@ public class QueuePauseAction extends AbstractManagerAction
     /**
      * Creates a new QueuePauseAction that makes the member on the given
      * interface unavailable on the given queue.
-     * 
+     *
      * @param iface the interface of the member to make unavailable
      * @param queue the queue the member is made unvailable on
      */
-    public QueuePauseAction(String iface, String queue)
-    {
+    public QueuePauseAction(String iface, String queue) {
         this.iface = iface;
         this.queue = queue;
         this.paused = Boolean.TRUE;
@@ -75,13 +71,12 @@ public class QueuePauseAction extends AbstractManagerAction
     /**
      * Creates a new QueuePauseAction that makes the member on the given
      * interface available or unavailable on all queues.
-     * 
-     * @param iface the interface of the member to make unavailable
+     *
+     * @param iface  the interface of the member to make unavailable
      * @param paused Boolean.TRUE to make the member unavailbale, Boolean.FALSE
-     *            to make the member available
+     *               to make the member available
      */
-    public QueuePauseAction(String iface, Boolean paused)
-    {
+    public QueuePauseAction(String iface, Boolean paused) {
         this.iface = iface;
         this.paused = paused;
     }
@@ -89,14 +84,13 @@ public class QueuePauseAction extends AbstractManagerAction
     /**
      * Creates a new QueuePauseAction that makes the member on the given
      * interface unavailable on the given queue.
-     * 
-     * @param iface the interface of the member to make unavailable
-     * @param queue the queue the member is made unvailable on
+     *
+     * @param iface  the interface of the member to make unavailable
+     * @param queue  the queue the member is made unvailable on
      * @param paused Boolean.TRUE to make the member unavailbale, Boolean.FALSE
-     *            to make the member available
+     *               to make the member available
      */
-    public QueuePauseAction(String iface, String queue, Boolean paused)
-    {
+    public QueuePauseAction(String iface, String queue, Boolean paused) {
         this.iface = iface;
         this.queue = queue;
         this.paused = paused;
@@ -104,81 +98,74 @@ public class QueuePauseAction extends AbstractManagerAction
 
     /**
      * Returns the name of this action, i.e. "QueuePause".
-     * 
+     *
      * @return the name of this action.
      */
     @Override
-   public String getAction()
-    {
+    public String getAction() {
         return "QueuePause";
     }
 
     /**
      * Returns the interface of the member to make available or unavailable.
-     * 
+     *
      * @return the interface of the member to make available or unavailable.
      */
-    public String getInterface()
-    {
+    public String getInterface() {
         return iface;
     }
 
     /**
      * Sets the interface of the member to make available or unavailable.<p>
      * This property is mandatory.
-     * 
+     *
      * @param iface the interface of the member to make available or
-     *            unavailable.
+     *              unavailable.
      */
-    public void setInterface(String iface)
-    {
+    public void setInterface(String iface) {
         this.iface = iface;
     }
 
     /**
      * Returns the name of the queue the member is made available or unavailable
      * on.
-     * 
+     *
      * @return the name of the queue the member is made available or unavailable
-     *         on or <code>null</code> for all queues.
+     * on or <code>null</code> for all queues.
      */
-    public String getQueue()
-    {
+    public String getQueue() {
         return queue;
     }
 
     /**
      * Sets the name of the queue the member is made available or unavailable
      * on.
-     * 
+     *
      * @param queue the name of the queue the member is made available or
-     *            unavailable on or <code>null</code> for all queues.
+     *              unavailable on or <code>null</code> for all queues.
      */
-    public void setQueue(String queue)
-    {
+    public void setQueue(String queue) {
         this.queue = queue;
     }
 
     /**
      * Returns if the member is made available or unavailable.
-     * 
+     *
      * @return Boolean.TRUE to make the member unavailbale, Boolean.FALSE to
-     *         make the member available
+     * make the member available
      */
-    public Boolean getPaused()
-    {
+    public Boolean getPaused() {
         return paused;
     }
 
     /**
      * Sets if the member is made available or unavailable.<p>
      * This property is mandatory.
-     * 
+     *
      * @param paused Boolean.TRUE to make the member unavailbale, Boolean.FALSE
-     *            to make the member available
+     *               to make the member available
      */
-    public void setPaused(Boolean paused)
-    {
+    public void setPaused(Boolean paused) {
         this.paused = paused;
     }
 
@@ -188,9 +175,8 @@ public class QueuePauseAction extends AbstractManagerAction
      *
      * @return Name of the local reason for clears the flag.
      */
-    public String getReason()
-    {
-	return reason;
+    public String getReason() {
+        return reason;
     }
 
     /**
@@ -199,8 +185,7 @@ public class QueuePauseAction extends AbstractManagerAction
      *
      * @param reason Name of the local reason for clears the flag.
      */
-    public void setReason(String reason)
-    {
-	this.reason = reason;
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 }

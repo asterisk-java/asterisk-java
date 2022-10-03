@@ -27,8 +27,7 @@ package org.asteriskjava.manager.event;
  * @version $Id$
  * @since 1.0.0
  */
-public class ChannelUpdateEvent extends ManagerEvent
-{
+public class ChannelUpdateEvent extends ManagerEvent {
     private static final long serialVersionUID = 3141630567125429466L;
     private String channelType;
     private String channel;
@@ -47,12 +46,11 @@ public class ChannelUpdateEvent extends ManagerEvent
     /**
      * @param source
      */
-    public ChannelUpdateEvent(Object source)
-    {
+    public ChannelUpdateEvent(Object source) {
         super(source);
     }
 
-    
+
     /**
      * Returns the type of channel, that is "IAX2" for an IAX2
      * channel or "SIP" for a SIP channel.<br>
@@ -60,13 +58,11 @@ public class ChannelUpdateEvent extends ManagerEvent
      *
      * @return the type of channel that is registered.
      */
-    public String getChannelType()
-    {
+    public String getChannelType() {
         return channelType;
     }
 
-    public void setChannelType(String channelType)
-    {
+    public void setChannelType(String channelType) {
         this.channelType = channelType;
     }
 
@@ -75,13 +71,11 @@ public class ChannelUpdateEvent extends ManagerEvent
      *
      * @return the name of the channel.
      */
-    public String getChannel()
-    {
+    public String getChannel() {
         return channel;
     }
 
-    public void setChannel(String channel)
-    {
+    public void setChannel(String channel) {
         this.channel = channel;
     }
 
@@ -90,83 +84,67 @@ public class ChannelUpdateEvent extends ManagerEvent
      *
      * @return the unique id of the channel.
      */
-    public String getUniqueId()
-    {
+    public String getUniqueId() {
         return uniqueId;
     }
 
-    public void setUniqueId(String uniqueId)
-    {
+    public void setUniqueId(String uniqueId) {
         this.uniqueId = uniqueId;
     }
 
-    public String getSipCallId()
-    {
+    public String getSipCallId() {
         return sipCallId;
     }
 
-    public void setSipCallId(String sipCallId)
-    {
+    public void setSipCallId(String sipCallId) {
         this.sipCallId = sipCallId;
     }
 
-    public String getSipFullContact()
-    {
+    public String getSipFullContact() {
         return sipFullContact;
     }
 
-    public void setSipFullContact(String sipFullContact)
-    {
+    public void setSipFullContact(String sipFullContact) {
         this.sipFullContact = sipFullContact;
     }
 
-    public String getPeerName()
-    {
+    public String getPeerName() {
         return peerName;
     }
 
-    public void setPeerName(String peerName)
-    {
+    public void setPeerName(String peerName) {
         this.peerName = peerName;
     }
 
-    public String getGtalkSid()
-    {
+    public String getGtalkSid() {
         return gtalkSid;
     }
 
-    public void setGtalkSid(String gtalkSid)
-    {
+    public void setGtalkSid(String gtalkSid) {
         this.gtalkSid = gtalkSid;
     }
 
-    public String getIax2CallNoLocal()
-    {
+    public String getIax2CallNoLocal() {
         return iax2CallNoLocal;
     }
 
-    public void setIax2CallNoLocal(String iax2CallNoLocal)
-    {
+    public void setIax2CallNoLocal(String iax2CallNoLocal) {
         this.iax2CallNoLocal = iax2CallNoLocal;
     }
 
-    public String getIax2CallNoRemote()
-    {
+    public String getIax2CallNoRemote() {
         return iax2CallNoRemote;
     }
 
-    public void setIax2CallNoRemote(String iax2CallNoRemote)
-    {
+    public void setIax2CallNoRemote(String iax2CallNoRemote) {
         this.iax2CallNoRemote = iax2CallNoRemote;
     }
 
-    public String getIax2Peer()
-    {
+    public String getIax2Peer() {
         return iax2Peer;
     }
 
-    public void setIax2Peer(String iax2Peer)
-    {
+    public void setIax2Peer(String iax2Peer) {
         this.iax2Peer = iax2Peer;
     }
 }

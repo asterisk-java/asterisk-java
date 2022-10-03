@@ -16,28 +16,22 @@
  */
 package org.asteriskjava.fastagi;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class ResourceBundleMappingStrategyTest
-{
+class ResourceBundleMappingStrategyTest {
     private ResourceBundleMappingStrategy mappingStrategy;
 
-    @Before
-    public void setUp()
-    {
+    @BeforeEach
+    void setUp() {
         this.mappingStrategy = new ResourceBundleMappingStrategy();
         this.mappingStrategy.setResourceBundleName("test-mapping");
     }
 
     @Test
-    public void testDetermineScript()
-    {
+    void testDetermineScript() {
         AgiScript scriptFirstPass;
         AgiScript scriptSecondPass;
         AgiRequest request;
@@ -47,15 +41,14 @@ public class ResourceBundleMappingStrategyTest
         scriptFirstPass = mappingStrategy.determineScript(request);
         scriptSecondPass = mappingStrategy.determineScript(request);
 
-        assertNotNull("no script determined", scriptFirstPass);
-        assertEquals("incorrect script determined", scriptFirstPass.getClass(), HelloAgiScript.class);
+        assertNotNull(scriptFirstPass, "no script determined");
+        assertEquals(scriptFirstPass.getClass(), HelloAgiScript.class, "incorrect script determined");
 
-        assertTrue("script instances are not cached", scriptFirstPass == scriptSecondPass);
+        assertTrue(scriptFirstPass == scriptSecondPass, "script instances are not cached");
     }
 
     @Test
-    public void testDetermineScriptWithResourceBundleUnavailable()
-    {
+    void testDetermineScriptWithResourceBundleUnavailable() {
         AgiRequest request;
 
         request = new SimpleAgiRequest();
@@ -65,8 +58,7 @@ public class ResourceBundleMappingStrategyTest
     }
 
     @Test
-    public void testDetermineScriptWithNonSharedInstance()
-    {
+    void testDetermineScriptWithNonSharedInstance() {
         AgiScript scriptFirstPass;
         AgiScript scriptSecondPass;
         AgiRequest request;
@@ -77,8 +69,8 @@ public class ResourceBundleMappingStrategyTest
         scriptFirstPass = mappingStrategy.determineScript(request);
         scriptSecondPass = mappingStrategy.determineScript(request);
 
-        assertEquals("incorrect script determined", scriptFirstPass.getClass(), HelloAgiScript.class);
+        assertEquals(scriptFirstPass.getClass(), HelloAgiScript.class, "incorrect script determined");
 
-        assertTrue("returned a shared instance", scriptFirstPass != scriptSecondPass);
+        assertTrue(scriptFirstPass != scriptSecondPass, "returned a shared instance");
     }
 }

@@ -18,12 +18,11 @@ package org.asteriskjava.manager.action;
 
 /**
  * The LogoffAction causes the server to close the connection.
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public class LogoffAction extends AbstractManagerAction
-{
+public class LogoffAction extends AbstractManagerAction {
     /**
      * Serializable version identifier
      */
@@ -32,8 +31,7 @@ public class LogoffAction extends AbstractManagerAction
     /**
      * Creates a new LogoffAction.
      */
-    public LogoffAction()
-    {
+    public LogoffAction() {
 
     }
 
@@ -41,8 +39,7 @@ public class LogoffAction extends AbstractManagerAction
      * Returns the name of this action, i.e. "Logoff".
      */
     @Override
-   public String getAction()
-    {
+    public String getAction() {
         return "Logoff";
     }
 }

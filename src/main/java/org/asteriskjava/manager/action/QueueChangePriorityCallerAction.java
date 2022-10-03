@@ -7,98 +7,105 @@ package org.asteriskjava.manager.action;
 
 public class QueueChangePriorityCallerAction extends AbstractManagerAction {
 
-	/**
-	 * Serializable version identifier
-	 */
+    /**
+     * Serializable version identifier
+     */
 
-	private final static long serialVersionUID = -1554562185648L;
+    private final static long serialVersionUID = -1554562185648L;
 
-	private String queue;
-	private String caller;
-	private Integer priority;
+    private String queue;
+    private String caller;
+    private Integer priority;
 
-	/**
-	 * Creates a new empty QueueChangePriorityCallerAction.
-	 */
+    /**
+     * Creates a new empty QueueChangePriorityCallerAction.
+     */
 
-	public QueueChangePriorityCallerAction() {
-	}
+    public QueueChangePriorityCallerAction() {
+    }
 
-	/**
-	 * Creates a new QueueChangePriorityCAllerAction with all required parameters.
-	 * @param queue name of queue.
-	 * @param caller caller channel name.
-	 * @param priority priority value to set.
-	 */
+    /**
+     * Creates a new QueueChangePriorityCAllerAction with all required parameters.
+     *
+     * @param queue    name of queue.
+     * @param caller   caller channel name.
+     * @param priority priority value to set.
+     */
 
-	public QueueChangePriorityCallerAction(String queue, String caller, Integer priority) {
-		this.queue = queue;
-		this.caller = caller;
-		this.priority = priority;
-	}
+    public QueueChangePriorityCallerAction(String queue, String caller, Integer priority) {
+        this.queue = queue;
+        this.caller = caller;
+        this.priority = priority;
+    }
 
-	/**
-	 * Returns the name of this action, i.e. "QueueChangePriorityCaller"
-	 * @return String, name of action
-	 */
+    /**
+     * Returns the name of this action, i.e. "QueueChangePriorityCaller"
+     *
+     * @return String, name of action
+     */
 
-	@Override
-	public String getAction() {
-		return "QueueChangePriorityCaller";
-	}
+    @Override
+    public String getAction() {
+        return "QueueChangePriorityCaller";
+    }
 
-	/**
-	 * Returns the queue that caller is inside.
-	 *
-	 * @return queue name
-	 */
+    /**
+     * Returns the queue that caller is inside.
+     *
+     * @return queue name
+     */
 
-	public String getQueue() {
-		return queue;
-	}
+    public String getQueue() {
+        return queue;
+    }
 
-	/**
-	 * Sets the queue filter.
-	 * @param queue queue name
-	 */
+    /**
+     * Sets the queue filter.
+     *
+     * @param queue queue name
+     */
 
-	public void setQueue(String queue) {
-		this.queue = queue;
-	}
+    public void setQueue(String queue) {
+        this.queue = queue;
+    }
 
-	/**
-	 * Returns the caller to change priority.
-	 * @return String caller name
-	 */
+    /**
+     * Returns the caller to change priority.
+     *
+     * @return String caller name
+     */
 
-	public String getCaller() {
-		return caller;
-	}
+    public String getCaller() {
+        return caller;
+    }
 
-	/**
-	 * Sets the caller to change priority. If not sets then nothing changes.
-	 * @param caller caller name
-	 */
+    /**
+     * Sets the caller to change priority. If not sets then nothing changes.
+     *
+     * @param caller caller name
+     */
 
-	public void setCaller(String caller) {
-		this.caller = caller;
-	}
+    public void setCaller(String caller) {
+        this.caller = caller;
+    }
 
-	/**
-	 * Returns priority to set to given caller.
-	 * @return integer priority value
-	 */
+    /**
+     * Returns priority to set to given caller.
+     *
+     * @return integer priority value
+     */
 
-	public Integer getPriority() {
-		return priority;
-	}
+    public Integer getPriority() {
+        return priority;
+    }
 
-	/**
-	 * Sets priority to given caller. If nothing sets then nothing changes.
-	 * @param priority priority value
-	 */
+    /**
+     * Sets priority to given caller. If nothing sets then nothing changes.
+     *
+     * @param priority priority value
+     */
 
-	public void setPriority(Integer priority) {
-		this.priority = priority;
-	}
+    public void setPriority(Integer priority) {
+        this.priority = priority;
+    }
 }

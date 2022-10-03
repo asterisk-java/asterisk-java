@@ -26,8 +26,7 @@ package org.asteriskjava.manager.action;
  * @version $Id$
  * @since 1.0.0
  */
-public class SendTextAction extends AbstractManagerAction
-{
+public class SendTextAction extends AbstractManagerAction {
     private static final long serialVersionUID = 1L;
 
     private String channel;
@@ -36,8 +35,7 @@ public class SendTextAction extends AbstractManagerAction
     /**
      * Creates a new empty SendTextAction.
      */
-    public SendTextAction()
-    {
+    public SendTextAction() {
         super();
     }
 
@@ -47,8 +45,7 @@ public class SendTextAction extends AbstractManagerAction
      * @param channel the name of the channel to send the message to.
      * @param message the message to send.
      */
-    public SendTextAction(String channel, String message)
-    {
+    public SendTextAction(String channel, String message) {
         super();
         this.channel = channel;
         this.message = message;
@@ -58,8 +55,7 @@ public class SendTextAction extends AbstractManagerAction
      * Returns the name of this action, i.e. "SendText".
      */
     @Override
-    public String getAction()
-    {
+    public String getAction() {
         return "SendText";
     }
 
@@ -68,8 +64,7 @@ public class SendTextAction extends AbstractManagerAction
      *
      * @return the name of the channel to send the message to.
      */
-    public String getChannel()
-    {
+    public String getChannel() {
         return channel;
     }
 
@@ -78,8 +73,7 @@ public class SendTextAction extends AbstractManagerAction
      *
      * @param channel the name of the channel to send the message to.
      */
-    public void setChannel(String channel)
-    {
+    public void setChannel(String channel) {
         this.channel = channel;
     }
 
@@ -88,8 +82,7 @@ public class SendTextAction extends AbstractManagerAction
      *
      * @return the message to send.
      */
-    public String getMessage()
-    {
+    public String getMessage() {
         return message;
     }
 
@@ -98,8 +91,7 @@ public class SendTextAction extends AbstractManagerAction
      *
      * @param message the message to send.
      */
-    public void setMessage(String message)
-    {
+    public void setMessage(String message) {
         this.message = message;
-	}
+    }
 }

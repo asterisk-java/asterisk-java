@@ -23,12 +23,11 @@ package org.asteriskjava.manager.action;
  * overwritten.<p>
  * The SetCDRUserFieldAction is implemented in
  * <code>apps/app_setcdruserfield.c</code>
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public class SetCdrUserFieldAction extends AbstractManagerAction
-{
+public class SetCdrUserFieldAction extends AbstractManagerAction {
     /**
      * Serializable version identifier
      */
@@ -40,21 +39,19 @@ public class SetCdrUserFieldAction extends AbstractManagerAction
     /**
      * Creates a new empty SetCdrUserFieldAction.
      */
-    public SetCdrUserFieldAction()
-    {
+    public SetCdrUserFieldAction() {
 
     }
 
     /**
      * Creates a new SetCdrUserFieldAction that sets the user field of the call
      * detail record for the given channel to the given value.
-     * 
-     * @param channel the name of the channel
+     *
+     * @param channel   the name of the channel
      * @param userField the new value of the userfield
      * @since 0.2
      */
-    public SetCdrUserFieldAction(String channel, String userField)
-    {
+    public SetCdrUserFieldAction(String channel, String userField) {
         this.channel = channel;
         this.userField = userField;
     }
@@ -62,16 +59,15 @@ public class SetCdrUserFieldAction extends AbstractManagerAction
     /**
      * Creates a new SetCDRUserFieldAction that sets the user field of the call
      * detail record for the given channel to the given value.
-     * 
-     * @param channel the name of the channel
+     *
+     * @param channel   the name of the channel
      * @param userField the new value of the userfield
-     * @param append true to append the value to the cdr user field or false to
-     *            overwrite
+     * @param append    true to append the value to the cdr user field or false to
+     *                  overwrite
      * @since 0.2
      */
     public SetCdrUserFieldAction(String channel, String userField,
-            Boolean append)
-    {
+                                 Boolean append) {
         this.channel = channel;
         this.userField = userField;
         this.append = append;
@@ -81,16 +77,14 @@ public class SetCdrUserFieldAction extends AbstractManagerAction
      * Returns the name of the action, i.e. "SetCDRUserField".
      */
     @Override
-   public String getAction()
-    {
+    public String getAction() {
         return "SetCDRUserField";
     }
 
     /**
      * Returns the name of the channel to set the cdr user field on.
      */
-    public String getChannel()
-    {
+    public String getChannel() {
         return channel;
     }
 
@@ -98,16 +92,14 @@ public class SetCdrUserFieldAction extends AbstractManagerAction
      * Sets the name of the channel to set the cdr user field on.<p>
      * This property is mandatory.
      */
-    public void setChannel(String channel)
-    {
+    public void setChannel(String channel) {
         this.channel = channel;
     }
 
     /**
      * Returns the value of the cdr user field to set or append.
      */
-    public String getUserField()
-    {
+    public String getUserField() {
         return userField;
     }
 
@@ -115,16 +107,14 @@ public class SetCdrUserFieldAction extends AbstractManagerAction
      * Sets the value of the cdr user field to set or append.<p>
      * This property is mandatory.
      */
-    public void setUserField(String userField)
-    {
+    public void setUserField(String userField) {
         this.userField = userField;
     }
 
     /**
      * Returns if the value of the cdr user field is appended or overwritten.
      */
-    public Boolean getAppend()
-    {
+    public Boolean getAppend() {
         return append;
     }
 
@@ -132,8 +122,7 @@ public class SetCdrUserFieldAction extends AbstractManagerAction
      * Set to true to append the value to the cdr user field or false to
      * overwrite.
      */
-    public void setAppend(Boolean append)
-    {
+    public void setAppend(Boolean append) {
         this.append = append;
     }
 }

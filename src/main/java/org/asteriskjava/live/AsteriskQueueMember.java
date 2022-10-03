@@ -31,8 +31,7 @@ package org.asteriskjava.live;
  * @version $Id$
  * @since 0.3.1
  */
-public interface AsteriskQueueMember extends LiveObject
-{
+public interface AsteriskQueueMember extends LiveObject {
     String PROPERTY_STATE = "state";
     String PROPERTY_PENALTY = "penalty";
     String PROPERTY_PAUSED = "paused";
@@ -66,7 +65,8 @@ public interface AsteriskQueueMember extends LiveObject
      * @return paused <code>true</code> is this queue member is paused, <code>false</code> otherwise.
      * @deprecated as of 1.0.0. Use {@link #isPaused()} instead.
      */
-    @Deprecated boolean getPaused();
+    @Deprecated
+    boolean getPaused();
 
     /**
      * Returns whether this member is currently paused..
@@ -102,7 +102,7 @@ public interface AsteriskQueueMember extends LiveObject
      * statically defined in <code>queues.conf</code>.
      *
      * @return "dynamic" if the added member is a dynamic queue member, "static"
-     *         if the added member is a static queue member.
+     * if the added member is a static queue member.
      * @since 1.0.0
      */
     String getMembership();
@@ -112,7 +112,7 @@ public interface AsteriskQueueMember extends LiveObject
      * defined in <code>queues.conf</code>.
      *
      * @return <code>true</code> if this member has been statically defined in
-     *         <code>queues.conf</code>, <code>false</code> otherwise.
+     * <code>queues.conf</code>, <code>false</code> otherwise.
      * @since 1.0.0
      */
     boolean isStatic();
@@ -122,7 +122,7 @@ public interface AsteriskQueueMember extends LiveObject
      * added by the QueueAdd command.
      *
      * @return <code>true</code> if this member has been dynamically added by
-     *         the QueueAdd command, <code>false</code> otherwise.
+     * the QueueAdd command, <code>false</code> otherwise.
      * @since 1.0.0
      */
     boolean isDynamic();
@@ -149,15 +149,17 @@ public interface AsteriskQueueMember extends LiveObject
 
     /**
      * get the timestamp when the last call was terminated
-     * @author itaqua
+     *
      * @return
+     * @author itaqua
      */
-	Long getLastCall();
+    Long getLastCall();
 
     /**
      * total calls taken
-     * @author itaqua
+     *
      * @return
+     * @author itaqua
      */
-	Integer getCallsTaken();
+    Integer getCallsTaken();
 }

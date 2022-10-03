@@ -1,11 +1,11 @@
 package org.asteriskjava.manager;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
-
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
 
 /**
  * Customized the mapping to Asterisk. In general the mapping is done implicitly based
@@ -17,7 +17,6 @@ import java.lang.annotation.Target;
  */
 @Target({METHOD, FIELD})
 @Retention(RUNTIME)
-public @interface AsteriskMapping
-{
+public @interface AsteriskMapping {
     String value();
 }

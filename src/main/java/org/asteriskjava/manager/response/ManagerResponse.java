@@ -33,8 +33,7 @@ import java.util.Map;
  * @version $Id$
  * @see org.asteriskjava.manager.action.ManagerAction
  */
-public class ManagerResponse implements Serializable
-{
+public class ManagerResponse implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Date dateReceived;
@@ -53,8 +52,7 @@ public class ManagerResponse implements Serializable
     private Map<String, Object> attributes;
     private String output;
 
-    public ManagerResponse()
-    {
+    public ManagerResponse() {
         this.attributes = null;
     }
 
@@ -65,8 +63,7 @@ public class ManagerResponse implements Serializable
      *
      * @see #getAttribute(String)
      */
-    public Map<String, Object> getAttributes()
-    {
+    public Map<String, Object> getAttributes() {
         return attributes;
     }
 
@@ -74,10 +71,9 @@ public class ManagerResponse implements Serializable
      * Sets the Map with all attributes.
      *
      * @param attributes Map with containing the attributes with all lower case
-     *            keys.
+     *                   keys.
      */
-    public void setAttributes(Map<String, Object> attributes)
-    {
+    public void setAttributes(Map<String, Object> attributes) {
         this.attributes = attributes;
     }
 
@@ -100,16 +96,15 @@ public class ManagerResponse implements Serializable
      * ManagerResponse response = connection.sendAction(action);
      * String alertInfo = response.getAttribute("ALERT_INFO");
      * </pre>
-     *
+     * <p>
      * As all attributes are internally stored in lower case the key is
      * automatically converted to lower case before lookup.
      *
      * @param key the key to lookup.
      * @return the value of the attribute stored under this key or
-     *         <code>null</code> if there is no such attribute.
+     * <code>null</code> if there is no such attribute.
      */
-    public String getAttribute(String key)
-    {
+    public String getAttribute(String key) {
         return (String) attributes.get(key.toLowerCase(Locale.ENGLISH));
     }
 
@@ -117,8 +112,7 @@ public class ManagerResponse implements Serializable
      * Returns the point in time this response was received from the asterisk
      * server.
      */
-    public Date getDateReceived()
-    {
+    public Date getDateReceived() {
         return dateReceived;
     }
 
@@ -126,8 +120,7 @@ public class ManagerResponse implements Serializable
      * Sets the point in time this response was received from the asterisk
      * server.
      */
-    public void setDateReceived(Date dateReceived)
-    {
+    public void setDateReceived(Date dateReceived) {
         this.dateReceived = dateReceived;
     }
 
@@ -137,11 +130,10 @@ public class ManagerResponse implements Serializable
      * <code>null</code>.
      *
      * @return the action id of the ManagerAction that caused this response or
-     *         <code>null</code> if none was set.
+     * <code>null</code> if none was set.
      * @see org.asteriskjava.manager.action.ManagerAction#setActionId(String)
      */
-    public String getActionId()
-    {
+    public String getActionId() {
         return actionId;
     }
 
@@ -151,12 +143,11 @@ public class ManagerResponse implements Serializable
      * This property is only available when using to AstManProxy.
      *
      * @return the name of the Asterisk server from which this response has been
-     *         received or <code>null</code> when directly connected to an
-     *         Asterisk server instead of AstManProxy.
+     * received or <code>null</code> when directly connected to an
+     * Asterisk server instead of AstManProxy.
      * @since 1.0.0
      */
-    public final String getServer()
-    {
+    public final String getServer() {
         return server;
     }
 
@@ -165,11 +156,10 @@ public class ManagerResponse implements Serializable
      * received.
      *
      * @param server the name of the Asterisk server from which this response
-     *            has been received.
+     *               has been received.
      * @since 1.0.0
      */
-    public final void setServer(String server)
-    {
+    public final void setServer(String server) {
         this.server = server;
     }
 
@@ -179,8 +169,7 @@ public class ManagerResponse implements Serializable
      * @return "start", "stop" or "complete"
      * @since 1.0.0
      */
-    public String getEventList()
-    {
+    public String getEventList() {
         return eventList;
     }
 
@@ -190,8 +179,7 @@ public class ManagerResponse implements Serializable
      * @param eventList the eventList.
      * @since 1.0.0
      */
-    public void setEventList(String eventList)
-    {
+    public void setEventList(String eventList) {
         this.eventList = eventList;
     }
 
@@ -199,10 +187,9 @@ public class ManagerResponse implements Serializable
      * Sets the action id of the ManagerAction that caused this response.
      *
      * @param actionId the action id of the ManagerAction that caused this
-     *            response.
+     *                 response.
      */
-    public void setActionId(String actionId)
-    {
+    public void setActionId(String actionId) {
         this.actionId = actionId;
     }
 
@@ -210,16 +197,14 @@ public class ManagerResponse implements Serializable
      * Returns the message received with this response. The content depends on
      * the action that generated this response.
      */
-    public String getMessage()
-    {
+    public String getMessage() {
         return message;
     }
 
     /**
      * Sets the message.
      */
-    public void setMessage(String message)
-    {
+    public void setMessage(String message) {
         this.message = message;
     }
 
@@ -228,16 +213,14 @@ public class ManagerResponse implements Serializable
      * "Success" or "Error" but depends on the action that generated this
      * response.
      */
-    public String getResponse()
-    {
+    public String getResponse() {
         return response;
     }
 
     /**
      * Sets the response.
      */
-    public void setResponse(String response)
-    {
+    public void setResponse(String response) {
         this.response = response;
     }
 
@@ -246,43 +229,35 @@ public class ManagerResponse implements Serializable
      * to keep track of channels created by the action sent, for example an
      * OriginateAction.
      */
-    public String getUniqueId()
-    {
+    public String getUniqueId() {
         return uniqueId;
     }
 
     /**
      * Sets the unique id received with this response.
      */
-    public void setUniqueId(String uniqueId)
-    {
+    public void setUniqueId(String uniqueId) {
         this.uniqueId = uniqueId;
     }
 
-    protected Integer stringToInteger(String s, String suffix) throws NumberFormatException
-    {
-        if (s == null || s.length() == 0)
-        {
+    protected Integer stringToInteger(String s, String suffix) throws NumberFormatException {
+        if (s == null || s.length() == 0) {
             return null;
         }
 
-        if (suffix != null && s.endsWith(suffix))
-        {
+        if (suffix != null && s.endsWith(suffix)) {
             return Integer.parseInt(s.substring(0, s.length() - suffix.length()).trim());
         }
 
         return Integer.parseInt(s.trim());
     }
 
-    protected Long stringToLong(String s, String suffix) throws NumberFormatException
-    {
-        if (s == null || s.length() == 0)
-        {
+    protected Long stringToLong(String s, String suffix) throws NumberFormatException {
+        if (s == null || s.length() == 0) {
             return null;
         }
 
-        if (suffix != null && s.endsWith(suffix))
-        {
+        if (suffix != null && s.endsWith(suffix)) {
             return Long.parseLong(s.substring(0, s.length() - suffix.length()).trim());
         }
 
@@ -290,8 +265,7 @@ public class ManagerResponse implements Serializable
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         StringBuilder sb;
 
         sb = new StringBuilder(100);
@@ -305,21 +279,19 @@ public class ManagerResponse implements Serializable
         return sb.toString();
     }
 
-    public String getEvents()
-    {
+    public String getEvents() {
         return events;
     }
 
-    public void setEvents(String events)
-    {
+    public void setEvents(String events) {
         this.events = events;
     }
 
-	public String getOutput() {
-		return output;
-	}
+    public String getOutput() {
+        return output;
+    }
 
-	public void setOutput(String output) {
-		this.output = output;
-	}
+    public void setOutput(String output) {
+        this.output = output;
+    }
 }

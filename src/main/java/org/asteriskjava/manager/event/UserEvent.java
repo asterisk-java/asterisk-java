@@ -34,29 +34,29 @@ package org.asteriskjava.manager.event;
  * methods in your new class.
  * <p>
  * Example:
- * 
+ *
  * <pre>
  * public class VIPCallEvent extends UserEvent
  * {
  *     private String firstName;
- * 
+ *
  *     public VIPCallEvent(Object source)
  *     {
  *         super(source);
  *     }
- * 
+ *
  *     public String getFirstName()
  *     {
  *         return firstName;
  *     }
- * 
+ *
  *     public void setFirstName(String firstName)
  *     {
  *         this.firstName = firstName;
  *     }
  * }
  * </pre>
- * 
+ * <p>
  * To send this event use <code>UserEvent(VIPCall|firstName: Jon)</code> in your
  * dialplan. Asterisk up to 1.2 (including) does only support one property in
  * the UserEvent so something like
@@ -67,13 +67,12 @@ package org.asteriskjava.manager.event;
  * <p>
  * Note that you must register your UserEvent with the ManagerConnection you are
  * using in order to be recognized.
- * 
- * @see org.asteriskjava.manager.ManagerConnection#registerUserEventClass(Class)
+ *
  * @author srt
  * @version $Id$
+ * @see org.asteriskjava.manager.ManagerConnection#registerUserEventClass(Class)
  */
-public abstract class UserEvent extends ManagerEvent
-{
+public abstract class UserEvent extends ManagerEvent {
     /**
      * Serial version identifier
      */
@@ -89,48 +88,43 @@ public abstract class UserEvent extends ManagerEvent
      */
     private String uniqueId;
 
-    public UserEvent(Object source)
-    {
+    public UserEvent(Object source) {
         super(source);
     }
 
     /**
      * Returns the name of the channel this event occured in.
-     * 
+     *
      * @return the name of the channel this event occured in.
      */
-    public String getChannel()
-    {
+    public String getChannel() {
         return channel;
     }
 
     /**
      * Sets the name of the channel this event occured in.
-     * 
+     *
      * @param channel the name of the channel this event occured in.
      */
-    public void setChannel(String channel)
-    {
+    public void setChannel(String channel) {
         this.channel = channel;
     }
 
     /**
      * Returns the unqiue id of the channel this event occured in.
-     * 
+     *
      * @return the unqiue id of the channel this event occured in.
      */
-    public String getUniqueId()
-    {
+    public String getUniqueId() {
         return uniqueId;
     }
 
     /**
      * Sets the unqiue id of the channel this event occured in.
-     * 
+     *
      * @param uniqueId the unqiue id of the channel this event occured in.
      */
-    public void setUniqueId(String uniqueId)
-    {
+    public void setUniqueId(String uniqueId) {
         this.uniqueId = uniqueId;
     }
 }

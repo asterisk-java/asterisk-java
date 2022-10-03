@@ -26,8 +26,7 @@ package org.asteriskjava.manager.event;
  * @version $Id$
  * @since 1.0.0
  */
-public class NewAccountCodeEvent extends ManagerEvent
-{
+public class NewAccountCodeEvent extends ManagerEvent {
     private static final long serialVersionUID = -1786512014173534223L;
     private String channel;
     private String uniqueId;
@@ -39,8 +38,7 @@ public class NewAccountCodeEvent extends ManagerEvent
     /**
      * @param source
      */
-    public NewAccountCodeEvent(Object source)
-    {
+    public NewAccountCodeEvent(Object source) {
         super(source);
     }
 
@@ -49,13 +47,11 @@ public class NewAccountCodeEvent extends ManagerEvent
      *
      * @return the name of the channel.
      */
-    public String getChannel()
-    {
+    public String getChannel() {
         return channel;
     }
 
-    public void setChannel(String channel)
-    {
+    public void setChannel(String channel) {
         this.channel = channel;
     }
 
@@ -64,13 +60,11 @@ public class NewAccountCodeEvent extends ManagerEvent
      *
      * @return the unique id of the channel.
      */
-    public String getUniqueId()
-    {
+    public String getUniqueId() {
         return uniqueId;
     }
 
-    public void setUniqueId(String uniqueId)
-    {
+    public void setUniqueId(String uniqueId) {
         this.uniqueId = uniqueId;
     }
 
@@ -79,13 +73,11 @@ public class NewAccountCodeEvent extends ManagerEvent
      *
      * @return the new account code.
      */
-    public String getAccountCode()
-    {
+    public String getAccountCode() {
         return accountCode;
     }
 
-    public void setAccountCode(String accountCode)
-    {
+    public void setAccountCode(String accountCode) {
         this.accountCode = accountCode;
     }
 
@@ -94,35 +86,29 @@ public class NewAccountCodeEvent extends ManagerEvent
      *
      * @return the old account code.
      */
-    public String getOldAccountCode()
-    {
+    public String getOldAccountCode() {
         return oldAccountCode;
     }
 
-    public void setOldAccountCode(String oldAccountCode)
-    {
+    public void setOldAccountCode(String oldAccountCode) {
         this.oldAccountCode = oldAccountCode;
     }
 
-    public String getLanguage()
-    {
+    public String getLanguage() {
         return language;
     }
 
-    public void setLanguage(String language)
-    {
+    public void setLanguage(String language) {
         this.language = language;
     }
 
-    public String getLinkedId()
-    {
+    public String getLinkedId() {
         return linkedId;
     }
 
-    public void setLinkedId(String linkedId)
-    {
+    public void setLinkedId(String linkedId) {
         this.linkedId = linkedId;
     }
-    
-    
+
+
 }

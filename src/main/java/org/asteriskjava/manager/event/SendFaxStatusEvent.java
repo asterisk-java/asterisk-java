@@ -19,8 +19,7 @@ package org.asteriskjava.manager.event;
 /**
  * A SendFaxStatusEvent is an event of Digium's Fax For Asterisk add-on.
  */
-public class SendFaxStatusEvent extends AbstractFaxEvent
-{
+public class SendFaxStatusEvent extends AbstractFaxEvent {
     /**
      * Serial version identifier.
      */
@@ -31,8 +30,7 @@ public class SendFaxStatusEvent extends AbstractFaxEvent
     private String fileName;
 
 
-    public SendFaxStatusEvent(Object source)
-    {
+    public SendFaxStatusEvent(Object source) {
         super(source);
     }
 
@@ -40,8 +38,7 @@ public class SendFaxStatusEvent extends AbstractFaxEvent
     /**
      * @return the status
      */
-    public String getStatus()
-    {
+    public String getStatus() {
         return status;
     }
 
@@ -49,8 +46,7 @@ public class SendFaxStatusEvent extends AbstractFaxEvent
     /**
      * @param status the status to set
      */
-    public void setStatus(String status)
-    {
+    public void setStatus(String status) {
         this.status = status;
     }
 
@@ -58,8 +54,7 @@ public class SendFaxStatusEvent extends AbstractFaxEvent
     /**
      * @return the callerId
      */
-    public String getCallerId()
-    {
+    public String getCallerId() {
         return callerId;
     }
 
@@ -67,8 +62,7 @@ public class SendFaxStatusEvent extends AbstractFaxEvent
     /**
      * @param callerId the callerId to set
      */
-    public void setCallerId(String callerId)
-    {
+    public void setCallerId(String callerId) {
         this.callerId = callerId;
     }
 
@@ -76,8 +70,7 @@ public class SendFaxStatusEvent extends AbstractFaxEvent
     /**
      * @return the localStationId
      */
-    public String getLocalStationId()
-    {
+    public String getLocalStationId() {
         return localStationId;
     }
 
@@ -85,8 +78,7 @@ public class SendFaxStatusEvent extends AbstractFaxEvent
     /**
      * @param localStationId the localStationId to set
      */
-    public void setLocalStationId(String localStationId)
-    {
+    public void setLocalStationId(String localStationId) {
         this.localStationId = localStationId;
     }
 
@@ -94,8 +86,7 @@ public class SendFaxStatusEvent extends AbstractFaxEvent
     /**
      * @return the fileName
      */
-    public String getFileName()
-    {
+    public String getFileName() {
         return fileName;
     }
 
@@ -103,8 +94,7 @@ public class SendFaxStatusEvent extends AbstractFaxEvent
     /**
      * @param fileName the fileName to set
      */
-    public void setFileName(String fileName)
-    {
+    public void setFileName(String fileName) {
         this.fileName = fileName;
     }
 

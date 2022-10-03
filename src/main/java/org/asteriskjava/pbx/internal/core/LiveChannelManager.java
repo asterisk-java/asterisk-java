@@ -1,12 +1,5 @@
 package org.asteriskjava.pbx.internal.core;
 
-import java.io.IOException;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.CopyOnWriteArrayList;
-
 import org.asteriskjava.lock.Lockable;
 import org.asteriskjava.lock.LockableList;
 import org.asteriskjava.lock.Locker.LockCloser;
@@ -16,16 +9,16 @@ import org.asteriskjava.pbx.EndPoint;
 import org.asteriskjava.pbx.InvalidChannelName;
 import org.asteriskjava.pbx.ListenerPriority;
 import org.asteriskjava.pbx.asterisk.wrap.actions.StatusAction;
-import org.asteriskjava.pbx.asterisk.wrap.events.HangupEvent;
-import org.asteriskjava.pbx.asterisk.wrap.events.ManagerEvent;
-import org.asteriskjava.pbx.asterisk.wrap.events.MasqueradeEvent;
-import org.asteriskjava.pbx.asterisk.wrap.events.NewChannelEvent;
-import org.asteriskjava.pbx.asterisk.wrap.events.RenameEvent;
-import org.asteriskjava.pbx.asterisk.wrap.events.ResponseEvent;
-import org.asteriskjava.pbx.asterisk.wrap.events.ResponseEvents;
-import org.asteriskjava.pbx.asterisk.wrap.events.StatusEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.*;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
+
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * The LiveChannelManager keeps a list of all of the live channels present on an
@@ -57,11 +50,10 @@ import org.asteriskjava.util.LogFactory;
  * a live channel during a masqurade event. A consumer holding an iChannel
  * handle will not even be aware (and does not need to be) that the underlying
  * channel has been replaced.
- * 
+ *
  * @author bsutton
  */
-public class LiveChannelManager extends Lockable implements FilteredManagerListener<ManagerEvent>
-{
+public class LiveChannelManager extends Lockable implements FilteredManagerListener<ManagerEvent> {
     private static final Log logger = LogFactory.getLog(LiveChannelManager.class);
 
     /**
@@ -71,8 +63,7 @@ public class LiveChannelManager extends Lockable implements FilteredManagerListe
      */
     private final LockableList<ChannelProxy> _liveChannels = new LockableList<>(new CopyOnWriteArrayList<>());
 
-    public LiveChannelManager()
-    {
+    public LiveChannelManager() {
         CoherentManagerConnection.getInstance().addListener(this);
 
     }
@@ -83,36 +74,27 @@ public class LiveChannelManager extends Lockable implements FilteredManagerListe
      * AsteriskPBX which isn't finished constructing until after the Constructor
      * returns.
      */
-    void performPostCreationTasks()
-    {
+    void performPostCreationTasks() {
         StatusAction statusAction = new StatusAction();
-        try
-        {
+        try {
             ResponseEvents events = CoherentManagerConnection.sendEventGeneratingAction(statusAction, 1000);
-            for (ResponseEvent event : events.getEvents())
-            {
-                if (event instanceof StatusEvent)
-                {
+            for (ResponseEvent event : events.getEvents()) {
+                if (event instanceof StatusEvent) {
                     // do nothing. Creating the events will register the
                     // channels, which is after all what we are trying to do.
                 }
             }
 
-        }
-        catch (IllegalArgumentException | IllegalStateException | IOException | TimeoutException e)
-        {
+        } catch (IllegalArgumentException | IllegalStateException | IOException | TimeoutException e) {
             logger.error(e, e);
         }
 
     }
 
-    public ChannelProxy getChannelByEndPoint(EndPoint endPoint)
-    {
+    public ChannelProxy getChannelByEndPoint(EndPoint endPoint) {
         ChannelProxy connectedChannel = null;
-        for (final ChannelProxy channel : _liveChannels)
-        {
-            if (channel.isConnectedTo(endPoint))
-            {
+        for (final ChannelProxy channel : _liveChannels) {
+            if (channel.isConnectedTo(endPoint)) {
                 connectedChannel = channel;
                 break;
             }
@@ -121,10 +103,8 @@ public class LiveChannelManager extends Lockable implements FilteredManagerListe
         return connectedChannel;
     }
 
-    public void add(ChannelProxy proxy)
-    {
-        try (LockCloser closer = _liveChannels.withLock())
-        {
+    public void add(ChannelProxy proxy) {
+        try (LockCloser closer = _liveChannels.withLock()) {
             ChannelProxy index = findProxy(proxy);
             if (index == null)
                 this._liveChannels.add(proxy);
@@ -136,24 +116,19 @@ public class LiveChannelManager extends Lockable implements FilteredManagerListe
 
     }
 
-    private void dumpProxies(ChannelProxy proxy, String cause)
-    {
-        if (logger.isDebugEnabled())
-        {
+    private void dumpProxies(ChannelProxy proxy, String cause) {
+        if (logger.isDebugEnabled()) {
             logger.debug("Dump of LiveChannels, cause:" + cause + ": " + proxy); //$NON-NLS-2$
-            for (ChannelProxy aProxy : _liveChannels)
-            {
+            for (ChannelProxy aProxy : _liveChannels) {
                 logger.debug("ChannelProxy: " + aProxy);
             }
         }
     }
 
-    public void remove(ChannelProxy proxy)
-    {
+    public void remove(ChannelProxy proxy) {
 
         ChannelProxy index = findProxy(proxy);
-        if (index != null)
-        {
+        if (index != null) {
             logger.info("Removing liveChannel " + proxy);
             this._liveChannels.remove(index);
         }
@@ -161,8 +136,7 @@ public class LiveChannelManager extends Lockable implements FilteredManagerListe
 
     }
 
-    public ChannelProxy findChannel(String extendedChannelName, String uniqueID)
-    {
+    public ChannelProxy findChannel(String extendedChannelName, String uniqueID) {
         ChannelProxy proxy = null;
         logger.debug("Trying to find channel " + extendedChannelName + " " + uniqueID);
 
@@ -174,13 +148,10 @@ public class LiveChannelManager extends Lockable implements FilteredManagerListe
         // Sometimes we can have two channels with the same name but
         // different
 
-        if (localUniqueId.compareTo(ChannelImpl.UNKNOWN_UNIQUE_ID) != 0)
-        {
+        if (localUniqueId.compareTo(ChannelImpl.UNKNOWN_UNIQUE_ID) != 0) {
 
-            for (ChannelProxy aChannel : _liveChannels)
-            {
-                if (aChannel.sameUniqueID(localUniqueId))
-                {
+            for (ChannelProxy aChannel : _liveChannels) {
+                if (aChannel.sameUniqueID(localUniqueId)) {
                     proxy = aChannel;
                     break;
                 }
@@ -190,24 +161,19 @@ public class LiveChannelManager extends Lockable implements FilteredManagerListe
         // If we don't have a match from the first pass and the new uniqueID
         // is unknown
         // then do a search matching by name.
-        if (proxy == null)
-        {
-            for (ChannelProxy aChannel : _liveChannels)
-            {
+        if (proxy == null) {
+            for (ChannelProxy aChannel : _liveChannels) {
 
-                if (aChannel.isSame(extendedChannelName, localUniqueId))
-                {
+                if (aChannel.isSame(extendedChannelName, localUniqueId)) {
                     proxy = aChannel;
                     break;
                 }
             }
         }
 
-        if (proxy == null)
-        {
+        if (proxy == null) {
             logger.debug("Failed to match channel to any of...");
-            for (ChannelProxy aChannel : _liveChannels)
-            {
+            for (ChannelProxy aChannel : _liveChannels) {
                 logger.debug(aChannel);
             }
 
@@ -216,12 +182,9 @@ public class LiveChannelManager extends Lockable implements FilteredManagerListe
         return proxy;
     }
 
-    private ChannelProxy findProxy(Channel original)
-    {
-        for (ChannelProxy aChannel : _liveChannels)
-        {
-            if (aChannel.isSame(original))
-            {
+    private ChannelProxy findProxy(Channel original) {
+        for (ChannelProxy aChannel : _liveChannels) {
+            if (aChannel.isSame(original)) {
                 return aChannel;
             }
         }
@@ -229,9 +192,8 @@ public class LiveChannelManager extends Lockable implements FilteredManagerListe
     }
 
     @Override
-    public HashSet<Class< ? extends ManagerEvent>> requiredEvents()
-    {
-        HashSet<Class< ? extends ManagerEvent>> required = new HashSet<>();
+    public HashSet<Class<? extends ManagerEvent>> requiredEvents() {
+        HashSet<Class<? extends ManagerEvent>> required = new HashSet<>();
 
         required.add(MasqueradeEvent.class);
         required.add(RenameEvent.class);
@@ -244,12 +206,9 @@ public class LiveChannelManager extends Lockable implements FilteredManagerListe
         return required;
     }
 
-    ChannelProxy findProxyById(String id)
-    {
-        for (ChannelProxy aChannel : _liveChannels)
-        {
-            if (("" + aChannel.getIdentity()).equals(id))
-            {
+    ChannelProxy findProxyById(String id) {
+        for (ChannelProxy aChannel : _liveChannels) {
+            if (("" + aChannel.getIdentity()).equals(id)) {
                 return aChannel;
             }
         }
@@ -257,19 +216,15 @@ public class LiveChannelManager extends Lockable implements FilteredManagerListe
     }
 
     @Override
-    public void onManagerEvent(ManagerEvent event)
-    {
-        if (event instanceof MasqueradeEvent)
-        {
+    public void onManagerEvent(ManagerEvent event) {
+        if (event instanceof MasqueradeEvent) {
             MasqueradeEvent masq = (MasqueradeEvent) event;
             ChannelProxy originalIndex = findProxy(masq.getOriginal());
             ChannelProxy cloneIndex = findProxy(masq.getClone());
-            if (originalIndex != null && cloneIndex != null)
-            {
+            if (originalIndex != null && cloneIndex != null) {
                 ChannelProxy originalProxy = (ChannelProxy) masq.getOriginal();
                 ChannelProxy cloneProxy = (ChannelProxy) masq.getClone();
-                try
-                {
+                try {
                     // After the masquerade the two underlying channels will
                     // have been switched
                     // between the two proxies.
@@ -297,47 +252,35 @@ public class LiveChannelManager extends Lockable implements FilteredManagerListe
                     originalProxy.masquerade(cloneProxy);
                     dumpProxies(cloneProxy, "Masquerade");
                     sanityCheck();
-                }
-                catch (InvalidChannelName e)
-                {
+                } catch (InvalidChannelName e) {
                     logger.error(e, e);
 
                 }
 
-            }
-            else
+            } else
                 logger.error("Either the clone or original channelProxy was missing during a masquerade: cloneIndex="
                         + cloneIndex + " originalIndex=" + originalIndex);
 
         }
-        if (event instanceof RenameEvent)
-        {
+        if (event instanceof RenameEvent) {
             RenameEvent rename = (RenameEvent) event;
 
             ChannelProxy oldChannel = findProxy(rename.getChannel());
-            if (oldChannel != null)
-            {
-                try
-                {
+            if (oldChannel != null) {
+                try {
                     oldChannel.rename(rename.getNewName(), rename.getUniqueId());
 
                     dumpProxies(oldChannel, "RenameEvent");
                     sanityCheck();
-                }
-                catch (InvalidChannelName e)
-                {
+                } catch (InvalidChannelName e) {
                     logger.error(e, e);
                 }
-            }
-            else
-            {
+            } else {
                 String message = "Unable to rename channel -> Failed to find channel " + rename.getChannel();
                 logger.warn(message);
                 dumpProxies(null, message);
             }
-        }
-        else if (event instanceof HangupEvent)
-        {
+        } else if (event instanceof HangupEvent) {
             // We need to process every hangup event that goes through the
             // system
             // as the LiveChannelManager has a Channel added for every channel
@@ -349,12 +292,10 @@ public class LiveChannelManager extends Lockable implements FilteredManagerListe
             // Yes I've seen a hangup where the channel was null, who knows
             // why?
 
-            if (hangup.getChannel() != null)
-            {
+            if (hangup.getChannel() != null) {
 
                 ChannelProxy proxy = findProxy(hangup.getChannel());
-                if (proxy != null)
-                {
+                if (proxy != null) {
                     logger.debug("Removing proxy " + proxy);
 
                     this._liveChannels.remove(proxy);
@@ -363,44 +304,34 @@ public class LiveChannelManager extends Lockable implements FilteredManagerListe
                     dumpProxies(proxy, "HangupEvent");
                 }
 
-            }
-            else
-            {
+            } else {
                 logger.error("Didn't remove hungup channel");
             }
         }
     }
 
     @Override
-    public String getName()
-    {
+    public String getName() {
         return "LiveChannelManager";
     }
 
     @Override
-    public ListenerPriority getPriority()
-    {
+    public ListenerPriority getPriority() {
         return ListenerPriority.CRITICAL;
     }
 
-    public void sanityCheck()
-    {
+    public void sanityCheck() {
 
-        if (logger.isDebugEnabled())
-        {
+        if (logger.isDebugEnabled()) {
             logger.error("Performing Sanity Check");
             Set<String> channels = new HashSet<>();
-            for (ChannelProxy channel : _liveChannels)
-            {
-                if (!channels.add(channel.getChannel().getExtendedChannelName()))
-                {
+            for (ChannelProxy channel : _liveChannels) {
+                if (!channels.add(channel.getChannel().getExtendedChannelName())) {
                     logger.error(
                             "Multiple channels by the name " + channel.getChannel().getExtendedChannelName() + " exist");
-                    for (ChannelProxy channel2 : _liveChannels)
-                    {
+                    for (ChannelProxy channel2 : _liveChannels) {
                         if (channel2.getChannel().getExtendedChannelName()
-                                .equals(channel.getChannel().getExtendedChannelName()))
-                        {
+                                .equals(channel.getChannel().getExtendedChannelName())) {
                             logger.error(channel2);
                         }
                     }
@@ -412,8 +343,7 @@ public class LiveChannelManager extends Lockable implements FilteredManagerListe
         }
     }
 
-    public List<ChannelProxy> getChannelList()
-    {
+    public List<ChannelProxy> getChannelList() {
         List<ChannelProxy> channels = new LinkedList<>();
         channels.addAll(_liveChannels);
         return channels;

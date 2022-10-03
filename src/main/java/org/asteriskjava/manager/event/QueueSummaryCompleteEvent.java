@@ -13,62 +13,62 @@ import org.asteriskjava.manager.action.QueueSummaryAction;
  * @since 0.3
  */
 public class QueueSummaryCompleteEvent extends ResponseEvent {
-	/**
-	 * Serial version identifier.
-	 */
-	private static final long serialVersionUID = -5044247858568827143L;
+    /**
+     * Serial version identifier.
+     */
+    private static final long serialVersionUID = -5044247858568827143L;
 
-	/**
-	 * ??
-	 */
-	private String eventList;
+    /**
+     * ??
+     */
+    private String eventList;
 
-	/**
-	 * The number of listed items from queueSummaryAction.
-	 */
-	private Integer listItems;
+    /**
+     * The number of listed items from queueSummaryAction.
+     */
+    private Integer listItems;
 
-	public QueueSummaryCompleteEvent(Object source) {
-		super(source);
-	}
+    public QueueSummaryCompleteEvent(Object source) {
+        super(source);
+    }
 
-	/**
-	 * Returns eventList variable.
-	 *
-	 * @return String value.
-	 */
+    /**
+     * Returns eventList variable.
+     *
+     * @return String value.
+     */
 
-	public String getEventlist() {
-		return eventList;
-	}
+    public String getEventlist() {
+        return eventList;
+    }
 
-	/**
-	 * Sets eventList variable.
-	 *
-	 * @param eventList variable
-	 */
+    /**
+     * Sets eventList variable.
+     *
+     * @param eventList variable
+     */
 
-	public void setEventlist(String eventList) {
-		this.eventList = eventList;
-	}
+    public void setEventlist(String eventList) {
+        this.eventList = eventList;
+    }
 
-	/**
-	 * Returns the number of listed items.
-	 *
-	 * @return listItems size.
-	 */
+    /**
+     * Returns the number of listed items.
+     *
+     * @return listItems size.
+     */
 
-	public Integer getListitems() {
-		return listItems;
-	}
+    public Integer getListitems() {
+        return listItems;
+    }
 
-	/**
-	 * Sets the returnItems value.
-	 *
-	 * @param listItems variable.
-	 */
+    /**
+     * Sets the returnItems value.
+     *
+     * @param listItems variable.
+     */
 
-	public void setListitems(Integer listItems) {
-		this.listItems = listItems;
-	}
+    public void setListitems(Integer listItems) {
+        this.listItems = listItems;
+    }
 }

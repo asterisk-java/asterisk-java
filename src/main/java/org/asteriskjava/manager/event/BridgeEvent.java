@@ -29,8 +29,7 @@ package org.asteriskjava.manager.event;
  * @author srt
  * @version $Id$
  */
-public class BridgeEvent extends ManagerEvent
-{
+public class BridgeEvent extends ManagerEvent {
     /**
      * Serializable version identifier.
      */
@@ -68,8 +67,7 @@ public class BridgeEvent extends ManagerEvent
     private String callerId1;
     private String callerId2;
 
-    public BridgeEvent(Object source)
-    {
+    public BridgeEvent(Object source) {
         super(source);
     }
 
@@ -81,8 +79,7 @@ public class BridgeEvent extends ManagerEvent
      * @see #BRIDGE_STATE_UNLINK
      * @since 1.0.0
      */
-    public String getBridgeState()
-    {
+    public String getBridgeState() {
         return bridgeState;
     }
 
@@ -92,8 +89,7 @@ public class BridgeEvent extends ManagerEvent
      * @param bridgeState "Link" if the two channels have been linked, "Unlink" if they have been unlinked.
      * @since 1.0.0
      */
-    public void setBridgeState(String bridgeState)
-    {
+    public void setBridgeState(String bridgeState) {
         this.bridgeState = bridgeState;
     }
 
@@ -108,8 +104,7 @@ public class BridgeEvent extends ManagerEvent
      * @see #BRIDGE_TYPE_RTP_REMOTE
      * @since 1.0.0
      */
-    public String getBridgeType()
-    {
+    public String getBridgeType() {
         return bridgeType;
     }
 
@@ -119,8 +114,7 @@ public class BridgeEvent extends ManagerEvent
      * @param bridgeType the bridge type.
      * @since 1.0.0
      */
-    public void setBridgeType(String bridgeType)
-    {
+    public void setBridgeType(String bridgeType) {
         this.bridgeType = bridgeType;
     }
 
@@ -129,8 +123,7 @@ public class BridgeEvent extends ManagerEvent
      *
      * @return the unique id of the first channel.
      */
-    public String getUniqueId1()
-    {
+    public String getUniqueId1() {
         return uniqueId1;
     }
 
@@ -139,8 +132,7 @@ public class BridgeEvent extends ManagerEvent
      *
      * @param uniqueId1 the unique id of the first channel.
      */
-    public void setUniqueId1(String uniqueId1)
-    {
+    public void setUniqueId1(String uniqueId1) {
         this.uniqueId1 = uniqueId1;
     }
 
@@ -149,8 +141,7 @@ public class BridgeEvent extends ManagerEvent
      *
      * @return the unique id of the second channel.
      */
-    public String getUniqueId2()
-    {
+    public String getUniqueId2() {
         return uniqueId2;
     }
 
@@ -159,8 +150,7 @@ public class BridgeEvent extends ManagerEvent
      *
      * @param uniqueId2 the unique id of the second channel.
      */
-    public void setUniqueId2(String uniqueId2)
-    {
+    public void setUniqueId2(String uniqueId2) {
         this.uniqueId2 = uniqueId2;
     }
 
@@ -169,8 +159,7 @@ public class BridgeEvent extends ManagerEvent
      *
      * @return the name of the first channel.
      */
-    public String getChannel1()
-    {
+    public String getChannel1() {
         return channel1;
     }
 
@@ -179,8 +168,7 @@ public class BridgeEvent extends ManagerEvent
      *
      * @param channel1 the name of the first channel.
      */
-    public void setChannel1(String channel1)
-    {
+    public void setChannel1(String channel1) {
         this.channel1 = channel1;
     }
 
@@ -189,8 +177,7 @@ public class BridgeEvent extends ManagerEvent
      *
      * @return the name of the second channel.
      */
-    public String getChannel2()
-    {
+    public String getChannel2() {
         return channel2;
     }
 
@@ -199,8 +186,7 @@ public class BridgeEvent extends ManagerEvent
      *
      * @param channel2 the name of the second channel.
      */
-    public void setChannel2(String channel2)
-    {
+    public void setChannel2(String channel2) {
         this.channel2 = channel2;
     }
 
@@ -210,8 +196,7 @@ public class BridgeEvent extends ManagerEvent
      * @return the Caller*Id number of the first channel.
      * @since 0.2
      */
-    public String getCallerId1()
-    {
+    public String getCallerId1() {
         return callerId1;
     }
 
@@ -221,8 +206,7 @@ public class BridgeEvent extends ManagerEvent
      * @param callerId1 the Caller*Id number of the first channel.
      * @since 0.2
      */
-    public void setCallerId1(String callerId1)
-    {
+    public void setCallerId1(String callerId1) {
         this.callerId1 = callerId1;
     }
 
@@ -232,8 +216,7 @@ public class BridgeEvent extends ManagerEvent
      * @return the Caller*Id number of the second channel.
      * @since 0.2
      */
-    public String getCallerId2()
-    {
+    public String getCallerId2() {
         return callerId2;
     }
 
@@ -243,8 +226,7 @@ public class BridgeEvent extends ManagerEvent
      * @param callerId2 the Caller*Id number of the second channel.
      * @since 0.2
      */
-    public void setCallerId2(String callerId2)
-    {
+    public void setCallerId2(String callerId2) {
         this.callerId2 = callerId2;
     }
 
@@ -254,8 +236,7 @@ public class BridgeEvent extends ManagerEvent
      * @return <code>true</code> the two channels have been linked, <code>false</code> if they have been unlinked.
      * @since 1.0.0
      */
-    public boolean isLink()
-    {
+    public boolean isLink() {
         return BRIDGE_STATE_LINK.equalsIgnoreCase(bridgeState);
     }
 
@@ -265,8 +246,7 @@ public class BridgeEvent extends ManagerEvent
      * @return <code>true</code> the two channels have been unlinked, <code>false</code> if they have been linked.
      * @since 1.0.0
      */
-    public boolean isUnlink()
-    {
+    public boolean isUnlink() {
         return BRIDGE_STATE_UNLINK.equalsIgnoreCase(bridgeState);
     }
 }

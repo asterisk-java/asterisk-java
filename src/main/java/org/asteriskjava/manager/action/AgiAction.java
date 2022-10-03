@@ -27,13 +27,12 @@ import org.asteriskjava.manager.event.ResponseEvent;
  * <br>
  * Available since Asterisk 1.6
  *
- * @see org.asteriskjava.manager.event.AsyncAgiEvent
  * @author srt
  * @version $Id$
+ * @see org.asteriskjava.manager.event.AsyncAgiEvent
  * @since 1.0.0
  */
-public class AgiAction extends AbstractManagerAction implements EventGeneratingAction
-{
+public class AgiAction extends AbstractManagerAction implements EventGeneratingAction {
     /**
      * Serializable version identifier.
      */
@@ -46,8 +45,7 @@ public class AgiAction extends AbstractManagerAction implements EventGeneratingA
     /**
      * Creates a new empty AgiAction.
      */
-    public AgiAction()
-    {
+    public AgiAction() {
 
     }
 
@@ -57,8 +55,7 @@ public class AgiAction extends AbstractManagerAction implements EventGeneratingA
      * @param channel the name of the channel to execute the AGI command on.
      * @param command the AGI command to execute.
      */
-    public AgiAction(String channel, String command)
-    {
+    public AgiAction(String channel, String command) {
         this.channel = channel;
         this.command = command;
     }
@@ -70,8 +67,7 @@ public class AgiAction extends AbstractManagerAction implements EventGeneratingA
      * @param command   the AGI command to execute.
      * @param commandId the command id to track execution progress.
      */
-    public AgiAction(String channel, String command, String commandId)
-    {
+    public AgiAction(String channel, String command, String commandId) {
         this.channel = channel;
         this.command = command;
         this.commandId = commandId;
@@ -81,13 +77,11 @@ public class AgiAction extends AbstractManagerAction implements EventGeneratingA
      * Returns the name of this action.
      */
     @Override
-    public String getAction()
-    {
+    public String getAction() {
         return "AGI";
     }
 
-    public Class<? extends ResponseEvent> getActionCompleteEventClass()
-    {
+    public Class<? extends ResponseEvent> getActionCompleteEventClass() {
         return AsyncAgiEvent.class;
     }
 
@@ -96,8 +90,7 @@ public class AgiAction extends AbstractManagerAction implements EventGeneratingA
      *
      * @return the name of the channel to execute the AGI command on.
      */
-    public String getChannel()
-    {
+    public String getChannel() {
         return channel;
     }
 
@@ -108,8 +101,7 @@ public class AgiAction extends AbstractManagerAction implements EventGeneratingA
      *
      * @param channel the name of the channel to execute the AGI command on.
      */
-    public void setChannel(String channel)
-    {
+    public void setChannel(String channel) {
         this.channel = channel;
     }
 
@@ -118,8 +110,7 @@ public class AgiAction extends AbstractManagerAction implements EventGeneratingA
      *
      * @return the AGI command to execute.
      */
-    public String getCommand()
-    {
+    public String getCommand() {
         return command;
     }
 
@@ -129,8 +120,7 @@ public class AgiAction extends AbstractManagerAction implements EventGeneratingA
      *
      * @param command the AGI command to execute.
      */
-    public void setCommand(String command)
-    {
+    public void setCommand(String command) {
         this.command = command;
     }
 
@@ -139,8 +129,7 @@ public class AgiAction extends AbstractManagerAction implements EventGeneratingA
      *
      * @return the command id to track execution progress.
      */
-    public String getCommandId()
-    {
+    public String getCommandId() {
         return commandId;
     }
 
@@ -150,8 +139,7 @@ public class AgiAction extends AbstractManagerAction implements EventGeneratingA
      *
      * @param commandId the command id to track execution progress.
      */
-    public void setCommandId(String commandId)
-    {
+    public void setCommandId(String commandId) {
         this.commandId = commandId;
     }
 }

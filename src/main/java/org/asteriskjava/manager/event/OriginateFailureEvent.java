@@ -20,15 +20,15 @@ package org.asteriskjava.manager.event;
  * An OriginateFailureEvent is triggered when the execution of an
  * OriginateAction failed.<p>
  * Deprecated since Asterisk 1.4.
- * 
+ *
+ * @author srt
+ * @version $Id$
  * @see org.asteriskjava.manager.action.OriginateAction
  * @see OriginateResponseEvent
  * @deprecated
- * @author srt
- * @version $Id$
  */
-@Deprecated public class OriginateFailureEvent extends OriginateResponseEvent
-{
+@Deprecated
+public class OriginateFailureEvent extends OriginateResponseEvent {
     /**
      * Serializable version identifier
      */
@@ -37,8 +37,7 @@ package org.asteriskjava.manager.event;
     /**
      * @param source
      */
-    public OriginateFailureEvent(Object source)
-    {
+    public OriginateFailureEvent(Object source) {
         super(source);
         setResponse("Failure");
     }

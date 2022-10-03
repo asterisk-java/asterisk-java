@@ -16,15 +16,11 @@
  */
 package org.asteriskjava.manager.event;
 
-import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.EventObject;
-import java.util.List;
-import java.util.Map;
-
 import org.asteriskjava.util.AstState;
 import org.asteriskjava.util.ReflectionUtil;
+
+import java.lang.reflect.Method;
+import java.util.*;
 
 /**
  * Abstract base class for all Events that can be received from the Asterisk
@@ -37,8 +33,7 @@ import org.asteriskjava.util.ReflectionUtil;
  * @author srt
  * @version $Id$
  */
-public abstract class ManagerEvent extends EventObject
-{
+public abstract class ManagerEvent extends EventObject {
     /**
      * Serializable version identifier.
      */
@@ -56,97 +51,79 @@ public abstract class ManagerEvent extends EventObject
      * Returns the Caller ID name of the caller's channel.
      *
      * @return the Caller ID name of the caller's channel or "unknown" if none
-     *         has been set.
+     * has been set.
      * @since 0.2
      */
 
-    public String getCallerIdName()
-    {
+    public String getCallerIdName() {
         return callerIdName;
     }
 
-    public void setCallerIdName(String callerIdName)
-    {
+    public void setCallerIdName(String callerIdName) {
         this.callerIdName = callerIdName;
     }
 
-    public String getConnectedLineNum()
-    {
+    public String getConnectedLineNum() {
         return connectedLineNum;
     }
 
-    public void setConnectedLineNum(String connectedLineNum)
-    {
+    public void setConnectedLineNum(String connectedLineNum) {
         this.connectedLineNum = connectedLineNum;
     }
 
-    public String getConnectedLineName()
-    {
+    public String getConnectedLineName() {
         return connectedLineName;
     }
 
-    public void setConnectedLineName(String connectedLineName)
-    {
+    public void setConnectedLineName(String connectedLineName) {
         this.connectedLineName = connectedLineName;
     }
 
-    public Integer getPriority()
-    {
+    public Integer getPriority() {
         return priority;
     }
 
-    public void setPriority(Integer priority)
-    {
+    public void setPriority(Integer priority) {
         this.priority = priority;
     }
 
-    public Integer getChannelState()
-    {
+    public Integer getChannelState() {
         return channelState == null ? AstState.str2state(channelStateDesc) : channelState;
     }
 
-    public void setChannelState(Integer channelState)
-    {
+    public void setChannelState(Integer channelState) {
         this.channelState = channelState;
     }
 
-    public String getChannelStateDesc()
-    {
+    public String getChannelStateDesc() {
         return channelStateDesc;
     }
 
-    public void setChannelStateDesc(String channelStateDesc)
-    {
+    public void setChannelStateDesc(String channelStateDesc) {
         this.channelStateDesc = channelStateDesc;
     }
 
-    public String getExten()
-    {
+    public String getExten() {
         return exten;
     }
 
-    public void setExten(String exten)
-    {
+    public void setExten(String exten) {
         this.exten = exten;
     }
 
-    public String getCallerIdNum()
-    {
+    public String getCallerIdNum() {
         return callerIdNum;
     }
 
-    public void setCallerIdNum(String callerIdNum)
-    {
+    public void setCallerIdNum(String callerIdNum) {
         this.callerIdNum = callerIdNum;
     }
 
-    public String getContext()
-    {
+    public String getContext() {
         return context;
     }
 
-    public void setContext(String context)
-    {
+    public void setContext(String context) {
         this.context = context;
     }
 
@@ -178,8 +155,7 @@ public abstract class ManagerEvent extends EventObject
     private String func;
     private Integer sequenceNumber;
 
-    public ManagerEvent(Object source)
-    {
+    public ManagerEvent(Object source) {
         super(source);
 
     }
@@ -191,16 +167,14 @@ public abstract class ManagerEvent extends EventObject
      * (for example ConnectEvent and DisconnectEvent) may return
      * <code>null</code>.
      */
-    public Date getDateReceived()
-    {
+    public Date getDateReceived() {
         return dateReceived;
     }
 
     /**
      * Sets the point in time this event was received from the asterisk server.
      */
-    public void setDateReceived(Date dateReceived)
-    {
+    public void setDateReceived(Date dateReceived) {
         this.dateReceived = dateReceived;
     }
 
@@ -212,8 +186,7 @@ public abstract class ManagerEvent extends EventObject
      *
      * @since 0.2
      */
-    public String getPrivilege()
-    {
+    public String getPrivilege() {
         return privilege;
     }
 
@@ -222,8 +195,7 @@ public abstract class ManagerEvent extends EventObject
      *
      * @since 0.2
      */
-    public void setPrivilege(String privilege)
-    {
+    public void setPrivilege(String privilege) {
         this.privilege = privilege;
     }
 
@@ -239,8 +211,7 @@ public abstract class ManagerEvent extends EventObject
      * @return the timestamp for this event.
      * @since 0.3
      */
-    public final Double getTimestamp()
-    {
+    public final Double getTimestamp() {
         return timestamp;
     }
 
@@ -250,8 +221,7 @@ public abstract class ManagerEvent extends EventObject
      * @param timestamp the timestamp to set.
      * @since 0.3
      */
-    public final void setTimestamp(Double timestamp)
-    {
+    public final void setTimestamp(Double timestamp) {
         this.timestamp = timestamp;
     }
 
@@ -261,12 +231,11 @@ public abstract class ManagerEvent extends EventObject
      * This property is only available when using to AstManProxy.
      *
      * @return the name of the Asterisk server from which this event has been
-     *         received or <code>null</code> when directly connected to an
-     *         Asterisk server instead of AstManProxy.
+     * received or <code>null</code> when directly connected to an
+     * Asterisk server instead of AstManProxy.
      * @since 1.0.0
      */
-    public final String getServer()
-    {
+    public final String getServer() {
         return server;
     }
 
@@ -275,21 +244,18 @@ public abstract class ManagerEvent extends EventObject
      * received.
      *
      * @param server the name of the Asterisk server from which this event has
-     *            been received.
+     *               been received.
      * @since 1.0.0
      */
-    public final void setServer(String server)
-    {
+    public final void setServer(String server) {
         this.server = server;
     }
 
-    public String getSystemName()
-    {
+    public String getSystemName() {
         return systemName;
     }
 
-    public void setSystemName(String systemName)
-    {
+    public void setSystemName(String systemName) {
         this.systemName = systemName;
     }
 
@@ -304,18 +270,16 @@ public abstract class ManagerEvent extends EventObject
      * This feature is availble in Asterisk since 1.6.0.
      *
      * @return the name of the file in that triggered this event or
-     *         <code>null</code> if debgging is turned off.
+     * <code>null</code> if debgging is turned off.
      * @see #getFunc()
      * @see #getLine()
      * @since 1.0.0
      */
-    public String getFile()
-    {
+    public String getFile() {
         return file;
     }
 
-    public void setFile(String file)
-    {
+    public void setFile(String file) {
         this.file = file;
     }
 
@@ -330,18 +294,16 @@ public abstract class ManagerEvent extends EventObject
      * This feature is availble in Asterisk since 1.6.0.
      *
      * @return the line number where this event was triggered or
-     *         <code>null</code> if debgging is turned off.
+     * <code>null</code> if debgging is turned off.
      * @see #getFile()
      * @see #getFunc()
      * @since 1.0.0
      */
-    public Integer getLine()
-    {
+    public Integer getLine() {
         return line;
     }
 
-    public void setLine(Integer line)
-    {
+    public void setLine(Integer line) {
         this.line = line;
     }
 
@@ -356,18 +318,16 @@ public abstract class ManagerEvent extends EventObject
      * This feature is availble in Asterisk since 1.6.0.
      *
      * @return the name of the C function that triggered this event or
-     *         <code>null</code> if debgging is turned off.
+     * <code>null</code> if debgging is turned off.
      * @see #getFile()
      * @see #getLine()
      * @since 1.0.0
      */
-    public String getFunc()
-    {
+    public String getFunc() {
         return func;
     }
 
-    public void setFunc(String func)
-    {
+    public void setFunc(String func) {
         this.func = func;
     }
 
@@ -382,24 +342,21 @@ public abstract class ManagerEvent extends EventObject
      * This feature is availble in Asterisk since 1.6.0.
      *
      * @return the sequence number of this event or <code>null</code> if
-     *         debgging is turned off.
+     * debgging is turned off.
      * @see #getFile()
      * @see #getLine()
      * @since 1.0.0
      */
-    public Integer getSequenceNumber()
-    {
+    public Integer getSequenceNumber() {
         return sequenceNumber;
     }
 
-    public void setSequenceNumber(Integer sequenceNumber)
-    {
+    public void setSequenceNumber(Integer sequenceNumber) {
         this.sequenceNumber = sequenceNumber;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         final List<String> ignoredProperties = Arrays.asList("file", "func", "line", "sequenceNumber", "datereceived",
                 "privilege", "source", "class");
         final StringBuilder sb = new StringBuilder(getClass().getName() + "[");
@@ -411,20 +368,16 @@ public abstract class ManagerEvent extends EventObject
         appendPropertyIfNotNull(sb, "privilege", getPrivilege());
 
         final Map<String, Method> getters = ReflectionUtil.getGetters(getClass());
-        for (Map.Entry<String, Method> entry : getters.entrySet())
-        {
+        for (Map.Entry<String, Method> entry : getters.entrySet()) {
             final String property = entry.getKey();
-            if (ignoredProperties.contains(property))
-            {
+            if (ignoredProperties.contains(property)) {
                 continue;
             }
 
-            try
-            {
+            try {
                 final Object value = entry.getValue().invoke(this);
                 appendProperty(sb, property, value);
-            }
-            catch (Exception e) // NOPMD
+            } catch (Exception e) // NOPMD
             {
                 // swallow
             }
@@ -435,23 +388,17 @@ public abstract class ManagerEvent extends EventObject
         return sb.toString();
     }
 
-    protected void appendPropertyIfNotNull(StringBuilder sb, String property, Object value)
-    {
-        if (value != null)
-        {
+    protected void appendPropertyIfNotNull(StringBuilder sb, String property, Object value) {
+        if (value != null) {
             appendProperty(sb, property, value);
         }
     }
 
-    private void appendProperty(StringBuilder sb, String property, Object value)
-    {
+    private void appendProperty(StringBuilder sb, String property, Object value) {
         sb.append(property).append("=");
-        if (value == null)
-        {
+        if (value == null) {
             sb.append("null");
-        }
-        else
-        {
+        } else {
             sb.append("'").append(value).append("'");
         }
         sb.append(",");

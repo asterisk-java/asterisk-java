@@ -25,8 +25,7 @@ package org.asteriskjava.manager.event;
  * @author srt
  * @version $Id$
  */
-public class PeerStatusEvent extends ManagerEvent
-{
+public class PeerStatusEvent extends ManagerEvent {
     /**
      * Serializable version identifier.
      */
@@ -50,8 +49,7 @@ public class PeerStatusEvent extends ManagerEvent
     /**
      * @param source
      */
-    public PeerStatusEvent(Object source)
-    {
+    public PeerStatusEvent(Object source) {
         super(source);
     }
 
@@ -63,8 +61,7 @@ public class PeerStatusEvent extends ManagerEvent
      * @return the type of channel that registers.
      * @since 1.0.0
      */
-    public String getChannelType()
-    {
+    public String getChannelType() {
         return channelType;
     }
 
@@ -74,8 +71,7 @@ public class PeerStatusEvent extends ManagerEvent
      * @param channelType the type of channel that registers
      * @since 1.0.0
      */
-    public void setChannelType(String channelType)
-    {
+    public void setChannelType(String channelType) {
         this.channelType = channelType;
     }
 
@@ -88,16 +84,14 @@ public class PeerStatusEvent extends ManagerEvent
      *
      * @return the peer's name including the channel type.
      */
-    public String getPeer()
-    {
+    public String getPeer() {
         return peer;
     }
 
     /**
      * Sets the name of the peer that registered.
      */
-    public void setPeer(String peer)
-    {
+    public void setPeer(String peer) {
         this.peer = peer;
     }
 
@@ -113,16 +107,14 @@ public class PeerStatusEvent extends ManagerEvent
      * <li>Rejected (IAX only)</li>
      * </ul>
      */
-    public String getPeerStatus()
-    {
+    public String getPeerStatus() {
         return peerStatus;
     }
 
     /**
      * Sets the registration state.
      */
-    public void setPeerStatus(String peerStatus)
-    {
+    public void setPeerStatus(String peerStatus) {
         this.peerStatus = peerStatus;
     }
 
@@ -134,16 +126,14 @@ public class PeerStatusEvent extends ManagerEvent
      *
      * @return the cause of a rejection or unregistration.
      */
-    public String getCause()
-    {
+    public String getCause() {
         return cause;
     }
 
     /**
      * Sets the cause of the rejection or unregistration.
      */
-    public void setCause(String cause)
-    {
+    public void setCause(String cause) {
         this.cause = cause;
     }
 
@@ -152,13 +142,11 @@ public class PeerStatusEvent extends ManagerEvent
      * equals "Unreachable" it returns how long the last response took (in ms) for IAX peers or -1
      * for SIP peers.
      */
-    public Integer getTime()
-    {
+    public Integer getTime() {
         return time;
     }
 
-    public void setTime(Integer time)
-    {
+    public void setTime(Integer time) {
         this.time = time;
     }
 
@@ -169,13 +157,11 @@ public class PeerStatusEvent extends ManagerEvent
      * @return the IP address of the peer that registered or <code>null</code> if not available.
      * @since 1.0.0
      */
-    public String getAddress()
-    {
+    public String getAddress() {
         return address;
     }
 
-    public void setAddress(String address)
-    {
+    public void setAddress(String address) {
         this.address = address;
     }
 
@@ -186,13 +172,11 @@ public class PeerStatusEvent extends ManagerEvent
      * @return the port of the peer that registered or <code>null</code> if not available.
      * @since 1.0.0
      */
-    public Integer getPort()
-    {
+    public Integer getPort() {
         return port;
     }
 
-    public void setPort(Integer port)
-    {
+    public void setPort(Integer port) {
         this.port = port;
     }
 }

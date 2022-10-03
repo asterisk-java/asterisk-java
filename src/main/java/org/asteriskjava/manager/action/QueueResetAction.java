@@ -24,8 +24,7 @@ package org.asteriskjava.manager.action;
  * @author Sebastian
  * @since 1.0.0
  */
-public class QueueResetAction extends AbstractManagerAction
-{
+public class QueueResetAction extends AbstractManagerAction {
     private static final long serialVersionUID = 1L;
 
     private String queue;
@@ -33,8 +32,7 @@ public class QueueResetAction extends AbstractManagerAction
     /**
      * Creates a new QueueResetAction that resets statistical data of all queues.
      */
-    public QueueResetAction()
-    {
+    public QueueResetAction() {
     }
 
     /**
@@ -42,14 +40,12 @@ public class QueueResetAction extends AbstractManagerAction
      *
      * @param queue the name of the queue to reset.
      */
-    public QueueResetAction(String queue)
-    {
+    public QueueResetAction(String queue) {
         this.queue = queue;
     }
 
     @Override
-    public String getAction()
-    {
+    public String getAction() {
         return "QueueReset";
     }
 
@@ -58,8 +54,7 @@ public class QueueResetAction extends AbstractManagerAction
      *
      * @return the name of the queue to reset or <code>null</code> for all queues.
      */
-    public String getQueue()
-    {
+    public String getQueue() {
         return queue;
     }
 
@@ -68,8 +63,7 @@ public class QueueResetAction extends AbstractManagerAction
      *
      * @param queue the name of the queue to reset or <code>null</code> for all queues.
      */
-    public void setQueue(String queue)
-    {
+    public void setQueue(String queue) {
         this.queue = queue;
     }
 }

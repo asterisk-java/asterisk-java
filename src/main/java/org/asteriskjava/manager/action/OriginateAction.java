@@ -16,18 +16,12 @@
  */
 package org.asteriskjava.manager.action;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.StringTokenizer;
-
 import org.asteriskjava.manager.event.OriginateResponseEvent;
 import org.asteriskjava.manager.event.ResponseEvent;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
+
+import java.util.*;
 
 /**
  * The OriginateAction generates an outgoing call to the extension in the given
@@ -52,8 +46,7 @@ import org.asteriskjava.util.LogFactory;
  * @version $Id$
  * @see org.asteriskjava.manager.event.OriginateResponseEvent
  */
-public class OriginateAction extends AbstractManagerAction implements EventGeneratingAction
-{
+public class OriginateAction extends AbstractManagerAction implements EventGeneratingAction {
 
     private final Log logger = LogFactory.getLog(getClass());
 
@@ -90,8 +83,7 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
      * @return the name of this action.
      */
     @Override
-    public String getAction()
-    {
+    public String getAction() {
         return "Originate";
     }
 
@@ -100,8 +92,7 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
      *
      * @return the account code to use for the originated call.
      */
-    public String getAccount()
-    {
+    public String getAccount() {
         return account;
     }
 
@@ -113,16 +104,14 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
      *
      * @param account the account code to use for the originated call.
      */
-    public void setAccount(String account)
-    {
+    public void setAccount(String account) {
         this.account = account;
     }
 
     /**
      * Returns the caller id to set on the outgoing channel.
      */
-    public String getCallerId()
-    {
+    public String getCallerId() {
         return callerId;
     }
 
@@ -134,8 +123,7 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
      *
      * @param callerId the caller id to set on the outgoing channel.
      */
-    public void setCallerId(String callerId)
-    {
+    public void setCallerId(String callerId) {
         this.callerId = callerId;
     }
 
@@ -147,8 +135,7 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
      * @return the calling presentation for the outgoing channel.
      * @see #setCallingPres(Integer)
      */
-    public Integer getCallingPres()
-    {
+    public Integer getCallingPres() {
         return callingPres;
     }
 
@@ -167,7 +154,7 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
      * <p>
      * <br>
      * Presentation indicator (Bits 6 and 7):
-     * 
+     *
      * <pre>
      * Bits Meaning
      *  7 6
@@ -176,9 +163,9 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
      *  1 0 Number not available due to interworking
      *  1 1 Reserved
      * </pre>
-     * 
+     * <p>
      * Screening indicator (Bits 1 and 2):
-     * 
+     *
      * <pre>
      * Bits Meaning
      *  2 1
@@ -187,30 +174,28 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
      *  1 0 User-provided, verified and failed
      *  1 1 Network provided
      * </pre>
-     * 
+     * <p>
      * Examples for some general settings:
-     * 
+     *
      * <pre>
      * Presentation Allowed, Network Provided: 3 (00000011)
      * Presentation Restricted, User-provided, not screened: 32 (00100000)
      * Presentation Restricted, User-provided, verified, and passed: 33 (00100001)
      * Presentation Restricted, Network Provided: 35 (00100011)
      * </pre>
-     * 
+     * <p>
      * This property is only available on BRIstuffed Asterisk servers.
      *
      * @param callingPres the calling presentation for the outgoing channel.
      */
-    public void setCallingPres(Integer callingPres)
-    {
+    public void setCallingPres(Integer callingPres) {
         this.callingPres = callingPres;
     }
 
     /**
      * Returns the name of the channel to connect to the outgoing call.
      */
-    public String getChannel()
-    {
+    public String getChannel() {
         return channel;
     }
 
@@ -219,16 +204,14 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
      * <p>
      * This property is mandatory.
      */
-    public void setChannel(String channel)
-    {
+    public void setChannel(String channel) {
         this.channel = channel;
     }
 
     /**
      * Returns the name of the context of the extension to connect to.
      */
-    public String getContext()
-    {
+    public String getContext() {
         return context;
     }
 
@@ -238,16 +221,14 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
      * If you set the context you also have to set the exten and priority
      * properties.
      */
-    public void setContext(String context)
-    {
+    public void setContext(String context) {
         this.context = context;
     }
 
     /**
      * Returns the extension to connect to.
      */
-    public String getExten()
-    {
+    public String getExten() {
         return exten;
     }
 
@@ -257,16 +238,14 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
      * If you set the extension you also have to set the context and priority
      * properties.
      */
-    public void setExten(String exten)
-    {
+    public void setExten(String exten) {
         this.exten = exten;
     }
 
     /**
      * Returns the priority of the extension to connect to.
      */
-    public Integer getPriority()
-    {
+    public Integer getPriority() {
         return priority;
     }
 
@@ -274,48 +253,42 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
      * Sets the priority of the extension to connect to. If you set the priority
      * you also have to set the context and exten properties.
      */
-    public void setPriority(Integer priority)
-    {
+    public void setPriority(Integer priority) {
         this.priority = priority;
     }
 
     /**
      * Returns the name of the application to connect to.
      */
-    public String getApplication()
-    {
+    public String getApplication() {
         return application;
     }
 
     /**
      * Sets the name of the application to connect to.
      */
-    public void setApplication(String application)
-    {
+    public void setApplication(String application) {
         this.application = application;
     }
 
     /**
      * Returns the parameters to pass to the application.
      */
-    public String getData()
-    {
+    public String getData() {
         return data;
     }
 
     /**
      * Sets the parameters to pass to the application.
      */
-    public void setData(String data)
-    {
+    public void setData(String data) {
         this.data = data;
     }
 
     /**
      * Returns the timeout for the origination.
      */
-    public Long getTimeout()
-    {
+    public Long getTimeout() {
         return timeout;
     }
 
@@ -331,23 +304,17 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
      * @deprecated use {@link #setTimeout(Long)} instead.
      */
     @Deprecated
-    public void setTimeout(Integer timeout)
-    {
-        if (timeout != null)
-        {
-            if (timeout < 1000)
-            {
+    public void setTimeout(Integer timeout) {
+        if (timeout != null) {
+            if (timeout < 1000) {
                 logger.error("A timeout of 1000 will cause the originate to almost cretainly fail!");
             }
-            if (timeout < 10000)
-            {
+            if (timeout < 10000) {
                 logger.warn(
                         "A timeout of less than 10000 will cause the originate to fail if not answered within 10 seconds!");
             }
             this.timeout = timeout.longValue();
-        }
-        else
-        {
+        } else {
             this.timeout = null;
         }
     }
@@ -362,16 +329,12 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
      *
      * @param timeout the timeout in milliseconds
      */
-    public void setTimeout(Long timeout)
-    {
-        if (timeout != null)
-        {
-            if (timeout < 1000)
-            {
+    public void setTimeout(Long timeout) {
+        if (timeout != null) {
+            if (timeout < 1000) {
                 logger.error("A timeout of 1000 will cause the originate to almost cretainly fail!");
             }
-            if (timeout < 10000)
-            {
+            if (timeout < 10000) {
                 logger.warn(
                         "A timeout of less than 100000 will cause the originate to fail if not answered within 10 seconds!");
             }
@@ -391,29 +354,23 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
      * @deprecated use {@link #setVariables(Map)} instead.
      */
     @Deprecated
-    public void setVariable(String variable)
-    {
+    public void setVariable(String variable) {
         final StringTokenizer st;
 
-        if (variable == null)
-        {
+        if (variable == null) {
             this.variables = null;
             return;
         }
 
         st = new StringTokenizer(variable, "|");
         variables = new LinkedHashMap<>();
-        while (st.hasMoreTokens())
-        {
+        while (st.hasMoreTokens()) {
             String[] keyValue;
 
             keyValue = st.nextToken().split("=", 2);
-            if (keyValue.length < 2)
-            {
+            if (keyValue.length < 2) {
                 variables.put(keyValue[0], null);
-            }
-            else
-            {
+            } else {
                 variables.put(keyValue[0], keyValue[1]);
             }
         }
@@ -422,14 +379,12 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
     /**
      * Sets an variable on the originated call.
      *
-     * @param name the name of the variable to set.
+     * @param name  the name of the variable to set.
      * @param value the value of the variable to set.
      * @since 0.3
      */
-    public void setVariable(String name, String value)
-    {
-        if (variables == null)
-        {
+    public void setVariable(String name, String value) {
+        if (variables == null) {
             variables = new LinkedHashMap<>();
         }
 
@@ -440,11 +395,10 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
      * Returns the variables to set on the originated call.
      *
      * @return a Map containing the variable names as key and their values as
-     *         value.
+     * value.
      * @since 0.2
      */
-    public Map<String, String> getVariables()
-    {
+    public Map<String, String> getVariables() {
         return variables;
     }
 
@@ -452,17 +406,13 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
      * Sets the variables to set on the originated call.
      *
      * @param variables a Map containing the variable names as key and their
-     *            values as value.
+     *                  values as value.
      * @since 0.2
      */
-    public void setVariables(Map<String, String> variables)
-    {
-        if (this.variables != null)
-        {
+    public void setVariables(Map<String, String> variables) {
+        if (this.variables != null) {
             this.variables.putAll(variables);
-        }
-        else
-        {
+        } else {
             this.variables = variables;
         }
     }
@@ -470,8 +420,7 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
     /**
      * Returns true if this is a fast origination.
      */
-    public Boolean getAsync()
-    {
+    public Boolean getAsync() {
         return async;
     }
 
@@ -479,24 +428,21 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
      * Set to true for fast origination. Only with fast origination Asterisk
      * will send OriginateSuccess- and OriginateFailureEvents.
      */
-    public void setAsync(Boolean async)
-    {
+    public void setAsync(Boolean async) {
         this.async = async;
     }
 
     /**
      * @param earlyMedia the earlyMedia to set
      */
-    public void setEarlyMedia(Boolean earlyMedia)
-    {
+    public void setEarlyMedia(Boolean earlyMedia) {
         this.earlyMedia = earlyMedia;
     }
 
     /**
      * @return the earlyMedia
      */
-    public Boolean getEarlyMedia()
-    {
+    public Boolean getEarlyMedia() {
         return earlyMedia;
     }
 
@@ -506,8 +452,7 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
      * @return the codecs to use for the call.
      * @since 1.0.0
      */
-    public String getCodecs()
-    {
+    public String getCodecs() {
         return codecs;
     }
 
@@ -519,8 +464,7 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
      * @param codecs comma separated list of codecs to use for the call.
      * @since 1.0.0
      */
-    public void setCodecs(String codecs)
-    {
+    public void setCodecs(String codecs) {
         this.codecs = codecs;
     }
 
@@ -532,62 +476,47 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
      * @param codecs list of codecs to use for the call.
      * @since 1.0.0
      */
-    public void setCodecs(List<String> codecs)
-    {
-        if (codecs == null || codecs.isEmpty())
-        {
+    public void setCodecs(List<String> codecs) {
+        if (codecs == null || codecs.isEmpty()) {
             this.codecs = null;
             return;
         }
 
         Iterator<String> iter = codecs.iterator();
         StringBuilder buffer = new StringBuilder(iter.next());
-        while (iter.hasNext())
-        {
+        while (iter.hasNext()) {
             buffer.append(",").append(iter.next());
         }
         this.codecs = buffer.toString();
     }
 
-    public Class< ? extends ResponseEvent> getActionCompleteEventClass()
-    {
+    public Class<? extends ResponseEvent> getActionCompleteEventClass() {
         return OriginateResponseEvent.class;
     }
 
-    public void addSipHeader(VariableInheritance inheritance, String header)
-    {
-        if (!preventDuplicateSipHeaders.contains(header))
-        {
+    public void addSipHeader(VariableInheritance inheritance, String header) {
+        if (!preventDuplicateSipHeaders.contains(header)) {
             setVariable(inheritance.getPrefix() + "SIPADDHEADER" + (headerCounter++), header);
             preventDuplicateSipHeaders.add(header);
-            if (headerCounter > 50)
-            {
+            if (headerCounter > 50) {
                 logger.warn("I think only 50 headers are allowed by asterisk?");
             }
-        }
-        else
-        {
+        } else {
             logger.error("Already added the sip header " + header);
         }
     }
 
-    public void addPjSipHeader(VariableInheritance inheritance, String header)
-    {
-        if (header != null)
-        {
+    public void addPjSipHeader(VariableInheritance inheritance, String header) {
+        if (header != null) {
             String[] parts = header.split(":");
-            if (parts.length == 2)
-            {
+            if (parts.length == 2) {
                 String varName = "PJSIP_HEADER" + "(add," + parts[0] + ")";
                 String varValue = parts[1];
 
-                if (!preventDuplicateSipHeaders.contains(header))
-                {
+                if (!preventDuplicateSipHeaders.contains(header)) {
                     setVariable(varName, varValue);
                     preventDuplicateSipHeaders.add(header);
-                }
-                else
-                {
+                } else {
                     logger.error("Already added the sip header " + header);
                 }
             }
@@ -596,26 +525,22 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
 
     /**
      * this will be the channels uniqueID
-     * 
+     *
      * @param channelId
      */
-    public void setChannelId(String channelId)
-    {
+    public void setChannelId(String channelId) {
         this.channelId = channelId;
     }
 
-    public String getChannelId()
-    {
+    public String getChannelId() {
         return channelId;
     }
 
-    public void setOtherChannelId(String otherChannelId)
-    {
+    public void setOtherChannelId(String otherChannelId) {
         this.otherChannelId = otherChannelId;
     }
 
-    public String getOtherChannelId()
-    {
+    public String getOtherChannelId() {
         return otherChannelId;
     }
 

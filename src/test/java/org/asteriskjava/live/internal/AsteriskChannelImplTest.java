@@ -1,23 +1,21 @@
 package org.asteriskjava.live.internal;
 
-import static org.junit.Assert.assertEquals;
+import org.asteriskjava.live.ChannelState;
+import org.asteriskjava.util.DateUtil;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import org.asteriskjava.live.ChannelState;
-import org.asteriskjava.util.DateUtil;
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class AsteriskChannelImplTest
-{
+class AsteriskChannelImplTest {
     private AsteriskChannelImpl channel;
     private int numberOfChanges;
 
-    @Before
-    public void setUp()
-    {
+    @BeforeEach
+    void setUp() {
         AsteriskServerImpl server = new AsteriskServerImpl();
         channel = new AsteriskChannelImpl(server, "SIP/1234", "0123456789.123", DateUtil.getDate());
         channel.stateChanged(DateUtil.getDate(), ChannelState.DOWN);
@@ -25,21 +23,18 @@ public class AsteriskChannelImplTest
     }
 
     @Test
-    public void testStateChange()
-    {
-        channel.addPropertyChangeListener(new PropertyChangeListener()
-        {
-            public void propertyChange(PropertyChangeEvent evt)
-            {
-                assertEquals("wrong propertyName", "state", evt.getPropertyName());
-                assertEquals("wrong oldValue", ChannelState.DOWN, evt.getOldValue());
-                assertEquals("wrong newValue", ChannelState.DIALING, evt.getNewValue());
-                assertEquals("wrong source", channel, evt.getSource());
+    void testStateChange() {
+        channel.addPropertyChangeListener(new PropertyChangeListener() {
+            public void propertyChange(PropertyChangeEvent evt) {
+                assertEquals("state", evt.getPropertyName(), "wrong propertyName");
+                assertEquals(ChannelState.DOWN, evt.getOldValue(), "wrong oldValue");
+                assertEquals(ChannelState.DIALING, evt.getNewValue(), "wrong newValue");
+                assertEquals(channel, evt.getSource(), "wrong source");
                 numberOfChanges++;
             }
         });
 
         channel.stateChanged(DateUtil.getDate(), ChannelState.DIALING);
-        assertEquals("wrong number of propagated changes", 1, numberOfChanges);
+        assertEquals(1, numberOfChanges, "wrong number of propagated changes");
     }
 }

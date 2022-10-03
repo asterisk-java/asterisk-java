@@ -19,13 +19,12 @@ package org.asteriskjava.manager.event;
 /**
  * A ZapShowChannelsEvent is triggered in response to a ZapShowChannelsAction
  * and shows the state of a zap channel.
- * 
- * @see org.asteriskjava.manager.action.ZapShowChannelsAction
+ *
  * @author srt
  * @version $Id$
+ * @see org.asteriskjava.manager.action.ZapShowChannelsAction
  */
-public class ZapShowChannelsEvent extends ResponseEvent
-{
+public class ZapShowChannelsEvent extends ResponseEvent {
     /**
      * Serial version identifier
      */
@@ -39,24 +38,21 @@ public class ZapShowChannelsEvent extends ResponseEvent
     /**
      * @param source
      */
-    public ZapShowChannelsEvent(Object source)
-    {
+    public ZapShowChannelsEvent(Object source) {
         super(source);
     }
 
     /**
      * Returns the number of this zap channel.
      */
-    public Integer getChannel()
-    {
+    public Integer getChannel() {
         return channel;
     }
 
     /**
      * Sets the number of this zap channel.
      */
-    public void setChannel(Integer channel)
-    {
+    public void setChannel(Integer channel) {
         this.channel = channel;
     }
 
@@ -90,40 +86,36 @@ public class ZapShowChannelsEvent extends ResponseEvent
      * <li>Pseudo Signalling</li>
      * </ul>
      */
-    public String getSignalling()
-    {
+    public String getSignalling() {
         return signalling;
     }
 
     /**
      * Sets the signalling of this zap channel.
      */
-    public void setSignalling(String signalling)
-    {
+    public void setSignalling(String signalling) {
         this.signalling = signalling;
     }
 
     /**
      * Returns whether dnd (do not disturb) is enabled for this zap channel.
-     * 
+     *
      * @return Boolean.TRUE if dnd is enabled, Boolean.FALSE if it is disabled,
-     *         <code>null</code> if not set.
+     * <code>null</code> if not set.
      * @since 0.3
      */
-    public Boolean getDnd()
-    {
+    public Boolean getDnd() {
         return dnd;
     }
 
     /**
      * Sets whether dnd (do not disturb) is enabled for this zap channel.
-     * 
+     *
      * @param dnd Boolean.TRUE if dnd is enabled, Boolean.FALSE if it is
      *            disabled.
      * @since 0.3
      */
-    public void setDnd(Boolean dnd)
-    {
+    public void setDnd(Boolean dnd) {
         this.dnd = dnd;
     }
 
@@ -141,16 +133,14 @@ public class ZapShowChannelsEvent extends ResponseEvent
      * <li>No Alarm</li>
      * </ul>
      */
-    public String getAlarm()
-    {
+    public String getAlarm() {
         return alarm;
     }
 
     /**
      * Sets the alarm state of this zap channel.
      */
-    public void setAlarm(String alarm)
-    {
+    public void setAlarm(String alarm) {
         this.alarm = alarm;
     }
 }

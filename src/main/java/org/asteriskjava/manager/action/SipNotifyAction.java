@@ -13,8 +13,7 @@ import java.util.Map;
  * @version $Id$
  * @since 1.0.0
  */
-public class SipNotifyAction extends AbstractManagerAction
-{
+public class SipNotifyAction extends AbstractManagerAction {
     /**
      * Serializable version identifier.
      */
@@ -26,8 +25,7 @@ public class SipNotifyAction extends AbstractManagerAction
     /**
      * Creates a new SipNotifyAction.
      */
-    public SipNotifyAction()
-    {
+    public SipNotifyAction() {
         super();
     }
 
@@ -36,8 +34,7 @@ public class SipNotifyAction extends AbstractManagerAction
      *
      * @param channel the peer to send the notify to either "SIP/peer" or just "peer".
      */
-    public SipNotifyAction(String channel)
-    {
+    public SipNotifyAction(String channel) {
         super();
         this.channel = channel;
     }
@@ -46,8 +43,7 @@ public class SipNotifyAction extends AbstractManagerAction
      * Returns the name of this action, i.e. "SipNotify".
      */
     @Override
-    public String getAction()
-    {
+    public String getAction() {
         return "SipNotify";
     }
 
@@ -56,8 +52,7 @@ public class SipNotifyAction extends AbstractManagerAction
      *
      * @param channel peer to receive the notify to either "SIP/peer" or just "peer".
      */
-    public void setChannel(String channel)
-    {
+    public void setChannel(String channel) {
         this.channel = channel;
     }
 
@@ -66,8 +61,7 @@ public class SipNotifyAction extends AbstractManagerAction
      *
      * @return peer
      */
-    public String getChannel()
-    {
+    public String getChannel() {
         return channel;
     }
 
@@ -75,11 +69,10 @@ public class SipNotifyAction extends AbstractManagerAction
      * Returns the variables to set on the originated call.
      *
      * @return a Map containing the variable names as key and their
-     *         values as value.
+     * values as value.
      * @since 1.0.0
      */
-    public Map<String, String> getVariables()
-    {
+    public Map<String, String> getVariables() {
         return variables;
     }
 
@@ -90,10 +83,8 @@ public class SipNotifyAction extends AbstractManagerAction
      * @param value the value of the variable to set.
      * @since 1.0.0
      */
-    public void setVariable(String name, String value)
-    {
-        if (variables == null)
-        {
+    public void setVariable(String name, String value) {
+        if (variables == null) {
             variables = new LinkedHashMap<>();
         }
 
@@ -107,8 +98,7 @@ public class SipNotifyAction extends AbstractManagerAction
      *                  values as value.
      * @since 1.0.0
      */
-    public void setVariables(Map<String, String> variables)
-    {
+    public void setVariables(Map<String, String> variables) {
         this.variables = variables;
     }
 

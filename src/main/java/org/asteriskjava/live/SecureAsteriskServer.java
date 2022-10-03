@@ -11,8 +11,7 @@ import org.asteriskjava.manager.ManagerConnection;
  * @version $Id$
  * @see org.asteriskjava.live.AsteriskServer
  */
-public class SecureAsteriskServer extends DefaultAsteriskServer
-{
+public class SecureAsteriskServer extends DefaultAsteriskServer {
     /**
      * Creates a new instance and a new SSL secured {@link ManagerConnection} with the given
      * connection data.
@@ -22,14 +21,12 @@ public class SecureAsteriskServer extends DefaultAsteriskServer
      * @param username the username to use for login
      * @param password the password to use for login
      */
-    public SecureAsteriskServer(String hostname, int port, String username, String password)
-    {
+    public SecureAsteriskServer(String hostname, int port, String username, String password) {
         super(hostname, port, username, password);
     }
 
     @Override
-    protected DefaultManagerConnection createManagerConnection(String hostname, int port, String username, String password)
-    {
+    protected DefaultManagerConnection createManagerConnection(String hostname, int port, String username, String password) {
         DefaultManagerConnection dmc;
         dmc = super.createManagerConnection(hostname, port, username, password);
         dmc.setSsl(true);

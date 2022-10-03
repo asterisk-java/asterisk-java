@@ -32,8 +32,7 @@ import org.asteriskjava.manager.event.ResponseEvent;
  * @see org.asteriskjava.manager.event.PeerlistCompleteEvent
  * @since 1.0.0
  */
-public class IaxPeerListAction extends AbstractManagerAction implements EventGeneratingAction
-{
+public class IaxPeerListAction extends AbstractManagerAction implements EventGeneratingAction {
     /**
      * Serial version identifier.
      */
@@ -42,19 +41,16 @@ public class IaxPeerListAction extends AbstractManagerAction implements EventGen
     /**
      * Creates a new IaxPeersAction.
      */
-    public IaxPeerListAction()
-    {
+    public IaxPeerListAction() {
 
     }
 
     @Override
-    public String getAction()
-    {
+    public String getAction() {
         return "IAXpeerlist";
     }
 
-    public Class<? extends ResponseEvent> getActionCompleteEventClass()
-    {
+    public Class<? extends ResponseEvent> getActionCompleteEventClass() {
         return PeerlistCompleteEvent.class;
     }
 }

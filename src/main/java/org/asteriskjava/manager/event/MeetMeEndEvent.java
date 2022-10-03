@@ -25,16 +25,14 @@ package org.asteriskjava.manager.event;
  * @version $Id$
  * @since 1.0.0
  */
-public class MeetMeEndEvent extends ManagerEvent
-{
+public class MeetMeEndEvent extends ManagerEvent {
     private static final long serialVersionUID = 510266716726148586L;
     private String meetMe;
 
     /**
      * @param source
      */
-    public MeetMeEndEvent(Object source)
-    {
+    public MeetMeEndEvent(Object source) {
         super(source);
     }
 
@@ -43,13 +41,11 @@ public class MeetMeEndEvent extends ManagerEvent
      *
      * @return the conference number.
      */
-    public String getMeetMe()
-    {
+    public String getMeetMe() {
         return meetMe;
     }
 
-    public void setMeetMe(String meetMe)
-    {
+    public void setMeetMe(String meetMe) {
         this.meetMe = meetMe;
     }
 }

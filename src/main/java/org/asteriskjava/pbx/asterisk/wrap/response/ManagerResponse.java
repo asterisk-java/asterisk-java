@@ -1,93 +1,81 @@
 package org.asteriskjava.pbx.asterisk.wrap.response;
 
+import org.asteriskjava.manager.response.ManagerError;
+
 import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
 
-import org.asteriskjava.manager.response.ManagerError;
+public class ManagerResponse {
 
-public class ManagerResponse
-{
+    private Date _dateReceived;
+    private String _actionId;
 
-	private Date _dateReceived;
-	private String _actionId;
+    /**
+     * The server from which this response has been received (only used with
+     * AstManProxy).
+     */
+    final private String _server;
+    final private String _response;
+    final private String _eventList;
+    final private String message;
+    final private String _uniqueId;
+    final private Map<String, Object> _attributes;
 
-	/**
-	 * The server from which this response has been received (only used with
-	 * AstManProxy).
-	 */
-	final private String _server;
-	final private String _response;
-	final private String _eventList;
-	final private String message;
-	final private String _uniqueId;
-	final private Map<String, Object> _attributes;
+    public ManagerResponse(org.asteriskjava.manager.response.ManagerResponse response) {
+        this._dateReceived = response.getDateReceived();
+        this._actionId = response.getActionId();
+        this._server = response.getServer();
+        this._response = response.getResponse();
+        this._eventList = response.getEventList();
+        this._uniqueId = response.getUniqueId();
+        this._attributes = response.getAttributes();
 
-	public ManagerResponse(org.asteriskjava.manager.response.ManagerResponse response)
-	{
-		this._dateReceived = response.getDateReceived();
-		this._actionId = response.getActionId();
-		this._server = response.getServer();
-		this._response = response.getResponse();
-		this._eventList = response.getEventList();
-		this._uniqueId = response.getUniqueId();
-		this._attributes = response.getAttributes();
+        if (response instanceof ManagerError) {
+            this.message = response.getOutput();
+        } else {
+            this.message = response.getMessage();
+        }
+    }
 
-		if (response instanceof ManagerError) {
-			this.message = response.getOutput();
-		} else {
-			this.message = response.getMessage();
-		}
-	}
+    public Date getDateReceived() {
+        return this._dateReceived;
+    }
 
-	public Date getDateReceived()
-	{
-		return this._dateReceived;
-	}
+    public String getActionId() {
+        return this._actionId;
+    }
 
-	public String getActionId()
-	{
-		return this._actionId;
-	}
+    public String getServer() {
+        return this._server;
+    }
 
-	public String getServer()
-	{
-		return this._server;
-	}
+    public String getResponse() {
+        return this._response;
+    }
 
-	public String getResponse()
-	{
-		return this._response;
-	}
+    public String getEventList() {
+        return this._eventList;
+    }
 
-	public String getEventList()
-	{
-		return this._eventList;
-	}
+    public String getMessage() {
+        return this.message;
+    }
 
-	public String getMessage()
-	{
-		return this.message;
-	}
+    public String getUniqueId() {
+        return this._uniqueId;
+    }
 
-	public String getUniqueId()
-	{
-		return this._uniqueId;
-	}
+    public Map<String, Object> getAttributes() {
+        return this._attributes;
+    }
 
-	public Map<String, Object> getAttributes()
-	{
-		return this._attributes;
-	}
+    public String getAttribute(String key) {
+        return (String) this._attributes.get(key.toLowerCase(Locale.ENGLISH));
+    }
 
-	public String getAttribute(String key)
-	{
-		return (String) this._attributes.get(key.toLowerCase(Locale.ENGLISH));
-	}
-
-	public boolean isSuccess()
-	{
-		return this._response.compareToIgnoreCase("Success") == 0; //$NON-NLS-1$
-	}
+    public boolean isSuccess() {
+        return this._response.compareToIgnoreCase("Success") == 0; //$NON-NLS-1$
+    }
 
 }

@@ -16,14 +16,9 @@
  */
 package org.asteriskjava.fastagi;
 
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
-
 import org.asteriskjava.lock.Locker.LockCloser;
+
+import java.util.*;
 
 /**
  * A MappingStrategy that is configured via a resource bundle.
@@ -32,24 +27,23 @@ import org.asteriskjava.lock.Locker.LockCloser;
  * qualified class name of the corresponding AgiScript as value.
  * <p>
  * Example:
- * 
+ *
  * <pre>
  * leastcostdial.agi = com.example.fastagi.LeastCostDialAgiScript
  * hello.agi = com.example.fastagi.HelloAgiScript
  * </pre>
- * 
+ * <p>
  * LeastCostDialAgiScript and HelloAgiScript must both implement the AgiScript
  * interface and have a default constructor with no parameters.
  * <p>
  * The resource bundle (properties) file is called
  * <code>fastagi-mapping.properties</code> by default and must be available on
  * the classpath.
- * 
+ *
  * @author srt
  * @version $Id$
  */
-public class ResourceBundleMappingStrategy extends AbstractMappingStrategy
-{
+public class ResourceBundleMappingStrategy extends AbstractMappingStrategy {
     private static final String DEFAULT_RESOURCE_BUNDLE_NAME = "fastagi-mapping";
     private String resourceBundleName;
     private Map<String, String> mappings;
@@ -59,32 +53,29 @@ public class ResourceBundleMappingStrategy extends AbstractMappingStrategy
     /**
      * Creates a new ResourceBundleMappingStrategy using shared instances..
      */
-    public ResourceBundleMappingStrategy()
-    {
+    public ResourceBundleMappingStrategy() {
         this(DEFAULT_RESOURCE_BUNDLE_NAME);
     }
 
     /**
      * Creates a new ResourceBundleMappingStrategy with the given basename of
      * the resource bundle to use.
-     * 
+     *
      * @param resourceBundleName basename of the resource bundle to use
      */
-    public ResourceBundleMappingStrategy(String resourceBundleName)
-    {
+    public ResourceBundleMappingStrategy(String resourceBundleName) {
         this(resourceBundleName, true);
     }
 
     /**
      * Creates a new ResourceBundleMappingStrategy indicating whether to use
      * shared instances or not.
-     * 
+     *
      * @param shareInstances <code>true</code> to use shared instances,
-     *            <code>false</code> to create a new instance for each request.
+     *                       <code>false</code> to create a new instance for each request.
      * @since 0.3
      */
-    public ResourceBundleMappingStrategy(boolean shareInstances)
-    {
+    public ResourceBundleMappingStrategy(boolean shareInstances) {
         this(DEFAULT_RESOURCE_BUNDLE_NAME, shareInstances);
     }
 
@@ -92,14 +83,13 @@ public class ResourceBundleMappingStrategy extends AbstractMappingStrategy
      * Creates a new ResourceBundleMappingStrategy with the given basename of
      * the resource bundle to use and indicating whether to use shared instances
      * or not.
-     * 
+     *
      * @param resourceBundleName basename of the resource bundle to use
-     * @param shareInstances <code>true</code> to use shared instances,
-     *            <code>false</code> to create a new instance for each request.
+     * @param shareInstances     <code>true</code> to use shared instances,
+     *                           <code>false</code> to create a new instance for each request.
      * @since 0.3
      */
-    public ResourceBundleMappingStrategy(String resourceBundleName, boolean shareInstances)
-    {
+    public ResourceBundleMappingStrategy(String resourceBundleName, boolean shareInstances) {
         super();
         this.resourceBundleName = resourceBundleName;
         this.shareInstances = shareInstances;
@@ -109,14 +99,12 @@ public class ResourceBundleMappingStrategy extends AbstractMappingStrategy
      * Sets the basename of the resource bundle to use.
      * <p>
      * Default is "fastagi-mapping".
-     * 
+     *
      * @param resourceBundleName basename of the resource bundle to use
      */
-    public void setResourceBundleName(String resourceBundleName)
-    {
+    public void setResourceBundleName(String resourceBundleName) {
         this.resourceBundleName = resourceBundleName;
-        try (LockCloser closer = this.withLock())
-        {
+        try (LockCloser closer = this.withLock()) {
             this.mappings = null;
             this.instances = null;
         }
@@ -128,41 +116,34 @@ public class ResourceBundleMappingStrategy extends AbstractMappingStrategy
      * to <code>false</code> a new instance is created for each request.
      * <p>
      * Default is <code>true</code>.
-     * 
+     *
      * @param shareInstances <code>true</code> to use shared instances,
-     *            <code>false</code> to create a new instance for each request.
+     *                       <code>false</code> to create a new instance for each request.
      * @since 0.3
      */
-    public synchronized void setShareInstances(boolean shareInstances)
-    {
+    public synchronized void setShareInstances(boolean shareInstances) {
         this.shareInstances = shareInstances;
     }
 
-    private synchronized void loadResourceBundle()
-    {
+    private synchronized void loadResourceBundle() {
         ResourceBundle resourceBundle;
-        Enumeration< ? > keys;
+        Enumeration<?> keys;
 
         mappings = new HashMap<>();
-        if (shareInstances)
-        {
+        if (shareInstances) {
             instances = new HashMap<>();
         }
 
-        try
-        {
+        try {
             resourceBundle = ResourceBundle.getBundle(resourceBundleName, Locale.getDefault(), getClassLoader());
-        }
-        catch (MissingResourceException e)
-        {
+        } catch (MissingResourceException e) {
             logger.info("Resource bundle '" + resourceBundleName + "' not found.");
             return;
         }
 
         keys = resourceBundle.getKeys();
 
-        while (keys.hasMoreElements())
-        {
+        while (keys.hasMoreElements()) {
             String scriptName;
             String className;
             AgiScript agiScript;
@@ -172,11 +153,9 @@ public class ResourceBundleMappingStrategy extends AbstractMappingStrategy
 
             mappings.put(scriptName, className);
 
-            if (shareInstances)
-            {
+            if (shareInstances) {
                 agiScript = createAgiScriptInstance(className);
-                if (agiScript == null)
-                {
+                if (agiScript == null) {
                     continue;
                 }
                 instances.put(scriptName, agiScript);
@@ -186,15 +165,12 @@ public class ResourceBundleMappingStrategy extends AbstractMappingStrategy
         }
     }
 
-    public synchronized AgiScript determineScript(AgiRequest request)
-    {
-        if (mappings == null || (shareInstances && instances == null))
-        {
+    public synchronized AgiScript determineScript(AgiRequest request) {
+        if (mappings == null || (shareInstances && instances == null)) {
             loadResourceBundle();
         }
 
-        if (shareInstances)
-        {
+        if (shareInstances) {
             return instances.get(request.getScript());
         }
         return createAgiScriptInstance(mappings.get(request.getScript()));

@@ -20,13 +20,12 @@ package org.asteriskjava.manager.event;
  * An AgentCallbackLoginEvent is triggered when an agent is successfully logged in using
  * AgentCallbackLogin.<p>
  * It is implemented in <code>channels/chan_agent.c</code>
- * 
- * @see org.asteriskjava.manager.event.AgentCallbackLogoffEvent
+ *
  * @author srt
  * @version $Id$
+ * @see org.asteriskjava.manager.event.AgentCallbackLogoffEvent
  */
-public class AgentCallbackLoginEvent extends ManagerEvent
-{
+public class AgentCallbackLoginEvent extends ManagerEvent {
     /**
      * Serializable version identifier
      */
@@ -38,44 +37,37 @@ public class AgentCallbackLoginEvent extends ManagerEvent
     /**
      * @param source
      */
-    public AgentCallbackLoginEvent(Object source)
-    {
+    public AgentCallbackLoginEvent(Object source) {
         super(source);
     }
 
     /**
      * Returns the name of the agent that logged in.
      */
-    public String getAgent()
-    {
+    public String getAgent() {
         return agent;
     }
 
     /**
      * Sets the name of the agent that logged in.
      */
-    public void setAgent(String agent)
-    {
+    public void setAgent(String agent) {
         this.agent = agent;
     }
 
-    public String getLoginChan()
-    {
+    public String getLoginChan() {
         return loginChan;
     }
 
-    public void setLoginChan(String loginChan)
-    {
+    public void setLoginChan(String loginChan) {
         this.loginChan = loginChan;
     }
 
-    public String getUniqueId()
-    {
+    public String getUniqueId() {
         return uniqueId;
     }
 
-    public void setUniqueId(String uniqueId)
-    {
+    public void setUniqueId(String uniqueId) {
         this.uniqueId = uniqueId;
     }
 }

@@ -34,8 +34,7 @@ import org.asteriskjava.manager.event.ResponseEvent;
  * @see org.asteriskjava.manager.event.ContactListComplete
  * @since 0.2
  */
-public class PJSipShowContactsAction extends AbstractManagerAction implements EventGeneratingAction
-{
+public class PJSipShowContactsAction extends AbstractManagerAction implements EventGeneratingAction {
     /**
      * Serial version identifier.
      */
@@ -44,19 +43,16 @@ public class PJSipShowContactsAction extends AbstractManagerAction implements Ev
     /**
      * Creates a new SipPeersAction.
      */
-    public PJSipShowContactsAction()
-    {
+    public PJSipShowContactsAction() {
 
     }
 
     @Override
-    public String getAction()
-    {
+    public String getAction() {
         return "PJSIPShowContacts";
     }
 
-    public Class< ? extends ResponseEvent> getActionCompleteEventClass()
-    {
+    public Class<? extends ResponseEvent> getActionCompleteEventClass() {
         return ContactListComplete.class;
     }
 }

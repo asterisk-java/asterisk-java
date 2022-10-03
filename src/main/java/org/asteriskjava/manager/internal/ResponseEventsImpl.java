@@ -16,26 +16,25 @@
  */
 package org.asteriskjava.manager.internal;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-
 import org.asteriskjava.lock.LockableList;
 import org.asteriskjava.lock.Locker.LockCloser;
 import org.asteriskjava.manager.ResponseEvents;
 import org.asteriskjava.manager.event.ResponseEvent;
 import org.asteriskjava.manager.response.ManagerResponse;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
 /**
  * Implementation of the ResponseEvents interface.
- * 
+ *
  * @author srt
  * @version $Id$
  * @since 0.2
  */
-public class ResponseEventsImpl implements ResponseEvents
-{
+public class ResponseEventsImpl implements ResponseEvents {
     private ManagerResponse response;
     private final LockableList<ResponseEvent> events;
     private boolean complete;
@@ -44,26 +43,22 @@ public class ResponseEventsImpl implements ResponseEvents
     /**
      * Creates a new instance.
      */
-    public ResponseEventsImpl()
-    {
+    public ResponseEventsImpl() {
         this.events = new LockableList<>(new ArrayList<>());
         this.complete = false;
     }
 
     // implementation of the ResponseEvents interface
 
-    public ManagerResponse getResponse()
-    {
+    public ManagerResponse getResponse() {
         return response;
     }
 
-    public Collection<ResponseEvent> getEvents()
-    {
+    public Collection<ResponseEvent> getEvents() {
         return events;
     }
 
-    public boolean isComplete()
-    {
+    public boolean isComplete() {
         return complete;
     }
 
@@ -71,35 +66,31 @@ public class ResponseEventsImpl implements ResponseEvents
 
     /**
      * Sets the ManagerResponse received.
-     * 
+     *
      * @param response the ManagerResponse received.
      */
-    public void setRepsonse(ManagerResponse response)
-    {
+    public void setRepsonse(ManagerResponse response) {
         this.response = response;
     }
 
     /**
      * Adds a ResponseEvent that has been received.
-     * 
+     *
      * @param event the ResponseEvent that has been received.
      */
-    public void addEvent(ResponseEvent event)
-    {
-        try (LockCloser closer = events.withLock())
-        {
+    public void addEvent(ResponseEvent event) {
+        try (LockCloser closer = events.withLock()) {
             events.add(event);
         }
     }
 
     /**
      * Indicates if all events have been received.
-     * 
+     *
      * @param complete <code>true</code> if all events have been received,
-     *            <code>false</code> otherwise.
+     *                 <code>false</code> otherwise.
      */
-    public void setComplete(boolean complete)
-    {
+    public void setComplete(boolean complete) {
         this.complete = complete;
     }
 
@@ -108,19 +99,16 @@ public class ResponseEventsImpl implements ResponseEvents
      * @return
      * @throws InterruptedException
      */
-    public boolean await(long timeout) throws InterruptedException
-    {
+    public boolean await(long timeout) throws InterruptedException {
         return latch.await(timeout, TimeUnit.MILLISECONDS);
     }
 
-    public void countDown()
-    {
+    public void countDown() {
         latch.countDown();
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "ResponseEventsImpl [response=" + response + ",\nevents=" + events + ",\ncomplete=" + complete + "]";
     }
 }

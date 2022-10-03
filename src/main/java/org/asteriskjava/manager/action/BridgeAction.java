@@ -25,8 +25,7 @@ package org.asteriskjava.manager.action;
  * @version $Id$
  * @since 1.0.0
  */
-public class BridgeAction extends AbstractManagerAction
-{
+public class BridgeAction extends AbstractManagerAction {
     /**
      * Serializable version identifier.
      */
@@ -39,8 +38,7 @@ public class BridgeAction extends AbstractManagerAction
     /**
      * Creates a new empty BridgeAction.
      */
-    public BridgeAction()
-    {
+    public BridgeAction() {
 
     }
 
@@ -50,8 +48,7 @@ public class BridgeAction extends AbstractManagerAction
      * @param channel1 the name of the channel to bridge to channel2.
      * @param channel2 the name of the channel to bridge to channel1.
      */
-    public BridgeAction(String channel1, String channel2)
-    {
+    public BridgeAction(String channel1, String channel2) {
         this.channel1 = channel1;
         this.channel2 = channel2;
     }
@@ -63,8 +60,7 @@ public class BridgeAction extends AbstractManagerAction
      * @param channel2 the name of the channel to bridge to channel1.
      * @param tone     <code>true</code> to play a courtesy tone to channel2, <code>false</code> otherwise.
      */
-    public BridgeAction(String channel1, String channel2, Boolean tone)
-    {
+    public BridgeAction(String channel1, String channel2, Boolean tone) {
         this.channel1 = channel1;
         this.channel2 = channel2;
         this.tone = tone;
@@ -74,8 +70,7 @@ public class BridgeAction extends AbstractManagerAction
      * Returns the name of this action, i.e. "Bridge".
      */
     @Override
-    public String getAction()
-    {
+    public String getAction() {
         return "Bridge";
     }
 
@@ -84,8 +79,7 @@ public class BridgeAction extends AbstractManagerAction
      *
      * @return the name of the channel to bridge to channel2.
      */
-    public String getChannel1()
-    {
+    public String getChannel1() {
         return channel1;
     }
 
@@ -94,8 +88,7 @@ public class BridgeAction extends AbstractManagerAction
      *
      * @param channel1 the name of the channel to bridge to channel2.
      */
-    public void setChannel1(String channel1)
-    {
+    public void setChannel1(String channel1) {
         this.channel1 = channel1;
     }
 
@@ -104,8 +97,7 @@ public class BridgeAction extends AbstractManagerAction
      *
      * @return the name of the channel to bridge to channel1.
      */
-    public String getChannel2()
-    {
+    public String getChannel2() {
         return channel2;
     }
 
@@ -114,8 +106,7 @@ public class BridgeAction extends AbstractManagerAction
      *
      * @param channel2 the name of the channel to bridge to channel1.
      */
-    public void setChannel2(String channel2)
-    {
+    public void setChannel2(String channel2) {
         this.channel2 = channel2;
     }
 
@@ -123,10 +114,9 @@ public class BridgeAction extends AbstractManagerAction
      * Returns whether a courtesy tone will be played to channel2.
      *
      * @return <code>true</code> to play a courtesy tone to channel2, <code>false</code> or
-     *         <code>null</code> (if not set) otherwise.
+     * <code>null</code> (if not set) otherwise.
      */
-    public Boolean getTone()
-    {
+    public Boolean getTone() {
         return tone;
     }
 
@@ -135,8 +125,7 @@ public class BridgeAction extends AbstractManagerAction
      *
      * @param tone <code>true</code> to play a courtesy tone to channel2, <code>false</code> otherwise.
      */
-    public void setTone(Boolean tone)
-    {
+    public void setTone(Boolean tone) {
         this.tone = tone;
     }
 }

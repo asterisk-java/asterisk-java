@@ -26,8 +26,7 @@ import java.util.Date;
  * @version $Id$
  * @since 0.3
  */
-public class ExtensionHistoryEntry implements Serializable
-{
+public class ExtensionHistoryEntry implements Serializable {
     /**
      * Serial version identifier.
      */
@@ -41,8 +40,7 @@ public class ExtensionHistoryEntry implements Serializable
      * @param date      the date the extension has been visited.
      * @param extension the extension that has been visited.
      */
-    public ExtensionHistoryEntry(Date date, Extension extension)
-    {
+    public ExtensionHistoryEntry(Date date, Extension extension) {
         this.date = date;
         this.extension = extension;
     }
@@ -52,8 +50,7 @@ public class ExtensionHistoryEntry implements Serializable
      *
      * @return the date the extension has been visited.
      */
-    public Date getDate()
-    {
+    public Date getDate() {
         return date;
     }
 
@@ -62,14 +59,12 @@ public class ExtensionHistoryEntry implements Serializable
      *
      * @return the extension that has been visited.
      */
-    public Extension getExtension()
-    {
+    public Extension getExtension() {
         return extension;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         final StringBuilder sb;
 
         sb = new StringBuilder(100);

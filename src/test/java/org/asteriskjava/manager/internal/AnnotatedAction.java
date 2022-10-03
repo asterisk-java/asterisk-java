@@ -19,8 +19,7 @@ package org.asteriskjava.manager.internal;
 import org.asteriskjava.manager.AsteriskMapping;
 import org.asteriskjava.manager.action.AbstractManagerAction;
 
-public class AnnotatedAction extends AbstractManagerAction
-{
+public class AnnotatedAction extends AbstractManagerAction {
     private static final long serialVersionUID = 1L;
     private String property1;
     private String property2;
@@ -28,52 +27,43 @@ public class AnnotatedAction extends AbstractManagerAction
     @AsteriskMapping("property-3") // annotated field
     private String property3;
 
-    public AnnotatedAction()
-    {
+    public AnnotatedAction() {
     }
 
-    public AnnotatedAction(String property1, String property2, String property3)
-    {
+    public AnnotatedAction(String property1, String property2, String property3) {
         this.property1 = property1;
         this.property2 = property2;
         this.property3 = property3;
     }
 
     @Override
-   public String getAction()
-    {
+    public String getAction() {
         return "Custom";
     }
 
     @AsteriskMapping("property-1") // annotated getter
-    public String getProperty1()
-    {
+    public String getProperty1() {
         return property1;
     }
 
-    public void setProperty1(String property1)
-    {
+    public void setProperty1(String property1) {
         this.property1 = property1;
     }
 
-    public String getProperty2()
-    {
+    public String getProperty2() {
         return property2;
     }
 
     @AsteriskMapping("property-2") // annotated setter
-    public void setProperty2(String property2)
-    {
+    public void setProperty2(String property2) {
         this.property2 = property2;
     }
 
-    public String getProperty3()
-    {
+    public String getProperty3() {
         return property3;
     }
 
-    public void setProperty3(String property3)
-    {
+    public void setProperty3(String property3) {
         this.property3 = property3;
     }
 }

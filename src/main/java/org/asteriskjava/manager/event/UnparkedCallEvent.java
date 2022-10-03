@@ -23,13 +23,12 @@ package org.asteriskjava.manager.event;
  * It is implemented in <code>res/res_features.c</code>
  * <p>
  * Available since Asterisk 1.2
- * 
+ *
  * @author srt
  * @version $Id$
  * @since 0.2
  */
-public class UnparkedCallEvent extends AbstractUnParkedEvent
-{
+public class UnparkedCallEvent extends AbstractUnParkedEvent {
     /**
      * Serializable version identifier
      */
@@ -54,128 +53,103 @@ public class UnparkedCallEvent extends AbstractUnParkedEvent
     /**
      * @param source
      */
-    public UnparkedCallEvent(Object source)
-    {
+    public UnparkedCallEvent(Object source) {
         super(source);
     }
 
-    public String getRetrieverChannel()
-    {
+    public String getRetrieverChannel() {
         return RetrieverChannel;
     }
 
-    public void setRetrieverChannel(String retrieverChannel)
-    {
+    public void setRetrieverChannel(String retrieverChannel) {
         RetrieverChannel = retrieverChannel;
     }
 
-    public Integer getRetrieverChannelState()
-    {
+    public Integer getRetrieverChannelState() {
         return RetrieverChannelState;
     }
 
-    public void setRetrieverChannelState(Integer retrieverChannelState)
-    {
+    public void setRetrieverChannelState(Integer retrieverChannelState) {
         RetrieverChannelState = retrieverChannelState;
     }
 
-    public String getRetrieverChannelStateDesc()
-    {
+    public String getRetrieverChannelStateDesc() {
         return RetrieverChannelStateDesc;
     }
 
-    public void setRetrieverChannelStateDesc(String retrieverChannelStateDesc)
-    {
+    public void setRetrieverChannelStateDesc(String retrieverChannelStateDesc) {
         RetrieverChannelStateDesc = retrieverChannelStateDesc;
     }
 
-    public String getRetrieverCallerIDNum()
-    {
+    public String getRetrieverCallerIDNum() {
         return RetrieverCallerIDNum;
     }
 
-    public void setRetrieverCallerIDNum(String retrieverCallerIDNum)
-    {
+    public void setRetrieverCallerIDNum(String retrieverCallerIDNum) {
         RetrieverCallerIDNum = retrieverCallerIDNum;
     }
 
-    public String getRetrieverCallerIDName()
-    {
+    public String getRetrieverCallerIDName() {
         return RetrieverCallerIDName;
     }
 
-    public void setRetrieverCallerIDName(String retrieverCallerIDName)
-    {
+    public void setRetrieverCallerIDName(String retrieverCallerIDName) {
         RetrieverCallerIDName = retrieverCallerIDName;
     }
 
-    public String getRetrieverConnectedLineNum()
-    {
+    public String getRetrieverConnectedLineNum() {
         return RetrieverConnectedLineNum;
     }
 
-    public void setRetrieverConnectedLineNum(String retrieverConnectedLineNum)
-    {
+    public void setRetrieverConnectedLineNum(String retrieverConnectedLineNum) {
         RetrieverConnectedLineNum = retrieverConnectedLineNum;
     }
 
-    public String getRetrieverConnectedLineName()
-    {
+    public String getRetrieverConnectedLineName() {
         return RetrieverConnectedLineName;
     }
 
-    public void setRetrieverConnectedLineName(String retrieverConnectedLineName)
-    {
+    public void setRetrieverConnectedLineName(String retrieverConnectedLineName) {
         RetrieverConnectedLineName = retrieverConnectedLineName;
     }
 
-    public String getRetrieverAccountCode()
-    {
+    public String getRetrieverAccountCode() {
         return RetrieverAccountCode;
     }
 
-    public void setRetrieverAccountCode(String retrieverAccountCode)
-    {
+    public void setRetrieverAccountCode(String retrieverAccountCode) {
         RetrieverAccountCode = retrieverAccountCode;
     }
 
-    public String getRetrieverContext()
-    {
+    public String getRetrieverContext() {
         return RetrieverContext;
     }
 
-    public void setRetrieverContext(String retrieverContext)
-    {
+    public void setRetrieverContext(String retrieverContext) {
         RetrieverContext = retrieverContext;
     }
 
-    public String getRetrieverExten()
-    {
+    public String getRetrieverExten() {
         return RetrieverExten;
     }
 
-    public void setRetrieverExten(String retrieverExten)
-    {
+    public void setRetrieverExten(String retrieverExten) {
         RetrieverExten = retrieverExten;
     }
 
-    public String getRetrieverPriority()
-    {
+    public String getRetrieverPriority() {
         return RetrieverPriority;
     }
 
-    public void setRetrieverPriority(String retrieverPriority)
-    {
+    public void setRetrieverPriority(String retrieverPriority) {
         RetrieverPriority = retrieverPriority;
     }
 
-    public String getRetrieverUniqueid()
-    {
+    public String getRetrieverUniqueid() {
         return RetrieverUniqueid;
     }
 
-    public void setRetrieverUniqueid(String retrieverUniqueid)
-    {
+    public void setRetrieverUniqueid(String retrieverUniqueid) {
         RetrieverUniqueid = retrieverUniqueid;
     }
 }

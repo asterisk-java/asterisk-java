@@ -25,8 +25,7 @@ package org.asteriskjava.manager.response;
  * @see org.asteriskjava.manager.action.CoreSettingsAction
  * @since 1.0.0
  */
-public class CoreSettingsResponse extends ManagerResponse
-{
+public class CoreSettingsResponse extends ManagerResponse {
     private static final long serialVersionUID = 1L;
 
     private String amiVersion;
@@ -46,13 +45,11 @@ public class CoreSettingsResponse extends ManagerResponse
      *
      * @return the version of the Asterisk Manager Interface (AMI).
      */
-    public String getAmiVersion()
-    {
+    public String getAmiVersion() {
         return amiVersion;
     }
 
-    public void setAmiVersion(String amiVersion)
-    {
+    public void setAmiVersion(String amiVersion) {
         this.amiVersion = amiVersion;
     }
 
@@ -61,73 +58,59 @@ public class CoreSettingsResponse extends ManagerResponse
      *
      * @return the version of the Asterisk server.
      */
-    public String getAsteriskVersion()
-    {
+    public String getAsteriskVersion() {
         return asteriskVersion;
     }
 
-    public void setAsteriskVersion(String asteriskVersion)
-    {
+    public void setAsteriskVersion(String asteriskVersion) {
         this.asteriskVersion = asteriskVersion;
     }
 
-    public String getSystemName()
-    {
+    public String getSystemName() {
         return systemName;
     }
 
-    public void setSystemName(String systemName)
-    {
+    public void setSystemName(String systemName) {
         this.systemName = systemName;
     }
 
-    public Integer getCoreMaxCalls()
-    {
+    public Integer getCoreMaxCalls() {
         return coreMaxCalls;
     }
 
-    public void setCoreMaxCalls(Integer coreMaxCalls)
-    {
+    public void setCoreMaxCalls(Integer coreMaxCalls) {
         this.coreMaxCalls = coreMaxCalls;
     }
 
-    public Double getCoreMaxLoadAvg()
-    {
+    public Double getCoreMaxLoadAvg() {
         return coreMaxLoadAvg;
     }
 
-    public void setCoreMaxLoadAvg(Double coreMaxLoadAvg)
-    {
+    public void setCoreMaxLoadAvg(Double coreMaxLoadAvg) {
         this.coreMaxLoadAvg = coreMaxLoadAvg;
     }
 
-    public String getCoreRunUser()
-    {
+    public String getCoreRunUser() {
         return coreRunUser;
     }
 
-    public void setCoreRunUser(String coreRunUser)
-    {
+    public void setCoreRunUser(String coreRunUser) {
         this.coreRunUser = coreRunUser;
     }
 
-    public String getCoreRunGroup()
-    {
+    public String getCoreRunGroup() {
         return coreRunGroup;
     }
 
-    public void setCoreRunGroup(String coreRunGroup)
-    {
+    public void setCoreRunGroup(String coreRunGroup) {
         this.coreRunGroup = coreRunGroup;
     }
 
-    public Integer getCoreMaxFilehandles()
-    {
+    public Integer getCoreMaxFilehandles() {
         return coreMaxFilehandles;
     }
 
-    public void setCoreMaxFilehandles(Integer coreMaxFilehandles)
-    {
+    public void setCoreMaxFilehandles(Integer coreMaxFilehandles) {
         this.coreMaxFilehandles = coreMaxFilehandles;
     }
 
@@ -136,13 +119,11 @@ public class CoreSettingsResponse extends ManagerResponse
      *
      * @return <code>true</code> if the realtime subsystem is enabled, <code>false</code> otherwise.
      */
-    public boolean isCoreRealtimeEnabled()
-    {
+    public boolean isCoreRealtimeEnabled() {
         return coreRealtimeEnabled != null && coreRealtimeEnabled;
     }
 
-    public void setCoreRealtimeEnabled(Boolean coreRealtimeEnabled)
-    {
+    public void setCoreRealtimeEnabled(Boolean coreRealtimeEnabled) {
         this.coreRealtimeEnabled = coreRealtimeEnabled;
     }
 
@@ -151,13 +132,11 @@ public class CoreSettingsResponse extends ManagerResponse
      *
      * @return <code>true</code> if the CDR subsystem is enabled, <code>false</code> otherwise.
      */
-    public boolean isCoreCdrEnabled()
-    {
+    public boolean isCoreCdrEnabled() {
         return coreCdrEnabled != null && coreCdrEnabled;
     }
 
-    public void setCoreCdrEnabled(Boolean coreCdrEnabled)
-    {
+    public void setCoreCdrEnabled(Boolean coreCdrEnabled) {
         this.coreCdrEnabled = coreCdrEnabled;
     }
 
@@ -166,13 +145,11 @@ public class CoreSettingsResponse extends ManagerResponse
      *
      * @return <code>true</code> if the HTTP subsystem is enabled, <code>false</code> otherwise.
      */
-    public boolean isCoreHttpEnabled()
-    {
+    public boolean isCoreHttpEnabled() {
         return coreHttpEnabled != null && coreHttpEnabled;
     }
 
-    public void setCoreHttpEnabled(Boolean coreHttpEnabled)
-    {
+    public void setCoreHttpEnabled(Boolean coreHttpEnabled) {
         this.coreHttpEnabled = coreHttpEnabled;
     }
 }

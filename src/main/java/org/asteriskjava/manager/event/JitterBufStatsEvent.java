@@ -26,8 +26,7 @@ package org.asteriskjava.manager.event;
  * @version $Id$
  * @since 1.0.0
  */
-public class JitterBufStatsEvent extends ManagerEvent
-{
+public class JitterBufStatsEvent extends ManagerEvent {
     private static final long serialVersionUID = 1L;
 
     private String owner;
@@ -47,8 +46,7 @@ public class JitterBufStatsEvent extends ManagerEvent
     private Integer remoteooo;
     private Integer remoteReceived;
 
-    public JitterBufStatsEvent(Object source)
-    {
+    public JitterBufStatsEvent(Object source) {
         super(source);
     }
 
@@ -57,163 +55,131 @@ public class JitterBufStatsEvent extends ManagerEvent
      *
      * @return channel the name of the channel.
      */
-    public String getOwner()
-    {
+    public String getOwner() {
         return owner;
     }
 
-    public void setOwner(String owner)
-    {
+    public void setOwner(String owner) {
         this.owner = owner;
     }
 
-    public Integer getPing()
-    {
+    public Integer getPing() {
         return ping;
     }
 
-    public void setPing(Integer ping)
-    {
+    public void setPing(Integer ping) {
         this.ping = ping;
     }
 
-    public Integer getLocalJitter()
-    {
+    public Integer getLocalJitter() {
         return localJitter;
     }
 
-    public void setLocalJitter(Integer localJitter)
-    {
+    public void setLocalJitter(Integer localJitter) {
         this.localJitter = localJitter;
     }
 
-    public Integer getLocalJbDelay()
-    {
+    public Integer getLocalJbDelay() {
         return localJbDelay;
     }
 
-    public void setLocalJbDelay(Integer localJbDelay)
-    {
+    public void setLocalJbDelay(Integer localJbDelay) {
         this.localJbDelay = localJbDelay;
     }
 
-    public Integer getLocalTotalLost()
-    {
+    public Integer getLocalTotalLost() {
         return localTotalLost;
     }
 
-    public void setLocalTotalLost(Integer localTotalLost)
-    {
+    public void setLocalTotalLost(Integer localTotalLost) {
         this.localTotalLost = localTotalLost;
     }
 
-    public Integer getLocalLossPercent()
-    {
+    public Integer getLocalLossPercent() {
         return localLossPercent;
     }
 
-    public void setLocalLossPercent(Integer localLossPercent)
-    {
+    public void setLocalLossPercent(Integer localLossPercent) {
         this.localLossPercent = localLossPercent;
     }
 
-    public Integer getLocalDropped()
-    {
+    public Integer getLocalDropped() {
         return localDropped;
     }
 
-    public void setLocalDropped(Integer localDropped)
-    {
+    public void setLocalDropped(Integer localDropped) {
         this.localDropped = localDropped;
     }
 
-    public Integer getLocalooo()
-    {
+    public Integer getLocalooo() {
         return localooo;
     }
 
-    public void setLocalooo(Integer localooo)
-    {
+    public void setLocalooo(Integer localooo) {
         this.localooo = localooo;
     }
 
-    public Integer getLocalReceived()
-    {
+    public Integer getLocalReceived() {
         return localReceived;
     }
 
-    public void setLocalReceived(Integer localReceived)
-    {
+    public void setLocalReceived(Integer localReceived) {
         this.localReceived = localReceived;
     }
 
-    public Integer getRemoteJitter()
-    {
+    public Integer getRemoteJitter() {
         return remoteJitter;
     }
 
-    public void setRemoteJitter(Integer remoteJitter)
-    {
+    public void setRemoteJitter(Integer remoteJitter) {
         this.remoteJitter = remoteJitter;
     }
 
-    public Integer getRemoteJbDelay()
-    {
+    public Integer getRemoteJbDelay() {
         return remoteJbDelay;
     }
 
-    public void setRemoteJbDelay(Integer remoteJbDelay)
-    {
+    public void setRemoteJbDelay(Integer remoteJbDelay) {
         this.remoteJbDelay = remoteJbDelay;
     }
 
-    public Integer getRemoteTotalLost()
-    {
+    public Integer getRemoteTotalLost() {
         return remoteTotalLost;
     }
 
-    public void setRemoteTotalLost(Integer remoteTotalLost)
-    {
+    public void setRemoteTotalLost(Integer remoteTotalLost) {
         this.remoteTotalLost = remoteTotalLost;
     }
 
-    public Integer getRemoteLossPercent()
-    {
+    public Integer getRemoteLossPercent() {
         return remoteLossPercent;
     }
 
-    public void setRemoteLossPercent(Integer remoteLossPercent)
-    {
+    public void setRemoteLossPercent(Integer remoteLossPercent) {
         this.remoteLossPercent = remoteLossPercent;
     }
 
-    public Integer getRemoteDropped()
-    {
+    public Integer getRemoteDropped() {
         return remoteDropped;
     }
 
-    public void setRemoteDropped(Integer remoteDropped)
-    {
+    public void setRemoteDropped(Integer remoteDropped) {
         this.remoteDropped = remoteDropped;
     }
 
-    public Integer getRemoteooo()
-    {
+    public Integer getRemoteooo() {
         return remoteooo;
     }
 
-    public void setRemoteooo(Integer remoteooo)
-    {
+    public void setRemoteooo(Integer remoteooo) {
         this.remoteooo = remoteooo;
     }
 
-    public Integer getRemoteReceived()
-    {
+    public Integer getRemoteReceived() {
         return remoteReceived;
     }
 
-    public void setRemoteReceived(Integer remoteReceived)
-    {
+    public void setRemoteReceived(Integer remoteReceived) {
         this.remoteReceived = remoteReceived;
     }
 }

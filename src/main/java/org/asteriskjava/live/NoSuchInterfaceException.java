@@ -23,8 +23,7 @@ package org.asteriskjava.live;
  * @version $Id$
  * @since 1.0.0
  */
-public class NoSuchInterfaceException extends LiveException
-{
+public class NoSuchInterfaceException extends LiveException {
     /**
      * Serial version identifier.
      */
@@ -35,8 +34,7 @@ public class NoSuchInterfaceException extends LiveException
      *
      * @param message the message
      */
-    public NoSuchInterfaceException(String message)
-    {
+    public NoSuchInterfaceException(String message) {
         super(message);
     }
 }

@@ -3,8 +3,7 @@ package org.asteriskjava.pbx;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
-public enum TechType implements Tech
-{
+public enum TechType implements Tech {
 
     //
     UNKNOWN, SIP, DAHDI, LOCAL, IAX, IAX2
@@ -27,14 +26,12 @@ public enum TechType implements Tech
     /**
      * Extracts the technology from a fully qualified endpoint string of the form:
      * TECH/NNNN
-     * 
+     *
      * @param fullyQualifiedEndPoint
      * @return
      */
-    public static TechType getTech(final String fullyQualifiedEndPoint)
-    {
-        if (!TechType.hasValidTech(fullyQualifiedEndPoint))
-        {
+    public static TechType getTech(final String fullyQualifiedEndPoint) {
+        if (!TechType.hasValidTech(fullyQualifiedEndPoint)) {
             throw new IllegalArgumentException("The provided end point '" //$NON-NLS-1$
                     + fullyQualifiedEndPoint + "' must contain a tech prefix. e.g. SIP/100"); //$NON-NLS-1$
         }
@@ -45,24 +42,19 @@ public enum TechType implements Tech
 
     /**
      * returns true if the endPoint name contains a valid tech descriptor.
-     * 
+     *
      * @param endPointName
      * @return
      */
-    public static boolean hasValidTech(final String endPointName)
-    {
+    public static boolean hasValidTech(final String endPointName) {
         TechType tech = UNKNOWN;
         final int index = endPointName.indexOf("/"); //$NON-NLS-1$
 
-        if (index >= 1)
-        {
+        if (index >= 1) {
             final String techName = endPointName.substring(0, index);
-            try
-            {
+            try {
                 tech = TechType.valueOf(techName.toUpperCase());
-            }
-            catch (final IllegalArgumentException e)
-            {
+            } catch (final IllegalArgumentException e) {
                 TechType.logger.error("Invalid tech for endpoint:" + endPointName); //$NON-NLS-1$
             }
         }
@@ -74,18 +66,16 @@ public enum TechType implements Tech
     /**
      * returns true if the endPoint name contains a tech descriptor even if it isn't
      * a known descriptor.
-     * 
+     *
      * @param endPointName
      * @return
      */
-    public static boolean hasTech(final String endPointName)
-    {
+    public static boolean hasTech(final String endPointName) {
         boolean hasTech = false;
 
         final int index = endPointName.indexOf("/"); //$NON-NLS-1$
 
-        if (index != -1)
-        {
+        if (index != -1) {
             hasTech = true;
         }
 

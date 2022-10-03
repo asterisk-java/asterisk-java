@@ -11,8 +11,7 @@ package org.asteriskjava.manager.event;
  * @since 12
  */
 
-public class ContactStatusDetail extends ResponseEvent
-{
+public class ContactStatusDetail extends ResponseEvent {
 
     /**
      * Serial version identifier.
@@ -36,163 +35,131 @@ public class ContactStatusDetail extends ResponseEvent
     private int qualifyFrequency;
     private Float qualifyTimeout;
 
-    public String getAor()
-    {
+    public String getAor() {
         return aor;
     }
 
-    public void setAor(String aor)
-    {
+    public void setAor(String aor) {
         this.aor = aor;
     }
 
-    public String getStatus()
-    {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(String status)
-    {
+    public void setStatus(String status) {
         this.status = status;
     }
 
-    public String getUri()
-    {
+    public String getUri() {
         return uri;
     }
 
-    public void setUri(String uri)
-    {
+    public void setUri(String uri) {
         this.uri = uri;
     }
 
-    public String getUserAgent()
-    {
+    public String getUserAgent() {
         return userAgent;
     }
 
-    public void setUserAgent(String userAgent)
-    {
+    public void setUserAgent(String userAgent) {
         this.userAgent = userAgent;
     }
 
-    public long getRegExpire()
-    {
+    public long getRegExpire() {
         return regExpire;
     }
 
-    public void setRegExpire(long regExpire)
-    {
+    public void setRegExpire(long regExpire) {
         this.regExpire = regExpire;
     }
 
-    public String getViaAddress()
-    {
+    public String getViaAddress() {
         return viaAddress;
     }
 
-    public void setViaAddress(String viaAddress)
-    {
+    public void setViaAddress(String viaAddress) {
         this.viaAddress = viaAddress;
     }
 
-    public String getCallID()
-    {
+    public String getCallID() {
         return callID;
     }
 
-    public void setCallID(String callID)
-    {
+    public void setCallID(String callID) {
         this.callID = callID;
     }
 
-    public String getEndpointName()
-    {
+    public String getEndpointName() {
         return endpointName;
     }
 
-    public void setEndpointName(String endpointName)
-    {
+    public void setEndpointName(String endpointName) {
         this.endpointName = endpointName;
     }
 
-    public String getId()
-    {
+    public String getId() {
         return id;
     }
 
-    public void setId(String id)
-    {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public Boolean isAuthenticateQualify()
-    {
+    public Boolean isAuthenticateQualify() {
         return authenticateQualify;
     }
 
-    public void setAuthenticateQualify(Boolean authenticateQualify)
-    {
+    public void setAuthenticateQualify(Boolean authenticateQualify) {
         this.authenticateQualify = authenticateQualify;
     }
 
-    public String getOutboundProxy()
-    {
+    public String getOutboundProxy() {
         return outboundProxy;
     }
 
-    public void setOutboundProxy(String outboundProxy)
-    {
+    public void setOutboundProxy(String outboundProxy) {
         this.outboundProxy = outboundProxy;
     }
 
-    public String getPath()
-    {
+    public String getPath() {
         return path;
     }
 
-    public void setPath(String path)
-    {
+    public void setPath(String path) {
         this.path = path;
     }
 
-    public int getQualifyFrequency()
-    {
+    public int getQualifyFrequency() {
         return qualifyFrequency;
     }
 
-    public void setQualifyFrequency(int qualifyFrequency)
-    {
+    public void setQualifyFrequency(int qualifyFrequency) {
         this.qualifyFrequency = qualifyFrequency;
     }
 
-    public Float getQualifyTimeout()
-    {
+    public Float getQualifyTimeout() {
         return qualifyTimeout;
     }
 
-    public void setQualifyTimeout(Float qualifyTimeout)
-    {
+    public void setQualifyTimeout(Float qualifyTimeout) {
         this.qualifyTimeout = qualifyTimeout;
     }
 
-    public void setQualifyTimeout(String qualifyTimeout)
-    {
+    public void setQualifyTimeout(String qualifyTimeout) {
         this.qualifyTimeout = Float.parseFloat(qualifyTimeout);
     }
 
-    public ContactStatusDetail(Object source)
-    {
+    public ContactStatusDetail(Object source) {
         super(source);
     }
 
-    public String getRoundtripUsec()
-    {
+    public String getRoundtripUsec() {
         return roundtripUsec;
     }
 
-    public void setRoundtripUsec(String roundtripUsec)
-    {
+    public void setRoundtripUsec(String roundtripUsec) {
         this.roundtripUsec = roundtripUsec;
     }
 

@@ -1,7 +1,6 @@
 package org.asteriskjava.manager.event;
 
-public class ConfbridgeListRoomsCompleteEvent extends ResponseEvent
-{
+public class ConfbridgeListRoomsCompleteEvent extends ResponseEvent {
     /**
      * Serializable version identifier
      */
@@ -10,24 +9,21 @@ public class ConfbridgeListRoomsCompleteEvent extends ResponseEvent
     private String eventList;
     private String listItems;
 
-    public ConfbridgeListRoomsCompleteEvent(Object source)
-    {
+    public ConfbridgeListRoomsCompleteEvent(Object source) {
         super(source);
     }
 
     /**
      * Sets the status of the list that is always "Complete".
      */
-    public void setEventList(String eventList)
-    {
+    public void setEventList(String eventList) {
         this.eventList = eventList;
     }
 
     /**
      * Returns the status of the list that is always "Complete".
      */
-    public String getEventList()
-    {
+    public String getEventList() {
         return eventList;
     }
 
@@ -36,8 +32,7 @@ public class ConfbridgeListRoomsCompleteEvent extends ResponseEvent
      *
      * @param listItems the number items returned.
      */
-    public void setListItems(String listItems)
-    {
+    public void setListItems(String listItems) {
         this.listItems = listItems;
     }
 
@@ -46,8 +41,7 @@ public class ConfbridgeListRoomsCompleteEvent extends ResponseEvent
      *
      * @return the number items returned.
      */
-    public String getListItems()
-    {
+    public String getListItems() {
         return listItems;
     }
 }
