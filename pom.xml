@@ -79,7 +79,7 @@
     </scm>
 
     <properties>
-        <releaseVersion>3.33.0</releaseVersion>
+        <releaseVersion>3.34.0</releaseVersion>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
