@@ -194,7 +194,7 @@
                         <id>make-assembly</id>
                         <phase>package</phase>
                         <goals>
-                            <goal>attached</goal>
+                            <goal>single</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -262,7 +262,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-						<version>1.6</version>
+                        <version>1.6</version>
                         <configuration>
                             <keyname>EA919AF2</keyname>
                         </configuration>
