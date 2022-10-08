@@ -183,7 +183,7 @@
             </plugin>
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
-                <version>2.5.3</version>
+                <version>3.4.2</version>
                 <configuration>
                     <descriptors>
                         <descriptor>${project.basedir}/src/main/assembly/bin.xml</descriptor>
@@ -194,7 +194,7 @@
                         <id>make-assembly</id>
                         <phase>package</phase>
                         <goals>
-                            <goal>attached</goal>
+                            <goal>single</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -262,7 +262,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-						<version>1.6</version>
+                        <version>1.6</version>
                         <configuration>
                             <keyname>EA919AF2</keyname>
                         </configuration>
