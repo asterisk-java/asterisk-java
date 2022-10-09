@@ -37,6 +37,8 @@ public class AbstractUnParkedEvent extends AbstractParkedCallEvent {
     private String parkerExten;
     private String parkerPriority;
     private String parkerUniqueid;
+    private String parkerLinkedid;
+    private String parkerLanguage;
 
     /**
      * @param source
@@ -139,5 +141,21 @@ public class AbstractUnParkedEvent extends AbstractParkedCallEvent {
 
     public void setParkerUniqueid(String parkerUniqueid) {
         this.parkerUniqueid = parkerUniqueid;
+    }
+
+    public String getParkerLinkedid() {
+        return parkerLinkedid;
+    }
+
+    public void setParkerLinkedid(String parkerLinkedid) {
+        this.parkerLinkedid = parkerLinkedid;
+    }
+
+    public String getParkerLanguage() {
+        return parkerLanguage;
+    }
+
+    public void setParkerLanguage(String parkerLanguage) {
+        this.parkerLanguage = parkerLanguage;
     }
 }
