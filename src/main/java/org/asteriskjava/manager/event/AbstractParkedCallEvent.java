@@ -248,14 +248,6 @@ public abstract class AbstractParkedCallEvent extends ManagerEvent {
         this.parkerDialString = parkerDialString;
     }
 
-    public String getParkinglot() {
-        return parkingLot;
-    }
-
-    public void setParkinglot(String parkinglot) {
-        this.parkingLot = parkinglot;
-    }
-
     public String getParkingSpace() {
         return parkingSpace;
     }
