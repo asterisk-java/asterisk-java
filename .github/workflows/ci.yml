@@ -25,4 +25,4 @@ jobs:
           java-version: ${{ matrix.java }}
 
       - name: Build
-        run: mvn clean package
+        run: ./mvnw clean package
