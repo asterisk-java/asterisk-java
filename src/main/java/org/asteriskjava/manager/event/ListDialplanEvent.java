@@ -23,6 +23,9 @@ public class ListDialplanEvent extends ResponseEvent {
     private String application;
     private String appData;
     private String registrar;
+    private String includeContext;
+    private String _switch;
+    private String ignorePattern;
 
     public ListDialplanEvent(Object source) {
         super(source);
@@ -118,5 +121,31 @@ public class ListDialplanEvent extends ResponseEvent {
 
     public void setRegistrar(String registrar) {
         this.registrar = registrar;
+    }
+
+    public String getIncludeContext() {
+        return includeContext;
+    }
+
+    public void setIncludeContext(String includeContext) {
+        this.includeContext = includeContext;
+    }
+
+    public String getSwitch() {
+        return _switch;
+    }
+
+    public ListDialplanEvent setSwitch(String _switch) {
+        this._switch = _switch;
+        return this;
+    }
+
+    public String getIgnorePattern() {
+        return ignorePattern;
+    }
+
+    public ListDialplanEvent setIgnorePattern(String ignorePattern) {
+        this.ignorePattern = ignorePattern;
+        return this;
     }
 }

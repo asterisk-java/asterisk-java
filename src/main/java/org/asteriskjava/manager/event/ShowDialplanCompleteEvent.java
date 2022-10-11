@@ -15,6 +15,7 @@ package org.asteriskjava.manager.event;
 public class ShowDialplanCompleteEvent extends ResponseEvent {
     private static final long serialVersionUID = 1L;
 
+    private String eventList;
     private Integer listItems;
     private Integer listExtensions;
     private Integer listPriorities;
@@ -22,6 +23,14 @@ public class ShowDialplanCompleteEvent extends ResponseEvent {
 
     public ShowDialplanCompleteEvent(Object source) {
         super(source);
+    }
+
+    public String getEventList() {
+        return eventList;
+    }
+
+    public void setEventList(String eventList) {
+        this.eventList = eventList;
     }
 
     /**
