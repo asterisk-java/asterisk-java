@@ -42,6 +42,7 @@ public abstract class AbstractParkedCallEvent extends ManagerEvent {
     private String parkeeExten;
     private Integer parkeePriority;
     private String parkeeUniqueid;
+    private String parkeeLinkedid;
     // Previously: From
     private String parkerDialString;
     private String parkingLot;
@@ -231,20 +232,20 @@ public abstract class AbstractParkedCallEvent extends ManagerEvent {
         this.parkeeUniqueid = parkeeUniqueid;
     }
 
+    public String getParkeeLinkedid() {
+        return parkeeLinkedid;
+    }
+
+    public void setParkeeLinkedid(String parkeeLinkedid) {
+        this.parkeeLinkedid = parkeeLinkedid;
+    }
+
     public String getParkerDialString() {
         return parkerDialString;
     }
 
     public void setParkerDialString(String parkerDialString) {
         this.parkerDialString = parkerDialString;
-    }
-
-    public String getParkinglot() {
-        return parkingLot;
-    }
-
-    public void setParkinglot(String parkinglot) {
-        this.parkingLot = parkinglot;
     }
 
     public String getParkingSpace() {
