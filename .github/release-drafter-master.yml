@@ -1,5 +1,3 @@
-name-template: $NEXT_MINOR_VERSION
-tag-template: $NEXT_MINOR_VERSION
 filter-by-commitish: true
 commitish: master
 template: |
