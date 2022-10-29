@@ -4,6 +4,8 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+    labels:
+      - "kind/dependencies"
     ignore:
       # As long as we support Java 8
       - dependency-name: "logback-classic"
@@ -12,3 +14,5 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+    labels:
+      - "kind/dependencies"
