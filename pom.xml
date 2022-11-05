@@ -18,6 +18,11 @@
         </license>
     </licenses>
 
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/asterisk-java/asterisk-java/issues</url>
+    </issueManagement>
+
     <developers>
         <developer>
             <name>Stefan Reuter</name>
