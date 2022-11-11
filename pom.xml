@@ -273,9 +273,6 @@
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
                         <version>3.0.1</version>
-                        <configuration>
-                            <keyname>EA919AF2</keyname>
-                        </configuration>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
@@ -289,6 +286,7 @@
                                         <arg>--pinentry-mode</arg>
                                         <arg>loopback</arg>
                                     </gpgArguments>
+                                    <keyname>EA919AF2</keyname>
                                 </configuration>
                             </execution>
                         </executions>
