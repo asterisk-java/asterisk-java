@@ -4,7 +4,7 @@
 
     <groupId>org.asteriskjava</groupId>
     <artifactId>asterisk-java</artifactId>
-    <version>${releaseVersion}</version>
+    <version>3.34.0</version>
 
     <name>Asterisk-Java</name>
     <description>The free Java library for Asterisk PBX integration.</description>
@@ -84,8 +84,6 @@
     </scm>
 
     <properties>
-        <releaseVersion>3.34.0</releaseVersion>
-
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -310,13 +308,13 @@
     </profiles>
 
     <distributionManagement>
-        <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
         <repository>
             <id>ossrh</id>
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
         </repository>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
     </distributionManagement>
 </project>
