@@ -1,0 +1,67 @@
+name: Release
+
+on:
+  release:
+    types: [ published ]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3.1.0
+
+      - name: Set up Java
+        uses: actions/setup-java@v3.6.0
+        with:
+          java-version: 8
+          distribution: temurin
+          server-id: ossrh
+          server-username: NEXUS_USERNAME
+          server-password: NEXUS_PASSWORD
+          gpg-passphrase: GPG_PASSPHRASE
+          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+
+      - name: Set artifact version
+        run: ./mvnw --batch-mode --define=generateBackupPoms=false --define=newVersion=${{ github.event.release.tag_name }} versions:set
+
+      - name: Publish package
+        run: ./mvnw --batch-mode --activate-profiles=deploy deploy
+        env:
+          NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME }}
+          NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+
+  update-versions:
+    needs: [ publish ]
+    permissions:
+      contents: write  # for peter-evans/create-pull-request to create branch
+      pull-requests: write  # for peter-evans/create-pull-request to create a PR
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3.1.0
+        with:
+          ref: master
+          fetch-depth: 0
+
+      - name: Update pom.xml version
+        run: ./mvnw --batch-mode --define=generateBackupPoms=false --define=newVersion=${{ github.event.release.tag_name }} versions:set
+
+      - name: Update Maven version in README.md
+        run: sed --in-place 's/<version>.*<\/version>/<version>${{ github.event.release.tag_name }}<\/version>/g' README.md
+
+      - name: Show diff
+        run: git diff
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4.2.0
+        with:
+          commit-message: Update versions to ${{ github.event.release.tag_name }}
+          title: Update versions to ${{ github.event.release.tag_name }}
+          body: Update versions to ${{ github.event.release.tag_name }}
+          branch: update-versions-${{ github.event.release.tag_name }}
+          delete-branch: true
+          labels: |
+            kind/documentation
+            meta/skip-changelog
