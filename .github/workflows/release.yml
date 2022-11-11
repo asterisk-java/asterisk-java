@@ -23,7 +23,7 @@ jobs:
           gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
 
       - name: Set artifact version
-        run: ./mvnw --batch-mode versions:set -DgenerateBackupPoms=false -DnewVersion=${{ github.event.release.tag_name }}
+        run: ./mvnw --batch-mode --define=generateBackupPoms=false --define=newVersion=${{ github.event.release.tag_name }} versions:set
 
       - name: Publish package
         run: ./mvnw --batch-mode --activate-profiles=deploy deploy
@@ -46,10 +46,10 @@ jobs:
           fetch-depth: 0
 
       - name: Update pom.xml version
-        run: ./mvnw --batch-mode versions:set -DgenerateBackupPoms=false -DnewVersion=${{ github.event.release.tag_name }}
+        run: ./mvnw --batch-mode --define=generateBackupPoms=false --define=newVersion=${{ github.event.release.tag_name }} versions:set
 
       - name: Update Maven version in README.md
-        run: sed -i 's/<version>.*<\/version>/<version>${{ github.event.release.tag_name }}<\/version>/g' README.md
+        run: sed --in-place 's/<version>.*<\/version>/<version>${{ github.event.release.tag_name }}<\/version>/g' README.md
 
       - name: Show diff
         run: git diff
