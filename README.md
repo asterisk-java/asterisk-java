@@ -49,7 +49,7 @@ Asterisk-Java 3.x (Java 1.8 and Asterisk Version 10 thru 18) (master)
 	<dependency>
 	  <groupId>org.asteriskjava</groupId>
 	  <artifactId>asterisk-java</artifactId>
-	  <version>3.34.0</version>
+	  <version>3.35.0</version>
 	</dependency>
 
 INSTALLATION FROM SOURCE
