@@ -1,22 +1,22 @@
 /*
- *  Copyright 2004-2006 Stefan Reuter
+ * Copyright 2004-2022 Asterisk-Java contributors
  *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.asteriskjava.manager.internal;
 
 import org.asteriskjava.manager.event.*;
+import org.asteriskjava.manager.util.EventAttributesHelper;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 import org.reflections.Reflections;
@@ -33,7 +33,7 @@ import java.util.Map.Entry;
  * @version $Id$
  * @see org.asteriskjava.manager.event.ManagerEvent
  */
-class EventBuilderImpl extends AbstractBuilder implements EventBuilder {
+class EventBuilderImpl implements EventBuilder {
     private static final Set<String> ignoredAttributes = new HashSet<>(Arrays.asList("event"));
     private Map<String, Class<?>> registeredEventClasses;
     private final Set<String> eventClassNegativeCache = new HashSet<>();
@@ -41,7 +41,7 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder {
     private static final Log logger = LogFactory.getLog(EventBuilderImpl.class);
 
     private final static Set<Class<? extends ManagerEvent>> knownManagerEventClasses = new Reflections(
-            "org.asteriskjava.manager.event").getSubTypesOf(ManagerEvent.class);
+        "org.asteriskjava.manager.event").getSubTypesOf(ManagerEvent.class);
 
     EventBuilderImpl() {
         this.registeredEventClasses = new HashMap<>();
@@ -87,7 +87,7 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder {
      * @throws IllegalArgumentException if clazz is not a valid event class.
      */
     public final void registerEventClass(String eventType, Class<? extends ManagerEvent> clazz)
-            throws IllegalArgumentException {
+        throws IllegalArgumentException {
         Constructor<?> defaultConstructor;
 
         if (Modifier.isAbstract(clazz.getModifiers())) {
@@ -131,8 +131,8 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder {
                 // Convert map of lists to list of maps - one map for each
                 // PeerEntry event
                 int peersAmount = attributes.get("listitems") != null
-                        ? Integer.parseInt((String) attributes.get("listitems"))
-                        : eventNames.size() - 1; // Last event is
+                    ? Integer.parseInt((String) attributes.get("listitems"))
+                    : eventNames.size() - 1; // Last event is
                 // PeerlistComplete
                 List<Map<String, Object>> peersAttributes = new ArrayList<>();
                 for (Map.Entry<String, Object> attribute : attributes.entrySet()) {
@@ -188,7 +188,7 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder {
         if (eventClass == null) {
             if (eventClassNegativeCache.add(eventType)) {
                 logger.info("No event class registered for event type '" + eventType + "', attributes: " + attributes
-                        + ". Please report at https://github.com/asterisk-java/asterisk-java/issues");
+                    + ". Please report at https://github.com/asterisk-java/asterisk-java/issues");
             }
             return null;
         }
@@ -214,7 +214,7 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder {
             // being passed around.
             for (Map<String, Object> peerAttrs : (List<Map<String, Object>>) attributes.get("peersAttributes")) {
                 PeerEntryEvent peerEntryEvent = new PeerEntryEvent(source);
-                setAttributes(peerEntryEvent, peerAttrs, ignoredAttributes);
+                EventAttributesHelper.setAttributes(peerEntryEvent, peerAttrs, ignoredAttributes);
                 List<PeerEntryEvent> peerEntryEvents = peersEvent.getChildEvents();
                 if (peerEntryEvents == null) {
                     peerEntryEvents = new ArrayList<>();
@@ -224,7 +224,7 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder {
             }
             peersEvent.setActionId(peersEvent.getChildEvents().get(0).getActionId());
         } else {
-            setAttributes(event, attributes, ignoredAttributes);
+            EventAttributesHelper.setAttributes(event, attributes, ignoredAttributes);
         }
 
         // ResponseEvents are sent in response to a ManagerAction if the
