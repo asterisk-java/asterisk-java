@@ -1,27 +1,45 @@
-package org.asteriskjava.manager.internal;
+/*
+ * Copyright 2004-2022 Asterisk-Java contributors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.asteriskjava.manager.util;
 
 import org.asteriskjava.manager.event.UserEvent;
 import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.util.AstUtil;
-import org.asteriskjava.util.Log;
-import org.asteriskjava.util.LogFactory;
 import org.asteriskjava.util.ReflectionUtil;
+import org.slf4j.Logger;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
-/**
- * Abstract base class for reflection based builders.
- */
-abstract class AbstractBuilder {
-    protected final Log logger = LogFactory.getLog(getClass());
+import static org.slf4j.LoggerFactory.getLogger;
 
-    protected void setAttributes(Object target, Map<String, Object> attributes, Set<String> ignoredAttributes) {
+/**
+ * @author Piotr Olaszewski <piotrooo>
+ */
+public class EventAttributesHelper {
+    private static final Logger logger = getLogger(EventAttributesHelper.class);
+
+    private EventAttributesHelper() {
+    }
+
+    public static void setAttributes(Object target, Map<String, Object> attributes, Set<String> ignoredAttributes) {
         Map<String, Method> setters;
 
         setters = ReflectionUtil.getSetters(target.getClass());
@@ -64,10 +82,10 @@ abstract class AbstractBuilder {
             // intentional
             if (setter == null && !(target instanceof UserEvent) && !target.getClass().equals(ManagerResponse.class)) {
                 logger.warn("Unable to set property '" + entry.getKey() + "' to '" + entry.getValue() + "' on "
-                        + target.getClass().getName()
-                        + ": no setter. Please report at https://github.com/asterisk-java/asterisk-java/issues");
+                    + target.getClass().getName()
+                    + ": no setter. Please report at https://github.com/asterisk-java/asterisk-java/issues");
 
-                for (Entry<String, Object> entry2 : attributes.entrySet()) {
+                for (Map.Entry<String, Object> entry2 : attributes.entrySet()) {
                     logger.debug("Key: " + entry2.getKey() + " Value: " + entry2.getValue());
                 }
             }
@@ -100,8 +118,8 @@ abstract class AbstractBuilder {
                         } else value = constructor.newInstance(entry.getValue());
                     } catch (Exception e) {
                         logger.error("Unable to convert value: Called the constructor of " + dataType + " with value '"
-                                + entry.getValue() + "' for the attribute '" + entry.getKey() + "'\n of event type "
-                                + target.getClass().getName() + " with resulting error: " + e.getMessage(), e);
+                            + entry.getValue() + "' for the attribute '" + entry.getKey() + "'\n of event type "
+                            + target.getClass().getName() + " with resulting error: " + e.getMessage(), e);
                         continue;
                     }
                 }
@@ -109,12 +127,12 @@ abstract class AbstractBuilder {
                 setter.invoke(target, value);
             } catch (Exception e) {
                 logger.error("Unable to set property '" + entry.getKey() + "' to '" + entry.getValue() + "' on "
-                        + target.getClass().getName() + " " + e.getMessage(), e);
+                    + target.getClass().getName() + " " + e.getMessage(), e);
             }
         }
     }
 
-    private Integer parseInteger(Entry<String, Object> entry) {
+    private static Integer parseInteger(Map.Entry<String, Object> entry) {
         Integer value;
         String stringValue = (String) entry.getValue();
         if (stringValue != null && stringValue.length() > 0) {
@@ -126,7 +144,7 @@ abstract class AbstractBuilder {
     }
 
     @SuppressWarnings("unchecked")
-    private Map<String, String> parseMap(Map.Entry<String, Object> entry) {
+    private static Map<String, String> parseMap(Map.Entry<String, Object> entry) {
         Map<String, String> value;
         if (entry.getValue() instanceof List) {
             List<String> list = (List<String>) entry.getValue();
@@ -140,7 +158,7 @@ abstract class AbstractBuilder {
     }
 
     @SuppressWarnings("unchecked")
-    private Object parseString(Map.Entry<String, Object> entry) {
+    private static Object parseString(Map.Entry<String, Object> entry) {
         Object value;
         value = entry.getValue();
         if (AstUtil.isNull(value)) {
@@ -159,7 +177,7 @@ abstract class AbstractBuilder {
         return value;
     }
 
-    private Double parseDouble(Map.Entry<String, Object> entry) {
+    private static Double parseDouble(Map.Entry<String, Object> entry) {
         Double value;
         String stringValue = (String) entry.getValue();
         if (stringValue != null && stringValue.length() > 0) {
@@ -170,7 +188,7 @@ abstract class AbstractBuilder {
         return value;
     }
 
-    private Long parseLong(Map.Entry<String, Object> entry) {
+    private static Long parseLong(Map.Entry<String, Object> entry) {
         Long value;
         String stringValue = (String) entry.getValue();
         if (stringValue != null && stringValue.length() > 0) {
@@ -181,7 +199,7 @@ abstract class AbstractBuilder {
         return value;
     }
 
-    private Map<String, String> buildMap(String... lines) {
+    private static Map<String, String> buildMap(String... lines) {
         if (lines == null) {
             return null;
         }

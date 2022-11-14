@@ -1,27 +1,29 @@
 /*
- *  Copyright 2004-2006 Stefan Reuter
+ * Copyright 2004-2022 Asterisk-Java contributors
  *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.asteriskjava.manager.internal;
 
 import org.asteriskjava.manager.response.CommandResponse;
 import org.asteriskjava.manager.response.ManagerError;
 import org.asteriskjava.manager.response.ManagerResponse;
+import org.asteriskjava.manager.util.EventAttributesHelper;
+import org.slf4j.Logger;
 
 import java.util.*;
 
+import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  * Default implementation of the ResponseBuilder interface.
@@ -30,9 +32,11 @@ import java.util.*;
  * @version $Id$
  * @see org.asteriskjava.manager.response.ManagerResponse
  */
-class ResponseBuilderImpl extends AbstractBuilder implements ResponseBuilder {
+class ResponseBuilderImpl implements ResponseBuilder {
+    private static final Logger logger = getLogger(ResponseBuilderImpl.class);
+
     private static final Set<String> ignoredAttributes = new HashSet<>(Arrays.asList(
-            "attributes", "proxyresponse", ManagerReader.COMMAND_RESULT_RESPONSE_KEY));
+        "attributes", "proxyresponse", ManagerReader.COMMAND_RESULT_RESPONSE_KEY));
 
     private static final String RESPONSE_KEY = "response";
     private static final String PROXY_RESPONSE_KEY = "proxyresponse";
@@ -57,7 +61,7 @@ class ResponseBuilderImpl extends AbstractBuilder implements ResponseBuilder {
             }
         }
 
-        setAttributes(response, attributes, ignoredAttributes);
+        EventAttributesHelper.setAttributes(response, attributes, ignoredAttributes);
 
         if (response instanceof CommandResponse) {
             final CommandResponse commandResponse = (CommandResponse) response;
