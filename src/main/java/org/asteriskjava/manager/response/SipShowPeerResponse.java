@@ -1,3 +1,18 @@
+/*
+ * Copyright 2004-2022 Asterisk-Java contributors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.asteriskjava.manager.response;
 
 import java.util.Map;
@@ -77,6 +92,11 @@ public class SipShowPeerResponse extends ManagerResponse {
     private String sipRtpEngine;
     private String sipComedia;
     private String mohsuggest;
+    private String namedPickupgroup;
+    private String sipRtcpMux;
+    private String description;
+    private String subscribecontext;
+    private String namedCallgroup;
 
     private Map<String, String> chanVariable;
 
@@ -614,6 +634,51 @@ public class SipShowPeerResponse extends ManagerResponse {
         this.mohsuggest = mohsuggest;
     }
 
+    public String getNamedPickupgroup() {
+        return namedPickupgroup;
+    }
+
+    public SipShowPeerResponse setNamedPickupgroup(String namedPickupgroup) {
+        this.namedPickupgroup = namedPickupgroup;
+        return this;
+    }
+
+    public String getSipRtcpMux() {
+        return sipRtcpMux;
+    }
+
+    public SipShowPeerResponse setSipRtcpMux(String sipRtcpMux) {
+        this.sipRtcpMux = sipRtcpMux;
+        return this;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public SipShowPeerResponse setDescription(String description) {
+        this.description = description;
+        return this;
+    }
+
+    public String getSubscribecontext() {
+        return subscribecontext;
+    }
+
+    public SipShowPeerResponse setSubscribecontext(String subscribecontext) {
+        this.subscribecontext = subscribecontext;
+        return this;
+    }
+
+    public String getNamedCallgroup() {
+        return namedCallgroup;
+    }
+
+    public SipShowPeerResponse setNamedCallgroup(String namedCallgroup) {
+        this.namedCallgroup = namedCallgroup;
+        return this;
+    }
+
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
@@ -745,6 +810,16 @@ public class SipShowPeerResponse extends ManagerResponse {
         builder.append(chanVariable);
         builder.append(", mohSuggest=");
         builder.append(mohsuggest);
+        builder.append(", namedPickupgroup=");
+        builder.append(namedPickupgroup);
+        builder.append(", sipRtcpMux=");
+        builder.append(sipRtcpMux);
+        builder.append(", description=");
+        builder.append(description);
+        builder.append(", subscribecontext=");
+        builder.append(subscribecontext);
+        builder.append(", namedCallgroup=");
+        builder.append(namedCallgroup);
         builder.append("]");
         return builder.toString();
     }
