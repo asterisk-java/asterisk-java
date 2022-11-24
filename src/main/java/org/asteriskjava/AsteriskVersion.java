@@ -26,10 +26,11 @@ import java.util.regex.Pattern;
  * @version $Id$
  * @since 0.2
  */
-public class AsteriskVersion implements Comparable<AsteriskVersion>, Serializable
-{
-	private static final String VERSION_PATTERN_18 = "^\\s*Asterisk (GIT-)?18[-. ].*";
-	private static final String VERSION_PATTERN_17 = "^\\s*Asterisk (GIT-)?17[-. ].*";
+public class AsteriskVersion implements Comparable<AsteriskVersion>, Serializable {
+    private static final String VERSION_PATTERN_20 = "^\\s*Asterisk (GIT-)?20[-. ].*";
+    private static final String VERSION_PATTERN_19 = "^\\s*Asterisk (GIT-)?19[-. ].*";
+    private static final String VERSION_PATTERN_18 = "^\\s*Asterisk (GIT-)?18[-. ].*";
+    private static final String VERSION_PATTERN_17 = "^\\s*Asterisk (GIT-)?17[-. ].*";
     private static final String VERSION_PATTERN_16 = "^\\s*Asterisk (GIT-)?16[-. ].*";
     private static final String VERSION_PATTERN_15 = "^\\s*Asterisk (GIT-)?15[-. ].*";
     private static final String VERSION_PATTERN_14 = "^\\s*Asterisk (GIT-)?14[-. ].*";
@@ -121,25 +122,40 @@ public class AsteriskVersion implements Comparable<AsteriskVersion>, Serializabl
      *
      * @since 2.1.0
      */
-    public static final AsteriskVersion ASTERISK_16 = new AsteriskVersion(1600, "Asterisk 16", VERSION_PATTERN_16,
-		VERSION_PATTERN_CERTIFIED_16);
+    public static final AsteriskVersion ASTERISK_16 = new AsteriskVersion(1600, "Asterisk 16", VERSION_PATTERN_16, VERSION_PATTERN_CERTIFIED_16);
 
-	/**
-	 * Represents the Asterisk 17 series.
-	 *
-	 * @since 3.7.0
-	 */
-	public static final AsteriskVersion ASTERISK_17 = new AsteriskVersion(1700, "Asterisk 17", VERSION_PATTERN_17);
+    /**
+     * Represents the Asterisk 17 series.
+     *
+     * @since 3.7.0
+     */
+    public static final AsteriskVersion ASTERISK_17 = new AsteriskVersion(1700, "Asterisk 17", VERSION_PATTERN_17);
 
-	/**
-	 * Represents the Asterisk 18 series.
-	 *
-	 * @since 3.13.0
-	 */
-	public static final AsteriskVersion ASTERISK_18 = new AsteriskVersion(1800, "Asterisk 18", VERSION_PATTERN_18);
+    /**
+     * Represents the Asterisk 18 series.
+     *
+     * @since 3.13.0
+     */
+    public static final AsteriskVersion ASTERISK_18 = new AsteriskVersion(1800, "Asterisk 18", VERSION_PATTERN_18);
 
-	private static final AsteriskVersion knownVersions[] = new AsteriskVersion[]{ASTERISK_18, ASTERISK_17, ASTERISK_16, ASTERISK_15, ASTERISK_14,
-            ASTERISK_13, ASTERISK_12, ASTERISK_11, ASTERISK_10, ASTERISK_1_8, ASTERISK_1_6};
+    /**
+     * Represents the Asterisk 19 series.
+     *
+     * @since 3.36.2
+     */
+    public static final AsteriskVersion ASTERISK_19 = new AsteriskVersion(1900, "Asterisk 19", VERSION_PATTERN_19);
+
+    /**
+     * Represents the Asterisk 20 series.
+     *
+     * @since 3.36.2
+     */
+    public static final AsteriskVersion ASTERISK_20 = new AsteriskVersion(2000, "Asterisk 20", VERSION_PATTERN_20);
+
+    private static final AsteriskVersion knownVersions[] = new AsteriskVersion[]{
+        ASTERISK_20, ASTERISK_19, ASTERISK_18, ASTERISK_17, ASTERISK_16, ASTERISK_15, ASTERISK_14, ASTERISK_13,
+        ASTERISK_12, ASTERISK_11, ASTERISK_10, ASTERISK_1_8, ASTERISK_1_6
+    };
 
     // current debian stable version, as of 09/10/2018
     public static final AsteriskVersion DEFAULT_VERSION = ASTERISK_16;
@@ -149,15 +165,13 @@ public class AsteriskVersion implements Comparable<AsteriskVersion>, Serializabl
      */
     private static final long serialVersionUID = 1L;
 
-    private AsteriskVersion(int version, String versionString, String... patterns)
-    {
+    private AsteriskVersion(int version, String versionString, String... patterns) {
         this.version = version;
         this.versionString = versionString;
 
         this.patterns = new Pattern[patterns.length];
         int i = 0;
-        for (String pattern : patterns)
-        {
+        for (String pattern : patterns) {
             this.patterns[i++] = Pattern.compile(pattern);
         }
     }
@@ -168,27 +182,22 @@ public class AsteriskVersion implements Comparable<AsteriskVersion>, Serializabl
      *
      * @param o the version to compare to
      * @return <code>true</code> if this version is equal to or higher than the
-     *         given version, <code>false</code> otherwise.
+     * given version, <code>false</code> otherwise.
      */
-    public boolean isAtLeast(AsteriskVersion o)
-    {
+    public boolean isAtLeast(AsteriskVersion o) {
         return version >= o.version;
     }
 
-    public int compareTo(AsteriskVersion o)
-    {
+    public int compareTo(AsteriskVersion o) {
         return Integer.compare(version, o.version);
     }
 
     @Override
-    public boolean equals(Object o)
-    {
-        if (this == o)
-        {
+    public boolean equals(Object o) {
+        if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass())
-        {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
 
@@ -198,14 +207,12 @@ public class AsteriskVersion implements Comparable<AsteriskVersion>, Serializabl
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         return version;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return versionString;
     }
 
@@ -216,14 +223,10 @@ public class AsteriskVersion implements Comparable<AsteriskVersion>, Serializabl
      * @param coreLine
      * @return the detected version, or null if unknown
      */
-    public static AsteriskVersion getDetermineVersionFromString(String coreLine)
-    {
-        for (AsteriskVersion version : knownVersions)
-        {
-            for (Pattern pattern : version.patterns)
-            {
-                if (pattern.matcher(coreLine).matches())
-                {
+    public static AsteriskVersion getDetermineVersionFromString(String coreLine) {
+        for (AsteriskVersion version : knownVersions) {
+            for (Pattern pattern : version.patterns) {
+                if (pattern.matcher(coreLine).matches()) {
                     return version;
                 }
             }
