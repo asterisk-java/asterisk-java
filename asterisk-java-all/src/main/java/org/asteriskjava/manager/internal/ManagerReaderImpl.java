@@ -17,6 +17,7 @@
 package org.asteriskjava.manager.internal;
 
 import com.google.common.util.concurrent.RateLimiter;
+import org.asteriskjava.core.socket.SocketConnectionAdapter;
 import org.asteriskjava.manager.event.DisconnectEvent;
 import org.asteriskjava.manager.event.ManagerEvent;
 import org.asteriskjava.manager.event.ProtocolIdentifierReceivedEvent;
@@ -26,7 +27,6 @@ import org.asteriskjava.pbx.util.LogTime;
 import org.asteriskjava.util.DateUtil;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
-import org.asteriskjava.util.SocketConnectionFacade;
 
 import java.io.IOException;
 import java.util.*;
@@ -66,7 +66,7 @@ public class ManagerReaderImpl implements ManagerReader {
     /**
      * The socket to use for reading from the asterisk server.
      */
-    private SocketConnectionFacade socket;
+    private SocketConnectionAdapter socket;
 
     /**
      * If set to <code>true</code>, terminates and closes the reader.
@@ -112,7 +112,7 @@ public class ManagerReaderImpl implements ManagerReader {
      *
      * @param socket the socket to use for reading from the asterisk server.
      */
-    public void setSocket(final SocketConnectionFacade socket) {
+    public void setSocket(final SocketConnectionAdapter socket) {
         this.socket = socket;
     }
 
@@ -152,13 +152,13 @@ public class ManagerReaderImpl implements ManagerReader {
         RateLimiter slowEventLogLimiter = RateLimiter.create(4);
         try {
             // main loop
-            while (!this.die && (line = socket.readLine()) != null) {
+            while (!this.die && (line = socket.read()) != null) {
                 // maybe we will find a better way to identify the protocol
                 // identifier but for now
                 // this works quite well.
                 if (line.startsWith("Asterisk Call Manager/") || line.startsWith("Asterisk Call Manager Proxy/")
-                        || line.startsWith("Asterisk Manager Proxy/") || line.startsWith("OpenPBX Call Manager/")
-                        || line.startsWith("CallWeaver Call Manager/")) {
+                    || line.startsWith("Asterisk Manager Proxy/") || line.startsWith("OpenPBX Call Manager/")
+                    || line.startsWith("CallWeaver Call Manager/")) {
                     ProtocolIdentifierReceivedEvent protocolIdentifierReceivedEvent;
                     protocolIdentifierReceivedEvent = new ProtocolIdentifierReceivedEvent(source);
                     protocolIdentifierReceivedEvent.setProtocolIdentifier(line);
@@ -275,7 +275,7 @@ public class ManagerReaderImpl implements ManagerReader {
                             // check we haven't already logged this to often
                             if (slowEventLogLimiter.tryAcquire()) {
                                 logger.warn("(This is normal during JVM warmup) Slow processing of event " + elapsed + "\n"
-                                        + cause);
+                                    + cause);
                             }
                         }
                     }

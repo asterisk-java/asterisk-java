@@ -16,9 +16,9 @@
  */
 package org.asteriskjava.manager.internal;
 
+import org.asteriskjava.core.socket.SocketConnectionAdapter;
 import org.asteriskjava.manager.event.ManagerEvent;
 import org.asteriskjava.manager.response.ManagerResponse;
-import org.asteriskjava.util.SocketConnectionFacade;
 
 import java.io.IOException;
 
@@ -35,7 +35,7 @@ public class ManagerReaderMock implements ManagerReader {
         throw new UnsupportedOperationException();
     }
 
-    public void setSocket(SocketConnectionFacade socket) {
+    public void setSocket(SocketConnectionAdapter socket) {
         setSocketCalls++;
     }
 

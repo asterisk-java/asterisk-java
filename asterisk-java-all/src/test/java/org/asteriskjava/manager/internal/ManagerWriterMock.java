@@ -17,6 +17,7 @@
 package org.asteriskjava.manager.internal;
 
 import org.asteriskjava.AsteriskVersion;
+import org.asteriskjava.core.socket.SocketConnectionAdapter;
 import org.asteriskjava.manager.action.ChallengeAction;
 import org.asteriskjava.manager.action.LoginAction;
 import org.asteriskjava.manager.action.LogoffAction;
@@ -26,7 +27,6 @@ import org.asteriskjava.manager.response.ChallengeResponse;
 import org.asteriskjava.manager.response.ManagerError;
 import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.util.DateUtil;
-import org.asteriskjava.util.SocketConnectionFacade;
 
 import java.io.IOException;
 
@@ -73,7 +73,7 @@ public class ManagerWriterMock implements ManagerWriter {
         this.sendProtocolIdentifierReceivedEvent = sendConnectEvent;
     }
 
-    public void setSocket(SocketConnectionFacade socket) {
+    public void setSocket(SocketConnectionAdapter socket) {
         if (sendProtocolIdentifierReceivedEvent) {
             Thread future = new Thread(new Runnable() {
                 public void run() {

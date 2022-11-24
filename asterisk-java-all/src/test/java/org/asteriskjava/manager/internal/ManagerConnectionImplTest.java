@@ -17,6 +17,7 @@
 package org.asteriskjava.manager.internal;
 
 import org.asteriskjava.AsteriskVersion;
+import org.asteriskjava.core.socket.SocketConnectionAdapter;
 import org.asteriskjava.manager.AuthenticationFailedException;
 import org.asteriskjava.manager.ManagerConnectionState;
 import org.asteriskjava.manager.ManagerEventListener;
@@ -30,7 +31,6 @@ import org.asteriskjava.manager.event.DisconnectEvent;
 import org.asteriskjava.manager.event.ManagerEvent;
 import org.asteriskjava.manager.event.NewChannelEvent;
 import org.asteriskjava.manager.response.ManagerResponse;
-import org.asteriskjava.util.SocketConnectionFacade;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -43,7 +43,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class ManagerConnectionImplTest {
-    protected SocketConnectionFacade mockSocket;
+    protected SocketConnectionAdapter mockSocket;
     protected ManagerWriterMock mockWriter;
     protected ManagerReaderMock mockReader;
     protected MockedManagerConnectionImpl mc;
@@ -56,7 +56,7 @@ class ManagerConnectionImplTest {
         mockWriter.setExpectedKey("40b1b887502902a8ce61a16e44630f7c");
 
         mockReader = new ManagerReaderMock();
-        mockSocket = mock(SocketConnectionFacade.class);
+        mockSocket = mock(SocketConnectionAdapter.class);
         mc = new MockedManagerConnectionImpl(mockReader, mockWriter, mockSocket);
         mockWriter.setDispatcher(mc);
     }
@@ -538,7 +538,7 @@ class ManagerConnectionImplTest {
     private class MockedManagerConnectionImpl extends ManagerConnectionImpl {
         ManagerReader mockReader;
         ManagerWriter mockWriter;
-        SocketConnectionFacade mockSocket;
+        SocketConnectionAdapter mockSocket;
 
         private boolean throwIOExceptionOnFirstSocketCreate = false;
         private boolean throwTimeoutExceptionOnFirstLogin = false;
@@ -550,7 +550,7 @@ class ManagerConnectionImplTest {
         public int loginCalls = 0;
 
         public MockedManagerConnectionImpl(ManagerReader mockReader, ManagerWriter mockWriter,
-                                           SocketConnectionFacade mockSocket) {
+                                           SocketConnectionAdapter mockSocket) {
             super();
             this.mockReader = mockReader;
             this.mockWriter = mockWriter;
@@ -592,7 +592,7 @@ class ManagerConnectionImplTest {
         }
 
         @Override
-        protected SocketConnectionFacade createSocket() throws IOException {
+        protected SocketConnectionAdapter createSocket() throws IOException {
             createSocketCalls++;
 
             if (throwIOExceptionOnFirstSocketCreate && createSocketCalls == 1) {

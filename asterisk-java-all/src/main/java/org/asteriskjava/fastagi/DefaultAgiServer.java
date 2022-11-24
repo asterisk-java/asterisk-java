@@ -16,12 +16,15 @@
  */
 package org.asteriskjava.fastagi;
 
+import org.asteriskjava.core.socket.SocketConnectionAdapter;
 import org.asteriskjava.fastagi.internal.AgiConnectionHandler;
 import org.asteriskjava.fastagi.internal.DefaultAgiChannelFactory;
 import org.asteriskjava.fastagi.internal.FastAgiConnectionHandler;
-import org.asteriskjava.util.*;
+import org.asteriskjava.util.Log;
+import org.asteriskjava.util.LogFactory;
+import org.asteriskjava.util.ReflectionUtil;
+import org.asteriskjava.util.ServerSocketFacade;
 import org.asteriskjava.util.internal.ServerSocketFacadeImpl;
-import org.asteriskjava.util.internal.SocketConnectionFacadeImpl;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -67,7 +70,7 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer {
      *
      * @see Socket#setSoTimeout(int)
      */
-    private int socketReadTimeout = SocketConnectionFacadeImpl.MAX_SOCKET_READ_TIMEOUT_MILLIS;
+    private int socketReadTimeout = 10800000;
 
     /**
      * Creates a new DefaultAgiServer.
@@ -159,7 +162,7 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer {
             compositeMappingStrategy.addStrategy(new ClassNameMappingStrategy());
             if (ReflectionUtil.isClassAvailable("javax.script.ScriptEngineManager")) {
                 MappingStrategy scriptEngineMappingStrategy = (MappingStrategy) ReflectionUtil
-                        .newInstance("org.asteriskjava.fastagi.ScriptEngineMappingStrategy");
+                    .newInstance("org.asteriskjava.fastagi.ScriptEngineMappingStrategy");
                 if (scriptEngineMappingStrategy != null) {
                     compositeMappingStrategy.addStrategy(scriptEngineMappingStrategy);
                 }
@@ -301,7 +304,7 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer {
         // loop will be terminated by accept() throwing an IOException when the
         // ServerSocket is closed.
         while (true) {
-            final SocketConnectionFacade socket;
+            final SocketConnectionAdapter socket;
 
             // accept connection
             try {
@@ -320,7 +323,7 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer {
 
             // execute connection handler
             final AgiConnectionHandler connectionHandler = new FastAgiConnectionHandler(getMappingStrategy(), socket,
-                    this.getAgiChannelFactory());
+                this.getAgiChannelFactory());
             try {
                 execute(connectionHandler);
             } catch (RejectedExecutionException e) {

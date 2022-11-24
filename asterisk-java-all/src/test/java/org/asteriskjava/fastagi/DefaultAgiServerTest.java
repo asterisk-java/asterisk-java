@@ -16,8 +16,8 @@
  */
 package org.asteriskjava.fastagi;
 
+import org.asteriskjava.core.socket.SocketConnectionAdapter;
 import org.asteriskjava.util.ServerSocketFacade;
-import org.asteriskjava.util.SocketConnectionFacade;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,7 +31,7 @@ import static org.mockito.Mockito.when;
 class DefaultAgiServerTest {
     private DefaultAgiServer server;
     private MockedServerSocketFacade serverSocket;
-    private SocketConnectionFacade socket;
+    private SocketConnectionAdapter socket;
 
     @BeforeEach
     void setUp() {
@@ -50,9 +50,9 @@ class DefaultAgiServerTest {
     }
 
     void XtestStartup() throws Exception {
-        socket = mock(SocketConnectionFacade.class);
+        socket = mock(SocketConnectionAdapter.class);
 
-        when(socket.readLine())
+        when(socket.read())
                 .thenReturn(null)
                 .thenReturn(null);
         when(socket.getLocalPort()).thenReturn(1);
@@ -60,7 +60,7 @@ class DefaultAgiServerTest {
         when(socket.getRemotePort()).thenReturn(2);
         socket.write("VERBOSE \"No script configured for null\" 1\n");
         socket.flush();
-        when(socket.readLine()).thenReturn(null);
+        when(socket.read()).thenReturn(null);
         socket.close();
 
         try {
@@ -85,7 +85,7 @@ class DefaultAgiServerTest {
         public int acceptCalls = 0;
         public int closeCalls = 0;
 
-        public SocketConnectionFacade accept() throws IOException {
+        public SocketConnectionAdapter accept() throws IOException {
             acceptCalls++;
             try {
                 Thread.sleep(100);

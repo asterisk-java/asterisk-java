@@ -16,11 +16,11 @@
  */
 package org.asteriskjava.fastagi.internal;
 
+import org.asteriskjava.core.socket.SocketConnectionAdapter;
 import org.asteriskjava.fastagi.AgiHangupException;
 import org.asteriskjava.fastagi.AgiReader;
 import org.asteriskjava.fastagi.AgiRequest;
 import org.asteriskjava.fastagi.reply.AgiReply;
-import org.asteriskjava.util.SocketConnectionFacade;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -33,11 +33,11 @@ import static org.mockito.Mockito.when;
 
 class AgiReaderImplTest {
     private AgiReader agiReader;
-    private SocketConnectionFacade socket;
+    private SocketConnectionAdapter socket;
 
     @BeforeEach
     void setUp() {
-        this.socket = mock(SocketConnectionFacade.class);
+        this.socket = mock(SocketConnectionAdapter.class);
         this.agiReader = new FastAgiReader(socket);
     }
 
@@ -45,7 +45,7 @@ class AgiReaderImplTest {
     void testReadRequest() throws Exception {
         AgiRequest request;
 
-        when(socket.readLine())
+        when(socket.read())
                 .thenReturn("agi_network: yes")
                 .thenReturn("agi_network_script: myscript.agi")
                 .thenReturn("agi_request: agi://host/myscript.agi")
@@ -89,7 +89,7 @@ class AgiReaderImplTest {
     void testReadReply() throws Exception {
         AgiReply reply;
 
-        when(socket.readLine()).thenReturn("200 result=49 endpos=2240");
+        when(socket.read()).thenReturn("200 result=49 endpos=2240");
 
         reply = agiReader.readReply();
 
@@ -101,7 +101,7 @@ class AgiReaderImplTest {
     void testReadReplyInvalidOrUnknownCommand() throws Exception {
         AgiReply reply;
 
-        when(socket.readLine()).thenReturn("510 Invalid or unknown command");
+        when(socket.read()).thenReturn("510 Invalid or unknown command");
 
         reply = agiReader.readReply();
 
@@ -112,7 +112,7 @@ class AgiReaderImplTest {
     void testReadReplyInvalidCommandSyntax() throws Exception {
         AgiReply reply;
 
-        when(socket.readLine())
+        when(socket.read())
                 .thenReturn("520-Invalid command syntax.  Proper usage follows:")
                 .thenReturn(" Usage: DATABASE DEL <family> <key>")
                 .thenReturn("        Deletes an entry in the Asterisk database for a")
@@ -128,7 +128,7 @@ class AgiReaderImplTest {
 
     @Test
     void testReadReplyWhenHungUp() throws Exception {
-        when(socket.readLine()).thenReturn(null);
+        when(socket.read()).thenReturn(null);
 
         try {
             agiReader.readReply();

@@ -16,11 +16,11 @@
  */
 package org.asteriskjava.fastagi.internal;
 
+import org.asteriskjava.core.socket.SocketConnectionAdapter;
 import org.asteriskjava.fastagi.AgiException;
 import org.asteriskjava.fastagi.AgiNetworkException;
 import org.asteriskjava.fastagi.AgiWriter;
 import org.asteriskjava.fastagi.command.AgiCommand;
-import org.asteriskjava.util.SocketConnectionFacade;
 
 import java.io.IOException;
 
@@ -32,9 +32,9 @@ import java.io.IOException;
  * @version $Id$
  */
 class FastAgiWriter implements AgiWriter {
-    private final SocketConnectionFacade socket;
+    private final SocketConnectionAdapter socket;
 
-    FastAgiWriter(SocketConnectionFacade socket) {
+    FastAgiWriter(SocketConnectionAdapter socket) {
         this.socket = socket;
     }
 

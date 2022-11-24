@@ -16,8 +16,8 @@
  */
 package org.asteriskjava.manager.internal;
 
+import org.asteriskjava.core.socket.SocketConnectionAdapter;
 import org.asteriskjava.manager.action.StatusAction;
-import org.asteriskjava.util.SocketConnectionFacade;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -45,13 +45,13 @@ class ManagerWriterImplTest {
 
     @Test
     void testSendAction() throws Exception {
-        SocketConnectionFacade socketConnectionFacade;
+        SocketConnectionAdapter socketConnectionAdapter;
 
-        socketConnectionFacade = mock(SocketConnectionFacade.class);
-        socketConnectionFacade.write("action: Status\r\n\r\n");
-        socketConnectionFacade.flush();
+        socketConnectionAdapter = mock(SocketConnectionAdapter.class);
+        socketConnectionAdapter.write("action: Status\r\n\r\n");
+        socketConnectionAdapter.flush();
 
-        managerWriter.setSocket(socketConnectionFacade);
+        managerWriter.setSocket(socketConnectionAdapter);
         managerWriter.sendAction(new StatusAction(), null);
     }
 }

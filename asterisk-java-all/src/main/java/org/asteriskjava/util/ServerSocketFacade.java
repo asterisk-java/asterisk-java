@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.util;
 
+import org.asteriskjava.core.socket.SocketConnectionAdapter;
+
 import java.io.IOException;
 
 /**
@@ -34,7 +36,7 @@ public interface ServerSocketFacade {
      * @return the new connection.
      * @throws IOException if an I/O error occurs when waiting for a connection.
      */
-    SocketConnectionFacade accept() throws IOException;
+    SocketConnectionAdapter accept() throws IOException;
 
     /**
      * Unbinds and closes the server socket.

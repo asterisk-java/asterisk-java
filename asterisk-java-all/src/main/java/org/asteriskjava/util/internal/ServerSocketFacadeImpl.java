@@ -16,13 +16,16 @@
  */
 package org.asteriskjava.util.internal;
 
+import org.asteriskjava.core.socket.SocketConnectionAdapter;
 import org.asteriskjava.util.ServerSocketFacade;
-import org.asteriskjava.util.SocketConnectionFacade;
 
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.time.Duration;
+
+import static org.asteriskjava.core.socket.scanner.SocketScanner.NewlineDelimiter.LF;
 
 
 /**
@@ -35,19 +38,33 @@ import java.net.Socket;
 public class ServerSocketFacadeImpl implements ServerSocketFacade {
     private ServerSocket serverSocket;
 
-    private int socketReadTimeout = SocketConnectionFacadeImpl.MAX_SOCKET_READ_TIMEOUT_MILLIS;
+    /**
+     * 3 hrs = 3 * 3660 * 1000
+     */
+    private int socketReadTimeout = 10800000;
 
     public ServerSocketFacadeImpl(int port, int backlog, InetAddress bindAddress)
-            throws IOException {
+        throws IOException {
         this.serverSocket = new ServerSocket(port, backlog, bindAddress);
     }
 
-    public SocketConnectionFacade accept() throws IOException {
+    public SocketConnectionAdapter accept() throws IOException {
         Socket socket;
 
         socket = serverSocket.accept();
 
-        return new SocketConnectionFacadeImpl(socket, socketReadTimeout);
+        int timeout;
+        if (socketReadTimeout == -1) {
+            timeout = 0;
+        } else {
+            timeout = socketReadTimeout;
+        }
+
+        return SocketConnectionAdapter
+            .builder(socket)
+            .readTimeout(Duration.ofMillis(timeout))
+            .newlineDelimiter(LF)
+            .build();
     }
 
     public void close() throws IOException {

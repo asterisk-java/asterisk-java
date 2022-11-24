@@ -16,11 +16,11 @@
  */
 package org.asteriskjava.manager.internal;
 
+import org.asteriskjava.core.socket.SocketConnectionAdapter;
 import org.asteriskjava.manager.event.*;
 import org.asteriskjava.manager.response.CommandResponse;
 import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.util.DateUtil;
-import org.asteriskjava.util.SocketConnectionFacade;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -37,7 +37,7 @@ import static org.mockito.Mockito.when;
 class ManagerReaderImplTest {
     private Date now;
     private MockedDispatcher dispatcher;
-    private SocketConnectionFacade socketConnectionFacade;
+    private SocketConnectionAdapter socketConnectionFacade;
     private ManagerReader managerReader;
 
     @BeforeEach
@@ -47,7 +47,7 @@ class ManagerReaderImplTest {
         dispatcher = new MockedDispatcher();
         managerReader = new ManagerReaderImpl(dispatcher, this);
 
-        socketConnectionFacade = mock(SocketConnectionFacade.class);
+        socketConnectionFacade = mock(SocketConnectionAdapter.class);
     }
 
     @AfterEach
@@ -67,7 +67,7 @@ class ManagerReaderImplTest {
 
     @Test
     void testRunReceivingProtocolIdentifier() throws Exception {
-        when(socketConnectionFacade.readLine())
+        when(socketConnectionFacade.read())
                 .thenReturn("Asterisk Call Manager/1.0")
                 .thenReturn(null);
 
@@ -88,7 +88,7 @@ class ManagerReaderImplTest {
 
     @Test
     void testRunReceivingEvent() throws Exception {
-        when(socketConnectionFacade.readLine())
+        when(socketConnectionFacade.read())
                 .thenReturn("Event: StatusComplete")
                 .thenReturn("")
                 .thenReturn(null);
@@ -104,7 +104,7 @@ class ManagerReaderImplTest {
 
     @Test
     void testRunReceivingEventWithMapProperty() throws Exception {
-        when(socketConnectionFacade.readLine())
+        when(socketConnectionFacade.read())
                 .thenReturn("Event: AgentCalled")
                 .thenReturn("Variable: var1=val1")
                 .thenReturn("Variable: var2=val2")
@@ -129,7 +129,7 @@ class ManagerReaderImplTest {
 
     @Test
     void testRunReceivingEventWithMapPropertyAndOnlyOneEntry() throws Exception {
-        when(socketConnectionFacade.readLine())
+        when(socketConnectionFacade.read())
                 .thenReturn("Event: AgentCalled")
                 .thenReturn("Variable: var1=val1")
                 .thenReturn("")
@@ -152,7 +152,7 @@ class ManagerReaderImplTest {
 
     @Test
     void testWorkaroundForAsteriskBug13319() throws Exception {
-        when(socketConnectionFacade.readLine())
+        when(socketConnectionFacade.read())
                 .thenReturn("Event: RTCPReceived")
                 .thenReturn("From 192.168.0.1:1234")
                 .thenReturn("HighestSequence: 999")
@@ -178,7 +178,7 @@ class ManagerReaderImplTest {
     void XtestRunReceivingUserEvent() throws Exception {
         managerReader.registerEventClass(MyUserEvent.class);
 
-        when(socketConnectionFacade.readLine())
+        when(socketConnectionFacade.read())
                 .thenReturn("Event: MyUser")
                 .thenReturn("")
                 .thenReturn(null);
@@ -196,7 +196,7 @@ class ManagerReaderImplTest {
 
     @Test
     void testRunReceivingResponse() throws Exception {
-        when(socketConnectionFacade.readLine())
+        when(socketConnectionFacade.read())
                 .thenReturn("Response: Success")
                 .thenReturn("Message: Authentication accepted")
                 .thenReturn("")
@@ -225,7 +225,7 @@ class ManagerReaderImplTest {
     void testRunReceivingCommandResponse() throws Exception {
         List<String> result = new ArrayList<String>();
 
-        when(socketConnectionFacade.readLine())
+        when(socketConnectionFacade.read())
                 .thenReturn("Response: Follows")
                 .thenReturn("ActionID: 678#12345")
                 .thenReturn("Line1\nLine2\n--END COMMAND--")
@@ -256,7 +256,7 @@ class ManagerReaderImplTest {
 
     @Test
     void testRunCatchingIOException() throws Exception {
-        when(socketConnectionFacade.readLine()).thenThrow(new IOException("Something happened to the network..."));
+        when(socketConnectionFacade.read()).thenThrow(new IOException("Something happened to the network..."));
 
         managerReader.setSocket(socketConnectionFacade);
         managerReader.run();

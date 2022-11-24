@@ -16,9 +16,9 @@
  */
 package org.asteriskjava.fastagi.internal;
 
+import org.asteriskjava.core.socket.SocketConnectionAdapter;
 import org.asteriskjava.fastagi.AgiWriter;
 import org.asteriskjava.fastagi.command.StreamFileCommand;
-import org.asteriskjava.util.SocketConnectionFacade;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -27,11 +27,11 @@ import static org.mockito.Mockito.verify;
 
 class AgiWriterImplTest {
     private AgiWriter agiWriter;
-    private SocketConnectionFacade socket;
+    private SocketConnectionAdapter socket;
 
     @BeforeEach
     void setUp() {
-        this.socket = mock(SocketConnectionFacade.class);
+        this.socket = mock(SocketConnectionAdapter.class);
         this.agiWriter = new FastAgiWriter(socket);
     }
 

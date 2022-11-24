@@ -17,8 +17,8 @@
 package org.asteriskjava.manager.internal;
 
 import org.asteriskjava.AsteriskVersion;
+import org.asteriskjava.core.socket.SocketConnectionAdapter;
 import org.asteriskjava.manager.action.ManagerAction;
-import org.asteriskjava.util.SocketConnectionFacade;
 
 import java.io.IOException;
 
@@ -47,7 +47,7 @@ public interface ManagerWriter {
      *
      * @param socket the socket to use for writing to Asterisk.
      */
-    void setSocket(final SocketConnectionFacade socket);
+    void setSocket(final SocketConnectionAdapter socket);
 
     /**
      * Sends the given action to the asterisk server.

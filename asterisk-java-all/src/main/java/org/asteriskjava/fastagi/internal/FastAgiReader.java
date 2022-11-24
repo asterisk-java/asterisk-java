@@ -16,9 +16,9 @@
  */
 package org.asteriskjava.fastagi.internal;
 
+import org.asteriskjava.core.socket.SocketConnectionAdapter;
 import org.asteriskjava.fastagi.*;
 import org.asteriskjava.fastagi.reply.AgiReply;
-import org.asteriskjava.util.SocketConnectionFacade;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,9 +31,9 @@ import java.util.List;
  * @version $Id$
  */
 class FastAgiReader implements AgiReader {
-    private final SocketConnectionFacade socket;
+    private final SocketConnectionAdapter socket;
 
-    FastAgiReader(SocketConnectionFacade socket) {
+    FastAgiReader(SocketConnectionAdapter socket) {
         this.socket = socket;
     }
 
@@ -45,7 +45,7 @@ class FastAgiReader implements AgiReader {
         lines = new ArrayList<>();
 
         try {
-            while ((line = socket.readLine()) != null) {
+            while ((line = socket.read()) != null) {
                 if (line.length() == 0) {
                     break;
                 }
@@ -73,7 +73,7 @@ class FastAgiReader implements AgiReader {
         lines = new ArrayList<>();
 
         try {
-            line = socket.readLine();
+            line = socket.read();
         } catch (IOException e) {
             // readline throws IOException if the connection has been closed
             throw new AgiHangupException();
@@ -98,7 +98,7 @@ class FastAgiReader implements AgiReader {
         // read synopsis and usage if statuscode is 520
         if (line.startsWith(Integer.toString(AgiReply.SC_INVALID_COMMAND_SYNTAX))) {
             try {
-                while ((line = socket.readLine()) != null) {
+                while ((line = socket.read()) != null) {
                     lines.add(line);
                     if (line.startsWith(Integer.toString(AgiReply.SC_INVALID_COMMAND_SYNTAX))) {
                         break;

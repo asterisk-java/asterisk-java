@@ -17,10 +17,10 @@
 package org.asteriskjava.manager.internal;
 
 import org.asteriskjava.AsteriskVersion;
+import org.asteriskjava.core.socket.SocketConnectionAdapter;
 import org.asteriskjava.lock.Lockable;
 import org.asteriskjava.lock.Locker.LockCloser;
 import org.asteriskjava.manager.action.ManagerAction;
-import org.asteriskjava.util.SocketConnectionFacade;
 
 import java.io.IOException;
 
@@ -42,7 +42,7 @@ public class ManagerWriterImpl extends Lockable implements ManagerWriter {
      */
     private final ActionBuilder actionBuilder;
 
-    private SocketConnectionFacade socket;
+    private SocketConnectionAdapter socket;
 
     /**
      * Creates a new ManagerWriter.
@@ -55,7 +55,7 @@ public class ManagerWriterImpl extends Lockable implements ManagerWriter {
         actionBuilder.setTargetVersion(version);
     }
 
-    public void setSocket(final SocketConnectionFacade socket) {
+    public void setSocket(final SocketConnectionAdapter socket) {
         try (LockCloser closer = this.withLock()) {
             this.socket = socket;
         }
