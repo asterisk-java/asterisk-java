@@ -69,7 +69,6 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
     // NOTE: identifier is AMI_VERSION, defined in include/asterisk/manager.h
     // AMI version consists of MAJOR.BREAKING.NON-BREAKING.
     private static final String[] SUPPORTED_AMI_VERSIONS = {
-
         "2.6", // Asterisk 13
         "2.7", // Asterisk 13.2
         "2.8", // Asterisk >13.5
@@ -80,7 +79,8 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
         "5.0", // Asterisk 16
         "6.0", // Asterisk 17
         "7.0", // Asterisk 18
-        "10.0.0", // Asterisk 20
+        "8.0", // Asterisk 18
+        "9.0", // Asterisk 20
     };
 
     private static final AtomicLong idCounter = new AtomicLong(0);
