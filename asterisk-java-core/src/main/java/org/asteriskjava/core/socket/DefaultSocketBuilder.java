@@ -62,12 +62,11 @@ class DefaultSocketBuilder implements SocketBuilder {
     @Override
     public Socket build() throws IOException {
         SocketFactory socketFactory = ssl ? SSLSocketFactory.getDefault() : SocketFactory.getDefault();
-        try (Socket socket = socketFactory.createSocket()) {
-            InetSocketAddress endpoint = new InetSocketAddress(hostname, port);
-            int connectionTimeout = toIntExact(this.connectionTimeout.toMillis());
-            socket.connect(endpoint, connectionTimeout);
+        Socket socket = socketFactory.createSocket();
+        InetSocketAddress endpoint = new InetSocketAddress(hostname, port);
+        int connectionTimeout = toIntExact(this.connectionTimeout.toMillis());
+        socket.connect(endpoint, connectionTimeout);
 
-            return socket;
-        }
+        return socket;
     }
 }
