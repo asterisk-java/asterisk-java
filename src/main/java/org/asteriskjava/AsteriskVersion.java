@@ -39,6 +39,7 @@ public class AsteriskVersion implements Comparable<AsteriskVersion>, Serializabl
     private final String versionString;
     private final Pattern patterns[];
 
+    private static final String VERSION_PATTERN_CERTIFIED_18 = "^\\s*Asterisk certified/(GIT-)?18[-. ].*";
     private static final String VERSION_PATTERN_CERTIFIED_16 = "^\\s*Asterisk certified/(GIT-)?16[-. ].*";
     private static final String VERSION_PATTERN_CERTIFIED_13 = "^\\s*Asterisk certified/((SVN-branch|GIT)-)?13[-. ].*";
 
@@ -136,7 +137,7 @@ public class AsteriskVersion implements Comparable<AsteriskVersion>, Serializabl
      *
      * @since 3.13.0
      */
-    public static final AsteriskVersion ASTERISK_18 = new AsteriskVersion(1800, "Asterisk 18", VERSION_PATTERN_18);
+    public static final AsteriskVersion ASTERISK_18 = new AsteriskVersion(1800, "Asterisk 18", VERSION_PATTERN_18, VERSION_PATTERN_CERTIFIED_18);
 
     /**
      * Represents the Asterisk 19 series.
