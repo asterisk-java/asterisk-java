@@ -16,6 +16,7 @@
  */
 package org.asteriskjava.live;
 
+import org.asteriskjava.ami.action.CommandAction;
 import org.asteriskjava.config.ConfigFile;
 import org.asteriskjava.manager.ManagerConnection;
 import org.asteriskjava.manager.ManagerEventListener;
@@ -397,7 +398,7 @@ public interface AsteriskServer {
      * @return a List containing strings representing the lines returned by the
      * CLI command.
      * @throws ManagerCommunicationException if the command can't be executed.
-     * @see org.asteriskjava.manager.action.CommandAction
+     * @see CommandAction
      * @since 0.3
      */
     List<String> executeCliCommand(String command) throws ManagerCommunicationException;

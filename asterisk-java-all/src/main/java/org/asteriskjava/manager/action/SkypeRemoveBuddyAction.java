@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.action;
 
+import org.asteriskjava.ami.action.AbstractManagerAction;
+
 /**
  * The SkypeRemoveBuddyAction removes a buddy from the buddy list of a Skype for Asterisk user.<p>
  * Available with Skype for Asterisk.

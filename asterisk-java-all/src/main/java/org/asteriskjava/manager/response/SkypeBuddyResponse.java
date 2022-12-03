@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.response;
 
+import org.asteriskjava.ami.action.response.ManagerResponse;
+
 /**
  * Corresponds to a SkypeBuddyAction and contains the details of a Skype buddy.
  *

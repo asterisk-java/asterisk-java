@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.response;
 
+import org.asteriskjava.ami.action.response.ManagerResponse;
+
 /**
  * A MailboxCountResponse is sent in response to a MailboxCountAction and contains the number of old
  * and new messages in a mailbox.

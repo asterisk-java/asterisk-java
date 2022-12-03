@@ -1,5 +1,7 @@
 package org.asteriskjava.manager.action;
 
+import org.asteriskjava.ami.action.AbstractManagerAction;
+
 /**
  * The QueueMemberRingInUseAction requests to change RingInUse value of queue member.
  */

@@ -1,5 +1,6 @@
 package org.asteriskjava.fastagi.internal;
 
+import org.asteriskjava.ami.action.response.ManagerResponse;
 import org.asteriskjava.fastagi.AgiException;
 import org.asteriskjava.fastagi.AgiWriter;
 import org.asteriskjava.fastagi.command.AgiCommand;
@@ -7,7 +8,6 @@ import org.asteriskjava.manager.ManagerConnection;
 import org.asteriskjava.manager.TimeoutException;
 import org.asteriskjava.manager.action.AgiAction;
 import org.asteriskjava.manager.response.ManagerError;
-import org.asteriskjava.manager.response.ManagerResponse;
 
 import java.io.IOException;
 

@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.action;
 
+import org.asteriskjava.ami.action.AbstractManagerAction;
+
 public class MWIUpdateAction extends AbstractManagerAction {
     static final long serialVersionUID = 1L;
     private String mailbox;

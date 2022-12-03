@@ -1,5 +1,7 @@
 package org.asteriskjava.manager.action;
 
+import org.asteriskjava.ami.action.AbstractManagerAction;
+
 /**
  * The ConfbridgeLockAction lockes a specified conference.
  *

@@ -16,7 +16,7 @@
  */
 package org.asteriskjava.manager.internal;
 
-import org.asteriskjava.manager.response.ManagerResponse;
+import org.asteriskjava.ami.action.response.ManagerResponse;
 
 import java.util.Map;
 
@@ -26,7 +26,7 @@ import java.util.Map;
  *
  * @author srt
  * @version $Id$
- * @see org.asteriskjava.manager.response.ManagerResponse
+ * @see ManagerResponse
  */
 interface ResponseBuilder {
     /**

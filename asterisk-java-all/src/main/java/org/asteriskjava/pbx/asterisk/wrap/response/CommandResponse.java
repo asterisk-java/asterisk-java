@@ -8,11 +8,11 @@ public class CommandResponse extends ManagerResponse {
     private List<String> result;
     private boolean error;
 
-    public CommandResponse(org.asteriskjava.manager.response.ManagerResponse response) {
+    public CommandResponse(org.asteriskjava.ami.action.response.ManagerResponse response) {
         super(response);
 
-        if (response instanceof org.asteriskjava.manager.response.CommandResponse) {
-            result = ((org.asteriskjava.manager.response.CommandResponse) response).getResult();
+        if (response instanceof org.asteriskjava.ami.action.response.CommandResponse) {
+            result = ((org.asteriskjava.ami.action.response.CommandResponse) response).getOutputs();
         } else if (response instanceof org.asteriskjava.manager.response.ManagerError) {
             error = true;
             result = Collections.singletonList(response.getOutput());

@@ -16,8 +16,9 @@
  */
 package org.asteriskjava.manager.action;
 
-import org.asteriskjava.manager.ExpectedResponse;
-import org.asteriskjava.manager.response.CommandResponse;
+import org.asteriskjava.ami.action.AbstractManagerAction;
+import org.asteriskjava.ami.action.annotation.ExpectedResponse;
+import org.asteriskjava.ami.action.response.CommandResponse;
 
 /**
  * The CommandAction sends a command line interface (CLI) command to the
@@ -45,7 +46,7 @@ import org.asteriskjava.manager.response.CommandResponse;
  *
  * @author srt
  * @version $Id$
- * @see org.asteriskjava.manager.response.CommandResponse
+ * @see CommandResponse
  */
 @ExpectedResponse(CommandResponse.class)
 public class ExecAction extends AbstractManagerAction {

@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.response;
 
+import org.asteriskjava.ami.action.response.ManagerResponse;
+
 /**
  * Corresponds to a ModuleCheckAction and contains the version of the module.
  *

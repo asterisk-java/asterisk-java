@@ -17,10 +17,10 @@
 package org.asteriskjava.manager.internal;
 
 import org.asteriskjava.AsteriskVersion;
+import org.asteriskjava.ami.action.ManagerAction;
 import org.asteriskjava.core.socket.SocketConnectionAdapter;
 import org.asteriskjava.lock.Lockable;
 import org.asteriskjava.lock.Locker.LockCloser;
-import org.asteriskjava.manager.action.ManagerAction;
 
 import java.io.IOException;
 

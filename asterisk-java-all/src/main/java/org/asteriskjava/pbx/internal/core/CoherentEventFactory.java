@@ -136,9 +136,9 @@ public class CoherentEventFactory {
         return response;
     }
 
-    public static ManagerResponse build(org.asteriskjava.manager.response.ManagerResponse response) {
+    public static ManagerResponse build(org.asteriskjava.ami.action.response.ManagerResponse response) {
         ManagerResponse result;
-        if (response instanceof org.asteriskjava.manager.response.CommandResponse) {
+        if (response instanceof org.asteriskjava.ami.action.response.CommandResponse) {
             result = new CommandResponse(response);
         } else if (response instanceof org.asteriskjava.manager.response.ManagerError) {
             result = new ManagerError(response);
@@ -149,8 +149,8 @@ public class CoherentEventFactory {
 
     }
 
-    public static org.asteriskjava.manager.action.ManagerAction build(ManagerAction action) {
-        org.asteriskjava.manager.action.ManagerAction result = null;
+    public static org.asteriskjava.ami.action.ManagerAction build(ManagerAction action) {
+        org.asteriskjava.ami.action.ManagerAction result = null;
 
         // final Class<? extends org.asteriskjava.manager.action.ManagerAction>
         // target = CoherentEventFactory.mapActions.get(action.getClass());

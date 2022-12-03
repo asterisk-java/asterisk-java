@@ -16,6 +16,9 @@
 package org.asteriskjava.manager.internal;
 
 import org.asteriskjava.AsteriskVersion;
+import org.asteriskjava.ami.action.*;
+import org.asteriskjava.ami.action.annotation.ExpectedResponse;
+import org.asteriskjava.ami.action.response.*;
 import org.asteriskjava.core.socket.SocketBuilder;
 import org.asteriskjava.core.socket.SocketConnectionAdapter;
 import org.asteriskjava.lock.Lockable;
@@ -23,9 +26,11 @@ import org.asteriskjava.lock.LockableList;
 import org.asteriskjava.lock.LockableMap;
 import org.asteriskjava.lock.Locker.LockCloser;
 import org.asteriskjava.manager.*;
-import org.asteriskjava.manager.action.*;
+import org.asteriskjava.manager.action.EventGeneratingAction;
+import org.asteriskjava.manager.action.LogoffAction;
+import org.asteriskjava.manager.action.UserEventAction;
 import org.asteriskjava.manager.event.*;
-import org.asteriskjava.manager.response.*;
+import org.asteriskjava.manager.response.ManagerError;
 import org.asteriskjava.pbx.util.LogTime;
 import org.asteriskjava.util.DateUtil;
 import org.asteriskjava.util.Log;
@@ -41,6 +46,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -221,7 +227,7 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
 
     protected ManagerConnectionState state = INITIAL;
 
-    private String eventMask;
+    private EnumSet<EventMask> events;
 
     /**
      * Creates a new instance.
@@ -416,7 +422,7 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
         login(null);
     }
 
-    public void login(String eventMask) throws IOException, AuthenticationFailedException, TimeoutException {
+    public void login(EnumSet<EventMask> events) throws IOException, AuthenticationFailedException, TimeoutException {
         try (LockCloser closer = this.withLock()) {
             if (state != INITIAL && state != DISCONNECTED) {
                 throw new IllegalStateException("Login may only be perfomed when in state "
@@ -424,9 +430,9 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
             }
 
             state = CONNECTING;
-            this.eventMask = eventMask;
+            this.events = events;
             try {
-                doLogin(defaultResponseTimeout, eventMask);
+                doLogin(defaultResponseTimeout, events);
             } finally {
                 if (state != CONNECTED) {
                     state = DISCONNECTED;
@@ -463,7 +469,7 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
      * @throws TimeoutException              if a timeout occurs while waiting for the
      *                                       protocol identifier. The connection is closed in this case.
      */
-    protected void doLogin(long timeout, String eventMask)
+    protected void doLogin(long timeout, EnumSet<EventMask> events)
         throws IOException, AuthenticationFailedException, TimeoutException {
         try (LockCloser closer = this.withLock()) {
             ChallengeAction challengeAction;
@@ -494,7 +500,7 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
                 throw new TimeoutException("Timeout waiting for protocol identifier");
             }
 
-            challengeAction = new ChallengeAction("MD5");
+            challengeAction = new ChallengeAction(AuthType.MD5);
             try {
                 challengeResponse = sendAction(challengeAction);
             } catch (Exception e) {
@@ -526,7 +532,8 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
                 throw new AuthenticationFailedException("Unable to create login key using MD5 Message Digest", ex);
             }
 
-            loginAction = new LoginAction(username, "MD5", key, eventMask);
+            loginAction = new LoginAction(username, AuthType.MD5, key);
+            loginAction.setEvents(events);
             try {
                 loginResponse = sendAction(loginAction);
             } catch (Exception e) {
@@ -534,7 +541,7 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
                 throw new AuthenticationFailedException("Unable to send login action", e);
             }
 
-            if (loginResponse instanceof ManagerError) {
+            if (loginResponse.getResponse() == ResponseType.Error) {
                 disconnect();
                 throw new AuthenticationFailedException(loginResponse.getMessage());
             }
@@ -626,7 +633,7 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
             return null;
         }
 
-        final List<String> coreShowVersionResult = ((CommandResponse) coreShowVersionResponse).getResult();
+        final List<String> coreShowVersionResult = ((CommandResponse) coreShowVersionResponse).getOutputs();
         if (coreShowVersionResult == null || coreShowVersionResult.isEmpty()) {
             logger.warn("Got empty response for 'core show version'");
             return null;
@@ -1025,7 +1032,7 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
 
         if (actionId != null) {
             internalActionId = ManagerUtil.getInternalActionId(actionId);
-            response.setActionId(ManagerUtil.stripInternalActionId(actionId));
+//            response.setActionId(ManagerUtil.stripInternalActionId(actionId));
         }
 
         if (logger.isDebugEnabled()) {
@@ -1282,7 +1289,7 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
                     connect();
 
                     try {
-                        doLogin(defaultResponseTimeout, eventMask);
+                        doLogin(defaultResponseTimeout, events);
                         logger.info("Successfully reconnected.");
                         // everything is ok again, so we leave
                         // when successful doLogin set the state to CONNECTED so

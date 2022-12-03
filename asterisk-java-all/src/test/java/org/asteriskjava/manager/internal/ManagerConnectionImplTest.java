@@ -17,27 +17,30 @@
 package org.asteriskjava.manager.internal;
 
 import org.asteriskjava.AsteriskVersion;
+import org.asteriskjava.ami.action.CommandAction;
+import org.asteriskjava.ami.action.CoreSettingsAction;
+import org.asteriskjava.ami.action.EventMask;
+import org.asteriskjava.ami.action.response.ManagerResponse;
 import org.asteriskjava.core.socket.SocketConnectionAdapter;
 import org.asteriskjava.manager.AuthenticationFailedException;
 import org.asteriskjava.manager.ManagerConnectionState;
 import org.asteriskjava.manager.ManagerEventListener;
 import org.asteriskjava.manager.TimeoutException;
-import org.asteriskjava.manager.action.CommandAction;
-import org.asteriskjava.manager.action.CoreSettingsAction;
 import org.asteriskjava.manager.action.PingAction;
 import org.asteriskjava.manager.action.StatusAction;
 import org.asteriskjava.manager.event.ConnectEvent;
 import org.asteriskjava.manager.event.DisconnectEvent;
 import org.asteriskjava.manager.event.ManagerEvent;
 import org.asteriskjava.manager.event.NewChannelEvent;
-import org.asteriskjava.manager.response.ManagerResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 
+import static org.asteriskjava.ami.action.response.ResponseType.Success;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -136,7 +139,7 @@ class ManagerConnectionImplTest {
         assertTrue(listener.eventsHandled.get(0) instanceof ConnectEvent, "event handled must be a ConnectEvent");
 
         assertTrue(duration <= 2000,
-                "login() took longer than 2 second, probably a notify error (duration was " + duration + " is msec)");
+            "login() took longer than 2 second, probably a notify error (duration was " + duration + " is msec)");
     }
 
     @Test
@@ -368,7 +371,7 @@ class ManagerConnectionImplTest {
         response = new ManagerResponse();
         // internalActionId: 123_0
         response.setActionId("123_0-abc");
-        response.setResponse("Success");
+        response.setResponse(Success);
 
         // expected result is ignoring the response and logging
         mc.dispatchResponse(response, null);
@@ -380,7 +383,7 @@ class ManagerConnectionImplTest {
 
         response = new ManagerResponse();
         response.setActionId("abc");
-        response.setResponse("Success");
+        response.setResponse(Success);
 
         // expected result is ignoring the response and logging
         mc.dispatchResponse(response, null);
@@ -392,7 +395,7 @@ class ManagerConnectionImplTest {
 
         response = new ManagerResponse();
         response.setActionId(null);
-        response.setResponse("Success");
+        response.setResponse(Success);
 
         // expected result is ignoring the response and logging
         mc.dispatchResponse(response, null);
@@ -602,8 +605,8 @@ class ManagerConnectionImplTest {
         }
 
         @Override
-        protected synchronized void doLogin(long timeout, String events)
-                throws IOException, AuthenticationFailedException, TimeoutException {
+        protected synchronized void doLogin(long timeout, EnumSet<EventMask> events)
+            throws IOException, AuthenticationFailedException, TimeoutException {
             loginCalls++;
 
             if (throwTimeoutExceptionOnFirstLogin && loginCalls == 1) {

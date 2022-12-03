@@ -17,14 +17,22 @@
 package org.asteriskjava.manager.internal;
 
 import org.asteriskjava.AsteriskVersion;
+import org.asteriskjava.ami.action.AbstractManagerAction;
+import org.asteriskjava.ami.action.EventMask;
+import org.asteriskjava.ami.action.LoginAction;
 import org.asteriskjava.manager.action.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.EnumSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.asteriskjava.ami.action.EventMask.agent;
+import static org.asteriskjava.ami.action.EventMask.agi;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ActionBuilderImplTest {
     private ActionBuilderImpl actionBuilder;
@@ -78,9 +86,9 @@ class ActionBuilderImplTest {
 
         actual = actionBuilder.buildAction(action);
 
-        assertTrue(actual.indexOf("action: Agents\r\n") >= 0, "Action name missing");
-        assertTrue(actual.indexOf("actioncompleteeventclass:") == -1, "Action contains actionCompleteEventClass property");
-        assertTrue(actual.endsWith("\r\n\r\n"), "Missing trailing CRNL CRNL");
+        assertThat(actual).contains("action: Agents\r\n");
+        assertThat(actual).doesNotContain("actioncompleteeventclass: ");
+        assertThat(actual).endsWith("\r\n\r\n");
     }
 
     @Test
@@ -94,14 +102,13 @@ class ActionBuilderImplTest {
 
         String actual = actionBuilder.buildAction(action);
 
-        assertTrue(actual.indexOf("action: UpdateConfig") >= 0, "Action name missing");
-        assertTrue(actual.indexOf("srcfilename: sourcefile.conf") >= 0, "Source filename missing");
-        assertTrue(actual.indexOf("dstfilename: destfile.conf") >= 0, "Destination filename missing");
-        assertTrue(actual.indexOf("reload: Yes") >= 0, "Correct reload setting missing");
-
-        assertFalse(actual.indexOf("Action-0:") >= 0, "Action must have zero-padded 6 digit numbering");
-        assertFalse(actual.indexOf("action: Action") >= 0, "UpdateConfig actions must not have more than one 'action' header");
-        assertTrue(actual.indexOf("Cat-000000: testcategory") >= 0, "Action missing category testcategory - " + actual);
+        assertThat(actual).contains("action: UpdateConfig\r\n");
+        assertThat(actual).contains("srcfilename: sourcefile.conf\r\n");
+        assertThat(actual).contains("dstfilename: destfile.conf\r\n");
+        assertThat(actual).contains("reload: Yes\r\n");
+        assertThat(actual).doesNotContain("Action-0:");
+        assertThat(actual).doesNotContain("action: Action");
+        assertThat(actual).contains("Cat-000000: testcategory");
     }
 
     @Test
@@ -113,7 +120,7 @@ class ActionBuilderImplTest {
         event = new MyUserEvent(this);
         action.setUserEvent(event);
 
-        Map<String, String> mapMemberTest = new LinkedHashMap<String, String>();
+        Map<String, String> mapMemberTest = new LinkedHashMap<>();
         mapMemberTest.put("Key1", "Value1");
         mapMemberTest.put("Key2", "Value2");
         mapMemberTest.put("Key3", "Value3");
@@ -122,11 +129,12 @@ class ActionBuilderImplTest {
         event.setMapMember(mapMemberTest);
 
         String actual = actionBuilder.buildAction(action);
-        assertTrue(actual.indexOf("action: UserEvent\r\n") >= 0, "Action name missing");
-        assertTrue(actual.indexOf("UserEvent: myuser\r\n") >= 0, "Event name missing");
-        assertTrue(actual.indexOf("stringmember: stringMemberValue\r\n") >= 0, "Regular member missing");
-        assertTrue(actual.indexOf("mapmember: Key1=Value1|Key2=Value2|Key3=Value3\r\n") >= 0, "Map member missing");
-        assertTrue(actual.endsWith("\r\n\r\n"), "Missing trailing CRNL CRNL");
+
+        assertThat(actual).contains("action: UserEvent\r\n");
+        assertThat(actual).contains("UserEvent: myuser\r\n");
+        assertThat(actual).contains("stringmember: stringMemberValue\r\n");
+        assertThat(actual).contains("mapmember: Key1=Value1|Key2=Value2|Key3=Value3\r\n");
+        assertThat(actual).endsWith("\r\n\r\n");
     }
 
     @SuppressWarnings("deprecation")
@@ -195,7 +203,7 @@ class ActionBuilderImplTest {
 
         originateAction = new OriginateAction();
 
-        map = new LinkedHashMap<String, String>();
+        map = new LinkedHashMap<>();
         map.put("var1", "value1");
         map.put("VAR2", "value2");
 
@@ -204,7 +212,8 @@ class ActionBuilderImplTest {
         actionBuilder.setTargetVersion(AsteriskVersion.ASTERISK_1_2);
         actual = actionBuilder.buildAction(originateAction);
 
-        assertTrue(actual.indexOf("variable: var1=value1\r\nvariable: VAR2=value2\r\n") >= 0, "Incorrect mapping of variable property for Asterisk 1.2");
+        assertThat(actual).contains("variable: var1=value1\r\n");
+        assertThat(actual).contains("variable: VAR2=value2\r\n");
     }
 
     @Test
@@ -219,7 +228,8 @@ class ActionBuilderImplTest {
         actionBuilder.setTargetVersion(AsteriskVersion.ASTERISK_1_6);
         actual = actionBuilder.buildAction(action);
 
-        assertTrue(actual.indexOf("variable: var1=value1\r\nvariable: var2=value2\r\n") >= 0, "Incorrect mapping of variable property");
+        assertThat(actual).contains("variable: var1=value1\r\n");
+        assertThat(actual).contains("variable: var2=value2\r\n");
     }
 
     @Test
@@ -241,7 +251,7 @@ class ActionBuilderImplTest {
         AnnotatedAction action = new AnnotatedAction("value1", "value2", "value3");
         String actual = actionBuilder.buildAction(action);
 
-        assertTrue(actual.indexOf("property-2: value2\r\n") >= 0, "Incorrect mapping of property with annotated setter");
+        assertThat(actual).contains("property-2: value2\r\n");
     }
 
     @Test
@@ -257,6 +267,21 @@ class ActionBuilderImplTest {
         String actual = actionBuilder.buildAction(action);
 
         assertTrue(actual.indexOf("property-3: value3\r\n") >= 0, "Incorrect mapping of property with annotated field");
+    }
+
+    @Test
+    void shouldUseSerializer() {
+        //given
+        EnumSet<EventMask> events = EnumSet.of(agent, agi);
+
+        LoginAction action = new LoginAction();
+        action.setEvents(events);
+
+        //when
+        String actual = actionBuilder.buildAction(action);
+
+        //then
+        assertThat(actual).contains("events: agent,agi\r\n");
     }
 
     class MyAction extends AbstractManagerAction {

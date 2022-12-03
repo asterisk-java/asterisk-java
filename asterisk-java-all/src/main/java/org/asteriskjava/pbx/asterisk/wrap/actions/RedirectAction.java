@@ -1,5 +1,6 @@
 package org.asteriskjava.pbx.asterisk.wrap.actions;
 
+import org.asteriskjava.ami.action.ManagerAction;
 import org.asteriskjava.pbx.Channel;
 import org.asteriskjava.pbx.EndPoint;
 
@@ -41,7 +42,7 @@ public class RedirectAction extends AbstractManagerAction {
     }
 
     @Override
-    public org.asteriskjava.manager.action.ManagerAction getAJAction() {
+    public ManagerAction getAJAction() {
         final org.asteriskjava.manager.action.RedirectAction action = new org.asteriskjava.manager.action.RedirectAction();
         action.setActionId(this.getActionId());
         action.setChannel(this._channel.getChannelName().toLowerCase());

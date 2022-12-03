@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.action;
 
+import org.asteriskjava.ami.action.AbstractManagerAction;
+
 /**
  * The QueuePenaltyAction sets the penalty for a queue member.<p>
  * It is implemented in <code>apps/app_queue.c</code><p>

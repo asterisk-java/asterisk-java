@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.action.ManagerAction;
+
 /**
  * Abstract base class for events triggered in response to a ManagerAction.
  * <p>
@@ -24,7 +26,7 @@ package org.asteriskjava.manager.event;
  *
  * @author srt
  * @version $Id$
- * @see org.asteriskjava.manager.action.ManagerAction
+ * @see ManagerAction
  */
 public abstract class ResponseEvent extends ManagerEvent {
     private static final long serialVersionUID = 1L;
@@ -42,7 +44,7 @@ public abstract class ResponseEvent extends ManagerEvent {
      *
      * @return the action id of the ManagerAction that caused this event or
      * <code>null</code> if none was set.
-     * @see org.asteriskjava.manager.action.ManagerAction#setActionId(String)
+     * @see ManagerAction#setActionId(String)
      */
     public final String getActionId() {
         return actionId;

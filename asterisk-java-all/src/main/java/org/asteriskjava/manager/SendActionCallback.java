@@ -16,11 +16,11 @@
  */
 package org.asteriskjava.manager;
 
-import org.asteriskjava.manager.action.ManagerAction;
-import org.asteriskjava.manager.response.ManagerResponse;
+import org.asteriskjava.ami.action.ManagerAction;
+import org.asteriskjava.ami.action.response.ManagerResponse;
 
 /**
- * Callback interface to send {@link org.asteriskjava.manager.action.ManagerAction}s
+ * Callback interface to send {@link ManagerAction}s
  * asynchronously.
  *
  * @author srt

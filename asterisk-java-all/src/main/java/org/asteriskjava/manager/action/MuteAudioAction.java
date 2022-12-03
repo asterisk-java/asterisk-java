@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.action;
 
+import org.asteriskjava.ami.action.AbstractManagerAction;
+
 /**
  * Action: MuteAudio Synopsis: Mute an audio stream Privilege: system,all
  * Description: Mute an incoming or outbound audio stream in a channel.

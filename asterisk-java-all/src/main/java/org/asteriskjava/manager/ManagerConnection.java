@@ -17,22 +17,26 @@
 package org.asteriskjava.manager;
 
 import org.asteriskjava.AsteriskVersion;
+import org.asteriskjava.ami.action.ChallengeAction;
+import org.asteriskjava.ami.action.EventMask;
+import org.asteriskjava.ami.action.LoginAction;
+import org.asteriskjava.ami.action.ManagerAction;
+import org.asteriskjava.ami.action.response.ManagerResponse;
 import org.asteriskjava.manager.action.EventGeneratingAction;
-import org.asteriskjava.manager.action.ManagerAction;
 import org.asteriskjava.manager.event.ManagerEvent;
-import org.asteriskjava.manager.response.ManagerResponse;
 
 import java.io.IOException;
 import java.net.InetAddress;
 import java.nio.charset.Charset;
+import java.util.EnumSet;
 
 /**
  * The main interface to talk to an Asterisk server via the Asterisk Manager
  * API.
  * <p>
  * The ManagerConnection repesents a connection to an Asterisk server and is
- * capable of sending {@link org.asteriskjava.manager.action.ManagerAction}s and
- * receiving {@link org.asteriskjava.manager.response.ManagerResponse}s and
+ * capable of sending {@link ManagerAction}s and
+ * receiving {@link ManagerResponse}s and
  * {@link org.asteriskjava.manager.event.ManagerEvent}s. It does not add any
  * further functionality but rather provides a Java view to Asterisk's Manager
  * API (freeing you from TCP/IP connection and parsing stuff).
@@ -229,8 +233,8 @@ public interface ManagerConnection {
      *                                       incorrect or the ChallengeResponse could not be built.
      * @throws TimeoutException              if a timeout occurs while waiting for the
      *                                       protocol identifier. The connection is closed in this case.
-     * @see org.asteriskjava.manager.action.LoginAction
-     * @see org.asteriskjava.manager.action.ChallengeAction
+     * @see LoginAction
+     * @see ChallengeAction
      */
     void login() throws IllegalStateException, IOException, AuthenticationFailedException, TimeoutException;
 
@@ -249,11 +253,11 @@ public interface ManagerConnection {
      *                                       incorrect or the ChallengeResponse could not be built.
      * @throws TimeoutException              if a timeout occurs while waiting for the
      *                                       protocol identifier. The connection is closed in this case.
-     * @see org.asteriskjava.manager.action.LoginAction
-     * @see org.asteriskjava.manager.action.ChallengeAction
+     * @see LoginAction
+     * @see ChallengeAction
      * @since 0.3
      */
-    void login(String events) throws IllegalStateException, IOException, AuthenticationFailedException, TimeoutException;
+    void login(EnumSet<EventMask> events) throws IllegalStateException, IOException, AuthenticationFailedException, TimeoutException;
 
     /**
      * Sends a LogoffAction to the Asterisk server and disconnects.

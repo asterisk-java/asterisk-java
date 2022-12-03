@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.response;
 
+import org.asteriskjava.ami.action.response.ManagerResponse;
+
 /**
  * Corresponds to a PingAction and contains an additional (yet useless) ping property.
  *

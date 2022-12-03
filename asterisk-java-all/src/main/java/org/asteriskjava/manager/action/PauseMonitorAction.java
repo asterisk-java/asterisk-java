@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.action;
 
+import org.asteriskjava.ami.action.AbstractManagerAction;
+
 /**
  * The PauseMonitorAction temporarily stop monitoring (recording) a channel.
  * <p>

@@ -16,18 +16,18 @@
  */
 package org.asteriskjava.live.internal;
 
+import org.asteriskjava.ami.action.CommandAction;
+import org.asteriskjava.ami.action.response.CommandResponse;
+import org.asteriskjava.ami.action.response.ManagerResponse;
 import org.asteriskjava.live.ManagerCommunicationException;
 import org.asteriskjava.live.MeetMeRoom;
 import org.asteriskjava.lock.LockableMap;
 import org.asteriskjava.lock.Locker.LockCloser;
-import org.asteriskjava.manager.action.CommandAction;
 import org.asteriskjava.manager.event.AbstractMeetMeEvent;
 import org.asteriskjava.manager.event.MeetMeLeaveEvent;
 import org.asteriskjava.manager.event.MeetMeMuteEvent;
 import org.asteriskjava.manager.event.MeetMeTalkingEvent;
-import org.asteriskjava.manager.response.CommandResponse;
 import org.asteriskjava.manager.response.ManagerError;
-import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.util.DateUtil;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
@@ -183,7 +183,7 @@ class MeetMeManager {
             return;
         }
 
-        lines = ((CommandResponse) response).getResult();
+        lines = ((CommandResponse) response).getOutputs();
         for (String line : lines) {
             final Matcher matcher;
             final Integer userNumber;

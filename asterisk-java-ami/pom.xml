@@ -13,10 +13,21 @@
     <artifactId>asterisk-java-ami</artifactId>
 
     <dependencies>
-<!--        <dependency>-->
-<!--            <groupId>org.asteriskjava</groupId>-->
-<!--            <artifactId>asterisk-java-core</artifactId>-->
-<!--            <version>4.0.0-SNAPSHOT</version>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>org.asteriskjava</groupId>
+            <artifactId>asterisk-java-core</artifactId>
+            <version>4.0.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+            <version>0.10.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.12.0</version>
+        </dependency>
     </dependencies>
 </project>

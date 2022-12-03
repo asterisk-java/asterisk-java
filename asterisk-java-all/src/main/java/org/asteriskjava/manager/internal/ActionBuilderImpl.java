@@ -17,13 +17,17 @@
 package org.asteriskjava.manager.internal;
 
 import org.asteriskjava.AsteriskVersion;
+import org.asteriskjava.ami.action.ManagerAction;
+import org.asteriskjava.ami.databind.AsteriskSerializer;
+import org.asteriskjava.ami.databind.AsteriskSerializers;
+import org.asteriskjava.ami.databind.ComaJoiningSerializer;
+import org.asteriskjava.ami.databind.annotation.AsteriskSerialize;
+import org.asteriskjava.core.utils.ReflectionUtils;
 import org.asteriskjava.manager.AsteriskMapping;
-import org.asteriskjava.manager.action.ManagerAction;
 import org.asteriskjava.manager.action.UserEventAction;
 import org.asteriskjava.manager.event.UserEvent;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
-import org.asteriskjava.util.ReflectionUtil;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -96,13 +100,13 @@ class ActionBuilderImpl implements ActionBuilder {
             UserEvent userEvent = ((UserEventAction) action).getUserEvent();
             appendUserEvent(sb, userEvent);
 
-            getters = ReflectionUtil.getGetters(userEvent.getClass());
+            getters = ReflectionUtils.getGetters(userEvent.getClass());
 
             // eventually we may want to add more Map keys for events to ignore
             // when appending
             appendGetters(sb, userEvent, getters);
         } else {
-            getters = ReflectionUtil.getGetters(action.getClass());
+            getters = ReflectionUtils.getGetters(action.getClass());
 
             appendGetters(sb, action, getters);
         }
@@ -122,7 +126,7 @@ class ActionBuilderImpl implements ActionBuilder {
                 Map<Object, Object> attributes = (Map<Object, Object>) value;
                 for (Map.Entry<Object, Object> entry : attributes.entrySet()) {
                     appendString(sb, entry.getKey() == null ? "null" : entry.getKey().toString(),
-                            entry.getValue() == null ? "null" : entry.getValue().toString());
+                        entry.getValue() == null ? "null" : entry.getValue().toString());
                 }
             }
         }
@@ -221,6 +225,9 @@ class ActionBuilderImpl implements ActionBuilder {
         appendString(sb, "UserEvent", eventType);
     }
 
+    private static final AsteriskSerializers asteriskSerializers = new AsteriskSerializers()
+        .add(ComaJoiningSerializer.class, new ComaJoiningSerializer());
+
     @SuppressWarnings("unchecked")
     private void appendGetters(StringBuilder sb, Object action, Map<String, Method> getters) {
         for (Map.Entry<String, Method> entry : getters.entrySet()) {
@@ -244,6 +251,16 @@ class ActionBuilderImpl implements ActionBuilder {
             }
 
             final String mappedName = mapToAsterisk(getter);
+
+            AsteriskSerialize asteriskSerialize = getter.getAnnotation(AsteriskSerialize.class);
+            if (asteriskSerialize != null) {
+                Class<? extends AsteriskSerializer> using = asteriskSerialize.using();
+                AsteriskSerializer<Object> asteriskSerializer = (AsteriskSerializer<Object>) asteriskSerializers.get(using);
+                String serialize = asteriskSerializer.serialize(value);
+                appendString(sb, mappedName, serialize);
+                continue;
+            }
+
             if (value instanceof Map) {
                 appendMap(sb, mappedName, (Map<String, String>) value);
             } else if (value instanceof String) {
@@ -259,7 +276,7 @@ class ActionBuilderImpl implements ActionBuilder {
 
         // check annotation of getter method
         annotation
-                = getter.getAnnotation(AsteriskMapping.class
+            = getter.getAnnotation(AsteriskMapping.class
         );
         if (annotation != null) {
             return annotation.value();
@@ -270,7 +287,7 @@ class ActionBuilderImpl implements ActionBuilder {
         try {
             Method setter = getter.getDeclaringClass().getDeclaredMethod(setterName, getter.getReturnType());
             annotation
-                    = setter.getAnnotation(AsteriskMapping.class
+                = setter.getAnnotation(AsteriskMapping.class
             );
             if (annotation != null) {
                 return annotation.value();
@@ -284,7 +301,7 @@ class ActionBuilderImpl implements ActionBuilder {
         try {
             Field field = getter.getDeclaringClass().getDeclaredField(fieldName);
             annotation
-                    = field.getAnnotation(AsteriskMapping.class
+                = field.getAnnotation(AsteriskMapping.class
             );
             if (annotation != null) {
                 return annotation.value();
@@ -330,6 +347,6 @@ class ActionBuilderImpl implements ActionBuilder {
         }
 
         return Character.toLowerCase(s.charAt(0))
-                + (s.length() == 1 ? "" : s.substring(1));
+            + (s.length() == 1 ? "" : s.substring(1));
     }
 }

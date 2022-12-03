@@ -17,18 +17,22 @@
 package org.asteriskjava.manager.internal;
 
 import org.asteriskjava.AsteriskVersion;
+import org.asteriskjava.ami.action.AuthType;
+import org.asteriskjava.ami.action.ChallengeAction;
+import org.asteriskjava.ami.action.LoginAction;
+import org.asteriskjava.ami.action.ManagerAction;
+import org.asteriskjava.ami.action.response.ChallengeResponse;
+import org.asteriskjava.ami.action.response.ManagerResponse;
+import org.asteriskjava.ami.action.response.ResponseType;
 import org.asteriskjava.core.socket.SocketConnectionAdapter;
-import org.asteriskjava.manager.action.ChallengeAction;
-import org.asteriskjava.manager.action.LoginAction;
 import org.asteriskjava.manager.action.LogoffAction;
-import org.asteriskjava.manager.action.ManagerAction;
 import org.asteriskjava.manager.event.ProtocolIdentifierReceivedEvent;
-import org.asteriskjava.manager.response.ChallengeResponse;
 import org.asteriskjava.manager.response.ManagerError;
-import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.util.DateUtil;
 
 import java.io.IOException;
+
+import static org.asteriskjava.ami.action.response.ResponseType.Success;
 
 public class ManagerWriterMock implements ManagerWriter {
     private static final String CHALLENGE = "12345";
@@ -96,9 +100,9 @@ public class ManagerWriterMock implements ManagerWriter {
     public void sendAction(ManagerAction action, String internalActionId) throws IOException {
         if (action instanceof ChallengeAction) {
             ChallengeAction challengeAction = (ChallengeAction) action;
-            String authType = challengeAction.getAuthType();
+            AuthType authType = challengeAction.getAuthType();
 
-            if (!authType.equals("MD5")) {
+            if (authType == AuthType.MD5) {
                 throw new RuntimeException("Expected authType 'MD5' got '" + authType + "'");
             }
 
@@ -117,9 +121,9 @@ public class ManagerWriterMock implements ManagerWriter {
             LoginAction loginAction = (LoginAction) action;
             String username = loginAction.getUsername();
             String key = loginAction.getKey();
-            String authType = loginAction.getAuthType();
+            AuthType authType = loginAction.getAuthType();
 
-            if (!"MD5".equals(authType)) {
+            if (authType != AuthType.MD5) {
                 throw new RuntimeException("Expected authType 'MD5' got '" + authType + "'");
             }
 
@@ -137,10 +141,10 @@ public class ManagerWriterMock implements ManagerWriter {
                 // 3 unsuccessful attempts
                 if (key.equals(expectedKey) || loginActionsSent > 2) {
                     loginResponse = new ManagerResponse();
-                    loginResponse.setResponse("Success");
+                    loginResponse.setResponse(Success);
                 } else {
                     loginResponse = new ManagerError();
-                    loginResponse.setResponse("Error");
+                    loginResponse.setResponse(ResponseType.Error);
                     loginResponse.setMessage("Authentication failed");
                 }
                 loginResponse.setActionId(ManagerUtil.addInternalActionId(action.getActionId(), internalActionId));
@@ -154,7 +158,7 @@ public class ManagerWriterMock implements ManagerWriter {
 
                 response = new ManagerResponse();
                 response.setActionId(ManagerUtil.addInternalActionId(action.getActionId(), internalActionId));
-                response.setResponse("Success");
+                response.setResponse(Success);
                 dispatchLater(response);
             }
         } else {
@@ -165,7 +169,7 @@ public class ManagerWriterMock implements ManagerWriter {
 
                 response = new ManagerResponse();
                 response.setActionId(ManagerUtil.addInternalActionId(action.getActionId(), internalActionId));
-                response.setResponse("Success");
+                response.setResponse(Success);
                 dispatchLater(response);
             }
         }

@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.action;
 
+import org.asteriskjava.ami.action.AbstractManagerAction;
+
 /**
  * The ModuleLoadAction loads, unloads or reloads Asterisk modules.<p>
  * Available since Asterisk 1.6

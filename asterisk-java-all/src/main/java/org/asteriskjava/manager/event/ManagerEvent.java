@@ -16,8 +16,8 @@
  */
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.core.utils.ReflectionUtils;
 import org.asteriskjava.util.AstState;
-import org.asteriskjava.util.ReflectionUtil;
 
 import java.lang.reflect.Method;
 import java.util.*;
@@ -367,7 +367,7 @@ public abstract class ManagerEvent extends EventObject {
         appendPropertyIfNotNull(sb, "dateReceived", getDateReceived());
         appendPropertyIfNotNull(sb, "privilege", getPrivilege());
 
-        final Map<String, Method> getters = ReflectionUtil.getGetters(getClass());
+        final Map<String, Method> getters = ReflectionUtils.getGetters(getClass());
         for (Map.Entry<String, Method> entry : getters.entrySet()) {
             final String property = entry.getKey();
             if (ignoredProperties.contains(property)) {

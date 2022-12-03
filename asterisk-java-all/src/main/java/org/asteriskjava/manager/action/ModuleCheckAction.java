@@ -16,7 +16,8 @@
  */
 package org.asteriskjava.manager.action;
 
-import org.asteriskjava.manager.ExpectedResponse;
+import org.asteriskjava.ami.action.AbstractManagerAction;
+import org.asteriskjava.ami.action.annotation.ExpectedResponse;
 import org.asteriskjava.manager.response.ModuleCheckResponse;
 
 /**

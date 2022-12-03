@@ -17,6 +17,10 @@
 package org.asteriskjava.live.internal;
 
 import org.asteriskjava.AsteriskVersion;
+import org.asteriskjava.ami.action.CommandAction;
+import org.asteriskjava.ami.action.ManagerAction;
+import org.asteriskjava.ami.action.response.CommandResponse;
+import org.asteriskjava.ami.action.response.ManagerResponse;
 import org.asteriskjava.config.ConfigFile;
 import org.asteriskjava.live.*;
 import org.asteriskjava.lock.Lockable;
@@ -27,7 +31,10 @@ import org.asteriskjava.lock.Locker.LockCloser;
 import org.asteriskjava.manager.*;
 import org.asteriskjava.manager.action.*;
 import org.asteriskjava.manager.event.*;
-import org.asteriskjava.manager.response.*;
+import org.asteriskjava.manager.response.GetConfigResponse;
+import org.asteriskjava.manager.response.MailboxCountResponse;
+import org.asteriskjava.manager.response.ManagerError;
+import org.asteriskjava.manager.response.ModuleCheckResponse;
 import org.asteriskjava.util.AstUtil;
 import org.asteriskjava.util.DateUtil;
 import org.asteriskjava.util.Log;
@@ -446,7 +453,7 @@ public class AsteriskServerImpl extends Lockable implements AsteriskServer, Mana
                 if (response instanceof CommandResponse) {
                     final List<String> result;
 
-                    result = ((CommandResponse) response).getResult();
+                    result = ((CommandResponse) response).getOutputs();
                     if (!result.isEmpty()) {
                         version = result.get(0);
                     }
@@ -482,7 +489,7 @@ public class AsteriskServerImpl extends Lockable implements AsteriskServer, Mana
                 if (response instanceof CommandResponse) {
                     List<String> result;
 
-                    result = ((CommandResponse) response).getResult();
+                    result = ((CommandResponse) response).getOutputs();
                     for (int i = 2; i < result.size(); i++) {
                         String line;
                         Matcher matcher;
@@ -573,7 +580,7 @@ public class AsteriskServerImpl extends Lockable implements AsteriskServer, Mana
             return voicemailboxes;
         }
 
-        result = ((CommandResponse) response).getResult();
+        result = ((CommandResponse) response).getOutputs();
         if (result == null || result.isEmpty()) {
             return voicemailboxes;
         }
@@ -631,7 +638,7 @@ public class AsteriskServerImpl extends Lockable implements AsteriskServer, Mana
                     "Response to CommandAction(\"" + command + "\") was not a CommandResponse but " + response, null);
         }
 
-        return ((CommandResponse) response).getResult();
+        return ((CommandResponse) response).getOutputs();
     }
 
     public boolean isModuleLoaded(String module) throws ManagerCommunicationException {

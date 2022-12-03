@@ -1,29 +1,27 @@
 /*
- *  Copyright 2004-2006 Stefan Reuter
+ * Copyright 2004-2022 Asterisk Java contributors
  *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-package org.asteriskjava.manager.response;
+package org.asteriskjava.ami.action.response;
+
+import org.asteriskjava.ami.action.CoreSettingsAction;
 
 /**
- * Corresponds to a CoreSettingsAction and contains the current settings summary of the
- * Asterisk server.
+ * Corresponds to a {@link CoreSettingsAction} and contains the current settings summary of the Asterisk server.
  *
- * @author srt
- * @version $Id$
- * @see org.asteriskjava.manager.action.CoreSettingsAction
- * @since 1.0.0
+ * @author Stefan Reuter
+ * @see CoreSettingsAction
  */
 public class CoreSettingsResponse extends ManagerResponse {
     private static final long serialVersionUID = 1L;
@@ -41,9 +39,7 @@ public class CoreSettingsResponse extends ManagerResponse {
     private Boolean coreHttpEnabled;
 
     /**
-     * Returns the version of the Asterisk Manager Interface (AMI). For Asterisk 1.6 this is "1.1".
-     *
-     * @return the version of the Asterisk Manager Interface (AMI).
+     * Returns the version of the Asterisk Manager Interface (AMI).
      */
     public String getAmiVersion() {
         return amiVersion;
@@ -54,9 +50,7 @@ public class CoreSettingsResponse extends ManagerResponse {
     }
 
     /**
-     * Returns the version of the Asterisk server. For example "1.6.0-beta9".
-     *
-     * @return the version of the Asterisk server.
+     * Returns the version of the Asterisk server.
      */
     public String getAsteriskVersion() {
         return asteriskVersion;
@@ -66,6 +60,9 @@ public class CoreSettingsResponse extends ManagerResponse {
         this.asteriskVersion = asteriskVersion;
     }
 
+    /**
+     * Returns the system name.
+     */
     public String getSystemName() {
         return systemName;
     }
@@ -116,8 +113,6 @@ public class CoreSettingsResponse extends ManagerResponse {
 
     /**
      * Checks whether the realtime subsystem is enabled.
-     *
-     * @return <code>true</code> if the realtime subsystem is enabled, <code>false</code> otherwise.
      */
     public boolean isCoreRealtimeEnabled() {
         return coreRealtimeEnabled != null && coreRealtimeEnabled;
@@ -129,8 +124,6 @@ public class CoreSettingsResponse extends ManagerResponse {
 
     /**
      * Checks whether the CDR (call detail records) subsystem is enabled.
-     *
-     * @return <code>true</code> if the CDR subsystem is enabled, <code>false</code> otherwise.
      */
     public boolean isCoreCdrEnabled() {
         return coreCdrEnabled != null && coreCdrEnabled;
@@ -142,8 +135,6 @@ public class CoreSettingsResponse extends ManagerResponse {
 
     /**
      * Checks whether the HTTP subsystem is enabled.
-     *
-     * @return <code>true</code> if the HTTP subsystem is enabled, <code>false</code> otherwise.
      */
     public boolean isCoreHttpEnabled() {
         return coreHttpEnabled != null && coreHttpEnabled;

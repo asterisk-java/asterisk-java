@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.response;
 
+import org.asteriskjava.ami.action.response.ManagerResponse;
+
 /**
  * Corresponds to a SkypeLicenseStatusAction and contains the number of licensed Skype calls.
  *

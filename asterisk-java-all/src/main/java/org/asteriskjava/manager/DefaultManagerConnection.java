@@ -17,15 +17,17 @@
 package org.asteriskjava.manager;
 
 import org.asteriskjava.AsteriskVersion;
+import org.asteriskjava.ami.action.EventMask;
+import org.asteriskjava.ami.action.ManagerAction;
+import org.asteriskjava.ami.action.response.ManagerResponse;
 import org.asteriskjava.manager.action.EventGeneratingAction;
-import org.asteriskjava.manager.action.ManagerAction;
 import org.asteriskjava.manager.event.ManagerEvent;
 import org.asteriskjava.manager.internal.ManagerConnectionImpl;
-import org.asteriskjava.manager.response.ManagerResponse;
 
 import java.io.IOException;
 import java.net.InetAddress;
 import java.nio.charset.Charset;
+import java.util.EnumSet;
 
 /**
  * Default implemention of the
@@ -279,8 +281,8 @@ public class DefaultManagerConnection implements ManagerConnection {
         impl.login();
     }
 
-    public void login(String events)
-            throws IllegalStateException, IOException, AuthenticationFailedException, TimeoutException {
+    public void login(EnumSet<EventMask> events)
+        throws IllegalStateException, IOException, AuthenticationFailedException, TimeoutException {
         impl.login(events);
     }
 
@@ -289,34 +291,34 @@ public class DefaultManagerConnection implements ManagerConnection {
     }
 
     public ManagerResponse sendAction(ManagerAction action)
-            throws IOException, TimeoutException, IllegalArgumentException, IllegalStateException {
+        throws IOException, TimeoutException, IllegalArgumentException, IllegalStateException {
         return impl.sendAction(action);
     }
 
     public ManagerResponse sendAction(ManagerAction action, long timeout)
-            throws IOException, TimeoutException, IllegalArgumentException, IllegalStateException {
+        throws IOException, TimeoutException, IllegalArgumentException, IllegalStateException {
         return impl.sendAction(action, timeout);
     }
 
     public void sendAction(ManagerAction action, SendActionCallback callbackHandler)
-            throws IOException, IllegalArgumentException, IllegalStateException {
+        throws IOException, IllegalArgumentException, IllegalStateException {
         impl.sendAction(action, callbackHandler);
     }
 
     public ResponseEvents sendEventGeneratingAction(EventGeneratingAction action)
-            throws IOException, EventTimeoutException, IllegalArgumentException, IllegalStateException {
+        throws IOException, EventTimeoutException, IllegalArgumentException, IllegalStateException {
         return impl.sendEventGeneratingAction(action);
     }
 
     public ResponseEvents sendEventGeneratingAction(EventGeneratingAction action, long timeout)
-            throws IOException, EventTimeoutException, IllegalArgumentException, IllegalStateException {
+        throws IOException, EventTimeoutException, IllegalArgumentException, IllegalStateException {
         return impl.sendEventGeneratingAction(action, timeout);
     }
 
     @Override
     public void sendEventGeneratingAction(EventGeneratingAction action,
                                           SendEventGeneratingActionCallback callback)
-            throws IOException, IllegalArgumentException, IllegalStateException {
+        throws IOException, IllegalArgumentException, IllegalStateException {
         impl.sendEventGeneratingAction(action, callback);
     }
 

@@ -16,7 +16,12 @@
  */
 package org.asteriskjava.manager.internal;
 
-import org.asteriskjava.manager.response.*;
+import org.asteriskjava.ami.action.response.ChallengeResponse;
+import org.asteriskjava.ami.action.response.ManagerResponse;
+import org.asteriskjava.manager.response.ExtensionStateResponse;
+import org.asteriskjava.manager.response.MailboxCountResponse;
+import org.asteriskjava.manager.response.MailboxStatusResponse;
+import org.asteriskjava.manager.response.ManagerError;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

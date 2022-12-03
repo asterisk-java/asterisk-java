@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.response;
 
+import org.asteriskjava.ami.action.response.ManagerResponse;
+
 /**
  * A MailboxStatusResponse is sent in response to a MailboxStatusAction and indicates if a set
  * of mailboxes contains waiting messages.

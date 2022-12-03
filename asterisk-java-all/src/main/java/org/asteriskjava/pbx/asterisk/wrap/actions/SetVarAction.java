@@ -1,5 +1,6 @@
 package org.asteriskjava.pbx.asterisk.wrap.actions;
 
+import org.asteriskjava.ami.action.ManagerAction;
 import org.asteriskjava.pbx.Channel;
 
 public class SetVarAction extends AbstractManagerAction {
@@ -15,7 +16,7 @@ public class SetVarAction extends AbstractManagerAction {
     }
 
     @Override
-    public org.asteriskjava.manager.action.ManagerAction getAJAction() {
+    public ManagerAction getAJAction() {
         final org.asteriskjava.manager.action.SetVarAction action = new org.asteriskjava.manager.action.SetVarAction();
         action.setActionId(this.getActionId());
         action.setChannel(this._channel.getChannelName());

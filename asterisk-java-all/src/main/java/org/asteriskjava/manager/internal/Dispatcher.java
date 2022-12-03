@@ -16,8 +16,8 @@
  */
 package org.asteriskjava.manager.internal;
 
+import org.asteriskjava.ami.action.response.ManagerResponse;
 import org.asteriskjava.manager.event.ManagerEvent;
-import org.asteriskjava.manager.response.ManagerResponse;
 
 /**
  * The Dispatcher defines the interface used for communication between

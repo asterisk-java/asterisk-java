@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.action;
 
+import org.asteriskjava.ami.action.AbstractManagerAction;
+
 /**
  * The QueueAddAction adds a new member to a queue.<p>
  * It is implemented in <code>apps/app_queue.c</code><p>

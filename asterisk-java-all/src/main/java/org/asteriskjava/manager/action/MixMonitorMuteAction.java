@@ -15,6 +15,8 @@
  */
 package org.asteriskjava.manager.action;
 
+import org.asteriskjava.ami.action.AbstractManagerAction;
+
 /**
  * MixMonitorMute can be used to mute and un-mute an existing recording.
  *

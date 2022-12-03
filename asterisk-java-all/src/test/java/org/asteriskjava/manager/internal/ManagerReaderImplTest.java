@@ -16,10 +16,10 @@
  */
 package org.asteriskjava.manager.internal;
 
+import org.asteriskjava.ami.action.response.CommandResponse;
+import org.asteriskjava.ami.action.response.ManagerResponse;
 import org.asteriskjava.core.socket.SocketConnectionAdapter;
 import org.asteriskjava.manager.event.*;
-import org.asteriskjava.manager.response.CommandResponse;
-import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.util.DateUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -249,7 +249,7 @@ class ManagerReaderImplTest {
 
         assertEquals("678#12345", dispatcher.dispatchedResponses.get(0).getAttribute("actionId"), "CommandResponse contains incorrect actionId (via getAttribute)");
 
-        assertEquals(result, ((CommandResponse) dispatcher.dispatchedResponses.get(0)).getResult(), "CommandResponse contains incorrect result");
+        assertEquals(result, ((CommandResponse) dispatcher.dispatchedResponses.get(0)).getOutputs(), "CommandResponse contains incorrect result");
 
         assertEquals(now, dispatcher.dispatchedResponses.get(0).getDateReceived(), "CommandResponse contains incorrect dateReceived");
     }

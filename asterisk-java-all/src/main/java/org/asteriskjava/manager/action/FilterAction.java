@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.action;
 
+import org.asteriskjava.ami.action.AbstractManagerAction;
+
 /**
  * The FilterAction dynamically adds filters for the current user in a manager session.
  * The filters added are only used for the current session. Once the connection is closed the filters are removed.

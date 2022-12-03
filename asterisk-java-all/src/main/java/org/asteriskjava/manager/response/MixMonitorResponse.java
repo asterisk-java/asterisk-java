@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.response;
 
+import org.asteriskjava.ami.action.response.ManagerResponse;
+
 /**
  * A MixMonitorResponse is sent in response to a MixMonitorAction and provides
  * the ID of the MixMonitor that was started on the referenced channel.

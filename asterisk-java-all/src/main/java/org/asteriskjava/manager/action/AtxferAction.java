@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.action;
 
+import org.asteriskjava.ami.action.AbstractManagerAction;
+
 /**
  * Starts an attended transfer. This action seems to be a bit of a hack. See
  * <a href="http://bugs.digium.com/view.php?id=12158">http://bugs.digium.com/view.php?id=12158</a>

@@ -17,18 +17,19 @@
 package org.asteriskjava.manager.internal;
 
 import com.google.common.util.concurrent.RateLimiter;
+import org.asteriskjava.ami.action.response.ManagerResponse;
 import org.asteriskjava.core.socket.SocketConnectionAdapter;
 import org.asteriskjava.manager.event.DisconnectEvent;
 import org.asteriskjava.manager.event.ManagerEvent;
 import org.asteriskjava.manager.event.ProtocolIdentifierReceivedEvent;
 import org.asteriskjava.manager.internal.backwardsCompatibility.BackwardsCompatibilityForManagerEvents;
-import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.pbx.util.LogTime;
 import org.asteriskjava.util.DateUtil;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -232,6 +233,7 @@ public class ManagerReaderImpl implements ManagerReader {
                             logger.debug("buildEvent returned null");
                         }
                     } else if (buffer.containsKey("response")) {
+                        System.out.println(buffer);
                         ManagerResponse response = buildResponse(buffer);
                         // TODO tracing
                         // logger.debug("attempting to build response");
@@ -352,7 +354,7 @@ public class ManagerReaderImpl implements ManagerReader {
         final ManagerResponse response = responseBuilder.buildResponse(responseClass, buffer);
 
         if (response != null) {
-            response.setDateReceived(DateUtil.getDate());
+            response.setDateReceived(Instant.now());
         }
 
         return response;

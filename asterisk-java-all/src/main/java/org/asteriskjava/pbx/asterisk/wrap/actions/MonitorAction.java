@@ -1,5 +1,6 @@
 package org.asteriskjava.pbx.asterisk.wrap.actions;
 
+import org.asteriskjava.ami.action.ManagerAction;
 import org.asteriskjava.pbx.Channel;
 
 public class MonitorAction extends AbstractManagerAction {
@@ -17,7 +18,7 @@ public class MonitorAction extends AbstractManagerAction {
     }
 
     @Override
-    public org.asteriskjava.manager.action.ManagerAction getAJAction() {
+    public ManagerAction getAJAction() {
         final org.asteriskjava.manager.action.MonitorAction action = new org.asteriskjava.manager.action.MonitorAction(
                 this._channel.getChannelName(), this._file, this._format, this._mix);
         action.setActionId(this.getActionId());

@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.action;
 
+import org.asteriskjava.ami.action.AbstractManagerAction;
+
 /**
  * Adds or updates an entry in the Asterisk database for a given family, key,
  * and value.<p>

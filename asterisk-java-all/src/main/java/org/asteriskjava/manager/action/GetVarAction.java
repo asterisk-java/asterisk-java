@@ -16,7 +16,9 @@
  */
 package org.asteriskjava.manager.action;
 
-import org.asteriskjava.manager.ExpectedResponse;
+import org.asteriskjava.ami.action.AbstractManagerAction;
+import org.asteriskjava.ami.action.annotation.ExpectedResponse;
+import org.asteriskjava.ami.action.response.ManagerResponse;
 import org.asteriskjava.manager.response.GetVarResponse;
 
 /**
@@ -31,8 +33,8 @@ import org.asteriskjava.manager.response.GetVarResponse;
  * the Manager API itself.<p>
  * GetVarAction returns a {@link org.asteriskjava.manager.response.GetVarResponse}.
  * To get the actual value from the corresponding
- * {@link org.asteriskjava.manager.response.ManagerResponse} call
- * {@link org.asteriskjava.manager.response.ManagerResponse#getAttribute(String)}
+ * {@link ManagerResponse} call
+ * {@link ManagerResponse#getAttribute(String)}
  * with either the variable name as parameter (for Asterisk 1.0.x) or
  * with "Value" as parameter (for Asterisk since 1.2).<p>
  * Example (for Asterisk 1.2):<p>

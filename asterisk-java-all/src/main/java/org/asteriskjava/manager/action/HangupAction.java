@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.action;
 
+import org.asteriskjava.ami.action.AbstractManagerAction;
+
 /**
  * The HangupAction causes Asterisk to hang up a given channel.<p>
  * Hangup with a cause code is only supported by Asterisk versions later than 1.6.2.
