@@ -19,14 +19,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AsteriskSerializers {
-    private final Map<Class<? extends AsteriskSerializer>, AsteriskSerializer<?>> serializerMap = new HashMap<>();
+    private final Map<Class<? extends AsteriskSerializer<?>>, AsteriskSerializer<?>> serializerMap = new HashMap<>();
 
-    public AsteriskSerializers add(Class<? extends AsteriskSerializer> clazz, AsteriskSerializer<?> serializer) {
+    public AsteriskSerializers add(Class<? extends AsteriskSerializer<?>> clazz, AsteriskSerializer<?> serializer) {
         serializerMap.put(clazz, serializer);
         return this;
     }
 
-    public AsteriskSerializer<?> get(Class<? extends AsteriskSerializer> key) {
+    public AsteriskSerializer<?> get(Class<? extends AsteriskSerializer<?>> key) {
         return serializerMap.get(key);
     }
 }

@@ -254,7 +254,7 @@ class ActionBuilderImpl implements ActionBuilder {
 
             AsteriskSerialize asteriskSerialize = getter.getAnnotation(AsteriskSerialize.class);
             if (asteriskSerialize != null) {
-                Class<? extends AsteriskSerializer> using = asteriskSerialize.using();
+                Class<? extends AsteriskSerializer<?>> using = asteriskSerialize.using();
                 AsteriskSerializer<Object> asteriskSerializer = (AsteriskSerializer<Object>) asteriskSerializers.get(using);
                 String serialize = asteriskSerializer.serialize(value);
                 appendString(sb, mappedName, serialize);

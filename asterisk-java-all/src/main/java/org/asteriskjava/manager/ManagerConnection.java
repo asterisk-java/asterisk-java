@@ -17,10 +17,7 @@
 package org.asteriskjava.manager;
 
 import org.asteriskjava.AsteriskVersion;
-import org.asteriskjava.ami.action.ChallengeAction;
-import org.asteriskjava.ami.action.EventMask;
-import org.asteriskjava.ami.action.LoginAction;
-import org.asteriskjava.ami.action.ManagerAction;
+import org.asteriskjava.ami.action.*;
 import org.asteriskjava.ami.action.response.ManagerResponse;
 import org.asteriskjava.manager.action.EventGeneratingAction;
 import org.asteriskjava.manager.event.ManagerEvent;
@@ -263,7 +260,7 @@ public interface ManagerConnection {
      * Sends a LogoffAction to the Asterisk server and disconnects.
      *
      * @throws IllegalStateException if not in state CONNECTED or RECONNECTING.
-     * @see org.asteriskjava.manager.action.LogoffAction
+     * @see LogoffAction
      */
     void logoff() throws IllegalStateException;
 

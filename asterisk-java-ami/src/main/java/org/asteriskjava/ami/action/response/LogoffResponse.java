@@ -13,18 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.asteriskjava.ami.databind.annotation;
+package org.asteriskjava.ami.action.response;
 
-import org.asteriskjava.ami.databind.AsteriskSerializer;
+import org.asteriskjava.ami.action.LogoffAction;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
+/**
+ * Corresponds to a {@link LogoffAction} and contains information about logoff action.
+ *
+ * @author Piotr Olaszewski
+ * @see LogoffAction
+ */
+public class LogoffResponse extends ManagerResponse {
+    private String message;
 
-import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
+    @Override
+    public String getMessage() {
+        return message;
+    }
 
-@Target({METHOD})
-@Retention(RUNTIME)
-public @interface AsteriskSerialize {
-    Class<? extends AsteriskSerializer<?>> using();
+    @Override
+    public void setMessage(String message) {
+        this.message = message;
+    }
 }

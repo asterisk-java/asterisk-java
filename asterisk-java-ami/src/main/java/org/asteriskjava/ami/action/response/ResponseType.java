@@ -24,4 +24,5 @@ package org.asteriskjava.ami.action.response;
 public enum ResponseType {
     Success,
     Error,
+    Goodbye,
 }

@@ -27,7 +27,6 @@ import org.asteriskjava.lock.LockableMap;
 import org.asteriskjava.lock.Locker.LockCloser;
 import org.asteriskjava.manager.*;
 import org.asteriskjava.manager.action.EventGeneratingAction;
-import org.asteriskjava.manager.action.LogoffAction;
 import org.asteriskjava.manager.action.UserEventAction;
 import org.asteriskjava.manager.event.*;
 import org.asteriskjava.manager.response.ManagerError;
