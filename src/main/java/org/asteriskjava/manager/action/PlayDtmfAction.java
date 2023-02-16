@@ -36,6 +36,7 @@ public class PlayDtmfAction extends AbstractManagerAction {
     private String channel;
     private String digit;
     private Integer duration = null;
+    private Boolean receive;
 
     /**
      * Creates a new empty PlayDtmfAction.
@@ -60,6 +61,26 @@ public class PlayDtmfAction extends AbstractManagerAction {
     @Override
     public String getAction() {
         return "PlayDTMF";
+    }
+
+    /**
+     * Returns the 'receive' property of this action.
+     * (since asterisk 16.7.0)
+     *
+     * @return the receive property, or null if not set
+     */
+    public Boolean getReceive() {
+        return this.receive;
+    }
+
+    /**
+     * Set the receive property of the action.
+     * (since asterisk 16.7.0)
+     *
+     * @param receive value for receive, or null to unset
+     */
+    public void setReceive(Boolean receive) {
+        this.receive = receive;
     }
 
     /**
