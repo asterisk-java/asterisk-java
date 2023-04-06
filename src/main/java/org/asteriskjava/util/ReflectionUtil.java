@@ -14,22 +14,16 @@
  *  limitations under the License.
  *
  */
-package org.asteriskjava.util;
+ package org.asteriskjava.util;
 
-import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.URLDecoder;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
 
 /**
  * Utility class that provides helper methods for reflection that is used by the
@@ -43,6 +37,80 @@ public class ReflectionUtil {
     private ReflectionUtil() {
         // hide constructor
     }
+     /**
+     * Checks if the class is available on the current thread's context class
+     * loader.
+     *
+     * @param s fully qualified name of the class to check.
+     * @return <code>true</code> if the class is available, <code>false</code>
+     * otherwise.
+     */
+    public static boolean isClassAvailable(String s) {
+        return ClassLoaderUtil.isClassAvailable(s);
+    }
+
+    /**
+     * retrieve all the classes that can be found on the classpath for the
+     * specified packageName
+     *
+     * @param packageName
+     * @return
+     * @throws IOException
+     * @throws URISyntaxException
+     */
+    private static Set<String> getClassNamesFromPackage(String packageName) throws IOException, URISyntaxException {
+        return PackageUtil.getClassNamesFromPackage(packageName);
+    }
+
+    /**
+     * retrieve all the classes that can be found on the classpath for the
+     * specified packageName
+     *
+     * @param packageName
+     * @return
+     * @throws IOException
+     * @throws URISyntaxException
+     */
+    public static Set<Class<?>> getClassesFromPackage(String packageName) throws IOException, URISyntaxException {
+        Set<Class<?>> classes = new HashSet<Class<?>>();
+        Set<String> classNames = getClassNamesFromPackage(packageName);
+
+        for (String className : classNames) {
+            try {
+                Class<?> clazz = Class.forName(packageName + "." + className);
+                classes.add(clazz);
+            } catch (ClassNotFoundException e) {
+                logger.error("Unable to load class " + className, e);
+            }
+        }
+
+        return classes;
+    }
+
+    /**
+     * retrieve all the classes that can be found on the classpath for the
+     * specified packageName that are assignable to the specified type
+     *
+     * @param packageName
+     * @param type
+     * @return
+     * @throws IOException
+     * @throws URISyntaxException
+     */
+    public static <T> Set<Class<? extends T>> getSubTypesOf(String packageName, Class<T> type)
+            throws IOException, URISyntaxException {
+        Set<Class<? extends T>> subTypes = new HashSet<Class<? extends T>>();
+        Set<Class<?>> classes = getClassesFromPackage(packageName);
+
+        for (Class<?> clazz : classes) {
+            if (type.isAssignableFrom(clazz) && !clazz.equals(type)) {
+                subTypes.add(clazz.asSubclass(type));
+            }
+        }
+
+        return subTypes;
+    }
+
 
     /**
      * Returns a Map of getter methods of the given class.
@@ -204,26 +272,6 @@ public class ReflectionUtil {
 
         return sb.toString();
     }
-
-    /**
-     * Checks if the class is available on the current thread's context class
-     * loader.
-     *
-     * @param s fully qualified name of the class to check.
-     * @return <code>true</code> if the class is available, <code>false</code>
-     * otherwise.
-     */
-    public static boolean isClassAvailable(String s) {
-        final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-
-        try {
-            classLoader.loadClass(s);
-            return true;
-        } catch (ClassNotFoundException e) {
-            return false;
-        }
-    }
-
     /**
      * Creates a new instance of the given class. The class is loaded using the
      * current thread's context class loader and instantiated using its default
@@ -290,72 +338,72 @@ public class ReflectionUtil {
         return result;
     }
 
-    /**
-     * retrieve all the classes that can be found on the classpath for the
-     * specified packageName
-     *
-     * @param packageName
-     * @return
-     * @throws IOException
-     * @throws URISyntaxException
-     */
-    private static Set<String> getClassNamesFromPackage(String packageName) throws IOException, URISyntaxException {
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        Enumeration<URL> packageURLs;
-        Set<String> names = new HashSet<String>();
+    // /**
+    //  * retrieve all the classes that can be found on the classpath for the
+    //  * specified packageName
+    //  *
+    //  * @param packageName
+    //  * @return
+    //  * @throws IOException
+    //  * @throws URISyntaxException
+    //  */
+    // private static Set<String> getClassNamesFromPackage(String packageName) throws IOException, URISyntaxException {
+    //     ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+    //     Enumeration<URL> packageURLs;
+    //     Set<String> names = new HashSet<String>();
 
-        packageName = packageName.replace(".", "/");
-        packageURLs = classLoader.getResources(packageName);
+    //     packageName = packageName.replace(".", "/");
+    //     packageURLs = classLoader.getResources(packageName);
 
-        while (packageURLs.hasMoreElements()) {
-            URL packageURL = packageURLs.nextElement();
-            if (packageURL.getProtocol().equals("jar")) {
-                String jarFileName;
+    //     while (packageURLs.hasMoreElements()) {
+    //         URL packageURL = packageURLs.nextElement();
+    //         if (packageURL.getProtocol().equals("jar")) {
+    //             String jarFileName;
 
-                Enumeration<JarEntry> jarEntries;
-                String entryName;
+    //             Enumeration<JarEntry> jarEntries;
+    //             String entryName;
 
-                // build jar file name, then loop through entries
-                jarFileName = URLDecoder.decode(packageURL.getFile(), "UTF-8");
-                jarFileName = jarFileName.substring(5, jarFileName.indexOf("!"));
-                logger.info(">" + jarFileName);
-                try (JarFile jf = new JarFile(jarFileName);) {
-                    jarEntries = jf.entries();
-                    while (jarEntries.hasMoreElements()) {
-                        entryName = jarEntries.nextElement().getName();
-                        if (entryName.startsWith(packageName) && entryName.endsWith(".class")) {
-                            entryName = entryName.substring(packageName.length() + 1, entryName.lastIndexOf('.'));
-                            names.add(entryName);
-                        }
-                    }
-                }
+    //             // build jar file name, then loop through entries
+    //             jarFileName = URLDecoder.decode(packageURL.getFile(), "UTF-8");
+    //             jarFileName = jarFileName.substring(5, jarFileName.indexOf("!"));
+    //             logger.info(">" + jarFileName);
+    //             try (JarFile jf = new JarFile(jarFileName);) {
+    //                 jarEntries = jf.entries();
+    //                 while (jarEntries.hasMoreElements()) {
+    //                     entryName = jarEntries.nextElement().getName();
+    //                     if (entryName.startsWith(packageName) && entryName.endsWith(".class")) {
+    //                         entryName = entryName.substring(packageName.length() + 1, entryName.lastIndexOf('.'));
+    //                         names.add(entryName);
+    //                     }
+    //                 }
+    //             }
 
-                // loop through files in classpath
-            } else {
-                URI uri = new URI(packageURL.toString());
-                File folder = new File(uri.getPath());
-                // won't work with path which contains blank (%20)
-                // File folder = new File(packageURL.getFile());
-                File[] files = folder.listFiles();
-                if (files != null) {
-                    for (File actual : files) {
-                        String entryName = actual.getName();
-                        entryName = entryName.substring(0, entryName.lastIndexOf('.'));
-                        names.add(entryName);
-                    }
-                }
-            }
-        }
+    //             // loop through files in classpath
+    //         } else {
+    //             URI uri = new URI(packageURL.toString());
+    //             File folder = new File(uri.getPath());
+    //             // won't work with path which contains blank (%20)
+    //             // File folder = new File(packageURL.getFile());
+    //             File[] files = folder.listFiles();
+    //             if (files != null) {
+    //                 for (File actual : files) {
+    //                     String entryName = actual.getName();
+    //                     entryName = entryName.substring(0, entryName.lastIndexOf('.'));
+    //                     names.add(entryName);
+    //                 }
+    //             }
+    //         }
+    //     }
 
-        // clean up
-        Iterator<String> itr = names.iterator();
-        while (itr.hasNext()) {
-            String name = itr.next();
-            if (name.equals("package") || name.endsWith(".") || name.length() == 0) {
-                itr.remove();
-            }
-        }
+    //     // clean up
+    //     Iterator<String> itr = names.iterator();
+    //     while (itr.hasNext()) {
+    //         String name = itr.next();
+    //         if (name.equals("package") || name.endsWith(".") || name.length() == 0) {
+    //             itr.remove();
+    //         }
+    //     }
 
-        return names;
-    }
+    //     return names;
+    // }
 }

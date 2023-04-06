@@ -160,8 +160,8 @@ public class ChannelProxy implements Channel, ChannelHangupListener {
     }
 
     @Override
-    public void rename(String newName, String uniqueId) throws InvalidChannelName {
-        this._channel.rename(newName, uniqueId);
+    public void renameChannel(String newName, String uniqueId) throws InvalidChannelName {
+        this._channel.renameChannel(newName, uniqueId);
     }
 
     @Override

@@ -344,7 +344,7 @@ public class ChannelImpl implements Channel {
     }
 
     @Override
-    public void rename(final String newName, String uniqueId) throws InvalidChannelName {
+    public void renameChannel(final String newName, String uniqueId) throws InvalidChannelName {
 
         String oldChannelName = getChannelName();
         logger.info("Changing " + oldChannelName + " to " + newName + " on " + oldChannelName + " " + _uniqueID);

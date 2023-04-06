@@ -1508,28 +1508,29 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
 
         @Override
         public void onManagerEvent(ManagerEvent event) {
-            if (event instanceof DisconnectEvent) {
-                callback.onResponse(events);
-                return;
-            }
+    if (event instanceof DisconnectEvent) {
+        callback.onResponse(events);
+        return;
+    }
 
-            // should always be a ResponseEvent, anyway...
-            if (false == (event instanceof ResponseEvent)) {
-                return;
-            }
+    boolean isResponseEvent = event instanceof ResponseEvent;
+    if (false == isResponseEvent) {
+        return;
+    }
 
-            ResponseEvent responseEvent = (ResponseEvent) event;
-            events.addEvent(responseEvent);
+    ResponseEvent responseEvent = (ResponseEvent) event;
+    events.addEvent(responseEvent);
 
-            if (actionCompleteEventClass.isAssignableFrom(event.getClass())) {
-                events.setComplete(true);
-                String internalActionId = responseEvent.getInternalActionId();
-                try (LockCloser closer = responseEventListeners.withLock()) {
-                    responseEventListeners.remove(internalActionId);
-                }
-                callback.onResponse(events);
-            }
+    boolean isActionCompleteEvent = actionCompleteEventClass.isAssignableFrom(event.getClass());
+    if (isActionCompleteEvent) {
+        events.setComplete(true);
+        String internalActionId = responseEvent.getInternalActionId();
+        try (LockCloser closer = responseEventListeners.withLock()) {
+            responseEventListeners.remove(internalActionId);
         }
+        callback.onResponse(events);
+    }
+}
 
         @Override
         public void onResponse(ManagerResponse response) {

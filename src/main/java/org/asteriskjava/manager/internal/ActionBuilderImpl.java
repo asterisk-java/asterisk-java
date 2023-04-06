@@ -307,17 +307,38 @@ class ActionBuilderImpl implements ActionBuilder {
     }
 
     static String determineFieldName(String accessorName) {
-        if (accessorName.startsWith("get")) {
-            return lcFirst(accessorName.substring(3));
-        } else if (accessorName.startsWith("is")) {
-            return lcFirst(accessorName.substring(2));
-        } else if (accessorName.startsWith("set")) {
-            return lcFirst(accessorName.substring(3));
+        if (isGetter(accessorName)) {
+            return lcFirst(getterName(accessorName));
+        } else if (isSetter(accessorName)) {
+            return lcFirst(setterName(accessorName));
         } else {
             throw new IllegalArgumentException("Accessor '" + accessorName + "' doesn't start with either 'get', 'is' or 'set'");
         }
     }
-
+    
+    static boolean isGetter(String accessorName) {
+        return accessorName.startsWith("get") || accessorName.startsWith("is");
+    }
+    
+    static boolean isSetter(String accessorName) {
+        return accessorName.startsWith("set");
+    }
+    
+    static String getterName(String accessorName) {
+        if (accessorName.startsWith("get")) {
+            return accessorName.substring(3);
+        } else if (accessorName.startsWith("is")) {
+            return accessorName.substring(2);
+        } else {
+            throw new IllegalArgumentException("Accessor '" + accessorName + "' doesn't start with either 'get' or 'is'");
+        }
+    }
+    
+    static String setterName(String accessorName) {
+        return accessorName.substring(3);
+    }
+    
+    
     /**
      * Converts the first character to lower case.
      *
