@@ -157,9 +157,9 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer {
 
             compositeMappingStrategy.addStrategy(new ResourceBundleMappingStrategy());
             compositeMappingStrategy.addStrategy(new ClassNameMappingStrategy());
-            if (ReflectionUtil.isClassAvailable("javax.script.ScriptEngineManager")) {
+            if (ClassLoaderUtil.isClassAvailable("javax.script.ScriptEngineManager")) {
                 MappingStrategy scriptEngineMappingStrategy = (MappingStrategy) ReflectionUtil
-                        .newInstance("org.asteriskjava.fastagi.ScriptEngineMappingStrategy");
+                    .newInstance("org.asteriskjava.fastagi.ScriptEngineMappingStrategy");
                 if (scriptEngineMappingStrategy != null) {
                     compositeMappingStrategy.addStrategy(scriptEngineMappingStrategy);
                 }
@@ -320,7 +320,7 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer {
 
             // execute connection handler
             final AgiConnectionHandler connectionHandler = new FastAgiConnectionHandler(getMappingStrategy(), socket,
-                    this.getAgiChannelFactory());
+                this.getAgiChannelFactory());
             try {
                 execute(connectionHandler);
             } catch (RejectedExecutionException e) {

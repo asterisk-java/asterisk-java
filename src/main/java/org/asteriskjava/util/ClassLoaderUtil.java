@@ -17,21 +17,8 @@
 package org.asteriskjava.util;
 
 public class ClassLoaderUtil {
-    private ClassLoaderUtil() {
-        // hide constructor
-    }
-
-    /**
-     * Checks if the class is available on the current thread's context class
-     * loader.
-     *
-     * @param s fully qualified name of the class to check.
-     * @return <code>true</code> if the class is available, <code>false</code>
-     * otherwise.
-     */
     public static boolean isClassAvailable(String s) {
         final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-
         try {
             classLoader.loadClass(s);
             return true;

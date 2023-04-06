@@ -84,6 +84,10 @@ public class AsyncAgiConnectionHandler extends AgiConnectionHandler {
         }
     }
 
+    protected boolean isIgnoreMissingScripts() {
+        return super.ignoreMissingScripts;
+    }
+
     public void onAsyncAgiExecEvent(AsyncAgiEvent event) {
         asyncAgiEvents.offer(event);
     }
