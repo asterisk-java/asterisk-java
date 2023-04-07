@@ -462,82 +462,15 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
      *                                       protocol identifier. The connection is closed in this case.
      */
     protected void doLogin(long timeout, String eventMask)
-            throws IOException, AuthenticationFailedException, TimeoutException {
+        throws IOException, AuthenticationFailedException, TimeoutException {
         try (LockCloser closer = this.withLock()) {
-            ChallengeAction challengeAction;
-            ManagerResponse challengeResponse;
-            String challenge;
-            String key;
-            LoginAction loginAction;
-            ManagerResponse loginResponse;
-
             if (socket == null) {
-                connect();
+                connectSocket();
             }
 
-            if (protocolIdentifier.getValue() == null) {
-                try {
-                    protocolIdentifier.await(timeout);
-                } catch (InterruptedException e) // NOPMD
-                {
-                    Thread.currentThread().interrupt();
-                }
-            }
+            identifyProtocol(timeout);
 
-            if (protocolIdentifier.getValue() == null) {
-                disconnect();
-                if (reader != null && reader.getTerminationException() != null) {
-                    throw reader.getTerminationException();
-                }
-                throw new TimeoutException("Timeout waiting for protocol identifier");
-            }
-
-            challengeAction = new ChallengeAction("MD5");
-            try {
-                challengeResponse = sendAction(challengeAction);
-            } catch (Exception e) {
-                disconnect();
-                throw new AuthenticationFailedException("Unable to send challenge action", e);
-            }
-
-            if (challengeResponse instanceof ChallengeResponse) {
-                challenge = ((ChallengeResponse) challengeResponse).getChallenge();
-            } else {
-                disconnect();
-                throw new AuthenticationFailedException("Unable to get challenge from Asterisk. ChallengeAction returned: "
-                        + challengeResponse.getMessage());
-            }
-
-            try {
-                MessageDigest md;
-
-                md = MessageDigest.getInstance("MD5");
-                if (challenge != null) {
-                    md.update(challenge.getBytes(StandardCharsets.UTF_8));
-                }
-                if (password != null) {
-                    md.update(password.getBytes(StandardCharsets.UTF_8));
-                }
-                key = ManagerUtil.toHexString(md.digest());
-            } catch (NoSuchAlgorithmException ex) {
-                disconnect();
-                throw new AuthenticationFailedException("Unable to create login key using MD5 Message Digest", ex);
-            }
-
-            loginAction = new LoginAction(username, "MD5", key, eventMask);
-            try {
-                loginResponse = sendAction(loginAction);
-            } catch (Exception e) {
-                disconnect();
-                throw new AuthenticationFailedException("Unable to send login action", e);
-            }
-
-            if (loginResponse instanceof ManagerError) {
-                disconnect();
-                throw new AuthenticationFailedException(loginResponse.getMessage());
-            }
-
-            logger.info("Successfully logged in");
+            authenticate(eventMask);
 
             version = determineVersion();
 
@@ -547,16 +480,87 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
 
             logger.info("Determined Asterisk version: " + version);
 
-            // generate pseudo event indicating a successful login
-            ConnectEvent connectEvent = new ConnectEvent(this);
-            connectEvent.setProtocolIdentifier(getProtocolIdentifier());
-            connectEvent.setDateReceived(DateUtil.getDate());
-            // TODO could this cause a deadlock?
-            fireEvent(connectEvent, null);
+            fireEvent(new ConnectEvent(this, getProtocolIdentifier()), null);
         }
     }
 
-    protected AsteriskVersion determineVersion() throws IOException, TimeoutException {
+    private void connectSocket() throws IOException {
+        connect();
+    }
+
+    private void identifyProtocol(long timeout) throws IOException, TimeoutException {
+        if (protocolIdentifier.getValue() == null) {
+            try {
+                protocolIdentifier.await(timeout);
+            } catch (InterruptedException e) // NOPMD
+            {
+                Thread.currentThread().interrupt();
+            }
+        }
+
+        if (protocolIdentifier.getValue() == null) {
+            disconnect();
+            if (reader != null && reader.getTerminationException() != null) {
+                throw reader.getTerminationException();
+            }
+            throw new TimeoutException("Timeout waiting for protocol identifier");
+        }
+    }
+
+    private void authenticate(String eventMask) throws IOException, AuthenticationFailedException {
+        ChallengeAction challengeAction;
+        ManagerResponse challengeResponse;
+        String challenge;
+        String key;
+        LoginAction loginAction;
+        ManagerResponse loginResponse;
+
+        challengeAction = new ChallengeAction("MD5");
+        try {
+            challengeResponse = sendAction(challengeAction);
+        } catch (Exception e) {
+            disconnect();
+            throw new AuthenticationFailedException("Unable to send challenge action", e);
+        }
+
+        if (challengeResponse instanceof ChallengeResponse) {
+            challenge = ((ChallengeResponse) challengeResponse).getChallenge();
+        } else {
+            disconnect();
+            throw new AuthenticationFailedException("Unable to get challenge from Asterisk. ChallengeAction returned: "
+                + challengeResponse.getMessage());
+        }
+
+        try {
+            MessageDigest md;
+
+            md = MessageDigest.getInstance("MD5");
+            if (challenge != null) {
+                md.update(challenge.getBytes(StandardCharsets.UTF_8));
+            }
+            if (password != null) {
+                md.update(password.getBytes(StandardCharsets.UTF_8));
+            }
+            key = ManagerUtil.toHexString(md.digest());
+        } catch (NoSuchAlgorithmException ex) {
+            disconnect();
+            throw new AuthenticationFailedException("Unable to create login key using MD5 Message Digest", ex);
+        }
+
+        loginAction = new LoginAction(username, "MD5", key, eventMask);
+        try {
+            loginResponse = sendAction(loginAction);
+        } catch (Exception e) {
+            disconnect();
+            throw new AuthenticationFailedException("Unable to send login action", e);
+        }if (loginResponse instanceof ManagerError) {
+            disconnect();
+            throw new AuthenticationFailedException(loginResponse.getMessage());
+        }
+
+        logger.info("Successfully logged in");
+    }
+            protected AsteriskVersion determineVersion() throws IOException, TimeoutException {
         int attempts = 0;
 
         logger.info("Got asterisk protocol identifier version " + protocolIdentifier.getValue());
