@@ -398,7 +398,11 @@ public class QueueMemberEvent extends ResponseEvent {
         this.wrapuptime = wrapuptime;
     }
 
-    public Integer getLogintime() { return logintime; }
+    public Integer getLogintime() {
+        return logintime;
+    }
 
-    public void setLogintime(Integer logintime) { this.logintime = logintime; }
+    public void setLogintime(Integer logintime) {
+        this.logintime = logintime;
+    }
 }
