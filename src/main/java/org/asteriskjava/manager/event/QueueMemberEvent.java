@@ -64,6 +64,7 @@ public class QueueMemberEvent extends ResponseEvent {
     private String pausedreason;
     private Integer wrapuptime;
     private String _interface;
+    private Integer logintime;
 
     /**
      * @param source
@@ -395,5 +396,13 @@ public class QueueMemberEvent extends ResponseEvent {
 
     public void setWrapuptime(Integer wrapuptime) {
         this.wrapuptime = wrapuptime;
+    }
+
+    public Integer getLogintime() {
+        return logintime;
+    }
+
+    public void setLogintime(Integer logintime) {
+        this.logintime = logintime;
     }
 }
