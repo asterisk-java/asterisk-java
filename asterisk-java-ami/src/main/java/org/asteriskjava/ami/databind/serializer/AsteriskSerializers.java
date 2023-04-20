@@ -13,18 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.asteriskjava.ami.databind.annotation;
+package org.asteriskjava.ami.databind.serializer;
 
-import org.asteriskjava.ami.databind.serializer.AsteriskSerializer;
+import java.util.HashMap;
+import java.util.Map;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
+public class AsteriskSerializers {
+    private final Map<Class<? extends AsteriskSerializer<?>>, AsteriskSerializer<?>> serializerMap = new HashMap<>();
 
-import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
+    public AsteriskSerializers add(Class<? extends AsteriskSerializer<?>> clazz, AsteriskSerializer<?> serializer) {
+        serializerMap.put(clazz, serializer);
+        return this;
+    }
 
-@Target({METHOD})
-@Retention(RUNTIME)
-public @interface AsteriskSerialize {
-    Class<? extends AsteriskSerializer<?>> using();
+    public AsteriskSerializer<?> get(Class<? extends AsteriskSerializer<?>> key) {
+        return serializerMap.get(key);
+    }
 }

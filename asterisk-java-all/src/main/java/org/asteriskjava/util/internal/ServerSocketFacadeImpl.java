@@ -25,7 +25,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.time.Duration;
 
-import static org.asteriskjava.core.socket.scanner.SocketScanner.NewlineDelimiter.LF;
+import static org.asteriskjava.core.NewlineDelimiter.LF;
 
 
 /**

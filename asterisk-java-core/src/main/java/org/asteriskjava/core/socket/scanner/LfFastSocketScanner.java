@@ -15,7 +15,7 @@
  */
 package org.asteriskjava.core.socket.scanner;
 
-import static org.asteriskjava.core.socket.scanner.SocketScanner.NewlineDelimiter.LF;
+import static org.asteriskjava.core.NewlineDelimiter.LF;
 
 /**
  * This a fast scanner implementation which take care about {@code \n} (LF) newlines delimiter.<p>

@@ -15,14 +15,13 @@
  */
 package org.asteriskjava.core.socket.scanner;
 
+import org.asteriskjava.core.NewlineDelimiter;
+
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.Scanner;
-import java.util.regex.Pattern;
 
-import static java.lang.String.format;
-import static java.util.Arrays.stream;
-import static org.asteriskjava.core.socket.scanner.SocketScanner.NewlineDelimiter.CRLF;
+import static org.asteriskjava.core.NewlineDelimiter.CRLF;
 
 /**
  * A socket scanner is used for read strings (lines) returned by Asterisk server.<p>
@@ -95,38 +94,5 @@ public interface SocketScanner extends Closeable {
         Scanner scanner = new Scanner(source)
             .useDelimiter(newLineDelimiter.getPattern());
         return new LegacySocketScanner(scanner);
-    }
-
-    /**
-     * Type of {@link SocketScanner}.<p>
-     */
-    enum NewlineDelimiter {
-        /**
-         * AGI uses <b>LF</b> (Line Feed) as a newline delimiter.
-         */
-        LF("\n"),
-
-        /**
-         * AMI uses <b>CRLF</b> (Carriage Return + Line Feed) as a newline delimiter.
-         */
-        CRLF("\r\n"),
-        ;
-
-        private final String pattern;
-
-        NewlineDelimiter(String pattern) {
-            this.pattern = pattern;
-        }
-
-        public String getPattern() {
-            return pattern;
-        }
-
-        public static NewlineDelimiter forPattern(Pattern pattern) {
-            return stream(values())
-                .filter(type -> type.pattern.equals(pattern.pattern()))
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException(format("Cannot find type for pattern '%s'.", pattern.toString())));
-        }
     }
 }

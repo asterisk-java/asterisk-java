@@ -15,7 +15,7 @@
  */
 package org.asteriskjava.core.socket.scanner;
 
-import org.asteriskjava.core.socket.scanner.SocketScanner.NewlineDelimiter;
+import org.asteriskjava.core.NewlineDelimiter;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -33,8 +33,8 @@ import java.util.regex.Pattern;
 import static java.nio.file.Files.readAllBytes;
 import static java.nio.file.Files.readAllLines;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.asteriskjava.core.socket.scanner.SocketScanner.NewlineDelimiter.CRLF;
-import static org.asteriskjava.core.socket.scanner.SocketScanner.NewlineDelimiter.LF;
+import static org.asteriskjava.core.NewlineDelimiter.CRLF;
+import static org.asteriskjava.core.NewlineDelimiter.LF;
 import static org.junit.jupiter.api.Assertions.fail;
 
 /**

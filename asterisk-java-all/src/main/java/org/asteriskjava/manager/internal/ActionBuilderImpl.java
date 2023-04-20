@@ -18,10 +18,10 @@ package org.asteriskjava.manager.internal;
 
 import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.ami.action.ManagerAction;
-import org.asteriskjava.ami.databind.AsteriskSerializer;
-import org.asteriskjava.ami.databind.AsteriskSerializers;
-import org.asteriskjava.ami.databind.ComaJoiningSerializer;
 import org.asteriskjava.ami.databind.annotation.AsteriskSerialize;
+import org.asteriskjava.ami.databind.serializer.AsteriskSerializer;
+import org.asteriskjava.ami.databind.serializer.AsteriskSerializers;
+import org.asteriskjava.ami.databind.serializer.ComaJoiningSerializer;
 import org.asteriskjava.core.utils.ReflectionUtils;
 import org.asteriskjava.manager.AsteriskMapping;
 import org.asteriskjava.manager.action.UserEventAction;

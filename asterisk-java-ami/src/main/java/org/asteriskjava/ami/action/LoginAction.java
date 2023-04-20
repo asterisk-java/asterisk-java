@@ -17,8 +17,8 @@ package org.asteriskjava.ami.action;
 
 import org.asteriskjava.ami.action.annotation.ExpectedResponse;
 import org.asteriskjava.ami.action.response.LoginResponse;
-import org.asteriskjava.ami.databind.ComaJoiningSerializer;
 import org.asteriskjava.ami.databind.annotation.AsteriskSerialize;
+import org.asteriskjava.ami.databind.serializer.ComaJoiningSerializer;
 
 import java.util.EnumSet;
 

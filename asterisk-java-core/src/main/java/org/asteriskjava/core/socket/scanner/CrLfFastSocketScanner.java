@@ -15,7 +15,7 @@
  */
 package org.asteriskjava.core.socket.scanner;
 
-import static org.asteriskjava.core.socket.scanner.SocketScanner.NewlineDelimiter.CRLF;
+import static org.asteriskjava.core.NewlineDelimiter.CRLF;
 
 /**
  * This a fast scanner implementation which take care about {@code \r\n} (CRLF) newlines delimiter.<p>

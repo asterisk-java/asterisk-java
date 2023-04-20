@@ -13,20 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.asteriskjava.ami.databind;
+package org.asteriskjava.core;
 
-import java.util.HashMap;
-import java.util.Map;
+/**
+ * Newline delimiters used for determine how lines was sent/received to/from Asterisk.
+ *
+ * @author Piotr Olaszewski
+ */
+public enum NewlineDelimiter {
+    /**
+     * AGI uses <b>LF</b> (Line Feed) as a newline delimiter.
+     */
+    LF("\n"),
 
-public class AsteriskSerializers {
-    private final Map<Class<? extends AsteriskSerializer<?>>, AsteriskSerializer<?>> serializerMap = new HashMap<>();
+    /**
+     * AMI uses <b>CRLF</b> (Carriage Return + Line Feed) as a newline delimiter.
+     */
+    CRLF("\r\n"),
+    ;
 
-    public AsteriskSerializers add(Class<? extends AsteriskSerializer<?>> clazz, AsteriskSerializer<?> serializer) {
-        serializerMap.put(clazz, serializer);
-        return this;
+    private final String pattern;
+
+    NewlineDelimiter(String pattern) {
+        this.pattern = pattern;
     }
 
-    public AsteriskSerializer<?> get(Class<? extends AsteriskSerializer<?>> key) {
-        return serializerMap.get(key);
+    public String getPattern() {
+        return pattern;
     }
 }

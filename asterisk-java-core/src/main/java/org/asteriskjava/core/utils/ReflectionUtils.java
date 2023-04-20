@@ -1,6 +1,7 @@
 package org.asteriskjava.core.utils;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -22,6 +23,16 @@ public class ReflectionUtils {
         final Method[] methods = clazz.getMethods();
 
         for (Method method : methods) {
+            if (method.getParameterCount() > 0 ||
+                method.getReturnType() == Void.TYPE ||
+                !Modifier.isPublic(method.getModifiers()) ||
+                Modifier.isNative(method.getModifiers()) ||
+                Modifier.isAbstract(method.getModifiers()) ||
+                method.getName().equals("toString")
+            ) {
+                continue;
+            }
+
             String name = null;
             String methodName = method.getName();
 

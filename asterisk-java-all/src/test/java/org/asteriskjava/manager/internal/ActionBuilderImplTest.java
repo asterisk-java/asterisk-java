@@ -20,6 +20,7 @@ import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.ami.action.AbstractManagerAction;
 import org.asteriskjava.ami.action.EventMask;
 import org.asteriskjava.ami.action.LoginAction;
+import org.asteriskjava.ami.databind.AsteriskObjectMapper;
 import org.asteriskjava.manager.action.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,6 +30,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.asteriskjava.AsteriskVersion.ASTERISK_1_2;
 import static org.asteriskjava.ami.action.EventMask.agent;
 import static org.asteriskjava.ami.action.EventMask.agi;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -54,6 +56,18 @@ class ActionBuilderImplTest {
 
         actual = actionBuilder.buildAction(myAction);
 
+        AsteriskObjectMapper asteriskObjectMapper = new AsteriskObjectMapper();
+        String newActual = asteriskObjectMapper.writeValue(myAction);
+
+        assertThat(actual).isEqualTo("action: My\r\n" +
+            "firstproperty: first value\r\n" +
+            "secondproperty: 2\r\n\r\n");
+
+        String expected = "Action: My\r\n" +
+            "FirstProperty: first value\r\n" +
+            "SecondProperty: 2\r\n\r\n";
+        assertThat(newActual).isEqualTo(expected);
+
         assertTrue(actual.indexOf("action: My\r\n") >= 0, "Action name missing");
         assertTrue(actual.indexOf("firstproperty: first value\r\n") >= 0, "First property missing");
         assertTrue(actual.indexOf("secondproperty: 2\r\n") >= 0, "Second property missing");
@@ -71,6 +85,9 @@ class ActionBuilderImplTest {
 
         actual = actionBuilder.buildAction(myAction);
 
+        assertThat(actual).isEqualTo("action: My\r\n" +
+            "firstproperty: first value\r\n\r\n");
+
         assertTrue(actual.indexOf("action: My\r\n") >= 0, "Action name missing");
         assertTrue(actual.indexOf("firstproperty: first value\r\n") >= 0, "First property missing");
         assertTrue(actual.endsWith("\r\n\r\n"), "Missing trailing CRNL CRNL");
@@ -85,6 +102,8 @@ class ActionBuilderImplTest {
         action = new AgentsAction();
 
         actual = actionBuilder.buildAction(action);
+
+        assertThat(actual).isEqualTo("action: Agents\r\n\r\n");
 
         assertThat(actual).contains("action: Agents\r\n");
         assertThat(actual).doesNotContain("actioncompleteeventclass: ");
@@ -101,6 +120,13 @@ class ActionBuilderImplTest {
         action.addCommand(UpdateConfigAction.ACTION_NEWCAT, "testcategory", null, null, null);
 
         String actual = actionBuilder.buildAction(action);
+
+        assertThat(actual).isEqualTo("action: UpdateConfig\r\n" +
+            "srcfilename: sourcefile.conf\r\n" +
+            "reload: Yes\r\n" +
+            "dstfilename: destfile.conf\r\n" +
+            "Action-000000: NewCat\r\n" +
+            "Cat-000000: testcategory\r\n\r\n");
 
         assertThat(actual).contains("action: UpdateConfig\r\n");
         assertThat(actual).contains("srcfilename: sourcefile.conf\r\n");
@@ -130,6 +156,12 @@ class ActionBuilderImplTest {
 
         String actual = actionBuilder.buildAction(action);
 
+        assertThat(actual).isEqualTo("action: UserEvent\r\n" +
+            "UserEvent: myuser\r\n" +
+            "mapmember: Key1=Value1|Key2=Value2|Key3=Value3\r\n" +
+            "source: org.asteriskjava.manager.internal.ActionBuilderImplTest@313b2ea6\r\n" +
+            "stringmember: stringMemberValue\r\n\r\n");
+
         assertThat(actual).contains("action: UserEvent\r\n");
         assertThat(actual).contains("UserEvent: myuser\r\n");
         assertThat(actual).contains("stringmember: stringMemberValue\r\n");
@@ -148,6 +180,9 @@ class ActionBuilderImplTest {
 
         actual = actionBuilder.buildAction(originateAction);
 
+        assertThat(actual).isEqualTo("action: Originate\r\n" +
+            "variable: var1=value1|var2=value2\r\n\r\n");
+
         assertTrue(actual.indexOf("variable: var1=value1|var2=value2\r\n") >= 0, "Incorrect mapping of variable property for Asterisk 1.0");
     }
 
@@ -162,6 +197,9 @@ class ActionBuilderImplTest {
 
         actual = actionBuilder.buildAction(originateAction);
 
+        assertThat(actual).isEqualTo("action: Originate\r\n" +
+            "variable: var1=value1|var2=|var3=value3\r\n\r\n");
+
         assertTrue(actual.indexOf("variable: var1=value1|var2=|var3=value3\r\n") >= 0, "Incorrect mapping of variable property for Asterisk 1.0");
     }
 
@@ -174,8 +212,12 @@ class ActionBuilderImplTest {
         originateAction = new OriginateAction();
         originateAction.setVariable("var1=value1|var2=value2");
 
-        actionBuilder.setTargetVersion(AsteriskVersion.ASTERISK_1_2);
+        actionBuilder.setTargetVersion(ASTERISK_1_2);
         actual = actionBuilder.buildAction(originateAction);
+
+        assertThat(actual).isEqualTo("action: Originate\r\n" +
+            "variable: var1=value1\r\n" +
+            "variable: var2=value2\r\n\r\n");
 
         assertTrue(actual.indexOf("variable: var1=value1\r\nvariable: var2=value2\r\n") >= 0, "Incorrect mapping of variable property for Asterisk 1.2");
     }
@@ -189,8 +231,13 @@ class ActionBuilderImplTest {
         originateAction = new OriginateAction();
         originateAction.setVariable("var1=value1|var2=|var3=value3");
 
-        actionBuilder.setTargetVersion(AsteriskVersion.ASTERISK_1_2);
+        actionBuilder.setTargetVersion(ASTERISK_1_2);
         actual = actionBuilder.buildAction(originateAction);
+
+        assertThat(actual).isEqualTo("action: Originate\r\n" +
+            "variable: var1=value1\r\n" +
+            "variable: var2=\r\n" +
+            "variable: var3=value3\r\n\r\n");
 
         assertTrue(actual.indexOf("variable: var1=value1\r\nvariable: var2=\r\nvariable: var3=value3\r\n") >= 0, "Incorrect mapping of variable property for Asterisk 1.2");
     }
@@ -209,8 +256,12 @@ class ActionBuilderImplTest {
 
         originateAction.setVariables(map);
 
-        actionBuilder.setTargetVersion(AsteriskVersion.ASTERISK_1_2);
+        actionBuilder.setTargetVersion(ASTERISK_1_2);
         actual = actionBuilder.buildAction(originateAction);
+
+        assertThat(actual).isEqualTo("action: Originate\r\n" +
+            "variable: var1=value1\r\n" +
+            "variable: VAR2=value2\r\n\r\n");
 
         assertThat(actual).contains("variable: var1=value1\r\n");
         assertThat(actual).contains("variable: VAR2=value2\r\n");
@@ -228,6 +279,11 @@ class ActionBuilderImplTest {
         actionBuilder.setTargetVersion(AsteriskVersion.ASTERISK_1_6);
         actual = actionBuilder.buildAction(action);
 
+        assertThat(actual).isEqualTo("action: SipNotify\r\n" +
+            "variable: var1=value1\r\n" +
+            "variable: var2=value2\r\n" +
+            "channel: peer\r\n\r\n");
+
         assertThat(actual).contains("variable: var1=value1\r\n");
         assertThat(actual).contains("variable: var2=value2\r\n");
     }
@@ -236,6 +292,11 @@ class ActionBuilderImplTest {
     void testBuildActionWithAnnotatedGetter() {
         AnnotatedAction action = new AnnotatedAction("value1", "value2", "value3");
         String actual = actionBuilder.buildAction(action);
+
+        assertThat(actual).isEqualTo("action: Custom\r\n" +
+            "property-2: value2\r\n" +
+            "property-1: value1\r\n" +
+            "property-3: value3\r\n\r\n");
 
         assertTrue(actual.indexOf("property-1: value1\r\n") >= 0, "Incorrect mapping of property with annotated getter");
     }
@@ -250,6 +311,11 @@ class ActionBuilderImplTest {
     void testBuildActionWithAnnotatedSetter() {
         AnnotatedAction action = new AnnotatedAction("value1", "value2", "value3");
         String actual = actionBuilder.buildAction(action);
+
+        assertThat(actual).isEqualTo("action: Custom\r\n" +
+            "property-2: value2\r\n" +
+            "property-1: value1\r\n" +
+            "property-3: value3\r\n\r\n");
 
         assertThat(actual).contains("property-2: value2\r\n");
     }
@@ -266,6 +332,11 @@ class ActionBuilderImplTest {
         AnnotatedAction action = new AnnotatedAction("value1", "value2", "value3");
         String actual = actionBuilder.buildAction(action);
 
+        assertThat(actual).isEqualTo("action: Custom\r\n" +
+            "property-2: value2\r\n" +
+            "property-1: value1\r\n" +
+            "property-3: value3\r\n\r\n");
+
         assertTrue(actual.indexOf("property-3: value3\r\n") >= 0, "Incorrect mapping of property with annotated field");
     }
 
@@ -281,10 +352,82 @@ class ActionBuilderImplTest {
         String actual = actionBuilder.buildAction(action);
 
         //then
-        assertThat(actual).contains("events: agent,agi\r\n");
+        assertThat(actual).isEqualTo("action: Login\r\n" +
+            "events: agent,agi\r\n\r\n");
     }
 
-    class MyAction extends AbstractManagerAction {
+    @Test
+    void shouldMapValue() {
+        //given
+        SipNotifyAction action = new SipNotifyAction("channel");
+        action.setVariable("v1", "1");
+        action.setVariable("v2", "2");
+
+        actionBuilder.setTargetVersion(ASTERISK_1_2);
+
+        //when
+        String actual = actionBuilder.buildAction(action);
+
+        //then
+        assertThat(actual).isEqualTo("action: SipNotify\r\n" +
+            "variable: v1=1\r\n" +
+            "variable: v2=2\r\n" +
+            "channel: channel\r\n\r\n");
+    }
+
+    @Test
+    void shouldHandleMultilineContent() {
+        //given
+        SipNotifyAction action = new SipNotifyAction("channel");
+        action.setVariable("Content", "value1\nvalue2\nvalue3");
+
+        actionBuilder.setTargetVersion(ASTERISK_1_2);
+
+        //when
+        String actual = actionBuilder.buildAction(action);
+
+        //then
+        assertThat(actual).isEqualTo("action: SipNotify\r\n" +
+            "variable: Content=value1\r\n" +
+            "variable: Content=value2\r\n" +
+            "variable: Content=value3\r\n" +
+            "channel: channel\r\n\r\n");
+    }
+
+    @Test
+    void shouldHandleInternalActionId() {
+        //given
+        AnnotatedAction action = new AnnotatedAction("value1", "value2", "value3");
+
+        //when
+        String actual = actionBuilder.buildAction(action, "internalId-1");
+
+        //then
+        assertThat(actual).isEqualTo("action: Custom\r\n" +
+            "actionid: internalId-1#\r\n" +
+            "property-2: value2\r\n" +
+            "property-1: value1\r\n" +
+            "property-3: value3\r\n\r\n");
+    }
+
+    @Test
+    void shouldUseActionId() {
+        //given
+        AnnotatedAction action = new AnnotatedAction("value1", "value2", "value3");
+        action.setActionId("actionId-1");
+
+        //when
+        String actual = actionBuilder.buildAction(action);
+
+        //then
+        assertThat(actual).isEqualTo("action: Custom\r\n" +
+            "actionid: actionId-1\r\n" +
+            "property-2: value2\r\n" +
+            "property-1: value1\r\n" +
+            "property-3: value3\r\n\r\n");
+    }
+
+    static class MyAction extends AbstractManagerAction {
         private static final long serialVersionUID = 3257568425345102641L;
         private String firstProperty;
         private Integer secondProperty;

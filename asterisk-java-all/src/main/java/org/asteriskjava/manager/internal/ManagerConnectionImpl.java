@@ -52,7 +52,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
-import static org.asteriskjava.core.socket.scanner.SocketScanner.NewlineDelimiter.CRLF;
+import static org.asteriskjava.core.NewlineDelimiter.CRLF;
 import static org.asteriskjava.manager.ManagerConnectionState.*;
 
 /**

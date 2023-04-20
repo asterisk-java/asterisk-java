@@ -15,8 +15,8 @@
  */
 package org.asteriskjava.core.socket;
 
+import org.asteriskjava.core.NewlineDelimiter;
 import org.asteriskjava.core.socket.scanner.SocketScanner;
-import org.asteriskjava.core.socket.scanner.SocketScanner.NewlineDelimiter;
 
 import java.io.IOException;
 import java.net.InetAddress;
