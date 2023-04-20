@@ -1,0 +1,23 @@
+subprojects {
+    apply plugin: 'java-library'
+
+    group = 'org.asteriskjava'
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+    compileJava.options.encoding = 'UTF-8'
+    compileTestJava.options.encoding = 'UTF-8'
+    javadoc.options.encoding = 'UTF-8'
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        implementation 'org.slf4j:slf4j-api:2.0.4'
+
+        testImplementation 'org.assertj:assertj-core:3.23.1'
+        testImplementation 'org.junit.jupiter:junit-jupiter:5.9.1'
+        testImplementation 'org.mockito:mockito-core:4.9.0'
+    }
+}

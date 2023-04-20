@@ -1,0 +1,6 @@
+dependencies {
+    implementation project(':asterisk-java-core')
+
+    implementation 'org.apache.commons:commons-lang3:3.12.0'
+    implementation 'org.reflections:reflections:0.10.2'
+}
