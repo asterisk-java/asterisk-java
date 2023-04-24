@@ -18,10 +18,6 @@ package org.asteriskjava.manager.internal;
 
 import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.ami.action.ManagerAction;
-import org.asteriskjava.ami.databind.annotation.AsteriskSerialize;
-import org.asteriskjava.ami.databind.serializer.AsteriskSerializer;
-import org.asteriskjava.ami.databind.serializer.AsteriskSerializers;
-import org.asteriskjava.ami.databind.serializer.ComaJoiningSerializer;
 import org.asteriskjava.core.utils.ReflectionUtils;
 import org.asteriskjava.manager.AsteriskMapping;
 import org.asteriskjava.manager.action.UserEventAction;
@@ -225,9 +221,6 @@ class ActionBuilderImpl implements ActionBuilder {
         appendString(sb, "UserEvent", eventType);
     }
 
-    private static final AsteriskSerializers asteriskSerializers = new AsteriskSerializers()
-        .add(ComaJoiningSerializer.class, new ComaJoiningSerializer());
-
     @SuppressWarnings("unchecked")
     private void appendGetters(StringBuilder sb, Object action, Map<String, Method> getters) {
         for (Map.Entry<String, Method> entry : getters.entrySet()) {
@@ -252,14 +245,14 @@ class ActionBuilderImpl implements ActionBuilder {
 
             final String mappedName = mapToAsterisk(getter);
 
-            AsteriskSerialize asteriskSerialize = getter.getAnnotation(AsteriskSerialize.class);
-            if (asteriskSerialize != null) {
-                Class<? extends AsteriskSerializer<?>> using = asteriskSerialize.using();
-                AsteriskSerializer<Object> asteriskSerializer = (AsteriskSerializer<Object>) asteriskSerializers.get(using);
-                String serialize = asteriskSerializer.serialize(value);
-                appendString(sb, mappedName, serialize);
-                continue;
-            }
+//            AsteriskSerialize asteriskSerialize = getter.getAnnotation(AsteriskSerialize.class);
+//            if (asteriskSerialize != null) {
+//                Class<? extends AsteriskSerializer<?>> using = asteriskSerialize.value();
+//                AsteriskSerializer<Object> asteriskSerializer = (AsteriskSerializer<Object>) asteriskSerializers.get(using);
+//                String serialize = asteriskSerializer.serialize(value, new AsteriskGenerator());
+//                appendString(sb, mappedName, serialize);
+//                continue;
+//            }
 
             if (value instanceof Map) {
                 appendMap(sb, mappedName, (Map<String, String>) value);

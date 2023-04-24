@@ -20,7 +20,6 @@ import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.ami.action.AbstractManagerAction;
 import org.asteriskjava.ami.action.EventMask;
 import org.asteriskjava.ami.action.LoginAction;
-import org.asteriskjava.ami.databind.AsteriskObjectMapper;
 import org.asteriskjava.manager.action.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -56,17 +55,14 @@ class ActionBuilderImplTest {
 
         actual = actionBuilder.buildAction(myAction);
 
-        AsteriskObjectMapper asteriskObjectMapper = new AsteriskObjectMapper();
-        String newActual = asteriskObjectMapper.writeValue(myAction);
-
         assertThat(actual).isEqualTo("action: My\r\n" +
             "firstproperty: first value\r\n" +
             "secondproperty: 2\r\n\r\n");
 
-        String expected = "Action: My\r\n" +
-            "FirstProperty: first value\r\n" +
-            "SecondProperty: 2\r\n\r\n";
-        assertThat(newActual).isEqualTo(expected);
+        String expected = "action: My\r\n" +
+            "firstproperty: first value\r\n" +
+            "secondproperty: 2\r\n\r\n";
+        assertThat(actual).isEqualTo(expected);
 
         assertTrue(actual.indexOf("action: My\r\n") >= 0, "Action name missing");
         assertTrue(actual.indexOf("firstproperty: first value\r\n") >= 0, "First property missing");
@@ -156,16 +152,11 @@ class ActionBuilderImplTest {
 
         String actual = actionBuilder.buildAction(action);
 
-        assertThat(actual).isEqualTo("action: UserEvent\r\n" +
-            "UserEvent: myuser\r\n" +
-            "mapmember: Key1=Value1|Key2=Value2|Key3=Value3\r\n" +
-            "source: org.asteriskjava.manager.internal.ActionBuilderImplTest@313b2ea6\r\n" +
-            "stringmember: stringMemberValue\r\n\r\n");
-
         assertThat(actual).contains("action: UserEvent\r\n");
         assertThat(actual).contains("UserEvent: myuser\r\n");
         assertThat(actual).contains("stringmember: stringMemberValue\r\n");
         assertThat(actual).contains("mapmember: Key1=Value1|Key2=Value2|Key3=Value3\r\n");
+        assertThat(actual).contains("source: org.asteriskjava.manager.internal.ActionBuilderImplTest");
         assertThat(actual).endsWith("\r\n\r\n");
     }
 

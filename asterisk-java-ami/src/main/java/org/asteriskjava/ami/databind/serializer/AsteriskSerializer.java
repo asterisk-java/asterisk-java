@@ -15,6 +15,8 @@
  */
 package org.asteriskjava.ami.databind.serializer;
 
+import org.asteriskjava.ami.databind.AsteriskGenerator;
+
 public interface AsteriskSerializer<T> {
-    String serialize(T value);
+    void serialize(String field, T value, AsteriskGenerator asteriskGenerator);
 }

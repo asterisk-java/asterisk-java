@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.asteriskjava.ami.databind.serializer;
+package org.asteriskjava.ami.databind.serializer.custom;
 
+import org.asteriskjava.ami.databind.AsteriskGenerator;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ import java.util.EnumSet;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.asteriskjava.core.NewlineDelimiter.CRLF;
 
 /**
  * Unit tests for {@link ComaJoiningSerializer}.
@@ -29,6 +31,8 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Piotr Olaszewski
  */
 class ComaJoiningSerializerTest {
+    private final AsteriskGenerator asteriskGenerator = new AsteriskGenerator(CRLF);
+
     @Test
     void shouldSerializeList() {
         //given
@@ -40,10 +44,10 @@ class ComaJoiningSerializerTest {
         value.add("string3");
 
         //when
-        String serialize = comaJoiningSerializer.serialize(value);
+        comaJoiningSerializer.serialize(null, value, asteriskGenerator);
 
         //then
-        assertThat(serialize).isEqualTo("string1,string2,string3");
+        assertThat(asteriskGenerator.generate().trim()).isEqualTo("string1,string2,string3");
     }
 
     @Test
@@ -54,10 +58,10 @@ class ComaJoiningSerializerTest {
         EnumSet<SampleEnum> enums = EnumSet.of(SampleEnum.value1, SampleEnum.value2, SampleEnum.value3);
 
         //when
-        String serialize = comaJoiningSerializer.serialize(enums);
+        comaJoiningSerializer.serialize(null, enums, asteriskGenerator);
 
         //then
-        assertThat(serialize).isEqualTo("value1,value2,value3");
+        assertThat(asteriskGenerator.generate().trim()).isEqualTo("value1,value2,value3");
     }
 
     private enum SampleEnum {

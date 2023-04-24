@@ -26,5 +26,5 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target({METHOD})
 @Retention(RUNTIME)
 public @interface AsteriskSerialize {
-    Class<? extends AsteriskSerializer<?>> using();
+    Class<? extends AsteriskSerializer<?>> value();
 }

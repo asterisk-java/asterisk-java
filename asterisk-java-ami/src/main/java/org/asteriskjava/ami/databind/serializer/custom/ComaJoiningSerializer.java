@@ -13,7 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.asteriskjava.ami.databind.serializer;
+package org.asteriskjava.ami.databind.serializer.custom;
+
+import org.asteriskjava.ami.databind.AsteriskGenerator;
+import org.asteriskjava.ami.databind.serializer.AsteriskSerializer;
 
 import java.util.Collection;
 
@@ -23,9 +26,11 @@ public class ComaJoiningSerializer implements AsteriskSerializer<Collection<?>> 
     private static final String COMA_SEPARATOR = ",";
 
     @Override
-    public String serialize(Collection<?> value) {
-        return value.stream()
+    public void serialize(String field, Collection<?> value, AsteriskGenerator asteriskGenerator) {
+        String v = value.stream()
             .map(Object::toString)
             .collect(joining(COMA_SEPARATOR));
+
+        asteriskGenerator.writeFieldValue(v);
     }
 }

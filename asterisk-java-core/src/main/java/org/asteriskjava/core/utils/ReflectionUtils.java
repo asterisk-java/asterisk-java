@@ -1,10 +1,12 @@
 package org.asteriskjava.core.utils;
 
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
+import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
+import java.util.TreeMap;
+
+import static java.lang.reflect.Modifier.*;
 
 public class ReflectionUtils {
     /**
@@ -18,16 +20,17 @@ public class ReflectionUtils {
      * @param clazz the class to return the getters for
      * @return a Map of attributes and their accessor methods (getters)
      */
-    public static Map<String, Method> getGetters(final Class<?> clazz) {
-        final Map<String, Method> accessors = new HashMap<>();
+    public static Map<String, Method> getGetters(final Class<?> clazz, Comparator<String> comparator) {
+        final Map<String, Method> accessors = comparator != null ? new TreeMap<>(comparator) : new HashMap<>();
         final Method[] methods = clazz.getMethods();
 
         for (Method method : methods) {
             if (method.getParameterCount() > 0 ||
                 method.getReturnType() == Void.TYPE ||
-                !Modifier.isPublic(method.getModifiers()) ||
-                Modifier.isNative(method.getModifiers()) ||
-                Modifier.isAbstract(method.getModifiers()) ||
+                !isPublic(method.getModifiers()) ||
+                isNative(method.getModifiers()) ||
+                isAbstract(method.getModifiers()) ||
+                isStatic(method.getModifiers()) ||
                 method.getName().equals("toString")
             ) {
                 continue;
@@ -46,14 +49,14 @@ public class ReflectionUtils {
                 continue;
             }
 
-            // skip methods with != 0 parameters
-            if (method.getParameterTypes().length != 0) {
-                continue;
-            }
-
-            accessors.put(name.toLowerCase(Locale.ENGLISH), method);
+            accessors.put(name, method);
+//            accessors.put(name.toLowerCase(Locale.ENGLISH), method);
         }
 
         return accessors;
+    }
+
+    public static Map<String, Method> getGetters(final Class<?> clazz) {
+        return getGetters(clazz, null);
     }
 }

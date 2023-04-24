@@ -16,8 +16,8 @@
 package org.asteriskjava.ami.action.response;
 
 /**
- * Value of the "Response:" line. This typically a string like {@code Success} or {@code Error} which is mapped to this
- * enum.
+ * Value of the "Response:" line. This is typically a string like {@code Success} or {@code Error} which is mapped to
+ * this enum.
  *
  * @author Piotr Olaszewski
  */

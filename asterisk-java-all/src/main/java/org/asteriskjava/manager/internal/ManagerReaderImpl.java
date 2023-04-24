@@ -233,7 +233,7 @@ public class ManagerReaderImpl implements ManagerReader {
                             logger.debug("buildEvent returned null");
                         }
                     } else if (buffer.containsKey("response")) {
-                        System.out.println(buffer);
+                        System.out.println("response " + buffer);
                         ManagerResponse response = buildResponse(buffer);
                         // TODO tracing
                         // logger.debug("attempting to build response");

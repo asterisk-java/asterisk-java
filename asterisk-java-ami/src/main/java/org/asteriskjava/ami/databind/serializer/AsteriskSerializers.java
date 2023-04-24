@@ -15,11 +15,20 @@
  */
 package org.asteriskjava.ami.databind.serializer;
 
+import org.asteriskjava.ami.databind.serializer.custom.ComaJoiningSerializer;
+import org.asteriskjava.ami.databind.serializer.std.ToStringSerializer;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class AsteriskSerializers {
+    private static final Map<Class<? extends AsteriskSerializer<?>>, ComaJoiningSerializer> customSerializers = new HashMap<>();
+
     private final Map<Class<? extends AsteriskSerializer<?>>, AsteriskSerializer<?>> serializerMap = new HashMap<>();
+
+    static {
+        customSerializers.put(ComaJoiningSerializer.class, new ComaJoiningSerializer());
+    }
 
     public AsteriskSerializers add(Class<? extends AsteriskSerializer<?>> clazz, AsteriskSerializer<?> serializer) {
         serializerMap.put(clazz, serializer);
@@ -28,5 +37,13 @@ public class AsteriskSerializers {
 
     public AsteriskSerializer<?> get(Class<? extends AsteriskSerializer<?>> key) {
         return serializerMap.get(key);
+    }
+
+    public AsteriskSerializer<?> findSerializer(Class<? extends AsteriskSerializer<?>> using) {
+        return customSerializers.get(using);
+    }
+
+    public AsteriskSerializer<Object> findTypeSerializer(Class<?> clazz) {
+        return new ToStringSerializer();
     }
 }

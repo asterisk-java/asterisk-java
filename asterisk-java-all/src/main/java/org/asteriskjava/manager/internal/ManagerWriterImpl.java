@@ -69,8 +69,12 @@ public class ManagerWriterImpl extends Lockable implements ManagerWriter {
                 throw new IllegalStateException("Unable to send action: socket is null");
             }
 
+            action.setActionId(internalActionId);
+
             actionString = actionBuilder.buildAction(action, internalActionId);
 
+
+            System.out.println("action with id: " + internalActionId + "\n" + actionString);
             socket.write(actionString);
             socket.flush();
 

@@ -16,6 +16,7 @@
 package org.asteriskjava.ami.action;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.asteriskjava.ami.databind.annotation.AsteriskName;
 
 /**
  * This class implements the {@link ManagerAction} interface and can serve as base class for your concrete action
@@ -29,6 +30,7 @@ public abstract class AbstractManagerAction implements ManagerAction {
 
     private String actionId;
 
+    @AsteriskName("ActionID")
     public String getActionId() {
         return actionId;
     }

@@ -18,7 +18,7 @@ package org.asteriskjava.ami.action;
 import org.asteriskjava.ami.action.annotation.ExpectedResponse;
 import org.asteriskjava.ami.action.response.LoginResponse;
 import org.asteriskjava.ami.databind.annotation.AsteriskSerialize;
-import org.asteriskjava.ami.databind.serializer.ComaJoiningSerializer;
+import org.asteriskjava.ami.databind.serializer.custom.ComaJoiningSerializer;
 
 import java.util.EnumSet;
 
@@ -168,7 +168,7 @@ public class LoginAction extends AbstractManagerAction {
     /**
      * Asterisk argument: {@code Events}.<p>
      */
-    @AsteriskSerialize(using = ComaJoiningSerializer.class)
+    @AsteriskSerialize(ComaJoiningSerializer.class)
     public EnumSet<EventMask> getEvents() {
         return events;
     }
