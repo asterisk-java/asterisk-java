@@ -45,6 +45,7 @@ public class RegistryEvent extends ManagerEvent {
     private String username;
     private String status;
     private String cause;
+    private String trunkname;
 
     /**
      * @param source
@@ -229,4 +230,11 @@ public class RegistryEvent extends ManagerEvent {
         this.cause = cause;
     }
 
+    public String getTrunkname() {
+        return trunkname;
+    }
+
+    public void setTrunkname(String trunkname) {
+        this.trunkname = trunkname;
+    }
 }
