@@ -73,6 +73,7 @@ public class RtcpReceivedEvent extends AbstractRtcpEvent {
     private Long sentPackets;
     private Long sentrtp;
     private String accountCode;
+    private Double mes;
 
 
     public RtcpReceivedEvent(Object source) {
@@ -380,5 +381,11 @@ public class RtcpReceivedEvent extends AbstractRtcpEvent {
         this.accountCode = accountCode;
     }
 
+    public Double getMes() {
+        return mes;
+    }
 
+    public void setMes(Double mes) {
+        this.mes = mes;
+    }
 }

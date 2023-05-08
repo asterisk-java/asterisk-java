@@ -58,6 +58,7 @@ public class RtcpSentEvent extends AbstractRtcpEvent {
     private Integer report0iaJitter;
     private Integer report0HighestSequence;
     private String accountCode;
+    private Double mes;
 
     public RtcpSentEvent(Object source) {
         super(source);
@@ -327,5 +328,13 @@ public class RtcpSentEvent extends AbstractRtcpEvent {
 
     public void setAccountCode(String accountCode) {
         this.accountCode = accountCode;
+    }
+
+    public Double getMes() {
+        return mes;
+    }
+
+    public void setMes(Double mes) {
+        this.mes = mes;
     }
 }
