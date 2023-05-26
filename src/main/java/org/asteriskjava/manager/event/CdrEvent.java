@@ -19,6 +19,8 @@ package org.asteriskjava.manager.event;
 import org.asteriskjava.util.DateUtil;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.TimeZone;
 
 /**
@@ -66,12 +68,14 @@ public class CdrEvent extends ManagerEvent {
     private String uniqueId;
     private String userField;
     private String recordfile;
+    private Map<String,String> dynamicProperties;
 
     /**
      * @param source
      */
     public CdrEvent(Object source) {
         super(source);
+        dynamicProperties = new HashMap<>();
     }
 
     /**
@@ -520,5 +524,17 @@ public class CdrEvent extends ManagerEvent {
 
     public void setRecordfile(String recordfile) {
         this.recordfile = recordfile;
+    }
+
+    public Map<String, String> getDynamicProperties() {
+        return dynamicProperties;
+    }
+
+    public void setDynamicProperties(Map<String, String> dynamicProperties) {
+        this.dynamicProperties = dynamicProperties;
+    }
+
+    public void addDynamicProperties(String key, String value) {
+        this.dynamicProperties.put(key,value);
     }
 }

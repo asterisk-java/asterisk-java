@@ -15,6 +15,7 @@
  */
 package org.asteriskjava.manager.util;
 
+import org.asteriskjava.manager.event.CdrEvent;
 import org.asteriskjava.manager.event.UserEvent;
 import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.util.AstUtil;
@@ -81,12 +82,25 @@ public class EventAttributesHelper {
             // it seems silly to warn if it's a user event -- maybe it was
             // intentional
             if (setter == null && !(target instanceof UserEvent) && !target.getClass().equals(ManagerResponse.class)) {
-                logger.warn("Unable to set property '" + entry.getKey() + "' to '" + entry.getValue() + "' on "
-                    + target.getClass().getName()
-                    + ": no setter. Please report at https://github.com/asterisk-java/asterisk-java/issues");
 
-                for (Map.Entry<String, Object> entry2 : attributes.entrySet()) {
-                    logger.debug("Key: " + entry2.getKey() + " Value: " + entry2.getValue());
+                //CDR has dynamic properties
+                if (target instanceof CdrEvent) {
+                    try {
+                        Method addproperty= CdrEvent.class.getMethod("addDynamicProperties", String.class, String.class);
+                        addproperty.invoke(target, entry.getKey(), entry.getValue().toString());
+                    } catch (Exception e) {
+                        logger.error("Unable to set Dynamic CDR Property '" + entry.getKey() + "' to '" + entry.getValue(), e);
+                        continue;
+                    }
+
+                } else {
+                    logger.warn("Unable to set property '" + entry.getKey() + "' to '" + entry.getValue() + "' on "
+                        + target.getClass().getName()
+                        + ": no setter. Please report at https://github.com/asterisk-java/asterisk-java/issues");
+
+                    for (Map.Entry<String, Object> entry2 : attributes.entrySet()) {
+                        logger.debug("Key: " + entry2.getKey() + " Value: " + entry2.getValue());
+                    }
                 }
             }
 
