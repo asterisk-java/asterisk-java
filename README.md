@@ -52,6 +52,12 @@ Asterisk-Java 3.x (Java 1.8 and Asterisk Version 10 thru 18) (master)
 	  <version>3.38.0</version>
 	</dependency>
 
+Gradle Dependency
+----------------
+
+	  implementation group: 'org.asteriskjava', name: 'asterisk-java', version: '3.38.0'
+
+
 INSTALLATION FROM SOURCE
 ------------------------
 
