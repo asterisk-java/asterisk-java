@@ -1,0 +1,111 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+}
+
+group = 'org.asteriskjava'
+
+compileJava.options.encoding = 'UTF-8'
+compileTestJava.options.encoding = 'UTF-8'
+javadoc.options.encoding = 'UTF-8'
+
+java {
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
+
+    withSourcesJar()
+    withJavadocJar()
+}
+
+javadoc.options.addStringOption('Xdoclint:none', '-quiet')
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'com.google.guava:guava:32.1.3-jre'
+    implementation 'org.apache.logging.log4j:log4j-core:2.21.1'
+    implementation 'org.reflections:reflections:0.10.2'
+    implementation 'org.slf4j:slf4j-api:2.0.9'
+
+    testImplementation 'org.assertj:assertj-core:3.24.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.1'
+    testImplementation 'org.mockito:mockito-core:4.11.0'
+    testImplementation 'ch.qos.logback:logback-classic:1.3.11'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+
+            pom {
+                name = project.description
+                description = 'The free Java library for Asterisk PBX integration'
+                url = 'https://asterisk-java.org'
+                inceptionYear = '2004'
+
+                issueManagement {
+                    system = 'GitHub'
+                    url = 'https://github.com/asterisk-java/asterisk-java/issues'
+                }
+
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'https://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+
+                scm {
+                    url = 'https://github.com/asterisk-java/asterisk-java'
+                    connection = 'scm:git:git@github.com:asterisk-java/asterisk-java.git'
+                    developerConnection = 'scm:git:git@github.com:asterisk-java/asterisk-java.git'
+                }
+
+                developers {
+                    developer {
+                        id = 'srt'
+                        name = 'Stefan Reuter'
+                        email = 'stefan.reuter@reucon.com'
+                        timezone = '+1'
+                    }
+                    developer {
+                        id = 'rlsutton1'
+                        name = 'Robert Sutton'
+                        email = 'rsutton@noojee.com.au'
+                        timezone = '+10'
+                    }
+                    developer {
+                        id = 'bsutton'
+                        name = 'Brett Sutton'
+                        email = 'bsutton@noojee.com.au'
+                        timezone = '+10'
+                    }
+                    developer {
+                        id = 'piotrooo'
+                        name = 'Piotr Olaszewski'
+                        email = 'piotroo89@gmail.com'
+                        timezone = '+1'
+                    }
+                }
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            url("https://oss.sonatype.org/service/local/staging/deploy/maven2")
+            credentials {
+                username = System.getenv('NEXUS_USERNAME')
+                password = System.getenv('NEXUS_PASSWORD')
+            }
+        }
+    }
+}
+
