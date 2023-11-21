@@ -2,16 +2,18 @@ name: CI
 
 on:
   push:
-    branches: [ '*' ]
+    branches:
+      - '*'
   pull_request:
-    branches: [ '*' ]
+    branches:
+      - '*'
 
 jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java: [ 8, 11, 17 ]
+        java: [ 17, 21 ]
     steps:
       - name: Check out code
         uses: actions/checkout@v4.1.1
@@ -25,4 +27,6 @@ jobs:
           java-version: ${{ matrix.java }}
 
       - name: Build
-        run: ./mvnw clean package
+        uses: gradle/gradle-build-action@v2.9.0
+        with:
+          arguments: build
