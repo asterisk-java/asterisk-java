@@ -1,6 +1,8 @@
 plugins {
     id 'java-library'
     id 'maven-publish'
+    id 'signing'
+    id 'io.github.gradle-nexus.publish-plugin' version '1.3.0'
 }
 
 group = 'org.asteriskjava'
@@ -97,14 +99,25 @@ publishing {
             }
         }
     }
+}
 
+signing {
+    def signingKeyId = System.getenv('GPG_KEY_ID')
+    def signingKey = System.getenv('GPG_PRIVATE_KEY')
+    def signingPassword = System.getenv('GPG_PASSPHRASE')
+    useInMemoryPgpKeys(
+            signingKeyId,
+            signingKey,
+            signingPassword
+    )
+    sign publishing.publications.mavenJava
+}
+
+nexusPublishing {
     repositories {
-        maven {
-            url("https://oss.sonatype.org/service/local/staging/deploy/maven2")
-            credentials {
-                username = System.getenv('NEXUS_USERNAME')
-                password = System.getenv('NEXUS_PASSWORD')
-            }
+        sonatype {
+            username = System.getenv('NEXUS_USERNAME')
+            password = System.getenv('NEXUS_PASSWORD')
         }
     }
 }
