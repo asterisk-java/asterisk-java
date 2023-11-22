@@ -1,18 +1,20 @@
 version: 2
 updates:
-  - package-ecosystem: "maven"
-    directory: "/"
+  - package-ecosystem: maven
+    directory: /
     schedule:
-      interval: "daily"
+      interval: daily
     labels:
-      - "kind/dependencies"
+      - kind/dependencies
     ignore:
       # As long as we support Java 8
-      - dependency-name: "logback-classic"
-        update-types: [ "version-update:semver-major", "version-update:semver-minor" ]
-  - package-ecosystem: "github-actions"
-    directory: "/"
+      - dependency-name: logback-classic
+        update-types:
+          - version-update:semver-major
+          - version-update:semver-minor
+  - package-ecosystem: github-actions
+    directory: /
     schedule:
-      interval: "daily"
+      interval: daily
     labels:
-      - "kind/dependencies"
+      - kind/dependencies

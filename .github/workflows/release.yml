@@ -2,7 +2,8 @@ name: Release
 
 on:
   release:
-    types: [ published ]
+    types:
+      - published
 
 jobs:
   publish:
@@ -14,26 +15,23 @@ jobs:
       - name: Set up Java
         uses: actions/setup-java@v3.13.0
         with:
-          java-version: 8
+          java-version: 17
           distribution: temurin
-          server-id: ossrh
-          server-username: NEXUS_USERNAME
-          server-password: NEXUS_PASSWORD
-          gpg-passphrase: GPG_PASSPHRASE
-          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
-
-      - name: Set artifact version
-        run: ./mvnw --batch-mode --define=generateBackupPoms=false --define=newVersion=${{ github.event.release.tag_name }} versions:set
 
       - name: Publish package
-        run: ./mvnw --batch-mode --activate-profiles=deploy deploy
+        uses: gradle/gradle-build-action@v2.9.0
+        with:
+          arguments: publish -Pversion=${{ github.event.release.tag_name }}
         env:
           NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME }}
           NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
+          GPG_KEY_ID: ${{ secrets.GPG_KEY_ID }}
+          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
           GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
 
   update-versions:
-    needs: [ publish ]
+    needs:
+      - publish
     permissions:
       contents: write  # for peter-evans/create-pull-request to create branch
       pull-requests: write  # for peter-evans/create-pull-request to create a PR
@@ -44,9 +42,6 @@ jobs:
         with:
           ref: master
           fetch-depth: 0
-
-      - name: Update pom.xml version
-        run: ./mvnw --batch-mode --define=generateBackupPoms=false --define=newVersion=${{ github.event.release.tag_name }} versions:set
 
       - name: Update Maven version in README.md
         run: sed --in-place 's/<version>.*<\/version>/<version>${{ github.event.release.tag_name }}<\/version>/g' README.md
