@@ -191,6 +191,14 @@ public class CallImpl implements ChannelHangupListener, Call {
 
         CallImpl joined = new CallImpl(originatingParty, direction);
         joined.setAcceptingParty(acceptingParty);
+
+        updateCallProperties(joined,joinTo); //extracted code for better understanding
+
+        return joined;
+    }
+
+    //created new method to make code readable and short
+    private void updateCallProperties(CallImpl joined,CallImpl joinTo){
         joined._owner = OWNER.SELF;
 
         joined._callStarted = minDate(this._callStarted, joinTo._callStarted);
@@ -200,8 +208,6 @@ public class CallImpl implements ChannelHangupListener, Call {
         joined._timeAtDialin = minDate(this._timeAtDialin, joinTo._timeAtDialin);
 
         logger.debug("Joined two calls lhs=" + this + ", rhs=" + joinTo); //$NON-NLS-1$//$NON-NLS-2$
-
-        return joined;
     }
 
     private Date minDate(Date d1, Date d2) {
