@@ -59,7 +59,8 @@ public abstract class DefaultAsteriskSettings implements AsteriskSettings {
     public int getDialTimeout() {
         // Return the amount of time to wait (in seconds) when dialing before we give up
         // when the call isn't answered
-        return 30;
+        final int DEFAULT_TIMEOUT = 30;
+        return DEFAULT_TIMEOUT;
     }
 
     /*
