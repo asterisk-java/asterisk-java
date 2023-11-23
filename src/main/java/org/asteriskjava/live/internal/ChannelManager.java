@@ -359,11 +359,9 @@ class ChannelManager {
         }
 
         name = localChannel.getName();
-        char secondLastChar = name.charAt(name.length() - 2);
-        if (name == null || !name.startsWith("Local/")) {
-            if((secondLastChar) != ',' && secondLastChar != ';') {
-                return null;
-            }
+        if (name == null || !name.startsWith("Local/")
+                || (name.charAt(name.length() - 2) != ',' && name.charAt(name.length() - 2) != ';')) {
+            return null;
         }
 
         num = name.charAt(name.length() - 1);
