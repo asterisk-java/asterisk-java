@@ -722,35 +722,46 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
      * @param timeout - in milliseconds
      */
     public ManagerResponse sendAction(ManagerAction action, long timeout)
-            throws IOException, TimeoutException, IllegalArgumentException, IllegalStateException {
+        throws IOException, TimeoutException, IllegalArgumentException, IllegalStateException {
 
         DefaultSendActionCallback callbackHandler = new DefaultSendActionCallback();
         ManagerResponse response = null;
+
         try {
             sendAction(action, callbackHandler);
-
-            // definitely return null for the response of user events
-            if (action instanceof UserEventAction) {
-                return null;
-            }
-            try {
-                response = callbackHandler.waitForResponse(timeout);
-
-                // no response?
-                if (response == null) {
-                    throw new TimeoutException("Timeout waiting for response to " + action.getAction()
-                            + (action.getActionId() == null
-                            ? ""
-                            : " (actionId: " + action.getActionId() + "), Timeout=" + timeout + " Action="
-                            + action.getAction()));
-                }
-            } catch (InterruptedException ex) {
-                logger.warn("Interrupted while waiting for result");
-                Thread.currentThread().interrupt();
-            }
+            response = handleActionResponse(action, callbackHandler, timeout);
         } finally {
             callbackHandler.dispose();
         }
+
+        return response;
+    }
+    
+    private ManagerResponse handleActionResponse(ManagerAction action, DefaultSendActionCallback callbackHandler, long timeout)
+        throws TimeoutException {
+        ManagerResponse response = null;
+
+        // definitely return null for the response of user events
+        if (action instanceof UserEventAction) {
+            return null;
+        }
+
+        try {
+            response = callbackHandler.waitForResponse(timeout);
+
+            // no response?
+            if (response == null) {
+                throw new TimeoutException("Timeout waiting for response to " + action.getAction()
+                    + (action.getActionId() == null
+                    ? ""
+                    : " (actionId: " + action.getActionId() + "), Timeout=" + timeout + " Action="
+                    + action.getAction()));
+            }
+        } catch (InterruptedException ex) {
+            logger.warn("Interrupted while waiting for result");
+            Thread.currentThread().interrupt();
+        }
+
         return response;
     }
 
