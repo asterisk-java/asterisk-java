@@ -31,6 +31,7 @@ import org.asteriskjava.util.SocketConnectionFacade;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Default implementation of the ManagerReader interface.
@@ -90,6 +91,7 @@ public class ManagerReaderImpl implements ManagerReader {
     BackwardsCompatibilityForManagerEvents compatibility = new BackwardsCompatibilityForManagerEvents();
 
     private final Dispatcher rawDispatcher;
+    private int reserve;
 
     /**
      * Creates a new ManagerReaderImpl.
@@ -125,14 +127,7 @@ public class ManagerReaderImpl implements ManagerReader {
     }
 
     /**
-     * Reads line by line from the asterisk server, sets the protocol identifier
-     * (using a generated
-     * {@link org.asteriskjava.manager.event.ProtocolIdentifierReceivedEvent})
-     * as soon as it is received and dispatches the received events and
-     * responses via the associated dispatcher.
-     *
-     * @see org.asteriskjava.manager.internal.Dispatcher#dispatchEvent(ManagerEvent)
-     * @see org.asteriskjava.manager.internal.Dispatcher#dispatchResponse(ManagerResponse)
+     * extract method for run
      */
     public void run() {
         long timeOfLastEvent = 0;
@@ -140,169 +135,175 @@ public class ManagerReaderImpl implements ManagerReader {
         final Map<String, Object> buffer = new HashMap<>();
         String line;
 
+        initialize();
+
+        AsyncEventPump dispatcher = createEventDispatcher();
+        long slowEventThresholdMs = 10;
+        RateLimiter slowEventLogLimiter = RateLimiter.create(4);
+
+        try {
+            // main loop
+            while (!this.die && (line = socket.readLine()) != null) {
+                if (handleProtocolIdentifier(line, dispatcher)) {
+                    continue;
+                }
+
+                if (handleSpecialResponse(buffer, line)) {
+                    continue;
+                }
+
+                processLineContent(line, buffer);
+
+                handleEmptyLine(line,buffer, dispatcher, slowEventThresholdMs, slowEventLogLimiter);
+            }
+
+            this.dead = true;
+            logger.debug("Reached end of stream, terminating reader.");
+        } catch (IOException e) {
+            handleIOException(e);
+        } catch (Exception e) {
+            handleUnexpectedException(e);
+        } finally {
+            cleanupResources(dispatcher);
+        }
+    }
+
+    private void initialize() {
+        // Initialization code
         if (socket == null) {
             throw new IllegalStateException("Unable to run: socket is null.");
         }
 
         this.die = false;
         this.dead = false;
+    }
 
-        AsyncEventPump dispatcher = new AsyncEventPump(this, rawDispatcher, Thread.currentThread().getName());
-        long slowEventThresholdMs = 10;
-        RateLimiter slowEventLogLimiter = RateLimiter.create(4);
-        try {
-            // main loop
-            while (!this.die && (line = socket.readLine()) != null) {
-                // maybe we will find a better way to identify the protocol
-                // identifier but for now
-                // this works quite well.
-                if (line.startsWith("Asterisk Call Manager/") || line.startsWith("Asterisk Call Manager Proxy/")
-                        || line.startsWith("Asterisk Manager Proxy/") || line.startsWith("OpenPBX Call Manager/")
-                        || line.startsWith("CallWeaver Call Manager/")) {
-                    ProtocolIdentifierReceivedEvent protocolIdentifierReceivedEvent;
-                    protocolIdentifierReceivedEvent = new ProtocolIdentifierReceivedEvent(source);
-                    protocolIdentifierReceivedEvent.setProtocolIdentifier(line);
-                    protocolIdentifierReceivedEvent.setDateReceived(DateUtil.getDate());
-                    dispatcher.dispatchEvent(protocolIdentifierReceivedEvent, null);
-                    continue;
-                }
+    private AsyncEventPump createEventDispatcher() {
+        return new AsyncEventPump(this, rawDispatcher, Thread.currentThread().getName());
+    }
 
-                /*
-                 * Special handling for "Response: Follows" (CommandResponse) As
-                 * we are using "\r\n" as the delimiter for line this also
-                 * handles multiline results as long as they only contain "\n".
-                 */
-                if ("Follows".equals(buffer.get("response")) && line.endsWith("--END COMMAND--")) {
-                    buffer.put(COMMAND_RESULT_RESPONSE_KEY, line);
-                    continue;
-                }
-
-                if (line.length() > 0) {
-                    // begin of workaround for Astersik bug 13319
-                    // see AJ-77
-                    // Use this workaround only when line starts from "From "
-                    // and "To "
-                    int isFromAtStart = line.indexOf("From ");
-                    int isToAtStart = line.indexOf("To ");
-
-                    int delimiterIndex = isFromAtStart == 0 || isToAtStart == 0 ? line.indexOf(" ") : line.indexOf(":");
-                    // end of workaround for Astersik bug 13319
-
-                    int delimiterLength = 1;
-
-                    if (delimiterIndex > 0 && line.length() > delimiterIndex + delimiterLength) {
-                        String name = line.substring(0, delimiterIndex).toLowerCase(Locale.ENGLISH).trim();
-                        String value = line.substring(delimiterIndex + delimiterLength).trim();
-
-                        addToBuffer(buffer, name, value);
-                        // TODO tracing
-                        // logger.debug("Got name [" + name + "], value: [" +
-                        // value + "]");
-                    }
-                }
-
-                // an empty line indicates a normal response's or event's end so
-                // we build
-                // the corresponding value object and dispatch it through the
-                // ManagerConnection.
-                if (line.length() == 0) {
-                    Object cause = null;
-                    LogTime timer = new LogTime();
-                    if (buffer.containsKey("event")) {
-                        // TODO tracing
-                        // logger.debug("attempting to build event: " +
-                        // buffer.get("event"));
-                        ManagerEvent event = buildEvent(source, buffer);
-                        if (event != null) {
-                            cause = event;
-                            dispatcher.dispatchEvent(event, null);
-
-                            // Backwards compatibility for bridge events.
-                            // Asterisk 13 uses BridgeCreate,
-                            // BridgeEnter, BridgeLeave and BridgeDestroy
-                            // events.
-                            // So here we track active bridges and simulate
-                            // BridgeEvent's for them allowing legacy code to
-                            // still work with BridgeEvent's
-                            ManagerEvent secondaryEvent = compatibility.handleEvent(event);
-                            if (secondaryEvent != null) {
-                                dispatcher.dispatchEvent(secondaryEvent, null);
-                            }
-                        } else {
-                            logger.debug("buildEvent returned null");
-                        }
-                    } else if (buffer.containsKey("response")) {
-                        ManagerResponse response = buildResponse(buffer);
-                        // TODO tracing
-                        // logger.debug("attempting to build response");
-                        if (response != null) {
-                            cause = response;
-                            dispatcher.dispatchResponse(response, null);
-                        }
-                    } else {
-                        if (!buffer.isEmpty()) {
-                            logger.debug("Buffer contains neither response nor event");
-                        }
-                    }
-
-                    buffer.clear();
-
-                    // some math to determine if events are being processed
-                    // slowly
-                    long elapsed = timer.timeTaken();
-                    long now = System.currentTimeMillis();
-                    long add = now - timeOfLastEvent;
-
-                    // double the elapsed time, this allows 50% slack. Also note
-                    // that we
-                    // would never be able to exhaust the reserve if we don't
-                    // artificially increase the elapsed time. I'd have probably
-                    // gone for 1.3 but I am trying to avoid floating point math
-                    reserve = (reserve + add) - (elapsed * 2);
-
-                    // don't allow reserve to exceed 500 ms
-                    reserve = Math.min(500, reserve);
-
-                    // don't allow reserve to go negative, otherwise we might
-                    // accrue a large debt
-                    reserve = Math.max(0, reserve);
-                    timeOfLastEvent = now;
-
-                    // check if the event was slow to build and dispatch
-                    if (elapsed > slowEventThresholdMs) {
-                        // check for to many slow events this second.
-                        if (reserve <= 0) {
-                            // check we haven't already logged this to often
-                            if (slowEventLogLimiter.tryAcquire()) {
-                                logger.warn("(This is normal during JVM warmup) Slow processing of event " + elapsed + "\n"
-                                        + cause);
-                            }
-                        }
-                    }
-                }
-            }
-            this.dead = true;
-            logger.debug("Reached end of stream, terminating reader.");
-        } catch (IOException e) {
-            this.terminationException = e;
-            this.dead = true;
-            logger.info("Terminating reader thread: " + e.getMessage());
-        } catch (Exception e) {
-            if (this.terminationException == null) {
-                // wrap in IOException to avoid changing the external API of
-                // asteriskjava
-                this.terminationException = new IOException(e);
-            }
-            logger.error("Manager reader exiting due to unexpected Exception...");
-            logger.error(e, e);
-        } finally {
-            this.dead = true;
-            // cleans resources and reconnects if needed
-            DisconnectEvent disconnectEvent = new DisconnectEvent(source);
-            disconnectEvent.setDateReceived(DateUtil.getDate());
-            dispatcher.dispatchEvent(disconnectEvent, null);
-            dispatcher.stop();
+    private boolean handleProtocolIdentifier(String line, AsyncEventPump dispatcher) {
+        if (line.startsWith("Asterisk Call Manager/") || line.startsWith("Asterisk Call Manager Proxy/")
+            || line.startsWith("Asterisk Manager Proxy/") || line.startsWith("OpenPBX Call Manager/")
+            || line.startsWith("CallWeaver Call Manager/")) {
+            ProtocolIdentifierReceivedEvent protocolIdentifierReceivedEvent;
+            protocolIdentifierReceivedEvent = new ProtocolIdentifierReceivedEvent(source);
+            protocolIdentifierReceivedEvent.setProtocolIdentifier(line);
+            protocolIdentifierReceivedEvent.setDateReceived(DateUtil.getDate());
+            dispatcher.dispatchEvent(protocolIdentifierReceivedEvent, null);
+            return true;
         }
+        return false;
+    }
+
+    private boolean handleSpecialResponse(Map<String, Object> buffer, String line) {
+        if ("Follows".equals(buffer.get("response")) && line.endsWith("--END COMMAND--")) {
+            buffer.put(COMMAND_RESULT_RESPONSE_KEY, line);
+            return true;
+        }
+        return false;
+    }
+
+    private void processLineContent(String line, Map<String, Object> buffer) {
+        if (line.length() > 0) {
+            int delimiterIndex = determineDelimiterIndex(line);
+            if (delimiterIndex > 0 && line.length() > delimiterIndex + 1) {
+                String name = extractName(line, delimiterIndex);
+                String value = extractValue(line, delimiterIndex);
+                addToBuffer(buffer, name, value);
+            }
+        }
+    }
+
+    private int determineDelimiterIndex(String line) {
+        int isFromAtStart = line.indexOf("From ");
+        int isToAtStart = line.indexOf("To ");
+
+        return isFromAtStart == 0 || isToAtStart == 0 ? line.indexOf(" ") : line.indexOf(":");
+    }
+
+    private String extractName(String line, int delimiterIndex) {
+        return line.substring(0, delimiterIndex).toLowerCase(Locale.ENGLISH).trim();
+    }
+
+    private String extractValue(String line, int delimiterIndex) {
+        int delimiterLength = 1;
+        return line.substring(delimiterIndex + delimiterLength).trim();
+    }
+
+    private void handleEmptyLine(String line,Map<String, Object> buffer, AsyncEventPump dispatcher, long slowEventThresholdMs, RateLimiter slowEventLogLimiter) {
+        if (line.length() == 0) {
+            Object cause = null;
+            LogTime timer = new LogTime();
+            if (buffer.containsKey("event")) {
+                ManagerEvent event = buildEvent(source, buffer);
+                if (event != null) {
+                    cause = event;
+                    dispatcher.dispatchEvent(event, null);
+
+                    ManagerEvent secondaryEvent = compatibility.handleEvent(event);
+                    if (secondaryEvent != null) {
+                        dispatcher.dispatchEvent(secondaryEvent, null);
+                    }
+                } else {
+                    logger.debug("buildEvent returned null");
+                }
+            } else if (buffer.containsKey("response")) {
+                ManagerResponse response = buildResponse(buffer);
+                if (response != null) {
+                    cause = response;
+                    dispatcher.dispatchResponse(response, null);
+                }
+            } else {
+                if (!buffer.isEmpty()) {
+                    logger.debug("Buffer contains neither response nor event");
+                }
+            }
+
+            buffer.clear();
+
+            // some math to determine if events are being processed slowly
+            long elapsed = timer.timeTaken();
+            long now = System.currentTimeMillis();
+            AtomicLong timeOfLastEvent = new AtomicLong();
+            long add = now - timeOfLastEvent.get();
+
+            reserve = (int) ((reserve + add) - (elapsed * 2));
+            reserve = Math.min(500, reserve);
+            reserve = Math.max(0, reserve);
+            timeOfLastEvent.set(now);
+
+            // check if the event was slow to build and dispatch
+            if (elapsed > slowEventThresholdMs) {
+                if (reserve <= 0) {
+                    if (slowEventLogLimiter.tryAcquire()) {
+                        logger.warn("(This is normal during JVM warmup) Slow processing of event " + elapsed + "\n" + cause);
+                    }
+                }
+            }
+        }
+    }
+
+    private void handleIOException(IOException e) {
+        this.terminationException = e;
+        this.dead = true;
+        logger.info("Terminating reader thread: " + e.getMessage());
+    }
+
+    private void handleUnexpectedException(Exception e) {
+        if (this.terminationException == null) {
+            this.terminationException = new IOException(e);
+        }
+        logger.error("Manager reader exiting due to unexpected Exception...");
+        logger.error(e, e);
+    }
+
+    private void cleanupResources(AsyncEventPump dispatcher) {
+        this.dead = true;
+        DisconnectEvent disconnectEvent = new DisconnectEvent(source);
+        disconnectEvent.setDateReceived(DateUtil.getDate());
+        dispatcher.dispatchEvent(disconnectEvent, null);
+        dispatcher.stop();
     }
 
     @SuppressWarnings("unchecked")
