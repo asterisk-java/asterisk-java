@@ -723,30 +723,59 @@ public class CallImpl implements ChannelHangupListener, Call {
 
     @Override
     public Channel getOperandChannel(OperandChannel operand) {
-        final Channel channel;
-
         switch (operand) {
             case ACCEPTING_PARTY:
-                channel = this._acceptingParty;
-                break;
+                return pushDownAcceptingParty();
             case ORIGINATING_PARTY:
-                channel = this._originatingParty;
-                break;
+                return pushDownOriginatingParty();
             case REMOTE_PARTY:
-                channel = getRemoteParty();
-                break;
+                return pushDownRemoteParty();
             case TRANSFER_TARGET_PARTY:
-                channel = this._transferTargetParty;
-                break;
+                return pushDownTransferTargetParty();
             case LOCAL_PARTY:
-                channel = this.getLocalParty();
-                break;
+                return pushDownLocalParty();
             default:
                 // should never happen
-                throw new IllegalArgumentException("An unsupported operand was passed:" + operand); //$NON-NLS-1$
+                throw new IllegalArgumentException("An unsupported operand was passed:" + operand);
         }
+    }
+
+    private Channel pushDownAcceptingParty() {
+        Channel channel = this._acceptingParty;
         if (channel == null) {
-            logger.warn("failed to get channel for " + operand);
+            logger.warn("failed to get channel for ACCEPTING_PARTY");
+        }
+        return channel;
+    }
+
+    private Channel pushDownOriginatingParty() {
+        Channel channel = this._originatingParty;
+        if (channel == null) {
+            logger.warn("failed to get channel for ORIGINATING_PARTY");
+        }
+        return channel;
+    }
+
+    private Channel pushDownRemoteParty() {
+        Channel channel = getRemoteParty();
+        if (channel == null) {
+            logger.warn("failed to get channel for REMOTE_PARTY");
+        }
+        return channel;
+    }
+
+    private Channel pushDownTransferTargetParty() {
+        Channel channel = this._transferTargetParty;
+        if (channel == null) {
+            logger.warn("failed to get channel for TRANSFER_TARGET_PARTY");
+        }
+        return channel;
+    }
+
+    private Channel pushDownLocalParty() {
+        Channel channel = getLocalParty();
+        if (channel == null) {
+            logger.warn("failed to get channel for LOCAL_PARTY");
         }
         return channel;
     }
