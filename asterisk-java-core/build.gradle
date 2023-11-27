@@ -2,6 +2,14 @@ plugins {
     id 'java-library'
 }
 
+java {
+    sourceCompatibility = '21'
+    targetCompatibility = '21'
+
+    withSourcesJar()
+    withJavadocJar()
+}
+
 repositories {
     mavenCentral()
 }

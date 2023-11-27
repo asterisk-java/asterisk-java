@@ -26,8 +26,6 @@ repositories {
 }
 
 dependencies {
-    implementation project(':asterisk-java-core')
-
     implementation 'com.google.guava:guava:32.1.3-jre'
     implementation 'org.apache.logging.log4j:log4j-core:2.22.0'
     implementation 'org.reflections:reflections:0.10.2'
