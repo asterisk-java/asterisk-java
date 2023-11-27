@@ -1,1 +1,3 @@
 rootProject.name = 'asterisk-java'
+
+include 'asterisk-java-core'
