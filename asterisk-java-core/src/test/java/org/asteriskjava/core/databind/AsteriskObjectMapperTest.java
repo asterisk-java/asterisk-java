@@ -32,7 +32,7 @@ class AsteriskObjectMapperTest {
         String expected = "Action: SimpleBean" + CRLF.getPattern();
         expected += "ActionID: id-1" + CRLF.getPattern();
         expected += "AuthType: MD5" + CRLF.getPattern();
-        expected += "Codecs: codec1,codec2" + CRLF.getPattern();
+        expected += "Codecs: codec1,codec2" + CRLF.getPattern() + CRLF.getPattern();
         assertThat(string).isEqualTo(expected);
     }
 
