@@ -46,8 +46,8 @@ public abstract class AbstractManagerAction implements ManagerAction {
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-            .append("action", getAction())
-            .append("actionId", actionId)
-            .toString();
+                .append("action", getAction())
+                .append("actionId", actionId)
+                .toString();
     }
 }

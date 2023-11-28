@@ -34,10 +34,7 @@ public class AsteriskObjectMapper {
     private final NewlineDelimiter newlineDelimiter;
     private final Comparator<String> fieldNamesComparator;
 
-    private AsteriskObjectMapper(
-        NewlineDelimiter newlineDelimiter,
-        Comparator<String> fieldNamesComparator
-    ) {
+    private AsteriskObjectMapper(NewlineDelimiter newlineDelimiter, Comparator<String> fieldNamesComparator) {
         this.newlineDelimiter = newlineDelimiter;
         this.fieldNamesComparator = fieldNamesComparator;
     }

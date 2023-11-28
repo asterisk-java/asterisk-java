@@ -1,8 +1,17 @@
-[*.{java,html}]
-charset = utf-8
-indent_style = space
-indent_size = 4
-trim_trailing_whitespace = true
+root = true
 
-[*.{yml,yaml}]
+[*]
+charset = utf-8
+end_of_line = lf
+indent_size = 4
+indent_style = space
+insert_final_newline = true
+max_line_length = 120
+tab_width = 4
+ij_continuation_indent_size = 8
+
+[*.{yaml,yml}]
 indent_size = 2
+
+[*.properties]
+ij_properties_align_group_field_declarations = false

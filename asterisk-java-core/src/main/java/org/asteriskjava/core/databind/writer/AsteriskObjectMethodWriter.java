@@ -34,10 +34,10 @@ public class AsteriskObjectMethodWriter {
     private final AsteriskObjectMethodWriterContext asteriskObjectMethodWriterContext;
 
     public AsteriskObjectMethodWriter(
-        Method method,
-        String name,
-        AsteriskSerializer<Object> asteriskSerializer,
-        AsteriskObjectMethodWriterContext asteriskObjectMethodWriterContext
+            Method method,
+            String name,
+            AsteriskSerializer<Object> asteriskSerializer,
+            AsteriskObjectMethodWriterContext asteriskObjectMethodWriterContext
     ) {
         this.method = method;
         this.name = name;

@@ -17,6 +17,7 @@
 package org.asteriskjava.manager.action;
 
 import org.asteriskjava.ami.action.AbstractManagerAction;
+import org.asteriskjava.ami.action.ChallengeAction;
 
 /**
  * The LoginAction authenticates the connection.<p>
@@ -28,7 +29,7 @@ import org.asteriskjava.ami.action.AbstractManagerAction;
  *
  * @author srt
  * @version $Id$
- * @see org.asteriskjava.manager.action.ChallengeAction
+ * @see ChallengeAction
  * @see org.asteriskjava.manager.response.ManagerError
  */
 public class LoginAction extends AbstractManagerAction {

@@ -32,9 +32,9 @@ class VariableSerializerTest {
         VariableSerializer variableSerializer = new VariableSerializer();
 
         Map<String, String> map = Map.of(
-            "key1", "value1",
-            "key2", "value2",
-            "key3", "value3"
+                "key1", "value1",
+                "key2", "value2",
+                "key3", "value3"
         );
 
         //when
@@ -42,10 +42,10 @@ class VariableSerializerTest {
 
         //then
         assertThat(asteriskGenerator.generate())
-            .contains(
-                "fieldName: key1=value1",
-                "fieldName: key2=value2",
-                "fieldName: key3=value3"
-            );
+                .contains(
+                        "fieldName: key1=value1",
+                        "fieldName: key2=value2",
+                        "fieldName: key3=value3"
+                );
     }
 }

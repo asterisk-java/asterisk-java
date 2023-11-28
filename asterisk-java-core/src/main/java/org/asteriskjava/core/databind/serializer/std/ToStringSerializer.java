@@ -18,6 +18,8 @@ package org.asteriskjava.core.databind.serializer.std;
 import org.asteriskjava.core.databind.AsteriskGenerator;
 import org.asteriskjava.core.databind.serializer.AsteriskSerializer;
 
+import static org.apache.commons.lang3.StringUtils.EMPTY;
+
 /**
  * Base serializer which calls only the toString method on the passed value.
  *
@@ -27,6 +29,10 @@ import org.asteriskjava.core.databind.serializer.AsteriskSerializer;
 public class ToStringSerializer implements AsteriskSerializer<Object> {
     @Override
     public void serialize(String fieldName, Object value, AsteriskGenerator asteriskGenerator) {
-        asteriskGenerator.writeFieldValue(value.toString());
+        if (value == null) {
+            asteriskGenerator.writeFieldValue(EMPTY);
+        } else {
+            asteriskGenerator.writeFieldValue(value.toString());
+        }
     }
 }

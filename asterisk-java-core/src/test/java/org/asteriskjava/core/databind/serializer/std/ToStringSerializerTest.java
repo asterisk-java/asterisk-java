@@ -44,9 +44,10 @@ class ToStringSerializerTest {
 
     private static Stream<Arguments> toStringSerializerArguments() {
         return Stream.of(
-            arguments("string", "string"),
-            arguments(true, "true"),
-            arguments(1.12, "1.12")
+                arguments("string", "string"),
+                arguments(true, "true"),
+                arguments(1.12, "1.12"),
+                arguments(null, "")
         );
     }
 }

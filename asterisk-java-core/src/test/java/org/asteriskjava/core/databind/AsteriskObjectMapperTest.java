@@ -14,8 +14,8 @@ import static org.asteriskjava.core.databind.AsteriskObjectMapperTest.SimpleBean
 
 class AsteriskObjectMapperTest {
     private final AsteriskObjectMapper asteriskObjectMapper = builder()
-        .crlfNewlineDelimiter()
-        .build();
+            .crlfNewlineDelimiter()
+            .build();
 
     @Test
     void shouldGenerateSimpleBean() {

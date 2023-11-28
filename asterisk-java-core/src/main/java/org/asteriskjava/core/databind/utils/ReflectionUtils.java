@@ -48,12 +48,12 @@ public final class ReflectionUtils {
         Method[] methods = clazz.getMethods();
         for (Method method : methods) {
             if (method.getParameterCount() > 0 ||
-                method.getReturnType() == Void.TYPE ||
-                !isPublic(method.getModifiers()) ||
-                isNative(method.getModifiers()) ||
-                isAbstract(method.getModifiers()) ||
-                isStatic(method.getModifiers()) ||
-                method.getName().equals("toString")
+                    method.getReturnType() == Void.TYPE ||
+                    !isPublic(method.getModifiers()) ||
+                    isNative(method.getModifiers()) ||
+                    isAbstract(method.getModifiers()) ||
+                    isStatic(method.getModifiers()) ||
+                    method.getName().equals("toString")
             ) {
                 continue;
             }

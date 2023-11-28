@@ -100,6 +100,7 @@ class ActionBuilderImpl implements ActionBuilder {
         String actionId = internalActionId != null ? ManagerUtil.addInternalActionId(action.getActionId(), internalActionId) : action.getActionId();
 
         if (action.getClass().getPackageName().contains("org.asteriskjava.ami.action")) {
+            action.setActionId(actionId);
             return asteriskObjectMapper.writeValue(action);
         }
 

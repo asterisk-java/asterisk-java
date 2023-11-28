@@ -43,10 +43,10 @@ public class AsteriskObjectWriter {
 
     public List<AsteriskObjectMethodWriter> getAsteriskObjectMethodWriters() {
         return getGetters(clazz, fieldNamesComparator)
-            .entrySet()
-            .stream()
-            .map(this::getAsteriskObjectMethodWriter)
-            .toList();
+                .entrySet()
+                .stream()
+                .map(this::getAsteriskObjectMethodWriter)
+                .toList();
     }
 
     private AsteriskObjectMethodWriter getAsteriskObjectMethodWriter(Entry<String, Method> entry) {

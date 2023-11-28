@@ -16,8 +16,11 @@
 package org.asteriskjava.manager.internal;
 
 import org.asteriskjava.AsteriskVersion;
+import org.asteriskjava.ami.action.AuthType;
+import org.asteriskjava.ami.action.ChallengeAction;
 import org.asteriskjava.ami.action.ManagerAction;
 import org.asteriskjava.ami.action.annotation.ExpectedResponse;
+import org.asteriskjava.ami.action.response.ChallengeResponse;
 import org.asteriskjava.ami.action.response.ManagerResponse;
 import org.asteriskjava.lock.Lockable;
 import org.asteriskjava.lock.LockableList;
@@ -26,7 +29,6 @@ import org.asteriskjava.lock.Locker.LockCloser;
 import org.asteriskjava.manager.*;
 import org.asteriskjava.manager.action.*;
 import org.asteriskjava.manager.event.*;
-import org.asteriskjava.manager.response.ChallengeResponse;
 import org.asteriskjava.manager.response.CommandResponse;
 import org.asteriskjava.manager.response.CoreSettingsResponse;
 import org.asteriskjava.manager.response.ManagerError;
@@ -498,7 +500,8 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
                 throw new TimeoutException("Timeout waiting for protocol identifier");
             }
 
-            challengeAction = new ChallengeAction("MD5");
+            challengeAction = new ChallengeAction();
+            challengeAction.setAuthType(AuthType.MD5);
             try {
                 challengeResponse = sendAction(challengeAction);
             } catch (Exception e) {

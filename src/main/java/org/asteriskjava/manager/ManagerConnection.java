@@ -17,6 +17,7 @@
 package org.asteriskjava.manager;
 
 import org.asteriskjava.AsteriskVersion;
+import org.asteriskjava.ami.action.ChallengeAction;
 import org.asteriskjava.ami.action.ManagerAction;
 import org.asteriskjava.ami.action.response.ManagerResponse;
 import org.asteriskjava.manager.action.EventGeneratingAction;
@@ -230,7 +231,7 @@ public interface ManagerConnection {
      * @throws TimeoutException              if a timeout occurs while waiting for the
      *                                       protocol identifier. The connection is closed in this case.
      * @see org.asteriskjava.manager.action.LoginAction
-     * @see org.asteriskjava.manager.action.ChallengeAction
+     * @see ChallengeAction
      */
     void login() throws IllegalStateException, IOException, AuthenticationFailedException, TimeoutException;
 
@@ -250,7 +251,7 @@ public interface ManagerConnection {
      * @throws TimeoutException              if a timeout occurs while waiting for the
      *                                       protocol identifier. The connection is closed in this case.
      * @see org.asteriskjava.manager.action.LoginAction
-     * @see org.asteriskjava.manager.action.ChallengeAction
+     * @see ChallengeAction
      * @since 0.3
      */
     void login(String events) throws IllegalStateException, IOException, AuthenticationFailedException, TimeoutException;

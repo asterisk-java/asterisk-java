@@ -34,9 +34,9 @@ public class ComaJoiningSerializer implements AsteriskSerializer<Collection<?>> 
     @Override
     public void serialize(String fieldName, Collection<?> value, AsteriskGenerator asteriskGenerator) {
         String fieldValue = value
-            .stream()
-            .map(Object::toString)
-            .collect(joining(COMA_SEPARATOR));
+                .stream()
+                .map(Object::toString)
+                .collect(joining(COMA_SEPARATOR));
 
         asteriskGenerator.writeFieldValue(fieldValue);
     }

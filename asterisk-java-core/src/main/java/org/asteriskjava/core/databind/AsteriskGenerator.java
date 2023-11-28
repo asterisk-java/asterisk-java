@@ -43,6 +43,7 @@ public class AsteriskGenerator {
     }
 
     public String generate() {
+        stringBuilder.append(newlineDelimiter.getPattern());
         return stringBuilder.toString();
     }
 }

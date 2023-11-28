@@ -138,7 +138,7 @@ class ReflectionUtilsTest {
         @Override
         public String toString() {
             return new StringJoiner(", ", InvalidClass.class.getSimpleName() + "[", "]")
-                .toString();
+                    .toString();
         }
     }
 
