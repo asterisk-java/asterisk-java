@@ -1,5 +1,7 @@
 package org.asteriskjava.manager.action;
 
+import org.asteriskjava.ami.action.AbstractManagerAction;
+
 /**
  * The ConfbridgeUnmuteAction unmutes a channel in a conference.
  *

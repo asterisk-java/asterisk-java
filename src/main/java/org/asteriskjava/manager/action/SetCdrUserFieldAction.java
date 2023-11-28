@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.action;
 
+import org.asteriskjava.ami.action.AbstractManagerAction;
+
 /**
  * The SetCDRUserFieldAction causes the user field of the call detail record for
  * the given channel to be changed.<p>

@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.action;
 
+import org.asteriskjava.ami.action.AbstractManagerAction;
+
 /**
  * The BridgeAction bridges two channels that are currently active on the system.<p>
  * It is definied in <code>res/res_features.c</code>.<p>

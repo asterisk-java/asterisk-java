@@ -1,5 +1,7 @@
 package org.asteriskjava.pbx.asterisk.wrap.actions;
 
+import org.asteriskjava.ami.action.ManagerAction;
+
 public class CommandAction extends AbstractManagerAction {
 
     private String _command;
@@ -12,7 +14,7 @@ public class CommandAction extends AbstractManagerAction {
     }
 
     @Override
-    public org.asteriskjava.manager.action.ManagerAction getAJAction() {
+    public ManagerAction getAJAction() {
         final org.asteriskjava.manager.action.CommandAction action = new org.asteriskjava.manager.action.CommandAction();
         action.setCommand(this._command);
         action.setActionId(this.getActionId());

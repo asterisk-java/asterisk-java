@@ -16,6 +16,7 @@
  */
 package org.asteriskjava.manager.action;
 
+import org.asteriskjava.ami.action.AbstractManagerAction;
 import org.asteriskjava.manager.event.DbGetResponseEvent;
 import org.asteriskjava.manager.event.ResponseEvent;
 

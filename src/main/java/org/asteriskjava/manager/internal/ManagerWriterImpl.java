@@ -17,9 +17,9 @@
 package org.asteriskjava.manager.internal;
 
 import org.asteriskjava.AsteriskVersion;
+import org.asteriskjava.ami.action.ManagerAction;
 import org.asteriskjava.lock.Lockable;
 import org.asteriskjava.lock.Locker.LockCloser;
-import org.asteriskjava.manager.action.ManagerAction;
 import org.asteriskjava.util.SocketConnectionFacade;
 
 import java.io.IOException;

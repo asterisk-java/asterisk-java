@@ -17,8 +17,8 @@
 package org.asteriskjava.manager;
 
 import org.asteriskjava.AsteriskVersion;
+import org.asteriskjava.ami.action.ManagerAction;
 import org.asteriskjava.manager.action.EventGeneratingAction;
-import org.asteriskjava.manager.action.ManagerAction;
 import org.asteriskjava.manager.event.ManagerEvent;
 import org.asteriskjava.manager.response.ManagerResponse;
 
@@ -31,7 +31,7 @@ import java.nio.charset.Charset;
  * API.
  * <p>
  * The ManagerConnection repesents a connection to an Asterisk server and is
- * capable of sending {@link org.asteriskjava.manager.action.ManagerAction}s and
+ * capable of sending {@link ManagerAction}s and
  * receiving {@link org.asteriskjava.manager.response.ManagerResponse}s and
  * {@link org.asteriskjava.manager.event.ManagerEvent}s. It does not add any
  * further functionality but rather provides a Java view to Asterisk's Manager

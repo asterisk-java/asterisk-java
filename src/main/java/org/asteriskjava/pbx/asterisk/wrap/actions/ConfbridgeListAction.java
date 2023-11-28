@@ -1,6 +1,6 @@
 package org.asteriskjava.pbx.asterisk.wrap.actions;
 
-import org.asteriskjava.manager.action.ManagerAction;
+import org.asteriskjava.ami.action.ManagerAction;
 
 public class ConfbridgeListAction extends AbstractManagerAction implements EventGeneratingAction {
 

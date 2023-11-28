@@ -16,6 +16,7 @@
  */
 package org.asteriskjava.live.internal;
 
+import org.asteriskjava.ami.action.ManagerAction;
 import org.asteriskjava.live.ManagerCommunicationException;
 import org.asteriskjava.manager.EventTimeoutException;
 
@@ -36,7 +37,7 @@ class ManagerCommunicationExceptionMapper {
     /**
      * Maps exceptions received from
      * {@link org.asteriskjava.manager.ManagerConnection} when sending a
-     * {@link org.asteriskjava.manager.action.ManagerAction} to the corresponding
+     * {@link ManagerAction} to the corresponding
      * {@link org.asteriskjava.live.ManagerCommunicationException}.
      *
      * @param actionName name of the action that has been tried to send

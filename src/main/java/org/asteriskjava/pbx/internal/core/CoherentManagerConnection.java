@@ -282,7 +282,7 @@ class CoherentManagerConnection implements FilteredManagerListener<ManagerEvent>
         CoherentManagerConnection.getInstance();
         if ((CoherentManagerConnection.managerConnection != null)
                 && (CoherentManagerConnection.managerConnection.getState() == ManagerConnectionState.CONNECTED)) {
-            final org.asteriskjava.manager.action.ManagerAction ajAction = action.getAJAction();
+            final org.asteriskjava.ami.action.ManagerAction ajAction = action.getAJAction();
 
             org.asteriskjava.manager.response.ManagerResponse response = CoherentManagerConnection.managerConnection
                     .sendAction(ajAction, timeout);

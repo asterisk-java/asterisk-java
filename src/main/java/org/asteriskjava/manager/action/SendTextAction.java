@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.action;
 
+import org.asteriskjava.ami.action.AbstractManagerAction;
+
 /**
  * Sends a text message to a given channel while in a call.
  * An active channel and a text message are required in order to success.<p>

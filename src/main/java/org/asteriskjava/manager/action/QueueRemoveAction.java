@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.action;
 
+import org.asteriskjava.ami.action.AbstractManagerAction;
+
 /**
  * The QueueRemoveAction removes a member from a queue.<p>
  * It is implemented in <code>apps/app_queue.c</code>

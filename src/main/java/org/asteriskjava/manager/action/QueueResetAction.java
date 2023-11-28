@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.action;
 
+import org.asteriskjava.ami.action.AbstractManagerAction;
+
 /**
  * The QueueResetAction resets all statistical data of a given queue or all queues.<p>
  * It is implemented in <code>apps/app_queue.c</code><p>

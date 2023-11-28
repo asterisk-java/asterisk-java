@@ -1,5 +1,6 @@
 package org.asteriskjava.manager.action;
 
+import org.asteriskjava.ami.action.AbstractManagerAction;
 import org.asteriskjava.manager.event.QueueSummaryCompleteEvent;
 import org.asteriskjava.manager.event.QueueSummaryEvent;
 import org.asteriskjava.manager.event.ResponseEvent;

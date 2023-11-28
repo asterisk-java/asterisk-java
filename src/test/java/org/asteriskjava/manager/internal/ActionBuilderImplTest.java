@@ -17,6 +17,7 @@
 package org.asteriskjava.manager.internal;
 
 import org.asteriskjava.AsteriskVersion;
+import org.asteriskjava.ami.action.AbstractManagerAction;
 import org.asteriskjava.manager.action.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,6 +41,7 @@ class ActionBuilderImplTest {
         String actual;
 
         myAction = new MyAction();
+        myAction.setActionId("id-1");
         myAction.setFirstProperty("first value");
         myAction.setSecondProperty(2);
         myAction.setNonPublicProperty("private");
@@ -50,7 +52,7 @@ class ActionBuilderImplTest {
         assertTrue(actual.indexOf("firstproperty: first value\r\n") >= 0, "First property missing");
         assertTrue(actual.indexOf("secondproperty: 2\r\n") >= 0, "Second property missing");
         assertTrue(actual.endsWith("\r\n\r\n"), "Missing trailing CRNL CRNL");
-        assertEquals(61, actual.length(), "Incorrect length");
+        assertEquals(77, actual.length(), "Incorrect length");
     }
 
     @Test
@@ -59,6 +61,7 @@ class ActionBuilderImplTest {
         String actual;
 
         myAction = new MyAction();
+        myAction.setActionId("id-1");
         myAction.setFirstProperty("first value");
 
         actual = actionBuilder.buildAction(myAction);
@@ -66,7 +69,7 @@ class ActionBuilderImplTest {
         assertTrue(actual.indexOf("action: My\r\n") >= 0, "Action name missing");
         assertTrue(actual.indexOf("firstproperty: first value\r\n") >= 0, "First property missing");
         assertTrue(actual.endsWith("\r\n\r\n"), "Missing trailing CRNL CRNL");
-        assertEquals(42, actual.length(), "Incorrect length");
+        assertEquals(58, actual.length(), "Incorrect length");
     }
 
     @Test

@@ -1,5 +1,6 @@
 package org.asteriskjava.manager;
 
+import org.asteriskjava.ami.action.ManagerAction;
 import org.asteriskjava.manager.response.ManagerResponse;
 
 import java.lang.annotation.Retention;
@@ -9,7 +10,7 @@ import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Indicates that an annotated {@link org.asteriskjava.manager.action.ManagerAction} expects
+ * Indicates that an annotated {@link ManagerAction} expects
  * a specific subclass of {@link org.asteriskjava.manager.response.ManagerResponse} when executed
  * successfully.
  *

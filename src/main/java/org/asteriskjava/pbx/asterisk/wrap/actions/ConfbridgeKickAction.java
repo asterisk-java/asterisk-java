@@ -1,5 +1,7 @@
 package org.asteriskjava.pbx.asterisk.wrap.actions;
 
+import org.asteriskjava.ami.action.ManagerAction;
+
 public class ConfbridgeKickAction extends AbstractManagerAction {
 
     private final String channel;
@@ -11,7 +13,7 @@ public class ConfbridgeKickAction extends AbstractManagerAction {
     }
 
     @Override
-    public org.asteriskjava.manager.action.ManagerAction getAJAction() {
+    public ManagerAction getAJAction() {
         final org.asteriskjava.manager.action.ConfbridgeKickAction action = new org.asteriskjava.manager.action.ConfbridgeKickAction();
         action.setActionId(this.getActionId());
         action.setChannel(channel);

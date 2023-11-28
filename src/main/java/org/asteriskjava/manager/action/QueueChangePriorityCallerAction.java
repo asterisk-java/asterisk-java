@@ -1,5 +1,7 @@
 package org.asteriskjava.manager.action;
 
+import org.asteriskjava.ami.action.AbstractManagerAction;
+
 /**
  * The QueueChangePriorityCallerAction requests to change priority of caller.
  * Priority cannot be less than 0.

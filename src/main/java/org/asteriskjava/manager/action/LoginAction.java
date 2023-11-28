@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.action;
 
+import org.asteriskjava.ami.action.AbstractManagerAction;
+
 /**
  * The LoginAction authenticates the connection.<p>
  * A successful login is the precondition for sending any other action except

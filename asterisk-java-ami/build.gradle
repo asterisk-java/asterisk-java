@@ -1,0 +1,29 @@
+plugins {
+    id 'java-library'
+}
+
+java {
+    sourceCompatibility = '17'
+    targetCompatibility = '17'
+
+    withSourcesJar()
+    withJavadocJar()
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation project(':asterisk-java-core')
+
+    implementation 'org.apache.commons:commons-lang3:3.14.0'
+
+    testImplementation 'org.assertj:assertj-core:3.24.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.1'
+    testImplementation 'org.mockito:mockito-core:5.7.0'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}

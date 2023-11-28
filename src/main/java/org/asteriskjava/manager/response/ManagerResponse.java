@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.response;
 
+import org.asteriskjava.ami.action.ManagerAction;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Locale;
@@ -31,7 +33,7 @@ import java.util.Map;
  *
  * @author srt
  * @version $Id$
- * @see org.asteriskjava.manager.action.ManagerAction
+ * @see ManagerAction
  */
 public class ManagerResponse implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -131,7 +133,7 @@ public class ManagerResponse implements Serializable {
      *
      * @return the action id of the ManagerAction that caused this response or
      * <code>null</code> if none was set.
-     * @see org.asteriskjava.manager.action.ManagerAction#setActionId(String)
+     * @see ManagerAction#setActionId(String)
      */
     public String getActionId() {
         return actionId;

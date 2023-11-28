@@ -149,8 +149,8 @@ public class CoherentEventFactory {
 
     }
 
-    public static org.asteriskjava.manager.action.ManagerAction build(ManagerAction action) {
-        org.asteriskjava.manager.action.ManagerAction result = null;
+    public static org.asteriskjava.ami.action.ManagerAction build(ManagerAction action) {
+        org.asteriskjava.ami.action.ManagerAction result = null;
 
         // final Class<? extends org.asteriskjava.manager.action.ManagerAction>
         // target = CoherentEventFactory.mapActions.get(action.getClass());
