@@ -1,8 +1,10 @@
 package org.asteriskjava.pbx.asterisk.wrap.response;
 
+import org.asteriskjava.ami.action.response.ManagerResponse;
+
 public class ManagerError extends CommandResponse {
 
-    public ManagerError(org.asteriskjava.manager.response.ManagerResponse error) {
+    public ManagerError(ManagerResponse error) {
         super(error);
     }
 

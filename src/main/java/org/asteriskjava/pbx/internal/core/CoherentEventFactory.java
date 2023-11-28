@@ -136,7 +136,7 @@ public class CoherentEventFactory {
         return response;
     }
 
-    public static ManagerResponse build(org.asteriskjava.manager.response.ManagerResponse response) {
+    public static ManagerResponse build(org.asteriskjava.ami.action.response.ManagerResponse response) {
         ManagerResponse result;
         if (response instanceof org.asteriskjava.manager.response.CommandResponse) {
             result = new CommandResponse(response);

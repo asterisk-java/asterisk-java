@@ -17,11 +17,11 @@
 package org.asteriskjava.manager.internal;
 
 import com.google.common.util.concurrent.RateLimiter;
+import org.asteriskjava.ami.action.response.ManagerResponse;
 import org.asteriskjava.manager.event.DisconnectEvent;
 import org.asteriskjava.manager.event.ManagerEvent;
 import org.asteriskjava.manager.event.ProtocolIdentifierReceivedEvent;
 import org.asteriskjava.manager.internal.backwardsCompatibility.BackwardsCompatibilityForManagerEvents;
-import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.pbx.util.LogTime;
 import org.asteriskjava.util.DateUtil;
 import org.asteriskjava.util.Log;

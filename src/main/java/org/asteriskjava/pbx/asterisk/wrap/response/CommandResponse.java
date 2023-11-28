@@ -8,7 +8,7 @@ public class CommandResponse extends ManagerResponse {
     private List<String> result;
     private boolean error;
 
-    public CommandResponse(org.asteriskjava.manager.response.ManagerResponse response) {
+    public CommandResponse(org.asteriskjava.ami.action.response.ManagerResponse response) {
         super(response);
 
         if (response instanceof org.asteriskjava.manager.response.CommandResponse) {

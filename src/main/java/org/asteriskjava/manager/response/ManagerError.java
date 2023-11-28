@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.response;
 
+import org.asteriskjava.ami.action.response.ManagerResponse;
+
 /**
  * Represents an "Response: Error" response received from the asterisk server.
  * The cause for the error is given in the message attribute.

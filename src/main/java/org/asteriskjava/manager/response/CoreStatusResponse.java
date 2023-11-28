@@ -16,6 +16,7 @@
  */
 package org.asteriskjava.manager.response;
 
+import org.asteriskjava.ami.action.response.ManagerResponse;
 import org.asteriskjava.util.DateUtil;
 
 import java.util.Date;

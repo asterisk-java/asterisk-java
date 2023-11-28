@@ -15,9 +15,9 @@
  */
 package org.asteriskjava.manager.util;
 
+import org.asteriskjava.ami.action.response.ManagerResponse;
 import org.asteriskjava.manager.event.CdrEvent;
 import org.asteriskjava.manager.event.UserEvent;
-import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.util.AstUtil;
 import org.asteriskjava.util.ReflectionUtil;
 import org.slf4j.Logger;

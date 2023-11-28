@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.response;
 
+import org.asteriskjava.ami.action.response.ManagerResponse;
+
 /**
  * Corresponds to a ChallengeAction and contains the challenge needed to log in using
  * challenge/response.

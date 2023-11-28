@@ -16,8 +16,8 @@
  */
 package org.asteriskjava.manager;
 
+import org.asteriskjava.ami.action.response.ManagerResponse;
 import org.asteriskjava.manager.event.ResponseEvent;
-import org.asteriskjava.manager.response.ManagerResponse;
 
 import java.util.Collection;
 
@@ -25,7 +25,7 @@ import java.util.Collection;
 /**
  * Contains the result of executing an
  * {@link org.asteriskjava.manager.action.EventGeneratingAction}, that is the
- * {@link org.asteriskjava.manager.response.ManagerResponse} and any received
+ * {@link ManagerResponse} and any received
  * {@link org.asteriskjava.manager.event.ManagerEvent}s.
  *
  * @author srt

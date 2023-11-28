@@ -18,6 +18,7 @@ package org.asteriskjava.live.internal;
 
 import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.ami.action.ManagerAction;
+import org.asteriskjava.ami.action.response.ManagerResponse;
 import org.asteriskjava.config.ConfigFile;
 import org.asteriskjava.live.*;
 import org.asteriskjava.lock.Lockable;

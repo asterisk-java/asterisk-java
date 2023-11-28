@@ -22,7 +22,7 @@ public class ManagerResponse {
     final private String _uniqueId;
     final private Map<String, Object> _attributes;
 
-    public ManagerResponse(org.asteriskjava.manager.response.ManagerResponse response) {
+    public ManagerResponse(org.asteriskjava.ami.action.response.ManagerResponse response) {
         this._dateReceived = response.getDateReceived();
         this._actionId = response.getActionId();
         this._server = response.getServer();

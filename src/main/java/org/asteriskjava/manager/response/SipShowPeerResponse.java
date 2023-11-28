@@ -15,6 +15,8 @@
  */
 package org.asteriskjava.manager.response;
 
+import org.asteriskjava.ami.action.response.ManagerResponse;
+
 import java.util.Map;
 
 /**

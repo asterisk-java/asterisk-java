@@ -16,9 +16,9 @@
  */
 package org.asteriskjava.manager.internal;
 
+import org.asteriskjava.ami.action.response.ManagerResponse;
 import org.asteriskjava.manager.event.*;
 import org.asteriskjava.manager.response.CommandResponse;
-import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.util.DateUtil;
 import org.asteriskjava.util.SocketConnectionFacade;
 import org.junit.jupiter.api.AfterEach;

@@ -1,7 +1,7 @@
 package org.asteriskjava.manager;
 
+import org.asteriskjava.ami.action.response.ManagerResponse;
 import org.asteriskjava.manager.response.ManagerError;
-import org.asteriskjava.manager.response.ManagerResponse;
 
 /**
  * Callback interface to send
