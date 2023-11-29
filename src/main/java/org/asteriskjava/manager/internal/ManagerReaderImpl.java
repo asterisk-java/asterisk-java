@@ -352,7 +352,7 @@ public class ManagerReaderImpl implements ManagerReader {
         final ManagerResponse response = responseBuilder.buildResponse(responseClass, buffer);
 
         if (response != null) {
-            response.setDateReceived(DateUtil.getDate());
+            response.setDateReceived(DateUtil.getDate().toInstant());
         }
 
         return response;

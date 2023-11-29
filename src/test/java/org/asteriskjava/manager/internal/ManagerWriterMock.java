@@ -22,6 +22,7 @@ import org.asteriskjava.ami.action.ChallengeAction;
 import org.asteriskjava.ami.action.ManagerAction;
 import org.asteriskjava.ami.action.response.ChallengeResponse;
 import org.asteriskjava.ami.action.response.ManagerResponse;
+import org.asteriskjava.ami.action.response.ResponseType;
 import org.asteriskjava.manager.action.LoginAction;
 import org.asteriskjava.manager.action.LogoffAction;
 import org.asteriskjava.manager.event.ProtocolIdentifierReceivedEvent;
@@ -138,10 +139,10 @@ public class ManagerWriterMock implements ManagerWriter {
                 // 3 unsuccessful attempts
                 if (key.equals(expectedKey) || loginActionsSent > 2) {
                     loginResponse = new ManagerResponse();
-                    loginResponse.setResponse("Success");
+                    loginResponse.setResponse(ResponseType.Success);
                 } else {
                     loginResponse = new ManagerError();
-                    loginResponse.setResponse("Error");
+                    loginResponse.setResponse(ResponseType.Error);
                     loginResponse.setMessage("Authentication failed");
                 }
                 loginResponse.setActionId(ManagerUtil.addInternalActionId(action.getActionId(), internalActionId));
@@ -155,7 +156,7 @@ public class ManagerWriterMock implements ManagerWriter {
 
                 response = new ManagerResponse();
                 response.setActionId(ManagerUtil.addInternalActionId(action.getActionId(), internalActionId));
-                response.setResponse("Success");
+                response.setResponse(ResponseType.Success);
                 dispatchLater(response);
             }
         } else {
@@ -166,7 +167,7 @@ public class ManagerWriterMock implements ManagerWriter {
 
                 response = new ManagerResponse();
                 response.setActionId(ManagerUtil.addInternalActionId(action.getActionId(), internalActionId));
-                response.setResponse("Success");
+                response.setResponse(ResponseType.Success);
                 dispatchLater(response);
             }
         }

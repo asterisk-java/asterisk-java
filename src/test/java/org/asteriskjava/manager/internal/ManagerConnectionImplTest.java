@@ -18,6 +18,7 @@ package org.asteriskjava.manager.internal;
 
 import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.ami.action.response.ManagerResponse;
+import org.asteriskjava.ami.action.response.ResponseType;
 import org.asteriskjava.manager.AuthenticationFailedException;
 import org.asteriskjava.manager.ManagerConnectionState;
 import org.asteriskjava.manager.ManagerEventListener;
@@ -368,7 +369,7 @@ class ManagerConnectionImplTest {
         response = new ManagerResponse();
         // internalActionId: 123_0
         response.setActionId("123_0-abc");
-        response.setResponse("Success");
+        response.setResponse(ResponseType.Success);
 
         // expected result is ignoring the response and logging
         mc.dispatchResponse(response, null);
@@ -380,7 +381,7 @@ class ManagerConnectionImplTest {
 
         response = new ManagerResponse();
         response.setActionId("abc");
-        response.setResponse("Success");
+        response.setResponse(ResponseType.Success);
 
         // expected result is ignoring the response and logging
         mc.dispatchResponse(response, null);
@@ -392,7 +393,7 @@ class ManagerConnectionImplTest {
 
         response = new ManagerResponse();
         response.setActionId(null);
-        response.setResponse("Success");
+        response.setResponse(ResponseType.Success);
 
         // expected result is ignoring the response and logging
         mc.dispatchResponse(response, null);

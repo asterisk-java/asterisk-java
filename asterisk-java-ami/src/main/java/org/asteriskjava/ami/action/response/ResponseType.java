@@ -15,32 +15,15 @@
  */
 package org.asteriskjava.ami.action.response;
 
-import org.asteriskjava.ami.action.ChallengeAction;
-
-import java.io.Serial;
-
 /**
- * Corresponds to a {@link ChallengeAction} and contains the challenge needed to log in using challenge/response.
+ * Value of the "Response:" line. This is typically a string like {@code Success} or {@code Error} which is mapped to
+ * this enum.
  *
- * @author Stefan Reuter
  * @author Piotr Olaszewski
- * @see ChallengeAction
- * @since 1.0.0
+ * @since 4.0.0
  */
-public class ChallengeResponse extends ManagerResponse {
-    @Serial
-    private static final long serialVersionUID = -7253724086340850957L;
-
-    private String challenge;
-
-    /**
-     * Returns the challenge to use when creating the key for log in.
-     */
-    public String getChallenge() {
-        return challenge;
-    }
-
-    public void setChallenge(String challenge) {
-        this.challenge = challenge;
-    }
+public enum ResponseType {
+    Success,
+    Error,
+    Goodbye,
 }

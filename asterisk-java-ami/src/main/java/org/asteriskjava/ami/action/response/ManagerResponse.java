@@ -19,7 +19,7 @@ import org.asteriskjava.ami.action.ManagerAction;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.Instant;
 import java.util.Locale;
 import java.util.Map;
 
@@ -37,15 +37,55 @@ public class ManagerResponse implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private Date dateReceived;
+    private ResponseType response;
+
+    private Instant dateReceived;
+
     private String actionId;
+
+    /**
+     * Asterisk argument: {@code Response}.
+     */
+    public ResponseType getResponse() {
+        return response;
+    }
+
+    public void setResponse(ResponseType response) {
+        this.response = response;
+    }
+
+    /**
+     * Returns the point in time when this response was received from the Asterisk server.
+     */
+    public Instant getDateReceived() {
+        return dateReceived;
+    }
+
+    public void setDateReceived(Instant dateReceived) {
+        this.dateReceived = dateReceived;
+    }
+
+    /**
+     * Asterisk argument: {@code ActionID}.
+     * <p>
+     * Returns the user provided action id of the {@link ManagerAction} that caused this response. If the application
+     * did not set an {@code ActionID} this method returns {@code null}.
+     */
+    public String getActionId() {
+        return actionId;
+    }
+
+    public void setActionId(String actionId) {
+        this.actionId = actionId;
+    }
+
+    /*---------------*/
 
     /**
      * The server from which this response has been received (only used with
      * AstManProxy).
      */
     private String server;
-    private String response;
     private String eventList;
     private String message;
     private String uniqueId;
@@ -110,35 +150,6 @@ public class ManagerResponse implements Serializable {
     }
 
     /**
-     * Returns the point in time this response was received from the asterisk
-     * server.
-     */
-    public Date getDateReceived() {
-        return dateReceived;
-    }
-
-    /**
-     * Sets the point in time this response was received from the asterisk
-     * server.
-     */
-    public void setDateReceived(Date dateReceived) {
-        this.dateReceived = dateReceived;
-    }
-
-    /**
-     * Returns the user provided action id of the ManagerAction that caused this
-     * response. If the application did not set an action id this method returns
-     * <code>null</code>.
-     *
-     * @return the action id of the ManagerAction that caused this response or
-     * <code>null</code> if none was set.
-     * @see ManagerAction#setActionId(String)
-     */
-    public String getActionId() {
-        return actionId;
-    }
-
-    /**
      * Returns the name of the Asterisk server from which this response has been
      * received. <br>
      * This property is only available when using to AstManProxy.
@@ -185,16 +196,6 @@ public class ManagerResponse implements Serializable {
     }
 
     /**
-     * Sets the action id of the ManagerAction that caused this response.
-     *
-     * @param actionId the action id of the ManagerAction that caused this
-     *                 response.
-     */
-    public void setActionId(String actionId) {
-        this.actionId = actionId;
-    }
-
-    /**
      * Returns the message received with this response. The content depends on
      * the action that generated this response.
      */
@@ -207,22 +208,6 @@ public class ManagerResponse implements Serializable {
      */
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    /**
-     * Returns the value of the "Response:" line. This typically a String like
-     * "Success" or "Error" but depends on the action that generated this
-     * response.
-     */
-    public String getResponse() {
-        return response;
-    }
-
-    /**
-     * Sets the response.
-     */
-    public void setResponse(String response) {
-        this.response = response;
     }
 
     /**

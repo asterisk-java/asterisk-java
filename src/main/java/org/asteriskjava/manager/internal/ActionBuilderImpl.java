@@ -17,6 +17,7 @@
 package org.asteriskjava.manager.internal;
 
 import org.asteriskjava.AsteriskVersion;
+import org.asteriskjava.ami.ActionFieldsComparator;
 import org.asteriskjava.ami.action.ManagerAction;
 import org.asteriskjava.core.databind.AsteriskObjectMapper;
 import org.asteriskjava.manager.AsteriskMapping;
@@ -51,25 +52,9 @@ class ActionBuilderImpl implements ActionBuilder {
     private final Set<String> membersToIgnore = new HashSet<>();
 
     private final AsteriskObjectMapper asteriskObjectMapper = builder()
-        .crlfNewlineDelimiter()
-        .fieldNamesComparator(new ActionFieldsComparator())
-        .build();
-
-    static class ActionFieldsComparator implements Comparator<String> {
-        @Override
-        public int compare(String o1, String o2) {
-            if (o1.equals(o2)) {
-                return 0;
-            }
-            if (o1.equalsIgnoreCase("Action") && o2.equalsIgnoreCase("ActionID") || (o1.equalsIgnoreCase("ActionID") && o2.equalsIgnoreCase("Action"))) {
-                return 1;
-            }
-            if (o1.equalsIgnoreCase("Action") || o1.equalsIgnoreCase("ActionID")) {
-                return -1;
-            }
-            return 1;
-        }
-    }
+            .crlfNewlineDelimiter()
+            .fieldNamesComparator(new ActionFieldsComparator())
+            .build();
 
     /**
      * Creates a new ActionBuilder for Asterisk 1.0.

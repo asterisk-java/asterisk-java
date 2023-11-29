@@ -16,6 +16,7 @@
 package org.asteriskjava.manager.internal;
 
 import org.asteriskjava.ami.action.response.ManagerResponse;
+import org.asteriskjava.ami.action.response.ResponseType;
 import org.asteriskjava.manager.response.CommandResponse;
 import org.asteriskjava.manager.response.ManagerError;
 import org.asteriskjava.manager.util.EventAttributesHelper;
@@ -90,7 +91,7 @@ class ResponseBuilderImpl implements ResponseBuilder {
         }
 
         if (response.getResponse() != null && attributes.get(PROXY_RESPONSE_KEY) != null) {
-            response.setResponse((String) attributes.get(PROXY_RESPONSE_KEY));
+            response.setResponse(ResponseType.valueOf((String) attributes.get(PROXY_RESPONSE_KEY)));
         }
 
         // make the map of all attributes available to the response
