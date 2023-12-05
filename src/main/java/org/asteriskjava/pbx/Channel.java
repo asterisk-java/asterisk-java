@@ -183,6 +183,6 @@ public interface Channel {
      * @throws InvalidChannelName
      */
 
-    void rename(String newName, String uniqueId) throws InvalidChannelName;
+    void renameChannel(String newName, String uniqueId) throws InvalidChannelName;
 
 }

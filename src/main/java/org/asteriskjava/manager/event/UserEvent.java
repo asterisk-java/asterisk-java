@@ -127,4 +127,25 @@ public abstract class UserEvent extends ManagerEvent {
     public void setUniqueId(String uniqueId) {
         this.uniqueId = uniqueId;
     }
+
+
+    private String header;
+
+    private String extension;
+
+    public String getHeader() {
+        return header;
+    }
+
+    public void setHeader(String header) {
+        this.header = header;
+    }
+
+    public String getExtension() {
+        return extension;
+    }
+
+    public void setExtension(String extension) {
+        this.extension = extension;
+    }
 }

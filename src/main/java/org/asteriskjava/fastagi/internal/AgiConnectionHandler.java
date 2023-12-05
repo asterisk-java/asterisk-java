@@ -40,12 +40,12 @@ public abstract class AgiConnectionHandler implements Runnable {
     private static final String AJ_AGISTATUS_FAILED = "FAILED";
     private static final ThreadLocal<AgiChannel> channel = new ThreadLocal<>();
     private final Log logger = LogFactory.getLog(getClass());
-    private boolean ignoreMissingScripts = false;
+    boolean ignoreMissingScripts = false;
     private AgiScript script = null;
     private AgiChannelFactory agiChannelFactory;
 
     public static final ConcurrentMap<AgiConnectionHandler, AgiChannel> AGI_CONNECTION_HANDLERS = new ConcurrentHashMap<>(
-            32);
+        32);
 
     /**
      * The strategy to use to determine which script to run.
@@ -72,9 +72,7 @@ public abstract class AgiConnectionHandler implements Runnable {
         this.mappingStrategy = mappingStrategy;
     }
 
-    protected boolean isIgnoreMissingScripts() {
-        return ignoreMissingScripts;
-    }
+
 
     protected void setIgnoreMissingScripts(boolean ignoreMissingScripts) {
         this.ignoreMissingScripts = ignoreMissingScripts;
@@ -118,7 +116,7 @@ public abstract class AgiConnectionHandler implements Runnable {
                 final String errorMessage;
 
                 errorMessage = "No script configured for URL '" + request.getRequestURL() + "' (script '"
-                        + request.getScript() + "')";
+                    + request.getScript() + "')";
                 logger.error(errorMessage);
 
                 setStatusVariable(channel, AJ_AGISTATUS_NOT_FOUND);

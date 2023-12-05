@@ -268,7 +268,7 @@ public class LiveChannelManager extends Lockable implements FilteredManagerListe
             ChannelProxy oldChannel = findProxy(rename.getChannel());
             if (oldChannel != null) {
                 try {
-                    oldChannel.rename(rename.getNewName(), rename.getUniqueId());
+                    oldChannel.renameChannel(rename.getNewName(), rename.getUniqueId());
 
                     dumpProxies(oldChannel, "RenameEvent");
                     sanityCheck();

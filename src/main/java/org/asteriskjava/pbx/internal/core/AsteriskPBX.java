@@ -649,41 +649,59 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener {
     }
 
     public boolean moveChannelToAgi(Channel channel) throws PBXException {
-        if (!waitForChannelToQuiescent(channel, 3000))
-            throw new PBXException("Channel: " + channel + " cannot be transfered as it is still in transition.");
+if (!waitForChannelToQuiescent(channel, 3000))
+throw new PBXException("Channel: " + channel + " cannot be transferred as it is still in transition.");
 
-        boolean isInAgi = channel.isInAgi();
-        if (!isInAgi) {
-            final AsteriskSettings profile = PBXFactory.getActiveProfile();
+boolean isInAgi = channel.isInAgi();
+if (!isInAgi) {
+    redirectChannelToAgi(channel);
+    isInAgi = checkIfChannelIsInAgi(channel);
+}
+return isInAgi;
+}
 
-            channel.setCurrentActivityAction(new AgiChannelActivityHold());
-            final RedirectAction redirect = new RedirectAction(channel, profile.getManagementContext(), getExtensionAgi(),
-                    1);
+private void redirectChannelToAgi(Channel channel) {
+final AsteriskSettings profile = PBXFactory.getActiveProfile();
+channel.setCurrentActivityAction(new AgiChannelActivityHold());
+final RedirectAction redirect = new RedirectAction(channel, profile.getManagementContext(), getExtensionAgi(), 1);
+logger.error("Issuing redirect on channel " + channel + " to move it to the agi");
+try {
+final ManagerResponse response = sendAction(redirect, 1000);
+if ((response != null) && (response.getResponse().compareToIgnoreCase("success") == 0)) {
+waitForChannelToEnterAgi(channel);
+}
+} catch (final Exception e) {
+logger.error(e, e);
+}
+}
 
-            logger.error("Issuing redirect on channel " + channel + " to move it to the agi");
+private boolean checkIfChannelIsInAgi(Channel channel) {
+int limit = 50;
+while (!channel.isInAgi() && limit-- > 0) {
+try {
+Thread.sleep(100);
+} catch (InterruptedException e) {
+logger.error(e, e);
+}
+}
+if (!channel.isInAgi()) {
+logger.error("Failed to move channel");
+return false;
+}
+return true;
+}
 
-            try {
-                final ManagerResponse response = sendAction(redirect, 1000);
-                if ((response != null) && (response.getResponse().compareToIgnoreCase("success") == 0))//$NON-NLS-1$
-                {
-                    int limit = 50;
-                    while (!channel.isInAgi() && limit-- > 0) {
-                        Thread.sleep(100);
-                    }
-                    isInAgi = channel.isInAgi();
-                    if (!isInAgi) {
-                        logger.error("Failed to move channel");
-                    }
-                }
+private void waitForChannelToEnterAgi(Channel channel) {
+int limit = 50;
+while (!channel.isInAgi() && limit-- > 0) {
+try {
+Thread.sleep(100);
+} catch (InterruptedException e) {
+logger.error(e, e);
+}
+}
+}
 
-            } catch (final Exception e) {
-                logger.error(e, e);
-            }
-
-        }
-        return isInAgi;
-
-    }
 
     public void moveChannelTo(Channel channel, String context, String exten, int prio) {
 

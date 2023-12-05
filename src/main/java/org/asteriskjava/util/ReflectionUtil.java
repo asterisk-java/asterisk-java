@@ -139,7 +139,7 @@ public class ReflectionUtil {
             Method existing = accessors.get(name);
             if (existing != null) {
                 logger.warn("multiple setters (case insensitive) exist for " + name + " on class(es) "
-                        + existing.getDeclaringClass() + " and " + method.getDeclaringClass());
+                    + existing.getDeclaringClass() + " and " + method.getDeclaringClass());
             }
             if (existing == null) {
                 // we don't have a mapping for this setter so add it.
@@ -213,16 +213,7 @@ public class ReflectionUtil {
      * @return <code>true</code> if the class is available, <code>false</code>
      * otherwise.
      */
-    public static boolean isClassAvailable(String s) {
-        final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 
-        try {
-            classLoader.loadClass(s);
-            return true;
-        } catch (ClassNotFoundException e) {
-            return false;
-        }
-    }
 
     /**
      * Creates a new instance of the given class. The class is loaded using the
