@@ -13,14 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.asteriskjava.core.databind.writer;
+package org.asteriskjava.core.databind.utils;
+
+import org.asteriskjava.core.databind.annotation.AsteriskName;
+
+import java.lang.reflect.Method;
 
 /**
- * Context for the process methods.
+ * Convenient class for handling annotations.
  *
- * @param serializerWriteFieldName whatever serializer write field names
  * @author Piotr Olaszewski
  * @since 4.0.0
  */
-record AsteriskObjectMethodWriterContext(boolean serializerWriteFieldName) {
+public final class AnnotationUtils {
+    private AnnotationUtils() {
+    }
+
+    public static String getName(Method method, String name) {
+        AsteriskName asteriskName = method.getAnnotation(AsteriskName.class);
+        return asteriskName == null ? name : asteriskName.value();
+    }
 }

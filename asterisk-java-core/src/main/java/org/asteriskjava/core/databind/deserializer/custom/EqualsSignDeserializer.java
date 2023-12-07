@@ -13,14 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.asteriskjava.core.databind.writer;
+package org.asteriskjava.core.databind.deserializer.custom;
+
+import org.apache.commons.lang3.tuple.Pair;
+import org.asteriskjava.core.databind.deserializer.AsteriskDeserializer;
 
 /**
- * Context for the process methods.
+ * Deserializer for splitting collection elements using the {@code =} sign.
  *
- * @param serializerWriteFieldName whatever serializer write field names
  * @author Piotr Olaszewski
  * @since 4.0.0
  */
-record AsteriskObjectMethodWriterContext(boolean serializerWriteFieldName) {
+public class EqualsSignDeserializer implements AsteriskDeserializer<Pair<String, String>> {
+    private static final String EQUALS_SIGN_SEPARATOR = "=";
+
+    @Override
+    public Pair<String, String> deserialize(String value) {
+        String[] split = value.split(EQUALS_SIGN_SEPARATOR);
+        return Pair.of(split[0], split[1]);
+    }
 }

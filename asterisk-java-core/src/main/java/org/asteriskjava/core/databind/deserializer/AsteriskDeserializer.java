@@ -13,14 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.asteriskjava.core.databind.writer;
+package org.asteriskjava.core.databind.deserializer;
 
 /**
- * Context for the process methods.
+ * Interface representing a deserializer for a given type.
  *
- * @param serializerWriteFieldName whatever serializer write field names
+ * @param <T> type of the deserialized value
  * @author Piotr Olaszewski
  * @since 4.0.0
  */
-record AsteriskObjectMethodWriterContext(boolean serializerWriteFieldName) {
+public interface AsteriskDeserializer<T> {
+    /**
+     * Deserializes object into Asterisk string.
+     *
+     * @return deserialized value
+     */
+    T deserialize(String value);
 }

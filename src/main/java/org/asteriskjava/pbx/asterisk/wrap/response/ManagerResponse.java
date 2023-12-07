@@ -23,10 +23,10 @@ public class ManagerResponse {
     final private Map<String, Object> _attributes;
 
     public ManagerResponse(org.asteriskjava.ami.action.response.ManagerResponse response) {
-        this._dateReceived = response.getDateReceived();
+        this._dateReceived = Date.from(response.getDateReceived());
         this._actionId = response.getActionId();
         this._server = response.getServer();
-        this._response = response.getResponse();
+        this._response = response.getResponse().toString();
         this._eventList = response.getEventList();
         this._uniqueId = response.getUniqueId();
         this._attributes = response.getAttributes();

@@ -13,14 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.asteriskjava.core.databind.writer;
+package org.asteriskjava.core.databind.annotation;
+
+import org.asteriskjava.core.databind.deserializer.AsteriskDeserializer;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Context for the process methods.
+ * Annotation used for configuring deserialization aspects, by attaching to "setter" methods.
  *
- * @param serializerWriteFieldName whatever serializer write field names
  * @author Piotr Olaszewski
  * @since 4.0.0
  */
-record AsteriskObjectMethodWriterContext(boolean serializerWriteFieldName) {
+@Target({METHOD})
+@Retention(RUNTIME)
+public @interface AsteriskDeserialize {
+    /**
+     * Deserializer class to use for deserializing associated value.
+     */
+    Class<? extends AsteriskDeserializer<?>> value();
 }

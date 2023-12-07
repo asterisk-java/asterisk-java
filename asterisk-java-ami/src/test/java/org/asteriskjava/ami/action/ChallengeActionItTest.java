@@ -45,7 +45,7 @@ class ChallengeActionItTest {
                 .fieldNamesComparator(new ActionFieldsComparator())
                 .build();
 
-        String action = asteriskObjectMapper.writeValue(challengeAction);
+        String action = asteriskObjectMapper.writeValueAsString(challengeAction);
 
         NioEventLoopGroup group = new NioEventLoopGroup();
         Bootstrap bootstrap = new Bootstrap();

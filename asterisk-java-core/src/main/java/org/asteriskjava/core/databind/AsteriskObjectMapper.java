@@ -16,11 +16,11 @@
 package org.asteriskjava.core.databind;
 
 import org.asteriskjava.core.NewlineDelimiter;
-import org.asteriskjava.core.databind.writer.AsteriskObjectMethodWriter;
+import org.asteriskjava.core.databind.reader.AsteriskObjectReader;
 import org.asteriskjava.core.databind.writer.AsteriskObjectWriter;
 
 import java.util.Comparator;
-import java.util.List;
+import java.util.Map;
 
 import static java.util.Objects.requireNonNull;
 import static org.asteriskjava.core.NewlineDelimiter.CRLF;
@@ -39,22 +39,14 @@ public class AsteriskObjectMapper {
         this.fieldNamesComparator = fieldNamesComparator;
     }
 
-    public String writeValue(Object value) {
-        Class<?> clazz = value.getClass();
-
-        AsteriskObjectWriter asteriskObjectWriter = new AsteriskObjectWriter(clazz, fieldNamesComparator);
-
-        return writeValue(value, asteriskObjectWriter);
+    public String writeValueAsString(Object value) {
+        AsteriskObjectWriter asteriskObjectWriter = new AsteriskObjectWriter(newlineDelimiter, fieldNamesComparator);
+        return asteriskObjectWriter.write(value);
     }
 
-    private String writeValue(Object value, AsteriskObjectWriter asteriskObjectWriter) {
-        AsteriskGenerator asteriskGenerator = new AsteriskGenerator(newlineDelimiter);
-        List<AsteriskObjectMethodWriter> asteriskObjectMethodWriters = asteriskObjectWriter.getAsteriskObjectMethodWriters();
-        for (AsteriskObjectMethodWriter asteriskObjectMethodWriter : asteriskObjectMethodWriters) {
-            asteriskObjectMethodWriter.writeName(asteriskGenerator);
-            asteriskObjectMethodWriter.writeValue(value, asteriskGenerator);
-        }
-        return asteriskGenerator.generate();
+    public <T> T readValue(Map<String, Object> content, Class<T> clazz) {
+        AsteriskObjectReader asteriskObjectReader = new AsteriskObjectReader();
+        return asteriskObjectReader.read(content, clazz);
     }
 
     public static Builder builder() {

@@ -18,8 +18,9 @@ package org.asteriskjava.core.databind.writer;
 import org.asteriskjava.core.databind.AsteriskGenerator;
 import org.asteriskjava.core.databind.serializer.AsteriskSerializer;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+
+import static org.asteriskjava.core.databind.utils.Invoker.invokeOn;
 
 /**
  * Writer class to write field names and serialized values using the {@link AsteriskGenerator}.
@@ -27,13 +28,13 @@ import java.lang.reflect.Method;
  * @author Piotr Olaszewski
  * @since 4.0.0
  */
-public class AsteriskObjectMethodWriter {
+class AsteriskObjectMethodWriter {
     private final Method method;
     private final String name;
     private final AsteriskSerializer<Object> asteriskSerializer;
     private final AsteriskObjectMethodWriterContext asteriskObjectMethodWriterContext;
 
-    public AsteriskObjectMethodWriter(
+    AsteriskObjectMethodWriter(
             Method method,
             String name,
             AsteriskSerializer<Object> asteriskSerializer,
@@ -45,22 +46,14 @@ public class AsteriskObjectMethodWriter {
         this.asteriskObjectMethodWriterContext = asteriskObjectMethodWriterContext;
     }
 
-    public void writeName(AsteriskGenerator asteriskGenerator) {
+    void writeName(AsteriskGenerator asteriskGenerator) {
         if (!asteriskObjectMethodWriterContext.serializerWriteFieldName()) {
             asteriskGenerator.writeFieldName(name);
         }
     }
 
-    public void writeValue(Object obj, AsteriskGenerator asteriskGenerator) {
-        Object currentValue = getCurrentValue(obj);
+    void writeValue(Object obj, AsteriskGenerator asteriskGenerator) {
+        Object currentValue = invokeOn(obj).method(method).withoutParameter();
         asteriskSerializer.serialize(name, currentValue, asteriskGenerator);
-    }
-
-    private Object getCurrentValue(Object obj) {
-        try {
-            return method.invoke(obj);
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            throw new RuntimeException(e);
-        }
     }
 }

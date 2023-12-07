@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static java.util.Arrays.stream;
 import static org.slf4j.LoggerFactory.getLogger;
 
 /**
@@ -123,6 +124,11 @@ public class EventAttributesHelper {
                     value = parseLong(entry);
                 } else if (dataType.isAssignableFrom(int.class) || dataType.isAssignableFrom(Integer.class)) {
                     value = parseInteger(entry);
+                } else if (dataType.isEnum()) {
+                    value = stream(dataType.getEnumConstants())
+                            .filter(t -> t.toString().equals(entry.getValue()))
+                            .findFirst()
+                            .orElse(null);
                 } else {
                     try {
                         Constructor<?> constructor = dataType.getConstructor(String.class);

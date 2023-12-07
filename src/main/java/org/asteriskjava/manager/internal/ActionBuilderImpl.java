@@ -86,7 +86,7 @@ class ActionBuilderImpl implements ActionBuilder {
 
         if (action.getClass().getPackageName().contains("org.asteriskjava.ami.action")) {
             action.setActionId(actionId);
-            return asteriskObjectMapper.writeValue(action);
+            return asteriskObjectMapper.writeValueAsString(action);
         }
 
         StringBuilder sb = new StringBuilder();

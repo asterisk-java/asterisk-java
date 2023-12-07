@@ -15,7 +15,8 @@
  */
 package org.asteriskjava.core.databind.writer;
 
-import org.asteriskjava.core.databind.annotation.AsteriskName;
+import org.asteriskjava.core.NewlineDelimiter;
+import org.asteriskjava.core.databind.AsteriskGenerator;
 import org.asteriskjava.core.databind.annotation.AsteriskSerialize;
 import org.asteriskjava.core.databind.serializer.AsteriskSerializer;
 import org.asteriskjava.core.databind.serializer.WritableFileName;
@@ -26,6 +27,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map.Entry;
 
+import static org.asteriskjava.core.databind.utils.AnnotationUtils.getName;
 import static org.asteriskjava.core.databind.utils.ReflectionUtils.getGetters;
 
 /**
@@ -33,15 +35,26 @@ import static org.asteriskjava.core.databind.utils.ReflectionUtils.getGetters;
  * @since 4.0.0
  */
 public class AsteriskObjectWriter {
-    private final Class<?> clazz;
     private final Comparator<String> fieldNamesComparator;
+    private final NewlineDelimiter newlineDelimiter;
 
-    public AsteriskObjectWriter(Class<?> clazz, Comparator<String> fieldNamesComparator) {
-        this.clazz = clazz;
+    public AsteriskObjectWriter(NewlineDelimiter newlineDelimiter, Comparator<String> fieldNamesComparator) {
         this.fieldNamesComparator = fieldNamesComparator;
+        this.newlineDelimiter = newlineDelimiter;
     }
 
-    public List<AsteriskObjectMethodWriter> getAsteriskObjectMethodWriters() {
+    public String write(Object value) {
+        Class<?> clazz = value.getClass();
+        AsteriskGenerator asteriskGenerator = new AsteriskGenerator(newlineDelimiter);
+        List<AsteriskObjectMethodWriter> asteriskObjectMethodWriters = getAsteriskObjectMethodWriters(clazz);
+        for (AsteriskObjectMethodWriter asteriskObjectMethodWriter : asteriskObjectMethodWriters) {
+            asteriskObjectMethodWriter.writeName(asteriskGenerator);
+            asteriskObjectMethodWriter.writeValue(value, asteriskGenerator);
+        }
+        return asteriskGenerator.generate();
+    }
+
+    private List<AsteriskObjectMethodWriter> getAsteriskObjectMethodWriters(Class<?> clazz) {
         return getGetters(clazz, fieldNamesComparator)
                 .entrySet()
                 .stream()
@@ -60,11 +73,6 @@ public class AsteriskObjectWriter {
         AsteriskObjectMethodWriterContext context = new AsteriskObjectMethodWriterContext(serializerWriteFieldName);
 
         return new AsteriskObjectMethodWriter(method, name, asteriskSerializer, context);
-    }
-
-    private static String getName(Method method, String name) {
-        AsteriskName asteriskName = method.getAnnotation(AsteriskName.class);
-        return asteriskName == null ? name : asteriskName.value();
     }
 
     private AsteriskSerializer<Object> getAsteriskSerializer(Method method) {
