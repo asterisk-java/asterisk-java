@@ -26,4 +26,6 @@ public enum ResponseType {
     Success,
     Error,
     Goodbye,
+    //todo check is sill in use
+    Follows,
 }

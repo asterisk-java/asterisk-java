@@ -334,7 +334,7 @@ class ManagerConnectionImplTest {
 
         assertEquals("123", statusAction.getActionId(), "incorrect actionId in action");
         assertEquals("123", response.getActionId(), "incorrect actionId in response");
-        assertEquals("Success", response.getResponse(), "incorrect response");
+        assertEquals(ResponseType.Success, response.getResponse(), "incorrect response");
 
         assertEquals(1, mockWriter.otherActionsSent, "other actions not sent 1 time");
     }

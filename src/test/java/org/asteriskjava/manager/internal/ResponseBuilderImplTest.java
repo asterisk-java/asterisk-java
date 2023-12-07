@@ -18,6 +18,7 @@ package org.asteriskjava.manager.internal;
 
 import org.asteriskjava.ami.action.response.ChallengeResponse;
 import org.asteriskjava.ami.action.response.ManagerResponse;
+import org.asteriskjava.ami.action.response.ResponseType;
 import org.asteriskjava.manager.response.ExtensionStateResponse;
 import org.asteriskjava.manager.response.MailboxCountResponse;
 import org.asteriskjava.manager.response.MailboxStatusResponse;
@@ -48,7 +49,7 @@ class ResponseBuilderImplTest {
 
         response = responseBuilder.buildResponse(ManagerResponse.class, attributes);
         assertEquals(ManagerResponse.class, response.getClass(), "Response of wrong type");
-        assertEquals("Success", response.getResponse(), "Response not set correctly");
+        assertEquals(ResponseType.Success, response.getResponse(), "Response not set correctly");
     }
 
     @Test
@@ -59,7 +60,7 @@ class ResponseBuilderImplTest {
 
         response = responseBuilder.buildResponse(null, attributes);
         assertEquals(ManagerResponse.class, response.getClass(), "Response of wrong type");
-        assertEquals("Success", response.getResponse(), "Response not set correctly");
+        assertEquals(ResponseType.Success, response.getResponse(), "Response not set correctly");
     }
 
     @Test
