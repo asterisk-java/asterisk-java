@@ -1,5 +1,6 @@
 package org.asteriskjava.pbx.asterisk.wrap.response;
 
+import org.asteriskjava.ami.action.response.ManagerActionResponse;
 import org.asteriskjava.manager.response.ManagerError;
 
 import java.util.Date;
@@ -22,7 +23,7 @@ public class ManagerResponse {
     final private String _uniqueId;
     final private Map<String, Object> _attributes;
 
-    public ManagerResponse(org.asteriskjava.ami.action.response.ManagerResponse response) {
+    public ManagerResponse(ManagerActionResponse response) {
         this._dateReceived = Date.from(response.getDateReceived());
         this._actionId = response.getActionId();
         this._server = response.getServer();

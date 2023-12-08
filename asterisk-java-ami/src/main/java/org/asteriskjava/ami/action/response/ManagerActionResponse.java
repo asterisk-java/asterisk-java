@@ -15,7 +15,11 @@
  */
 package org.asteriskjava.ami.action.response;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.asteriskjava.ami.action.ManagerAction;
+import org.asteriskjava.core.databind.annotation.AsteriskName;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -33,7 +37,7 @@ import java.util.Map;
  * @see ManagerAction
  * @since 1.0.0
  */
-public class ManagerResponse implements Serializable {
+public class ManagerActionResponse implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
@@ -75,8 +79,46 @@ public class ManagerResponse implements Serializable {
         return actionId;
     }
 
+    @AsteriskName("ActionID")
     public void setActionId(String actionId) {
         this.actionId = actionId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        ManagerActionResponse that = (ManagerActionResponse) o;
+
+        return new EqualsBuilder()
+                .append(response, that.response)
+                .append(dateReceived, that.dateReceived)
+                .append(actionId, that.actionId)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(response)
+                .append(dateReceived)
+                .append(actionId)
+                .toHashCode();
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("response", response)
+                .append("dateReceived", dateReceived)
+                .append("actionId", actionId)
+                .toString();
     }
 
     /*---------------*/
@@ -93,7 +135,7 @@ public class ManagerResponse implements Serializable {
     private Map<String, Object> attributes;
     private String output;
 
-    public ManagerResponse() {
+    public ManagerActionResponse() {
         this.attributes = null;
     }
 
@@ -248,21 +290,6 @@ public class ManagerResponse implements Serializable {
         }
 
         return Long.parseLong(s.trim());
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb;
-
-        sb = new StringBuilder(100);
-        sb.append(getClass().getName()).append(": ");
-        sb.append("actionId='").append(getActionId()).append("'; ");
-        sb.append("message='").append(getMessage()).append("'; ");
-        sb.append("response='").append(getResponse()).append("'; ");
-        sb.append("uniqueId='").append(getUniqueId()).append("'; ");
-        sb.append("systemHashcode=").append(System.identityHashCode(this));
-
-        return sb.toString();
     }
 
     public String getEvents() {

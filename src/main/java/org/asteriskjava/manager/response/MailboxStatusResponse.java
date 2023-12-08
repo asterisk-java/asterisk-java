@@ -16,7 +16,7 @@
  */
 package org.asteriskjava.manager.response;
 
-import org.asteriskjava.ami.action.response.ManagerResponse;
+import org.asteriskjava.ami.action.response.ManagerActionResponse;
 
 /**
  * A MailboxStatusResponse is sent in response to a MailboxStatusAction and indicates if a set
@@ -26,7 +26,7 @@ import org.asteriskjava.ami.action.response.ManagerResponse;
  * @version $Id$
  * @see org.asteriskjava.manager.action.MailboxStatusAction
  */
-public class MailboxStatusResponse extends ManagerResponse {
+public class MailboxStatusResponse extends ManagerActionResponse {
     /**
      * Serial version identifier
      */

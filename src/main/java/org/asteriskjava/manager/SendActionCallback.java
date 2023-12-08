@@ -17,7 +17,7 @@
 package org.asteriskjava.manager;
 
 import org.asteriskjava.ami.action.ManagerAction;
-import org.asteriskjava.ami.action.response.ManagerResponse;
+import org.asteriskjava.ami.action.response.ManagerActionResponse;
 
 /**
  * Callback interface to send {@link ManagerAction}s
@@ -33,5 +33,5 @@ public interface SendActionCallback {
      *
      * @param response the response that has been received
      */
-    void onResponse(ManagerResponse response);
+    void onResponse(ManagerActionResponse response);
 }

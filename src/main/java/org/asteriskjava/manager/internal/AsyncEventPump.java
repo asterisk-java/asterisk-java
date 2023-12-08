@@ -1,7 +1,7 @@
 package org.asteriskjava.manager.internal;
 
 import com.google.common.util.concurrent.RateLimiter;
-import org.asteriskjava.ami.action.response.ManagerResponse;
+import org.asteriskjava.ami.action.response.ManagerActionResponse;
 import org.asteriskjava.lock.Locker;
 import org.asteriskjava.manager.event.ManagerEvent;
 import org.asteriskjava.pbx.util.LogTime;
@@ -143,7 +143,7 @@ public class AsyncEventPump implements Dispatcher, Runnable {
      * add a ManagerResponse to the queue, only if the queue is not full
      */
     @Override
-    public void dispatchResponse(ManagerResponse response, Integer requiredHandlingTime) {
+    public void dispatchResponse(ManagerActionResponse response, Integer requiredHandlingTime) {
         if (!queue.offer(new EventWrapper(response))) {
             logger.error(name + " Event queue is full, not processing ManagerResponse " + response);
         }
@@ -161,7 +161,7 @@ public class AsyncEventPump implements Dispatcher, Runnable {
 
     private static class EventWrapper {
         LogTime timer = new LogTime();
-        ManagerResponse response;
+        ManagerActionResponse response;
         ManagerEvent event;
         CountDownLatch poison;
 
@@ -180,7 +180,7 @@ public class AsyncEventPump implements Dispatcher, Runnable {
 
         }
 
-        EventWrapper(ManagerResponse response) {
+        EventWrapper(ManagerActionResponse response) {
             this.response = response;
         }
 

@@ -32,6 +32,7 @@ dependencies {
     testImplementation 'io.netty:netty-codec:4.1.101.Final'
     testImplementation 'io.netty:netty-handler:4.1.101.Final'
     testImplementation 'io.netty:netty-transport:4.1.101.Final'
+    testImplementation 'org.awaitility:awaitility:4.2.0'
 }
 
 tasks.named('test') {

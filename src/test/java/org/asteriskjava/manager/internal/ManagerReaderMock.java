@@ -16,7 +16,7 @@
  */
 package org.asteriskjava.manager.internal;
 
-import org.asteriskjava.ami.action.response.ManagerResponse;
+import org.asteriskjava.ami.action.response.ManagerActionResponse;
 import org.asteriskjava.manager.event.ManagerEvent;
 import org.asteriskjava.util.SocketConnectionFacade;
 
@@ -39,7 +39,7 @@ public class ManagerReaderMock implements ManagerReader {
         setSocketCalls++;
     }
 
-    public void expectResponseClass(String actionId, Class<? extends ManagerResponse> responseClass) {
+    public void expectResponseClass(String actionId, Class<? extends ManagerActionResponse> responseClass) {
 
     }
 

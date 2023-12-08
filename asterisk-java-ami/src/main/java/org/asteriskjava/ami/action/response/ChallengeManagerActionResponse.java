@@ -15,6 +15,9 @@
  */
 package org.asteriskjava.ami.action.response;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.asteriskjava.ami.action.ChallengeAction;
 
 import java.io.Serial;
@@ -27,7 +30,7 @@ import java.io.Serial;
  * @see ChallengeAction
  * @since 1.0.0
  */
-public class ChallengeResponse extends ManagerResponse {
+public class ChallengeManagerActionResponse extends ManagerActionResponse {
     @Serial
     private static final long serialVersionUID = -7253724086340850957L;
 
@@ -42,5 +45,39 @@ public class ChallengeResponse extends ManagerResponse {
 
     public void setChallenge(String challenge) {
         this.challenge = challenge;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        ChallengeManagerActionResponse that = (ChallengeManagerActionResponse) o;
+
+        return new EqualsBuilder()
+                .appendSuper(super.equals(that))
+                .append(challenge, that.challenge)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .appendSuper(super.hashCode())
+                .append(challenge)
+                .toHashCode();
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .appendSuper(super.toString())
+                .append("challenge", challenge)
+                .toString();
     }
 }

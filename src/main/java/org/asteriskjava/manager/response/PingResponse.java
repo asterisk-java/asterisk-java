@@ -16,7 +16,7 @@
  */
 package org.asteriskjava.manager.response;
 
-import org.asteriskjava.ami.action.response.ManagerResponse;
+import org.asteriskjava.ami.action.response.ManagerActionResponse;
 
 /**
  * Corresponds to a PingAction and contains an additional (yet useless) ping property.
@@ -24,7 +24,7 @@ import org.asteriskjava.ami.action.response.ManagerResponse;
  * @author srt
  * @see org.asteriskjava.manager.action.PingAction
  */
-public class PingResponse extends ManagerResponse {
+public class PingResponse extends ManagerActionResponse {
     private static final long serialVersionUID = 0L;
 
     private String ping;

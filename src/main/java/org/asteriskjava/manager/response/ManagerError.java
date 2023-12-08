@@ -16,7 +16,7 @@
  */
 package org.asteriskjava.manager.response;
 
-import org.asteriskjava.ami.action.response.ManagerResponse;
+import org.asteriskjava.ami.action.response.ManagerActionResponse;
 
 /**
  * Represents an "Response: Error" response received from the asterisk server.
@@ -25,7 +25,7 @@ import org.asteriskjava.ami.action.response.ManagerResponse;
  * @author srt
  * @version $Id$
  */
-public class ManagerError extends ManagerResponse {
+public class ManagerError extends ManagerActionResponse {
     /**
      * Serial version identifier
      */

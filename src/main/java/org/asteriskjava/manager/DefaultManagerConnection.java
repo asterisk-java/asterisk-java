@@ -18,7 +18,7 @@ package org.asteriskjava.manager;
 
 import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.ami.action.ManagerAction;
-import org.asteriskjava.ami.action.response.ManagerResponse;
+import org.asteriskjava.ami.action.response.ManagerActionResponse;
 import org.asteriskjava.manager.action.EventGeneratingAction;
 import org.asteriskjava.manager.event.ManagerEvent;
 import org.asteriskjava.manager.internal.ManagerConnectionImpl;
@@ -288,12 +288,12 @@ public class DefaultManagerConnection implements ManagerConnection {
         impl.logoff();
     }
 
-    public ManagerResponse sendAction(ManagerAction action)
+    public ManagerActionResponse sendAction(ManagerAction action)
             throws IOException, TimeoutException, IllegalArgumentException, IllegalStateException {
         return impl.sendAction(action);
     }
 
-    public ManagerResponse sendAction(ManagerAction action, long timeout)
+    public ManagerActionResponse sendAction(ManagerAction action, long timeout)
             throws IOException, TimeoutException, IllegalArgumentException, IllegalStateException {
         return impl.sendAction(action, timeout);
     }

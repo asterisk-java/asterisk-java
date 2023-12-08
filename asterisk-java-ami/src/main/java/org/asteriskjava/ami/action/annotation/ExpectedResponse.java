@@ -16,7 +16,7 @@
 package org.asteriskjava.ami.action.annotation;
 
 import org.asteriskjava.ami.action.ManagerAction;
-import org.asteriskjava.ami.action.response.ManagerResponse;
+import org.asteriskjava.ami.action.response.ManagerActionResponse;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
@@ -25,7 +25,7 @@ import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Indicates that an annotated {@link ManagerAction} expects a specific subclass of {@link ManagerResponse} when
+ * Indicates that an annotated {@link ManagerAction} expects a specific subclass of {@link ManagerActionResponse} when
  * executed successfully.
  *
  * @author Stefan Reuter
@@ -35,7 +35,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 public @interface ExpectedResponse {
     /**
-     * {@link ManagerResponse} subclass, to handle {@link ManagerAction} response.
+     * {@link ManagerActionResponse} subclass, to handle {@link ManagerAction} response.
      */
-    Class<? extends ManagerResponse> value();
+    Class<? extends ManagerActionResponse> value();
 }

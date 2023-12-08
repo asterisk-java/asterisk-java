@@ -15,7 +15,7 @@
  */
 package org.asteriskjava.manager.util;
 
-import org.asteriskjava.ami.action.response.ManagerResponse;
+import org.asteriskjava.ami.action.response.ManagerActionResponse;
 import org.asteriskjava.manager.event.CdrEvent;
 import org.asteriskjava.manager.event.UserEvent;
 import org.asteriskjava.util.AstUtil;
@@ -82,7 +82,7 @@ public class EventAttributesHelper {
 
             // it seems silly to warn if it's a user event -- maybe it was
             // intentional
-            if (setter == null && !(target instanceof UserEvent) && !target.getClass().equals(ManagerResponse.class)) {
+            if (setter == null && !(target instanceof UserEvent) && !target.getClass().equals(ManagerActionResponse.class)) {
 
                 //CDR has dynamic properties
                 if (target instanceof CdrEvent) {

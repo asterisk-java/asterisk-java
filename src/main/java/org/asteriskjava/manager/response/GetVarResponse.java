@@ -16,7 +16,7 @@
  */
 package org.asteriskjava.manager.response;
 
-import org.asteriskjava.ami.action.response.ManagerResponse;
+import org.asteriskjava.ami.action.response.ManagerActionResponse;
 
 /**
  * Corresponds to a GetVarAction and contains the value of the requested variable.
@@ -26,7 +26,7 @@ import org.asteriskjava.ami.action.response.ManagerResponse;
  * @see org.asteriskjava.manager.action.GetVarAction
  * @since 1.0.0
  */
-public class GetVarResponse extends ManagerResponse {
+public class GetVarResponse extends ManagerActionResponse {
     private static final long serialVersionUID = 1L;
 
     private String variable;

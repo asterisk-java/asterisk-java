@@ -17,7 +17,7 @@
 package org.asteriskjava.manager.internal;
 
 import org.asteriskjava.AsteriskVersion;
-import org.asteriskjava.ami.action.response.ManagerResponse;
+import org.asteriskjava.ami.action.response.ManagerActionResponse;
 import org.asteriskjava.ami.action.response.ResponseType;
 import org.asteriskjava.manager.AuthenticationFailedException;
 import org.asteriskjava.manager.ManagerConnectionState;
@@ -322,7 +322,7 @@ class ManagerConnectionImplTest {
     @Test
     void testSendAction() throws Exception {
         StatusAction statusAction;
-        ManagerResponse response;
+        ManagerActionResponse response;
 
         statusAction = new StatusAction();
         statusAction.setActionId("123");
@@ -364,9 +364,9 @@ class ManagerConnectionImplTest {
 
     @Test
     void testDispatchResponseUnexpectedResponse() {
-        ManagerResponse response;
+        ManagerActionResponse response;
 
-        response = new ManagerResponse();
+        response = new ManagerActionResponse();
         // internalActionId: 123_0
         response.setActionId("123_0-abc");
         response.setResponse(ResponseType.Success);
@@ -377,9 +377,9 @@ class ManagerConnectionImplTest {
 
     @Test
     void testDispatchResponseMissingInternalActionId() {
-        ManagerResponse response;
+        ManagerActionResponse response;
 
-        response = new ManagerResponse();
+        response = new ManagerActionResponse();
         response.setActionId("abc");
         response.setResponse(ResponseType.Success);
 
@@ -389,9 +389,9 @@ class ManagerConnectionImplTest {
 
     @Test
     void testDispatchResponseNullActionId() {
-        ManagerResponse response;
+        ManagerActionResponse response;
 
-        response = new ManagerResponse();
+        response = new ManagerActionResponse();
         response.setActionId(null);
         response.setResponse(ResponseType.Success);
 

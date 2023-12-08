@@ -1,6 +1,6 @@
 package org.asteriskjava.fastagi.internal;
 
-import org.asteriskjava.ami.action.response.ManagerResponse;
+import org.asteriskjava.ami.action.response.ManagerActionResponse;
 import org.asteriskjava.fastagi.AgiException;
 import org.asteriskjava.fastagi.AgiWriter;
 import org.asteriskjava.fastagi.command.AgiCommand;
@@ -30,7 +30,7 @@ public class AsyncAgiWriter implements AgiWriter {
 
     public void sendCommand(AgiCommand command) throws AgiException {
         final AgiAction agiAction;
-        final ManagerResponse response;
+        final ManagerActionResponse response;
 
         agiAction = new AgiAction(channelName, command.buildCommand());
 

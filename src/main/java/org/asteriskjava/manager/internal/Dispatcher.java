@@ -16,7 +16,7 @@
  */
 package org.asteriskjava.manager.internal;
 
-import org.asteriskjava.ami.action.response.ManagerResponse;
+import org.asteriskjava.ami.action.response.ManagerActionResponse;
 import org.asteriskjava.manager.event.ManagerEvent;
 
 /**
@@ -31,7 +31,7 @@ import org.asteriskjava.manager.event.ManagerEvent;
  */
 interface Dispatcher {
     /**
-     * This method is called by the reader whenever a {@link ManagerResponse} is
+     * This method is called by the reader whenever a {@link ManagerActionResponse} is
      * received. The response is dispatched to the associated
      * {@link org.asteriskjava.manager.SendActionCallback}.
      *
@@ -40,7 +40,7 @@ interface Dispatcher {
      *                             within to not cause a back log of events
      * @see ManagerReader
      */
-    void dispatchResponse(ManagerResponse response, Integer requiredHandlingTime);
+    void dispatchResponse(ManagerActionResponse response, Integer requiredHandlingTime);
 
     /**
      * This method is called by the reader whenever a ManagerEvent is received.

@@ -16,7 +16,7 @@
  */
 package org.asteriskjava.manager.response;
 
-import org.asteriskjava.ami.action.response.ManagerResponse;
+import org.asteriskjava.ami.action.response.ManagerActionResponse;
 
 /**
  * Corresponds to a CoreSettingsAction and contains the current settings summary of the
@@ -27,7 +27,7 @@ import org.asteriskjava.ami.action.response.ManagerResponse;
  * @see org.asteriskjava.manager.action.CoreSettingsAction
  * @since 1.0.0
  */
-public class CoreSettingsResponse extends ManagerResponse {
+public class CoreSettingsResponse extends ManagerActionResponse {
     private static final long serialVersionUID = 1L;
 
     private String amiVersion;

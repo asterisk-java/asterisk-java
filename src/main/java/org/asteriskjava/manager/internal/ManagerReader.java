@@ -16,7 +16,7 @@
  */
 package org.asteriskjava.manager.internal;
 
-import org.asteriskjava.ami.action.response.ManagerResponse;
+import org.asteriskjava.ami.action.response.ManagerActionResponse;
 import org.asteriskjava.manager.event.ManagerEvent;
 import org.asteriskjava.util.SocketConnectionFacade;
 
@@ -57,7 +57,7 @@ public interface ManagerReader extends Runnable {
      */
     void registerEventClass(Class<? extends ManagerEvent> event);
 
-    void expectResponseClass(String internalActionId, Class<? extends ManagerResponse> responseClass);
+    void expectResponseClass(String internalActionId, Class<? extends ManagerActionResponse> responseClass);
 
     /**
      * Terminates this reader.

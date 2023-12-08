@@ -1,6 +1,7 @@
 package org.asteriskjava.pbx.internal.core;
 
 import org.asteriskjava.AsteriskVersion;
+import org.asteriskjava.ami.action.response.ManagerActionResponse;
 import org.asteriskjava.manager.*;
 import org.asteriskjava.pbx.*;
 import org.asteriskjava.pbx.asterisk.wrap.actions.*;
@@ -284,7 +285,7 @@ class CoherentManagerConnection implements FilteredManagerListener<ManagerEvent>
                 && (CoherentManagerConnection.managerConnection.getState() == ManagerConnectionState.CONNECTED)) {
             final org.asteriskjava.ami.action.ManagerAction ajAction = action.getAJAction();
 
-            org.asteriskjava.ami.action.response.ManagerResponse response = CoherentManagerConnection.managerConnection
+            ManagerActionResponse response = CoherentManagerConnection.managerConnection
                     .sendAction(ajAction, timeout);
             ManagerResponse convertedResponse = null;
 

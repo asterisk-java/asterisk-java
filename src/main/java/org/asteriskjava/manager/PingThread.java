@@ -16,7 +16,7 @@
  */
 package org.asteriskjava.manager;
 
-import org.asteriskjava.ami.action.response.ManagerResponse;
+import org.asteriskjava.ami.action.response.ManagerActionResponse;
 import org.asteriskjava.lock.LockableSet;
 import org.asteriskjava.lock.Locker.LockCloser;
 import org.asteriskjava.manager.action.PingAction;
@@ -170,7 +170,7 @@ public class PingThread extends Thread {
             if (timeout <= 0) {
                 c.sendAction(new PingAction(), null);
             } else {
-                final ManagerResponse response;
+                final ManagerActionResponse response;
 
                 response = c.sendAction(new PingAction(), timeout);
                 logger.debug("Ping response '" + response + "' for " + c.toString());

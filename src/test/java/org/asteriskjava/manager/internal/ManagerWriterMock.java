@@ -20,8 +20,8 @@ import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.ami.action.AuthType;
 import org.asteriskjava.ami.action.ChallengeAction;
 import org.asteriskjava.ami.action.ManagerAction;
-import org.asteriskjava.ami.action.response.ChallengeResponse;
-import org.asteriskjava.ami.action.response.ManagerResponse;
+import org.asteriskjava.ami.action.response.ChallengeManagerActionResponse;
+import org.asteriskjava.ami.action.response.ManagerActionResponse;
 import org.asteriskjava.ami.action.response.ResponseType;
 import org.asteriskjava.manager.action.LoginAction;
 import org.asteriskjava.manager.action.LogoffAction;
@@ -107,12 +107,12 @@ public class ManagerWriterMock implements ManagerWriter {
             challengeActionsSent++;
 
             if (sendResponse) {
-                ChallengeResponse challengeResponse;
+                ChallengeManagerActionResponse challengeManagerActionResponse;
 
-                challengeResponse = new ChallengeResponse();
-                challengeResponse.setActionId(ManagerUtil.addInternalActionId(action.getActionId(), internalActionId));
-                challengeResponse.setChallenge(CHALLENGE);
-                dispatchLater(challengeResponse);
+                challengeManagerActionResponse = new ChallengeManagerActionResponse();
+                challengeManagerActionResponse.setActionId(ManagerUtil.addInternalActionId(action.getActionId(), internalActionId));
+                challengeManagerActionResponse.setChallenge(CHALLENGE);
+                dispatchLater(challengeManagerActionResponse);
             }
         } else if (action instanceof LoginAction) {
 
@@ -132,13 +132,13 @@ public class ManagerWriterMock implements ManagerWriter {
             loginActionsSent++;
 
             if (sendResponse) {
-                ManagerResponse loginResponse;
+                ManagerActionResponse loginResponse;
 
                 // let testReconnectWithKeepAliveAfterAuthenticationFailure
                 // succeed after
                 // 3 unsuccessful attempts
                 if (key.equals(expectedKey) || loginActionsSent > 2) {
-                    loginResponse = new ManagerResponse();
+                    loginResponse = new ManagerActionResponse();
                     loginResponse.setResponse(ResponseType.Success);
                 } else {
                     loginResponse = new ManagerError();
@@ -152,9 +152,9 @@ public class ManagerWriterMock implements ManagerWriter {
             logoffActionsSent++;
 
             if (sendResponse) {
-                ManagerResponse response;
+                ManagerActionResponse response;
 
-                response = new ManagerResponse();
+                response = new ManagerActionResponse();
                 response.setActionId(ManagerUtil.addInternalActionId(action.getActionId(), internalActionId));
                 response.setResponse(ResponseType.Success);
                 dispatchLater(response);
@@ -163,9 +163,9 @@ public class ManagerWriterMock implements ManagerWriter {
             otherActionsSent++;
 
             if (sendResponse) {
-                ManagerResponse response;
+                ManagerActionResponse response;
 
-                response = new ManagerResponse();
+                response = new ManagerActionResponse();
                 response.setActionId(ManagerUtil.addInternalActionId(action.getActionId(), internalActionId));
                 response.setResponse(ResponseType.Success);
                 dispatchLater(response);
@@ -173,7 +173,7 @@ public class ManagerWriterMock implements ManagerWriter {
         }
     }
 
-    private void dispatchLater(final ManagerResponse response) {
+    private void dispatchLater(final ManagerActionResponse response) {
         Thread future = new Thread(new Runnable() {
             public void run() {
                 try {

@@ -16,7 +16,7 @@
  */
 package org.asteriskjava.manager.internal;
 
-import org.asteriskjava.ami.action.response.ManagerResponse;
+import org.asteriskjava.ami.action.response.ManagerActionResponse;
 import org.asteriskjava.ami.action.response.ResponseType;
 import org.asteriskjava.manager.event.*;
 import org.asteriskjava.manager.response.CommandResponse;
@@ -208,7 +208,7 @@ class ManagerReaderImplTest {
 
         assertEquals(1, dispatcher.dispatchedResponses.size(), "not exactly one response dispatched");
 
-        assertEquals(ManagerResponse.class, dispatcher.dispatchedResponses.get(0).getClass(), "first response must be a ManagerResponse");
+        assertEquals(ManagerActionResponse.class, dispatcher.dispatchedResponses.get(0).getClass(), "first response must be a ManagerResponse");
         assertEquals(ResponseType.Success, dispatcher.dispatchedResponses.get(0).getResponse(), "ManagerResponse contains incorrect response");
 
         assertEquals("Authentication accepted", dispatcher.dispatchedResponses.get(0).getMessage(), "ManagerResponse contains incorrect message");
@@ -271,15 +271,15 @@ class ManagerReaderImplTest {
 
     private class MockedDispatcher implements Dispatcher {
         List<ManagerEvent> dispatchedEvents;
-        List<ManagerResponse> dispatchedResponses;
+        List<ManagerActionResponse> dispatchedResponses;
 
         public MockedDispatcher() {
             this.dispatchedEvents = new ArrayList<ManagerEvent>();
-            this.dispatchedResponses = new ArrayList<ManagerResponse>();
+            this.dispatchedResponses = new ArrayList<ManagerActionResponse>();
         }
 
         @Override
-        public void dispatchResponse(ManagerResponse response, Integer requiredHandlingTime) {
+        public void dispatchResponse(ManagerActionResponse response, Integer requiredHandlingTime) {
             dispatchedResponses.add(response);
         }
 

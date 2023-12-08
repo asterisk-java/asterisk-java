@@ -16,7 +16,7 @@
  */
 package org.asteriskjava.manager.response;
 
-import org.asteriskjava.ami.action.response.ManagerResponse;
+import org.asteriskjava.ami.action.response.ManagerActionResponse;
 
 /**
  * A MailboxCountResponse is sent in response to a MailboxCountAction and contains the number of old
@@ -26,7 +26,7 @@ import org.asteriskjava.ami.action.response.ManagerResponse;
  * @version $Id$
  * @see org.asteriskjava.manager.action.MailboxCountAction
  */
-public class MailboxCountResponse extends ManagerResponse {
+public class MailboxCountResponse extends ManagerActionResponse {
     /**
      * Serial version identifier
      */

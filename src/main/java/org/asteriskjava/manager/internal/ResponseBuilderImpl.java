@@ -15,7 +15,7 @@
  */
 package org.asteriskjava.manager.internal;
 
-import org.asteriskjava.ami.action.response.ManagerResponse;
+import org.asteriskjava.ami.action.response.ManagerActionResponse;
 import org.asteriskjava.ami.action.response.ResponseType;
 import org.asteriskjava.core.databind.AsteriskDecoder;
 import org.asteriskjava.manager.response.CommandResponse;
@@ -32,7 +32,7 @@ import static org.slf4j.LoggerFactory.getLogger;
  *
  * @author srt
  * @version $Id$
- * @see ManagerResponse
+ * @see ManagerActionResponse
  */
 class ResponseBuilderImpl implements ResponseBuilder {
     private static final Logger logger = getLogger(ResponseBuilderImpl.class);
@@ -48,21 +48,21 @@ class ResponseBuilderImpl implements ResponseBuilder {
     private final AsteriskDecoder asteriskDecoder = new AsteriskDecoder(false);
 
     @SuppressWarnings("unchecked")
-    public ManagerResponse buildResponse(Class<? extends ManagerResponse> responseClass, Map<String, Object> attributes) {
-        responseClass = responseClass == null ? ManagerResponse.class : responseClass;
+    public ManagerActionResponse buildResponse(Class<? extends ManagerActionResponse> responseClass, Map<String, Object> attributes) {
+        responseClass = responseClass == null ? ManagerActionResponse.class : responseClass;
         if (responseClass.getPackageName().contains("org.asteriskjava.ami.action.response")) {
-            ManagerResponse response = asteriskDecoder.decode(attributes, responseClass);
+            ManagerActionResponse response = asteriskDecoder.decode(attributes, responseClass);
             response.setAttributes(new HashMap<>(attributes));
             return response;
         }
 
-        final ManagerResponse response;
+        final ManagerActionResponse response;
         final String responseType = (String) attributes.get(RESPONSE_KEY);
 
         if (RESPONSE_TYPE_ERROR.equalsIgnoreCase(responseType)) {
             response = new ManagerError();
         } else if (responseClass == null) {
-            response = new ManagerResponse();
+            response = new ManagerActionResponse();
         } else {
             try {
                 response = responseClass.getDeclaredConstructor().newInstance();

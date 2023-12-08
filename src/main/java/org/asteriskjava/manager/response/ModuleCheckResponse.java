@@ -16,7 +16,7 @@
  */
 package org.asteriskjava.manager.response;
 
-import org.asteriskjava.ami.action.response.ManagerResponse;
+import org.asteriskjava.ami.action.response.ManagerActionResponse;
 
 /**
  * Corresponds to a ModuleCheckAction and contains the version of the module.
@@ -26,7 +26,7 @@ import org.asteriskjava.ami.action.response.ManagerResponse;
  * @see org.asteriskjava.manager.action.ModuleCheckAction
  * @since 1.0.0
  */
-public class ModuleCheckResponse extends ManagerResponse {
+public class ModuleCheckResponse extends ManagerActionResponse {
     private static final long serialVersionUID = -7253724086340850957L;
 
     private String version;

@@ -16,7 +16,7 @@
  */
 package org.asteriskjava.manager.response;
 
-import org.asteriskjava.ami.action.response.ManagerResponse;
+import org.asteriskjava.ami.action.response.ManagerActionResponse;
 
 import java.util.List;
 
@@ -31,7 +31,7 @@ import java.util.List;
  * @version $Id$
  * @see org.asteriskjava.manager.action.CommandAction
  */
-public class CommandResponse extends ManagerResponse {
+public class CommandResponse extends ManagerActionResponse {
     private static final long serialVersionUID = 1L;
 
     private String privilege;

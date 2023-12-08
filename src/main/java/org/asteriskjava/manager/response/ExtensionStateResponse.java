@@ -16,7 +16,7 @@
  */
 package org.asteriskjava.manager.response;
 
-import org.asteriskjava.ami.action.response.ManagerResponse;
+import org.asteriskjava.ami.action.response.ManagerActionResponse;
 
 /**
  * Response to an {@link org.asteriskjava.manager.action.ExtensionStateAction}.
@@ -25,7 +25,7 @@ import org.asteriskjava.ami.action.response.ManagerResponse;
  * @version $Id$
  * @see org.asteriskjava.manager.action.ExtensionStateAction
  */
-public class ExtensionStateResponse extends ManagerResponse {
+public class ExtensionStateResponse extends ManagerActionResponse {
     private static final long serialVersionUID = -2044248427247227390L;
     private String exten;
     private String context;

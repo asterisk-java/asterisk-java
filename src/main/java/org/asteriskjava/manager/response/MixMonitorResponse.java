@@ -16,7 +16,7 @@
  */
 package org.asteriskjava.manager.response;
 
-import org.asteriskjava.ami.action.response.ManagerResponse;
+import org.asteriskjava.ami.action.response.ManagerActionResponse;
 
 /**
  * A MixMonitorResponse is sent in response to a MixMonitorAction and provides
@@ -26,7 +26,7 @@ import org.asteriskjava.ami.action.response.ManagerResponse;
  *
  * @see org.asteriskjava.manager.action.MixMonitorAction;
  */
-public class MixMonitorResponse extends ManagerResponse {
+public class MixMonitorResponse extends ManagerActionResponse {
     private static final long serialVersionUID = 1L;
     private String mixMonitorId;
 

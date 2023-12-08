@@ -16,8 +16,8 @@
  */
 package org.asteriskjava.manager.internal;
 
-import org.asteriskjava.ami.action.response.ChallengeResponse;
-import org.asteriskjava.ami.action.response.ManagerResponse;
+import org.asteriskjava.ami.action.response.ChallengeManagerActionResponse;
+import org.asteriskjava.ami.action.response.ManagerActionResponse;
 import org.asteriskjava.ami.action.response.ResponseType;
 import org.asteriskjava.manager.response.ExtensionStateResponse;
 import org.asteriskjava.manager.response.MailboxCountResponse;
@@ -42,64 +42,64 @@ class ResponseBuilderImplTest {
 
     @Test
     void testBuildResponse() {
-        ManagerResponse response;
+        ManagerActionResponse response;
 
         attributes.put("response", "Success");
 
-        response = responseBuilder.buildResponse(ManagerResponse.class, attributes);
-        assertEquals(ManagerResponse.class, response.getClass(), "Response of wrong type");
+        response = responseBuilder.buildResponse(ManagerActionResponse.class, attributes);
+        assertEquals(ManagerActionResponse.class, response.getClass(), "Response of wrong type");
         assertEquals(ResponseType.Success, response.getResponse(), "Response not set correctly");
     }
 
     @Test
     void testBuildResponseWithoutResponseClass() {
-        ManagerResponse response;
+        ManagerActionResponse response;
 
         attributes.put("response", "Success");
 
         response = responseBuilder.buildResponse(null, attributes);
-        assertEquals(ManagerResponse.class, response.getClass(), "Response of wrong type");
+        assertEquals(ManagerActionResponse.class, response.getClass(), "Response of wrong type");
         assertEquals(ResponseType.Success, response.getResponse(), "Response not set correctly");
     }
 
     @Test
     void testBuildError() {
-        ManagerResponse response;
+        ManagerActionResponse response;
 
         attributes.put("response", "Error");
         attributes.put("message", "Missing action in request");
 
-        response = responseBuilder.buildResponse(ManagerResponse.class, attributes);
+        response = responseBuilder.buildResponse(ManagerActionResponse.class, attributes);
         assertEquals("Missing action in request", response.getMessage(), "Message not set correctly");
     }
 
     @Test
     void testBuildErrorWithActionId() {
-        ManagerResponse response;
+        ManagerActionResponse response;
 
         attributes.put("response", "Error");
         attributes.put("actionid", "1234");
         attributes.put("message", "Missing action in request");
 
-        response = responseBuilder.buildResponse(ManagerResponse.class, attributes);
+        response = responseBuilder.buildResponse(ManagerActionResponse.class, attributes);
         assertEquals("1234", response.getActionId(), "ActionId not set correctly");
     }
 
     @Test
     void testBuildChallengeResponse() {
-        ManagerResponse response;
+        ManagerActionResponse response;
 
         attributes.put("response", "Success");
         attributes.put("challenge", "131494410");
 
-        response = responseBuilder.buildResponse(ChallengeResponse.class, attributes);
-        assertEquals(ChallengeResponse.class, response.getClass(), "Response of wrong type");
-        assertEquals("131494410", ((ChallengeResponse) response).getChallenge(), "Challenge not set correctly");
+        response = responseBuilder.buildResponse(ChallengeManagerActionResponse.class, attributes);
+        assertEquals(ChallengeManagerActionResponse.class, response.getClass(), "Response of wrong type");
+        assertEquals("131494410", ((ChallengeManagerActionResponse) response).getChallenge(), "Challenge not set correctly");
     }
 
     @Test
     void testBuildMailboxStatusResponse() {
-        ManagerResponse response;
+        ManagerActionResponse response;
 
         attributes.put("response", "Success");
         attributes.put("message", "Mailbox Status");
@@ -116,7 +116,7 @@ class ResponseBuilderImplTest {
 
     @Test
     void testBuildMailboxStatusResponseWithNoWaiting() {
-        ManagerResponse response;
+        ManagerActionResponse response;
 
         attributes.put("response", "Success");
         attributes.put("message", "Mailbox Status");
@@ -133,7 +133,7 @@ class ResponseBuilderImplTest {
 
     @Test
     void testBuildMailboxCountResponse() {
-        ManagerResponse response;
+        ManagerActionResponse response;
 
         attributes.put("response", "Success");
         attributes.put("message", "Mailbox Message Count");
@@ -152,7 +152,7 @@ class ResponseBuilderImplTest {
 
     @Test
     void testBuildExtensionStateResponse() {
-        ManagerResponse response;
+        ManagerActionResponse response;
 
         attributes.put("response", "Success");
         attributes.put("message", "Extension Status");

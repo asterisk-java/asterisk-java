@@ -1,5 +1,6 @@
 package org.asteriskjava.pbx.internal.core;
 
+import org.asteriskjava.ami.action.response.ManagerActionResponse;
 import org.asteriskjava.pbx.asterisk.wrap.actions.ManagerAction;
 import org.asteriskjava.pbx.asterisk.wrap.events.ManagerEvent;
 import org.asteriskjava.pbx.asterisk.wrap.events.ResponseEvent;
@@ -136,7 +137,7 @@ public class CoherentEventFactory {
         return response;
     }
 
-    public static ManagerResponse build(org.asteriskjava.ami.action.response.ManagerResponse response) {
+    public static ManagerResponse build(ManagerActionResponse response) {
         ManagerResponse result;
         if (response instanceof org.asteriskjava.manager.response.CommandResponse) {
             result = new CommandResponse(response);
