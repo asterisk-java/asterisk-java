@@ -20,7 +20,7 @@ import org.asteriskjava.ami.action.AuthType;
 import org.asteriskjava.ami.action.ChallengeAction;
 import org.asteriskjava.ami.action.ManagerAction;
 import org.asteriskjava.ami.action.annotation.ExpectedResponse;
-import org.asteriskjava.ami.action.response.ChallengeManagerActionResponse;
+import org.asteriskjava.ami.action.response.ChallengeActionResponse;
 import org.asteriskjava.ami.action.response.ManagerActionResponse;
 import org.asteriskjava.lock.Lockable;
 import org.asteriskjava.lock.LockableList;
@@ -450,7 +450,7 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
      * timeout ms.
      * <li>Sends a {@link ChallengeAction} requesting a challenge for authType
      * MD5.
-     * <li>When the {@link ChallengeManagerActionResponse} is received a {@link LoginAction}
+     * <li>When the {@link ChallengeActionResponse} is received a {@link LoginAction}
      * is sent using the calculated key (MD5 hash of the password appended to
      * the received challenge).
      * </ol>
@@ -509,8 +509,8 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
                 throw new AuthenticationFailedException("Unable to send challenge action", e);
             }
 
-            if (challengeResponse instanceof ChallengeManagerActionResponse) {
-                challenge = ((ChallengeManagerActionResponse) challengeResponse).getChallenge();
+            if (challengeResponse instanceof ChallengeActionResponse) {
+                challenge = ((ChallengeActionResponse) challengeResponse).getChallenge();
             } else {
                 disconnect();
                 throw new AuthenticationFailedException("Unable to get challenge from Asterisk. ChallengeAction returned: "

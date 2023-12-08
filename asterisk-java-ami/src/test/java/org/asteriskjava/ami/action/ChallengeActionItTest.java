@@ -27,7 +27,7 @@ import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 import io.netty.handler.timeout.IdleStateHandler;
 import org.asteriskjava.ami.ActionFieldsComparator;
-import org.asteriskjava.ami.action.response.ChallengeManagerActionResponse;
+import org.asteriskjava.ami.action.response.ChallengeActionResponse;
 import org.asteriskjava.ami.action.response.ManagerActionResponse;
 import org.asteriskjava.core.databind.AsteriskDecoder;
 import org.asteriskjava.core.databind.AsteriskEncoder;
@@ -71,7 +71,7 @@ class ChallengeActionItTest {
         challengeAction.setAuthType(MD5);
 
         //when
-        ChallengeManagerActionResponse actual = testAction(challengeAction, ChallengeManagerActionResponse.class, now);
+        ChallengeActionResponse actual = testAction(challengeAction, ChallengeActionResponse.class, now);
 
         //then
         assertThat(actual.getResponse()).isEqualTo(Success);

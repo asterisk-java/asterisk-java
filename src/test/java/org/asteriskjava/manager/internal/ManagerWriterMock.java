@@ -20,7 +20,7 @@ import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.ami.action.AuthType;
 import org.asteriskjava.ami.action.ChallengeAction;
 import org.asteriskjava.ami.action.ManagerAction;
-import org.asteriskjava.ami.action.response.ChallengeManagerActionResponse;
+import org.asteriskjava.ami.action.response.ChallengeActionResponse;
 import org.asteriskjava.ami.action.response.ManagerActionResponse;
 import org.asteriskjava.ami.action.response.ResponseType;
 import org.asteriskjava.manager.action.LoginAction;
@@ -107,12 +107,12 @@ public class ManagerWriterMock implements ManagerWriter {
             challengeActionsSent++;
 
             if (sendResponse) {
-                ChallengeManagerActionResponse challengeManagerActionResponse;
+                ChallengeActionResponse challengeActionResponse;
 
-                challengeManagerActionResponse = new ChallengeManagerActionResponse();
-                challengeManagerActionResponse.setActionId(ManagerUtil.addInternalActionId(action.getActionId(), internalActionId));
-                challengeManagerActionResponse.setChallenge(CHALLENGE);
-                dispatchLater(challengeManagerActionResponse);
+                challengeActionResponse = new ChallengeActionResponse();
+                challengeActionResponse.setActionId(ManagerUtil.addInternalActionId(action.getActionId(), internalActionId));
+                challengeActionResponse.setChallenge(CHALLENGE);
+                dispatchLater(challengeActionResponse);
             }
         } else if (action instanceof LoginAction) {
 

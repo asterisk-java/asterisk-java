@@ -16,13 +16,13 @@
 package org.asteriskjava.ami.action;
 
 import org.asteriskjava.ami.action.annotation.ExpectedResponse;
-import org.asteriskjava.ami.action.response.ChallengeManagerActionResponse;
+import org.asteriskjava.ami.action.response.ChallengeActionResponse;
 
 import java.io.Serial;
 
 /**
  * The {@link ChallengeAction} requests a challenge from the server to use when logging in using challenge/response.
- * Sending this action to the Asterisk server results in a {@link ChallengeManagerActionResponse} being received from the server.
+ * Sending this action to the Asterisk server results in a {@link ChallengeActionResponse} being received from the server.
  * <p>
  * Supported Asterisk versions:
  * <ul>
@@ -32,10 +32,10 @@ import java.io.Serial;
  *
  * @author Stefan Reuter
  * @author Piotr Olaszewski
- * @see ChallengeManagerActionResponse
+ * @see ChallengeActionResponse
  * @since 1.0.0
  */
-@ExpectedResponse(ChallengeManagerActionResponse.class)
+@ExpectedResponse(ChallengeActionResponse.class)
 public class ChallengeAction extends AbstractManagerAction {
     @Serial
     private static final long serialVersionUID = 7240516124871953971L;

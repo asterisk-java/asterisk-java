@@ -16,7 +16,7 @@
  */
 package org.asteriskjava.manager.internal;
 
-import org.asteriskjava.ami.action.response.ChallengeManagerActionResponse;
+import org.asteriskjava.ami.action.response.ChallengeActionResponse;
 import org.asteriskjava.ami.action.response.ManagerActionResponse;
 import org.asteriskjava.ami.action.response.ResponseType;
 import org.asteriskjava.manager.response.ExtensionStateResponse;
@@ -92,9 +92,9 @@ class ResponseBuilderImplTest {
         attributes.put("response", "Success");
         attributes.put("challenge", "131494410");
 
-        response = responseBuilder.buildResponse(ChallengeManagerActionResponse.class, attributes);
-        assertEquals(ChallengeManagerActionResponse.class, response.getClass(), "Response of wrong type");
-        assertEquals("131494410", ((ChallengeManagerActionResponse) response).getChallenge(), "Challenge not set correctly");
+        response = responseBuilder.buildResponse(ChallengeActionResponse.class, attributes);
+        assertEquals(ChallengeActionResponse.class, response.getClass(), "Response of wrong type");
+        assertEquals("131494410", ((ChallengeActionResponse) response).getChallenge(), "Challenge not set correctly");
     }
 
     @Test

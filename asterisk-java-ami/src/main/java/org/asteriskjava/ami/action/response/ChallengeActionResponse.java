@@ -30,7 +30,7 @@ import java.io.Serial;
  * @see ChallengeAction
  * @since 1.0.0
  */
-public class ChallengeManagerActionResponse extends ManagerActionResponse {
+public class ChallengeActionResponse extends ManagerActionResponse {
     @Serial
     private static final long serialVersionUID = -7253724086340850957L;
 
@@ -57,7 +57,7 @@ public class ChallengeManagerActionResponse extends ManagerActionResponse {
             return false;
         }
 
-        ChallengeManagerActionResponse that = (ChallengeManagerActionResponse) o;
+        ChallengeActionResponse that = (ChallengeActionResponse) o;
 
         return new EqualsBuilder()
                 .appendSuper(super.equals(that))
