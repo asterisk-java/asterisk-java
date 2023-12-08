@@ -16,11 +16,11 @@
  */
 package org.asteriskjava.manager.internal;
 
+import org.asteriskjava.ami.action.response.ManagerActionResponse;
 import org.asteriskjava.lock.LockableList;
 import org.asteriskjava.lock.Locker.LockCloser;
 import org.asteriskjava.manager.ResponseEvents;
 import org.asteriskjava.manager.event.ResponseEvent;
-import org.asteriskjava.manager.response.ManagerResponse;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -35,7 +35,7 @@ import java.util.concurrent.TimeUnit;
  * @since 0.2
  */
 public class ResponseEventsImpl implements ResponseEvents {
-    private ManagerResponse response;
+    private ManagerActionResponse response;
     private final LockableList<ResponseEvent> events;
     private boolean complete;
     private final CountDownLatch latch = new CountDownLatch(1);
@@ -50,7 +50,7 @@ public class ResponseEventsImpl implements ResponseEvents {
 
     // implementation of the ResponseEvents interface
 
-    public ManagerResponse getResponse() {
+    public ManagerActionResponse getResponse() {
         return response;
     }
 
@@ -69,7 +69,7 @@ public class ResponseEventsImpl implements ResponseEvents {
      *
      * @param response the ManagerResponse received.
      */
-    public void setRepsonse(ManagerResponse response) {
+    public void setRepsonse(ManagerActionResponse response) {
         this.response = response;
     }
 

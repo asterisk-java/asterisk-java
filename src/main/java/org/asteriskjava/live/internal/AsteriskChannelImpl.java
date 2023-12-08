@@ -16,13 +16,13 @@
  */
 package org.asteriskjava.live.internal;
 
+import org.asteriskjava.ami.action.response.ManagerActionResponse;
 import org.asteriskjava.live.*;
 import org.asteriskjava.lock.LockableList;
 import org.asteriskjava.lock.LockableMap;
 import org.asteriskjava.lock.Locker.LockCloser;
 import org.asteriskjava.manager.action.*;
 import org.asteriskjava.manager.response.ManagerError;
-import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.util.MixMonitorDirection;
 
 import java.util.*;
@@ -583,7 +583,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel 
 
     public void hangup(HangupCause cause) throws ManagerCommunicationException, NoSuchChannelException {
         final HangupAction action;
-        final ManagerResponse response;
+        final ManagerActionResponse response;
 
         if (cause != null) {
             setVariable(CAUSE_VARIABLE_NAME, Integer.toString(cause.getCode()));
@@ -599,7 +599,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel 
     }
 
     public void setAbsoluteTimeout(int seconds) throws ManagerCommunicationException, NoSuchChannelException {
-        ManagerResponse response;
+        ManagerActionResponse response;
 
         response = server.sendAction(new AbsoluteTimeoutAction(name, seconds));
         if (response instanceof ManagerError) {
@@ -609,7 +609,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel 
 
     public void redirect(String context, String exten, int priority)
             throws ManagerCommunicationException, NoSuchChannelException {
-        ManagerResponse response;
+        ManagerActionResponse response;
 
         response = server.sendAction(new RedirectAction(name, context, exten, priority));
         if (response instanceof ManagerError) {
@@ -619,7 +619,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel 
 
     public void redirectBothLegs(String context, String exten, int priority)
             throws ManagerCommunicationException, NoSuchChannelException {
-        ManagerResponse response;
+        ManagerActionResponse response;
 
         try (LockCloser closer = linkedChannels.withLock()) {
             if (linkedChannels.isEmpty()) {
@@ -636,7 +636,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel 
     }
 
     public String getVariable(String variable) throws ManagerCommunicationException, NoSuchChannelException {
-        ManagerResponse response;
+        ManagerActionResponse response;
         String value;
 
         try (LockCloser closer = variables.withLock()) {
@@ -661,7 +661,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel 
     }
 
     public void setVariable(String variable, String value) throws ManagerCommunicationException, NoSuchChannelException {
-        ManagerResponse response;
+        ManagerActionResponse response;
 
         response = server.sendAction(new SetVarAction(name, variable, value));
         if (response instanceof ManagerError) {
@@ -673,7 +673,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel 
     }
 
     public void playDtmf(String digit) throws ManagerCommunicationException, NoSuchChannelException, IllegalArgumentException {
-        ManagerResponse response;
+        ManagerActionResponse response;
 
         if (digit == null) {
             throw new IllegalArgumentException("DTMF digit to send must not be null");
@@ -695,7 +695,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel 
 
     public void startMonitoring(String filename, String format, boolean mix)
             throws ManagerCommunicationException, NoSuchChannelException {
-        ManagerResponse response;
+        ManagerActionResponse response;
 
         response = server.sendAction(new MonitorAction(name, filename, format, mix));
         if (response instanceof ManagerError) {
@@ -705,7 +705,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel 
 
     public void changeMonitoring(String filename)
             throws ManagerCommunicationException, NoSuchChannelException, IllegalArgumentException {
-        ManagerResponse response;
+        ManagerActionResponse response;
 
         if (filename == null) {
             throw new IllegalArgumentException("New filename must not be null");
@@ -718,7 +718,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel 
     }
 
     public void stopMonitoring() throws ManagerCommunicationException, NoSuchChannelException {
-        ManagerResponse response;
+        ManagerActionResponse response;
 
         response = server.sendAction(new StopMonitorAction(name));
         if (response instanceof ManagerError) {
@@ -727,7 +727,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel 
     }
 
     public void pauseMonitoring() throws ManagerCommunicationException, NoSuchChannelException {
-        ManagerResponse response;
+        ManagerActionResponse response;
 
         response = server.sendAction(new PauseMonitorAction(name));
         if (response instanceof ManagerError) {
@@ -736,7 +736,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel 
     }
 
     public void unpauseMonitoring() throws ManagerCommunicationException, NoSuchChannelException {
-        ManagerResponse response;
+        ManagerActionResponse response;
 
         response = server.sendAction(new UnpauseMonitorAction(name));
         if (response instanceof ManagerError) {
@@ -746,7 +746,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel 
 
     public void pauseMixMonitor(MixMonitorDirection direction)
             throws ManagerCommunicationException, NoSuchChannelException, RecordingException {
-        ManagerResponse response;
+        ManagerActionResponse response;
         response = server.sendAction(new PauseMixMonitorAction(this.name, 1, direction.getStateName()));
         if (response instanceof ManagerError) {
             if (response.getMessage().equals("Cannot set mute flag")) {
@@ -758,7 +758,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel 
 
     public void unPauseMixMonitor(MixMonitorDirection direction)
             throws ManagerCommunicationException, NoSuchChannelException, RecordingException {
-        ManagerResponse response;
+        ManagerActionResponse response;
         response = server.sendAction(new PauseMixMonitorAction(this.name, 0, direction.getStateName()));
         if (response instanceof ManagerError) {
             if (response.getMessage().equals("Cannot set mute flag")) {

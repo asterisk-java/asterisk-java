@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.action;
 
+import org.asteriskjava.ami.action.AbstractManagerAction;
+
 /**
  * Deletes an entry in the Asterisk database for a given family and key.<p>
  * Available since Asterisk 1.2 with BRIStuff patches and since Asterisk 1.6

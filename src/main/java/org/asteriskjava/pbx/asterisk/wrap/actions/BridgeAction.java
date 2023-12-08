@@ -1,5 +1,6 @@
 package org.asteriskjava.pbx.asterisk.wrap.actions;
 
+import org.asteriskjava.ami.action.ManagerAction;
 import org.asteriskjava.pbx.Channel;
 
 public class BridgeAction extends AbstractManagerAction {
@@ -13,7 +14,7 @@ public class BridgeAction extends AbstractManagerAction {
     }
 
     @Override
-    public org.asteriskjava.manager.action.ManagerAction getAJAction() {
+    public ManagerAction getAJAction() {
         final org.asteriskjava.manager.action.BridgeAction action = new org.asteriskjava.manager.action.BridgeAction();
         action.setActionId(this.getActionId());
         action.setChannel1(this._lhs.getChannelName());

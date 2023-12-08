@@ -15,9 +15,9 @@
  */
 package org.asteriskjava.manager.util;
 
+import org.asteriskjava.ami.action.response.ManagerActionResponse;
 import org.asteriskjava.manager.event.CdrEvent;
 import org.asteriskjava.manager.event.UserEvent;
-import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.util.AstUtil;
 import org.asteriskjava.util.ReflectionUtil;
 import org.slf4j.Logger;
@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static java.util.Arrays.stream;
 import static org.slf4j.LoggerFactory.getLogger;
 
 /**
@@ -81,7 +82,7 @@ public class EventAttributesHelper {
 
             // it seems silly to warn if it's a user event -- maybe it was
             // intentional
-            if (setter == null && !(target instanceof UserEvent) && !target.getClass().equals(ManagerResponse.class)) {
+            if (setter == null && !(target instanceof UserEvent) && !target.getClass().equals(ManagerActionResponse.class)) {
 
                 //CDR has dynamic properties
                 if (target instanceof CdrEvent) {
@@ -123,6 +124,11 @@ public class EventAttributesHelper {
                     value = parseLong(entry);
                 } else if (dataType.isAssignableFrom(int.class) || dataType.isAssignableFrom(Integer.class)) {
                     value = parseInteger(entry);
+                } else if (dataType.isEnum()) {
+                    value = stream(dataType.getEnumConstants())
+                            .filter(t -> t.toString().equals(entry.getValue()))
+                            .findFirst()
+                            .orElse(null);
                 } else {
                     try {
                         Constructor<?> constructor = dataType.getConstructor(String.class);

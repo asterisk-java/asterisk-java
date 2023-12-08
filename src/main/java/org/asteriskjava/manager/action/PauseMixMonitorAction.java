@@ -17,6 +17,8 @@
 
 package org.asteriskjava.manager.action;
 
+import org.asteriskjava.ami.action.AbstractManagerAction;
+
 /**
  * The PauseMixMonitorAction temporarily stop/start monitoring (recording) a/both channel(s).
  * <p>

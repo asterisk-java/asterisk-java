@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.action;
 
+import org.asteriskjava.ami.action.AbstractManagerAction;
+
 /**
  * Recursivly deletes entries in the Asterisk database for a given family and key.<p>
  * Available since Asterisk 1.6

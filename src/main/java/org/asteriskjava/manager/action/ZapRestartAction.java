@@ -1,5 +1,7 @@
 package org.asteriskjava.manager.action;
 
+import org.asteriskjava.ami.action.AbstractManagerAction;
+
 /**
  * Fully restarts all zaptel channels and terminates any calls on Zap
  * interfaces.

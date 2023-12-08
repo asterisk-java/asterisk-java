@@ -16,13 +16,15 @@
  */
 package org.asteriskjava.manager.response;
 
+import org.asteriskjava.ami.action.response.ManagerActionResponse;
+
 /**
  * Corresponds to a SkypeBuddyAction and contains the details of a Skype buddy.
  *
  * @see org.asteriskjava.manager.action.SkypeBuddyAction
  * @since 1.0.0
  */
-public class SkypeBuddyResponse extends ManagerResponse {
+public class SkypeBuddyResponse extends ManagerActionResponse {
     private static final long serialVersionUID = 0L;
 
     private String skypename;

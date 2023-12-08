@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.action;
 
+import org.asteriskjava.ami.action.AbstractManagerAction;
+
 /**
  * The AbsoluteTimeoutAction sets the absolute maximum amount of time permitted
  * for a call on a given channel, it hangs up the channel after a certain time.

@@ -16,6 +16,7 @@
  */
 package org.asteriskjava.manager.action;
 
+import org.asteriskjava.ami.action.AbstractManagerAction;
 import org.asteriskjava.manager.event.ContactListComplete;
 import org.asteriskjava.manager.event.ResponseEvent;
 

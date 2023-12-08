@@ -16,13 +16,15 @@
  */
 package org.asteriskjava.manager.action;
 
-import org.asteriskjava.manager.ExpectedResponse;
+import org.asteriskjava.ami.action.AbstractManagerAction;
+import org.asteriskjava.ami.action.annotation.ExpectedResponse;
+import org.asteriskjava.ami.action.response.ManagerActionResponse;
 import org.asteriskjava.manager.response.SipShowPeerResponse;
 
 /**
  * Retrieves a the details about a given SIP peer.<p>
  * The result is returned in the response received in reply to this action.<p>
- * Use {@link org.asteriskjava.manager.response.ManagerResponse#getAttribute(String)}
+ * Use {@link ManagerActionResponse#getAttribute(String)}
  * to retrieve the properties. Consider using {@link org.asteriskjava.manager.action.SipPeersAction}
  * instead.<p>
  * Available since Asterisk 1.2

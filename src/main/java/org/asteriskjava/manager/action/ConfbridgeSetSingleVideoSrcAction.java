@@ -1,5 +1,7 @@
 package org.asteriskjava.manager.action;
 
+import org.asteriskjava.ami.action.AbstractManagerAction;
+
 /**
  * The ConfbridgeSetSingleVideoSrcAction sets a conference user as the single video source distributed to all other video-capable participants.
  *

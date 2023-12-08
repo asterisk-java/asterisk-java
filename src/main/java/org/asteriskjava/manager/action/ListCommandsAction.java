@@ -16,13 +16,16 @@
  */
 package org.asteriskjava.manager.action;
 
+import org.asteriskjava.ami.action.AbstractManagerAction;
+import org.asteriskjava.ami.action.response.ManagerActionResponse;
+
 /**
  * The ListCommandsAction returns possible commands in the Manager interface.
  * <p>
  * Use the getAttributes method on the ManagerResponse for a map of commands and explanations.
  *
  * @author martins
- * @see org.asteriskjava.manager.response.ManagerResponse#getAttributes()
+ * @see ManagerActionResponse#getAttributes()
  * @since 0.3
  */
 public class ListCommandsAction extends AbstractManagerAction {

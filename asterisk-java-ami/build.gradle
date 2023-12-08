@@ -1,0 +1,40 @@
+plugins {
+    id 'java-library'
+}
+
+java {
+    sourceCompatibility = '17'
+    targetCompatibility = '17'
+
+    withSourcesJar()
+    withJavadocJar()
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation project(':asterisk-java-core')
+
+    implementation 'org.apache.commons:commons-lang3:3.14.0'
+
+    testImplementation 'org.assertj:assertj-core:3.24.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.1'
+    testImplementation 'org.mockito:mockito-core:5.7.0'
+    testImplementation 'ch.qos.logback:logback-classic:1.4.11' //todo remove
+
+    testImplementation platform('org.testcontainers:testcontainers-bom:1.19.3')
+    testImplementation 'org.testcontainers:junit-jupiter'
+    testImplementation 'org.testcontainers:testcontainers'
+
+    //todo only for testing framework
+    testImplementation 'io.netty:netty-codec:4.1.101.Final'
+    testImplementation 'io.netty:netty-handler:4.1.101.Final'
+    testImplementation 'io.netty:netty-transport:4.1.101.Final'
+    testImplementation 'org.awaitility:awaitility:4.2.0'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}

@@ -16,6 +16,7 @@
  */
 package org.asteriskjava.live.internal;
 
+import org.asteriskjava.ami.action.response.ManagerActionResponse;
 import org.asteriskjava.live.ManagerCommunicationException;
 import org.asteriskjava.live.MeetMeRoom;
 import org.asteriskjava.lock.LockableMap;
@@ -27,7 +28,6 @@ import org.asteriskjava.manager.event.MeetMeMuteEvent;
 import org.asteriskjava.manager.event.MeetMeTalkingEvent;
 import org.asteriskjava.manager.response.CommandResponse;
 import org.asteriskjava.manager.response.ManagerError;
-import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.util.DateUtil;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
@@ -156,7 +156,7 @@ class MeetMeManager {
 
     private void populateRoom(MeetMeRoomImpl room) {
         final CommandAction meetMeListAction;
-        final ManagerResponse response;
+        final ManagerActionResponse response;
         final List<String> lines;
         final Collection<Integer> userNumbers = new ArrayList<>(); // list
         // of

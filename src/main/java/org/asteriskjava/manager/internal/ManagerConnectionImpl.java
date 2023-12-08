@@ -16,6 +16,12 @@
 package org.asteriskjava.manager.internal;
 
 import org.asteriskjava.AsteriskVersion;
+import org.asteriskjava.ami.action.AuthType;
+import org.asteriskjava.ami.action.ChallengeAction;
+import org.asteriskjava.ami.action.ManagerAction;
+import org.asteriskjava.ami.action.annotation.ExpectedResponse;
+import org.asteriskjava.ami.action.response.ChallengeManagerActionResponse;
+import org.asteriskjava.ami.action.response.ManagerActionResponse;
 import org.asteriskjava.lock.Lockable;
 import org.asteriskjava.lock.LockableList;
 import org.asteriskjava.lock.LockableMap;
@@ -23,7 +29,9 @@ import org.asteriskjava.lock.Locker.LockCloser;
 import org.asteriskjava.manager.*;
 import org.asteriskjava.manager.action.*;
 import org.asteriskjava.manager.event.*;
-import org.asteriskjava.manager.response.*;
+import org.asteriskjava.manager.response.CommandResponse;
+import org.asteriskjava.manager.response.CoreSettingsResponse;
+import org.asteriskjava.manager.response.ManagerError;
 import org.asteriskjava.pbx.util.LogTime;
 import org.asteriskjava.util.DateUtil;
 import org.asteriskjava.util.Log;
@@ -442,7 +450,7 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
      * timeout ms.
      * <li>Sends a {@link ChallengeAction} requesting a challenge for authType
      * MD5.
-     * <li>When the {@link ChallengeResponse} is received a {@link LoginAction}
+     * <li>When the {@link ChallengeManagerActionResponse} is received a {@link LoginAction}
      * is sent using the calculated key (MD5 hash of the password appended to
      * the received challenge).
      * </ol>
@@ -465,11 +473,11 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
             throws IOException, AuthenticationFailedException, TimeoutException {
         try (LockCloser closer = this.withLock()) {
             ChallengeAction challengeAction;
-            ManagerResponse challengeResponse;
+            ManagerActionResponse challengeResponse;
             String challenge;
             String key;
             LoginAction loginAction;
-            ManagerResponse loginResponse;
+            ManagerActionResponse loginResponse;
 
             if (socket == null) {
                 connect();
@@ -492,7 +500,8 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
                 throw new TimeoutException("Timeout waiting for protocol identifier");
             }
 
-            challengeAction = new ChallengeAction("MD5");
+            challengeAction = new ChallengeAction();
+            challengeAction.setAuthType(AuthType.MD5);
             try {
                 challengeResponse = sendAction(challengeAction);
             } catch (Exception e) {
@@ -500,8 +509,8 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
                 throw new AuthenticationFailedException("Unable to send challenge action", e);
             }
 
-            if (challengeResponse instanceof ChallengeResponse) {
-                challenge = ((ChallengeResponse) challengeResponse).getChallenge();
+            if (challengeResponse instanceof ChallengeManagerActionResponse) {
+                challenge = ((ChallengeManagerActionResponse) challengeResponse).getChallenge();
             } else {
                 disconnect();
                 throw new AuthenticationFailedException("Unable to get challenge from Asterisk. ChallengeAction returned: "
@@ -597,7 +606,7 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
      */
     protected AsteriskVersion determineVersionByCoreSettings() throws Exception {
 
-        ManagerResponse response = sendAction(new CoreSettingsAction());
+        ManagerActionResponse response = sendAction(new CoreSettingsAction());
         if (!(response instanceof CoreSettingsResponse)) {
             // NOTE: you need system or reporting permissions
             logger.info("Could not get core settings, do we have the necessary permissions?");
@@ -616,7 +625,7 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
      * @throws Exception
      */
     protected AsteriskVersion determineVersionByCoreShowVersion() throws Exception {
-        final ManagerResponse coreShowVersionResponse = sendAction(new CommandAction(CMD_SHOW_VERSION));
+        final ManagerActionResponse coreShowVersionResponse = sendAction(new CommandAction(CMD_SHOW_VERSION));
 
         if (coreShowVersionResponse == null || !(coreShowVersionResponse instanceof CommandResponse)) {
             // this needs 'command' permissions
@@ -711,7 +720,7 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
         }
     }
 
-    public ManagerResponse sendAction(ManagerAction action)
+    public ManagerActionResponse sendAction(ManagerAction action)
             throws IOException, TimeoutException, IllegalArgumentException, IllegalStateException {
         return sendAction(action, defaultResponseTimeout);
     }
@@ -721,11 +730,11 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
      *
      * @param timeout - in milliseconds
      */
-    public ManagerResponse sendAction(ManagerAction action, long timeout)
+    public ManagerActionResponse sendAction(ManagerAction action, long timeout)
             throws IOException, TimeoutException, IllegalArgumentException, IllegalStateException {
 
         DefaultSendActionCallback callbackHandler = new DefaultSendActionCallback();
-        ManagerResponse response = null;
+        ManagerActionResponse response = null;
         try {
             sendAction(action, callbackHandler);
 
@@ -790,7 +799,7 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
             }
         }
 
-        Class<? extends ManagerResponse> responseClass = getExpectedResponseClass(action.getClass());
+        Class<? extends ManagerActionResponse> responseClass = getExpectedResponseClass(action.getClass());
         if (responseClass != null) {
             reader.expectResponseClass(internalActionId, responseClass);
         }
@@ -810,7 +819,7 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
         return false;
     }
 
-    private Class<? extends ManagerResponse> getExpectedResponseClass(Class<? extends ManagerAction> actionClass) {
+    private Class<? extends ManagerActionResponse> getExpectedResponseClass(Class<? extends ManagerAction> actionClass) {
         final ExpectedResponse annotation = actionClass.getAnnotation(ExpectedResponse.class);
         if (annotation == null) {
             return null;
@@ -988,14 +997,14 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
     /* Implementation of Dispatcher: callbacks for ManagerReader */
 
     /**
-     * This method is called by the reader whenever a {@link ManagerResponse} is
+     * This method is called by the reader whenever a {@link ManagerActionResponse} is
      * received. The response is dispatched to the associated
      * {@link SendActionCallback}.
      *
      * @param response the response received by the reader
      * @see ManagerReader
      */
-    public void dispatchResponse(ManagerResponse response, Integer requiredHandlingTime) {
+    public void dispatchResponse(ManagerActionResponse response, Integer requiredHandlingTime) {
         final String actionId;
         String internalActionId;
         SendActionCallback listener;
@@ -1389,18 +1398,18 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
      */
     private static class DefaultSendActionCallback implements SendActionCallback, Serializable {
         private static final long serialVersionUID = 7831097958568769220L;
-        private ManagerResponse response;
+        private ManagerActionResponse response;
         private final CountDownLatch latch = new CountDownLatch(1);
         private volatile boolean disposed = false;
         private LogTime timer = new LogTime();
 
-        private ManagerResponse waitForResponse(long timeout) throws InterruptedException {
+        private ManagerActionResponse waitForResponse(long timeout) throws InterruptedException {
             latch.await(timeout, TimeUnit.MILLISECONDS);
             return this.response;
         }
 
         @Override
-        public void onResponse(ManagerResponse response) {
+        public void onResponse(ManagerActionResponse response) {
             this.response = response;
             if (disposed) {
                 logger.error("Response arrived after Disposal and assumably Timeout " + response + " elapsed: "
@@ -1466,7 +1475,7 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
             }
         }
 
-        public void onResponse(ManagerResponse response) {
+        public void onResponse(ManagerActionResponse response) {
             // If disconnected
             if (response == null) {
                 // Set flag that must not wait for the response
@@ -1532,7 +1541,7 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
         }
 
         @Override
-        public void onResponse(ManagerResponse response) {
+        public void onResponse(ManagerActionResponse response) {
             // If disconnected
             if (response == null) {
                 callback.onResponse(events);

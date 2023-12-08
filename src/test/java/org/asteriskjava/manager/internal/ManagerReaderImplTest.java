@@ -16,9 +16,10 @@
  */
 package org.asteriskjava.manager.internal;
 
+import org.asteriskjava.ami.action.response.ManagerActionResponse;
+import org.asteriskjava.ami.action.response.ResponseType;
 import org.asteriskjava.manager.event.*;
 import org.asteriskjava.manager.response.CommandResponse;
-import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.util.DateUtil;
 import org.asteriskjava.util.SocketConnectionFacade;
 import org.junit.jupiter.api.AfterEach;
@@ -207,14 +208,14 @@ class ManagerReaderImplTest {
 
         assertEquals(1, dispatcher.dispatchedResponses.size(), "not exactly one response dispatched");
 
-        assertEquals(ManagerResponse.class, dispatcher.dispatchedResponses.get(0).getClass(), "first response must be a ManagerResponse");
-        assertEquals("Success", dispatcher.dispatchedResponses.get(0).getResponse(), "ManagerResponse contains incorrect response");
+        assertEquals(ManagerActionResponse.class, dispatcher.dispatchedResponses.get(0).getClass(), "first response must be a ManagerResponse");
+        assertEquals(ResponseType.Success, dispatcher.dispatchedResponses.get(0).getResponse(), "ManagerResponse contains incorrect response");
 
         assertEquals("Authentication accepted", dispatcher.dispatchedResponses.get(0).getMessage(), "ManagerResponse contains incorrect message");
 
         assertEquals("Authentication accepted", dispatcher.dispatchedResponses.get(0).getAttribute("MESSAGE"), "ManagerResponse contains incorrect message (via getAttribute)");
 
-        assertEquals(now, dispatcher.dispatchedResponses.get(0).getDateReceived(), "ManagerResponse contains incorrect dateReceived");
+        assertEquals(now, Date.from(dispatcher.dispatchedResponses.get(0).getDateReceived()), "ManagerResponse contains incorrect dateReceived");
 
         assertEquals(1, dispatcher.dispatchedEvents.size(), "not exactly one events dispatched");
 
@@ -243,7 +244,7 @@ class ManagerReaderImplTest {
 
         assertEquals(CommandResponse.class, dispatcher.dispatchedResponses.get(0).getClass(), "first response must be a CommandResponse");
 
-        assertEquals("Follows", dispatcher.dispatchedResponses.get(0).getResponse(), "CommandResponse contains incorrect response");
+        assertEquals(ResponseType.Follows, dispatcher.dispatchedResponses.get(0).getResponse(), "CommandResponse contains incorrect response");
 
         assertEquals("678#12345", dispatcher.dispatchedResponses.get(0).getActionId(), "CommandResponse contains incorrect actionId");
 
@@ -251,7 +252,7 @@ class ManagerReaderImplTest {
 
         assertEquals(result, ((CommandResponse) dispatcher.dispatchedResponses.get(0)).getResult(), "CommandResponse contains incorrect result");
 
-        assertEquals(now, dispatcher.dispatchedResponses.get(0).getDateReceived(), "CommandResponse contains incorrect dateReceived");
+        assertEquals(now, Date.from(dispatcher.dispatchedResponses.get(0).getDateReceived()), "CommandResponse contains incorrect dateReceived");
     }
 
     @Test
@@ -270,15 +271,15 @@ class ManagerReaderImplTest {
 
     private class MockedDispatcher implements Dispatcher {
         List<ManagerEvent> dispatchedEvents;
-        List<ManagerResponse> dispatchedResponses;
+        List<ManagerActionResponse> dispatchedResponses;
 
         public MockedDispatcher() {
             this.dispatchedEvents = new ArrayList<ManagerEvent>();
-            this.dispatchedResponses = new ArrayList<ManagerResponse>();
+            this.dispatchedResponses = new ArrayList<ManagerActionResponse>();
         }
 
         @Override
-        public void dispatchResponse(ManagerResponse response, Integer requiredHandlingTime) {
+        public void dispatchResponse(ManagerActionResponse response, Integer requiredHandlingTime) {
             dispatchedResponses.add(response);
         }
 

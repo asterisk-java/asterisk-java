@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.action;
 
+import org.asteriskjava.ami.action.AbstractManagerAction;
+
 /**
  * The SetVarAction sets the value of a global or local channel variable.<p>
  * Setting global variables is supported since Asterisk 1.2.

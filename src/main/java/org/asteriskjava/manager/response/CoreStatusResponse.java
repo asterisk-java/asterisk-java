@@ -16,6 +16,7 @@
  */
 package org.asteriskjava.manager.response;
 
+import org.asteriskjava.ami.action.response.ManagerActionResponse;
 import org.asteriskjava.util.DateUtil;
 
 import java.util.Date;
@@ -30,7 +31,7 @@ import java.util.TimeZone;
  * @see org.asteriskjava.manager.action.CoreStatusAction
  * @since 1.0.0
  */
-public class CoreStatusResponse extends ManagerResponse {
+public class CoreStatusResponse extends ManagerActionResponse {
     private static final long serialVersionUID = 1L;
 
     private String coreStartupTime;

@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.action;
 
+import org.asteriskjava.ami.action.AbstractManagerAction;
+
 /**
  * The SkypeChatSendAction sends a Skype Chat message to a buddy of a Skype for Asterisk user.<p>
  * Available with Skype for Asterisk.

@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.action;
 
+import org.asteriskjava.ami.action.AbstractManagerAction;
+
 /**
  * The MonitorAction starts monitoring (recording) a channel.<p>
  * It is implemented in <code>res/res_monitor.c</code>

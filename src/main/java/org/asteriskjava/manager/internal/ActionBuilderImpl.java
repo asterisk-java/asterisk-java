@@ -17,8 +17,10 @@
 package org.asteriskjava.manager.internal;
 
 import org.asteriskjava.AsteriskVersion;
+import org.asteriskjava.ami.ActionFieldsComparator;
+import org.asteriskjava.ami.action.ManagerAction;
+import org.asteriskjava.core.databind.AsteriskEncoder;
 import org.asteriskjava.manager.AsteriskMapping;
-import org.asteriskjava.manager.action.ManagerAction;
 import org.asteriskjava.manager.action.UserEventAction;
 import org.asteriskjava.manager.event.UserEvent;
 import org.asteriskjava.util.Log;
@@ -47,6 +49,11 @@ class ActionBuilderImpl implements ActionBuilder {
     private AsteriskVersion targetVersion;
     private final Set<String> membersToIgnore = new HashSet<>();
 
+    private final AsteriskEncoder asteriskEncoder = AsteriskEncoder.builder()
+            .crlfNewlineDelimiter()
+            .fieldNamesComparator(new ActionFieldsComparator())
+            .build();
+
     /**
      * Creates a new ActionBuilder for Asterisk 1.0.
      */
@@ -73,20 +80,21 @@ class ActionBuilderImpl implements ActionBuilder {
 
     @SuppressWarnings("unchecked")
     public String buildAction(final ManagerAction action, final String internalActionId) {
+        String actionId = internalActionId != null ? ManagerUtil.addInternalActionId(action.getActionId(), internalActionId) : action.getActionId();
+
+        if (action.getClass().getPackageName().contains("org.asteriskjava.ami.action")) {
+            action.setActionId(actionId);
+            return asteriskEncoder.encode(action);
+        }
+
         StringBuilder sb = new StringBuilder();
 
         sb.append("action: ");
         sb.append(action.getAction());
         sb.append(LINE_SEPARATOR);
-        if (internalActionId != null) {
-            sb.append("actionid: ");
-            sb.append(ManagerUtil.addInternalActionId(action.getActionId(), internalActionId));
-            sb.append(LINE_SEPARATOR);
-        } else if (action.getActionId() != null) {
-            sb.append("actionid: ");
-            sb.append(action.getActionId());
-            sb.append(LINE_SEPARATOR);
-        }
+        sb.append("actionid: ");
+        sb.append(actionId);
+        sb.append(LINE_SEPARATOR);
 
         Map<String, Method> getters;
 
@@ -122,7 +130,7 @@ class ActionBuilderImpl implements ActionBuilder {
                 Map<Object, Object> attributes = (Map<Object, Object>) value;
                 for (Map.Entry<Object, Object> entry : attributes.entrySet()) {
                     appendString(sb, entry.getKey() == null ? "null" : entry.getKey().toString(),
-                            entry.getValue() == null ? "null" : entry.getValue().toString());
+                        entry.getValue() == null ? "null" : entry.getValue().toString());
                 }
             }
         }
@@ -259,7 +267,7 @@ class ActionBuilderImpl implements ActionBuilder {
 
         // check annotation of getter method
         annotation
-                = getter.getAnnotation(AsteriskMapping.class
+            = getter.getAnnotation(AsteriskMapping.class
         );
         if (annotation != null) {
             return annotation.value();
@@ -270,7 +278,7 @@ class ActionBuilderImpl implements ActionBuilder {
         try {
             Method setter = getter.getDeclaringClass().getDeclaredMethod(setterName, getter.getReturnType());
             annotation
-                    = setter.getAnnotation(AsteriskMapping.class
+                = setter.getAnnotation(AsteriskMapping.class
             );
             if (annotation != null) {
                 return annotation.value();
@@ -284,7 +292,7 @@ class ActionBuilderImpl implements ActionBuilder {
         try {
             Field field = getter.getDeclaringClass().getDeclaredField(fieldName);
             annotation
-                    = field.getAnnotation(AsteriskMapping.class
+                = field.getAnnotation(AsteriskMapping.class
             );
             if (annotation != null) {
                 return annotation.value();
@@ -330,6 +338,6 @@ class ActionBuilderImpl implements ActionBuilder {
         }
 
         return Character.toLowerCase(s.charAt(0))
-                + (s.length() == 1 ? "" : s.substring(1));
+            + (s.length() == 1 ? "" : s.substring(1));
     }
 }

@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.response;
 
+import org.asteriskjava.ami.action.response.ManagerActionResponse;
+
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -34,7 +36,7 @@ import java.util.TreeMap;
  * @see org.asteriskjava.manager.action.GetConfigAction
  * @since 0.3
  */
-public class GetConfigResponse extends ManagerResponse {
+public class GetConfigResponse extends ManagerActionResponse {
     private static final long serialVersionUID = -2044248427247227390L;
 
     private Map<Integer, String> categories;

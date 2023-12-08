@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.action;
 
+import org.asteriskjava.ami.action.AbstractManagerAction;
+
 /**
  * The AgentCallbackLoginAction sets an agent as logged in with callback.<p>
  * You can pass an extentsion (and optionally a context) to specify the

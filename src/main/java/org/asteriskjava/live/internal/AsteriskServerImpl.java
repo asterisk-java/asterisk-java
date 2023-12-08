@@ -17,6 +17,8 @@
 package org.asteriskjava.live.internal;
 
 import org.asteriskjava.AsteriskVersion;
+import org.asteriskjava.ami.action.ManagerAction;
+import org.asteriskjava.ami.action.response.ManagerActionResponse;
 import org.asteriskjava.config.ConfigFile;
 import org.asteriskjava.live.*;
 import org.asteriskjava.lock.Lockable;
@@ -431,7 +433,7 @@ public class AsteriskServerImpl extends Lockable implements AsteriskServer, Mana
 
     public String getVersion() throws ManagerCommunicationException {
         try (LockCloser closer = this.withLock()) {
-            final ManagerResponse response;
+            final ManagerActionResponse response;
             final String command;
 
             initializeIfNeeded();
@@ -467,7 +469,7 @@ public class AsteriskServerImpl extends Lockable implements AsteriskServer, Mana
         initializeIfNeeded();
         if (versions == null) {
             LockableMap<String, String> map;
-            ManagerResponse response;
+            ManagerActionResponse response;
 
             map = new LockableMap<>(new HashMap<>());
             try {
@@ -530,7 +532,7 @@ public class AsteriskServerImpl extends Lockable implements AsteriskServer, Mana
     }
 
     public String getGlobalVariable(String variable) throws ManagerCommunicationException {
-        ManagerResponse response;
+        ManagerActionResponse response;
         String value;
 
         initializeIfNeeded();
@@ -546,7 +548,7 @@ public class AsteriskServerImpl extends Lockable implements AsteriskServer, Mana
     }
 
     public void setGlobalVariable(String variable, String value) throws ManagerCommunicationException {
-        ManagerResponse response;
+        ManagerActionResponse response;
 
         initializeIfNeeded();
         response = sendAction(new SetVarAction(variable, value));
@@ -557,7 +559,7 @@ public class AsteriskServerImpl extends Lockable implements AsteriskServer, Mana
 
     public Collection<Voicemailbox> getVoicemailboxes() throws ManagerCommunicationException {
         final Collection<Voicemailbox> voicemailboxes;
-        ManagerResponse response;
+        ManagerActionResponse response;
         final List<String> result;
 
         initializeIfNeeded();
@@ -622,7 +624,7 @@ public class AsteriskServerImpl extends Lockable implements AsteriskServer, Mana
     }
 
     public List<String> executeCliCommand(String command) throws ManagerCommunicationException {
-        final ManagerResponse response;
+        final ManagerActionResponse response;
 
         initializeIfNeeded();
         response = sendAction(new CommandAction(command));
@@ -655,7 +657,7 @@ public class AsteriskServerImpl extends Lockable implements AsteriskServer, Mana
     }
 
     protected void sendModuleLoadAction(String module, String loadType) throws ManagerCommunicationException {
-        final ManagerResponse response;
+        final ManagerActionResponse response;
 
         response = sendAction(new ModuleLoadAction(module, loadType));
         if (response instanceof ManagerError) {
@@ -665,7 +667,7 @@ public class AsteriskServerImpl extends Lockable implements AsteriskServer, Mana
     }
 
     public ConfigFile getConfig(String filename) throws ManagerCommunicationException {
-        final ManagerResponse response;
+        final ManagerActionResponse response;
         final GetConfigResponse getConfigResponse;
 
         initializeIfNeeded();
@@ -753,7 +755,7 @@ public class AsteriskServerImpl extends Lockable implements AsteriskServer, Mana
         }
     }
 
-    ManagerResponse sendActionOnEventConnection(ManagerAction action) throws ManagerCommunicationException {
+    ManagerActionResponse sendActionOnEventConnection(ManagerAction action) throws ManagerCommunicationException {
         try {
             return eventConnection.sendAction(action);
         } catch (Exception e) {
@@ -761,7 +763,7 @@ public class AsteriskServerImpl extends Lockable implements AsteriskServer, Mana
         }
     }
 
-    ManagerResponse sendAction(ManagerAction action) throws ManagerCommunicationException {
+    ManagerActionResponse sendAction(ManagerAction action) throws ManagerCommunicationException {
         // return connectionPool.sendAction(action);
         try {
             return eventConnection.sendAction(action);

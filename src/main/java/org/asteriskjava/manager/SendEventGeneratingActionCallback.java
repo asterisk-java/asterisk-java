@@ -1,7 +1,7 @@
 package org.asteriskjava.manager;
 
+import org.asteriskjava.ami.action.response.ManagerActionResponse;
 import org.asteriskjava.manager.response.ManagerError;
-import org.asteriskjava.manager.response.ManagerResponse;
 
 /**
  * Callback interface to send
@@ -9,8 +9,8 @@ import org.asteriskjava.manager.response.ManagerResponse;
  *
  * @see org.asteriskjava.manager.ManagerConnection#sendEventGeneratingAction(org.asteriskjava.manager.action.EventGeneratingAction, SendEventGeneratingActionCallback)
  * <p>
- * Initial response is passed to one of {@link #onResponse(ManagerResponse)} or
- * {@link #onErrorResponse(ManagerResponse)}. but not both.
+ * Initial response is passed to one of {@link #onResponse(ManagerActionResponse)} or
+ * {@link #onErrorResponse(ManagerActionResponse)}. but not both.
  */
 public interface SendEventGeneratingActionCallback {
     /**

@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.action;
 
+import org.asteriskjava.ami.action.AbstractManagerAction;
+
 /**
  * The QueuePauseAction makes a queue member temporarily unavailabe (or
  * available again).<p>

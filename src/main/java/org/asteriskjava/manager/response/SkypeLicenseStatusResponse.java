@@ -16,13 +16,15 @@
  */
 package org.asteriskjava.manager.response;
 
+import org.asteriskjava.ami.action.response.ManagerActionResponse;
+
 /**
  * Corresponds to a SkypeLicenseStatusAction and contains the number of licensed Skype calls.
  *
  * @see org.asteriskjava.manager.action.SkypeLicenseStatusAction
  * @since 1.0.0
  */
-public class SkypeLicenseStatusResponse extends ManagerResponse {
+public class SkypeLicenseStatusResponse extends ManagerActionResponse {
     private static final long serialVersionUID = 0L;
 
     private Integer callsLicensed;

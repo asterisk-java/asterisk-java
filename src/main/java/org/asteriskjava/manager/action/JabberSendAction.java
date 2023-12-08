@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.action;
 
+import org.asteriskjava.ami.action.AbstractManagerAction;
+
 /**
  * The JabberSendAction sends a Jabber (XMPP) message to a recipient.<p>
  * Available since Asterisk 1.6.0

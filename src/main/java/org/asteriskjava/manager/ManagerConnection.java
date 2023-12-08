@@ -17,10 +17,11 @@
 package org.asteriskjava.manager;
 
 import org.asteriskjava.AsteriskVersion;
+import org.asteriskjava.ami.action.ChallengeAction;
+import org.asteriskjava.ami.action.ManagerAction;
+import org.asteriskjava.ami.action.response.ManagerActionResponse;
 import org.asteriskjava.manager.action.EventGeneratingAction;
-import org.asteriskjava.manager.action.ManagerAction;
 import org.asteriskjava.manager.event.ManagerEvent;
-import org.asteriskjava.manager.response.ManagerResponse;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -31,8 +32,8 @@ import java.nio.charset.Charset;
  * API.
  * <p>
  * The ManagerConnection repesents a connection to an Asterisk server and is
- * capable of sending {@link org.asteriskjava.manager.action.ManagerAction}s and
- * receiving {@link org.asteriskjava.manager.response.ManagerResponse}s and
+ * capable of sending {@link ManagerAction}s and
+ * receiving {@link ManagerActionResponse}s and
  * {@link org.asteriskjava.manager.event.ManagerEvent}s. It does not add any
  * further functionality but rather provides a Java view to Asterisk's Manager
  * API (freeing you from TCP/IP connection and parsing stuff).
@@ -230,7 +231,7 @@ public interface ManagerConnection {
      * @throws TimeoutException              if a timeout occurs while waiting for the
      *                                       protocol identifier. The connection is closed in this case.
      * @see org.asteriskjava.manager.action.LoginAction
-     * @see org.asteriskjava.manager.action.ChallengeAction
+     * @see ChallengeAction
      */
     void login() throws IllegalStateException, IOException, AuthenticationFailedException, TimeoutException;
 
@@ -250,7 +251,7 @@ public interface ManagerConnection {
      * @throws TimeoutException              if a timeout occurs while waiting for the
      *                                       protocol identifier. The connection is closed in this case.
      * @see org.asteriskjava.manager.action.LoginAction
-     * @see org.asteriskjava.manager.action.ChallengeAction
+     * @see ChallengeAction
      * @since 0.3
      */
     void login(String events) throws IllegalStateException, IOException, AuthenticationFailedException, TimeoutException;
@@ -294,12 +295,12 @@ public interface ManagerConnection {
      * @see #sendAction(ManagerAction, long)
      * @see #sendAction(ManagerAction, SendActionCallback)
      */
-    ManagerResponse sendAction(ManagerAction action)
+    ManagerActionResponse sendAction(ManagerAction action)
             throws IOException, TimeoutException, IllegalArgumentException, IllegalStateException;
 
     /**
      * Sends a ManagerAction to the Asterisk server and waits for the
-     * corresponding {@link ManagerResponse}.
+     * corresponding {@link ManagerActionResponse}.
      *
      * @param action  the action to send to the Asterisk server
      * @param timeout milliseconds to wait for the response before throwing a
@@ -313,12 +314,12 @@ public interface ManagerConnection {
      *                                  server.
      * @see #sendAction(ManagerAction, SendActionCallback)
      */
-    ManagerResponse sendAction(ManagerAction action, long timeout)
+    ManagerActionResponse sendAction(ManagerAction action, long timeout)
             throws IOException, TimeoutException, IllegalArgumentException, IllegalStateException;
 
     /**
      * Sends a ManagerAction to the Asterisk server and registers a callback
-     * handler to be called when the corresponding {@link ManagerResponse} is
+     * handler to be called when the corresponding {@link ManagerActionResponse} is
      * received. Be very careful that your callbackHandler terminates very
      * quickly and does not do any fancy processing because it is called from
      * the reader thread which is blocked for the time it takes to execute your
@@ -338,11 +339,11 @@ public interface ManagerConnection {
 
     /**
      * Sends an {@link EventGeneratingAction} to the Asterisk server and waits
-     * for the corresponding {@link ManagerResponse} and the
+     * for the corresponding {@link ManagerActionResponse} and the
      * {@link org.asteriskjava.manager.event.ResponseEvent}s
      * <p>
      * EventGeneratingActions are {@link ManagerAction}s that don't return their
-     * response in the corresponding {@link ManagerResponse} but send a series
+     * response in the corresponding {@link ManagerActionResponse} but send a series
      * of events that contain the payload.
      * <p>
      * This method will block until the correpsonding action complete event has
@@ -375,11 +376,11 @@ public interface ManagerConnection {
 
     /**
      * Sends an {@link EventGeneratingAction} to the Asterisk server and waits
-     * for the corresponding {@link ManagerResponse} and the
+     * for the corresponding {@link ManagerActionResponse} and the
      * {@link org.asteriskjava.manager.event.ResponseEvent}s
      * <p>
      * EventGeneratingActions are {@link ManagerAction}s that don't return their
-     * response in the corresponding {@link ManagerResponse} but send a series
+     * response in the corresponding {@link ManagerActionResponse} but send a series
      * of events that contain the payload.
      * <p>
      * This method will block until the correpsonding action complete event has

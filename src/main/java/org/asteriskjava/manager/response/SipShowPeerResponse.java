@@ -15,6 +15,8 @@
  */
 package org.asteriskjava.manager.response;
 
+import org.asteriskjava.ami.action.response.ManagerActionResponse;
+
 import java.util.Map;
 
 /**
@@ -25,7 +27,7 @@ import java.util.Map;
  * @see org.asteriskjava.manager.action.SipShowPeerAction
  * @since 1.0.0
  */
-public class SipShowPeerResponse extends ManagerResponse {
+public class SipShowPeerResponse extends ManagerActionResponse {
     private static final long serialVersionUID = 1L;
 
     private String channelType;

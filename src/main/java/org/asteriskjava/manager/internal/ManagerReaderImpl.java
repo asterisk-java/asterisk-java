@@ -17,11 +17,11 @@
 package org.asteriskjava.manager.internal;
 
 import com.google.common.util.concurrent.RateLimiter;
+import org.asteriskjava.ami.action.response.ManagerActionResponse;
 import org.asteriskjava.manager.event.DisconnectEvent;
 import org.asteriskjava.manager.event.ManagerEvent;
 import org.asteriskjava.manager.event.ProtocolIdentifierReceivedEvent;
 import org.asteriskjava.manager.internal.backwardsCompatibility.BackwardsCompatibilityForManagerEvents;
-import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.pbx.util.LogTime;
 import org.asteriskjava.util.DateUtil;
 import org.asteriskjava.util.Log;
@@ -56,7 +56,7 @@ public class ManagerReaderImpl implements ManagerReader {
      */
     private final ResponseBuilder responseBuilder;
 
-    private final Map<String, Class<? extends ManagerResponse>> expectedResponseClasses;
+    private final Map<String, Class<? extends ManagerActionResponse>> expectedResponseClasses;
 
     /**
      * The source to use when creating {@link ManagerEvent}s.
@@ -120,7 +120,7 @@ public class ManagerReaderImpl implements ManagerReader {
         eventBuilder.registerEventClass(eventClass);
     }
 
-    public void expectResponseClass(String internalActionId, Class<? extends ManagerResponse> responseClass) {
+    public void expectResponseClass(String internalActionId, Class<? extends ManagerActionResponse> responseClass) {
         expectedResponseClasses.put(internalActionId, responseClass);
     }
 
@@ -132,7 +132,7 @@ public class ManagerReaderImpl implements ManagerReader {
      * responses via the associated dispatcher.
      *
      * @see org.asteriskjava.manager.internal.Dispatcher#dispatchEvent(ManagerEvent)
-     * @see org.asteriskjava.manager.internal.Dispatcher#dispatchResponse(ManagerResponse)
+     * @see org.asteriskjava.manager.internal.Dispatcher#dispatchResponse(ManagerActionResponse)
      */
     public void run() {
         long timeOfLastEvent = 0;
@@ -232,7 +232,7 @@ public class ManagerReaderImpl implements ManagerReader {
                             logger.debug("buildEvent returned null");
                         }
                     } else if (buffer.containsKey("response")) {
-                        ManagerResponse response = buildResponse(buffer);
+                        ManagerActionResponse response = buildResponse(buffer);
                         // TODO tracing
                         // logger.debug("attempting to build response");
                         if (response != null) {
@@ -341,18 +341,18 @@ public class ManagerReaderImpl implements ManagerReader {
         return terminationException;
     }
 
-    private ManagerResponse buildResponse(Map<String, Object> buffer) {
-        Class<? extends ManagerResponse> responseClass = null;
+    private ManagerActionResponse buildResponse(Map<String, Object> buffer) {
+        Class<? extends ManagerActionResponse> responseClass = null;
         final String actionId = (String) buffer.get("actionid");
         final String internalActionId = ManagerUtil.getInternalActionId(actionId);
         if (internalActionId != null) {
             responseClass = expectedResponseClasses.remove(internalActionId);
         }
 
-        final ManagerResponse response = responseBuilder.buildResponse(responseClass, buffer);
+        final ManagerActionResponse response = responseBuilder.buildResponse(responseClass, buffer);
 
         if (response != null) {
-            response.setDateReceived(DateUtil.getDate());
+            response.setDateReceived(DateUtil.getDate().toInstant());
         }
 
         return response;

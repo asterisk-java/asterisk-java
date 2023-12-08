@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.action;
 
+import org.asteriskjava.ami.action.AbstractManagerAction;
+
 /**
  * The ChangeMonitorAction changes the monitoring filename of a channel. It has
  * no effect if the channel is not monitored.<p>

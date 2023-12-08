@@ -16,12 +16,12 @@
  */
 package org.asteriskjava.live.internal;
 
+import org.asteriskjava.ami.action.response.ManagerActionResponse;
 import org.asteriskjava.live.*;
 import org.asteriskjava.lock.Locker.LockCloser;
 import org.asteriskjava.manager.action.QueuePauseAction;
 import org.asteriskjava.manager.action.QueuePenaltyAction;
 import org.asteriskjava.manager.response.ManagerError;
-import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.util.AstUtil;
 
 /**
@@ -123,7 +123,7 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
     }
 
     private void sendPauseAction(QueuePauseAction action) throws ManagerCommunicationException, NoSuchInterfaceException {
-        final ManagerResponse response = server.sendAction(action);
+        final ManagerActionResponse response = server.sendAction(action);
 
         if (response instanceof ManagerError) {
             // Message: Interface not found
@@ -159,7 +159,7 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
             throw new IllegalArgumentException("Penalty must not be negative");
         }
 
-        final ManagerResponse response = server.sendAction(new QueuePenaltyAction(location, penalty, queue.getName()));
+        final ManagerActionResponse response = server.sendAction(new QueuePenaltyAction(location, penalty, queue.getName()));
         if (response instanceof ManagerError) {
             throw new InvalidPenaltyException(
                     "Unable to set penalty for '" + location + "' on '" + queue.getName() + "': " + response.getMessage());
