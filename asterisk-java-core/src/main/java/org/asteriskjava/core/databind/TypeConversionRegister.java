@@ -31,9 +31,9 @@ public class TypeConversionRegister {
     public static final Map<Class<?>, Map<Class<?>, Converter<?, ?>>> TYPE_CONVERTERS = new ConcurrentHashMap<>();
 
     static {
-        convertFromString().to(Instant.class).register(Instant::parse);
-        convertFromString().to(Integer.class).register(Integer::valueOf);
-        convertFromString().to(String.class).register(Object::toString);
+        convertFrom(String.class).to(Instant.class).register(Instant::parse);
+        convertFrom(String.class).to(Integer.class).register(Integer::valueOf);
+        convertFrom(String.class).to(String.class).register(Object::toString);
     }
 
     private TypeConversionRegister() {
@@ -41,10 +41,6 @@ public class TypeConversionRegister {
 
     public static <S> TypeConverter<S> convertFrom(Class<S> sourceType) {
         return new TypeConverter<>(sourceType);
-    }
-
-    public static TypeConverter<String> convertFromString() {
-        return convertFrom(String.class);
     }
 
     public static class TypeConverter<S> {

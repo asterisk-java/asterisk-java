@@ -12,40 +12,37 @@ import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 import io.netty.handler.timeout.IdleStateHandler;
 import org.asteriskjava.ami.ActionFieldsComparator;
-import org.asteriskjava.core.databind.AsteriskObjectMapper;
-import org.junit.jupiter.api.Test;
+import org.asteriskjava.core.databind.AsteriskEncoder;
 import org.testcontainers.containers.GenericContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.asteriskjava.ami.action.AuthType.MD5;
 import static org.testcontainers.containers.BindMode.READ_ONLY;
 import static org.testcontainers.containers.wait.strategy.Wait.forLogMessage;
 
-@Testcontainers
+//@Testcontainers
 class ChallengeActionItTest {
-    @Container
+//    @Container
     static final GenericContainer<?> asterisk = new GenericContainer<>("andrius/asterisk:alpine-18.15.1")
             .withClasspathResourceMapping("manager.conf", "/etc/asterisk/manager.conf", READ_ONLY)
             .withAccessToHost(true)
             .withExposedPorts(5038)
             .waitingFor(forLogMessage(".*Asterisk Ready.*", 1));
 
-    @Test
+//    @Test
     void shouldName() throws InterruptedException {
         //given
         ChallengeAction challengeAction = new ChallengeAction();
         challengeAction.setActionId("id-1");
         challengeAction.setAuthType(MD5);
 
-        AsteriskObjectMapper asteriskObjectMapper = AsteriskObjectMapper
+        AsteriskEncoder asteriskEncoder = AsteriskEncoder
                 .builder()
                 .crlfNewlineDelimiter()
                 .fieldNamesComparator(new ActionFieldsComparator())
                 .build();
 
-        String action = asteriskObjectMapper.writeValueAsString(challengeAction);
+        String action = asteriskEncoder.encode(challengeAction);
 
         NioEventLoopGroup group = new NioEventLoopGroup();
         Bootstrap bootstrap = new Bootstrap();

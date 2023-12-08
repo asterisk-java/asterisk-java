@@ -18,7 +18,6 @@ package org.asteriskjava.core.databind.utils;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Method;
-import java.util.Comparator;
 import java.util.Map;
 import java.util.StringJoiner;
 
@@ -151,15 +150,6 @@ class ReflectionUtilsTest {
         assertThat(getters).containsOnlyKeys("Value", "Valid", "Action");
     }
 
-    @Test
-    void shouldReturnValidGettersSorted() {
-        //when
-        Map<String, Method> getters = getGetters(ValidClass.class, new ActionFieldsComparator());
-
-        //then
-        assertThat(getters.keySet()).containsExactly("Action", "Value", "Valid");
-    }
-
     static class ValidClass {
 
         public String getValue() {
@@ -172,16 +162,6 @@ class ReflectionUtilsTest {
 
         public String getAction() {
             return "NewAction";
-        }
-    }
-
-    static class ActionFieldsComparator implements Comparator<String> {
-        @Override
-        public int compare(String o1, String o2) {
-            if (o1.equals(o2)) {
-                return 0;
-            }
-            return o1.equalsIgnoreCase("Action") ? -1 : 1;
         }
     }
 }

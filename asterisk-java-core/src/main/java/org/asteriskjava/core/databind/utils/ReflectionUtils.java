@@ -16,10 +16,8 @@
 package org.asteriskjava.core.databind.utils;
 
 import java.lang.reflect.Method;
-import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
 import static java.lang.reflect.Modifier.*;
 
@@ -42,13 +40,11 @@ public final class ReflectionUtils {
      * getter itself (an instance of Method). A method is considered a getter if its name starts with 'get' or 'is'.
      * It is declared public and takes no arguments.
      *
-     * @param clazz      the class to return the getters for
-     * @param comparator the comparator for sorting properties
+     * @param clazz the class to return the getters for
      * @return a Map of attributes and their accessor methods (getters)
-     * @see #getGetters(Class)
      */
-    public static Map<String, Method> getGetters(Class<?> clazz, Comparator<String> comparator) {
-        Map<String, Method> accessors = comparator != null ? new TreeMap<>(comparator) : new LinkedHashMap<>();
+    public static Map<String, Method> getGetters(Class<?> clazz) {
+        Map<String, Method> accessors = new LinkedHashMap<>();
 
         Method[] methods = clazz.getMethods();
         for (Method method : methods) {
@@ -83,17 +79,6 @@ public final class ReflectionUtils {
     }
 
     /**
-     * Returns a {@link Map} of getter methods of the given class.
-     *
-     * @param clazz the class to return the getters for
-     * @return a Map of attributes and their accessor methods (getters)
-     * @see #getGetters(Class, Comparator)
-     */
-    public static Map<String, Method> getGetters(Class<?> clazz) {
-        return getGetters(clazz, null);
-    }
-
-    /**
      * Returns a {@link Map} of setter methods of the given class.
      * <p>
      * The key of the map contains the name of the attribute that can be accessed by the setter, the value the setter
@@ -121,6 +106,11 @@ public final class ReflectionUtils {
             }
 
             String name = methodName.substring("set".length());
+
+            if (name.isEmpty()) {
+                continue;
+            }
+
             accessors.put(name, method);
         }
         return accessors;

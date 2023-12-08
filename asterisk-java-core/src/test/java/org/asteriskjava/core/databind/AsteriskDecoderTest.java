@@ -1,28 +1,9 @@
-/*
- * Copyright 2004-2023 Asterisk Java contributors
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package org.asteriskjava.core.databind;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.asteriskjava.core.databind.annotation.AsteriskDeserialize;
 import org.asteriskjava.core.databind.annotation.AsteriskName;
-import org.asteriskjava.core.databind.annotation.AsteriskSerialize;
-import org.asteriskjava.core.databind.deserializer.custom.EqualsSignDeserializer;
-import org.asteriskjava.core.databind.serializer.custom.ComaJoiningSerializer;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
@@ -30,79 +11,13 @@ import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.asteriskjava.core.NewlineDelimiter.CRLF;
-import static org.asteriskjava.core.databind.AsteriskObjectMapper.builder;
-import static org.asteriskjava.core.databind.AsteriskObjectMapperTest.Base.ResponseType.Goodbye;
-import static org.asteriskjava.core.databind.AsteriskObjectMapperTest.SimpleBean.AuthType.MD5;
+import static org.asteriskjava.core.databind.AsteriskDecoderTest.BaseBean.ResponseType.Goodbye;
 
-class AsteriskObjectMapperTest {
-    private final AsteriskObjectMapper asteriskObjectMapper = builder()
-            .crlfNewlineDelimiter()
-            .build();
+class AsteriskDecoderTest {
+    private final AsteriskDecoder asteriskDecoder = new AsteriskDecoder();
 
     @Test
-    void shouldWriteAsStringForSimpleTypes() {
-        //given
-        SimpleBean bean = new SimpleBean();
-        bean.setActionId("id-1");
-        bean.setAuthType(MD5);
-        bean.setCodecs(List.of("codec1", "codec2"));
-
-        //when
-        String string = asteriskObjectMapper.writeValueAsString(bean);
-
-        //then
-        String expected = "Action: SimpleBean" + CRLF.getPattern();
-        expected += "ActionID: id-1" + CRLF.getPattern();
-        expected += "AuthType: MD5" + CRLF.getPattern();
-        expected += "Codecs: codec1,codec2" + CRLF.getPattern() + CRLF.getPattern();
-        assertThat(string).isEqualTo(expected);
-    }
-
-    public static class SimpleBean {
-        public enum AuthType {
-            MD5,
-        }
-
-        private String actionId;
-
-        private AuthType authType;
-
-        private List<String> codecs;
-
-        public String getAction() {
-            return "SimpleBean";
-        }
-
-        @AsteriskName("ActionID")
-        public String getActionId() {
-            return actionId;
-        }
-
-        public void setActionId(String actionId) {
-            this.actionId = actionId;
-        }
-
-        public AuthType getAuthType() {
-            return authType;
-        }
-
-        public void setAuthType(AuthType authType) {
-            this.authType = authType;
-        }
-
-        @AsteriskSerialize(ComaJoiningSerializer.class)
-        public List<String> getCodecs() {
-            return codecs;
-        }
-
-        public void setCodecs(List<String> codecs) {
-            this.codecs = codecs;
-        }
-    }
-
-    @Test
-    void shouldReadForSimpleTypes() {
+    void shouldDecodeForSimpleBeanWhichExtendsFormBaseBean() {
         //given
         Instant date = Instant.parse("2023-11-20T20:33:30.002Z");
 
@@ -114,42 +29,63 @@ class AsteriskObjectMapperTest {
         );
 
         //when
-        SomeClass someClass = asteriskObjectMapper.readValue(content, SomeClass.class);
+        SimpleBean simpleBean = asteriskDecoder.decode(content, SimpleBean.class);
 
         //then
-        SomeClass expected = new SomeClass();
+        SimpleBean expected = new SimpleBean();
         expected.setChallenge("123456");
         expected.setActionId("id-1");
         expected.setDateReceived(date);
         expected.setResponse(Goodbye);
-        assertThat(someClass).isEqualTo(expected);
+        assertThat(simpleBean).isEqualTo(expected);
     }
 
     @Test
-    void shouldReadContentWithList() {
+    void shouldDecodeListValues() {
         //given
+        AsteriskDecoder asteriskDecoder = new AsteriskDecoder();
+
         Map<String, Object> content = Map.of(
                 "Number", List.of("1", "2", "3")
         );
 
         //when
-        SomeClass2 someClass = asteriskObjectMapper.readValue(content, SomeClass2.class);
+        ListBean listBean = asteriskDecoder.decode(content, ListBean.class);
 
         //then
-        SomeClass2 expected = new SomeClass2();
+        ListBean expected = new ListBean();
         expected.setNumbers(List.of(1, 2, 3));
+        assertThat(listBean).isEqualTo(expected);
+    }
+
+    @Test
+    void shouldDecodeMap() {
+        //given
+        AsteriskDecoder asteriskDecoder = new AsteriskDecoder();
+
+        Map<String, Object> content = Map.of("Header", "1=name1");
+
+        //when
+        MapBean someClass = asteriskDecoder.decode(content, MapBean.class);
+
+        //then
+        Map<Integer, String> map = Map.of(1, "name1");
+        MapBean expected = new MapBean();
+        expected.setHeaders(map);
         assertThat(someClass).isEqualTo(expected);
     }
 
     @Test
-    void shouldReadContentWithListWhichShouldBeAMap() {
+    void shouldDecodeMapWhenIsListOfEntries() {
         //given
+        AsteriskDecoder asteriskDecoder = new AsteriskDecoder();
+
         Map<String, Object> content = Map.of(
                 "Header", List.of("1=name1", "2=name2", "3=name3")
         );
 
         //when
-        SomeClass3 someClass = asteriskObjectMapper.readValue(content, SomeClass3.class);
+        MapBean mapBean = asteriskDecoder.decode(content, MapBean.class);
 
         //then
         Map<Integer, String> map = Map.of(
@@ -157,27 +93,12 @@ class AsteriskObjectMapperTest {
                 2, "name2",
                 3, "name3"
         );
-        SomeClass3 expected = new SomeClass3();
+        MapBean expected = new MapBean();
         expected.setHeaders(map);
-        assertThat(someClass).isEqualTo(expected);
+        assertThat(mapBean).isEqualTo(expected);
     }
 
-    @Test
-    void shouldReadContentWithMap() {
-        //given
-        Map<String, Object> content = Map.of("Header", "1=name1");
-
-        //when
-        SomeClass3 someClass = asteriskObjectMapper.readValue(content, SomeClass3.class);
-
-        //then
-        Map<Integer, String> map = Map.of(1, "name1");
-        SomeClass3 expected = new SomeClass3();
-        expected.setHeaders(map);
-        assertThat(someClass).isEqualTo(expected);
-    }
-
-    public static class Base {
+    public static class BaseBean {
         public enum ResponseType {
             Success,
             Error,
@@ -225,7 +146,7 @@ class AsteriskObjectMapperTest {
                 return false;
             }
 
-            Base base = (Base) object;
+            BaseBean base = (BaseBean) object;
 
             return new EqualsBuilder()
                     .append(response, base.response)
@@ -253,7 +174,7 @@ class AsteriskObjectMapperTest {
         }
     }
 
-    public static class SomeClass extends Base {
+    public static class SimpleBean extends BaseBean {
         private String challenge;
 
         public String getChallenge() {
@@ -274,7 +195,7 @@ class AsteriskObjectMapperTest {
                 return false;
             }
 
-            SomeClass someClass = (SomeClass) object;
+            SimpleBean someClass = (SimpleBean) object;
 
             return new EqualsBuilder()
                     .appendSuper(super.equals(object))
@@ -299,7 +220,7 @@ class AsteriskObjectMapperTest {
         }
     }
 
-    public static class SomeClass2 {
+    public static class ListBean {
         private List<Integer> numbers;
 
         public List<Integer> getNumbers() {
@@ -321,7 +242,7 @@ class AsteriskObjectMapperTest {
                 return false;
             }
 
-            SomeClass2 someClass = (SomeClass2) object;
+            ListBean someClass = (ListBean) object;
 
             return new EqualsBuilder()
                     .append(numbers, someClass.numbers)
@@ -343,7 +264,7 @@ class AsteriskObjectMapperTest {
         }
     }
 
-    public static class SomeClass3 {
+    public static class MapBean {
         private Map<Integer, String> headers;
 
         public Map<Integer, String> getHeaders() {
@@ -351,7 +272,6 @@ class AsteriskObjectMapperTest {
         }
 
         @AsteriskName("Header")
-        @AsteriskDeserialize(EqualsSignDeserializer.class)
         public void setHeaders(Map<Integer, String> headers) {
             this.headers = headers;
         }
@@ -366,7 +286,7 @@ class AsteriskObjectMapperTest {
                 return false;
             }
 
-            SomeClass3 someClass = (SomeClass3) object;
+            MapBean someClass = (MapBean) object;
 
             return new EqualsBuilder()
                     .append(headers, someClass.headers)

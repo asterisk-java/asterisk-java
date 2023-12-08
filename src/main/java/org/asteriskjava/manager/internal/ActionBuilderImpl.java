@@ -19,7 +19,7 @@ package org.asteriskjava.manager.internal;
 import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.ami.ActionFieldsComparator;
 import org.asteriskjava.ami.action.ManagerAction;
-import org.asteriskjava.core.databind.AsteriskObjectMapper;
+import org.asteriskjava.core.databind.AsteriskEncoder;
 import org.asteriskjava.manager.AsteriskMapping;
 import org.asteriskjava.manager.action.UserEventAction;
 import org.asteriskjava.manager.event.UserEvent;
@@ -30,8 +30,6 @@ import org.asteriskjava.util.ReflectionUtil;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.*;
-
-import static org.asteriskjava.core.databind.AsteriskObjectMapper.builder;
 
 /**
  * Default implementation of the ActionBuilder interface.
@@ -51,7 +49,7 @@ class ActionBuilderImpl implements ActionBuilder {
     private AsteriskVersion targetVersion;
     private final Set<String> membersToIgnore = new HashSet<>();
 
-    private final AsteriskObjectMapper asteriskObjectMapper = builder()
+    private final AsteriskEncoder asteriskEncoder = AsteriskEncoder.builder()
             .crlfNewlineDelimiter()
             .fieldNamesComparator(new ActionFieldsComparator())
             .build();
@@ -86,7 +84,7 @@ class ActionBuilderImpl implements ActionBuilder {
 
         if (action.getClass().getPackageName().contains("org.asteriskjava.ami.action")) {
             action.setActionId(actionId);
-            return asteriskObjectMapper.writeValueAsString(action);
+            return asteriskEncoder.encode(action);
         }
 
         StringBuilder sb = new StringBuilder();

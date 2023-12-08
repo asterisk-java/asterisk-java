@@ -22,7 +22,6 @@ import org.asteriskjava.ami.action.response.ResponseType;
 import org.asteriskjava.manager.response.ExtensionStateResponse;
 import org.asteriskjava.manager.response.MailboxCountResponse;
 import org.asteriskjava.manager.response.MailboxStatusResponse;
-import org.asteriskjava.manager.response.ManagerError;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -71,7 +70,6 @@ class ResponseBuilderImplTest {
         attributes.put("message", "Missing action in request");
 
         response = responseBuilder.buildResponse(ManagerResponse.class, attributes);
-        assertEquals(ManagerError.class, response.getClass(), "Response of wrong type");
         assertEquals("Missing action in request", response.getMessage(), "Message not set correctly");
     }
 

@@ -13,13 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.asteriskjava.core.databind.reader;
+package org.asteriskjava.core.databind;
 
 import org.apache.commons.lang3.tuple.Pair;
-import org.asteriskjava.core.databind.TypeConversionRegister;
 import org.asteriskjava.core.databind.TypeConversionRegister.Converter;
-import org.asteriskjava.core.databind.annotation.AsteriskDeserialize;
-import org.asteriskjava.core.databind.deserializer.AsteriskDeserializer;
 import org.slf4j.Logger;
 
 import java.lang.reflect.Method;
@@ -31,84 +28,96 @@ import java.util.Map.Entry;
 
 import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.toMap;
+import static org.asteriskjava.core.databind.TypeConversionRegister.TYPE_CONVERTERS;
 import static org.asteriskjava.core.databind.utils.AnnotationUtils.getName;
 import static org.asteriskjava.core.databind.utils.Invoker.invokeOn;
 import static org.asteriskjava.core.databind.utils.ReflectionUtils.getSetters;
 import static org.slf4j.LoggerFactory.getLogger;
 
 /**
- * Reader class to read content and transform for the desired object.
- *
  * @author Piotr Olaszewski
  * @since 4.0.0
  */
-public class AsteriskObjectReader {
-    private static final Logger logger = getLogger(AsteriskObjectReader.class);
+public class AsteriskDecoder {
+    private static final Logger logger = getLogger(AsteriskDecoder.class);
 
-    public <T> T read(Map<String, Object> content, Class<T> clazz) {
-        Map<String, Method> setters = getSetters(clazz)
+    private boolean caseSensitive = true;
+
+    public AsteriskDecoder() {
+    }
+
+    public AsteriskDecoder(boolean caseSensitive) {
+        this.caseSensitive = caseSensitive;
+    }
+
+    public <T> T decode(Map<String, Object> source, Class<T> target) {
+        Map<String, Method> setters = getSetters(target)
                 .entrySet()
                 .stream()
-                .collect(toMap(e -> getName(e.getValue(), e.getKey()), Entry::getValue));
+                .collect(toMap(e -> {
+                    String name = getName(e.getValue(), e.getKey());
+                    return caseSensitive ? name : name.toLowerCase();
+                }, Entry::getValue));
 
-        T resultObject = instantiateResultClass(clazz);
-        for (Entry<String, Object> entry : content.entrySet()) {
-            handleEntry(entry, setters, resultObject);
+        T result = instantiateResultClass(target);
+        for (Entry<String, Object> entry : source.entrySet()) {
+            handleEntry(entry, setters, result, caseSensitive);
         }
-        return resultObject;
+        return result;
     }
 
-    private static <T> T instantiateResultClass(Class<T> clazz) {
+    private static <T> T instantiateResultClass(Class<T> target) {
         try {
-            return clazz.getConstructor().newInstance();
+            return target.getConstructor().newInstance();
         } catch (Exception e) {
-            throw new RuntimeException("Cannot instantiate result class %s".formatted(clazz), e);
+            throw new RuntimeException("Cannot instantiate class %s".formatted(target), e);
         }
     }
 
-    private static <T> void handleEntry(Entry<String, Object> entry, Map<String, Method> setters, T resultObject) {
-        Object currentValue = entry.getValue();
+    private static <T> void handleEntry(Entry<String, Object> entry, Map<String, Method> setters, T result, boolean caseSensitive) {
+        Object value = entry.getValue();
 
-        Method method = setters.getOrDefault(entry.getKey(), null);
+        String key = caseSensitive ? entry.getKey() : entry.getKey().toLowerCase();
+        Method method = setters.getOrDefault(key, null);
         if (method == null) {
             logger.warn("Unable to set the '{}' property to the value '{}' in the '{}' class. There is no setter method available. " +
                             "Please report at https://github.com/asterisk-java/asterisk-java/issues.",
-                    entry.getKey(), currentValue, resultObject.getClass().getName());
+                    entry.getKey(), value, result.getClass().getName());
             return;
         }
 
-        Object value = getValue(currentValue, method);
-        invokeOn(resultObject).method(method).withParameter(value);
+        Object targetValue = getValue(value, method);
+        invokeOn(result).method(method).withParameter(targetValue);
     }
 
-    private static Object getValue(Object currentValue, Method method) {
+    private static Object getValue(Object value, Method method) {
         Class<?> targetDataType = method.getParameterTypes()[0];
         if (targetDataType.isEnum()) {
-            return parseEnum(method, currentValue);
+            return parseEnum(method, value);
         } else if (targetDataType.isAssignableFrom(List.class)) {
-            return parseList(method, currentValue);
+            return parseList(method, value);
         } else if (targetDataType.isAssignableFrom(Map.class)) {
-            return parseMap(method, currentValue);
+            return parseMap(method, value);
         } else {
-            return parseOtherType(method, currentValue);
+            return parseOtherType(method, value);
         }
     }
 
-    private static Enum<?> parseEnum(Method method, Object currentValue) {
+    private static Enum<?> parseEnum(Method method, Object value) {
         Class<?> targetDataType = method.getParameterTypes()[0];
         return (Enum<?>) stream(targetDataType.getEnumConstants())
-                .filter(t -> t.toString().equals(String.valueOf(currentValue)))
+                .filter(t -> t.toString().equals(String.valueOf(value)))
                 .findFirst()
                 .orElse(null);
     }
 
-    private static List<Object> parseList(Method method, Object currentValue) {
+    private static List<Object> parseList(Method method, Object value) {
         ParameterizedType genericParameter = (ParameterizedType) method.getGenericParameterTypes()[0];
         Class<?> listElementType = (Class<?>) genericParameter.getActualTypeArguments()[0];
 
-        Map<Class<?>, Converter<?, ?>> conversions = TypeConversionRegister.TYPE_CONVERTERS.get(listElementType);
+        Map<Class<?>, Converter<?, ?>> conversions = TYPE_CONVERTERS.get(listElementType);
 
-        return ((List<?>) currentValue)
+        return ((List<?>) value)
                 .stream()
                 .map(object -> {
                     @SuppressWarnings("rawtypes")
@@ -119,62 +128,45 @@ public class AsteriskObjectReader {
                 .toList();
     }
 
-    private static Map<Object, Object> parseMap(Method method, Object currentValue) {
-        AsteriskDeserializer<Pair<String, String>> asteriskDeserializer = getAsteriskDeserializer(method);
-
+    private static Map<Object, Object> parseMap(Method method, Object value) {
         ParameterizedType genericParameter = (ParameterizedType) method.getGenericParameterTypes()[0];
         Class<?> mapKeyType = (Class<?>) genericParameter.getActualTypeArguments()[0];
         Class<?> mapValueType = (Class<?>) genericParameter.getActualTypeArguments()[1];
 
-        Map<Class<?>, Converter<?, ?>> keyConversions = TypeConversionRegister.TYPE_CONVERTERS.get(mapKeyType);
-        Map<Class<?>, Converter<?, ?>> valueConversions = TypeConversionRegister.TYPE_CONVERTERS.get(mapValueType);
+        Map<Class<?>, Converter<?, ?>> keyConversions = TYPE_CONVERTERS.get(mapKeyType);
+        Map<Class<?>, Converter<?, ?>> valueConversions = TYPE_CONVERTERS.get(mapValueType);
 
-        if (currentValue instanceof List) {
+        if (value instanceof List<?> values) {
             Map<Object, Object> map = new LinkedHashMap<>();
-            for (Object item : (List<?>) currentValue) {
-                Pair<Object, Object> converted = convertMapItem(item, asteriskDeserializer, keyConversions, valueConversions);
+            for (Object item : values) {
+                Pair<Object, Object> converted = convertMapItem(item, keyConversions, valueConversions);
                 map.put(converted.getKey(), converted.getValue());
             }
             return map;
         } else {
-            Pair<Object, Object> converted = convertMapItem(currentValue, asteriskDeserializer, keyConversions, valueConversions);
+            Pair<Object, Object> converted = convertMapItem(value, keyConversions, valueConversions);
             return Map.of(converted.getKey(), converted.getValue());
         }
     }
 
-    private static Object parseOtherType(Method method, Object currentValue) {
-        Class<?> sourceType = currentValue.getClass();
+    private static Object parseOtherType(Method method, Object value) {
+        Class<?> sourceType = value.getClass();
         Class<?> targetType = method.getParameterTypes()[0];
 
-        Map<Class<?>, Converter<?, ?>> conversions = TypeConversionRegister.TYPE_CONVERTERS.get(targetType);
+        Map<Class<?>, Converter<?, ?>> conversions = TYPE_CONVERTERS.get(targetType);
         @SuppressWarnings("rawtypes")
         Converter converter = conversions.get(sourceType);
         //noinspection unchecked
-        return converter.apply(currentValue);
-    }
-
-    private static AsteriskDeserializer<Pair<String, String>> getAsteriskDeserializer(Method method) {
-        AsteriskDeserialize asteriskDeserialize = method.getAnnotation(AsteriskDeserialize.class);
-        if (asteriskDeserialize == null) {
-            throw new RuntimeException("Map should have defined deserializer");
-        }
-
-        try {
-            Class<? extends AsteriskDeserializer<?>> asteriskDeserializerClass = asteriskDeserialize.value();
-            //noinspection unchecked
-            return (AsteriskDeserializer<Pair<String, String>>) asteriskDeserializerClass.getDeclaredConstructor().newInstance();
-        } catch (Exception e) {
-            throw new RuntimeException("Cannot create new instance of deserializer %s".formatted(asteriskDeserialize), e);
-        }
+        return converter.apply(value);
     }
 
     private static Pair<Object, Object> convertMapItem(
             Object object,
-            AsteriskDeserializer<Pair<String, String>> asteriskDeserializer,
             Map<Class<?>, Converter<?, ?>> keyConversions,
             Map<Class<?>, Converter<?, ?>> valueConversions
     ) {
-        Pair<String, String> deserialize = asteriskDeserializer.deserialize(String.valueOf(object));
+        String[] split = String.valueOf(object).split("=");
+        Pair<String, String> deserialize = Pair.of(split[0], split[1]);
 
         @SuppressWarnings("rawtypes")
         Converter keyConverter = keyConversions.get(String.class);

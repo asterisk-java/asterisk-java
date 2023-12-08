@@ -17,6 +17,7 @@ package org.asteriskjava.manager.internal;
 
 import org.asteriskjava.ami.action.response.ManagerResponse;
 import org.asteriskjava.ami.action.response.ResponseType;
+import org.asteriskjava.core.databind.AsteriskDecoder;
 import org.asteriskjava.manager.response.CommandResponse;
 import org.asteriskjava.manager.response.ManagerError;
 import org.asteriskjava.manager.util.EventAttributesHelper;
@@ -37,15 +38,24 @@ class ResponseBuilderImpl implements ResponseBuilder {
     private static final Logger logger = getLogger(ResponseBuilderImpl.class);
 
     private static final Set<String> ignoredAttributes = new HashSet<>(Arrays.asList(
-        "attributes", "proxyresponse", ManagerReader.COMMAND_RESULT_RESPONSE_KEY));
+            "attributes", "proxyresponse", ManagerReader.COMMAND_RESULT_RESPONSE_KEY));
 
     private static final String RESPONSE_KEY = "response";
     private static final String PROXY_RESPONSE_KEY = "proxyresponse";
     private static final String RESPONSE_TYPE_ERROR = "error";
     private static final String OUTPUT_RESPONSE_KEY = "output"; //Asterisk 14.3.0
 
+    private final AsteriskDecoder asteriskDecoder = new AsteriskDecoder(false);
+
     @SuppressWarnings("unchecked")
     public ManagerResponse buildResponse(Class<? extends ManagerResponse> responseClass, Map<String, Object> attributes) {
+        responseClass = responseClass == null ? ManagerResponse.class : responseClass;
+        if (responseClass.getPackageName().contains("org.asteriskjava.ami.action.response")) {
+            ManagerResponse response = asteriskDecoder.decode(attributes, responseClass);
+            response.setAttributes(new HashMap<>(attributes));
+            return response;
+        }
+
         final ManagerResponse response;
         final String responseType = (String) attributes.get(RESPONSE_KEY);
 
