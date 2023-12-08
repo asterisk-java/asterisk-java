@@ -1,3 +1,18 @@
+/*
+ * Copyright 2004-2023 Asterisk Java contributors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.asteriskjava.core.databind;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -11,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.asteriskjava.core.NewlineDelimiter.LF;
 import static org.asteriskjava.core.databind.AsteriskDecoderTest.BaseBean.ResponseType.Goodbye;
 
 class AsteriskDecoderTest {
@@ -83,6 +99,99 @@ class AsteriskDecoderTest {
         Map<String, Object> content = Map.of(
                 "Header", List.of("1=name1", "2=name2", "3=name3")
         );
+
+        //when
+        MapBean mapBean = asteriskDecoder.decode(content, MapBean.class);
+
+        //then
+        Map<Integer, String> map = Map.of(
+                1, "name1",
+                2, "name2",
+                3, "name3"
+        );
+        MapBean expected = new MapBean();
+        expected.setHeaders(map);
+        assertThat(mapBean).isEqualTo(expected);
+    }
+
+    @Test
+    void shouldDecodeSimpleBeanFromString() {
+        //given
+        AsteriskDecoder asteriskDecoder = new AsteriskDecoder();
+
+        Instant date = Instant.parse("2023-11-20T20:33:30.002Z");
+        String string = """
+                ActionID: id-1
+                DateReceived: %s
+                Challenge: 123456
+                Response: Goodbye
+                """.formatted(date);
+        String[] content = string.split(LF.getPattern());
+
+        //when
+        SimpleBean simpleBean = asteriskDecoder.decode(content, SimpleBean.class);
+
+        //then
+        SimpleBean expected = new SimpleBean();
+        expected.setChallenge("123456");
+        expected.setActionId("id-1");
+        expected.setDateReceived(date);
+        expected.setResponse(Goodbye);
+        assertThat(simpleBean).isEqualTo(expected);
+    }
+
+    @Test
+    void shouldDecoderListFromString() {
+        //given
+        AsteriskDecoder asteriskDecoder = new AsteriskDecoder();
+
+        String string = """
+                Number: 1
+                Number: 2
+                Number: 3
+                """;
+        String[] content = string.split(LF.getPattern());
+
+        //when
+        ListBean listBean = asteriskDecoder.decode(content, ListBean.class);
+
+        //then
+        ListBean expected = new ListBean();
+        expected.setNumbers(List.of(1, 2, 3));
+        assertThat(listBean).isEqualTo(expected);
+    }
+
+    @Test
+    void shouldDecodeMapFromString() {
+        //given
+        AsteriskDecoder asteriskDecoder = new AsteriskDecoder();
+
+        String string = """
+                Header: 1=name1
+                """;
+        String[] content = string.split(LF.getPattern());
+
+        //when
+        MapBean someClass = asteriskDecoder.decode(content, MapBean.class);
+
+        //then
+        Map<Integer, String> map = Map.of(1, "name1");
+        MapBean expected = new MapBean();
+        expected.setHeaders(map);
+        assertThat(someClass).isEqualTo(expected);
+    }
+
+    @Test
+    void shouldDecodeMapWhenIsListOfEntriesFromString() {
+        //given
+        AsteriskDecoder asteriskDecoder = new AsteriskDecoder();
+
+        String string = """
+                Header: 1=name1
+                Header: 2=name2
+                Header: 3=name3
+                """;
+        String[] content = string.split(LF.getPattern());
 
         //when
         MapBean mapBean = asteriskDecoder.decode(content, MapBean.class);

@@ -25,7 +25,7 @@ import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.joining;
 import static org.asteriskjava.core.NewlineDelimiter.CRLF;
 import static org.asteriskjava.core.NewlineDelimiter.LF;
-import static org.asteriskjava.core.databind.AsteriskEncoder.EncoderConsts.*;
+import static org.asteriskjava.core.databind.CodersConsts.*;
 import static org.asteriskjava.core.databind.utils.AnnotationUtils.getName;
 import static org.asteriskjava.core.databind.utils.Invoker.invokeOn;
 import static org.asteriskjava.core.databind.utils.ReflectionUtils.getGetters;
@@ -148,11 +148,5 @@ public class AsteriskEncoder {
         public AsteriskEncoder build() {
             return new AsteriskEncoder(newlineDelimiter, fieldNamesComparator);
         }
-    }
-
-    static class EncoderConsts {
-        final static String nameValueSeparator = ": ";
-        final static String listSeparator = ",";
-        final static String mapTemplate = "%s=%s";
     }
 }
