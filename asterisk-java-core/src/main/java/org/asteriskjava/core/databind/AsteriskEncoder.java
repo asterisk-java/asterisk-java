@@ -58,6 +58,11 @@ public class AsteriskEncoder {
             for (Entry<String, Object> entry : source.entrySet()) {
                 String name = entry.getKey();
                 Object value = entry.getValue();
+
+                if (value == null) {
+                    continue;
+                }
+
                 if (value instanceof List<?> values) {
                     values.forEach(v -> appendFieldNameAndValue(name, v, stringBuilder));
                 } else {

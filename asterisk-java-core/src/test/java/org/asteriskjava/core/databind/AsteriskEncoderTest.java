@@ -92,16 +92,36 @@ class AsteriskEncoderTest {
         String string = asteriskEncoder.encode(bean);
 
         //then
-        String expected = "Action: SimpleBean" + LF.getPattern();
-        expected += "ActionID: id-1" + LF.getPattern();
-        expected += "AuthType: MD5" + LF.getPattern();
-        expected += "Codecs: codec1,codec2" + LF.getPattern();
-        expected += "Variable: key1=value1" + LF.getPattern();
-        expected += "Variable: key2=value2" + LF.getPattern();
-        expected += "Variable: key3=value3" + LF.getPattern() + LF.getPattern();
         assertThat(string).contains(
                 "Action: SimpleBean", "ActionID: id-1", "AuthType: MD5", "Codecs: codec1,codec2",
                 "Variable: key1=value1", "Variable: key2=value2", "Variable: key3=value3"
+        );
+    }
+
+    @Test
+    void shouldNotEncodeNulls() {
+        //given
+        AsteriskEncoder asteriskEncoder = new AsteriskEncoder(LF);
+
+        SimpleBean bean = new SimpleBean();
+        bean.setActionId("id-1");
+        bean.setAuthType(MD5);
+        bean.setCodecs(null);
+        Map<String, String> variable = new LinkedHashMap<>();
+        variable.put("key1", "value1");
+        variable.put("key2", "value2");
+        variable.put("key3", "value3");
+        bean.setVariable(variable);
+
+        //when
+        String string = asteriskEncoder.encode(bean);
+
+        //then
+        assertThat(string).contains(
+                "Action: SimpleBean", "ActionID: id-1", "AuthType: MD5",
+                "Variable: key1=value1", "Variable: key2=value2", "Variable: key3=value3"
+        ).doesNotContain(
+                "Codecs: null"
         );
     }
 
