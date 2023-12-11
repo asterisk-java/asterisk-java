@@ -16,20 +16,23 @@
 package org.asteriskjava.ami.action;
 
 import org.asteriskjava.ami.action.response.ChallengeActionResponse;
+import org.asteriskjava.ami.action.response.LoginResponse;
+import org.asteriskjava.ami.action.response.ManagerActionResponse;
 import org.asteriskjava.ami.utils.ActionsRunner;
 import org.asteriskjava.ami.utils.ActionsRunner.ResponseRecorder;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
+import java.util.function.Function;
 
 import static java.time.Instant.now;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.asteriskjava.ami.action.AuthType.MD5;
-import static org.asteriskjava.ami.action.response.ResponseType.Success;
+import static org.asteriskjava.ami.action.response.ResponseType.Error;
 
-class ChallengeActionItTest extends BaseActionItTest {
+class LoginActionItTest extends BaseActionItTest {
     @Test
-    void shouldSendChallengeActionAndReceiveChallengeResponse() throws InterruptedException {
+    void shouldReturnFailedWhenLoginIsNotSuccessful() throws InterruptedException {
         //given
         Instant now = now();
 
@@ -37,18 +40,25 @@ class ChallengeActionItTest extends BaseActionItTest {
         challengeAction.setActionId("id-1");
         challengeAction.setAuthType(MD5);
 
+        Function<ManagerActionResponse, ManagerAction> loginActionProvider = prevResponse -> {
+            ChallengeActionResponse challengeActionResponse = (ChallengeActionResponse) prevResponse;
+            LoginAction loginAction = new LoginAction("asterisk-java-it-tests", MD5, challengeActionResponse.getChallenge());
+            loginAction.setActionId("id-2");
+            return loginAction;
+        };
+
         ActionsRunner actionsRunner = actionRunner()
                 .withFixedTime(now)
-                .registerAction(ChallengeAction.class, challengeAction);
+                .registerAction(ChallengeAction.class, challengeAction)
+                .registerAction(LoginAction.class, loginActionProvider);
 
         //when
         ResponseRecorder responseRecorder = actionsRunner.run();
 
         //then
-        ChallengeActionResponse actual = responseRecorder.getRecorderResponse("id-1", ChallengeActionResponse.class);
-        assertThat(actual.getResponse()).isEqualTo(Success);
-        assertThat(actual.getActionId()).isEqualTo("id-1");
+        LoginResponse actual = responseRecorder.getRecorderResponse("id-2", LoginResponse.class);
+        assertThat(actual.getResponse()).isEqualTo(Error);
+        assertThat(actual.getMessage()).isEqualTo("Authentication failed");
         assertThat(actual.getDateReceived()).isEqualTo(now);
-        assertThat(actual.getChallenge()).isNotBlank();
     }
 }

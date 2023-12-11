@@ -44,15 +44,6 @@ import static org.slf4j.LoggerFactory.getLogger;
 public class AsteriskDecoder {
     private static final Logger logger = getLogger(AsteriskDecoder.class);
 
-    private boolean caseSensitive = true;
-
-    public AsteriskDecoder() {
-    }
-
-    public AsteriskDecoder(boolean caseSensitive) {
-        this.caseSensitive = caseSensitive;
-    }
-
     public <T> T decode(String[] source, Class<T> target) {
         return decode(toMap(source), target);
     }
@@ -61,16 +52,39 @@ public class AsteriskDecoder {
         Map<String, Method> setters = getSetters(target)
                 .entrySet()
                 .stream()
-                .collect(Collectors.toMap(e -> {
-                    String name = getName(e.getValue(), e.getKey());
-                    return caseSensitive ? name : name.toLowerCase(ENGLISH);
-                }, Entry::getValue));
+                .collect(Collectors.toMap(e -> getName(e.getValue(), e.getKey()).toLowerCase(ENGLISH), Entry::getValue));
 
         T result = instantiateResultClass(target);
         for (Entry<String, Object> entry : source.entrySet()) {
-            handleEntry(entry, setters, result, caseSensitive);
+            handleEntry(entry, setters, result);
         }
         return result;
+    }
+
+    public static Map<String, Object> toMap(String[] source) {
+        Map<String, Object> map = new LinkedHashMap<>();
+        for (String line : source) {
+            String[] split = line.split(nameValueSeparator);
+            String name = split[0].trim().toLowerCase(ENGLISH);
+            Object value = split[1].trim();
+
+            if (map.containsKey(name)) {
+                Object currenValue = map.get(name);
+                //noinspection rawtypes
+                if (currenValue instanceof List list) {
+                    //noinspection unchecked
+                    list.add(value);
+                } else {
+                    List<Object> list = new LinkedList<>();
+                    list.add(currenValue);
+                    list.add(value);
+                    map.put(name, list);
+                }
+            } else {
+                map.put(name, value);
+            }
+        }
+        return map;
     }
 
     private static <T> T instantiateResultClass(Class<T> target) {
@@ -81,10 +95,10 @@ public class AsteriskDecoder {
         }
     }
 
-    private static <T> void handleEntry(Entry<String, Object> entry, Map<String, Method> setters, T result, boolean caseSensitive) {
+    private static <T> void handleEntry(Entry<String, Object> entry, Map<String, Method> setters, T result) {
         Object value = entry.getValue();
 
-        String key = caseSensitive ? entry.getKey() : entry.getKey().toLowerCase(ENGLISH);
+        String key = entry.getKey().toLowerCase(ENGLISH);
         Method method = setters.getOrDefault(key, null);
         if (method == null) {
             logger.warn("Unable to set the '{}' property to the value '{}' in the '{}' class. There is no setter method available. " +
@@ -189,31 +203,5 @@ public class AsteriskDecoder {
         Object valueValue = valueConverter.apply(value);
 
         return Pair.of(keyValue, valueValue);
-    }
-
-    private static Map<String, Object> toMap(String[] source) {
-        Map<String, Object> map = new LinkedHashMap<>();
-        for (String line : source) {
-            String[] split = line.split(nameValueSeparator);
-            String name = split[0].trim();
-            Object value = split[1].trim();
-
-            if (map.containsKey(name)) {
-                Object currenValue = map.get(name);
-                //noinspection rawtypes
-                if (currenValue instanceof List list) {
-                    //noinspection unchecked
-                    list.add(value);
-                } else {
-                    List<Object> list = new LinkedList<>();
-                    list.add(currenValue);
-                    list.add(value);
-                    map.put(name, list);
-                }
-            } else {
-                map.put(name, value);
-            }
-        }
-        return map;
     }
 }

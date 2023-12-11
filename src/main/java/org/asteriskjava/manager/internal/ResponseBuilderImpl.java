@@ -45,7 +45,7 @@ class ResponseBuilderImpl implements ResponseBuilder {
     private static final String RESPONSE_TYPE_ERROR = "error";
     private static final String OUTPUT_RESPONSE_KEY = "output"; //Asterisk 14.3.0
 
-    private final AsteriskDecoder asteriskDecoder = new AsteriskDecoder(false);
+    private final AsteriskDecoder asteriskDecoder = new AsteriskDecoder();
 
     @SuppressWarnings("unchecked")
     public ManagerActionResponse buildResponse(Class<? extends ManagerActionResponse> responseClass, Map<String, Object> attributes) {

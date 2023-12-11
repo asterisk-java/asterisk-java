@@ -30,11 +30,11 @@ import static org.asteriskjava.core.NewlineDelimiter.LF;
 import static org.asteriskjava.core.databind.AsteriskDecoderTest.BaseBean.ResponseType.Goodbye;
 
 class AsteriskDecoderTest {
-    private final AsteriskDecoder asteriskDecoder = new AsteriskDecoder();
-
     @Test
     void shouldDecodeForSimpleBeanWhichExtendsFormBaseBean() {
         //given
+        AsteriskDecoder asteriskDecoder = new AsteriskDecoder();
+
         Instant date = Instant.parse("2023-11-20T20:33:30.002Z");
 
         Map<String, Object> content = Map.of(

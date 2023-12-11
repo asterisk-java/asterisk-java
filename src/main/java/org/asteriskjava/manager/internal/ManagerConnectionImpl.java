@@ -16,12 +16,11 @@
 package org.asteriskjava.manager.internal;
 
 import org.asteriskjava.AsteriskVersion;
-import org.asteriskjava.ami.action.AuthType;
-import org.asteriskjava.ami.action.ChallengeAction;
-import org.asteriskjava.ami.action.ManagerAction;
+import org.asteriskjava.ami.action.*;
 import org.asteriskjava.ami.action.annotation.ExpectedResponse;
 import org.asteriskjava.ami.action.response.ChallengeActionResponse;
 import org.asteriskjava.ami.action.response.ManagerActionResponse;
+import org.asteriskjava.ami.action.response.ResponseType;
 import org.asteriskjava.lock.Lockable;
 import org.asteriskjava.lock.LockableList;
 import org.asteriskjava.lock.LockableMap;
@@ -48,12 +47,15 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
+import static java.util.Arrays.stream;
+import static java.util.stream.Collectors.toCollection;
 import static org.asteriskjava.manager.ManagerConnectionState.*;
 
 /**
@@ -75,18 +77,18 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
     // NOTE: identifier is AMI_VERSION, defined in include/asterisk/manager.h
     // AMI version consists of MAJOR.BREAKING.NON-BREAKING.
     private static final String[] SUPPORTED_AMI_VERSIONS = {
-        "2.6", // Asterisk 13
-        "2.7", // Asterisk 13.2
-        "2.8", // Asterisk >13.5
-        "2.9", // Asterisk >13.3
-        "3.1", // Asterisk =14.3
-        "3.2", // Asterisk 14.4.0
-        "4.0", // Asterisk 15
-        "5.0", // Asterisk 16
-        "6.0", // Asterisk 17
-        "7.0", // Asterisk 18
-        "8.0", // Asterisk 19
-        "9.0", // Asterisk 20
+            "2.6", // Asterisk 13
+            "2.7", // Asterisk 13.2
+            "2.8", // Asterisk >13.5
+            "2.9", // Asterisk >13.3
+            "3.1", // Asterisk =14.3
+            "3.2", // Asterisk 14.4.0
+            "4.0", // Asterisk 15
+            "5.0", // Asterisk 16
+            "6.0", // Asterisk 17
+            "7.0", // Asterisk 18
+            "8.0", // Asterisk 19
+            "9.0", // Asterisk 20
     };
 
     private static final AtomicLong idCounter = new AtomicLong(0);
@@ -533,7 +535,15 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
                 throw new AuthenticationFailedException("Unable to create login key using MD5 Message Digest", ex);
             }
 
-            loginAction = new LoginAction(username, "MD5", key, eventMask);
+            EnumSet<EventMask> eventMasks = null;
+            if (eventMask != null) {
+                eventMasks = stream(eventMask.split(","))
+                        .map(EventMask::valueOf)
+                        .collect(toCollection(() -> EnumSet.noneOf(EventMask.class)));
+            }
+
+            loginAction = new LoginAction(username, AuthType.MD5, key);
+            loginAction.setEvents(eventMasks);
             try {
                 loginResponse = sendAction(loginAction);
             } catch (Exception e) {
@@ -541,7 +551,7 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
                 throw new AuthenticationFailedException("Unable to send login action", e);
             }
 
-            if (loginResponse instanceof ManagerError) {
+            if (loginResponse.getResponse() == ResponseType.Error) {
                 disconnect();
                 throw new AuthenticationFailedException(loginResponse.getMessage());
             }

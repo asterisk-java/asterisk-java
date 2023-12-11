@@ -19,11 +19,11 @@ package org.asteriskjava.manager.internal;
 import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.ami.action.AuthType;
 import org.asteriskjava.ami.action.ChallengeAction;
+import org.asteriskjava.ami.action.LoginAction;
 import org.asteriskjava.ami.action.ManagerAction;
 import org.asteriskjava.ami.action.response.ChallengeActionResponse;
 import org.asteriskjava.ami.action.response.ManagerActionResponse;
 import org.asteriskjava.ami.action.response.ResponseType;
-import org.asteriskjava.manager.action.LoginAction;
 import org.asteriskjava.manager.action.LogoffAction;
 import org.asteriskjava.manager.event.ProtocolIdentifierReceivedEvent;
 import org.asteriskjava.manager.response.ManagerError;
@@ -119,9 +119,9 @@ public class ManagerWriterMock implements ManagerWriter {
             LoginAction loginAction = (LoginAction) action;
             String username = loginAction.getUsername();
             String key = loginAction.getKey();
-            String authType = loginAction.getAuthType();
+            AuthType authType = loginAction.getAuthType();
 
-            if (!"MD5".equals(authType)) {
+            if (!AuthType.MD5.equals(authType)) {
                 throw new RuntimeException("Expected authType 'MD5' got '" + authType + "'");
             }
 
