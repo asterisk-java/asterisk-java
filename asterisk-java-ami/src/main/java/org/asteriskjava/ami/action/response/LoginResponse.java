@@ -17,6 +17,7 @@ package org.asteriskjava.ami.action.response;
 
 import org.asteriskjava.ami.action.LoginAction;
 
+//todo maybe we need some generic empty response?
 /**
  * Corresponds to a {@link LoginAction} and contains information about login action.
  *
@@ -24,18 +25,4 @@ import org.asteriskjava.ami.action.LoginAction;
  * @since 4.0.0
  */
 public class LoginResponse extends ManagerActionResponse {
-    private String message;
-
-    /**
-     * Returns the message received with this response. The content depends on the action that generated this response.
-     */
-    @Override
-    public String getMessage() {
-        return message;
-    }
-
-    @Override
-    public void setMessage(String message) {
-        this.message = message;
-    }
 }

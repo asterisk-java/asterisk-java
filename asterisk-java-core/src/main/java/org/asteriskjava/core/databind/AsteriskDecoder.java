@@ -151,13 +151,14 @@ public class AsteriskDecoder {
 
         Map<Class<?>, Converter<?, ?>> conversions = TYPE_CONVERTERS.get(listElementType);
 
-        return ((List<?>) value)
+        List<?> list = value instanceof List<?> ? (List<?>) value : List.of(value);
+        return list
                 .stream()
                 .map(object -> {
                     @SuppressWarnings("rawtypes")
-                    Converter converter = conversions.get(object.getClass());
+                    Converter converter = conversions.get(String.class);
                     //noinspection unchecked
-                    return converter.apply(object);
+                    return converter.apply(object.toString());
                 })
                 .toList();
     }
@@ -195,6 +196,11 @@ public class AsteriskDecoder {
 
         @SuppressWarnings("rawtypes")
         Converter converter = conversions.get(sourceType);
+
+        if (converter == null) {
+            throw new RuntimeException("Cannot find converter from [%s] type to type [%s]".formatted(sourceType, targetType));
+        }
+
         //noinspection unchecked
         return converter.apply(value);
     }

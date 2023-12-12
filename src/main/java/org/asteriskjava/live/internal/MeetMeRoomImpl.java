@@ -16,12 +16,12 @@
  */
 package org.asteriskjava.live.internal;
 
+import org.asteriskjava.ami.action.CommandAction;
 import org.asteriskjava.live.ManagerCommunicationException;
 import org.asteriskjava.live.MeetMeRoom;
 import org.asteriskjava.live.MeetMeUser;
 import org.asteriskjava.lock.LockableMap;
 import org.asteriskjava.lock.Locker.LockCloser;
-import org.asteriskjava.manager.action.CommandAction;
 
 import java.util.ArrayList;
 import java.util.Collection;

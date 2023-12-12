@@ -18,21 +18,16 @@ package org.asteriskjava.manager.internal;
 import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.ami.action.*;
 import org.asteriskjava.ami.action.annotation.ExpectedResponse;
-import org.asteriskjava.ami.action.response.ChallengeActionResponse;
-import org.asteriskjava.ami.action.response.CoreSettingsResponse;
-import org.asteriskjava.ami.action.response.ManagerActionResponse;
-import org.asteriskjava.ami.action.response.ResponseType;
+import org.asteriskjava.ami.action.response.*;
 import org.asteriskjava.lock.Lockable;
 import org.asteriskjava.lock.LockableList;
 import org.asteriskjava.lock.LockableMap;
 import org.asteriskjava.lock.Locker.LockCloser;
 import org.asteriskjava.manager.*;
-import org.asteriskjava.manager.action.CommandAction;
 import org.asteriskjava.manager.action.EventGeneratingAction;
 import org.asteriskjava.manager.action.LogoffAction;
 import org.asteriskjava.manager.action.UserEventAction;
 import org.asteriskjava.manager.event.*;
-import org.asteriskjava.manager.response.CommandResponse;
 import org.asteriskjava.manager.response.ManagerError;
 import org.asteriskjava.pbx.util.LogTime;
 import org.asteriskjava.util.DateUtil;
@@ -625,13 +620,13 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
     protected AsteriskVersion determineVersionByCoreShowVersion() throws Exception {
         final ManagerActionResponse coreShowVersionResponse = sendAction(new CommandAction(CMD_SHOW_VERSION));
 
-        if (coreShowVersionResponse == null || !(coreShowVersionResponse instanceof CommandResponse)) {
+        if (coreShowVersionResponse == null || !(coreShowVersionResponse instanceof CommandActionResponse)) {
             // this needs 'command' permissions
             logger.info("Could not get response for 'core show version'");
             return null;
         }
 
-        final List<String> coreShowVersionResult = ((CommandResponse) coreShowVersionResponse).getResult();
+        final List<String> coreShowVersionResult = ((CommandActionResponse) coreShowVersionResponse).getOutput();
         if (coreShowVersionResult == null || coreShowVersionResult.isEmpty()) {
             logger.warn("Got empty response for 'core show version'");
             return null;

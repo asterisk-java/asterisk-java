@@ -33,7 +33,9 @@ public class ManagerResponse {
         this._attributes = response.getAttributes();
 
         if (response instanceof ManagerError) {
-            this.message = response.getOutput();
+            //todo
+//            this.message = response.getOutput();
+            this.message = null;
         } else {
             this.message = response.getMessage();
         }

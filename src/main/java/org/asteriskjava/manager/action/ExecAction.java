@@ -18,7 +18,7 @@ package org.asteriskjava.manager.action;
 
 import org.asteriskjava.ami.action.AbstractManagerAction;
 import org.asteriskjava.ami.action.annotation.ExpectedResponse;
-import org.asteriskjava.manager.response.CommandResponse;
+import org.asteriskjava.ami.action.response.CommandActionResponse;
 
 /**
  * The CommandAction sends a command line interface (CLI) command to the
@@ -46,9 +46,9 @@ import org.asteriskjava.manager.response.CommandResponse;
  *
  * @author srt
  * @version $Id$
- * @see org.asteriskjava.manager.response.CommandResponse
+ * @see CommandActionResponse
  */
-@ExpectedResponse(CommandResponse.class)
+@ExpectedResponse(CommandActionResponse.class)
 public class ExecAction extends AbstractManagerAction {
     static final long serialVersionUID = 4753117770471622025L;
     protected String command;

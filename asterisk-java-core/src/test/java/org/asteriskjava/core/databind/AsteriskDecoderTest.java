@@ -76,6 +76,24 @@ class AsteriskDecoderTest {
     }
 
     @Test
+    void shouldDecodeListValuesWhenIsOnlyOneElement() {
+        //given
+        AsteriskDecoder asteriskDecoder = new AsteriskDecoder();
+
+        Map<String, Object> content = Map.of(
+                "Number", 1
+        );
+
+        //when
+        ListBean listBean = asteriskDecoder.decode(content, ListBean.class);
+
+        //then
+        ListBean expected = new ListBean();
+        expected.setNumbers(List.of(1));
+        assertThat(listBean).isEqualTo(expected);
+    }
+
+    @Test
     void shouldDecodeMap() {
         //given
         AsteriskDecoder asteriskDecoder = new AsteriskDecoder();

@@ -1,8 +1,8 @@
 package org.asteriskjava.pbx.asterisk.wrap.response;
 
+import org.asteriskjava.ami.action.response.CommandActionResponse;
 import org.asteriskjava.ami.action.response.ManagerActionResponse;
 
-import java.util.Collections;
 import java.util.List;
 
 public class CommandResponse extends ManagerResponse {
@@ -13,11 +13,12 @@ public class CommandResponse extends ManagerResponse {
     public CommandResponse(ManagerActionResponse response) {
         super(response);
 
-        if (response instanceof org.asteriskjava.manager.response.CommandResponse) {
-            result = ((org.asteriskjava.manager.response.CommandResponse) response).getResult();
+        if (response instanceof CommandActionResponse) {
+            result = ((CommandActionResponse) response).getOutput();
         } else if (response instanceof org.asteriskjava.manager.response.ManagerError) {
             error = true;
-            result = Collections.singletonList(response.getOutput());
+            //todo
+//            result = Collections.singletonList(response.getOutput());
         }
     }
 

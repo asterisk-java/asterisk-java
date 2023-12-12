@@ -15,7 +15,7 @@ public class CommandAction extends AbstractManagerAction {
 
     @Override
     public ManagerAction getAJAction() {
-        final org.asteriskjava.manager.action.CommandAction action = new org.asteriskjava.manager.action.CommandAction();
+        final org.asteriskjava.ami.action.CommandAction action = new org.asteriskjava.ami.action.CommandAction();
         action.setCommand(this._command);
         action.setActionId(this.getActionId());
 

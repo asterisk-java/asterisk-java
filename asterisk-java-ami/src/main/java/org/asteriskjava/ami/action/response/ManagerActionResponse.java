@@ -41,14 +41,10 @@ public class ManagerActionResponse implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private ResponseType response;
-
     private Instant dateReceived;
-
     private String actionId;
+    private String message;
 
-    /**
-     * Asterisk argument: {@code Response}.
-     */
     public ResponseType getResponse() {
         return response;
     }
@@ -57,9 +53,6 @@ public class ManagerActionResponse implements Serializable {
         this.response = response;
     }
 
-    /**
-     * Returns the point in time when this response was received from the Asterisk server.
-     */
     public Instant getDateReceived() {
         return dateReceived;
     }
@@ -68,12 +61,6 @@ public class ManagerActionResponse implements Serializable {
         this.dateReceived = dateReceived;
     }
 
-    /**
-     * Asterisk argument: {@code ActionID}.
-     * <p>
-     * Returns the user provided action id of the {@link ManagerAction} that caused this response. If the application
-     * did not set an {@code ActionID} this method returns {@code null}.
-     */
     public String getActionId() {
         return actionId;
     }
@@ -81,6 +68,14 @@ public class ManagerActionResponse implements Serializable {
     @AsteriskName("ActionID")
     public void setActionId(String actionId) {
         this.actionId = actionId;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     @Override
@@ -99,6 +94,7 @@ public class ManagerActionResponse implements Serializable {
                 .append(response, that.response)
                 .append(dateReceived, that.dateReceived)
                 .append(actionId, that.actionId)
+                .append(message, that.message)
                 .isEquals();
     }
 
@@ -108,6 +104,7 @@ public class ManagerActionResponse implements Serializable {
                 .append(response)
                 .append(dateReceived)
                 .append(actionId)
+                .append(message)
                 .toHashCode();
     }
 
@@ -117,6 +114,7 @@ public class ManagerActionResponse implements Serializable {
                 .append("response", response)
                 .append("dateReceived", dateReceived)
                 .append("actionId", actionId)
+                .append("message", message)
                 .toString();
     }
 
@@ -128,7 +126,6 @@ public class ManagerActionResponse implements Serializable {
      */
     private String server;
     private String eventList;
-    private String message;
     private String uniqueId;
     private String events;
     private Map<String, Object> attributes;
@@ -237,21 +234,6 @@ public class ManagerActionResponse implements Serializable {
     }
 
     /**
-     * Returns the message received with this response. The content depends on
-     * the action that generated this response.
-     */
-    public String getMessage() {
-        return message;
-    }
-
-    /**
-     * Sets the message.
-     */
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    /**
      * Returns the unique id received with this response. The unique id is used
      * to keep track of channels created by the action sent, for example an
      * OriginateAction.
@@ -297,13 +279,5 @@ public class ManagerActionResponse implements Serializable {
 
     public void setEvents(String events) {
         this.events = events;
-    }
-
-    public String getOutput() {
-        return output;
-    }
-
-    public void setOutput(String output) {
-        this.output = output;
     }
 }

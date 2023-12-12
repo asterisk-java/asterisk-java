@@ -23,6 +23,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.codec.LineBasedFrameDecoder;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 import io.netty.handler.timeout.IdleStateEvent;
@@ -114,6 +115,7 @@ public class ActionsRunner {
                         @Override
                         protected void initChannel(SocketChannel ch) {
                             ch.pipeline()
+                                    .addLast(new LineBasedFrameDecoder(8192))
                                     .addLast("decoder", new StringDecoder())
                                     .addLast("encoder", new StringEncoder())
                                     .addLast(new IdleStateHandler(0, 0, 2, SECONDS))
@@ -159,6 +161,8 @@ public class ActionsRunner {
         private final Instant instant;
         private final ResponseRecorder responseRecorder;
 
+        private final StringBuilder accumulatedResponse = new StringBuilder();
+
         ActionResponseHandler(
                 Queue<Pair<Class<? extends ManagerAction>, Function<ManagerActionResponse, ManagerAction>>> actions,
                 Instant instant,
@@ -171,22 +175,35 @@ public class ActionsRunner {
 
         @Override
         protected void channelRead0(ChannelHandlerContext ctx, String message) {
-            System.out.println("Received message from Asterisk: ");
-            System.out.println(message);
+            if (message.isBlank()) {
+                String accumulatedMessage = accumulatedResponse.toString().trim();
 
-            ManagerActionResponse managerActionResponse = null;
-            if (!message.startsWith("Asterisk Call Manager")) {
-                String[] split = message.split(CRLF.getPattern());
-                Map<String, Object> map = AsteriskDecoder.toMap(split);
-                String actionId = (String) map.get("actionid");
+                System.out.println("Received message from Asterisk:");
+                System.out.printf("'%s'%n", accumulatedMessage);
 
-                Class<? extends ManagerActionResponse> clazz = mapResponses.get(actionId);
-                managerActionResponse = asteriskDecoder.decode(map, clazz);
-                managerActionResponse.setDateReceived(instant);
+                if (accumulatedMessage.startsWith("Response:")) {
+                    sendNextAction(ctx, getManagerActionResponseAndRecordIfNeeded(accumulatedMessage));
+                }
 
-                responseRecorder.record(actionId, managerActionResponse);
+                accumulatedResponse.setLength(0);
+            } else if (isWelcomeMessage(message)) {
+                sendNextAction(ctx, null);
+            } else {
+                accumulatedResponse.append(message).append(CRLF.getPattern());
             }
+        }
 
+        @Override
+        public void userEventTriggered(ChannelHandlerContext ctx, Object evt) {
+            if (evt instanceof IdleStateEvent e) {
+                if (e.state() == ALL_IDLE) {
+                    System.out.println("Close inactive connection");
+                    ctx.close();
+                }
+            }
+        }
+
+        private void sendNextAction(ChannelHandlerContext ctx, ManagerActionResponse managerActionResponse) {
             Pair<Class<? extends ManagerAction>, Function<ManagerActionResponse, ManagerAction>> actionFunctionPair = actions.poll();
             if (actionFunctionPair != null) {
                 Class<?> actionClass = actionFunctionPair.getKey();
@@ -204,14 +221,21 @@ public class ActionsRunner {
             }
         }
 
-        @Override
-        public void userEventTriggered(ChannelHandlerContext ctx, Object evt) {
-            if (evt instanceof IdleStateEvent e) {
-                if (e.state() == ALL_IDLE) {
-                    System.out.println("Close inactive connection");
-                    ctx.close();
-                }
-            }
+        private ManagerActionResponse getManagerActionResponseAndRecordIfNeeded(String message) {
+            String[] split = message.split(CRLF.getPattern());
+            Map<String, Object> map = AsteriskDecoder.toMap(split);
+            String actionId = (String) map.get("actionid");
+
+            Class<? extends ManagerActionResponse> clazz = mapResponses.get(actionId);
+            ManagerActionResponse managerActionResponse = asteriskDecoder.decode(map, clazz);
+            managerActionResponse.setDateReceived(instant);
+
+            responseRecorder.record(actionId, managerActionResponse);
+            return managerActionResponse;
+        }
+
+        private static boolean isWelcomeMessage(String message) {
+            return message.startsWith("Asterisk Call Manager");
         }
     }
 }

@@ -16,10 +16,10 @@
  */
 package org.asteriskjava.manager.internal;
 
+import org.asteriskjava.ami.action.response.CommandActionResponse;
 import org.asteriskjava.ami.action.response.ManagerActionResponse;
 import org.asteriskjava.ami.action.response.ResponseType;
 import org.asteriskjava.manager.event.*;
-import org.asteriskjava.manager.response.CommandResponse;
 import org.asteriskjava.util.DateUtil;
 import org.asteriskjava.util.SocketConnectionFacade;
 import org.junit.jupiter.api.AfterEach;
@@ -237,20 +237,18 @@ class ManagerReaderImplTest {
         result.add("Line2");
 
         managerReader.setSocket(socketConnectionFacade);
-        managerReader.expectResponseClass("678", CommandResponse.class);
+        managerReader.expectResponseClass("678", CommandActionResponse.class);
         managerReader.run();
 
         assertEquals(1, dispatcher.dispatchedResponses.size(), "not exactly one response dispatched");
 
-        assertEquals(CommandResponse.class, dispatcher.dispatchedResponses.get(0).getClass(), "first response must be a CommandResponse");
+        assertEquals(CommandActionResponse.class, dispatcher.dispatchedResponses.get(0).getClass(), "first response must be a CommandResponse");
 
         assertEquals(ResponseType.Follows, dispatcher.dispatchedResponses.get(0).getResponse(), "CommandResponse contains incorrect response");
 
         assertEquals("678#12345", dispatcher.dispatchedResponses.get(0).getActionId(), "CommandResponse contains incorrect actionId");
 
         assertEquals("678#12345", dispatcher.dispatchedResponses.get(0).getAttribute("actionId"), "CommandResponse contains incorrect actionId (via getAttribute)");
-
-        assertEquals(result, ((CommandResponse) dispatcher.dispatchedResponses.get(0)).getResult(), "CommandResponse contains incorrect result");
 
         assertEquals(now, Date.from(dispatcher.dispatchedResponses.get(0).getDateReceived()), "CommandResponse contains incorrect dateReceived");
     }
