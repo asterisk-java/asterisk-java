@@ -26,9 +26,11 @@ import java.time.Instant;
 import java.util.function.Function;
 
 import static java.time.Instant.now;
+import static org.apache.commons.codec.digest.DigestUtils.md5Hex;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.asteriskjava.ami.action.AuthType.MD5;
 import static org.asteriskjava.ami.action.response.ResponseType.Error;
+import static org.asteriskjava.ami.action.response.ResponseType.Success;
 
 class LoginActionItTest extends BaseActionItTest {
     @Test
@@ -40,9 +42,40 @@ class LoginActionItTest extends BaseActionItTest {
         challengeAction.setActionId("id-1");
         challengeAction.setAuthType(MD5);
 
+        LoginAction loginAction = new LoginAction("asterisk-java-it-tests", MD5, "invalid");
+        loginAction.setActionId("id-2");
+
+        ActionsRunner actionsRunner = actionRunner()
+                .withFixedTime(now)
+                .registerAction(ChallengeAction.class, challengeAction)
+                .registerAction(LoginAction.class, loginAction);
+
+        //when
+        ResponseRecorder responseRecorder = actionsRunner.run();
+
+        //then
+        LoginResponse actual = responseRecorder.getRecorderResponse("id-2", LoginResponse.class);
+        assertThat(actual.getResponse()).isEqualTo(Error);
+        assertThat(actual.getMessage()).isEqualTo("Authentication failed");
+        assertThat(actual.getDateReceived()).isEqualTo(now);
+    }
+
+    @Test
+    void shouldLoginSuccessfully() throws InterruptedException {
+        //given
+        Instant now = now();
+
+        ChallengeAction challengeAction = new ChallengeAction();
+        challengeAction.setActionId("id-1");
+        challengeAction.setAuthType(MD5);
+
         Function<ManagerActionResponse, ManagerAction> loginActionProvider = prevResponse -> {
             ChallengeActionResponse challengeActionResponse = (ChallengeActionResponse) prevResponse;
-            LoginAction loginAction = new LoginAction("asterisk-java-it-tests", MD5, challengeActionResponse.getChallenge());
+
+            String challenge = challengeActionResponse.getChallenge();
+            String bytes = md5Hex(challenge + "123qwe");
+
+            LoginAction loginAction = new LoginAction("asterisk-java-it-tests", MD5, bytes);
             loginAction.setActionId("id-2");
             return loginAction;
         };
@@ -57,8 +90,8 @@ class LoginActionItTest extends BaseActionItTest {
 
         //then
         LoginResponse actual = responseRecorder.getRecorderResponse("id-2", LoginResponse.class);
-        assertThat(actual.getResponse()).isEqualTo(Error);
-        assertThat(actual.getMessage()).isEqualTo("Authentication failed");
+        assertThat(actual.getResponse()).isEqualTo(Success);
+        assertThat(actual.getMessage()).isEqualTo("Authentication accepted");
         assertThat(actual.getDateReceived()).isEqualTo(now);
     }
 }

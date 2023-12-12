@@ -30,6 +30,7 @@ import java.util.stream.Collectors;
 
 import static java.util.Arrays.stream;
 import static java.util.Locale.ENGLISH;
+import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.asteriskjava.core.databind.CodersConsts.nameValueSeparator;
 import static org.asteriskjava.core.databind.TypeConversionRegister.TYPE_CONVERTERS;
 import static org.asteriskjava.core.databind.utils.AnnotationUtils.getName;
@@ -64,6 +65,10 @@ public class AsteriskDecoder {
     public static Map<String, Object> toMap(String[] source) {
         Map<String, Object> map = new LinkedHashMap<>();
         for (String line : source) {
+            if (isBlank(line)) {
+                continue;
+            }
+
             String[] split = line.split(nameValueSeparator);
             String name = split[0].trim().toLowerCase(ENGLISH);
             Object value = split[1].trim();

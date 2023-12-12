@@ -44,8 +44,6 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -56,6 +54,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.toCollection;
+import static org.apache.commons.codec.digest.DigestUtils.md5Hex;
 import static org.asteriskjava.manager.ManagerConnectionState.*;
 
 /**
@@ -519,21 +518,7 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
                         + challengeResponse.getMessage());
             }
 
-            try {
-                MessageDigest md;
-
-                md = MessageDigest.getInstance("MD5");
-                if (challenge != null) {
-                    md.update(challenge.getBytes(StandardCharsets.UTF_8));
-                }
-                if (password != null) {
-                    md.update(password.getBytes(StandardCharsets.UTF_8));
-                }
-                key = ManagerUtil.toHexString(md.digest());
-            } catch (NoSuchAlgorithmException ex) {
-                disconnect();
-                throw new AuthenticationFailedException("Unable to create login key using MD5 Message Digest", ex);
-            }
+            key = md5Hex(challenge + password);
 
             EnumSet<EventMask> eventMasks = null;
             if (eventMask != null) {

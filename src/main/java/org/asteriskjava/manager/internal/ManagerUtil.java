@@ -42,24 +42,6 @@ public class ManagerUtil {
     }
 
     /**
-     * Converts a byte array to a hex string representing it. The hex digits are
-     * lower case.
-     *
-     * @param b the byte array to convert
-     * @return the hex representation of b
-     */
-    public static String toHexString(byte[] b) {
-        final StringBuilder sb;
-
-        sb = new StringBuilder(b.length * 2);
-        for (byte aB : b) {
-            sb.append(hexChar[(aB & 0xf0) >>> 4]);
-            sb.append(hexChar[aB & 0x0f]);
-        }
-        return sb.toString();
-    }
-
-    /**
      * Returns the internal action id contained in the given action id.
      *
      * @param actionId the action id prefixed by the internal action id as
