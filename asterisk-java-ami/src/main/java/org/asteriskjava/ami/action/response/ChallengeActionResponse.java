@@ -27,7 +27,6 @@ import java.io.Serial;
  *
  * @author Stefan Reuter
  * @author Piotr Olaszewski
- * @see ChallengeAction
  * @since 1.0.0
  */
 public class ChallengeActionResponse extends ManagerActionResponse {

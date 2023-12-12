@@ -29,6 +29,11 @@ import java.util.EnumSet;
  * An unsuccessful login results in an ManagerError being received from the server with a message set to
  * "Authentication failed" and the socket being closed by Asterisk.
  * <p>
+ * Username and secret must be configured in Asterisk's {@code manager.conf}
+ * <p>
+ * Set to {@link EventMask#on} if all events should be sent, {@link EventMask#off} if not events should be sent or
+ * combination of other flags from {@link EventMask}.
+ * <p>
  * Supported Asterisk versions:
  * <ul>
  *     <li>18 - <a href="https://docs.asterisk.org/Asterisk_18_Documentation/API_Documentation/AMI_Actions/Login/">Login</a></li>
@@ -53,10 +58,6 @@ import java.util.EnumSet;
  *
  * @author Stefan Reuter
  * @author Piotr Olaszewski
- * @see ChallengeAction
- * @see AuthType
- * @see LoginResponse
- * @see EventMask
  * @since 1.0.0
  */
 @ExpectedResponse(LoginResponse.class)
@@ -105,92 +106,45 @@ public class LoginAction extends AbstractManagerAction {
         return "Login";
     }
 
-    /**
-     * Asterisk argument: {@code Username}.
-     * <p>
-     * Username must be configured in Asterisk's {@code manager.conf}.
-     */
     public String getUsername() {
         return username;
     }
 
-    /**
-     * Sets Asterisk argument: {@code Username}.
-     * <p>
-     * Username must be configured in Asterisk's {@code manager.conf}.
-     */
     public void setUsername(String username) {
         this.username = username;
     }
 
-    /**
-     * Asterisk argument: {@code Secret}.
-     * <p>
-     * Secret must be configured in Asterisk's {@code manager.conf}.
-     */
     public String getSecret() {
         return secret;
     }
 
     /**
-     * Sets Asterisk argument: {@code Secret}.
-     * <p>
-     * Secret must be configured in Asterisk's {@code manager.conf}.
-     * <p>
-     * <b>The secret is passed to Asterisk in clear text.</b>
+     * @deprecated The secret is passed to Asterisk in <b>clear text</b>.
      */
     public void setSecret(String secret) {
         this.secret = secret;
     }
 
-    /**
-     * Asterisk argument: {@code AuthType}.
-     */
     public AuthType getAuthType() {
         return authType;
     }
 
-    /**
-     * Sets Asterisk argument: {@code AuthType}.
-     * <p>
-     * The digest algorithm is used to create the key based on the challenge and the user's password.<p>
-     * Currently, Asterisk supports only {@code MD5}.
-     */
     public void setAuthType(AuthType authType) {
         this.authType = authType;
     }
 
-    /**
-     * Asterisk argument: {@code Key}.
-     * <p>
-     * Hash of the user's password and the challenge.
-     */
     public String getKey() {
         return key;
     }
 
-    /**
-     * Sets Asterisk argument: {@code Key}.
-     */
     public void setKey(String key) {
         this.key = key;
     }
 
-    /**
-     * Asterisk argument: {@code Events}.
-     */
     public EnumSet<EventMask> getEvents() {
         return events;
     }
 
-    /**
-     * Sets Asterisk argument: {@code Events}.
-     * <p>
-     * Specify what kind of events should be sent.
-     * <p>
-     * Set to {@link EventMask#on} if all events should be sent, {@link EventMask#off} if not events should be sent or
-     * combination of other flags from {@link EventMask}.
-     */
     public void setEvents(EnumSet<EventMask> events) {
         this.events = events;
     }

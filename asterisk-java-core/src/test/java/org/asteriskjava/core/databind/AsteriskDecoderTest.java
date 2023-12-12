@@ -28,6 +28,7 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.asteriskjava.core.NewlineDelimiter.LF;
 import static org.asteriskjava.core.databind.AsteriskDecoderTest.BaseBean.ResponseType.Goodbye;
+import static org.asteriskjava.core.databind.AsteriskDecoderTest.BaseBean.ResponseType.Success;
 
 class AsteriskDecoderTest {
     @Test
@@ -205,6 +206,29 @@ class AsteriskDecoderTest {
         MapBean expected = new MapBean();
         expected.setHeaders(map);
         assertThat(mapBean).isEqualTo(expected);
+    }
+
+    @Test
+    void shouldHandleEmptyValues() {
+        //given
+        AsteriskDecoder asteriskDecoder = new AsteriskDecoder();
+
+        String string = """
+                Response: Success
+                ActionID: id-1
+                Challenge: 
+                """;
+        String[] content = string.split(LF.getPattern());
+
+        //when
+        SimpleBean simpleBean = asteriskDecoder.decode(content, SimpleBean.class);
+
+        //then
+        SimpleBean expected = new SimpleBean();
+        expected.setChallenge(null);
+        expected.setActionId("id-1");
+        expected.setResponse(Success);
+        assertThat(simpleBean).isEqualTo(expected);
     }
 
     public static class BaseBean {

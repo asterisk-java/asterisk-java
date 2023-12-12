@@ -30,6 +30,7 @@ import java.util.stream.Collectors;
 
 import static java.util.Arrays.stream;
 import static java.util.Locale.ENGLISH;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.asteriskjava.core.databind.CodersConsts.nameValueSeparator;
 import static org.asteriskjava.core.databind.TypeConversionRegister.TYPE_CONVERTERS;
@@ -71,7 +72,12 @@ public class AsteriskDecoder {
 
             String[] split = line.split(nameValueSeparator);
             String name = split[0].trim().toLowerCase(ENGLISH);
-            Object value = split[1].trim();
+            Object value = null;
+            if (split.length == 1) {
+                name = name.replace(nameValueSeparator.trim(), EMPTY);
+            } else {
+                value = split[1].trim();
+            }
 
             if (map.containsKey(name)) {
                 Object currenValue = map.get(name);
@@ -118,7 +124,9 @@ public class AsteriskDecoder {
 
     private static Object getValue(Object value, Method method) {
         Class<?> targetDataType = method.getParameterTypes()[0];
-        if (targetDataType.isEnum()) {
+        if (value == null) {
+            return null;
+        } else if (targetDataType.isEnum()) {
             return parseEnum(method, value);
         } else if (targetDataType.isAssignableFrom(List.class)) {
             return parseList(method, value);
@@ -180,6 +188,11 @@ public class AsteriskDecoder {
         Class<?> targetType = method.getParameterTypes()[0];
 
         Map<Class<?>, Converter<?, ?>> conversions = TYPE_CONVERTERS.get(targetType);
+
+        if (conversions == null) {
+            throw new RuntimeException("Cannot find conversions for type [%s]".formatted(targetType));
+        }
+
         @SuppressWarnings("rawtypes")
         Converter converter = conversions.get(sourceType);
         //noinspection unchecked

@@ -100,7 +100,6 @@ public enum EventMask {
      * MESSAGE events.
      */
     message,
-
     /**
      * Allows to receive all events.
      */

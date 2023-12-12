@@ -34,7 +34,6 @@ import java.util.Map;
  * match the action id of the corresponding action.
  *
  * @author Stefan Reuter
- * @see ManagerAction
  * @since 1.0.0
  */
 public class ManagerActionResponse implements Serializable {

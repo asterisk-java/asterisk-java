@@ -28,8 +28,11 @@ import io.netty.handler.codec.string.StringEncoder;
 import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.handler.timeout.IdleStateHandler;
 import org.asteriskjava.ami.ActionFieldsComparator;
+import org.asteriskjava.ami.action.ChallengeAction;
+import org.asteriskjava.ami.action.LoginAction;
 import org.asteriskjava.ami.action.ManagerAction;
 import org.asteriskjava.ami.action.annotation.ExpectedResponse;
+import org.asteriskjava.ami.action.response.ChallengeActionResponse;
 import org.asteriskjava.ami.action.response.ManagerActionResponse;
 import org.asteriskjava.core.databind.AsteriskDecoder;
 import org.asteriskjava.core.databind.AsteriskEncoder;
@@ -48,6 +51,8 @@ import java.util.function.Function;
 import static io.netty.handler.timeout.IdleState.ALL_IDLE;
 import static java.time.Instant.now;
 import static java.util.concurrent.TimeUnit.SECONDS;
+import static org.apache.commons.codec.digest.DigestUtils.md5Hex;
+import static org.asteriskjava.ami.action.AuthType.MD5;
 import static org.asteriskjava.core.NewlineDelimiter.CRLF;
 
 public class ActionsRunner {
@@ -63,6 +68,25 @@ public class ActionsRunner {
     public ActionsRunner withFixedTime(Instant now) {
         this.now = now;
         return this;
+    }
+
+    public ActionsRunner registerLoginSequence() {
+        ChallengeAction challengeAction = new ChallengeAction();
+        challengeAction.setActionId("login-seq-1");
+        challengeAction.setAuthType(MD5);
+
+        Function<ManagerActionResponse, ManagerAction> loginActionProvider = prevResponse -> {
+            ChallengeActionResponse challengeActionResponse = (ChallengeActionResponse) prevResponse;
+
+            String challenge = challengeActionResponse.getChallenge();
+            String bytes = md5Hex(challenge + "123qwe");
+
+            LoginAction loginAction = new LoginAction("asterisk-java-it-tests", MD5, bytes);
+            loginAction.setActionId("login-seq-2");
+            return loginAction;
+        };
+        return registerAction(ChallengeAction.class, challengeAction)
+                .registerAction(LoginAction.class, loginActionProvider);
     }
 
     public <A extends ManagerAction> ActionsRunner registerAction(Class<A> actionClass, Function<ManagerActionResponse, ManagerAction> actionProvider) {

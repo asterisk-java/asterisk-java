@@ -32,7 +32,6 @@ import java.io.Serial;
  *
  * @author Stefan Reuter
  * @author Piotr Olaszewski
- * @see ChallengeActionResponse
  * @since 1.0.0
  */
 @ExpectedResponse(ChallengeActionResponse.class)
@@ -47,16 +46,10 @@ public class ChallengeAction extends AbstractManagerAction {
         return "Challenge";
     }
 
-    /**
-     * Asterisk argument: {@code AuthType}.
-     */
     public AuthType getAuthType() {
         return authType;
     }
 
-    /**
-     * Sets Asterisk argument: {@code AuthType}.
-     */
     public void setAuthType(AuthType authType) {
         this.authType = authType;
     }

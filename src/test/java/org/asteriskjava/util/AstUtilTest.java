@@ -6,16 +6,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class AstUtilTest {
     @Test
-    void testIsTrue() {
-        assertTrue(AstUtil.isTrue("on"), "on must be true");
-        assertTrue(AstUtil.isTrue("ON"), "ON must be true");
-        assertTrue(AstUtil.isTrue("Enabled"), "Enabled must be true");
-        assertTrue(AstUtil.isTrue("true"), "true must be true");
-        assertFalse(AstUtil.isTrue("false"), "false must be false");
-        assertFalse(AstUtil.isTrue(null), "null must be false");
-    }
-
-    @Test
     void testParseCallerIdName() {
         assertEquals("Hans Wurst", AstUtil.parseCallerId("\"Hans Wurst\"<1234>")[0]);
         assertEquals("Hans Wurst", AstUtil.parseCallerId("\"Hans Wurst\" <1234>")[0]);

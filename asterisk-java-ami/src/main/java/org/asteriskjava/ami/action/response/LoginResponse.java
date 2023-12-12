@@ -21,7 +21,6 @@ import org.asteriskjava.ami.action.LoginAction;
  * Corresponds to a {@link LoginAction} and contains information about login action.
  *
  * @author Piotr Olaszewski
- * @see LoginAction
  * @since 4.0.0
  */
 public class LoginResponse extends ManagerActionResponse {

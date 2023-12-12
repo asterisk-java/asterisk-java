@@ -19,7 +19,6 @@ package org.asteriskjava.ami.action;
  * Digest algorithms to use in the challenge.
  *
  * @author Piotr Olaszewski
- * @see ChallengeAction
  * @since 4.0.0
  */
 public enum AuthType {

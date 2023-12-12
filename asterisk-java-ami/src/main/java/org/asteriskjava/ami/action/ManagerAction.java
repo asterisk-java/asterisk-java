@@ -29,14 +29,8 @@ import java.io.Serializable;
  * @since 1.0.0
  */
 public interface ManagerAction extends Serializable {
-    /**
-     * Asterisk argument: {@code Action}.
-     */
     String getAction();
 
-    /**
-     * Asterisk argument: {@code ActionID}.
-     */
     String getActionId();
 
     /**

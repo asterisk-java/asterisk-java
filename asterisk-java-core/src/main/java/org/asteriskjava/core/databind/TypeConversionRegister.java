@@ -15,6 +15,8 @@
  */
 package org.asteriskjava.core.databind;
 
+import org.asteriskjava.core.databind.utils.ToBoolean;
+
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,6 +33,9 @@ public class TypeConversionRegister {
     public static final Map<Class<?>, Map<Class<?>, Converter<?, ?>>> TYPE_CONVERTERS = new ConcurrentHashMap<>();
 
     static {
+        convertFrom(String.class).to(boolean.class).register(ToBoolean::toBoolean);
+        convertFrom(String.class).to(Boolean.class).register(ToBoolean::toBoolean);
+        convertFrom(String.class).to(Double.class).register(Double::valueOf);
         convertFrom(String.class).to(Instant.class).register(Instant::parse);
         convertFrom(String.class).to(Integer.class).register(Integer::valueOf);
         convertFrom(String.class).to(String.class).register(Object::toString);
