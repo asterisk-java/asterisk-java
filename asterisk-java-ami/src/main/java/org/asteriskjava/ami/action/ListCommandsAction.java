@@ -1,5 +1,5 @@
 /*
- *  Copyright 2004-2007 Stefan Reuter and others
+ *  Copyright 2004-2006 Stefan Reuter
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -14,36 +14,32 @@
  *  limitations under the License.
  *
  */
-package org.asteriskjava.manager.action;
+package org.asteriskjava.ami.action;
 
-import org.asteriskjava.ami.action.AbstractManagerAction;
-import org.asteriskjava.ami.action.response.ManagerActionResponse;
+import org.asteriskjava.ami.action.annotation.ExpectedResponse;
+import org.asteriskjava.ami.action.response.ListCommandActionResponse;
+
+import java.io.Serial;
 
 /**
- * The ListCommandsAction returns possible commands in the Manager interface.
+ * List available manager commands.
  * <p>
- * Use the getAttributes method on the ManagerResponse for a map of commands and explanations.
+ * Returns the action name and synopsis for every action that is available to the user.
+ * <p>
+ * Supported Asterisk versions:
+ * <ul>
+ *     <li>18 - <a href="https://docs.asterisk.org/Asterisk_18_Documentation/API_Documentation/AMI_Actions/ListCommands/">ListCommands</a></li>
+ *     <li>20 - <a href="https://docs.asterisk.org/Asterisk_20_Documentation/API_Documentation/AMI_Actions/ListCommands/">ListCommands</a></li>
+ * </ul>
  *
- * @author martins
- * @see ManagerActionResponse#getAttributes()
- * @since 0.3
+ * @author Martin Smith
+ * @since 1.0.0
  */
+@ExpectedResponse(ListCommandActionResponse.class)
 public class ListCommandsAction extends AbstractManagerAction {
-    /**
-     * Serializable version identifier
-     */
+    @Serial
     private static final long serialVersionUID = -2651441681309280764L;
 
-    /**
-     * Creates a new ListCommandsAction.
-     */
-    public ListCommandsAction() {
-
-    }
-
-    /**
-     * Returns the name of this action, i.e. "ListCommands".
-     */
     @Override
     public String getAction() {
         return "ListCommands";

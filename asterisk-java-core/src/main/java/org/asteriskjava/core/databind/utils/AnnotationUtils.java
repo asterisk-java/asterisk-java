@@ -15,9 +15,12 @@
  */
 package org.asteriskjava.core.databind.utils;
 
+import org.asteriskjava.core.databind.annotation.AsteriskAttributesBucket;
 import org.asteriskjava.core.databind.annotation.AsteriskName;
 
 import java.lang.reflect.Method;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Convenient class for handling annotations.
@@ -32,5 +35,19 @@ public final class AnnotationUtils {
     public static String getName(Method method, String name) {
         AsteriskName asteriskName = method.getAnnotation(AsteriskName.class);
         return asteriskName == null ? name : asteriskName.value();
+    }
+
+    public static Method getBucketMethod(Collection<Method> methods) {
+        List<Method> list = methods
+                .stream()
+                .filter(method -> method.isAnnotationPresent(AsteriskAttributesBucket.class))
+                .toList();
+        if (list.size() > 1) {
+            throw new IllegalArgumentException("Only one @AsteriskAttributesBucket annotation allowed");
+        }
+        if (list.isEmpty()) {
+            return null;
+        }
+        return list.get(0);
     }
 }

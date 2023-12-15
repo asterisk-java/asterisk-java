@@ -6,7 +6,7 @@ public class ListCommandsAction extends AbstractManagerAction {
 
     @Override
     public ManagerAction getAJAction() {
-        final org.asteriskjava.manager.action.ListCommandsAction action = new org.asteriskjava.manager.action.ListCommandsAction();
+        final org.asteriskjava.ami.action.ListCommandsAction action = new org.asteriskjava.ami.action.ListCommandsAction();
         action.setActionId(this.getActionId());
 
         return action;

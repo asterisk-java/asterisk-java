@@ -30,10 +30,12 @@ import java.util.stream.Collectors;
 
 import static java.util.Arrays.stream;
 import static java.util.Locale.ENGLISH;
+import static java.util.stream.Collectors.joining;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.asteriskjava.core.databind.CodersConsts.nameValueSeparator;
 import static org.asteriskjava.core.databind.TypeConversionRegister.TYPE_CONVERTERS;
+import static org.asteriskjava.core.databind.utils.AnnotationUtils.getBucketMethod;
 import static org.asteriskjava.core.databind.utils.AnnotationUtils.getName;
 import static org.asteriskjava.core.databind.utils.Invoker.invokeOn;
 import static org.asteriskjava.core.databind.utils.ReflectionUtils.getSetters;
@@ -56,10 +58,19 @@ public class AsteriskDecoder {
                 .stream()
                 .collect(Collectors.toMap(e -> getName(e.getValue(), e.getKey()).toLowerCase(ENGLISH), Entry::getValue));
 
+        Method bucketMethod = getBucketMethod(setters.values());
+
+        Map<String, String> bucket = bucketMethod != null ? new LinkedHashMap<>() : null;
+
         T result = instantiateResultClass(target);
         for (Entry<String, Object> entry : source.entrySet()) {
-            handleEntry(entry, setters, result);
+            handleEntry(entry, setters, result, bucket);
         }
+
+        if (bucketMethod != null) {
+            invokeOn(result).method(bucketMethod).withParameter(bucket);
+        }
+
         return result;
     }
 
@@ -71,12 +82,15 @@ public class AsteriskDecoder {
             }
 
             String[] split = line.split(nameValueSeparator);
-            String name = split[0].trim().toLowerCase(ENGLISH);
+            String name = split[0].trim();
             Object value = null;
             if (split.length == 1) {
                 name = name.replace(nameValueSeparator.trim(), EMPTY);
             } else {
-                value = split[1].trim();
+                value = stream(split)
+                        .skip(1)
+                        .collect(joining(nameValueSeparator))
+                        .trim();
             }
 
             if (map.containsKey(name)) {
@@ -106,15 +120,20 @@ public class AsteriskDecoder {
         }
     }
 
-    private static <T> void handleEntry(Entry<String, Object> entry, Map<String, Method> setters, T result) {
+    private static <T> void handleEntry(Entry<String, Object> entry, Map<String, Method> setters, T result, Map<String, String> bucket) {
         Object value = entry.getValue();
 
         String key = entry.getKey().toLowerCase(ENGLISH);
         Method method = setters.getOrDefault(key, null);
         if (method == null) {
-            logger.warn("Unable to set the '{}' property to the value '{}' in the '{}' class. There is no setter method available. " +
-                            "Please report at https://github.com/asterisk-java/asterisk-java/issues.",
-                    entry.getKey(), value, result.getClass().getName());
+            if (bucket == null) {
+                logger.warn("Unable to set the '{}' property to the value '{}' in the '{}' class. There is no setter method available. " +
+                                "Please report at https://github.com/asterisk-java/asterisk-java/issues.",
+                        entry.getKey(), value, result.getClass().getName());
+                return;
+            }
+
+            bucket.put(entry.getKey(), String.valueOf(value));
             return;
         }
 

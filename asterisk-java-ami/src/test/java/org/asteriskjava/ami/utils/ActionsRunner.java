@@ -224,7 +224,7 @@ public class ActionsRunner {
         private ManagerActionResponse getManagerActionResponseAndRecordIfNeeded(String message) {
             String[] split = message.split(CRLF.getPattern());
             Map<String, Object> map = AsteriskDecoder.toMap(split);
-            String actionId = (String) map.get("actionid");
+            String actionId = (String) map.get("ActionID");
 
             Class<? extends ManagerActionResponse> clazz = mapResponses.get(actionId);
             ManagerActionResponse managerActionResponse = asteriskDecoder.decode(map, clazz);

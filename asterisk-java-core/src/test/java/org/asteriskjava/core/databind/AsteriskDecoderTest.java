@@ -18,6 +18,7 @@ package org.asteriskjava.core.databind;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.asteriskjava.core.databind.annotation.AsteriskAttributesBucket;
 import org.asteriskjava.core.databind.annotation.AsteriskName;
 import org.junit.jupiter.api.Test;
 
@@ -25,7 +26,9 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 
+import static java.util.Collections.emptyMap;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.entry;
 import static org.asteriskjava.core.NewlineDelimiter.LF;
 import static org.asteriskjava.core.databind.AsteriskDecoderTest.BaseBean.ResponseType.Goodbye;
 import static org.asteriskjava.core.databind.AsteriskDecoderTest.BaseBean.ResponseType.Success;
@@ -54,6 +57,7 @@ class AsteriskDecoderTest {
         expected.setActionId("id-1");
         expected.setDateReceived(date);
         expected.setResponse(Goodbye);
+        expected.setUnmatchedAttributes(emptyMap());
         assertThat(simpleBean).isEqualTo(expected);
     }
 
@@ -156,6 +160,7 @@ class AsteriskDecoderTest {
         expected.setActionId("id-1");
         expected.setDateReceived(date);
         expected.setResponse(Goodbye);
+        expected.setUnmatchedAttributes(emptyMap());
         assertThat(simpleBean).isEqualTo(expected);
     }
 
@@ -246,7 +251,54 @@ class AsteriskDecoderTest {
         expected.setChallenge(null);
         expected.setActionId("id-1");
         expected.setResponse(Success);
+        expected.setUnmatchedAttributes(emptyMap());
         assertThat(simpleBean).isEqualTo(expected);
+    }
+
+    @Test
+    void shouldEncodeMethodWithAttributesBucket() {
+        //given
+        AsteriskDecoder asteriskDecoder = new AsteriskDecoder();
+
+        String string = """
+                Response: Success
+                ActionID: id-1
+                Challenge: 123456
+                FirstUnmatched: first
+                SecondUnmatched: second
+                """;
+        String[] content = string.split(LF.getPattern());
+
+        //when
+        SimpleBean simpleBean = asteriskDecoder.decode(content, SimpleBean.class);
+
+        //then
+        assertThat(simpleBean.getChallenge()).isEqualTo("123456");
+        assertThat(simpleBean.getUnmatchedAttributes()).containsOnly(
+                entry("FirstUnmatched", "first"),
+                entry("SecondUnmatched", "second")
+        );
+    }
+
+    @Test
+    void shouldHandleWhenFieldSeparatorIsInFieldValue() {
+        //given
+        AsteriskDecoder asteriskDecoder = new AsteriskDecoder();
+
+        String string = """
+                Response: Success
+                ActionID: id-1
+                Challenge: (Colon: 123456)
+                FirstUnmatched: first
+                SecondUnmatched: second
+                """;
+        String[] content = string.split(LF.getPattern());
+
+        //when
+        SimpleBean simpleBean = asteriskDecoder.decode(content, SimpleBean.class);
+
+        //then
+        assertThat(simpleBean.getChallenge()).isEqualTo("(Colon: 123456)");
     }
 
     public static class BaseBean {
@@ -261,6 +313,8 @@ class AsteriskDecoderTest {
         private Instant dateReceived;
 
         private String actionId;
+
+        private Map<String, String> unmatchedAttributes;
 
         public ResponseType getResponse() {
             return response;
@@ -287,6 +341,16 @@ class AsteriskDecoderTest {
             this.actionId = actionId;
         }
 
+        public Map<String, String> getUnmatchedAttributes() {
+            return unmatchedAttributes;
+        }
+
+        @AsteriskAttributesBucket
+        public BaseBean setUnmatchedAttributes(Map<String, String> unmatchedAttributes) {
+            this.unmatchedAttributes = unmatchedAttributes;
+            return this;
+        }
+
         @Override
         public boolean equals(Object object) {
             if (this == object) {
@@ -303,6 +367,7 @@ class AsteriskDecoderTest {
                     .append(response, base.response)
                     .append(dateReceived, base.dateReceived)
                     .append(actionId, base.actionId)
+                    .append(unmatchedAttributes, base.unmatchedAttributes)
                     .isEquals();
         }
 
@@ -312,6 +377,7 @@ class AsteriskDecoderTest {
                     .append(response)
                     .append(dateReceived)
                     .append(actionId)
+                    .append(unmatchedAttributes)
                     .toHashCode();
         }
 
@@ -321,6 +387,7 @@ class AsteriskDecoderTest {
                     .append("response", response)
                     .append("dateReceived", dateReceived)
                     .append("actionId", actionId)
+                    .append("unmatchedAttributes", unmatchedAttributes)
                     .toString();
         }
     }
