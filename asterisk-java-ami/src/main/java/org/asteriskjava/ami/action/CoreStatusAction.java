@@ -16,30 +16,29 @@
 package org.asteriskjava.ami.action;
 
 import org.asteriskjava.ami.action.annotation.ExpectedResponse;
-import org.asteriskjava.ami.action.response.CoreSettingsActionResponse;
+import org.asteriskjava.ami.action.response.CoreStatusActionResponse;
 
 import java.io.Serial;
 
 /**
- * The {@link CoreSettingsActionResponse} requests a settings summary from the server. The settings include the version,
- * system name, and various system limits.
+ * The {@link CoreStatusActionResponse} requests a status summary from the server.
  * <p>
  * Supported Asterisk versions:
  * <ul>
- *     <li>18 - <a href="https://docs.asterisk.org/Asterisk_18_Documentation/API_Documentation/AMI_Actions/CoreSettings/">CoreSettings</a></li>
- *     <li>20 - <a href="https://docs.asterisk.org/Asterisk_20_Documentation/API_Documentation/AMI_Actions/CoreSettings/">CoreSettings</a></li>
+ *     <li>18 - <a href="https://docs.asterisk.org/Asterisk_18_Documentation/API_Documentation/AMI_Actions/CoreStatus/">CoreStatus</a></li>
+ *     <li>20 - <a href="https://docs.asterisk.org/Asterisk_20_Documentation/API_Documentation/AMI_Actions/CoreStatus/">CoreStatus</a></li>
  * </ul>
  *
  * @author Stefan Reuter
  * @since 1.0.0
  */
-@ExpectedResponse(CoreSettingsActionResponse.class)
-public class CoreSettingsAction extends AbstractManagerAction {
+@ExpectedResponse(CoreStatusActionResponse.class)
+public class CoreStatusAction extends AbstractManagerAction {
     @Serial
     private static final long serialVersionUID = 1L;
 
     @Override
     public String getAction() {
-        return "CoreSettings";
+        return "CoreStatus";
     }
 }

@@ -15,46 +15,43 @@
  */
 package org.asteriskjava.ami.action;
 
-import org.asteriskjava.ami.action.response.CoreSettingsActionResponse;
+import org.asteriskjava.ami.action.response.CoreStatusActionResponse;
 import org.asteriskjava.ami.utils.ActionsRunner;
 import org.asteriskjava.ami.utils.ActionsRunner.ResponseRecorder;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 import static java.time.Instant.now;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.asteriskjava.ami.action.response.ResponseType.Success;
 
-class CoreSettingsActionItTest extends BaseActionItTest {
+class CoreStatusActionItTest extends BaseActionItTest {
     @Test
-    void shouldGetCoreSettings() throws InterruptedException {
+    void shouldReturnWithParsedTimeAndDate() throws InterruptedException {
         //given
         Instant now = now();
 
-        CoreSettingsAction coreSettingsAction = new CoreSettingsAction();
-        coreSettingsAction.setActionId("id-1");
+        CoreStatusAction coreStatusAction = new CoreStatusAction();
+        coreStatusAction.setActionId("id-1");
 
         ActionsRunner actionsRunner = actionRunner()
                 .withFixedTime(now)
                 .registerLoginSequence()
-                .registerAction(CoreSettingsAction.class, coreSettingsAction);
+                .registerAction(CoreStatusAction.class, coreStatusAction);
 
         //when
         ResponseRecorder responseRecorder = actionsRunner.run();
 
         //then
-        CoreSettingsActionResponse actual = responseRecorder.getRecorderResponse("id-1", CoreSettingsActionResponse.class);
+        CoreStatusActionResponse actual = responseRecorder.getRecorderResponse("id-1", CoreStatusActionResponse.class);
         assertThat(actual.getResponse()).isEqualTo(Success);
-        assertThat(actual.getAmiVersion()).isEqualTo("7.0.3");
-        assertThat(actual.getAsteriskVersion()).isEqualTo("18.15.1");
-        assertThat(actual.getSystemName()).isNull();
-        assertThat(actual.getCoreMaxCalls()).isEqualTo(0);
-        assertThat(actual.getCoreRunUser()).isNull();
-        assertThat(actual.getCoreRunGroup()).isNull();
-        assertThat(actual.getCoreMaxFilehandles()).isEqualTo(0);
-        assertThat(actual.isCoreRealtimeEnabled()).isFalse();
-        assertThat(actual.isCoreCdrEnabled()).isTrue();
-        assertThat(actual.isCoreHttpEnabled()).isFalse();
+        assertThat(actual.getCoreStartupDate()).isInstanceOf(LocalDate.class).isNotNull();
+        assertThat(actual.getCoreStartupTime()).isInstanceOf(LocalTime.class).isNotNull();
+        assertThat(actual.getCoreReloadDate()).isInstanceOf(LocalDate.class).isNotNull();
+        assertThat(actual.getCoreReloadTime()).isInstanceOf(LocalTime.class).isNotNull();
+        assertThat(actual.getCoreCurrentCalls()).isEqualTo(0);
     }
 }

@@ -26,7 +26,7 @@ import java.io.Serial;
  * @author Piotr Olaszewski
  * @since 1.0.0
  */
-public class CoreSettingsResponse extends ManagerActionResponse {
+public class CoreSettingsActionResponse extends ManagerActionResponse {
     @Serial
     private static final long serialVersionUID = 1L;
 

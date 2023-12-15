@@ -600,13 +600,13 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
     protected AsteriskVersion determineVersionByCoreSettings() throws Exception {
 
         ManagerActionResponse response = sendAction(new CoreSettingsAction());
-        if (!(response instanceof CoreSettingsResponse)) {
+        if (!(response instanceof CoreSettingsActionResponse)) {
             // NOTE: you need system or reporting permissions
             logger.info("Could not get core settings, do we have the necessary permissions?");
             return null;
         }
 
-        String ver = ((CoreSettingsResponse) response).getAsteriskVersion();
+        String ver = ((CoreSettingsActionResponse) response).getAsteriskVersion();
         return AsteriskVersion.getDetermineVersionFromString("Asterisk " + ver);
     }
 
