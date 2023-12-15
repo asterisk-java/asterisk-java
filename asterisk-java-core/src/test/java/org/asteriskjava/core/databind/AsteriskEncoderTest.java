@@ -18,6 +18,7 @@ package org.asteriskjava.core.databind;
 import org.asteriskjava.core.databind.annotation.AsteriskName;
 import org.junit.jupiter.api.Test;
 
+import java.util.EnumSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +27,7 @@ import static java.util.Comparator.naturalOrder;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.asteriskjava.core.NewlineDelimiter.LF;
 import static org.asteriskjava.core.databind.AsteriskEncoderTest.SimpleBean.AuthType.MD5;
+import static org.asteriskjava.core.databind.AsteriskEncoderTest.SimpleBean.AuthType.SHA1;
 
 class AsteriskEncoderTest {
     @Test
@@ -125,9 +127,26 @@ class AsteriskEncoderTest {
         );
     }
 
+    @Test
+    void shouldEncodeEnumSet() {
+        //given
+        AsteriskEncoder asteriskEncoder = new AsteriskEncoder(LF);
+
+        SimpleBean bean = new SimpleBean();
+        bean.setActionId("id-1");
+        bean.setAuths(EnumSet.of(MD5, SHA1));
+
+        //when
+        String string = asteriskEncoder.encode(bean);
+
+        //then
+        assertThat(string).contains("Action: SimpleBean", "ActionID: id-1", "Auths: MD5,SHA1");
+    }
+
     public static class SimpleBean {
         public enum AuthType {
             MD5,
+            SHA1,
         }
 
         private String actionId;
@@ -137,6 +156,8 @@ class AsteriskEncoderTest {
         private List<String> codecs;
 
         private Map<String, String> variable;
+
+        private EnumSet<AuthType> auths;
 
         public String getAction() {
             return "SimpleBean";
@@ -173,6 +194,15 @@ class AsteriskEncoderTest {
 
         public void setVariable(Map<String, String> variable) {
             this.variable = variable;
+        }
+
+        public EnumSet<AuthType> getAuths() {
+            return auths;
+        }
+
+        public SimpleBean setAuths(EnumSet<AuthType> auths) {
+            this.auths = auths;
+            return this;
         }
     }
 }

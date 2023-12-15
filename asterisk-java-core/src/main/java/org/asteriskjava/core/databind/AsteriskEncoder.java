@@ -107,7 +107,7 @@ public class AsteriskEncoder {
             String name = getName(method, entry.getKey());
             Object value = invokeOn(source).method(method).withoutParameter();
 
-            if (value instanceof List<?> values) {
+            if (value instanceof Collection<?> values) {
                 value = values
                         .stream()
                         .map(Object::toString)

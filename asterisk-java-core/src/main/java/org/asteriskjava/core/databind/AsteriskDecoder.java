@@ -140,7 +140,7 @@ public class AsteriskDecoder {
     private static Enum<?> parseEnum(Method method, Object value) {
         Class<?> targetDataType = method.getParameterTypes()[0];
         return (Enum<?>) stream(targetDataType.getEnumConstants())
-                .filter(t -> t.toString().equals(String.valueOf(value)))
+                .filter(t -> t.toString().equalsIgnoreCase(String.valueOf(value)))
                 .findFirst()
                 .orElse(null);
     }

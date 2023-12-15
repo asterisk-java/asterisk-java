@@ -128,7 +128,6 @@ public class ManagerActionResponse implements Serializable {
     private String server;
     private String eventList;
     private String uniqueId;
-    private String events;
     private Map<String, Object> attributes;
     private String output;
 
@@ -272,13 +271,5 @@ public class ManagerActionResponse implements Serializable {
         }
 
         return Long.parseLong(s.trim());
-    }
-
-    public String getEvents() {
-        return events;
-    }
-
-    public void setEvents(String events) {
-        this.events = events;
     }
 }
