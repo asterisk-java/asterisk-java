@@ -15,14 +15,11 @@
  */
 package org.asteriskjava.ami.action.response;
 
-import org.asteriskjava.ami.action.LoginAction;
-
-//todo maybe we need some generic empty response?
 /**
- * Corresponds to a {@link LoginAction} and contains information about login action.
+ * This response is used in cases when only default fields are returned in response.
  *
  * @author Piotr Olaszewski
  * @since 4.0.0
  */
-public class LoginResponse extends ManagerActionResponse {
+public class EmptyActionResponse extends ManagerActionResponse {
 }

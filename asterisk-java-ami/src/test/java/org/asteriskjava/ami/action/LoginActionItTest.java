@@ -16,7 +16,7 @@
 package org.asteriskjava.ami.action;
 
 import org.asteriskjava.ami.action.response.ChallengeActionResponse;
-import org.asteriskjava.ami.action.response.LoginResponse;
+import org.asteriskjava.ami.action.response.EmptyActionResponse;
 import org.asteriskjava.ami.action.response.ManagerActionResponse;
 import org.asteriskjava.ami.utils.ActionsRunner;
 import org.asteriskjava.ami.utils.ActionsRunner.ResponseRecorder;
@@ -54,7 +54,7 @@ class LoginActionItTest extends BaseActionItTest {
         ResponseRecorder responseRecorder = actionsRunner.run();
 
         //then
-        LoginResponse actual = responseRecorder.getRecorderResponse("id-2", LoginResponse.class);
+        EmptyActionResponse actual = responseRecorder.getRecorderResponse("id-2", EmptyActionResponse.class);
         assertThat(actual.getResponse()).isEqualTo(Error);
         assertThat(actual.getMessage()).isEqualTo("Authentication failed");
         assertThat(actual.getDateReceived()).isEqualTo(now);
@@ -89,7 +89,7 @@ class LoginActionItTest extends BaseActionItTest {
         ResponseRecorder responseRecorder = actionsRunner.run();
 
         //then
-        LoginResponse actual = responseRecorder.getRecorderResponse("id-2", LoginResponse.class);
+        EmptyActionResponse actual = responseRecorder.getRecorderResponse("id-2", EmptyActionResponse.class);
         assertThat(actual.getResponse()).isEqualTo(Success);
         assertThat(actual.getMessage()).isEqualTo("Authentication accepted");
         assertThat(actual.getDateReceived()).isEqualTo(now);

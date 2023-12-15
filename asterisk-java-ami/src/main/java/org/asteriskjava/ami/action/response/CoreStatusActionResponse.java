@@ -25,6 +25,7 @@ import java.time.LocalTime;
  * Corresponds to a {@link CoreStatusAction} and contains the current status summary of the Asterisk server.
  *
  * @author Stefan Reuter
+ * @author Piotr Olaszewski
  * @since 1.0.0
  */
 public class CoreStatusActionResponse extends ManagerActionResponse {
