@@ -22,7 +22,12 @@ import java.io.Serial;
 
 /**
  * The action causes the server to close the connection.
- *
+ * <p>
+ * Supported Asterisk versions:
+ * <ul>
+ *     <li>18 - <a href="https://docs.asterisk.org/Asterisk_18_Documentation/API_Documentation/AMI_Actions/Logoff/">Logoff</a></li>
+ *     <li>20 - <a href="https://docs.asterisk.org/Asterisk_20_Documentation/API_Documentation/AMI_Actions/Logoff/">Logoff</a></li>
+ * </ul>
  * @author Stefan Reuter
  * @since 1.0.0
  */
