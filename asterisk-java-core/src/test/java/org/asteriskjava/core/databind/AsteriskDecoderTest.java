@@ -143,16 +143,15 @@ class AsteriskDecoderTest {
         AsteriskDecoder asteriskDecoder = new AsteriskDecoder();
 
         Instant date = Instant.parse("2023-11-20T20:33:30.002Z");
-        String string = """
+        String content = """
                 ActionID: id-1
                 DateReceived: %s
                 Challenge: 123456
                 Response: Goodbye
                 """.formatted(date);
-        String[] content = string.split(LF.getPattern());
 
         //when
-        SimpleBean simpleBean = asteriskDecoder.decode(content, SimpleBean.class);
+        SimpleBean simpleBean = asteriskDecoder.decode(content, LF, SimpleBean.class);
 
         //then
         SimpleBean expected = new SimpleBean();
@@ -169,15 +168,14 @@ class AsteriskDecoderTest {
         //given
         AsteriskDecoder asteriskDecoder = new AsteriskDecoder();
 
-        String string = """
+        String content = """
                 Number: 1
                 Number: 2
                 Number: 3
                 """;
-        String[] content = string.split(LF.getPattern());
 
         //when
-        ListBean listBean = asteriskDecoder.decode(content, ListBean.class);
+        ListBean listBean = asteriskDecoder.decode(content, LF, ListBean.class);
 
         //then
         ListBean expected = new ListBean();
@@ -190,13 +188,12 @@ class AsteriskDecoderTest {
         //given
         AsteriskDecoder asteriskDecoder = new AsteriskDecoder();
 
-        String string = """
+        String content = """
                 Header: 1=name1
                 """;
-        String[] content = string.split(LF.getPattern());
 
         //when
-        MapBean someClass = asteriskDecoder.decode(content, MapBean.class);
+        MapBean someClass = asteriskDecoder.decode(content, LF, MapBean.class);
 
         //then
         Map<Integer, String> map = Map.of(1, "name1");
@@ -210,15 +207,14 @@ class AsteriskDecoderTest {
         //given
         AsteriskDecoder asteriskDecoder = new AsteriskDecoder();
 
-        String string = """
+        String content = """
                 Header: 1=name1
                 Header: 2=name2
                 Header: 3=name3
                 """;
-        String[] content = string.split(LF.getPattern());
 
         //when
-        MapBean mapBean = asteriskDecoder.decode(content, MapBean.class);
+        MapBean mapBean = asteriskDecoder.decode(content, LF, MapBean.class);
 
         //then
         Map<Integer, String> map = Map.of(
@@ -236,15 +232,14 @@ class AsteriskDecoderTest {
         //given
         AsteriskDecoder asteriskDecoder = new AsteriskDecoder();
 
-        String string = """
+        String content = """
                 Response: Success
                 ActionID: id-1
                 Challenge: 
                 """;
-        String[] content = string.split(LF.getPattern());
 
         //when
-        SimpleBean simpleBean = asteriskDecoder.decode(content, SimpleBean.class);
+        SimpleBean simpleBean = asteriskDecoder.decode(content, LF, SimpleBean.class);
 
         //then
         SimpleBean expected = new SimpleBean();
@@ -260,17 +255,16 @@ class AsteriskDecoderTest {
         //given
         AsteriskDecoder asteriskDecoder = new AsteriskDecoder();
 
-        String string = """
+        String content = """
                 Response: Success
                 ActionID: id-1
                 Challenge: 123456
                 FirstUnmatched: first
                 SecondUnmatched: second
                 """;
-        String[] content = string.split(LF.getPattern());
 
         //when
-        SimpleBean simpleBean = asteriskDecoder.decode(content, SimpleBean.class);
+        SimpleBean simpleBean = asteriskDecoder.decode(content, LF, SimpleBean.class);
 
         //then
         assertThat(simpleBean.getChallenge()).isEqualTo("123456");
@@ -285,17 +279,16 @@ class AsteriskDecoderTest {
         //given
         AsteriskDecoder asteriskDecoder = new AsteriskDecoder();
 
-        String string = """
+        String content = """
                 Response: Success
                 ActionID: id-1
                 Challenge: (Colon: 123456)
                 FirstUnmatched: first
                 SecondUnmatched: second
                 """;
-        String[] content = string.split(LF.getPattern());
 
         //when
-        SimpleBean simpleBean = asteriskDecoder.decode(content, SimpleBean.class);
+        SimpleBean simpleBean = asteriskDecoder.decode(content, LF, SimpleBean.class);
 
         //then
         assertThat(simpleBean.getChallenge()).isEqualTo("(Colon: 123456)");

@@ -16,6 +16,7 @@
 package org.asteriskjava.core.databind;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.asteriskjava.core.NewlineDelimiter;
 import org.asteriskjava.core.databind.TypeConversionRegister.Converter;
 import org.slf4j.Logger;
 
@@ -47,6 +48,11 @@ import static org.slf4j.LoggerFactory.getLogger;
  */
 public class AsteriskDecoder {
     private static final Logger logger = getLogger(AsteriskDecoder.class);
+
+    public <T> T decode(String source, NewlineDelimiter newlineDelimiter, Class<T> target) {
+        String[] content = source.split(newlineDelimiter.getPattern());
+        return decode(content, target);
+    }
 
     public <T> T decode(String[] source, Class<T> target) {
         return decode(toMap(source), target);
