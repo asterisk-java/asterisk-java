@@ -294,6 +294,24 @@ class AsteriskDecoderTest {
         assertThat(simpleBean.getChallenge()).isEqualTo("(Colon: 123456)");
     }
 
+    @Test
+    void shouldHandleParametersWhichLooksLikeList() {
+        //given
+        AsteriskDecoder asteriskDecoder = new AsteriskDecoder();
+
+        String content = """
+                Number-000001: 1
+                Number-000002: 2
+                Number-000003: 3
+                """;
+
+        //when
+        ListBean listBean = asteriskDecoder.decode(content, LF, ListBean.class);
+
+        //then
+        assertThat(listBean.getNumbers()).containsExactly(1, 2, 3);
+    }
+
     public static class BaseBean {
         public enum ResponseType {
             Success,

@@ -27,10 +27,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static java.util.Arrays.stream;
 import static java.util.Locale.ENGLISH;
+import static java.util.regex.Pattern.compile;
 import static java.util.stream.Collectors.joining;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.isBlank;
@@ -48,6 +51,16 @@ import static org.slf4j.LoggerFactory.getLogger;
  */
 public class AsteriskDecoder {
     private static final Logger logger = getLogger(AsteriskDecoder.class);
+
+    /**
+     * Handles values that look like a list. E.g.:
+     * <pre>
+     * Category-000001: cat1
+     * Category-000002: cat2
+     * Category-000003: cat3
+     * </pre>
+     */
+    private static final Pattern LIST_DETECTOR = compile("-\\d\\d\\d\\d\\d\\d$");
 
     public <T> T decode(String source, NewlineDelimiter newlineDelimiter, Class<T> target) {
         String[] content = source.split(newlineDelimiter.getPattern());
@@ -98,6 +111,8 @@ public class AsteriskDecoder {
                         .collect(joining(nameValueSeparator))
                         .trim();
             }
+
+            name = cleanupNameWhenIsList(name);
 
             if (map.containsKey(name)) {
                 Object currenValue = map.get(name);
@@ -252,5 +267,10 @@ public class AsteriskDecoder {
         Object valueValue = valueConverter.apply(value);
 
         return Pair.of(keyValue, valueValue);
+    }
+
+    private static String cleanupNameWhenIsList(String name) {
+        Matcher matcher = LIST_DETECTOR.matcher(name);
+        return matcher.find() ? matcher.replaceAll(EMPTY) : name;
     }
 }
