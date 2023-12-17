@@ -100,6 +100,11 @@ public class ActionsRunner {
         return this;
     }
 
+    public <A extends ManagerAction> ActionsRunner registerAction(ManagerAction managerAction) {
+        registerAction(managerAction.getClass(), managerAction);
+        return this;
+    }
+
     public ResponseRecorder run() throws InterruptedException {
         Queue<Pair<Class<? extends ManagerAction>, Function<ManagerActionResponse, ManagerAction>>> queue = new ArrayBlockingQueue<>(actions.size(), false, actions);
 

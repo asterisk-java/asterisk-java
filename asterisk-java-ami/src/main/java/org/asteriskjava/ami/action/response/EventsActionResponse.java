@@ -31,8 +31,7 @@ public class EventsActionResponse extends ManagerActionResponse {
         return events;
     }
 
-    public EventsActionResponse setEvents(EventMask events) {
+    public void setEvents(EventMask events) {
         this.events = events;
-        return this;
     }
 }
