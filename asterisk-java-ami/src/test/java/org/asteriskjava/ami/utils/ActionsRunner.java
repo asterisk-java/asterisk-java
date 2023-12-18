@@ -184,7 +184,8 @@ public class ActionsRunner {
                 String accumulatedMessage = accumulatedResponse.toString().trim();
 
                 System.out.println("Received message from Asterisk:");
-                System.out.printf("'%s'%n", accumulatedMessage);
+                System.out.println(accumulatedMessage);
+                System.out.println("===============================");
 
                 if (accumulatedMessage.startsWith("Response:")) {
                     sendNextAction(ctx, getManagerActionResponseAndRecordIfNeeded(accumulatedMessage));
