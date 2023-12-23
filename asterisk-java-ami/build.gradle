@@ -25,6 +25,7 @@ dependencies {
     testImplementation 'org.mockito:mockito-core:5.7.0'
     testImplementation 'org.slf4j:slf4j-simple:2.0.9'
 
+    testImplementation 'org.skyscreamer:jsonassert:1.5.1'
     testImplementation platform('org.testcontainers:testcontainers-bom:1.19.3')
     testImplementation 'org.testcontainers:junit-jupiter'
     testImplementation 'org.testcontainers:testcontainers'
