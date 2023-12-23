@@ -41,7 +41,7 @@ class EventsActionItTest extends BaseActionItTest {
         ActionsRunner actionsRunner = actionRunner()
                 .withFixedTime(now)
                 .registerLoginSequence()
-                .registerAction(EventsAction.class, eventsAction);
+                .registerAction(eventsAction);
 
         //when
         ResponseRecorder responseRecorder = actionsRunner.run();
@@ -64,7 +64,7 @@ class EventsActionItTest extends BaseActionItTest {
         ActionsRunner actionsRunner = actionRunner()
                 .withFixedTime(now)
                 .registerLoginSequence()
-                .registerAction(EventsAction.class, eventsAction);
+                .registerAction(eventsAction);
 
         //when
         ResponseRecorder responseRecorder = actionsRunner.run();

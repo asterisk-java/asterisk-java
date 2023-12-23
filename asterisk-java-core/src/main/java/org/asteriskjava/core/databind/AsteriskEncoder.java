@@ -18,6 +18,7 @@ package org.asteriskjava.core.databind;
 import org.asteriskjava.core.NewlineDelimiter;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -108,10 +109,18 @@ public class AsteriskEncoder {
             Object value = invokeOn(source).method(method).withoutParameter();
 
             if (value instanceof Collection<?> values) {
-                value = values
-                        .stream()
-                        .map(Object::toString)
-                        .collect(joining(listSeparator));
+                ParameterizedType genericReturnType = (ParameterizedType) method.getGenericReturnType();
+                Class<?> actualTypeArgument = (Class<?>) genericReturnType.getActualTypeArguments()[0];
+                if (!actualTypeArgument.isAssignableFrom(Number.class) && !actualTypeArgument.isAssignableFrom(String.class) && !actualTypeArgument.isEnum()) {
+                    Map<String, Object> nestedObjectsCollection = nestedObjectsCollection(values);
+                    map.putAll(nestedObjectsCollection);
+                    continue;
+                } else {
+                    value = values
+                            .stream()
+                            .map(Object::toString)
+                            .collect(joining(listSeparator));
+                }
             }
 
             if (value instanceof Map<?, ?> values) {
@@ -125,6 +134,21 @@ public class AsteriskEncoder {
             map.put(name, value);
         }
 
+        return map;
+    }
+
+    private static Map<String, Object> nestedObjectsCollection(Collection<?> values) {
+        Map<String, Object> map = new LinkedHashMap<>();
+        int i = 0;
+        for (Object nestedSource : values) {
+            Map<String, Object> nestedObject = toMap(nestedSource);
+            for (Entry<String, Object> stringObjectEntry : nestedObject.entrySet()) {
+                String nestedName = stringObjectEntry.getKey();
+                Object nestedValue = stringObjectEntry.getValue();
+                map.put(nestedObjectListTemplate.formatted(nestedName, i), nestedValue);
+            }
+            i++;
+        }
         return map;
     }
 

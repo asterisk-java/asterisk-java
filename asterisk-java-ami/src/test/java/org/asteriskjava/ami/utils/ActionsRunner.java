@@ -183,8 +183,8 @@ public class ActionsRunner {
             if (message.isBlank()) {
                 String accumulatedMessage = accumulatedResponse.toString().trim();
 
-                System.out.println("Received message from Asterisk:");
-                System.out.println(accumulatedMessage);
+                System.out.println("<<<<<<<<<<<<INCOMING<<<<<<<<<<<");
+                System.out.println(accumulatedMessage.trim());
                 System.out.println("===============================");
 
                 if (accumulatedMessage.startsWith("Response:")) {
@@ -224,6 +224,10 @@ public class ActionsRunner {
 
                 String encode = asteriskEncoder.encode(action);
                 ctx.writeAndFlush(encode);
+
+                System.out.println(">>>>>>>>>>>>OUTGOING>>>>>>>>>>>>");
+                System.out.println(encode.trim());
+                System.out.println("===============================");
             }
         }
 

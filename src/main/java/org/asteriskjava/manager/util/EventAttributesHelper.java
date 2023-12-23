@@ -30,7 +30,7 @@ import java.util.Map;
 import java.util.Set;
 
 import static java.util.Arrays.stream;
-import static org.asteriskjava.core.databind.utils.ToBoolean.toBoolean;
+import static org.asteriskjava.core.databind.utils.AsteriskBoolean.toBoolean;
 import static org.slf4j.LoggerFactory.getLogger;
 
 /**

@@ -143,6 +143,35 @@ class AsteriskEncoderTest {
         assertThat(string).contains("Action: SimpleBean", "ActionID: id-1", "Auths: MD5,SHA1");
     }
 
+    @Test
+    void shouldHandleListOfCustomObjectsWithCounter() {
+        //given
+        AsteriskEncoder asteriskEncoder = new AsteriskEncoder(LF);
+
+        SimpleBean.Config config1 = new SimpleBean.Config()
+                .setAuth(MD5)
+                .setCategory("category1");
+        SimpleBean.Config config2 = new SimpleBean.Config()
+                .setAuth(MD5)
+                .setCategory("category2");
+
+        SimpleBean bean = new SimpleBean();
+        bean.setActionId("id-1");
+        bean.setConfigs(List.of(config1, config2));
+
+        //when
+        String string = asteriskEncoder.encode(bean);
+
+        //then
+        assertThat(string).contains(
+                "Action: SimpleBean", "ActionID: id-1",
+                "Authorization-000000: MD5",
+                "Category-000000: category1",
+                "Authorization-000001: MD5",
+                "Category-000001: category2"
+        ).doesNotContain("Configs:");
+    }
+
     public static class SimpleBean {
         public enum AuthType {
             MD5,
@@ -158,6 +187,8 @@ class AsteriskEncoderTest {
         private Map<String, String> variable;
 
         private EnumSet<AuthType> auths;
+
+        private List<Config> configs;
 
         public String getAction() {
             return "SimpleBean";
@@ -203,6 +234,39 @@ class AsteriskEncoderTest {
         public SimpleBean setAuths(EnumSet<AuthType> auths) {
             this.auths = auths;
             return this;
+        }
+
+        public List<Config> getConfigs() {
+            return configs;
+        }
+
+        public SimpleBean setConfigs(List<Config> configs) {
+            this.configs = configs;
+            return this;
+        }
+
+        public static class Config {
+            private AuthType auth;
+            private String category;
+
+            @AsteriskName("Authorization")
+            public AuthType getAuth() {
+                return auth;
+            }
+
+            public Config setAuth(AuthType auth) {
+                this.auth = auth;
+                return this;
+            }
+
+            public String getCategory() {
+                return category;
+            }
+
+            public Config setCategory(String category) {
+                this.category = category;
+                return this;
+            }
         }
     }
 }

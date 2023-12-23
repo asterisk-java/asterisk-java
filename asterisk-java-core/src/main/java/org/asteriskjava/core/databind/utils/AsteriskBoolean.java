@@ -25,7 +25,7 @@ import static java.util.Locale.ENGLISH;
  * @author Piotr Olaszewski
  * @since 4.0.0
  */
-public class ToBoolean {
+public class AsteriskBoolean {
     private static final Set<String> TRUE_LITERALS = new HashSet<>(20);
 
     static {
@@ -38,7 +38,7 @@ public class ToBoolean {
         TRUE_LITERALS.add("enabled");
     }
 
-    private ToBoolean() {
+    private AsteriskBoolean() {
     }
 
     /**
@@ -57,5 +57,15 @@ public class ToBoolean {
         }
 
         return TRUE_LITERALS.contains(o.toString().toLowerCase(ENGLISH));
+    }
+
+    /**
+     * Converts a {@link Boolean} value to Asterisk's {@code true} or {@code false} equivalents.
+     */
+    public static String fromBoolean(Boolean b) {
+        if (b == null) {
+            return "false";
+        }
+        return b ? "true" : "false";
     }
 }

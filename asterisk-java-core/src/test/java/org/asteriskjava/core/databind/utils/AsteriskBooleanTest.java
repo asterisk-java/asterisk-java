@@ -7,10 +7,10 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.asteriskjava.core.databind.utils.ToBoolean.toBoolean;
+import static org.asteriskjava.core.databind.utils.AsteriskBoolean.toBoolean;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
-class ToBooleanTest {
+class AsteriskBooleanTest {
     @ParameterizedTest
     @MethodSource("values")
     void testIsTrue(Object value, boolean expected) {
