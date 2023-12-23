@@ -16,7 +16,7 @@
  */
 package org.asteriskjava.manager.response;
 
-import org.asteriskjava.ami.action.response.ManagerActionResponse;
+import org.asteriskjava.ami.action.api.response.ManagerActionResponse;
 
 /**
  * A MailboxStatusResponse is sent in response to a MailboxStatusAction and indicates if a set

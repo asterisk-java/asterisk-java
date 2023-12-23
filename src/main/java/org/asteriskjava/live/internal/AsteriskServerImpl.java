@@ -17,10 +17,10 @@
 package org.asteriskjava.live.internal;
 
 import org.asteriskjava.AsteriskVersion;
-import org.asteriskjava.ami.action.CommandAction;
-import org.asteriskjava.ami.action.ManagerAction;
-import org.asteriskjava.ami.action.response.CommandActionResponse;
-import org.asteriskjava.ami.action.response.ManagerActionResponse;
+import org.asteriskjava.ami.action.api.CommandAction;
+import org.asteriskjava.ami.action.api.ManagerAction;
+import org.asteriskjava.ami.action.api.response.CommandActionResponse;
+import org.asteriskjava.ami.action.api.response.ManagerActionResponse;
 import org.asteriskjava.config.ConfigFile;
 import org.asteriskjava.live.*;
 import org.asteriskjava.lock.Lockable;

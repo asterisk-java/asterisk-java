@@ -17,10 +17,10 @@
 package org.asteriskjava.manager.internal;
 
 import org.asteriskjava.AsteriskVersion;
-import org.asteriskjava.ami.action.*;
-import org.asteriskjava.ami.action.response.ChallengeActionResponse;
-import org.asteriskjava.ami.action.response.ManagerActionResponse;
-import org.asteriskjava.ami.action.response.ResponseType;
+import org.asteriskjava.ami.action.api.*;
+import org.asteriskjava.ami.action.api.response.ChallengeActionResponse;
+import org.asteriskjava.ami.action.api.response.ManagerActionResponse;
+import org.asteriskjava.ami.action.api.response.ResponseType;
 import org.asteriskjava.manager.event.ProtocolIdentifierReceivedEvent;
 import org.asteriskjava.manager.response.ManagerError;
 import org.asteriskjava.util.DateUtil;

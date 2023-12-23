@@ -15,8 +15,8 @@
  */
 package org.asteriskjava.ami.action.annotation;
 
-import org.asteriskjava.ami.action.ManagerAction;
-import org.asteriskjava.ami.action.response.ManagerActionResponse;
+import org.asteriskjava.ami.action.api.ManagerAction;
+import org.asteriskjava.ami.action.api.response.ManagerActionResponse;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;

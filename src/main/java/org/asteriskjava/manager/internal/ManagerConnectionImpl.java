@@ -16,9 +16,9 @@
 package org.asteriskjava.manager.internal;
 
 import org.asteriskjava.AsteriskVersion;
-import org.asteriskjava.ami.action.*;
 import org.asteriskjava.ami.action.annotation.ExpectedResponse;
-import org.asteriskjava.ami.action.response.*;
+import org.asteriskjava.ami.action.api.*;
+import org.asteriskjava.ami.action.api.response.*;
 import org.asteriskjava.lock.Lockable;
 import org.asteriskjava.lock.LockableList;
 import org.asteriskjava.lock.LockableMap;

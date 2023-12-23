@@ -16,7 +16,7 @@
  */
 package org.asteriskjava.live.internal;
 
-import org.asteriskjava.ami.action.CommandAction;
+import org.asteriskjava.ami.action.api.CommandAction;
 import org.asteriskjava.live.ManagerCommunicationException;
 import org.asteriskjava.live.MeetMeUser;
 import org.asteriskjava.live.MeetMeUserState;

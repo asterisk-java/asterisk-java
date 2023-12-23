@@ -16,7 +16,7 @@
  */
 package org.asteriskjava.live;
 
-import org.asteriskjava.ami.action.CommandAction;
+import org.asteriskjava.ami.action.api.CommandAction;
 import org.asteriskjava.config.ConfigFile;
 import org.asteriskjava.manager.ManagerConnection;
 import org.asteriskjava.manager.ManagerEventListener;

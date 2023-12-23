@@ -1,6 +1,6 @@
 package org.asteriskjava.manager.response;
 
-import org.asteriskjava.ami.action.response.CoreStatusActionResponse;
+import org.asteriskjava.ami.action.api.response.CoreStatusActionResponse;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

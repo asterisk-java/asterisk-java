@@ -16,7 +16,7 @@
  */
 package org.asteriskjava.manager;
 
-import org.asteriskjava.ami.action.response.ManagerActionResponse;
+import org.asteriskjava.ami.action.api.response.ManagerActionResponse;
 import org.asteriskjava.manager.event.ResponseEvent;
 
 import java.util.Collection;

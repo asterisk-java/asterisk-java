@@ -1,7 +1,7 @@
 package org.asteriskjava.pbx.asterisk.wrap.actions;
 
 import org.asteriskjava.AsteriskVersion;
-import org.asteriskjava.ami.action.ManagerAction;
+import org.asteriskjava.ami.action.api.ManagerAction;
 import org.asteriskjava.pbx.Channel;
 import org.asteriskjava.pbx.PBXFactory;
 import org.asteriskjava.pbx.internal.core.AsteriskPBX;

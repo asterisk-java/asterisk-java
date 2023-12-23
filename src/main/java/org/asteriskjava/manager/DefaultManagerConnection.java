@@ -17,8 +17,8 @@
 package org.asteriskjava.manager;
 
 import org.asteriskjava.AsteriskVersion;
-import org.asteriskjava.ami.action.ManagerAction;
-import org.asteriskjava.ami.action.response.ManagerActionResponse;
+import org.asteriskjava.ami.action.api.ManagerAction;
+import org.asteriskjava.ami.action.api.response.ManagerActionResponse;
 import org.asteriskjava.manager.action.EventGeneratingAction;
 import org.asteriskjava.manager.event.ManagerEvent;
 import org.asteriskjava.manager.internal.ManagerConnectionImpl;

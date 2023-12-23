@@ -16,9 +16,9 @@
  */
 package org.asteriskjava.manager.internal;
 
-import org.asteriskjava.ami.action.response.CommandActionResponse;
-import org.asteriskjava.ami.action.response.ManagerActionResponse;
-import org.asteriskjava.ami.action.response.ResponseType;
+import org.asteriskjava.ami.action.api.response.CommandActionResponse;
+import org.asteriskjava.ami.action.api.response.ManagerActionResponse;
+import org.asteriskjava.ami.action.api.response.ResponseType;
 import org.asteriskjava.manager.event.*;
 import org.asteriskjava.util.DateUtil;
 import org.asteriskjava.util.SocketConnectionFacade;

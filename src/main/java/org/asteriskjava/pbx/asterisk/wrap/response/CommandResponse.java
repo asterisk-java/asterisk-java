@@ -1,7 +1,7 @@
 package org.asteriskjava.pbx.asterisk.wrap.response;
 
-import org.asteriskjava.ami.action.response.CommandActionResponse;
-import org.asteriskjava.ami.action.response.ManagerActionResponse;
+import org.asteriskjava.ami.action.api.response.CommandActionResponse;
+import org.asteriskjava.ami.action.api.response.ManagerActionResponse;
 
 import java.util.List;
 

@@ -18,7 +18,7 @@ package org.asteriskjava.manager.internal;
 
 import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.ami.ActionFieldsComparator;
-import org.asteriskjava.ami.action.ManagerAction;
+import org.asteriskjava.ami.action.api.ManagerAction;
 import org.asteriskjava.core.databind.AsteriskEncoder;
 import org.asteriskjava.manager.AsteriskMapping;
 import org.asteriskjava.manager.action.UserEventAction;

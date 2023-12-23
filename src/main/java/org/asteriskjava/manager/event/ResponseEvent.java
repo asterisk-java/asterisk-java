@@ -16,7 +16,7 @@
  */
 package org.asteriskjava.manager.event;
 
-import org.asteriskjava.ami.action.ManagerAction;
+import org.asteriskjava.ami.action.api.ManagerAction;
 
 /**
  * Abstract base class for events triggered in response to a ManagerAction.

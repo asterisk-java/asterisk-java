@@ -1,6 +1,6 @@
 package org.asteriskjava.pbx.asterisk.wrap.actions;
 
-import org.asteriskjava.ami.action.ManagerAction;
+import org.asteriskjava.ami.action.api.ManagerAction;
 import org.asteriskjava.pbx.Channel;
 
 public class BridgeAction extends AbstractManagerAction {

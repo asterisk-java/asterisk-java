@@ -17,7 +17,7 @@
 package org.asteriskjava.manager.internal;
 
 import org.asteriskjava.AsteriskVersion;
-import org.asteriskjava.ami.action.AbstractManagerAction;
+import org.asteriskjava.ami.action.api.AbstractManagerAction;
 import org.asteriskjava.manager.action.AgentsAction;
 import org.asteriskjava.manager.action.OriginateAction;
 import org.asteriskjava.manager.action.SipNotifyAction;

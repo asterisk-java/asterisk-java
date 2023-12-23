@@ -1,6 +1,6 @@
 package org.asteriskjava.pbx.asterisk.wrap.response;
 
-import org.asteriskjava.ami.action.response.ManagerActionResponse;
+import org.asteriskjava.ami.action.api.response.ManagerActionResponse;
 import org.asteriskjava.manager.response.ManagerError;
 
 import java.util.Date;

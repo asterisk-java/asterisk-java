@@ -16,8 +16,8 @@
  */
 package org.asteriskjava.manager.action;
 
-import org.asteriskjava.ami.action.AbstractManagerAction;
-import org.asteriskjava.ami.action.ManagerAction;
+import org.asteriskjava.ami.action.api.AbstractManagerAction;
+import org.asteriskjava.ami.action.api.ManagerAction;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

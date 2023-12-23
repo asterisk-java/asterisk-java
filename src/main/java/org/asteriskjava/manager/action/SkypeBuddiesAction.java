@@ -16,7 +16,7 @@
  */
 package org.asteriskjava.manager.action;
 
-import org.asteriskjava.ami.action.AbstractManagerAction;
+import org.asteriskjava.ami.action.api.AbstractManagerAction;
 import org.asteriskjava.manager.event.ResponseEvent;
 import org.asteriskjava.manager.event.SkypeBuddyListCompleteEvent;
 

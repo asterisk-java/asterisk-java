@@ -16,7 +16,7 @@
  */
 package org.asteriskjava.manager;
 
-import org.asteriskjava.ami.action.ManagerAction;
+import org.asteriskjava.ami.action.api.ManagerAction;
 
 /**
  * This factory is the canonical way to obtain new

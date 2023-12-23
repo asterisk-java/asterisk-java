@@ -17,11 +17,11 @@
 package org.asteriskjava.manager;
 
 import org.asteriskjava.AsteriskVersion;
-import org.asteriskjava.ami.action.ChallengeAction;
-import org.asteriskjava.ami.action.LoginAction;
-import org.asteriskjava.ami.action.LogoffAction;
-import org.asteriskjava.ami.action.ManagerAction;
-import org.asteriskjava.ami.action.response.ManagerActionResponse;
+import org.asteriskjava.ami.action.api.ChallengeAction;
+import org.asteriskjava.ami.action.api.LoginAction;
+import org.asteriskjava.ami.action.api.LogoffAction;
+import org.asteriskjava.ami.action.api.ManagerAction;
+import org.asteriskjava.ami.action.api.response.ManagerActionResponse;
 import org.asteriskjava.manager.action.EventGeneratingAction;
 import org.asteriskjava.manager.event.ManagerEvent;
 
