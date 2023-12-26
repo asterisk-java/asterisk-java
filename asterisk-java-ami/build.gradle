@@ -27,8 +27,12 @@ dependencies {
 
     testImplementation 'org.skyscreamer:jsonassert:1.5.1'
     testImplementation platform('org.testcontainers:testcontainers-bom:1.19.3')
-    testImplementation 'org.testcontainers:junit-jupiter'
-    testImplementation 'org.testcontainers:testcontainers'
+    testImplementation('org.testcontainers:junit-jupiter') {
+        exclude group: 'com.fasterxml.jackson.core', module: 'jackson-annotations'
+    }
+    testImplementation('org.testcontainers:testcontainers') {
+        exclude group: 'com.fasterxml.jackson.core', module: 'jackson-annotations'
+    }
 
     //todo only for testing framework
     testImplementation 'io.netty:netty-codec:4.1.101.Final'

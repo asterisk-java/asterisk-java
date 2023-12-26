@@ -13,28 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.asteriskjava.ami.action.api.response;
+package org.asteriskjava.core.databind.converter;
 
-import org.asteriskjava.ami.action.api.ListCommandsAction;
-import org.asteriskjava.core.databind.annotation.AsteriskAttributesBucket;
+import com.fasterxml.jackson.databind.util.StdConverter;
 
-import java.util.Map;
+import java.util.Collection;
+
+import static java.util.stream.Collectors.joining;
+import static org.asteriskjava.core.databind.CodersConsts.listSeparator;
 
 /**
- * Corresponds to a {@link ListCommandsAction} and contains all available commands.
- *
  * @author Piotr Olaszewski
  * @since 4.0.0
  */
-public class ListCommandActionResponse extends ManagerActionResponse {
-    @AsteriskAttributesBucket
-    private Map<String, String> commands;
-
-    public Map<String, String> getCommands() {
-        return commands;
-    }
-
-    public void setCommands(Map<String, String> commands) {
-        this.commands = commands;
+public class CommaConverter extends StdConverter<Collection<Object>, String> {
+    @Override
+    public String convert(Collection<Object> value) {
+        return value.stream()
+                .map(String::valueOf)
+                .collect(joining(listSeparator));
     }
 }

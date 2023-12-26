@@ -28,7 +28,6 @@ import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.handler.timeout.IdleStateHandler;
-import org.asteriskjava.ami.ActionFieldsComparator;
 import org.asteriskjava.ami.action.annotation.ExpectedResponse;
 import org.asteriskjava.ami.action.api.ChallengeAction;
 import org.asteriskjava.ami.action.api.LoginAction;
@@ -153,11 +152,7 @@ public class ActionsRunner {
     }
 
     static class ActionResponseHandler extends SimpleChannelInboundHandler<String> {
-        private static final AsteriskEncoder asteriskEncoder = AsteriskEncoder
-                .builder()
-                .crlfNewlineDelimiter()
-                .fieldNamesComparator(new ActionFieldsComparator())
-                .build();
+        private static final AsteriskEncoder asteriskEncoder = new AsteriskEncoder(CRLF);
         private static final AsteriskDecoder asteriskDecoder = new AsteriskDecoder();
 
         private final Map<String, Class<? extends ManagerActionResponse>> mapResponses = new ConcurrentHashMap<>();

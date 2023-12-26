@@ -15,8 +15,6 @@
  */
 package org.asteriskjava.ami.action.api.response;
 
-import org.asteriskjava.core.databind.annotation.AsteriskName;
-
 public class GetConfigJsonActionResponse extends ManagerActionResponse {
     private String json;
 
@@ -24,7 +22,6 @@ public class GetConfigJsonActionResponse extends ManagerActionResponse {
         return json;
     }
 
-    @AsteriskName("JSON")
     public void setJson(String json) {
         this.json = json;
     }

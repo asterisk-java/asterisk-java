@@ -27,13 +27,13 @@ import java.util.List;
  * @since 4.0.0
  */
 public class ListCategoriesActionResponse extends ManagerActionResponse {
+    @AsteriskName("Category")
     private List<String> categories;
 
     public List<String> getCategories() {
         return categories;
     }
 
-    @AsteriskName("Category")
     public void setCategories(List<String> categories) {
         this.categories = categories;
     }

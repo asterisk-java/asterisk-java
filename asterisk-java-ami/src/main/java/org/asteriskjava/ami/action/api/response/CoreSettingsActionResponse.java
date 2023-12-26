@@ -16,6 +16,8 @@
 package org.asteriskjava.ami.action.api.response;
 
 import org.asteriskjava.ami.action.api.CoreSettingsAction;
+import org.asteriskjava.core.databind.annotation.AsteriskDeserialize;
+import org.asteriskjava.core.databind.deserializer.AsteriskBooleanDeserializer;
 
 import java.io.Serial;
 
@@ -38,8 +40,11 @@ public class CoreSettingsActionResponse extends ManagerActionResponse {
     private String coreRunUser;
     private String coreRunGroup;
     private Integer coreMaxFilehandles;
+    @AsteriskDeserialize(deserializer = AsteriskBooleanDeserializer.class)
     private boolean coreRealtimeEnabled;
+    @AsteriskDeserialize(deserializer = AsteriskBooleanDeserializer.class)
     private boolean coreCdrEnabled;
+    @AsteriskDeserialize(deserializer = AsteriskBooleanDeserializer.class)
     private boolean coreHttpEnabled;
 
     public String getAmiVersion() {

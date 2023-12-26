@@ -15,6 +15,8 @@
  */
 package org.asteriskjava.ami.action.api;
 
+import org.asteriskjava.core.databind.annotation.AsteriskFieldOrder;
+
 import java.io.Serializable;
 
 /**
@@ -28,6 +30,7 @@ import java.io.Serializable;
  * @author Stefan Reuter
  * @since 1.0.0
  */
+@AsteriskFieldOrder({"Action", "ActionID"})
 public interface ManagerAction extends Serializable {
     String getAction();
 

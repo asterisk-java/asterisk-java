@@ -43,6 +43,7 @@ public class ManagerActionResponse implements Serializable {
 
     private ResponseType response;
     private Instant dateReceived;
+    @AsteriskName("ActionID")
     private String actionId;
     private String message;
 
@@ -66,7 +67,6 @@ public class ManagerActionResponse implements Serializable {
         return actionId;
     }
 
-    @AsteriskName("ActionID")
     public void setActionId(String actionId) {
         this.actionId = actionId;
     }

@@ -19,9 +19,9 @@ package org.asteriskjava.core.databind;
  * @author Piotr Olaszewski
  * @since 4.0.0
  */
-class CodersConsts {
-    static final String nameValueSeparator = ": ";
-    static final String listSeparator = ",";
-    static final String mapTemplate = "%s=%s";
-    static final String nestedObjectListTemplate = "%s-%06d";
+public class CodersConsts {
+    public static final String nameValueSeparator = ": ";
+    public static final String listSeparator = ",";
+    public static final String mapTemplate = "%s=%s";
+    public static final String listWithCounterTemplate = "%s-%06d";
 }

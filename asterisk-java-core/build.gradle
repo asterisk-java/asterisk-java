@@ -15,6 +15,9 @@ repositories {
 }
 
 dependencies {
+    api 'com.fasterxml.jackson.core:jackson-databind:2.16.1'
+    api 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.16.1'
+
     implementation 'org.apache.commons:commons-lang3:3.14.0'
     implementation 'org.slf4j:slf4j-api:2.0.9'
 

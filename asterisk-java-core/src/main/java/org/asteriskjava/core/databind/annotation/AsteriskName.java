@@ -18,7 +18,7 @@ package org.asteriskjava.core.databind.annotation;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
@@ -27,7 +27,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * @author Piotr Olaszewski
  * @since 4.0.0
  */
-@Target({METHOD})
+@Target({FIELD})
 @Retention(RUNTIME)
 public @interface AsteriskName {
     /**

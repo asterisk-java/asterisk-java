@@ -19,14 +19,16 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.asteriskjava.core.databind.annotation.AsteriskAttributesBucket;
+import org.asteriskjava.core.databind.annotation.AsteriskDeserialize;
 import org.asteriskjava.core.databind.annotation.AsteriskName;
+import org.asteriskjava.core.databind.deserializer.AsteriskBooleanDeserializer;
+import org.asteriskjava.core.databind.deserializer.AsteriskMapDeserializer;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 
-import static java.util.Collections.emptyMap;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
 import static org.asteriskjava.core.NewlineDelimiter.LF;
@@ -57,7 +59,7 @@ class AsteriskDecoderTest {
         expected.setActionId("id-1");
         expected.setDateReceived(date);
         expected.setResponse(Goodbye);
-        expected.setUnmatchedAttributes(emptyMap());
+        expected.setUnmatchedAttributes(null);
         assertThat(simpleBean).isEqualTo(expected);
     }
 
@@ -159,7 +161,7 @@ class AsteriskDecoderTest {
         expected.setActionId("id-1");
         expected.setDateReceived(date);
         expected.setResponse(Goodbye);
-        expected.setUnmatchedAttributes(emptyMap());
+        expected.setUnmatchedAttributes(null);
         assertThat(simpleBean).isEqualTo(expected);
     }
 
@@ -246,7 +248,7 @@ class AsteriskDecoderTest {
         expected.setChallenge(null);
         expected.setActionId("id-1");
         expected.setResponse(Success);
-        expected.setUnmatchedAttributes(emptyMap());
+        expected.setUnmatchedAttributes(null);
         assertThat(simpleBean).isEqualTo(expected);
     }
 
@@ -312,6 +314,22 @@ class AsteriskDecoderTest {
         assertThat(listBean.getNumbers()).containsExactly(1, 2, 3);
     }
 
+    @Test
+    void shouldHandleBoolean() {
+        //given
+        AsteriskDecoder asteriskDecoder = new AsteriskDecoder();
+
+        String content = """
+                HttpEnabled: true
+                """;
+
+        //when
+        SimpleBean simpleBean = asteriskDecoder.decode(content, LF, SimpleBean.class);
+
+        //then
+        assertThat(simpleBean.isHttpEnabled()).isTrue();
+    }
+
     public static class BaseBean {
         public enum ResponseType {
             Success,
@@ -325,6 +343,7 @@ class AsteriskDecoderTest {
 
         private String actionId;
 
+        @AsteriskAttributesBucket
         private Map<String, String> unmatchedAttributes;
 
         public ResponseType getResponse() {
@@ -347,7 +366,6 @@ class AsteriskDecoderTest {
             return actionId;
         }
 
-        @AsteriskName("ActionID")
         public void setActionId(String actionId) {
             this.actionId = actionId;
         }
@@ -356,10 +374,8 @@ class AsteriskDecoderTest {
             return unmatchedAttributes;
         }
 
-        @AsteriskAttributesBucket
-        public BaseBean setUnmatchedAttributes(Map<String, String> unmatchedAttributes) {
+        public void setUnmatchedAttributes(Map<String, String> unmatchedAttributes) {
             this.unmatchedAttributes = unmatchedAttributes;
-            return this;
         }
 
         @Override
@@ -406,12 +422,23 @@ class AsteriskDecoderTest {
     public static class SimpleBean extends BaseBean {
         private String challenge;
 
+        @AsteriskDeserialize(deserializer = AsteriskBooleanDeserializer.class)
+        private boolean httpEnabled;
+
         public String getChallenge() {
             return challenge;
         }
 
         public void setChallenge(String challenge) {
             this.challenge = challenge;
+        }
+
+        public boolean isHttpEnabled() {
+            return httpEnabled;
+        }
+
+        public void setHttpEnabled(boolean httpEnabled) {
+            this.httpEnabled = httpEnabled;
         }
 
         @Override
@@ -450,13 +477,13 @@ class AsteriskDecoderTest {
     }
 
     public static class ListBean {
+        @AsteriskName("Number")
         private List<Integer> numbers;
 
         public List<Integer> getNumbers() {
             return numbers;
         }
 
-        @AsteriskName("Number")
         public void setNumbers(List<Integer> numbers) {
             this.numbers = numbers;
         }
@@ -494,13 +521,14 @@ class AsteriskDecoderTest {
     }
 
     public static class MapBean {
+        @AsteriskName("Header")
+        @AsteriskDeserialize(deserializer = AsteriskMapDeserializer.class, keyAs = Integer.class, valueAs = String.class)
         private Map<Integer, String> headers;
 
         public Map<Integer, String> getHeaders() {
             return headers;
         }
 
-        @AsteriskName("Header")
         public void setHeaders(Map<Integer, String> headers) {
             this.headers = headers;
         }

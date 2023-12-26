@@ -17,6 +17,8 @@ package org.asteriskjava.ami.action.api;
 
 import org.asteriskjava.ami.action.annotation.ExpectedResponse;
 import org.asteriskjava.ami.action.api.response.EventsActionResponse;
+import org.asteriskjava.core.databind.annotation.AsteriskConverter;
+import org.asteriskjava.core.databind.converter.CommaConverter;
 
 import java.io.Serial;
 import java.util.EnumSet;
@@ -40,6 +42,7 @@ public class EventsAction extends AbstractManagerAction {
     @Serial
     private static final long serialVersionUID = -8042435402644984875L;
 
+    @AsteriskConverter(CommaConverter.class)
     private EnumSet<EventMask> eventMask;
 
     @Override

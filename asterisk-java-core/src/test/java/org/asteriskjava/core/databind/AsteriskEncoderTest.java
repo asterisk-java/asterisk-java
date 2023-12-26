@@ -15,7 +15,9 @@
  */
 package org.asteriskjava.core.databind;
 
+import org.asteriskjava.core.databind.annotation.AsteriskConverter;
 import org.asteriskjava.core.databind.annotation.AsteriskName;
+import org.asteriskjava.core.databind.converter.CommaConverter;
 import org.junit.jupiter.api.Test;
 
 import java.util.EnumSet;
@@ -23,58 +25,12 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import static java.util.Comparator.naturalOrder;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.asteriskjava.core.NewlineDelimiter.LF;
 import static org.asteriskjava.core.databind.AsteriskEncoderTest.SimpleBean.AuthType.MD5;
 import static org.asteriskjava.core.databind.AsteriskEncoderTest.SimpleBean.AuthType.SHA1;
 
 class AsteriskEncoderTest {
-    @Test
-    void shouldEncodeWithoutSortingFields() {
-        //given
-        AsteriskEncoder asteriskEncoder = new AsteriskEncoder(LF);
-
-        Map<String, Object> source = new LinkedHashMap<>();
-        source.put("Z", "value z");
-        source.put("A", "value a");
-        source.put("M", "value m");
-        source.put("F", "value f");
-
-        //when
-        String encode = asteriskEncoder.encode(source);
-
-        //then
-        String expected = "Z: value z" + LF.getPattern();
-        expected += "A: value a" + LF.getPattern();
-        expected += "M: value m" + LF.getPattern();
-        expected += "F: value f" + LF.getPattern() + LF.getPattern();
-        assertThat(encode).isEqualTo(expected);
-    }
-
-    @Test
-    void shouldEncodeAndSortFields() {
-        //given
-        AsteriskEncoder asteriskEncoder = new AsteriskEncoder(LF, naturalOrder());
-
-        Map<String, Object> source = Map.of(
-                "Z", "value z",
-                "A", "value a",
-                "M", "value m",
-                "F", "value f"
-        );
-
-        //when
-        String encode = asteriskEncoder.encode(source);
-
-        //then
-        String expected = "A: value a" + LF.getPattern();
-        expected += "F: value f" + LF.getPattern();
-        expected += "M: value m" + LF.getPattern();
-        expected += "Z: value z" + LF.getPattern() + LF.getPattern();
-        assertThat(encode).isEqualTo(expected);
-    }
-
     @Test
     void shouldEncodeObject() {
         //given
@@ -163,13 +119,15 @@ class AsteriskEncoderTest {
         String string = asteriskEncoder.encode(bean);
 
         //then
-        assertThat(string).contains(
-                "Action: SimpleBean", "ActionID: id-1",
-                "Authorization-000000: MD5",
-                "Category-000000: category1",
-                "Authorization-000001: MD5",
-                "Category-000001: category2"
-        ).doesNotContain("Configs:");
+        assertThat(string)
+                .contains(
+                        "Action: SimpleBean", "ActionID: id-1",
+                        "Authorization-000000: MD5",
+                        "Category-000000: category1",
+                        "Authorization-000001: MD5",
+                        "Category-000001: category2"
+                )
+                .doesNotContain("Configs:");
     }
 
     public static class SimpleBean {
@@ -178,14 +136,17 @@ class AsteriskEncoderTest {
             SHA1,
         }
 
+        @AsteriskName("ActionID")
         private String actionId;
 
         private AuthType authType;
 
+        @AsteriskConverter(CommaConverter.class)
         private List<String> codecs;
 
         private Map<String, String> variable;
 
+        @AsteriskConverter(CommaConverter.class)
         private EnumSet<AuthType> auths;
 
         private List<Config> configs;
@@ -194,7 +155,6 @@ class AsteriskEncoderTest {
             return "SimpleBean";
         }
 
-        @AsteriskName("ActionID")
         public String getActionId() {
             return actionId;
         }
@@ -231,25 +191,23 @@ class AsteriskEncoderTest {
             return auths;
         }
 
-        public SimpleBean setAuths(EnumSet<AuthType> auths) {
+        public void setAuths(EnumSet<AuthType> auths) {
             this.auths = auths;
-            return this;
         }
 
         public List<Config> getConfigs() {
             return configs;
         }
 
-        public SimpleBean setConfigs(List<Config> configs) {
+        public void setConfigs(List<Config> configs) {
             this.configs = configs;
-            return this;
         }
 
         public static class Config {
+            @AsteriskName("Authorization")
             private AuthType auth;
             private String category;
 
-            @AsteriskName("Authorization")
             public AuthType getAuth() {
                 return auth;
             }

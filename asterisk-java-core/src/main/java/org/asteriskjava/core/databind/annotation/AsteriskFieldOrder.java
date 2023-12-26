@@ -13,28 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.asteriskjava.ami.action.api.response;
+package org.asteriskjava.core.databind.annotation;
 
-import org.asteriskjava.ami.action.api.ListCommandsAction;
-import org.asteriskjava.core.databind.annotation.AsteriskAttributesBucket;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import java.util.Map;
+import static java.lang.annotation.ElementType.TYPE;
 
 /**
- * Corresponds to a {@link ListCommandsAction} and contains all available commands.
- *
  * @author Piotr Olaszewski
  * @since 4.0.0
  */
-public class ListCommandActionResponse extends ManagerActionResponse {
-    @AsteriskAttributesBucket
-    private Map<String, String> commands;
-
-    public Map<String, String> getCommands() {
-        return commands;
-    }
-
-    public void setCommands(Map<String, String> commands) {
-        this.commands = commands;
-    }
+@Target({TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface AsteriskFieldOrder {
+    String[] value() default {};
 }

@@ -13,28 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.asteriskjava.ami.action.api.response;
+package org.asteriskjava.core.databind.annotation;
 
-import org.asteriskjava.ami.action.api.ListCommandsAction;
-import org.asteriskjava.core.databind.annotation.AsteriskAttributesBucket;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonDeserializer.None;
 
-import java.util.Map;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Corresponds to a {@link ListCommandsAction} and contains all available commands.
- *
  * @author Piotr Olaszewski
  * @since 4.0.0
  */
-public class ListCommandActionResponse extends ManagerActionResponse {
-    @AsteriskAttributesBucket
-    private Map<String, String> commands;
+@Target({FIELD})
+@Retention(RUNTIME)
+public @interface AsteriskDeserialize {
+    Class<? extends JsonDeserializer> deserializer() default None.class;
 
-    public Map<String, String> getCommands() {
-        return commands;
-    }
+    Class<?> keyAs() default Void.class;
 
-    public void setCommands(Map<String, String> commands) {
-        this.commands = commands;
-    }
+    Class<?> valueAs() default Void.class;
 }

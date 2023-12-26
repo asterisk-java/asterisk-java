@@ -13,28 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.asteriskjava.ami.action.api.response;
+package org.asteriskjava.core.databind.deserializer;
 
-import org.asteriskjava.ami.action.api.ListCommandsAction;
-import org.asteriskjava.core.databind.annotation.AsteriskAttributesBucket;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 
-import java.util.Map;
+import java.io.IOException;
+
+import static org.asteriskjava.core.databind.utils.AsteriskBoolean.toBoolean;
 
 /**
- * Corresponds to a {@link ListCommandsAction} and contains all available commands.
- *
  * @author Piotr Olaszewski
  * @since 4.0.0
  */
-public class ListCommandActionResponse extends ManagerActionResponse {
-    @AsteriskAttributesBucket
-    private Map<String, String> commands;
-
-    public Map<String, String> getCommands() {
-        return commands;
+public class AsteriskBooleanDeserializer extends StdDeserializer<Boolean> {
+    public AsteriskBooleanDeserializer() {
+        super(Boolean.class);
     }
 
-    public void setCommands(Map<String, String> commands) {
-        this.commands = commands;
+    @Override
+    public Boolean deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+        return toBoolean(jsonParser.getText());
     }
 }
