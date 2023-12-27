@@ -16,7 +16,7 @@
 package org.asteriskjava.ami.action.api;
 
 import org.asteriskjava.ami.action.annotation.ExpectedResponse;
-import org.asteriskjava.ami.action.api.response.EmptyActionResponse;
+import org.asteriskjava.ami.action.api.response.DefaultActionResponse;
 
 import java.io.Serial;
 import java.util.EnumSet;
@@ -60,7 +60,7 @@ import java.util.EnumSet;
  * @author Piotr Olaszewski
  * @since 1.0.0
  */
-@ExpectedResponse(EmptyActionResponse.class)
+@ExpectedResponse(DefaultActionResponse.class)
 public class LoginAction extends AbstractManagerAction {
     @Serial
     private static final long serialVersionUID = -2600694249339115032L;

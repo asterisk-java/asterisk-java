@@ -15,7 +15,7 @@
  */
 package org.asteriskjava.ami.action.api;
 
-import org.asteriskjava.ami.action.api.response.EmptyActionResponse;
+import org.asteriskjava.ami.action.api.response.DefaultActionResponse;
 import org.asteriskjava.ami.utils.ActionsRunner;
 import org.asteriskjava.ami.utils.ActionsRunner.ResponseRecorder;
 import org.junit.jupiter.api.Test;
@@ -42,7 +42,7 @@ class DbPutActionItTest extends BaseActionItTest {
         ResponseRecorder responseRecorder = actionsRunner.run();
 
         //then
-        EmptyActionResponse actual = responseRecorder.getRecorderResponse("id-1", EmptyActionResponse.class);
+        DefaultActionResponse actual = responseRecorder.getRecorderResponse("id-1", DefaultActionResponse.class);
         assertThat(actual.getResponse()).isEqualTo(Success);
         assertThat(actual.getMessage()).isEqualTo("Updated database successfully");
 

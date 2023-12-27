@@ -16,7 +16,7 @@
 package org.asteriskjava.ami.action.api;
 
 import org.asteriskjava.ami.action.annotation.ExpectedResponse;
-import org.asteriskjava.ami.action.api.response.EmptyActionResponse;
+import org.asteriskjava.ami.action.api.response.DefaultActionResponse;
 
 /**
  * Creates an empty file in the configuration directory.
@@ -33,7 +33,7 @@ import org.asteriskjava.ami.action.api.response.EmptyActionResponse;
  * @author Piotr Olaszewski
  * @since 4.0.0
  */
-@ExpectedResponse(EmptyActionResponse.class)
+@ExpectedResponse(DefaultActionResponse.class)
 public class CreateConfigAction extends AbstractManagerAction {
     private String filename;
 

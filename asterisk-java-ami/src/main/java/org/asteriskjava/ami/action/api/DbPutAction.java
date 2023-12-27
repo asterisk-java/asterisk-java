@@ -16,7 +16,7 @@
 package org.asteriskjava.ami.action.api;
 
 import org.asteriskjava.ami.action.annotation.ExpectedResponse;
-import org.asteriskjava.ami.action.api.response.EmptyActionResponse;
+import org.asteriskjava.ami.action.api.response.DefaultActionResponse;
 
 import java.io.Serial;
 
@@ -32,7 +32,7 @@ import java.io.Serial;
  * @author Stefan Reuter
  * @since 1.0.0
  */
-@ExpectedResponse(EmptyActionResponse.class)
+@ExpectedResponse(DefaultActionResponse.class)
 public class DbPutAction extends AbstractManagerAction {
     @Serial
     private static final long serialVersionUID = 921037572305993779L;

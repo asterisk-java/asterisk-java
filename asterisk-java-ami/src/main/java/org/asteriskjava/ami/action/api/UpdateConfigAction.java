@@ -16,7 +16,7 @@
 package org.asteriskjava.ami.action.api;
 
 import org.asteriskjava.ami.action.annotation.ExpectedResponse;
-import org.asteriskjava.ami.action.api.response.EmptyActionResponse;
+import org.asteriskjava.ami.action.api.response.DefaultActionResponse;
 
 import java.io.Serial;
 import java.util.List;
@@ -44,7 +44,7 @@ import static org.asteriskjava.core.databind.utils.AsteriskBoolean.fromBoolean;
  * @author Piotr Olaszewski
  * @since 1.0.0
  */
-@ExpectedResponse(EmptyActionResponse.class)
+@ExpectedResponse(DefaultActionResponse.class)
 public class UpdateConfigAction extends AbstractManagerAction {
     @Serial
     private static final long serialVersionUID = 4753117770471622025L;

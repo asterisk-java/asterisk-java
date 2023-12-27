@@ -21,5 +21,5 @@ package org.asteriskjava.ami.action.api.response;
  * @author Piotr Olaszewski
  * @since 4.0.0
  */
-public class EmptyActionResponse extends ManagerActionResponse {
+public class DefaultActionResponse extends ManagerActionResponse {
 }

@@ -15,7 +15,7 @@
  */
 package org.asteriskjava.ami.action.api;
 
-import org.asteriskjava.ami.action.api.response.EmptyActionResponse;
+import org.asteriskjava.ami.action.api.response.DefaultActionResponse;
 import org.asteriskjava.ami.utils.ActionsRunner;
 import org.asteriskjava.ami.utils.ActionsRunner.ResponseRecorder;
 import org.junit.jupiter.api.Test;
@@ -44,7 +44,7 @@ class LogoffActionItTest extends BaseActionItTest {
         ResponseRecorder responseRecorder = actionsRunner.run();
 
         //then
-        EmptyActionResponse actual = responseRecorder.getRecorderResponse("id-1", EmptyActionResponse.class);
+        DefaultActionResponse actual = responseRecorder.getRecorderResponse("id-1", DefaultActionResponse.class);
         assertThat(actual.getResponse()).isEqualTo(Goodbye);
         assertThat(actual.getMessage()).isEqualTo("Thanks for all the fish.");
         assertThat(actual.getDateReceived()).isEqualTo(now);
@@ -66,7 +66,7 @@ class LogoffActionItTest extends BaseActionItTest {
         ResponseRecorder responseRecorder = actionsRunner.run();
 
         //then
-        EmptyActionResponse actual = responseRecorder.getRecorderResponse("id-1", EmptyActionResponse.class);
+        DefaultActionResponse actual = responseRecorder.getRecorderResponse("id-1", DefaultActionResponse.class);
         assertThat(actual.getResponse()).isEqualTo(Goodbye);
         assertThat(actual.getMessage()).isEqualTo("Thanks for all the fish.");
         assertThat(actual.getDateReceived()).isEqualTo(now);
