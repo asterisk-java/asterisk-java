@@ -19,7 +19,6 @@ import org.asteriskjava.ami.action.api.UpdateConfigAction.*;
 import org.asteriskjava.ami.action.api.response.DefaultActionResponse;
 import org.asteriskjava.ami.utils.ActionsRunner;
 import org.asteriskjava.ami.utils.ActionsRunner.ResponseRecorder;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.testcontainers.containers.Container;
 
@@ -346,7 +345,6 @@ class UpdateConfigActionItTest extends BaseActionItTest {
     }
 
     @Test
-    @Disabled("Possible bug - waiting for https://github.com/asterisk/asterisk/issues/511")
     void shouldDeleteValueUsingVarAndValueMatchSelector() throws Exception {
         //given
         String filename = "asterisk-java-test-delete-by-var-and-match.conf";
@@ -395,8 +393,8 @@ class UpdateConfigActionItTest extends BaseActionItTest {
         Container.ExecResult execResult = asteriskDocker.execInContainer("cat", "/etc/asterisk/%s".formatted(filename));
         assertThat(execResult.getExitCode()).isZero();
         assertThat(execResult.getStdout())
-                .contains("[brand-new-category]", "some-variable = some-first-value")
-                .doesNotContain("some-variable = some-second-value");
+                .contains("[brand-new-category]", "some-var = some-value")
+                .doesNotContain("var-to-delete", "value-to-delete");
     }
 
     @Test

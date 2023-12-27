@@ -214,7 +214,7 @@ public class UpdateConfigAction extends AbstractManagerAction {
 
     public static class Delete extends Config {
         private String var;
-        private int line;
+        private Integer line;
         private String match;
 
         @Override
@@ -230,11 +230,11 @@ public class UpdateConfigAction extends AbstractManagerAction {
             this.var = var;
         }
 
-        public int getLine() {
+        public Integer getLine() {
             return line;
         }
 
-        public void setLine(int line) {
+        public void setLine(Integer line) {
             this.line = line;
         }
 
