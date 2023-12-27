@@ -29,6 +29,7 @@ public abstract class BaseActionItTest {
     @Container
     protected static final GenericContainer<?> asteriskDocker = new GenericContainer("andrius/asterisk:alpine-18.15.1")
             .withClasspathResourceMapping("/manager.conf", "/etc/asterisk/manager.conf", READ_ONLY)
+            .withClasspathResourceMapping("/queues.conf", "/etc/asterisk/queues.conf", READ_ONLY)
             .withAccessToHost(true)
             .withExposedPorts(5038)
             .waitingFor(forLogMessage(".*Asterisk Ready.*", 1));
