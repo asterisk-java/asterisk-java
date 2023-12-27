@@ -16,10 +16,10 @@
  */
 package org.asteriskjava.manager;
 
+import org.asteriskjava.ami.action.api.PingAction;
 import org.asteriskjava.ami.action.api.response.ManagerActionResponse;
 import org.asteriskjava.lock.LockableSet;
 import org.asteriskjava.lock.Locker.LockCloser;
-import org.asteriskjava.manager.action.PingAction;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 

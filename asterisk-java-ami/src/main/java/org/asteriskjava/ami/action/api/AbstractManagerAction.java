@@ -32,9 +32,9 @@ public abstract class AbstractManagerAction implements ManagerAction {
     @Serial
     private static final long serialVersionUID = -7667827187378395689L;
 
+    @AsteriskName("ActionID")
     private String actionId;
 
-    @AsteriskName("ActionID")
     public String getActionId() {
         return actionId;
     }

@@ -14,27 +14,26 @@
  *  limitations under the License.
  *
  */
-package org.asteriskjava.manager.response;
+package org.asteriskjava.ami.action.api.response;
 
-import org.asteriskjava.ami.action.api.response.ManagerActionResponse;
+import org.asteriskjava.ami.action.api.PingAction;
+
+import java.io.Serial;
+import java.time.Instant;
 
 /**
- * Corresponds to a PingAction and contains an additional (yet useless) ping property.
+ * Corresponds to a {@link PingAction} and contains an additional (yet useless) ping property.
  *
- * @author srt
- * @see org.asteriskjava.manager.action.PingAction
+ * @author Stefan Reuter
+ * @since 1.0.0
  */
-public class PingResponse extends ManagerActionResponse {
+public class PingActionResponse extends ManagerActionResponse {
+    @Serial
     private static final long serialVersionUID = 0L;
 
     private String ping;
-    private String timestamp;
+    private Instant timestamp;
 
-    /**
-     * Returns always "Pong".
-     *
-     * @return always "Pong".
-     */
     public String getPing() {
         return ping;
     }
@@ -43,17 +42,11 @@ public class PingResponse extends ManagerActionResponse {
         this.ping = ping;
     }
 
-    /**
-     * Timestamp for the response.
-     *
-     * @return Timestamp as a String, e.g 1353747825.795863
-     * @since 1.0.0
-     */
-    public String getTimestamp() {
+    public Instant getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(String timestamp) {
+    public void setTimestamp(Instant timestamp) {
         this.timestamp = timestamp;
     }
 }

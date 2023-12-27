@@ -19,6 +19,7 @@ import org.asteriskjava.ami.action.api.UpdateConfigAction.Append;
 import org.asteriskjava.ami.action.api.UpdateConfigAction.NewCat;
 import org.asteriskjava.ami.action.api.response.GetConfigJsonActionResponse;
 import org.asteriskjava.ami.utils.ActionsRunner;
+import org.asteriskjava.ami.utils.ActionsRunner.ResponseRecorder;
 import org.json.JSONException;
 import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -27,7 +28,6 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.asteriskjava.ami.action.api.response.ResponseType.Success;
-import static org.asteriskjava.ami.utils.ActionsRunner.ResponseRecorder;
 
 class GetConfigJsonActionItTest extends BaseActionItTest {
     @Test

@@ -17,6 +17,7 @@ package org.asteriskjava.ami.action.api;
 
 import org.asteriskjava.ami.action.api.response.EmptyActionResponse;
 import org.asteriskjava.ami.utils.ActionsRunner;
+import org.asteriskjava.ami.utils.ActionsRunner.ResponseRecorder;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
@@ -40,7 +41,7 @@ class LogoffActionItTest extends BaseActionItTest {
                 .registerAction(LogoffAction.class, logoffAction);
 
         //when
-        ActionsRunner.ResponseRecorder responseRecorder = actionsRunner.run();
+        ResponseRecorder responseRecorder = actionsRunner.run();
 
         //then
         EmptyActionResponse actual = responseRecorder.getRecorderResponse("id-1", EmptyActionResponse.class);
@@ -62,7 +63,7 @@ class LogoffActionItTest extends BaseActionItTest {
                 .registerAction(LogoffAction.class, logoffAction);
 
         //when
-        ActionsRunner.ResponseRecorder responseRecorder = actionsRunner.run();
+        ResponseRecorder responseRecorder = actionsRunner.run();
 
         //then
         EmptyActionResponse actual = responseRecorder.getRecorderResponse("id-1", EmptyActionResponse.class);
