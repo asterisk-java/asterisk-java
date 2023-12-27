@@ -18,6 +18,7 @@ package org.asteriskjava.live.internal;
 
 import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.ami.action.api.CommandAction;
+import org.asteriskjava.ami.action.api.DbPutAction;
 import org.asteriskjava.ami.action.api.ManagerAction;
 import org.asteriskjava.ami.action.api.response.CommandActionResponse;
 import org.asteriskjava.ami.action.api.response.ManagerActionResponse;
@@ -1105,7 +1106,11 @@ public class AsteriskServerImpl extends Lockable implements AsteriskServer, Mana
     }
 
     public void dbPut(String family, String key, String value) throws ManagerCommunicationException {
-        sendAction(new DbPutAction(family, key, value));
+        DbPutAction action = new DbPutAction();
+        action.setFamily(family);
+        action.setKey(key);
+        action.setVal(value);
+        sendAction(action);
     }
 
     public AsteriskChannel getChannelByNameAndActive(String name) throws ManagerCommunicationException {
