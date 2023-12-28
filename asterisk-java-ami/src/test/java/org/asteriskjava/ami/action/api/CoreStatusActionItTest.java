@@ -26,7 +26,7 @@ import java.time.LocalTime;
 
 import static java.time.Instant.now;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.asteriskjava.ami.action.api.response.ResponseType.Success;
+import static org.asteriskjava.ami.action.api.response.ResponseType.success;
 
 class CoreStatusActionItTest extends BaseActionItTest {
     @Test
@@ -47,7 +47,7 @@ class CoreStatusActionItTest extends BaseActionItTest {
 
         //then
         CoreStatusActionResponse actual = responseRecorder.getRecorderResponse("id-1", CoreStatusActionResponse.class);
-        assertThat(actual.getResponse()).isEqualTo(Success);
+        assertThat(actual.getResponse()).isEqualTo(success);
         assertThat(actual.getCoreStartupDate()).isInstanceOf(LocalDate.class).isNotNull();
         assertThat(actual.getCoreStartupTime()).isInstanceOf(LocalTime.class).isNotNull();
         assertThat(actual.getCoreReloadDate()).isInstanceOf(LocalDate.class).isNotNull();

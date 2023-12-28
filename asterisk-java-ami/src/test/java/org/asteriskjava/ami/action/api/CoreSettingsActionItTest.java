@@ -24,7 +24,7 @@ import java.time.Instant;
 
 import static java.time.Instant.now;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.asteriskjava.ami.action.api.response.ResponseType.Success;
+import static org.asteriskjava.ami.action.api.response.ResponseType.success;
 
 class CoreSettingsActionItTest extends BaseActionItTest {
     @Test
@@ -45,7 +45,7 @@ class CoreSettingsActionItTest extends BaseActionItTest {
 
         //then
         CoreSettingsActionResponse actual = responseRecorder.getRecorderResponse("id-1", CoreSettingsActionResponse.class);
-        assertThat(actual.getResponse()).isEqualTo(Success);
+        assertThat(actual.getResponse()).isEqualTo(success);
         assertThat(actual.getAmiVersion()).isEqualTo("7.0.3");
         assertThat(actual.getAsteriskVersion()).isEqualTo("18.15.1");
         assertThat(actual.getSystemName()).isNull();

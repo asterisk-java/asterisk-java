@@ -48,7 +48,7 @@ class ResponseBuilderImplTest {
 
         response = responseBuilder.buildResponse(ManagerActionResponse.class, attributes);
         assertEquals(ManagerActionResponse.class, response.getClass(), "Response of wrong type");
-        assertEquals(ResponseType.Success, response.getResponse(), "Response not set correctly");
+        assertEquals(ResponseType.success, response.getResponse(), "Response not set correctly");
     }
 
     @Test
@@ -59,7 +59,7 @@ class ResponseBuilderImplTest {
 
         response = responseBuilder.buildResponse(null, attributes);
         assertEquals(ManagerActionResponse.class, response.getClass(), "Response of wrong type");
-        assertEquals(ResponseType.Success, response.getResponse(), "Response not set correctly");
+        assertEquals(ResponseType.success, response.getResponse(), "Response not set correctly");
     }
 
     @Test

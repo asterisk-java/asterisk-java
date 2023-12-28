@@ -23,9 +23,9 @@ package org.asteriskjava.ami.action.api.response;
  * @since 4.0.0
  */
 public enum ResponseType {
-    Success,
-    Error,
-    Goodbye,
+    success,
+    error,
+    goodbye,
     //todo check is sill in use
-    Follows,
+    follows,
 }

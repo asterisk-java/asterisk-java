@@ -209,7 +209,7 @@ class ManagerReaderImplTest {
         assertEquals(1, dispatcher.dispatchedResponses.size(), "not exactly one response dispatched");
 
         assertEquals(ManagerActionResponse.class, dispatcher.dispatchedResponses.get(0).getClass(), "first response must be a ManagerResponse");
-        assertEquals(ResponseType.Success, dispatcher.dispatchedResponses.get(0).getResponse(), "ManagerResponse contains incorrect response");
+        assertEquals(ResponseType.success, dispatcher.dispatchedResponses.get(0).getResponse(), "ManagerResponse contains incorrect response");
 
         assertEquals("Authentication accepted", dispatcher.dispatchedResponses.get(0).getMessage(), "ManagerResponse contains incorrect message");
 
@@ -244,7 +244,7 @@ class ManagerReaderImplTest {
 
         assertEquals(CommandActionResponse.class, dispatcher.dispatchedResponses.get(0).getClass(), "first response must be a CommandResponse");
 
-        assertEquals(ResponseType.Follows, dispatcher.dispatchedResponses.get(0).getResponse(), "CommandResponse contains incorrect response");
+        assertEquals(ResponseType.follows, dispatcher.dispatchedResponses.get(0).getResponse(), "CommandResponse contains incorrect response");
 
         assertEquals("678#12345", dispatcher.dispatchedResponses.get(0).getActionId(), "CommandResponse contains incorrect actionId");
 

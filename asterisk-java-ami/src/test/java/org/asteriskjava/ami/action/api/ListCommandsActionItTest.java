@@ -25,7 +25,7 @@ import java.time.Instant;
 import static java.time.Instant.now;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
-import static org.asteriskjava.ami.action.api.response.ResponseType.Success;
+import static org.asteriskjava.ami.action.api.response.ResponseType.success;
 
 class ListCommandsActionItTest extends BaseActionItTest {
     @Test
@@ -46,7 +46,7 @@ class ListCommandsActionItTest extends BaseActionItTest {
 
         //then
         ListCommandActionResponse actual = responseRecorder.getRecorderResponse("id-1", ListCommandActionResponse.class);
-        assertThat(actual.getResponse()).isEqualTo(Success);
+        assertThat(actual.getResponse()).isEqualTo(success);
         assertThat(actual.getCommands()).contains(
                 entry("ConfbridgeList", "(Priv: reporting,all)"),
                 entry("ConfbridgeMute", "(Priv: call,all)"),

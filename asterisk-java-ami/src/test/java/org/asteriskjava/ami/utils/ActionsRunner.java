@@ -226,12 +226,12 @@ public class ActionsRunner {
             }
         }
 
-        private ManagerActionResponse getManagerActionResponseAndRecordIfNeeded(String message) {
+        private ManagerActionResponse getManagerActionResponseAndRecord(String message) {
             String[] split = message.split(CRLF.getPattern());
             Map<String, Object> map = AsteriskDecoder.toMap(split);
             String actionId = (String) map.get("ActionID");
 
-            Class<? extends ManagerActionResponse> clazz = mapResponses.get(actionId);
+            Class<? extends ManagerActionResponse> clazz = mapResponses.remove(actionId);
             ManagerActionResponse managerActionResponse = asteriskDecoder.decode(map, clazz);
             managerActionResponse.setDateReceived(instant);
 

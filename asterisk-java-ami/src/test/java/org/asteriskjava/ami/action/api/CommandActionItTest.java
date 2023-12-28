@@ -24,8 +24,8 @@ import java.time.Instant;
 
 import static java.time.Instant.now;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.asteriskjava.ami.action.api.response.ResponseType.Error;
-import static org.asteriskjava.ami.action.api.response.ResponseType.Success;
+import static org.asteriskjava.ami.action.api.response.ResponseType.error;
+import static org.asteriskjava.ami.action.api.response.ResponseType.success;
 
 class CommandActionItTest extends BaseActionItTest {
     @Test
@@ -47,7 +47,7 @@ class CommandActionItTest extends BaseActionItTest {
 
         //then
         CommandActionResponse actual = responseRecorder.getRecorderResponse("id-1", CommandActionResponse.class);
-        assertThat(actual.getResponse()).isEqualTo(Error);
+        assertThat(actual.getResponse()).isEqualTo(error);
         assertThat(actual.getMessage()).isEqualTo("Command output follows");
         assertThat(actual.getOutput()).containsExactly("No such command 'invalid command' (type 'core show help invalid command' for other possible commands)");
     }
@@ -71,7 +71,7 @@ class CommandActionItTest extends BaseActionItTest {
 
         //then
         CommandActionResponse actual = responseRecorder.getRecorderResponse("id-1", CommandActionResponse.class);
-        assertThat(actual.getResponse()).isEqualTo(Success);
+        assertThat(actual.getResponse()).isEqualTo(success);
         assertThat(actual.getMessage()).isEqualTo("Command output follows");
         assertThat(actual.getOutput()).contains("-= 183 Applications Registered =-", "VoiceMailPlayMsg");
     }

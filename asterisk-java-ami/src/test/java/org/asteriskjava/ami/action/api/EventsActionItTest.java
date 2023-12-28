@@ -26,7 +26,7 @@ import java.util.EnumSet;
 import static java.time.Instant.now;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.asteriskjava.ami.action.api.EventMask.*;
-import static org.asteriskjava.ami.action.api.response.ResponseType.Success;
+import static org.asteriskjava.ami.action.api.response.ResponseType.success;
 
 class EventsActionItTest extends BaseActionItTest {
     @Test
@@ -48,7 +48,7 @@ class EventsActionItTest extends BaseActionItTest {
 
         //then
         EventsActionResponse actual = responseRecorder.getRecorderResponse("id-1", EventsActionResponse.class);
-        assertThat(actual.getResponse()).isEqualTo(Success);
+        assertThat(actual.getResponse()).isEqualTo(success);
         assertThat(actual.getEvents()).isEqualTo(off);
     }
 
@@ -71,7 +71,7 @@ class EventsActionItTest extends BaseActionItTest {
 
         //then
         EventsActionResponse actual = responseRecorder.getRecorderResponse("id-1", EventsActionResponse.class);
-        assertThat(actual.getResponse()).isEqualTo(Success);
+        assertThat(actual.getResponse()).isEqualTo(success);
         assertThat(actual.getEvents()).isEqualTo(on);
     }
 }

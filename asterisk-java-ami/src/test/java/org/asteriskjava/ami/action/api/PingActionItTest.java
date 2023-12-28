@@ -24,7 +24,7 @@ import org.junit.jupiter.api.Test;
 import java.time.Instant;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.asteriskjava.ami.action.api.response.ResponseType.Success;
+import static org.asteriskjava.ami.action.api.response.ResponseType.success;
 
 class PingActionItTest extends BaseActionItTest {
     @Test
@@ -42,7 +42,7 @@ class PingActionItTest extends BaseActionItTest {
 
         //then
         PingActionResponse actual = responseRecorder.getRecorderResponse("id-1", PingActionResponse.class);
-        assertThat(actual.getResponse()).isEqualTo(Success);
+        assertThat(actual.getResponse()).isEqualTo(success);
         assertThat(actual.getTimestamp()).isInstanceOf(Instant.class);
     }
 }

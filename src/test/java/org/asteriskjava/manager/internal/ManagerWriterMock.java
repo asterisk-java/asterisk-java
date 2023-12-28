@@ -135,10 +135,10 @@ public class ManagerWriterMock implements ManagerWriter {
                 // 3 unsuccessful attempts
                 if (key.equals(expectedKey) || loginActionsSent > 2) {
                     loginResponse = new ManagerActionResponse();
-                    loginResponse.setResponse(ResponseType.Success);
+                    loginResponse.setResponse(ResponseType.success);
                 } else {
                     loginResponse = new ManagerError();
-                    loginResponse.setResponse(ResponseType.Error);
+                    loginResponse.setResponse(ResponseType.error);
                     loginResponse.setMessage("Authentication failed");
                 }
                 loginResponse.setActionId(ManagerUtil.addInternalActionId(action.getActionId(), internalActionId));
@@ -152,7 +152,7 @@ public class ManagerWriterMock implements ManagerWriter {
 
                 response = new ManagerActionResponse();
                 response.setActionId(ManagerUtil.addInternalActionId(action.getActionId(), internalActionId));
-                response.setResponse(ResponseType.Success);
+                response.setResponse(ResponseType.success);
                 dispatchLater(response);
             }
         } else {
@@ -163,7 +163,7 @@ public class ManagerWriterMock implements ManagerWriter {
 
                 response = new ManagerActionResponse();
                 response.setActionId(ManagerUtil.addInternalActionId(action.getActionId(), internalActionId));
-                response.setResponse(ResponseType.Success);
+                response.setResponse(ResponseType.success);
                 dispatchLater(response);
             }
         }

@@ -24,8 +24,8 @@ import org.testcontainers.containers.Container;
 
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.asteriskjava.ami.action.api.response.ResponseType.Error;
-import static org.asteriskjava.ami.action.api.response.ResponseType.Success;
+import static org.asteriskjava.ami.action.api.response.ResponseType.error;
+import static org.asteriskjava.ami.action.api.response.ResponseType.success;
 
 class UpdateConfigActionItTest extends BaseActionItTest {
     @Test
@@ -52,7 +52,7 @@ class UpdateConfigActionItTest extends BaseActionItTest {
 
         //then
         DefaultActionResponse actual = responseRecorder.getRecorderResponse("id-1", DefaultActionResponse.class);
-        assertThat(actual.getResponse()).isEqualTo(Success);
+        assertThat(actual.getResponse()).isEqualTo(success);
 
         Container.ExecResult execResult = asteriskDocker.execInContainer("cat", "/etc/asterisk/%s".formatted(filename));
         assertThat(execResult.getExitCode()).isZero();
@@ -87,7 +87,7 @@ class UpdateConfigActionItTest extends BaseActionItTest {
 
         //then
         DefaultActionResponse actual = responseRecorder.getRecorderResponse("id-1", DefaultActionResponse.class);
-        assertThat(actual.getResponse()).isEqualTo(Success);
+        assertThat(actual.getResponse()).isEqualTo(success);
 
         Container.ExecResult execResult = asteriskDocker.execInContainer("cat", "/etc/asterisk/%s".formatted(filename));
         assertThat(execResult.getExitCode()).isZero();
@@ -123,7 +123,7 @@ class UpdateConfigActionItTest extends BaseActionItTest {
 
         //then
         DefaultActionResponse actual = responseRecorder.getRecorderResponse("id-2", DefaultActionResponse.class);
-        assertThat(actual.getResponse()).isEqualTo(Success);
+        assertThat(actual.getResponse()).isEqualTo(success);
 
         Container.ExecResult execResult = asteriskDocker.execInContainer("cat", "/etc/asterisk/%s".formatted(filename));
         assertThat(execResult.getExitCode()).isZero();
@@ -159,7 +159,7 @@ class UpdateConfigActionItTest extends BaseActionItTest {
 
         //then
         DefaultActionResponse actual = responseRecorder.getRecorderResponse("id-2", DefaultActionResponse.class);
-        assertThat(actual.getResponse()).isEqualTo(Success);
+        assertThat(actual.getResponse()).isEqualTo(success);
 
         Container.ExecResult execResult = asteriskDocker.execInContainer("cat", "/etc/asterisk/asterisk-java-test-append.conf");
         assertThat(execResult.getExitCode()).isZero();
@@ -196,7 +196,7 @@ class UpdateConfigActionItTest extends BaseActionItTest {
 
         //then
         DefaultActionResponse actual = responseRecorder.getRecorderResponse("id-1", DefaultActionResponse.class);
-        assertThat(actual.getResponse()).isEqualTo(Success);
+        assertThat(actual.getResponse()).isEqualTo(success);
 
         Container.ExecResult execResult = asteriskDocker.execInContainer("cat", "/etc/asterisk/%s".formatted(filename));
         assertThat(execResult.getExitCode()).isZero();
@@ -239,7 +239,7 @@ class UpdateConfigActionItTest extends BaseActionItTest {
 
         //then
         DefaultActionResponse actual = responseRecorder.getRecorderResponse("id-2", DefaultActionResponse.class);
-        assertThat(actual.getResponse()).isEqualTo(Success);
+        assertThat(actual.getResponse()).isEqualTo(success);
 
         Container.ExecResult execResult = asteriskDocker.execInContainer("cat", "/etc/asterisk/%s".formatted(filename));
         assertThat(execResult.getExitCode()).isZero();
@@ -286,7 +286,7 @@ class UpdateConfigActionItTest extends BaseActionItTest {
 
         //then
         DefaultActionResponse actual = responseRecorder.getRecorderResponse("id-1", DefaultActionResponse.class);
-        assertThat(actual.getResponse()).isEqualTo(Success);
+        assertThat(actual.getResponse()).isEqualTo(success);
 
         Container.ExecResult execResult = asteriskDocker.execInContainer("cat", "/etc/asterisk/%s".formatted(filename));
         assertThat(execResult.getExitCode()).isZero();
@@ -335,7 +335,7 @@ class UpdateConfigActionItTest extends BaseActionItTest {
 
         //then
         DefaultActionResponse actual = responseRecorder.getRecorderResponse("id-1", DefaultActionResponse.class);
-        assertThat(actual.getResponse()).isEqualTo(Success);
+        assertThat(actual.getResponse()).isEqualTo(success);
 
         Container.ExecResult execResult = asteriskDocker.execInContainer("cat", "/etc/asterisk/%s".formatted(filename));
         assertThat(execResult.getExitCode()).isZero();
@@ -388,7 +388,7 @@ class UpdateConfigActionItTest extends BaseActionItTest {
 
         //then
         DefaultActionResponse actual = responseRecorder.getRecorderResponse("id-3", DefaultActionResponse.class);
-        assertThat(actual.getResponse()).isEqualTo(Success);
+        assertThat(actual.getResponse()).isEqualTo(success);
 
         Container.ExecResult execResult = asteriskDocker.execInContainer("cat", "/etc/asterisk/%s".formatted(filename));
         assertThat(execResult.getExitCode()).isZero();
@@ -441,7 +441,7 @@ class UpdateConfigActionItTest extends BaseActionItTest {
 
         //then
         DefaultActionResponse actual = responseRecorder.getRecorderResponse("id-3", DefaultActionResponse.class);
-        assertThat(actual.getResponse()).isEqualTo(Success);
+        assertThat(actual.getResponse()).isEqualTo(success);
 
         Container.ExecResult execResult = asteriskDocker.execInContainer("cat", "/etc/asterisk/%s".formatted(filename));
         assertThat(execResult.getExitCode()).isZero();
@@ -494,7 +494,7 @@ class UpdateConfigActionItTest extends BaseActionItTest {
 
         //then
         DefaultActionResponse actual = responseRecorder.getRecorderResponse("id-3", DefaultActionResponse.class);
-        assertThat(actual.getResponse()).isEqualTo(Error);
+        assertThat(actual.getResponse()).isEqualTo(error);
         assertThat(actual.getMessage()).isEqualTo("Update did not complete successfully");
 
         Container.ExecResult execResult = asteriskDocker.execInContainer("cat", "/etc/asterisk/%s".formatted(filename));
@@ -545,7 +545,7 @@ class UpdateConfigActionItTest extends BaseActionItTest {
 
         //then
         DefaultActionResponse actual = responseRecorder.getRecorderResponse("id-3", DefaultActionResponse.class);
-        assertThat(actual.getResponse()).isEqualTo(Success);
+        assertThat(actual.getResponse()).isEqualTo(success);
 
         Container.ExecResult execResult = asteriskDocker.execInContainer("cat", "/etc/asterisk/%s".formatted(filename));
         assertThat(execResult.getExitCode()).isZero();

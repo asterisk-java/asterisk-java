@@ -25,7 +25,7 @@ import java.time.Instant;
 import static java.time.Instant.now;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.asteriskjava.ami.action.api.AuthType.MD5;
-import static org.asteriskjava.ami.action.api.response.ResponseType.Success;
+import static org.asteriskjava.ami.action.api.response.ResponseType.success;
 
 class ChallengeActionItTest extends BaseActionItTest {
     @Test
@@ -46,7 +46,7 @@ class ChallengeActionItTest extends BaseActionItTest {
 
         //then
         ChallengeActionResponse actual = responseRecorder.getRecorderResponse("id-1", ChallengeActionResponse.class);
-        assertThat(actual.getResponse()).isEqualTo(Success);
+        assertThat(actual.getResponse()).isEqualTo(success);
         assertThat(actual.getActionId()).isEqualTo("id-1");
         assertThat(actual.getDateReceived()).isEqualTo(now);
         assertThat(actual.getChallenge()).isNotBlank();

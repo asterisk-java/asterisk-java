@@ -533,7 +533,7 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
                 throw new AuthenticationFailedException("Unable to send login action", e);
             }
 
-            if (loginResponse.getResponse() == ResponseType.Error) {
+            if (loginResponse.getResponse() == ResponseType.error) {
                 disconnect();
                 throw new AuthenticationFailedException(loginResponse.getMessage());
             }

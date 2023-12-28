@@ -24,7 +24,7 @@ import java.time.Instant;
 
 import static java.time.Instant.now;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.asteriskjava.ami.action.api.response.ResponseType.Success;
+import static org.asteriskjava.ami.action.api.response.ResponseType.success;
 
 class ListCategoriesActionItTest extends BaseActionItTest {
     @Test
@@ -46,7 +46,7 @@ class ListCategoriesActionItTest extends BaseActionItTest {
 
         //then
         ListCategoriesActionResponse actual = responseRecorder.getRecorderResponse("id-1", ListCategoriesActionResponse.class);
-        assertThat(actual.getResponse()).isEqualTo(Success);
+        assertThat(actual.getResponse()).isEqualTo(success);
         assertThat(actual.getCategories()).containsExactly("general", "csv");
     }
 }

@@ -24,7 +24,7 @@ import java.time.Instant;
 
 import static java.time.Instant.now;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.asteriskjava.ami.action.api.response.ResponseType.Goodbye;
+import static org.asteriskjava.ami.action.api.response.ResponseType.goodbye;
 
 class LogoffActionItTest extends BaseActionItTest {
     @Test
@@ -45,7 +45,7 @@ class LogoffActionItTest extends BaseActionItTest {
 
         //then
         DefaultActionResponse actual = responseRecorder.getRecorderResponse("id-1", DefaultActionResponse.class);
-        assertThat(actual.getResponse()).isEqualTo(Goodbye);
+        assertThat(actual.getResponse()).isEqualTo(goodbye);
         assertThat(actual.getMessage()).isEqualTo("Thanks for all the fish.");
         assertThat(actual.getDateReceived()).isEqualTo(now);
     }
@@ -67,7 +67,7 @@ class LogoffActionItTest extends BaseActionItTest {
 
         //then
         DefaultActionResponse actual = responseRecorder.getRecorderResponse("id-1", DefaultActionResponse.class);
-        assertThat(actual.getResponse()).isEqualTo(Goodbye);
+        assertThat(actual.getResponse()).isEqualTo(goodbye);
         assertThat(actual.getMessage()).isEqualTo("Thanks for all the fish.");
         assertThat(actual.getDateReceived()).isEqualTo(now);
     }

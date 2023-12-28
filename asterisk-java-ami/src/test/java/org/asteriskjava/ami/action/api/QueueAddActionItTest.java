@@ -21,7 +21,7 @@ import org.asteriskjava.ami.utils.ActionsRunner.ResponseRecorder;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.asteriskjava.ami.action.api.response.ResponseType.Success;
+import static org.asteriskjava.ami.action.api.response.ResponseType.success;
 
 class QueueAddActionItTest extends BaseActionItTest {
     @Test
@@ -45,7 +45,7 @@ class QueueAddActionItTest extends BaseActionItTest {
 
         //then
         DefaultActionResponse actual = responseRecorder.getRecorderResponse("id-1", DefaultActionResponse.class);
-        assertThat(actual.getResponse()).isEqualTo(Success);
+        assertThat(actual.getResponse()).isEqualTo(success);
         assertThat(actual.getMessage()).isEqualTo("Added interface to queue");
     }
 }

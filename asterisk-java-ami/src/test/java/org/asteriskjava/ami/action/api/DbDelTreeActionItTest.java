@@ -22,7 +22,7 @@ import org.junit.jupiter.api.Test;
 import org.testcontainers.containers.Container;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.asteriskjava.ami.action.api.response.ResponseType.Success;
+import static org.asteriskjava.ami.action.api.response.ResponseType.success;
 
 class DbDelTreeActionItTest extends BaseActionItTest {
     @Test
@@ -45,7 +45,7 @@ class DbDelTreeActionItTest extends BaseActionItTest {
 
         //then
         DefaultActionResponse actual = responseRecorder.getRecorderResponse("id-1", DefaultActionResponse.class);
-        assertThat(actual.getResponse()).isEqualTo(Success);
+        assertThat(actual.getResponse()).isEqualTo(success);
         assertThat(actual.getMessage()).isEqualTo("Key tree deleted successfully");
 
         Container.ExecResult execResult1 = asteriskDocker.execInContainer("asterisk", "-rx", "database get family1 key1");
@@ -75,7 +75,7 @@ class DbDelTreeActionItTest extends BaseActionItTest {
 
         //then
         DefaultActionResponse actual = responseRecorder.getRecorderResponse("id-1", DefaultActionResponse.class);
-        assertThat(actual.getResponse()).isEqualTo(Success);
+        assertThat(actual.getResponse()).isEqualTo(success);
         assertThat(actual.getMessage()).isEqualTo("Key tree deleted successfully");
 
         Container.ExecResult execResult1 = asteriskDocker.execInContainer("asterisk", "-rx", "database get family1 key1");

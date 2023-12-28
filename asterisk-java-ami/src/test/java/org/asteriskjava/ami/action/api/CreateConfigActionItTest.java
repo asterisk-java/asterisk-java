@@ -22,7 +22,7 @@ import org.junit.jupiter.api.Test;
 import org.testcontainers.containers.Container.ExecResult;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.asteriskjava.ami.action.api.response.ResponseType.Success;
+import static org.asteriskjava.ami.action.api.response.ResponseType.success;
 
 class CreateConfigActionItTest extends BaseActionItTest {
     @Test
@@ -41,7 +41,7 @@ class CreateConfigActionItTest extends BaseActionItTest {
 
         //then
         DefaultActionResponse actual = responseRecorder.getRecorderResponse("id-1", DefaultActionResponse.class);
-        assertThat(actual.getResponse()).isEqualTo(Success);
+        assertThat(actual.getResponse()).isEqualTo(success);
         assertThat(actual.getMessage()).isEqualTo("New configuration file created successfully");
 
         ExecResult execResult = asteriskDocker.execInContainer("ls", "-la", "/etc/asterisk");

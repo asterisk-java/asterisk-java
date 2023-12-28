@@ -27,7 +27,7 @@ import org.skyscreamer.jsonassert.JSONAssert;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.asteriskjava.ami.action.api.response.ResponseType.Success;
+import static org.asteriskjava.ami.action.api.response.ResponseType.success;
 
 class GetConfigJsonActionItTest extends BaseActionItTest {
     @Test
@@ -53,7 +53,7 @@ class GetConfigJsonActionItTest extends BaseActionItTest {
 
         //then
         GetConfigJsonActionResponse actual = responseRecorder.getRecorderResponse("id-1", GetConfigJsonActionResponse.class);
-        assertThat(actual.getResponse()).isEqualTo(Success);
+        assertThat(actual.getResponse()).isEqualTo(success);
         String expectedStr = """
                 {
                     "brand-new-category":{
@@ -92,7 +92,7 @@ class GetConfigJsonActionItTest extends BaseActionItTest {
 
         //then
         GetConfigJsonActionResponse actual = responseRecorder.getRecorderResponse("id-1", GetConfigJsonActionResponse.class);
-        assertThat(actual.getResponse()).isEqualTo(Success);
+        assertThat(actual.getResponse()).isEqualTo(success);
         String expectedStr = """
                 {
                     "brand-new-category":{
@@ -128,7 +128,7 @@ class GetConfigJsonActionItTest extends BaseActionItTest {
 
         //then
         GetConfigJsonActionResponse actual = responseRecorder.getRecorderResponse("id-1", GetConfigJsonActionResponse.class);
-        assertThat(actual.getResponse()).isEqualTo(Success);
+        assertThat(actual.getResponse()).isEqualTo(success);
         String expectedStr = """
                 {
                     "again-new-category":{

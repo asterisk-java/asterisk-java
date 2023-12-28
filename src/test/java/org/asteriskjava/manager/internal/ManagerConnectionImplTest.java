@@ -334,7 +334,7 @@ class ManagerConnectionImplTest {
 
         assertEquals("123", statusAction.getActionId(), "incorrect actionId in action");
         assertEquals("123", response.getActionId(), "incorrect actionId in response");
-        assertEquals(ResponseType.Success, response.getResponse(), "incorrect response");
+        assertEquals(ResponseType.success, response.getResponse(), "incorrect response");
 
         assertEquals(1, mockWriter.otherActionsSent, "other actions not sent 1 time");
     }
@@ -369,7 +369,7 @@ class ManagerConnectionImplTest {
         response = new ManagerActionResponse();
         // internalActionId: 123_0
         response.setActionId("123_0-abc");
-        response.setResponse(ResponseType.Success);
+        response.setResponse(ResponseType.success);
 
         // expected result is ignoring the response and logging
         mc.dispatchResponse(response, null);
@@ -381,7 +381,7 @@ class ManagerConnectionImplTest {
 
         response = new ManagerActionResponse();
         response.setActionId("abc");
-        response.setResponse(ResponseType.Success);
+        response.setResponse(ResponseType.success);
 
         // expected result is ignoring the response and logging
         mc.dispatchResponse(response, null);
@@ -393,7 +393,7 @@ class ManagerConnectionImplTest {
 
         response = new ManagerActionResponse();
         response.setActionId(null);
-        response.setResponse(ResponseType.Success);
+        response.setResponse(ResponseType.success);
 
         // expected result is ignoring the response and logging
         mc.dispatchResponse(response, null);

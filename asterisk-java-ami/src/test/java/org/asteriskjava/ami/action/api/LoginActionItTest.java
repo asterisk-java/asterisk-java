@@ -29,8 +29,8 @@ import static java.time.Instant.now;
 import static org.apache.commons.codec.digest.DigestUtils.md5Hex;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.asteriskjava.ami.action.api.AuthType.MD5;
-import static org.asteriskjava.ami.action.api.response.ResponseType.Error;
-import static org.asteriskjava.ami.action.api.response.ResponseType.Success;
+import static org.asteriskjava.ami.action.api.response.ResponseType.error;
+import static org.asteriskjava.ami.action.api.response.ResponseType.success;
 
 class LoginActionItTest extends BaseActionItTest {
     @Test
@@ -55,7 +55,7 @@ class LoginActionItTest extends BaseActionItTest {
 
         //then
         DefaultActionResponse actual = responseRecorder.getRecorderResponse("id-2", DefaultActionResponse.class);
-        assertThat(actual.getResponse()).isEqualTo(Error);
+        assertThat(actual.getResponse()).isEqualTo(error);
         assertThat(actual.getMessage()).isEqualTo("Authentication failed");
         assertThat(actual.getDateReceived()).isEqualTo(now);
     }
@@ -90,7 +90,7 @@ class LoginActionItTest extends BaseActionItTest {
 
         //then
         DefaultActionResponse actual = responseRecorder.getRecorderResponse("id-2", DefaultActionResponse.class);
-        assertThat(actual.getResponse()).isEqualTo(Success);
+        assertThat(actual.getResponse()).isEqualTo(success);
         assertThat(actual.getMessage()).isEqualTo("Authentication accepted");
         assertThat(actual.getDateReceived()).isEqualTo(now);
     }
