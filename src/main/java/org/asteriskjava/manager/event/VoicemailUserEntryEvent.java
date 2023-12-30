@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.action.api.response.event.ResponseEvent;
+
 /**
  * A VoicemailUserEntryCompleteEvent is triggered in response to a VoicemailUsersListAction
  * and contains the details about a voicemail user.<p>

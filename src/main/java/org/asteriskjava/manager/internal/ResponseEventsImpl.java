@@ -17,10 +17,10 @@
 package org.asteriskjava.manager.internal;
 
 import org.asteriskjava.ami.action.api.response.ManagerActionResponse;
+import org.asteriskjava.ami.action.api.response.event.ResponseEvent;
 import org.asteriskjava.lock.LockableList;
 import org.asteriskjava.lock.Locker.LockCloser;
 import org.asteriskjava.manager.ResponseEvents;
-import org.asteriskjava.manager.event.ResponseEvent;
 
 import java.util.ArrayList;
 import java.util.Collection;

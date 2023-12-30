@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.event.api.ManagerEvent;
+
 public class DialStateEvent extends ManagerEvent {
     private static final long serialVersionUID = 1L;
 

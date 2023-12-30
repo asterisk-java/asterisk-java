@@ -16,6 +16,7 @@
  */
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.event.api.ManagerEvent;
 import org.asteriskjava.util.DateUtil;
 
 import java.util.Date;

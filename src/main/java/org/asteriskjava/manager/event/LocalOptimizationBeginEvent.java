@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.event.api.ManagerEvent;
+
 /**
  * Raised when two halves of a Local Channel begin to optimize themselves out of
  * the media path. Available since Asterisk 12

@@ -1,5 +1,7 @@
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.event.api.ManagerEvent;
+
 /**
  * AgiExecEvents are triggered when an AGI command is executed. For each command two events are triggered:
  * one before excution ("Start") and one after execution ("End").

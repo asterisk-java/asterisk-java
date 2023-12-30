@@ -17,6 +17,8 @@
 
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.action.api.response.event.ResponseEvent;
+
 /**
  * A CoreShowChannelsCompleteEvent is triggered after the state of all channels has been reported in response
  * to a CoreShowChannelsAction.

@@ -16,7 +16,7 @@
  */
 package org.asteriskjava.manager.internal;
 
-import org.asteriskjava.manager.event.ManagerEvent;
+import org.asteriskjava.ami.event.api.ManagerEvent;
 
 import java.util.Map;
 
@@ -25,7 +25,7 @@ import java.util.Map;
  *
  * @author srt
  * @version $Id$
- * @see org.asteriskjava.manager.event.ManagerEvent
+ * @see ManagerEvent
  */
 interface EventBuilder {
     /**

@@ -1,6 +1,6 @@
 package org.asteriskjava.manager.internal.backwardsCompatibility;
 
-import org.asteriskjava.manager.event.ManagerEvent;
+import org.asteriskjava.ami.event.api.ManagerEvent;
 import org.asteriskjava.manager.internal.backwardsCompatibility.bridge.BridgesActive;
 import org.asteriskjava.manager.internal.backwardsCompatibility.meetme.MeetmeCompatibility;
 

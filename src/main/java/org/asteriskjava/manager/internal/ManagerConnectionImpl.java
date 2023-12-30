@@ -19,6 +19,8 @@ import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.ami.action.annotation.ExpectedResponse;
 import org.asteriskjava.ami.action.api.*;
 import org.asteriskjava.ami.action.api.response.*;
+import org.asteriskjava.ami.action.api.response.event.ResponseEvent;
+import org.asteriskjava.ami.event.api.ManagerEvent;
 import org.asteriskjava.lock.Lockable;
 import org.asteriskjava.lock.LockableList;
 import org.asteriskjava.lock.LockableMap;
@@ -830,20 +832,15 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
      */
     public ResponseEvents sendEventGeneratingAction(EventGeneratingAction action, long timeout)
             throws IOException, EventTimeoutException, IllegalArgumentException, IllegalStateException {
+        Class<? extends ResponseEvent> actionCompleteEventClass = getActionCompleteEventClass(action);
+        return sendEventGeneratingAction(action, timeout, actionCompleteEventClass);
+    }
+
+    @Override
+    public ResponseEvents sendEventGeneratingAction(ManagerAction action, long timeout, Class<?> actionCompleteEventClass) throws IOException, EventTimeoutException {
         final ResponseEventsImpl responseEvents;
         final ResponseEventHandler responseEventHandler;
         final String internalActionId;
-
-        if (action == null) {
-            throw new IllegalArgumentException("Unable to send action: action is null.");
-        } else if (action.getActionCompleteEventClass() == null) {
-            throw new IllegalArgumentException(
-                    "Unable to send action: actionCompleteEventClass for " + action.getClass().getName() + " is null.");
-        } else if (!ResponseEvent.class.isAssignableFrom(action.getActionCompleteEventClass())) {
-            throw new IllegalArgumentException(
-                    "Unable to send action: actionCompleteEventClass (" + action.getActionCompleteEventClass().getName()
-                            + ") for " + action.getClass().getName() + " is not a ResponseEvent.");
-        }
 
         if (state != CONNECTED) {
             throw new IllegalStateException(
@@ -851,7 +848,7 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
         }
 
         responseEvents = new ResponseEventsImpl();
-        responseEventHandler = new ResponseEventHandler(responseEvents, action.getActionCompleteEventClass());
+        responseEventHandler = new ResponseEventHandler(responseEvents, actionCompleteEventClass);
 
         internalActionId = createInternalActionId();
 
@@ -905,16 +902,7 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
 
     public void sendEventGeneratingAction(EventGeneratingAction action, SendEventGeneratingActionCallback callback)
             throws IOException, IllegalArgumentException, IllegalStateException {
-        if (action == null) {
-            throw new IllegalArgumentException("Unable to send action: action is null.");
-        } else if (action.getActionCompleteEventClass() == null) {
-            throw new IllegalArgumentException(
-                    "Unable to send action: actionCompleteEventClass for " + action.getClass().getName() + " is null.");
-        } else if (!ResponseEvent.class.isAssignableFrom(action.getActionCompleteEventClass())) {
-            throw new IllegalArgumentException(
-                    "Unable to send action: actionCompleteEventClass (" + action.getActionCompleteEventClass().getName()
-                            + ") for " + action.getClass().getName() + " is not a ResponseEvent.");
-        }
+        Class<? extends ResponseEvent> actionCompleteEventClass = getActionCompleteEventClass(action);
 
         if (state != CONNECTED) {
             throw new IllegalStateException(
@@ -925,7 +913,7 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
 
         if (callback != null) {
             AsyncEventGeneratingResponseHandler responseEventHandler = new AsyncEventGeneratingResponseHandler(
-                    action.getActionCompleteEventClass(), callback);
+                    actionCompleteEventClass, callback);
 
             // register response handler...
             try (LockCloser closer = this.responseListeners.withLock()) {
@@ -939,6 +927,20 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
         }
 
         writer.sendAction(action, internalActionId);
+    }
+
+    private static Class<? extends ResponseEvent> getActionCompleteEventClass(EventGeneratingAction action) {
+        if (action == null) {
+            throw new IllegalArgumentException("Unable to send action: action is null.");
+        } else if (action.getActionCompleteEventClass() == null) {
+            throw new IllegalArgumentException(
+                    "Unable to send action: actionCompleteEventClass for " + action.getClass().getName() + " is null.");
+        } else if (!ResponseEvent.class.isAssignableFrom(action.getActionCompleteEventClass())) {
+            throw new IllegalArgumentException(
+                    "Unable to send action: actionCompleteEventClass (" + action.getActionCompleteEventClass().getName()
+                            + ") for " + action.getClass().getName() + " is not a ResponseEvent.");
+        }
+        return action.getActionCompleteEventClass();
     }
 
     /**

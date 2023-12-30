@@ -19,8 +19,8 @@ package org.asteriskjava.manager;
 import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.ami.action.api.ManagerAction;
 import org.asteriskjava.ami.action.api.response.ManagerActionResponse;
+import org.asteriskjava.ami.event.api.ManagerEvent;
 import org.asteriskjava.manager.action.EventGeneratingAction;
-import org.asteriskjava.manager.event.ManagerEvent;
 import org.asteriskjava.manager.internal.ManagerConnectionImpl;
 
 import java.io.IOException;
@@ -311,6 +311,11 @@ public class DefaultManagerConnection implements ManagerConnection {
     public ResponseEvents sendEventGeneratingAction(EventGeneratingAction action, long timeout)
             throws IOException, EventTimeoutException, IllegalArgumentException, IllegalStateException {
         return impl.sendEventGeneratingAction(action, timeout);
+    }
+
+    @Override
+    public ResponseEvents sendEventGeneratingAction(ManagerAction action, long timeout, Class<?> actionCompleteEventClass) throws IOException, EventTimeoutException {
+        return impl.sendEventGeneratingAction(action, timeout, actionCompleteEventClass);
     }
 
     @Override

@@ -1,5 +1,7 @@
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.action.api.response.event.ResponseEvent;
+
 /**
  * A EndpointDetail event is triggered in response to a
  * {@link org.asteriskjava.manager.action.PJSipShowEndpoint}, and contains

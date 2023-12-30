@@ -1,11 +1,11 @@
 package org.asteriskjava.manager.internal.backwardsCompatibility.bridge;
 
+import org.asteriskjava.ami.event.api.ManagerEvent;
 import org.asteriskjava.lock.LockableMap;
 import org.asteriskjava.lock.Locker.LockCloser;
 import org.asteriskjava.manager.event.BridgeEnterEvent;
 import org.asteriskjava.manager.event.BridgeEvent;
 import org.asteriskjava.manager.event.BridgeLeaveEvent;
-import org.asteriskjava.manager.event.ManagerEvent;
 import org.asteriskjava.util.DateUtil;
 
 import java.util.*;

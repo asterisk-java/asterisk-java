@@ -1,26 +1,24 @@
 /*
- *  Copyright 2004-2006 Stefan Reuter
+ * Copyright 2004-2023 Asterisk Java contributors
  *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-package org.asteriskjava.manager.event;
+package org.asteriskjava.ami.event.api;
 
-import org.asteriskjava.util.AstState;
-import org.asteriskjava.util.ReflectionUtil;
+import org.asteriskjava.core.legacy.AstState;
 
-import java.lang.reflect.Method;
-import java.util.*;
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Abstract base class for all Events that can be received from the Asterisk
@@ -30,10 +28,26 @@ import java.util.*;
  * There is one concrete subclass of ManagerEvent per each supported Asterisk
  * Event.
  *
- * @author srt
- * @version $Id$
+ * @author Stefan Reuter
+ * @since 1.0.0
  */
-public abstract class ManagerEvent extends EventObject {
+public abstract class ManagerEvent implements Serializable {
+    private String event;
+
+    public String getEvent() {
+        return event;
+    }
+
+    public void setEvent(String event) {
+        this.event = event;
+    }
+
+    /*----------LEGACY BELOW-----*/
+
+    public Object getSource() {
+        return this;
+    }
+
     /**
      * Serializable version identifier.
      */
@@ -156,7 +170,6 @@ public abstract class ManagerEvent extends EventObject {
     private Integer sequenceNumber;
 
     public ManagerEvent(Object source) {
-        super(source);
 
     }
 
@@ -355,38 +368,11 @@ public abstract class ManagerEvent extends EventObject {
         this.sequenceNumber = sequenceNumber;
     }
 
-    @Override
-    public String toString() {
-        final List<String> ignoredProperties = Arrays.asList("file", "func", "line", "sequenceNumber", "datereceived",
-                "privilege", "source", "class");
-        final StringBuilder sb = new StringBuilder(getClass().getName() + "[");
-        appendPropertyIfNotNull(sb, "file", getFile());
-        appendPropertyIfNotNull(sb, "func", getFunc());
-        appendPropertyIfNotNull(sb, "line", getLine());
-        appendPropertyIfNotNull(sb, "sequenceNumber", getSequenceNumber());
-        appendPropertyIfNotNull(sb, "dateReceived", getDateReceived());
-        appendPropertyIfNotNull(sb, "privilege", getPrivilege());
-
-        final Map<String, Method> getters = ReflectionUtil.getGetters(getClass());
-        for (Map.Entry<String, Method> entry : getters.entrySet()) {
-            final String property = entry.getKey();
-            if (ignoredProperties.contains(property)) {
-                continue;
-            }
-
-            try {
-                final Object value = entry.getValue().invoke(this);
-                appendProperty(sb, property, value);
-            } catch (Exception e) // NOPMD
-            {
-                // swallow
-            }
-        }
-        sb.append("systemHashcode=").append(System.identityHashCode(this));
-        sb.append("]");
-
-        return sb.toString();
-    }
+//    @Override
+//    public String toString() {
+//        //todo
+//        return "todo toString";
+//    }
 
     protected void appendPropertyIfNotNull(StringBuilder sb, String property, Object value) {
         if (value != null) {

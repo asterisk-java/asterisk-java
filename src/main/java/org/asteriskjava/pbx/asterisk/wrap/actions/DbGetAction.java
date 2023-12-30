@@ -14,7 +14,7 @@ public class DbGetAction extends AbstractManagerAction {
 
     @Override
     public ManagerAction getAJAction() {
-        final org.asteriskjava.manager.action.DbGetAction action = new org.asteriskjava.manager.action.DbGetAction();
+        final org.asteriskjava.ami.action.api.DbGetAction action = new org.asteriskjava.ami.action.api.DbGetAction();
         action.setActionId(this.getActionId());
         action.setKey(this._key);
         action.setFamily(this._family);

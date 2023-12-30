@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.event.api.ManagerEvent;
+
 /**
  * An ExtensionStatusEvent is triggered when the state of an extension changes.<p>
  * For this to work for you must provide appropriate hints in your dialplan to

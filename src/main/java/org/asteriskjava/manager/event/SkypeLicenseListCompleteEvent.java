@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.action.api.response.event.ResponseEvent;
+
 /**
  * A SkypeLicenseListCompleteEvent is triggered in response to a SkypeLicenseListAction when
  * all licenses have been reported.<p>

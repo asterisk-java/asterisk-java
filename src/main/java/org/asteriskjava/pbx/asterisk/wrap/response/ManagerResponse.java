@@ -28,7 +28,9 @@ public class ManagerResponse {
         this._actionId = response.getActionId();
         this._server = response.getServer();
         this._response = response.getResponse().toString();
-        this._eventList = response.getEventList();
+        //todo
+//        this._eventList = response.getEventList();
+        this._eventList = null;
         this._uniqueId = response.getUniqueId();
         this._attributes = response.getAttributes();
 

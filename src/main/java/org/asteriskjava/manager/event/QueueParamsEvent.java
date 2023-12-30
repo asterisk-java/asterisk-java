@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.action.api.response.event.ResponseEvent;
+
 /**
  * A QueueParamsEvent is triggered in response to a QueueStatusAction and contains the parameters of
  * a queue.<p>

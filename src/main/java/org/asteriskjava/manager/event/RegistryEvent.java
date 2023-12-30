@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.event.api.ManagerEvent;
+
 /**
  * A RegistryEvent is triggered when this asterisk server attempts to register
  * as a client at another SIP or IAX server.<p>

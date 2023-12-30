@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.action.api.response.event.ResponseEvent;
+
 /**
  * A RegistrationsCompleteEvent is triggered after the details of all SIP
  * registrations has been reported in response to an SipShowRegistryAction.<p>

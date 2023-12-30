@@ -1,9 +1,9 @@
 package org.asteriskjava.manager.action;
 
 import org.asteriskjava.ami.action.api.AbstractManagerAction;
+import org.asteriskjava.ami.action.api.response.event.ResponseEvent;
 import org.asteriskjava.manager.event.QueueSummaryCompleteEvent;
 import org.asteriskjava.manager.event.QueueSummaryEvent;
-import org.asteriskjava.manager.event.ResponseEvent;
 
 /**
  * The QueueSummaryAction retrieves the summary for one or all queues.

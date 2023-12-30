@@ -15,7 +15,11 @@
  */
 package org.asteriskjava.manager.internal;
 
-import org.asteriskjava.manager.event.*;
+import org.asteriskjava.ami.action.api.response.event.ResponseEvent;
+import org.asteriskjava.ami.event.api.ManagerEvent;
+import org.asteriskjava.manager.event.PeerEntryEvent;
+import org.asteriskjava.manager.event.PeersEvent;
+import org.asteriskjava.manager.event.UserEvent;
 import org.asteriskjava.manager.util.EventAttributesHelper;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
@@ -31,7 +35,7 @@ import java.util.Map.Entry;
  *
  * @author srt
  * @version $Id$
- * @see org.asteriskjava.manager.event.ManagerEvent
+ * @see ManagerEvent
  */
 class EventBuilderImpl implements EventBuilder {
     private static final Set<String> ignoredAttributes = new HashSet<>(Arrays.asList("event"));
@@ -42,10 +46,13 @@ class EventBuilderImpl implements EventBuilder {
 
     private final static Set<Class<? extends ManagerEvent>> knownManagerEventClasses = new Reflections(
         "org.asteriskjava.manager.event").getSubTypesOf(ManagerEvent.class);
+    private final static Set<Class<? extends ManagerEvent>> actionResponseEventClasses = new Reflections(
+            "org.asteriskjava.ami.action.api.response.event").getSubTypesOf(ManagerEvent.class);
 
     EventBuilderImpl() {
         this.registeredEventClasses = new HashMap<>();
         registerBuiltinEventClasses();
+        registerActionResponseEventClasses();
     }
 
     /**
@@ -53,6 +60,14 @@ class EventBuilderImpl implements EventBuilder {
      */
     private void registerBuiltinEventClasses() {
         for (Class<? extends ManagerEvent> managerEventClass : knownManagerEventClasses) {
+            if (!Modifier.isAbstract(managerEventClass.getModifiers())) {
+                registerEventClass(managerEventClass);
+            }
+        }
+    }
+
+    private void registerActionResponseEventClasses() {
+        for (Class<? extends ManagerEvent> managerEventClass : actionResponseEventClasses) {
             if (!Modifier.isAbstract(managerEventClass.getModifiers())) {
                 registerEventClass(managerEventClass);
             }

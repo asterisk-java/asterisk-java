@@ -6,7 +6,7 @@ public class ResponseEvent extends ManagerEvent {
     private final String actionId;
     private final String internalActionId;
 
-    public ResponseEvent(final org.asteriskjava.manager.event.ResponseEvent event) {
+    public ResponseEvent(final org.asteriskjava.ami.action.api.response.event.ResponseEvent event) {
         super(event);
         this.actionId = event.getActionId();
         this.internalActionId = event.getInternalActionId();

@@ -29,6 +29,7 @@ import io.netty.handler.codec.string.StringEncoder;
 import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.handler.timeout.IdleStateHandler;
 import org.asteriskjava.ami.action.annotation.ExpectedResponse;
+import org.asteriskjava.ami.action.annotation.GeneratedEvents;
 import org.asteriskjava.ami.action.api.ChallengeAction;
 import org.asteriskjava.ami.action.api.LoginAction;
 import org.asteriskjava.ami.action.api.ManagerAction;
@@ -40,17 +41,16 @@ import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.shaded.org.apache.commons.lang3.tuple.Pair;
 
 import java.time.Instant;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Queue;
+import java.util.*;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
 import static io.netty.handler.timeout.IdleState.ALL_IDLE;
 import static java.time.Instant.now;
+import static java.util.Collections.emptyList;
 import static java.util.concurrent.TimeUnit.SECONDS;
+import static java.util.stream.Collectors.toMap;
 import static org.apache.commons.codec.digest.DigestUtils.md5Hex;
 import static org.asteriskjava.ami.action.api.AuthType.MD5;
 import static org.asteriskjava.core.NewlineDelimiter.CRLF;
@@ -135,27 +135,12 @@ public class ActionsRunner {
         return responseRecorder;
     }
 
-    public static class ResponseRecorder {
-        private final Map<String, ManagerActionResponse> mapResponses = new ConcurrentHashMap<>();
-
-        private ResponseRecorder() {
-        }
-
-        void record(String actionId, ManagerActionResponse managerActionResponse) {
-            mapResponses.put(actionId, managerActionResponse);
-        }
-
-        public <T extends ManagerActionResponse> T getRecorderResponse(String actionId, Class<T> clazz) {
-            ManagerActionResponse managerActionResponse = mapResponses.get(actionId);
-            return clazz.cast(managerActionResponse);
-        }
-    }
-
     static class ActionResponseHandler extends SimpleChannelInboundHandler<String> {
         private static final AsteriskEncoder asteriskEncoder = new AsteriskEncoder(CRLF);
         private static final AsteriskDecoder asteriskDecoder = new AsteriskDecoder();
 
         private final Map<String, Class<? extends ManagerActionResponse>> mapResponses = new ConcurrentHashMap<>();
+        private final Map<String, Map<String, Class<?>>> mapResponseEvents = new ConcurrentHashMap<>();
 
         private final Queue<Pair<Class<? extends ManagerAction>, Function<ManagerActionResponse, ManagerAction>>> actions;
         private final Instant instant;
@@ -183,7 +168,11 @@ public class ActionsRunner {
                 System.out.println("===============================");
 
                 if (accumulatedMessage.startsWith("Response:")) {
-                    sendNextAction(ctx, getManagerActionResponseAndRecordIfNeeded(accumulatedMessage));
+                    sendNextAction(ctx, getManagerActionResponseAndRecord(accumulatedMessage));
+                } else if (accumulatedMessage.startsWith("Event:")) {
+                    if (accumulatedMessage.contains("ActionID:")) {
+                        recordManagerActionResponseEventIfNeeded(accumulatedMessage);
+                    }
                 }
 
                 accumulatedResponse.setLength(0);
@@ -211,11 +200,20 @@ public class ActionsRunner {
                 Function<ManagerActionResponse, ManagerAction> actionFunction = actionFunctionPair.getValue();
                 ManagerAction action = actionFunction.apply(managerActionResponse);
 
-                ExpectedResponse annotation = actionClass.getAnnotation(ExpectedResponse.class);
-                if (annotation == null) {
+                String actionId = action.getActionId();
+
+                ExpectedResponse expectedResponse = actionClass.getAnnotation(ExpectedResponse.class);
+                if (expectedResponse == null) {
                     throw new RuntimeException("Action does not have @ExpectedResponse annotation");
                 }
-                mapResponses.put(action.getActionId(), annotation.value());
+                mapResponses.put(actionId, expectedResponse.value());
+
+                GeneratedEvents generatedEvents = actionClass.getAnnotation(GeneratedEvents.class);
+                if (generatedEvents != null) {
+                    Map<String, Class<?>> nameToClass = Arrays.stream(generatedEvents.value())
+                            .collect(toMap(GeneratedEvents.Event::name, GeneratedEvents.Event::value, (a, b) -> b));
+                    mapResponseEvents.put(actionId, nameToClass);
+                }
 
                 String encode = asteriskEncoder.encode(action);
                 ctx.writeAndFlush(encode);
@@ -235,12 +233,107 @@ public class ActionsRunner {
             ManagerActionResponse managerActionResponse = asteriskDecoder.decode(map, clazz);
             managerActionResponse.setDateReceived(instant);
 
-            responseRecorder.record(actionId, managerActionResponse);
+            responseRecorder.recordForAction(actionId).record(managerActionResponse);
             return managerActionResponse;
+        }
+
+        private void recordManagerActionResponseEventIfNeeded(String message) {
+            String[] split = message.split(CRLF.getPattern());
+            Map<String, Object> map = AsteriskDecoder.toMap(split);
+            String actionId = (String) map.get("ActionID");
+
+            Map<String, Class<?>> events = mapResponseEvents.get(actionId);
+            if (events != null) {
+                String event = (String) map.get("Event");
+                Class<?> clazz = events.get(event);
+                Object responseEvent = asteriskDecoder.decode(map, clazz);
+                responseRecorder.recordForAction(actionId).record(responseEvent);
+            }
         }
 
         private static boolean isWelcomeMessage(String message) {
             return message.startsWith("Asterisk Call Manager");
+        }
+    }
+
+    public static class ResponseRecorder {
+        private final Map<String, ManagerActionResponse> mapResponses = new ConcurrentHashMap<>();
+        private final Map<String, Map<Class<?>, List<Object>>> mapResponseEvents = new ConcurrentHashMap<>();
+
+        private ResponseRecorder() {
+        }
+
+        Recorder recordForAction(String actionId) {
+            return new Recorder(actionId);
+        }
+
+        public Provider getForAction(String actionId) {
+            return new Provider(actionId);
+        }
+
+        public <T extends ManagerActionResponse> T getRecorderResponse(String actionId, Class<T> clazz) {
+            ManagerActionResponse managerActionResponse = mapResponses.get(actionId);
+            return clazz.cast(managerActionResponse);
+        }
+
+        class Recorder {
+            private final String actionId;
+
+            Recorder(String actionId) {
+                this.actionId = actionId;
+            }
+
+            void record(ManagerActionResponse managerActionResponse) {
+                mapResponses.put(actionId, managerActionResponse);
+            }
+
+            void record(Object responseEvent) {
+                mapResponseEvents.compute(actionId, (s, o) -> {
+                    if (o == null) {
+                        Map<Class<?>, List<Object>> map = new HashMap<>();
+                        List<Object> objects = new ArrayList<>();
+                        objects.add(responseEvent);
+                        map.put(responseEvent.getClass(), objects);
+                        return map;
+                    }
+
+                    List<Object> responseEvents = o.getOrDefault(responseEvent.getClass(), null);
+                    if (responseEvents == null) {
+                        List<Object> objects = new ArrayList<>();
+                        objects.add(responseEvent);
+                        o.put(responseEvent.getClass(), objects);
+                    } else {
+                        responseEvents.add(responseEvent);
+                        o.put(responseEvent.getClass(), responseEvents);
+                    }
+
+                    return o;
+                });
+            }
+        }
+
+        public class Provider {
+            private final String actionId;
+
+            Provider(String actionId) {
+                this.actionId = actionId;
+            }
+
+            public <T extends ManagerActionResponse> T getResponse(Class<T> clazz) {
+                ManagerActionResponse managerActionResponse = mapResponses.get(actionId);
+                return clazz.cast(managerActionResponse);
+            }
+
+            public <T> List<T> getResponseEvents(Class<T> clazz) {
+                Map<Class<?>, List<Object>> classToEvents = mapResponseEvents.get(actionId);
+                List<Object> responseEvents = classToEvents.getOrDefault(clazz, null);
+                if (responseEvents == null) {
+                    return emptyList();
+                }
+                return responseEvents.stream()
+                        .map(clazz::cast)
+                        .toList();
+            }
         }
     }
 }

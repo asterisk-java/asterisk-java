@@ -119,7 +119,7 @@ public class ManagerActionResponse implements Serializable {
                 .toString();
     }
 
-    /*---------------*/
+    /*------LEGACY BELOW---------*/
 
     /**
      * The server from which this response has been received (only used with
@@ -211,26 +211,6 @@ public class ManagerActionResponse implements Serializable {
      */
     public final void setServer(String server) {
         this.server = server;
-    }
-
-    /**
-     * Sent for manager events that reply with a list of events.
-     *
-     * @return "start", "stop" or "complete"
-     * @since 1.0.0
-     */
-    public String getEventList() {
-        return eventList;
-    }
-
-    /**
-     * Sets the eventList.
-     *
-     * @param eventList the eventList.
-     * @since 1.0.0
-     */
-    public void setEventList(String eventList) {
-        this.eventList = eventList;
     }
 
     /**

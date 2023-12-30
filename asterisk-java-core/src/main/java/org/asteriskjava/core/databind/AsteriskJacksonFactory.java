@@ -25,6 +25,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.asteriskjava.core.databind.annotation.*;
 
 import static com.fasterxml.jackson.databind.DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY;
+import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES;
 import static com.fasterxml.jackson.databind.MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS;
 import static com.fasterxml.jackson.databind.MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES;
 import static com.fasterxml.jackson.databind.PropertyNamingStrategies.UPPER_CAMEL_CASE;
@@ -41,6 +42,7 @@ public class AsteriskJacksonFactory {
                 .configure(ACCEPT_CASE_INSENSITIVE_ENUMS, true)
                 .configure(ACCEPT_CASE_INSENSITIVE_PROPERTIES, true)
                 .configure(ACCEPT_SINGLE_VALUE_AS_ARRAY, true)
+                .configure(FAIL_ON_UNKNOWN_PROPERTIES, false)
                 .propertyNamingStrategy(UPPER_CAMEL_CASE)
                 .annotationIntrospector(new AsteriskJacksonAnnotationIntrospector())
                 .build();

@@ -1,5 +1,7 @@
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.action.api.response.event.ResponseEvent;
+
 /**
  * A ShowDialplanCompleteEvent is triggered after the dialplan has been reported
  * in response to a ShowDialplanAction.<p>

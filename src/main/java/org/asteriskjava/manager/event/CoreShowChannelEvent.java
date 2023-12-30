@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.action.api.response.event.ResponseEvent;
+
 /**
  * A CoreShowChannelEvent is triggered for each active channel in response to a
  * CoreShowChannelsAction.

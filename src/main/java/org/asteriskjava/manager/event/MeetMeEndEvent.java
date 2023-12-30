@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.event.api.ManagerEvent;
+
 /**
  * A MeetMeEnd event indicates that a conference room was disposed.<p>
  * Available since Asterisk 1.6.<p>

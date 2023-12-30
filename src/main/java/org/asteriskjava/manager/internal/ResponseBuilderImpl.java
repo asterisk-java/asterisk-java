@@ -50,7 +50,7 @@ class ResponseBuilderImpl implements ResponseBuilder {
     @SuppressWarnings("unchecked")
     public ManagerActionResponse buildResponse(Class<? extends ManagerActionResponse> responseClass, Map<String, Object> attributes) {
         responseClass = responseClass == null ? ManagerActionResponse.class : responseClass;
-        if (responseClass.getPackageName().contains("org.asteriskjava.ami.action.response")) {
+        if (responseClass.getPackageName().contains("org.asteriskjava.ami.action.api.response")) {
             ManagerActionResponse response = asteriskDecoder.decode(attributes, responseClass);
             response.setAttributes(new HashMap<>(attributes));
             return response;

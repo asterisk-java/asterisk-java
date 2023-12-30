@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.event.api.ManagerEvent;
+
 /**
  * Abstract base class for monitoring events.<p>
  * Monitoring events are implemented in <code>res/res_monitor.c</code>

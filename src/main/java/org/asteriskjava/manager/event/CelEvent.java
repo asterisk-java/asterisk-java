@@ -1,5 +1,7 @@
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.event.api.ManagerEvent;
+
 /**
  * Raised when a Channel Event Log is generated for a channel.
  * https://wiki.asterisk.org/wiki/display/AST/Asterisk+13+ManagerEvent_CEL

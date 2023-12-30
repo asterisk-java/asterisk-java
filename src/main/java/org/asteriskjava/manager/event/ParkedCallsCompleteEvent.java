@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.action.api.response.event.ResponseEvent;
+
 /**
  * A ParkedCallsCompleteEvent is triggered after all parked calls have been
  * reported in response to a ParkedCallsAction.

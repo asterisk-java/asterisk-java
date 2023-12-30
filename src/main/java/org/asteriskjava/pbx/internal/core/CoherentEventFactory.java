@@ -29,10 +29,10 @@ public class CoherentEventFactory {
     private static final Log logger = LogFactory.getLog(CoherentEventFactory.class);
 
     // Events
-    static Hashtable<Class<org.asteriskjava.manager.event.ManagerEvent>, Class<ManagerEvent>> mapEvents = new Hashtable<>();
+    static Hashtable<Class<org.asteriskjava.ami.event.api.ManagerEvent>, Class<ManagerEvent>> mapEvents = new Hashtable<>();
 
     // Response
-    static Hashtable<Class<? extends org.asteriskjava.manager.event.ResponseEvent>, Class<? extends ResponseEvent>> mapResponses = new Hashtable<>();
+    static Hashtable<Class<? extends org.asteriskjava.ami.action.api.response.event.ResponseEvent>, Class<? extends ResponseEvent>> mapResponses = new Hashtable<>();
 
     // static initialiser
     static {
@@ -50,12 +50,12 @@ public class CoherentEventFactory {
                     if (known.getConstructor(clazz) != null) {
                         if (ResponseEvent.class.isAssignableFrom(known)) {
                             CoherentEventFactory.mapResponses.put(
-                                    (Class<org.asteriskjava.manager.event.ResponseEvent>) clazz,
+                                    (Class<org.asteriskjava.ami.action.api.response.event.ResponseEvent>) clazz,
                                     (Class<ResponseEvent>) known);
                             logger.info("Response Event Added " + clazz + " --> " + known);
 
                         } else {
-                            CoherentEventFactory.mapEvents.put((Class<org.asteriskjava.manager.event.ManagerEvent>) clazz,
+                            CoherentEventFactory.mapEvents.put((Class<org.asteriskjava.ami.event.api.ManagerEvent>) clazz,
                                     (Class<ManagerEvent>) known);
                             logger.info("Manager Event Added " + clazz + " --> " + known);
                         }
@@ -68,7 +68,7 @@ public class CoherentEventFactory {
                 }
             } catch (ClassNotFoundException e) {
                 logger.error(e, e);
-                throw new RuntimeException(e);
+//                throw new RuntimeException(e);
             } catch (NoSuchMethodException e) {
                 logger.error(clazz.getCanonicalName() + " doesn't have an appropriate event constructor");
             } catch (SecurityException e) {
@@ -76,11 +76,11 @@ public class CoherentEventFactory {
             }
         }
 
-        CoherentEventFactory.mapResponses.put(org.asteriskjava.manager.event.ResponseEvent.class, ResponseEvent.class);
+        CoherentEventFactory.mapResponses.put(org.asteriskjava.ami.action.api.response.event.ResponseEvent.class, ResponseEvent.class);
 
     }
 
-    public static Class<? extends ManagerEvent> getShadowEvent(org.asteriskjava.manager.event.ManagerEvent event) {
+    public static Class<? extends ManagerEvent> getShadowEvent(org.asteriskjava.ami.event.api.ManagerEvent event) {
         Class<? extends ManagerEvent> result = CoherentEventFactory.mapEvents.get(event.getClass());
         if (result == null) {
             Class<? extends ResponseEvent> response = CoherentEventFactory.mapResponses.get(event.getClass());
@@ -91,12 +91,12 @@ public class CoherentEventFactory {
 
     }
 
-    public static ManagerEvent build(final org.asteriskjava.manager.event.ManagerEvent event) {
+    public static ManagerEvent build(final org.asteriskjava.ami.event.api.ManagerEvent event) {
         ManagerEvent iEvent = null;
 
         Class<? extends ManagerEvent> target = null;
 
-        if (event instanceof org.asteriskjava.manager.event.ResponseEvent)
+        if (event instanceof org.asteriskjava.ami.action.api.response.event.ResponseEvent)
             target = CoherentEventFactory.mapResponses.get(event.getClass());
         else
             target = CoherentEventFactory.mapEvents.get(event.getClass());
@@ -116,7 +116,7 @@ public class CoherentEventFactory {
         return iEvent;
     }
 
-    public static ResponseEvent build(org.asteriskjava.manager.event.ResponseEvent event) {
+    public static ResponseEvent build(org.asteriskjava.ami.action.api.response.event.ResponseEvent event) {
         ResponseEvent response = null;
 
         final Class<? extends ResponseEvent> target = CoherentEventFactory.mapResponses.get(event.getClass());

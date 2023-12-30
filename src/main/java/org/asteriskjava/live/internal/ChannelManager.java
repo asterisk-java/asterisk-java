@@ -16,6 +16,7 @@
  */
 package org.asteriskjava.live.internal;
 
+import org.asteriskjava.ami.event.api.ManagerEvent;
 import org.asteriskjava.live.*;
 import org.asteriskjava.lock.LockableMap;
 import org.asteriskjava.lock.Locker.LockCloser;

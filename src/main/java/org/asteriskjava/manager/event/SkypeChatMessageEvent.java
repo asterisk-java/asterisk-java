@@ -16,6 +16,7 @@
  */
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.event.api.ManagerEvent;
 import org.asteriskjava.util.Base64;
 
 import java.nio.charset.StandardCharsets;

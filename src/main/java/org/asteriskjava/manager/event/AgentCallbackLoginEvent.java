@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.event.api.ManagerEvent;
+
 /**
  * An AgentCallbackLoginEvent is triggered when an agent is successfully logged in using
  * AgentCallbackLogin.<p>

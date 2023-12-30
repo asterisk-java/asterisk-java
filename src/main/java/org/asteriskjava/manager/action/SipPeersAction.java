@@ -17,8 +17,8 @@
 package org.asteriskjava.manager.action;
 
 import org.asteriskjava.ami.action.api.AbstractManagerAction;
+import org.asteriskjava.ami.action.api.response.event.ResponseEvent;
 import org.asteriskjava.manager.event.PeerlistCompleteEvent;
-import org.asteriskjava.manager.event.ResponseEvent;
 
 /**
  * Retrieves a list of all defined SIP peers.<p>

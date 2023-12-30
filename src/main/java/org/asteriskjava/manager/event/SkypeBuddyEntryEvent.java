@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.action.api.response.event.ResponseEvent;
+
 /**
  * A SkypeBuddyEntryEvent is triggered in response to a SkypeBuddiesAction for each
  * buddy on the buddy list.<p>

@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.event.api.ManagerEvent;
+
 /**
  * A ProtocolIdentifierReceivedEvent is triggered when the network connection to the Asterisk
  * server has been established and the protocol identifier has been sent.<p>

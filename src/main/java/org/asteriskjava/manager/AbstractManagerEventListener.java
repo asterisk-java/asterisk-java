@@ -1,5 +1,8 @@
 package org.asteriskjava.manager;
 
+import org.asteriskjava.ami.action.api.response.event.DbGetResponseEvent;
+import org.asteriskjava.ami.action.api.response.event.ResponseEvent;
+import org.asteriskjava.ami.event.api.ManagerEvent;
 import org.asteriskjava.manager.event.*;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;

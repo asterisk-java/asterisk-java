@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.event.api.ManagerEvent;
+
 /**
  * A JitterBufStatsEvent is triggered at the end of IAX2 calls and reports
  * jitter statistics.<p>

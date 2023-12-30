@@ -1,5 +1,7 @@
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.event.api.ManagerEvent;
+
 /**
  * A HoldEvent is triggered when a channel is put on hold (or no longer on
  * hold).

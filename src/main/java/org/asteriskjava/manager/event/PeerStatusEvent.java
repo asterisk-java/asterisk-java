@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.event.api.ManagerEvent;
+
 /**
  * A PeerStatusEvent is triggered when a SIP or IAX client attempts to registrer at this asterisk
  * server.<p>

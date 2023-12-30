@@ -15,6 +15,8 @@
  */
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.event.api.ManagerEvent;
+
 public class ChanSpyStopEvent extends ManagerEvent {
     private static final long serialVersionUID = 3256725065466000696L;
 

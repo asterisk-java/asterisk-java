@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.action.api.response.event.ResponseEvent;
+
 /**
  * An AgentsEvent is triggered for each agent in response to an AgentsAction.
  * <p>

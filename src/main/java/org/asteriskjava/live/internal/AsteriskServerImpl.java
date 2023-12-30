@@ -17,11 +17,16 @@
 package org.asteriskjava.live.internal;
 
 import org.asteriskjava.AsteriskVersion;
+import org.asteriskjava.ami.action.annotation.GeneratedEvents;
 import org.asteriskjava.ami.action.api.CommandAction;
+import org.asteriskjava.ami.action.api.DbGetAction;
 import org.asteriskjava.ami.action.api.DbPutAction;
 import org.asteriskjava.ami.action.api.ManagerAction;
 import org.asteriskjava.ami.action.api.response.CommandActionResponse;
 import org.asteriskjava.ami.action.api.response.ManagerActionResponse;
+import org.asteriskjava.ami.action.api.response.event.DbGetResponseEvent;
+import org.asteriskjava.ami.action.api.response.event.ResponseEvent;
+import org.asteriskjava.ami.event.api.ManagerEvent;
 import org.asteriskjava.config.ConfigFile;
 import org.asteriskjava.live.*;
 import org.asteriskjava.lock.Lockable;
@@ -45,6 +50,8 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * Default implementation of the {@link AsteriskServer} interface.
@@ -787,12 +794,28 @@ public class AsteriskServerImpl extends Lockable implements AsteriskServer, Mana
         }
     }
 
-    ResponseEvents
-
-    sendEventGeneratingAction(EventGeneratingAction action, long timeout) throws ManagerCommunicationException {
+    ResponseEvents sendEventGeneratingAction(EventGeneratingAction action, long timeout) throws ManagerCommunicationException {
         // return connectionPool.sendEventGeneratingAction(action, timeout);
         try {
             return eventConnection.sendEventGeneratingAction(action, timeout);
+        } catch (Exception e) {
+            throw ManagerCommunicationExceptionMapper.mapSendActionException(action.getAction(), e);
+        }
+    }
+
+    ResponseEvents sendEventGeneratingAction(ManagerAction action, long timeout) throws ManagerCommunicationException {
+        // return connectionPool.sendEventGeneratingAction(action, timeout);
+        try {
+            Class<?> actionCompleteEventClass = null;
+            GeneratedEvents generatedEvents = action.getClass().getAnnotation(GeneratedEvents.class);
+            if (generatedEvents != null) {
+                GeneratedEvents.Event first = Arrays.stream(generatedEvents.value())
+                        .filter(GeneratedEvents.Event::complete)
+                        .findFirst()
+                        .orElse(null);
+                actionCompleteEventClass = requireNonNull(first).value();
+            }
+            return eventConnection.sendEventGeneratingAction(action, timeout, actionCompleteEventClass);
         } catch (Exception e) {
             throw ManagerCommunicationExceptionMapper.mapSendActionException(action.getAction(), e);
         }
@@ -1090,7 +1113,10 @@ public class AsteriskServerImpl extends Lockable implements AsteriskServer, Mana
     }
 
     public DbGetResponseEvent dbGet(String family, String key) throws ManagerCommunicationException {
-        ResponseEvents responseEvents = sendEventGeneratingAction(new DbGetAction(family, key), 2000);
+        DbGetAction dbGetAction = new DbGetAction();
+        dbGetAction.setFamily(family);
+        dbGetAction.setKey(key);
+        ResponseEvents responseEvents = sendEventGeneratingAction(dbGetAction, 2000);
         DbGetResponseEvent dbgre = null;
         for (ResponseEvent re : responseEvents.getEvents()) {
             dbgre = (DbGetResponseEvent) re;

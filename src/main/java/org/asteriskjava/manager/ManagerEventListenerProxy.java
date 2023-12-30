@@ -1,6 +1,6 @@
 package org.asteriskjava.manager;
 
-import org.asteriskjava.manager.event.ManagerEvent;
+import org.asteriskjava.ami.event.api.ManagerEvent;
 import org.asteriskjava.util.DaemonThreadFactory;
 
 import java.util.concurrent.*;
@@ -9,7 +9,7 @@ import java.util.concurrent.*;
  * Proxies a ManagerEventListener and dispatches events asynchronously by using
  * a single threaded executor.<p>
  * Use this proxy to prevent the reader thread from being blocked while your
- * application processes {@link org.asteriskjava.manager.event.ManagerEvent}s.
+ * application processes {@link ManagerEvent}s.
  * If you want to use the {@link org.asteriskjava.manager.ManagerConnection} for
  * sending actions in your {@link org.asteriskjava.manager.ManagerEventListener}
  * using a proxy like this one is mandatory; otherwise you will always run into

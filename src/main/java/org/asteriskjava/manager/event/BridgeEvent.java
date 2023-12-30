@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.event.api.ManagerEvent;
+
 /**
  * A BridgeEvent is triggered when a link between two voice channels is established ("Link") or
  * discontinued ("Unlink").<p>

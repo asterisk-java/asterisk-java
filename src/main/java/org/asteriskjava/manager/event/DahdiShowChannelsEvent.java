@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.action.api.response.event.ResponseEvent;
+
 /**
  * A DahdiShowChannelsEvent is triggered in response to a DahdiShowChannelsAction and shows the state of
  * a Dahdi channel.

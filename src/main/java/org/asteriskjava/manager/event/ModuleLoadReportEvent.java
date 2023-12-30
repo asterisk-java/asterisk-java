@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.event.api.ManagerEvent;
+
 /**
  * A ModuleLoadReportEvent is triggerd when Asterisk has completed loading its modules.<p>
  * It is implemented in <code>main/loader.c</code>

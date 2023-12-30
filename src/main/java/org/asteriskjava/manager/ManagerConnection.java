@@ -22,8 +22,9 @@ import org.asteriskjava.ami.action.api.LoginAction;
 import org.asteriskjava.ami.action.api.LogoffAction;
 import org.asteriskjava.ami.action.api.ManagerAction;
 import org.asteriskjava.ami.action.api.response.ManagerActionResponse;
+import org.asteriskjava.ami.action.api.response.event.ResponseEvent;
+import org.asteriskjava.ami.event.api.ManagerEvent;
 import org.asteriskjava.manager.action.EventGeneratingAction;
-import org.asteriskjava.manager.event.ManagerEvent;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -36,7 +37,7 @@ import java.nio.charset.Charset;
  * The ManagerConnection repesents a connection to an Asterisk server and is
  * capable of sending {@link ManagerAction}s and
  * receiving {@link ManagerActionResponse}s and
- * {@link org.asteriskjava.manager.event.ManagerEvent}s. It does not add any
+ * {@link ManagerEvent}s. It does not add any
  * further functionality but rather provides a Java view to Asterisk's Manager
  * API (freeing you from TCP/IP connection and parsing stuff).
  * <p>
@@ -342,7 +343,7 @@ public interface ManagerConnection {
     /**
      * Sends an {@link EventGeneratingAction} to the Asterisk server and waits
      * for the corresponding {@link ManagerActionResponse} and the
-     * {@link org.asteriskjava.manager.event.ResponseEvent}s
+     * {@link ResponseEvent}s
      * <p>
      * EventGeneratingActions are {@link ManagerAction}s that don't return their
      * response in the corresponding {@link ManagerActionResponse} but send a series
@@ -370,7 +371,7 @@ public interface ManagerConnection {
      * @throws IllegalStateException    if you are not connected to an Asterisk
      *                                  server.
      * @see EventGeneratingAction
-     * @see org.asteriskjava.manager.event.ResponseEvent
+     * @see ResponseEvent
      * @since 0.2
      */
     ResponseEvents sendEventGeneratingAction(EventGeneratingAction action)
@@ -379,7 +380,7 @@ public interface ManagerConnection {
     /**
      * Sends an {@link EventGeneratingAction} to the Asterisk server and waits
      * for the corresponding {@link ManagerActionResponse} and the
-     * {@link org.asteriskjava.manager.event.ResponseEvent}s
+     * {@link ResponseEvent}s
      * <p>
      * EventGeneratingActions are {@link ManagerAction}s that don't return their
      * response in the corresponding {@link ManagerActionResponse} but send a series
@@ -410,11 +411,13 @@ public interface ManagerConnection {
      * @throws IllegalStateException    if you are not connected to an Asterisk
      *                                  server.
      * @see EventGeneratingAction
-     * @see org.asteriskjava.manager.event.ResponseEvent
+     * @see ResponseEvent
      * @since 0.2
      */
     ResponseEvents sendEventGeneratingAction(EventGeneratingAction action, long timeout)
             throws IOException, EventTimeoutException, IllegalArgumentException, IllegalStateException;
+
+    ResponseEvents sendEventGeneratingAction(ManagerAction action, long timeout, Class<?> actionCompleteEventClass) throws IOException, EventTimeoutException;
 
     /**
      * Asynchronously sends an {@link EventGeneratingAction} to the Asterisk
@@ -433,7 +436,7 @@ public interface ManagerConnection {
 
     /**
      * Registers an event listener that is called whenever an
-     * {@link org.asteriskjava.manager.event.ManagerEvent} is receiced from the
+     * {@link ManagerEvent} is receiced from the
      * Asterisk server.
      * <p>
      * Event listeners are notified about new events in the same order as they

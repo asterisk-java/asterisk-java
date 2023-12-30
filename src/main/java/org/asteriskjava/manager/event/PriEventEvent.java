@@ -1,5 +1,7 @@
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.event.api.ManagerEvent;
+
 /**
  * This event is implemented in <code>channels/chan_dahdi.c</code>.<p>
  * Available since Asterisk 1.6.1

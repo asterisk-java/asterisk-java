@@ -1,5 +1,7 @@
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.action.api.response.event.ResponseEvent;
+
 /**
  * A ShowDialplanCompleteEvent is triggered for each priority in the dialplan
  * in response to a ShowDialplanAction.<p>

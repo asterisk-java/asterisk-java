@@ -17,8 +17,8 @@
 package org.asteriskjava.manager.action;
 
 import org.asteriskjava.ami.action.api.AbstractManagerAction;
+import org.asteriskjava.ami.action.api.response.event.ResponseEvent;
 import org.asteriskjava.manager.event.AgentsCompleteEvent;
-import org.asteriskjava.manager.event.ResponseEvent;
 
 /**
  * The AgentsAction requests the state of all agents.<p>

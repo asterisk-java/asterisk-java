@@ -1,5 +1,7 @@
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.event.api.ManagerEvent;
+
 /**
  * Indicates that Asterisk has loaded all its modules and finished booting.<br>
  * It is handy to have a single event notification for when all Asterisk
