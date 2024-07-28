@@ -39,6 +39,7 @@ public class CoreSettingsResponse extends ManagerResponse {
     private Boolean coreRealtimeEnabled;
     private Boolean coreCdrEnabled;
     private Boolean coreHttpEnabled;
+    private Boolean soundsSearchCustomDir;
 
     /**
      * Returns the version of the Asterisk Manager Interface (AMI). For Asterisk 1.6 this is "1.1".
@@ -151,5 +152,13 @@ public class CoreSettingsResponse extends ManagerResponse {
 
     public void setCoreHttpEnabled(Boolean coreHttpEnabled) {
         this.coreHttpEnabled = coreHttpEnabled;
+    }
+
+    public boolean isSoundsSearchCustomDir() {
+        return soundsSearchCustomDir != null && soundsSearchCustomDir;
+    }
+
+    public void setSoundsSearchCustomDir(Boolean soundsSearchCustomDir) {
+        this.soundsSearchCustomDir = soundsSearchCustomDir;
     }
 }
