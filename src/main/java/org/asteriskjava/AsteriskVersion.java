@@ -27,6 +27,7 @@ import java.util.regex.Pattern;
  * @since 0.2
  */
 public class AsteriskVersion implements Comparable<AsteriskVersion>, Serializable {
+    private static final String VERSION_PATTERN_21 = "^\\s*Asterisk (GIT-)?21[-. ].*";
     private static final String VERSION_PATTERN_20 = "^\\s*Asterisk (GIT-)?20[-. ].*";
     private static final String VERSION_PATTERN_19 = "^\\s*Asterisk (GIT-)?19[-. ].*";
     private static final String VERSION_PATTERN_18 = "^\\s*Asterisk (GIT-)?18[-. ].*";
@@ -39,6 +40,7 @@ public class AsteriskVersion implements Comparable<AsteriskVersion>, Serializabl
     private final String versionString;
     private final Pattern patterns[];
 
+    private static final String VERSION_PATTERN_CERTIFIED_20 = "^\\s*Asterisk certified/(GIT-)?20[-. ].*";
     private static final String VERSION_PATTERN_CERTIFIED_18 = "^\\s*Asterisk certified/(GIT-)?18[-. ].*";
     private static final String VERSION_PATTERN_CERTIFIED_16 = "^\\s*Asterisk certified/(GIT-)?16[-. ].*";
     private static final String VERSION_PATTERN_CERTIFIED_13 = "^\\s*Asterisk certified/((SVN-branch|GIT)-)?13[-. ].*";
@@ -151,11 +153,18 @@ public class AsteriskVersion implements Comparable<AsteriskVersion>, Serializabl
      *
      * @since 3.36.2
      */
-    public static final AsteriskVersion ASTERISK_20 = new AsteriskVersion(2000, "Asterisk 20", VERSION_PATTERN_20);
+    public static final AsteriskVersion ASTERISK_20 = new AsteriskVersion(2000, "Asterisk 20", VERSION_PATTERN_20, VERSION_PATTERN_CERTIFIED_20);
+
+    /**
+     * Represents the Asterisk 21 series.
+     *
+     * @since 3.40.0
+     */
+    public static final AsteriskVersion ASTERISK_21 = new AsteriskVersion(2100, "Asterisk 21", VERSION_PATTERN_21);
 
     private static final AsteriskVersion knownVersions[] = new AsteriskVersion[]{
-        ASTERISK_20, ASTERISK_19, ASTERISK_18, ASTERISK_17, ASTERISK_16, ASTERISK_15, ASTERISK_14, ASTERISK_13,
-        ASTERISK_12, ASTERISK_11, ASTERISK_10, ASTERISK_1_8, ASTERISK_1_6
+        ASTERISK_21, ASTERISK_20, ASTERISK_19, ASTERISK_18, ASTERISK_17, ASTERISK_16, ASTERISK_15, ASTERISK_14,
+        ASTERISK_13, ASTERISK_12, ASTERISK_11, ASTERISK_10, ASTERISK_1_8, ASTERISK_1_6
     };
 
     // current debian stable version, as of 09/10/2018
