@@ -35,7 +35,7 @@ public class CoherentEventFactory {
     // static initialiser
     static {
 
-        Set<Class<ManagerEvent>> knownClasses = ReflectionUtil.loadClasses("org.asteriskjava.pbx.asterisk.wrap.events",
+        Set<Class<? extends ManagerEvent>> knownClasses = ReflectionUtil.loadClasses("org.asteriskjava.pbx.asterisk.wrap.events",
                 ManagerEvent.class);
 
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();

@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.util;
 
+import org.reflections.Reflections;
+
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
@@ -30,6 +32,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.stream.Collectors;
 
 /**
  * Utility class that provides helper methods for reflection that is used by the
@@ -257,35 +260,21 @@ public class ReflectionUtil {
     private static final Log logger = LogFactory.getLog(ReflectionUtil.class);
 
     /**
-     * find and all non abstract classes that implement/extend
-     * baseClassOrInterface in the package packageName
+     * Find all non-abstract classes in the given package that
+     * implement/extend the provided type.
      *
-     * @param packageName
-     * @param baseClassOrInterface
-     * @return
+     * @param packageName the package to search
+     * @param baseClassOrInterface the supertype or interface to filter by
+     * @return a Set of types that implement or extend the provided type
      */
-    @SuppressWarnings("unchecked")
-    public static <T> Set<Class<T>> loadClasses(String packageName, Class<T> baseClassOrInterface) {
-        Set<Class<T>> result = new HashSet<>();
+    public static <T> Set<Class<? extends T>> loadClasses(String packageName, Class<T> baseClassOrInterface) {
+        Set<Class<? extends T>> result = new Reflections(packageName)
+            .getSubTypesOf(baseClassOrInterface)
+            .stream()
+            .filter(c -> !Modifier.isAbstract(c.getModifiers()))
+            .collect(Collectors.toSet());
 
-        try {
-            Set<String> classNames = getClassNamesFromPackage(packageName);
-            ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-            for (String className : classNames) {
-                try {
-                    Class<?> clazz = classLoader.loadClass(packageName + "." + className);
-                    if (!Modifier.isAbstract(clazz.getModifiers()) && baseClassOrInterface.isAssignableFrom(clazz)) {
-                        result.add((Class<T>) clazz);
-                    }
-                } catch (Throwable e) {
-                    logger.error(e, e);
-                }
-
-            }
-            logger.info("Loaded " + result.size());
-        } catch (Exception e) {
-            logger.error(e, e);
-        }
+        logger.info("Loaded " + result.size());
 
         return result;
     }
