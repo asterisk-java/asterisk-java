@@ -33,6 +33,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Utility class that provides helper methods for reflection that is used by the
@@ -268,13 +269,16 @@ public class ReflectionUtil {
      * @return a Set of types that implement or extend the provided type
      */
     public static <T> Set<Class<? extends T>> loadClasses(String packageName, Class<T> baseClassOrInterface) {
-        Set<Class<? extends T>> result = new Reflections(packageName)
-            .getSubTypesOf(baseClassOrInterface)
-            .stream()
-            .filter(c -> !Modifier.isAbstract(c.getModifiers()))
-            .collect(Collectors.toSet());
+        Set<Class<? extends T>> result =
+            Stream.concat(
+                Stream.of(baseClassOrInterface),
+                    new Reflections(packageName)
+                        .getSubTypesOf(baseClassOrInterface)
+                        .stream())
+                .filter(c -> !Modifier.isAbstract(c.getModifiers()))
+                .collect(Collectors.toSet());
 
-        logger.info("Loaded " + result.size());
+        logger.info("Loaded asd" + result.size());
 
         return result;
     }
