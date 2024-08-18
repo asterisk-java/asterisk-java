@@ -333,12 +333,10 @@ public interface AsteriskServer {
     String getVersion() throws ManagerCommunicationException;
 
     /**
-     * <<<<<<< HEAD Returns the CVS revision of a given source file of this
+     * Returns the CVS revision of a given source file of this
      * Asterisk server. <br>
-     * ======= Returns the CVS revision of a given source file of this Asterisk
-     * server. <br>
-     * >>>>>>> refs/heads/release-1.1 For example getVersion("app_meetme.c") may
-     * return {1, 102} for CVS revision "1.102". <br>
+     * For example getVersion("app_meetme.c") may return {1, 102} for
+     * CVS revision "1.102". <br>
      * Note that this feature is not available with Asterisk 1.0.x. <br>
      * You can use this feature if you need to write applications that behave
      * different depending on specific modules being available in a specific
