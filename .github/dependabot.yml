@@ -8,7 +8,7 @@ updates:
       - "kind/dependencies"
     ignore:
       # As long as we support Java 8
-      - dependency-name: "logback-classic"
+      - dependency-name: "ch.qos.logback:logback-classic"
         update-types: [ "version-update:semver-major", "version-update:semver-minor" ]
   - package-ecosystem: "github-actions"
     directory: "/"
