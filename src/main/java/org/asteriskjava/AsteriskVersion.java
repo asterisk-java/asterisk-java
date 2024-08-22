@@ -27,6 +27,7 @@ import java.util.regex.Pattern;
  * @since 0.2
  */
 public class AsteriskVersion implements Comparable<AsteriskVersion>, Serializable {
+    private static final String VERSION_PATTERN_23 = "^\\s*Asterisk (GIT-)?23[-. ].*";
     private static final String VERSION_PATTERN_22 = "^\\s*Asterisk (GIT-)?22[-. ].*";
     private static final String VERSION_PATTERN_21 = "^\\s*Asterisk (GIT-)?21[-. ].*";
     private static final String VERSION_PATTERN_20 = "^\\s*Asterisk (GIT-)?20[-. ].*";
@@ -170,9 +171,16 @@ public class AsteriskVersion implements Comparable<AsteriskVersion>, Serializabl
      */
     public static final AsteriskVersion ASTERISK_22 = new AsteriskVersion(2200, "Asterisk 22", VERSION_PATTERN_22);
 
+    /**
+     * Represents the Asterisk 23 series.
+     *
+     * @since 3.40.0
+     */
+    public static final AsteriskVersion ASTERISK_23 = new AsteriskVersion(2300, "Asterisk 23", VERSION_PATTERN_23);
+
     private static final AsteriskVersion knownVersions[] = new AsteriskVersion[]{
-        ASTERISK_22, ASTERISK_21, ASTERISK_20, ASTERISK_19, ASTERISK_18, ASTERISK_17, ASTERISK_16, ASTERISK_15,
-        ASTERISK_14, ASTERISK_13, ASTERISK_12, ASTERISK_11, ASTERISK_10, ASTERISK_1_8, ASTERISK_1_6
+        ASTERISK_23, ASTERISK_22, ASTERISK_21, ASTERISK_20, ASTERISK_19, ASTERISK_18, ASTERISK_17, ASTERISK_16,
+        ASTERISK_15, ASTERISK_14, ASTERISK_13, ASTERISK_12, ASTERISK_11, ASTERISK_10, ASTERISK_1_8, ASTERISK_1_6
     };
 
     // current debian stable version, as of 09/10/2018
