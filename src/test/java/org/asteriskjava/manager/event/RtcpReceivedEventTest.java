@@ -17,14 +17,14 @@ class RtcpReceivedEventTest {
     void testFrom() {
         rtcpReceivedEvent.setFrom("192.168.0.1:1234");
         assertEquals(rtcpReceivedEvent.getFromAddress().getHostAddress(), "192.168.0.1");
-        assertEquals(new Integer(1234), rtcpReceivedEvent.getFromPort());
+        assertEquals(Integer.valueOf(1234), rtcpReceivedEvent.getFromPort());
     }
 
     @Test
     void testPt() {
         rtcpReceivedEvent.setPt("200(Sender Report)");
-        assertEquals(new Long(200), rtcpReceivedEvent.getPt());
-        assertEquals(new Long(RtcpReceivedEvent.PT_SENDER_REPORT), rtcpReceivedEvent.getPt());
+        assertEquals(Long.valueOf(200), rtcpReceivedEvent.getPt());
+        assertEquals(Long.valueOf(RtcpReceivedEvent.PT_SENDER_REPORT), rtcpReceivedEvent.getPt());
     }
 
     @Test
@@ -42,6 +42,6 @@ class RtcpReceivedEventTest {
     @Test
     void testRtt() {
         rtcpReceivedEvent.setRtt("12345(sec)");
-        assertEquals(new Double(12345), rtcpReceivedEvent.getRtt());
+        assertEquals(Double.valueOf(12345), rtcpReceivedEvent.getRtt());
     }
 }

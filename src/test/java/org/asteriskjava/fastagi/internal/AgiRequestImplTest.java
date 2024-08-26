@@ -66,7 +66,7 @@ class AgiRequestImplTest {
         assertEquals("9876", request.getRdnis(), "incorrect rdnis");
         assertEquals("local", request.getContext(), "incorrect context");
         assertEquals("8870", request.getExtension(), "incorrect extension");
-        assertEquals(new Integer(1), request.getPriority(), "incorrect priority");
+        assertEquals(Integer.valueOf(1), request.getPriority(), "incorrect priority");
         assertEquals(Boolean.FALSE, request.getEnhanced(), "incorrect enhanced");
         assertNull(request.getAccountCode(), "incorrect accountCode must not be set");
         assertEquals(AsteriskVersion.ASTERISK_13, request.getAsteriskVersion(), "incorret Asterisk Version Number");
