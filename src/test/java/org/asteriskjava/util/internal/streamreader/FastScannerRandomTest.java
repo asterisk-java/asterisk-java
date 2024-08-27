@@ -1,6 +1,6 @@
 package org.asteriskjava.util.internal.streamreader;
 
-import ch.qos.logback.core.encoder.ByteArrayUtil;
+import org.asteriskjava.manager.internal.ManagerUtil;
 import org.asteriskjava.util.internal.SocketConnectionFacadeImpl;
 import org.junit.jupiter.api.Test;
 
@@ -72,8 +72,8 @@ class FastScannerRandomTest {
 
                 if (!fastResult.equals(scannerResult)) {
 
-                    System.out.println("Expected " + ByteArrayUtil.toHexString(scannerResult.getBytes()));
-                    System.out.println("Got      " + ByteArrayUtil.toHexString(fastResult.getBytes()));
+                    System.out.println("Expected " + ManagerUtil.toHexString(scannerResult.getBytes()));
+                    System.out.println("Got      " + ManagerUtil.toHexString(fastResult.getBytes()));
                     System.out.println("Error " + ctr);
                     System.out.println("");
 
