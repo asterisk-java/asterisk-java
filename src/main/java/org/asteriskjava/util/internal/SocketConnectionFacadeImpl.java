@@ -46,10 +46,8 @@ public class SocketConnectionFacadeImpl implements SocketConnectionFacade {
     private Trace trace;
 
     /**
-     * <<<<<<< HEAD Creates a new instance for use with the Manager API that
-     * uses UTF-8 as encoding and CRNL ("\r\n") as line delimiter. =======
-     * Creates a new instance for use with the Manager API that uses CRNL
-     * ("\r\n") as line delimiter. >>>>>>> refs/heads/release-1.1
+     * Creates a new instance for use with the Manager API that uses UTF-8
+     * as the encoding and CRLF ("\r\n") as line delimiter.
      *
      * @param host        the foreign host to connect to.
      * @param port        the foreign port to connect to.
@@ -64,7 +62,7 @@ public class SocketConnectionFacadeImpl implements SocketConnectionFacade {
 
     /**
      * Creates a new instance for use with the Manager API that uses the given
-     * encoding and CRNL ("\r\n") as line delimiter.
+     * encoding and CRLF ("\r\n") as line delimiter.
      *
      * @param host        the foreign host to connect to.
      * @param port        the foreign port to connect to.
