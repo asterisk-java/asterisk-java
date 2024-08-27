@@ -16,9 +16,8 @@
  */
 package org.asteriskjava.manager.event;
 
-import org.asteriskjava.util.Base64;
-
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 
 /**
  * A SkypeChatMessageEvent is triggered when a Skype Chat message is sent or
@@ -107,6 +106,6 @@ public class SkypeChatMessageEvent extends ManagerEvent {
         if (message == null) {
             return null;
         }
-        return new String(Base64.base64ToByteArray(message), StandardCharsets.UTF_8);
+        return new String(Base64.getDecoder().decode(message), StandardCharsets.UTF_8);
     }
 }
