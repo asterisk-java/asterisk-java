@@ -15,7 +15,8 @@ public abstract class AbstractBridgeEvent extends ManagerEvent {
     private String bridgeName;
     private String bridgeTechnology;
     private String accountCode;
-    private String bridgevideosourcemode;
+    private String bridgeVideoSource;
+    private String bridgeVideoSourceMode;
 
     AbstractBridgeEvent(Object source) {
         super(source);
@@ -77,11 +78,19 @@ public abstract class AbstractBridgeEvent extends ManagerEvent {
         this.accountCode = accountCode;
     }
 
-    public String getBridgevideosourcemode() {
-        return bridgevideosourcemode;
+    public String getBridgeVideoSource() {
+        return bridgeVideoSource;
     }
 
-    public void setBridgevideosourcemode(String bridgevideosourcemode) {
-        this.bridgevideosourcemode = bridgevideosourcemode;
+    public void setBridgeVideoSource(String bridgeVideoSource) {
+        this.bridgeVideoSource = bridgeVideoSource;
+    }
+
+    public String getBridgevideosourcemode() {
+        return bridgeVideoSourceMode;
+    }
+
+    public void setBridgevideosourcemode(String bridgeVideoSourceMode) {
+        this.bridgeVideoSourceMode = bridgeVideoSourceMode;
     }
 }
