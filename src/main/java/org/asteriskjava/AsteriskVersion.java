@@ -40,8 +40,8 @@ public class AsteriskVersion implements Comparable<AsteriskVersion>, Serializabl
     private final String versionString;
     private final Pattern patterns[];
 
-    private static final String VERSION_PATTERN_CERTIFIED_20 = "^\\s*Asterisk certified/(GIT-)?20[-. ].*";
-    private static final String VERSION_PATTERN_CERTIFIED_18 = "^\\s*Asterisk certified/(GIT-)?18[-. ].*";
+    private static final String VERSION_PATTERN_CERTIFIED_20 = "^\\s*Asterisk certified-(GIT-)?20[-. ].*";
+    private static final String VERSION_PATTERN_CERTIFIED_18 = "^\\s*Asterisk certified[-/](GIT-)?18[-. ].*";
     private static final String VERSION_PATTERN_CERTIFIED_16 = "^\\s*Asterisk certified/(GIT-)?16[-. ].*";
     private static final String VERSION_PATTERN_CERTIFIED_13 = "^\\s*Asterisk certified/((SVN-branch|GIT)-)?13[-. ].*";
 
