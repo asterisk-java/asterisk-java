@@ -12,8 +12,11 @@ package org.asteriskjava.util;
  * and vice-versa.<p>
  * From java.util.prefs.
  *
+ * @deprecated Use {@link java.util.Base64} instead.
+ *
  * @author Josh Bloch
  */
+@Deprecated
 public class Base64 {
 
     private Base64() {
