@@ -20,9 +20,22 @@ package org.asteriskjava.manager.event;
  * Raised when the channel that is the source of video in a bridge changes.
  */
 public class BridgeVideoSourceUpdateEvent extends AbstractBridgeEvent {
+    private String bridgePreviousVideoSource;
 
     public BridgeVideoSourceUpdateEvent(Object source) {
         super(source);
     }
 
+    /**
+     * Gets the unique ID of the channel that was the video source.
+     *
+     * @return the unique ID of the channel that was the video source.
+     */
+    public String getBridgePreviousVideoSource() {
+        return bridgePreviousVideoSource;
+    }
+
+    public void setBridgePreviousVideoSource(String bridgePreviousVideoSource) {
+        this.bridgePreviousVideoSource = bridgePreviousVideoSource;
+    }
 }

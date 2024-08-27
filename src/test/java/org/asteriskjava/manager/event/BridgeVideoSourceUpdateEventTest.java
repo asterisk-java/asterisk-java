@@ -32,9 +32,13 @@ class BridgeVideoSourceUpdateEventTest {
 
         HashMap<String, Object> attributes = new HashMap<>();
         attributes.put("bridgeuniqueid", "85f11e74-b0d9-4354-bc91-80782ee7a6a7");
+        attributes.put("bridgepreviousvideosource", "e39cdee4-61a1-49b5-9656-96cef742806f");
         setAttributes(bridgeVideoSourceUpdateEvent, attributes, new HashSet<>());
 
-        assertThat(bridgeVideoSourceUpdateEvent.getBridgeUniqueId()).isEqualTo("85f11e74-b0d9-4354-bc91-80782ee7a6a7");
+        assertThat(bridgeVideoSourceUpdateEvent.getBridgeUniqueId())
+            .isEqualTo("85f11e74-b0d9-4354-bc91-80782ee7a6a7");
+        assertThat(bridgeVideoSourceUpdateEvent.getBridgePreviousVideoSource())
+            .isEqualTo("e39cdee4-61a1-49b5-9656-96cef742806f");
     }
 
 }
