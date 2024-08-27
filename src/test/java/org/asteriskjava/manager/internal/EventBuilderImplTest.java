@@ -357,7 +357,7 @@ class EventBuilderImplTest {
         event = eventBuilder.buildEvent(this, properties);
 
         assertNotNull(event);
-        assertEquals(new Long(569108), ((MeetMeLeaveEvent) event).getDuration(), "Duration property not set correctly");
+        assertEquals(Long.valueOf(569108), ((MeetMeLeaveEvent) event).getDuration(), "Duration property not set correctly");
     }
 
     @Test

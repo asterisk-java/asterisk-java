@@ -168,8 +168,8 @@ class ManagerReaderImplTest {
 
         RtcpReceivedEvent rtcpReceivedEvent = (RtcpReceivedEvent) dispatcher.dispatchedEvents.get(0);
         assertEquals("192.168.0.1", rtcpReceivedEvent.getFromAddress().getHostAddress(), "Invalid from address on RtcpReceivedEvent");
-        assertEquals(new Integer(1234), rtcpReceivedEvent.getFromPort(), "Invalid from port on RtcpReceivedEvent");
-        assertEquals(new Long(999), rtcpReceivedEvent.getHighestSequence(), "Invalid highest sequence on RtcpReceivedEvent");
+        assertEquals(Integer.valueOf(1234), rtcpReceivedEvent.getFromPort(), "Invalid from port on RtcpReceivedEvent");
+        assertEquals(Long.valueOf(999), rtcpReceivedEvent.getHighestSequence(), "Invalid highest sequence on RtcpReceivedEvent");
 
         assertEquals(DisconnectEvent.class, dispatcher.dispatchedEvents.get(1).getClass(), "second event must be a DisconnectEvent");
     }

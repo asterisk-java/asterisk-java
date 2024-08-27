@@ -52,7 +52,7 @@ public class Cli
                 Integer port = null;
                 try
                 {
-                    port = new Integer(args[1]);
+                    port = Integer.parseInt(args[1], 10);
                 }
                 catch (NumberFormatException e)
                 {

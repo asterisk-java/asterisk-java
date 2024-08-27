@@ -16,13 +16,13 @@ class NewStateEventTest {
     @Test
     void testWithState() {
         newStateEvent.setState("Ring");
-        assertEquals(new Integer(4), newStateEvent.getChannelState());
+        assertEquals(Integer.valueOf(4), newStateEvent.getChannelState());
         assertEquals("Ring", newStateEvent.getChannelStateDesc());
     }
 
     @Test
     void testWithUnknownState() {
         newStateEvent.setState("Unknown (4)");
-        assertEquals(new Integer(4), newStateEvent.getChannelState());
+        assertEquals(Integer.valueOf(4), newStateEvent.getChannelState());
     }
 }

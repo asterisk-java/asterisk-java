@@ -28,7 +28,7 @@ public abstract class DefaultAsteriskSettings implements AsteriskSettings {
         // doesn't overlap any conference rooms you are currently running on your pbx.
         // You should probably allow 200 conference rooms here e.g. (3000-3200)
         // Actions like transfers (and conference calls) use a conference room.
-        return new Integer(3000);
+        return 3000;
     }
 
     @Override
