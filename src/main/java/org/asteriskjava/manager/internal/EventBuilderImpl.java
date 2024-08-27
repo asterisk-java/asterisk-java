@@ -15,6 +15,7 @@
  */
 package org.asteriskjava.manager.internal;
 
+import org.asteriskjava.manager.AsteriskMapping;
 import org.asteriskjava.manager.event.*;
 import org.asteriskjava.manager.util.EventAttributesHelper;
 import org.asteriskjava.util.Log;
@@ -60,14 +61,18 @@ class EventBuilderImpl implements EventBuilder {
     }
 
     public final void registerEventClass(Class<? extends ManagerEvent> clazz) throws IllegalArgumentException {
-        String className;
         String eventType;
 
-        className = clazz.getName();
-        eventType = className.substring(className.lastIndexOf('.') + 1).toLowerCase(Locale.ENGLISH);
+        AsteriskMapping annotation = clazz.getAnnotation(AsteriskMapping.class);
+        if (annotation == null) {
+            String className = clazz.getName();
+            eventType = className.substring(className.lastIndexOf('.') + 1).toLowerCase(Locale.ENGLISH);
 
-        if (eventType.endsWith("event")) {
-            eventType = eventType.substring(0, eventType.length() - "event".length());
+            if (eventType.endsWith("event")) {
+                eventType = eventType.substring(0, eventType.length() - "event".length());
+            }
+        } else {
+            eventType = annotation.value().toLowerCase(Locale.ENGLISH);
         }
 
         if (UserEvent.class.isAssignableFrom(clazz) && !eventType.startsWith("userevent")) {
