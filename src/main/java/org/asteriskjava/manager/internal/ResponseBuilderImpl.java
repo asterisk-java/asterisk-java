@@ -19,11 +19,10 @@ import org.asteriskjava.manager.response.CommandResponse;
 import org.asteriskjava.manager.response.ManagerError;
 import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.manager.util.EventAttributesHelper;
-import org.slf4j.Logger;
+import org.asteriskjava.util.Log;
+import org.asteriskjava.util.LogFactory;
 
 import java.util.*;
-
-import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  * Default implementation of the ResponseBuilder interface.
@@ -33,7 +32,7 @@ import static org.slf4j.LoggerFactory.getLogger;
  * @see org.asteriskjava.manager.response.ManagerResponse
  */
 class ResponseBuilderImpl implements ResponseBuilder {
-    private static final Logger logger = getLogger(ResponseBuilderImpl.class);
+    private static final Log logger = LogFactory.getLog(ResponseBuilderImpl.class);
 
     private static final Set<String> ignoredAttributes = new HashSet<>(Arrays.asList(
         "attributes", "proxyresponse", ManagerReader.COMMAND_RESULT_RESPONSE_KEY));
