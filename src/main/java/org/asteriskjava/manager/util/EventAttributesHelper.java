@@ -19,8 +19,9 @@ import org.asteriskjava.manager.event.CdrEvent;
 import org.asteriskjava.manager.event.UserEvent;
 import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.util.AstUtil;
+import org.asteriskjava.util.Log;
+import org.asteriskjava.util.LogFactory;
 import org.asteriskjava.util.ReflectionUtil;
-import org.slf4j.Logger;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -29,13 +30,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static org.slf4j.LoggerFactory.getLogger;
-
 /**
  * @author Piotr Olaszewski <piotrooo>
  */
 public class EventAttributesHelper {
-    private static final Logger logger = getLogger(EventAttributesHelper.class);
+    private static final Log logger = LogFactory.getLog(EventAttributesHelper.class);
 
     private EventAttributesHelper() {
     }
