@@ -4,7 +4,7 @@
 
     <groupId>org.asteriskjava</groupId>
     <artifactId>asterisk-java</artifactId>
-    <version>3.39.0</version>
+    <version>3.40.1-SNAPSHOT</version>
 
     <name>Asterisk-Java</name>
     <description>The free Java library for Asterisk PBX integration.</description>
