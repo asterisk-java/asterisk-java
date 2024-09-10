@@ -1,10 +1,9 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.asteriskjava</groupId>
     <artifactId>asterisk-java</artifactId>
-    <version>3.40.1-SNAPSHOT</version>
+    <version>3.40.1</version>
 
     <name>Asterisk-Java</name>
     <description>The free Java library for Asterisk PBX integration.</description>
@@ -81,7 +80,8 @@
         <connection>scm:git:git@github.com:asterisk-java/asterisk-java.git</connection>
         <developerConnection>scm:git:git@github.com:asterisk-java/asterisk-java.git</developerConnection>
         <url>https://github.com/asterisk-java/asterisk-java</url>
-    </scm>
+      <tag>3.40.1</tag>
+  </scm>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
