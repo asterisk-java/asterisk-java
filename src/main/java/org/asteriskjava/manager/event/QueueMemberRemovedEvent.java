@@ -40,6 +40,7 @@ public class QueueMemberRemovedEvent extends AbstractQueueMemberEvent {
     Boolean ringinuse;
     Long lastcall;
     Integer status;
+    Integer lastpause;
 
 
     public QueueMemberRemovedEvent(Object source) {
@@ -123,5 +124,14 @@ public class QueueMemberRemovedEvent extends AbstractQueueMemberEvent {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Integer getLastpause() {
+        return lastpause;
+    }
+
+
+    public void setLastpause(Integer lastpause) {
+        this.lastpause = lastpause;
     }
 }
