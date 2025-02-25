@@ -42,6 +42,7 @@ public class QueueMemberRemovedEvent extends AbstractQueueMemberEvent {
     Integer status;
     Integer logintime;
     Integer wrapuptime;
+    Integer lastpause;
 
 
     public QueueMemberRemovedEvent(Object source) {
@@ -141,5 +142,13 @@ public class QueueMemberRemovedEvent extends AbstractQueueMemberEvent {
 
     public void setWrapuptime(Integer wrapuptime) {
         this.wrapuptime = wrapuptime;
+    }
+
+    public Integer getLastpause() {
+        return lastpause;
+    }
+
+    public void setLastpause(Integer lastpause) {
+        this.lastpause = lastpause;
     }
 }
