@@ -128,27 +128,27 @@ public class QueueMemberRemovedEvent extends AbstractQueueMemberEvent {
         this.status = status;
     }
 
-    public Integer getLogintime() {
+    public Integer getLoginTime() {
         return logintime;
     }
 
-    public void setLogintime(Integer logintime) {
+    public void setLoginTime(Integer logintime) {
         this.logintime = logintime;
     }
 
-    public Integer getWrapuptime() {
+    public Integer getWrapupTime() {
         return wrapuptime;
     }
 
-    public void setWrapuptime(Integer wrapuptime) {
+    public void setWrapupTime(Integer wrapuptime) {
         this.wrapuptime = wrapuptime;
     }
 
-    public Integer getLastpause() {
+    public Integer getLastPause() {
         return lastpause;
     }
 
-    public void setLastpause(Integer lastpause) {
+    public void setLastPause(Integer lastpause) {
         this.lastpause = lastpause;
     }
 }
