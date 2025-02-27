@@ -40,6 +40,9 @@ public class QueueMemberAddedEvent extends AbstractQueueMemberEvent {
 
     private String stateinterface;
     private Boolean ringinuse;
+    private Integer logintime;
+    private Integer wrapuptime;
+    private Integer lastpause;
 
     public QueueMemberAddedEvent(Object source) {
         super(source);
@@ -191,5 +194,29 @@ public class QueueMemberAddedEvent extends AbstractQueueMemberEvent {
 
     public void setRinginuse(Boolean ringinuse) {
         this.ringinuse = ringinuse;
+    }
+
+    public Integer getLoginTime() {
+        return logintime;
+    }
+
+    public void setLoginTime(Integer logintime) {
+        this.logintime = logintime;
+    }
+
+    public Integer getWrapupTime() {
+        return wrapuptime;
+    }
+
+    public void setWrapupTime(Integer wrapuptime) {
+        this.wrapuptime = wrapuptime;
+    }
+
+    public Integer getLastPause() {
+        return lastpause;
+    }
+
+    public void setLastPause(Integer lastpause) {
+        this.lastpause = lastpause;
     }
 }
