@@ -18,9 +18,13 @@ package org.asteriskjava.manager.event;
 
 /**
  * A MeetMeTalkingEvent is triggered when a user starts talking in a meet me
- * conference.<p>
- * To enable talker detection you must pass the option 'T' to the MeetMe application.<p>
- * It is implemented in <code>apps/app_meetme.c</code><p>
+ * conference.
+ * <p>
+ * To enable talker detection you must pass the option 'T' to the MeetMe
+ * application.
+ * <p>
+ * It is implemented in <code>apps/app_meetme.c</code>
+ * <p>
  * Available since Asterisk 1.2
  *
  * @author srt
@@ -34,6 +38,22 @@ public class MeetMeTalkingEvent extends AbstractMeetMeEvent {
      */
     private static final long serialVersionUID = -8554403451985143184L;
 
+    private String meetme;
+    private String channel;
+    private Integer channelState;
+    private String channelStateDesc;
+    private String callerIDNum;
+    private String callerIDName;
+    private String connectedLineNum;
+    private String connectedLineName;
+    private String language;
+    private String accountCode;
+    private String context;
+    private String exten;
+    private Integer priority;
+    private String uniqueid;
+    private String linkedid;
+    private Integer duration;
     protected Boolean status = Boolean.TRUE;
 
     public MeetMeTalkingEvent(Object source) {
@@ -54,6 +74,134 @@ public class MeetMeTalkingEvent extends AbstractMeetMeEvent {
      * <code>false</code> if the user has stopped talking.
      * @since 0.3
      */
+    public String getMeetMe() {
+        return meetme;
+    }
+
+    public void setMeetMe(String meetme) {
+        this.meetme = meetme;
+    }
+
+    public String getChannel() {
+        return channel;
+    }
+
+    public void setChannel(String channel) {
+        this.channel = channel;
+    }
+
+    public Integer getChannelState() {
+        return channelState;
+    }
+
+    public void setChannelState(Integer channelState) {
+        this.channelState = channelState;
+    }
+
+    public String getChannelStateDesc() {
+        return channelStateDesc;
+    }
+
+    public void setChannelStateDesc(String channelStateDesc) {
+        this.channelStateDesc = channelStateDesc;
+    }
+
+    public String getCallerIDNum() {
+        return callerIDNum;
+    }
+
+    public void setCallerIDNum(String callerIDNum) {
+        this.callerIDNum = callerIDNum;
+    }
+
+    public String getCallerIDName() {
+        return callerIDName;
+    }
+
+    public void setCallerIDName(String callerIDName) {
+        this.callerIDName = callerIDName;
+    }
+
+    public String getConnectedLineNum() {
+        return connectedLineNum;
+    }
+
+    public void setConnectedLineNum(String connectedLineNum) {
+        this.connectedLineNum = connectedLineNum;
+    }
+
+    public String getConnectedLineName() {
+        return connectedLineName;
+    }
+
+    public void setConnectedLineName(String connectedLineName) {
+        this.connectedLineName = connectedLineName;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    public String getAccountCode() {
+        return accountCode;
+    }
+
+    public void setAccountCode(String accountCode) {
+        this.accountCode = accountCode;
+    }
+
+    public String getContext() {
+        return context;
+    }
+
+    public void setContext(String context) {
+        this.context = context;
+    }
+
+    public String getExten() {
+        return exten;
+    }
+
+    public void setExten(String exten) {
+        this.exten = exten;
+    }
+
+    public Integer getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Integer priority) {
+        this.priority = priority;
+    }
+
+    public String getUniqueId() {
+        return uniqueid;
+    }
+
+    public void setUniqueId(String uniqueid) {
+        this.uniqueid = uniqueid;
+    }
+
+    public String getLinkedId() {
+        return linkedid;
+    }
+
+    public void setLinkedId(String linkedid) {
+        this.linkedid = linkedid;
+    }
+
+    public Integer getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Integer duration) {
+        this.duration = duration;
+    }
+
     public Boolean getStatus() {
         return status;
     }
