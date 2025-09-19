@@ -13,10 +13,10 @@ public class DAHDIChannelEvent extends ManagerEvent {
     private String dahdispan;
     private String uniqueid;
     private String channel;
-
-    public String getDahdichannel() {
-        return dahdichannel;
-    }
+    private String linkedid;
+    private String language;
+    private Integer dahdigroup;
+    private String accountcode;
 
     public void setDahdichannel(String dahdichannel) {
         this.dahdichannel = dahdichannel;
@@ -50,4 +50,35 @@ public class DAHDIChannelEvent extends ManagerEvent {
         super(source);
     }
 
+    public String getLinkedId() {
+        return this.linkedid;
+    }
+
+    public void setLinkedId(String linkedid) {
+        this.linkedid = linkedid;
+    }
+
+    public Integer getDadhiGroup() {
+        return this.dahdigroup;
+    }
+
+    public void setDadhiGroup(Integer dahdigroup) {
+        this.dahdigroup = dahdigroup;
+    }
+
+    public String getLanguage() {
+        return this.language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    public String getAccountCode() {
+        return this.accountcode;
+    }
+
+    public void setAccountCode(String accountcode) {
+        this.accountcode = accountcode;
+    }
 }
