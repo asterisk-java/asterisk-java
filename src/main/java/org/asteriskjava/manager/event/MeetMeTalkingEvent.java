@@ -43,7 +43,6 @@ public class MeetMeTalkingEvent extends AbstractMeetMeEvent {
     private Integer channelState;
     private String channelStateDesc;
     private String callerIDNum;
-    private String callerIDName;
     private String connectedLineNum;
     private String connectedLineName;
     private String language;
@@ -112,14 +111,6 @@ public class MeetMeTalkingEvent extends AbstractMeetMeEvent {
 
     public void setCallerIDNum(String callerIDNum) {
         this.callerIDNum = callerIDNum;
-    }
-
-    public String getCallerIDName() {
-        return callerIDName;
-    }
-
-    public void setCallerIDName(String callerIDName) {
-        this.callerIDName = callerIDName;
     }
 
     public String getConnectedLineNum() {
