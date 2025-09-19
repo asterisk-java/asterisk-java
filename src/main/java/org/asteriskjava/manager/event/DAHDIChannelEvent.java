@@ -18,6 +18,10 @@ public class DAHDIChannelEvent extends ManagerEvent {
     private Integer dahdigroup;
     private String accountcode;
 
+    public String getDahdichannel() {
+        return dahdichannel;
+    }
+
     public void setDahdichannel(String dahdichannel) {
         this.dahdichannel = dahdichannel;
     }
