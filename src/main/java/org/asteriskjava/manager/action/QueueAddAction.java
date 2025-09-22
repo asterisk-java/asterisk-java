@@ -20,7 +20,8 @@ package org.asteriskjava.manager.action;
  * The QueueAddAction adds a new member to a queue.<p>
  * It is implemented in <code>apps/app_queue.c</code><p>
  * The <code>memberName</code> property was added in Asterisk 1.4, the
- * <code>stateInterface</code> property in Asterisk 1.6.
+ * <code>stateInterface</code> property in Asterisk 1.6,
+ * the <code>reason</code> property in Asterisk 20.
  *
  * @author srt
  * @version $Id$
@@ -31,6 +32,7 @@ public class QueueAddAction extends AbstractManagerAction {
     private String iface;
     private Integer penalty;
     private Boolean paused;
+    private String reason;
     private String memberName;
     private String stateInterface;
 
@@ -160,6 +162,26 @@ public class QueueAddAction extends AbstractManagerAction {
      */
     public void setPaused(Boolean paused) {
         this.paused = paused;
+    }
+    
+    /**
+     * Returns the queue member pause reason.
+     * Available since Asterisk 20.
+     *
+     * @return Pause reason.
+     */
+    public String getReason() {
+        return reason;
+    }
+
+    /**
+     * Sets the queue member pause reason.
+     * Available since Asterisk 20.
+     * 
+     * @param reason.
+     */
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 
     /**
