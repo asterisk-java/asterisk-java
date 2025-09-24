@@ -62,11 +62,11 @@ public class DAHDIChannelEvent extends ManagerEvent {
         this.linkedid = linkedid;
     }
 
-    public Integer getDadhiGroup() {
+    public Integer getDahdiGroup() {
         return this.dahdigroup;
     }
 
-    public void setDadhiGroup(Integer dahdigroup) {
+    public void setDahdiGroup(Integer dahdigroup) {
         this.dahdigroup = dahdigroup;
     }
 
