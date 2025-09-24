@@ -42,7 +42,6 @@ public class MeetMeTalkingEvent extends AbstractMeetMeEvent {
     private String channel;
     private Integer channelState;
     private String channelStateDesc;
-    private String callerIDNum;
     private String connectedLineNum;
     private String connectedLineName;
     private String language;
