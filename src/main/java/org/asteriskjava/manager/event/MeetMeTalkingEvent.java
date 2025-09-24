@@ -105,13 +105,6 @@ public class MeetMeTalkingEvent extends AbstractMeetMeEvent {
         this.channelStateDesc = channelStateDesc;
     }
 
-    public String getCallerIDNum() {
-        return callerIDNum;
-    }
-
-    public void setCallerIDNum(String callerIDNum) {
-        this.callerIDNum = callerIDNum;
-    }
 
     public String getConnectedLineNum() {
         return connectedLineNum;
