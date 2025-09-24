@@ -32,11 +32,48 @@ public class MeetMeJoinEvent extends AbstractMeetMeEvent {
      * Serializable version identifier.
      */
     private static final long serialVersionUID = 0L;
+    private String linkedid;
+    private String language;
+    private Integer duration;
+    private String accountcode;
 
     /**
      * @param source
      */
     public MeetMeJoinEvent(Object source) {
         super(source);
+    }
+
+    public String getLinkedId() {
+        return this.linkedid;
+    }
+
+    public void setLinkedId(String linkedid) {
+        this.linkedid = linkedid;
+    }
+
+
+    public String getLanguage() {
+        return this.language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    public String getAccountCode() {
+        return this.accountcode;
+    }
+
+    public void setAccountCode(String accountcode) {
+        this.accountcode = accountcode;
+    }
+
+    public Integer getDuration() {
+        return this.duration;
+    }
+
+    public void setDuration(Integer duration) {
+        this.duration = duration;
     }
 }
