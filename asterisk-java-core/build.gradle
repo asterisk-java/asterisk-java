@@ -25,6 +25,8 @@ dependencies {
     testImplementation libs.junit.jupiter
     testImplementation libs.mockito.core
     testImplementation libs.slf4j.simple
+
+    testRuntimeOnly libs.junit.platform.launcher
 }
 
 tasks.named('test') {
