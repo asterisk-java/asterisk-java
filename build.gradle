@@ -2,14 +2,10 @@ plugins {
     id 'java-library'
     id 'maven-publish'
     id 'signing'
-    id 'io.github.gradle-nexus.publish-plugin' version '1.3.0'
+//    id 'io.github.gradle-nexus.publish-plugin' version '1.3.0'
 }
 
 group = 'org.asteriskjava'
-
-compileJava.options.encoding = 'UTF-8'
-compileTestJava.options.encoding = 'UTF-8'
-javadoc.options.encoding = 'UTF-8'
 
 java {
     sourceCompatibility = '17'
@@ -116,11 +112,11 @@ signing {
     sign publishing.publications.mavenJava
 }
 
-nexusPublishing {
-    repositories {
-        sonatype {
-            username = System.getenv('NEXUS_USERNAME')
-            password = System.getenv('NEXUS_PASSWORD')
-        }
-    }
-}
+//nexusPublishing {
+//    repositories {
+//        sonatype {
+//            username = System.getenv('NEXUS_USERNAME')
+//            password = System.getenv('NEXUS_PASSWORD')
+//        }
+//    }
+//}
