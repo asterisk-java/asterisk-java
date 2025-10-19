@@ -2,3 +2,31 @@ rootProject.name = 'asterisk-java'
 
 include 'asterisk-java-ami'
 include 'asterisk-java-core'
+
+dependencyResolutionManagement {
+    versionCatalogs {
+        libs {
+            library('assertj-core', 'org.assertj:assertj-core:3.27.6')
+            library('jsonassert', 'org.skyscreamer:jsonassert:1.5.3')
+            library('junit-jupiter', 'org.junit.jupiter:junit-jupiter:6.0.0')
+            library('junit-platform-launcher', 'org.junit.platform:junit-platform-launcher:6.0.0')
+            library('mockito-core', 'org.mockito:mockito-core:5.20.0')
+
+            library('apache-commons-codec', 'commons-codec:commons-codec:1.19.0')
+            library('apache-commons-lang3', 'org.apache.commons:commons-lang3:3.19.0')
+
+            library('netty-codec', 'io.netty:netty-codec:4.2.7.Final')
+            library('netty-handler', 'io.netty:netty-handler:4.2.7.Final')
+            library('netty-transport', 'io.netty:netty-transport:4.2.7.Final')
+
+            library('jackson-databind', 'com.fasterxml.jackson.core:jackson-databind:2.16.1')
+            library('jackson-datatype-jsr310', 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.16.1')
+
+            library('slf4j-api', 'org.slf4j:slf4j-api:2.0.17')
+            library('slf4j-simple', 'org.slf4j:slf4j-simple:2.0.17')
+
+            library('testcontainers-bom', 'org.testcontainers:testcontainers-bom:2.0.1')
+            library('testcontainers-junit-jupiter', 'org.testcontainers:junit-jupiter:2.0.1')
+        }
+    }
+}

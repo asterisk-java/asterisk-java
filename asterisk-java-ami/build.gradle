@@ -17,17 +17,17 @@ repositories {
 dependencies {
     implementation project(':asterisk-java-core')
 
-    implementation 'commons-codec:commons-codec:1.16.0'
-    implementation 'org.apache.commons:commons-lang3:3.14.0'
+    implementation libs.apache.commons.codec
+    implementation libs.apache.commons.lang3
 
-    testImplementation 'org.assertj:assertj-core:3.24.2'
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.1'
-    testImplementation 'org.mockito:mockito-core:5.7.0'
-    testImplementation 'org.slf4j:slf4j-simple:2.0.9'
+    testImplementation libs.assertj.core
+    testImplementation libs.jsonassert
+    testImplementation libs.junit.jupiter
+    testImplementation libs.mockito.core
+    testImplementation libs.slf4j.simple
 
-    testImplementation 'org.skyscreamer:jsonassert:1.5.1'
-    testImplementation platform('org.testcontainers:testcontainers-bom:1.19.3')
-    testImplementation('org.testcontainers:junit-jupiter') {
+    testImplementation platform(libs.testcontainers.bom)
+    testImplementation('org.testcontainers:testcontainers-junit-jupiter') {
         exclude group: 'com.fasterxml.jackson.core', module: 'jackson-annotations'
     }
     testImplementation('org.testcontainers:testcontainers') {
@@ -35,9 +35,11 @@ dependencies {
     }
 
     //todo only for testing framework
-    testImplementation 'io.netty:netty-codec:4.1.101.Final'
-    testImplementation 'io.netty:netty-handler:4.1.101.Final'
-    testImplementation 'io.netty:netty-transport:4.1.101.Final'
+    testImplementation libs.netty.codec
+    testImplementation libs.netty.handler
+    testImplementation libs.netty.transport
+
+    testRuntimeOnly libs.junit.platform.launcher
 }
 
 tasks.named('test') {

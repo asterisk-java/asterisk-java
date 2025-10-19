@@ -28,6 +28,7 @@ import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.handler.timeout.IdleStateHandler;
+import org.apache.commons.lang3.tuple.Pair;
 import org.asteriskjava.ami.action.annotation.ExpectedResponse;
 import org.asteriskjava.ami.action.annotation.GeneratedEvents;
 import org.asteriskjava.ami.action.api.ChallengeAction;
@@ -38,7 +39,6 @@ import org.asteriskjava.ami.action.api.response.ManagerActionResponse;
 import org.asteriskjava.core.databind.AsteriskDecoder;
 import org.asteriskjava.core.databind.AsteriskEncoder;
 import org.testcontainers.containers.GenericContainer;
-import org.testcontainers.shaded.org.apache.commons.lang3.tuple.Pair;
 
 import java.time.Instant;
 import java.util.*;
@@ -233,7 +233,7 @@ public class ActionsRunner {
             ManagerActionResponse managerActionResponse = asteriskDecoder.decode(map, clazz);
             managerActionResponse.setDateReceived(instant);
 
-            responseRecorder.recordForAction(actionId).record(managerActionResponse);
+            responseRecorder.recordForAction(actionId).doRecord(managerActionResponse);
             return managerActionResponse;
         }
 
@@ -247,7 +247,7 @@ public class ActionsRunner {
                 String event = (String) map.get("Event");
                 Class<?> clazz = events.get(event);
                 Object responseEvent = asteriskDecoder.decode(map, clazz);
-                responseRecorder.recordForAction(actionId).record(responseEvent);
+                responseRecorder.recordForAction(actionId).doRecord(responseEvent);
             }
         }
 
@@ -283,11 +283,11 @@ public class ActionsRunner {
                 this.actionId = actionId;
             }
 
-            void record(ManagerActionResponse managerActionResponse) {
+            void doRecord(ManagerActionResponse managerActionResponse) {
                 mapResponses.put(actionId, managerActionResponse);
             }
 
-            void record(Object responseEvent) {
+            void doRecord(Object responseEvent) {
                 mapResponseEvents.compute(actionId, (s, o) -> {
                     if (o == null) {
                         Map<Class<?>, List<Object>> map = new HashMap<>();

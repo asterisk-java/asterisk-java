@@ -27,7 +27,7 @@ import static org.testcontainers.containers.wait.strategy.Wait.forLogMessage;
 public abstract class BaseActionItTest {
     @SuppressWarnings("rawtypes")
     @Container
-    protected static final GenericContainer<?> asteriskDocker = new GenericContainer("andrius/asterisk:alpine-18.15.1")
+    protected static final GenericContainer<?> asteriskDocker = new GenericContainer("andrius/asterisk:20.16.0_debian-trixie-dev")
             .withClasspathResourceMapping("/manager.conf", "/etc/asterisk/manager.conf", READ_ONLY)
             .withClasspathResourceMapping("/queues.conf", "/etc/asterisk/queues.conf", READ_ONLY)
             .withAccessToHost(true)

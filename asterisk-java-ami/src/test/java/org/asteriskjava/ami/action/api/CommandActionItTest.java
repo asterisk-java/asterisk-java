@@ -73,6 +73,6 @@ class CommandActionItTest extends BaseActionItTest {
         CommandActionResponse actual = responseRecorder.getRecorderResponse("id-1", CommandActionResponse.class);
         assertThat(actual.getResponse()).isEqualTo(success);
         assertThat(actual.getMessage()).isEqualTo("Command output follows");
-        assertThat(actual.getOutput()).contains("-= 183 Applications Registered =-", "VoiceMailPlayMsg");
+        assertThat(actual.getOutput()).contains("-= 182 Applications Registered =-", "VoiceMailPlayMsg: Play a single voice mail msg from a mailbox by msg id.");
     }
 }

@@ -48,9 +48,9 @@ class ListCommandsActionItTest extends BaseActionItTest {
         ListCommandActionResponse actual = responseRecorder.getRecorderResponse("id-1", ListCommandActionResponse.class);
         assertThat(actual.getResponse()).isEqualTo(success);
         assertThat(actual.getCommands()).contains(
-                entry("ConfbridgeList", "(Priv: reporting,all)"),
-                entry("ConfbridgeMute", "(Priv: call,all)"),
-                entry("QueuePause", "(Priv: agent,all)")
+                entry("ConfbridgeList", "List participants in a conference.  (Priv: reporting,all)"),
+                entry("ConfbridgeMute", "Mute a Confbridge user.  (Priv: call,all)"),
+                entry("QueuePause", "Makes a queue member temporarily unavailable.  (Priv: agent,all)")
         );
     }
 }

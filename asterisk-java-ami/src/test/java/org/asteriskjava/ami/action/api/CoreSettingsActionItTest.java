@@ -46,13 +46,13 @@ class CoreSettingsActionItTest extends BaseActionItTest {
         //then
         CoreSettingsActionResponse actual = responseRecorder.getRecorderResponse("id-1", CoreSettingsActionResponse.class);
         assertThat(actual.getResponse()).isEqualTo(success);
-        assertThat(actual.getAmiVersion()).isEqualTo("7.0.3");
-        assertThat(actual.getAsteriskVersion()).isEqualTo("18.15.1");
+        assertThat(actual.getAmiVersion()).isEqualTo("9.0.0");
+        assertThat(actual.getAsteriskVersion()).isEqualTo("20.16.0");
         assertThat(actual.getSystemName()).isNull();
-        assertThat(actual.getCoreMaxCalls()).isEqualTo(0);
+        assertThat(actual.getCoreMaxCalls()).isZero();
         assertThat(actual.getCoreRunUser()).isNull();
         assertThat(actual.getCoreRunGroup()).isNull();
-        assertThat(actual.getCoreMaxFilehandles()).isEqualTo(0);
+        assertThat(actual.getCoreMaxFilehandles()).isZero();
         assertThat(actual.isCoreRealtimeEnabled()).isFalse();
         assertThat(actual.isCoreCdrEnabled()).isTrue();
         assertThat(actual.isCoreHttpEnabled()).isFalse();
