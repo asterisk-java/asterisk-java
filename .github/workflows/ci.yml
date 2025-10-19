@@ -16,7 +16,6 @@ jobs:
         java:
           - 17
           - 21
-          - 25
     steps:
       - name: Check out code
         uses: actions/checkout@v5.0.0

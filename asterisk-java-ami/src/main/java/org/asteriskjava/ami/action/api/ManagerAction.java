@@ -23,7 +23,7 @@ import java.io.Serializable;
  * Interface that all actions that can be sent to the Asterisk server must implement.
  * <p>
  * Instances of this class represent a command sent to Asterisk via AMI, requesting a particular action be performed.
- * The number of actions available to the client are determined by the modules presently loaded in the Asterisk engine.
+ * The numbers of actions available to the client are determined by the modules presently loaded in the Asterisk engine.
  * <p>
  * There is one concrete subclass of ManagerAction per each supported Asterisk action.
  *
