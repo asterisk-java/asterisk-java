@@ -16,7 +16,7 @@
  */
 package org.asteriskjava.manager.action;
 
-import org.asteriskjava.ami.action.AbstractManagerAction;
+import org.asteriskjava.ami.action.api.AbstractManagerAction;
 
 /**
  * The PauseMonitorAction re-enables monitoring (recording) of a channel after

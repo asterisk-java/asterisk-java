@@ -16,9 +16,9 @@
  */
 package org.asteriskjava.manager.internal;
 
-import org.asteriskjava.ami.action.response.ChallengeManagerActionResponse;
-import org.asteriskjava.ami.action.response.ManagerActionResponse;
-import org.asteriskjava.ami.action.response.ResponseType;
+import org.asteriskjava.ami.action.api.response.ChallengeActionResponse;
+import org.asteriskjava.ami.action.api.response.ManagerActionResponse;
+import org.asteriskjava.ami.action.api.response.ResponseType;
 import org.asteriskjava.manager.response.ExtensionStateResponse;
 import org.asteriskjava.manager.response.MailboxCountResponse;
 import org.asteriskjava.manager.response.MailboxStatusResponse;
@@ -48,7 +48,7 @@ class ResponseBuilderImplTest {
 
         response = responseBuilder.buildResponse(ManagerActionResponse.class, attributes);
         assertEquals(ManagerActionResponse.class, response.getClass(), "Response of wrong type");
-        assertEquals(ResponseType.Success, response.getResponse(), "Response not set correctly");
+        assertEquals(ResponseType.success, response.getResponse(), "Response not set correctly");
     }
 
     @Test
@@ -59,7 +59,7 @@ class ResponseBuilderImplTest {
 
         response = responseBuilder.buildResponse(null, attributes);
         assertEquals(ManagerActionResponse.class, response.getClass(), "Response of wrong type");
-        assertEquals(ResponseType.Success, response.getResponse(), "Response not set correctly");
+        assertEquals(ResponseType.success, response.getResponse(), "Response not set correctly");
     }
 
     @Test
@@ -92,9 +92,9 @@ class ResponseBuilderImplTest {
         attributes.put("response", "Success");
         attributes.put("challenge", "131494410");
 
-        response = responseBuilder.buildResponse(ChallengeManagerActionResponse.class, attributes);
-        assertEquals(ChallengeManagerActionResponse.class, response.getClass(), "Response of wrong type");
-        assertEquals("131494410", ((ChallengeManagerActionResponse) response).getChallenge(), "Challenge not set correctly");
+        response = responseBuilder.buildResponse(ChallengeActionResponse.class, attributes);
+        assertEquals(ChallengeActionResponse.class, response.getClass(), "Response of wrong type");
+        assertEquals("131494410", ((ChallengeActionResponse) response).getChallenge(), "Challenge not set correctly");
     }
 
     @Test

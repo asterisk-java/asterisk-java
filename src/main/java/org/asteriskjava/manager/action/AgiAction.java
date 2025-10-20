@@ -16,9 +16,9 @@
  */
 package org.asteriskjava.manager.action;
 
-import org.asteriskjava.ami.action.AbstractManagerAction;
+import org.asteriskjava.ami.action.api.AbstractManagerAction;
+import org.asteriskjava.ami.action.api.response.event.ResponseEvent;
 import org.asteriskjava.manager.event.AsyncAgiEvent;
-import org.asteriskjava.manager.event.ResponseEvent;
 
 /**
  * Add a new AGI command to execute by the Async AGI application.<p>

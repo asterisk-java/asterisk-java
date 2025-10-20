@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.event.api.ManagerEvent;
+
 /**
  * A TransferEvent is triggered when a SIP channel is transfered.<p>
  * It is implemented in <code>channels/chan_sip.c</code>.<p>

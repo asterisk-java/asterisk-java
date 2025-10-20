@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.event.api.ManagerEvent;
+
 /**
  * A MusicOnHoldEvent is triggered when music on hold starts or stops on a
  * channel.

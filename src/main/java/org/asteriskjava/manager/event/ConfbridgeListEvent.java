@@ -1,5 +1,7 @@
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.action.api.response.event.ResponseEvent;
+
 /**
  * Response to a {@link org.asteriskjava.manager.action.ConfbridgeListAction}.
  *

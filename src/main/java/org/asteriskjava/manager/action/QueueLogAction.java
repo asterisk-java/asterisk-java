@@ -16,7 +16,7 @@
  */
 package org.asteriskjava.manager.action;
 
-import org.asteriskjava.ami.action.AbstractManagerAction;
+import org.asteriskjava.ami.action.api.AbstractManagerAction;
 
 /**
  * The QueueLogAction adds a custom log entry to the <code>queue_log</code>.<p>

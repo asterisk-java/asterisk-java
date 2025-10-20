@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.event.api.ManagerEvent;
+
 /**
  * Abstract base class providing common properties channel related events.
  *

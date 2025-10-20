@@ -16,7 +16,7 @@
  */
 package org.asteriskjava.manager.action;
 
-import org.asteriskjava.ami.action.AbstractManagerAction;
+import org.asteriskjava.ami.action.api.AbstractManagerAction;
 
 /**
  * Redirects a given channel (and an optional additional channel) to a new

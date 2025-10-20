@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.action.api.response.event.ResponseEvent;
+
 /**
  * A QueueMemberEvent is triggered in response to a QueueStatusAction and
  * contains information about a member of a queue.

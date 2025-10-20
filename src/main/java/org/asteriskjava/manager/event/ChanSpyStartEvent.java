@@ -17,6 +17,8 @@
 package org.asteriskjava.manager.event;
 
 
+import org.asteriskjava.ami.event.api.ManagerEvent;
+
 public class ChanSpyStartEvent extends ManagerEvent {
     /**
      * Serial version identifier

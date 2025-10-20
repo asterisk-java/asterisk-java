@@ -17,15 +17,19 @@
 package org.asteriskjava.manager.internal;
 
 import org.asteriskjava.AsteriskVersion;
-import org.asteriskjava.ami.action.AbstractManagerAction;
-import org.asteriskjava.manager.action.*;
+import org.asteriskjava.ami.action.api.AbstractManagerAction;
+import org.asteriskjava.manager.action.AgentsAction;
+import org.asteriskjava.manager.action.OriginateAction;
+import org.asteriskjava.manager.action.SipNotifyAction;
+import org.asteriskjava.manager.action.UserEventAction;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ActionBuilderImplTest {
     private ActionBuilderImpl actionBuilder;
@@ -84,27 +88,6 @@ class ActionBuilderImplTest {
         assertTrue(actual.indexOf("action: Agents\r\n") >= 0, "Action name missing");
         assertTrue(actual.indexOf("actioncompleteeventclass:") == -1, "Action contains actionCompleteEventClass property");
         assertTrue(actual.endsWith("\r\n\r\n"), "Missing trailing CRNL CRNL");
-    }
-
-    @Test
-    void testBuildUpdateConfigAction() {
-        UpdateConfigAction action;
-        action = new UpdateConfigAction();
-        action.setSrcFilename("sourcefile.conf");
-        action.setDstFilename("destfile.conf");
-        action.setReload(true);
-        action.addCommand(UpdateConfigAction.ACTION_NEWCAT, "testcategory", null, null, null);
-
-        String actual = actionBuilder.buildAction(action);
-
-        assertTrue(actual.indexOf("action: UpdateConfig") >= 0, "Action name missing");
-        assertTrue(actual.indexOf("srcfilename: sourcefile.conf") >= 0, "Source filename missing");
-        assertTrue(actual.indexOf("dstfilename: destfile.conf") >= 0, "Destination filename missing");
-        assertTrue(actual.indexOf("reload: Yes") >= 0, "Correct reload setting missing");
-
-        assertFalse(actual.indexOf("Action-0:") >= 0, "Action must have zero-padded 6 digit numbering");
-        assertFalse(actual.indexOf("action: Action") >= 0, "UpdateConfig actions must not have more than one 'action' header");
-        assertTrue(actual.indexOf("Cat-000000: testcategory") >= 0, "Action missing category testcategory - " + actual);
     }
 
     @Test

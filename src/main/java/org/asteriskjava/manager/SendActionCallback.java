@@ -16,8 +16,8 @@
  */
 package org.asteriskjava.manager;
 
-import org.asteriskjava.ami.action.ManagerAction;
-import org.asteriskjava.ami.action.response.ManagerActionResponse;
+import org.asteriskjava.ami.action.api.ManagerAction;
+import org.asteriskjava.ami.action.api.response.ManagerActionResponse;
 
 /**
  * Callback interface to send {@link ManagerAction}s

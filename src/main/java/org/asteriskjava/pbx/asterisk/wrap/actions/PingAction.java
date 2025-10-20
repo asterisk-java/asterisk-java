@@ -1,12 +1,12 @@
 package org.asteriskjava.pbx.asterisk.wrap.actions;
 
-import org.asteriskjava.ami.action.ManagerAction;
+import org.asteriskjava.ami.action.api.ManagerAction;
 
 public class PingAction extends AbstractManagerAction {
 
     @Override
     public ManagerAction getAJAction() {
-        final org.asteriskjava.manager.action.PingAction action = new org.asteriskjava.manager.action.PingAction();
+        final org.asteriskjava.ami.action.api.PingAction action = new org.asteriskjava.ami.action.api.PingAction();
         action.setActionId(this.getActionId());
         return action;
     }

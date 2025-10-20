@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.event.api.ManagerEvent;
+
 /**
  * A DNDStateEvent is triggered by the Zap channel driver when a channel enters
  * or leaves DND (do not disturb) state.<p>

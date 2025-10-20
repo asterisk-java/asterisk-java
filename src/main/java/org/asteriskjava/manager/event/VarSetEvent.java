@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.event.api.ManagerEvent;
+
 /**
  * A VarSetEvent is triggered when a channel or global variable is set in
  * Asterisk.

@@ -17,22 +17,29 @@ repositories {
 dependencies {
     implementation project(':asterisk-java-core')
 
-    implementation 'org.apache.commons:commons-lang3:3.14.0'
+    implementation libs.apache.commons.codec
+    implementation libs.apache.commons.lang3
 
-    testImplementation 'org.assertj:assertj-core:3.24.2'
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.1'
-    testImplementation 'org.mockito:mockito-core:5.7.0'
-    testImplementation 'ch.qos.logback:logback-classic:1.4.11' //todo remove
+    testImplementation libs.assertj.core
+    testImplementation libs.jsonassert
+    testImplementation libs.junit.jupiter
+    testImplementation libs.mockito.core
+    testImplementation libs.slf4j.simple
 
-    testImplementation platform('org.testcontainers:testcontainers-bom:1.19.3')
-    testImplementation 'org.testcontainers:junit-jupiter'
-    testImplementation 'org.testcontainers:testcontainers'
+    testImplementation platform(libs.testcontainers.bom)
+    testImplementation('org.testcontainers:testcontainers-junit-jupiter') {
+        exclude group: 'com.fasterxml.jackson.core', module: 'jackson-annotations'
+    }
+    testImplementation('org.testcontainers:testcontainers') {
+        exclude group: 'com.fasterxml.jackson.core', module: 'jackson-annotations'
+    }
 
     //todo only for testing framework
-    testImplementation 'io.netty:netty-codec:4.1.101.Final'
-    testImplementation 'io.netty:netty-handler:4.1.101.Final'
-    testImplementation 'io.netty:netty-transport:4.1.101.Final'
-    testImplementation 'org.awaitility:awaitility:4.2.0'
+    testImplementation libs.netty.codec
+    testImplementation libs.netty.handler
+    testImplementation libs.netty.transport
+
+    testRuntimeOnly libs.junit.platform.launcher
 }
 
 tasks.named('test') {

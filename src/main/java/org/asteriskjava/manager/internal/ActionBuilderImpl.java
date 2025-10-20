@@ -17,8 +17,7 @@
 package org.asteriskjava.manager.internal;
 
 import org.asteriskjava.AsteriskVersion;
-import org.asteriskjava.ami.ActionFieldsComparator;
-import org.asteriskjava.ami.action.ManagerAction;
+import org.asteriskjava.ami.action.api.ManagerAction;
 import org.asteriskjava.core.databind.AsteriskEncoder;
 import org.asteriskjava.manager.AsteriskMapping;
 import org.asteriskjava.manager.action.UserEventAction;
@@ -30,6 +29,8 @@ import org.asteriskjava.util.ReflectionUtil;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.*;
+
+import static org.asteriskjava.core.NewlineDelimiter.CRLF;
 
 /**
  * Default implementation of the ActionBuilder interface.
@@ -49,10 +50,7 @@ class ActionBuilderImpl implements ActionBuilder {
     private AsteriskVersion targetVersion;
     private final Set<String> membersToIgnore = new HashSet<>();
 
-    private final AsteriskEncoder asteriskEncoder = AsteriskEncoder.builder()
-            .crlfNewlineDelimiter()
-            .fieldNamesComparator(new ActionFieldsComparator())
-            .build();
+    private final AsteriskEncoder asteriskEncoder = new AsteriskEncoder(CRLF);
 
     /**
      * Creates a new ActionBuilder for Asterisk 1.0.

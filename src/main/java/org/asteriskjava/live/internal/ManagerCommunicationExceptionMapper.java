@@ -16,7 +16,7 @@
  */
 package org.asteriskjava.live.internal;
 
-import org.asteriskjava.ami.action.ManagerAction;
+import org.asteriskjava.ami.action.api.ManagerAction;
 import org.asteriskjava.live.ManagerCommunicationException;
 import org.asteriskjava.manager.EventTimeoutException;
 

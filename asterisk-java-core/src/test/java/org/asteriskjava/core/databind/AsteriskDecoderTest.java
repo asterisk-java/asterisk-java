@@ -18,7 +18,11 @@ package org.asteriskjava.core.databind;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.asteriskjava.core.databind.annotation.AsteriskAttributesBucket;
+import org.asteriskjava.core.databind.annotation.AsteriskDeserialize;
 import org.asteriskjava.core.databind.annotation.AsteriskName;
+import org.asteriskjava.core.databind.deserializer.AsteriskBooleanDeserializer;
+import org.asteriskjava.core.databind.deserializer.AsteriskMapDeserializer;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
@@ -26,15 +30,17 @@ import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.entry;
 import static org.asteriskjava.core.NewlineDelimiter.LF;
 import static org.asteriskjava.core.databind.AsteriskDecoderTest.BaseBean.ResponseType.Goodbye;
+import static org.asteriskjava.core.databind.AsteriskDecoderTest.BaseBean.ResponseType.Success;
 
 class AsteriskDecoderTest {
-    private final AsteriskDecoder asteriskDecoder = new AsteriskDecoder();
-
     @Test
     void shouldDecodeForSimpleBeanWhichExtendsFormBaseBean() {
         //given
+        AsteriskDecoder asteriskDecoder = new AsteriskDecoder();
+
         Instant date = Instant.parse("2023-11-20T20:33:30.002Z");
 
         Map<String, Object> content = Map.of(
@@ -53,6 +59,7 @@ class AsteriskDecoderTest {
         expected.setActionId("id-1");
         expected.setDateReceived(date);
         expected.setResponse(Goodbye);
+        expected.setUnmatchedAttributes(null);
         assertThat(simpleBean).isEqualTo(expected);
     }
 
@@ -71,6 +78,24 @@ class AsteriskDecoderTest {
         //then
         ListBean expected = new ListBean();
         expected.setNumbers(List.of(1, 2, 3));
+        assertThat(listBean).isEqualTo(expected);
+    }
+
+    @Test
+    void shouldDecodeListValuesWhenIsOnlyOneElement() {
+        //given
+        AsteriskDecoder asteriskDecoder = new AsteriskDecoder();
+
+        Map<String, Object> content = Map.of(
+                "Number", 1
+        );
+
+        //when
+        ListBean listBean = asteriskDecoder.decode(content, ListBean.class);
+
+        //then
+        ListBean expected = new ListBean();
+        expected.setNumbers(List.of(1));
         assertThat(listBean).isEqualTo(expected);
     }
 
@@ -120,16 +145,15 @@ class AsteriskDecoderTest {
         AsteriskDecoder asteriskDecoder = new AsteriskDecoder();
 
         Instant date = Instant.parse("2023-11-20T20:33:30.002Z");
-        String string = """
+        String content = """
                 ActionID: id-1
                 DateReceived: %s
                 Challenge: 123456
                 Response: Goodbye
                 """.formatted(date);
-        String[] content = string.split(LF.getPattern());
 
         //when
-        SimpleBean simpleBean = asteriskDecoder.decode(content, SimpleBean.class);
+        SimpleBean simpleBean = asteriskDecoder.decode(content, LF, SimpleBean.class);
 
         //then
         SimpleBean expected = new SimpleBean();
@@ -137,6 +161,7 @@ class AsteriskDecoderTest {
         expected.setActionId("id-1");
         expected.setDateReceived(date);
         expected.setResponse(Goodbye);
+        expected.setUnmatchedAttributes(null);
         assertThat(simpleBean).isEqualTo(expected);
     }
 
@@ -145,15 +170,14 @@ class AsteriskDecoderTest {
         //given
         AsteriskDecoder asteriskDecoder = new AsteriskDecoder();
 
-        String string = """
+        String content = """
                 Number: 1
                 Number: 2
                 Number: 3
                 """;
-        String[] content = string.split(LF.getPattern());
 
         //when
-        ListBean listBean = asteriskDecoder.decode(content, ListBean.class);
+        ListBean listBean = asteriskDecoder.decode(content, LF, ListBean.class);
 
         //then
         ListBean expected = new ListBean();
@@ -166,13 +190,12 @@ class AsteriskDecoderTest {
         //given
         AsteriskDecoder asteriskDecoder = new AsteriskDecoder();
 
-        String string = """
+        String content = """
                 Header: 1=name1
                 """;
-        String[] content = string.split(LF.getPattern());
 
         //when
-        MapBean someClass = asteriskDecoder.decode(content, MapBean.class);
+        MapBean someClass = asteriskDecoder.decode(content, LF, MapBean.class);
 
         //then
         Map<Integer, String> map = Map.of(1, "name1");
@@ -186,15 +209,14 @@ class AsteriskDecoderTest {
         //given
         AsteriskDecoder asteriskDecoder = new AsteriskDecoder();
 
-        String string = """
+        String content = """
                 Header: 1=name1
                 Header: 2=name2
                 Header: 3=name3
                 """;
-        String[] content = string.split(LF.getPattern());
 
         //when
-        MapBean mapBean = asteriskDecoder.decode(content, MapBean.class);
+        MapBean mapBean = asteriskDecoder.decode(content, LF, MapBean.class);
 
         //then
         Map<Integer, String> map = Map.of(
@@ -205,6 +227,107 @@ class AsteriskDecoderTest {
         MapBean expected = new MapBean();
         expected.setHeaders(map);
         assertThat(mapBean).isEqualTo(expected);
+    }
+
+    @Test
+    void shouldHandleEmptyValues() {
+        //given
+        AsteriskDecoder asteriskDecoder = new AsteriskDecoder();
+
+        String content = """
+                Response: Success
+                ActionID: id-1
+                Challenge: 
+                """;
+
+        //when
+        SimpleBean simpleBean = asteriskDecoder.decode(content, LF, SimpleBean.class);
+
+        //then
+        SimpleBean expected = new SimpleBean();
+        expected.setChallenge(null);
+        expected.setActionId("id-1");
+        expected.setResponse(Success);
+        expected.setUnmatchedAttributes(null);
+        assertThat(simpleBean).isEqualTo(expected);
+    }
+
+    @Test
+    void shouldEncodeMethodWithAttributesBucket() {
+        //given
+        AsteriskDecoder asteriskDecoder = new AsteriskDecoder();
+
+        String content = """
+                Response: Success
+                ActionID: id-1
+                Challenge: 123456
+                FirstUnmatched: first
+                SecondUnmatched: second
+                """;
+
+        //when
+        SimpleBean simpleBean = asteriskDecoder.decode(content, LF, SimpleBean.class);
+
+        //then
+        assertThat(simpleBean.getChallenge()).isEqualTo("123456");
+        assertThat(simpleBean.getUnmatchedAttributes()).containsOnly(
+                entry("FirstUnmatched", "first"),
+                entry("SecondUnmatched", "second")
+        );
+    }
+
+    @Test
+    void shouldHandleWhenFieldSeparatorIsInFieldValue() {
+        //given
+        AsteriskDecoder asteriskDecoder = new AsteriskDecoder();
+
+        String content = """
+                Response: Success
+                ActionID: id-1
+                Challenge: (Colon: 123456)
+                FirstUnmatched: first
+                SecondUnmatched: second
+                """;
+
+        //when
+        SimpleBean simpleBean = asteriskDecoder.decode(content, LF, SimpleBean.class);
+
+        //then
+        assertThat(simpleBean.getChallenge()).isEqualTo("(Colon: 123456)");
+    }
+
+    @Test
+    void shouldHandleParametersWhichLooksLikeList() {
+        //given
+        AsteriskDecoder asteriskDecoder = new AsteriskDecoder();
+
+        String content = """
+                Number-000001: 1
+                Number-000002: 2
+                Number-000003: 3
+                """;
+
+        //when
+        ListBean listBean = asteriskDecoder.decode(content, LF, ListBean.class);
+
+        //then
+        assertThat(listBean.getNumbers()).containsExactly(1, 2, 3);
+    }
+
+    @Test
+    void shouldHandleBoolean() {
+        //given
+        AsteriskDecoder asteriskDecoder = new AsteriskDecoder();
+
+        String content = """
+                HttpEnabled: true
+                """;
+
+        //when
+        SimpleBean simpleBean = asteriskDecoder.decode(content, LF, SimpleBean.class);
+
+        //then
+        assertThat(simpleBean.isHttpEnabled()).isTrue();
     }
 
     public static class BaseBean {
@@ -219,6 +342,9 @@ class AsteriskDecoderTest {
         private Instant dateReceived;
 
         private String actionId;
+
+        @AsteriskAttributesBucket
+        private Map<String, String> unmatchedAttributes;
 
         public ResponseType getResponse() {
             return response;
@@ -240,9 +366,16 @@ class AsteriskDecoderTest {
             return actionId;
         }
 
-        @AsteriskName("ActionID")
         public void setActionId(String actionId) {
             this.actionId = actionId;
+        }
+
+        public Map<String, String> getUnmatchedAttributes() {
+            return unmatchedAttributes;
+        }
+
+        public void setUnmatchedAttributes(Map<String, String> unmatchedAttributes) {
+            this.unmatchedAttributes = unmatchedAttributes;
         }
 
         @Override
@@ -261,6 +394,7 @@ class AsteriskDecoderTest {
                     .append(response, base.response)
                     .append(dateReceived, base.dateReceived)
                     .append(actionId, base.actionId)
+                    .append(unmatchedAttributes, base.unmatchedAttributes)
                     .isEquals();
         }
 
@@ -270,6 +404,7 @@ class AsteriskDecoderTest {
                     .append(response)
                     .append(dateReceived)
                     .append(actionId)
+                    .append(unmatchedAttributes)
                     .toHashCode();
         }
 
@@ -279,6 +414,7 @@ class AsteriskDecoderTest {
                     .append("response", response)
                     .append("dateReceived", dateReceived)
                     .append("actionId", actionId)
+                    .append("unmatchedAttributes", unmatchedAttributes)
                     .toString();
         }
     }
@@ -286,12 +422,23 @@ class AsteriskDecoderTest {
     public static class SimpleBean extends BaseBean {
         private String challenge;
 
+        @AsteriskDeserialize(deserializer = AsteriskBooleanDeserializer.class)
+        private boolean httpEnabled;
+
         public String getChallenge() {
             return challenge;
         }
 
         public void setChallenge(String challenge) {
             this.challenge = challenge;
+        }
+
+        public boolean isHttpEnabled() {
+            return httpEnabled;
+        }
+
+        public void setHttpEnabled(boolean httpEnabled) {
+            this.httpEnabled = httpEnabled;
         }
 
         @Override
@@ -330,13 +477,13 @@ class AsteriskDecoderTest {
     }
 
     public static class ListBean {
+        @AsteriskName("Number")
         private List<Integer> numbers;
 
         public List<Integer> getNumbers() {
             return numbers;
         }
 
-        @AsteriskName("Number")
         public void setNumbers(List<Integer> numbers) {
             this.numbers = numbers;
         }
@@ -374,13 +521,14 @@ class AsteriskDecoderTest {
     }
 
     public static class MapBean {
+        @AsteriskName("Header")
+        @AsteriskDeserialize(deserializer = AsteriskMapDeserializer.class, keyAs = Integer.class, valueAs = String.class)
         private Map<Integer, String> headers;
 
         public Map<Integer, String> getHeaders() {
             return headers;
         }
 
-        @AsteriskName("Header")
         public void setHeaders(Map<Integer, String> headers) {
             this.headers = headers;
         }

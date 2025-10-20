@@ -1,5 +1,7 @@
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.event.api.ManagerEvent;
+
 /**
  * A RequestBadFormatEvent is triggered when bad format of request.
  */

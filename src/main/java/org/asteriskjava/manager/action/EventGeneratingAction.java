@@ -16,8 +16,8 @@
  */
 package org.asteriskjava.manager.action;
 
-import org.asteriskjava.ami.action.ManagerAction;
-import org.asteriskjava.manager.event.ResponseEvent;
+import org.asteriskjava.ami.action.api.ManagerAction;
+import org.asteriskjava.ami.action.api.response.event.ResponseEvent;
 
 /**
  * The EventGeneratingAction interface is implemented by ManagerActions that
@@ -28,7 +28,7 @@ import org.asteriskjava.manager.event.ResponseEvent;
  *
  * @author srt
  * @version $Id$
- * @see org.asteriskjava.manager.event.ResponseEvent
+ * @see ResponseEvent
  * @since 0.2
  */
 public interface EventGeneratingAction extends ManagerAction {
@@ -37,7 +37,7 @@ public interface EventGeneratingAction extends ManagerAction {
      * response events for this action.
      *
      * @return a Class that is an instance of ResponseEvent.
-     * @see org.asteriskjava.manager.event.ResponseEvent
+     * @see ResponseEvent
      */
     Class<? extends ResponseEvent> getActionCompleteEventClass();
 }

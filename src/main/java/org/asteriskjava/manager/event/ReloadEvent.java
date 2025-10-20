@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.event.api.ManagerEvent;
+
 /**
  * A ReloadEvent is triggerd when the <code>reload</code> console command is executed or the
  * Asterisk server is started.<p>

@@ -15,10 +15,10 @@
  */
 package org.asteriskjava.manager.internal;
 
-import org.asteriskjava.ami.action.response.ManagerActionResponse;
-import org.asteriskjava.ami.action.response.ResponseType;
+import org.asteriskjava.ami.action.api.response.CommandActionResponse;
+import org.asteriskjava.ami.action.api.response.ManagerActionResponse;
+import org.asteriskjava.ami.action.api.response.ResponseType;
 import org.asteriskjava.core.databind.AsteriskDecoder;
-import org.asteriskjava.manager.response.CommandResponse;
 import org.asteriskjava.manager.response.ManagerError;
 import org.asteriskjava.manager.util.EventAttributesHelper;
 import org.slf4j.Logger;
@@ -45,12 +45,12 @@ class ResponseBuilderImpl implements ResponseBuilder {
     private static final String RESPONSE_TYPE_ERROR = "error";
     private static final String OUTPUT_RESPONSE_KEY = "output"; //Asterisk 14.3.0
 
-    private final AsteriskDecoder asteriskDecoder = new AsteriskDecoder(false);
+    private final AsteriskDecoder asteriskDecoder = new AsteriskDecoder();
 
     @SuppressWarnings("unchecked")
     public ManagerActionResponse buildResponse(Class<? extends ManagerActionResponse> responseClass, Map<String, Object> attributes) {
         responseClass = responseClass == null ? ManagerActionResponse.class : responseClass;
-        if (responseClass.getPackageName().contains("org.asteriskjava.ami.action.response")) {
+        if (responseClass.getPackageName().contains("org.asteriskjava.ami.action.api.response")) {
             ManagerActionResponse response = asteriskDecoder.decode(attributes, responseClass);
             response.setAttributes(new HashMap<>(attributes));
             return response;
@@ -74,8 +74,8 @@ class ResponseBuilderImpl implements ResponseBuilder {
 
         EventAttributesHelper.setAttributes(response, attributes, ignoredAttributes);
 
-        if (response instanceof CommandResponse) {
-            final CommandResponse commandResponse = (CommandResponse) response;
+        if (response instanceof CommandActionResponse) {
+            final CommandActionResponse commandActionResponse = (CommandActionResponse) response;
             final List<String> result = new ArrayList<>();
             //For Asterisk 14
             if (attributes.get(OUTPUT_RESPONSE_KEY) != null) {
@@ -97,7 +97,7 @@ class ResponseBuilderImpl implements ResponseBuilder {
                     }
                 }
             }
-            commandResponse.setResult(result);
+            commandActionResponse.setOutput(result);
         }
 
         if (response.getResponse() != null && attributes.get(PROXY_RESPONSE_KEY) != null) {

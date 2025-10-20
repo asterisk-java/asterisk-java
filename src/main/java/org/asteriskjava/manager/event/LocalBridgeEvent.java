@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.event.api.ManagerEvent;
+
 /**
  * https://wiki.asterisk.org/wiki/display/AST/Asterisk+11+ManagerEvent_LocalBridge
  * Triggered when 2 halves of a local channels are bridged

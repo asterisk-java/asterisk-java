@@ -15,7 +15,7 @@
  */
 package org.asteriskjava.manager.util;
 
-import org.asteriskjava.ami.action.response.ManagerActionResponse;
+import org.asteriskjava.ami.action.api.response.ManagerActionResponse;
 import org.asteriskjava.manager.event.CdrEvent;
 import org.asteriskjava.manager.event.UserEvent;
 import org.asteriskjava.util.AstUtil;
@@ -30,6 +30,7 @@ import java.util.Map;
 import java.util.Set;
 
 import static java.util.Arrays.stream;
+import static org.asteriskjava.core.databind.utils.AsteriskBoolean.toBoolean;
 import static org.slf4j.LoggerFactory.getLogger;
 
 /**
@@ -113,7 +114,7 @@ public class EventAttributesHelper {
                 dataType = setter.getParameterTypes()[0];
 
                 if (dataType == Boolean.class) {
-                    value = AstUtil.isTrue(entry.getValue());
+                    value = toBoolean(entry.getValue());
                 } else if (dataType.isAssignableFrom(String.class)) {
                     value = parseString(entry);
                 } else if (dataType.isAssignableFrom(Map.class)) {
@@ -134,7 +135,7 @@ public class EventAttributesHelper {
                         Constructor<?> constructor = dataType.getConstructor(String.class);
                         // Asterisk sometimes uses yes/no instead of True/False for boolean.  java.lang.Boolean(String) doesn't handle this.
                         if (dataType.isAssignableFrom(Boolean.class)) {
-                            value = constructor.newInstance(AstUtil.convertAsteriskBooleanStringToStandardBooleanString((String) entry.getValue()));
+                            value = toBoolean(entry.getValue());
                         } else value = constructor.newInstance(entry.getValue());
                     } catch (Exception e) {
                         logger.error("Unable to convert value: Called the constructor of " + dataType + " with value '"

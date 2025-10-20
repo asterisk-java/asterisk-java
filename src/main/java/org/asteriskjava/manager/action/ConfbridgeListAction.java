@@ -1,8 +1,8 @@
 package org.asteriskjava.manager.action;
 
-import org.asteriskjava.ami.action.AbstractManagerAction;
+import org.asteriskjava.ami.action.api.AbstractManagerAction;
+import org.asteriskjava.ami.action.api.response.event.ResponseEvent;
 import org.asteriskjava.manager.event.ConfbridgeListCompleteEvent;
-import org.asteriskjava.manager.event.ResponseEvent;
 
 /**
  * Lists all users in a particular ConfBridge conference. ConfbridgeList will follow as separate events,

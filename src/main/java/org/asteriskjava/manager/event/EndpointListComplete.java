@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.action.api.response.event.ResponseEvent;
+
 /**
  * An EndpointListComplete event is triggered after the details of all end points have been
  * reported in response to a PJSIPShowEndpoints event.

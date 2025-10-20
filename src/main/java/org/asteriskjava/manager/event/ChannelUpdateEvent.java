@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.event.api.ManagerEvent;
+
 /**
  * A ChannelUpdateEvent provides additional channel type specific information like
  * the SIP call id or IAX2 call numbers about a channel.<p>

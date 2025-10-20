@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.action.api.response.event.ResponseEvent;
+
 /**
  * A QueueStatusCompleteEvent is triggered after the state of all queues has been reported in response
  * to a QueueStatusAction.<p>

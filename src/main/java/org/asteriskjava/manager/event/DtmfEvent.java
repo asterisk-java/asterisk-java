@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.event.api.ManagerEvent;
+
 /**
  * A DtmfEvent is triggered each time a DTMF digit is sent or received on a
  * channel.<p>

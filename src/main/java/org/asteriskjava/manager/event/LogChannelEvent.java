@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.event.api.ManagerEvent;
+
 /**
  * A LogChannelEvent is triggered when logging is turned on or off.<p>
  * It is implemented in <code>logger.c</code><p>

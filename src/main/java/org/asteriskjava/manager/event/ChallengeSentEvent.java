@@ -1,5 +1,7 @@
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.event.api.ManagerEvent;
+
 /**
  * Created by plhk on 1/15/15.
  */

@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.event.api.ManagerEvent;
+
 /**
  * A MessageWaitingEvent is triggered when someone leaves voicemail.<p>
  * It is implemented in <code>apps/app_voicemail.c</code>

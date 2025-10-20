@@ -17,14 +17,10 @@
 package org.asteriskjava.manager.internal;
 
 import org.asteriskjava.AsteriskVersion;
-import org.asteriskjava.ami.action.AuthType;
-import org.asteriskjava.ami.action.ChallengeAction;
-import org.asteriskjava.ami.action.ManagerAction;
-import org.asteriskjava.ami.action.response.ChallengeManagerActionResponse;
-import org.asteriskjava.ami.action.response.ManagerActionResponse;
-import org.asteriskjava.ami.action.response.ResponseType;
-import org.asteriskjava.manager.action.LoginAction;
-import org.asteriskjava.manager.action.LogoffAction;
+import org.asteriskjava.ami.action.api.*;
+import org.asteriskjava.ami.action.api.response.ChallengeActionResponse;
+import org.asteriskjava.ami.action.api.response.ManagerActionResponse;
+import org.asteriskjava.ami.action.api.response.ResponseType;
 import org.asteriskjava.manager.event.ProtocolIdentifierReceivedEvent;
 import org.asteriskjava.manager.response.ManagerError;
 import org.asteriskjava.util.DateUtil;
@@ -107,21 +103,21 @@ public class ManagerWriterMock implements ManagerWriter {
             challengeActionsSent++;
 
             if (sendResponse) {
-                ChallengeManagerActionResponse challengeManagerActionResponse;
+                ChallengeActionResponse challengeActionResponse;
 
-                challengeManagerActionResponse = new ChallengeManagerActionResponse();
-                challengeManagerActionResponse.setActionId(ManagerUtil.addInternalActionId(action.getActionId(), internalActionId));
-                challengeManagerActionResponse.setChallenge(CHALLENGE);
-                dispatchLater(challengeManagerActionResponse);
+                challengeActionResponse = new ChallengeActionResponse();
+                challengeActionResponse.setActionId(ManagerUtil.addInternalActionId(action.getActionId(), internalActionId));
+                challengeActionResponse.setChallenge(CHALLENGE);
+                dispatchLater(challengeActionResponse);
             }
         } else if (action instanceof LoginAction) {
 
             LoginAction loginAction = (LoginAction) action;
             String username = loginAction.getUsername();
             String key = loginAction.getKey();
-            String authType = loginAction.getAuthType();
+            AuthType authType = loginAction.getAuthType();
 
-            if (!"MD5".equals(authType)) {
+            if (!AuthType.MD5.equals(authType)) {
                 throw new RuntimeException("Expected authType 'MD5' got '" + authType + "'");
             }
 
@@ -139,10 +135,10 @@ public class ManagerWriterMock implements ManagerWriter {
                 // 3 unsuccessful attempts
                 if (key.equals(expectedKey) || loginActionsSent > 2) {
                     loginResponse = new ManagerActionResponse();
-                    loginResponse.setResponse(ResponseType.Success);
+                    loginResponse.setResponse(ResponseType.success);
                 } else {
                     loginResponse = new ManagerError();
-                    loginResponse.setResponse(ResponseType.Error);
+                    loginResponse.setResponse(ResponseType.error);
                     loginResponse.setMessage("Authentication failed");
                 }
                 loginResponse.setActionId(ManagerUtil.addInternalActionId(action.getActionId(), internalActionId));
@@ -156,7 +152,7 @@ public class ManagerWriterMock implements ManagerWriter {
 
                 response = new ManagerActionResponse();
                 response.setActionId(ManagerUtil.addInternalActionId(action.getActionId(), internalActionId));
-                response.setResponse(ResponseType.Success);
+                response.setResponse(ResponseType.success);
                 dispatchLater(response);
             }
         } else {
@@ -167,7 +163,7 @@ public class ManagerWriterMock implements ManagerWriter {
 
                 response = new ManagerActionResponse();
                 response.setActionId(ManagerUtil.addInternalActionId(action.getActionId(), internalActionId));
-                response.setResponse(ResponseType.Success);
+                response.setResponse(ResponseType.success);
                 dispatchLater(response);
             }
         }

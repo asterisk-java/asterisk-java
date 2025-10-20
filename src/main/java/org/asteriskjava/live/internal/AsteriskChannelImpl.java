@@ -16,7 +16,7 @@
  */
 package org.asteriskjava.live.internal;
 
-import org.asteriskjava.ami.action.response.ManagerActionResponse;
+import org.asteriskjava.ami.action.api.response.ManagerActionResponse;
 import org.asteriskjava.live.*;
 import org.asteriskjava.lock.LockableList;
 import org.asteriskjava.lock.LockableMap;

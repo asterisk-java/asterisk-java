@@ -11,11 +11,11 @@ permissions:
 jobs:
   update_release_draft:
     permissions:
-      contents: write # for release-drafter to create a GitHub release
+      contents: write # To create a GitHub Release
     runs-on: ubuntu-latest
     steps:
-      - uses: release-drafter/release-drafter@v5.25.0
+      - uses: release-drafter/release-drafter@v6.1.0
         with:
-          config-name: release-drafter-master.yml
+          config-name: release-drafter-main.yml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

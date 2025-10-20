@@ -1,7 +1,8 @@
 package org.asteriskjava.pbx.internal.core;
 
 import org.asteriskjava.AsteriskVersion;
-import org.asteriskjava.ami.action.response.ManagerActionResponse;
+import org.asteriskjava.ami.action.api.response.ManagerActionResponse;
+import org.asteriskjava.ami.action.api.response.event.ResponseEvent;
 import org.asteriskjava.manager.*;
 import org.asteriskjava.pbx.*;
 import org.asteriskjava.pbx.asterisk.wrap.actions.*;
@@ -243,7 +244,7 @@ class CoherentManagerConnection implements FilteredManagerListener<ManagerEvent>
                 .sendEventGeneratingAction(action.getAJEventGeneratingAction());
 
         ResponseEvents convertedEvents = new ResponseEvents();
-        for (org.asteriskjava.manager.event.ResponseEvent event : events.getEvents()) {
+        for (ResponseEvent event : events.getEvents()) {
             convertedEvents.add(CoherentEventFactory.build(event));
         }
         return convertedEvents;
@@ -256,7 +257,7 @@ class CoherentManagerConnection implements FilteredManagerListener<ManagerEvent>
                 .sendEventGeneratingAction(action.getAJEventGeneratingAction(), timeout);
 
         ResponseEvents convertedEvents = new ResponseEvents();
-        for (org.asteriskjava.manager.event.ResponseEvent event : events.getEvents()) {
+        for (ResponseEvent event : events.getEvents()) {
             convertedEvents.add(CoherentEventFactory.build(event));
         }
         return convertedEvents;
@@ -283,7 +284,7 @@ class CoherentManagerConnection implements FilteredManagerListener<ManagerEvent>
         CoherentManagerConnection.getInstance();
         if ((CoherentManagerConnection.managerConnection != null)
                 && (CoherentManagerConnection.managerConnection.getState() == ManagerConnectionState.CONNECTED)) {
-            final org.asteriskjava.ami.action.ManagerAction ajAction = action.getAJAction();
+            final org.asteriskjava.ami.action.api.ManagerAction ajAction = action.getAJAction();
 
             ManagerActionResponse response = CoherentManagerConnection.managerConnection
                     .sendAction(ajAction, timeout);

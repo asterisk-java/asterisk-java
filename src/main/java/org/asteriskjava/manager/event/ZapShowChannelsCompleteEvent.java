@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.action.api.response.event.ResponseEvent;
+
 /**
  * A ZapShowChannelsCompleteEvent is triggered after the state of all zap channels has been reported
  * in response to a ZapShowChannelsAction.

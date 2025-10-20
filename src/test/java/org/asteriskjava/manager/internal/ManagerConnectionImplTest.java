@@ -17,19 +17,19 @@
 package org.asteriskjava.manager.internal;
 
 import org.asteriskjava.AsteriskVersion;
-import org.asteriskjava.ami.action.response.ManagerActionResponse;
-import org.asteriskjava.ami.action.response.ResponseType;
+import org.asteriskjava.ami.action.api.CommandAction;
+import org.asteriskjava.ami.action.api.CoreSettingsAction;
+import org.asteriskjava.ami.action.api.PingAction;
+import org.asteriskjava.ami.action.api.response.ManagerActionResponse;
+import org.asteriskjava.ami.action.api.response.ResponseType;
+import org.asteriskjava.ami.event.api.ManagerEvent;
 import org.asteriskjava.manager.AuthenticationFailedException;
 import org.asteriskjava.manager.ManagerConnectionState;
 import org.asteriskjava.manager.ManagerEventListener;
 import org.asteriskjava.manager.TimeoutException;
-import org.asteriskjava.manager.action.CommandAction;
-import org.asteriskjava.manager.action.CoreSettingsAction;
-import org.asteriskjava.manager.action.PingAction;
 import org.asteriskjava.manager.action.StatusAction;
 import org.asteriskjava.manager.event.ConnectEvent;
 import org.asteriskjava.manager.event.DisconnectEvent;
-import org.asteriskjava.manager.event.ManagerEvent;
 import org.asteriskjava.manager.event.NewChannelEvent;
 import org.asteriskjava.util.SocketConnectionFacade;
 import org.junit.jupiter.api.BeforeEach;
@@ -334,7 +334,7 @@ class ManagerConnectionImplTest {
 
         assertEquals("123", statusAction.getActionId(), "incorrect actionId in action");
         assertEquals("123", response.getActionId(), "incorrect actionId in response");
-        assertEquals(ResponseType.Success, response.getResponse(), "incorrect response");
+        assertEquals(ResponseType.success, response.getResponse(), "incorrect response");
 
         assertEquals(1, mockWriter.otherActionsSent, "other actions not sent 1 time");
     }
@@ -369,7 +369,7 @@ class ManagerConnectionImplTest {
         response = new ManagerActionResponse();
         // internalActionId: 123_0
         response.setActionId("123_0-abc");
-        response.setResponse(ResponseType.Success);
+        response.setResponse(ResponseType.success);
 
         // expected result is ignoring the response and logging
         mc.dispatchResponse(response, null);
@@ -381,7 +381,7 @@ class ManagerConnectionImplTest {
 
         response = new ManagerActionResponse();
         response.setActionId("abc");
-        response.setResponse(ResponseType.Success);
+        response.setResponse(ResponseType.success);
 
         // expected result is ignoring the response and logging
         mc.dispatchResponse(response, null);
@@ -393,7 +393,7 @@ class ManagerConnectionImplTest {
 
         response = new ManagerActionResponse();
         response.setActionId(null);
-        response.setResponse(ResponseType.Success);
+        response.setResponse(ResponseType.success);
 
         // expected result is ignoring the response and logging
         mc.dispatchResponse(response, null);

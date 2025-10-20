@@ -15,6 +15,8 @@
  */
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.event.api.ManagerEvent;
+
 public abstract class AbstractChannelTalkingEvent extends ManagerEvent {
     private String language;
     private String accountCode;

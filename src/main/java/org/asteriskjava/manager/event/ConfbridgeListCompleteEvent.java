@@ -1,5 +1,7 @@
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.action.api.response.event.ResponseEvent;
+
 public class ConfbridgeListCompleteEvent extends ResponseEvent {
     /**
      * Serializable version identifier

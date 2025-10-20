@@ -1,6 +1,10 @@
 package org.asteriskjava.manager.internal.backwardsCompatibility.bridge;
 
-import org.asteriskjava.manager.event.*;
+import org.asteriskjava.ami.event.api.ManagerEvent;
+import org.asteriskjava.manager.event.BridgeCreateEvent;
+import org.asteriskjava.manager.event.BridgeDestroyEvent;
+import org.asteriskjava.manager.event.BridgeEnterEvent;
+import org.asteriskjava.manager.event.BridgeLeaveEvent;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 

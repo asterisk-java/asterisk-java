@@ -14,3 +14,4 @@ build/
 /.metadata/
 /.packages
 /.dart_tool/
+out/

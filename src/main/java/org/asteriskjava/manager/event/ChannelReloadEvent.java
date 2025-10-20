@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.event.api.ManagerEvent;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

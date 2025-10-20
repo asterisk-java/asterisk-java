@@ -16,8 +16,8 @@
  */
 package org.asteriskjava.manager.internal;
 
-import org.asteriskjava.ami.action.response.ManagerActionResponse;
-import org.asteriskjava.manager.event.ManagerEvent;
+import org.asteriskjava.ami.action.api.response.ManagerActionResponse;
+import org.asteriskjava.ami.event.api.ManagerEvent;
 import org.asteriskjava.util.SocketConnectionFacade;
 
 import java.io.IOException;

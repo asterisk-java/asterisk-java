@@ -15,20 +15,15 @@
  */
 package org.asteriskjava.core.databind;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import org.asteriskjava.core.NewlineDelimiter;
 
-import java.lang.reflect.Method;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
-import static java.util.Objects.requireNonNull;
-import static java.util.stream.Collectors.joining;
-import static org.asteriskjava.core.NewlineDelimiter.CRLF;
-import static org.asteriskjava.core.NewlineDelimiter.LF;
-import static org.asteriskjava.core.databind.CodersConsts.*;
-import static org.asteriskjava.core.databind.utils.AnnotationUtils.getName;
-import static org.asteriskjava.core.databind.utils.Invoker.invokeOn;
-import static org.asteriskjava.core.databind.utils.ReflectionUtils.getGetters;
+import static org.asteriskjava.core.databind.CodersConsts.NAME_VALUE_SEPARATOR;
 
 /**
  * @author Piotr Olaszewski
@@ -36,30 +31,34 @@ import static org.asteriskjava.core.databind.utils.ReflectionUtils.getGetters;
  */
 public class AsteriskEncoder {
     private final NewlineDelimiter newlineDelimiter;
-    private final Comparator<String> fieldNamesComparator;
-
-    public AsteriskEncoder(NewlineDelimiter newlineDelimiter, Comparator<String> fieldNamesComparator) {
-        this.newlineDelimiter = newlineDelimiter;
-        this.fieldNamesComparator = fieldNamesComparator;
-    }
+    private final JsonMapper jsonMapper;
 
     public AsteriskEncoder(NewlineDelimiter newlineDelimiter) {
-        this(newlineDelimiter, null);
+        this.newlineDelimiter = newlineDelimiter;
+        jsonMapper = AsteriskJacksonFactory.create();
     }
 
     public String encode(Object source) {
-        return encode(toMap(source));
+        Map<String, Object> map = jsonMapper.convertValue(source, new TypeReference<>() {
+        });
+        return encode(map);
     }
 
     public String encode(Map<String, Object> source) {
-        source = sortIfNeeded(source);
         StringBuilder stringBuilder = new StringBuilder();
         if (!source.isEmpty()) {
             for (Entry<String, Object> entry : source.entrySet()) {
                 String name = entry.getKey();
                 Object value = entry.getValue();
-                if (value instanceof List<?> values) {
-                    values.forEach(v -> appendFieldNameAndValue(name, v, stringBuilder));
+
+                if (value == null) {
+                    continue;
+                }
+
+                if (value instanceof Map<?, ?> valueMap) {
+                    encodeMap(valueMap, name, stringBuilder);
+                } else if (value instanceof List<?> valueList) {
+                    encodeList(valueList, name, stringBuilder);
                 } else {
                     appendFieldNameAndValue(name, value, stringBuilder);
                 }
@@ -70,83 +69,33 @@ public class AsteriskEncoder {
         return stringBuilder.toString();
     }
 
-    public static Builder builder() {
-        return new Builder();
+    private void encodeMap(Map<?, ?> valueMap, String name, StringBuilder stringBuilder) {
+        valueMap.entrySet()
+                .stream()
+                .map(entry -> "%s=%s".formatted(entry.getKey(), entry.getValue()))
+                .forEach(value -> appendFieldNameAndValue(name, value, stringBuilder));
     }
 
-    private Map<String, Object> sortIfNeeded(Map<String, Object> source) {
-        if (fieldNamesComparator == null) {
-            return source;
+    private void encodeList(List<?> valueList, String name, StringBuilder stringBuilder) {
+        int i = 0;
+        for (Object value : valueList) {
+            if (value instanceof Map<?, ?> valueMap) {
+                for (Entry<?, ?> entry : valueMap.entrySet()) {
+                    if (entry.getValue() != null) {
+                        appendFieldNameAndValue("%s-%06d".formatted(entry.getKey(), i), entry.getValue(), stringBuilder);
+                    }
+                }
+                i++;
+            } else {
+                appendFieldNameAndValue(name, value, stringBuilder);
+            }
         }
-
-        Map<String, Object> sourceSortedIfNeeded = new TreeMap<>(fieldNamesComparator);
-        sourceSortedIfNeeded.putAll(source);
-        return sourceSortedIfNeeded;
     }
 
     private void appendFieldNameAndValue(String name, Object value, StringBuilder stringBuilder) {
         stringBuilder.append(name);
-        stringBuilder.append(nameValueSeparator);
+        stringBuilder.append(NAME_VALUE_SEPARATOR);
         stringBuilder.append(value);
         stringBuilder.append(newlineDelimiter.getPattern());
-    }
-
-    private static Map<String, Object> toMap(Object source) {
-        Map<String, Object> map = new LinkedHashMap<>();
-
-        Class<?> clazz = source.getClass();
-        Map<String, Method> getters = getGetters(clazz);
-        for (Entry<String, Method> entry : getters.entrySet()) {
-            Method method = entry.getValue();
-
-            String name = getName(method, entry.getKey());
-            Object value = invokeOn(source).method(method).withoutParameter();
-
-            if (value instanceof List<?> values) {
-                value = values
-                        .stream()
-                        .map(Object::toString)
-                        .collect(joining(listSeparator));
-            }
-
-            if (value instanceof Map<?, ?> values) {
-                value = values
-                        .entrySet()
-                        .stream()
-                        .map(e -> mapTemplate.formatted(e.getKey(), e.getValue()))
-                        .toList();
-            }
-
-            map.put(name, value);
-        }
-
-        return map;
-    }
-
-    public static class Builder {
-        private NewlineDelimiter newlineDelimiter = CRLF;
-        private Comparator<String> fieldNamesComparator;
-
-        public Builder newlineDelimiter(NewlineDelimiter newlineDelimiter) {
-            this.newlineDelimiter = requireNonNull(newlineDelimiter, "newlineDelimiter cannot be null");
-            return this;
-        }
-
-        public Builder crlfNewlineDelimiter() {
-            return newlineDelimiter(CRLF);
-        }
-
-        public Builder lfNewlineDelimiter() {
-            return newlineDelimiter(LF);
-        }
-
-        public Builder fieldNamesComparator(Comparator<String> fieldNamesComparator) {
-            this.fieldNamesComparator = requireNonNull(fieldNamesComparator, "fieldNamesComparator cannot be null");
-            return this;
-        }
-
-        public AsteriskEncoder build() {
-            return new AsteriskEncoder(newlineDelimiter, fieldNamesComparator);
-        }
     }
 }

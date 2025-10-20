@@ -15,64 +15,22 @@
  */
 package org.asteriskjava.core.databind;
 
+import org.asteriskjava.core.databind.annotation.AsteriskConverter;
 import org.asteriskjava.core.databind.annotation.AsteriskName;
+import org.asteriskjava.core.databind.converter.CommaConverter;
 import org.junit.jupiter.api.Test;
 
+import java.util.EnumSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import static java.util.Comparator.naturalOrder;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.asteriskjava.core.NewlineDelimiter.LF;
 import static org.asteriskjava.core.databind.AsteriskEncoderTest.SimpleBean.AuthType.MD5;
+import static org.asteriskjava.core.databind.AsteriskEncoderTest.SimpleBean.AuthType.SHA1;
 
 class AsteriskEncoderTest {
-    @Test
-    void shouldEncodeWithoutSortingFields() {
-        //given
-        AsteriskEncoder asteriskEncoder = new AsteriskEncoder(LF);
-
-        Map<String, Object> source = new LinkedHashMap<>();
-        source.put("Z", "value z");
-        source.put("A", "value a");
-        source.put("M", "value m");
-        source.put("F", "value f");
-
-        //when
-        String encode = asteriskEncoder.encode(source);
-
-        //then
-        String expected = "Z: value z" + LF.getPattern();
-        expected += "A: value a" + LF.getPattern();
-        expected += "M: value m" + LF.getPattern();
-        expected += "F: value f" + LF.getPattern() + LF.getPattern();
-        assertThat(encode).isEqualTo(expected);
-    }
-
-    @Test
-    void shouldEncodeAndSortFields() {
-        //given
-        AsteriskEncoder asteriskEncoder = new AsteriskEncoder(LF, naturalOrder());
-
-        Map<String, Object> source = Map.of(
-                "Z", "value z",
-                "A", "value a",
-                "M", "value m",
-                "F", "value f"
-        );
-
-        //when
-        String encode = asteriskEncoder.encode(source);
-
-        //then
-        String expected = "A: value a" + LF.getPattern();
-        expected += "F: value f" + LF.getPattern();
-        expected += "M: value m" + LF.getPattern();
-        expected += "Z: value z" + LF.getPattern() + LF.getPattern();
-        assertThat(encode).isEqualTo(expected);
-    }
-
     @Test
     void shouldEncodeObject() {
         //given
@@ -92,37 +50,111 @@ class AsteriskEncoderTest {
         String string = asteriskEncoder.encode(bean);
 
         //then
-        String expected = "Action: SimpleBean" + LF.getPattern();
-        expected += "ActionID: id-1" + LF.getPattern();
-        expected += "AuthType: MD5" + LF.getPattern();
-        expected += "Codecs: codec1,codec2" + LF.getPattern();
-        expected += "Variable: key1=value1" + LF.getPattern();
-        expected += "Variable: key2=value2" + LF.getPattern();
-        expected += "Variable: key3=value3" + LF.getPattern() + LF.getPattern();
         assertThat(string).contains(
                 "Action: SimpleBean", "ActionID: id-1", "AuthType: MD5", "Codecs: codec1,codec2",
                 "Variable: key1=value1", "Variable: key2=value2", "Variable: key3=value3"
         );
     }
 
+    @Test
+    void shouldNotEncodeNulls() {
+        //given
+        AsteriskEncoder asteriskEncoder = new AsteriskEncoder(LF);
+
+        SimpleBean bean = new SimpleBean();
+        bean.setActionId("id-1");
+        bean.setAuthType(MD5);
+        bean.setCodecs(null);
+        Map<String, String> variable = new LinkedHashMap<>();
+        variable.put("key1", "value1");
+        variable.put("key2", "value2");
+        variable.put("key3", "value3");
+        bean.setVariable(variable);
+
+        //when
+        String string = asteriskEncoder.encode(bean);
+
+        //then
+        assertThat(string).contains(
+                "Action: SimpleBean", "ActionID: id-1", "AuthType: MD5",
+                "Variable: key1=value1", "Variable: key2=value2", "Variable: key3=value3"
+        ).doesNotContain(
+                "Codecs: null"
+        );
+    }
+
+    @Test
+    void shouldEncodeEnumSet() {
+        //given
+        AsteriskEncoder asteriskEncoder = new AsteriskEncoder(LF);
+
+        SimpleBean bean = new SimpleBean();
+        bean.setActionId("id-1");
+        bean.setAuths(EnumSet.of(MD5, SHA1));
+
+        //when
+        String string = asteriskEncoder.encode(bean);
+
+        //then
+        assertThat(string).contains("Action: SimpleBean", "ActionID: id-1", "Auths: MD5,SHA1");
+    }
+
+    @Test
+    void shouldHandleListOfCustomObjectsWithCounter() {
+        //given
+        AsteriskEncoder asteriskEncoder = new AsteriskEncoder(LF);
+
+        SimpleBean.Config config1 = new SimpleBean.Config()
+                .setAuth(MD5)
+                .setCategory("category1");
+        SimpleBean.Config config2 = new SimpleBean.Config()
+                .setAuth(MD5)
+                .setCategory("category2");
+
+        SimpleBean bean = new SimpleBean();
+        bean.setActionId("id-1");
+        bean.setConfigs(List.of(config1, config2));
+
+        //when
+        String string = asteriskEncoder.encode(bean);
+
+        //then
+        assertThat(string)
+                .contains(
+                        "Action: SimpleBean", "ActionID: id-1",
+                        "Authorization-000000: MD5",
+                        "Category-000000: category1",
+                        "Authorization-000001: MD5",
+                        "Category-000001: category2"
+                )
+                .doesNotContain("Configs:");
+    }
+
     public static class SimpleBean {
         public enum AuthType {
             MD5,
+            SHA1,
         }
 
+        @AsteriskName("ActionID")
         private String actionId;
 
         private AuthType authType;
 
+        @AsteriskConverter(CommaConverter.class)
         private List<String> codecs;
 
         private Map<String, String> variable;
+
+        @AsteriskConverter(CommaConverter.class)
+        private EnumSet<AuthType> auths;
+
+        private List<Config> configs;
 
         public String getAction() {
             return "SimpleBean";
         }
 
-        @AsteriskName("ActionID")
         public String getActionId() {
             return actionId;
         }
@@ -153,6 +185,46 @@ class AsteriskEncoderTest {
 
         public void setVariable(Map<String, String> variable) {
             this.variable = variable;
+        }
+
+        public EnumSet<AuthType> getAuths() {
+            return auths;
+        }
+
+        public void setAuths(EnumSet<AuthType> auths) {
+            this.auths = auths;
+        }
+
+        public List<Config> getConfigs() {
+            return configs;
+        }
+
+        public void setConfigs(List<Config> configs) {
+            this.configs = configs;
+        }
+
+        public static class Config {
+            @AsteriskName("Authorization")
+            private AuthType auth;
+            private String category;
+
+            public AuthType getAuth() {
+                return auth;
+            }
+
+            public Config setAuth(AuthType auth) {
+                this.auth = auth;
+                return this;
+            }
+
+            public String getCategory() {
+                return category;
+            }
+
+            public Config setCategory(String category) {
+                this.category = category;
+                return this;
+            }
         }
     }
 }

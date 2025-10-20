@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.action.api.response.event.ResponseEvent;
+
 /**
  * A DahdiShowChannelsCompleteEvent is triggered after the state of all Dahdi channels has been reported
  * in response to a DahdiShowChannelsAction.

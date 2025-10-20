@@ -16,6 +16,7 @@
  */
 package org.asteriskjava.live.internal;
 
+import org.asteriskjava.ami.event.api.ManagerEvent;
 import org.asteriskjava.live.AgentState;
 import org.asteriskjava.live.AsteriskAgent;
 import org.asteriskjava.live.ManagerCommunicationException;

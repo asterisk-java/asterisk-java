@@ -1,5 +1,6 @@
 package org.asteriskjava.tools;
 
+import org.asteriskjava.ami.event.api.ManagerEvent;
 import org.asteriskjava.live.DefaultAsteriskServer;
 import org.asteriskjava.manager.ManagerEventListener;
 import org.asteriskjava.manager.event.*;

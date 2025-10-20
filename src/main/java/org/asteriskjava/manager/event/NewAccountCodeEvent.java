@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.event.api.ManagerEvent;
+
 /**
  * A NewAccountCodeEvent indicates that the account code used for CDR has
  * changed.<p>

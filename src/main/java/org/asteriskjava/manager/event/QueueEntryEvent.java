@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.action.api.response.event.ResponseEvent;
+
 /**
  * A QueueEntryEvent is triggered in response to a QueueStatusAction and
  * contains information about an entry in a queue.

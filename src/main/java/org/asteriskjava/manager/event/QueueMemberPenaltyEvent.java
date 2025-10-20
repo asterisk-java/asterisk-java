@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.event.api.ManagerEvent;
+
 /**
  * A QueueMemberPenaltyEvent is triggered when a queue member is assigned a
  * new penalty.<p>

@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.event.api.ManagerEvent;
+
 /**
  * A ConnectEvent is triggered after successful login to the Asterisk server.<p>
  * It is a pseudo event not directly related to an Asterisk generated event.

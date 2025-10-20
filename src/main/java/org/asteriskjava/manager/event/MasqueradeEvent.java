@@ -16,7 +16,8 @@
  */
 package org.asteriskjava.manager.event;
 
-import org.asteriskjava.util.AstState;
+import org.asteriskjava.ami.event.api.ManagerEvent;
+import org.asteriskjava.core.legacy.AstState;
 
 /**
  * A MasqueradeEvent is triggered when Asterisk masquerades a channel.<p>
@@ -56,7 +57,7 @@ public class MasqueradeEvent extends ManagerEvent {
      * Returns the state of the clone channel.
      *
      * @return the state of the clone channel.
-     * @see org.asteriskjava.util.AstState
+     * @see AstState
      */
     public Integer getCloneState() {
         return AstState.str2state(cloneStateDesc);
@@ -92,7 +93,7 @@ public class MasqueradeEvent extends ManagerEvent {
      * Returns the state of the original channel.
      *
      * @return the state of the original channel.
-     * @see org.asteriskjava.util.AstState
+     * @see AstState
      */
     public Integer getOriginalState() {
         return AstState.str2state(originalStateDesc);

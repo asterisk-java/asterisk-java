@@ -16,10 +16,10 @@
  */
 package org.asteriskjava.manager.action;
 
-import org.asteriskjava.ami.action.AbstractManagerAction;
+import org.asteriskjava.ami.action.api.AbstractManagerAction;
+import org.asteriskjava.ami.action.api.response.event.ResponseEvent;
 import org.asteriskjava.manager.event.RegistrationsCompleteEvent;
 import org.asteriskjava.manager.event.RegistryEntryEvent;
-import org.asteriskjava.manager.event.ResponseEvent;
 
 /**
  * Retrieves a list with the details about the SIP registrations.<p>

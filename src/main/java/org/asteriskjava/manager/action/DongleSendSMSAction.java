@@ -1,6 +1,6 @@
 package org.asteriskjava.manager.action;
 
-import org.asteriskjava.ami.action.AbstractManagerAction;
+import org.asteriskjava.ami.action.api.AbstractManagerAction;
 
 public class DongleSendSMSAction extends AbstractManagerAction {
     static final long serialVersionUID = 8194597741743334704L;

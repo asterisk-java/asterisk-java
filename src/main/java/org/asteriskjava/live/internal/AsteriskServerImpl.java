@@ -17,8 +17,16 @@
 package org.asteriskjava.live.internal;
 
 import org.asteriskjava.AsteriskVersion;
-import org.asteriskjava.ami.action.ManagerAction;
-import org.asteriskjava.ami.action.response.ManagerActionResponse;
+import org.asteriskjava.ami.action.annotation.GeneratedEvents;
+import org.asteriskjava.ami.action.api.CommandAction;
+import org.asteriskjava.ami.action.api.DbGetAction;
+import org.asteriskjava.ami.action.api.DbPutAction;
+import org.asteriskjava.ami.action.api.ManagerAction;
+import org.asteriskjava.ami.action.api.response.CommandActionResponse;
+import org.asteriskjava.ami.action.api.response.ManagerActionResponse;
+import org.asteriskjava.ami.action.api.response.event.DbGetResponseEvent;
+import org.asteriskjava.ami.action.api.response.event.ResponseEvent;
+import org.asteriskjava.ami.event.api.ManagerEvent;
 import org.asteriskjava.config.ConfigFile;
 import org.asteriskjava.live.*;
 import org.asteriskjava.lock.Lockable;
@@ -29,7 +37,10 @@ import org.asteriskjava.lock.Locker.LockCloser;
 import org.asteriskjava.manager.*;
 import org.asteriskjava.manager.action.*;
 import org.asteriskjava.manager.event.*;
-import org.asteriskjava.manager.response.*;
+import org.asteriskjava.manager.response.GetConfigResponse;
+import org.asteriskjava.manager.response.MailboxCountResponse;
+import org.asteriskjava.manager.response.ManagerError;
+import org.asteriskjava.manager.response.ModuleCheckResponse;
 import org.asteriskjava.util.AstUtil;
 import org.asteriskjava.util.DateUtil;
 import org.asteriskjava.util.Log;
@@ -39,6 +50,8 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * Default implementation of the {@link AsteriskServer} interface.
@@ -445,10 +458,10 @@ public class AsteriskServerImpl extends Lockable implements AsteriskServer, Mana
                 }
 
                 response = sendAction(new CommandAction(command));
-                if (response instanceof CommandResponse) {
+                if (response instanceof CommandActionResponse) {
                     final List<String> result;
 
-                    result = ((CommandResponse) response).getResult();
+                    result = ((CommandActionResponse) response).getOutput();
                     if (!result.isEmpty()) {
                         version = result.get(0);
                     }
@@ -481,10 +494,10 @@ public class AsteriskServerImpl extends Lockable implements AsteriskServer, Mana
                     command = SHOW_VERSION_FILES_COMMAND;
                 }
                 response = sendAction(new CommandAction(command));
-                if (response instanceof CommandResponse) {
+                if (response instanceof CommandActionResponse) {
                     List<String> result;
 
-                    result = ((CommandResponse) response).getResult();
+                    result = ((CommandActionResponse) response).getOutput();
                     for (int i = 2; i < result.size(); i++) {
                         String line;
                         Matcher matcher;
@@ -569,13 +582,13 @@ public class AsteriskServerImpl extends Lockable implements AsteriskServer, Mana
         } else {
             response = sendAction(new CommandAction(SHOW_VOICEMAIL_USERS_COMMAND));
         }
-        if (!(response instanceof CommandResponse)) {
+        if (!(response instanceof CommandActionResponse)) {
             logger.error("Response to CommandAction(\"" + SHOW_VOICEMAIL_USERS_COMMAND + "\") was not a CommandResponse but "
                     + response);
             return voicemailboxes;
         }
 
-        result = ((CommandResponse) response).getResult();
+        result = ((CommandActionResponse) response).getOutput();
         if (result == null || result.isEmpty()) {
             return voicemailboxes;
         }
@@ -628,12 +641,12 @@ public class AsteriskServerImpl extends Lockable implements AsteriskServer, Mana
 
         initializeIfNeeded();
         response = sendAction(new CommandAction(command));
-        if (!(response instanceof CommandResponse)) {
+        if (!(response instanceof CommandActionResponse)) {
             throw new ManagerCommunicationException(
                     "Response to CommandAction(\"" + command + "\") was not a CommandResponse but " + response, null);
         }
 
-        return ((CommandResponse) response).getResult();
+        return ((CommandActionResponse) response).getOutput();
     }
 
     public boolean isModuleLoaded(String module) throws ManagerCommunicationException {
@@ -781,12 +794,28 @@ public class AsteriskServerImpl extends Lockable implements AsteriskServer, Mana
         }
     }
 
-    ResponseEvents
-
-    sendEventGeneratingAction(EventGeneratingAction action, long timeout) throws ManagerCommunicationException {
+    ResponseEvents sendEventGeneratingAction(EventGeneratingAction action, long timeout) throws ManagerCommunicationException {
         // return connectionPool.sendEventGeneratingAction(action, timeout);
         try {
             return eventConnection.sendEventGeneratingAction(action, timeout);
+        } catch (Exception e) {
+            throw ManagerCommunicationExceptionMapper.mapSendActionException(action.getAction(), e);
+        }
+    }
+
+    ResponseEvents sendEventGeneratingAction(ManagerAction action, long timeout) throws ManagerCommunicationException {
+        // return connectionPool.sendEventGeneratingAction(action, timeout);
+        try {
+            Class<?> actionCompleteEventClass = null;
+            GeneratedEvents generatedEvents = action.getClass().getAnnotation(GeneratedEvents.class);
+            if (generatedEvents != null) {
+                GeneratedEvents.Event first = Arrays.stream(generatedEvents.value())
+                        .filter(GeneratedEvents.Event::complete)
+                        .findFirst()
+                        .orElse(null);
+                actionCompleteEventClass = requireNonNull(first).value();
+            }
+            return eventConnection.sendEventGeneratingAction(action, timeout, actionCompleteEventClass);
         } catch (Exception e) {
             throw ManagerCommunicationExceptionMapper.mapSendActionException(action.getAction(), e);
         }
@@ -1084,7 +1113,10 @@ public class AsteriskServerImpl extends Lockable implements AsteriskServer, Mana
     }
 
     public DbGetResponseEvent dbGet(String family, String key) throws ManagerCommunicationException {
-        ResponseEvents responseEvents = sendEventGeneratingAction(new DbGetAction(family, key), 2000);
+        DbGetAction dbGetAction = new DbGetAction();
+        dbGetAction.setFamily(family);
+        dbGetAction.setKey(key);
+        ResponseEvents responseEvents = sendEventGeneratingAction(dbGetAction, 2000);
         DbGetResponseEvent dbgre = null;
         for (ResponseEvent re : responseEvents.getEvents()) {
             dbgre = (DbGetResponseEvent) re;
@@ -1100,7 +1132,11 @@ public class AsteriskServerImpl extends Lockable implements AsteriskServer, Mana
     }
 
     public void dbPut(String family, String key, String value) throws ManagerCommunicationException {
-        sendAction(new DbPutAction(family, key, value));
+        DbPutAction action = new DbPutAction();
+        action.setFamily(family);
+        action.setKey(key);
+        action.setVal(value);
+        sendAction(action);
     }
 
     public AsteriskChannel getChannelByNameAndActive(String name) throws ManagerCommunicationException {

@@ -16,21 +16,19 @@
 package org.asteriskjava.manager.internal;
 
 import org.asteriskjava.AsteriskVersion;
-import org.asteriskjava.ami.action.AuthType;
-import org.asteriskjava.ami.action.ChallengeAction;
-import org.asteriskjava.ami.action.ManagerAction;
 import org.asteriskjava.ami.action.annotation.ExpectedResponse;
-import org.asteriskjava.ami.action.response.ChallengeManagerActionResponse;
-import org.asteriskjava.ami.action.response.ManagerActionResponse;
+import org.asteriskjava.ami.action.api.*;
+import org.asteriskjava.ami.action.api.response.*;
+import org.asteriskjava.ami.action.api.response.event.ResponseEvent;
+import org.asteriskjava.ami.event.api.ManagerEvent;
 import org.asteriskjava.lock.Lockable;
 import org.asteriskjava.lock.LockableList;
 import org.asteriskjava.lock.LockableMap;
 import org.asteriskjava.lock.Locker.LockCloser;
 import org.asteriskjava.manager.*;
-import org.asteriskjava.manager.action.*;
+import org.asteriskjava.manager.action.EventGeneratingAction;
+import org.asteriskjava.manager.action.UserEventAction;
 import org.asteriskjava.manager.event.*;
-import org.asteriskjava.manager.response.CommandResponse;
-import org.asteriskjava.manager.response.CoreSettingsResponse;
 import org.asteriskjava.manager.response.ManagerError;
 import org.asteriskjava.pbx.util.LogTime;
 import org.asteriskjava.util.DateUtil;
@@ -45,15 +43,17 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
+import static java.util.Arrays.stream;
+import static java.util.stream.Collectors.toCollection;
+import static org.apache.commons.codec.digest.DigestUtils.md5Hex;
 import static org.asteriskjava.manager.ManagerConnectionState.*;
 
 /**
@@ -75,18 +75,18 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
     // NOTE: identifier is AMI_VERSION, defined in include/asterisk/manager.h
     // AMI version consists of MAJOR.BREAKING.NON-BREAKING.
     private static final String[] SUPPORTED_AMI_VERSIONS = {
-        "2.6", // Asterisk 13
-        "2.7", // Asterisk 13.2
-        "2.8", // Asterisk >13.5
-        "2.9", // Asterisk >13.3
-        "3.1", // Asterisk =14.3
-        "3.2", // Asterisk 14.4.0
-        "4.0", // Asterisk 15
-        "5.0", // Asterisk 16
-        "6.0", // Asterisk 17
-        "7.0", // Asterisk 18
-        "8.0", // Asterisk 19
-        "9.0", // Asterisk 20
+            "2.6", // Asterisk 13
+            "2.7", // Asterisk 13.2
+            "2.8", // Asterisk >13.5
+            "2.9", // Asterisk >13.3
+            "3.1", // Asterisk =14.3
+            "3.2", // Asterisk 14.4.0
+            "4.0", // Asterisk 15
+            "5.0", // Asterisk 16
+            "6.0", // Asterisk 17
+            "7.0", // Asterisk 18
+            "8.0", // Asterisk 19
+            "9.0", // Asterisk 20
     };
 
     private static final AtomicLong idCounter = new AtomicLong(0);
@@ -450,7 +450,7 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
      * timeout ms.
      * <li>Sends a {@link ChallengeAction} requesting a challenge for authType
      * MD5.
-     * <li>When the {@link ChallengeManagerActionResponse} is received a {@link LoginAction}
+     * <li>When the {@link ChallengeActionResponse} is received a {@link LoginAction}
      * is sent using the calculated key (MD5 hash of the password appended to
      * the received challenge).
      * </ol>
@@ -509,31 +509,25 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
                 throw new AuthenticationFailedException("Unable to send challenge action", e);
             }
 
-            if (challengeResponse instanceof ChallengeManagerActionResponse) {
-                challenge = ((ChallengeManagerActionResponse) challengeResponse).getChallenge();
+            if (challengeResponse instanceof ChallengeActionResponse) {
+                challenge = ((ChallengeActionResponse) challengeResponse).getChallenge();
             } else {
                 disconnect();
                 throw new AuthenticationFailedException("Unable to get challenge from Asterisk. ChallengeAction returned: "
                         + challengeResponse.getMessage());
             }
 
-            try {
-                MessageDigest md;
+            key = md5Hex(challenge + password);
 
-                md = MessageDigest.getInstance("MD5");
-                if (challenge != null) {
-                    md.update(challenge.getBytes(StandardCharsets.UTF_8));
-                }
-                if (password != null) {
-                    md.update(password.getBytes(StandardCharsets.UTF_8));
-                }
-                key = ManagerUtil.toHexString(md.digest());
-            } catch (NoSuchAlgorithmException ex) {
-                disconnect();
-                throw new AuthenticationFailedException("Unable to create login key using MD5 Message Digest", ex);
+            EnumSet<EventMask> eventMasks = null;
+            if (eventMask != null) {
+                eventMasks = stream(eventMask.split(","))
+                        .map(EventMask::valueOf)
+                        .collect(toCollection(() -> EnumSet.noneOf(EventMask.class)));
             }
 
-            loginAction = new LoginAction(username, "MD5", key, eventMask);
+            loginAction = new LoginAction(username, AuthType.MD5, key);
+            loginAction.setEvents(eventMasks);
             try {
                 loginResponse = sendAction(loginAction);
             } catch (Exception e) {
@@ -541,7 +535,7 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
                 throw new AuthenticationFailedException("Unable to send login action", e);
             }
 
-            if (loginResponse instanceof ManagerError) {
+            if (loginResponse.getResponse() == ResponseType.error) {
                 disconnect();
                 throw new AuthenticationFailedException(loginResponse.getMessage());
             }
@@ -607,13 +601,13 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
     protected AsteriskVersion determineVersionByCoreSettings() throws Exception {
 
         ManagerActionResponse response = sendAction(new CoreSettingsAction());
-        if (!(response instanceof CoreSettingsResponse)) {
+        if (!(response instanceof CoreSettingsActionResponse)) {
             // NOTE: you need system or reporting permissions
             logger.info("Could not get core settings, do we have the necessary permissions?");
             return null;
         }
 
-        String ver = ((CoreSettingsResponse) response).getAsteriskVersion();
+        String ver = ((CoreSettingsActionResponse) response).getAsteriskVersion();
         return AsteriskVersion.getDetermineVersionFromString("Asterisk " + ver);
     }
 
@@ -627,13 +621,13 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
     protected AsteriskVersion determineVersionByCoreShowVersion() throws Exception {
         final ManagerActionResponse coreShowVersionResponse = sendAction(new CommandAction(CMD_SHOW_VERSION));
 
-        if (coreShowVersionResponse == null || !(coreShowVersionResponse instanceof CommandResponse)) {
+        if (coreShowVersionResponse == null || !(coreShowVersionResponse instanceof CommandActionResponse)) {
             // this needs 'command' permissions
             logger.info("Could not get response for 'core show version'");
             return null;
         }
 
-        final List<String> coreShowVersionResult = ((CommandResponse) coreShowVersionResponse).getResult();
+        final List<String> coreShowVersionResult = ((CommandActionResponse) coreShowVersionResponse).getOutput();
         if (coreShowVersionResult == null || coreShowVersionResult.isEmpty()) {
             logger.warn("Got empty response for 'core show version'");
             return null;
@@ -838,20 +832,15 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
      */
     public ResponseEvents sendEventGeneratingAction(EventGeneratingAction action, long timeout)
             throws IOException, EventTimeoutException, IllegalArgumentException, IllegalStateException {
+        Class<? extends ResponseEvent> actionCompleteEventClass = getActionCompleteEventClass(action);
+        return sendEventGeneratingAction(action, timeout, actionCompleteEventClass);
+    }
+
+    @Override
+    public ResponseEvents sendEventGeneratingAction(ManagerAction action, long timeout, Class<?> actionCompleteEventClass) throws IOException, EventTimeoutException {
         final ResponseEventsImpl responseEvents;
         final ResponseEventHandler responseEventHandler;
         final String internalActionId;
-
-        if (action == null) {
-            throw new IllegalArgumentException("Unable to send action: action is null.");
-        } else if (action.getActionCompleteEventClass() == null) {
-            throw new IllegalArgumentException(
-                    "Unable to send action: actionCompleteEventClass for " + action.getClass().getName() + " is null.");
-        } else if (!ResponseEvent.class.isAssignableFrom(action.getActionCompleteEventClass())) {
-            throw new IllegalArgumentException(
-                    "Unable to send action: actionCompleteEventClass (" + action.getActionCompleteEventClass().getName()
-                            + ") for " + action.getClass().getName() + " is not a ResponseEvent.");
-        }
 
         if (state != CONNECTED) {
             throw new IllegalStateException(
@@ -859,7 +848,7 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
         }
 
         responseEvents = new ResponseEventsImpl();
-        responseEventHandler = new ResponseEventHandler(responseEvents, action.getActionCompleteEventClass());
+        responseEventHandler = new ResponseEventHandler(responseEvents, actionCompleteEventClass);
 
         internalActionId = createInternalActionId();
 
@@ -913,16 +902,7 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
 
     public void sendEventGeneratingAction(EventGeneratingAction action, SendEventGeneratingActionCallback callback)
             throws IOException, IllegalArgumentException, IllegalStateException {
-        if (action == null) {
-            throw new IllegalArgumentException("Unable to send action: action is null.");
-        } else if (action.getActionCompleteEventClass() == null) {
-            throw new IllegalArgumentException(
-                    "Unable to send action: actionCompleteEventClass for " + action.getClass().getName() + " is null.");
-        } else if (!ResponseEvent.class.isAssignableFrom(action.getActionCompleteEventClass())) {
-            throw new IllegalArgumentException(
-                    "Unable to send action: actionCompleteEventClass (" + action.getActionCompleteEventClass().getName()
-                            + ") for " + action.getClass().getName() + " is not a ResponseEvent.");
-        }
+        Class<? extends ResponseEvent> actionCompleteEventClass = getActionCompleteEventClass(action);
 
         if (state != CONNECTED) {
             throw new IllegalStateException(
@@ -933,7 +913,7 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
 
         if (callback != null) {
             AsyncEventGeneratingResponseHandler responseEventHandler = new AsyncEventGeneratingResponseHandler(
-                    action.getActionCompleteEventClass(), callback);
+                    actionCompleteEventClass, callback);
 
             // register response handler...
             try (LockCloser closer = this.responseListeners.withLock()) {
@@ -947,6 +927,20 @@ public class ManagerConnectionImpl extends Lockable implements ManagerConnection
         }
 
         writer.sendAction(action, internalActionId);
+    }
+
+    private static Class<? extends ResponseEvent> getActionCompleteEventClass(EventGeneratingAction action) {
+        if (action == null) {
+            throw new IllegalArgumentException("Unable to send action: action is null.");
+        } else if (action.getActionCompleteEventClass() == null) {
+            throw new IllegalArgumentException(
+                    "Unable to send action: actionCompleteEventClass for " + action.getClass().getName() + " is null.");
+        } else if (!ResponseEvent.class.isAssignableFrom(action.getActionCompleteEventClass())) {
+            throw new IllegalArgumentException(
+                    "Unable to send action: actionCompleteEventClass (" + action.getActionCompleteEventClass().getName()
+                            + ") for " + action.getClass().getName() + " is not a ResponseEvent.");
+        }
+        return action.getActionCompleteEventClass();
     }
 
     /**

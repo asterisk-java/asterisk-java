@@ -16,7 +16,7 @@
  */
 package org.asteriskjava.manager.internal;
 
-import org.asteriskjava.ami.action.AbstractManagerAction;
+import org.asteriskjava.ami.action.api.AbstractManagerAction;
 import org.asteriskjava.manager.AsteriskMapping;
 
 public class AnnotatedAction extends AbstractManagerAction {

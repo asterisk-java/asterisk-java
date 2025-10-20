@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.event.api.ManagerEvent;
+
 /**
  * A BridgeExecEvent is triggered when two channels are bridged through a feature code or bridging the channels fails.<p>
  * It is implemented in <code>main/features.c</code><p>

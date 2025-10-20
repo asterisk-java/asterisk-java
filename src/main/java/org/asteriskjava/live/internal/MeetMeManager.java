@@ -16,17 +16,17 @@
  */
 package org.asteriskjava.live.internal;
 
-import org.asteriskjava.ami.action.response.ManagerActionResponse;
+import org.asteriskjava.ami.action.api.CommandAction;
+import org.asteriskjava.ami.action.api.response.CommandActionResponse;
+import org.asteriskjava.ami.action.api.response.ManagerActionResponse;
 import org.asteriskjava.live.ManagerCommunicationException;
 import org.asteriskjava.live.MeetMeRoom;
 import org.asteriskjava.lock.LockableMap;
 import org.asteriskjava.lock.Locker.LockCloser;
-import org.asteriskjava.manager.action.CommandAction;
 import org.asteriskjava.manager.event.AbstractMeetMeEvent;
 import org.asteriskjava.manager.event.MeetMeLeaveEvent;
 import org.asteriskjava.manager.event.MeetMeMuteEvent;
 import org.asteriskjava.manager.event.MeetMeTalkingEvent;
-import org.asteriskjava.manager.response.CommandResponse;
 import org.asteriskjava.manager.response.ManagerError;
 import org.asteriskjava.util.DateUtil;
 import org.asteriskjava.util.Log;
@@ -177,13 +177,13 @@ class MeetMeManager {
             logger.error("Unable to send \"" + MEETME_LIST_COMMAND + "\" command: " + response.getMessage());
             return;
         }
-        if (!(response instanceof CommandResponse)) {
+        if (!(response instanceof CommandActionResponse)) {
             logger.error("Response to \"" + MEETME_LIST_COMMAND + "\" command is not a CommandResponse but "
                     + response.getClass());
             return;
         }
 
-        lines = ((CommandResponse) response).getResult();
+        lines = ((CommandActionResponse) response).getOutput();
         for (String line : lines) {
             final Matcher matcher;
             final Integer userNumber;

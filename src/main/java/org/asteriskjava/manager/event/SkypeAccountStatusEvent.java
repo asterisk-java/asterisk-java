@@ -18,6 +18,8 @@
  */
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.event.api.ManagerEvent;
+
 /**
  * A SkypeAccountStatusEvent is sent when a Skype for Asterisk user logs in or out
  * of the Skype community.<p>

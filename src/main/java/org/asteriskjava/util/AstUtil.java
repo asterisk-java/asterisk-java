@@ -13,19 +13,9 @@ import java.util.Set;
  * @version $Id$
  */
 public class AstUtil {
-    private static final Set<String> TRUE_LITERALS;
     private static final Set<String> NULL_LITERALS;
 
     static {
-        TRUE_LITERALS = new HashSet<>(20);
-        TRUE_LITERALS.add("yes");
-        TRUE_LITERALS.add("true");
-        TRUE_LITERALS.add("y");
-        TRUE_LITERALS.add("t");
-        TRUE_LITERALS.add("1");
-        TRUE_LITERALS.add("on");
-        TRUE_LITERALS.add("enabled");
-
         NULL_LITERALS = new HashSet<>(20);
         NULL_LITERALS.add("<unknown>");
         NULL_LITERALS.add("unknown");
@@ -43,50 +33,6 @@ public class AstUtil {
 
     private AstUtil() {
         // hide constructor
-    }
-
-    /**
-     * Checks if a String represents <code>true</code> or <code>false</code>
-     * according to Asterisk's logic. <br>
-     * The original implementation is <code>util.c</code> is as follows: <br>
-     *
-     * <pre>
-     *     int ast_true(const char *s)
-     *     {
-     *         if (!s || ast_strlen_zero(s))
-     *             return 0;
-     * <br>
-     *         if (!strcasecmp(s, &quot;yes&quot;) ||
-     *             !strcasecmp(s, &quot;true&quot;) ||
-     *             !strcasecmp(s, &quot;y&quot;) ||
-     *             !strcasecmp(s, &quot;t&quot;) ||
-     *             !strcasecmp(s, &quot;1&quot;) ||
-     *             !strcasecmp(s, &quot;on&quot;))
-     *             return -1;
-     * <br>
-     *         return 0;
-     *     }
-     * </pre>
-     *
-     * <br>
-     * To support the dnd property of
-     * {@link org.asteriskjava.manager.event.ZapShowChannelsEvent} this method
-     * also consideres the string "Enabled" as true.
-     *
-     * @param o the Object (usually a String) to check for <code>true</code>.
-     * @return <code>true</code> if s represents <code>true</code>,
-     * <code>false</code> otherwise.
-     */
-    public static boolean isTrue(Object o) {
-        if (o == null) {
-            return false;
-        }
-
-        if (o instanceof Boolean) {
-            return (Boolean) o;
-        }
-
-        return TRUE_LITERALS.contains(o.toString().toLowerCase(Locale.US));
     }
 
     /**
@@ -181,34 +127,5 @@ public class AstUtil {
         }
 
         return NULL_LITERALS.contains(((String) s).toLowerCase(Locale.US));
-    }
-
-    /**
-     * Converts a non-standard Asterisk boolean String value into something the Boolean class
-     * String constructor recognizes.
-     * <p>
-     * Asterisk can return various strings that represent truth values.
-     * This method converts them into standard True/False, or null if null.
-     *
-     * @param value
-     * @return <code>true</code> if the String is "true" or "yes" (case insensitive).
-     * <code>false</code> if the String is "false" or "no" (case insensitive).
-     * <code>null</code> if the String is null.
-     * @throws <code>IllegalArgumentException</code> if any other value not listed above.
-     */
-
-    public static String convertAsteriskBooleanStringToStandardBooleanString(String value) {
-        if (value == null) return null;
-        switch (value.toLowerCase()) {
-            case "true":
-            case "yes":
-                return "True";
-            case "false":
-            case "no":
-                return "False";
-            default:
-                throw new IllegalArgumentException("value of:" + value + " was not recognized as a boolean");
-        }
-
     }
 }

@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.action.api.response.event.ResponseEvent;
+
 /**
  * An AgentsCompleteEvent is triggered after the state of all agents has been
  * reported in response to an AgentsAction.<p>

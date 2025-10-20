@@ -16,7 +16,7 @@
  */
 package org.asteriskjava.live;
 
-import org.asteriskjava.util.AstState;
+import org.asteriskjava.core.legacy.AstState;
 
 /**
  * The lifecycle status of an {@link org.asteriskjava.live.AsteriskChannel}.

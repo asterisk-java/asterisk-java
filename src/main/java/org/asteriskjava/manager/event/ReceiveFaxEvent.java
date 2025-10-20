@@ -1,5 +1,7 @@
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.event.api.ManagerEvent;
+
 /**
  * A ReceiveFaxEvent is an event of Digium's Fax For Asterisk add-on.
  */

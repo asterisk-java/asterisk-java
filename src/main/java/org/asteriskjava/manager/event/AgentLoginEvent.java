@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.event.api.ManagerEvent;
+
 /**
  * An AgentLoginEvent is triggered when an agent is successfully logged in using AgentLogin.<p>
  * It is implemented in <code>channels/chan_agent.c</code>

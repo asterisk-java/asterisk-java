@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.action.api.response.event.ResponseEvent;
+
 /**
  * A ContactListCompleteEvent is triggered after the details of all peers has
  * been reported in response to an PJSipShowContactsAction.
@@ -219,7 +221,7 @@ public class ContactList extends ResponseEvent {
                 + ", roundtripusec=" + roundtripusec + ", expirationtime=" + expirationtime + ", authenticatequalify="
                 + authenticatequalify + ", objectname=" + objectname + ", useragent=" + useragent + ", uri=" + uri
                 + ", viaaddr=" + viaaddr + ", qualifyfrequency=" + qualifyfrequency + ", path=" + path + ", endpoint="
-                + endpoint + ", viaport=" + viaport + ", outboundproxy=" + outboundproxy + ", actionId=" + actionId
+                + endpoint + ", viaport=" + viaport + ", outboundproxy=" + outboundproxy + ", actionId=" + getActionId()
                 + ", objecttype=" + objecttype + ", pruneonboot=" + pruneonboot + ", status=" + status + "]\n";
     }
 

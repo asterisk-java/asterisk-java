@@ -38,7 +38,7 @@ class CoherentManagerEventQueue implements ManagerEventListener, Runnable {
     private volatile boolean _stop = false;
 
     private static final int QUEUE_SIZE = 1000;
-    private final BlockingQueue<EventLifeMonitor<org.asteriskjava.manager.event.ManagerEvent>> _eventQueue = new LinkedBlockingQueue<>(
+    private final BlockingQueue<EventLifeMonitor<org.asteriskjava.ami.event.api.ManagerEvent>> _eventQueue = new LinkedBlockingQueue<>(
             QUEUE_SIZE);
 
     long suppressQueueSizeErrorUntil = 0;
@@ -61,7 +61,7 @@ class CoherentManagerEventQueue implements ManagerEventListener, Runnable {
      * subsequently passed on to the original listener.
      */
     @Override
-    public void onManagerEvent(final org.asteriskjava.manager.event.ManagerEvent event) {
+    public void onManagerEvent(final org.asteriskjava.ami.event.api.ManagerEvent event) {
 
         // logger.error(event);
         boolean wanted = false;
@@ -94,7 +94,7 @@ class CoherentManagerEventQueue implements ManagerEventListener, Runnable {
         try {
             while (!this._stop) {
                 try {
-                    final EventLifeMonitor<org.asteriskjava.manager.event.ManagerEvent> elm = this._eventQueue.poll(2,
+                    final EventLifeMonitor<org.asteriskjava.ami.event.api.ManagerEvent> elm = this._eventQueue.poll(2,
                             TimeUnit.SECONDS);
                     if (elm != null) {
                         // A poison queue event means its time to shutdown.
@@ -128,7 +128,7 @@ class CoherentManagerEventQueue implements ManagerEventListener, Runnable {
 
     }
 
-    class PoisonQueueEvent extends org.asteriskjava.manager.event.ManagerEvent {
+    class PoisonQueueEvent extends org.asteriskjava.ami.event.api.ManagerEvent {
         private static final long serialVersionUID = 1L;
 
         public PoisonQueueEvent() {
@@ -140,7 +140,7 @@ class CoherentManagerEventQueue implements ManagerEventListener, Runnable {
     public void stop() {
         this._stop = true;
         try {
-            this._eventQueue.put(new EventLifeMonitor<org.asteriskjava.manager.event.ManagerEvent>(new PoisonQueueEvent()));
+            this._eventQueue.put(new EventLifeMonitor<org.asteriskjava.ami.event.api.ManagerEvent>(new PoisonQueueEvent()));
         } catch (InterruptedException e) {
             logger.error(e, e);
 

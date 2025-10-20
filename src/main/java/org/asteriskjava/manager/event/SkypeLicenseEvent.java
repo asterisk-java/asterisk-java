@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.action.api.response.event.ResponseEvent;
+
 /**
  * A SkypeLicenseEvent is triggered in response to a SkypeLicenseListAction for each
  * license installed on the system.<p>

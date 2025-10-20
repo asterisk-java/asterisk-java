@@ -1,5 +1,7 @@
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.event.api.ManagerEvent;
+
 public class DongleNewSMSBase64Event extends ManagerEvent {
     private static final long serialVersionUID = 3257845467831284784L;
     private String from;

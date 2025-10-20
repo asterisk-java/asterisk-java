@@ -16,6 +16,8 @@
  */
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.ami.action.api.response.event.ResponseEvent;
+
 /**
  * A SkypeBuddyListCompleteEvent is triggered in response to a SkypeBuddiesAction when
  * all buddies have been reported.<p>

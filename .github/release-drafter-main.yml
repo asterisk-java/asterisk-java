@@ -1,0 +1,27 @@
+filter-by-commitish: true
+commitish: main
+template: |
+  ## What's Changed
+  
+  $CHANGES
+categories:
+  - title: '💥 Breaking API Changes'
+    label: 'kind/breaking'
+  - title: '🚀 Features & Enhancements'
+    labels:
+      - 'kind/enhancement'
+      - 'kind/feature'
+  - title: '🐛 Bug Fixes'
+    label: 'kind/bug'
+  - title: '🧹 Refactor'
+    label: 'kind/refactor'
+  - title: '📝 Documentation'
+    label: 'kind/documentation'
+  - title: '📦 Dependency Updates'
+    label: 'kind/dependencies'
+    collapse-after: 5
+change-template: '* (#$NUMBER) $TITLE by @$AUTHOR'
+exclude-labels:
+  - 'kind/question'
+  - 'kind/wontfix'
+  - 'meta/skip-changelog'
