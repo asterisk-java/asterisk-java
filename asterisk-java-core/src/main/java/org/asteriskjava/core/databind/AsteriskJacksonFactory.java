@@ -35,6 +35,9 @@ import static com.fasterxml.jackson.databind.PropertyNamingStrategies.UPPER_CAME
  * @since 4.0.0
  */
 public class AsteriskJacksonFactory {
+    private AsteriskJacksonFactory() {
+    }
+
     public static JsonMapper create() {
         return JsonMapper
                 .builder()

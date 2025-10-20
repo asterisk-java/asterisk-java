@@ -20,7 +20,7 @@ import com.fasterxml.jackson.databind.util.StdConverter;
 import java.util.Collection;
 
 import static java.util.stream.Collectors.joining;
-import static org.asteriskjava.core.databind.CodersConsts.listSeparator;
+import static org.asteriskjava.core.databind.CodersConsts.LIST_SEPARATOR;
 
 /**
  * @author Piotr Olaszewski
@@ -31,6 +31,6 @@ public class CommaConverter extends StdConverter<Collection<Object>, String> {
     public String convert(Collection<Object> value) {
         return value.stream()
                 .map(String::valueOf)
-                .collect(joining(listSeparator));
+                .collect(joining(LIST_SEPARATOR));
     }
 }

@@ -52,8 +52,8 @@ public class AsteriskBoolean {
             return false;
         }
 
-        if (o instanceof Boolean) {
-            return (Boolean) o;
+        if (o instanceof Boolean b) {
+            return b;
         }
 
         return TRUE_LITERALS.contains(o.toString().toLowerCase(ENGLISH));

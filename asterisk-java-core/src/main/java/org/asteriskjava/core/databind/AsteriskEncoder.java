@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import static org.asteriskjava.core.databind.CodersConsts.*;
+import static org.asteriskjava.core.databind.CodersConsts.NAME_VALUE_SEPARATOR;
 
 /**
  * @author Piotr Olaszewski
@@ -72,7 +72,7 @@ public class AsteriskEncoder {
     private void encodeMap(Map<?, ?> valueMap, String name, StringBuilder stringBuilder) {
         valueMap.entrySet()
                 .stream()
-                .map(entry -> mapTemplate.formatted(entry.getKey(), entry.getValue()))
+                .map(entry -> "%s=%s".formatted(entry.getKey(), entry.getValue()))
                 .forEach(value -> appendFieldNameAndValue(name, value, stringBuilder));
     }
 
@@ -82,7 +82,7 @@ public class AsteriskEncoder {
             if (value instanceof Map<?, ?> valueMap) {
                 for (Entry<?, ?> entry : valueMap.entrySet()) {
                     if (entry.getValue() != null) {
-                        appendFieldNameAndValue(listWithCounterTemplate.formatted(entry.getKey(), i), entry.getValue(), stringBuilder);
+                        appendFieldNameAndValue("%s-%06d".formatted(entry.getKey(), i), entry.getValue(), stringBuilder);
                     }
                 }
                 i++;
@@ -94,7 +94,7 @@ public class AsteriskEncoder {
 
     private void appendFieldNameAndValue(String name, Object value, StringBuilder stringBuilder) {
         stringBuilder.append(name);
-        stringBuilder.append(nameValueSeparator);
+        stringBuilder.append(NAME_VALUE_SEPARATOR);
         stringBuilder.append(value);
         stringBuilder.append(newlineDelimiter.getPattern());
     }

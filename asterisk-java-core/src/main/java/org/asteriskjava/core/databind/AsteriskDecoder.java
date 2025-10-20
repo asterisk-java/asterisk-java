@@ -30,7 +30,7 @@ import static java.util.regex.Pattern.compile;
 import static java.util.stream.Collectors.joining;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.isBlank;
-import static org.asteriskjava.core.databind.CodersConsts.nameValueSeparator;
+import static org.asteriskjava.core.databind.CodersConsts.NAME_VALUE_SEPARATOR;
 
 /**
  * @author Piotr Olaszewski
@@ -73,15 +73,15 @@ public class AsteriskDecoder {
                 continue;
             }
 
-            String[] split = line.split(nameValueSeparator);
+            String[] split = line.split(NAME_VALUE_SEPARATOR);
             String name = split[0].trim();
             Object value = null;
             if (split.length == 1) {
-                name = name.replace(nameValueSeparator.trim(), EMPTY);
+                name = name.replace(NAME_VALUE_SEPARATOR.trim(), EMPTY);
             } else {
                 value = stream(split)
                         .skip(1)
-                        .collect(joining(nameValueSeparator))
+                        .collect(joining(NAME_VALUE_SEPARATOR))
                         .trim();
             }
 

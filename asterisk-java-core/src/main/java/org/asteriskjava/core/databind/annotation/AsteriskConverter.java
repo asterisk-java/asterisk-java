@@ -25,7 +25,7 @@ import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Sets converter for specified value.
+ * Sets converter for a specified value.
  *
  * @author Piotr Olaszewski
  * @since 4.0.0
