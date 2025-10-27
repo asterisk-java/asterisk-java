@@ -34,7 +34,6 @@ public class MeetMeJoinEvent extends AbstractMeetMeEvent {
     private static final long serialVersionUID = 0L;
     private String linkedid;
     private String language;
-    private Integer duration;
     private String accountcode;
 
     /**
@@ -67,13 +66,5 @@ public class MeetMeJoinEvent extends AbstractMeetMeEvent {
 
     public void setAccountCode(String accountcode) {
         this.accountcode = accountcode;
-    }
-
-    public Integer getDuration() {
-        return this.duration;
-    }
-
-    public void setDuration(Integer duration) {
-        this.duration = duration;
     }
 }
