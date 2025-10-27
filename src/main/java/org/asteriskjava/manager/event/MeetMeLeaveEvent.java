@@ -34,6 +34,9 @@ public class MeetMeLeaveEvent extends AbstractMeetMeEvent {
     private static final long serialVersionUID = 7692361610793036224L;
 
     private Long duration;
+    private String linkedid;
+    private String language;
+    private String accountcode;
 
     /**
      * @param source
@@ -60,5 +63,30 @@ public class MeetMeLeaveEvent extends AbstractMeetMeEvent {
      */
     public void setDuration(Long duration) {
         this.duration = duration;
+    }
+
+    public String getLinkedId() {
+        return this.linkedid;
+    }
+
+    public void setLinkedId(String linkedid) {
+        this.linkedid = linkedid;
+    }
+
+
+    public String getLanguage() {
+        return this.language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    public String getAccountCode() {
+        return this.accountcode;
+    }
+
+    public void setAccountCode(String accountcode) {
+        this.accountcode = accountcode;
     }
 }
