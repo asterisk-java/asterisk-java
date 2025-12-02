@@ -23,6 +23,8 @@ package org.asteriskjava.manager.event;
  * It is implemented in <code>apps/app_meetme.c</code><p>
  * Available since Asterisk 1.6
  *
+ * @deprecated You want {@link MeetMeTalkRequestEvent} instead.
+ *
  * @author srt
  * @version $Id$
  * @since 1.0.0
