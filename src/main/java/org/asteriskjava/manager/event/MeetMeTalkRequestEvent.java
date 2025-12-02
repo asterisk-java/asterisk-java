@@ -16,7 +16,7 @@ public class MeetMeTalkRequestEvent extends AbstractMeetMeEvent {
      * @param source The object on which the Event initially occurred.
      * @throws IllegalArgumentException if source is null.
      */
-    protected MeetMeTalkRequestEvent(Object source) {
+    public MeetMeTalkRequestEvent(Object source) {
         super(source);
     }
 
