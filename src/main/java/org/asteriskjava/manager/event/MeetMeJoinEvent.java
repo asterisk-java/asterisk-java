@@ -33,10 +33,25 @@ public class MeetMeJoinEvent extends AbstractMeetMeEvent {
      */
     private static final long serialVersionUID = 0L;
 
+    private Integer duration;
+
     /**
      * @param source
      */
     public MeetMeJoinEvent(Object source) {
         super(source);
+    }
+
+    /**
+     * Returns how long the user has been in the conference.
+     *
+     * @return the duration, in seconds, the user has been in the conference
+     */
+    public Integer getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Integer duration) {
+        this.duration = duration;
     }
 }
