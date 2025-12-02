@@ -28,8 +28,9 @@ public class MailboxCountResponse extends ManagerResponse {
     /**
      * Serial version identifier
      */
-    private static final long serialVersionUID = 7820598941277275838L;
+    private static final long serialVersionUID = 1408614199035675323L;
     private String mailbox;
+    private Integer urgMessages;
     private Integer newMessages;
     private Integer oldMessages;
 
@@ -45,6 +46,20 @@ public class MailboxCountResponse extends ManagerResponse {
      */
     public void setMailbox(String mailbox) {
         this.mailbox = mailbox;
+    }
+
+    /**
+     * Returns the number of urgent messages in the mailbox.
+     */
+    public Integer getUrgMessages() {
+        return urgMessages;
+    }
+
+    /**
+     * Sets the number of urgent messages in the mailbox.
+     */
+    public void setUrgMessages(Integer urgMessages) {
+        this.urgMessages = urgMessages;
     }
 
     /**
