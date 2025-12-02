@@ -29,8 +29,9 @@ public class MeetMeMuteEvent extends AbstractMeetMeEvent {
     /**
      * Serializable version identifier.
      */
-    private static final long serialVersionUID = -8554403451985143184L;
+    private static final long serialVersionUID = 1664651272460031885L;
 
+    private Integer duration;
     private Boolean status;
 
     /**
@@ -38,6 +39,19 @@ public class MeetMeMuteEvent extends AbstractMeetMeEvent {
      */
     public MeetMeMuteEvent(Object source) {
         super(source);
+    }
+
+    /**
+     * Returns how long the user has been in the conference.
+     *
+     * @return the duration, in seconds, the user has been in the conference
+     */
+    public Integer getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Integer duration) {
+        this.duration = duration;
     }
 
     /**

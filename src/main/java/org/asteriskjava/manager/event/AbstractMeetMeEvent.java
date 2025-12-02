@@ -26,11 +26,14 @@ package org.asteriskjava.manager.event;
  * @version $Id$
  */
 public abstract class AbstractMeetMeEvent extends ManagerEvent {
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 2L;
     private String channel;
     private String uniqueId;
     private String meetMe;
     private Integer user;
+    private String language;
+    private String accountCode;
+    private String linkedId;
 
     /**
      * @param source
@@ -142,5 +145,45 @@ public abstract class AbstractMeetMeEvent extends ManagerEvent {
      */
     public void setUser(Integer userNum) {
         this.user = userNum;
+    }
+
+    /**
+     * Get the account code associated with the current channel.
+     *
+     * @return the channel's account code
+     */
+    public String getAccountCode() {
+        return accountCode;
+    }
+
+    public void setAccountCode(String accountCode) {
+        this.accountCode = accountCode;
+    }
+
+    /**
+     * Get the language associated with the current channel.
+     *
+     * @return the channel's language
+     */
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    /**
+     * Get the linked ID of the channel, which ties this event to other related
+     * channel's events.
+     *
+     * @return the channel's linked ID
+     */
+    public String getLinkedId() {
+        return linkedId;
+    }
+
+    public void setLinkedId(String linkedId) {
+        this.linkedId = linkedId;
     }
 }
