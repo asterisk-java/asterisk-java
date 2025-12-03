@@ -16,29 +16,31 @@
  */
 package org.asteriskjava.manager.event;
 
+import org.asteriskjava.manager.AsteriskMapping;
+
 /**
- * A MeetMeTalkingEvent is triggered when a muted user requests talking in a meet me
- * conference.<p>
- * To enable talker detection you must pass the option 'T' to the MeetMe application.<p>
- * It is implemented in <code>apps/app_meetme.c</code><p>
- * Available since Asterisk 1.6
- *
- * @deprecated You want {@link MeetMeTalkRequestEvent} instead.
+ * A MeetMeTalkRequestEvent is triggered when a muted user requests talking in
+ * a MeetMe conference.
  *
  * @author srt
  * @version $Id$
  * @since 1.0.0
  */
+@AsteriskMapping("MeetMeTalkRequest")
 public class MeetMeTalkingRequestEvent extends AbstractMeetMeEvent {
     /**
      * Serializable version identifier.
      */
-    private static final long serialVersionUID = 0L;
+    private static final long serialVersionUID = 1L;
 
     private Boolean status;
+    private Integer duration;
 
     /**
-     * @param source
+     * Constructs a MeetMeTalkingRequestEvent
+     *
+     * @param source The object on which the Event initially occurred.
+     * @throws IllegalArgumentException if source is null.
      */
     public MeetMeTalkingRequestEvent(Object source) {
         super(source);
@@ -47,10 +49,24 @@ public class MeetMeTalkingRequestEvent extends AbstractMeetMeEvent {
     // see http://bugs.digium.com/view.php?id=9418
 
     /**
-     * Returns whether the user has started or stopped requesting talking.
+     * The length of time (in seconds) that the MeetMe user has been in the
+     * conference at the time of this event
      *
-     * @return <code>true</code> if ther user has started requesting talking,
-     * <code>false</code> if the user has stopped requesting talking.
+     * @return the number of seconds this user has been in the conference.
+     */
+    public Integer getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Integer duration) {
+        this.duration = duration;
+    }
+
+    /**
+     * Returns whether the user has started or stopped requesting talking
+     *
+     * @return {@code true} if the user has started requesting talking,
+     * {@code false} if the user has stopped requesting talking.
      */
     public Boolean getStatus() {
         return status;
