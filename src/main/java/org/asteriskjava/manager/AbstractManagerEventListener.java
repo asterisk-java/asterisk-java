@@ -171,9 +171,6 @@ public abstract class AbstractManagerEventListener implements ManagerEventListen
     public void handleEvent(MeetMeTalkingRequestEvent event) {
     }
 
-    public void handleEvent(MeetMeTalkRequestEvent event) {
-    }
-
     public void handleEvent(MonitorStartEvent event) {
     }
 
