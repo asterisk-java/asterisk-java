@@ -16,18 +16,31 @@
  */
 package org.asteriskjava.manager.action;
 
+import org.asteriskjava.manager.event.ChannelsHungupListComplete;
+import org.asteriskjava.manager.event.ResponseEvent;
+
 /**
- * The HangupAction causes Asterisk to hang up a given channel.<p>
+ * The HangupAction causes Asterisk to hang up a given channel.
+ * <p>
  * Hangup with a cause code is only supported by Asterisk versions later than 1.6.2.
+ * <p>
+ * If the provided channel is surrounded by {@code /forward slashes/}, Asterisk
+ * will interpret the value as a
+ * <a href="https://pubs.opengroup.org/onlinepubs/9799919799/basedefs/V1_chap09.html#tag_09_04">POSIX Extended Regular Expression (ERE)</a>,
+ * allowing multiple channels to be hung up at once.
+ * <p>
+ * If you are passing a regular expression to this action, ensure that you also
+ * use one of the {@link org.asteriskjava.manager.ManagerConnection#sendEventGeneratingAction(EventGeneratingAction)}
+ * overloads to capture the response correctly.
  *
  * @author srt
  * @version $Id$
  */
-public class HangupAction extends AbstractManagerAction {
+public class HangupAction extends AbstractManagerAction implements EventGeneratingAction {
     /**
      * Serializable version identifier
      */
-    static final long serialVersionUID = 0L;
+    private static final long serialVersionUID = -7534073930283445113L;
 
     private String channel;
     private Integer cause;
@@ -42,22 +55,22 @@ public class HangupAction extends AbstractManagerAction {
     /**
      * Creates a new HangupAction that hangs up the given channel.
      *
-     * @param channel the name of the channel to hangup.
+     * @param channelOrRegex the name of the channel to hangup.
      * @since 0.2
      */
-    public HangupAction(String channel) {
-        this.channel = channel;
+    public HangupAction(String channelOrRegex) {
+        this.channel = channelOrRegex;
     }
 
     /**
      * Creates a new HangupAction that hangs up the given channel with the given cause code.
      *
-     * @param channel the name of the channel to hangup.
-     * @param cause   the cause code. The cause code must be &gt;= 0 and &lt;= 127.
+     * @param channelOrRegex the name of the channel to hangup.
+     * @param cause          the cause code. The cause code must be &gt;= 0 and &lt;= 127.
      * @since 1.0.0
      */
-    public HangupAction(String channel, int cause) {
-        this.channel = channel;
+    public HangupAction(String channelOrRegex, int cause) {
+        this.channel = channelOrRegex;
         this.cause = cause;
     }
 
@@ -107,5 +120,10 @@ public class HangupAction extends AbstractManagerAction {
      */
     public void setCause(Integer cause) {
         this.cause = cause;
+    }
+
+    @Override
+    public Class<? extends ResponseEvent> getActionCompleteEventClass() {
+        return ChannelsHungupListComplete.class;
     }
 }
