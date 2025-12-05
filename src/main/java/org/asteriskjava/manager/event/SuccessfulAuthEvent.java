@@ -7,7 +7,7 @@ public class SuccessfulAuthEvent extends ManagerEvent {
     /**
      *
      */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -1075176582208556468L;
     private String severity;
     private Integer eventVersion;
     private String accountId;
@@ -18,6 +18,7 @@ public class SuccessfulAuthEvent extends ManagerEvent {
     private String remoteAddress;
     private String localAddress;
     private String sessionId;
+    private String module;
 
     public SuccessfulAuthEvent(Object source) {
         super(source);
@@ -101,5 +102,13 @@ public class SuccessfulAuthEvent extends ManagerEvent {
 
     public void setSessionId(String sessionId) {
         this.sessionId = sessionId;
+    }
+
+    public String getModule() {
+        return module;
+    }
+
+    public void setModule(String module) {
+        this.module = module;
     }
 }

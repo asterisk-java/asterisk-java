@@ -7,7 +7,7 @@ public class ChallengeSentEvent extends ManagerEvent {
     /**
      *
      */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 8219597230372769610L;
     private String severity;
     private Integer eventVersion;
     private String accountId;
@@ -17,6 +17,8 @@ public class ChallengeSentEvent extends ManagerEvent {
     private String localAddress;
     private String challenge;
     private String sessionId;
+    private String module;
+    private String sessiontv;
 
     public ChallengeSentEvent(Object source) {
         super(source);
@@ -92,5 +94,21 @@ public class ChallengeSentEvent extends ManagerEvent {
 
     public void setSessionId(String sessionId) {
         this.sessionId = sessionId;
+    }
+
+    public String getModule() {
+        return module;
+    }
+
+    public void setModule(String module) {
+        this.module = module;
+    }
+
+    public String getSessiontv() {
+        return sessiontv;
+    }
+
+    public void setSessiontv(String sessiontv) {
+        this.sessiontv = sessiontv;
     }
 }

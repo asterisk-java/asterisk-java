@@ -7,7 +7,7 @@ public class InvalidPasswordEvent extends ManagerEvent {
     /**
      *
      */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -5161586187203331724L;
     private String severity;
     private Integer eventVersion;
     private String eventtv;
@@ -19,6 +19,10 @@ public class InvalidPasswordEvent extends ManagerEvent {
     private String service;
     private String remoteAddress;
     private String challenge;
+    private String sessiontv;
+    private String localAddress;
+    private String sessionId;
+    private String module;
 
     public InvalidPasswordEvent(Object source) {
         super(source);
@@ -110,5 +114,37 @@ public class InvalidPasswordEvent extends ManagerEvent {
 
     public void setChallenge(String challenge) {
         this.challenge = challenge;
+    }
+
+    public String getLocalAddress() {
+        return localAddress;
+    }
+
+    public void setLocalAddress(String localAddress) {
+        this.localAddress = localAddress;
+    }
+
+    public String getModule() {
+        return module;
+    }
+
+    public void setModule(String module) {
+        this.module = module;
+    }
+
+    public String getSessionId() {
+        return sessionId;
+    }
+
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+    }
+
+    public String getSessiontv() {
+        return sessiontv;
+    }
+
+    public void setSessiontv(String sessiontv) {
+        this.sessiontv = sessiontv;
     }
 }

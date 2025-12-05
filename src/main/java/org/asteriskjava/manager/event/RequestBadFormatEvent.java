@@ -9,7 +9,7 @@ public class RequestBadFormatEvent extends ManagerEvent {
     /**
      * Serializable version identifier.
      */
-    private final static long serialVersionUID = 12534663L;
+    private final static long serialVersionUID = -4626589852577838795L;
 
     private String severity;
 
@@ -30,6 +30,10 @@ public class RequestBadFormatEvent extends ManagerEvent {
     private String service;
 
     private String remoteaddress;
+
+    private String module;
+
+    private String requestparams;
 
     public RequestBadFormatEvent(Object source) {
         super(source);
@@ -113,5 +117,21 @@ public class RequestBadFormatEvent extends ManagerEvent {
 
     public void setRemoteaddress(String remoteaddress) {
         this.remoteaddress = remoteaddress;
+    }
+
+    public String getModule() {
+        return module;
+    }
+
+    public void setModule(String module) {
+        this.module = module;
+    }
+
+    public String getRequestparams() {
+        return requestparams;
+    }
+
+    public void setRequestparams(String requestparams) {
+        this.requestparams = requestparams;
     }
 }
