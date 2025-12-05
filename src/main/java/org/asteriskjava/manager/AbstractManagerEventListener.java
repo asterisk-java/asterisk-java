@@ -578,6 +578,33 @@ public abstract class AbstractManagerEventListener implements ManagerEventListen
     public void handleEvent(SuccessfulAuthEvent event) {
     }
 
+    public void handleEvent(AuthMethodNotAllowedEvent event) {
+    }
+
+    public void handleEvent(FailedACLEvent event) {
+    }
+
+    public void handleEvent(InvalidTransportEvent event) {
+    }
+
+    public void handleEvent(LoadAverageLimitEvent event) {
+    }
+
+    public void handleEvent(MemoryLimitEvent event) {
+    }
+
+    public void handleEvent(RequestNotAllowedEvent event) {
+    }
+
+    public void handleEvent(RequestNotSupportedEvent event) {
+    }
+
+    public void handleEvent(SessionLimitEvent event) {
+    }
+
+    public void handleEvent(UnexpectedAddressEvent event) {
+    }
+
     public void handleEvent(TransferEvent event) {
     }
 
