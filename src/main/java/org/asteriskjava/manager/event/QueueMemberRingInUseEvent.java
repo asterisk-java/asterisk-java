@@ -26,7 +26,7 @@ public class QueueMemberRingInUseEvent extends ManagerEvent {
      * @param source The object on which the Event initially occurred.
      * @throws IllegalArgumentException if source is null.
      */
-    protected QueueMemberRingInUseEvent(Object source) {
+    public QueueMemberRingInUseEvent(Object source) {
         super(source);
     }
 
