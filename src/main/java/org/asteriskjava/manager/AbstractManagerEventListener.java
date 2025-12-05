@@ -189,6 +189,9 @@ public abstract class AbstractManagerEventListener implements ManagerEventListen
     public void handleEvent(QueueMemberRemovedEvent event) {
     }
 
+    public void handleEvent(QueueMemberRingInUseEvent event) {
+    }
+
     public void handleEvent(RtcpReceivedEvent event) {
     }
 
