@@ -1,68 +1,39 @@
-/*
- *  Copyright 2004-2006 Stefan Reuter
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *
- */
 package org.asteriskjava.manager.event;
 
-/**
- * A QueueMemberPenaltyEvent is triggered when a queue member is assigned a
- * new penalty.<p>
- * It is implemented in <code>apps/app_queue.c</code>.<p>
- * Available since Asterisk 1.6
- *
- * @author srt
- * @version $Id$
- * @since 1.0.0
- */
-public class QueueMemberPenaltyEvent extends ManagerEvent {
-    /**
-     * Serializable version identifier.
-     */
-    private static final long serialVersionUID = 2361464012968723903L;
+public class QueueMemberRingInUseEvent extends ManagerEvent {
+    private static final long serialVersionUID = -631622399932926664L;
 
     private String queue;
-    private String location;
-    private Integer penalty;
-    private Boolean paused;
-    private Integer wrapuptime;
-    private Integer lastpause;
-    private String stateinterface;
-    private String pausedreason;
-    private Integer incall;
-    private String membership;
+    private String memberName;
     private String _interface;
-    private Integer callstaken;
-    private Integer ringinuse;
-    private Integer lastcall;
-    private String membername;
+    private String stateInterface;
+    private String membership;
+    private Integer penalty;
+    private Integer callsTaken;
+    private Integer lastCall;
+    private Integer lastPause;
+    private Integer loginTime;
+    private Integer inCall;
     private Integer status;
-    private Integer logintime;
+    private Boolean paused;
+    private String pausedReason;
+    private Integer ringInUse;
+    private Integer wrapUpTime;
 
     /**
-     * Creates a new instance.
+     * Constructs a QueueMemberRingInUseEvent
      *
-     * @param source
+     * @param source The object on which the Event initially occurred.
+     * @throws IllegalArgumentException if source is null.
      */
-    public QueueMemberPenaltyEvent(Object source) {
+    public QueueMemberRingInUseEvent(Object source) {
         super(source);
     }
 
     /**
-     * Returns if the member is pause
+     * Returns if the member is paused
      *
-     * @return if the member is pause
+     * @return if the member is paused
      */
     public Boolean getPaused() {
         return paused;
@@ -83,7 +54,7 @@ public class QueueMemberPenaltyEvent extends ManagerEvent {
      * @return Returns wrapuptime
      */
     public Integer getWrapuptime() {
-        return wrapuptime;
+        return wrapUpTime;
     }
 
     /**
@@ -92,7 +63,7 @@ public class QueueMemberPenaltyEvent extends ManagerEvent {
      * @param wrapuptime the wrapuptime
      */
     public void setWrapuptime(Integer wrapuptime) {
-        this.wrapuptime = wrapuptime;
+        this.wrapUpTime = wrapuptime;
     }
 
     /**
@@ -101,7 +72,7 @@ public class QueueMemberPenaltyEvent extends ManagerEvent {
      * @return Returns time in seconds when started last paused the queue member
      */
     public Integer getLastpause() {
-        return lastpause;
+        return lastPause;
     }
 
     /**
@@ -110,7 +81,7 @@ public class QueueMemberPenaltyEvent extends ManagerEvent {
      * @param lastpause time in seconds when started last paused the queue member
      */
     public void setLastpause(Integer lastpause) {
-        this.lastpause = lastpause;
+        this.lastPause = lastpause;
     }
 
     /**
@@ -119,7 +90,7 @@ public class QueueMemberPenaltyEvent extends ManagerEvent {
      * @return the queue member's tech or location state
      */
     public String getStateinterface() {
-        return stateinterface;
+        return stateInterface;
     }
 
     /**
@@ -128,7 +99,7 @@ public class QueueMemberPenaltyEvent extends ManagerEvent {
      * @param stateinterface channel technology or location from which the member device changed
      */
     public void setStateinterface(String stateinterface) {
-        this.stateinterface = stateinterface;
+        this.stateInterface = stateinterface;
     }
 
     /**
@@ -137,7 +108,7 @@ public class QueueMemberPenaltyEvent extends ManagerEvent {
      * @return reason if set when paused
      */
     public String getPausedreason() {
-        return pausedreason;
+        return pausedReason;
     }
 
     /**
@@ -146,7 +117,7 @@ public class QueueMemberPenaltyEvent extends ManagerEvent {
      * @param pausedreason reason if set when paused
      */
     public void setPausedreason(String pausedreason) {
-        this.pausedreason = pausedreason;
+        this.pausedReason = pausedreason;
     }
 
     /**
@@ -155,7 +126,7 @@ public class QueueMemberPenaltyEvent extends ManagerEvent {
      * @return if member is in call when event is raised
      */
     public Integer getIncall() {
-        return incall;
+        return inCall;
     }
 
     /**
@@ -164,7 +135,7 @@ public class QueueMemberPenaltyEvent extends ManagerEvent {
      * @param incall if member is in call when event is raised
      */
     public void setIncall(Integer incall) {
-        this.incall = incall;
+        this.inCall = incall;
     }
 
     /**
@@ -210,7 +181,7 @@ public class QueueMemberPenaltyEvent extends ManagerEvent {
      * @return number of calls this queue member has serviced
      */
     public Integer getCallstaken() {
-        return callstaken;
+        return callsTaken;
     }
 
     /**
@@ -219,7 +190,7 @@ public class QueueMemberPenaltyEvent extends ManagerEvent {
      * @param callstaken number of calls this queue member has serviced
      */
     public void setCallstaken(Integer callstaken) {
-        this.callstaken = callstaken;
+        this.callsTaken = callstaken;
     }
 
     /**
@@ -228,7 +199,7 @@ public class QueueMemberPenaltyEvent extends ManagerEvent {
      * @return member's ring in use setup
      */
     public Integer getRinginuse() {
-        return ringinuse;
+        return ringInUse;
     }
 
     /**
@@ -237,7 +208,7 @@ public class QueueMemberPenaltyEvent extends ManagerEvent {
      * @param ringinuse member's ring in use setup
      */
     public void setRinginuse(Integer ringinuse) {
-        this.ringinuse = ringinuse;
+        this.ringInUse = ringinuse;
     }
 
     /**
@@ -246,7 +217,7 @@ public class QueueMemberPenaltyEvent extends ManagerEvent {
      * @return time this member last took a call, expressed in seconds
      */
     public Integer getLastcall() {
-        return lastcall;
+        return lastCall;
     }
 
     /**
@@ -255,7 +226,7 @@ public class QueueMemberPenaltyEvent extends ManagerEvent {
      * @param lastcall time this member last took a call, expressed in seconds
      */
     public void setLastcall(Integer lastcall) {
-        this.lastcall = lastcall;
+        this.lastCall = lastcall;
     }
 
     /**
@@ -264,7 +235,7 @@ public class QueueMemberPenaltyEvent extends ManagerEvent {
      * @return name of the queue member.
      */
     public String getMembername() {
-        return membername;
+        return memberName;
     }
 
     /**
@@ -273,7 +244,7 @@ public class QueueMemberPenaltyEvent extends ManagerEvent {
      * @param membername name of the queue member.
      */
     public void setMembername(String membername) {
-        this.membername = membername;
+        this.memberName = membername;
     }
 
     /**
@@ -313,25 +284,6 @@ public class QueueMemberPenaltyEvent extends ManagerEvent {
     }
 
     /**
-     * Returns the name of the member's interface.<p>
-     * E.g. the channel name or agent group.
-     *
-     * @return the name of the member's interface.
-     */
-    public String getLocation() {
-        return location;
-    }
-
-    /**
-     * Sets the name of the member's interface.
-     *
-     * @param member the name of the member's interface.
-     */
-    public void setLocation(String member) {
-        this.location = member;
-    }
-
-    /**
      * Returns the new penalty.
      *
      * @return the new penalty.
@@ -350,20 +302,20 @@ public class QueueMemberPenaltyEvent extends ManagerEvent {
     }
 
     /**
-     * Gets the login time (as a UNIX timestamp)
+     * Gets the login time
      *
-     * @return the login time of the agent
+     * @return the login time of the agent as a UNIX timestamp
      */
     public Integer getLoginTime() {
-        return logintime;
+        return loginTime;
     }
 
     /**
-     * Sets the login time (as a UNIX timestamp)
+     * Sets the login time
      *
-     * @param logintime the login time of the agent
+     * @param logintime the login time of the agent as a UNIX timestamp
      */
     public void setLoginTime(Integer logintime) {
-        this.logintime = logintime;
+        this.loginTime = logintime;
     }
 }
