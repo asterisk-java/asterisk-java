@@ -30,7 +30,8 @@ public class QueueMemberPenaltyEvent extends ManagerEvent {
     /**
      * Serializable version identifier.
      */
-    private static final long serialVersionUID = 0L;
+    private static final long serialVersionUID = 2361464012968723903L;
+
     private String queue;
     private String location;
     private Integer penalty;
@@ -47,6 +48,7 @@ public class QueueMemberPenaltyEvent extends ManagerEvent {
     private Integer lastcall;
     private String membername;
     private Integer status;
+    private Integer logintime;
 
     /**
      * Creates a new instance.
@@ -345,5 +347,23 @@ public class QueueMemberPenaltyEvent extends ManagerEvent {
      */
     public void setPenalty(Integer penalty) {
         this.penalty = penalty;
+    }
+
+    /**
+     * Gets the login time (as a UNIX timestamp)
+     *
+     * @return the login time of the agent
+     */
+    public Integer getLoginTime() {
+        return logintime;
+    }
+
+    /**
+     * Sets the login time (as a UNIX timestamp)
+     *
+     * @param logintime the login time of the agent
+     */
+    public void setLoginTime(Integer logintime) {
+        this.logintime = logintime;
     }
 }
