@@ -10,13 +10,20 @@ public class ChallengeResponseFailedEvent extends ManagerEvent {
     /**
      * Serializable version identifier.
      */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -4630209124005390153L;
 
     private String severity;
     private String eventversion;
     private String service;
     private String remoteaddress;
     private String localaddress;
+    private String accountId;
+    private String module;
+    private String sessiontv;
+    private String sessionId;
+    private String challange;
+    private String response;
+    private String expectedResponse;
 
     /**
      * @param source
@@ -76,5 +83,61 @@ public class ChallengeResponseFailedEvent extends ManagerEvent {
         } finally {
             this.setTimestamp(t.doubleValue());
         }
+    }
+
+    public String getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
+    }
+
+    public String getModule() {
+        return module;
+    }
+
+    public void setModule(String module) {
+        this.module = module;
+    }
+
+    public String getSessiontv() {
+        return sessiontv;
+    }
+
+    public void setSessiontv(String sessiontv) {
+        this.sessiontv = sessiontv;
+    }
+
+    public String getSessionId() {
+        return sessionId;
+    }
+
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+    }
+
+    public String getChallange() {
+        return challange;
+    }
+
+    public void setChallange(String challange) {
+        this.challange = challange;
+    }
+
+    public String getResponse() {
+        return response;
+    }
+
+    public void setResponse(String response) {
+        this.response = response;
+    }
+
+    public String getExpectedResponse() {
+        return expectedResponse;
+    }
+
+    public void setExpectedResponse(String expectedResponse) {
+        this.expectedResponse = expectedResponse;
     }
 }

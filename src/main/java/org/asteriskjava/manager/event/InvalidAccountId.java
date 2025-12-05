@@ -9,7 +9,7 @@ public class InvalidAccountId extends ManagerEvent {
     /**
      *
      */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 7812041063040911614L;
     private String severity;
     private Integer eventVersion;
     private String eventtv;
@@ -19,6 +19,8 @@ public class InvalidAccountId extends ManagerEvent {
     private String service;
     private String remoteAddress;
     private String event;
+    private String module;
+    private String sessiontv;
 
     public InvalidAccountId(Object source) {
         super(source);
@@ -98,5 +100,21 @@ public class InvalidAccountId extends ManagerEvent {
 
     public void setEvent(String event) {
         this.event = event;
+    }
+
+    public String getModule() {
+        return module;
+    }
+
+    public void setModule(String module) {
+        this.module = module;
+    }
+
+    public String getSessiontv() {
+        return sessiontv;
+    }
+
+    public void setSessiontv(String sessiontv) {
+        this.sessiontv = sessiontv;
     }
 }
