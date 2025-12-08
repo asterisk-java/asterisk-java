@@ -24,6 +24,7 @@ public class SendFaxEvent extends AbstractFaxEvent {
      * Serial version identifier.
      */
     private static final long serialVersionUID = -1L;
+    private String channel;
     private String callerId;
     private String localStationId;
     private String remoteStationId;
@@ -32,11 +33,24 @@ public class SendFaxEvent extends AbstractFaxEvent {
     private String transferRate;
     private String fileName;
 
+    private String language;
+    private String accountCode;
+    private String linkedId;
+    private String uniqueId;
 
     public SendFaxEvent(Object source) {
         super(source);
     }
 
+    @Override
+    public String getChannel() {
+        return channel;
+    }
+
+    @Override
+    public void setChannel(String channel) {
+        this.channel = channel;
+    }
 
     /**
      * @return the callerId
@@ -149,6 +163,36 @@ public class SendFaxEvent extends AbstractFaxEvent {
         this.fileName = fileName;
     }
 
+    public String getAccountCode() {
+        return accountCode;
+    }
 
+    public void setAccountCode(String accountCode) {
+        this.accountCode = accountCode;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    public String getLinkedId() {
+        return linkedId;
+    }
+
+    public void setLinkedId(String linkedId) {
+        this.linkedId = linkedId;
+    }
+
+    public String getUniqueId() {
+        return uniqueId;
+    }
+
+    public void setUniqueId(String uniqueId) {
+        this.uniqueId = uniqueId;
+    }
 }
 
