@@ -39,6 +39,11 @@ public class T38FaxStatusEvent extends AbstractFaxEvent {
     private Integer minimumJitterSpace;
     private Integer unrecoverablePackets;
 
+    private String language;
+    private String accountCode;
+    private String linkedId;
+    private String uniqueId;
+
     public T38FaxStatusEvent(Object source) {
         super(source);
     }
@@ -269,6 +274,38 @@ public class T38FaxStatusEvent extends AbstractFaxEvent {
     public Integer getAverageRxDataRateInBps() {
         final String averageRxDataRateStripped = stripUnit(this.averageRxDataRate);
         return averageRxDataRateStripped == null ? null : Integer.valueOf(averageRxDataRateStripped);
+    }
+
+    public String getAccountCode() {
+        return accountCode;
+    }
+
+    public void setAccountCode(String accountCode) {
+        this.accountCode = accountCode;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    public String getLinkedId() {
+        return linkedId;
+    }
+
+    public void setLinkedId(String linkedId) {
+        this.linkedId = linkedId;
+    }
+
+    public String getUniqueId() {
+        return uniqueId;
+    }
+
+    public void setUniqueId(String uniqueId) {
+        this.uniqueId = uniqueId;
     }
 
     String stripUnit(String s) {

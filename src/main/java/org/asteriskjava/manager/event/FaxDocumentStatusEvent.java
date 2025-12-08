@@ -41,6 +41,10 @@ public class FaxDocumentStatusEvent extends AbstractFaxEvent {
     private String remoteSid;
     private String remoteDis;
 
+    private String language;
+    private String accountCode;
+    private String linkedId;
+    private String uniqueId;
 
     public FaxDocumentStatusEvent(Object source) {
         super(source);
@@ -302,6 +306,36 @@ public class FaxDocumentStatusEvent extends AbstractFaxEvent {
         this.remoteDis = remoteDis;
     }
 
+    public String getAccountCode() {
+        return accountCode;
+    }
 
+    public void setAccountCode(String accountCode) {
+        this.accountCode = accountCode;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    public String getLinkedId() {
+        return linkedId;
+    }
+
+    public void setLinkedId(String linkedId) {
+        this.linkedId = linkedId;
+    }
+
+    public String getUniqueId() {
+        return uniqueId;
+    }
+
+    public void setUniqueId(String uniqueId) {
+        this.uniqueId = uniqueId;
+    }
 }
 
