@@ -293,7 +293,7 @@ class ActionBuilderImpl implements ActionBuilder {
             // ok, no field
         }
 
-        return fieldName.toLowerCase(Locale.US);
+        return fieldName.toLowerCase(Locale.ENGLISH);
     }
 
     static String determineSetterName(String getterName) {

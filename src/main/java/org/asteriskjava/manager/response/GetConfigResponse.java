@@ -54,7 +54,7 @@ public class GetConfigResponse extends ManagerResponse {
         Map<String, Object> responseMap = super.getAttributes();
         for (Entry<String, Object> response : responseMap.entrySet()) {
             String key = response.getKey();
-            if (key.toLowerCase(Locale.US).contains("category")) {
+            if (key.toLowerCase(Locale.ENGLISH).contains("category")) {
                 String[] keyParts = key.split("-");
 
                 // if it doesn't have at least category-XXXXXX, skip
@@ -91,7 +91,7 @@ public class GetConfigResponse extends ManagerResponse {
         Map<String, Object> responseMap = super.getAttributes();
         for (Entry<String, Object> response : responseMap.entrySet()) {
             String key = response.getKey();
-            if (key.toLowerCase(Locale.US).contains("line")) {
+            if (key.toLowerCase(Locale.ENGLISH).contains("line")) {
                 String[] keyParts = key.split("-");
 
                 // if it doesn't have at least line-XXXXXX-XXXXXX, skip
