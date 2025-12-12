@@ -32,6 +32,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -161,52 +162,21 @@ public class ReflectionUtil {
         return accessors;
     }
 
+    private static final Pattern ILLEGAL_CHARS = Pattern.compile("[^a-z0-9]+");
+
     /**
-     * Strips all illegal charaters from the given lower case string. Illegal
-     * characters are all characters that are neither characters ('a' to 'z')
+     * Strips all illegal characters from the given lower case string. Illegal
+     * characters are all characters that are neither alphabetic ('a' to 'z')
      * nor digits ('0' to '9').
      *
      * @param s the original string
      * @return the string with all illegal characters stripped
      */
     public static String stripIllegalCharacters(String s) {
-        char c;
-        boolean needsStrip = false;
-        StringBuilder sb;
-
         if (s == null) {
             return null;
         }
-
-        for (int i = 0; i < s.length(); i++) {
-            c = s.charAt(i);
-            if (c >= '0' && c <= '9') {
-                // continue
-            } // NOPMD
-            else if (c >= 'a' && c <= 'z') {
-                // continue
-            } // NOPMD
-            else {
-                needsStrip = true;
-                break;
-            }
-        }
-
-        if (!needsStrip) {
-            return s;
-        }
-
-        sb = new StringBuilder(s.length());
-        for (int i = 0; i < s.length(); i++) {
-            c = s.charAt(i);
-            if (c >= '0' && c <= '9') {
-                sb.append(c);
-            } else if (c >= 'a' && c <= 'z') {
-                sb.append(c);
-            }
-        }
-
-        return sb.toString();
+        return ILLEGAL_CHARS.matcher(s).replaceAll("");
     }
 
     /**
