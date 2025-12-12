@@ -2,7 +2,8 @@ package org.asteriskjava.manager.event;
 
 /**
  * Raised when a Channel Event Log is generated for a channel.
- * https://wiki.asterisk.org/wiki/display/AST/Asterisk+13+ManagerEvent_CEL
+ * <p>
+ * <a href="https://docs.asterisk.org/Latest_API/API_Documentation/AMI_Events/CEL/">Asterisk AMI Events: CEL</a>
  */
 public class CelEvent extends ManagerEvent {
     private static final long serialVersionUID = 1L;
@@ -22,7 +23,11 @@ public class CelEvent extends ManagerEvent {
     public static final String CEL_EVENT_FORWARD = "FORWARD";
     public static final String CEL_EVENT_LINKEDID_END = "LINKEDID_END";
     public static final String CEL_EVENT_LOCAL_OPTIMIZE = "LOCAL_OPTIMIZE";
+    public static final String CEL_EVENT_LOCAL_OPTIMIZE_BEGIN = "LOCAL_OPTIMIZE_BEGIN";
     public static final String CEL_EVENT_USER_DEFINED = "USER_DEFINED";
+    public static final String CEL_EVENT_STREAM_BEGIN = "STREAM_BEGIN";
+    public static final String CEL_EVENT_STREAM_END = "STREAM_END";
+    public static final String CEL_EVENT_DTMF = "DTMF";
 
     private String eventName;
     private String accountCode;
