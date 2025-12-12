@@ -131,8 +131,8 @@ public class ManagerReaderImpl implements ManagerReader {
      * as soon as it is received and dispatches the received events and
      * responses via the associated dispatcher.
      *
-     * @see org.asteriskjava.manager.internal.Dispatcher#dispatchEvent(ManagerEvent)
-     * @see org.asteriskjava.manager.internal.Dispatcher#dispatchResponse(ManagerResponse)
+     * @see org.asteriskjava.manager.internal.Dispatcher#dispatchEvent(ManagerEvent, Integer)
+     * @see org.asteriskjava.manager.internal.Dispatcher#dispatchResponse(ManagerResponse, Integer)
      */
     public void run() {
         long timeOfLastEvent = 0;
