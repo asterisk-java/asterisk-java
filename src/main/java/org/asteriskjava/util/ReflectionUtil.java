@@ -137,7 +137,7 @@ public class ReflectionUtil {
             }
 
             // OK seems to be an setter
-            name = methodName.substring("set".length()).toLowerCase(Locale.US);
+            name = methodName.substring("set".length()).toLowerCase(Locale.ENGLISH);
 
             // if an event class implements a setter that exists in
             // ManagerEvent, then prefer the setter from the extending class

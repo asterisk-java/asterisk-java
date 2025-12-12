@@ -86,7 +86,7 @@ public class AstUtil {
             return (Boolean) o;
         }
 
-        return TRUE_LITERALS.contains(o.toString().toLowerCase(Locale.US));
+        return TRUE_LITERALS.contains(o.toString().toLowerCase(Locale.ENGLISH));
     }
 
     /**
@@ -180,7 +180,7 @@ public class AstUtil {
             return false;
         }
 
-        return NULL_LITERALS.contains(((String) s).toLowerCase(Locale.US));
+        return NULL_LITERALS.contains(((String) s).toLowerCase(Locale.ENGLISH));
     }
 
     /**

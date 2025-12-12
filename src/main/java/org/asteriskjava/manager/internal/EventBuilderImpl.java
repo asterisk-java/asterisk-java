@@ -112,7 +112,7 @@ class EventBuilderImpl implements EventBuilder {
             throw new IllegalArgumentException(clazz + " has no usable constructor");
         }
 
-        registeredEventClasses.put(eventType.toLowerCase(Locale.US), clazz);
+        registeredEventClasses.put(eventType.toLowerCase(Locale.ENGLISH), clazz);
 
         logger.debug("Registered event type '" + eventType + "' (" + clazz + ")");
     }
@@ -167,7 +167,7 @@ class EventBuilderImpl implements EventBuilder {
                 return null;
             }
 
-            eventType = ((String) attributes.get("event")).toLowerCase(Locale.US);
+            eventType = ((String) attributes.get("event")).toLowerCase(Locale.ENGLISH);
 
             // Change in Asterisk 1.4 where the name of the UserEvent is sent as
             // property instead
@@ -184,7 +184,7 @@ class EventBuilderImpl implements EventBuilder {
                     return null;
                 }
 
-                userEventType = ((String) attributes.get("userevent")).toLowerCase(Locale.US);
+                userEventType = ((String) attributes.get("userevent")).toLowerCase(Locale.ENGLISH);
                 eventType = eventType + userEventType;
             }
         }

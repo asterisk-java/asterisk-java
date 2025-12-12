@@ -369,7 +369,7 @@ public class ConfigFileReader {
                 name = "";
             }
             throw new MissingDirectiveParameterException(configfile, lineno,
-                    "Directive '#%s' needs an argument (%s) at line %d of %s", name.toLowerCase(Locale.US),
+                    "Directive '#%s' needs an argument (%s) at line %d of %s", name.toLowerCase(Locale.ENGLISH),
                     "include".equalsIgnoreCase(name) ? "filename" : "/path/to/executable", lineno, configfile);
         }
 
