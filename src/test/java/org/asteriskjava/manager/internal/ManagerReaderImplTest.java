@@ -150,30 +150,6 @@ class ManagerReaderImplTest {
         assertEquals(DisconnectEvent.class, dispatcher.dispatchedEvents.get(1).getClass(), "second event must be an DisconnectEvent");
     }
 
-    @Test
-    void testWorkaroundForAsteriskBug13319() throws Exception {
-        when(socketConnectionFacade.readLine())
-                .thenReturn("Event: RTCPReceived")
-                .thenReturn("From 192.168.0.1:1234")
-                .thenReturn("HighestSequence: 999")
-                .thenReturn("")
-                .thenReturn(null);
-
-        managerReader.setSocket(socketConnectionFacade);
-        managerReader.run();
-
-        assertEquals(2, dispatcher.dispatchedEvents.size(), "not exactly two events dispatched");
-
-        assertEquals(RtcpReceivedEvent.class, dispatcher.dispatchedEvents.get(0).getClass(), "first event must be a RtcpReceivedEvent");
-
-        RtcpReceivedEvent rtcpReceivedEvent = (RtcpReceivedEvent) dispatcher.dispatchedEvents.get(0);
-        assertEquals("192.168.0.1", rtcpReceivedEvent.getFromAddress().getHostAddress(), "Invalid from address on RtcpReceivedEvent");
-        assertEquals(Integer.valueOf(1234), rtcpReceivedEvent.getFromPort(), "Invalid from port on RtcpReceivedEvent");
-        assertEquals(Long.valueOf(999), rtcpReceivedEvent.getHighestSequence(), "Invalid highest sequence on RtcpReceivedEvent");
-
-        assertEquals(DisconnectEvent.class, dispatcher.dispatchedEvents.get(1).getClass(), "second event must be a DisconnectEvent");
-    }
-
     // todo fix testRunReceivingUserEvent
     void XtestRunReceivingUserEvent() throws Exception {
         managerReader.registerEventClass(MyUserEvent.class);

@@ -177,27 +177,16 @@ public class ManagerReaderImpl implements ManagerReader {
                     continue;
                 }
 
-                if (line.length() > 0) {
-                    // begin of workaround for Astersik bug 13319
-                    // see AJ-77
-                    // Use this workaround only when line starts from "From "
-                    // and "To "
-                    int isFromAtStart = line.indexOf("From ");
-                    int isToAtStart = line.indexOf("To ");
-
-                    int delimiterIndex = isFromAtStart == 0 || isToAtStart == 0 ? line.indexOf(" ") : line.indexOf(":");
-                    // end of workaround for Astersik bug 13319
-
-                    int delimiterLength = 1;
-
-                    if (delimiterIndex > 0 && line.length() > delimiterIndex + delimiterLength) {
-                        String name = line.substring(0, delimiterIndex).toLowerCase(Locale.ENGLISH).trim();
-                        String value = line.substring(delimiterIndex + delimiterLength).trim();
-
-                        addToBuffer(buffer, name, value);
-                        // TODO tracing
-                        // logger.debug("Got name [" + name + "], value: [" +
-                        // value + "]");
+                if (!line.isEmpty()) {
+                    String[] parts = line.split(":", 2);
+                    if (parts.length == 2) {
+                        parts[0] = parts[0].toLowerCase(Locale.ENGLISH).trim();
+                        parts[1] = parts[1].trim();
+                        if (!parts[0].isEmpty()) {
+                            addToBuffer(buffer, parts[0], parts[1]);
+                            // TODO tracing
+                            //  logger.debug("Got name [" + name + "], value: [" + value + "]");
+                        }
                     }
                 }
 
