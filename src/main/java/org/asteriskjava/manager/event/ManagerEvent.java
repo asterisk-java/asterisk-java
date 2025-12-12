@@ -37,7 +37,7 @@ public abstract class ManagerEvent extends EventObject {
     /**
      * Serializable version identifier.
      */
-    static final long serialVersionUID = 2L;
+    private static final long serialVersionUID = 2L;
     protected String connectedLineNum;
     protected String connectedLineName;
     protected Integer priority;
@@ -46,6 +46,7 @@ public abstract class ManagerEvent extends EventObject {
     protected String exten;
     protected String callerIdNum;
     protected String callerIdName;
+    protected Map<String, String> channelVariables = Collections.emptyMap();
 
     /**
      * Returns the Caller ID name of the caller's channel.
@@ -125,6 +126,25 @@ public abstract class ManagerEvent extends EventObject {
 
     public void setContext(String context) {
         this.context = context;
+    }
+
+    /**
+     * Gets a map of channel variables sent with this manager event.
+     * <p>
+     * These are only sent by Asterisk if it has been configured to do so in
+     * the manager configuration file (manager.conf).
+     *
+     * @return an unmodifiable map of channel variables and their values, never {@code null}
+     */
+    public Map<String, String> getChannelVariables() {
+        return channelVariables;
+    }
+
+    public void setChanVariables(Map<String, String> variables) {
+        if (variables == null) {
+            return;
+        }
+        this.channelVariables = Collections.unmodifiableMap(new HashMap<>(variables));
     }
 
     protected String context;
