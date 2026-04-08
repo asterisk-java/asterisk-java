@@ -34,6 +34,7 @@ public class ContactStatusDetail extends ResponseEvent {
     private String path;
     private int qualifyFrequency;
     private Float qualifyTimeout;
+    private Boolean qualify2xxOnly;
 
     public String getAor() {
         return aor;
@@ -149,6 +150,14 @@ public class ContactStatusDetail extends ResponseEvent {
 
     public void setQualifyTimeout(String qualifyTimeout) {
         this.qualifyTimeout = Float.parseFloat(qualifyTimeout);
+    }
+
+    public Boolean isQualify2xxOnly() {
+        return qualify2xxOnly;
+    }
+
+    public void setQualify2xxOnly(Boolean qualify2xxOnly) {
+        this.qualify2xxOnly = qualify2xxOnly;
     }
 
     public ContactStatusDetail(Object source) {
