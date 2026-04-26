@@ -54,6 +54,7 @@ public class ContactList extends ResponseEvent {
     String objecttype;
     String pruneonboot;
     ContactStatusEnum status;
+    Boolean qualify2xxOnly;
 
     /**
      * Creates a new instance.
@@ -213,6 +214,14 @@ public class ContactList extends ResponseEvent {
 
     }
 
+    public Boolean isQualify2xxOnly() {
+        return qualify2xxOnly;
+    }
+
+    public void setQualify2xxOnly(Boolean qualify2xxOnly) {
+        this.qualify2xxOnly = qualify2xxOnly;
+    }
+
     @Override
     public String toString() {
         return "ContactList [qualifyTimeout=" + qualifyTimeout + ", callid=" + callid + ", regserver=" + regserver
@@ -220,7 +229,7 @@ public class ContactList extends ResponseEvent {
                 + authenticatequalify + ", objectname=" + objectname + ", useragent=" + useragent + ", uri=" + uri
                 + ", viaaddr=" + viaaddr + ", qualifyfrequency=" + qualifyfrequency + ", path=" + path + ", endpoint="
                 + endpoint + ", viaport=" + viaport + ", outboundproxy=" + outboundproxy + ", actionId=" + actionId
-                + ", objecttype=" + objecttype + ", pruneonboot=" + pruneonboot + ", status=" + status + "]\n";
+                + ", objecttype=" + objecttype + ", pruneonboot=" + pruneonboot + ", status=" + status + ", qualify2xxOnly=" + qualify2xxOnly + "]\n";
     }
 
 }

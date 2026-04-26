@@ -40,6 +40,8 @@ public class AorDetail extends ResponseEvent {
     private int totalContacts;
     private int contactsRegistered;
     private String endpointName;
+    private Boolean removeUnavailable;
+    private Boolean qualify2xxOnly;
 
     public String getObjectType() {
         return objectType;
@@ -183,6 +185,22 @@ public class AorDetail extends ResponseEvent {
 
     public void setEndpointName(String endpointName) {
         this.endpointName = endpointName;
+    }
+
+    public Boolean isRemoveUnavailable() {
+        return removeUnavailable;
+    }
+
+    public void setRemoveUnavailable(Boolean removeUnavailable) {
+        this.removeUnavailable = removeUnavailable;
+    }
+
+    public Boolean isQualify2xxOnly() {
+        return qualify2xxOnly;
+    }
+
+    public void setQualify2xxOnly(Boolean qualify2xxOnly) {
+        this.qualify2xxOnly = qualify2xxOnly;
     }
 
 }
