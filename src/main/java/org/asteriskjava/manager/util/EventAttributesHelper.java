@@ -146,14 +146,19 @@ public class EventAttributesHelper {
     }
 
     private static Integer parseInteger(Map.Entry<String, Object> entry) {
-        Integer value;
-        String stringValue = (String) entry.getValue();
-        if (stringValue != null && stringValue.length() > 0) {
-            value = Integer.parseInt(stringValue);
+        Object rawValue = entry.getValue();
+        String stringValue;
+        if (rawValue instanceof List) {
+            // Take the first non-null element
+            List<?> list = (List<?>) rawValue;
+            stringValue = list.isEmpty() ? null : (String) list.get(0);
         } else {
-            value = null;
+            stringValue = (String) rawValue;
         }
-        return value;
+        if (stringValue != null && stringValue.length() > 0) {
+            return Integer.parseInt(stringValue);
+        }
+        return null;
     }
 
     @SuppressWarnings("unchecked")
