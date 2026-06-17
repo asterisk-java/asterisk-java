@@ -31,8 +31,14 @@ class AsteriskVersionTest {
     void test18() {
         assertTrue(AsteriskVersion.getDetermineVersionFromString("Asterisk 18.1.0").equals(AsteriskVersion.ASTERISK_18));
     }
+
     @Test
     void testCertified18() {
         assertTrue(AsteriskVersion.getDetermineVersionFromString("Asterisk certified/18.9-cert2").equals(AsteriskVersion.ASTERISK_18));
+    }
+
+    @Test
+    void testCertified22() {
+        assertTrue(AsteriskVersion.getDetermineVersionFromString("Asterisk certified-22.8-cert2").equals(AsteriskVersion.ASTERISK_22));
     }
 }
