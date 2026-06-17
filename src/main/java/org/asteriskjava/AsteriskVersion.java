@@ -44,6 +44,7 @@ public class AsteriskVersion implements Comparable<AsteriskVersion>, Serializabl
     private final String versionString;
     private final Pattern patterns[];
 
+    private static final String VERSION_PATTERN_CERTIFIED_22 = "^\\s*Asterisk certified-(GIT-)?22[-. ].*";
     private static final String VERSION_PATTERN_CERTIFIED_20 = "^\\s*Asterisk certified-(GIT-)?20[-. ].*";
     private static final String VERSION_PATTERN_CERTIFIED_18 = "^\\s*Asterisk certified[-/](GIT-)?18[-. ].*";
     private static final String VERSION_PATTERN_CERTIFIED_16 = "^\\s*Asterisk certified/(GIT-)?16[-. ].*";
@@ -171,7 +172,7 @@ public class AsteriskVersion implements Comparable<AsteriskVersion>, Serializabl
      *
      * @since 3.40.0
      */
-    public static final AsteriskVersion ASTERISK_22 = new AsteriskVersion(2200, "Asterisk 22", VERSION_PATTERN_22);
+    public static final AsteriskVersion ASTERISK_22 = new AsteriskVersion(2200, "Asterisk 22", VERSION_PATTERN_22, VERSION_PATTERN_CERTIFIED_22);
 
     /**
      * Represents the Asterisk 23 series.
