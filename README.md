@@ -69,14 +69,14 @@ Asterisk-Java 3.x (Java 1.8 and Asterisk Version 10 thru 23) (master)
 <dependency>
     <groupId>org.asteriskjava</groupId>
     <artifactId>asterisk-java</artifactId>
-    <version>3.41.0</version>
+    <version>3.42.2</version>
 </dependency>
 ```
 
 ### Gradle
 
 ```text
-implementation group: 'org.asteriskjava', name: 'asterisk-java', version: '3.41.0'
+implementation group: 'org.asteriskjava', name: 'asterisk-java', version: '3.42.2'
 ```
 
 ### Installation from source
