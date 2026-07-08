@@ -71,8 +71,14 @@
         <developer>
             <name>Piotr Olaszewski</name>
             <id>piotrooo</id>
-            <email>piotroo89_at_gmail.com</email>
+            <email>piotroo89 at gmail.com</email>
             <timezone>+1</timezone>
+        </developer>
+        <developer>
+            <name>Sean Bright</name>
+            <id>seanbright</id>
+            <email>sean at seanbright.com</email>
+            <timezone>-5</timezone>
         </developer>
     </developers>
 
